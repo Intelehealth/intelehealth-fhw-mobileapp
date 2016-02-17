@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Health Assistants\' Client</string>
+
+    //Generic
+    <string name="the_flipping_word_next">Next</string>
+
+    //Home Screen
+    <string name="title">mKnowledge</string>
+    <string name="settings">Settings</string>
+    <string name="new_pt">New Patient</string>
+    <string name="fu_pt">Follow-Up Patient</string>
+    <string name="diagnostics">Diagnostic Tests</string>
+    <string name="specialty">Specialty Services</string>
+    <string name="active_pts">Active Patients</string>
+
+    //Demographics
+    <string name="first_name_hint">First Name</string>
+    <string name="last_name_hint">Last Name</string>
+    <string name="address_hint">Address</string>
+    <string name="phone_number_hint">Phone Number</string>
+    <string name="male_checkbox">Male</string>
+    <string name="female_checkbox">Female</string>
+    <string name="birthday_hint">Date of Birth</string>
+    <string name="relationship_hint">Son/Daughter/Wife of ...</string>
+    <string name="occupation_hint">Occupation</string>
+
+    //Chief Complaint 1
+    <string name="complaint_category_question">What category is the complaint under?</string>
+
+    //CC 2
+    <string name="category_statement">The CATEGORY of complaint is: </string>
+    <string name="complaint_question">What is the complaint under this category?</string>
+
+    //CC 3
+    <string name="complaint_category_specifics">Here are the questions associated with: </string>
+
+    //
+    
+</resources>
