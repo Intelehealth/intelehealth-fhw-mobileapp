@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="edu.jhu.bme.cbid.healthassistantsclient.MainActivity">
+
+    <Button
+        android:layout_width="@dimen/home_screen_button_width"
+        android:layout_height="@dimen/home_screen_Button_height"
+        android:text="@string/new_pt_button"
+        android:id="@+id/new_pt_button"
+        android:layout_gravity="center_vertical"
+        android:layout_weight=".25"
+        android:onClick="newPatientWorkflow" />
+
+
+    <Button
+        android:layout_width="@dimen/home_screen_button_width"
+        android:layout_height="@dimen/home_screen_Button_height"
+        android:text="@string/fu_pt_button"
+        android:id="@+id/fu_pt_button"
+        android:layout_gravity="center_vertical"
+        android:layout_weight=".25" />
+
+    <Button
+        android:layout_width="@dimen/home_screen_button_width"
+        android:layout_height="@dimen/home_screen_Button_height"
+        android:text="@string/diagnostics_button"
+        android:id="@+id/diagnostics_button"
+        android:layout_gravity="center"
+        android:layout_weight=".25" />
+
+    <Button
+        android:layout_width="@dimen/home_screen_button_width"
+        android:layout_height="@dimen/home_screen_Button_height"
+        android:text="@string/active_pt_button"
+        android:id="@+id/active_pt_button"
+        android:layout_gravity="center"
+        android:layout_weight=".25" />
+
+</LinearLayout>
