@@ -35,6 +35,9 @@
     //CC 3
     <string name="complaint_category_specifics">Here are the questions associated with: </string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     //
 
 </resources>
