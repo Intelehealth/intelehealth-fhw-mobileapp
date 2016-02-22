@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 public class IdentificationActivity extends AppCompatActivity {
 
+    //Demographic acquisition screen
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

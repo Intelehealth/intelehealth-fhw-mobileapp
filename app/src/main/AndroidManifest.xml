@@ -16,10 +16,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".IdentificationActivity" />
-        <activity android:name=".MedHistoryActivity" />
-        <activity android:name=".TableExamActivity" />
-        <activity android:name=".PhysicalExamActivity" />
-        <activity android:name=".DashboardActivity"></activity>
     </application>
 
 </manifest>
