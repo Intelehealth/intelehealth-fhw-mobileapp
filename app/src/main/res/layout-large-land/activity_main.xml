@@ -25,7 +25,8 @@
         android:layout_height="@dimen/home_screen_Button_height"
         android:layout_gravity="center_vertical"
         android:layout_weight=".25"
-        android:text="@string/fu_pt_button" />
+        android:text="@string/fu_pt_button"
+        android:onClick="fuPatientWorkflow" />
 
     <Button
         android:id="@+id/diagnostics_button"
@@ -33,7 +34,8 @@
         android:layout_height="@dimen/home_screen_Button_height"
         android:layout_gravity="center"
         android:layout_weight=".25"
-        android:text="@string/diagnostics_button" />
+        android:text="@string/diagnostics_button"
+        android:onClick="diagnosticTests" />
 
     <Button
         android:id="@+id/active_pt_button"
@@ -41,6 +43,7 @@
         android:layout_height="@dimen/home_screen_Button_height"
         android:layout_gravity="center"
         android:layout_weight=".25"
-        android:text="@string/active_pt_button" />
+        android:text="@string/active_pt_button"
+        android:onClick="activePatients" />
 
 </LinearLayout>
