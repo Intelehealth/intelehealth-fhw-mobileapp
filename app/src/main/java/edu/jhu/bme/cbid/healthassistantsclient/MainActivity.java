@@ -8,6 +8,7 @@ import android.view.View;
 public class MainActivity extends AppCompatActivity {
 
     //Home screen with the four buttons
+    // TODO: write code lol
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
