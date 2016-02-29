@@ -22,7 +22,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DatabaseIO localDb = new DatabaseIO(openOrCreateDatabase("localDb", MODE_PRIVATE, null));
+        // Old DatabaseIO system
+        // DatabaseIO localDb = new DatabaseIO(openOrCreateDatabase("localDb", MODE_PRIVATE, null));
 
         // The INSERT and UPDATE/DELETE commands require SQL statements to be passed as parameters
         // TODO: Use SQL statements from schema
