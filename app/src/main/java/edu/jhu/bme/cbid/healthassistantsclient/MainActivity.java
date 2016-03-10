@@ -54,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
     public void diagnosticTests(View view) {
         Intent intent = new Intent(this, IdentificationActivity.class);
         startActivity(intent);
-        // No fragment, just go straight into the screen
+        //Listview with the diagnostic test options loaded up from a arraylist
+        //not modular, because this list will only change with a app update
     }
 
 
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, IdentificationActivity.class);
         startActivity(intent);
         // This can be a fragment, can be fragment-less as well
+
 
     }
 
