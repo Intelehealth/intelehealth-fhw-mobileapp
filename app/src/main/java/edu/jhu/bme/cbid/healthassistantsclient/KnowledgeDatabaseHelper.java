@@ -15,7 +15,7 @@ public class KnowledgeDatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "knowledge.db";
     public static final String CREATE_PATIENT = "CREATE TABLE IF NOT EXISTS patient (" +
             "_id integer PRIMARY KEY" +
-            "openmrs_id varchar NOT NULL," +
+            "openmrs_id varchar," +
             "first_name varchar(50) NOT NULL," +
             "middle_name varchar(50)," +
             "last_name varchar(50)," +

@@ -51,6 +51,9 @@
             android:name=".GetPatientHistoryActivity"
             android:label="@string/title_activity_get_patient_history"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <service
+            android:name=".IdService"
+            android:exported="false"/>
     </application>
 
 </manifest>
