@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         // Old DatabaseIO system
         // DatabaseIO localDb = new DatabaseIO(openOrCreateDatabase("localDb", MODE_PRIVATE, null));
 
@@ -38,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
          */
     }
 
-    public void fuPatientWorkflow(View view) {
-        Intent intent = new Intent(this, IdentificationActivity.class);
+    public void findPatientWorkflow(View view) {
+        Intent intent = new Intent(this, SearchPatient.class);
         startActivity(intent);
 
         /*
@@ -52,15 +53,16 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void diagnosticTests(View view) {
-        Intent intent = new Intent(this, IdentificationActivity.class);
+        Intent intent = new Intent(this, DiagnosticTestsSelection.class);
         startActivity(intent);
         //Listview with the diagnostic test options loaded up from a arraylist
         //not modular, because this list will only change with a app update
+
     }
 
 
     public void activePatients(View view) {
-        Intent intent = new Intent(this, IdentificationActivity.class);
+        Intent intent = new Intent(this, ActivePatientActivity.class);
         startActivity(intent);
         // This can be a fragment, can be fragment-less as well
 
@@ -68,6 +70,5 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    // ANDROID ASYNC TASKS
 
 }

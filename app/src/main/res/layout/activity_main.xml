@@ -9,38 +9,58 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.jhu.bme.cbid.healthassistantsclient.MainActivity">
 
-    <Button
-        android:layout_width="@dimen/home_screen_button_width"
-        android:layout_height="@dimen/home_screen_Button_height"
-        android:text="@string/new_pt_button"
-        android:id="@+id/new_pt_button"
-        android:layout_gravity="center_vertical"
-        android:layout_weight=".25"
-        android:onClick="newPatientWorkflow" />
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:stretchColumns="2">
 
 
-    <Button
-        android:layout_width="@dimen/home_screen_button_width"
-        android:layout_height="@dimen/home_screen_Button_height"
-        android:text="@string/fu_pt_button"
-        android:id="@+id/fu_pt_button"
-        android:layout_gravity="center_vertical"
-        android:layout_weight=".25" />
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5">
 
-    <Button
-        android:layout_width="@dimen/home_screen_button_width"
-        android:layout_height="@dimen/home_screen_Button_height"
-        android:text="@string/diagnostics_button"
-        android:id="@+id/diagnostics_button"
-        android:layout_gravity="center"
-        android:layout_weight=".25" />
+            <Button
+                android:layout_width="@dimen/home_screen_button_width"
+                android:layout_height="@dimen/home_screen_button_height"
+                android:id="@+id/newPatientButton"
+                android:text="@string/new_pt_button"
+                android:layout_weight=".5"
+                android:layout_gravity="center"
+                android:onClick="newPatientWorkflow" />
 
-    <Button
-        android:layout_width="@dimen/home_screen_button_width"
-        android:layout_height="@dimen/home_screen_Button_height"
-        android:text="@string/active_pt_button"
-        android:id="@+id/active_pt_button"
-        android:layout_gravity="center"
-        android:layout_weight=".25" />
+            <Button
+                android:layout_width="@dimen/home_screen_button_width"
+                android:layout_height="@dimen/home_screen_button_height"
+                android:text="@string/find_pt_button"
+                android:id="@+id/findPatientsButton"
+                android:layout_weight=".5"
+                android:layout_gravity="center"
+                android:onClick="" />
+        </TableRow>
 
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5">
+
+            <Button
+                android:layout_width="@dimen/home_screen_button_width"
+                android:layout_height="@dimen/home_screen_button_height"
+                android:text="@string/diagnostic_tests_button"
+                android:id="@+id/diagnosticServicesButton"
+                android:layout_weight=".5"
+                android:layout_gravity="center" />
+
+            <Button
+                android:layout_width="@dimen/home_screen_button_width"
+                android:layout_height="@dimen/home_screen_button_height"
+                android:text="@string/active_pt_button"
+                android:id="@+id/activePatientsButton"
+                android:layout_weight=".5"
+                android:layout_gravity="center" />
+        </TableRow>
+
+    </TableLayout>
 </LinearLayout>
