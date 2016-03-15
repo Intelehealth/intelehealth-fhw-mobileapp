@@ -72,6 +72,13 @@
                 android:text="@string/action_sign_in"
                 android:textStyle="bold" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/device_id"
+                android:id="@+id/textview_device_id" />
+
         </LinearLayout>
     </ScrollView>
+
 </LinearLayout>
