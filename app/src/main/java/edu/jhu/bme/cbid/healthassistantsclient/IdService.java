@@ -1,14 +1,26 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Sends Identification data to OpenMRS and receives the OpenMRS ID of the newly-created patient
@@ -16,6 +28,11 @@ import com.google.gson.GsonBuilder;
 public class IdService extends IntentService {
 
     public static final String LOG_TAG = "IdService";
+    public int mId = 1;
+
+    NotificationManager mNotifyManager =
+            (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
 
     KnowledgeDatabaseHelper mDbHelper = new KnowledgeDatabaseHelper(this);
 
@@ -28,10 +45,23 @@ public class IdService extends IntentService {
         super(name);
     }
 
+    // TODO: send picture data
+
     @Override
     protected void onHandleIntent(Intent intent) {
         String dataString = intent.getDataString(); // The dataString is the _id of the patient to send
         String jsonToSend = serialize(dataString);
+        createNotification();
+        String resultString = sendData(jsonToSend);
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        int id = Integer.parseInt(dataString);
+        int openMrsId = Integer.parseInt(resultString);
+        String sql = "UPDATE patient SET opemrs_id = ? WHERE _id = ?";
+        SQLiteStatement stmt = db.compileStatement(sql);
+        stmt.bindLong(1, openMrsId); // SQL indices start at 1
+        stmt.bindLong(2, id);
+        int numberOfRowsAffected = stmt.executeUpdateDelete();
+        Log.v(LOG_TAG, "Updated Rows: " + numberOfRowsAffected);
 
     }
 
@@ -87,5 +117,75 @@ public class IdService extends IntentService {
         Log.d(LOG_TAG + "/Gson", json);
 
         return json;
+    }
+
+    public void createNotification() {
+        mBuilder.setContentTitle("Patient Data Upload")
+                .setContentText("Patient data upload in progress")
+                .setSmallIcon(R.drawable.ic_cloud_upload);
+        // Sets an activity indicator for an operation of indeterminate length
+        mBuilder.setProgress(0, 0, true);
+        // Issues the notification
+        mNotifyManager.notify(mId, mBuilder.build());
+    }
+
+    public void endNotification() {
+        mNotifyManager.cancel(mId);
+
+        /*
+        // When the loop is finished, updates the notification
+        mBuilder.setContentText("Upload complete")
+                // Removes the progress bar
+                .setProgress(0,0,false);
+        mNotifyManager.notify(mId, mBuilder.build()); */
+    }
+
+    public String sendData(String jsonString) {
+        final String serverAddress = "localhost"; // TODO: get string
+
+        HttpURLConnection urlConnection;
+        DataOutputStream printout;
+        StringBuffer buffer = new StringBuffer();
+        BufferedReader reader;
+        InputStream inputStream;
+
+        try {
+
+            URL url = new URL(serverAddress);
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+            urlConnection.setUseCaches(false);
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.connect();
+
+            printout = new DataOutputStream(urlConnection.getOutputStream());
+            printout.writeBytes(jsonString);
+            printout.flush();
+            printout.close();
+
+            inputStream = urlConnection.getInputStream();
+            if (inputStream == null) return null;
+
+
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // Appending the newline character helps with JSON debugging,
+                // but will not interfere with JSON parsing.
+                buffer.append(line + "\n");
+            }
+
+            if (buffer.length() == 0) return null; // Stream was empty; no point in parsing.
+
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "Error in sending data: ", e);
+        }
+
+        endNotification();
+
+        return buffer.toString(); // returns the openMrsId
     }
 }
