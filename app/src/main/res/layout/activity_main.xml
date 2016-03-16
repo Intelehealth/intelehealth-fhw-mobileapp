@@ -9,6 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.jhu.bme.cbid.healthassistantsclient.MainActivity">
 
+
     <Button
         android:layout_width="@dimen/home_screen_button_width"
         android:layout_height="@dimen/home_screen_Button_height"
