@@ -1,4 +1,4 @@
-package edu.jhu.bme.cbid.healthassistantsclient;
+package edu.jhu.bme.cbid.healthassistantsclient.objects;
 
 /**
  * Response information class for Gson data serialization

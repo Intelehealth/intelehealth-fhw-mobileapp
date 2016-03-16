@@ -1,26 +1,35 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
 import android.app.IntentService;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Environment;
 import android.support.v7.app.NotificationCompat;
+import android.util.Base64;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
+import edu.jhu.bme.cbid.healthassistantsclient.objects.PatientImage;
 
 /**
  * Sends Identification data to OpenMRS and receives the OpenMRS ID of the newly-created patient
@@ -45,23 +54,36 @@ public class IdService extends IntentService {
         super(name);
     }
 
-    // TODO: send picture data
-
     @Override
     protected void onHandleIntent(Intent intent) {
-        String dataString = intent.getDataString(); // The dataString is the _id of the patient to send
-        String jsonToSend = serialize(dataString);
         createNotification();
-        String resultString = sendData(jsonToSend);
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        try {
+            while (!isOnline()) {
+                Thread.sleep(1000);
+            }
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "Waiting interrupted?");
+        }
+
+        String dataString = intent.getDataString(); // The dataString is the _id of the patient to send
         int id = Integer.parseInt(dataString);
+        String jsonToSend = serialize(dataString);
+
+        String resultString = sendData(jsonToSend);
+        boolean sent = sendPicture(id);
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
         int openMrsId = Integer.parseInt(resultString);
-        String sql = "UPDATE patient SET opemrs_id = ? WHERE _id = ?";
-        SQLiteStatement stmt = db.compileStatement(sql);
-        stmt.bindLong(1, openMrsId); // SQL indices start at 1
-        stmt.bindLong(2, id);
-        int numberOfRowsAffected = stmt.executeUpdateDelete();
-        Log.v(LOG_TAG, "Updated Rows: " + numberOfRowsAffected);
+        if(resultString != null) {
+            String sql = "UPDATE patient SET opemrs_id = ? WHERE _id = ?";
+            SQLiteStatement stmt = db.compileStatement(sql);
+            stmt.bindLong(1, openMrsId); // SQL indices start at 1
+            stmt.bindLong(2, id);
+            int numberOfRowsAffected = stmt.executeUpdateDelete();
+            Log.v(LOG_TAG, "Updated Rows: " + numberOfRowsAffected);
+            if(sent) endNotification();
+            else errorNotification();
+        }
 
     }
 
@@ -130,14 +152,20 @@ public class IdService extends IntentService {
     }
 
     public void endNotification() {
-        mNotifyManager.cancel(mId);
+        // mNotifyManager.cancel(mId);
 
-        /*
         // When the loop is finished, updates the notification
         mBuilder.setContentText("Upload complete")
                 // Removes the progress bar
                 .setProgress(0,0,false);
-        mNotifyManager.notify(mId, mBuilder.build()); */
+        mNotifyManager.notify(mId, mBuilder.build());
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        return (networkInfo != null && networkInfo.isConnected());
     }
 
     public String sendData(String jsonString) {
@@ -184,8 +212,27 @@ public class IdService extends IntentService {
             Log.e(LOG_TAG, "Error in sending data: ", e);
         }
 
-        endNotification();
+        return buffer.toString(); // returns the openMrsId OR "Picture received" (if picture)
+    }
 
-        return buffer.toString(); // returns the openMrsId
+    public boolean sendPicture(int patientId) {
+        String jpg = patientId + ".jpg";
+        Bitmap bm = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getPath() + "/patients/" + jpg);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+        byte[] b = baos.toByteArray();
+        String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+
+        PatientImage image = new PatientImage(patientId, encodedImage);
+        Gson gson = new Gson();
+        String json = gson.toJson(image);
+
+        String result = sendData(json);
+
+        return result != null;
+    }
+
+    public void errorNotification() {
+        // TODO: determine error behavior
     }
 }
