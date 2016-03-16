@@ -19,7 +19,7 @@ public class KnowledgeDatabaseHelper extends SQLiteOpenHelper {
             "first_name varchar(50) NOT NULL," +
             "middle_name varchar(50)," +
             "last_name varchar(50)," +
-            "date_of_birth datetime NOT NULL," +
+            "date_of_birth TEXT NOT NULL," +
             "phone_number integer(10)," +
             "address1 varchar(255)," +
             "address2 varchar(255)," +
@@ -41,8 +41,8 @@ public class KnowledgeDatabaseHelper extends SQLiteOpenHelper {
     public static final String CREATE_VISIT = "CREATE TABLE IF NOT EXISTS visit (" +
             "_id integer PRIMARY KEY" +
             "patient_id integer(10) FOREIGN KEY REFERENCES patient(_id)," +
-            "start_datetime datetime NOT NULL," +
-            "end_datetime datetime," +
+            "start_datetime TEXT NOT NULL," +
+            "end_datetime TEXT," +
             "visit_type_id integer(10)," +
             "visit_location_id integer(10) NOT NULL," +
             "visit_creator integer(10) NOT NULL," +
@@ -70,9 +70,9 @@ public class KnowledgeDatabaseHelper extends SQLiteOpenHelper {
             "password varchar(128) NOT NULL," +
             "secret_question varchar(255) NOT NULL," +
             "secret_answer varchar(255) NOT NULL," +
-            "date_created datetime NOT NULL," +
+            "date_created TEXT NOT NULL," +
             "creator integer(10) NOT NULL," +
-            "date_changed datetime NOT NULL," +
+            "date_changed TEXT NOT NULL," +
             "changed_by integer(10) NOT NULL" +
             ")";
     public static final String CREATE_LOCATION = "CREATE TABLE location_details (" +

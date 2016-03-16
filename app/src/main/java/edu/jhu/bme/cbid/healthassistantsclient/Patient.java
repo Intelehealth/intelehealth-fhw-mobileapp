@@ -5,7 +5,7 @@ package edu.jhu.bme.cbid.healthassistantsclient;
  */
 public class Patient {
 
-    private int id;
+    private Integer id;
     private String openmrs_id;
     private String first_name;
     private String middle_name;
@@ -24,11 +24,11 @@ public class Patient {
     private String patient_identifier3;
 
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
