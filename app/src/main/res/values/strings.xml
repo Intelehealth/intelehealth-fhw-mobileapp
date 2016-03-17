@@ -11,7 +11,8 @@
     <string name="find_pt_button">Find Patient</string>
     <string name="diagnostic_tests_button">Diagnostic Tests</string>
     <string name="active_pt_button">Active Patients</string>
-
+    <string name="sync_button">Sync Data</string>
+    <string name="end_of_day">End of Day</string>
 
     //Demographics
     <string name="first_name_hint">First Name</string>
