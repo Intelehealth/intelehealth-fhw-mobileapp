@@ -59,6 +59,9 @@
             android:name=".DiagnosticTestsSelection"
             android:label="@string/title_activity_diagnostic_tests_list"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <service
+            android:name=".IdService"
+            android:exported="false"/>
     </application>
 
 </manifest>
