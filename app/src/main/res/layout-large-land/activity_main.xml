@@ -9,39 +9,41 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.jhu.bme.cbid.healthassistantsclient.MainActivity">
 
-
     <Button
+        android:id="@+id/new_pt_button"
         android:layout_width="@dimen/home_screen_button_width"
         android:layout_height="@dimen/home_screen_Button_height"
-        android:text="@string/new_pt_button"
-        android:id="@+id/new_pt_button"
         android:layout_gravity="center_vertical"
         android:layout_weight=".25"
-        android:onClick="newPatientWorkflow" />
+        android:onClick="newPatientWorkflow"
+        android:text="@string/new_pt_button" />
 
 
     <Button
-        android:layout_width="@dimen/home_screen_button_width"
-        android:layout_height="@dimen/home_screen_Button_height"
-        android:text="@string/fu_pt_button"
         android:id="@+id/fu_pt_button"
+        android:layout_width="@dimen/home_screen_button_width"
+        android:layout_height="@dimen/home_screen_Button_height"
         android:layout_gravity="center_vertical"
-        android:layout_weight=".25" />
+        android:layout_weight=".25"
+        android:text="@string/fu_pt_button"
+        android:onClick="fuPatientWorkflow" />
 
     <Button
-        android:layout_width="@dimen/home_screen_button_width"
-        android:layout_height="@dimen/home_screen_Button_height"
-        android:text="@string/diagnostics_button"
         android:id="@+id/diagnostics_button"
-        android:layout_gravity="center"
-        android:layout_weight=".25" />
-
-    <Button
         android:layout_width="@dimen/home_screen_button_width"
         android:layout_height="@dimen/home_screen_Button_height"
-        android:text="@string/active_pt_button"
-        android:id="@+id/active_pt_button"
         android:layout_gravity="center"
-        android:layout_weight=".25" />
+        android:layout_weight=".25"
+        android:text="@string/diagnostics_button"
+        android:onClick="diagnosticTests" />
+
+    <Button
+        android:id="@+id/active_pt_button"
+        android:layout_width="@dimen/home_screen_button_width"
+        android:layout_height="@dimen/home_screen_Button_height"
+        android:layout_gravity="center"
+        android:layout_weight=".25"
+        android:text="@string/active_pt_button"
+        android:onClick="activePatients" />
 
 </LinearLayout>

@@ -6,11 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 import java.util.ArrayList;
 
@@ -26,41 +22,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        Button newPtButton = (Button) findViewById(R.id.newPatientButton);
-        newPtButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startNewPatient();
-            }
-        });
-
-
-        Button findPatientButton = (Button) findViewById(R.id.findPatientsButton);
-        findPatientButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                findPatient();
-            }
-        });
-
-        Button diagnosticServicesButton = (Button) findViewById(R.id.diagnosticServicesButton);
-        findPatientButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectDiagnosticService();
-            }
-        });
-
-        Button activePatientsButton = (Button) findViewById(R.id.activePatientsButton);
-        activePatientsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchActivePatients();
-            }
-        });
-
-
         // Old DatabaseIO system
         // DatabaseIO localDb = new DatabaseIO(openOrCreateDatabase("localDb", MODE_PRIVATE, null));
 
@@ -68,64 +29,45 @@ public class MainActivity extends AppCompatActivity {
         // TODO: Use SQL statements from schema
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_activity, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.syncOption:
-                refreshDatabases();
-                return true;
-            case R.id.settingsOption:
-                settings();
-                return true;
-            case R.id.endOfDayOption:
-                endOfDay();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    public void startNewPatient() {
+    public void newPatientWorkflow(View view) {
         Intent intent = new Intent(this, IdentificationActivity.class);
         startActivity(intent);
+        /*
+        Ideally, we would start this class with the fragment to do a new patient
+        See below for the reasoning behind this
+         */
     }
 
-    public void findPatient() {
-        Intent intent = new Intent(this, SearchPatient.class);
+    public void fuPatientWorkflow(View view) {
+        Intent intent = new Intent(this, IdentificationActivity.class);
         startActivity(intent);
+
+        /*
+        So this should definitely start a fragment
+        Basically, this will allow the HA to search for the patient
+        If the patient is not found in the local database, give the HA the option to create a new PT
+        Then swap out the "findPatient" fragment with createPatient
+        */
     }
 
-    public void selectDiagnosticService() {
-        Intent intent = new Intent(this, DiagnosticTestsSelection.class);
+
+    public void diagnosticTests(View view) {
+        Intent intent = new Intent(this, IdentificationActivity.class);
         startActivity(intent);
+        //Listview with the diagnostic test options loaded up from a arraylist
+        //not modular, because this list will only change with a app update
     }
 
-    public void searchActivePatients() {
-        Intent intent = new Intent(this, ActivePatientActivity.class);
+
+    public void activePatients(View view) {
+        Intent intent = new Intent(this, IdentificationActivity.class);
         startActivity(intent);
+        // This can be a fragment, can be fragment-less as well
+
+
     }
 
-    public void refreshDatabases() {
-        // TODO: write function to sync the patients within a specific location
-        // Bandwidth heavy task
-    }
 
-    public void settings() {
-        // TODO: WTF are settings?
-    }
-
-    public void endOfDay() {
-        // TODO: sync all the data recorded to EHR, and sync back locally
-        // Information to sync includes credentials and patient info
-        // Bandwidth heavy task
-    }
+    // ANDROID ASYNC TASKS
 
 }

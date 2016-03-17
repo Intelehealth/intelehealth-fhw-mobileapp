@@ -4,15 +4,15 @@
     //Generic
     <string name="the_flipping_word_next">Next</string>
 
-    //
+    //Home Screen
     <string name="title_textview">Health Assistant\'s Client</string>
     <string name="settings_button">Settings</string>
     <string name="new_pt_button">New Patient</string>
-    <string name="find_pt_button">Find Patient</string>
-    <string name="diagnostic_tests_button">Diagnostic Tests</string>
+    <string name="fu_pt_button">Follow-Up Patient</string>
+    <string name="diagnostics_button">Diagnostic Tests</string>
+    <string name="specialty_button">Specialty Services</string>
     <string name="active_pt_button">Active Patients</string>
-    <string name="sync_button">Sync Data</string>
-    <string name="end_of_day">End of Day</string>
+
 
     //Demographics
     <string name="first_name_hint">First Name</string>
@@ -146,8 +146,6 @@
     </string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_get_patient_history">GetPatientHistoryActivity</string>
-    <string name="title_activity_search_patient">SearchPatient</string>
-    <string name="title_activity_diagnostic_tests_list">DiagnosticTestsList</string>
 
     //
 
