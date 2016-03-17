@@ -50,14 +50,6 @@
         <activity
             android:name=".GetPatientHistoryActivity"
             android:label="@string/title_activity_get_patient_history"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".SearchPatient"
-            android:label="@string/title_activity_search_patient"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".DiagnosticTestsSelection"
-            android:label="@string/title_activity_diagnostic_tests_list"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <service
             android:name=".IdService"
