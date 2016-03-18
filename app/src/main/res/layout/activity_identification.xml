@@ -20,6 +20,7 @@
 
 
     <TableLayout
+        android:id="@+id/identificationTable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -40,8 +41,9 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:hint="@string/hint_required"
                 android:inputType="textPersonName"
-                android:hint="@string/hint_required" />
+                android:tag="@string/db_first_name" />
         </TableRow>
 
         <TableRow
@@ -62,7 +64,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/hint_optional"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:tag="@string/db_middle_name" />
         </TableRow>
 
         <TableRow
@@ -83,7 +86,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/hint_required"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:tag="@string/db_last_name" />
         </TableRow>
 
         <TableRow
@@ -102,13 +106,15 @@
                 android:id="@+id/maleCheckBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/checkbox_male" />
+                android:text="@string/checkbox_male"
+                android:tag="@string/db_gender" />
 
             <CheckBox
                 android:id="@+id/femaleCheckBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/checkbox_female" />
+                android:text="@string/checkbox_female"
+                android:tag="@string/db_gender" />
 
         </TableRow>
 
@@ -128,7 +134,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="date" />
+                android:inputType="date"
+                android:tag="@string/db_dob" />
 
             <TextView
                 android:id="@+id/ageQuestion"
@@ -156,11 +163,25 @@
                 android:text="@string/prompt_address" />
 
             <EditText
-                android:id="@+id/addressInput"
+                android:id="@+id/addressLine1Input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPostalAddress" />
+                android:inputType="textPostalAddress"
+                android:tag="@string/db_address_line1" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <EditText
+                android:id="@+id/addressLine2Input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:ems="10"
+                android:inputType="textPostalAddress"
+                android:tag="@string/db_address_line2" />
 
         </TableRow>
 
@@ -178,7 +199,8 @@
             <EditText
                 android:id="@+id/cityInput"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:tag="@string/db_city" />
 
             <TextView
                 android:id="@+id/stateQuestion"
@@ -189,7 +211,8 @@
             <EditText
                 android:id="@+id/stateInput"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:tag="@string/db_state" />
 
         </TableRow>
 
@@ -197,17 +220,6 @@
             android:id="@+id/countryPostalCodeSet"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/countryQuestion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/prompt_country" />
-
-            <EditText
-                android:id="@+id/countryInput"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/postalCodeQuestion"
@@ -220,7 +232,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="number" />
+                android:inputType="number"
+                android:tag="@string/db_postal_code" />
+            <TextView
+                android:id="@+id/countryQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/prompt_country" />
+
+            <EditText
+                android:id="@+id/countryInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tag="@string/db_country" />
+
+
         </TableRow>
 
         <TableRow
@@ -239,7 +265,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="phone" />
+                android:inputType="phone"
+                android:tag="@string/db_phone_number" />
 
         </TableRow>
 
@@ -248,17 +275,18 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/relationshipQuestion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/prompt_relationship"
-                android:id="@+id/relationshipQuestion" />
+                android:text="@string/prompt_relationship" />
 
             <EditText
+                android:id="@+id/relationshipInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
                 android:ems="10"
-                android:id="@+id/relationshipInput" />
+                android:inputType="textPersonName"
+                android:tag="@string/db_patient_id1" />
         </TableRow>
 
         <TableRow
@@ -266,26 +294,27 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/occupationQuestion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/prompt_occupation"
-                android:id="@+id/occupationQuestion" />
+                android:text="@string/prompt_occupation" />
 
             <EditText
+                android:id="@+id/occupationInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
                 android:ems="10"
-                android:id="@+id/occupationInput" />
+                android:inputType="textPersonName"
+                android:tag="@string/db_patient_id2" />
         </TableRow>
 
     </TableLayout>
 
     <Button
+        android:id="@+id/identificationSubmitButton"
         android:layout_width="@dimen/submit_button"
         android:layout_height="@dimen/submit_button"
         android:layout_gravity="end"
-        android:text="@string/generic_the_flipping_word_next"
-        android:id="@+id/identificationSubmitButton" />
+        android:text="@string/generic_the_flipping_word_next" />
 
 </LinearLayout>
