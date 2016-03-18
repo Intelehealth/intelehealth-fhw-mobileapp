@@ -22,7 +22,6 @@ import com.google.gson.GsonBuilder;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -43,7 +42,7 @@ public class IdService extends IntentService {
             (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
 
-    KnowledgeDatabaseHelper mDbHelper = new KnowledgeDatabaseHelper(this);
+    LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.

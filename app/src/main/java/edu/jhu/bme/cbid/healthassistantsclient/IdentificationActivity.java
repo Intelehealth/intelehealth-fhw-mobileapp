@@ -1,5 +1,8 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -28,13 +31,21 @@ public class IdentificationActivity extends AppCompatActivity {
     }
 
     public void submitIdentifiers() {
+
+        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
+        SQLiteDatabase localDb = mDbHelper.getWritableDatabase();
+        ContentValues patientEntries = new ContentValues();
+
         ViewGroup identifiersLayout = (ViewGroup) findViewById(R.id.identificationTable);
         for (int i = 0; i < identifiersLayout.getChildCount(); i++) {
             View view = identifiersLayout.getChildAt(i);
             if (view instanceof EditText) {
-                String buffer = ((EditText) view).getText().toString();
-                //TODO: write query to write into DB
-                //use view.getTag() to get the DB column/field/idunno what they're called
+                String storageColumn = (view).getTag().toString();
+                String storageValue = ((EditText) view).getText().toString();
+
+                patientEntries.put(storageColumn, storageValue);
+
+                //TODO: Check if DB statements are correct
             }
         }
 
@@ -42,14 +53,24 @@ public class IdentificationActivity extends AppCompatActivity {
         CheckBox femaleCheckBox = (CheckBox) findViewById(R.id.femaleCheckBox);
 
         if (maleCheckBox.isChecked()) {
-            //TODO: write male to gender query
-            //also stored in maleCheckBox.getTag()
+
+            String storageColumn = maleCheckBox.getTag().toString();
+            String storageValue = "male";
+
+            patientEntries.put(storageColumn, storageValue);
         } else if (femaleCheckBox.isChecked()) {
-            //TODO: write female to gender query
-            //also stored in femaleCheckBox.getTag()
+            String storageColumn = maleCheckBox.getTag().toString();
+            String storageValue = "female";
+
+            patientEntries.put(storageColumn, storageValue);
         }
 
-        //TODO: query to write gender into DB
+        long newRowID; //TODO: Can we make this the local identifier/registration number?
+        newRowID = localDb.insert(
+                "patient",
+                "null",
+                patientEntries);
+
 
         //TODO: upload identifiers to OpenMRS using service
     }
