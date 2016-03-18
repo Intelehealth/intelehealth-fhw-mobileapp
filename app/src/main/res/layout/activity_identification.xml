@@ -43,7 +43,8 @@
                 android:ems="10"
                 android:hint="@string/hint_required"
                 android:inputType="textPersonName"
-                android:tag="@string/db_first_name" />
+                android:tag="@string/db_first_name"
+                android:freezesText="true" />
         </TableRow>
 
         <TableRow
@@ -65,7 +66,8 @@
                 android:ems="10"
                 android:hint="@string/hint_optional"
                 android:inputType="textPersonName"
-                android:tag="@string/db_middle_name" />
+                android:tag="@string/db_middle_name"
+                android:freezesText="true" />
         </TableRow>
 
         <TableRow
@@ -87,7 +89,8 @@
                 android:ems="10"
                 android:hint="@string/hint_required"
                 android:inputType="textPersonName"
-                android:tag="@string/db_last_name" />
+                android:tag="@string/db_last_name"
+                android:freezesText="true" />
         </TableRow>
 
         <TableRow
@@ -135,7 +138,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="date"
-                android:tag="@string/db_dob" />
+                android:tag="@string/db_dob"
+                android:freezesText="true" />
 
             <TextView
                 android:id="@+id/ageQuestion"
@@ -148,7 +152,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="number" />
+                android:inputType="number"
+                android:freezesText="true" />
         </TableRow>
 
         <TableRow
@@ -168,7 +173,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPostalAddress"
-                android:tag="@string/db_address_line1" />
+                android:tag="@string/db_address_line1"
+                android:freezesText="true" />
 
         </TableRow>
 
@@ -181,7 +187,8 @@
                 android:layout_column="1"
                 android:ems="10"
                 android:inputType="textPostalAddress"
-                android:tag="@string/db_address_line2" />
+                android:tag="@string/db_address_line2"
+                android:freezesText="true" />
 
         </TableRow>
 
@@ -200,7 +207,8 @@
                 android:id="@+id/cityInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:tag="@string/db_city" />
+                android:tag="@string/db_city"
+                android:freezesText="true" />
 
             <TextView
                 android:id="@+id/stateQuestion"
@@ -212,7 +220,8 @@
                 android:id="@+id/stateInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:tag="@string/db_state" />
+                android:tag="@string/db_state"
+                android:freezesText="true" />
 
         </TableRow>
 
@@ -233,7 +242,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="number"
-                android:tag="@string/db_postal_code" />
+                android:tag="@string/db_postal_code"
+                android:freezesText="true" />
             <TextView
                 android:id="@+id/countryQuestion"
                 android:layout_width="wrap_content"
@@ -244,7 +254,8 @@
                 android:id="@+id/countryInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:tag="@string/db_country" />
+                android:tag="@string/db_country"
+                android:freezesText="true" />
 
 
         </TableRow>
@@ -266,7 +277,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="phone"
-                android:tag="@string/db_phone_number" />
+                android:tag="@string/db_phone_number"
+                android:freezesText="true" />
 
         </TableRow>
 
@@ -286,7 +298,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:tag="@string/db_patient_id1" />
+                android:tag="@string/db_patient_id1"
+                android:freezesText="true" />
         </TableRow>
 
         <TableRow
@@ -305,7 +318,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:tag="@string/db_patient_id2" />
+                android:tag="@string/db_patient_id2"
+                android:freezesText="true" />
         </TableRow>
 
     </TableLayout>
