@@ -52,11 +52,11 @@
             android:label="@string/title_activity_get_patient_history"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".SearchPatient"
+            android:name=".SearchPatientActivity"
             android:label="@string/title_activity_search_patient"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".DiagnosticTestsSelection"
+            android:name=".DiagnosticTestsSelectionActivity"
             android:label="@string/title_activity_diagnostic_tests_list"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <service
