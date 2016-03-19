@@ -22,7 +22,7 @@
     <string name="male_checkbox">Male</string>
     <string name="female_checkbox">Female</string>
     <string name="birthday_hint">Date of Birth</string>
-    <string name="relationship_hint">Son/Daughter/Wife of ...</string>
+    <string name="relationship_hint">Son/Daughter/Wife of…</string>
     <string name="occupation_hint">Occupation</string>
 
     //Chief Complaint 1
@@ -38,6 +38,23 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_login">Sign in</string>
+
+
+    <!-- Table exam strings -->
+    <string name="table_hw">Body Measurements</string>
+    <string name="table_height">Height</string>
+    <string name="table_weight">Weight</string>
+    <string name="table_bmi">BMI</string>
+    <string name="table_pulse">Pulse</string>
+    <string name="table_bp">Blood Pressure</string>
+    <string name="table_bpsys">Systolic Pressure</string>
+    <string name="table_bpdia">Diastolic Pressure</string>
+    <string name="table_r">Readings</string>
+    <string name="table_temp">Temperature</string>
+    <string name="table_spo2">SpO2</string>
+
+
+
 
     <!-- Strings related to login -->
     <string name="prompt_email">Username</string>
@@ -148,7 +165,8 @@
     <string name="title_activity_get_patient_history">GetPatientHistoryActivity</string>
     <string name="title_activity_search_patient">SearchPatient</string>
     <string name="title_activity_diagnostic_tests_list">DiagnosticTestsList</string>
+    <string name="title_activity_table_exam">Table Exam</string>
 
-    //
+
 
 </resources>

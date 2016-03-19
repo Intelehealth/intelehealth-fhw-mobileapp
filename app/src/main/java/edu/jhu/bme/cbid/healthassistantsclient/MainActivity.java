@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         Button diagnosticServicesButton = (Button) findViewById(R.id.diagnosticServicesButton);
-        findPatientButton.setOnClickListener(new View.OnClickListener() {
+        diagnosticServicesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectDiagnosticService();
