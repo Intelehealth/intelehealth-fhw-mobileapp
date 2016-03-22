@@ -23,7 +23,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".ActivePatientActivity"
@@ -53,11 +52,11 @@
             android:label="@string/title_activity_get_patient_history"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".SearchPatient"
+            android:name=".SearchPatientActivity"
             android:label="@string/title_activity_search_patient"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".DiagnosticTestsSelection"
+            android:name=".DiagnosticTestsSelectionActivity"
             android:label="@string/title_activity_diagnostic_tests_list"
             android:theme="@style/AppTheme.NoActionBar" />
 
@@ -65,6 +64,10 @@
             android:name=".IdService"
             android:exported="false" />
 
+        <activity
+            android:name=".TableExamActivity"
+            android:label="@string/title_activity_table_exam"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

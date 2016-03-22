@@ -96,12 +96,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void findPatient() {
-        Intent intent = new Intent(this, SearchPatient.class);
+        Intent intent = new Intent(this, SearchPatientActivity.class);
         startActivity(intent);
     }
 
     public void selectDiagnosticService() {
-        Intent intent = new Intent(this, DiagnosticTestsSelection.class);
+        Intent intent = new Intent(this, DiagnosticTestsSelectionActivity.class);
         startActivity(intent);
     }
 
