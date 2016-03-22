@@ -5,17 +5,17 @@
 
         <item
             android:id="@+id/syncOption"
-            android:title="@string/sync_button"
+            android:title="@string/menu_option_sync"
             android:orderInCategory="50" />
 
         <item
             android:id="@+id/settingsOption"
-            android:title="@string/settings_button"
+            android:title="@string/menu_option_settings"
             android:orderInCategory="100" />
 
         <item
             android:id="@+id/endOfDayOption"
-            android:title="@string/end_of_day"
+            android:title="@string/menu_option_end_of_day"
             android:orderInCategory="200" />
 
     </group>

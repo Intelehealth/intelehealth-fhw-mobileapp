@@ -8,11 +8,11 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Class to manage input/output with the database.
  */
 
-public class KnowledgeDatabaseHelper extends SQLiteOpenHelper {
+public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 2;
-    public static final String DATABASE_NAME = "knowledge.db";
+    public static final String DATABASE_NAME = "localRecords.db";
     public static final String CREATE_PATIENT = "CREATE TABLE IF NOT EXISTS patient (" +
             "_id integer PRIMARY KEY" +
             "openmrs_id varchar," +
@@ -83,7 +83,7 @@ public class KnowledgeDatabaseHelper extends SQLiteOpenHelper {
             ")";
     public static final String DROP = "DROP TABLE IF EXISTS";
 
-    public KnowledgeDatabaseHelper(Context context) {
+    public LocalRecordsDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

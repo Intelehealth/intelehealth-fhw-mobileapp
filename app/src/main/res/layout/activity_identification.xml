@@ -1,12 +1,334 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:label="@string/title_identification_screen"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.jhu.bme.cbid.healthassistantsclient.IdentificationActivity">
 
-</RelativeLayout>
+    <ImageButton
+        android:id="@+id/cameraButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/ic_camera_alt_black_48dp" />
+
+
+    <TableLayout
+        android:id="@+id/identificationTable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow
+            android:id="@+id/firstNameSet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/firstNameQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_identification_screen"
+                android:text="@string/prompt_first_name" />
+
+            <EditText
+                android:id="@+id/firstNameInput"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/hint_required"
+                android:inputType="textPersonName"
+                android:tag="@string/db_first_name"
+                android:freezesText="true" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/middleNameSet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/middleNameQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_identification_screen"
+                android:text="@string/prompt_middle_name" />
+
+            <EditText
+                android:id="@+id/middleNameInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/hint_optional"
+                android:inputType="textPersonName"
+                android:tag="@string/db_middle_name"
+                android:freezesText="true" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/lastNameSet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/lastNameQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_identification_screen"
+                android:text="@string/prompt_last_name" />
+
+            <EditText
+                android:id="@+id/lastNameInput"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/hint_required"
+                android:inputType="textPersonName"
+                android:tag="@string/db_last_name"
+                android:freezesText="true" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/genderSet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <TextView
+                android:id="@+id/genderQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/prompt_gender" />
+
+            <CheckBox
+                android:id="@+id/maleCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/checkbox_male"
+                android:tag="@string/db_gender" />
+
+            <CheckBox
+                android:id="@+id/femaleCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/checkbox_female"
+                android:tag="@string/db_gender" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/birthDateSet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/birthdayQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/prompt_birthday" />
+
+            <EditText
+                android:id="@+id/birthdayInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="date"
+                android:tag="@string/db_dob"
+                android:freezesText="true" />
+
+            <TextView
+                android:id="@+id/ageQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/prompt_age" />
+
+            <EditText
+                android:id="@+id/ageInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:freezesText="true" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/addressLine1Set"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/addressQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/prompt_address" />
+
+            <EditText
+                android:id="@+id/addressLine1Input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPostalAddress"
+                android:tag="@string/db_address_line1"
+                android:freezesText="true" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <EditText
+                android:id="@+id/addressLine2Input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:ems="10"
+                android:inputType="textPostalAddress"
+                android:tag="@string/db_address_line2"
+                android:freezesText="true" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/cityStateSet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/cityQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/prompt_city" />
+
+            <EditText
+                android:id="@+id/cityInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tag="@string/db_city"
+                android:freezesText="true" />
+
+            <TextView
+                android:id="@+id/stateQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/prompt_state" />
+
+            <EditText
+                android:id="@+id/stateInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tag="@string/db_state"
+                android:freezesText="true" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/countryPostalCodeSet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/postalCodeQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/prompt_postal_code" />
+
+            <EditText
+                android:id="@+id/postalCodeInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="number"
+                android:tag="@string/db_postal_code"
+                android:freezesText="true" />
+            <TextView
+                android:id="@+id/countryQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/prompt_country" />
+
+            <EditText
+                android:id="@+id/countryInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tag="@string/db_country"
+                android:freezesText="true" />
+
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/phoneNumberSet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/phoneNumberQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/prompt_phone_number" />
+
+            <EditText
+                android:id="@+id/phoneNumberInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="phone"
+                android:tag="@string/db_phone_number"
+                android:freezesText="true" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/relationshipQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/prompt_relationship" />
+
+            <EditText
+                android:id="@+id/relationshipInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:tag="@string/db_patient_id1"
+                android:freezesText="true" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/occupationQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/prompt_occupation" />
+
+            <EditText
+                android:id="@+id/occupationInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:tag="@string/db_patient_id2"
+                android:freezesText="true" />
+        </TableRow>
+
+    </TableLayout>
+
+    <Button
+        android:id="@+id/identificationSubmitButton"
+        android:layout_width="@dimen/submit_button"
+        android:layout_height="@dimen/submit_button"
+        android:layout_gravity="end"
+        android:text="@string/generic_the_flipping_word_next" />
+
+</LinearLayout>

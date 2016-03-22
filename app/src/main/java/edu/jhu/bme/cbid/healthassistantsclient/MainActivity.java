@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
 
         // The INSERT and UPDATE/DELETE commands require SQL statements to be passed as parameters
         // TODO: Use SQL statements from schema
+
+
     }
 
     @Override
