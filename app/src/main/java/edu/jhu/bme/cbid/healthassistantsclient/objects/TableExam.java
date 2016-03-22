@@ -10,6 +10,7 @@ public class TableExam {
     private double bmi;
     private double bpsys;
     private double bpdia;
+    private double pulse;
     private double temperature;
     private double spo2;
 
@@ -76,5 +77,13 @@ public class TableExam {
 
     public void setSpo2(double spo2) {
         this.spo2 = spo2;
+    }
+
+    public double getPulse() {
+        return pulse;
+    }
+
+    public void setPulse(double pulse) {
+        this.pulse = pulse;
     }
 }
