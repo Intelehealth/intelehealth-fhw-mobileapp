@@ -29,9 +29,10 @@ public class TableExamActivity extends AppCompatActivity {
     private InsertTableExamDb mTask = null;
 
 
-    // EditText bmi = (EditText) findViewById(R.id.table_bmi); // TODO: autocalculation - do we need this here?
+    // EditText bmi = (EditText) findViewById(R.id.table_bmi);
     // bmi.setFocusable(false);
-    // TODO: intent passes along patient id
+    // TODO: intent passes along patient id, gender
+    // TODO: autocalculation of bmi
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +65,6 @@ public class TableExamActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-
                 validateTable();
             }
         });
@@ -112,13 +111,17 @@ public class TableExamActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             TableExam results = new TableExam();
-            results.setHeight(Double.parseDouble(mHeight.getText().toString()));
-            results.setWeight(Double.parseDouble(mWeight.getText().toString()));
-            results.setPulse(Double.parseDouble(mPulse.getText().toString()));
-            results.setBpsys(Double.parseDouble(mBpSys.getText().toString()));
-            results.setBpdia(Double.parseDouble(mBpDia.getText().toString()));
-            results.setTemperature(Double.parseDouble(mTemperature.getText().toString()));
-            results.setSpo2(Double.parseDouble(mSpo2.getText().toString()));
+            try {
+                results.setHeight(Double.parseDouble(mHeight.getText().toString()));
+                results.setWeight(Double.parseDouble(mWeight.getText().toString()));
+                results.setPulse(Double.parseDouble(mPulse.getText().toString()));
+                results.setBpsys(Double.parseDouble(mBpSys.getText().toString()));
+                results.setBpdia(Double.parseDouble(mBpDia.getText().toString()));
+                results.setTemperature(Double.parseDouble(mTemperature.getText().toString()));
+                results.setSpo2(Double.parseDouble(mSpo2.getText().toString()));
+            } catch (NumberFormatException e) {
+                Snackbar.make(findViewById(R.id.cl_table), "Error: non-decimal number entered.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            }
 
             mTask = new InsertTableExamDb(results);
             mTask.execute((Void) null);
@@ -163,7 +166,7 @@ public class TableExamActivity extends AppCompatActivity {
             return true;
         }
 
-        protected void onPostExecute()
+        protected void onPostExecute(Boolean result)
         {
             dialog.dismiss();
         }
