@@ -58,10 +58,16 @@
         <activity
             android:name=".DiagnosticTestsSelectionActivity"
             android:label="@string/title_activity_diagnostic_tests_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <service
             android:name=".IdService"
-            android:exported="false"/>
+            android:exported="false" />
+
+        <activity
+            android:name=".TableExamActivity"
+            android:label="@string/title_activity_table_exam"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
