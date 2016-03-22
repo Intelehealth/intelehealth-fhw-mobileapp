@@ -9,11 +9,14 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -129,6 +132,7 @@ public class TableExamActivity extends AppCompatActivity {
 
         int id;
         double height, weight, pulse, bpsys, bpdia, temperature, spo2;
+        TableExam exam;
         private ProgressDialog dialog;
 
 
@@ -141,6 +145,8 @@ public class TableExamActivity extends AppCompatActivity {
             bpdia = result.getBpdia();
             temperature = result.getTemperature();
             spo2 = result.getSpo2();
+
+            exam = result;
         }
 
         protected void onPreExecute()
@@ -151,12 +157,13 @@ public class TableExamActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-
+            Gson gson = new Gson();
+            Log.d("Table Exam", gson.toJson(exam));
             // TODO: where do we insert this? and how?
             return true;
         }
 
-        protected void onPostExecute(Void unused)
+        protected void onPostExecute()
         {
             dialog.dismiss();
         }

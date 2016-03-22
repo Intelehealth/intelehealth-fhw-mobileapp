@@ -27,6 +27,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import javax.net.ssl.HttpsURLConnection;
+
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
 import edu.jhu.bme.cbid.healthassistantsclient.objects.PatientImage;
 
@@ -42,7 +44,7 @@ public class IdService extends IntentService {
             (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
 
-    LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
+    LocalRecordsDatabaseHelper mDbHelper;
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
@@ -56,6 +58,7 @@ public class IdService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         createNotification();
+        mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
 
         try {
             while (!isOnline()) {
@@ -88,6 +91,7 @@ public class IdService extends IntentService {
 
     // TODO: test this code segement
     public String serialize(String dataString) {
+        mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         String[] columnsToReturn = {
@@ -114,7 +118,7 @@ public class IdService extends IntentService {
         String[] args = new String[1];
         args[0] = dataString;
 
-        Cursor patientCursor = db.query("patient", columnsToReturn, selection, args, null, null, null);
+        Cursor patientCursor = db.query("patient", null, selection, args, null, null, null);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
         Patient patient = new Patient();
@@ -186,6 +190,8 @@ public class IdService extends IntentService {
             urlConnection.setUseCaches(false);
             urlConnection.setRequestProperty("Content-Type", "application/json");
             urlConnection.connect();
+
+            if(urlConnection.getResponseCode() != HttpURLConnection.HTTP_OK) return null;
 
             printout = new DataOutputStream(urlConnection.getOutputStream());
             printout.writeBytes(jsonString);
