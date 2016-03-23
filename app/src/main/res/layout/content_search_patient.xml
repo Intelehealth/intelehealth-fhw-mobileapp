@@ -12,4 +12,8 @@
     tools:context=".SearchPatientActivity"
     tools:showIn="@layout/activity_search_patient">
 
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listview_search" />
 </RelativeLayout>

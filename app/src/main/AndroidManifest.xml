@@ -55,7 +55,16 @@
         <activity
             android:name=".SearchPatientActivity"
             android:label="@string/title_activity_search_patient"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.jhu.bme.cbid.healthassistantsclient.MainActivity" />
+        </activity>
         <activity
             android:name=".DiagnosticTestsSelectionActivity"
             android:label="@string/title_activity_diagnostic_tests_list"
@@ -69,6 +78,9 @@
             android:name=".TableExamActivity"
             android:label="@string/title_activity_table_exam"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <provider android:name=".SearchSuggestionProvider"
+            android:authorities="edu.jhu.bme.cbid.healthassistantsclient.SearchSuggestionProvider" />
     </application>
 
 </manifest>

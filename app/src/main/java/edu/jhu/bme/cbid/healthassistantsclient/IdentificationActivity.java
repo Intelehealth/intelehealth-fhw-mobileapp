@@ -17,9 +17,12 @@ import android.widget.EditText;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.Random;
+
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
 
 public class IdentificationActivity extends AppCompatActivity {
+    LocalRecordsDatabaseHelper mDbHelper;
 
     //Demographic acquisition screen
 
@@ -27,6 +30,7 @@ public class IdentificationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_identification);
+        mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
 
         Button identificationButton = (Button) findViewById(R.id.identificationSubmitButton);
         identificationButton.setOnClickListener(new View.OnClickListener() {
@@ -73,14 +77,16 @@ public class IdentificationActivity extends AppCompatActivity {
             patientEntries.put(storageColumn, storageValue);
         }
 
+
+
         long newRowID; //TODO: Can we make this the local identifier/registration number?
         newRowID = localDb.insert(
                 "patient",
-                "null",
+                null,
                 patientEntries);
 
         // DEBUG ONLY
-        Log.d("Patient ID Row", debug("" + newRowID));
+        Log.d("Patient ID Row", String.valueOf(addDummyPatient()));
         Intent intent = new Intent(this, TableExamActivity.class);
         startActivity(intent);
 
@@ -88,43 +94,101 @@ public class IdentificationActivity extends AppCompatActivity {
         //TODO: upload identifiers to OpenMRS using service
     }
 
-    public String debug(String dataString) {
-        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+    /** DEBUG ONLY */
+    public long addDummyPatient() {
+        SQLiteDatabase localDb = mDbHelper.getWritableDatabase();
+        ContentValues patientEntries = new ContentValues();
 
-        /* String[] columnsToReturn = {
-                "_id",
-                "openmrs_id",
-                "first_name",
-                "middle_name",
-                "last_name",
-                "date_of_birth", // ISO 8601
-                "phone_number",
-                "address1",
-                "address2",
-                "city_village",
-                "state_province",
-                "postal_code",
-                "country", // ISO 3166-1 alpha-2
-                "gender",
-                "patient_identifier1",
-                "patient_identifier2",
-                "patient_identifier3"
-        }; */
+        Random rand = new Random();
 
-        String selection = "_id = ?";
-        String[] args = new String[1];
-        args[0] = dataString;
+        String[] fnames = {"Molly",
+                "Amy",
+                "Claire",
+                "Emily",
+                "Katie",
+                "Madeline",
+                "Katelyn",
+                "Emma",
+                "Abigail",
+                "Carly",
+                "Jenna",
+                "Heather",
+                "Katherine",
+                "Caitlin",
+                "Kaitlin",
+                "Holly",
+                "Allison",
+                "Kaitlyn",
+                "Hannah",
+                "Kathryn"};
 
-        Cursor patientCursor = db.query("patient", null, selection, args, null, null, null);
+        String[] lnames = { "Dawson",
+                "Reed",
+                "White",
+                "Smith",
+                "Adam",
+                "Wesley",
+                "Ambrose",
+                "Schnieder",
+                "Lamody",
+                "Knudtson",
+                "Kundert",
+                "Kohlstedt",
+                "Gilbert",
+                "Willson",
+                "Williams",
+                "Mathews",
+                "Young",
+                "Hale",
+                "Cullen",
+                "Steffan",
+                "Stevens",
+                "StClaire",
+                "Bryson",
+                "Hammer",
+                "Stegar",
+                "Miles",
+                "Bryant",
+                "Davis",
+                "Jones",
+                "Miller",
+                "Moore",
+                "Anderson",
+                "Martin",
+                "Thompson",
+                "Lewis",
+                "Allen",
+                "Wright",
+                "Hill",
+                "Wood",
+                "Baker",
+                "Sampson",
+                "Nelson",
+                "Mason",
+                "Parker",
+                "Stewart",
+                "Murphy",
+                "Brooks",
+                "Kelly"};
 
-        Gson gson = new GsonBuilder().serializeNulls().create();
-        Patient patient = new Patient();
-        patientCursor.moveToFirst();
-        patient.setFirstName(patientCursor.getString(2));
-        String json = gson.toJson(patient);
-        Log.d("IdSerial" + "/Gson", json);
+        String fName = fnames[rand.nextInt(fnames.length)];
+        String lName = lnames[rand.nextInt(lnames.length)];
+        String mName = "Michael";
+        String dob = String.format("%d-%02d-%02d", rand.nextInt(60) + 1950,
+                rand.nextInt(11) + 1, rand.nextInt(26)+1);
+        String gender = "female";
 
-        return json;
+        patientEntries.put("first_name", fName);
+        patientEntries.put("middle_name", mName);
+        patientEntries.put("last_name", lName);
+        patientEntries.put("date_of_birth", dob);
+        patientEntries.put("gender", gender);
+
+        long newRowID = localDb.insert(
+                "patient",
+                null,
+                patientEntries);
+
+        return newRowID;
     }
 }
