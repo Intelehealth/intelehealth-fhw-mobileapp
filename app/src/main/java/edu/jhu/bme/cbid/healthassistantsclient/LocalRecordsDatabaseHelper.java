@@ -13,7 +13,7 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "localRecords.db";
-    public static final String CREATE_PATIENT = "CREATE TABLE IF NOT EXISTS patient (" +
+    public static final String CREATE_PATIENT = "CREATE VIRTUAL TABLE IF NOT EXISTS patient USING fts3(" +
             "_id integer PRIMARY KEY," +
             "openmrs_id varchar," +
             // "first_name varchar(50) NOT NULL," +

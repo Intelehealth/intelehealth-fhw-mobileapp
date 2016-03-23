@@ -78,7 +78,7 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_get_patient_history">GetPatientHistoryActivity</string>
-    <string name="title_activity_search_patient">SearchPatient</string>
+    <string name="title_activity_search_patient">Patient Lookup</string>
     <string name="title_activity_diagnostic_tests_list">DiagnosticTestsList</string>
 
     <string name="large_text">
@@ -186,5 +186,8 @@
     <string name="table_r">Other Readings</string>
     <string name="table_temp">Temperature</string>
     <string name="table_spo2">SpO2</string>
+
+    <string name="search_hint">Type to search…</string>
+    <string name="action_search">Search</string>
 
 </resources>
