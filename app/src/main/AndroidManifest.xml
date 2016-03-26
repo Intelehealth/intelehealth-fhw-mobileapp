@@ -14,7 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity" />
-        <activity android:name=".IdentificationActivity" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login">
@@ -23,7 +22,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".ActivePatientActivity"
@@ -59,8 +57,10 @@
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.jhu.bme.cbid.healthassistantsclient.MainActivity" />
@@ -77,10 +77,16 @@
         <activity
             android:name=".TableExamActivity"
             android:label="@string/title_activity_table_exam"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <provider android:name=".SearchSuggestionProvider"
+        <provider
+            android:name=".SearchSuggestionProvider"
             android:authorities="edu.jhu.bme.cbid.healthassistantsclient.SearchSuggestionProvider" />
+
+        <activity
+            android:name=".IdentificationActivity"
+            android:label="@string/title_activity_identification"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

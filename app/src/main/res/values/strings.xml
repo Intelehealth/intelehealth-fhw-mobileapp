@@ -36,11 +36,12 @@
     <string name="menu_option_end_of_day">End of Day</string>
 
     //Identification Screen
-    <string name="title_identification_screen">Add New Patient</string>
+    <string name="title_activity_identification">Add New Patient</string>
     <string name="prompt_first_name">First Name</string>
     <string name="prompt_middle_name">Middle Name</string>
     <string name="prompt_last_name">Last Name</string>
     <string name="prompt_address">Address</string>
+    <string name="prompt_address2">Address Line 2</string>
     <string name="prompt_phone_number">Phone Number</string>
     <string name="prompt_gender">Gender</string>
     <string name="checkbox_male">Male</string>
@@ -170,7 +171,6 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
-    <string name="title_activity_identifiers">IdentifiersActivity</string>
     <string name="title_activity_table_exam">Table Exam</string>
 
 
