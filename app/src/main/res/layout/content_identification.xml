@@ -20,6 +20,7 @@
 
 
         <LinearLayout
+            android:id="@+id/layout_identification"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -46,8 +47,7 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPersonName"
                     android:maxLines="1"
-                    android:singleLine="true"
-                    android:tag="@string/db_first_name" />
+                    android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -61,12 +61,12 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:freezesText="true"
+                    android:tag="@string/hint_optional"
                     android:hint="@string/prompt_middle_name"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPersonName"
                     android:maxLines="1"
-                    android:singleLine="true"
-                    android:tag="@string/db_middle_name" />
+                    android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -84,8 +84,54 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPersonName"
                     android:maxLines="1"
-                    android:singleLine="true"
-                    android:tag="@string/db_last_name" />
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="20dp" />
+
+
+            <RadioGroup
+                android:id="@+id/radioGrp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp">
+
+                <RadioButton
+                    android:id="@+id/identification_gender_male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/checkbox_male"
+                    android:textSize="@dimen/id_screen_text_size"
+                    android:layout_weight="1" />
+
+                <RadioButton
+                    android:id="@+id/identification_gender_female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/checkbox_female"
+                    android:textSize="@dimen/id_screen_text_size"
+                    android:layout_weight="1" />
+
+            </RadioGroup>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/identification_birth_date"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:freezesText="true"
+                    android:hint="@string/prompt_birthday"
+                    android:inputType="date" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -101,56 +147,9 @@
                     android:freezesText="true"
                     android:hint="@string/prompt_phone_number"
                     android:imeOptions="actionUnspecified"
-                    android:inputType="number"
+                    android:inputType="phone"
                     android:maxLines="1"
-                    android:singleLine="true"
-                    android:tag="@string/db_phone_number" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <Space
-                android:layout_width="20px"
-                android:layout_height="20px" />
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/prompt_gender"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                <RadioButton
-                    android:id="@+id/identification_gender_male"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:tag="@string/db_gender"
-                    android:text="@string/checkbox_male" />
-
-                <RadioButton
-                    android:id="@+id/identification_gender_female"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:tag="@string/db_gender"
-                    android:text="@string/checkbox_female" />
-
-            </TableRow>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/identification_birthdate"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:freezesText="true"
-                    android:hint="@string/prompt_birthday"
-                    android:inputType="date"
-                    android:tag="@string/db_dob" />
+                    android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -189,8 +188,7 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPostalAddress"
                     android:maxLines="2"
-                    android:singleLine="false"
-                    android:tag="@string/db_address_line1" />
+                    android:singleLine="false" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -208,8 +206,7 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPostalAddress"
                     android:maxLines="2"
-                    android:singleLine="false"
-                    android:tag="@string/db_address_line2" />
+                    android:singleLine="false" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -225,8 +222,7 @@
                     android:hint="@string/prompt_city"
                     android:imeOptions="actionUnspecified"
                     android:maxLines="1"
-                    android:singleLine="true"
-                    android:tag="@string/db_city" />
+                    android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -243,8 +239,7 @@
                     android:hint="@string/prompt_state"
                     android:imeOptions="actionUnspecified"
                     android:maxLines="1"
-                    android:singleLine="true"
-                    android:tag="@string/db_state" />
+                    android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -262,8 +257,7 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="number"
                     android:maxLines="1"
-                    android:singleLine="true"
-                    android:tag="@string/db_postal_code" />
+                    android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -279,8 +273,7 @@
                     android:hint="@string/prompt_country"
                     android:imeOptions="actionUnspecified"
                     android:maxLines="1"
-                    android:singleLine="true"
-                    android:tag="@string/db_country" />
+                    android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -299,8 +292,7 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPersonName"
                     android:maxLines="1"
-                    android:singleLine="true"
-                    android:tag="@string/db_patient_id1" />
+                    android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -318,8 +310,7 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPersonName"
                     android:maxLines="1"
-                    android:singleLine="true"
-                    android:tag="@string/db_patient_id2" />
+                    android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
 
