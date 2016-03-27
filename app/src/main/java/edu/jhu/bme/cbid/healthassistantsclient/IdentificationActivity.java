@@ -10,11 +10,12 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
 import com.google.gson.Gson;
+
+import java.util.ArrayList;
 
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
 
@@ -91,8 +92,7 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 createNewPatient();
-                Snackbar.make(view, R.string.snack_patient_created, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Snackbar.make(view, R.string.snack_patient_created, Snackbar.LENGTH_LONG);
             }
         });
     }
@@ -116,24 +116,32 @@ public class IdentificationActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-        ViewGroup identifiersLayout = (ViewGroup) findViewById(R.id.layout_identification);
-        for (int i = 0; i < identifiersLayout.getChildCount(); i++) {
-            View view = identifiersLayout.getChildAt(i);
-            if (view instanceof EditText) {
-                if (TextUtils.isEmpty(((EditText) view).getText().toString())) {
-                    if (view.getTag().toString() == "optional") {
+        ArrayList<EditText> values = new ArrayList<EditText>();
+        values.add(mFirstName);
+        values.add(mMiddleName);
+        values.add(mLastName);
+        values.add(mDOB);
+        values.add(mPhoneNum);
+        values.add(mAddress1);
+        values.add(mAddress2);
+        values.add(mCity);
+        values.add(mState);
+        values.add(mPostal);
+        values.add(mCountry);
+        values.add(mRelationship);
+        values.add(mOccupation);
 
-                    } else {
-
-                        ((EditText) view).setError(getString(R.string.error_field_required));
-                        focusView = view;
-                        cancel = true;
-                        break;
-                    }
-
-                }
+        for (int i = 0; i < values.size(); i++) {
+            EditText et = values.get(i);
+            if (TextUtils.isEmpty(et.getText().toString()) && et.getTag() == null) {
+                et.setError(getString(R.string.error_field_required));
+                focusView = et;
+                cancel = true;
+                break;
             }
+
         }
+
 
         if (cancel) {
             focusView.requestFocus();
