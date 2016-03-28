@@ -12,5 +12,5 @@
 
     //Identification Screen
     <dimen name="padding_identification_screen">10dp</dimen>
-    <dimen name="submit_button">100dp</dimen>
+    <dimen name="id_screen_text_size">20dp</dimen>
 </resources>

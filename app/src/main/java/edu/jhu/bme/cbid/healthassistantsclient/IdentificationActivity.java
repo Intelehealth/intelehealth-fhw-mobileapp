@@ -1,194 +1,248 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
 import android.content.ContentValues;
-import android.content.Intent;
-import android.database.Cursor;
+import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
-import android.support.v7.app.AppCompatActivity;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.Random;
+import java.util.ArrayList;
 
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
 
-public class IdentificationActivity extends AppCompatActivity {
-    LocalRecordsDatabaseHelper mDbHelper;
+/**
+ * Created by Amal Afroz Alam on 3/25/16.
+ */
 
-    //Demographic acquisition screen
+public class IdentificationActivity extends AppCompatActivity {
+
+    EditText mFirstName;
+    EditText mMiddleName;
+    EditText mLastName;
+    EditText mDOB;
+    EditText mPhoneNum;
+    EditText mAge;
+    EditText mAddress1;
+    EditText mAddress2;
+    EditText mCity;
+    EditText mState;
+    EditText mPostal;
+    EditText mCountry;
+    RadioButton mGenderM;
+    RadioButton mGenderF;
+    String mGender;
+    EditText mRelationship;
+    EditText mOccupation;
+
+    private InsertPatientTable mTask = null;
+    LocalRecordsDatabaseHelper mDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_identification);
-        mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        Button identificationButton = (Button) findViewById(R.id.identificationSubmitButton);
-        identificationButton.setOnClickListener(new View.OnClickListener() {
+        mDbHelper = new LocalRecordsDatabaseHelper(this);
+
+        mFirstName = (EditText) findViewById(R.id.identification_first_name);
+        mMiddleName = (EditText) findViewById(R.id.identification_middle_name);
+        mLastName = (EditText) findViewById(R.id.identification_last_name);
+        mDOB = (EditText) findViewById(R.id.identification_birth_date);
+        mPhoneNum = (EditText) findViewById(R.id.identification_phone_number);
+        mAge = (EditText) findViewById(R.id.identification_age);
+        mAddress1 = (EditText) findViewById(R.id.identification_address1);
+        mAddress2 = (EditText) findViewById(R.id.identification_address2);
+        mCity = (EditText) findViewById(R.id.identification_city);
+        mState = (EditText) findViewById(R.id.identification_state);
+        mPostal = (EditText) findViewById(R.id.identification_postal_code);
+        mCountry = (EditText) findViewById(R.id.identification_country);
+        mGenderM = (RadioButton) findViewById(R.id.identification_gender_male);
+        mGenderF = (RadioButton) findViewById(R.id.identification_gender_female);
+        mRelationship = (EditText) findViewById(R.id.identification_relationship);
+        mOccupation = (EditText) findViewById(R.id.identification_occupation);
+
+        mGenderF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                submitIdentifiers();
+                onRadioButtonClicked(v);
             }
         });
 
-    }
-
-    public void submitIdentifiers() {
-
-        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
-        SQLiteDatabase localDb = mDbHelper.getWritableDatabase();
-        ContentValues patientEntries = new ContentValues();
-
-        ViewGroup identifiersLayout = (ViewGroup) findViewById(R.id.identificationTable);
-        for (int i = 0; i < identifiersLayout.getChildCount(); i++) {
-            View view = identifiersLayout.getChildAt(i);
-            if (view instanceof EditText) {
-                String storageColumn = (view).getTag().toString();
-                String storageValue = ((EditText) view).getText().toString();
-
-                patientEntries.put(storageColumn, storageValue);
-
-                //TODO: Check if DB statements are correct
+        mGenderM.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onRadioButtonClicked(v);
             }
-        }
+        });
 
-        CheckBox maleCheckBox = (CheckBox) findViewById(R.id.maleCheckBox);
-        CheckBox femaleCheckBox = (CheckBox) findViewById(R.id.femaleCheckBox);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-        if (maleCheckBox.isChecked()) {
-
-            String storageColumn = maleCheckBox.getTag().toString();
-            String storageValue = "male";
-
-            patientEntries.put(storageColumn, storageValue);
-        } else if (femaleCheckBox.isChecked()) {
-            String storageColumn = maleCheckBox.getTag().toString();
-            String storageValue = "female";
-
-            patientEntries.put(storageColumn, storageValue);
-        }
-
-
-
-        long newRowID; //TODO: Can we make this the local identifier/registration number?
-        newRowID = localDb.insert(
-                "patient",
-                null,
-                patientEntries);
-
-        // DEBUG ONLY
-        Log.d("Patient ID Row", String.valueOf(addDummyPatient()));
-        Intent intent = new Intent(this, TableExamActivity.class);
-        startActivity(intent);
-
-
-        //TODO: upload identifiers to OpenMRS using service
+                createNewPatient();
+                Snackbar.make(view, R.string.snack_patient_created, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
     }
 
-    /** DEBUG ONLY */
-    public long addDummyPatient() {
-        SQLiteDatabase localDb = mDbHelper.getWritableDatabase();
+    public void onRadioButtonClicked(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+        switch (view.getId()) {
+            case R.id.identification_gender_male:
+                if (checked)
+                    mGender = "male";
+                break;
+            case R.id.identification_gender_female:
+                if (checked)
+                    mGender = "female";
+                break;
+        }
+    }
+
+    public void createNewPatient() {
+
+        boolean cancel = false;
+        View focusView = null;
+
+        ArrayList<EditText> values = new ArrayList<>();
+        values.add(mFirstName);
+        values.add(mMiddleName);
+        values.add(mLastName);
+        values.add(mDOB);
+        values.add(mPhoneNum);
+        values.add(mAddress1);
+        values.add(mAddress2);
+        values.add(mCity);
+        values.add(mState);
+        values.add(mPostal);
+        values.add(mCountry);
+        values.add(mRelationship);
+        values.add(mOccupation);
+
+        for (int i = 0; i < values.size(); i++) {
+            EditText et = values.get(i);
+            if (TextUtils.isEmpty(et.getText().toString()) && et.getTag() == null) {
+                et.setError(getString(R.string.error_field_required));
+                focusView = et;
+                cancel = true;
+                break;
+            }
+
+        }
+
+
+        if (cancel) {
+            focusView.requestFocus();
+        } else {
+            Patient currentPatient = new Patient();
+            try {
+                currentPatient.setFirstName(mFirstName.getText().toString());
+                if (TextUtils.isEmpty(mMiddleName.getText().toString())) {
+                    currentPatient.setMiddleName(null);
+                } else {
+                    currentPatient.setMiddleName(mMiddleName.getText().toString());
+                }
+                currentPatient.setLastName(mLastName.getText().toString());
+                currentPatient.setDateOfBirth(mDOB.getText().toString());
+                currentPatient.setPhoneNumber(mPhoneNum.getText().toString());
+                currentPatient.setAddress1(mAddress1.getText().toString());
+                if (TextUtils.isEmpty(mAddress2.getText().toString())) {
+                    currentPatient.setAddress2(null);
+                } else {
+                    currentPatient.setAddress2(mAddress2.getText().toString());
+                }
+                currentPatient.setCityVillage(mCity.getText().toString());
+                currentPatient.setStateProvince(mState.getText().toString());
+                currentPatient.setPostalCode(mPostal.getText().toString());
+                currentPatient.setCountry(mCountry.getText().toString());
+                currentPatient.setGender(mGender);
+                currentPatient.setPatientIdentifier1(mRelationship.getText().toString());
+                currentPatient.setPatientIdentifier2(mOccupation.getText().toString());
+            } catch (NullPointerException e) {
+                Snackbar.make(findViewById(R.id.cl_table), R.string.error_data_fields, Snackbar.LENGTH_SHORT);
+            }
+
+            mTask = new InsertPatientTable(currentPatient);
+            mTask.execute((Void) null);
+
+        }
+    }
+
+    public class InsertPatientTable extends AsyncTask<Void, Void, Boolean>
+            implements DialogInterface.OnCancelListener {
+
+        long patientID;
+        Patient patient;
+
+        InsertPatientTable(Patient currentPatient) {
+            patient = currentPatient;
+        }
+
+
         ContentValues patientEntries = new ContentValues();
 
-        Random rand = new Random();
+        public void gatherEntries() {
+            patientEntries.put("first_name", patient.getFirstName());
+            patientEntries.put("middle_name", patient.getMiddleName());
+            patientEntries.put("last_name", patient.getLastName());
+            patientEntries.put("date_of_birth", patient.getDateOfBirth());
+            patientEntries.put("phone_number", patient.getPhoneNumber());
+            patientEntries.put("address1", patient.getAddress1());
+            patientEntries.put("address2", patient.getAddress2());
+            patientEntries.put("city_village", patient.getCityVillage());
+            patientEntries.put("state_province", patient.getStateProvince());
+            patientEntries.put("postal_code", patient.getPostalCode());
+            patientEntries.put("country", patient.getCountry());
+            patientEntries.put("gender", patient.getGender());
+            patientEntries.put("patient_identifier1", patient.getPatientIdentifier1());
+            patientEntries.put("patient_identifier2", patient.getPatientIdentifier2());
+        }
 
-        String[] fnames = {"Molly",
-                "Amy",
-                "Claire",
-                "Emily",
-                "Katie",
-                "Madeline",
-                "Katelyn",
-                "Emma",
-                "Abigail",
-                "Carly",
-                "Jenna",
-                "Heather",
-                "Katherine",
-                "Caitlin",
-                "Kaitlin",
-                "Holly",
-                "Allison",
-                "Kaitlyn",
-                "Hannah",
-                "Kathryn"};
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            gatherEntries();
+            SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+            patientID = localdb.insert(
+                    "patient",
+                    null,
+                    patientEntries
+            );
 
-        String[] lnames = { "Dawson",
-                "Reed",
-                "White",
-                "Smith",
-                "Adam",
-                "Wesley",
-                "Ambrose",
-                "Schnieder",
-                "Lamody",
-                "Knudtson",
-                "Kundert",
-                "Kohlstedt",
-                "Gilbert",
-                "Willson",
-                "Williams",
-                "Mathews",
-                "Young",
-                "Hale",
-                "Cullen",
-                "Steffan",
-                "Stevens",
-                "StClaire",
-                "Bryson",
-                "Hammer",
-                "Stegar",
-                "Miles",
-                "Bryant",
-                "Davis",
-                "Jones",
-                "Miller",
-                "Moore",
-                "Anderson",
-                "Martin",
-                "Thompson",
-                "Lewis",
-                "Allen",
-                "Wright",
-                "Hill",
-                "Wood",
-                "Baker",
-                "Sampson",
-                "Nelson",
-                "Mason",
-                "Parker",
-                "Stewart",
-                "Murphy",
-                "Brooks",
-                "Kelly"};
+            patient.setId(patientID);
 
-        String fName = fnames[rand.nextInt(fnames.length)];
-        String lName = lnames[rand.nextInt(lnames.length)];
-        String mName = "Michael";
-        String dob = String.format("%d-%02d-%02d", rand.nextInt(60) + 1950,
-                rand.nextInt(11) + 1, rand.nextInt(26)+1);
-        String gender = "female";
+            Gson gson = new GsonBuilder().serializeNulls().create();
+            Log.i("Patient", gson.toJson(patient));
 
-        patientEntries.put("first_name", fName);
-        patientEntries.put("middle_name", mName);
-        patientEntries.put("last_name", lName);
-        patientEntries.put("date_of_birth", dob);
-        patientEntries.put("gender", gender);
+            return null;
+        }
 
-        long newRowID = localDb.insert(
-                "patient",
-                null,
-                patientEntries);
+        @Override
+        public void onCancel(DialogInterface dialog) {
+            cancel(true);
+            dialog.dismiss();
+        }
 
-        return newRowID;
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+        }
     }
+
 }
+

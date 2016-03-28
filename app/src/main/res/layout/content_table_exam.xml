@@ -16,7 +16,7 @@
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/scrollView" >
+        android:id="@+id/scrollView">
 
         <LinearLayout
             android:orientation="vertical"

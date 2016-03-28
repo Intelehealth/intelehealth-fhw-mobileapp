@@ -5,7 +5,7 @@
     <string name="generic_the_flipping_word_next">Next</string>
     <string name="hint_required">Required</string>
     <string name="hint_optional">Optional</string>
-    <string name="tag_storage">storage</string>
+    <string name="tag_optional">optional</string>
 
     //Database Schema Names
     <string name="db_first_name">first_name</string>
@@ -36,11 +36,12 @@
     <string name="menu_option_end_of_day">End of Day</string>
 
     //Identification Screen
-    <string name="title_identification_screen">Add New Patient</string>
+    <string name="title_activity_identification">Add New Patient</string>
     <string name="prompt_first_name">First Name</string>
     <string name="prompt_middle_name">Middle Name</string>
     <string name="prompt_last_name">Last Name</string>
     <string name="prompt_address">Address</string>
+    <string name="prompt_address2">Address Line 2</string>
     <string name="prompt_phone_number">Phone Number</string>
     <string name="prompt_gender">Gender</string>
     <string name="checkbox_male">Male</string>
@@ -53,7 +54,8 @@
     <string name="prompt_postal_code">Postal Code</string>
     <string name="prompt_relationship">Son/Daughter/Wife of</string>
     <string name="prompt_occupation">Occupation</string>
-
+    <string name="snack_patient_created">Patient created! Uploading to server.</string>
+    <string name="error_data_fields">Error: data fields are not formatted correctly</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -170,7 +172,6 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
-    <string name="title_activity_identifiers">IdentifiersActivity</string>
     <string name="title_activity_table_exam">Table Exam</string>
 
 
