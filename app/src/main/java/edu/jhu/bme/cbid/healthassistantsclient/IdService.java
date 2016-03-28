@@ -27,8 +27,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import javax.net.ssl.HttpsURLConnection;
-
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
 import edu.jhu.bme.cbid.healthassistantsclient.objects.PatientImage;
 
@@ -122,7 +120,7 @@ public class IdService extends IntentService {
 
         Gson gson = new GsonBuilder().serializeNulls().create();
         Patient patient = new Patient();
-        patient.setId(Integer.parseInt(patientCursor.getString(0)));
+        patient.setId(Long.parseLong(patientCursor.getString(0)));
         patient.setFirstName(patientCursor.getString(1));
         patient.setMiddleName(patientCursor.getString(2));
         patient.setLastName(patientCursor.getString(3));

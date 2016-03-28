@@ -86,7 +86,11 @@
         <activity
             android:name=".IdentificationActivity"
             android:label="@string/title_activity_identification"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.jhu.bme.cbid.healthassistantsclient.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -1,6 +1,8 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
+import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +16,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 
@@ -44,8 +47,7 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mOccupation;
 
     private InsertPatientTable mTask = null;
-
-    int patientID;
+    LocalRecordsDatabaseHelper mDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class IdentificationActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mDbHelper = new LocalRecordsDatabaseHelper(this);
 
         mFirstName = (EditText) findViewById(R.id.identification_first_name);
         mMiddleName = (EditText) findViewById(R.id.identification_middle_name);
@@ -92,7 +95,8 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 createNewPatient();
-                Snackbar.make(view, R.string.snack_patient_created, Snackbar.LENGTH_LONG);
+                Snackbar.make(view, R.string.snack_patient_created, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         });
     }
@@ -116,7 +120,7 @@ public class IdentificationActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-        ArrayList<EditText> values = new ArrayList<EditText>();
+        ArrayList<EditText> values = new ArrayList<>();
         values.add(mFirstName);
         values.add(mMiddleName);
         values.add(mLastName);
@@ -150,7 +154,7 @@ public class IdentificationActivity extends AppCompatActivity {
             try {
                 currentPatient.setFirstName(mFirstName.getText().toString());
                 if (TextUtils.isEmpty(mMiddleName.getText().toString())) {
-                    currentPatient.setMiddleName("null");
+                    currentPatient.setMiddleName(null);
                 } else {
                     currentPatient.setMiddleName(mMiddleName.getText().toString());
                 }
@@ -159,12 +163,13 @@ public class IdentificationActivity extends AppCompatActivity {
                 currentPatient.setPhoneNumber(mPhoneNum.getText().toString());
                 currentPatient.setAddress1(mAddress1.getText().toString());
                 if (TextUtils.isEmpty(mAddress2.getText().toString())) {
-                    currentPatient.setAddress2("null");
+                    currentPatient.setAddress2(null);
                 } else {
                     currentPatient.setAddress2(mAddress2.getText().toString());
                 }
                 currentPatient.setCityVillage(mCity.getText().toString());
                 currentPatient.setStateProvince(mState.getText().toString());
+                currentPatient.setPostalCode(mPostal.getText().toString());
                 currentPatient.setCountry(mCountry.getText().toString());
                 currentPatient.setGender(mGender);
                 currentPatient.setPatientIdentifier1(mRelationship.getText().toString());
@@ -182,18 +187,48 @@ public class IdentificationActivity extends AppCompatActivity {
     public class InsertPatientTable extends AsyncTask<Void, Void, Boolean>
             implements DialogInterface.OnCancelListener {
 
-        int patientID;
+        long patientID;
         Patient patient;
 
         InsertPatientTable(Patient currentPatient) {
             patient = currentPatient;
         }
 
+
+        ContentValues patientEntries = new ContentValues();
+
+        public void gatherEntries() {
+            patientEntries.put("first_name", patient.getFirstName());
+            patientEntries.put("middle_name", patient.getMiddleName());
+            patientEntries.put("last_name", patient.getLastName());
+            patientEntries.put("date_of_birth", patient.getDateOfBirth());
+            patientEntries.put("phone_number", patient.getPhoneNumber());
+            patientEntries.put("address1", patient.getAddress1());
+            patientEntries.put("address2", patient.getAddress2());
+            patientEntries.put("city_village", patient.getCityVillage());
+            patientEntries.put("state_province", patient.getStateProvince());
+            patientEntries.put("postal_code", patient.getPostalCode());
+            patientEntries.put("country", patient.getCountry());
+            patientEntries.put("gender", patient.getGender());
+            patientEntries.put("patient_identifier1", patient.getPatientIdentifier1());
+            patientEntries.put("patient_identifier2", patient.getPatientIdentifier2());
+        }
+
         @Override
         protected Boolean doInBackground(Void... params) {
-            Gson gson = new Gson();
+            gatherEntries();
+            SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+            patientID = localdb.insert(
+                    "patient",
+                    null,
+                    patientEntries
+            );
+
+            patient.setId(patientID);
+
+            Gson gson = new GsonBuilder().serializeNulls().create();
             Log.i("Patient", gson.toJson(patient));
-            //TODO:insert patient into DB table
+
             return null;
         }
 
@@ -201,6 +236,11 @@ public class IdentificationActivity extends AppCompatActivity {
         public void onCancel(DialogInterface dialog) {
             cancel(true);
             dialog.dismiss();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
         }
     }
 
