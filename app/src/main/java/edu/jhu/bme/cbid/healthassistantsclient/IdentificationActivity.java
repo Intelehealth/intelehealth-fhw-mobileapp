@@ -2,6 +2,7 @@ package edu.jhu.bme.cbid.healthassistantsclient;
 
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -240,7 +241,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
+
             super.onPostExecute(aBoolean);
+            Intent intent = new Intent(this, ComplaintSelectActivity.class);
+            startActivity(intent);
         }
     }
 

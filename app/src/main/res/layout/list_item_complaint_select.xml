@@ -9,6 +9,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_size_complaint"
-        android:padding="@dimen/padding_complaint_select" />
+        android:padding="@dimen/padding_complaint_select"
+        android:focusable="true" />
 
 </LinearLayout>

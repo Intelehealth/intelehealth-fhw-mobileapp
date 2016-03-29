@@ -25,6 +25,8 @@ public class ComplaintSelectActivity extends AppCompatActivity {
     ExpandableListView expandableListView;
     List<String> listLevelOne;
     HashMap<String, List<String>> listLevelTwo;
+    List<String> chosenCategory;
+    List<String> chosenComplaint;
 
 
     @Override
@@ -47,6 +49,17 @@ public class ComplaintSelectActivity extends AppCompatActivity {
         listAdapter = new ExpandableListAdapter(this, listLevelOne, listLevelTwo);
         expandableListView.setAdapter(listAdapter);
 
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                chosenCategory.add(Integer.toString(groupPosition));
+                chosenComplaint.add(Integer.toString(childPosition));
+
+                return true;
+            }
+        });
+
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +78,7 @@ public class ComplaintSelectActivity extends AppCompatActivity {
         String raw_json = null;
 
         try {
-            InputStream is = getAssets().open("generic.json");
+            InputStream is = getAssets().open("proto2.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -85,7 +98,7 @@ public class ComplaintSelectActivity extends AppCompatActivity {
                 JSONArray array_complaints = category.getJSONArray("options");
                 List<String> workingArray = new ArrayList<String>();
                 for (int j = 0; j < array_complaints.length(); j++) {
-                    JSONObject complaint = array_complaints.getJSONObject(i);
+                    JSONObject complaint = array_complaints.getJSONObject(j);
                     String complaint_name = complaint.getString("text");
                     workingArray.add(complaint_name);
                 }
@@ -98,4 +111,6 @@ public class ComplaintSelectActivity extends AppCompatActivity {
         }
 
     }
+
+
 }

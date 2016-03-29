@@ -18,6 +18,6 @@
     //Complaint Select Screen
     <dimen name="padding_complaint_select">16dp</dimen>
     <dimen name="text_size_category">25sp</dimen>
-    <dimen name="text_size_complaint">12sp</dimen>
+    <dimen name="text_size_complaint">20sp</dimen>
 
 </resources>
