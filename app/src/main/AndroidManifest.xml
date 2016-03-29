@@ -91,6 +91,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.jhu.bme.cbid.healthassistantsclient.MainActivity" />
         </activity>
+        <activity
+            android:name=".ComplaintSelectActivity"
+            android:label="@string/title_activity_complaint_select"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -190,5 +190,6 @@
 
     <string name="search_hint">Type to search…</string>
     <string name="action_search">Search</string>
+    <string name="title_activity_complaint_select">ComplaintSelectActivity</string>
 
 </resources>
