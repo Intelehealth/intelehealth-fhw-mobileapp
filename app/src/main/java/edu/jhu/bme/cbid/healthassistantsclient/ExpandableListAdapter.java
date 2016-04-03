@@ -5,6 +5,10 @@ package edu.jhu.bme.cbid.healthassistantsclient;
  * Contact me: contact@amal.io
  */
 
+/**
+ * References: http://www.androidhive.info/2013/07/android-expandable-list-view-tutorial/
+ */
+
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;

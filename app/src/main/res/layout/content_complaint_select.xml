@@ -15,6 +15,7 @@
     <ExpandableListView
         android:id="@+id/complaint_expandable_list_view"
         android:layout_height="match_parent"
-        android:layout_width="match_parent" />
+        android:layout_width="match_parent"
+        android:clickable="true" />
 
 </RelativeLayout>

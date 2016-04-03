@@ -5,8 +5,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +29,6 @@ public class ComplaintSelectActivity extends AppCompatActivity {
     HashMap<String, List<String>> listLevelTwo;
     List<String> chosenCategory;
     List<String> chosenComplaint;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,13 +53,14 @@ public class ComplaintSelectActivity extends AppCompatActivity {
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                chosenCategory.add(Integer.toString(groupPosition));
-                chosenComplaint.add(Integer.toString(childPosition));
+                Log.d("Category", Integer.toString(groupPosition));
+                Log.d("Complaint", Integer.toString(childPosition));
+                String message = "Category: " + Integer.toString(groupPosition) + "Complaint: " + Integer.toString(childPosition);
+                Toast.makeText(ComplaintSelectActivity.this, message, Toast.LENGTH_SHORT).show();
 
-                return true;
+                return false;
             }
         });
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -93,13 +95,13 @@ public class ComplaintSelectActivity extends AppCompatActivity {
             JSONArray array_categories = knowledge.getJSONArray("options");
             for (int i = 0; i < array_categories.length(); i++) {
                 JSONObject category = array_categories.getJSONObject(i);
-                String category_name = category.getString("text");
+                String category_name = "\t" + category.getString("text");
                 listLevelOne.add(category_name);
                 JSONArray array_complaints = category.getJSONArray("options");
                 List<String> workingArray = new ArrayList<String>();
                 for (int j = 0; j < array_complaints.length(); j++) {
                     JSONObject complaint = array_complaints.getJSONObject(j);
-                    String complaint_name = complaint.getString("text");
+                    String complaint_name = "\t\t" + complaint.getString("text");
                     workingArray.add(complaint_name);
                 }
                 listLevelTwo.put(listLevelOne.get(i), workingArray);
@@ -109,6 +111,10 @@ public class ComplaintSelectActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+    }
+
+    private void selectedComplaint() {
 
     }
 

@@ -2,7 +2,6 @@ package edu.jhu.bme.cbid.healthassistantsclient;
 
 import android.content.ContentValues;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -226,6 +225,7 @@ public class IdentificationActivity extends AppCompatActivity {
             );
 
             patient.setId(patientID);
+            //TODO: record the patientID back into the same row as the patient was stored into
 
             Gson gson = new GsonBuilder().serializeNulls().create();
             Log.i("Patient", gson.toJson(patient));
@@ -243,8 +243,8 @@ public class IdentificationActivity extends AppCompatActivity {
         protected void onPostExecute(Boolean aBoolean) {
 
             super.onPostExecute(aBoolean);
-            Intent intent = new Intent(this, ComplaintSelectActivity.class);
-            startActivity(intent);
+            //Intent intent = new Intent(this, ComplaintSelectActivity.class);
+            //startActivity(intent);
         }
     }
 
