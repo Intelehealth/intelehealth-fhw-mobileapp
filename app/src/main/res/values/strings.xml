@@ -175,6 +175,9 @@
     <string name="title_activity_table_exam">Table Exam</string>
 
 
+    <string name="complaint_category_selected">Selected Categories:</string>
+    <string name="complaint_complaint_selected">Selected Complaints:</string>
+
     <!-- Table exam strings -->
     <string name="table_hw">Body Measurements</string>
     <string name="table_height">Height</string>
@@ -191,5 +194,6 @@
     <string name="search_hint">Type to search…</string>
     <string name="action_search">Search</string>
     <string name="title_activity_complaint_select">Select Complaints</string>
+    <string name="title_activity_complaint_questions">ComplaintQuestionsActivity</string>
 
 </resources>

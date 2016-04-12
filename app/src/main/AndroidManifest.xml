@@ -94,7 +94,16 @@
         <activity
             android:name=".ComplaintSelectActivity"
             android:label="@string/title_activity_complaint_select"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ComplaintQuestionsActivity"
+            android:label="@string/title_activity_complaint_questions"
+            android:parentActivityName=".ComplaintSelectActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.jhu.bme.cbid.healthassistantsclient.ComplaintSelectActivity" />
+        </activity>
     </application>
 
 </manifest>

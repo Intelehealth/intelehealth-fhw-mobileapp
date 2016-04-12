@@ -9,7 +9,10 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_size_complaint"
-        android:padding="@dimen/padding_complaint_select"
-        android:focusable="false" />
+        android:focusable="false"
+        android:background="@drawable/complaint_selector"
+        android:paddingTop="@dimen/padding_complaint_select"
+        android:paddingBottom="@dimen/padding_complaint_select"
+        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" />
 
 </LinearLayout>

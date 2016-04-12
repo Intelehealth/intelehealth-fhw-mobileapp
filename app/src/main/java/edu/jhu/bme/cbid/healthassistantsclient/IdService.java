@@ -170,7 +170,7 @@ public class IdService extends IntentService {
     }
 
     public String sendData(String jsonString) {
-        final String serverAddress = "localhost"; // TODO: get string
+        final String serverAddress = "openmrs.amal.io:8443/openmrs/ws/rest/v1/"; // TODO: get string
 
         HttpURLConnection urlConnection;
         DataOutputStream printout;

@@ -51,6 +51,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_identification);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -143,9 +144,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 cancel = true;
                 break;
             }
-
         }
-
 
         if (cancel) {
             focusView.requestFocus();
@@ -230,6 +229,7 @@ public class IdentificationActivity extends AppCompatActivity {
             Gson gson = new GsonBuilder().serializeNulls().create();
             Log.i("Patient", gson.toJson(patient));
 
+
             return null;
         }
 
@@ -243,6 +243,13 @@ public class IdentificationActivity extends AppCompatActivity {
         protected void onPostExecute(Boolean aBoolean) {
 
             super.onPostExecute(aBoolean);
+//            Intent sendIntent = new Intent();
+//            sendIntent.setAction(Intent.ACTION_SEND);
+//            sendIntent.putExtra(Intent.EXTRA_TEXT, patient.getId().toString());
+//            sendIntent.setType("text/plain");
+//            startActivity(sendIntent);
+//            context.startActivity(sendIntent, IdService.class);
+
             //Intent intent = new Intent(this, ComplaintSelectActivity.class);
             //startActivity(intent);
         }

@@ -2,7 +2,6 @@ package edu.jhu.bme.cbid.healthassistantsclient;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -27,6 +26,7 @@ public class ComplaintSelectActivity extends AppCompatActivity {
     ExpandableListView expandableListView;
     List<String> listLevelOne;
     HashMap<String, List<String>> listLevelTwo;
+    HashMap<String, List<Boolean>> listLevelTwoBool;
     List<String> chosenCategory;
     List<String> chosenComplaint;
 
@@ -48,6 +48,7 @@ public class ComplaintSelectActivity extends AppCompatActivity {
         //TODO: Add setting to change where knowledge is located
 
         listAdapter = new ExpandableListAdapter(this, listLevelOne, listLevelTwo);
+        expandableListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
         expandableListView.setAdapter(listAdapter);
 
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
@@ -55,8 +56,17 @@ public class ComplaintSelectActivity extends AppCompatActivity {
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 Log.d("Category", Integer.toString(groupPosition));
                 Log.d("Complaint", Integer.toString(childPosition));
-                String message = "Category: " + Integer.toString(groupPosition) + "Complaint: " + Integer.toString(childPosition);
+                String selection = listLevelOne.get(groupPosition);
+                List<String> complaintSelection = listLevelTwo.get(selection);
+                String message2 = complaintSelection.get(childPosition);
+                String message = "Category:" + selection + " - Complaint:" + message2;
                 Toast.makeText(ComplaintSelectActivity.this, message, Toast.LENGTH_SHORT).show();
+
+                List<Boolean> workingList = listLevelTwoBool.get(listLevelOne.get(groupPosition));
+                workingList.set(childPosition, !workingList.get(childPosition));
+                listLevelTwoBool.put(listLevelOne.get(groupPosition), workingList);
+
+                v.setSelected(true);
 
                 return false;
             }
@@ -66,8 +76,7 @@ public class ComplaintSelectActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                selectedComplaint();
             }
         });
     }
@@ -77,6 +86,7 @@ public class ComplaintSelectActivity extends AppCompatActivity {
 
         listLevelOne = new ArrayList<String>();
         listLevelTwo = new HashMap<String, List<String>>();
+        listLevelTwoBool = new HashMap<String, List<Boolean>>();
         String raw_json = null;
 
         try {
@@ -95,16 +105,20 @@ public class ComplaintSelectActivity extends AppCompatActivity {
             JSONArray array_categories = knowledge.getJSONArray("options");
             for (int i = 0; i < array_categories.length(); i++) {
                 JSONObject category = array_categories.getJSONObject(i);
-                String category_name = "\t" + category.getString("text");
+                String category_name = category.getString("text");
                 listLevelOne.add(category_name);
                 JSONArray array_complaints = category.getJSONArray("options");
                 List<String> workingArray = new ArrayList<String>();
+                List<Boolean> workingBoolArray = new ArrayList<Boolean>();
                 for (int j = 0; j < array_complaints.length(); j++) {
                     JSONObject complaint = array_complaints.getJSONObject(j);
-                    String complaint_name = "\t\t" + complaint.getString("text");
+                    String complaint_name = complaint.getString("text");
                     workingArray.add(complaint_name);
+                    workingBoolArray.add(false);
+
                 }
                 listLevelTwo.put(listLevelOne.get(i), workingArray);
+                listLevelTwoBool.put(listLevelOne.get(i), workingBoolArray);
 
 
             }
@@ -115,6 +129,7 @@ public class ComplaintSelectActivity extends AppCompatActivity {
     }
 
     private void selectedComplaint() {
+
 
     }
 

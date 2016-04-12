@@ -8,9 +8,11 @@
     <TextView
         android:id="@+id/complaint_select_group"
         android:layout_width="fill_parent"
-        android:padding="@dimen/padding_complaint_select"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_category" />
+        android:paddingTop="@dimen/padding_complaint_select"
+        android:paddingBottom="@dimen/padding_complaint_select"
+        android:textSize="@dimen/text_size_category"
+        android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft" />
 
 
 </LinearLayout>
