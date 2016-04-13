@@ -2,6 +2,7 @@ package edu.jhu.bme.cbid.healthassistantsclient;
 
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -51,6 +52,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_identification);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -143,9 +145,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 cancel = true;
                 break;
             }
-
         }
-
 
         if (cancel) {
             focusView.requestFocus();
@@ -225,9 +225,11 @@ public class IdentificationActivity extends AppCompatActivity {
             );
 
             patient.setId(patientID);
+            //TODO: record the patientID back into the same row as the patient was stored into
 
             Gson gson = new GsonBuilder().serializeNulls().create();
             Log.i("Patient", gson.toJson(patient));
+
 
             return null;
         }
@@ -240,7 +242,12 @@ public class IdentificationActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
+
             super.onPostExecute(aBoolean);
+            Intent intent = new Intent(IdentificationActivity.this, IdService.class);
+            intent.putExtra(Intent.EXTRA_TEXT, patient.getId().toString());
+            intent.setType("type/plain");
+            startService(intent);
         }
     }
 
