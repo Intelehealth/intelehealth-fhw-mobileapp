@@ -243,11 +243,15 @@ public class IdentificationActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
 
-            super.onPostExecute(aBoolean);
-            Intent intent = new Intent(IdentificationActivity.this, IdService.class);
-            intent.putExtra(Intent.EXTRA_TEXT, patient.getId().toString());
-            intent.setType("type/plain");
-            startService(intent);
+//            super.onPostExecute(aBoolean);
+//            Intent intent = new Intent(IdentificationActivity.this, IdService.class);
+//            intent.putExtra(Intent.EXTRA_TEXT, patient.getId().toString());
+//            intent.setType("type/plain");
+//            startService(intent);
+
+
+            Intent intent2 = new Intent(IdentificationActivity.this, ComplaintSelectActivity.class);
+            startActivity(intent2);
         }
     }
 
