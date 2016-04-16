@@ -243,7 +243,8 @@ public class IdentificationActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
 
-//            super.onPostExecute(aBoolean);
+            super.onPostExecute(aBoolean);
+
 //            Intent intent = new Intent(IdentificationActivity.this, IdService.class);
 //            intent.putExtra(Intent.EXTRA_TEXT, patient.getId().toString());
 //            intent.setType("type/plain");
@@ -251,6 +252,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
             Intent intent2 = new Intent(IdentificationActivity.this, ComplaintSelectActivity.class);
+            intent2.putExtra(Intent.EXTRA_TEXT, patient.getId().toString());
+            intent2.setType("type/plain");
             startActivity(intent2);
         }
     }

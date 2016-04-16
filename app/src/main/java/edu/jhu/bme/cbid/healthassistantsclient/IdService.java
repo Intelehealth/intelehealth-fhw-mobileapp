@@ -66,6 +66,7 @@ public class IdService extends IntentService {
             Log.e(LOG_TAG, "Waiting interrupted?");
         }
 
+
         String dataString = intent.getDataString(); // The dataString is the _id of the patient to send
         int id = Integer.parseInt(dataString);
         String jsonToSend = serialize(dataString);
