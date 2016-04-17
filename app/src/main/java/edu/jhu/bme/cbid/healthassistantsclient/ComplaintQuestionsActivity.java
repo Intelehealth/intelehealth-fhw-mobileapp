@@ -5,13 +5,63 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.ExpandableListView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+
+/*
+gather the knowledge from the JSON file --> check the settings to get the proper string
+look through the list of selected responses
+when i hit a true, grab the questions from that and put it into the questions hashmap
+build the same map, but with booleans all set to false
+display the questions, and make the title of the toolbar the complaint
+onclicklistener so that the answer selected is highlighted, and then record it into the bool map
+expand the first question
+then collapse that group, expand the next question/group
+when collapsing, check to see if its the last question or not
+if its the last one, dialog box telling them that the next complaint will now be presented
+when all questions complete, dialog box that says processing language
+gather all the language and present to the HA to confirm
+once confirmed, write the language bits into the obs table?
+ */
 
 public class ComplaintQuestionsActivity extends AppCompatActivity {
 
+    public static final String LOG_TAG = "Complaint Question";
+
+    Integer patientID;
+
+    ExpandableListAdapter listAdapter;
+    ExpandableListView expandableListView;
+
+    List<String> listTitles;
+    List<String> listQuestions;
+    HashMap<String, List<String>> listOptions;
+    HashMap<String, List<Boolean>> listOptionsBool;
+
+    JSONArray complaints;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
+        Bundle bundle = getIntent().getExtras();
+        patientID = bundle.getInt("patientID");
+        try {
+            complaints = new JSONArray(bundle.getString("complaints"));
+            setupQuestions();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         setContentView(R.layout.activity_complaint_questions);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -25,6 +75,65 @@ public class ComplaintQuestionsActivity extends AppCompatActivity {
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        expandableListView = (ExpandableListView) findViewById(R.id.complaint_questions_expandable);
+
+        listAdapter = new ExpandableListAdapter(this, listQuestions, listOptions);
+        expandableListView.setAdapter(listAdapter);
+        Log.d(LOG_TAG, ((Integer) listQuestions.size()).toString());
+        expandableListView.expandGroup(0);
+
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                List<Boolean> workingList = listOptionsBool.get(listQuestions.get(groupPosition));
+                workingList.set(childPosition, !workingList.get(childPosition));
+                listOptionsBool.put(listQuestions.get(groupPosition), workingList);
+                v.setSelected(true);
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (groupPosition < listQuestions.size() - 1) {
+                    expandableListView.collapseGroup(groupPosition);
+                    expandableListView.expandGroup(groupPosition + 1);
+                }
+                return false;
+            }
+        });
+
+        super.onCreate(savedInstanceState);
     }
 
+
+    private void setupQuestions() throws JSONException {
+        listTitles = new ArrayList<String>();
+        listQuestions = new ArrayList<String>();
+        listOptions = new HashMap<String, List<String>>();
+        listOptionsBool = new HashMap<String, List<Boolean>>();
+
+        for (int i = 0; i < complaints.length(); i++) {
+            JSONObject current = complaints.getJSONObject(i);
+            listTitles.add(current.getString("text"));
+            JSONArray complaintQuestions = current.getJSONArray("options");
+            for (int j = 0; j < complaintQuestions.length(); j++) {
+                JSONObject question = complaintQuestions.getJSONObject(j);
+                listQuestions.add(question.getString("text"));
+                //Log.d(LOG_TAG, question.getString("text"));
+                JSONArray questionOptions = question.optJSONArray("options");
+                List<String> workingArray = new ArrayList<>();
+                List<Boolean> workingBoolArray = new ArrayList<>();
+                for (int k = 0; k < questionOptions.length(); k++) {
+                    JSONObject answerChoice = questionOptions.getJSONObject(k);
+                    workingArray.add(answerChoice.getString("text"));
+                    //Log.d(LOG_TAG, answerChoice.getString("text"));
+                    workingBoolArray.add(false);
+                    //Log.d(LOG_TAG, workingArray.toString());
+                }
+                listOptions.put(listQuestions.get(j), workingArray);
+                listOptionsBool.put(listQuestions.get(j), workingBoolArray);
+            }
+        }
+    }
 }

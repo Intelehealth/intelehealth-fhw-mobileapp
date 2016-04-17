@@ -252,8 +252,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
             Intent intent2 = new Intent(IdentificationActivity.this, ComplaintSelectActivity.class);
-            intent2.putExtra(Intent.EXTRA_TEXT, patient.getId().toString());
-            intent2.setType("type/plain");
+            intent2.putExtra("patientID", patient.getId());
             startActivity(intent2);
         }
     }

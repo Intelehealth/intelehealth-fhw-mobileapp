@@ -180,6 +180,7 @@
     <string name="complaint_complaint_selected">Selected Complaints:</string>
     <string name="complaint_dialog_title">Complaints</string>
     <string name="complaint_required">Complaint must be selected!</string>
+    <string name="complaint_change_selected">Modify</string>
 
 
     <!-- Table exam strings -->

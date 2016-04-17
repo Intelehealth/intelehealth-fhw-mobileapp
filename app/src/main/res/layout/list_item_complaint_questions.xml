@@ -5,7 +5,7 @@
     android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/complaint_select_item"
+        android:id="@+id/complaint_question_item"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/complaint_selector"
