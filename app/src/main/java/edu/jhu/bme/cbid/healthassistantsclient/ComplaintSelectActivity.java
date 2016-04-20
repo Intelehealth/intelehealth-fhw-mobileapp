@@ -65,6 +65,16 @@ public class ComplaintSelectActivity extends AppCompatActivity {
         expandableListView.setAdapter(listAdapter);
         expandableListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
 
+        //Check what's selected, and change the checked symbol accordingly
+//        for (int i = 0; i < listLevelOne.size(); i++){
+//            List<Boolean> workingList = listLevelTwoBool.get(listLevelOne.get(i));
+//            for (int j = 0; j < workingList.size(); j++) {
+//                if (workingList.get(j)){
+//
+//                }
+//            }
+//        }
+
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
@@ -192,7 +202,7 @@ public class ComplaintSelectActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-            alertDialogBuilder.setNegativeButton(R.string.complaint_change_selected, new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setNegativeButton(getResources().getString(R.string.complaint_change_selected), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();

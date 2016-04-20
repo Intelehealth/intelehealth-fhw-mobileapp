@@ -5,9 +5,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,6 +41,7 @@ public class ComplaintQuestionsActivity extends AppCompatActivity {
 
     Integer patientID;
 
+    TextView complaintDisplay;
     ExpandableListAdapter listAdapter;
     ExpandableListView expandableListView;
 
@@ -49,39 +51,26 @@ public class ComplaintQuestionsActivity extends AppCompatActivity {
     HashMap<String, List<Boolean>> listOptionsBool;
 
     JSONArray complaints;
+    Integer complaintNumber = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.activity_complaint_questions);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        complaintDisplay = (TextView) findViewById(R.id.complaint_question_display);
 
         Bundle bundle = getIntent().getExtras();
         patientID = bundle.getInt("patientID");
         try {
             complaints = new JSONArray(bundle.getString("complaints"));
-            setupQuestions();
+            //Log.d("Number of complaints", ((Integer) complaints.length()).toString());
+            expandableListView = (ExpandableListView) findViewById(R.id.complaint_questions_expandable);
+            setupQuestions(complaintNumber);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        setContentView(R.layout.activity_complaint_questions);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        expandableListView = (ExpandableListView) findViewById(R.id.complaint_questions_expandable);
-
-        listAdapter = new ExpandableListAdapter(this, listQuestions, listOptions);
-        expandableListView.setAdapter(listAdapter);
-        Log.d(LOG_TAG, ((Integer) listQuestions.size()).toString());
-        expandableListView.expandGroup(0);
 
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
@@ -91,7 +80,7 @@ public class ComplaintQuestionsActivity extends AppCompatActivity {
                 listOptionsBool.put(listQuestions.get(groupPosition), workingList);
                 v.setSelected(true);
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(250);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -103,37 +92,82 @@ public class ComplaintQuestionsActivity extends AppCompatActivity {
             }
         });
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        assert fab != null;
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (complaintNumber < complaints.length() - 1) {
+                    complaintNumber++;
+                    try {
+                        setupQuestions(complaintNumber);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         super.onCreate(savedInstanceState);
     }
 
 
-    private void setupQuestions() throws JSONException {
+    private void setupQuestions(int complaintCount) throws JSONException {
         listTitles = new ArrayList<String>();
         listQuestions = new ArrayList<String>();
         listOptions = new HashMap<String, List<String>>();
         listOptionsBool = new HashMap<String, List<Boolean>>();
 
-        for (int i = 0; i < complaints.length(); i++) {
-            JSONObject current = complaints.getJSONObject(i);
-            listTitles.add(current.getString("text"));
-            JSONArray complaintQuestions = current.getJSONArray("options");
-            for (int j = 0; j < complaintQuestions.length(); j++) {
-                JSONObject question = complaintQuestions.getJSONObject(j);
-                listQuestions.add(question.getString("text"));
-                //Log.d(LOG_TAG, question.getString("text"));
-                JSONArray questionOptions = question.optJSONArray("options");
+        JSONObject current = complaints.getJSONObject(complaintCount);
+        listTitles.add(current.getString("text"));
+        //Log.d("Title", current.getString("text"));
+        JSONArray complaintQuestions = current.getJSONArray("options");
+        for (int j = 0; j < complaintQuestions.length(); j++) {
+            JSONObject question = complaintQuestions.getJSONObject(j);
+            listQuestions.add(question.getString("text"));
+            //Log.d("Question", question.getString("text"));
+
+            JSONArray questionOptions = question.optJSONArray("options");
+            String daysFieldConfirmation = question.optString("days-field");
+            String textFieldConfirmation = question.optString("text-field");
+
+            if (questionOptions != null) {
+
                 List<String> workingArray = new ArrayList<>();
                 List<Boolean> workingBoolArray = new ArrayList<>();
+
                 for (int k = 0; k < questionOptions.length(); k++) {
                     JSONObject answerChoice = questionOptions.getJSONObject(k);
                     workingArray.add(answerChoice.getString("text"));
-                    //Log.d(LOG_TAG, answerChoice.getString("text"));
+                    //Log.d("Answer Choices", answerChoice.getString("text"));
                     workingBoolArray.add(false);
-                    //Log.d(LOG_TAG, workingArray.toString());
+                    //Log.d("Answer Choice Array", workingArray.toString());
                 }
                 listOptions.put(listQuestions.get(j), workingArray);
                 listOptionsBool.put(listQuestions.get(j), workingBoolArray);
+            } else if (!daysFieldConfirmation.isEmpty()) {
+
+                List<String> workingArray = new ArrayList<>();
+                List<Boolean> workingBoolArray = new ArrayList<>();
+
+                workingArray.add(getResources().getString(R.string.complaint_days_question));
+                workingBoolArray.add(false);
+                //Log.d("Days Question", workingArray.toString());
+                listOptions.put(listQuestions.get(j), workingArray);
+                listOptionsBool.put(listQuestions.get(j), workingBoolArray);
             }
+
         }
+
+        listAdapter = new ExpandableListAdapter(this, listQuestions, listOptions);
+        expandableListView.setAdapter(listAdapter);
+        expandableListView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
+        expandableListView.expandGroup(0);
+        complaintDisplay.setText(current.getString("text"));
+
     }
 }
+

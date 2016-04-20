@@ -12,11 +12,21 @@
     tools:context="edu.jhu.bme.cbid.healthassistantsclient.ComplaintQuestionsActivity"
     tools:showIn="@layout/activity_complaint_questions">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/complaint_question_display" />
+
+    <Space
+        android:layout_width="20px"
+        android:layout_height="20px" />
 
     <ExpandableListView
         android:id="@+id/complaint_questions_expandable"
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/complaint_question_display"
         android:clickable="true" />
 
 
