@@ -9,11 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".SearchPatientActivity"
-    tools:showIn="@layout/activity_search_patient">
+    tools:context="edu.jhu.bme.cbid.healthassistantsclient.ComplaintQuestionsActivity"
+    tools:showIn="@layout/activity_complaint_questions">
 
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/listview_search" />
 </RelativeLayout>

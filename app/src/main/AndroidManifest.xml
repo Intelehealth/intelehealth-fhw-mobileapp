@@ -14,7 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity" />
-        <activity android:name=".IdentificationActivity" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login">
@@ -52,16 +51,59 @@
             android:label="@string/title_activity_get_patient_history"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".SearchPatient"
+            android:name=".SearchPatientActivity"
             android:label="@string/title_activity_search_patient"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.jhu.bme.cbid.healthassistantsclient.MainActivity" />
+        </activity>
         <activity
-            android:name=".DiagnosticTestsSelection"
+            android:name=".DiagnosticTestsSelectionActivity"
             android:label="@string/title_activity_diagnostic_tests_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <service
             android:name=".IdService"
-            android:exported="false"/>
+            android:exported="false" />
+
+        <activity
+            android:name=".TableExamActivity"
+            android:label="@string/title_activity_table_exam"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <provider
+            android:name=".SearchSuggestionProvider"
+            android:authorities="edu.jhu.bme.cbid.healthassistantsclient.SearchSuggestionProvider" />
+
+        <activity
+            android:name=".IdentificationActivity"
+            android:label="@string/title_activity_identification"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.jhu.bme.cbid.healthassistantsclient.MainActivity" />
+        </activity>
+        <activity
+            android:name=".ComplaintSelectActivity"
+            android:label="@string/title_activity_complaint_select"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ComplaintQuestionsActivity"
+            android:label="@string/title_activity_complaint_questions"
+            android:parentActivityName=".ComplaintSelectActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.jhu.bme.cbid.healthassistantsclient.ComplaintSelectActivity" />
+        </activity>
     </application>
 
 </manifest>

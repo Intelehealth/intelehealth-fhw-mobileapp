@@ -2,40 +2,33 @@
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
     tools:context="edu.jhu.bme.cbid.healthassistantsclient.MainActivity">
 
 
     <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_weight=".5">
 
-        <ImageButton
+        <Button
             android:id="@+id/newPatientButton"
-            android:layout_width="0dp"
-            android:layout_gravity="bottom"
-            android:layout_weight="1"
-            style="?android:attr/borderlessButtonStyle"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:src="@drawable/new_patient_button" />
+            android:layout_width="@dimen/home_screen_button_width"
+            android:layout_height="@dimen/home_screen_button_height"
+            android:layout_gravity="center"
+            android:layout_weight=".5"
+            android:text="@string/button_new_pt" />
 
-        <ImageButton
+        <Button
             android:id="@+id/findPatientsButton"
-            android:layout_width="0dp"
-            android:layout_gravity="bottom"
-            android:layout_weight="1"
+            android:layout_width="@dimen/home_screen_button_width"
+            android:layout_height="@dimen/home_screen_button_height"
+            android:layout_gravity="center"
+            android:layout_weight=".5"
             android:onClick=""
-            style="?android:attr/borderlessButtonStyle"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:src="@drawable/find_patients_button"
-            android:layout_column="11" />
+            android:text="@string/button_find_pt" />
     </TableRow>
 
     <TableRow
@@ -43,25 +36,21 @@
         android:layout_height="wrap_content"
         android:layout_weight=".5">
 
-        <ImageButton
-            android:id="@+id/diagnosticTestsButton"
-            android:layout_width="0dp"
-            android:layout_gravity="top"
-            android:layout_weight="1"
-            style="?android:attr/borderlessButtonStyle"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:src="@drawable/diagnostic_tests_button" />
+        <Button
+            android:id="@+id/diagnosticServicesButton"
+            android:layout_width="@dimen/home_screen_button_width"
+            android:layout_height="@dimen/home_screen_button_height"
+            android:layout_gravity="center"
+            android:layout_weight=".5"
+            android:text="@string/button_diagnostic_tests" />
 
-        <ImageButton
+        <Button
             android:id="@+id/activePatientsButton"
-            android:layout_width="0dp"
-            android:layout_gravity="top"
-            android:layout_weight="1"
-            style="?android:attr/borderlessButtonStyle"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:src="@drawable/active_patients_button" />
+            android:layout_width="@dimen/home_screen_button_width"
+            android:layout_height="@dimen/home_screen_button_height"
+            android:layout_gravity="center"
+            android:layout_weight=".5"
+            android:text="@string/button_active_pt" />
     </TableRow>
 
 </TableLayout>

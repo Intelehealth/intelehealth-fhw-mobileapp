@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteStatement;
 import java.util.ArrayList;
 
 /**
- * @deprecated Replaced by {@link KnowledgeDatabaseHelper} for consistency with Android framework
+ * @deprecated Replaced by {@link LocalRecordsDatabaseHelper} for consistency with Android framework
  * Class to manage input/output with the database.
  */
 @Deprecated public class DatabaseIO {

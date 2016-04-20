@@ -22,7 +22,6 @@ import com.google.gson.GsonBuilder;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -43,7 +42,7 @@ public class IdService extends IntentService {
             (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
 
-    KnowledgeDatabaseHelper mDbHelper = new KnowledgeDatabaseHelper(this);
+    LocalRecordsDatabaseHelper mDbHelper;
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
@@ -57,6 +56,7 @@ public class IdService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         createNotification();
+        mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
 
         try {
             while (!isOnline()) {
@@ -89,6 +89,7 @@ public class IdService extends IntentService {
 
     // TODO: test this code segement
     public String serialize(String dataString) {
+        mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         String[] columnsToReturn = {
@@ -115,11 +116,11 @@ public class IdService extends IntentService {
         String[] args = new String[1];
         args[0] = dataString;
 
-        Cursor patientCursor = db.query("patient", columnsToReturn, selection, args, null, null, null);
+        Cursor patientCursor = db.query("patient", null, selection, args, null, null, null);
 
         Gson gson = new GsonBuilder().serializeNulls().create();
         Patient patient = new Patient();
-        patient.setId(Integer.parseInt(patientCursor.getString(0)));
+        patient.setId(Long.parseLong(patientCursor.getString(0)));
         patient.setFirstName(patientCursor.getString(1));
         patient.setMiddleName(patientCursor.getString(2));
         patient.setLastName(patientCursor.getString(3));
@@ -169,7 +170,7 @@ public class IdService extends IntentService {
     }
 
     public String sendData(String jsonString) {
-        final String serverAddress = "localhost"; // TODO: get string
+        final String serverAddress = "openmrs.amal.io:8443/openmrs/ws/rest/v1/"; // TODO: get string
 
         HttpURLConnection urlConnection;
         DataOutputStream printout;
@@ -187,6 +188,8 @@ public class IdService extends IntentService {
             urlConnection.setUseCaches(false);
             urlConnection.setRequestProperty("Content-Type", "application/json");
             urlConnection.connect();
+
+            if(urlConnection.getResponseCode() != HttpURLConnection.HTTP_OK) return null;
 
             printout = new DataOutputStream(urlConnection.getOutputStream());
             printout.writeBytes(jsonString);

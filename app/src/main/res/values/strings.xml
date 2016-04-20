@@ -2,38 +2,61 @@
     <string name="app_name">Health Assistants\' Client</string>
 
     //Generic
-    <string name="the_flipping_word_next">Next</string>
+    <string name="generic_the_flipping_word_next">Next</string>
+    <string name="hint_required">Required</string>
+    <string name="hint_optional">Optional</string>
+    <string name="tag_optional">optional</string>
+    <string name="generic_ok">OK</string>
 
-    //
-    <string name="title_textview">Health Assistant\'s Client</string>
-    <string name="settings_button">Settings</string>
-    <string name="new_pt_button">New Patient</string>
-    <string name="find_pt_button">Find Patient</string>
-    <string name="diagnostic_tests_button">Diagnostic Tests</string>
-    <string name="active_pt_button">Active Patients</string>
-    <string name="sync_button">Sync Data</string>
-    <string name="end_of_day">End of Day</string>
+    //Database Schema Names
+    <string name="db_first_name">first_name</string>
+    <string name="db_middle_name">middle_name</string>
+    <string name="db_last_name">last_name</string>
+    <string name="db_dob">date_of_birth</string>
+    <string name="db_phone_number">phone_number</string>
+    <string name="db_address_line1">address1</string>
+    <string name="db_address_line2">address2</string>
+    <string name="db_city">city_village</string>
+    <string name="db_state">state_province</string>
+    <string name="db_postal_code">postal_code</string>
+    <string name="db_country">country</string>
+    <string name="db_gender">gender</string>
+    <string name="db_patient_id1">patient_identifier1</string>
+    <string name="db_patient_id2">patient_identifier2</string>
+    <string name="db_patient_id3">patient_identifier3</string>
 
-    //Demographics
-    <string name="first_name_hint">First Name</string>
-    <string name="last_name_hint">Last Name</string>
-    <string name="address_hint">Address</string>
-    <string name="phone_number_hint">Phone Number</string>
-    <string name="male_checkbox">Male</string>
-    <string name="female_checkbox">Female</string>
-    <string name="birthday_hint">Date of Birth</string>
-    <string name="relationship_hint">Son/Daughter/Wife of ...</string>
-    <string name="occupation_hint">Occupation</string>
 
-    //Chief Complaint 1
-    <string name="complaint_category_question">What category is the complaint under?</string>
+    //Home Screen (after login)
+    <string name="title_home_screen">Health Assistant\'s Client</string>
+    <string name="button_new_pt">New Patient</string>
+    <string name="button_find_pt">Find Patient</string>
+    <string name="button_diagnostic_tests">Diagnostic Tests</string>
+    <string name="button_active_pt">Active Patients</string>
+    <string name="menu_option_sync">Sync Data</string>
+    <string name="menu_option_settings">Settings</string>
+    <string name="menu_option_end_of_day">End of Day</string>
 
-    //CC 2
-    <string name="category_statement">The CATEGORY of complaint is: </string>
-    <string name="complaint_question">What is the complaint under this category?</string>
-
-    //CC 3
-    <string name="complaint_category_specifics">Here are the questions associated with: </string>
+    //Identification Screen
+    <string name="title_activity_identification">Add New Patient</string>
+    <string name="prompt_first_name">First Name</string>
+    <string name="prompt_middle_name">Middle Name</string>
+    <string name="prompt_last_name">Last Name</string>
+    <string name="prompt_address">Address</string>
+    <string name="prompt_address2">Address Line 2</string>
+    <string name="prompt_phone_number">Phone Number</string>
+    <string name="prompt_gender">Gender</string>
+    <string name="checkbox_male">Male</string>
+    <string name="checkbox_female">Female</string>
+    <string name="prompt_birthday">Date of Birth</string>
+    <string name="prompt_age">Age</string>
+    <string name="prompt_city">City</string>
+    <string name="prompt_state">State</string>
+    <string name="prompt_country">Country</string>
+    <string name="prompt_postal_code">Postal Code</string>
+    <string name="prompt_relationship">Son/Daughter/Wife of</string>
+    <string name="prompt_occupation">Occupation</string>
+    <string name="snack_patient_created">Patient created! Uploading to server.</string>
+    <string name="error_data_fields">Error: data fields are not formatted correctly</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -55,6 +78,12 @@
     <string name="title_activity_active_patient">ActivePatientActivity</string>
     <string name="title_activity_patient_detail">PatientDetailActivity</string>
     <string name="title_activity_patient_summary">PatientSummaryActivity</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_get_patient_history">GetPatientHistoryActivity</string>
+    <string name="title_activity_search_patient">Patient Lookup</string>
+    <string name="title_activity_diagnostic_tests_list">DiagnosticTestsList</string>
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
@@ -144,11 +173,31 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_get_patient_history">GetPatientHistoryActivity</string>
-    <string name="title_activity_search_patient">SearchPatient</string>
-    <string name="title_activity_diagnostic_tests_list">DiagnosticTestsList</string>
+    <string name="title_activity_table_exam">Table Exam</string>
 
-    //
+
+    <string name="complaint_category_selected">Selected Categories:</string>
+    <string name="complaint_complaint_selected">Selected Complaints:</string>
+    <string name="complaint_dialog_title">Complaints</string>
+    <string name="complaint_required">Complaint must be selected!</string>
+
+
+    <!-- Table exam strings -->
+    <string name="table_hw">Body Measurements</string>
+    <string name="table_height">Height</string>
+    <string name="table_weight">Weight</string>
+    <string name="table_bmi">BMI</string>
+    <string name="table_pulse">Pulse</string>
+    <string name="table_bp">Blood Pressure/Pulse</string>
+    <string name="table_bpsys">Systolic Pressure</string>
+    <string name="table_bpdia">Diastolic Pressure</string>
+    <string name="table_r">Other Readings</string>
+    <string name="table_temp">Temperature</string>
+    <string name="table_spo2">SpO2</string>
+
+    <string name="search_hint">Type to search…</string>
+    <string name="action_search">Search</string>
+    <string name="title_activity_complaint_select">Select Complaints</string>
+    <string name="title_activity_complaint_questions">ComplaintQuestionsActivity</string>
 
 </resources>

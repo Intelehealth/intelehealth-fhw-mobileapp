@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="edu.jhu.bme.cbid.healthassistantsclient.IdentificationActivity">
+    tools:context="edu.jhu.bme.cbid.healthassistantsclient.ComplaintSelectActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_identification" />
+    <include layout="@layout/content_complaint_select" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

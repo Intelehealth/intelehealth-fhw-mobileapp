@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="edu.jhu.bme.cbid.healthassistantsclient.IdentificationActivity">
+    android:id="@+id/cl_table"
+    tools:context="edu.jhu.bme.cbid.healthassistantsclient.TableExamActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -21,7 +22,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_identification" />
+    <include layout="@layout/content_table_exam" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
