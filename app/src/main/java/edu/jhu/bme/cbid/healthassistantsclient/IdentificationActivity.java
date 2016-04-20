@@ -1,5 +1,6 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
+import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,13 +14,16 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
 
@@ -33,6 +37,7 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mMiddleName;
     EditText mLastName;
     EditText mDOB;
+    TextView mDOBTitle;
     EditText mPhoneNum;
     EditText mAge;
     EditText mAddress1;
@@ -46,6 +51,7 @@ public class IdentificationActivity extends AppCompatActivity {
     String mGender;
     EditText mRelationship;
     EditText mOccupation;
+    DatePickerDialog mDOBPicker;
 
     private InsertPatientTable mTask = null;
     LocalRecordsDatabaseHelper mDbHelper;
@@ -63,6 +69,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mFirstName = (EditText) findViewById(R.id.identification_first_name);
         mMiddleName = (EditText) findViewById(R.id.identification_middle_name);
         mLastName = (EditText) findViewById(R.id.identification_last_name);
+        mDOBTitle = (TextView) findViewById(R.id.identification_birth_date_text_view);
         mDOB = (EditText) findViewById(R.id.identification_birth_date);
         mPhoneNum = (EditText) findViewById(R.id.identification_phone_number);
         mAge = (EditText) findViewById(R.id.identification_age);
@@ -77,6 +84,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mRelationship = (EditText) findViewById(R.id.identification_relationship);
         mOccupation = (EditText) findViewById(R.id.identification_occupation);
 
+
         mGenderF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,6 +98,31 @@ public class IdentificationActivity extends AppCompatActivity {
                 onRadioButtonClicked(v);
             }
         });
+
+        Calendar calendar = Calendar.getInstance();
+        mDOBPicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                mDOB.setText(new StringBuilder().append(monthOfYear + 1)
+                        .append("-").append(dayOfMonth).append("-").append(year)
+                        .append(" "));
+            }
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+
+        mDOB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDOBPicker.show();
+            }
+        });
+
+        mDOBTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDOBPicker.show();
+            }
+        });
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -122,11 +155,13 @@ public class IdentificationActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
+        //TODO: check if gender is checked
+        //TODO: check if date was selected for DOB
+
         ArrayList<EditText> values = new ArrayList<>();
         values.add(mFirstName);
         values.add(mMiddleName);
         values.add(mLastName);
-        values.add(mDOB);
         values.add(mPhoneNum);
         values.add(mAddress1);
         values.add(mAddress2);
@@ -244,12 +279,18 @@ public class IdentificationActivity extends AppCompatActivity {
         protected void onPostExecute(Boolean aBoolean) {
 
             super.onPostExecute(aBoolean);
-            Intent intent = new Intent(IdentificationActivity.this, IdService.class);
-            intent.putExtra(Intent.EXTRA_TEXT, patient.getId().toString());
-            intent.setType("type/plain");
-            startService(intent);
+
+//            Intent intent = new Intent(IdentificationActivity.this, IdService.class);
+//            intent.putExtra(Intent.EXTRA_TEXT, patient.getId().toString());
+//            intent.setType("type/plain");
+//            startService(intent);
+
+
+            Intent intent2 = new Intent(IdentificationActivity.this, ComplaintSelectActivity.class);
+            intent2.putExtra(Intent.EXTRA_TEXT, patient.getId().toString());
+            intent2.setType("type/plain");
+            startActivity(intent2);
         }
     }
-
 }
 

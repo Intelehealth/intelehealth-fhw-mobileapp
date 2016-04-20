@@ -11,11 +11,6 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Home screen with the four buttons
-    // TODO: write code lol
-
-    // ANDROID UI METHODS
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,10 +49,6 @@ public class MainActivity extends AppCompatActivity {
                 searchActivePatients();
             }
         });
-
-
-        // Old DatabaseIO system
-        // DatabaseIO localDb = new DatabaseIO(openOrCreateDatabase("localDb", MODE_PRIVATE, null));
 
         // The INSERT and UPDATE/DELETE commands require SQL statements to be passed as parameters
         // TODO: Use SQL statements from schema
