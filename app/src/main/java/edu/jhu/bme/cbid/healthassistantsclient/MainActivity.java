@@ -10,7 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
 
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        Button newPtButton = (Button) findViewById(R.id.newPatientButton);
+        ImageButton newPtButton = (ImageButton) findViewById(R.id.newPatientButton);
         newPtButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        Button findPatientButton = (Button) findViewById(R.id.findPatientsButton);
+        ImageButton findPatientButton = (ImageButton) findViewById(R.id.findPatientsButton);
         findPatientButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button diagnosticServicesButton = (Button) findViewById(R.id.diagnosticServicesButton);
+        ImageButton diagnosticServicesButton = (ImageButton) findViewById(R.id.diagnosticTestsButton);
         findPatientButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button activePatientsButton = (Button) findViewById(R.id.activePatientsButton);
+        ImageButton activePatientsButton = (ImageButton) findViewById(R.id.activePatientsButton);
         activePatientsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
