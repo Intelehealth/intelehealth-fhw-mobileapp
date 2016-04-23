@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import edu.jhu.bme.cbid.healthassistantsclient.objects.KnowledgeNode;
+
 public class ComplaintSelectActivity extends AppCompatActivity {
 
     Integer patientID = null;
@@ -36,6 +38,7 @@ public class ComplaintSelectActivity extends AppCompatActivity {
     JSONObject knowledge;
     JSONArray arrayCategories;
     JSONArray complaints;
+    KnowledgeNode nodes;
 
 
     @Override
@@ -52,6 +55,7 @@ public class ComplaintSelectActivity extends AppCompatActivity {
         try {
             gatherKnowledge();
             //TODO: Add argument to allow for different knowledge "styles"
+            nodify();
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -89,6 +93,7 @@ public class ComplaintSelectActivity extends AppCompatActivity {
         });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,6 +105,23 @@ public class ComplaintSelectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
     }
 
+    private void nodify() throws JSONException {
+        String raw_json = null;
+
+        try {
+            InputStream is = getAssets().open("generic.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            raw_json = new String(buffer, "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        nodes = new KnowledgeNode(new JSONObject(raw_json));
+
+    }
 
     private void gatherKnowledge() throws JSONException {
 
