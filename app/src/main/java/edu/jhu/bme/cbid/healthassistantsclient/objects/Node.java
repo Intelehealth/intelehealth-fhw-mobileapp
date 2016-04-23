@@ -20,13 +20,13 @@ public class Node {
     private String physicalExams;
     private List<Node> optionsList;
     private String associatedComplaint;
-    private List associatedComplaints;
+    //private List associatedComplaints; //To be implemented only when
     private String jobAidFile;
     private String jobAidType;
 
     private boolean complaint;
     private boolean terminal;
-    private boolean hasAssocations;
+    private boolean hasAssociations;
     private boolean aidAvailable;
 
     public Node(JSONObject jsonNode) {
@@ -95,9 +95,9 @@ public class Node {
              */
             this.associatedComplaint = jsonNode.optString("associated-complaint");
             if (!associatedComplaint.isEmpty()) {
-                this.hasAssocations = false;
+                this.hasAssociations = false;
             } else {
-                this.hasAssocations = true;
+                this.hasAssociations = true;
             }
 
         } catch (JSONException e) {
@@ -145,8 +145,27 @@ public class Node {
     }
 
     public boolean hasAssociations() {
-        return hasAssocations;
+        return hasAssociations;
     }
 
+    public boolean isAidAvailable() {
+        return aidAvailable;
+    }
+
+    public String getExams() {
+        return physicalExams;
+    }
+
+    public List<Node> getOptionsList() {
+        return optionsList;
+    }
+
+    public String getJobAidFile() {
+        return jobAidFile;
+    }
+
+    private String getJobAidType() {
+        return jobAidType;
+    }
 
 }
