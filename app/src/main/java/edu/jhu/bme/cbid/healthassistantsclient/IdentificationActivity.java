@@ -69,7 +69,6 @@ public class IdentificationActivity extends AppCompatActivity {
         mFirstName = (EditText) findViewById(R.id.identification_first_name);
         mMiddleName = (EditText) findViewById(R.id.identification_middle_name);
         mLastName = (EditText) findViewById(R.id.identification_last_name);
-        mDOBTitle = (TextView) findViewById(R.id.identification_birth_date_text_view);
         mDOB = (TextView) findViewById(R.id.identification_birth_date_text_view);
         mPhoneNum = (EditText) findViewById(R.id.identification_phone_number);
         mAge = (EditText) findViewById(R.id.identification_age);
@@ -116,15 +115,8 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
 
-        mDOBTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDOBPicker.show();
-            }
-        });
-
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
