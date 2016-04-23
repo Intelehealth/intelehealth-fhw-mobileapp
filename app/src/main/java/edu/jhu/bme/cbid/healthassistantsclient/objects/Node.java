@@ -148,6 +148,10 @@ public class Node {
         return hasAssociations;
     }
 
+    public String getAssociatedComplaint() {
+        return associatedComplaint;
+    }
+
     public boolean isAidAvailable() {
         return aidAvailable;
     }
