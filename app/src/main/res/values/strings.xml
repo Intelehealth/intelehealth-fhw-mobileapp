@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Health Assistants\' Client</string>
+    <string name="app_name">Intelecare Client</string>
 
     //Generic
     <string name="generic_the_flipping_word_next">Next</string>
@@ -60,7 +60,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_login">Intelecare</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Username</string>
@@ -76,8 +76,8 @@
     </string>
     <string name="device_id">Device ID: </string>
     <string name="title_activity_active_patient">ActivePatientActivity</string>
-    <string name="title_activity_patient_detail">PatientDetailActivity</string>
-    <string name="title_activity_patient_summary">PatientSummaryActivity</string>
+    <string name="title_activity_patient_detail">Patient Detail</string>
+    <string name="title_activity_patient_summary">Visit Summary</string>
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_get_patient_history">GetPatientHistoryActivity</string>

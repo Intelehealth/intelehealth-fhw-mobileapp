@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 import android.support.design.widget.FloatingActionButton;
@@ -17,14 +16,18 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class SearchPatientActivity extends AppCompatActivity {
 
     LocalRecordsDatabaseHelper mDbHelper;
+    SearchCursorAdapter mSearchAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mDbHelper = new LocalRecordsDatabaseHelper(this);
@@ -83,19 +86,51 @@ public class SearchPatientActivity extends AppCompatActivity {
         String[] args = new String[1];
         args[0] = String.format("%s", query);
         String order = "last_name ASC";
-        Cursor searchCursor = db.query(table, columns, selection, args, null, null, order);
+        final Cursor searchCursor = db.query(table, columns, selection, args, null, null, order);
         // Find ListView to populate
         ListView lvItems = (ListView) findViewById(R.id.listview_search);
 
         try {
             // Setup cursor adapter and attach cursor adapter to the ListView
-            SearchCursorAdapter searchAdapter = new SearchCursorAdapter(this, searchCursor, 0);
-            if (searchAdapter.getCount() < 1) {
+            mSearchAdapter = new SearchCursorAdapter(this, searchCursor, 0);
+            if (mSearchAdapter.getCount() < 1) {
                 noneFound(lvItems);
-            } else {
-                lvItems.setAdapter(searchAdapter);
+            } else if (searchCursor.moveToFirst()){
+                lvItems.setAdapter(mSearchAdapter);
+                lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                        // Toast
+                        // Toast toast = Toast.makeText(getActivity(), mAdapter.getItem(position), Toast.LENGTH_SHORT);
+                        // toast.show();
+
+                        if(searchCursor.moveToPosition(position)) {
+                            String fName = searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name"));
+                            String mName = searchCursor.getString(searchCursor.getColumnIndexOrThrow("middle_name"));
+                            char mInitial = '\0';
+                            if (mName != null) mInitial = mName.charAt(0);
+                            String lName = searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name"));
+                            String dob = searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth"));
+                            int age = HelperMethods.getAge(dob);
+
+
+                            ArrayList<String> patientInfo = new ArrayList<String>();
+
+                            patientInfo.add(lName);
+                            patientInfo.add(fName);
+                            patientInfo.add(mInitial + "");
+                            patientInfo.add(dob);
+                            patientInfo.add(age + "");
+
+                            Intent patientIntent = new Intent(SearchPatientActivity.this, PatientDetailActivity.class);
+                            patientIntent.putStringArrayListExtra("patientInfo", patientInfo);
+                            startActivity(patientIntent);
+                        }
+                    }
+                });
             }
-            lvItems.setAdapter(searchAdapter);
+
+
         } catch (Exception e) {
             noneFound(lvItems);
             Log.e("Search Activity", "Exception", e);

@@ -102,9 +102,8 @@ public class IdentificationActivity extends AppCompatActivity {
         mDOBPicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                mDOB.setText(new StringBuilder().append(monthOfYear + 1)
-                        .append("-").append(dayOfMonth).append("-").append(year)
-                        .append(" "));
+                mDOB.setText(new StringBuilder().append(year).append("-").append(monthOfYear + 1)
+                        .append("-").append(dayOfMonth));
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
