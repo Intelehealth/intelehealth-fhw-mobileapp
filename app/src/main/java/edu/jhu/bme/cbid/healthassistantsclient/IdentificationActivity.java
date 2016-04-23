@@ -36,7 +36,7 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mFirstName;
     EditText mMiddleName;
     EditText mLastName;
-    EditText mDOB;
+    TextView mDOB;
     TextView mDOBTitle;
     EditText mPhoneNum;
     EditText mAge;
@@ -70,7 +70,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mMiddleName = (EditText) findViewById(R.id.identification_middle_name);
         mLastName = (EditText) findViewById(R.id.identification_last_name);
         mDOBTitle = (TextView) findViewById(R.id.identification_birth_date_text_view);
-        mDOB = (EditText) findViewById(R.id.identification_birth_date);
+        mDOB = (TextView) findViewById(R.id.identification_birth_date_text_view);
         mPhoneNum = (EditText) findViewById(R.id.identification_phone_number);
         mAge = (EditText) findViewById(R.id.identification_age);
         mAddress1 = (EditText) findViewById(R.id.identification_address1);
