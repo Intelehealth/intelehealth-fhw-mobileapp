@@ -7,10 +7,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,8 +20,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import edu.jhu.bme.cbid.healthassistantsclient.objects.KnowledgeNode;
+
 public class ComplaintSelectActivity extends AppCompatActivity {
 
+    Integer patientID = null;
 
     ExpandableListAdapter listAdapter;
     ExpandableListView expandableListView;
@@ -34,13 +35,18 @@ public class ComplaintSelectActivity extends AppCompatActivity {
     ArrayList<String> categoryList;
     ArrayList<String> complaintList;
 
-    String categoryChosen;
-    String complaintChosen;
+    JSONObject knowledge;
+    JSONArray arrayCategories;
+    JSONArray complaints;
+    KnowledgeNode nodes;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
+        //Bundle bundle = getIntent().getExtras();
+        //patientID = bundle.getInt("patientID");
+
         setContentView(R.layout.activity_complaint_select);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -49,31 +55,35 @@ public class ComplaintSelectActivity extends AppCompatActivity {
         try {
             gatherKnowledge();
             //TODO: Add argument to allow for different knowledge "styles"
+            nodify();
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
         //TODO: Add setting to change where knowledge is located
 
+        //Log.d("knowledge", listLevelTwo.toString());
+
 
         listAdapter = new ExpandableListAdapter(this, listLevelOne, listLevelTwo);
         expandableListView.setAdapter(listAdapter);
         expandableListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
 
+        //Check what's selected, and change the checked symbol accordingly
+//        for (int i = 0; i < listLevelOne.size(); i++){
+//            List<Boolean> workingList = listLevelTwoBool.get(listLevelOne.get(i));
+//            for (int j = 0; j < workingList.size(); j++) {
+//                if (workingList.get(j)){
+//
+//                }
+//            }
+//        }
+
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                Log.d("Category", Integer.toString(groupPosition));
-                Log.d("Complaint", Integer.toString(childPosition));
-                String selection = listLevelOne.get(groupPosition);
-                List<String> complaintSelection = listLevelTwo.get(selection);
-                String message2 = complaintSelection.get(childPosition);
-                String message = "Category: " + selection + " - Complaint: " + message2;
-                Toast.makeText(ComplaintSelectActivity.this, message, Toast.LENGTH_SHORT).show();
-
                 List<Boolean> workingList = listLevelTwoBool.get(listLevelOne.get(groupPosition));
                 workingList.set(childPosition, !workingList.get(childPosition));
-                listLevelTwoBool.remove(listLevelOne.get(groupPosition));
                 listLevelTwoBool.put(listLevelOne.get(groupPosition), workingList);
 
                 v.setSelected(true);
@@ -83,14 +93,35 @@ public class ComplaintSelectActivity extends AppCompatActivity {
         });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectedComplaint();
             }
         });
+
+
+        super.onCreate(savedInstanceState);
     }
 
+    private void nodify() throws JSONException {
+        String raw_json = null;
+
+        try {
+            InputStream is = getAssets().open("generic.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            raw_json = new String(buffer, "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        nodes = new KnowledgeNode(new JSONObject(raw_json));
+
+    }
 
     private void gatherKnowledge() throws JSONException {
 
@@ -100,7 +131,7 @@ public class ComplaintSelectActivity extends AppCompatActivity {
         String raw_json = null;
 
         try {
-            InputStream is = getAssets().open("proto2.json");
+            InputStream is = getAssets().open("generic.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -111,12 +142,13 @@ public class ComplaintSelectActivity extends AppCompatActivity {
         }
 
         try {
-            JSONObject knowledge = new JSONObject(raw_json);
-            JSONArray array_categories = knowledge.getJSONArray("options");
-            for (int i = 0; i < array_categories.length(); i++) {
-                JSONObject category = array_categories.getJSONObject(i);
+            knowledge = new JSONObject(raw_json);
+            arrayCategories = knowledge.getJSONArray("options");
+            for (int i = 0; i < arrayCategories.length(); i++) {
+                JSONObject category = arrayCategories.getJSONObject(i);
                 String category_name = category.getString("text");
                 listLevelOne.add(category_name);
+                //Log.d("Current Category", category_name);
                 JSONArray array_complaints = category.getJSONArray("options");
                 List<String> workingArray = new ArrayList<String>();
                 List<Boolean> workingBoolArray = new ArrayList<Boolean>();
@@ -124,9 +156,12 @@ public class ComplaintSelectActivity extends AppCompatActivity {
                     JSONObject complaint = array_complaints.getJSONObject(j);
                     String complaint_name = complaint.getString("text");
                     workingArray.add(complaint_name);
+                    //Log.d("Current Complaint", complaint_name);
                     workingBoolArray.add(false);
                 }
+                //Log.d("working Array", workingArray.toString());
                 listLevelTwo.put(listLevelOne.get(i), workingArray);
+                //Log.d("list level two", listLevelTwo.toString());
                 listLevelTwoBool.put(listLevelOne.get(i), workingBoolArray);
             }
         } catch (JSONException e) {
@@ -172,12 +207,27 @@ public class ComplaintSelectActivity extends AppCompatActivity {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setTitle(R.string.complaint_dialog_title);
             alertDialogBuilder.setMessage(complaintList.toString());
-            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
+                    try {
+                        gatherComplaints();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     Intent intent = new Intent(ComplaintSelectActivity.this, ComplaintQuestionsActivity.class);
+                    intent.putExtra("patientID", patientID);
+                    intent.putExtra("complaints", complaints.toString());
+                    //Log.d("complaints", listLevelTwo.toString());
+                    //Log.d("selected complaints", listLevelTwoBool.toString());
                     startActivity(intent);
+                }
+            });
+            alertDialogBuilder.setNegativeButton(getResources().getString(R.string.complaint_change_selected), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
                 }
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
@@ -186,5 +236,26 @@ public class ComplaintSelectActivity extends AppCompatActivity {
         }
     }
 
+    private void gatherComplaints() throws JSONException {
+        complaints = new JSONArray();
+        //Log.d("Function", "gather complaints called");
+        for (int i = 0; i < listLevelTwoBool.size(); i++) {
+            List<Boolean> current = listLevelTwoBool.get(listLevelOne.get(i));
+            //Log.d("current", current.toString());
+            if (current.contains(true)) {
+                JSONObject category = arrayCategories.getJSONObject(i);
+                //Log.d("category", category.toString());
+                JSONArray categoryOptions = category.getJSONArray("options");
+                //Log.d("category options", categoryOptions.toString());
+                for (int j = 0; j < current.size(); j++) {
+                    if (current.get(j)) {
+                        //Log.d("Complaint?", categoryOptions.getJSONObject(j).toString());
+                        complaints.put(categoryOptions.getJSONObject(j));
+                        //Log.d("complaint", "put successfully");
+                    }
+                }
+            }
+        }
+    }
 
 }

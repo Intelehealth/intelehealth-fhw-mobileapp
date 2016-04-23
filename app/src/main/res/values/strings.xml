@@ -82,7 +82,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_get_patient_history">GetPatientHistoryActivity</string>
     <string name="title_activity_search_patient">Patient Lookup</string>
-    <string name="title_activity_diagnostic_tests_list">DiagnosticTestsList</string>
+    <string name="title_activity_diagnostic_tests_list">Choose a Diagnostic Test</string>
 
     <string name="large_text">
         "Material is the metaphor.\n\n"
@@ -175,11 +175,15 @@
     </string>
     <string name="title_activity_table_exam">Table Exam</string>
 
-
+    <!-- Complaint Select -->
     <string name="complaint_category_selected">Selected Categories:</string>
     <string name="complaint_complaint_selected">Selected Complaints:</string>
     <string name="complaint_dialog_title">Complaints</string>
     <string name="complaint_required">Complaint must be selected!</string>
+
+    <!-- Complaint Questionnaire -->
+    <string name="complaint_change_selected">Modify</string>
+    <string name="complaint_days_question">Enter the number of days</string>
 
 
     <!-- Table exam strings -->
@@ -198,6 +202,6 @@
     <string name="search_hint">Type to search…</string>
     <string name="action_search">Search</string>
     <string name="title_activity_complaint_select">Select Complaints</string>
-    <string name="title_activity_complaint_questions">ComplaintQuestionsActivity</string>
+    <string name="title_activity_complaint_questions">Answer All Questions</string>
 
 </resources>
