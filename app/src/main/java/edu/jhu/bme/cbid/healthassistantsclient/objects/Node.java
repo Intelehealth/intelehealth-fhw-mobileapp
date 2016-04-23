@@ -1,7 +1,5 @@
 package edu.jhu.bme.cbid.healthassistantsclient.objects;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,7 +11,7 @@ import java.util.List;
  * Created by Amal Afroz Alam on 21, April, 2016.
  * Contact me: contact@amal.io
  */
-public class KnowledgeNode {
+public class Node {
 
     private String id;
     private String text;
@@ -21,28 +19,18 @@ public class KnowledgeNode {
     private String inputType;
     private String physicalExams;
     private boolean terminal;
-    private List<KnowledgeNode> optionsList;
+    private List<Node> optionsList;
     private List associations;
 
-    public KnowledgeNode() {
-        this.id = null;
-        this.text = null;
-    }
-
-    public KnowledgeNode(JSONObject jsonNode) {
+    public Node(JSONObject jsonNode) {
         try {
             this.id = jsonNode.getString("id");
-            Log.d("Starting ID", id.toString());
             this.text = jsonNode.getString("text");
-            Log.d("Parent Node", text.toString());
             JSONArray optionsArray = jsonNode.optJSONArray("options");
-            //Log.d("options", jsonArray.toString());
 
             if (optionsArray == null) {
                 this.terminal = true;
-                Log.d("Options are", "NULL");
             } else {
-                Log.d("IF STATEMENT", "IM IN THIS SHIT");
                 this.terminal = false;
                 this.optionsList = createOptions(optionsArray);
             }
@@ -54,13 +42,13 @@ public class KnowledgeNode {
 
     }
 
-    private List<KnowledgeNode> createOptions(JSONArray jsonArray) {
-        List<KnowledgeNode> createdOptions = new ArrayList<KnowledgeNode>();
+    private List<Node> createOptions(JSONArray jsonArray) {
+        List<Node> createdOptions = new ArrayList<Node>();
 
         try {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject current = jsonArray.getJSONObject(i);
-                createdOptions.add(i, new KnowledgeNode(current));
+                createdOptions.add(i, new Node(current));
             }
         } catch (JSONException e) {
             e.printStackTrace();

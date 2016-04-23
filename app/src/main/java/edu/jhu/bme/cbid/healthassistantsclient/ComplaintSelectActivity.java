@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import edu.jhu.bme.cbid.healthassistantsclient.objects.KnowledgeNode;
+import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
 
 public class ComplaintSelectActivity extends AppCompatActivity {
 
@@ -38,7 +38,7 @@ public class ComplaintSelectActivity extends AppCompatActivity {
     JSONObject knowledge;
     JSONArray arrayCategories;
     JSONArray complaints;
-    KnowledgeNode nodes;
+    Node nodes;
 
 
     @Override
@@ -119,7 +119,7 @@ public class ComplaintSelectActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        nodes = new KnowledgeNode(new JSONObject(raw_json));
+        nodes = new Node(new JSONObject(raw_json));
 
     }
 
