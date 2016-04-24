@@ -1,5 +1,12 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
+import android.content.Context;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Calendar;
 
 /**
@@ -28,6 +35,31 @@ public class HelperMethods {
         }
 
         return age;
+    }
+
+    public static JSONObject encodeJSON(Context context, String fileName) {
+        String raw_json = null;
+        JSONObject encoded = null;
+        try {
+            InputStream is = context.getAssets().open(fileName);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            raw_json = new String(buffer, "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+
+            encoded = new JSONObject(raw_json);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return encoded;
+
     }
 
 

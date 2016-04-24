@@ -28,6 +28,10 @@ public class Node {
     private boolean terminal;
     private boolean hasAssociations;
     private boolean aidAvailable;
+    private boolean selected;
+
+    public Node() {
+    }
 
     public Node(JSONObject jsonNode) {
         try {
@@ -100,6 +104,8 @@ public class Node {
                 this.hasAssociations = true;
             }
 
+            this.selected = false;
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -144,6 +150,10 @@ public class Node {
         return id;
     }
 
+    public int size() {
+        return optionsList.size();
+    }
+
     public boolean hasAssociations() {
         return hasAssociations;
     }
@@ -164,12 +174,24 @@ public class Node {
         return optionsList;
     }
 
+    public Node getOption(int i) {
+        return optionsList.get(i);
+    }
+
     public String getJobAidFile() {
         return jobAidFile;
     }
 
-    private String getJobAidType() {
+    public String getJobAidType() {
         return jobAidType;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void toggleSelected() {
+        selected = !selected;
     }
 
 }

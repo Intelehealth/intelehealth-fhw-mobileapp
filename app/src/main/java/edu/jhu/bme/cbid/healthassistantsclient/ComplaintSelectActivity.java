@@ -51,7 +51,7 @@ public class ComplaintSelectActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        expandableListView = (ExpandableListView) findViewById(R.id.complaint_expandable_list_view);
+        expandableListView = (ExpandableListView) findViewById(R.id.complaint_expandable_list_view2);
         try {
             gatherKnowledge();
             //TODO: Add argument to allow for different knowledge "styles"

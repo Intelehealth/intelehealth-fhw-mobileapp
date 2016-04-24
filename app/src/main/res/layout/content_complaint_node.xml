@@ -9,11 +9,11 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="edu.jhu.bme.cbid.healthassistantsclient.ComplaintSelectActivity"
-    tools:showIn="@layout/activity_complaint_select">
+    tools:context="edu.jhu.bme.cbid.healthassistantsclient.ComplaintNodeActivity"
+    tools:showIn="@layout/activity_complaint_node">
 
     <ExpandableListView
-        android:id="@+id/complaint_expandable_list_view2"
+        android:id="@+id/complaint_expandable_list_view"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:clickable="true" />
