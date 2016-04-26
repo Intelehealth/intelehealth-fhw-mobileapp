@@ -8,13 +8,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:id="@+id/dialog_duration_quantity"></NumberPicker>
+        android:id="@+id/dialog_2_numbers_quantity">
+
+    </NumberPicker>
+
+    <TextView
+        android:id="@+id/dialog_2_numbers_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight=".25" />
 
     <NumberPicker
         android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/dialog_duration_unit">
+        android:id="@+id/dialog_2_numbers_unit">
 
     </NumberPicker>
+
 </LinearLayout>

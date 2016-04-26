@@ -1,25 +1,16 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
-import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.NumberPicker;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -107,7 +98,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
                 }
                 if (!question.isTerminal()) {
-                    displayNextLevel(question);
+                    //TODO: nth level parsing of nodes
                 }
 
                 //nextQuestion(groupPosition);
@@ -158,147 +149,30 @@ public class QuestionNodeActivity extends AppCompatActivity {
         String type = questionNode.type();
         switch (type) {
             case "text":
-                askText(questionNode);
+                HelperMethods.askText(questionNode, this);
                 break;
             case "date":
-                askDate(questionNode);
+                HelperMethods.askDate(questionNode, this);
                 break;
             case "location":
-                askLocation(questionNode);
+                HelperMethods.askLocation(questionNode, this);
                 break;
             case "number":
-                askNumber(questionNode);
+                HelperMethods.askNumber(questionNode, this);
                 break;
             case "area":
-                askArea(questionNode);
+                HelperMethods.askArea(questionNode, this);
                 break;
             case "duration":
-                askDuration(questionNode);
+                HelperMethods.askDuration(questionNode, this);
                 break;
             case "range":
-                askRange(questionNode);
+                HelperMethods.askRange(questionNode, this);
                 break;
             case "frequency":
-                askFrequency(questionNode);
+                HelperMethods.askFrequency(questionNode, this);
                 break;
         }
-    }
-
-    private void displayNextLevel(Node node) {
-
-    }
-
-    private void askText(final Node node) {
-        final AlertDialog.Builder textInput = new AlertDialog.Builder(QuestionNodeActivity.this);
-        textInput.setTitle(R.string.question_text_input);
-        final EditText dialogEditText = new EditText(this);
-        dialogEditText.setInputType(InputType.TYPE_CLASS_TEXT);
-        textInput.setView(dialogEditText);
-        textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                node.addLanguage(dialogEditText.getText().toString());
-                node.changeText(node.language());
-            }
-        });
-        textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        textInput.show();
-    }
-
-    private void askDate(final Node node) {
-
-        final AlertDialog.Builder textInput = new AlertDialog.Builder(QuestionNodeActivity.this);
-        textInput.setTitle(R.string.question_date_picker);
-        //DatePicker datePicker = new DatePicker()
-
-
-        Calendar calendar = Calendar.getInstance();
-        DatePickerDialog datePickerDialog = new DatePickerDialog(QuestionNodeActivity.this,
-                android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        Calendar cal = Calendar.getInstance();
-                        cal.setTimeInMillis(0);
-                        cal.set(year, monthOfYear, dayOfMonth);
-                        Date date = cal.getTime();
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", getResources().getConfiguration().locale);
-                        String dateString = simpleDateFormat.format(date);
-                        node.addLanguage(dateString);
-                        node.changeText(node.language());
-                        //TODO:: Check if the language is actually what is intended to be displayed
-                    }
-                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-    }
-
-    private void askLocation(final Node node) {
-
-        final AlertDialog.Builder textInput = new AlertDialog.Builder(QuestionNodeActivity.this);
-        textInput.setTitle(R.string.question_text_input);
-    }
-
-    private void askNumber(final Node node) {
-
-        final AlertDialog.Builder textInput = new AlertDialog.Builder(QuestionNodeActivity.this);
-        textInput.setTitle(R.string.question_text_input);
-    }
-
-    private void askArea(final Node node) {
-
-        final AlertDialog.Builder textInput = new AlertDialog.Builder(QuestionNodeActivity.this);
-        textInput.setTitle(R.string.question_text_input);
-    }
-
-    private void askDuration(final Node node) {
-        final AlertDialog.Builder durationPicker = new AlertDialog.Builder(QuestionNodeActivity.this);
-        durationPicker.setTitle(R.string.question_duration_picker);
-        final LayoutInflater inflater = getLayoutInflater();
-        View convertView = inflater.inflate(R.layout.dialog_duration_picker, null);
-        durationPicker.setView(convertView);
-        final NumberPicker quantityPicker = (NumberPicker) convertView.findViewById(R.id.dialog_duration_quantity);
-        final NumberPicker unitPicker = (NumberPicker) convertView.findViewById(R.id.dialog_duration_unit);
-        final String[] units = new String[]{"Hours", "Days", "Weeks", "Months", "Years"};
-        unitPicker.setDisplayedValues(units);
-        quantityPicker.setMinValue(0);
-        quantityPicker.setMaxValue(24);
-        unitPicker.setMinValue(0);
-        unitPicker.setMaxValue(4);
-        durationPicker.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                quantityPicker.setValue(quantityPicker.getValue());
-                unitPicker.setValue(unitPicker.getValue());
-                String durationString = String.valueOf(quantityPicker.getValue()) + " " + units[unitPicker.getValue()];
-                node.addLanguage(" " + durationString);
-                node.changeText(durationString);
-                node.setSelected();
-                dialog.dismiss();
-            }
-        });
-        durationPicker.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        durationPicker.show();
-    }
-
-    private void askRange(final Node node) {
-
-        final AlertDialog.Builder textInput = new AlertDialog.Builder(QuestionNodeActivity.this);
-        textInput.setTitle(R.string.question_text_input);
-    }
-
-    private void askFrequency(final Node node) {
-
-        final AlertDialog.Builder textInput = new AlertDialog.Builder(QuestionNodeActivity.this);
-        textInput.setTitle(R.string.question_text_input);
     }
 
 }

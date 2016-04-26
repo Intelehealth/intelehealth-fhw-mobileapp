@@ -190,7 +190,7 @@
     <string name="question_date_picker">Please select date</string>
     <string name="question_location_picker">Please select locations</string>
     <string name="question_number_picker">Please enter number</string>
-    <string name="question_area_picker">Please enter the area</string>
+    <string name="question_area_picker">Please enter the area (width X length)</string>
     <string name="question_range_picker">Please enter a range</string>
     <string name="question_frequency_picker">Please enter how many times</string>
 
