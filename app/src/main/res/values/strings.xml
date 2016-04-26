@@ -6,7 +6,8 @@
     <string name="hint_required">Required</string>
     <string name="hint_optional">Optional</string>
     <string name="tag_optional">optional</string>
-    <string name="generic_ok">OK</string>
+    <string name="generic_ok">Okay</string>
+    <string name="generic_cancel">Cancel</string>
 
     //Database Schema Names
     <string name="db_first_name">first_name</string>
@@ -175,15 +176,23 @@
     </string>
     <string name="title_activity_table_exam">Table Exam</string>
 
-    <!-- Complaint Select -->
+    <!-- Complaint Node Strings -->
     <string name="complaint_category_selected">Selected Categories:</string>
     <string name="complaint_complaint_selected">Selected Complaints:</string>
     <string name="complaint_dialog_title">Complaints</string>
     <string name="complaint_required">Complaint must be selected!</string>
 
-    <!-- Complaint Questionnaire -->
+    <!-- Question Node Strings -->
     <string name="complaint_change_selected">Modify</string>
-    <string name="complaint_days_question">Enter the number of days</string>
+    <string name="question_answer_all">Please answer all questions!</string>
+    <string name="question_duration_picker">Please enter duration</string>
+    <string name="question_text_input">Please enter text</string>
+    <string name="question_date_picker">Please select date</string>
+    <string name="question_location_picker">Please select locations</string>
+    <string name="question_number_picker">Please enter number</string>
+    <string name="question_area_picker">Please enter the area</string>
+    <string name="question_range_picker">Please enter a range</string>
+    <string name="question_frequency_picker">Please enter how many times</string>
 
 
     <!-- Table exam strings -->

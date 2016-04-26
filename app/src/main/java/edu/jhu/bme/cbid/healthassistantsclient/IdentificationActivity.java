@@ -271,7 +271,7 @@ public class IdentificationActivity extends AppCompatActivity {
         protected void onPostExecute(Boolean aBoolean) {
 
             super.onPostExecute(aBoolean);
-            Intent intent2 = new Intent(IdentificationActivity.this, ComplaintSelectActivity.class);
+            Intent intent2 = new Intent(IdentificationActivity.this, ComplaintNodeActivity.class);
             intent2.putExtra("patientID", patient.getId());
             startActivity(intent2);
         }

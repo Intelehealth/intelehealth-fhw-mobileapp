@@ -29,6 +29,7 @@ public class Node {
     private boolean hasAssociations;
     private boolean aidAvailable;
     private boolean selected;
+    private boolean subSelected;
 
     public Node() {
     }
@@ -62,6 +63,7 @@ public class Node {
              * Almost all nodes have a language attribute which becomes the displayed text to the user.
              */
             this.language = jsonNode.optString("language");
+            this.language = jsonNode.optString("display");
 
             /**
              * There are various input types available to each node.
@@ -142,6 +144,10 @@ public class Node {
         return language;
     }
 
+    public void addLanguage(String newText) {
+        language = language + newText;
+    }
+
     public String text() {
         return text;
     }
@@ -190,8 +196,30 @@ public class Node {
         return selected;
     }
 
+    public void setUnselected() {
+        selected = false;
+    }
+
     public void toggleSelected() {
         selected = !selected;
+    }
+
+    public void setSelected() {
+        selected = true;
+    }
+
+    public boolean anySubSelected() {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).isSelected()) {
+                subSelected = true;
+                break;
+            }
+        }
+        return subSelected;
+    }
+
+    public void changeText(String newText) {
+        this.text = newText;
     }
 
 }
