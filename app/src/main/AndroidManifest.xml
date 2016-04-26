@@ -106,7 +106,12 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.jhu.bme.cbid.healthassistantsclient.IdentificationActivity" />
+                android:value="edu.jhu.bme.cbid.healthassistantsclient.ComplaintSelectActivity" />
+        </activity>
+        <!--
+ ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         </activity>
         <activity
             android:name=".QuestionNodeActivity"
