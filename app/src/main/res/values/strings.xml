@@ -203,5 +203,14 @@
     <string name="action_search">Search</string>
     <string name="title_activity_complaint_select">Select Complaints</string>
     <string name="title_activity_complaint_questions">Answer All Questions</string>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
+
+    <!-- Patient Detail -->
+    <string name="header_patient_detail">Basic Information</string>
+    <string name="header_last_five">Recent Visits</string>
+    <string name="header_contact">Address and Contact</string>
+    <string name="button_history">Patient History</string>
+    <string name="button_meds">Medications</string>
+
 
 </resources>

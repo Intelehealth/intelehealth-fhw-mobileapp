@@ -1,6 +1,7 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,9 +14,7 @@ import java.util.ArrayList;
 
 public class PatientDetailActivity extends AppCompatActivity {
 
-    private ArrayList<String> mPatientInfo;
-    private String mPatientName;
-    private String mPatientDob;
+    LocalRecordsDatabaseHelper mDbHelper;
 
 
     @Override
@@ -39,22 +38,71 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null && intent.getStringArrayListExtra("patientInfo") != null) {
-            this.mPatientInfo = intent.getStringArrayListExtra("patientInfo");
-            this.mPatientName = this.mPatientInfo.get(0) + ", " + this.mPatientInfo.get(1)
-                    + " " + this.mPatientInfo.get(2);
-            this.mPatientDob = "Date of Birth: "  + this.mPatientInfo.get(3) + " (Age "
-                    + this.mPatientInfo.get(4) + ")";
+            ArrayList<String> mPatientInfo = intent.getStringArrayListExtra("patientInfo");
+            String mPatientName = mPatientInfo.get(0) + ", " + mPatientInfo.get(1)
+                    + " " + mPatientInfo.get(2);
+            String mPatientDob = "Date of Birth: " + mPatientInfo.get(3) + " (Age "
+                    + mPatientInfo.get(4) + ")";
+            String mAddress = mPatientInfo.get(5);
+            String mCityState = mPatientInfo.get(6);
+            String mPhone = "Phone Number: " + mPatientInfo.get(7);
+            String mSdw = "Son/Daughter/Wife of " + mPatientInfo.get(8);
+            String mOccupation = "Occupation: " + mPatientInfo.get(9);
 
-            TextView textViewName = (TextView) findViewById(R.id.textview_patient_info_name);
-            textViewName.setText(this.mPatientName);
+            //TextView textViewName = (TextView) findViewById(R.id.textview_patient_details);
+            //textViewName.setText(this.mPatientName);
 
-            TextView textViewDob = (TextView) findViewById(R.id.textview_patient_info_dob);
-            textViewDob.setText(this.mPatientDob);
+            getSupportActionBar().setTitle(mPatientName);
+
+            TextView textViewDob = (TextView) findViewById(R.id.textview_patient_info_age);
+            textViewDob.setText(mPatientDob);
+
+            TextView textViewSdw = (TextView) findViewById(R.id.textView_sdw);
+            textViewSdw.setText(mSdw);
+
+            TextView textViewOcc = (TextView) findViewById(R.id.textview_occup);
+            textViewOcc.setText(mOccupation);
+
+            TextView textViewAddr = (TextView) findViewById(R.id.textView_addr1);
+            textViewAddr.setText(mAddress);
+
+            TextView textViewCityState = (TextView) findViewById(R.id.textView_addr2);
+            textViewCityState.setText(mCityState);
+
+            TextView textViewPhone = (TextView) findViewById(R.id.textView_phone);
+            textViewPhone.setText(mPhone);
+
+            UpdatePatientTask upd = new UpdatePatientTask();
+            upd.execute(mPatientInfo.get(10));
+        }
+    }
+
+    protected class UpdatePatientTask extends AsyncTask<String, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Snackbar.make(findViewById(R.id.clayout_detail), "Refreshing patient data", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
         }
 
-        // TODO: Access LocalDB and retrieve any available information
-        // TODO: Update the image with the picture of the patient as stored on the filesystem
-        // TODO: Connect to OpenMRS via the Middleware API and get more info on the Patient
+        @Override
+        public Void doInBackground(String... params) {
+            String patientId = params[0];
+            queryExtraInfo(patientId);
+            loadImage(patientId);
+
+            return null;
+        }
+
+        public void queryExtraInfo(String id) {
+            // TODO: Connect to OpenMRS via the Middleware API and get more info on the Patient
+        }
+
+        public void loadImage(String id) {
+            // TODO: Update the image with the picture of the patient as stored on the filesystem
+        }
+
     }
 
 }

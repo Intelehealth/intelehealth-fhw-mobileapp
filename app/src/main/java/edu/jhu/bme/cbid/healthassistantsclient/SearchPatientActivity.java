@@ -19,7 +19,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -81,7 +80,9 @@ public class SearchPatientActivity extends AppCompatActivity {
     public void doQuery(String query) {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         String table = "patient";
-        String[] columns = {"_id", "first_name", "middle_name", "last_name", "date_of_birth", "gender"};
+        String[] columns = {"_id", "first_name", "middle_name", "last_name",
+                "date_of_birth", "address1", "address2", "city_village", "state_province",
+                "postal_code", "phone_number", "patient_identifier1", "patient_identifier2"};
         String selection = "patient MATCH ?";
         String[] args = new String[1];
         args[0] = String.format("%s", query);
@@ -113,6 +114,18 @@ public class SearchPatientActivity extends AppCompatActivity {
                             String dob = searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth"));
                             int age = HelperMethods.getAge(dob);
 
+                            String addr1 = searchCursor.getString(searchCursor.getColumnIndexOrThrow("address1"));
+                            String addr2 = searchCursor.getString(searchCursor.getColumnIndexOrThrow("address2"));
+                            if(addr2 != null) addr1 = addr1 + " " + addr2;
+                            String cityVillage = searchCursor.getString(searchCursor.getColumnIndexOrThrow("city_village"));
+                            String stateProvince = searchCursor.getString(searchCursor.getColumnIndexOrThrow("state_province"));
+                            String postal = searchCursor.getString(searchCursor.getColumnIndexOrThrow("postal_code"));
+                            String phoneNumber = searchCursor.getString(searchCursor.getColumnIndexOrThrow("phone_number"));
+
+                            String sdw = searchCursor.getString(searchCursor.getColumnIndexOrThrow("patient_identifier1"));
+                            String occupation = searchCursor.getString(searchCursor.getColumnIndexOrThrow("patient_identifier2"));
+
+                            String patientIdCol = searchCursor.getString(searchCursor.getColumnIndexOrThrow("_id"));
 
                             ArrayList<String> patientInfo = new ArrayList<String>();
 
@@ -121,6 +134,15 @@ public class SearchPatientActivity extends AppCompatActivity {
                             patientInfo.add(mInitial + "");
                             patientInfo.add(dob);
                             patientInfo.add(age + "");
+                            patientInfo.add(addr1);
+                            patientInfo.add(cityVillage + ", " + stateProvince + " " + postal);
+                            patientInfo.add(phoneNumber);
+                            patientInfo.add(sdw);
+                            patientInfo.add(occupation);
+                            patientInfo.add(patientIdCol);
+
+
+
 
                             Intent patientIntent = new Intent(SearchPatientActivity.this, PatientDetailActivity.class);
                             patientIntent.putStringArrayListExtra("patientInfo", patientInfo);
