@@ -204,5 +204,6 @@
     <string name="title_activity_complaint_select">Select Complaints</string>
     <string name="title_activity_complaint_questions">Answer All Questions</string>
     <string name="title_activity_complaint_node">ComplaintNodeActivity</string>
+    <string name="title_activity_question_node">QuestionNodeActivity</string>
 
 </resources>

@@ -57,11 +57,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.item_complaint, null);
+            convertView = infalInflater.inflate(R.layout.list_expandable_item, null);
         }
 
         TextView txtListChild = (TextView) convertView
-                .findViewById(R.id.complaint_item);
+                .findViewById(R.id.expandable_list_item);
 
         txtListChild.setText(childText);
         txtListChild.setSelected(false);
@@ -98,10 +98,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.group_complaint, null);
+            convertView = infalInflater.inflate(R.layout.list_expandable_group, null);
         }
 
-        TextView lblListHeader = (TextView) convertView.findViewById(R.id.complaint_group);
+        TextView lblListHeader = (TextView) convertView.findViewById(R.id.expandable_list_group);
 
 
         lblListHeader.setTypeface(null, Typeface.BOLD);

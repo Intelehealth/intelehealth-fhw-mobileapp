@@ -171,7 +171,7 @@ public class ComplaintSelectActivity extends AppCompatActivity {
 
     private void selectedComplaint() {
 
-        Integer counter = 0;
+        int counter = 0;
 
         categoryList = new ArrayList<String>();
         complaintList = new ArrayList<String>();

@@ -121,6 +121,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.jhu.bme.cbid.healthassistantsclient.IdentificationActivity" />
         </activity>
+        <activity
+            android:name=".QuestionNodeActivity"
+            android:label="@string/title_activity_question_node"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

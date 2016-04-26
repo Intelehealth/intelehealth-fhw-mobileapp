@@ -13,6 +13,7 @@ public class Knowledge extends Node {
 
     private String LOG_TAG = "Knowledge Class";
     private List<Node> mComplaints;
+    private int selectedCounter = 0;
 
     public Knowledge(JSONObject jsonObject) {
         super(jsonObject);
@@ -41,14 +42,31 @@ public class Knowledge extends Node {
 
     public Node getComplaint(String title) {
         Node foundComplaint = null;
-
         for (int i = 0; i < mComplaints.size(); i++) {
-            if (mComplaints.get(i).text() == title) {
+            if (mComplaints.get(i).text().equals(title)) {
                 foundComplaint = mComplaints.get(i);
             }
         }
         return foundComplaint;
     }
 
+    public void storeSelectedComplaint(String title) {
+        for (int i = 0; i < mComplaints.size(); i++) {
+            if (mComplaints.get(i).text() == title) {
+                mComplaints.get(i).toggleSelected();
+            }
+        }
+    }
+
+
+    public ArrayList<String> getSelectedComplaints() {
+        ArrayList<String> selectedComplaints = new ArrayList<>();
+        for (int i = 0; i < mComplaints.size(); i++) {
+            if (mComplaints.get(i).isSelected()) {
+                selectedComplaints.add(mComplaints.get(i).text());
+            }
+        }
+        return selectedComplaints;
+    }
 
 }

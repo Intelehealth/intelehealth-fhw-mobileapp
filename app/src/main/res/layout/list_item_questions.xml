@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/complaint_item"
+        android:id="@+id/complaint_question_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight=".8"
@@ -20,7 +20,8 @@
         android:layout_gravity="end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/complaint_item_image"
-        android:src="@drawable/grey_check" />
+        android:paddingTop="@dimen/padding_complaint_select"
+        android:paddingBottom="@dimen/padding_complaint_select"
+        android:id="@+id/expandable_list_group_image" />
 
 </LinearLayout>

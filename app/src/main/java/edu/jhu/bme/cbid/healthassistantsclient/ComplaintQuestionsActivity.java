@@ -59,7 +59,7 @@ public class ComplaintQuestionsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        complaintDisplay = (TextView) findViewById(R.id.complaint_question_display);
+        complaintDisplay = (TextView) findViewById(R.id.complaint_question_display_OLD);
 
         Bundle bundle = getIntent().getExtras();
         patientID = bundle.getInt("patientID");

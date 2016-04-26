@@ -4,9 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <TextView
-        android:id="@+id/complaint_group"
+        android:id="@+id/complaint_question_group"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/padding_complaint_select"
@@ -14,5 +13,10 @@
         android:textSize="@dimen/text_size_category"
         android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft" />
 
+    <ImageView
+        android:layout_gravity="end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/expandable_list_group_image" />
 
 </LinearLayout>
