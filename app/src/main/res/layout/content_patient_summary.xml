@@ -6,12 +6,392 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="edu.jhu.bme.cbid.healthassistantsclient.PatientSummaryActivity"
-    tools:showIn="@layout/activity_patient_summary">
+    tools:showIn="@layout/activity_patient_summary"
+    android:background="@color/background_gray">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:text="@string/large_text" />
+    <!--Split the screen into two columns of cards-->
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/padding_visit_summary_screen"
+        android:paddingRight="@dimen/padding_visit_summary_screen"
+        android:orientation="horizontal">
+        <!-- Emphasis is placed on the column on the right by attributing more weight to it -->
+        <!--Left column holds diagnostic information collected by HA-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/padding_visit_summary_screen"
+            android:paddingRight="@dimen/padding_visit_summary_screen"
+            android:orientation="vertical"
+            android:layout_weight="1.4">
+
+
+            <!-- Vitals Card contains a TableView-->
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/visit_summary_vitals"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_card"
+                android:layout_marginBottom="@dimen/padding_card"
+                card_view:contentPadding="@dimen/padding_card"
+                card_view:cardCornerRadius="@dimen/card_corner_radius"
+                card_view:cardElevation="2dp"
+                card_view:cardUseCompatPadding="true">
+
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TableRow>
+                        <TextView
+                            android:id="@+id/visit_summary_vitals_heading"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingTop="@dimen/padding_card_title_text"
+                            android:textSize="@dimen/card_title_text_size"
+                            android:text="Vitals"/>
+                    </TableRow>
+                    <TableRow>
+                        <TextView
+                            android:id ="@+id/info_text4"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingTop="@dimen/padding_card"
+                            android:textSize="@dimen/card_content_text_size"
+                            android:layout_weight="1"
+                            android:text="Height"/>
+
+                        <TextView
+                            android:id="@+id/info_text2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingTop="@dimen/padding_card"
+                            android:textSize="@dimen/card_content_text_size"
+                            android:layout_weight="1"
+                            android:text="123" />
+                        <TextView
+                            android:id ="@+id/info_text5"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingTop="@dimen/padding_card"
+                            android:textSize="@dimen/card_content_text_size"
+                            android:layout_weight="1"
+                            android:text="cm"/>
+                    </TableRow>
+
+                    <TableRow>
+                        <TextView
+                            android:id ="@+id/info_text6"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:textSize="@dimen/card_content_text_size"
+                            android:layout_weight="1"
+                            android:text="Weight"/>
+
+                        <TextView
+                            android:id="@+id/info_text7"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:textSize="@dimen/card_content_text_size"
+                            android:layout_weight="1"
+                            android:text="123" />
+                        <TextView
+                            android:id ="@+id/info_text8"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:textSize="@dimen/card_content_text_size"
+                            android:layout_weight="1"
+                            android:text="kg"/>
+                    </TableRow>
+
+                </TableLayout>
+            </android.support.v7.widget.CardView>
+
+            <!--C/O Card contains text-->
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/visit_summary_complaint"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_card"
+                android:layout_marginBottom="@dimen/padding_card"
+                card_view:contentPadding="@dimen/padding_card"
+                card_view:cardCornerRadius="@dimen/card_corner_radius"
+                card_view:cardElevation="2dp"
+                card_view:cardUseCompatPadding="true">
+
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:orientation="vertical">
+                <TextView
+                    android:id="@+id/visit_summary_complaint_heading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:textSize="@dimen/card_title_text_size"
+                    android:text="C/O"/>
+                <TextView
+                    android:id="@+id/visit_summary_complaint_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/padding_card"
+                    android:textSize="@dimen/card_content_text_size"
+                    android:text="Blah blah blah"/>
+             </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <!--Physical Exam Card contains text-->
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/visit_summary_physexam"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_card"
+                android:layout_marginBottom="@dimen/padding_card"
+                card_view:contentPadding="@dimen/padding_card"
+                card_view:cardCornerRadius="@dimen/card_corner_radius"
+                card_view:cardElevation="2dp"
+                card_view:cardUseCompatPadding="true">
+
+                <TextView
+                    android:id="@+id/visit_summary_physexam_heading"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:textSize="@dimen/card_title_text_size"
+                    android:text="On Examination"/>
+            </android.support.v7.widget.CardView>
+
+            <!--Family History Card contains text-->
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/visit_summary_famhist"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_card"
+                android:layout_marginBottom="@dimen/padding_card"
+                card_view:contentPadding="@dimen/padding_card"
+                card_view:cardCornerRadius="@dimen/card_corner_radius"
+                card_view:cardElevation="2dp"
+                card_view:cardUseCompatPadding="true">
+
+                <TextView
+                    android:id="@+id/visit_summary_famhist_heading"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:textSize="@dimen/card_title_text_size"
+                    android:text="Family History"/>
+            </android.support.v7.widget.CardView>
+
+            <!--Patient History Card contains text-->
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/visit_summary_pathist"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_card"
+                android:layout_marginBottom="@dimen/padding_card"
+                card_view:contentPadding="@dimen/padding_card"
+                card_view:cardCornerRadius="@dimen/card_corner_radius"
+                card_view:cardElevation="2dp"
+                card_view:cardUseCompatPadding="true">
+
+                <TextView
+                    android:id="@+id/visit_summary_pathist_heading"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:textSize="@dimen/card_title_text_size"
+                    android:text="Medical History"/>
+            </android.support.v7.widget.CardView>
+
+            <!--Previous Reports Card contains a list of links to image files of the previous reports-->
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/visit_summary_prevreports"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_card"
+                android:layout_marginBottom="@dimen/padding_card"
+                card_view:contentPadding="@dimen/padding_card"
+                card_view:cardCornerRadius="@dimen/card_corner_radius"
+                card_view:cardElevation="2dp"
+                card_view:cardUseCompatPadding="true">
+
+                <TextView
+                    android:id="@+id/visit_summary_prevreports_heading"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:textSize="@dimen/card_title_text_size"
+                    android:text="Previous Reports"/>
+            </android.support.v7.widget.CardView>
+
+            <!--HA details Card contains text-->
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/visit_summary_hadetails"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_card"
+                android:layout_marginBottom="@dimen/padding_card"
+                card_view:contentPadding="@dimen/padding_card"
+                card_view:cardCornerRadius="@dimen/card_corner_radius"
+                card_view:cardElevation="2dp"
+                card_view:cardUseCompatPadding="true">
+
+                <TextView
+                    android:id="@+id/visit_summary_hadetails_heading"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:textSize="@dimen/card_title_text_size"
+                    android:text="Health Assistant"/>
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+        <!--Right column contains treatment related information from the doctor-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <!--Diagnosis Card contains diagnoses in a tabular format-->
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/visit_summary_diagnosis"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_card"
+                android:layout_marginBottom="@dimen/padding_card"
+                card_view:contentPadding="@dimen/padding_card"
+                card_view:cardCornerRadius="@dimen/card_corner_radius"
+                card_view:cardElevation="2dp"
+                card_view:cardUseCompatPadding="true">
+
+                <TextView
+                    android:id="@+id/visit_summary_diagnosis_heading"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:textSize="@dimen/card_title_text_size"
+                    android:text="Diagnosis"/>
+            </android.support.v7.widget.CardView>
+
+            <!--Medications Card contains medications in a tabular format-->
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/visit_summary_medications"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_card"
+                android:layout_marginBottom="@dimen/padding_card"
+                card_view:contentPadding="@dimen/padding_card"
+                card_view:cardCornerRadius="@dimen/card_corner_radius"
+                card_view:cardElevation="2dp"
+                card_view:cardUseCompatPadding="true">
+
+                <TextView
+                    android:id="@+id/visit_summary_medications_heading"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:textSize="@dimen/card_title_text_size"
+                    android:text="Medications"/>
+            </android.support.v7.widget.CardView>
+
+            <!--Tests/Investigations Card contains a list of tests/investigations-->
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/visit_summary_tests"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_card"
+                android:layout_marginBottom="@dimen/padding_card"
+                card_view:contentPadding="@dimen/padding_card"
+                card_view:cardCornerRadius="@dimen/card_corner_radius"
+                card_view:cardElevation="2dp"
+                card_view:cardUseCompatPadding="true">
+
+                <TextView
+                    android:id="@+id/visit_summary_tests_heading"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:textSize="@dimen/card_title_text_size"
+                    android:text="Tests/Investigations"/>
+            </android.support.v7.widget.CardView>
+
+            <!--Advice/Referral Card contains a list of advice/referral notes-->
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/visit_summary_advice"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_card"
+                android:layout_marginBottom="@dimen/padding_card"
+                card_view:contentPadding="@dimen/padding_card"
+                card_view:cardCornerRadius="@dimen/card_corner_radius"
+                card_view:cardElevation="2dp"
+                card_view:cardUseCompatPadding="true">
+
+                <TextView
+                    android:id="@+id/visit_summary_advice_heading"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:textSize="@dimen/card_title_text_size"
+                    android:text="Advice/Referral"/>
+            </android.support.v7.widget.CardView>
+
+            <!--Doctor details Card contains text-->
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/visit_summary_drdetails"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_card"
+                android:layout_marginBottom="@dimen/padding_card"
+                card_view:contentPadding="@dimen/padding_card"
+                card_view:cardCornerRadius="@dimen/card_corner_radius"
+                card_view:cardElevation="2dp"
+                card_view:cardUseCompatPadding="true">
+
+                <TextView
+                    android:id="@+id/visit_summary_drdetails_heading"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:textSize="@dimen/card_title_text_size"
+                    android:text="Doctor"/>
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+    </LinearLayout>
+
+
 
 </android.support.v4.widget.NestedScrollView>
