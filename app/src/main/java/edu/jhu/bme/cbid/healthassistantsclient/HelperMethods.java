@@ -1,6 +1,8 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
-import java.util.Calendar;
+import org.joda.time.LocalDate;
+import org.joda.time.Period;
+import org.joda.time.PeriodType;
 
 /**
  * Created by tusharjois on 3/22/16.
@@ -16,18 +18,11 @@ public class HelperMethods {
         int month = Integer.parseInt(components[1]);
         int day = Integer.parseInt(components[2]);
 
-        Calendar dob = Calendar.getInstance();
-        Calendar today = Calendar.getInstance();
+        LocalDate birthdate = new LocalDate (year, month, day);          //Birth date
+        LocalDate now = new LocalDate();                    //Today's date
+        Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
 
-        dob.set(year, month, day);
-
-        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
-
-        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)){
-            age--;
-        }
-
-        return age;
+        return period.getYears();
     }
 
 
