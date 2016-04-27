@@ -96,7 +96,7 @@ public class SearchPatientActivity extends AppCompatActivity {
             mSearchAdapter = new SearchCursorAdapter(this, searchCursor, 0);
             if (mSearchAdapter.getCount() < 1) {
                 noneFound(lvItems);
-            } else if (searchCursor.moveToFirst()){
+            } else if (searchCursor.moveToFirst()) {
                 lvItems.setAdapter(mSearchAdapter);
                 lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
@@ -105,7 +105,7 @@ public class SearchPatientActivity extends AppCompatActivity {
                         // Toast toast = Toast.makeText(getActivity(), mAdapter.getItem(position), Toast.LENGTH_SHORT);
                         // toast.show();
 
-                        if(searchCursor.moveToPosition(position)) {
+                        if (searchCursor.moveToPosition(position)) {
                             String fName = searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name"));
                             String mName = searchCursor.getString(searchCursor.getColumnIndexOrThrow("middle_name"));
                             char mInitial = '\0';
@@ -116,7 +116,7 @@ public class SearchPatientActivity extends AppCompatActivity {
 
                             String addr1 = searchCursor.getString(searchCursor.getColumnIndexOrThrow("address1"));
                             String addr2 = searchCursor.getString(searchCursor.getColumnIndexOrThrow("address2"));
-                            if(addr2 != null) addr1 = addr1 + " " + addr2;
+                            if (addr2 != null) addr1 = addr1 + " " + addr2;
                             String cityVillage = searchCursor.getString(searchCursor.getColumnIndexOrThrow("city_village"));
                             String stateProvince = searchCursor.getString(searchCursor.getColumnIndexOrThrow("state_province"));
                             String postal = searchCursor.getString(searchCursor.getColumnIndexOrThrow("postal_code"));
@@ -140,8 +140,6 @@ public class SearchPatientActivity extends AppCompatActivity {
                             patientInfo.add(sdw);
                             patientInfo.add(occupation);
                             patientInfo.add(patientIdCol);
-
-
 
 
                             Intent patientIntent = new Intent(SearchPatientActivity.this, PatientDetailActivity.class);

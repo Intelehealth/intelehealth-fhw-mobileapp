@@ -110,7 +110,6 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     dialog.dismiss();
                     Intent intent = new Intent(ComplaintNodeActivity.this, QuestionNodeActivity.class);
                     intent.putExtra("patientID", patientID);
-                    Bundle bundle = new Bundle();
                     intent.putStringArrayListExtra("complaints", selection);
                     startActivity(intent);
                 }

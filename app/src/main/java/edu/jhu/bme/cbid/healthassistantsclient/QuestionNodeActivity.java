@@ -1,16 +1,18 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -30,10 +32,9 @@ public class QuestionNodeActivity extends AppCompatActivity {
     HashMap<String, String> complaintDetails;
     ArrayList<String> complaints;
     List<Node> complaintsNodes;
+    ArrayList<String> physicalExams;
     Node currentNode;
     NodeAdapter adapter;
-
-    String specialString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,8 @@ public class QuestionNodeActivity extends AppCompatActivity {
 //        complaints = bundle.getStringArrayList("complaints");
 
         complaints = new ArrayList<>();
+        complaintDetails = new HashMap<>();
+        physicalExams = new ArrayList<>();
         complaints.add("Difficulty in Breathing");
 
         mKnowledge = new Knowledge(HelperMethods.encodeJSON(this, mFileName));
@@ -69,11 +72,28 @@ public class QuestionNodeActivity extends AppCompatActivity {
                         break;
                     }
                 }
-                if (complaintNumber < complaints.size() - 1) {
 
-                    //TODO: Build the string for this specific complaint before moving onto the next one
+                ArrayList<String> selectedAssociations = currentNode.getSelectedAssociations();
+                for (int i = 0; i < selectedAssociations.size(); i++) {
+                    if (!complaints.contains(selectedAssociations.get(i))) {
+                        complaints.add(selectedAssociations.get(i));
+                        complaintsNodes.add(mKnowledge.getComplaint(selectedAssociations.get(i)));
+                    }
+                }
+
+                String complaintString = currentNode.generateLanguage();
+                String complaint = currentNode.text();
+                complaintDetails.put(complaint, complaintString);
+                physicalExams.addAll(parseExams(currentNode));
+
+                if (complaintNumber < complaints.size() - 1) {
                     complaintNumber++;
                     setupQuestions(complaintNumber);
+                } else {
+                    Intent intent = new Intent(QuestionNodeActivity.this, PatientMedicalHistory.class);
+                    intent.putExtra("patientID", patientID);
+                    intent.putStringArrayListExtra("exams", physicalExams);
+                    startActivity(intent);
                 }
             }
         });
@@ -83,7 +103,6 @@ public class QuestionNodeActivity extends AppCompatActivity {
         questionListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                Log.d(LOG_TAG, currentNode.getOption(groupPosition).getOption(childPosition).language());
                 currentNode.getOption(groupPosition).getOption(childPosition).toggleSelected();
                 if (currentNode.getOption(groupPosition).anySubSelected()) {
                     currentNode.getOption(groupPosition).setSelected();
@@ -97,16 +116,34 @@ public class QuestionNodeActivity extends AppCompatActivity {
                     handleQuestion(question);
                     adapter.notifyDataSetChanged();
                 }
+
                 if (!question.isTerminal()) {
                     //TODO: nth level parsing of nodes
+                    adapter.notifyDataSetChanged();
                 }
 
-                //nextQuestion(groupPosition);
+                adapter.notifyDataSetChanged();
                 return false;
 
             }
         });
 
+        questionListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (groupPosition != 0) {
+                    questionListView.collapseGroup(groupPosition - 1);
+                }
+            }
+        });
+
+        questionListView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                return false;
+            }
+        });
 
     }
 
@@ -133,46 +170,41 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
     }
 
-    private void nextQuestion(int groupPosition) {
-        if (groupPosition < adapter.getGroupCount() - 1) {
-            questionListView.collapseGroup(groupPosition);
-            try {
-                Thread.sleep(250);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            questionListView.expandGroup(groupPosition + 1);
-        }
-    }
-
     private void handleQuestion(Node questionNode) {
         String type = questionNode.type();
         switch (type) {
             case "text":
-                HelperMethods.askText(questionNode, this);
+                HelperMethods.askText(questionNode, this, adapter);
                 break;
             case "date":
-                HelperMethods.askDate(questionNode, this);
+                HelperMethods.askDate(questionNode, this, adapter);
                 break;
             case "location":
-                HelperMethods.askLocation(questionNode, this);
+                HelperMethods.askLocation(questionNode, this, adapter);
                 break;
             case "number":
-                HelperMethods.askNumber(questionNode, this);
+                HelperMethods.askNumber(questionNode, this, adapter);
                 break;
             case "area":
-                HelperMethods.askArea(questionNode, this);
+                HelperMethods.askArea(questionNode, this, adapter);
                 break;
             case "duration":
-                HelperMethods.askDuration(questionNode, this);
+                HelperMethods.askDuration(questionNode, this, adapter);
                 break;
             case "range":
-                HelperMethods.askRange(questionNode, this);
+                HelperMethods.askRange(questionNode, this, adapter);
                 break;
             case "frequency":
-                HelperMethods.askFrequency(questionNode, this);
+                HelperMethods.askFrequency(questionNode, this, adapter);
                 break;
         }
     }
 
+    private ArrayList<String> parseExams(Node node) {
+        ArrayList<String> examList = new ArrayList<>();
+        String rawExams = node.getExams();
+        String[] splitExams = rawExams.split(";");
+        examList.addAll(Arrays.asList(splitExams));
+        return examList;
+    }
 }

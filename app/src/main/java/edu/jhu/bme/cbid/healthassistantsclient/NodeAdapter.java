@@ -84,7 +84,7 @@ public class NodeAdapter extends BaseExpandableListAdapter {
 
         Node node = (Node) getGroup(groupPosition);
 
-        TextView textView = (TextView) convertView.findViewById(R.id.expandable_list_group);
+        final TextView textView = (TextView) convertView.findViewById(R.id.expandable_list_group);
         ImageView imageView = (ImageView) convertView.findViewById(R.id.expandable_list_group_image);
 
         textView.setText(node.text());
@@ -92,12 +92,12 @@ public class NodeAdapter extends BaseExpandableListAdapter {
 
         switch (callingClass) {
             case "QuestionNodeActivity":
-                if (node.isSelected()) {
+                if (node.isSelected() | node.anySubSelected()) {
                     imageView.setImageResource(R.drawable.green_check);
-                    textView.setBackgroundResource(R.color.colorAccent);
+                    //textView.setBackgroundResource(R.color.colorAccent);
                 } else {
                     imageView.setImageResource(R.drawable.grey_check);
-                    textView.setBackgroundResource(0);
+                    //textView.setBackgroundResource(0);
                 }
                 break;
             default:
@@ -113,8 +113,8 @@ public class NodeAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.list_expandable_item, null);
         }
-        Node node = (Node) getChild(groupPosition, childPosition);
-        TextView textView = (TextView) convertView.findViewById(R.id.expandable_list_item);
+        final Node node = (Node) getChild(groupPosition, childPosition);
+        final TextView textView = (TextView) convertView.findViewById(R.id.expandable_list_item);
         textView.setText(node.text());
 
         ImageView imageView = (ImageView) convertView.findViewById(R.id.expandable_list_item_image);
@@ -131,14 +131,15 @@ public class NodeAdapter extends BaseExpandableListAdapter {
             case "QuestionNodeActivity":
                 if (node.isSelected()) {
                     imageView.setImageResource(R.drawable.checkbox);
-                    textView.setBackgroundResource(R.color.colorAccent);
+                    //textView.setBackgroundResource(R.color.colorAccent);
                 } else {
-                    textView.setBackgroundResource(0);
+                    //textView.setBackgroundResource(0);
                     imageView.setImageResource(R.drawable.blank_checkbox);
                 }
                 break;
 
         }
+
         return convertView;
 
         //If the child is a complaint, then add it to the group list, otherwise dont
