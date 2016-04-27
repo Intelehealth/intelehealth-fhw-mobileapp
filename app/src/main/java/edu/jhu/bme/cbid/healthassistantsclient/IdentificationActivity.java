@@ -1,5 +1,6 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
+import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,8 +12,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
@@ -20,6 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
 
@@ -46,6 +48,7 @@ public class IdentificationActivity extends AppCompatActivity {
     String mGender;
     EditText mRelationship;
     EditText mOccupation;
+    DatePickerDialog mDOBPicker;
 
     private InsertPatientTable mTask = null;
     LocalRecordsDatabaseHelper mDbHelper;
@@ -63,7 +66,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mFirstName = (EditText) findViewById(R.id.identification_first_name);
         mMiddleName = (EditText) findViewById(R.id.identification_middle_name);
         mLastName = (EditText) findViewById(R.id.identification_last_name);
-        mDOB = (EditText) findViewById(R.id.identification_birth_date);
+        mDOB = (EditText) findViewById(R.id.identification_birth_date_text_view);
         mPhoneNum = (EditText) findViewById(R.id.identification_phone_number);
         mAge = (EditText) findViewById(R.id.identification_age);
         mAddress1 = (EditText) findViewById(R.id.identification_address1);
@@ -76,6 +79,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mGenderF = (RadioButton) findViewById(R.id.identification_gender_female);
         mRelationship = (EditText) findViewById(R.id.identification_relationship);
         mOccupation = (EditText) findViewById(R.id.identification_occupation);
+
 
         mGenderF.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +95,26 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
 
+        //Change minimum
+
+        Calendar calendar = Calendar.getInstance();
+        mDOBPicker = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                mDOB.setText(new StringBuilder().append(year).append("-").append(monthOfYear + 1)
+                        .append("-").append(dayOfMonth));
+            }
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+
+        mDOB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDOBPicker.show();
+            }
+        });
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,6 +144,9 @@ public class IdentificationActivity extends AppCompatActivity {
 
         boolean cancel = false;
         View focusView = null;
+
+        //TODO: check if gender is checked
+        //TODO: check if date was selected for DOB
 
         ArrayList<EditText> values = new ArrayList<>();
         values.add(mFirstName);
@@ -228,7 +254,7 @@ public class IdentificationActivity extends AppCompatActivity {
             //TODO: record the patientID back into the same row as the patient was stored into
 
             Gson gson = new GsonBuilder().serializeNulls().create();
-            Log.i("Patient", gson.toJson(patient));
+            //Log.i("Patient", gson.toJson(patient));
 
 
             return null;
@@ -244,12 +270,10 @@ public class IdentificationActivity extends AppCompatActivity {
         protected void onPostExecute(Boolean aBoolean) {
 
             super.onPostExecute(aBoolean);
-            Intent intent = new Intent(IdentificationActivity.this, IdService.class);
-            intent.putExtra(Intent.EXTRA_TEXT, patient.getId().toString());
-            intent.setType("type/plain");
-            startService(intent);
+            Intent intent2 = new Intent(IdentificationActivity.this, ComplaintNodeActivity.class);
+            intent2.putExtra("patientID", patient.getId());
+            startActivity(intent2);
         }
     }
-
 }
 

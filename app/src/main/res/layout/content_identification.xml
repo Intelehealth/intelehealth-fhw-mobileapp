@@ -53,12 +53,12 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:freezesText="true"
-                    android:tag="@string/tag_optional"
                     android:hint="@string/prompt_middle_name"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPersonName"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:tag="@string/tag_optional" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -98,32 +98,40 @@
                     android:id="@+id/identification_gender_male"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="@string/checkbox_male"
-                    android:textSize="@dimen/id_screen_text_size"
-                    android:layout_weight="1" />
+                    android:textSize="@dimen/id_screen_text_size" />
 
                 <RadioButton
                     android:id="@+id/identification_gender_female"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="@string/checkbox_female"
-                    android:textSize="@dimen/id_screen_text_size"
-                    android:layout_weight="1" />
+                    android:textSize="@dimen/id_screen_text_size" />
 
             </RadioGroup>
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="20dp" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/identification_birth_date"
+                android:id="@+id/identification_birth_date_text_view"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                android:layout_height="wrap_content"
                     android:ems="10"
                     android:freezesText="true"
-                    android:hint="@string/prompt_birthday"
-                    android:inputType="date" />
+                android:hint="@string/prompt_birthday"
+                    android:imeOptions="actionUnspecified"
+                    android:focusable="false"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+
 
             </android.support.design.widget.TextInputLayout>
 
@@ -195,11 +203,11 @@
                     android:ems="10"
                     android:freezesText="true"
                     android:hint="@string/prompt_address2"
-                    android:tag="@string/tag_optional"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPostalAddress"
                     android:maxLines="2"
-                    android:singleLine="false" />
+                    android:singleLine="false"
+                    android:tag="@string/tag_optional" />
 
             </android.support.design.widget.TextInputLayout>
 

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/complaint_question_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight=".8"
+        android:background="@drawable/complaint_selector"
+        android:focusable="false"
+        android:paddingBottom="@dimen/padding_complaint_select"
+        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+        android:paddingTop="@dimen/padding_complaint_select"
+        android:textSize="@dimen/text_size_complaint" />
+
+    <ImageView
+        android:layout_gravity="end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/padding_complaint_select"
+        android:paddingBottom="@dimen/padding_complaint_select"
+        android:id="@+id/expandable_list_group_image" />
+
+</LinearLayout>

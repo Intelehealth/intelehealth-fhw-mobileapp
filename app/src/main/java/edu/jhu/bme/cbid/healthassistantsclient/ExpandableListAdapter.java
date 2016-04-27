@@ -3,6 +3,8 @@ package edu.jhu.bme.cbid.healthassistantsclient;
 /**
  * Created by Amal Afroz Alam on 29, March, 2016.
  * Contact me: contact@amal.io
+ * <p>
+ * References: http://www.androidhive.info/2013/07/android-expandable-list-view-tutorial/
  */
 
 /**
@@ -11,6 +13,7 @@ package edu.jhu.bme.cbid.healthassistantsclient;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,13 +57,15 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_item_complaint_select, null);
+            convertView = infalInflater.inflate(R.layout.list_expandable_item, null);
         }
 
         TextView txtListChild = (TextView) convertView
-                .findViewById(R.id.complaint_select_item);
+                .findViewById(R.id.expandable_list_item);
 
         txtListChild.setText(childText);
+        txtListChild.setSelected(false);
+        Log.d("Child", childText);
         return convertView;
     }
 
@@ -86,19 +91,22 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded,
-                             View convertView, ViewGroup parent) {
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         String headerTitle = (String) getGroup(groupPosition);
+
+
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_group_complaint_select, null);
+            convertView = infalInflater.inflate(R.layout.list_expandable_group, null);
         }
 
-        TextView lblListHeader = (TextView) convertView
-                .findViewById(R.id.complaint_select_group);
+        TextView lblListHeader = (TextView) convertView.findViewById(R.id.expandable_list_group);
+
+
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
+        Log.d("Header", headerTitle);
 
         return convertView;
     }
