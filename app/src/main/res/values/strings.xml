@@ -220,6 +220,9 @@
     <string name="button_history">Patient History</string>
     <string name="button_meds">Medications</string>
 
+    <string name="action_print">Print</string>
+
+
     <string name="title_activity_complaint_node">ComplaintNodeActivity</string>
     <string name="title_activity_question_node">QuestionNodeActivity</string>
 
