@@ -223,5 +223,6 @@
 
     <string name="title_activity_complaint_node">ComplaintNodeActivity</string>
     <string name="title_activity_question_node">QuestionNodeActivity</string>
+    <string name="title_activity_patient_medical_history">PatientMedicalHistory</string>
 
 </resources>
