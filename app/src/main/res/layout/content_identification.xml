@@ -25,60 +25,81 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.design.widget.TextInputLayout
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
-                <EditText
-                    android:id="@+id/identification_first_name"
+                <ImageView
+                    android:layout_width="170dp"
+                    android:layout_height="170dp"
+                    android:src="@drawable/person300px"
+                    android:id="@+id/imageview_id_picture"
+                    android:scaleType="centerCrop"
+                    android:layout_gravity="right" />
+
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:freezesText="true"
-                    android:hint="@string/prompt_first_name"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textPersonName"
-                    android:maxLines="1"
-                    android:singleLine="true" />
+                    android:layout_height="match_parent">
 
-            </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                        <EditText
+                            android:id="@+id/identification_first_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:freezesText="true"
+                            android:hint="@string/prompt_first_name"
+                            android:imeOptions="actionUnspecified"
+                            android:inputType="textPersonName"
+                            android:maxLines="1"
+                            android:singleLine="true" />
 
-                <EditText
-                    android:id="@+id/identification_middle_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:freezesText="true"
-                    android:hint="@string/prompt_middle_name"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textPersonName"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:tag="@string/tag_optional" />
+                    </android.support.design.widget.TextInputLayout>
 
-            </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                        <EditText
+                            android:id="@+id/identification_middle_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:freezesText="true"
+                            android:hint="@string/prompt_middle_name"
+                            android:imeOptions="actionUnspecified"
+                            android:inputType="textPersonName"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:tag="@string/tag_optional" />
 
-                <EditText
-                    android:id="@+id/identification_last_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:freezesText="true"
-                    android:hint="@string/prompt_last_name"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textPersonName"
-                    android:maxLines="1"
-                    android:singleLine="true" />
+                    </android.support.design.widget.TextInputLayout>
 
-            </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/identification_last_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:freezesText="true"
+                            android:hint="@string/prompt_last_name"
+                            android:imeOptions="actionUnspecified"
+                            android:inputType="textPersonName"
+                            android:maxLines="1"
+                            android:singleLine="true" />
+
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+            </LinearLayout>
 
 
             <Space
