@@ -34,13 +34,6 @@ public class NodeAdapter extends BaseExpandableListAdapter {
         this.callingClass = caller;
     }
 
-//    public NodeAdapter(Context context, Knowledge knowledge) {
-//        this.mContext = context;
-//        this.mNode = knowledge;
-//        this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//    }
-
-
     @Override
     public int getGroupCount() {
         return mNode.size();

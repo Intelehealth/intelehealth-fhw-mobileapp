@@ -119,7 +119,7 @@
             android:label="@string/title_activity_question_node"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".PatientMedicalHistory"
+            android:name=".PatientHistoryActivity"
             android:label="@string/title_activity_patient_medical_history"
             android:parentActivityName=".QuestionNodeActivity"
             android:theme="@style/AppTheme.NoActionBar">
