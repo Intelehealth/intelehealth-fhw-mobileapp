@@ -23,7 +23,7 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             // "date_of_birth TEXT NOT NULL," +
             "date_of_birth TEXT," +
             "phone_number integer(10)," +
-            "address1 varchar(255)," +
+                                "address1 varchar(255)," +
             "address2 varchar(255)," +
             // "city_village varchar(255) NOT NULL," +
             // "state_province varchar(255) NOT NULL," +

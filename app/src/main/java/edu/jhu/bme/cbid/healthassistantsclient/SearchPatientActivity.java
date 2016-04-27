@@ -82,7 +82,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         String table = "patient";
         String[] columns = {"_id", "first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
-                "postal_code", "phone_number", "patient_identifier1", "patient_identifier2"};
+                "postal_code", "phone_number", "patient_identifier1", "patient_identifier2, patient_identifier3"};
         String selection = "patient MATCH ?";
         String[] args = new String[1];
         args[0] = String.format("%s", query);
@@ -127,6 +127,9 @@ public class SearchPatientActivity extends AppCompatActivity {
 
                             String patientIdCol = searchCursor.getString(searchCursor.getColumnIndexOrThrow("_id"));
 
+                            String photoLoc = searchCursor.getString(searchCursor.getColumnIndexOrThrow("patient_identifier3"));
+
+
                             ArrayList<String> patientInfo = new ArrayList<String>();
 
                             patientInfo.add(lName);
@@ -140,6 +143,8 @@ public class SearchPatientActivity extends AppCompatActivity {
                             patientInfo.add(sdw);
                             patientInfo.add(occupation);
                             patientInfo.add(patientIdCol);
+                            patientInfo.add(photoLoc);
+
 
 
                             Intent patientIntent = new Intent(SearchPatientActivity.this, PatientDetailActivity.class);

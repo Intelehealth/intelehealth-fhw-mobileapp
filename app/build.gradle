@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "edu.jhu.bme.cbid.healthassistantsclient"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -27,6 +27,7 @@ dependencies {
     compile 'com.android.support:support-v4:23.3.0'
     compile 'com.android.support:recyclerview-v7:23.3.0'
     compile 'com.android.support:design:23.3.0'
+    compile 'com.android.support:cardview-v7:23.+'
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
     compile 'joda-time:joda-time:2.9.3'
 }
