@@ -9,7 +9,15 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="edu.jhu.bme.cbid.healthassistantsclient.PatientMedicalHistory"
-    tools:showIn="@layout/activity_patient_medical_history">
+    tools:context=".PatientHistoryActivity"
+    tools:showIn="@layout/activity_patient_history">
+
+    <ExpandableListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/expandable_list_view"
+        android:clickable="true">
+
+    </ExpandableListView>
 
 </RelativeLayout>

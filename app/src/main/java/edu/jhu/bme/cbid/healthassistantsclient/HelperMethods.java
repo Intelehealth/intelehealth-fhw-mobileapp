@@ -74,6 +74,33 @@ public class HelperMethods {
 
     }
 
+    public static void subLevelQuestion(final Node node, Activity context){
+        /*
+        I could just grab the node, and then grab all of its options
+        Then i can take all of the options, for loop for all its text, and then set an onclicklistener
+        so when i get a click, i just check the node at that index, and then do the functions appropriate
+
+        Functions though:
+        I need to check the input method
+        I need to check if its terminal
+        I need to set it to selected in the first place
+        Wait, but do I do all this shit on the select?
+        When the option is clicked, I need to present a new screen, but what about when they press okay?
+        What do I do then?
+        So say I have a list of options, and then they are able to select multiple options
+        When they click okay, I need to change all of them to selected, and then I need to grab that list of select indices
+        Check each of the nodes at those indices, and then do what needs to be done
+        But I need to check on click listeners on each item too, to make sure if it has an input type
+
+
+
+        Okay, so item onclicks to check if its an input type
+        When okay is clicked, I need to checked the selected ones, set their nodes as selected, and then
+        I need to see if those nodes are terminal
+        if they are not, i may need to display several dialogs
+         */
+    }
+
     public static void askText(final Node node, Activity context, final NodeAdapter adapter) {
         final AlertDialog.Builder textInput = new AlertDialog.Builder(context);
         textInput.setTitle(R.string.question_text_input);

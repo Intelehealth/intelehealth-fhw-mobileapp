@@ -27,7 +27,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
     Integer patientID = null;
     Knowledge mKnowledge;
     ExpandableListView questionListView;
-    String mFileName = "generic.json";
+    String mFileName = "knowledge.json";
     int complaintNumber = 0;
     HashMap<String, String> complaintDetails;
     ArrayList<String> complaints;
@@ -93,7 +93,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
                     complaintNumber++;
                     setupQuestions(complaintNumber);
                 } else {
-                    Intent intent = new Intent(QuestionNodeActivity.this, PatientMedicalHistory.class);
+                    Intent intent = new Intent(QuestionNodeActivity.this, PatientHistoryActivity.class);
                     intent.putExtra("patientID", patientID);
                     intent.putStringArrayListExtra("exams", physicalExams);
                     startActivity(intent);

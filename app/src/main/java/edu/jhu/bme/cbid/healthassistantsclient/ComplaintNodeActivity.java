@@ -31,7 +31,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
      * Eventually, the knowledge base will be selected from the Settings Menu.
      * For now, the filename is listed here to be used later.
      */
-    String mFileName = "generic.json";
+    String mFileName = "knowledge.json";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
