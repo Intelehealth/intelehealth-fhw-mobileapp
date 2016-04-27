@@ -1,6 +1,8 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -71,6 +74,10 @@ public class PatientDetailActivity extends AppCompatActivity {
 
             TextView textViewPhone = (TextView) findViewById(R.id.textView_phone);
             textViewPhone.setText(mPhone);
+
+            Bitmap imageBitmap = BitmapFactory.decodeFile(mPatientInfo.get(11));
+            ImageView mImageView = (ImageView) findViewById(R.id.detail_image);
+            mImageView.setImageBitmap(imageBitmap);
 
             UpdatePatientTask upd = new UpdatePatientTask();
             upd.execute(mPatientInfo.get(10));
