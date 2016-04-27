@@ -28,5 +28,7 @@
     <dimen name="card_corner_radius">0dp</dimen>
     <dimen name="card_title_text_size">24sp</dimen>
     <dimen name="card_content_text_size">14sp</dimen>
+    <dimen name="edit_icon_height">24dp</dimen>
+    <dimen name="edit_icon_width">24dp</dimen>
 
 </resources>
