@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
@@ -125,6 +126,12 @@ public class HelperMethods {
 
         final AlertDialog.Builder locationDialog = new AlertDialog.Builder(context);
         locationDialog.setTitle(R.string.question_location_picker);
+        final LayoutInflater inflater = context.getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.dialog_list, null);
+        locationDialog.setView(convertView);
+        final ListView listView = (ListView) convertView.findViewById(R.id.dialog_list_view);
+
+        //TODO: Issue #51 on GitHub
 
 
     }
