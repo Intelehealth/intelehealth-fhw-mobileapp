@@ -81,6 +81,7 @@
         <activity
             android:name=".TableExamActivity"
             android:label="@string/title_activity_table_exam"
+            android:exported="true"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <provider
