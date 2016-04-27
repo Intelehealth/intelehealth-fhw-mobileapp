@@ -84,6 +84,9 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 String complaintString = currentNode.generateLanguage();
                 String complaint = currentNode.text();
                 complaintDetails.put(complaint, complaintString);
+
+                //TODO: add a database query to write these values into the DB
+
                 physicalExams.addAll(parseExams(currentNode));
 
                 if (complaintNumber < complaints.size() - 1) {
@@ -118,7 +121,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 }
 
                 if (!question.isTerminal()) {
-                    //TODO: nth level parsing of nodes
+
                     adapter.notifyDataSetChanged();
                 }
 
