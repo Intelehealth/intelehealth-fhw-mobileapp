@@ -20,4 +20,15 @@
     <dimen name="text_size_category">25sp</dimen>
     <dimen name="text_size_complaint">20sp</dimen>
 
+    //Visit Summary Screen
+    <dimen name="padding_visit_summary_screen">10dp</dimen>
+    <dimen name="padding_card">16dp</dimen>
+    <dimen name="padding_card_action">8dp</dimen>
+    <dimen name="padding_card_title_text">8dp</dimen>
+    <dimen name="card_corner_radius">0dp</dimen>
+    <dimen name="card_title_text_size">24sp</dimen>
+    <dimen name="card_content_text_size">14sp</dimen>
+    <dimen name="edit_icon_height">24dp</dimen>
+    <dimen name="edit_icon_width">24dp</dimen>
+
 </resources>

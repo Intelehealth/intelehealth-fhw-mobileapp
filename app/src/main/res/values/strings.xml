@@ -225,4 +225,26 @@
     <string name="title_activity_question_node">QuestionNodeActivity</string>
     <string name="title_activity_patient_medical_history">PatientMedicalHistory</string>
 
+    <!--Visit summary strings-->
+
+    <string name="visit_height_value"></string>
+    <string name="visit_weight_value"></string>
+    <string name="visit_bmi_value"></string>
+    <string name="visit_bpsys_value"></string>
+    <string name="visit_bpdia_value"></string>
+    <string name="visit_pulse_value"></string>
+    <string name="visit_temp_value"></string>
+    <string name="visit_pulseox_value"></string>
+    <string name="visit_complaint_content"></string>
+    <string name="visit_physexam_content"></string>
+    <string name="visit_famhist_content"></string>
+    <string name="visit_pathist_content"></string>
+    <string name="visit_prevreports_content"></string>
+    <string name="visit_hadetails_content"></string>
+    <string name="visit_diagnosis_content"></string>
+    <string name="visit_medications_content"></string>
+    <string name="visit_tests_content"></string>
+    <string name="visit_advice_content"></string>
+    <string name="visit_drdetails_content"></string>
+
 </resources>
