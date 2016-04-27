@@ -31,9 +31,6 @@ public class Node {
     private boolean selected;
     private boolean subSelected;
 
-    public Node() {
-    }
-
     public Node(JSONObject jsonNode) {
         try {
             /**
@@ -62,8 +59,8 @@ public class Node {
             /**
              * Almost all nodes have a language attribute which becomes the displayed text to the user.
              */
+
             this.language = jsonNode.optString("language");
-            this.language = jsonNode.optString("display");
 
             /**
              * There are various input types available to each node.
@@ -100,7 +97,7 @@ public class Node {
              * We account for this by storing the name of the associated complaint, and search for that object in the knowledge DB.
              */
             this.associatedComplaint = jsonNode.optString("associated-complaint");
-            if (!associatedComplaint.isEmpty()) {
+            if (associatedComplaint.isEmpty()) {
                 this.hasAssociations = false;
             } else {
                 this.hasAssociations = true;
@@ -213,6 +210,8 @@ public class Node {
             if (optionsList.get(i).isSelected()) {
                 subSelected = true;
                 break;
+            } else {
+                subSelected = false;
             }
         }
         return subSelected;
@@ -220,6 +219,51 @@ public class Node {
 
     public void changeText(String newText) {
         this.text = newText;
+    }
+
+    private String formLanguage() {
+        List<String> stringsList = new ArrayList<>();
+        List<Node> mOptions = optionsList;
+        for (int i = 0; i < mOptions.size(); i++) {
+            //Log.d(text, "For loop entered - " + String.valueOf(i));
+            if (mOptions.get(i).isSelected()) {
+                //Log.d(text, "selected");
+                stringsList.add(mOptions.get(i).language());
+                //Log.d(text, mLanguage);
+                if (!mOptions.get(i).isTerminal()) {
+                    //Log.d(text, "not terminal");
+                    stringsList.add(mOptions.get(i).formLanguage());
+                }
+            }
+        }
+
+        String languageSeparator = ", ";
+        String mLanguage = "";
+        for (int i = 0; i < stringsList.size(); i++) {
+            if (i == 0) {
+                if (!stringsList.get(i).isEmpty()) {
+                    mLanguage = mLanguage.concat(stringsList.get(i));
+                }
+            } else {
+                if (!stringsList.get(i).isEmpty()) {
+                    mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i));
+                }
+            }
+        }
+        return mLanguage;
+    }
+
+    public String generateLanguage() {
+        String raw = this.formLanguage();
+        String formatted = raw.substring(2);
+        return formatted;
+    }
+
+    public ArrayList<String> getSelectedAssociations() {
+        ArrayList<String> assocations = new ArrayList<>();
+
+
+        return assocations;
     }
 
 }

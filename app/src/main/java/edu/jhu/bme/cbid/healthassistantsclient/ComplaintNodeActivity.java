@@ -82,6 +82,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
         final ArrayList<String> selection = mKnowledge.getSelectedComplaints();
 
+        //TODO DB write selection in as complaints (not actually sure)
 
         if (selection.isEmpty()) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -110,7 +111,6 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     dialog.dismiss();
                     Intent intent = new Intent(ComplaintNodeActivity.this, QuestionNodeActivity.class);
                     intent.putExtra("patientID", patientID);
-                    Bundle bundle = new Bundle();
                     intent.putStringArrayListExtra("complaints", selection);
                     startActivity(intent);
                 }

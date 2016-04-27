@@ -1,9 +1,5 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
-import org.joda.time.LocalDate;
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
-
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -14,9 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import org.joda.time.LocalDate;
+import org.joda.time.Period;
+import org.joda.time.PeriodType;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,7 +42,7 @@ public class HelperMethods {
         int month = Integer.parseInt(components[1]);
         int day = Integer.parseInt(components[2]);
 
-        LocalDate birthdate = new LocalDate (year, month, day);          //Birth date
+        LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
         LocalDate now = new LocalDate();                    //Today's date
         Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
 
@@ -74,7 +74,7 @@ public class HelperMethods {
 
     }
 
-    public static void askText(final Node node, Activity context) {
+    public static void askText(final Node node, Activity context, final NodeAdapter adapter) {
         final AlertDialog.Builder textInput = new AlertDialog.Builder(context);
         textInput.setTitle(R.string.question_text_input);
         final EditText dialogEditText = new EditText(context);
@@ -86,6 +86,7 @@ public class HelperMethods {
                 node.addLanguage(dialogEditText.getText().toString());
                 node.changeText(node.language());
                 node.setSelected();
+                adapter.notifyDataSetChanged();
             }
         });
         textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
@@ -97,7 +98,7 @@ public class HelperMethods {
         textInput.show();
     }
 
-    public static void askDate(final Node node, final Activity context) {
+    public static void askDate(final Node node, final Activity context, final NodeAdapter adapter) {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(context,
                 android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
@@ -113,6 +114,7 @@ public class HelperMethods {
                         node.addLanguage(dateString);
                         node.changeText(node.language());
                         node.setSelected();
+                        adapter.notifyDataSetChanged();
                         //TODO:: Check if the language is actually what is intended to be displayed
                     }
                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
@@ -120,14 +122,21 @@ public class HelperMethods {
         datePickerDialog.show();
     }
 
-    public static void askLocation(final Node node, Activity context) {
+    public static void askLocation(final Node node, Activity context, final NodeAdapter adapter) {
 
-        final AlertDialog.Builder textInput = new AlertDialog.Builder(context);
-        textInput.setTitle(R.string.question_location_picker);
+        final AlertDialog.Builder locationDialog = new AlertDialog.Builder(context);
+        locationDialog.setTitle(R.string.question_location_picker);
+        final LayoutInflater inflater = context.getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.dialog_list, null);
+        locationDialog.setView(convertView);
+        final ListView listView = (ListView) convertView.findViewById(R.id.dialog_list_view);
+
+        //TODO: Issue #51 on GitHub
+
 
     }
 
-    public static void askNumber(final Node node, Activity context) {
+    public static void askNumber(final Node node, Activity context, final NodeAdapter adapter) {
 
         final AlertDialog.Builder numberDialog = new AlertDialog.Builder(context);
         numberDialog.setTitle(R.string.question_number_picker);
@@ -145,6 +154,7 @@ public class HelperMethods {
                 node.addLanguage(" " + value);
                 node.changeText(value);
                 node.setSelected();
+                adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
         });
@@ -159,7 +169,7 @@ public class HelperMethods {
 
     }
 
-    public static void askArea(final Node node, Activity context) {
+    public static void askArea(final Node node, Activity context, final NodeAdapter adapter) {
 
         final AlertDialog.Builder areaDialog = new AlertDialog.Builder(context);
         areaDialog.setTitle(R.string.question_area_picker);
@@ -185,6 +195,7 @@ public class HelperMethods {
                 node.addLanguage(" " + durationString);
                 node.changeText(durationString);
                 node.setSelected();
+                adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
         });
@@ -199,7 +210,7 @@ public class HelperMethods {
     }
 
 
-    public static void askRange(final Node node, Activity context) {
+    public static void askRange(final Node node, Activity context, final NodeAdapter adapter) {
 
         final AlertDialog.Builder rangeDialog = new AlertDialog.Builder(context);
         rangeDialog.setTitle(R.string.question_range_picker);
@@ -225,6 +236,7 @@ public class HelperMethods {
                 node.addLanguage(" " + durationString);
                 node.changeText(durationString);
                 node.setSelected();
+                adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
         });
@@ -237,7 +249,7 @@ public class HelperMethods {
         rangeDialog.show();
     }
 
-    public static void askFrequency(final Node node, Activity context) {
+    public static void askFrequency(final Node node, Activity context, final NodeAdapter adapter) {
 
         final AlertDialog.Builder frequencyDialog = new AlertDialog.Builder(context);
         frequencyDialog.setTitle(R.string.question_frequency_picker);
@@ -264,6 +276,7 @@ public class HelperMethods {
                 node.addLanguage(" " + durationString);
                 node.changeText(durationString);
                 node.setSelected();
+                adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
         });
@@ -277,7 +290,7 @@ public class HelperMethods {
 
     }
 
-    public static void askDuration(final Node node, Activity context) {
+    public static void askDuration(final Node node, Activity context, final NodeAdapter adapter) {
         final AlertDialog.Builder durationDialog = new AlertDialog.Builder(context);
         durationDialog.setTitle(R.string.question_duration_picker);
         final LayoutInflater inflater = context.getLayoutInflater();
@@ -302,6 +315,7 @@ public class HelperMethods {
                 node.addLanguage(" " + durationString);
                 node.changeText(durationString);
                 node.setSelected();
+                adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
         });
