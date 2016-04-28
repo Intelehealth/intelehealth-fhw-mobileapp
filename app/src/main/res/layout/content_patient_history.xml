@@ -15,7 +15,7 @@
     <ExpandableListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/expandable_list_view"
+        android:id="@+id/patient_history_expandable_list_view"
         android:clickable="true">
 
     </ExpandableListView>
