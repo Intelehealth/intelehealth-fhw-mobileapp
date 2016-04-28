@@ -1,7 +1,5 @@
 package edu.jhu.bme.cbid.healthassistantsclient.objects;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -268,7 +266,15 @@ public class Node {
 
     public ArrayList<String> getSelectedAssociations() {
         ArrayList<String> selectedAssociations = new ArrayList<>();
-        //TODO: find the associations that are selected and dump 'em back
+        List<Node> mOptions = optionsList;
+        for (int i = 0; i < mOptions.size(); i++) {
+            if (mOptions.get(i).isSelected() & mOptions.get(i).hasAssociations()) {
+                selectedAssociations.add(mOptions.get(i).getAssociatedComplaint());
+                if (!mOptions.get(i).isTerminal()) {
+                    selectedAssociations.addAll(mOptions.get(i).getSelectedAssociations());
+                }
+            }
+        }
         return selectedAssociations;
     }
 
