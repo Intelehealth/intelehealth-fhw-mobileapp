@@ -74,7 +74,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                     }
                 }
 
-                Intent intent = new Intent(FamilyHistoryActivity.this, PhysicalExamActivity.class);
+                Intent intent = new Intent(FamilyHistoryActivity.this, TableExamActivity.class);
                 intent.putExtra("patientID", patientID);
                 intent.putStringArrayListExtra("exams", physicalExams);
                 startActivity(intent);
@@ -135,7 +135,6 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         final int CREATOR_ID = 42; // TODO: Connect the proper CREATOR_ID
 
         final int CONCEPT_ID = 163188; // RHK FAMILY HISTORY BLURB
-
 
         Gson gson = new Gson();
         String toInsert = gson.toJson(familyObj);

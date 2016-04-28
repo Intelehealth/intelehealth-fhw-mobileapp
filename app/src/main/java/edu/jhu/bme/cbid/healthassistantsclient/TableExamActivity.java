@@ -1,7 +1,10 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -20,11 +23,16 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
+import edu.jhu.bme.cbid.healthassistantsclient.objects.PhysicalExam;
 import edu.jhu.bme.cbid.healthassistantsclient.objects.TableExam;
 
 public class TableExamActivity extends AppCompatActivity {
 
     EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mSpo2;
+    Long obsID;
+    final String LOG_TAG = "TableExamActivity";
+    private Long patientID;
+    private ArrayList<String> physExams;
 
     private InsertTableExamDb mTask = null;
 
@@ -49,6 +57,13 @@ public class TableExamActivity extends AppCompatActivity {
         mTemperature = (EditText) findViewById(R.id.table_temp);
         mSpo2 = (EditText) findViewById(R.id.table_spo2);
 
+        Intent intent = this.getIntent(); // The intent was passed to the activity
+        if (intent != null) {
+            patientID = intent.getLongExtra("patientID", 0);
+            physExams = intent.getStringArrayListExtra("exams");
+            Log.v(LOG_TAG, patientID + "");
+        }
+
         mSpo2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -59,7 +74,6 @@ public class TableExamActivity extends AppCompatActivity {
                 return false;
             }
         });
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -124,13 +138,13 @@ public class TableExamActivity extends AppCompatActivity {
             }
 
             mTask = new InsertTableExamDb(results);
-            mTask.execute((Void) null);
+            mTask.execute();
         }
 
 
     }
 
-    public class InsertTableExamDb extends AsyncTask<Void, Void, Boolean>
+    public class InsertTableExamDb extends AsyncTask<Void, Void, Long>
             implements DialogInterface.OnCancelListener {
 
         int id;
@@ -159,16 +173,40 @@ public class TableExamActivity extends AppCompatActivity {
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected Long doInBackground(Void... params) {
+            LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(TableExamActivity.this);
+
+            final int VISIT_ID = 100; // TODO: Connect the proper VISIT_ID
+            final int CREATOR_ID = 42; // TODO: Connect the proper CREATOR_ID
+
+            final int CONCEPT_ID = 163189; // RHK EXAM BLURB
+
             Gson gson = new Gson();
-            Log.d("Table Exam", gson.toJson(exam));
-            // TODO: where do we insert this? and how?
-            return true;
+            String toInsert = gson.toJson(exam);
+
+            Log.d(LOG_TAG, toInsert);
+
+            ContentValues complaintEntries = new ContentValues();
+
+            complaintEntries.put("patient_id", patientID);
+            complaintEntries.put("visit_id", VISIT_ID);
+            complaintEntries.put("creator", CREATOR_ID);
+            complaintEntries.put("value", toInsert);
+            complaintEntries.put("concept_id", CONCEPT_ID);
+
+            SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+            return localdb.insert("obs", null, complaintEntries);
         }
 
-        protected void onPostExecute(Boolean result)
+        protected void onPostExecute(Long result)
         {
             dialog.dismiss();
+            obsID = result;
+
+            Intent intent = new Intent(TableExamActivity.this, PhysicalExamActivity.class);
+            intent.putExtra("patientID", patientID);
+            intent.putStringArrayListExtra("exams", physExams);
+            startActivity(intent);
         }
 
         public void onCancel(DialogInterface dialog)
