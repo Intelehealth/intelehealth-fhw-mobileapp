@@ -10,7 +10,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ExpandableListView;
 
@@ -29,6 +28,8 @@ import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
 public class QuestionNodeActivity extends AppCompatActivity {
 
     final String LOG_TAG = "Question Node Activity";
+
+    int lastExpandedPosition = -1;
 
     Long patientID = null;
     Knowledge mKnowledge;
@@ -145,9 +146,12 @@ public class QuestionNodeActivity extends AppCompatActivity {
         questionListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
-                if (groupPosition != 0) {
-                    questionListView.collapseGroup(groupPosition - 1);
+
+                if (lastExpandedPosition != -1
+                        && groupPosition != lastExpandedPosition) {
+                    questionListView.collapseGroup(lastExpandedPosition);
                 }
+                lastExpandedPosition = groupPosition;
             }
         });
 
