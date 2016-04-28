@@ -37,6 +37,9 @@ public class NodeAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
+        if(mNode.getOption(groupPosition).isTerminal()){
+            return 0;
+        }
         return mNode.getOption(groupPosition).size();
     }
 
