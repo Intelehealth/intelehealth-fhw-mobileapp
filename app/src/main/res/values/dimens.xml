@@ -20,6 +20,10 @@
     <dimen name="text_size_category">25sp</dimen>
     <dimen name="text_size_complaint">20sp</dimen>
 
+
+    //Physical Exam Screen
+    <dimen name="physical_node_title">40sp</dimen>
+
     //Visit Summary Screen
     <dimen name="padding_visit_summary_screen">10dp</dimen>
     <dimen name="padding_card">16dp</dimen>

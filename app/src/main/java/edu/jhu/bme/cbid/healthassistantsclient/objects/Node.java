@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  * Created by Amal Afroz Alam on 21, April, 2016.
  * Contact me: contact@amal.io
  */
-public class Node {
+public class Node implements Serializable{
 
     private String id;
     private String text;
@@ -110,6 +111,23 @@ public class Node {
         }
     }
 
+    public Node(Node another) {
+        this.id = another.id;
+        this.text = another.text;
+        this.optionsList = another.optionsList;
+        this.terminal = another.terminal;
+        this.language = another.language;
+        this.inputType = another.inputType;
+        this.physicalExams = another.physicalExams;
+        this.complaint = another.complaint;
+        this.jobAidFile = another.jobAidFile;
+        this.jobAidType = another.jobAidType;
+        this.aidAvailable = another.aidAvailable;
+        this.associatedComplaint = another.associatedComplaint;
+        this.hasAssociations = another.hasAssociations;
+        this.selected = false;
+    }
+
     private List<Node> createOptions(JSONArray jsonArray) {
         List<Node> createdOptions = new ArrayList<>();
 
@@ -142,7 +160,7 @@ public class Node {
     }
 
     public void addLanguage(String newText) {
-        if (language.contains("_")){
+        if (language.contains("_")) {
             language = language.replace("_", newText);
         } else {
             language = language + newText;
@@ -181,8 +199,22 @@ public class Node {
         return optionsList;
     }
 
+    public Node getOptionByName(String name) {
+        Node foundNode = null;
+        for (Node node : optionsList) {
+            if (node.text().equals(name)) {
+                foundNode = node;
+            }
+        }
+        return foundNode;
+    }
+
     public Node getOption(int i) {
         return optionsList.get(i);
+    }
+
+    public void addOptions(Node node) {
+        optionsList.add(node);
     }
 
     public String getJobAidFile() {
@@ -210,15 +242,19 @@ public class Node {
     }
 
     public boolean anySubSelected() {
-        for (int i = 0; i < optionsList.size(); i++) {
-            if (optionsList.get(i).isSelected()) {
-                subSelected = true;
-                break;
-            } else {
-                subSelected = false;
+        if(!terminal){
+            for (int i = 0; i < optionsList.size(); i++) {
+                if (optionsList.get(i).isSelected()) {
+                    subSelected = true;
+                    break;
+                } else {
+                    subSelected = false;
+                }
             }
+            return subSelected;
+        } else {
+            return false;
         }
-        return subSelected;
     }
 
     public void changeText(String newText) {
@@ -256,7 +292,7 @@ public class Node {
     public String generateLanguage() {
         String raw = this.formLanguage();
         String formatted;
-        if (Character.toString(raw.charAt(0)).equals(",")){
+        if (Character.toString(raw.charAt(0)).equals(",")) {
             formatted = raw.substring(2);
         } else {
             formatted = raw;
@@ -278,4 +314,96 @@ public class Node {
         return selectedAssociations;
     }
 
+    public void removeOptionsList(){
+        this.optionsList = new ArrayList<>();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getInputType() {
+        return inputType;
+    }
+
+    public void setInputType(String inputType) {
+        this.inputType = inputType;
+    }
+
+    public String getPhysicalExams() {
+        return physicalExams;
+    }
+
+    public void setPhysicalExams(String physicalExams) {
+        this.physicalExams = physicalExams;
+    }
+
+    public void setOptionsList(List<Node> optionsList) {
+        this.optionsList = optionsList;
+    }
+
+    public void setAssociatedComplaint(String associatedComplaint) {
+        this.associatedComplaint = associatedComplaint;
+    }
+
+    public void setJobAidFile(String jobAidFile) {
+        this.jobAidFile = jobAidFile;
+    }
+
+    public void setJobAidType(String jobAidType) {
+        this.jobAidType = jobAidType;
+    }
+
+    public void setComplaint(boolean complaint) {
+        this.complaint = complaint;
+    }
+
+    public void setTerminal(boolean terminal) {
+        this.terminal = terminal;
+    }
+
+    public boolean isHasAssociations() {
+        return hasAssociations;
+    }
+
+    public void setHasAssociations(boolean hasAssociations) {
+        this.hasAssociations = hasAssociations;
+    }
+
+    public void setAidAvailable(boolean aidAvailable) {
+        this.aidAvailable = aidAvailable;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    public boolean isSubSelected() {
+        return subSelected;
+    }
+
+    public void setSubSelected(boolean subSelected) {
+        this.subSelected = subSelected;
+    }
 }
+

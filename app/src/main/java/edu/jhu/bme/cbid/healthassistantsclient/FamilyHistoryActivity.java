@@ -74,10 +74,10 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                     }
                 }
 
-//                Intent intent = new Intent(FamilyHistoryActivity.this, FamilyHistoryActivity.class);
-//                intent.putExtra("patientID", patientID);
-//                intent.putStringArrayListExtra("exams", physicalExams);
-//                startActivity(intent);
+                Intent intent = new Intent(FamilyHistoryActivity.this, PhysicalExamActivity.class);
+                intent.putExtra("patientID", patientID);
+                intent.putStringArrayListExtra("exams", physicalExams);
+                startActivity(intent);
 
             }
         });

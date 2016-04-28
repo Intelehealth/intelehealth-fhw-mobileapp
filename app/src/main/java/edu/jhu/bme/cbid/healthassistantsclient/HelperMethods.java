@@ -12,6 +12,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -82,8 +83,23 @@ public class HelperMethods {
         List<Node> mNodes = node.getOptionsList();
         final subNodeAdapter adapter = new subNodeAdapter(context, R.layout.list_item_subquestion, mNodes);
         final AlertDialog.Builder subQuestion = new AlertDialog.Builder(context);
+
+        final LayoutInflater inflater = context.getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.dialog_subquestion, null);
+        ImageView imageView = (ImageView) convertView.findViewById(R.id.dialog_subquestion_image_view);
+        if(node.isAidAvailable()){
+            if(node.getJobAidType().equals("image")){
+                imageView.setImageResource(R.drawable.jaundiceexample);
+                //TODO: add drawables and display images here
+            } else {
+                //imageView.setVisibility(View.GONE);
+            }
+        }
+
+
+
         subQuestion.setTitle(node.text());
-        ListView listView = new ListView(context);
+        ListView listView = (ListView) convertView.findViewById(R.id.dialog_subquestion_list_view);
         listView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
         listView.setClickable(true);
         listView.setAdapter(adapter);
@@ -118,6 +134,8 @@ public class HelperMethods {
                 dialog.cancel();
             }
         });
+
+        subQuestion.setView(convertView);
         subQuestion.show();
 
 
