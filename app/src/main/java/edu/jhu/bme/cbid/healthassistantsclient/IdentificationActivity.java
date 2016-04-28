@@ -149,10 +149,7 @@ public class IdentificationActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 createNewPatient();
-                Snackbar.make(view, R.string.snack_patient_created, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
             }
         });
     }

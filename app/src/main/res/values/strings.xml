@@ -248,8 +248,8 @@
     <string name="visit_tests_content"></string>
     <string name="visit_advice_content"></string>
     <string name="visit_drdetails_content"></string>
-    <string name="title_activity_family_history">FamilyHistoryActivity</string>
-    <string name="title_activity_physical_exam">PhysicalExamActivity</string>
+    <string name="title_activity_family_history">Family History</string>
+    <string name="title_activity_physical_exam">Physical Exam</string>
     <string name="section_format">Hello World from section: %1$d</string>
 
 </resources>
