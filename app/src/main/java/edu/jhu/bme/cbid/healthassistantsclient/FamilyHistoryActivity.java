@@ -78,9 +78,6 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                 }
                 adapter.notifyDataSetChanged();
 
-
-                adapter.notifyDataSetChanged();
-
                 if(!familyHistoryMap.getOption(groupPosition).getOption(childPosition).isTerminal()){
                     HelperMethods.subLevelQuestion(clickedNode, FamilyHistoryActivity.this, adapter);
                 }
@@ -92,6 +89,11 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         familyListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
+                Node clickedNode = familyHistoryMap.getOption(groupPosition);
+
+                if(clickedNode.type() != null){
+                    HelperMethods.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter);
+                }
 
                 if (lastExpandedPosition != -1
                         && groupPosition != lastExpandedPosition) {

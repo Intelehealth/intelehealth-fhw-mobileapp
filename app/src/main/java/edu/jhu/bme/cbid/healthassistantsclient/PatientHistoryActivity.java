@@ -78,9 +78,6 @@ public class PatientHistoryActivity extends AppCompatActivity {
                 }
                 adapter.notifyDataSetChanged();
 
-
-                adapter.notifyDataSetChanged();
-
                 if(!patientHistoryMap.getOption(groupPosition).getOption(childPosition).isTerminal()){
                     HelperMethods.subLevelQuestion(clickedNode, PatientHistoryActivity.this, adapter);
                 }
