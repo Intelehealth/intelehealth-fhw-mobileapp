@@ -30,5 +30,6 @@
     <dimen name="card_content_text_size">14sp</dimen>
     <dimen name="edit_icon_height">24dp</dimen>
     <dimen name="edit_icon_width">24dp</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
 
 </resources>
