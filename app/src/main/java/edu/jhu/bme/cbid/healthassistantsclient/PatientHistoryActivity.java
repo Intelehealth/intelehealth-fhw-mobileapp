@@ -1,18 +1,27 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 
+import edu.jhu.bme.cbid.healthassistantsclient.objects.MedicalHistory;
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
 
 public class PatientHistoryActivity extends AppCompatActivity {
+
+    String LOG_TAG = "Patient History Activity";
+    String patient = "Patient";
 
     Long patientID;
     ArrayList<String> physicalExams;
@@ -30,9 +39,13 @@ public class PatientHistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-//        Bundle bundle = getIntent().getExtras();
-//        patientID = bundle.getInt("patientID");
-//        physicalExams = bundle.getStringArrayList("exams");
+        Intent intent = this.getIntent(); // The intent was passed to the activity
+        if (intent != null) {
+            patientID = intent.getLongExtra("patientID", 0);
+            Log.v(LOG_TAG, patientID + "");
+        }
+        physicalExams = intent.getStringArrayListExtra("exams");
+
 
         setTitle(R.string.title_activity_patient_history);
 
@@ -49,7 +62,13 @@ public class PatientHistoryActivity extends AppCompatActivity {
 
                 if(patientHistoryMap.anySubSelected()){
                     patientHistory = patientHistoryMap.generateLanguage();
+
+                    MedicalHistory historyObj = new MedicalHistory(patient, patientHistory);
+
+                    long obsId = insertDb(historyObj);
                 }
+
+
 
                 Intent intent = new Intent(PatientHistoryActivity.this, FamilyHistoryActivity.class);
                 intent.putExtra("patientID", patientID);
@@ -100,6 +119,31 @@ public class PatientHistoryActivity extends AppCompatActivity {
 
     }
 
+    private long insertDb(MedicalHistory historyObj) {
+        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
+
+        final int VISIT_ID = 100; // TODO: Connect the proper VISIT_ID
+        final int CREATOR_ID = 42; // TODO: Connect the proper CREATOR_ID
+
+        final int CONCEPT_ID = 163187; // RHK MEDICAL HISTORY BLURB
+
+
+        Gson gson = new Gson();
+        String toInsert = gson.toJson(historyObj);
+
+        Log.d(LOG_TAG, toInsert);
+
+        ContentValues complaintEntries = new ContentValues();
+
+        complaintEntries.put("patient_id", patientID);
+        complaintEntries.put("visit_id", VISIT_ID);
+        complaintEntries.put("creator", CREATOR_ID);
+        complaintEntries.put("value", toInsert);
+        complaintEntries.put("concept_id", CONCEPT_ID);
+
+        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+        return localdb.insert("obs", null, complaintEntries);
+    }
 
 
 }

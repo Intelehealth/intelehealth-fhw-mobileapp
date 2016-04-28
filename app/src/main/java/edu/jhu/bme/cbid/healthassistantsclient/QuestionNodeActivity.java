@@ -45,9 +45,15 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        Bundle bundle = getIntent().getExtras();
-//        patientID = bundle.getInt("patientID");
-//        complaints = bundle.getStringArrayList("complaints");
+
+
+
+        Intent intent = this.getIntent(); // The intent was passed to the activity
+        if (intent != null) {
+            patientID = intent.getLongExtra("patientID", 0);
+            Log.v(LOG_TAG, patientID + "");
+        }
+        complaints = intent.getStringArrayListExtra("complaints");
 
         complaints = new ArrayList<>();
         complaintDetails = new HashMap<>();
@@ -111,13 +117,6 @@ public class QuestionNodeActivity extends AppCompatActivity {
         });
 
         setupQuestions(complaintNumber);
-
-        Intent intent = this.getIntent(); // The intent was passed to the activity
-        if (intent != null) {
-            patientID = intent.getLongExtra("patientID", 0);
-            Log.v(LOG_TAG, patientID + "");
-        }
-
 
         questionListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
