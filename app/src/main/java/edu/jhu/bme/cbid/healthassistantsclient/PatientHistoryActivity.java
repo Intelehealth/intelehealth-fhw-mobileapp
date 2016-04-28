@@ -1,5 +1,6 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +23,7 @@ public class PatientHistoryActivity extends AppCompatActivity {
     NodeAdapter adapter;
     ExpandableListView historyListView;
 
-
+    String patientHistory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,14 @@ public class PatientHistoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                if(patientHistoryMap.anySubSelected()){
+                    patientHistory = patientHistoryMap.generateLanguage();
+                }
+
+                Intent intent = new Intent(PatientHistoryActivity.this, FamilyHistoryActivity.class);
+                intent.putExtra("patientID", patientID);
+                intent.putStringArrayListExtra("exams", physicalExams);
+                startActivity(intent);
 
 
             }

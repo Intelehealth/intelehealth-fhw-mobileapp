@@ -248,5 +248,6 @@
     <string name="visit_tests_content"></string>
     <string name="visit_advice_content"></string>
     <string name="visit_drdetails_content"></string>
+    <string name="title_activity_family_history">FamilyHistoryActivity</string>
 
 </resources>
