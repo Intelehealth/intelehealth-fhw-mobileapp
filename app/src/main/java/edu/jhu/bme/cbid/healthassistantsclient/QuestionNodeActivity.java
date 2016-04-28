@@ -1,20 +1,27 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ExpandableListView;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import edu.jhu.bme.cbid.healthassistantsclient.objects.Complaint;
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Knowledge;
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
 
@@ -23,7 +30,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
     final String LOG_TAG = "Question Node Activity";
 
-    Integer patientID = null;
+    Long patientID = null;
     Knowledge mKnowledge;
     ExpandableListView questionListView;
     String mFileName = "knowledge.json";
@@ -84,7 +91,9 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 String complaint = currentNode.text();
                 complaintDetails.put(complaint, complaintString);
 
-                //TODO: add a database query to write these values into the DB
+                Complaint complaintObj = new Complaint(complaint, complaintString);
+
+                long obsId = insertDb(complaintObj);
 
                 physicalExams.addAll(parseExams(currentNode));
 
@@ -101,6 +110,13 @@ public class QuestionNodeActivity extends AppCompatActivity {
         });
 
         setupQuestions(complaintNumber);
+
+        Intent intent = this.getIntent(); // The intent was passed to the activity
+        if (intent != null) {
+            patientID = intent.getLongExtra("patientID", 0);
+            Log.v(LOG_TAG, patientID + "");
+        }
+
 
         questionListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
@@ -135,6 +151,32 @@ public class QuestionNodeActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private long insertDb(Complaint complaintObj) {
+        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
+
+        final int VISIT_ID = 100; // TODO: Connect the proper VISIT_ID
+        final int CREATOR_ID = 42; // TODO: Connect the proper CREATOR_ID
+
+        final int CONCEPT_ID = 163186; // RHK COMPLAINT
+
+
+        Gson gson = new Gson();
+        String toInsert = gson.toJson(complaintObj);
+
+        Log.d(LOG_TAG, toInsert);
+
+        ContentValues complaintEntries = new ContentValues();
+
+        complaintEntries.put("patient_id", patientID);
+        complaintEntries.put("visit_id", VISIT_ID);
+        complaintEntries.put("creator", CREATOR_ID);
+        complaintEntries.put("value", toInsert);
+        complaintEntries.put("concept_id", CONCEPT_ID);
+
+        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+        return localdb.insert("obs", null, complaintEntries);
     }
 
     private void setupQuestions(int complaintIndex) {

@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -22,7 +23,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
     final String LOG_TAG = "Complaint Node Activity";
 
-    Integer patientID = null;
+    Long patientID = null;
 
     ExpandableListView complaintListView;
 
@@ -61,6 +62,12 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         final NodeAdapter adapter = new NodeAdapter(this, mKnowledge, this.getClass().getSimpleName());
         complaintListView.setAdapter(adapter);
         complaintListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
+
+        Intent intent = this.getIntent(); // The intent was passed to the activity
+        if (intent != null) {
+            patientID = intent.getLongExtra("patientID", 0);
+            Log.v(LOG_TAG, patientID + "");
+        }
 
         complaintListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override

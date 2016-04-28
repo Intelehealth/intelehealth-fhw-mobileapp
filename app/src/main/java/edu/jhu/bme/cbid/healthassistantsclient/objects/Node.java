@@ -1,5 +1,7 @@
 package edu.jhu.bme.cbid.healthassistantsclient.objects;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

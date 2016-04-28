@@ -331,7 +331,6 @@ public class IdentificationActivity extends AppCompatActivity {
             );
 
             patient.setId(patientID);
-            //TODO: record the patientID back into the same row as the patient was stored into
 
             Gson gson = new GsonBuilder().serializeNulls().create();
             //Log.i("Patient", gson.toJson(patient));

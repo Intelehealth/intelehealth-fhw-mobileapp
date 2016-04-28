@@ -23,7 +23,7 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             // "date_of_birth TEXT NOT NULL," +
             "date_of_birth TEXT," +
             "phone_number integer(10)," +
-                                "address1 varchar(255)," +
+            "address1 varchar(255)," +
             "address2 varchar(255)," +
             // "city_village varchar(255) NOT NULL," +
             // "state_province varchar(255) NOT NULL," +
@@ -54,8 +54,9 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             "visit_type_id integer(10)," +
             "visit_location_id integer(10) NOT NULL," +
             "visit_creator integer(10) NOT NULL," +
-            "openmrs_visit_id integer(10)," +
-            "FOREIGN KEY (patient_id) REFERENCES patient(_id)" +
+            "openmrs_visit_id integer(10)" +
+     //       "openmrs_visit_id integer(10)," +
+     //       "FOREIGN KEY (patient_id) REFERENCES patient(_id)" +
             ")";
     public static final String CREATE_OBS = "CREATE TABLE IF NOT EXISTS obs (" +
             "_id INTEGER PRIMARY KEY," +
@@ -65,9 +66,10 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             "concept_id integer(10) NOT NULL," +
             "creator integer(10) NOT NULL," +
             "openmrs_encounter_id integer(10)," +
-            "openmrs_obs_id integer(10)," +
-            "FOREIGN KEY (visit_id) REFERENCES visit (_id)," +
-            "FOREIGN KEY (patient_id) REFERENCES patient (_id)" +
+            "openmrs_obs_id integer(10)" +
+     //       "openmrs_obs_id integer(10)," +
+     //       "FOREIGN KEY (visit_id) REFERENCES visit (_id)," +
+     //       "FOREIGN KEY (patient_id) REFERENCES patient (_id)" +
             ")";
     public static final String CREATE_USER = "CREATE TABLE IF NOT EXISTS user_provider (" +
             "_id INTEGER PRIMARY KEY," +
