@@ -12,4 +12,12 @@
     tools:context="edu.jhu.bme.cbid.healthassistantsclient.FamilyHistoryActivity"
     tools:showIn="@layout/activity_family_history">
 
+    <ExpandableListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/family_history_expandable_list_view"
+        android:clickable="true">
+
+    </ExpandableListView>
+
 </RelativeLayout>

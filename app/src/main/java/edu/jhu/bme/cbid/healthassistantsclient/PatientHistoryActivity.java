@@ -17,6 +17,8 @@ public class PatientHistoryActivity extends AppCompatActivity {
     Long patientID;
     ArrayList<String> physicalExams;
 
+    int lastExpandedPosition = -1;
+
     String mFileName = "pathist.json";
 
     Node patientHistoryMap;
@@ -27,7 +29,6 @@ public class PatientHistoryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
 
 //        Bundle bundle = getIntent().getExtras();
 //        patientID = bundle.getInt("patientID");
@@ -85,6 +86,18 @@ public class PatientHistoryActivity extends AppCompatActivity {
                 }
 
                 return false;
+            }
+        });
+
+        historyListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            @Override
+            public void onGroupExpand(int groupPosition) {
+
+                if (lastExpandedPosition != -1
+                        && groupPosition != lastExpandedPosition) {
+                    historyListView.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = groupPosition;
             }
         });
 
