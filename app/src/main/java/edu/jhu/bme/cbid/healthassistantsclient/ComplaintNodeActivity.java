@@ -79,7 +79,6 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
     public void confirmComplaints() {
 
-
         final ArrayList<String> selection = mKnowledge.getSelectedComplaints();
 
         //TODO DB write selection in as complaints (not actually sure)

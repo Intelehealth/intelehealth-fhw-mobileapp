@@ -223,9 +223,9 @@
     <string name="action_print">Print</string>
 
 
-    <string name="title_activity_complaint_node">ComplaintNodeActivity</string>
+    <string name="title_activity_complaint_node">Select Complaints</string>
     <string name="title_activity_question_node">QuestionNodeActivity</string>
-    <string name="title_activity_patient_medical_history">PatientMedicalHistory</string>
+    <string name="title_activity_patient_history">Patient Medical History</string>
 
     <!--Visit summary strings-->
 

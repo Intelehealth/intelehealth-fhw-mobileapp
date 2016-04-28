@@ -142,7 +142,11 @@ public class Node {
     }
 
     public void addLanguage(String newText) {
-        language = language + newText;
+        if (language.contains("_")){
+            language = language.replace("_", newText);
+        } else {
+            language = language + newText;
+        }
     }
 
     public String text() {
@@ -225,13 +229,9 @@ public class Node {
         List<String> stringsList = new ArrayList<>();
         List<Node> mOptions = optionsList;
         for (int i = 0; i < mOptions.size(); i++) {
-            //Log.d(text, "For loop entered - " + String.valueOf(i));
             if (mOptions.get(i).isSelected()) {
-                //Log.d(text, "selected");
                 stringsList.add(mOptions.get(i).language());
-                //Log.d(text, mLanguage);
                 if (!mOptions.get(i).isTerminal()) {
-                    //Log.d(text, "not terminal");
                     stringsList.add(mOptions.get(i).formLanguage());
                 }
             }
@@ -255,15 +255,19 @@ public class Node {
 
     public String generateLanguage() {
         String raw = this.formLanguage();
-        String formatted = raw.substring(2);
+        String formatted;
+        if (Character.toString(raw.charAt(0)).equals(",")){
+            formatted = raw.substring(2);
+        } else {
+            formatted = raw;
+        }
         return formatted;
     }
 
     public ArrayList<String> getSelectedAssociations() {
-        ArrayList<String> assocations = new ArrayList<>();
-
-
-        return assocations;
+        ArrayList<String> selectedAssociations = new ArrayList<>();
+        //TODO: find the associations that are selected and dump 'em back
+        return selectedAssociations;
     }
 
 }

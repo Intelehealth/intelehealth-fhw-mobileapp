@@ -7,7 +7,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ExpandableListView;
 
@@ -106,7 +105,8 @@ public class QuestionNodeActivity extends AppCompatActivity {
         questionListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                currentNode.getOption(groupPosition).getOption(childPosition).toggleSelected();
+                Node question = currentNode.getOption(groupPosition).getOption(childPosition);
+                question.toggleSelected();
                 if (currentNode.getOption(groupPosition).anySubSelected()) {
                     currentNode.getOption(groupPosition).setSelected();
                 } else {
@@ -114,18 +114,13 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 }
                 adapter.notifyDataSetChanged();
 
-                Node question = currentNode.getOption(groupPosition).getOption(childPosition);
                 if (question.type() != null) {
-                    handleQuestion(question);
-                    adapter.notifyDataSetChanged();
+                    HelperMethods.handleQuestion(question, QuestionNodeActivity.this, adapter);
                 }
 
                 if (!question.isTerminal()) {
-
-                    adapter.notifyDataSetChanged();
+                    HelperMethods.subLevelQuestion(question, QuestionNodeActivity.this, adapter);
                 }
-
-                adapter.notifyDataSetChanged();
                 return false;
 
             }
@@ -137,14 +132,6 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 if (groupPosition != 0) {
                     questionListView.collapseGroup(groupPosition - 1);
                 }
-            }
-        });
-
-        questionListView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                return false;
             }
         });
 
@@ -173,35 +160,6 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
     }
 
-    private void handleQuestion(Node questionNode) {
-        String type = questionNode.type();
-        switch (type) {
-            case "text":
-                HelperMethods.askText(questionNode, this, adapter);
-                break;
-            case "date":
-                HelperMethods.askDate(questionNode, this, adapter);
-                break;
-            case "location":
-                HelperMethods.askLocation(questionNode, this, adapter);
-                break;
-            case "number":
-                HelperMethods.askNumber(questionNode, this, adapter);
-                break;
-            case "area":
-                HelperMethods.askArea(questionNode, this, adapter);
-                break;
-            case "duration":
-                HelperMethods.askDuration(questionNode, this, adapter);
-                break;
-            case "range":
-                HelperMethods.askRange(questionNode, this, adapter);
-                break;
-            case "frequency":
-                HelperMethods.askFrequency(questionNode, this, adapter);
-                break;
-        }
-    }
 
     private ArrayList<String> parseExams(Node node) {
         ArrayList<String> examList = new ArrayList<>();

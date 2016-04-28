@@ -5,7 +5,6 @@ import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,9 +22,6 @@ public class NodeAdapter extends BaseExpandableListAdapter {
     private Node mNode;
     private LayoutInflater mInflater;
     private String callingClass;
-
-    // The default choice is the multiple one
-    private int choiceMode = AbsListView.CHOICE_MODE_MULTIPLE;
 
     public NodeAdapter(Context context, Node node, String caller) {
         this.mContext = context;
@@ -77,14 +73,17 @@ public class NodeAdapter extends BaseExpandableListAdapter {
 
         Node node = (Node) getGroup(groupPosition);
 
-        final TextView textView = (TextView) convertView.findViewById(R.id.expandable_list_group);
+        TextView textView = (TextView) convertView.findViewById(R.id.expandable_list_group);
         ImageView imageView = (ImageView) convertView.findViewById(R.id.expandable_list_group_image);
 
         textView.setText(node.text());
         textView.setTypeface(Typeface.DEFAULT_BOLD);
 
         switch (callingClass) {
-            case "QuestionNodeActivity":
+            case "ComplaintNodeActivity":
+                imageView.setVisibility(View.GONE);
+                break;
+            default:
                 if (node.isSelected() | node.anySubSelected()) {
                     imageView.setImageResource(R.drawable.green_check);
                     //textView.setBackgroundResource(R.color.colorAccent);
@@ -92,9 +91,6 @@ public class NodeAdapter extends BaseExpandableListAdapter {
                     imageView.setImageResource(R.drawable.grey_check);
                     //textView.setBackgroundResource(0);
                 }
-                break;
-            default:
-                imageView.setVisibility(View.GONE);
                 break;
         }
 
@@ -121,7 +117,7 @@ public class NodeAdapter extends BaseExpandableListAdapter {
                     imageView.setImageResource(R.drawable.grey_check);
                 }
                 break;
-            case "QuestionNodeActivity":
+            default:
                 if (node.isSelected()) {
                     imageView.setImageResource(R.drawable.checkbox);
                     //textView.setBackgroundResource(R.color.colorAccent);
@@ -130,7 +126,6 @@ public class NodeAdapter extends BaseExpandableListAdapter {
                     imageView.setImageResource(R.drawable.blank_checkbox);
                 }
                 break;
-
         }
 
         return convertView;
