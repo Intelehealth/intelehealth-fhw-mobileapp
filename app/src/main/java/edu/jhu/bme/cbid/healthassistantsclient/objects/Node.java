@@ -263,7 +263,7 @@ public class Node implements Serializable{
         this.text = newText;
     }
 
-    private String formLanguage() {
+    public String formLanguage() {
         List<String> stringsList = new ArrayList<>();
         List<Node> mOptions = optionsList;
         for (int i = 0; i < mOptions.size(); i++) {
@@ -294,12 +294,12 @@ public class Node implements Serializable{
 
     public String generateLanguage() {
         String raw = this.formLanguage();
-        String formatted = raw;
-//        if (Character.toString(raw.charAt(0)).equals(",")) {
-//            formatted = raw.substring(2);
-//        } else {
-//            formatted = raw;
-//        }
+        String formatted;
+        if (Character.toString(raw.charAt(0)).equals(",")) {
+            formatted = raw.substring(2);
+        } else {
+            formatted = raw;
+        }
         return formatted;
     }
 

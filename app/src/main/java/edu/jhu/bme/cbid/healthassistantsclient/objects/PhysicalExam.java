@@ -128,4 +128,46 @@ public class PhysicalExam extends Node {
 
     }
 
+    @Override
+    public String formLanguage() {
+        List<String> stringsList = new ArrayList<>();
+        List<Node> mOptions = selectedNodes;
+        for (int i = 0; i < mOptions.size(); i++) {
+            if (mOptions.get(i).isSelected()) {
+                stringsList.add(mOptions.get(i).language());
+                if (!mOptions.get(i).isTerminal()) {
+                    stringsList.add(mOptions.get(i).formLanguage());
+                }
+            }
+        }
+
+        String languageSeparator = ", ";
+        String mLanguage = "";
+        for (int i = 0; i < stringsList.size(); i++) {
+            if (i == 0) {
+                if (!stringsList.get(i).isEmpty()) {
+                    mLanguage = mLanguage.concat(stringsList.get(i));
+                }
+            } else {
+                if (!stringsList.get(i).isEmpty()) {
+                    mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i));
+                }
+            }
+        }
+        Log.d("Form language", mLanguage);
+        return mLanguage;
+    }
+
+    @Override
+    public String generateLanguage() {
+        String raw = this.formLanguage();
+        String formatted;
+        if (Character.toString(raw.charAt(0)).equals(",")) {
+            formatted = raw.substring(2);
+        } else {
+            formatted = raw;
+        }
+        return formatted;
+    }
+
 }

@@ -100,8 +100,8 @@ public class PhysicalExamActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-//                physicalFindings = physicalExamMap.generateLanguage();
-                physicalFindings = physicalExamMap.language();
+                physicalFindings = physicalExamMap.generateLanguage();
+                //physicalFindings = physicalExamMap.language();
                 Log.d(LOG_TAG, physicalFindings);
 
                 Intent intent1 = new Intent(PhysicalExamActivity.this, PatientSummaryActivity.class);
@@ -226,14 +226,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
                 }
             });
 
-            expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-                @Override
-                public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                    Node question = viewNode.getOption(groupPosition);
-                    question.toggleSelected();
-                    return false;
-                }
-            });
 
 
             return rootView;
