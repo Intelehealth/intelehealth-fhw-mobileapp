@@ -2,6 +2,7 @@ package edu.jhu.bme.cbid.healthassistantsclient;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -56,18 +57,19 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
     PhysicalExam physicalExamMap;
 
+    String physicalFindings;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-//        Intent intent = this.getIntent(); // The intent was passed to the activity
-//        if (intent != null) {
-//            patientID = intent.getLongExtra("patientID", 0);
-//            Log.v(LOG_TAG, patientID + "");
-//        }
-//        selectedExamsList = intent.getStringArrayListExtra("complaints");
-        selectedExamsList = new ArrayList<>();
-        selectedExamsList.add("Head:Injury");
-        //selectedExamsList.add("Head:Swelling");
+        Intent intent = this.getIntent(); // The intent was passed to the activity
+        if (intent != null) {
+            patientID = intent.getLongExtra("patientID", 0);
+            selectedExamsList = intent.getStringArrayListExtra("exams");
+            Log.v(LOG_TAG, patientID + "");
+        }
+        //TODO check if intent is null
+
 
         physicalExamMap = new PhysicalExam(HelperMethods.encodeJSON(this, mFileName), selectedExamsList);
 
@@ -97,6 +99,14 @@ public class PhysicalExamActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+//                physicalFindings = physicalExamMap.generateLanguage();
+                physicalFindings = physicalExamMap.language();
+                Log.d(LOG_TAG, physicalFindings);
+
+                Intent intent1 = new Intent(PhysicalExamActivity.this, PatientSummaryActivity.class);
+                intent1.putExtra("patientID", patientID);
+                startActivity(intent1);
             }
         });
 
@@ -169,7 +179,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
             String nodeText = viewNode.text();
             textView.setText(nodeText);
 
-            Log.d("View Number", String.valueOf(viewNumber));
+            //Log.d("View Number", String.valueOf(viewNumber));
 
             if (viewNode.isAidAvailable()) {
                 String type = viewNode.getJobAidType();
@@ -195,6 +205,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                 @Override
                 public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                     Node question = viewNode.getOption(groupPosition).getOption(childPosition);
+                    Log.d("Clicked", question.language());
                     question.toggleSelected();
                     if (viewNode.getOption(groupPosition).anySubSelected()) {
                         viewNode.getOption(groupPosition).setSelected();

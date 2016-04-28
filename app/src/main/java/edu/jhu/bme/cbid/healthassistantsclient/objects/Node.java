@@ -1,5 +1,7 @@
 package edu.jhu.bme.cbid.healthassistantsclient.objects;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -286,17 +288,18 @@ public class Node implements Serializable{
                 }
             }
         }
+        Log.d("Form language", mLanguage);
         return mLanguage;
     }
 
     public String generateLanguage() {
         String raw = this.formLanguage();
-        String formatted;
-        if (Character.toString(raw.charAt(0)).equals(",")) {
-            formatted = raw.substring(2);
-        } else {
-            formatted = raw;
-        }
+        String formatted = raw;
+//        if (Character.toString(raw.charAt(0)).equals(",")) {
+//            formatted = raw.substring(2);
+//        } else {
+//            formatted = raw;
+//        }
         return formatted;
     }
 
