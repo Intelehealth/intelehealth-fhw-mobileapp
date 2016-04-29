@@ -21,7 +21,7 @@ import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
 public class PatientHistoryActivity extends AppCompatActivity {
 
     String LOG_TAG = "Patient History Activity";
-    String patient = "Patient";
+    String patient = "patient";
 
     Long patientID;
     ArrayList<String> physicalExams;
@@ -39,12 +39,10 @@ public class PatientHistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Intent intent = this.getIntent(); // The intent was passed to the activity
-        if (intent != null) {
-            patientID = intent.getLongExtra("patientID", 0);
-            Log.v(LOG_TAG, patientID + "");
-        }
-        physicalExams = intent.getStringArrayListExtra("exams");
+
+        Bundle bundle = getIntent().getExtras();
+        patientID = bundle.getLong("patientID", 0);
+        physicalExams = bundle.getStringArrayList("exams");
 
 
         setTitle(R.string.title_activity_patient_history);

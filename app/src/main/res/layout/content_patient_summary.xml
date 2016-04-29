@@ -58,14 +58,14 @@
                         android:textSize="@dimen/card_title_text_size"
                         android:text="Vitals"/>
 
-                    <ImageButton
-                        android:id="@+id/imagebutton_edit_vitals"
-                        android:layout_width="@dimen/edit_icon_width"
-                        android:layout_height="@dimen/edit_icon_height"
-                        android:src="@drawable/edit_icon"
-                        android:padding="@dimen/padding_card_action"
-                        android:layout_alignRight="@id/textview_heading_vitals"
-                        android:background="@null"/>
+                    <!--<ImageButton-->
+                        <!--android:id="@+id/imagebutton_edit_vitals"-->
+                        <!--android:layout_width="@dimen/edit_icon_width"-->
+                        <!--android:layout_height="@dimen/edit_icon_height"-->
+                        <!--android:src="@drawable/edit_icon"-->
+                        <!--android:padding="@dimen/padding_card_action"-->
+                        <!--android:layout_alignRight="@id/textview_heading_vitals"-->
+                        <!--android:background="@null"/>-->
 
                         <TableLayout
                             android:layout_width="match_parent"
@@ -135,7 +135,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:textSize="@dimen/card_content_text_size"
-                                    android:layout_weight="1"
+                                    android:layout_weight=".25"
                                     android:text="BP"/>
 
                                 <LinearLayout
@@ -248,14 +248,14 @@
                         android:paddingTop="@dimen/padding_card_title_text"
                         android:textSize="@dimen/card_title_text_size"
                         android:text="C/O"/>
-                     <ImageButton
-                         android:id="@+id/imagebutton_edit_complaint"
-                         android:layout_width="@dimen/edit_icon_width"
-                         android:layout_height="@dimen/edit_icon_height"
-                         android:src="@drawable/edit_icon"
-                         android:padding="@dimen/padding_card_action"
-                         android:layout_alignRight="@id/textview_heading_complaint"
-                         android:background="@null"/>
+                     <!--<ImageButton-->
+                         <!--android:id="@+id/imagebutton_edit_complaint"-->
+                         <!--android:layout_width="@dimen/edit_icon_width"-->
+                         <!--android:layout_height="@dimen/edit_icon_height"-->
+                         <!--android:src="@drawable/edit_icon"-->
+                         <!--android:padding="@dimen/padding_card_action"-->
+                         <!--android:layout_alignRight="@id/textview_heading_complaint"-->
+                         <!--android:background="@null"/>-->
                     <TextView
                         android:id="@+id/textview_content_complaint"
                         android:layout_width="match_parent"
@@ -291,14 +291,14 @@
                         android:paddingTop="@dimen/padding_card_title_text"
                         android:textSize="@dimen/card_title_text_size"
                         android:text="On Examination"/>
-                    <ImageButton
-                        android:id="@+id/imagebutton_edit_physexam"
-                        android:layout_width="@dimen/edit_icon_width"
-                        android:layout_height="@dimen/edit_icon_height"
-                        android:src="@drawable/edit_icon"
-                        android:padding="@dimen/padding_card_action"
-                        android:layout_alignRight="@id/textview_heading_physexam"
-                        android:background="@null"/>
+                    <!--<ImageButton-->
+                        <!--android:id="@+id/imagebutton_edit_physexam"-->
+                        <!--android:layout_width="@dimen/edit_icon_width"-->
+                        <!--android:layout_height="@dimen/edit_icon_height"-->
+                        <!--android:src="@drawable/edit_icon"-->
+                        <!--android:padding="@dimen/padding_card_action"-->
+                        <!--android:layout_alignRight="@id/textview_heading_physexam"-->
+                        <!--android:background="@null"/>-->
                     <TextView
                         android:id="@+id/textview_content_physexam"
                         android:layout_width="match_parent"
@@ -333,14 +333,14 @@
                         android:paddingTop="@dimen/padding_card_title_text"
                         android:textSize="@dimen/card_title_text_size"
                         android:text="Family History"/>
-                    <ImageButton
-                        android:id="@+id/imagebutton_edit_famhist"
-                        android:layout_width="@dimen/edit_icon_width"
-                        android:layout_height="@dimen/edit_icon_height"
-                        android:src="@drawable/edit_icon"
-                        android:padding="@dimen/padding_card_action"
-                        android:layout_alignRight="@id/textview_heading_famhist"
-                        android:background="@null"/>
+                    <!--<ImageButton-->
+                        <!--android:id="@+id/imagebutton_edit_famhist"-->
+                        <!--android:layout_width="@dimen/edit_icon_width"-->
+                        <!--android:layout_height="@dimen/edit_icon_height"-->
+                        <!--android:src="@drawable/edit_icon"-->
+                        <!--android:padding="@dimen/padding_card_action"-->
+                        <!--android:layout_alignRight="@id/textview_heading_famhist"-->
+                        <!--android:background="@null"/>-->
                     <TextView
                         android:id="@+id/textview_content_famhist"
                         android:layout_width="match_parent"
@@ -375,14 +375,14 @@
                         android:paddingTop="@dimen/padding_card_title_text"
                         android:textSize="@dimen/card_title_text_size"
                         android:text="Medical History"/>
-                    <ImageButton
-                        android:id="@+id/imagebutton_edit_pathist"
-                        android:layout_width="@dimen/edit_icon_width"
-                        android:layout_height="@dimen/edit_icon_height"
-                        android:src="@drawable/edit_icon"
-                        android:padding="@dimen/padding_card_action"
-                        android:layout_alignRight="@id/textview_heading_pathist"
-                        android:background="@null"/>
+                    <!--<ImageButton-->
+                        <!--android:id="@+id/imagebutton_edit_pathist"-->
+                        <!--android:layout_width="@dimen/edit_icon_width"-->
+                        <!--android:layout_height="@dimen/edit_icon_height"-->
+                        <!--android:src="@drawable/edit_icon"-->
+                        <!--android:padding="@dimen/padding_card_action"-->
+                        <!--android:layout_alignRight="@id/textview_heading_pathist"-->
+                        <!--android:background="@null"/>-->
                     <TextView
                         android:id="@+id/textview_content_pathist"
                         android:layout_width="match_parent"
@@ -418,14 +418,14 @@
                         android:paddingTop="@dimen/padding_card_title_text"
                         android:textSize="@dimen/card_title_text_size"
                         android:text="Previous Reports"/>
-                    <ImageButton
-                        android:id="@+id/imagebutton_edit_prevreports"
-                        android:layout_width="@dimen/edit_icon_width"
-                        android:layout_height="@dimen/edit_icon_height"
-                        android:src="@drawable/edit_icon"
-                        android:padding="@dimen/padding_card_action"
-                        android:layout_alignRight="@id/textview_heading_prevreports"
-                        android:background="@null"/>
+                    <!--<ImageButton-->
+                        <!--android:id="@+id/imagebutton_edit_prevreports"-->
+                        <!--android:layout_width="@dimen/edit_icon_width"-->
+                        <!--android:layout_height="@dimen/edit_icon_height"-->
+                        <!--android:src="@drawable/edit_icon"-->
+                        <!--android:padding="@dimen/padding_card_action"-->
+                        <!--android:layout_alignRight="@id/textview_heading_prevreports"-->
+                        <!--android:background="@null"/>-->
                     <TextView
                         android:id="@+id/textview_content_prevreports"
                         android:layout_width="match_parent"
@@ -461,14 +461,14 @@
                     android:paddingTop="@dimen/padding_card_title_text"
                     android:textSize="@dimen/card_title_text_size"
                     android:text="HA on duty"/>
-                <ImageButton
-                    android:id="@+id/imagebutton_edit_hadetails"
-                    android:layout_width="@dimen/edit_icon_width"
-                    android:layout_height="@dimen/edit_icon_height"
-                    android:src="@drawable/edit_icon"
-                    android:padding="@dimen/padding_card_action"
-                    android:layout_alignRight="@id/textview_heading_hadetails"
-                    android:background="@null"/>
+                <!--<ImageButton-->
+                    <!--android:id="@+id/imagebutton_edit_hadetails"-->
+                    <!--android:layout_width="@dimen/edit_icon_width"-->
+                    <!--android:layout_height="@dimen/edit_icon_height"-->
+                    <!--android:src="@drawable/edit_icon"-->
+                    <!--android:padding="@dimen/padding_card_action"-->
+                    <!--android:layout_alignRight="@id/textview_heading_hadetails"-->
+                    <!--android:background="@null"/>-->
                 <TextView
                     android:id="@+id/textview_content_hadetails"
                     android:layout_width="match_parent"
@@ -515,14 +515,14 @@
                         android:paddingTop="@dimen/padding_card_title_text"
                         android:textSize="@dimen/card_title_text_size"
                         android:text="Diagnosis"/>
-                    <ImageButton
-                        android:id="@+id/imagebutton_edit_diagnosis"
-                        android:layout_width="@dimen/edit_icon_width"
-                        android:layout_height="@dimen/edit_icon_height"
-                        android:src="@drawable/edit_icon"
-                        android:padding="@dimen/padding_card_action"
-                        android:layout_alignRight="@id/textview_heading_diagnosis"
-                        android:background="@null"/>
+                    <!--<ImageButton-->
+                        <!--android:id="@+id/imagebutton_edit_diagnosis"-->
+                        <!--android:layout_width="@dimen/edit_icon_width"-->
+                        <!--android:layout_height="@dimen/edit_icon_height"-->
+                        <!--android:src="@drawable/edit_icon"-->
+                        <!--android:padding="@dimen/padding_card_action"-->
+                        <!--android:layout_alignRight="@id/textview_heading_diagnosis"-->
+                        <!--android:background="@null"/>-->
                     <TextView
                         android:id="@+id/textview_content_diagnosis"
                         android:layout_width="match_parent"
@@ -559,14 +559,14 @@
                         android:paddingTop="@dimen/padding_card_title_text"
                         android:textSize="@dimen/card_title_text_size"
                         android:text="Medications"/>
-                    <ImageButton
-                        android:id="@+id/imagebutton_edit_medications"
-                        android:layout_width="@dimen/edit_icon_width"
-                        android:layout_height="@dimen/edit_icon_height"
-                        android:src="@drawable/edit_icon"
-                        android:padding="@dimen/padding_card_action"
-                        android:layout_alignRight="@id/textview_heading_medications"
-                        android:background="@null"/>
+                    <!--<ImageButton-->
+                        <!--android:id="@+id/imagebutton_edit_medications"-->
+                        <!--android:layout_width="@dimen/edit_icon_width"-->
+                        <!--android:layout_height="@dimen/edit_icon_height"-->
+                        <!--android:src="@drawable/edit_icon"-->
+                        <!--android:padding="@dimen/padding_card_action"-->
+                        <!--android:layout_alignRight="@id/textview_heading_medications"-->
+                        <!--android:background="@null"/>-->
                     <TextView
                         android:id="@+id/textview_content_medications"
                         android:layout_width="match_parent"
@@ -603,14 +603,14 @@
                         android:paddingTop="@dimen/padding_card_title_text"
                         android:textSize="@dimen/card_title_text_size"
                         android:text="Tests/Investigations"/>
-                    <ImageButton
-                        android:id="@+id/imagebutton_edit_tests"
-                        android:layout_width="@dimen/edit_icon_width"
-                        android:layout_height="@dimen/edit_icon_height"
-                        android:src="@drawable/edit_icon"
-                        android:padding="@dimen/padding_card_action"
-                        android:layout_alignRight="@id/textview_heading_tests"
-                        android:background="@null"/>
+                    <!--<ImageButton-->
+                        <!--android:id="@+id/imagebutton_edit_tests"-->
+                        <!--android:layout_width="@dimen/edit_icon_width"-->
+                        <!--android:layout_height="@dimen/edit_icon_height"-->
+                        <!--android:src="@drawable/edit_icon"-->
+                        <!--android:padding="@dimen/padding_card_action"-->
+                        <!--android:layout_alignRight="@id/textview_heading_tests"-->
+                        <!--android:background="@null"/>-->
                     <TextView
                         android:id="@+id/textview_content_tests"
                         android:layout_width="match_parent"
@@ -646,14 +646,14 @@
                         android:paddingTop="@dimen/padding_card_title_text"
                         android:textSize="@dimen/card_title_text_size"
                         android:text="Advice/Referral"/>
-                    <ImageButton
-                        android:id="@+id/imagebutton_edit_advice"
-                        android:layout_width="@dimen/edit_icon_width"
-                        android:layout_height="@dimen/edit_icon_height"
-                        android:src="@drawable/edit_icon"
-                        android:padding="@dimen/padding_card_action"
-                        android:layout_alignRight="@id/textview_heading_advice"
-                        android:background="@null"/>
+                    <!--<ImageButton-->
+                        <!--android:id="@+id/imagebutton_edit_advice"-->
+                        <!--android:layout_width="@dimen/edit_icon_width"-->
+                        <!--android:layout_height="@dimen/edit_icon_height"-->
+                        <!--android:src="@drawable/edit_icon"-->
+                        <!--android:padding="@dimen/padding_card_action"-->
+                        <!--android:layout_alignRight="@id/textview_heading_advice"-->
+                        <!--android:background="@null"/>-->
                     <TextView
                         android:id="@+id/textview_content_advice"
                         android:layout_width="match_parent"
@@ -689,14 +689,14 @@
                         android:paddingTop="@dimen/padding_card_title_text"
                         android:textSize="@dimen/card_title_text_size"
                         android:text="Doctor"/>
-                    <ImageButton
-                        android:id="@+id/imagebutton_edit_drdetails"
-                        android:layout_width="@dimen/edit_icon_width"
-                        android:layout_height="@dimen/edit_icon_height"
-                        android:src="@drawable/edit_icon"
-                        android:padding="@dimen/padding_card_action"
-                        android:layout_alignRight="@id/textview_heading_drdetails"
-                        android:background="@null"/>
+                    <!--<ImageButton-->
+                        <!--android:id="@+id/imagebutton_edit_drdetails"-->
+                        <!--android:layout_width="@dimen/edit_icon_width"-->
+                        <!--android:layout_height="@dimen/edit_icon_height"-->
+                        <!--android:src="@drawable/edit_icon"-->
+                        <!--android:padding="@dimen/padding_card_action"-->
+                        <!--android:layout_alignRight="@id/textview_heading_drdetails"-->
+                        <!--android:background="@null"/>-->
                     <TextView
                         android:id="@+id/textview_content_drdetails"
                         android:layout_width="match_parent"

@@ -6,7 +6,6 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -307,7 +306,7 @@ public class IdentificationActivity extends AppCompatActivity {
     public class InsertPatientTable extends AsyncTask<Void, Void, Boolean>
             implements DialogInterface.OnCancelListener {
 
-        long patientID;
+        Long patientID;
         Patient patient;
 
         InsertPatientTable(Patient currentPatient) {
@@ -347,6 +346,18 @@ public class IdentificationActivity extends AppCompatActivity {
 
             patient.setId(patientID);
 
+            ContentValues contentValuesUpdate = new ContentValues();
+            contentValuesUpdate.put("_id", patient.getId());
+            String selection = "first_name = ?";
+            String[] args = {patient.getFirstName()};
+
+            localdb.update(
+                    "patient",
+                    contentValuesUpdate,
+                    selection,
+                    args
+            );
+
             Gson gson = new GsonBuilder().serializeNulls().create();
             //Log.i("Patient", gson.toJson(patient));
 
@@ -365,7 +376,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             super.onPostExecute(aBoolean);
             Intent intent2 = new Intent(IdentificationActivity.this, ComplaintNodeActivity.class);
-            intent2.putExtra("patientID", patient.getId());
+            intent2.putExtra("patientID", patientID);
             startActivity(intent2);
         }
     }

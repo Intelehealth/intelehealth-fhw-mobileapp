@@ -67,14 +67,10 @@ public class PhysicalExamActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Intent intent = this.getIntent(); // The intent was passed to the activity
-        if (intent != null) {
-            patientID = intent.getLongExtra("patientID", 0);
-            selectedExamsList = intent.getStringArrayListExtra("exams");
-            Log.v(LOG_TAG, patientID + "");
-        } else {
-            patientID = null;
-        }
+        Bundle bundle = getIntent().getExtras();
+        patientID = bundle.getLong("patientID", 0);
+        selectedExamsList = bundle.getStringArrayList("exams");
+
 
         physicalExamMap = new PhysicalExam(HelperMethods.encodeJSON(this, mFileName), selectedExamsList);
 
@@ -295,7 +291,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
         final int VISIT_ID = 100; // TODO: Connect the proper VISIT_ID
         final int CREATOR_ID = 42; // TODO: Connect the proper CREATOR_ID
 
-        final int CONCEPT_ID = 16319; // RHK ON EXAM
+        final int CONCEPT_ID = 163189; // RHK ON EXAM
 
 
         Gson gson = new Gson();

@@ -46,14 +46,9 @@ public class QuestionNodeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
-
-        Intent intent = this.getIntent(); // The intent was passed to the activity
-        if (intent != null) {
-            patientID = intent.getLongExtra("patientID", 0);
-            Log.v(LOG_TAG, patientID + "");
-        }
-        complaints = intent.getStringArrayListExtra("complaints");
+        Bundle bundle = getIntent().getExtras();
+        patientID = bundle.getLong("patientID", 0);
+        complaints = bundle.getStringArrayList("complaints");
 
         complaintDetails = new HashMap<>();
         physicalExams = new ArrayList<>();
@@ -128,7 +123,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 }
                 adapter.notifyDataSetChanged();
 
-                if (question.type() != null) {
+                if (!question.type().isEmpty()) {
                     HelperMethods.handleQuestion(question, QuestionNodeActivity.this, adapter);
                 }
 

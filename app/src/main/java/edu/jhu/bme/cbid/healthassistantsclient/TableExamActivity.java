@@ -23,7 +23,6 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
-import edu.jhu.bme.cbid.healthassistantsclient.objects.PhysicalExam;
 import edu.jhu.bme.cbid.healthassistantsclient.objects.TableExam;
 
 public class TableExamActivity extends AppCompatActivity {
@@ -44,6 +43,12 @@ public class TableExamActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Bundle bundle = getIntent().getExtras();
+        patientID = bundle.getLong("patientID", 0);
+        physExams = bundle.getStringArrayList("exams");
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table_exam);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -56,13 +61,6 @@ public class TableExamActivity extends AppCompatActivity {
         mBpDia = (EditText) findViewById(R.id.table_bpdia);
         mTemperature = (EditText) findViewById(R.id.table_temp);
         mSpo2 = (EditText) findViewById(R.id.table_spo2);
-
-        Intent intent = this.getIntent(); // The intent was passed to the activity
-        if (intent != null) {
-            patientID = intent.getLongExtra("patientID", 0);
-            physExams = intent.getStringArrayListExtra("exams");
-            Log.v(LOG_TAG, patientID + "");
-        }
 
         mSpo2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -180,6 +178,7 @@ public class TableExamActivity extends AppCompatActivity {
             final int CREATOR_ID = 42; // TODO: Connect the proper CREATOR_ID
 
             final int CONCEPT_ID = 163189; // RHK EXAM BLURB
+            //TODO: split these up as each bit of info is different
 
             Gson gson = new Gson();
             String toInsert = gson.toJson(exam);

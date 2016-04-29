@@ -41,12 +41,10 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Intent intent = this.getIntent(); // The intent was passed to the activity
-        if (intent != null) {
-            patientID = intent.getLongExtra("patientID", 0);
-            Log.v(LOG_TAG, patientID + "");
-        }
-        physicalExams = intent.getStringArrayListExtra("exams");
+
+        Bundle bundle = getIntent().getExtras();
+        patientID = bundle.getLong("patientID", 0);
+        physicalExams = bundle.getStringArrayList("exams");
 
 
         super.onCreate(savedInstanceState);
@@ -62,12 +60,11 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                 if(familyHistoryMap.anySubSelected()){
                     for (Node node : familyHistoryMap.getOptionsList()) {
                         if(node.isSelected()){
-                            familyHistory.put(node.text(), node.generateLanguage());
+                            String familyString = node.generateLanguage();
 
-                            String familyString = generateString(familyHistory);
                             //This was moved into a different function only because it will get removed once OpenMRS has more concepts
 
-                            MedicalHistory familyObj = new MedicalHistory(family, familyString);
+                            MedicalHistory familyObj = new MedicalHistory(node.text(), familyString);
 
                             long obsId = insertDb(familyObj);
                         }
