@@ -55,10 +55,8 @@ public class QuestionNodeActivity extends AppCompatActivity {
         }
         complaints = intent.getStringArrayListExtra("complaints");
 
-        complaints = new ArrayList<>();
         complaintDetails = new HashMap<>();
         physicalExams = new ArrayList<>();
-        complaints.add("Difficulty in Breathing");
 
         mKnowledge = new Knowledge(HelperMethods.encodeJSON(this, mFileName));
         complaintsNodes = new ArrayList<>();

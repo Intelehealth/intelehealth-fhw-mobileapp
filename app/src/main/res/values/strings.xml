@@ -6,7 +6,7 @@
     <string name="hint_required">Required</string>
     <string name="hint_optional">Optional</string>
     <string name="tag_optional">optional</string>
-    <string name="generic_ok">Okay</string>
+    <string name="generic_ok">OK</string>
     <string name="generic_cancel">Cancel</string>
 
     //Database Schema Names

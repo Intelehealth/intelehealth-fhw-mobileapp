@@ -2,7 +2,6 @@ package edu.jhu.bme.cbid.healthassistantsclient;
 
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -27,9 +26,9 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
-import edu.jhu.bme.cbid.healthassistantsclient.objects.Complaint;
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
 import edu.jhu.bme.cbid.healthassistantsclient.objects.PhysicalExam;
+import edu.jhu.bme.cbid.healthassistantsclient.objects.PhysicalFindings;
 
 public class PhysicalExamActivity extends AppCompatActivity {
 
@@ -55,21 +54,28 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
     String mFileName = "physicalexams.json";
 
+    String storageName = "physical";
+
     PhysicalExam physicalExamMap;
 
-    String physicalFindings;
+    String physicalString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Intent intent = this.getIntent(); // The intent was passed to the activity
-        if (intent != null) {
-            patientID = intent.getLongExtra("patientID", 0);
-            selectedExamsList = intent.getStringArrayListExtra("exams");
-            Log.v(LOG_TAG, patientID + "");
-        }
-        //TODO check if intent is null
+//        Intent intent = this.getIntent(); // The intent was passed to the activity
+//        if (intent != null) {
+//            patientID = intent.getLongExtra("patientID", 0);
+//            selectedExamsList = intent.getStringArrayListExtra("exams");
+//            Log.v(LOG_TAG, patientID + "");
+//        } else {
+//            patientID = null;
+//            selectedExamsList = new ArrayList<>();
+//            selectedExamsList.add("Head:Injury");
+//        }
 
+        selectedExamsList = new ArrayList<>();
+        selectedExamsList.add("Head:Injury");
 
         physicalExamMap = new PhysicalExam(HelperMethods.encodeJSON(this, mFileName), selectedExamsList);
 
@@ -100,13 +106,14 @@ public class PhysicalExamActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                physicalFindings = physicalExamMap.generateLanguage();
-                //physicalFindings = physicalExamMap.language();
-                Log.d(LOG_TAG, physicalFindings);
+                physicalString = physicalExamMap.generateFindings();
 
-                Intent intent1 = new Intent(PhysicalExamActivity.this, PatientSummaryActivity.class);
-                intent1.putExtra("patientID", patientID);
-                startActivity(intent1);
+//                PhysicalFindings physicalFindings = new PhysicalFindings(storageName, physicalString);
+//                long obsId = insertDb(physicalFindings);
+
+//                Intent intent1 = new Intent(PhysicalExamActivity.this, PatientSummaryActivity.class);
+//                intent1.putExtra("patientID", patientID);
+//                startActivity(intent1);
             }
         });
 
@@ -179,22 +186,18 @@ public class PhysicalExamActivity extends AppCompatActivity {
             String nodeText = viewNode.text();
             textView.setText(nodeText);
 
-            //Log.d("View Number", String.valueOf(viewNumber));
+            Node displayNode = viewNode.getOption(0);
 
-            if (viewNode.isAidAvailable()) {
-                String type = viewNode.getJobAidType();
-                switch (type) {
-                    case "video":
-                        imageView.setVisibility(View.GONE);
-                        break;
-                    case "image":
-
-                        //videoView.setVisibility(View.GONE);
-                        break;
-                    default:
-                        //videoView.setVisibility(View.GONE);
-                        imageView.setVisibility(View.GONE);
-                        break;
+            if (displayNode.isAidAvailable()) {
+                String type = displayNode.getJobAidType();
+                Log.d(displayNode.text(), type);
+                if(type.equals("video")){
+                    imageView.setVisibility(View.GONE);
+                } else if (type.equals("image")){
+                    Log.d(displayNode.text(), "IMAGE TYPE RECOGNIZED");
+                    imageView.setImageResource(R.drawable.jaundiceexample);
+                } else {
+                    imageView.setVisibility(View.GONE);
                 }
             }
 
@@ -205,7 +208,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                 @Override
                 public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                     Node question = viewNode.getOption(groupPosition).getOption(childPosition);
-                    Log.d("Clicked", question.language());
+                    //Log.d("Clicked", question.language());
                     question.toggleSelected();
                     if (viewNode.getOption(groupPosition).anySubSelected()) {
                         viewNode.getOption(groupPosition).setSelected();
@@ -226,6 +229,14 @@ public class PhysicalExamActivity extends AppCompatActivity {
                 }
             });
 
+            expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+                @Override
+                public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                    return true;
+                }
+            });
+
+            expandableListView.expandGroup(0);
 
 
             return rootView;
@@ -263,17 +274,17 @@ public class PhysicalExamActivity extends AppCompatActivity {
         }
     }
 
-    private long insertDb(Complaint complaintObj) {
+    private long insertDb(PhysicalFindings findingsObj) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
 
         final int VISIT_ID = 100; // TODO: Connect the proper VISIT_ID
         final int CREATOR_ID = 42; // TODO: Connect the proper CREATOR_ID
 
-        final int CONCEPT_ID = 163186; // RHK COMPLAINT
+        final int CONCEPT_ID = 16319; // RHK ON EXAM
 
 
         Gson gson = new Gson();
-        String toInsert = gson.toJson(complaintObj);
+        String toInsert = gson.toJson(findingsObj);
 
         Log.d(LOG_TAG, toInsert);
 

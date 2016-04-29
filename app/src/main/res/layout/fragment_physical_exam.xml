@@ -10,17 +10,19 @@
     tools:context="edu.jhu.bme.cbid.healthassistantsclient.PhysicalExamActivity$PlaceholderFragment">
 
 
-    <ImageView
-        android:id="@+id/physical_exam_image_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
     <TextView
         android:id="@+id/physical_exam_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/physical_node_title"
         />
+
+    <ImageView
+        android:id="@+id/physical_exam_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"/>
+
 
 
     <ExpandableListView

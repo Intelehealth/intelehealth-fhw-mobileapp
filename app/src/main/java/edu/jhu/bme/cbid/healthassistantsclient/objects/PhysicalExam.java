@@ -37,23 +37,23 @@ public class PhysicalExam extends Node {
         if(!selection.isEmpty()){
             for (int i = 0; i < selection.size(); i++) {
                 String current = selection.get(i);
-                Log.d("Exam current: ", current);
+                //Log.d("Exam current: ", current);
                 String[] split = current.split(":");
                 String location = split[0];
-                Log.d("Exam location: ", location);
+                //Log.d("Exam location: ", location);
                 String exam = split[1];
-                Log.d("Exam exam: ", exam);
+                //Log.d("Exam exam: ", exam);
                 Node locationNodeRef = getOptionByName(location);
-                Log.d("Exam locRef", locationNodeRef.text());
+                //Log.d("Exam locRef", locationNodeRef.text());
                 Node examNodeRef = locationNodeRef.getOptionByName(exam);
-                Log.d("Exam examRef", examNodeRef.text());
+                //Log.d("Exam examRef", examNodeRef.text());
                 if (foundLocations.contains(location)) {
-                    Log.d("Exam if", "location in foundLocations");
+                    //Log.d("Exam if", "location in foundLocations");
                     int locationIndex = foundLocations.indexOf(location);
                     Node foundLocationNode = newOptionsList.get(locationIndex);
                     foundLocationNode.addOptions(new Node(examNodeRef));
                 } else {
-                    Log.d("Exam if", "not found");
+                    //Log.d("Exam if", "not found");
                     foundLocations.add(location);
                     Node locationNode = new Node(locationNodeRef);
                     locationNode.removeOptionsList();
@@ -128,39 +128,46 @@ public class PhysicalExam extends Node {
 
     }
 
-    @Override
-    public String formLanguage() {
+    public String generateFindings() {
+        String mLanguage = "";
         List<String> stringsList = new ArrayList<>();
-        List<Node> mOptions = selectedNodes;
-        for (int i = 0; i < mOptions.size(); i++) {
-            if (mOptions.get(i).isSelected()) {
-                stringsList.add(mOptions.get(i).language());
-                if (!mOptions.get(i).isTerminal()) {
-                    stringsList.add(mOptions.get(i).formLanguage());
+
+        int total = this.totalExams;
+        for (int i = 0; i < total; i++) {
+            Node node = getExamNode(i);
+            if(node.isSelected() | node.anySubSelected()){
+                Log.d(node.text(), node.language());
+                stringsList.add(node.language());
+                if(!node.isTerminal()){
+                    stringsList.add(node.formLanguage());
                 }
             }
+            mLanguage = mLanguage + node.getLanguage();
         }
 
+
         String languageSeparator = ", ";
-        String mLanguage = "";
+
         for (int i = 0; i < stringsList.size(); i++) {
-            if (i == 0) {
-                if (!stringsList.get(i).isEmpty()) {
-                    mLanguage = mLanguage.concat(stringsList.get(i));
-                }
-            } else {
-                if (!stringsList.get(i).isEmpty()) {
-                    mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i));
-                }
-            }
+            mLanguage = mLanguage.concat(stringsList.get(i));
+//            if (i == 0) {
+//                if (!stringsList.get(i).isEmpty()) {
+//                    mLanguage = mLanguage.concat(stringsList.get(i));
+//                }
+//            } else {
+//                if (!stringsList.get(i).isEmpty()) {
+//                    mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i));
+//                }
+//            }
         }
-        Log.d("Form language", mLanguage);
+
+        mLanguage = removeCharsFindings(mLanguage);
+
         return mLanguage;
     }
 
-    @Override
-    public String generateLanguage() {
-        String raw = this.formLanguage();
+
+    private String removeCharsFindings(String raw){
         String formatted;
         if (Character.toString(raw.charAt(0)).equals(",")) {
             formatted = raw.substring(2);
