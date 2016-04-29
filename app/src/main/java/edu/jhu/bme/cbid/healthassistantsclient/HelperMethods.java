@@ -89,10 +89,11 @@ public class HelperMethods {
         ImageView imageView = (ImageView) convertView.findViewById(R.id.dialog_subquestion_image_view);
         if(node.isAidAvailable()){
             if(node.getJobAidType().equals("image")){
-                imageView.setImageResource(R.drawable.jaundiceexample);
-                //TODO: add drawables and display images here
+                String drawableName = node.getJobAidFile();
+                int resID = context.getResources().getIdentifier(drawableName, "drawable",  context.getPackageName());
+                imageView.setImageResource(resID);
             } else {
-                //imageView.setVisibility(View.GONE);
+                imageView.setVisibility(View.GONE);
             }
         }
 

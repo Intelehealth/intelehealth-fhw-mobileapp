@@ -24,6 +24,7 @@ public class PhysicalExam extends Node {
         this.selectedNodes = matchSelections();
         this.totalExams = calculateTotal();
         this.pageTitles = determineTitles();
+
     }
 
 
@@ -34,7 +35,9 @@ public class PhysicalExam extends Node {
         newOptionsList.add(getOption(0));
         foundLocations.add(newOptionsList.get(0).text());
 
-        if(!selection.isEmpty()){
+        if (selection == null){
+            return newOptionsList;
+        }else if(!selection.isEmpty()){
             for (int i = 0; i < selection.size(); i++) {
                 String current = selection.get(i);
                 //Log.d("Exam current: ", current);

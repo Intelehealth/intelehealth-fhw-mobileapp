@@ -2,7 +2,9 @@ package edu.jhu.bme.cbid.healthassistantsclient;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -24,6 +26,8 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
@@ -50,7 +54,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
     private ViewPager mViewPager;
 
     Long patientID;
-    ArrayList<String> selectedExamsList;
+    ArrayList<String> selectedExamsList = new ArrayList<>();
 
     String mFileName = "physicalexams.json";
 
@@ -63,19 +67,14 @@ public class PhysicalExamActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-//        Intent intent = this.getIntent(); // The intent was passed to the activity
-//        if (intent != null) {
-//            patientID = intent.getLongExtra("patientID", 0);
-//            selectedExamsList = intent.getStringArrayListExtra("exams");
-//            Log.v(LOG_TAG, patientID + "");
-//        } else {
-//            patientID = null;
-//            selectedExamsList = new ArrayList<>();
-//            selectedExamsList.add("Head:Injury");
-//        }
-
-        selectedExamsList = new ArrayList<>();
-        selectedExamsList.add("Head:Injury");
+        Intent intent = this.getIntent(); // The intent was passed to the activity
+        if (intent != null) {
+            patientID = intent.getLongExtra("patientID", 0);
+            selectedExamsList = intent.getStringArrayListExtra("exams");
+            Log.v(LOG_TAG, patientID + "");
+        } else {
+            patientID = null;
+        }
 
         physicalExamMap = new PhysicalExam(HelperMethods.encodeJSON(this, mFileName), selectedExamsList);
 
@@ -108,12 +107,12 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
                 physicalString = physicalExamMap.generateFindings();
 
-//                PhysicalFindings physicalFindings = new PhysicalFindings(storageName, physicalString);
-//                long obsId = insertDb(physicalFindings);
+                PhysicalFindings physicalFindings = new PhysicalFindings(storageName, physicalString);
+                long obsId = insertDb(physicalFindings);
 
-//                Intent intent1 = new Intent(PhysicalExamActivity.this, PatientSummaryActivity.class);
-//                intent1.putExtra("patientID", patientID);
-//                startActivity(intent1);
+                Intent intent1 = new Intent(PhysicalExamActivity.this, PatientSummaryActivity.class);
+                intent1.putExtra("patientID", patientID);
+                startActivity(intent1);
             }
         });
 
@@ -194,8 +193,24 @@ public class PhysicalExamActivity extends AppCompatActivity {
                 if(type.equals("video")){
                     imageView.setVisibility(View.GONE);
                 } else if (type.equals("image")){
-                    Log.d(displayNode.text(), "IMAGE TYPE RECOGNIZED");
-                    imageView.setImageResource(R.drawable.jaundiceexample);
+                    String drawableName = "physicalExamImages/" + displayNode.getJobAidFile() + ".jpg";
+                    try
+                    {
+                        // get input stream
+                        InputStream ims = getContext().getAssets().open(drawableName);
+                        // load image as Drawable
+                        Drawable d = Drawable.createFromStream(ims, null);
+                        // set image to ImageView
+                        imageView.setImageDrawable(d);
+                        imageView.setMinimumHeight(500);
+                        imageView.setMinimumWidth(500);
+                    }
+                    catch(IOException ex)
+                    {
+                        ex.printStackTrace();
+                    }
+//                    int resID = getResources().getIdentifier(drawableName, "drawable", getContext().getPackageName());
+//                    imageView.setImageResource(resID);
                 } else {
                     imageView.setVisibility(View.GONE);
                 }
