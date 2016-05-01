@@ -24,8 +24,8 @@ public class PatientSummaryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-//        Bundle bundle = getIntent().getExtras();
-//        patientID = bundle.getLong("patientID", 0);
+        Bundle bundle = getIntent().getExtras();
+        patientID = bundle.getLong("patientID", 0);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_summary);
@@ -42,7 +42,7 @@ public class PatientSummaryActivity extends AppCompatActivity {
             }
         });
 
-        serialize(String.valueOf(1));
+        serialize(String.valueOf(2));
 
     }
 
@@ -50,36 +50,35 @@ public class PatientSummaryActivity extends AppCompatActivity {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-        String selection = "_id = ?";
+        String selection = "_id MATCH ?";
         String[] args = {dataString};
 
         ArrayList<String> uploadedFields = new ArrayList<>();
 
-                String[] columnsToReturn = {
-                "first_name",
-                "middle_name",
-                "last_name",
-                "date_of_birth",
-                "phone_number",
-                "address1",
-                "address2",
-                "city_village",
-                "state_province",
-                "postal_code",
-                "country",
-                "gender",
-                "patient_identifier1",
-                "patient_identifier2",
-        };
-        Cursor idCursor = db.query("patient", columnsToReturn, selection, args, null, null, null);
+        String table = "patient";
+        String[] columnsToReturn = {"first_name", "middle_name", "last_name",
+                "date_of_birth", "address1", "address2", "city_village", "state_province",
+                "postal_code", "phone_number", "patient_identifier1", "patient_identifier2"};
+        final Cursor idCursor = db.query(table, columnsToReturn, selection, args, null, null, null);
 
-        idCursor.moveToFirst();
+        //TODO: query and grab each column of the cursor, and create a patient obj and use that to display the card
+
+        //TODO: the different queries should become different container objects
+
+        //TODO: modify the cards so that they adapt to the objects
+
+
+
+//        idCursor.moveToFirst();
+//        Log.d(LOG_TAG, String.valueOf(idCursor.moveToFirst()) );
+//        Log.d(LOG_TAG, String.valueOf(idCursor.getColumnIndex("first_name")));
+//        Log.d(LOG_TAG, data1);
 
         if (idCursor.moveToFirst()){
             do{
-                String data = idCursor.getString(idCursor.getColumnIndex("first_name"));
-                Log.d(LOG_TAG, data);
-                uploadedFields.add(data);
+        String data1 = idCursor.getString(idCursor.getColumnIndex("first_name"));
+                Log.d(LOG_TAG, data1);
+                uploadedFields.add(data1);
             }while(idCursor.moveToNext());
         }
         idCursor.close();
@@ -94,18 +93,18 @@ public class PatientSummaryActivity extends AppCompatActivity {
         if (visitCursor.moveToFirst()){
             do{
                 String data = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                Log.d(LOG_TAG, data);
+                //Log.d(LOG_TAG, data);
                 uploadedFields.add(data);
             }while(visitCursor.moveToNext());
         }
         visitCursor.close();
 
-        Log.d(LOG_TAG, uploadedFields.toString());
+        //Log.d(LOG_TAG, uploadedFields.toString());
 
         Gson gson = new GsonBuilder().serializeNulls().create();
         String json = gson.toJson(uploadedFields);
 
-        Log.d(LOG_TAG, json);
+        //Log.d(LOG_TAG, json);
 
 
     }

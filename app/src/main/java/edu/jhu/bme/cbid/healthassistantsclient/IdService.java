@@ -53,6 +53,8 @@ public class IdService extends IntentService {
         super(name);
     }
 
+
+
     @Override
     protected void onHandleIntent(Intent intent) {
         createNotification();
