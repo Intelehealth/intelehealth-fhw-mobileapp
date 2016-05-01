@@ -106,7 +106,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                 PhysicalFindings physicalFindings = new PhysicalFindings(storageName, physicalString);
                 long obsId = insertDb(physicalFindings);
 
-                Intent intent1 = new Intent(PhysicalExamActivity.this, PatientSummaryActivity.class);
+                Intent intent1 = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
                 intent1.putExtra("patientID", patientID);
                 startActivity(intent1);
             }

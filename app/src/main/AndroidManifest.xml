@@ -48,7 +48,7 @@
                 android:value="edu.jhu.bme.cbid.healthassistantsclient.ActivePatientActivity" />
         </activity>
         <activity
-            android:name=".PatientSummaryActivity"
+            android:name=".VisitSummaryActivity"
             android:label="@string/title_activity_patient_summary"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ViewHistoryActivity" />

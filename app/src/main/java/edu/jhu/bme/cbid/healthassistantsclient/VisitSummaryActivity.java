@@ -15,7 +15,7 @@ import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 
-public class PatientSummaryActivity extends AppCompatActivity {
+public class VisitSummaryActivity extends AppCompatActivity {
 
     String LOG_TAG = "Patient Summary Activity";
 
