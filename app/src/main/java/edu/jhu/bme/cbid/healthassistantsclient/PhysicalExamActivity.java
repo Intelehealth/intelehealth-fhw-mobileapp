@@ -24,8 +24,6 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -70,6 +68,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         patientID = bundle.getLong("patientID", 0);
         selectedExamsList = bundle.getStringArrayList("exams");
+        Log.d(LOG_TAG, String.valueOf(patientID));
 
 
         physicalExamMap = new PhysicalExam(HelperMethods.encodeJSON(this, mFileName), selectedExamsList);
@@ -104,7 +103,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                 physicalString = physicalExamMap.generateFindings();
 
                 PhysicalFindings physicalFindings = new PhysicalFindings(storageName, physicalString);
-                long obsId = insertDb(physicalFindings);
+                long obsId = insertDb(physicalString);
 
                 Intent intent1 = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
                 intent1.putExtra("patientID", patientID);
@@ -185,7 +184,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
             if (displayNode.isAidAvailable()) {
                 String type = displayNode.getJobAidType();
-                Log.d(displayNode.text(), type);
+                //Log.d(displayNode.text(), type);
                 if(type.equals("video")){
                     imageView.setVisibility(View.GONE);
                 } else if (type.equals("image")){
@@ -285,7 +284,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
         }
     }
 
-    private long insertDb(PhysicalFindings findingsObj) {
+    private long insertDb(String value) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
 
         final int VISIT_ID = 100; // TODO: Connect the proper VISIT_ID
@@ -293,18 +292,12 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
         final int CONCEPT_ID = 163189; // RHK ON EXAM
 
-
-        Gson gson = new Gson();
-        String toInsert = gson.toJson(findingsObj);
-
-        Log.d(LOG_TAG, toInsert);
-
         ContentValues complaintEntries = new ContentValues();
 
         complaintEntries.put("patient_id", patientID);
         complaintEntries.put("visit_id", VISIT_ID);
         complaintEntries.put("creator", CREATOR_ID);
-        complaintEntries.put("value", toInsert);
+        complaintEntries.put("value", value);
         complaintEntries.put("concept_id", CONCEPT_ID);
 
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();

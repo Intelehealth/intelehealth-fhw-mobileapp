@@ -9,6 +9,9 @@ public class PhysicalFindings {
     private String name;
     private String data;
 
+    public PhysicalFindings() {
+    }
+
     public PhysicalFindings(String name, String data) {
         this.name = name;
         this.data = data;

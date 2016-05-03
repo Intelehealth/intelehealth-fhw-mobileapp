@@ -9,23 +9,38 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import edu.jhu.bme.cbid.healthassistantsclient.objects.Obs;
+import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
 
 public class VisitSummaryActivity extends AppCompatActivity {
 
     String LOG_TAG = "Patient Summary Activity";
 
-    Long patientID;
+    Long patientID = Long.valueOf("1");
+    Patient patient = new Patient();
+    Obs complaint = new Obs();
+    Obs famHistory = new Obs();
+    Obs patHistory = new Obs();
+    Obs physFindings = new Obs();
+    Obs height = new Obs();
+    Obs weight = new Obs();
+    Obs pulse = new Obs();
+    Obs bpSys = new Obs();
+    Obs bpDias = new Obs();
+    Obs temperature = new Obs();
+    Obs spO2 = new Obs();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Bundle bundle = getIntent().getExtras();
-        patientID = bundle.getLong("patientID", 0);
+//        Bundle bundle = getIntent().getExtras();
+//        patientID = bundle.getLong("patientID", 1);
+        Log.d(LOG_TAG, String.valueOf(patientID));
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_summary);
@@ -42,11 +57,36 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         });
 
-        serialize(String.valueOf(2));
+        queryData(String.valueOf(patientID));
+
+        TextView heightView = (TextView) findViewById(R.id.textview_height_value);
+        TextView weightView = (TextView) findViewById(R.id.textview_weight_value);
+        TextView pulseView = (TextView) findViewById(R.id.textview_pulse_value);
+        TextView bpSysView = (TextView) findViewById(R.id.textview_bpsys_value);
+        TextView bpDiasView = (TextView) findViewById(R.id.textview_bpdia_value);
+        TextView tempView = (TextView) findViewById(R.id.textview_temp_value);
+        TextView spO2View = (TextView) findViewById(R.id.textview_pulseox_value);
+
+        TextView complaintView = (TextView) findViewById(R.id.textview_content_complaint);
+        TextView famHistView = (TextView) findViewById(R.id.textview_content_famhist);
+        TextView patHistView = (TextView) findViewById(R.id.textview_content_pathist);
+        TextView physFindingsView = (TextView) findViewById(R.id.textview_content_physexam);
+
+        heightView.setText(height.getValue());
+        weightView.setText(weight.getValue());
+        pulseView.setText(pulse.getValue());
+        bpSysView.setText(bpSys.getValue());
+        bpDiasView.setText(bpDias.getValue());
+        tempView.setText(temperature.getValue());
+        spO2View.setText(spO2.getValue());
+        complaintView.setText(complaint.getValue());
+        famHistView.setText(famHistory.getValue());
+        patHistView.setText(patHistory.getValue());
+        physFindingsView.setText(physFindings.getValue());
 
     }
 
-    public void serialize(String dataString) {
+    public void queryData(String dataString) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
@@ -61,28 +101,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 "postal_code", "phone_number", "patient_identifier1", "patient_identifier2"};
         final Cursor idCursor = db.query(table, columnsToReturn, selection, args, null, null, null);
 
-        //TODO: query and grab each column of the cursor, and create a patient obj and use that to display the card
-
-        //TODO: the different queries should become different container objects
-
-        //TODO: modify the cards so that they adapt to the objects
-
-
-
-//        idCursor.moveToFirst();
-//        Log.d(LOG_TAG, String.valueOf(idCursor.moveToFirst()) );
-//        Log.d(LOG_TAG, String.valueOf(idCursor.getColumnIndex("first_name")));
-//        Log.d(LOG_TAG, data1);
-
-        if (idCursor.moveToFirst()){
-            do{
-        String data1 = idCursor.getString(idCursor.getColumnIndex("first_name"));
-                Log.d(LOG_TAG, data1);
-                uploadedFields.add(data1);
-            }while(idCursor.moveToNext());
+        if (idCursor.moveToFirst()) {
+            do {
+                patient.setFirstName(idCursor.getString(idCursor.getColumnIndex("first_name")));
+                patient.setMiddleName(idCursor.getString(idCursor.getColumnIndex("middle_name")));
+                patient.setLastName(idCursor.getString(idCursor.getColumnIndex("last_name")));
+                patient.setDateOfBirth(idCursor.getString(idCursor.getColumnIndex("date_of_birth")));
+                patient.setAddress1(idCursor.getString(idCursor.getColumnIndex("address1")));
+                patient.setAddress2(idCursor.getString(idCursor.getColumnIndex("address2")));
+                patient.setCityVillage(idCursor.getString(idCursor.getColumnIndex("city_village")));
+                patient.setStateProvince(idCursor.getString(idCursor.getColumnIndex("state_province")));
+                patient.setPostalCode(idCursor.getString(idCursor.getColumnIndex("postal_code")));
+                patient.setPhoneNumber(idCursor.getString(idCursor.getColumnIndex("phone_number")));
+                patient.setPatientIdentifier1(idCursor.getString(idCursor.getColumnIndex("patient_identifier1")));
+                patient.setPatientIdentifier2(idCursor.getString(idCursor.getColumnIndex("patient_identifier2")));
+            } while (idCursor.moveToNext());
         }
         idCursor.close();
-
 
         selection = "patient_id = ?";
 
@@ -90,22 +125,55 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String orderBy = "concept_id";
         Cursor visitCursor = db.query("obs", columns, selection, args, null, null, orderBy);
 
-        if (visitCursor.moveToFirst()){
-            do{
-                String data = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                //Log.d(LOG_TAG, data);
-                uploadedFields.add(data);
-            }while(visitCursor.moveToNext());
+        if (visitCursor.moveToFirst()) {
+            do {
+                int dbConceptID = visitCursor.getInt(visitCursor.getColumnIndex("concept_id"));
+                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                parseData(dbConceptID, dbValue);
+            } while (visitCursor.moveToNext());
         }
         visitCursor.close();
-
-        //Log.d(LOG_TAG, uploadedFields.toString());
-
-        Gson gson = new GsonBuilder().serializeNulls().create();
-        String json = gson.toJson(uploadedFields);
-
-        //Log.d(LOG_TAG, json);
-
-
     }
+
+    private void parseData(int concept_id, String value) {
+        switch (concept_id) {
+            case 163187: //Medical History
+                patHistory.setValue(value);
+                break;
+            case 163188: //Family History
+                famHistory.setValue(value);
+                break;
+            case 163186: //Current Complaint
+                complaint.setValue(value);
+                break;
+            case 163189: //Physical Examination
+                physFindings.setValue(value);
+                break;
+            case 5090: //Height
+                height.setValue(value);
+                break;
+            case 5089: //Weight
+                weight.setValue(value);
+                break;
+            case 5087: //Pulse
+                pulse.setValue(value);
+                break;
+            case 5085: //Systolic BP
+                bpSys.setValue(value);
+                break;
+            case 5086: //Diastolic BP
+                bpDias.setValue(value);
+                break;
+            case 163202: //Temperature
+                temperature.setValue(value);
+                break;
+            case 5092: //SpO2
+                spO2.setValue(value);
+                break;
+            default:
+                break;
+
+        }
+    }
+
 }

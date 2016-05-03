@@ -1,11 +1,8 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
-import android.app.ProgressDialog;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,8 +16,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 
 import edu.jhu.bme.cbid.healthassistantsclient.objects.TableExam;
@@ -33,9 +28,6 @@ public class TableExamActivity extends AppCompatActivity {
     private Long patientID;
     private ArrayList<String> physExams;
 
-    private InsertTableExamDb mTask = null;
-
-
     // EditText bmi = (EditText) findViewById(R.id.table_bmi);
     // bmi.setFocusable(false);
     // TODO: intent passes along patient id, gender
@@ -47,6 +39,7 @@ public class TableExamActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         patientID = bundle.getLong("patientID", 0);
         physExams = bundle.getStringArrayList("exams");
+        Log.d(LOG_TAG, String.valueOf(patientID));
 
 
         super.onCreate(savedInstanceState);
@@ -74,6 +67,7 @@ public class TableExamActivity extends AppCompatActivity {
         });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,10 +77,6 @@ public class TableExamActivity extends AppCompatActivity {
     }
 
     public void validateTable() {
-        if (mTask != null) {
-            return;
-        }
-
         // Reset errors.
 
 
@@ -135,84 +125,41 @@ public class TableExamActivity extends AppCompatActivity {
                 Snackbar.make(findViewById(R.id.cl_table), "Error: non-decimal number entered.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
 
-            mTask = new InsertTableExamDb(results);
-            mTask.execute();
+            insertDb(results.getHeight(), 5090);
+            insertDb(results.getWeight(), 5089);
+            insertDb(results.getPulse(), 5087);
+            insertDb(results.getBpsys(), 5085);
+            insertDb(results.getBpdia(), 5086);
+            insertDb(results.getTemperature(), 163202);
+            insertDb(results.getSpo2(), 5092);
         }
 
 
+        Intent intent = new Intent(TableExamActivity.this, PhysicalExamActivity.class);
+        intent.putExtra("patientID", patientID);
+        intent.putStringArrayListExtra("exams", physExams);
+        startActivity(intent);
     }
 
-    public class InsertTableExamDb extends AsyncTask<Void, Void, Long>
-            implements DialogInterface.OnCancelListener {
 
-        int id;
-        double height, weight, pulse, bpsys, bpdia, temperature, spo2;
-        TableExam exam;
-        private ProgressDialog dialog;
+    private long insertDb(double objValue, int CONCEPT_ID) {
+        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
 
+        final int VISIT_ID = 100; // TODO: Connect the proper VISIT_ID
+        final int CREATOR_ID = 42; // TODO: Connect the proper CREATOR_ID
 
-        InsertTableExamDb(TableExam result) {
-            id = result.getPatientId();
-            height = result.getHeight();
-            weight = result.getWeight();
-            pulse = result.getPulse();
-            bpsys = result.getBpsys();
-            bpdia = result.getBpdia();
-            temperature = result.getTemperature();
-            spo2 = result.getSpo2();
+        String value = String.valueOf(objValue);
 
-            exam = result;
-        }
+        ContentValues complaintEntries = new ContentValues();
 
-        protected void onPreExecute()
-        {
-            dialog = ProgressDialog
-                    .show(TableExamActivity.this, "", "Loading. Please wait...", true);
-        }
+        complaintEntries.put("patient_id", patientID);
+        complaintEntries.put("visit_id", VISIT_ID);
+        complaintEntries.put("creator", CREATOR_ID);
+        complaintEntries.put("value", value);
+        complaintEntries.put("concept_id", CONCEPT_ID);
 
-        @Override
-        protected Long doInBackground(Void... params) {
-            LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(TableExamActivity.this);
-
-            final int VISIT_ID = 100; // TODO: Connect the proper VISIT_ID
-            final int CREATOR_ID = 42; // TODO: Connect the proper CREATOR_ID
-
-            final int CONCEPT_ID = 163189; // RHK EXAM BLURB
-            //TODO: split these up as each bit of info is different
-
-            Gson gson = new Gson();
-            String toInsert = gson.toJson(exam);
-
-            Log.d(LOG_TAG, toInsert);
-
-            ContentValues complaintEntries = new ContentValues();
-
-            complaintEntries.put("patient_id", patientID);
-            complaintEntries.put("visit_id", VISIT_ID);
-            complaintEntries.put("creator", CREATOR_ID);
-            complaintEntries.put("value", toInsert);
-            complaintEntries.put("concept_id", CONCEPT_ID);
-
-            SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
-            return localdb.insert("obs", null, complaintEntries);
-        }
-
-        protected void onPostExecute(Long result)
-        {
-            dialog.dismiss();
-            obsID = result;
-
-            Intent intent = new Intent(TableExamActivity.this, PhysicalExamActivity.class);
-            intent.putExtra("patientID", patientID);
-            intent.putStringArrayListExtra("exams", physExams);
-            startActivity(intent);
-        }
-
-        public void onCancel(DialogInterface dialog)
-        {
-            cancel(true);
-            dialog.dismiss();
-        }
+        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+        return localdb.insert("obs", null, complaintEntries);
     }
 
 }

@@ -5,6 +5,9 @@ package edu.jhu.bme.cbid.healthassistantsclient.objects;
  */
 public class Complaint {
 
+    public Complaint() {
+    }
+
     public Complaint(String n, String d) {
         this.name = n;
         this.data = d;

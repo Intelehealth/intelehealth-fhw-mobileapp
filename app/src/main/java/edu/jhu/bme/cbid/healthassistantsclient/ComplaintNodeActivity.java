@@ -39,6 +39,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         patientID = bundle.getLong("patientID", 0);
+        Log.d(LOG_TAG, String.valueOf(patientID));
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {

@@ -88,10 +88,10 @@ public class NodeAdapter extends BaseExpandableListAdapter {
                 break;
             default:
                 if (node.isSelected() | node.anySubSelected()) {
-                    imageView.setImageResource(R.drawable.green_check);
+                    imageView.setImageResource(R.drawable.checkbox);
                     //textView.setBackgroundResource(R.color.colorAccent);
                 } else {
-                    imageView.setImageResource(R.drawable.grey_check);
+                    imageView.setImageResource(R.drawable.blank_checkbox);
                     //textView.setBackgroundResource(0);
                 }
                 break;
@@ -115,9 +115,9 @@ public class NodeAdapter extends BaseExpandableListAdapter {
 
             case "ComplaintNodeActivity":
                 if (node.isSelected()) {
-                    imageView.setImageResource(R.drawable.green_check);
+                    imageView.setImageResource(R.drawable.checkbox);
                 } else {
-                    imageView.setImageResource(R.drawable.grey_check);
+                    imageView.setImageResource(R.drawable.blank_checkbox);
                 }
                 break;
             default:

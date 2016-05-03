@@ -21,14 +21,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,6 +42,7 @@ import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
  */
 
 public class IdentificationActivity extends AppCompatActivity {
+    String LOG_TAG = "Identification Activity";
 
     EditText mFirstName;
     EditText mMiddleName;
@@ -66,11 +65,9 @@ public class IdentificationActivity extends AppCompatActivity {
 
     String mFileName;
 
-
-
-
     private InsertPatientTable mTask = null;
     LocalRecordsDatabaseHelper mDbHelper;
+
 
     ImageView mImageView;
     String mCurrentPhotoPath;
@@ -358,7 +355,9 @@ public class IdentificationActivity extends AppCompatActivity {
                     args
             );
 
-            Gson gson = new GsonBuilder().serializeNulls().create();
+            Log.d(LOG_TAG, String.valueOf(patientID));
+
+            //Gson gson = new GsonBuilder().serializeNulls().create();
             //Log.i("Patient", gson.toJson(patient));
 
 

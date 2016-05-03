@@ -7,16 +7,12 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
-
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import edu.jhu.bme.cbid.healthassistantsclient.objects.MedicalHistory;
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
 
 public class FamilyHistoryActivity extends AppCompatActivity {
@@ -36,7 +32,8 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     NodeAdapter adapter;
     ExpandableListView familyListView;
 
-    HashMap<String, String> familyHistory;
+    ArrayList<String> insertionList = new ArrayList<>();
+    String insertion = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,13 +61,18 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 
                             //This was moved into a different function only because it will get removed once OpenMRS has more concepts
 
-                            MedicalHistory familyObj = new MedicalHistory(node.text(), familyString);
+                            String toInsert = node.text() + ": " + familyString;
+                            insertionList.add(toInsert);
 
-                            long obsId = insertDb(familyObj);
                         }
                     }
                 }
 
+                for (int i = 0; i < insertionList.size(); i++) {
+                    insertion = insertion + insertionList.get(i) + "\n\n";
+                }
+
+                long obsId = insertDb(insertion);
                 Intent intent = new Intent(FamilyHistoryActivity.this, TableExamActivity.class);
                 intent.putExtra("patientID", patientID);
                 intent.putStringArrayListExtra("exams", physicalExams);
@@ -80,7 +82,6 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        familyHistory = new HashMap<>();
         familyHistoryMap = new Node(HelperMethods.encodeJSON(this, mFileName));
         familyListView = (ExpandableListView) findViewById(R.id.family_history_expandable_list_view);
         adapter = new NodeAdapter(this, familyHistoryMap, this.getClass().getSimpleName());
@@ -125,7 +126,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 
     }
 
-    private long insertDb(MedicalHistory familyObj) {
+    private long insertDb(String value) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
 
         final int VISIT_ID = 100; // TODO: Connect the proper VISIT_ID
@@ -133,17 +134,12 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 
         final int CONCEPT_ID = 163188; // RHK FAMILY HISTORY BLURB
 
-        Gson gson = new Gson();
-        String toInsert = gson.toJson(familyObj);
-
-        Log.d(LOG_TAG, toInsert);
-
         ContentValues complaintEntries = new ContentValues();
 
         complaintEntries.put("patient_id", patientID);
         complaintEntries.put("visit_id", VISIT_ID);
         complaintEntries.put("creator", CREATOR_ID);
-        complaintEntries.put("value", toInsert);
+        complaintEntries.put("value", value);
         complaintEntries.put("concept_id", CONCEPT_ID);
 
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();

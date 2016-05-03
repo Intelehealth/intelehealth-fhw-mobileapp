@@ -15,7 +15,6 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
-import edu.jhu.bme.cbid.healthassistantsclient.objects.MedicalHistory;
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
 
 public class PatientHistoryActivity extends AppCompatActivity {
@@ -43,6 +42,7 @@ public class PatientHistoryActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         patientID = bundle.getLong("patientID", 0);
         physicalExams = bundle.getStringArrayList("exams");
+        Log.d(LOG_TAG, String.valueOf(patientID));
 
 
         setTitle(R.string.title_activity_patient_history);
@@ -61,9 +61,7 @@ public class PatientHistoryActivity extends AppCompatActivity {
                 if(patientHistoryMap.anySubSelected()){
                     patientHistory = patientHistoryMap.generateLanguage();
 
-                    MedicalHistory historyObj = new MedicalHistory(patient, patientHistory);
-
-                    long obsId = insertDb(historyObj);
+                    long obsId = insertDb(patientHistory);
                 }
 
 
@@ -117,7 +115,7 @@ public class PatientHistoryActivity extends AppCompatActivity {
 
     }
 
-    private long insertDb(MedicalHistory historyObj) {
+    private long insertDb(String value) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
 
         final int VISIT_ID = 100; // TODO: Connect the proper VISIT_ID
@@ -127,7 +125,7 @@ public class PatientHistoryActivity extends AppCompatActivity {
 
 
         Gson gson = new Gson();
-        String toInsert = gson.toJson(historyObj);
+        String toInsert = gson.toJson(value);
 
         Log.d(LOG_TAG, toInsert);
 

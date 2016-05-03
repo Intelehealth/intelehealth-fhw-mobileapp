@@ -6,6 +6,9 @@ package edu.jhu.bme.cbid.healthassistantsclient.objects;
  */
 public class MedicalHistory {
 
+    public MedicalHistory() {
+    }
+
     public MedicalHistory(String n, String d) {
         this.name = n;
         this.data = d;

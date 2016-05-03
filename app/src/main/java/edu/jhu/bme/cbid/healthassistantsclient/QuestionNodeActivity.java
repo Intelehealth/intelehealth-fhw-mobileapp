@@ -13,14 +13,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import edu.jhu.bme.cbid.healthassistantsclient.objects.Complaint;
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Knowledge;
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
 
@@ -42,6 +39,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
     ArrayList<String> physicalExams;
     Node currentNode;
     NodeAdapter adapter;
+    boolean nodeComplete = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +47,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         patientID = bundle.getLong("patientID", 0);
         complaints = bundle.getStringArrayList("complaints");
+        Log.d(LOG_TAG, String.valueOf(patientID));
 
         complaintDetails = new HashMap<>();
         physicalExams = new ArrayList<>();
@@ -73,38 +72,45 @@ public class QuestionNodeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 for (int i = 0; i < adapter.getGroupCount(); i++) {
                     if (!currentNode.getOption(i).isSelected()) {
-                        questionsMissing();
+                        nodeComplete = false;
                         questionListView.expandGroup(i);
                         break;
+                    } else {
+                        nodeComplete = true;
                     }
                 }
 
-                ArrayList<String> selectedAssociations = currentNode.getSelectedAssociations();
-                for (int i = 0; i < selectedAssociations.size(); i++) {
-                    if (!complaints.contains(selectedAssociations.get(i))) {
-                        complaints.add(selectedAssociations.get(i));
-                        complaintsNodes.add(mKnowledge.getComplaint(selectedAssociations.get(i)));
+                if(!nodeComplete){
+                    questionsMissing();
+                } else if (nodeComplete) {
+
+                    ArrayList<String> selectedAssociations = currentNode.getSelectedAssociations();
+                    for (int i = 0; i < selectedAssociations.size(); i++) {
+                        if (!complaints.contains(selectedAssociations.get(i))) {
+                            complaints.add(selectedAssociations.get(i));
+                            complaintsNodes.add(mKnowledge.getComplaint(selectedAssociations.get(i)));
+                        }
                     }
-                }
+                    String complaintString = currentNode.generateLanguage();
+                    String complaint = currentNode.text();
+                    complaintDetails.put(complaint, complaintString);
 
-                String complaintString = currentNode.generateLanguage();
-                String complaint = currentNode.text();
-                complaintDetails.put(complaint, complaintString);
+                    String insertion = complaint + ":\n" + complaintString;
 
-                Complaint complaintObj = new Complaint(complaint, complaintString);
+                    long obsId = insertDb(insertion);
 
-                long obsId = insertDb(complaintObj);
+                    physicalExams.addAll(parseExams(currentNode));
 
-                physicalExams.addAll(parseExams(currentNode));
+                    if (complaintNumber < complaints.size() - 1) {
+                        complaintNumber++;
+                        setupQuestions(complaintNumber);
+                    } else {
+                        Intent intent = new Intent(QuestionNodeActivity.this, PatientHistoryActivity.class);
+                        intent.putExtra("patientID", patientID);
+                        intent.putStringArrayListExtra("exams", physicalExams);
+                        startActivity(intent);
+                    }
 
-                if (complaintNumber < complaints.size() - 1) {
-                    complaintNumber++;
-                    setupQuestions(complaintNumber);
-                } else {
-                    Intent intent = new Intent(QuestionNodeActivity.this, PatientHistoryActivity.class);
-                    intent.putExtra("patientID", patientID);
-                    intent.putStringArrayListExtra("exams", physicalExams);
-                    startActivity(intent);
                 }
             }
         });
@@ -149,7 +155,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
     }
 
-    private long insertDb(Complaint complaintObj) {
+    private long insertDb(String value) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
 
         final int VISIT_ID = 100; // TODO: Connect the proper VISIT_ID
@@ -157,18 +163,12 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
         final int CONCEPT_ID = 163186; // RHK COMPLAINT
 
-
-        Gson gson = new Gson();
-        String toInsert = gson.toJson(complaintObj);
-
-        Log.d(LOG_TAG, toInsert);
-
         ContentValues complaintEntries = new ContentValues();
 
         complaintEntries.put("patient_id", patientID);
         complaintEntries.put("visit_id", VISIT_ID);
         complaintEntries.put("creator", CREATOR_ID);
-        complaintEntries.put("value", toInsert);
+        complaintEntries.put("value", value);
         complaintEntries.put("concept_id", CONCEPT_ID);
 
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
@@ -176,6 +176,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
     }
 
     private void setupQuestions(int complaintIndex) {
+        nodeComplete = false;
         currentNode = mKnowledge.getComplaint(complaints.get(complaintIndex));
         adapter = new NodeAdapter(this, currentNode, this.getClass().getSimpleName());
         questionListView.setAdapter(adapter);
