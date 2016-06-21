@@ -20,7 +20,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     String LOG_TAG = "Patient Summary Activity";
 
-    Long patientID = Long.valueOf("1");
+    Long patientID;
     Patient patient = new Patient();
     Obs complaint = new Obs();
     Obs famHistory = new Obs();
@@ -38,8 +38,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-//        Bundle bundle = getIntent().getExtras();
-//        patientID = bundle.getLong("patientID", 1);
+        Bundle bundle = getIntent().getExtras();
+        patientID = bundle.getLong("patientID", 1);
         Log.d(LOG_TAG, String.valueOf(patientID));
 
         super.onCreate(savedInstanceState);
@@ -54,6 +54,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
+
             }
         });
 
