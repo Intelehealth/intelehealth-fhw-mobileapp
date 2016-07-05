@@ -47,6 +47,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+
+//        @Override
+//        public boolean onCreateOptionsMenu(Menu menu) {
+//            MenuInflater inflater = getMenuInflater();
+//            inflater.inflate(R.menu.game_menu, menu);
+//            return true;
+//        }
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
@@ -64,8 +73,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         TextView heightView = (TextView) findViewById(R.id.textview_height_value);
         TextView weightView = (TextView) findViewById(R.id.textview_weight_value);
         TextView pulseView = (TextView) findViewById(R.id.textview_pulse_value);
-        TextView bpSysView = (TextView) findViewById(R.id.textview_bpsys_value);
-        TextView bpDiasView = (TextView) findViewById(R.id.textview_bpdia_value);
+        TextView bpView = (TextView) findViewById(R.id.textview_bp_value);
         TextView tempView = (TextView) findViewById(R.id.textview_temp_value);
         TextView spO2View = (TextView) findViewById(R.id.textview_pulseox_value);
 
@@ -77,8 +85,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         heightView.setText(height.getValue());
         weightView.setText(weight.getValue());
         pulseView.setText(pulse.getValue());
-        bpSysView.setText(bpSys.getValue());
-        bpDiasView.setText(bpDias.getValue());
+
+        //String bpSys = bpSys.getVa
+
+        bpView.setText(bpSys.getValue() + "/"  + bpDias.getValue());
+
         tempView.setText(temperature.getValue());
         spO2View.setText(spO2.getValue());
         complaintView.setText(complaint.getValue());

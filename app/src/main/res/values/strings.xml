@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Intelecare Client</string>
+    <string name="app_name">Intelehealth Client</string>
 
     //Generic
     <string name="generic_the_flipping_word_next">Next</string>
@@ -221,6 +221,7 @@
     <string name="button_meds">Medications</string>
 
     <string name="action_print">Print</string>
+    <string name="action_home">Home</string>
 
 
     <string name="title_activity_complaint_node">Select Complaints</string>

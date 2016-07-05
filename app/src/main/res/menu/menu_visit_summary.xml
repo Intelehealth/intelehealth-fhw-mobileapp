@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res-auto"
+    xmlns:android1="http://schemas.android.com/apk/res/android">
+
+    <item
+        android1:title="@string/action_print"
+        android:icon="@drawable/ic_print_24dp"
+        android:id="@+id/summary_print"
+        android:showAsAction="ifRoom"></item>
+
+    <item
+        android1:title="@string/action_home"
+        android:id="@+id/summary_home"
+        android:showAsAction="ifRoom"></item>
+
+</menu>
