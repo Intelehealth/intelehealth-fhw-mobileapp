@@ -22,7 +22,7 @@ import edu.jhu.bme.cbid.healthassistantsclient.objects.TableExam;
 
 public class TableExamActivity extends AppCompatActivity {
 
-    EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mSpo2;
+    EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mSpo2, mBMI;
     Long obsID;
     final String LOG_TAG = "TableExamActivity";
     private Long patientID;
@@ -54,6 +54,17 @@ public class TableExamActivity extends AppCompatActivity {
         mBpDia = (EditText) findViewById(R.id.table_bpdia);
         mTemperature = (EditText) findViewById(R.id.table_temp);
         mSpo2 = (EditText) findViewById(R.id.table_spo2);
+
+        mBMI = (EditText) findViewById(R.id.table_bmi);
+        mBMI.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                double numerator =  Double.parseDouble(mWeight.getText().toString());
+                double denominator = (Double.parseDouble(mHeight.getText().toString())) * (Double.parseDouble(mHeight.getText().toString()));
+
+                double bmi_value = numerator/denominator;
+            }
+        });
 
         mSpo2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

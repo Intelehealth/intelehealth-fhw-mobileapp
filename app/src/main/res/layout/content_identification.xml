@@ -183,6 +183,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
+                    android:focusable="false"
                     android:freezesText="true"
                     android:hint="@string/prompt_age"
                     android:imeOptions="actionUnspecified"

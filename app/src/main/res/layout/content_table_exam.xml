@@ -75,6 +75,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/table_bmi"
                     android:imeOptions="actionUnspecified"
+                    android:focusable="false"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:longClickable="false"

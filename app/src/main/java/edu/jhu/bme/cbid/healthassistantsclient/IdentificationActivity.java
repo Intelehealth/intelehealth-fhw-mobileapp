@@ -143,10 +143,29 @@ public class IdentificationActivity extends AppCompatActivity {
         mDOBPicker = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                mDOB.setText(new StringBuilder().append(year).append("-").append(monthOfYear + 1)
-                        .append("-").append(dayOfMonth));
+                int month = monthOfYear + 1;
+                String formattedMonth = "" + month;
+                String formattedDayOfMonth = "" + dayOfMonth;
+
+                if(month < 10){
+
+                    formattedMonth = "0" + month;
+                }
+                if(dayOfMonth < 10){
+
+                    formattedDayOfMonth = "0" + dayOfMonth;
+                }
+                mDOB.setText(formattedDayOfMonth + "/" + formattedMonth + "/" + year);
+
+                //Age calculation
+                Calendar calendar = Calendar.getInstance();
+                int curYear = calendar.get(Calendar.YEAR);
+                int age = curYear - year;
+                mAge.setText(age);
+
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+
 
         mDOB.setOnClickListener(new View.OnClickListener() {
             @Override
