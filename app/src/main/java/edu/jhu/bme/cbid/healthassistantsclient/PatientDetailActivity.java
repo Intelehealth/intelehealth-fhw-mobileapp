@@ -1,6 +1,5 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,7 +13,6 @@ import android.print.PrintManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -147,7 +145,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         // Generate an HTML document on the fly:
         String htmlDocument =
-                String.format("<h1 id=\"intelecare-patient-detail\">Intelecare Patient Detail</h1>\n" +
+                String.format("<h1 id=\"Intelehealth-patient-detail\">Intelehealth Patient Detail</h1>\n" +
                 "<h1>%s</h1>\n" +
                 "<h2 id=\"basic-information\">Basic Information</h2>\n" +
                 "<ul>\n" +

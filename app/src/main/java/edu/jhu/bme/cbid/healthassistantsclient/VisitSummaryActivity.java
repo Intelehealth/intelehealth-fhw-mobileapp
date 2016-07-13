@@ -1,8 +1,14 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.print.PrintAttributes;
+import android.print.PrintDocumentAdapter;
+import android.print.PrintJob;
+import android.print.PrintManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,10 +16,16 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Obs;
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
@@ -21,6 +33,10 @@ import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
 public class VisitSummaryActivity extends AppCompatActivity {
 
     String LOG_TAG = "Patient Summary Activity";
+
+    private WebView mWebView;
+
+    String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2;
 
     Long patientID;
     Patient patient = new Patient();
@@ -43,6 +59,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.summary_home:
+                Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.summary_print:
+                doWebViewPrint();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -62,8 +95,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Snackbar.make(view, "Feature arriving shortly. Will sync to OpenMRS", Snackbar.LENGTH_LONG);
 
 
             }
@@ -77,7 +109,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         TextView bpView = (TextView) findViewById(R.id.textview_bp_value);
         TextView tempView = (TextView) findViewById(R.id.textview_temp_value);
         TextView spO2View = (TextView) findViewById(R.id.textview_pulseox_value);
-
+        TextView bmiView = (TextView) findViewById(R.id.textview_bmi_value);
         TextView complaintView = (TextView) findViewById(R.id.textview_content_complaint);
         TextView famHistView = (TextView) findViewById(R.id.textview_content_famhist);
         TextView patHistView = (TextView) findViewById(R.id.textview_content_pathist);
@@ -87,14 +119,27 @@ public class VisitSummaryActivity extends AppCompatActivity {
         weightView.setText(weight.getValue());
         pulseView.setText(pulse.getValue());
 
-        //String bpSys = bpSys.getVa
 
-        bpView.setText(bpSys.getValue() + "/"  + bpDias.getValue());
+        bpView.setText(bpSys.getValue() + "/" + bpDias.getValue());
 
+
+        Double mWeight = Double.parseDouble(weight.getValue());
+        Double mHeight = Double.parseDouble(height.getValue());
+
+        double numerator = mWeight;
+        double denominator = (mHeight) * (mHeight);
+
+        double bmi_value = numerator / denominator;
+
+        bmiView.setText(String.format(Locale.ENGLISH, "%,2f", bmi_value));
+        mBMI = String.format(Locale.ENGLISH, "%,2f", bmi_value);
         tempView.setText(temperature.getValue());
         spO2View.setText(spO2.getValue());
         complaintView.setText(complaint.getValue());
         famHistView.setText(famHistory.getValue());
+
+        String medHistory = patHistory.getValue();
+        medHistory.substring(1, medHistory.length() - 1);
         patHistView.setText(patHistory.getValue());
         physFindingsView.setText(physFindings.getValue());
 
@@ -188,6 +233,105 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 break;
 
         }
+    }
+
+    private void doWebViewPrint() {
+        // Create a WebView object specifically for printing
+        WebView webView = new WebView(this);
+        webView.setWebViewClient(new WebViewClient() {
+
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return false;
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                Log.i("Patient WebView", "page finished loading " + url);
+                createWebPrintJob(view);
+                mWebView = null;
+            }
+        });
+
+        String mPatientName = patient.getFirstName() + " " + patient.getMiddleName() + " " + patient.getLastName();
+        String mPatientDob = patient.getDateOfBirth();
+        String mAddress = patient.getAddress1() + "\n" + patient.getAddress2();
+        String mCityState = patient.getCityVillage();
+        String mPhone = patient.getPhoneNumber();
+        String mSdw = patient.getPatientIdentifier1();
+        String mOccupation = patient.getPatientIdentifier2();
+
+        Calendar c = Calendar.getInstance();
+        System.out.println("Current time => " + c.getTime());
+
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        String mDate = df.format(c.getTime());
+
+        String mPatHist = patHistory.getValue();
+        String mFamHist = famHistory.getValue();
+        mHeight = height.getValue();
+        mWeight = weight.getValue();
+        mBP = bpSys.getValue() + "/" + bpDias.getValue();
+        mPulse = pulse.getValue();
+        mTemp = temperature.getValue();
+        mSPO2 = spO2.getValue();
+        String mComplaint = complaint.getValue();
+        String mExam = physFindings.getValue();
+
+
+        // Generate an HTML document on the fly:
+        String htmlDocument =
+                String.format("<h1 id=\"intelecare-patient-detail\">Intelehealth Visit Summary</h1>\n" +
+                                "<h1>%s</h1>\n" +
+                                "<p>%s</p>\n" +
+                                "<h2 id=\"patient-information\">Patient Information</h2>\n" +
+                                "<ul>\n" +
+                                "<li>%s</li>\n" +
+                                "<li>%s</li>\n" +
+                                "<li>%s</li>\n" +
+                                "</ul>\n" +
+                                "<h2 id=\"address-and-contact\">Address and Contact</h2>\n" +
+                                "<p>%s</p>\n" +
+                                "<p>%s</p>\n" +
+                                "<p>%s</p>\n" +
+                                "<h2 id=\"vitals\">Vitals</h2>\n" +
+                                "<li>Height: %s</li>\n" +
+                                "<li>Weight: %s</li>\n" +
+                                "<li>BMI: %s</li>\n" +
+                                "<li>Blood Pressure: %s</li>\n" +
+                                "<li>Pulse: %s</li>\n" +
+                                "<li>Temperature: %s</li>\n" +
+                                "<li>SpO2: %s</li>\n" +
+                                "<h2 id=\"patient-history\">Patient History</h2>\n" +
+                                "<li>%s</li>\n" +
+                                "<h2 id=\"family-history\">Family History</h2>\n" +
+                                "<li>%s</li>\n" +
+                                "<h2 id=\"complaint\">Complaint and Observations</h2>" +
+                                "<li>%s</li>\n" +
+                                "<h2 id=\"examination\">On Examination</h2>" +
+                                "<p>%s</p>\n",
+                        mPatientName, mDate, mPatientDob, mOccupation, mSdw, mAddress, mCityState, mPhone, mHeight, mWeight,
+                        mBMI, mBP, mPulse, mTemp, mSPO2, mPatHist, mFamHist, mComplaint, mExam);
+        webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
+
+        // Keep a reference to WebView object until you pass the PrintDocumentAdapter
+        // to the PrintManager
+        mWebView = webView;
+    }
+
+    private void createWebPrintJob(WebView webView) {
+
+        // Get a PrintManager instance
+        PrintManager printManager = (PrintManager) this
+                .getSystemService(Context.PRINT_SERVICE);
+
+        // Get a print adapter instance
+        PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter();
+
+        // Create a print job with name and adapter instance
+        String jobName = getString(R.string.app_name) + " Visit Summary";
+        PrintJob printJob = printManager.print(jobName, printAdapter,
+                new PrintAttributes.Builder().build());
+
     }
 
 }

@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import edu.jhu.bme.cbid.healthassistantsclient.objects.TableExam;
 
@@ -59,10 +60,12 @@ public class TableExamActivity extends AppCompatActivity {
         mBMI.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double numerator =  Double.parseDouble(mWeight.getText().toString());
+                double numerator = Double.parseDouble(mWeight.getText().toString());
                 double denominator = (Double.parseDouble(mHeight.getText().toString())) * (Double.parseDouble(mHeight.getText().toString()));
 
-                double bmi_value = numerator/denominator;
+                double bmi_value = numerator / denominator;
+                mBMI.setText(String.format(Locale.ENGLISH, "%,2f", bmi_value));
+                Log.d("BMI", String.valueOf(bmi_value));
             }
         });
 
@@ -91,7 +94,7 @@ public class TableExamActivity extends AppCompatActivity {
         // Reset errors.
 
 
-    // .getText().toString()
+        // .getText().toString()
         boolean cancel = false;
         View focusView = null;
 
@@ -107,7 +110,7 @@ public class TableExamActivity extends AppCompatActivity {
         values.add(mSpo2);
 
         // Check for a valid values.
-        for(int i = 0; i < values.size(); i++) {
+        for (int i = 0; i < values.size(); i++) {
             EditText et = values.get(i);
 
             if (TextUtils.isEmpty(et.getText().toString())) {

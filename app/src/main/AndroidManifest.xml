@@ -84,7 +84,11 @@
             android:name=".TableExamActivity"
             android:exported="true"
             android:label="@string/title_activity_table_exam"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".FamilyHistoryActivity" />
+        </activity>
 
         <provider
             android:name=".SearchSuggestionProvider"

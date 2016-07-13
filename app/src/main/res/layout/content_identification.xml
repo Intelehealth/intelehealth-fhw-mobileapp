@@ -26,22 +26,22 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
                 <ImageView
+                    android:id="@+id/imageview_id_picture"
                     android:layout_width="170dp"
                     android:layout_height="170dp"
-                    android:src="@drawable/person300px"
-                    android:id="@+id/imageview_id_picture"
+                    android:layout_gravity="right"
                     android:scaleType="centerCrop"
-                    android:layout_gravity="right" />
+                    android:src="@drawable/person300px" />
 
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -142,37 +142,20 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                android:id="@+id/identification_birth_date_text_view"
-                    android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:freezesText="true"
-                android:hint="@string/prompt_birthday"
-                    android:imeOptions="actionUnspecified"
-                    android:focusable="false"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/identification_phone_number"
+                    android:id="@+id/identification_birth_date_text_view"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
+                    android:focusable="false"
                     android:freezesText="true"
-                    android:hint="@string/prompt_phone_number"
+                    android:hint="@string/prompt_birthday"
                     android:imeOptions="actionUnspecified"
-                    android:inputType="phone"
                     android:maxLines="1"
                     android:singleLine="true" />
 
+
             </android.support.design.widget.TextInputLayout>
+
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -201,6 +184,25 @@
                 android:layout_height="wrap_content">
 
                 <EditText
+                    android:id="@+id/identification_phone_number"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:freezesText="true"
+                    android:hint="@string/prompt_phone_number"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="phone"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
                     android:id="@+id/identification_address1"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -208,7 +210,7 @@
                     android:freezesText="true"
                     android:hint="@string/prompt_address"
                     android:imeOptions="actionUnspecified"
-                    android:inputType="textPostalAddress"
+                    android:inputType="textCapWords"
                     android:maxLines="2"
                     android:singleLine="false" />
 
@@ -226,7 +228,7 @@
                     android:freezesText="true"
                     android:hint="@string/prompt_address2"
                     android:imeOptions="actionUnspecified"
-                    android:inputType="textPostalAddress"
+                    android:inputType="textCapWords"
                     android:maxLines="2"
                     android:singleLine="false"
                     android:tag="@string/tag_optional" />
@@ -244,6 +246,7 @@
                     android:freezesText="true"
                     android:hint="@string/prompt_city"
                     android:imeOptions="actionUnspecified"
+                    android:inputType="textCapWords"
                     android:maxLines="1"
                     android:singleLine="true" />
 
@@ -260,6 +263,7 @@
                     android:layout_height="wrap_content"
                     android:freezesText="true"
                     android:hint="@string/prompt_state"
+                    android:inputType="textCapWords"
                     android:imeOptions="actionUnspecified"
                     android:maxLines="1"
                     android:singleLine="true" />
@@ -293,6 +297,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:freezesText="true"
+                    android:inputType="textCapWords"
                     android:hint="@string/prompt_country"
                     android:imeOptions="actionUnspecified"
                     android:maxLines="1"

@@ -3,6 +3,7 @@ package edu.jhu.bme.cbid.healthassistantsclient;
 import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -18,8 +19,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -64,6 +67,9 @@ public class IdentificationActivity extends AppCompatActivity {
     DatePickerDialog mDOBPicker;
 
     String mFileName;
+
+    final Calendar today = Calendar.getInstance();
+    final Calendar dob = Calendar.getInstance();
 
     private InsertPatientTable mTask = null;
     LocalRecordsDatabaseHelper mDbHelper;
@@ -113,7 +119,6 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
 
-
         mGenderF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,38 +144,90 @@ public class IdentificationActivity extends AppCompatActivity {
 
         //Change minimum
 
-        Calendar calendar = Calendar.getInstance();
+
         mDOBPicker = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                dob.set(year, monthOfYear, dayOfMonth);
+
                 int month = monthOfYear + 1;
                 String formattedMonth = "" + month;
                 String formattedDayOfMonth = "" + dayOfMonth;
 
-                if(month < 10){
+                if (month < 10) {
 
                     formattedMonth = "0" + month;
                 }
-                if(dayOfMonth < 10){
+                if (dayOfMonth < 10) {
 
                     formattedDayOfMonth = "0" + dayOfMonth;
                 }
-                mDOB.setText(formattedDayOfMonth + "/" + formattedMonth + "/" + year);
+                String dobString = formattedDayOfMonth + "/" + formattedMonth + "/" + year;
+
+                //can use SimpleDateFormat, but couldn't get it to work
+                mDOB.setText(dobString);
 
                 //Age calculation
-                Calendar calendar = Calendar.getInstance();
-                int curYear = calendar.get(Calendar.YEAR);
-                int age = curYear - year;
-                mAge.setText(age);
+                int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+                if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
+                    age--;
+                }
+                mAge.setText(String.valueOf(age));
 
             }
-        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        }, today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH));
 
 
         mDOB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDOBPicker.show();
+                String currentDOB = mDOB.getText().toString();
+                if (currentDOB.matches("")) ;
+                {
+                    mDOBPicker.show();
+
+                }
+            }
+        });
+
+        mAge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String currentAge = mAge.getText().toString();
+                if (currentAge.matches("")) ;
+                {
+
+                    Context context = IdentificationActivity.this;
+
+                    final AlertDialog.Builder textInput = new AlertDialog.Builder(context);
+                    textInput.setTitle(R.string.dialog_age);
+                    final EditText dialogEditText = new EditText(context);
+                    dialogEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    textInput.setView(dialogEditText);
+                    textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String ageString = (dialogEditText.getText().toString());
+                            mAge.setText(ageString);
+
+                            Calendar calendar = Calendar.getInstance();
+                            int curYear = calendar.get(Calendar.YEAR);
+                            int birthYear = curYear - Integer.valueOf(ageString);
+                            String calcDOB = "01/01/" + birthYear;
+                            mDOB.setText(calcDOB);
+                            dialog.dismiss();
+                        }
+                    });
+                    textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    textInput.show();
+
+                }
             }
         });
 
@@ -182,7 +239,6 @@ public class IdentificationActivity extends AppCompatActivity {
                 createNewPatient();
             }
         });
-
 
 
     }
@@ -206,8 +262,35 @@ public class IdentificationActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-        //TODO: check if gender is checked
-        //TODO: check if date was selected for DOB
+        if(!mGenderF.isChecked() && !mGenderM.isChecked()){
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
+            alertDialogBuilder.setMessage(R.string.dialog_error_gender);
+            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+            return;
+        }
+
+        if (dob.after(today)){
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
+            alertDialogBuilder.setMessage(R.string.dialog_error_dob);
+            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            mDOBPicker.show();
+            alertDialog.show();
+            return;
+        }
 
         ArrayList<EditText> values = new ArrayList<>();
         values.add(mFirstName);
@@ -275,7 +358,7 @@ public class IdentificationActivity extends AppCompatActivity {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 
-        mFileName =  "PATIENT_" + timeStamp;
+        mFileName = "PATIENT_" + timeStamp;
         File storageDir = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
