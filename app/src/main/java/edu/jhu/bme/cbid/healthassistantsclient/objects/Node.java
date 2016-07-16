@@ -28,6 +28,7 @@ public class Node implements Serializable{
     private String jobAidType;
 
     private boolean complaint;
+    private boolean required;
     private boolean terminal;
     private boolean hasAssociations;
     private boolean aidAvailable;
@@ -76,6 +77,8 @@ public class Node implements Serializable{
 
             this.selected = false;
 
+            this.required = false;
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -96,6 +99,7 @@ public class Node implements Serializable{
         this.associatedComplaint = another.associatedComplaint;
         this.hasAssociations = another.hasAssociations;
         this.selected = false;
+        this.required = another.required;
     }
 
     private List<Node> createOptions(JSONArray jsonArray) {
@@ -123,6 +127,10 @@ public class Node implements Serializable{
 
     public boolean isComplaint() {
         return complaint;
+    }
+
+    public boolean isRequired(){
+        return required;
     }
 
     public String language() {
@@ -311,6 +319,10 @@ public class Node implements Serializable{
 
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+    public void setRequired(boolean required) {
+        this.required = required;
     }
 
     public String getInputType() {

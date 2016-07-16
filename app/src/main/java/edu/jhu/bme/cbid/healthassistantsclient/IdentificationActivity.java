@@ -118,7 +118,6 @@ public class IdentificationActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.CAMERA}, 2); // 2 is a contanst
         }
 
-
         mGenderF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -30,11 +30,10 @@ import java.util.ArrayList;
 
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
 import edu.jhu.bme.cbid.healthassistantsclient.objects.PhysicalExam;
-import edu.jhu.bme.cbid.healthassistantsclient.objects.PhysicalFindings;
 
 public class PhysicalExamActivity extends AppCompatActivity {
 
-    String LOG_TAG = "Physical Exam Activity";
+    final static String LOG_TAG = "Physical Exam Activity";
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -65,11 +64,12 @@ public class PhysicalExamActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Bundle bundle = getIntent().getExtras();
-        patientID = bundle.getLong("patientID", 0);
-        selectedExamsList = bundle.getStringArrayList("exams");
-        Log.d(LOG_TAG, String.valueOf(patientID));
+//        Bundle bundle = getIntent().getExtras();
+//        patientID = bundle.getLong("patientID", 0);
+//        selectedExamsList = bundle.getStringArrayList("exams");
+//        Log.d(LOG_TAG, String.valueOf(patientID));
 
+        patientID = Long.valueOf("1");
 
         physicalExamMap = new PhysicalExam(HelperMethods.encodeJSON(this, mFileName), selectedExamsList);
 
@@ -100,14 +100,26 @@ public class PhysicalExamActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                physicalString = physicalExamMap.generateFindings();
+                if(physicalExamMap.areRequiredAnswered()){
 
-                PhysicalFindings physicalFindings = new PhysicalFindings(storageName, physicalString);
-                long obsId = insertDb(physicalString);
+                    physicalString = physicalExamMap.generateFindings();
 
-                Intent intent1 = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
-                intent1.putExtra("patientID", patientID);
-                startActivity(intent1);
+                    long obsId = insertDb(physicalString);
+
+                    Intent intent1 = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
+                    intent1.putExtra("patientID", patientID);
+                    startActivity(intent1);
+                } else {
+                    Node genExams = physicalExamMap.getOption(0);
+                    for (int i = 0; i < genExams.getOptionsList().size(); i++) {
+                        Log.d(LOG_TAG, "current i value " + i);
+                        if(!genExams.getOption(i).anySubSelected()){
+                            Log.d(LOG_TAG, genExams.getOption(i).text());
+                            mViewPager.setCurrentItem(i);
+                            return;
+                        }
+                    }
+                }
             }
         });
 

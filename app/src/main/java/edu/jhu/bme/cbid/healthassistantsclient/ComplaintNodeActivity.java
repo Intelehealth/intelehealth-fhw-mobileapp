@@ -88,8 +88,6 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
         final ArrayList<String> selection = mKnowledge.getSelectedComplaints();
 
-        //TODO DB write selection in as complaints (not actually sure)
-
         if (selection.isEmpty()) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setTitle(R.string.complaint_dialog_title);

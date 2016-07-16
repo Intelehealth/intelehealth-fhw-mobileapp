@@ -2,6 +2,7 @@ package edu.jhu.bme.cbid.healthassistantsclient;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +19,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
         ImageButton newPtButton = (ImageButton) findViewById(R.id.newPatientButton);
+        assert newPtButton != null;
         newPtButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -27,6 +29,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
         ImageButton findPatientButton = (ImageButton) findViewById(R.id.findPatientsButton);
+        assert findPatientButton != null;
         findPatientButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -35,24 +38,14 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         ImageButton diagnosticServicesButton = (ImageButton) findViewById(R.id.diagnosticServicesButton);
+        assert diagnosticServicesButton != null;
         diagnosticServicesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectDiagnosticService();
+                //selectDiagnosticService();
+                Snackbar.make(v, R.string.generic_coming_soon, Snackbar.LENGTH_LONG);
             }
         });
-//
-//        Button activePatientsButton = (Button) findViewById(R.id.activePatientsButton);
-//        activePatientsButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                searchActivePatients();
-//            }
-//        });
-
-        // The INSERT and UPDATE/DELETE commands require SQL statements to be passed as parameters
-        // TODO: Use SQL statements from schema
-
 
     }
 
@@ -96,10 +89,6 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void searchActivePatients() {
-        Intent intent = new Intent(this, ActivePatientActivity.class);
-        startActivity(intent);
-    }
 
     public void refreshDatabases() {
         // TODO: write function to sync the patients within a specific location
@@ -107,7 +96,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void settings() {
-        // TODO: WTF are settings?
+        // TODO: Settings Screen to come.
     }
 
     public void endOfDay() {

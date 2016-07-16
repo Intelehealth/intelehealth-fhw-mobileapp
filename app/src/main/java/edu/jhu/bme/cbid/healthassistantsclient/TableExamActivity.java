@@ -118,13 +118,15 @@ public class TableExamActivity extends AppCompatActivity {
                 focusView = et;
                 cancel = true;
                 break;
+            } else {
+                cancel = false;
             }
         }
-
 
         if (cancel) {
             // There was an error - focus the first form field with an error.
             focusView.requestFocus();
+            return;
         } else {
             TableExam results = new TableExam();
             try {

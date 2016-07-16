@@ -8,6 +8,7 @@
     <string name="tag_optional">optional</string>
     <string name="generic_ok">OK</string>
     <string name="generic_cancel">Cancel</string>
+    <string name="generic_coming_soon">Coming Soon.....</string>
 
     //Database Schema Names
     <string name="db_first_name">first_name</string>
