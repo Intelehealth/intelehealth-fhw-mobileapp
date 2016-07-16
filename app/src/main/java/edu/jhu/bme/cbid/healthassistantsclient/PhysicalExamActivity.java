@@ -62,14 +62,19 @@ public class PhysicalExamActivity extends AppCompatActivity {
     String physicalString;
 
     @Override
+    public void onBackPressed(){
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-//        Bundle bundle = getIntent().getExtras();
-//        patientID = bundle.getLong("patientID", 0);
-//        selectedExamsList = bundle.getStringArrayList("exams");
-//        Log.d(LOG_TAG, String.valueOf(patientID));
+        Bundle bundle = getIntent().getExtras();
+        patientID = bundle.getLong("patientID", 0);
+        selectedExamsList = bundle.getStringArrayList("exams");
+        Log.d(LOG_TAG, String.valueOf(patientID));
 
-        patientID = Long.valueOf("1");
+        //Only for testing purposes.
+        //patientID = Long.valueOf("1");
 
         physicalExamMap = new PhysicalExam(HelperMethods.encodeJSON(this, mFileName), selectedExamsList);
 
@@ -78,7 +83,10 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        //TODO: find a better solution to this. Toolbar back buttons disabled everywhere.
+
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), physicalExamMap);

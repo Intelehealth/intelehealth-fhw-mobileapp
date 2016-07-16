@@ -88,6 +88,7 @@ public class IdentificationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_identification);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         mDbHelper = new LocalRecordsDatabaseHelper(this);
 

@@ -51,6 +51,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_complaint_node);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         assert fab != null;

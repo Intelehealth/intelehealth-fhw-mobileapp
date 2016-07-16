@@ -40,7 +40,7 @@ public class PatientHistoryActivity extends AppCompatActivity {
 
 
         Bundle bundle = getIntent().getExtras();
-        patientID = bundle.getLong("patientID", 0);
+        patientID = bundle.getLong("patientID", 1);
         physicalExams = bundle.getStringArrayList("exams");
         Log.d(LOG_TAG, String.valueOf(patientID));
 
@@ -51,6 +51,7 @@ public class PatientHistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_patient_history);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         assert fab != null;

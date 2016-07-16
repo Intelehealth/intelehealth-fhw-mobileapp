@@ -47,6 +47,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_patient_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -56,8 +57,6 @@ public class PatientDetailActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         Intent intent = this.getIntent(); // The intent was passed to the activity

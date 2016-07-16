@@ -59,6 +59,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public void onBackPressed(){
+        //do nothing
+        //Use the buttons on the screen to navigate
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -89,6 +95,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_patient_summary);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         assert fab != null;

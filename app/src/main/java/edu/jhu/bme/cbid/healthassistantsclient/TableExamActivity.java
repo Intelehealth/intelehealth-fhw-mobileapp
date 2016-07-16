@@ -47,6 +47,7 @@ public class TableExamActivity extends AppCompatActivity {
         setContentView(R.layout.activity_table_exam);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         mHeight = (EditText) findViewById(R.id.table_height);
         mWeight = (EditText) findViewById(R.id.table_weight);

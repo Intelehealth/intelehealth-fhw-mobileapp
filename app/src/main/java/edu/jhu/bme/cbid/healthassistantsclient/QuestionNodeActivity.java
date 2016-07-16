@@ -62,6 +62,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_question_node);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         questionListView = (ExpandableListView) findViewById(R.id.complaint_question_expandable_list_view);
 
