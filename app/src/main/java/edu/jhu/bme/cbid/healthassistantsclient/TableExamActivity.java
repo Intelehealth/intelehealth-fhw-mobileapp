@@ -61,9 +61,8 @@ public class TableExamActivity extends AppCompatActivity {
         mBMI.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double numerator = Double.parseDouble(mWeight.getText().toString());
+                double numerator = Double.parseDouble(mWeight.getText().toString()) * 10000;
                 double denominator = (Double.parseDouble(mHeight.getText().toString())) * (Double.parseDouble(mHeight.getText().toString()));
-
                 double bmi_value = numerator / denominator;
                 mBMI.setText(String.format(Locale.ENGLISH, "%,2f", bmi_value));
                 Log.d("BMI", String.valueOf(bmi_value));

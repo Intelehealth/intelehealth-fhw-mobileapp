@@ -96,7 +96,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
                     String complaint = currentNode.text();
                     complaintDetails.put(complaint, complaintString);
 
-                    String insertion = complaint + ":\n" + complaintString;
+                    String insertion = complaint + ": " + complaintString;
 
                     long obsId = insertDb(insertion);
 

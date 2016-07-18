@@ -62,7 +62,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 
                             //This was moved into a different function only because it will get removed once OpenMRS has more concepts
 
-                            String toInsert = node.text() + ": " + familyString;
+                            String toInsert = node.text() + " has " + familyString;
                             insertionList.add(toInsert);
 
                         }
@@ -70,7 +70,11 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                 }
 
                 for (int i = 0; i < insertionList.size(); i++) {
-                    insertion = insertion + insertionList.get(i) + "\n\n";
+                    if (i == 0){
+                        insertion = insertionList.get(i);
+                    } else {
+                        insertion = insertion + "; " + insertionList.get(i);
+                    }
                 }
 
                 long obsId = insertDb(insertion);

@@ -162,7 +162,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
                     formattedDayOfMonth = "0" + dayOfMonth;
                 }
-                String dobString = formattedDayOfMonth + "/" + formattedMonth + "/" + year;
+                String dobString = year + "-" + formattedMonth + "-" + formattedDayOfMonth;
 
                 //can use SimpleDateFormat, but couldn't get it to work
                 mDOB.setText(dobString);
@@ -183,10 +183,8 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String currentDOB = mDOB.getText().toString();
-                if (currentDOB.matches("")) ;
-                {
+                if (currentDOB.matches("")) {
                     mDOBPicker.show();
-
                 }
             }
         });
@@ -195,8 +193,7 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String currentAge = mAge.getText().toString();
-                if (currentAge.matches("")) ;
-                {
+                if (currentAge.matches("")) {
 
                     Context context = IdentificationActivity.this;
 
@@ -248,11 +245,11 @@ public class IdentificationActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.identification_gender_male:
                 if (checked)
-                    mGender = "male";
+                    mGender = "M";
                 break;
             case R.id.identification_gender_female:
                 if (checked)
-                    mGender = "female";
+                    mGender = "F";
                 break;
         }
     }
@@ -262,7 +259,7 @@ public class IdentificationActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-        if(!mGenderF.isChecked() && !mGenderM.isChecked()){
+        if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
             alertDialogBuilder.setMessage(R.string.dialog_error_gender);
             alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
@@ -276,7 +273,7 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
-        if (dob.after(today)){
+        if (dob.after(today)) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
             alertDialogBuilder.setMessage(R.string.dialog_error_dob);
             alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
