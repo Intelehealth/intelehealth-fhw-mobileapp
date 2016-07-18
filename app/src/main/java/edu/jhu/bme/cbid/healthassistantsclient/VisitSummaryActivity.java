@@ -159,7 +159,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String medHistory = patHistory.getValue();
         medHistory = medHistory.replace("\"", "");
         medHistory = medHistory.replace("\n", "");
-        do{
+        do {
             medHistory = medHistory.replace("  ", "");
         } while (medHistory.contains("  "));
         patHistory.setValue(medHistory);
@@ -413,23 +413,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-
-            //first you send in the person creation
-            //when that comes back, you check that the response code is 201
-            //then you store the response string into the person UUID
-            //then change to patient
-            //check again that it's 201
-            //then store this patientUUID into the DB as the patient UUID
-
-            String mPatientName = patient.getFirstName() + " " + patient.getMiddleName() + " " + patient.getLastName();
-            String mPatientDob = patient.getDateOfBirth();
-            String mAddress = patient.getAddress1() + "\n" + patient.getAddress2();
-            String mCityState = patient.getCityVillage();
-            String mPhone = patient.getPhoneNumber();
-            String mSdw = patient.getPatientIdentifier1();
-            String mOccupation = patient.getPatientIdentifier2();
-            String mGender = patient.getGender();
-
             String personString =
                     String.format("{\"gender\":\"%s\", " +
                                     "\"names\":[{\"givenName\":\"%s\", " +
@@ -456,7 +439,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             patient.getPostalCode());
 
             Log.d(LOG_TAG, "Person String: " + personString);
-            PostResponse responsePerson = new PostResponse();
+            PostResponse responsePerson;
             responsePerson = postCommand("person", personString);
             if (responsePerson != null && responsePerson.getResponseCode() != 201) {
                 Log.d(LOG_TAG, "Person posting was unsuccessful");
@@ -464,13 +447,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
 
             assert responsePerson != null;
+            String identifierNumber = 20000 + String.valueOf(patientID);
             String patientString =
                     String.format("{\"person\":\"%s\", " +
-                                    "\"identifiers\":[{\"identifier\":\"20031\", " +
+                                    "\"identifiers\":[{\"identifier\":\"%s\", " +
                                     "\"identifierType\":\"05a29f94-c0ed-11e2-94be-8c13b969e334\", " +
                                     "\"location\":\"688051a3-c26b-483f-bfca-5cf996937a45\", " +
                                     "\"preferred\":true}]}",
-                            responsePerson.getResponseString());
+                            responsePerson.getResponseString(), identifierNumber);
 
             Log.d(LOG_TAG, "Patient String: " + patientString);
             PostResponse responsePatient;
@@ -502,8 +486,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     " \"patient\":\"%s\"," +
                                     "\"encounterType\":\"VITALS\"," +
                                     " \"visit\":\"%s\"," +
-                                    "\"obs\"" +
-                                    ":[{\"concept\":\"5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\", \"value\":\"%s\"}," + //Weight
+                                    "\"obs\":[" +
+                                    "{\"concept\":\"5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\", \"value\":\"%s\"}," + //Weight
                                     "{\"concept\":\"5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"value\":\"%s\"}, " + //Height
                                     "{\"concept\":\"5088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"value\":\"%s\"}," + //Temperature
                                     "{\"concept\":\"5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"value\":\"%s\"}," + //Pulse
@@ -530,9 +514,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     String.format("{\"encounterDatetime\":\"2016-07-17\"," +
                                     " \"patient\":\"%s\"," +
                                     "\"encounterType\":\"ADULTINITIAL\"," +
-                                    " \"visit\":\"%s\"," +
-                                    "\"obs\"" +
-                                    ":[{\"concept\":\"3f5c487f-5533-478c-bde7-4f4c0ed63781\", \"value\":\"%s\"}," + //son wife daughter
+                                    "\"visit\":\"%s\"," +
+                                    "\"obs\":[" +
+                                    "{\"concept\":\"3f5c487f-5533-478c-bde7-4f4c0ed63781\", \"value\":\"%s\"}," + //son wife daughter
                                     "{\"concept\":\"8e619790-d8f7-40d3-bd6e-02ea3aaabe41\",\"value\":\"%s\"}, " + //occupation
                                     "{\"concept\":\"8ea039c3-78eb-4bde-a84a-b8fac10ca9c0\",\"value\":\"%s\"}," + //medical history
                                     "{\"concept\":\"3511eaeb-8c2b-47ab-895c-18d615102b7c\",\"value\":\"%s\"}," + //family history
@@ -554,7 +538,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
 
 
-       return null;
+            return null;
         }
 
         private PostResponse postCommand(String urlModifier, String dataString) {
