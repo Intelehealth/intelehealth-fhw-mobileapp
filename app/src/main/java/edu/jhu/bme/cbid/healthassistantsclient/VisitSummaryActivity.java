@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.print.PrintAttributes;
@@ -26,11 +25,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONArray;
@@ -61,13 +57,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private WebView mWebView;
     private LinearLayout mLayout;
 
-    String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, patientUUID;
+    String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2;
 
     boolean uploaded = true;
     boolean dataChanged = false;
 
     Context context;
-    RelativeLayout.LayoutParams layoutParams;
 
     Long patientID;
     Patient patient = new Patient();
@@ -147,11 +142,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-//        Bundle bundle = getIntent().getExtras();
-//        patientID = bundle.getLong("patientID", 1);
-//        Log.d(LOG_TAG, String.valueOf(patientID));
+        Bundle bundle = getIntent().getExtras();
+        patientID = bundle.getLong("patientID", 1);
+        Log.d(LOG_TAG, String.valueOf(patientID));
 
-        patientID = Long.valueOf("1");
+        //For Testing
+        //patientID = Long.valueOf("1");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_summary);
@@ -208,15 +204,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Feature arriving shortly. Will sync to OpenMRS", Snackbar.LENGTH_LONG);
-//                if(!uploaded){
-//                    sendPost(view);
-//                }
-//                if(dataChanged){
-//                    sendPost(view);
-//                }
-//                if (uploaded) {
-//                    retrieveOpenMRS(view);
-//                }
+                if(!uploaded){
+                    sendPost(view);
+                }
+                if(dataChanged){
+                    sendPost(view);
+                }
+                if (uploaded) {
+                    retrieveOpenMRS(view);
+                }
                 retrieveOpenMRS(view);
             }
         });
@@ -265,10 +261,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         patHistory.setValue(medHistory);
         patHistView.setText(patHistory.getValue());
         physFindingsView.setText(physFindings.getValue());
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     public void sendPost(View view) {
@@ -470,47 +462,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "VisitSummary Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://edu.jhu.bme.cbid.healthassistantsclient/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "VisitSummary Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://edu.jhu.bme.cbid.healthassistantsclient/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();
-    }
-
-
     private class WebResponse {
 
         int responseCode = 1000;
@@ -562,8 +513,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "\"country\":\"%s\"," +
                                     "\"postalCode\":\"%s\"}]}",
                             patient.getGender(),
-                            //patient.getFirstName(),
-                            "Testing4",
+                            patient.getFirstName(),
                             patient.getMiddleName(),
                             patient.getLastName(),
                             patient.getDateOfBirth(),
@@ -583,9 +533,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
 
             assert responsePerson != null;
-            //String identifierNumber = 20000 + String.valueOf(patientID);
+            String identifierNumber = 20000 + String.valueOf(patientID);
             //Testing Purposes
-            String identifierNumber = "20004";
+            //String identifierNumber = "20004";
             String patientString =
                     String.format("{\"person\":\"%s\", " +
                                     "\"identifiers\":[{\"identifier\":\"%s\", " +
@@ -773,10 +723,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
 
-            //String identifierNumber = 20000 + String.valueOf(patientID);
+            String identifierNumber = 20000 + String.valueOf(patientID);
 
             //For Testing
-            String identifierNumber = "20004";
+            //String identifierNumber = "20004";
             String queryString = "?q=" + identifierNumber;
             WebResponse responseEncounter;
             responseEncounter = getCommand("encounter", queryString);
