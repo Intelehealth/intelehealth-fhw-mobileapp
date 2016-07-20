@@ -256,5 +256,15 @@
     <string name="title_activity_family_history">Family History</string>
     <string name="title_activity_physical_exam">Physical Exam</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="card_medical_history">Medical History</string>
+    <string name="card_family_history">Family History</string>
+    <string name="card_on_examination">On Examination</string>
+    <string name="card_complaint">C/O</string>
+    <string name="card_doctor_details">Doctor Details</string>
+    <string name="card_rx">Prescribed Medications</string>
+    <string name="card_diagnosis">Diagnosis</string>
+    <string name="card_advice">Medical Advice</string>
+    <string name="card_tests_prescribed">Tests/Referrals</string>
+    <string name="card_additional_comments">Additional Comments</string>
 
 </resources>

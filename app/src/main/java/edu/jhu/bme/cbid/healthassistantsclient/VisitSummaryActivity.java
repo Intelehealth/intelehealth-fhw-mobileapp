@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.print.PrintAttributes;
@@ -16,14 +17,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,6 +47,8 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Obs;
@@ -47,8 +59,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String LOG_TAG = "Patient Summary Activity";
 
     private WebView mWebView;
+    private LinearLayout mLayout;
 
     String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, patientUUID;
+
+    boolean uploaded = true;
+    boolean dataChanged = false;
+
+    Context context;
+    RelativeLayout.LayoutParams layoutParams;
 
     Long patientID;
     Patient patient = new Patient();
@@ -63,6 +82,37 @@ public class VisitSummaryActivity extends AppCompatActivity {
     Obs bpDias = new Obs();
     Obs temperature = new Obs();
     Obs spO2 = new Obs();
+
+    String diagnosisReturned = "";
+    String rxReturned = "";
+    String testsReturned = "";
+    String adviceReturned = "";
+    String doctorName = "";
+    String additionalReturned = "";
+
+    ImageButton editVitals;
+    ImageButton editComplaint;
+    ImageButton editPhysical;
+    ImageButton editFamHist;
+    ImageButton editMedHist;
+
+
+    TextView heightView;
+    TextView weightView;
+    TextView pulseView;
+    TextView bpView;
+    TextView tempView;
+    TextView spO2View;
+    TextView bmiView;
+    TextView complaintView;
+    TextView famHistView;
+    TextView patHistView;
+    TextView physFindingsView;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -108,6 +158,49 @@ public class VisitSummaryActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        mLayout = (LinearLayout) findViewById(R.id.summary_layout);
+        context = getApplicationContext();
+
+        editVitals = (ImageButton) findViewById(R.id.imagebutton_edit_vitals);
+        editComplaint = (ImageButton) findViewById(R.id.imagebutton_edit_complaint);
+        editPhysical = (ImageButton) findViewById(R.id.imagebutton_edit_physexam);
+        editFamHist = (ImageButton) findViewById(R.id.imagebutton_edit_famhist);
+        editMedHist = (ImageButton) findViewById(R.id.imagebutton_edit_pathist);
+
+        editVitals.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        editComplaint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        editPhysical.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        editFamHist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        editMedHist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         assert fab != null;
@@ -115,31 +208,38 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Feature arriving shortly. Will sync to OpenMRS", Snackbar.LENGTH_LONG);
-                sendPost(view);
+//                if(!uploaded){
+//                    sendPost(view);
+//                }
+//                if(dataChanged){
+//                    sendPost(view);
+//                }
+//                if (uploaded) {
+//                    retrieveOpenMRS(view);
+//                }
+                retrieveOpenMRS(view);
             }
         });
 
         queryData(String.valueOf(patientID));
 
-        TextView heightView = (TextView) findViewById(R.id.textview_height_value);
-        TextView weightView = (TextView) findViewById(R.id.textview_weight_value);
-        TextView pulseView = (TextView) findViewById(R.id.textview_pulse_value);
-        TextView bpView = (TextView) findViewById(R.id.textview_bp_value);
-        TextView tempView = (TextView) findViewById(R.id.textview_temp_value);
-        TextView spO2View = (TextView) findViewById(R.id.textview_pulseox_value);
-        TextView bmiView = (TextView) findViewById(R.id.textview_bmi_value);
-        TextView complaintView = (TextView) findViewById(R.id.textview_content_complaint);
-        TextView famHistView = (TextView) findViewById(R.id.textview_content_famhist);
-        TextView patHistView = (TextView) findViewById(R.id.textview_content_pathist);
-        TextView physFindingsView = (TextView) findViewById(R.id.textview_content_physexam);
+        heightView = (TextView) findViewById(R.id.textview_height_value);
+        weightView = (TextView) findViewById(R.id.textview_weight_value);
+        pulseView = (TextView) findViewById(R.id.textview_pulse_value);
+        bpView = (TextView) findViewById(R.id.textview_bp_value);
+        tempView = (TextView) findViewById(R.id.textview_temp_value);
+        spO2View = (TextView) findViewById(R.id.textview_pulseox_value);
+        bmiView = (TextView) findViewById(R.id.textview_bmi_value);
+        complaintView = (TextView) findViewById(R.id.textview_content_complaint);
+        famHistView = (TextView) findViewById(R.id.textview_content_famhist);
+        patHistView = (TextView) findViewById(R.id.textview_content_pathist);
+        physFindingsView = (TextView) findViewById(R.id.textview_content_physexam);
 
         heightView.setText(height.getValue());
         weightView.setText(weight.getValue());
         pulseView.setText(pulse.getValue());
-
-
-        bpView.setText(bpSys.getValue() + "/" + bpDias.getValue());
-
+        String bpText = bpSys.getValue() + "/" + bpDias.getValue();
+        bpView.setText(bpText);
 
         Double mWeight = Double.parseDouble(weight.getValue());
         Double mHeight = Double.parseDouble(height.getValue());
@@ -149,8 +249,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         double bmi_value = numerator / denominator;
 
-        bmiView.setText(String.format(Locale.ENGLISH, "%,2f", bmi_value));
         mBMI = String.format(Locale.ENGLISH, "%,2f", bmi_value);
+        bmiView.setText(mBMI);
         tempView.setText(temperature.getValue());
         spO2View.setText(spO2.getValue());
         complaintView.setText(complaint.getValue());
@@ -166,10 +266,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
         patHistView.setText(patHistory.getValue());
         physFindingsView.setText(physFindings.getValue());
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     public void sendPost(View view) {
         new PostClass(this).execute();
+    }
+
+    public void retrieveOpenMRS(View view) {
+        new RetrieveData(this).execute();
     }
 
     public void queryData(String dataString) {
@@ -363,8 +470,48 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
 
-    private class PostResponse {
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "VisitSummary Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://edu.jhu.bme.cbid.healthassistantsclient/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "VisitSummary Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://edu.jhu.bme.cbid.healthassistantsclient/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
+    }
+
+
+    private class WebResponse {
 
         int responseCode = 1000;
         String responseString = "";
@@ -395,21 +542,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         public PostClass(Context c) {
 
             this.context = c;
-//            this.error = status;
-//            this.type = t;
         }
 
         protected void onPreExecute() {
         }
-
-        /**
-         * Take the String representing the complete forecast in JSON Format and
-         * pull out the data we need to construct the Strings needed for the wireframes.
-         * <p/>
-         * Fortunately parsing is easy:  constructor takes the JSON string and converts it
-         * into an Object hierarchy for us.
-         */
-
 
         @Override
         protected String doInBackground(String... params) {
@@ -427,7 +563,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "\"postalCode\":\"%s\"}]}",
                             patient.getGender(),
                             //patient.getFirstName(),
-                            "Testing1",
+                            "Testing4",
                             patient.getMiddleName(),
                             patient.getLastName(),
                             patient.getDateOfBirth(),
@@ -439,7 +575,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             patient.getPostalCode());
 
             Log.d(LOG_TAG, "Person String: " + personString);
-            PostResponse responsePerson;
+            WebResponse responsePerson;
             responsePerson = postCommand("person", personString);
             if (responsePerson != null && responsePerson.getResponseCode() != 201) {
                 Log.d(LOG_TAG, "Person posting was unsuccessful");
@@ -447,7 +583,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
 
             assert responsePerson != null;
-            String identifierNumber = 20000 + String.valueOf(patientID);
+            //String identifierNumber = 20000 + String.valueOf(patientID);
+            //Testing Purposes
+            String identifierNumber = "20004";
             String patientString =
                     String.format("{\"person\":\"%s\", " +
                                     "\"identifiers\":[{\"identifier\":\"%s\", " +
@@ -457,7 +595,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             responsePerson.getResponseString(), identifierNumber);
 
             Log.d(LOG_TAG, "Patient String: " + patientString);
-            PostResponse responsePatient;
+            WebResponse responsePatient;
             responsePatient = postCommand("patient", patientString);
             if (responsePatient != null && responsePatient.getResponseCode() != 201) {
                 Log.d(LOG_TAG, "Patient posting was unsuccessful");
@@ -467,13 +605,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
             //TODO: Location UUID needs to be found before doing these
             assert responsePatient != null;
             String visitString =
-                    String.format("{\"startDatetime\":\"2016-07-17\"," +
+                    String.format("{\"startDatetime\":\"2016-07-17T20:04:49+05:30\"," +
                                     "\"visitType\":\"Telemedicine\"," +
                                     "\"patient\":\"%s\"," +
                                     "\"location\":\"688051a3-c26b-483f-bfca-5cf996937a45\"}",
                             responsePatient.getResponseString());
             Log.d(LOG_TAG, "Visit String: " + visitString);
-            PostResponse responseVisit;
+            WebResponse responseVisit;
             responseVisit = postCommand("visit", visitString);
             if (responseVisit != null && responseVisit.getResponseCode() != 201) {
                 Log.d(LOG_TAG, "Visit posting was unsuccessful");
@@ -482,7 +620,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             assert responseVisit != null;
             String vitalsString =
-                    String.format("{\"encounterDatetime\":\"2016-07-17\"," +
+                    String.format("{\"encounterDatetime\":\"2016-07-17T20:04:49+05:30\"," +
                                     " \"patient\":\"%s\"," +
                                     "\"encounterType\":\"VITALS\"," +
                                     " \"visit\":\"%s\"," +
@@ -502,7 +640,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             bpDias.getValue(), spO2.getValue()
                     );
             Log.d(LOG_TAG, "Vitals Encounter String: " + vitalsString);
-            PostResponse responseVitals;
+            WebResponse responseVitals;
             responseVitals = postCommand("encounter", vitalsString);
             if (responseVitals != null && responseVitals.getResponseCode() != 201) {
                 Log.d(LOG_TAG, "Encounter posting was unsuccessful");
@@ -511,7 +649,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             assert responseVitals != null;
             String noteString =
-                    String.format("{\"encounterDatetime\":\"2016-07-17\"," +
+                    String.format("{\"encounterDatetime\":\"2016-07-17T20:04:49+05:30\"," +
                                     " \"patient\":\"%s\"," +
                                     "\"encounterType\":\"ADULTINITIAL\"," +
                                     "\"visit\":\"%s\"," +
@@ -530,22 +668,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             complaint.getValue(), physFindings.getValue()
                     );
             Log.d(LOG_TAG, "Notes Encounter String: " + noteString);
-            PostResponse responseNotes;
+            WebResponse responseNotes;
             responseNotes = postCommand("encounter", noteString);
             if (responseNotes != null && responseNotes.getResponseCode() != 201) {
                 Log.d(LOG_TAG, "Notes Encounter posting was unsuccessful");
                 return null;
             }
 
+            uploaded = true;
 
             return null;
         }
 
-        private PostResponse postCommand(String urlModifier, String dataString) {
+        private WebResponse postCommand(String urlModifier, String dataString) {
             BufferedReader reader;
             String JSONString;
 
-            PostResponse postResponse = new PostResponse();
+            WebResponse webResponse = new WebResponse();
 
             try {
 
@@ -572,7 +711,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 dStream.flush();
                 dStream.close();
                 int responseCode = connection.getResponseCode();
-                postResponse.setResponseCode(responseCode);
+                webResponse.setResponseCode(responseCode);
 
 
                 Log.d(LOG_TAG, "POST URL: " + url);
@@ -606,7 +745,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 try {
                     JSONObject JSONResponse = new JSONObject(JSONString);
-                    postResponse.setResponseString(JSONResponse.getString("uuid"));
+                    webResponse.setResponseString(JSONResponse.getString("uuid"));
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -616,7 +755,276 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return postResponse;
+            return webResponse;
         }
+    }
+
+    private class RetrieveData extends AsyncTask<String, Void, String> {
+
+        private final String LOG_TAG = RetrieveData.class.getSimpleName();
+
+        private final Context context;
+
+        public RetrieveData(Context c) {
+            this.context = c;
+        }
+
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            //String identifierNumber = 20000 + String.valueOf(patientID);
+
+            //For Testing
+            String identifierNumber = "20004";
+            String queryString = "?q=" + identifierNumber;
+            WebResponse responseEncounter;
+            responseEncounter = getCommand("encounter", queryString);
+            if (responseEncounter != null && responseEncounter.getResponseCode() != 200) {
+                Log.d(LOG_TAG, "Encounter searching was unsuccessful");
+                return null;
+            }
+
+
+            assert responseEncounter != null;
+            JSONArray resultsArray = null;
+            List<String> uriList = new ArrayList<>();
+            try {
+                JSONObject JSONResponse = new JSONObject(responseEncounter.getResponseString());
+                resultsArray = JSONResponse.getJSONArray("results");
+
+
+                SimpleDateFormat currentDate = new SimpleDateFormat("dd/MM/yyyy");
+                Date todayDate = new Date();
+                String thisDate = currentDate.format(todayDate);
+
+
+                String searchString = "Visit Note " + thisDate;
+
+                if (resultsArray.length() != 0) {
+                    for (int i = 0; i < resultsArray.length(); i++) {
+                        JSONObject checking = resultsArray.getJSONObject(i);
+                        if (checking.getString("display").equals(searchString)) {
+                            uriList.add("/" + checking.getString("uuid"));
+                        }
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            List<WebResponse> obsResponse = new ArrayList<>();
+            for (int i = 0; i < uriList.size(); i++) {
+                obsResponse.add(i, getCommand("encounter", uriList.get(i)));
+                if (obsResponse.get(i) != null && obsResponse.get(i).getResponseCode() != 200) {
+                    Log.d(LOG_TAG, "Obs get call number " + String.valueOf(i) + " of " + String.valueOf(uriList.size()) + " was unsuccessful");
+                    return null;
+                }
+            }
+
+
+            JSONObject responseObj;
+            JSONArray obsArray;
+            JSONArray providersArray;
+
+            for (int i = 0; i < obsResponse.size(); i++) {
+                //Log.d(LOG_TAG, obsResponse.get(i).toString());
+                //Log.d(LOG_TAG, obsResponse.get(i).getResponseString());
+
+                try {
+                    responseObj = new JSONObject(obsResponse.get(i).getResponseString());
+                    obsArray = responseObj.getJSONArray("obs");
+                    providersArray = responseObj.getJSONArray("encounterProviders");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+
+                //Log.d(LOG_TAG, obsArray.toString());
+                for (int k = 0; k < obsArray.length(); k++) {
+                    String obsString = "";
+                    //Log.d(LOG_TAG, obsString);
+                    try {
+                        JSONObject obsObj = obsArray.getJSONObject(k);
+                        obsString = obsObj.getString("display");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+
+                    String[] obsSplit = obsString.split(":");
+                    //Log.d(LOG_TAG, obsString);
+
+                    String obsLocation = obsSplit[0];
+                    obsString = obsSplit[1];
+
+                    if (obsLocation.contains("Visit Diagnoses")) {
+                        if (!diagnosisReturned.contains(obsString) && !diagnosisReturned.isEmpty()) {
+                            diagnosisReturned = diagnosisReturned + "\n" + obsString;
+                        } else {
+                            diagnosisReturned = obsString;
+                        }
+                    }
+
+                    if (obsLocation.contains("PRESCRIPTION")) {
+                        if (!rxReturned.contains(obsString) && !rxReturned.isEmpty()) {
+                            rxReturned = rxReturned + "\n" + obsString;
+                        } else {
+                            rxReturned = obsString;
+                        }
+
+                    }
+
+                    if (obsLocation.contains("MEDICAL ADVICE")) {
+                        if (!adviceReturned.contains(obsString) && !adviceReturned.isEmpty()) {
+                            adviceReturned = adviceReturned + "\n" + obsString;
+                        } else {
+                            adviceReturned = obsString;
+                        }
+
+                    }
+
+                    if (obsLocation.contains("REQUESTED TESTS")) {
+                        if (!testsReturned.contains(obsString) && !testsReturned.isEmpty()) {
+                            testsReturned = testsReturned + "\n" + obsString;
+                        } else {
+                            testsReturned = obsString;
+                        }
+
+                    }
+
+                    if (obsLocation.contains("Additional Comments")) {
+                        if (!additionalReturned.contains(obsString) && !additionalReturned.isEmpty()) {
+                            additionalReturned = additionalReturned + "\n" + obsString;
+                        } else {
+                            additionalReturned = obsString;
+                        }
+
+                    }
+
+                }
+
+                for (int j = 0; j < providersArray.length(); j++) {
+                    String providerName;
+
+                    try {
+                        JSONObject providerObj = providersArray.getJSONObject(j);
+                        providerName = providerObj.getString("display");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+
+                    String[] providerSplit = providerName.split(":");
+                    providerName = providerSplit[0];
+                    if (!doctorName.contains(providerName) && !doctorName.isEmpty()) {
+                        doctorName = doctorName + "\n" + providerName;
+                    } else {
+                        doctorName = providerName;
+                    }
+
+                }
+//                Log.d(LOG_TAG, diagnosisReturned);
+//                Log.d(LOG_TAG, rxReturned);
+//                Log.d(LOG_TAG, adviceReturned);
+//                Log.d(LOG_TAG, testsReturned);
+//                Log.d(LOG_TAG, additionalReturned);
+//                Log.d(LOG_TAG, doctorName);
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            createNewCardView(getString(R.string.card_diagnosis), diagnosisReturned, 0);
+            createNewCardView(getString(R.string.card_rx), rxReturned, 1);
+            createNewCardView(getString(R.string.card_advice), adviceReturned, 2);
+            createNewCardView(getString(R.string.card_tests_prescribed), testsReturned, 3);
+            createNewCardView(getString(R.string.card_additional_comments), additionalReturned, 4);
+            createNewCardView(getString(R.string.card_doctor_details), doctorName, 5);
+            Log.d(LOG_TAG, "IT WORKED");
+            super.onPostExecute(s);
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+    }
+
+    private WebResponse getCommand(String urlModifier, String dataString) {
+        BufferedReader reader;
+        String JSONString;
+
+        WebResponse webResponse = new WebResponse();
+
+        try {
+            Log.d(LOG_TAG, "Try Catch Entered");
+
+            final String USERNAME = "Admin";
+            final String PASSWORD = "CBIDtiger123";
+            String urlString =
+                    String.format("http://openmrs.amal.io:8080/openmrs/ws/rest/v1/%s%s", urlModifier, dataString);
+
+            URL url = new URL(urlString);
+
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
+            connection.setRequestProperty("Authorization", "Basic " + encoded);
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
+            connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
+
+            int responseCode = connection.getResponseCode();
+            webResponse.setResponseCode(responseCode);
+
+            Log.d(LOG_TAG, "GET URL: " + url);
+            Log.d(LOG_TAG, "Response Code from Server: " + String.valueOf(responseCode));
+
+            // Read the input stream into a String
+            InputStream inputStream = connection.getInputStream();
+            StringBuffer buffer = new StringBuffer();
+            if (inputStream == null) {
+                // Do Nothing.
+                return null;
+            }
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
+                // But it does make debugging a *lot* easier if you print out the completed
+                // buffer for debugging.
+                buffer.append(line + "\n");
+            }
+
+            if (buffer.length() == 0) {
+                // Stream was empty.  No point in parsing.
+                return null;
+            }
+
+            JSONString = buffer.toString();
+
+            Log.d(LOG_TAG, "JSON Response: " + JSONString);
+            webResponse.setResponseString(JSONString);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return webResponse;
+    }
+
+
+    private void createNewCardView(String title, String content, int index) {
+        final LayoutInflater inflater = VisitSummaryActivity.this.getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.card_simple_content, null);
+        TextView titleView = (TextView) convertView.findViewById(R.id.textview_heading);
+        TextView contentView = (TextView) convertView.findViewById(R.id.textview_content);
+        titleView.setText(title);
+        contentView.setText(content);
+        mLayout.addView(convertView, index);
     }
 }
