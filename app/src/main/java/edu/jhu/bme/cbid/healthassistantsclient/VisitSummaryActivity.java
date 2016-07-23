@@ -27,8 +27,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.common.api.GoogleApiClient;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,6 +44,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Obs;
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
@@ -59,7 +58,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2;
 
-    boolean uploaded = true;
+    boolean uploaded = false;
     boolean dataChanged = false;
 
     Context context;
@@ -103,11 +102,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView famHistView;
     TextView patHistView;
     TextView physFindingsView;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -142,12 +136,22 @@ public class VisitSummaryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Bundle bundle = getIntent().getExtras();
-        patientID = bundle.getLong("patientID", 1);
-        Log.d(LOG_TAG, String.valueOf(patientID));
+//        Bundle bundle = getIntent().getExtras();
+//        patientID = bundle.getLong("patientID", 1);
+//        Log.d(LOG_TAG, String.valueOf(patientID));
 
         //For Testing
-        //patientID = Long.valueOf("1");
+        patientID = Long.valueOf("1");
+        Calendar c = Calendar.getInstance();
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss X");
+        df.setTimeZone(TimeZone.getDefault());
+        String formattedDate = df.format(c.getTime());
+        Log.d(LOG_TAG, formattedDate);
+        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+        Date todayDate = new Date();
+        String thisDate = currentDate.format(todayDate);
+        Log.d(LOG_TAG, thisDate);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_summary);
@@ -203,17 +207,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Feature arriving shortly. Will sync to OpenMRS", Snackbar.LENGTH_LONG);
-                if(!uploaded){
-                    sendPost(view);
+                retrieveOpenMRS(view);
+                if (true) {
+                    retrieveOpenMRS(view);
                 }
                 if(dataChanged){
                     sendPost(view);
                 }
-                if (uploaded) {
-                    retrieveOpenMRS(view);
+                if(!uploaded){
+                    sendPost(view);
+                    Snackbar.make(view, "Uploading to OpenMRS", Snackbar.LENGTH_LONG);
                 }
-                retrieveOpenMRS(view);
             }
         });
 
@@ -533,9 +537,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
 
             assert responsePerson != null;
-            String identifierNumber = 20000 + String.valueOf(patientID);
+//            String identifierNumber = 20000 + String.valueOf(patientID);
             //Testing Purposes
-            //String identifierNumber = "20004";
+            String identifierNumber = "20004";
             String patientString =
                     String.format("{\"person\":\"%s\", " +
                                     "\"identifiers\":[{\"identifier\":\"%s\", " +
@@ -552,14 +556,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 return null;
             }
 
+            SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            Date todayDate = new Date();
+            String thisDate = currentDate.format(todayDate);
+
             //TODO: Location UUID needs to be found before doing these
             assert responsePatient != null;
             String visitString =
-                    String.format("{\"startDatetime\":\"2016-07-17T20:04:49+05:30\"," +
+                    String.format("{\"startDatetime\":\"%s\"," +
                                     "\"visitType\":\"Telemedicine\"," +
                                     "\"patient\":\"%s\"," +
                                     "\"location\":\"688051a3-c26b-483f-bfca-5cf996937a45\"}",
-                            responsePatient.getResponseString());
+                            thisDate, responsePatient.getResponseString());
             Log.d(LOG_TAG, "Visit String: " + visitString);
             WebResponse responseVisit;
             responseVisit = postCommand("visit", visitString);
@@ -570,7 +578,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             assert responseVisit != null;
             String vitalsString =
-                    String.format("{\"encounterDatetime\":\"2016-07-17T20:04:49+05:30\"," +
+                    String.format("{\"encounterDatetime\":\"%s\"," +
                                     " \"patient\":\"%s\"," +
                                     "\"encounterType\":\"VITALS\"," +
                                     " \"visit\":\"%s\"," +
@@ -584,7 +592,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "{\"concept\":\"5092AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\", \"value\":\"%s\"}]," + //Sp02
                                     "\"location\":\"688051a3-c26b-483f-bfca-5cf996937a45\"}",
 
-                            responsePatient.getResponseString(), responseVisit.getResponseString(),
+                            thisDate, responsePatient.getResponseString(), responseVisit.getResponseString(),
                             weight.getValue(), height.getValue(), temperature.getValue(),
                             pulse.getValue(), bpSys.getValue(),
                             bpDias.getValue(), spO2.getValue()
@@ -599,7 +607,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             assert responseVitals != null;
             String noteString =
-                    String.format("{\"encounterDatetime\":\"2016-07-17T20:04:49+05:30\"," +
+                    String.format("{\"encounterDatetime\":\"%s\"," +
                                     " \"patient\":\"%s\"," +
                                     "\"encounterType\":\"ADULTINITIAL\"," +
                                     "\"visit\":\"%s\"," +
@@ -612,7 +620,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "{\"concept\":\"3f1820eb-de08-46e5-b85c-a062ae91b94f\",\"value\":\"%s\"}]," + //physical exam
                                     "\"location\":\"688051a3-c26b-483f-bfca-5cf996937a45\"}",
 
-                            responsePatient.getResponseString(), responseVisit.getResponseString(),
+                            thisDate, responsePatient.getResponseString(), responseVisit.getResponseString(),
                             patient.getPatientIdentifier1(), patient.getPatientIdentifier2(),
                             patHistory.getValue(), famHistory.getValue(),
                             complaint.getValue(), physFindings.getValue()
@@ -726,8 +734,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String identifierNumber = 20000 + String.valueOf(patientID);
 
             //For Testing
-            //String identifierNumber = "20004";
+//            String identifierNumber = "20009";
             String queryString = "?q=" + identifierNumber;
+            Log.d(LOG_TAG, identifierNumber);
             WebResponse responseEncounter;
             responseEncounter = getCommand("encounter", queryString);
             if (responseEncounter != null && responseEncounter.getResponseCode() != 200) {
@@ -744,7 +753,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 resultsArray = JSONResponse.getJSONArray("results");
 
 
-                SimpleDateFormat currentDate = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat currentDate = new SimpleDateFormat("MM/dd/yyyy");
                 Date todayDate = new Date();
                 String thisDate = currentDate.format(todayDate);
 
@@ -875,12 +884,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
 
                 }
-//                Log.d(LOG_TAG, diagnosisReturned);
-//                Log.d(LOG_TAG, rxReturned);
-//                Log.d(LOG_TAG, adviceReturned);
-//                Log.d(LOG_TAG, testsReturned);
-//                Log.d(LOG_TAG, additionalReturned);
-//                Log.d(LOG_TAG, doctorName);
+                Log.d(LOG_TAG, diagnosisReturned);
+                Log.d(LOG_TAG, rxReturned);
+                Log.d(LOG_TAG, adviceReturned);
+                Log.d(LOG_TAG, testsReturned);
+                Log.d(LOG_TAG, additionalReturned);
+                Log.d(LOG_TAG, doctorName);
             }
 
             return null;
@@ -888,13 +897,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
-            createNewCardView(getString(R.string.card_diagnosis), diagnosisReturned, 0);
-            createNewCardView(getString(R.string.card_rx), rxReturned, 1);
-            createNewCardView(getString(R.string.card_advice), adviceReturned, 2);
-            createNewCardView(getString(R.string.card_tests_prescribed), testsReturned, 3);
-            createNewCardView(getString(R.string.card_additional_comments), additionalReturned, 4);
-            createNewCardView(getString(R.string.card_doctor_details), doctorName, 5);
-            Log.d(LOG_TAG, "IT WORKED");
+            if(!diagnosisReturned.isEmpty()){
+                createNewCardView(getString(R.string.card_diagnosis), diagnosisReturned, 0);
+                createNewCardView(getString(R.string.card_rx), rxReturned, 1);
+                createNewCardView(getString(R.string.card_advice), adviceReturned, 2);
+                createNewCardView(getString(R.string.card_tests_prescribed), testsReturned, 3);
+                createNewCardView(getString(R.string.card_additional_comments), additionalReturned, 4);
+                createNewCardView(getString(R.string.card_doctor_details), doctorName, 5);
+                Log.d(LOG_TAG, "IT WORKED");
+            }
             super.onPostExecute(s);
         }
 
