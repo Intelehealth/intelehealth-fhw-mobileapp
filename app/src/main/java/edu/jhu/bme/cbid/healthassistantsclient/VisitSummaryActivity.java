@@ -44,7 +44,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Obs;
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
@@ -144,14 +143,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
         patientID = Long.valueOf("1");
         Calendar c = Calendar.getInstance();
 
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss X");
-        df.setTimeZone(TimeZone.getDefault());
-        String formattedDate = df.format(c.getTime());
-        Log.d(LOG_TAG, formattedDate);
-        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-        Date todayDate = new Date();
-        String thisDate = currentDate.format(todayDate);
-        Log.d(LOG_TAG, thisDate);
+//        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss X");
+//        df.setTimeZone(TimeZone.getDefault());
+//        String formattedDate = df.format(c.getTime());
+//        Log.d(LOG_TAG, formattedDate);
+//        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+//        Date todayDate = new Date();
+//        String thisDate = currentDate.format(todayDate);
+//        Log.d(LOG_TAG, thisDate);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_summary);

@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_refresh_white_24px"
+        android:src="@drawable/ic_file_upload_white_48px"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end" />
 
