@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 
@@ -39,10 +40,12 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
 
-        Bundle bundle = getIntent().getExtras();
-        patientID = bundle.getLong("patientID", 0);
-        physicalExams = bundle.getStringArrayList("exams");
+//        Bundle bundle = getIntent().getExtras();
+//        patientID = bundle.getLong("patientID", 0);
+//        physicalExams = bundle.getStringArrayList("exams");
 
+        //For Testing
+        patientID = Long.valueOf("1");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_family_history);
@@ -59,9 +62,6 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                     for (Node node : familyHistoryMap.getOptionsList()) {
                         if(node.isSelected()){
                             String familyString = node.generateLanguage();
-
-                            //This was moved into a different function only because it will get removed once OpenMRS has more concepts
-
                             String toInsert = node.text() + " has " + familyString;
                             insertionList.add(toInsert);
 
@@ -97,6 +97,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 Node clickedNode = familyHistoryMap.getOption(groupPosition).getOption(childPosition);
                 clickedNode.toggleSelected();
+                Log.d(LOG_TAG, String.valueOf(clickedNode.isSelected()));
                 if (familyHistoryMap.getOption(groupPosition).anySubSelected()) {
                     familyHistoryMap.getOption(groupPosition).setSelected();
                 } else {

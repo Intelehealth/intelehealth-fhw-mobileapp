@@ -7,7 +7,7 @@
     android:background="@color/background_gray"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".VisitSummaryActivity"
-    tools:showIn="@layout/activity_patient_summary">
+    tools:showIn="@layout/activity_visit_summary">
 
     <!-- TODO: Replace hard-coded strings with @string resources-->
 
