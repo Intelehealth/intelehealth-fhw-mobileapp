@@ -22,6 +22,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.telephony.TelephonyManager;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -37,6 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
 
@@ -109,6 +111,8 @@ public class IdentificationActivity extends AppCompatActivity {
         mRelationship = (EditText) findViewById(R.id.identification_relationship);
         mOccupation = (EditText) findViewById(R.id.identification_occupation);
 
+        String country = getUserCountry(IdentificationActivity.this);
+        mCountry.setText(country);
 
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(IdentificationActivity.this,
@@ -477,6 +481,24 @@ public class IdentificationActivity extends AppCompatActivity {
             intent2.putExtra("patientID", patientID);
             startActivity(intent2);
         }
+    }
+
+    public static String getUserCountry(Context context) {
+        try {
+            final TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            final String simCountry = tm.getSimCountryIso();
+            if (simCountry != null && simCountry.length() == 2) { // SIM country code is available
+                return simCountry.toLowerCase(Locale.US);
+            }
+            else if (tm.getPhoneType() != TelephonyManager.PHONE_TYPE_CDMA) { // device is not 3G (would be unreliable)
+                String networkCountry = tm.getNetworkCountryIso();
+                if (networkCountry != null && networkCountry.length() == 2) { // network country code is available
+                    return networkCountry.toLowerCase(Locale.US);
+                }
+            }
+        }
+        catch (Exception e) { }
+        return null;
     }
 }
 

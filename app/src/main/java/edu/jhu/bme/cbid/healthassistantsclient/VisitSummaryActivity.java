@@ -644,7 +644,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } else {
                 Snackbar.make(fab, "Upload failed.", Snackbar.LENGTH_LONG);
             }
-            //uploaded = true;
             super.onPostExecute(s);
         }
     }
