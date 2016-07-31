@@ -113,7 +113,7 @@ public class TableExamActivity extends AppCompatActivity {
         for (int i = 0; i < values.size(); i++) {
             EditText et = values.get(i);
 
-            if (TextUtils.isEmpty(et.getText().toString())) {
+            if (TextUtils.isEmpty(et.getText().toString()) && et.getTag() == null) {
                 et.setError(getString(R.string.error_field_required));
                 focusView = et;
                 cancel = true;
