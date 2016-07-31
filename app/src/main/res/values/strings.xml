@@ -39,7 +39,7 @@
     <string name="menu_option_end_of_day">End of Day</string>
 
     //Identification Screen
-    <string name="identification_screen_title">Add New Patient</string>
+    <string name="title_activity_identification">Add New Patient</string>
     <string name="identification_screen_prompt_first_name">First Name</string>
     <string name="identification_screen_prompt_middle_name">Middle Name</string>
     <string name="identification_screen_prompt_last_name">Last Name</string>

@@ -198,7 +198,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     Context context = IdentificationActivity.this;
 
                     final AlertDialog.Builder textInput = new AlertDialog.Builder(context);
-                    textInput.setTitle(R.string.dialog_age);
+                    textInput.setTitle(R.string.identification_screen_dialog_age);
                     final EditText dialogEditText = new EditText(context);
                     dialogEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
                     textInput.setView(dialogEditText);
@@ -261,7 +261,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
-            alertDialogBuilder.setMessage(R.string.dialog_error_gender);
+            alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
             alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -275,7 +275,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (dob.after(today)) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
-            alertDialogBuilder.setMessage(R.string.dialog_error_dob);
+            alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_dob);
             alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -342,7 +342,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 currentPatient.setPatientIdentifier1(mRelationship.getText().toString());
                 currentPatient.setPatientIdentifier2(mOccupation.getText().toString());
             } catch (NullPointerException e) {
-                Snackbar.make(findViewById(R.id.cl_table), R.string.error_data_fields, Snackbar.LENGTH_SHORT);
+                Snackbar.make(findViewById(R.id.cl_table), R.string.identification_screen_error_data_fields, Snackbar.LENGTH_SHORT);
             }
 
             mTask = new InsertPatientTable(currentPatient);

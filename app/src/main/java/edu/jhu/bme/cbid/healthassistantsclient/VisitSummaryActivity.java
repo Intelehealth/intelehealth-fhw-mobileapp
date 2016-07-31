@@ -89,7 +89,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ImageButton editFamHist;
     ImageButton editMedHist;
 
-
     TextView heightView;
     TextView weightView;
     TextView pulseView;
@@ -101,6 +100,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView famHistView;
     TextView patHistView;
     TextView physFindingsView;
+
+    FloatingActionButton fab;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -152,6 +153,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //        String thisDate = currentDate.format(todayDate);
 //        Log.d(LOG_TAG, thisDate);
 
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_summary);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -201,21 +203,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                retrieveOpenMRS(view);
-                if (true) {
+                Log.d(LOG_TAG, "Uploaded" + uploaded);
+                if (uploaded) {
                     retrieveOpenMRS(view);
-                }
-                if(dataChanged){
-                    sendPost(view);
-                }
-                if(!uploaded){
-                    sendPost(view);
+                } else if (!uploaded){
                     Snackbar.make(view, "Uploading to OpenMRS", Snackbar.LENGTH_LONG);
+                    sendPost(view);
                 }
             }
         });
@@ -503,6 +501,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
+
             String personString =
                     String.format("{\"gender\":\"%s\", " +
                                     "\"names\":[{\"givenName\":\"%s\", " +
@@ -536,14 +535,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
 
             assert responsePerson != null;
-//            String identifierNumber = 20000 + String.valueOf(patientID);
-            //Testing Purposes
-            String identifierNumber = "20004";
+            String identifierNumber = 20000 + String.valueOf(patientID);
+//            Testing Purposes
+//            String identifierNumber = "20004";
             String patientString =
                     String.format("{\"person\":\"%s\", " +
                                     "\"identifiers\":[{\"identifier\":\"%s\", " +
                                     "\"identifierType\":\"05a29f94-c0ed-11e2-94be-8c13b969e334\", " +
-                                    "\"location\":\"688051a3-c26b-483f-bfca-5cf996937a45\", " +
+                                    "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\", " +
                                     "\"preferred\":true}]}",
                             responsePerson.getResponseString(), identifierNumber);
 
@@ -555,6 +554,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 return null;
             }
 
+
             SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             Date todayDate = new Date();
             String thisDate = currentDate.format(todayDate);
@@ -565,7 +565,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     String.format("{\"startDatetime\":\"%s\"," +
                                     "\"visitType\":\"Telemedicine\"," +
                                     "\"patient\":\"%s\"," +
-                                    "\"location\":\"688051a3-c26b-483f-bfca-5cf996937a45\"}",
+                                    "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\"}",
                             thisDate, responsePatient.getResponseString());
             Log.d(LOG_TAG, "Visit String: " + visitString);
             WebResponse responseVisit;
@@ -589,7 +589,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "{\"concept\":\"5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"value\":\"%s\"}," + //BpSYS
                                     "{\"concept\":\"5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"value\":\"%s\"}," + //BpDias
                                     "{\"concept\":\"5092AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\", \"value\":\"%s\"}]," + //Sp02
-                                    "\"location\":\"688051a3-c26b-483f-bfca-5cf996937a45\"}",
+                                    "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\"}",
 
                             thisDate, responsePatient.getResponseString(), responseVisit.getResponseString(),
                             weight.getValue(), height.getValue(), temperature.getValue(),
@@ -611,13 +611,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "\"encounterType\":\"ADULTINITIAL\"," +
                                     "\"visit\":\"%s\"," +
                                     "\"obs\":[" +
-                                    "{\"concept\":\"3f5c487f-5533-478c-bde7-4f4c0ed63781\", \"value\":\"%s\"}," + //son wife daughter
-                                    "{\"concept\":\"8e619790-d8f7-40d3-bd6e-02ea3aaabe41\",\"value\":\"%s\"}, " + //occupation
-                                    "{\"concept\":\"8ea039c3-78eb-4bde-a84a-b8fac10ca9c0\",\"value\":\"%s\"}," + //medical history
-                                    "{\"concept\":\"3511eaeb-8c2b-47ab-895c-18d615102b7c\",\"value\":\"%s\"}," + //family history
-                                    "{\"concept\":\"60d07351-b991-45bc-802d-0051dd08d06f\",\"value\":\"%s\"}," + //current complaint
-                                    "{\"concept\":\"3f1820eb-de08-46e5-b85c-a062ae91b94f\",\"value\":\"%s\"}]," + //physical exam
-                                    "\"location\":\"688051a3-c26b-483f-bfca-5cf996937a45\"}",
+                                    "{\"concept\":\"35c3afdd-bb96-4b61-afb9-22a5fc2d088e\", \"value\":\"%s\"}," + //son wife daughter
+                                    "{\"concept\":\"5fe2ef6f-bbf7-45df-a6ea-a284aee82ddc\",\"value\":\"%s\"}, " + //occupation
+                                    "{\"concept\":\"62bff84b-795a-45ad-aae1-80e7f5163a82\",\"value\":\"%s\"}," + //medical history
+                                    "{\"concept\":\"d63ae965-47fb-40e8-8f08-1f46a8a60b2b\",\"value\":\"%s\"}," + //family history
+                                    "{\"concept\":\"3edb0e09-9135-481e-b8f0-07a26fa9a5ce\",\"value\":\"%s\"}," + //current complaint
+                                    "{\"concept\":\"e1761e85-9b50-48ae-8c4d-e6b7eeeba084\",\"value\":\"%s\"}]," + //physical exam
+                                    "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\"}",
 
                             thisDate, responsePatient.getResponseString(), responseVisit.getResponseString(),
                             patient.getPatientIdentifier1(), patient.getPatientIdentifier2(),
@@ -637,82 +637,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
             return null;
         }
 
-        private WebResponse postCommand(String urlModifier, String dataString) {
-            BufferedReader reader;
-            String JSONString;
-
-            WebResponse webResponse = new WebResponse();
-
-            try {
-
-                final String USERNAME = "Admin";
-                final String PASSWORD = "CBIDtiger123";
-                String urlString =
-                        String.format("http://openmrs.amal.io:8080/openmrs/ws/rest/v1/%s", urlModifier);
-
-                URL url = new URL(urlString);
-
-                byte[] outputInBytes = dataString.getBytes("UTF-8");
-
-
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
-                connection.setRequestProperty("Authorization", "Basic " + encoded);
-                connection.setRequestMethod("POST");
-                connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
-                connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
-                connection.setRequestProperty("Content-Type", "application/json");
-                connection.setDoOutput(true);
-                DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
-                dStream.write(outputInBytes);
-                dStream.flush();
-                dStream.close();
-                int responseCode = connection.getResponseCode();
-                webResponse.setResponseCode(responseCode);
-
-
-                Log.d(LOG_TAG, "POST URL: " + url);
-                Log.d(LOG_TAG, "Response Code from Server: " + String.valueOf(responseCode));
-
-                // Read the input stream into a String
-                InputStream inputStream = connection.getInputStream();
-                StringBuffer buffer = new StringBuffer();
-                if (inputStream == null) {
-                    // Nothing to do.
-                    return null;
-                }
-                reader = new BufferedReader(new InputStreamReader(inputStream));
-
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
-                    // But it does make debugging a *lot* easier if you print out the completed
-                    // buffer for debugging.
-                    buffer.append(line + "\n");
-                }
-
-                if (buffer.length() == 0) {
-                    // Stream was empty.  No point in parsing.
-                    return null;
-                }
-
-                JSONString = buffer.toString();
-
-                Log.d(LOG_TAG, "JSON Response: " + JSONString);
-
-                try {
-                    JSONObject JSONResponse = new JSONObject(JSONString);
-                    webResponse.setResponseString(JSONResponse.getString("uuid"));
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
+        @Override
+        protected void onPostExecute(String s) {
+            if (uploaded){
+                fab.setImageResource(R.drawable.ic_file_download_white_48px);
+            } else {
+                Snackbar.make(fab, "Upload failed.", Snackbar.LENGTH_LONG);
             }
-            return webResponse;
+            //uploaded = true;
+            super.onPostExecute(s);
         }
     }
 
@@ -725,7 +658,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         public RetrieveData(Context c) {
             this.context = c;
         }
-
 
         @Override
         protected String doInBackground(String... params) {
@@ -903,7 +835,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 createNewCardView(getString(R.string.card_tests_prescribed), testsReturned, 3);
                 createNewCardView(getString(R.string.card_additional_comments), additionalReturned, 4);
                 createNewCardView(getString(R.string.card_doctor_details), doctorName, 5);
-                Log.d(LOG_TAG, "IT WORKED");
+                Log.d(LOG_TAG, "Retrieval successful");
             }
             super.onPostExecute(s);
         }
@@ -977,6 +909,83 @@ public class VisitSummaryActivity extends AppCompatActivity {
         return webResponse;
     }
 
+    private WebResponse postCommand(String urlModifier, String dataString) {
+        BufferedReader reader;
+        String JSONString;
+
+        WebResponse webResponse = new WebResponse();
+
+        try {
+
+            final String USERNAME = "Admin";
+            final String PASSWORD = "CBIDtiger123";
+            String urlString =
+                    String.format("http://openmrs.amal.io:8080/openmrs/ws/rest/v1/%s", urlModifier);
+
+            URL url = new URL(urlString);
+
+            byte[] outputInBytes = dataString.getBytes("UTF-8");
+
+
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
+            connection.setRequestProperty("Authorization", "Basic " + encoded);
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
+            connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setDoOutput(true);
+            DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
+            dStream.write(outputInBytes);
+            dStream.flush();
+            dStream.close();
+            int responseCode = connection.getResponseCode();
+            webResponse.setResponseCode(responseCode);
+
+
+            Log.d(LOG_TAG, "POST URL: " + url);
+            Log.d(LOG_TAG, "Response Code from Server: " + String.valueOf(responseCode));
+
+            // Read the input stream into a String
+            InputStream inputStream = connection.getInputStream();
+            StringBuffer buffer = new StringBuffer();
+            if (inputStream == null) {
+                // Nothing to do.
+                return null;
+            }
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
+                // But it does make debugging a *lot* easier if you print out the completed
+                // buffer for debugging.
+                buffer.append(line + "\n");
+            }
+
+            if (buffer.length() == 0) {
+                // Stream was empty.  No point in parsing.
+                return null;
+            }
+
+            JSONString = buffer.toString();
+
+            Log.d(LOG_TAG, "JSON Response: " + JSONString);
+
+            try {
+                JSONObject JSONResponse = new JSONObject(JSONString);
+                webResponse.setResponseString(JSONResponse.getString("uuid"));
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return webResponse;
+    }
 
     private void createNewCardView(String title, String content, int index) {
         final LayoutInflater inflater = VisitSummaryActivity.this.getLayoutInflater();

@@ -300,7 +300,8 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return exams.getTitle(position);
+            //return exams.getTitle(position);
+            return String.valueOf(position);
         }
     }
 
