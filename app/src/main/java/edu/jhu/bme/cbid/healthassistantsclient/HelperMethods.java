@@ -151,9 +151,6 @@ public class HelperMethods {
             case "date":
                 HelperMethods.askDate(questionNode, context, adapter);
                 break;
-            case "location":
-                HelperMethods.askLocation(questionNode, context, adapter);
-                break;
             case "number":
                 HelperMethods.askNumber(questionNode, context, adapter);
                 break;
@@ -214,22 +211,12 @@ public class HelperMethods {
                         node.changeText(node.language());
                         node.setSelected();
                         adapter.notifyDataSetChanged();
-                        //TODO:: Check if the language is actually what is intended to be displayed
                     }
                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.setTitle(R.string.question_date_picker);
         datePickerDialog.show();
     }
 
-    public static void askLocation(final Node node, Activity context, final NodeAdapter adapter) {
-
-        final AlertDialog.Builder locationDialog = new AlertDialog.Builder(context);
-        locationDialog.setTitle(R.string.question_location_picker);
-
-        //TODO: Issue #51 on GitHub
-
-
-    }
 
     public static void askNumber(final Node node, Activity context, final NodeAdapter adapter) {
 
@@ -326,7 +313,6 @@ public class HelperMethods {
                 startPicker.setValue(startPicker.getValue());
                 endPicker.setValue(endPicker.getValue());
                 String durationString = String.valueOf(startPicker.getValue()) + " to " + endPicker.getValue();
-                //TODO gotta get the units of the range somehow. gotta see what they look like first
                 node.addLanguage(" " + durationString);
                 node.changeText(durationString);
                 node.setSelected();
@@ -431,9 +417,6 @@ public class HelperMethods {
             case "date":
                 HelperMethods.subAskDate(questionNode, context, adapter);
                 break;
-            case "location":
-                HelperMethods.subAskLocation(questionNode, context, adapter);
-                break;
             case "number":
                 HelperMethods.subAskNumber(questionNode, context, adapter);
                 break;
@@ -494,21 +477,10 @@ public class HelperMethods {
                         node.changeText(node.language());
                         node.setSelected();
                         adapter.notifyDataSetChanged();
-                        //TODO:: Check if the language is actually what is intended to be displayed
                     }
                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.setTitle(R.string.question_date_picker);
         datePickerDialog.show();
-    }
-
-    public static void subAskLocation(final Node node, Activity context, final subNodeAdapter adapter) {
-
-        final AlertDialog.Builder locationDialog = new AlertDialog.Builder(context);
-        locationDialog.setTitle(R.string.question_location_picker);
-
-        //TODO: Issue #51 on GitHub
-
-
     }
 
     public static void subAskNumber(final Node node, Activity context, final subNodeAdapter adapter) {
@@ -606,7 +578,6 @@ public class HelperMethods {
                 startPicker.setValue(startPicker.getValue());
                 endPicker.setValue(endPicker.getValue());
                 String durationString = String.valueOf(startPicker.getValue()) + " to " + endPicker.getValue();
-                //TODO gotta get the units of the range somehow. gotta see what they look like first
                 node.addLanguage(" " + durationString);
                 node.changeText(durationString);
                 node.setSelected();
