@@ -25,6 +25,10 @@ public class Knowledge extends Node {
 
     }
 
+    public List<Node> getmComplaints() {
+        return mComplaints;
+    }
+
     private List<Node> gatherComplaints(Node node) {
         List<Node> foundComplaints = new ArrayList<>();
         List<Node> mOptions = node.getOptionsList();

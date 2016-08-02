@@ -515,7 +515,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "\"country\":\"%s\"," +
                                     "\"postalCode\":\"%s\"}]}",
                             patient.getGender(),
-                            patient.getFirstName(),
+                            //patient.getFirstName(),
+                            "Acharya",
                             patient.getMiddleName(),
                             patient.getLastName(),
                             patient.getDateOfBirth(),
@@ -535,15 +536,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
 
             assert responsePerson != null;
-            String identifierNumber = 20000 + String.valueOf(patientID);
+//            String identifierNumber = 20000 + String.valueOf(patientID);
 //            Testing Purposes
-//            String identifierNumber = "20004";
+            String identifierNumber = "400007";
             String patientString =
                     String.format("{\"person\":\"%s\", " +
                                     "\"identifiers\":[{\"identifier\":\"%s\", " +
-                                    "\"identifierType\":\"05a29f94-c0ed-11e2-94be-8c13b969e334\", " +
+                                    "\"identifierType\":\"05a29f94-c0ed-11e2-94be-8c13b969e334\"}], " +
                                     "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\", " +
                                     "\"preferred\":true}]}",
+
                             responsePerson.getResponseString(), identifierNumber);
 
             Log.d(LOG_TAG, "Patient String: " + patientString);
@@ -661,10 +663,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
 
-            String identifierNumber = 20000 + String.valueOf(patientID);
+//            String identifierNumber = 20000 + String.valueOf(patientID);
 
             //For Testing
-//            String identifierNumber = "20009";
+            String identifierNumber = "400007";
             String queryString = "?q=" + identifierNumber;
             Log.d(LOG_TAG, identifierNumber);
             WebResponse responseEncounter;

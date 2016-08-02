@@ -18,4 +18,13 @@
         android:layout_width="match_parent"
         android:clickable="true" />
 
+    <ListView
+        android:id="@+id/complaint_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true">
+
+
+    </ListView>
+
 </RelativeLayout>

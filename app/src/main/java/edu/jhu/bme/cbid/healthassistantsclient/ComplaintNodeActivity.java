@@ -10,14 +10,18 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Knowledge;
+import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
 
 public class ComplaintNodeActivity extends AppCompatActivity {
 
@@ -68,6 +72,10 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         complaintListView = (ExpandableListView) findViewById(R.id.complaint_expandable_list_view);
+        if (complaintListView != null) {
+            complaintListView.setVisibility(View.GONE);
+        }
+        ListView complaintList = (ListView) findViewById(R.id.complaint_list_view);
 
         mKnowledge = new Knowledge(HelperMethods.encodeJSON(this, mFileName));
         final NodeAdapter adapter = new NodeAdapter(this, mKnowledge, this.getClass().getSimpleName());
@@ -86,6 +94,34 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+
+        final List<Node> complaints = mKnowledge.getmComplaints();
+        List<String> complaintTitles = new ArrayList<>();
+        for (int i = 0; i < complaints.size(); i++) {
+            complaintTitles.add(i,complaints.get(i).text() );
+        }
+        Log.d(LOG_TAG, complaintTitles.toString());
+
+        if (complaintList != null) {
+            complaintList.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
+        }
+        complaintList.setClickable(true);
+
+        final subNodeAdapter listAdapter = new subNodeAdapter(ComplaintNodeActivity.this,
+                R.layout.list_item_subquestion,
+                complaints);
+
+        complaintList.setAdapter(listAdapter);
+
+        complaintList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                complaints.get(position).toggleSelected();
+                listAdapter.notifyDataSetChanged();
+            }
+        });
+
 
     }
 
