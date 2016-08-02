@@ -4,136 +4,319 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="edu.jhu.bme.cbid.healthassistantsclient.PatientDetailActivity"
     tools:showIn="@layout/activity_patient_detail">
 
 
-    <LinearLayout android:orientation="horizontal"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        android:orientation="horizontal">
 
-        <RelativeLayout android:layout_width="match_parent"
-            android:layout_height="824dp"
-            xmlns:android="http://schemas.android.com/apk/res/android">
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
 
             <TextView
+                android:id="@+id/textview_patient_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/header_patient_detail"
-                android:id="@+id/textview_patient_details"
-                android:layout_marginTop="26dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
                 android:layout_marginLeft="26dp"
                 android:layout_marginStart="26dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:layout_marginTop="26dp"
+                android:text="@string/header_patient_detail"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
                 android:id="@+id/textview_patient_info_age"
-                android:layout_below="@+id/textview_patient_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/textview_patient_details"
-                android:layout_alignStart="@+id/textview_patient_details" />
+                android:layout_alignStart="@+id/textview_patient_details"
+                android:layout_below="@+id/textview_patient_details"
+                android:text="Patient Info Age"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/header_last_five"
-                android:id="@+id/textview_last_five"
-                android:layout_below="@+id/button_hist"
-                android:layout_alignLeft="@+id/textView_phone"
-                android:layout_alignStart="@+id/textView_phone" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
                 android:id="@+id/textview_occup"
-                android:layout_below="@+id/textview_patient_info_age"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/textview_patient_info_age"
-                android:layout_alignStart="@+id/textview_patient_info_age" />
+                android:layout_alignStart="@+id/textview_patient_info_age"
+                android:layout_below="@+id/textview_patient_info_age"
+                android:text="Occupation"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/header_contact"
-                android:id="@+id/textview_header_addr"
-                android:layout_below="@+id/textview_occup"
-                android:layout_alignLeft="@+id/textview_occup"
-                android:layout_marginTop="42dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
                 android:id="@+id/textView_sdw"
-                android:layout_below="@+id/textview_occup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/textview_occup"
-                android:layout_alignStart="@+id/textview_occup" />
+                android:layout_alignStart="@+id/textview_occup"
+                android:layout_below="@+id/textview_occup"
+                android:text="Son Daughter Wife"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
 
             <TextView
+                android:id="@+id/textview_header_addr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
+                android:layout_alignLeft="@+id/textview_occup"
+                android:layout_below="@+id/textview_occup"
+                android:layout_marginTop="42dp"
+                android:text="@string/header_contact"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+
+            <TextView
                 android:id="@+id/textView_addr1"
-                android:layout_below="@+id/textview_header_addr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/textview_header_addr"
-                android:layout_alignStart="@+id/textview_header_addr" />
+                android:layout_alignStart="@+id/textview_header_addr"
+                android:layout_below="@+id/textview_header_addr"
+                android:text="Address 1"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
                 android:id="@+id/textView_addr2"
-                android:layout_below="@+id/textView_addr1"
-                android:layout_alignLeft="@+id/textView_addr1"
-                android:layout_alignStart="@+id/textView_addr1" />
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
+                android:layout_alignLeft="@+id/textView_addr1"
+                android:layout_alignStart="@+id/textView_addr1"
+                android:layout_below="@+id/textView_addr1"
+                android:text="Address 2"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
                 android:id="@+id/textView_phone"
-                android:layout_below="@+id/textView_addr2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/textView_addr2"
-                android:layout_alignStart="@+id/textView_addr2" />
+                android:layout_alignStart="@+id/textView_addr2"
+                android:layout_below="@+id/textView_addr2"
+                android:text="Phone Number"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <Button
+                android:id="@+id/button_hist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/button_history"
-                android:id="@+id/button_hist"
                 android:layout_below="@+id/textView_phone"
+                android:layout_marginEnd="40dp"
+                android:layout_marginRight="40dp"
                 android:layout_toLeftOf="@+id/button_meds"
                 android:layout_toStartOf="@+id/button_meds"
-                android:layout_marginRight="40dp"
-                android:layout_marginEnd="40dp" />
+                android:text="@string/button_history" />
 
             <Button
+                android:id="@+id/button_meds"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/button_meds"
-                android:id="@+id/button_meds"
-                android:layout_alignTop="@+id/button_hist"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/button_hist"
+                android:layout_marginEnd="37dp"
                 android:layout_marginRight="37dp"
-                android:layout_marginEnd="37dp" />
+                android:text="@string/button_meds" />
+
+
+            <TextView
+                android:id="@+id/textview_last_five"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/textView_phone"
+                android:layout_alignStart="@+id/textView_phone"
+                android:layout_below="@+id/button_hist"
+                android:text="@string/header_last_five"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textview_last_five"
+                android:layout_alignStart="@+id/textview_last_five">
+
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Visit Date"
+                        android:id="@+id/textview_table_heading_date" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="HA Name"
+                        android:id="@+id/textview_table_heading_CHW" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Doctor's Name"
+                        android:id="@+id/textview_table_heading_doctor" />
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Visit Date 1"
+                        android:id="@+id/textview_table_date_1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="HA Name 1"
+                        android:id="@+id/textview_table_CHW_1" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Doctor's Name 1"
+                        android:id="@+id/textview_table_DR_1" />
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Visit Date 2"
+                        android:id="@+id/textview_table_date_2" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="HA Name 2"
+                        android:id="@+id/textview_table_CHW_2" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Doctor's Name 2"
+                        android:id="@+id/textview_table_DR_2" />
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Visit Date 3"
+                        android:id="@+id/textview_table_date_3" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="HA Name 3"
+                        android:id="@+id/textview_table_CHW_3" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Doctor's Name 3"
+                        android:id="@+id/textview_table_DR_3" />
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Visit Date 4"
+                        android:id="@+id/textview_table_date_4" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="HA Name 4"
+                        android:id="@+id/textview_table_CHW_4" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Doctor's Name 4"
+                        android:id="@+id/textview_table_DR_4" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Visit Date 5"
+                        android:id="@+id/textview_table_date_5" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="HA Name 5"
+                        android:id="@+id/textview_table_CHW_5" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Doctor's Name 5"
+                        android:id="@+id/textview_table_DR_5" />
+                </TableRow>
+            </TableLayout>
 
 
         </RelativeLayout>

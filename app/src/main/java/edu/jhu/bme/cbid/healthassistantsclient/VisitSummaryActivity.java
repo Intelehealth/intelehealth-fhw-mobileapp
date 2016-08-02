@@ -36,6 +36,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.InvalidObjectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -56,6 +57,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private LinearLayout mLayout;
 
     String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2;
+    String identifierNumber;
 
     boolean uploaded = false;
     boolean dataChanged = false;
@@ -136,13 +138,24 @@ public class VisitSummaryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-//        Bundle bundle = getIntent().getExtras();
-//        patientID = bundle.getLong("patientID", 1);
-//        Log.d(LOG_TAG, String.valueOf(patientID));
+        Bundle bundle = getIntent().getExtras();
+        patientID = bundle.getLong("patientID", 1);
+        Log.d(LOG_TAG, String.valueOf(patientID));
 
         //For Testing
-        patientID = Long.valueOf("1");
+//        patientID = Long.valueOf("1");
         Calendar c = Calendar.getInstance();
+
+
+
+      identifierNumber = "40000" + String.valueOf(patientID);
+//        For Testing
+//        identifierNumber = "400014";
+
+        int checkedDigit = checkdigit(identifierNumber);
+        Log.d(LOG_TAG, "check digit" + String.valueOf(checkedDigit));
+
+        identifierNumber = identifierNumber + "-" + String.valueOf(checkedDigit);
 
 //        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss X");
 //        df.setTimeZone(TimeZone.getDefault());
@@ -209,12 +222,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d(LOG_TAG, "Uploaded" + uploaded);
-                if (uploaded) {
-                    retrieveOpenMRS(view);
-                } else if (!uploaded){
-                    Snackbar.make(view, "Uploading to OpenMRS", Snackbar.LENGTH_LONG);
-                    sendPost(view);
-                }
+                retrieveOpenMRS(view);
+
+//                if (uploaded) {
+//                    retrieveOpenMRS(view);
+//                } else if (!uploaded) {
+//                    Snackbar.make(view, "Uploading to OpenMRS", Snackbar.LENGTH_LONG);
+//                    sendPost(view);
+//                }
             }
         });
 
@@ -516,7 +531,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "\"postalCode\":\"%s\"}]}",
                             patient.getGender(),
                             //patient.getFirstName(),
-                            "Acharya",
+                            "Neha",
                             patient.getMiddleName(),
                             patient.getLastName(),
                             patient.getDateOfBirth(),
@@ -536,13 +551,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
 
             assert responsePerson != null;
-//            String identifierNumber = 20000 + String.valueOf(patientID);
-//            Testing Purposes
-            String identifierNumber = "400007";
+
             String patientString =
                     String.format("{\"person\":\"%s\", " +
                                     "\"identifiers\":[{\"identifier\":\"%s\", " +
-                                    "\"identifierType\":\"05a29f94-c0ed-11e2-94be-8c13b969e334\"}], " +
+                                    "\"identifierType\":\"05a29f94-c0ed-11e2-94be-8c13b969e334\", " +
                                     "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\", " +
                                     "\"preferred\":true}]}",
 
@@ -641,7 +654,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
-            if (uploaded){
+            if (uploaded) {
                 fab.setImageResource(R.drawable.ic_file_download_white_48px);
             } else {
                 Snackbar.make(fab, "Upload failed.", Snackbar.LENGTH_LONG);
@@ -662,11 +675,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-
-//            String identifierNumber = 20000 + String.valueOf(patientID);
-
-            //For Testing
-            String identifierNumber = "400007";
             String queryString = "?q=" + identifierNumber;
             Log.d(LOG_TAG, identifierNumber);
             WebResponse responseEncounter;
@@ -685,10 +693,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 resultsArray = JSONResponse.getJSONArray("results");
 
 
-                SimpleDateFormat currentDate = new SimpleDateFormat("MM/dd/yyyy");
+                SimpleDateFormat currentDate = new SimpleDateFormat("dd/MM/yyyy");
                 Date todayDate = new Date();
                 String thisDate = currentDate.format(todayDate);
 
+                Log.d(LOG_TAG, thisDate);
 
                 String searchString = "Visit Note " + thisDate;
 
@@ -829,7 +838,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
-            if(!diagnosisReturned.isEmpty()){
+            if (!diagnosisReturned.isEmpty()) {
                 createNewCardView(getString(R.string.card_diagnosis), diagnosisReturned, 0);
                 createNewCardView(getString(R.string.card_rx), rxReturned, 1);
                 createNewCardView(getString(R.string.card_advice), adviceReturned, 2);
@@ -855,7 +864,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         WebResponse webResponse = new WebResponse();
 
         try {
-            Log.d(LOG_TAG, "Try Catch Entered");
 
             final String USERNAME = "Admin";
             final String PASSWORD = "CBIDtiger123";
@@ -997,4 +1005,72 @@ public class VisitSummaryActivity extends AppCompatActivity {
         contentView.setText(content);
         mLayout.addView(convertView, index);
     }
+
+
+    public int checkdigit(String idWithoutCheckdigit) {
+
+// allowable characters within identifier
+        String validChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVYWXZ_";
+
+// remove leading or trailing whitespace, convert to uppercase
+        idWithoutCheckdigit = idWithoutCheckdigit.trim().toUpperCase();
+
+// this will be a running total
+        int sum = 0;
+
+// loop through digits from right to left
+        for (int i = 0; i < idWithoutCheckdigit.length(); i++) {
+
+//set ch to "current" character to be processed
+            char ch = idWithoutCheckdigit
+                    .charAt(idWithoutCheckdigit.length() - i - 1);
+
+// throw exception for invalid characters
+            if (validChars.indexOf(ch) == -1)
+            try {
+                throw new InvalidObjectException("\"" + ch + "\" is an invalid character");
+            } catch (InvalidObjectException e) {
+                e.printStackTrace();
+            }
+
+// our "digit" is calculated using ASCII value - 48
+            int digit = (int) ch - 48;
+
+// weight will be the current digit's contribution to
+// the running total
+            int weight;
+            if (i % 2 == 0) {
+
+                // for alternating digits starting with the rightmost, we
+                // use our formula this is the same as multiplying x 2 and
+                // adding digits together for values 0 to 9.  Using the
+                // following formula allows us to gracefully calculate a
+                // weight for non-numeric "digits" as well (from their
+                // ASCII value - 48).
+                weight = (2 * digit) - (int) (digit / 5) * 9;
+
+            } else {
+
+                // even-positioned digits just contribute their ascii
+                // value minus 48
+                weight = digit;
+
+            }
+
+// keep a running total of weights
+            sum += weight;
+
+        }
+
+// avoid sum less than 10 (if characters below "0" allowed,
+// this could happen)
+        sum = Math.abs(sum) + 10;
+
+// check digit is amount needed to reach next number
+// divisible by ten
+        return (10 - (sum % 10)) % 10;
+
+    }
+
+
 }

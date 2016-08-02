@@ -40,12 +40,12 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
 
-//        Bundle bundle = getIntent().getExtras();
-//        patientID = bundle.getLong("patientID", 0);
-//        physicalExams = bundle.getStringArrayList("exams");
+        Bundle bundle = getIntent().getExtras();
+        patientID = bundle.getLong("patientID", 0);
+        physicalExams = bundle.getStringArrayList("exams");
 
         //For Testing
-        patientID = Long.valueOf("1");
+//        patientID = Long.valueOf("1");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_family_history);
