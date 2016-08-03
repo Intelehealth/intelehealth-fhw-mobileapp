@@ -252,7 +252,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
             }
 
 
-            final NodeAdapter adapter = new NodeAdapter(getContext(), viewNode, this.getClass().getSimpleName());
+            final CustomExpandableListAdapter adapter = new CustomExpandableListAdapter(getContext(), viewNode, this.getClass().getSimpleName());
             expandableListView.setAdapter(adapter);
             expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
                 @Override

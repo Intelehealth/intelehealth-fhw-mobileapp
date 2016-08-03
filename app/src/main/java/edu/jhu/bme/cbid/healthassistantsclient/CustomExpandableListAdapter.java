@@ -15,7 +15,7 @@ import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
  * Created by Amal Afroz Alam on 23, April, 2016.
  * Contact me: contact@amal.io
  */
-public class NodeAdapter extends BaseExpandableListAdapter {
+public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 
     private String LOG_TAG = "Node Adapter";
     private Context mContext;
@@ -23,7 +23,7 @@ public class NodeAdapter extends BaseExpandableListAdapter {
     private LayoutInflater mInflater;
     private String callingClass;
 
-    public NodeAdapter(Context context, Node node, String caller) {
+    public CustomExpandableListAdapter(Context context, Node node, String caller) {
         this.mContext = context;
         this.mNode = node;
         this.mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

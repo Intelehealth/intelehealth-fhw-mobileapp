@@ -79,7 +79,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         ListView complaintList = (ListView) findViewById(R.id.complaint_list_view);
 
         mKnowledge = new Knowledge(HelperMethods.encodeJSON(this, mFileName));
-        final NodeAdapter adapter = new NodeAdapter(this, mKnowledge, this.getClass().getSimpleName());
+        final CustomExpandableListAdapter adapter = new CustomExpandableListAdapter(this, mKnowledge, this.getClass().getSimpleName());
         complaintListView.setAdapter(adapter);
         complaintListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
 
@@ -109,7 +109,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         }
         complaintList.setClickable(true);
 
-        final subNodeAdapter listAdapter = new subNodeAdapter(ComplaintNodeActivity.this,
+        final CustomArrayAdapter listAdapter = new CustomArrayAdapter(ComplaintNodeActivity.this,
                 R.layout.list_item_subquestion,
                 complaints);
 

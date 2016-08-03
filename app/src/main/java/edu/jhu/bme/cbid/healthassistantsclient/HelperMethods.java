@@ -78,10 +78,10 @@ public class HelperMethods {
 
     }
 
-    public static void subLevelQuestion(final Node node, final Activity context, final NodeAdapter callingAdapter){
+    public static void subLevelQuestion(final Node node, final Activity context, final CustomExpandableListAdapter callingAdapter){
         node.setSelected();
         List<Node> mNodes = node.getOptionsList();
-        final subNodeAdapter adapter = new subNodeAdapter(context, R.layout.list_item_subquestion, mNodes);
+        final CustomArrayAdapter adapter = new CustomArrayAdapter(context, R.layout.list_item_subquestion, mNodes);
         final AlertDialog.Builder subQuestion = new AlertDialog.Builder(context);
 
         final LayoutInflater inflater = context.getLayoutInflater();
@@ -142,7 +142,7 @@ public class HelperMethods {
 
     }
 
-    public static void handleQuestion(Node questionNode, final Activity context, final NodeAdapter adapter) {
+    public static void handleQuestion(Node questionNode, final Activity context, final CustomExpandableListAdapter adapter) {
         String type = questionNode.type();
         switch (type) {
             case "text":
@@ -169,7 +169,7 @@ public class HelperMethods {
         }
     }
 
-    public static void askText(final Node node, Activity context, final NodeAdapter adapter) {
+    public static void askText(final Node node, Activity context, final CustomExpandableListAdapter adapter) {
         final AlertDialog.Builder textInput = new AlertDialog.Builder(context);
         textInput.setTitle(R.string.question_text_input);
         final EditText dialogEditText = new EditText(context);
@@ -194,7 +194,7 @@ public class HelperMethods {
         textInput.show();
     }
 
-    public static void askDate(final Node node, final Activity context, final NodeAdapter adapter) {
+    public static void askDate(final Node node, final Activity context, final CustomExpandableListAdapter adapter) {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(context,
                 android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
@@ -218,7 +218,7 @@ public class HelperMethods {
     }
 
 
-    public static void askNumber(final Node node, Activity context, final NodeAdapter adapter) {
+    public static void askNumber(final Node node, Activity context, final CustomExpandableListAdapter adapter) {
 
         final AlertDialog.Builder numberDialog = new AlertDialog.Builder(context);
         numberDialog.setTitle(R.string.question_number_picker);
@@ -251,7 +251,7 @@ public class HelperMethods {
 
     }
 
-    public static void askArea(final Node node, Activity context, final NodeAdapter adapter) {
+    public static void askArea(final Node node, Activity context, final CustomExpandableListAdapter adapter) {
 
         final AlertDialog.Builder areaDialog = new AlertDialog.Builder(context);
         areaDialog.setTitle(R.string.question_area_picker);
@@ -291,7 +291,7 @@ public class HelperMethods {
 
     }
 
-    public static void askRange(final Node node, Activity context, final NodeAdapter adapter) {
+    public static void askRange(final Node node, Activity context, final CustomExpandableListAdapter adapter) {
 
         final AlertDialog.Builder rangeDialog = new AlertDialog.Builder(context);
         rangeDialog.setTitle(R.string.question_range_picker);
@@ -329,7 +329,7 @@ public class HelperMethods {
         rangeDialog.show();
     }
 
-    public static void askFrequency(final Node node, Activity context, final NodeAdapter adapter) {
+    public static void askFrequency(final Node node, Activity context, final CustomExpandableListAdapter adapter) {
 
         final AlertDialog.Builder frequencyDialog = new AlertDialog.Builder(context);
         frequencyDialog.setTitle(R.string.question_frequency_picker);
@@ -370,7 +370,7 @@ public class HelperMethods {
 
     }
 
-    public static void askDuration(final Node node, Activity context, final NodeAdapter adapter) {
+    public static void askDuration(final Node node, Activity context, final CustomExpandableListAdapter adapter) {
         final AlertDialog.Builder durationDialog = new AlertDialog.Builder(context);
         durationDialog.setTitle(R.string.question_duration_picker);
         final LayoutInflater inflater = context.getLayoutInflater();
@@ -408,7 +408,7 @@ public class HelperMethods {
         durationDialog.show();
     }
 
-    public static void subHandleQuestion(Node questionNode, final Activity context, final subNodeAdapter adapter) {
+    public static void subHandleQuestion(Node questionNode, final Activity context, final CustomArrayAdapter adapter) {
         String type = questionNode.type();
         switch (type) {
             case "text":
@@ -435,7 +435,7 @@ public class HelperMethods {
         }
     }
 
-    public static void subAskText(final Node node, Activity context, final subNodeAdapter adapter) {
+    public static void subAskText(final Node node, Activity context, final CustomArrayAdapter adapter) {
         final AlertDialog.Builder textInput = new AlertDialog.Builder(context);
         textInput.setTitle(R.string.question_text_input);
         final EditText dialogEditText = new EditText(context);
@@ -460,7 +460,7 @@ public class HelperMethods {
         textInput.show();
     }
 
-    public static void subAskDate(final Node node, final Activity context, final subNodeAdapter adapter) {
+    public static void subAskDate(final Node node, final Activity context, final CustomArrayAdapter adapter) {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(context,
                 android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
@@ -483,7 +483,7 @@ public class HelperMethods {
         datePickerDialog.show();
     }
 
-    public static void subAskNumber(final Node node, Activity context, final subNodeAdapter adapter) {
+    public static void subAskNumber(final Node node, Activity context, final CustomArrayAdapter adapter) {
 
         final AlertDialog.Builder numberDialog = new AlertDialog.Builder(context);
         numberDialog.setTitle(R.string.question_number_picker);
@@ -516,7 +516,7 @@ public class HelperMethods {
 
     }
 
-    public static void subAskArea(final Node node, Activity context, final subNodeAdapter adapter) {
+    public static void subAskArea(final Node node, Activity context, final CustomArrayAdapter adapter) {
 
         final AlertDialog.Builder areaDialog = new AlertDialog.Builder(context);
         areaDialog.setTitle(R.string.question_area_picker);
@@ -556,7 +556,7 @@ public class HelperMethods {
 
     }
 
-    public static void subAskRange(final Node node, Activity context, final subNodeAdapter adapter) {
+    public static void subAskRange(final Node node, Activity context, final CustomArrayAdapter adapter) {
 
         final AlertDialog.Builder rangeDialog = new AlertDialog.Builder(context);
         rangeDialog.setTitle(R.string.question_range_picker);
@@ -594,7 +594,7 @@ public class HelperMethods {
         rangeDialog.show();
     }
 
-    public static void subAskFrequency(final Node node, Activity context, final subNodeAdapter adapter) {
+    public static void subAskFrequency(final Node node, Activity context, final CustomArrayAdapter adapter) {
 
         final AlertDialog.Builder frequencyDialog = new AlertDialog.Builder(context);
         frequencyDialog.setTitle(R.string.question_frequency_picker);
@@ -635,7 +635,7 @@ public class HelperMethods {
 
     }
 
-    public static void subAskDuration(final Node node, Activity context, final subNodeAdapter adapter) {
+    public static void subAskDuration(final Node node, Activity context, final CustomArrayAdapter adapter) {
         final AlertDialog.Builder durationDialog = new AlertDialog.Builder(context);
         durationDialog.setTitle(R.string.question_duration_picker);
         final LayoutInflater inflater = context.getLayoutInflater();

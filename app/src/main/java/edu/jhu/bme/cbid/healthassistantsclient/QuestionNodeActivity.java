@@ -42,7 +42,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
     List<Node> complaintsNodes;
     ArrayList<String> physicalExams;
     Node currentNode;
-    NodeAdapter adapter;
+    CustomExpandableListAdapter adapter;
     boolean nodeComplete = false;
 
     @Override
@@ -203,7 +203,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
     private void setupQuestions(int complaintIndex) {
         nodeComplete = false;
         currentNode = mKnowledge.getComplaint(complaints.get(complaintIndex));
-        adapter = new NodeAdapter(this, currentNode, this.getClass().getSimpleName());
+        adapter = new CustomExpandableListAdapter(this, currentNode, this.getClass().getSimpleName());
         questionListView.setAdapter(adapter);
         questionListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
         questionListView.expandGroup(0);

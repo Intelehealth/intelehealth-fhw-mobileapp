@@ -34,7 +34,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     int lastExpandedPosition = -1;
 
     Node familyHistoryMap;
-    NodeAdapter adapter;
+    CustomExpandableListAdapter adapter;
     ExpandableListView familyListView;
 
     ArrayList<String> insertionList = new ArrayList<>();
@@ -111,7 +111,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 
         familyHistoryMap = new Node(HelperMethods.encodeJSON(this, mFileName));
         familyListView = (ExpandableListView) findViewById(R.id.family_history_expandable_list_view);
-        adapter = new NodeAdapter(this, familyHistoryMap, this.getClass().getSimpleName());
+        adapter = new CustomExpandableListAdapter(this, familyHistoryMap, this.getClass().getSimpleName());
         familyListView.setAdapter(adapter);
 
         familyListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {

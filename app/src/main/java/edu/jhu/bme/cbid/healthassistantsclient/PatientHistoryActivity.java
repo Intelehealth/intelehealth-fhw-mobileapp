@@ -34,7 +34,7 @@ public class PatientHistoryActivity extends AppCompatActivity {
     String mFileName = "pathist.json";
 
     Node patientHistoryMap;
-    NodeAdapter adapter;
+    CustomExpandableListAdapter adapter;
     ExpandableListView historyListView;
 
     String patientHistory;
@@ -97,7 +97,7 @@ public class PatientHistoryActivity extends AppCompatActivity {
 
         patientHistoryMap = new Node(HelperMethods.encodeJSON(this, mFileName));
         historyListView = (ExpandableListView) findViewById(R.id.patient_history_expandable_list_view);
-        adapter = new NodeAdapter(this, patientHistoryMap, this.getClass().getSimpleName());
+        adapter = new CustomExpandableListAdapter(this, patientHistoryMap, this.getClass().getSimpleName());
         historyListView.setAdapter(adapter);
 
         historyListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {

@@ -17,7 +17,7 @@ import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
  * Created by Amal Afroz Alam on 27, April, 2016.
  * Contact me: contact@amal.io
  */
-public class subNodeAdapter extends ArrayAdapter<Node> {
+public class CustomArrayAdapter extends ArrayAdapter<Node> {
 
     private Context mContext;
     private int layoutResourceID;
@@ -31,7 +31,7 @@ public class subNodeAdapter extends ArrayAdapter<Node> {
      *                 instantiating views.
      * @param nodes  The objects to represent in the ListView.
      */
-    public subNodeAdapter(Context context, int resource, List<Node> nodes) {
+    public CustomArrayAdapter(Context context, int resource, List<Node> nodes) {
         super(context, resource, nodes);
         mContext = context;
         layoutResourceID = resource;
