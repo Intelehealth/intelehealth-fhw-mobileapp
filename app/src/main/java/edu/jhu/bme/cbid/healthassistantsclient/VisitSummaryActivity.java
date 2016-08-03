@@ -1,5 +1,6 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -12,6 +13,7 @@ import android.print.PrintJob;
 import android.print.PrintManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
@@ -106,6 +108,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView patHistView;
     TextView physFindingsView;
 
+    NotificationManager mNotificationManager;
+    NotificationCompat.Builder mBuilder;
     FloatingActionButton fab;
 
     @Override
@@ -180,6 +184,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         mLayout = (LinearLayout) findViewById(R.id.summary_layout);
         context = getApplicationContext();
+
+
+        mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         editVitals = (ImageButton) findViewById(R.id.imagebutton_edit_vitals);
         editComplaint = (ImageButton) findViewById(R.id.imagebutton_edit_complaint);
@@ -545,6 +553,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
 
+            int notifyID = 1;
+
+           mBuilder =
+                    new NotificationCompat.Builder(VisitSummaryActivity.this)
+                            .setContentTitle("My notification")
+                            .setContentText("Hello World!");
+
+            mNotificationManager.notify(
+                    notifyID,
+                    mBuilder.build());
+
             String personString =
                     String.format("{\"gender\":\"%s\", " +
                                     "\"names\":[{\"givenName\":\"%s\", " +
@@ -558,8 +577,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "\"country\":\"%s\"," +
                                     "\"postalCode\":\"%s\"}]}",
                             patient.getGender(),
-                            //patient.getFirstName(),
-                            "Neha",
+                            patient.getFirstName(),
                             patient.getMiddleName(),
                             patient.getLastName(),
                             patient.getDateOfBirth(),

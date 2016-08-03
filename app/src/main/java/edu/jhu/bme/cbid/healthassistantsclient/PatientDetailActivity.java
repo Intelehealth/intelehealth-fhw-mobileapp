@@ -2,6 +2,8 @@ package edu.jhu.bme.cbid.healthassistantsclient;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -21,15 +23,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
+
 public class PatientDetailActivity extends AppCompatActivity {
 
     LocalRecordsDatabaseHelper mDbHelper;
     private WebView mWebView;
+
+
+    Patient patient = new Patient();
 
     String mPatientName;
     String mPatientDob;
@@ -39,7 +47,8 @@ public class PatientDetailActivity extends AppCompatActivity {
     String mSdw;
     String mOccupation;
 
-
+    Button medHistButton;
+    Button patHistButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +83,31 @@ public class PatientDetailActivity extends AppCompatActivity {
 
             //TextView textViewName = (TextView) findViewById(R.id.textview_patient_details);
             //textViewName.setText(this.mPatientName);
+
+            medHistButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //TODO: Create new activity to display patient previous medications
+                    Intent intent = new Intent(PatientDetailActivity.this, PatientHistoryActivity.class);
+                    //intent1.putExtra("patientID", patientID);
+                    //intent1.putExtra("status", patientStatus);
+                    //intent.putExtra("tag", "edit");
+                    startActivity(intent);
+
+                }
+            });
+
+            patHistButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(PatientDetailActivity.this, PatientHistoryActivity.class);
+//                    intent.putExtra("patientID", patientID);
+//                    intent.putExtra("status", patientStatus);
+//                    intent.putExtra("tag", "edit");
+                    startActivity(intent);
+
+                }
+            });
 
             getSupportActionBar().setTitle(mPatientName);
 
@@ -123,7 +157,98 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
     }
 
+    public void queryData(String dataString) {
+        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
+        String selection = "_id MATCH ?";
+        String[] args = {dataString};
+
+        ArrayList<String> uploadedFields = new ArrayList<>();
+
+        String table = "patient";
+        String[] columnsToReturn = {"first_name", "middle_name", "last_name",
+                "date_of_birth", "address1", "address2", "city_village", "state_province",
+                "postal_code", "phone_number", "gender", "patient_identifier1", "patient_identifier2"};
+        final Cursor idCursor = db.query(table, columnsToReturn, selection, args, null, null, null);
+
+        if (idCursor.moveToFirst()) {
+            do {
+                patient.setFirstName(idCursor.getString(idCursor.getColumnIndex("first_name")));
+                patient.setMiddleName(idCursor.getString(idCursor.getColumnIndex("middle_name")));
+                patient.setLastName(idCursor.getString(idCursor.getColumnIndex("last_name")));
+                patient.setDateOfBirth(idCursor.getString(idCursor.getColumnIndex("date_of_birth")));
+                patient.setAddress1(idCursor.getString(idCursor.getColumnIndex("address1")));
+                patient.setAddress2(idCursor.getString(idCursor.getColumnIndex("address2")));
+                patient.setCityVillage(idCursor.getString(idCursor.getColumnIndex("city_village")));
+                patient.setStateProvince(idCursor.getString(idCursor.getColumnIndex("state_province")));
+                patient.setPostalCode(idCursor.getString(idCursor.getColumnIndex("postal_code")));
+                patient.setPhoneNumber(idCursor.getString(idCursor.getColumnIndex("phone_number")));
+                patient.setGender(idCursor.getString(idCursor.getColumnIndex("gender")));
+                patient.setPatientIdentifier1(idCursor.getString(idCursor.getColumnIndex("patient_identifier1")));
+                patient.setPatientIdentifier2(idCursor.getString(idCursor.getColumnIndex("patient_identifier2")));
+            } while (idCursor.moveToNext());
+        }
+        idCursor.close();
+
+        selection = "patient_id = ?";
+
+        String[] columns = {"value", " concept_id"};
+        String orderBy = "concept_id";
+        Cursor visitCursor = db.query("obs", columns, selection, args, null, null, orderBy);
+
+        if (visitCursor.moveToFirst()) {
+            do {
+                int dbConceptID = visitCursor.getInt(visitCursor.getColumnIndex("concept_id"));
+                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                //parseData(dbConceptID, dbValue);
+            } while (visitCursor.moveToNext());
+        }
+        visitCursor.close();
+    }
+
+    /*
+    private void parseData(int concept_id, String value) {
+        switch (concept_id) {
+            case 163187: //Medical History
+                patHistory.setValue(value);
+                break;
+            case 163188: //Family History
+                famHistory.setValue(value);
+                break;
+            case 163186: //Current Complaint
+                complaint.setValue(value);
+                break;
+            case 163189: //Physical Examination
+                physFindings.setValue(value);
+                break;
+            case 5090: //Height
+                height.setValue(value);
+                break;
+            case 5089: //Weight
+                weight.setValue(value);
+                break;
+            case 5087: //Pulse
+                pulse.setValue(value);
+                break;
+            case 5085: //Systolic BP
+                bpSys.setValue(value);
+                break;
+            case 5086: //Diastolic BP
+                bpDias.setValue(value);
+                break;
+            case 163202: //Temperature
+                temperature.setValue(value);
+                break;
+            case 5092: //SpO2
+                spO2.setValue(value);
+                break;
+            default:
+                break;
+
+        }
+    }
+    */
 
     private void doWebViewPrint() {
         // Create a WebView object specifically for printing

@@ -63,7 +63,6 @@
     <string name="identification_screen_dialog_error_dob">Error: DOB is set for date after today</string>
     <string name="identification_screen_dialog_error_gender">Error: Gender is not selected</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_login">Intelehealth</string>
 
