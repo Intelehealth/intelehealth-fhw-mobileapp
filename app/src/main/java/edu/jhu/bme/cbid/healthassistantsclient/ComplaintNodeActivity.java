@@ -28,6 +28,8 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     final String LOG_TAG = "Complaint Node Activity";
 
     Long patientID = null;
+    String patientStatus;
+    String intentTag;
 
     ExpandableListView complaintListView;
 
@@ -41,18 +43,17 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-//        Bundle bundle = getIntent().getExtras();
-//        patientID = bundle.getLong("patientID", 0);
-//        Log.d(LOG_TAG, String.valueOf(patientID));
-
         //For Testing
-        patientID = Long.valueOf("1");
-
+//        patientID = Long.valueOf("1");
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
-            patientID = intent.getLongExtra("patientID", 0);
-            Log.v(LOG_TAG, patientID + "");
+            patientID = intent.getLongExtra("patientID", 1);
+            patientStatus = intent.getStringExtra("status");
+            intentTag = intent.getStringExtra("tag");
+            Log.v(LOG_TAG, "Patient ID: " + patientID);
+            Log.v(LOG_TAG, "Status: " + patientStatus);
+            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
         super.onCreate(savedInstanceState);
@@ -156,6 +157,8 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     dialog.dismiss();
                     Intent intent = new Intent(ComplaintNodeActivity.this, QuestionNodeActivity.class);
                     intent.putExtra("patientID", patientID);
+                    intent.putExtra("status", patientStatus);
+                    intent.putExtra("tag", intentTag);
                     intent.putStringArrayListExtra("complaints", selection);
                     startActivity(intent);
                 }

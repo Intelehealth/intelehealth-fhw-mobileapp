@@ -28,7 +28,11 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
     int lastExpandedPosition = -1;
 
+
     Long patientID = null;
+    String patientStatus;
+    String intentTag;
+
     Knowledge mKnowledge;
     ExpandableListView questionListView;
     String mFileName = "knowledge.json";
@@ -44,10 +48,19 @@ public class QuestionNodeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Bundle bundle = getIntent().getExtras();
-        patientID = bundle.getLong("patientID", 0);
-        complaints = bundle.getStringArrayList("complaints");
-        Log.d(LOG_TAG, String.valueOf(patientID));
+        //For Testing
+//        patientID = Long.valueOf("1");
+
+        Intent intent = this.getIntent(); // The intent was passed to the activity
+        if (intent != null) {
+            patientID = intent.getLongExtra("patientID", 1);
+            patientStatus = intent.getStringExtra("status");
+            intentTag = intent.getStringExtra("tag");
+            complaints = intent.getStringArrayListExtra("complaints");
+            Log.v(LOG_TAG, "Patient ID: " + patientID);
+            Log.v(LOG_TAG, "Status: " + patientStatus);
+            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
+        }
 
         complaintDetails = new HashMap<>();
         physicalExams = new ArrayList<>();
@@ -81,7 +94,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
                     }
                 }
 
-                if(!nodeComplete){
+                if (!nodeComplete) {
                     questionsMissing();
                 } else if (nodeComplete) {
 
@@ -106,10 +119,21 @@ public class QuestionNodeActivity extends AppCompatActivity {
                         complaintNumber++;
                         setupQuestions(complaintNumber);
                     } else {
-                        Intent intent = new Intent(QuestionNodeActivity.this, PatientHistoryActivity.class);
-                        intent.putExtra("patientID", patientID);
-                        intent.putStringArrayListExtra("exams", physicalExams);
-                        startActivity(intent);
+                        if (intentTag.equals("edit")) {
+                            Intent intent = new Intent(QuestionNodeActivity.this, PhysicalExamActivity.class);
+                            intent.putExtra("patientID", patientID);
+                            intent.putExtra("status", patientStatus);
+                            intent.putExtra("tag", intentTag);
+                            intent.putStringArrayListExtra("exams", physicalExams);
+                            startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(QuestionNodeActivity.this, PatientHistoryActivity.class);
+                            intent.putExtra("patientID", patientID);
+                            intent.putExtra("status", patientStatus);
+                            intent.putExtra("tag", intentTag);
+                            intent.putStringArrayListExtra("exams", physicalExams);
+                            startActivity(intent);
+                        }
                     }
 
                 }

@@ -64,7 +64,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     Context context;
 
-    Long patientID;
+    Long patientID = null;
+    String patientStatus;
+    String intentTag;
+
     Patient patient = new Patient();
     Obs complaint = new Obs();
     Obs famHistory = new Obs();
@@ -138,15 +141,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Bundle bundle = getIntent().getExtras();
-        patientID = bundle.getLong("patientID", 1);
-        Log.d(LOG_TAG, String.valueOf(patientID));
-
         //For Testing
 //        patientID = Long.valueOf("1");
-        Calendar c = Calendar.getInstance();
 
-
+        Intent intent = this.getIntent(); // The intent was passed to the activity
+        if (intent != null) {
+            patientID = intent.getLongExtra("patientID", 1);
+            patientStatus = intent.getStringExtra("status");
+            intentTag = intent.getStringExtra("tag");
+            Log.v(LOG_TAG, "Patient ID: " + patientID);
+            Log.v(LOG_TAG, "Status: " + patientStatus);
+            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
+        }
 
       identifierNumber = "40000" + String.valueOf(patientID);
 //        For Testing
@@ -184,9 +190,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editVitals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent1 = new Intent(VisitSummaryActivity.this, TableExamActivity.class);
                 intent1.putExtra("patientID", patientID);
+                intent1.putExtra("status", patientStatus);
                 intent1.putExtra("tag", "edit");
                 startActivity(intent1);
             }
@@ -195,6 +201,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editComplaint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent1 = new Intent(VisitSummaryActivity.this, ComplaintNodeActivity.class);
+                intent1.putExtra("patientID", patientID);
+                intent1.putExtra("status", patientStatus);
+                intent1.putExtra("tag", "edit");
+                startActivity(intent1);
 
             }
         });
@@ -202,6 +213,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editPhysical.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent1 = new Intent(VisitSummaryActivity.this, PhysicalExamActivity.class);
+                intent1.putExtra("patientID", patientID);
+                intent1.putExtra("status", patientStatus);
+                intent1.putExtra("tag", "edit");
+                startActivity(intent1);
 
             }
         });
@@ -209,6 +225,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editFamHist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent1 = new Intent(VisitSummaryActivity.this, FamilyHistoryActivity.class);
+                intent1.putExtra("patientID", patientID);
+                intent1.putExtra("status", patientStatus);
+                intent1.putExtra("tag", "edit");
+                startActivity(intent1);
 
             }
         });
@@ -216,6 +237,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editMedHist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent1 = new Intent(VisitSummaryActivity.this, PatientHistoryActivity.class);
+                intent1.putExtra("patientID", patientID);
+                intent1.putExtra("status", patientStatus);
+                intent1.putExtra("tag", "edit");
+                startActivity(intent1);
 
             }
         });
@@ -226,14 +252,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d(LOG_TAG, "Uploaded" + uploaded);
-                retrieveOpenMRS(view);
-
-//                if (uploaded) {
-//                    retrieveOpenMRS(view);
-//                } else if (!uploaded) {
-//                    Snackbar.make(view, "Uploading to OpenMRS", Snackbar.LENGTH_LONG);
-//                    sendPost(view);
-//                }
+                if (uploaded) {
+                    retrieveOpenMRS(view);
+                } else if (!uploaded) {
+                    Snackbar.make(view, "Uploading to OpenMRS", Snackbar.LENGTH_LONG);
+                    sendPost(view);
+                }
             }
         });
 
@@ -1009,7 +1033,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         contentView.setText(content);
         mLayout.addView(convertView, index);
     }
-
 
     public int checkDigit(String idWithoutCheckDigit) {
 

@@ -50,7 +50,11 @@ public class PhysicalExamActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
-    Long patientID;
+
+    Long patientID = null;
+    String patientStatus;
+    String intentTag;
+
     ArrayList<String> selectedExamsList = new ArrayList<>();
 
     String mFileName = "physexam.json";
@@ -68,13 +72,19 @@ public class PhysicalExamActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Bundle bundle = getIntent().getExtras();
-        patientID = bundle.getLong("patientID", 0);
-        selectedExamsList = bundle.getStringArrayList("exams");
-        Log.d(LOG_TAG, String.valueOf(patientID));
-
-        //Only for testing purposes.
+        //For Testing
 //        patientID = Long.valueOf("1");
+
+        Intent intent = this.getIntent(); // The intent was passed to the activity
+        if (intent != null) {
+            patientID = intent.getLongExtra("patientID", 1);
+            patientStatus = intent.getStringExtra("status");
+            intentTag = intent.getStringExtra("tag");
+            selectedExamsList = intent.getStringArrayListExtra("exams");
+            Log.v(LOG_TAG, "Patient ID: " + patientID);
+            Log.v(LOG_TAG, "Status: " + patientStatus);
+            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
+        }
 
         Log.d(LOG_TAG, selectedExamsList.toString());
         physicalExamMap = new PhysicalExam(HelperMethods.encodeJSON(this, mFileName), selectedExamsList);
@@ -114,10 +124,19 @@ public class PhysicalExamActivity extends AppCompatActivity {
                     physicalString = physicalExamMap.generateFindings();
 
                     long obsId = insertDb(physicalString);
-
-                    Intent intent1 = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
-                    intent1.putExtra("patientID", patientID);
-                    startActivity(intent1);
+                    if (intentTag.equals("edit")){
+                        Intent intent = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
+                        intent.putExtra("patientID", patientID);
+                        intent.putExtra("status", patientStatus);
+                        intent.putExtra("tag", intentTag);
+                        startActivity(intent);
+                    } else {
+                        Intent intent1 = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
+                        intent1.putExtra("patientID", patientID);
+                        intent1.putExtra("status", patientStatus);
+                        intent1.putExtra("tag", intentTag);
+                        startActivity(intent1);
+                    }
                 } else {
                     Node genExams = physicalExamMap.getOption(0);
                     for (int i = 0; i < genExams.getOptionsList().size(); i++) {

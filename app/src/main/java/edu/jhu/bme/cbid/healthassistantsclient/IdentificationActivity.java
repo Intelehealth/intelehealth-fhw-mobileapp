@@ -515,6 +515,8 @@ public class IdentificationActivity extends AppCompatActivity {
             super.onPostExecute(aBoolean);
             Intent intent2 = new Intent(IdentificationActivity.this, ComplaintNodeActivity.class);
             intent2.putExtra("patientID", patientID);
+            intent2.putExtra("status", "new");
+            intent2.putExtra("tag", "");
             startActivity(intent2);
         }
     }

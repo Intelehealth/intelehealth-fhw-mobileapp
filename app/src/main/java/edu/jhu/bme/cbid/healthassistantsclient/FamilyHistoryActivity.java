@@ -22,7 +22,11 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 
     String family = "family";
 
-    Long patientID;
+
+    Long patientID = null;
+    String patientStatus;
+    String intentTag;
+
     ArrayList<String> physicalExams;
 
     String mFileName = "famhist.json";
@@ -39,13 +43,18 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
-        Bundle bundle = getIntent().getExtras();
-        patientID = bundle.getLong("patientID", 0);
-        physicalExams = bundle.getStringArrayList("exams");
-
         //For Testing
 //        patientID = Long.valueOf("1");
+
+        Intent intent = this.getIntent(); // The intent was passed to the activity
+        if (intent != null) {
+            patientID = intent.getLongExtra("patientID", 1);
+            patientStatus = intent.getStringExtra("status");
+            intentTag = intent.getStringExtra("tag");
+            Log.v(LOG_TAG, "Patient ID: " + patientID);
+            Log.v(LOG_TAG, "Status: " + patientStatus);
+            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
+        }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_family_history);
@@ -78,10 +87,23 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                 }
 
                 long obsId = insertDb(insertion);
-                Intent intent = new Intent(FamilyHistoryActivity.this, TableExamActivity.class);
-                intent.putExtra("patientID", patientID);
-                intent.putStringArrayListExtra("exams", physicalExams);
-                startActivity(intent);
+
+                if (intentTag.equals("edit")){
+                    Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
+                    intent.putExtra("patientID", patientID);
+                    intent.putExtra("status", patientStatus);
+                    intent.putExtra("tag", intentTag);
+                    intent.putStringArrayListExtra("exams", physicalExams);
+                    startActivity(intent);
+                } else {
+
+                    Intent intent = new Intent(FamilyHistoryActivity.this, TableExamActivity.class);
+                    intent.putExtra("patientID", patientID);
+                    intent.putExtra("status", patientStatus);
+                    intent.putExtra("tag", intentTag);
+                    intent.putStringArrayListExtra("exams", physicalExams);
+                    startActivity(intent);
+                }
 
             }
         });
