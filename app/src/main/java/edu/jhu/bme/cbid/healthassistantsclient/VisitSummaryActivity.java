@@ -152,7 +152,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //        For Testing
 //        identifierNumber = "400014";
 
-        int checkedDigit = checkdigit(identifierNumber);
+        int checkedDigit = checkDigit(identifierNumber);
         Log.d(LOG_TAG, "check digit" + String.valueOf(checkedDigit));
 
         identifierNumber = identifierNumber + "-" + String.valueOf(checkedDigit);
@@ -185,6 +185,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                Intent intent1 = new Intent(VisitSummaryActivity.this, TableExamActivity.class);
+                intent1.putExtra("patientID", patientID);
+                intent1.putExtra("tag", "edit");
+                startActivity(intent1);
             }
         });
 
@@ -1007,23 +1011,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
 
-    public int checkdigit(String idWithoutCheckdigit) {
+    public int checkDigit(String idWithoutCheckDigit) {
 
 // allowable characters within identifier
         String validChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVYWXZ_";
 
 // remove leading or trailing whitespace, convert to uppercase
-        idWithoutCheckdigit = idWithoutCheckdigit.trim().toUpperCase();
+        idWithoutCheckDigit = idWithoutCheckDigit.trim().toUpperCase();
 
 // this will be a running total
         int sum = 0;
 
 // loop through digits from right to left
-        for (int i = 0; i < idWithoutCheckdigit.length(); i++) {
+        for (int i = 0; i < idWithoutCheckDigit.length(); i++) {
 
 //set ch to "current" character to be processed
-            char ch = idWithoutCheckdigit
-                    .charAt(idWithoutCheckdigit.length() - i - 1);
+            char ch = idWithoutCheckDigit
+                    .charAt(idWithoutCheckDigit.length() - i - 1);
 
 // throw exception for invalid characters
             if (validChars.indexOf(ch) == -1)

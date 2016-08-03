@@ -41,12 +41,12 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Bundle bundle = getIntent().getExtras();
-        patientID = bundle.getLong("patientID", 0);
-        Log.d(LOG_TAG, String.valueOf(patientID));
+//        Bundle bundle = getIntent().getExtras();
+//        patientID = bundle.getLong("patientID", 0);
+//        Log.d(LOG_TAG, String.valueOf(patientID));
 
         //For Testing
-//        patientID = Long.valueOf("1");
+        patientID = Long.valueOf("1");
 
 
         Intent intent = this.getIntent(); // The intent was passed to the activity

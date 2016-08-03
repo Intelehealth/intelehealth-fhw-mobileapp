@@ -53,7 +53,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
     Long patientID;
     ArrayList<String> selectedExamsList = new ArrayList<>();
 
-    String mFileName = "physicalexams.json";
+    String mFileName = "physexam.json";
 
     String storageName = "physical";
 
@@ -74,8 +74,9 @@ public class PhysicalExamActivity extends AppCompatActivity {
         Log.d(LOG_TAG, String.valueOf(patientID));
 
         //Only for testing purposes.
-        //patientID = Long.valueOf("1");
+//        patientID = Long.valueOf("1");
 
+        Log.d(LOG_TAG, selectedExamsList.toString());
         physicalExamMap = new PhysicalExam(HelperMethods.encodeJSON(this, mFileName), selectedExamsList);
 
         super.onCreate(savedInstanceState);
@@ -301,7 +302,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             //return exams.getTitle(position);
-            return String.valueOf(position);
+            return String.valueOf(position + 1);
         }
     }
 
