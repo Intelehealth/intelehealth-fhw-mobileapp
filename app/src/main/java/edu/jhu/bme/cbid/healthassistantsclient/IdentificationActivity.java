@@ -70,12 +70,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
     String mFileName;
 
-    final Calendar today = Calendar.getInstance();
-    final Calendar dob = Calendar.getInstance();
+    Calendar today = Calendar.getInstance();
+    Calendar dob = Calendar.getInstance();
 
-    private InsertPatientTable mTask = null;
     LocalRecordsDatabaseHelper mDbHelper;
-
 
     ImageView mImageView;
     String mCurrentPhotoPath;
@@ -92,6 +90,7 @@ public class IdentificationActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
+        //Initialize the local database to store patient information
         mDbHelper = new LocalRecordsDatabaseHelper(this);
 
         mFirstName = (EditText) findViewById(R.id.identification_first_name);
@@ -111,18 +110,21 @@ public class IdentificationActivity extends AppCompatActivity {
         mRelationship = (EditText) findViewById(R.id.identification_relationship);
         mOccupation = (EditText) findViewById(R.id.identification_occupation);
 
+        //This is supposed to get the country that the tablet was set to, yet is not working due to unknown reasons.
+        //TODO: Country should be auto-filled.
         String country = getUserCountry(IdentificationActivity.this);
         mCountry.setText(country);
 
-        // Here, thisActivity is the current activity
+        //Check to see if the permission was given to take pictures.
         if (ContextCompat.checkSelfPermission(IdentificationActivity.this,
                 Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(IdentificationActivity.this,
-                    new String[]{Manifest.permission.CAMERA}, 2); // 2 is a contanst
+                    new String[]{Manifest.permission.CAMERA}, 2); // 2 is a constant
         }
 
+        //When either button is clicked, that information needs to be stored.
         mGenderF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,7 +139,10 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
 
-
+        /*
+        The patient's picture will be taken here and then stored using the method below.
+        This picture will then be displayed right after, allowing the user to verify the picture was well taken.
+        */
         mImageView = (ImageView) findViewById(R.id.imageview_id_picture);
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,34 +151,23 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
 
-        //Change minimum
-
-
+        //DOB is set using an AlertDialog
         mDOBPicker = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                //Set the DOB calendar to the date selected by the user
                 dob.set(year, monthOfYear, dayOfMonth);
 
-                int month = monthOfYear + 1;
-                String formattedMonth = "" + month;
-                String formattedDayOfMonth = "" + dayOfMonth;
+                //Formatted so that it can be read the way the user sets
+                //TODO: Settings option to change date format
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                dob.set(year, monthOfYear, dayOfMonth);
+                String dobString = simpleDateFormat.format(dob.getTime());
 
-                if (month < 10) {
-
-                    formattedMonth = "0" + month;
-                }
-                if (dayOfMonth < 10) {
-
-                    formattedDayOfMonth = "0" + dayOfMonth;
-                }
-                String dobString = year + "-" + formattedMonth + "-" + formattedDayOfMonth;
-
-                //can use SimpleDateFormat, but couldn't get it to work
                 mDOB.setText(dobString);
 
-                //Age calculation
+                //Age should be calculated based on the date
                 int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
-
                 if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
                     age--;
                 }
@@ -182,54 +176,54 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }, today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH));
 
-
+        //DOB Picker is shown when clicked
         mDOB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String currentDOB = mDOB.getText().toString();
-                if (currentDOB.matches("")) {
-                    mDOBPicker.show();
-                }
+                mDOBPicker.show();
             }
         });
 
+        /*
+        User has to have option where they can enter the age.
+        Some patients do not actually know their DOB, but they remember their age.
+        If only age is provided, then the DOB is calculated as January 1, the year being current year minus their age.
+         */
         mAge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String currentAge = mAge.getText().toString();
-                if (currentAge.matches("")) {
 
-                    Context context = IdentificationActivity.this;
+                Context context = IdentificationActivity.this;
+                final AlertDialog.Builder textInput = new AlertDialog.Builder(context);
+                textInput.setTitle(R.string.identification_screen_dialog_age);
+                final EditText dialogEditText = new EditText(context);
+                dialogEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                textInput.setView(dialogEditText);
 
-                    final AlertDialog.Builder textInput = new AlertDialog.Builder(context);
-                    textInput.setTitle(R.string.identification_screen_dialog_age);
-                    final EditText dialogEditText = new EditText(context);
-                    dialogEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    textInput.setView(dialogEditText);
-                    textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            String ageString = (dialogEditText.getText().toString());
-                            mAge.setText(ageString);
+                textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String ageString = (dialogEditText.getText().toString());
+                        mAge.setText(ageString);
 
-                            Calendar calendar = Calendar.getInstance();
-                            int curYear = calendar.get(Calendar.YEAR);
-                            int birthYear = curYear - Integer.valueOf(ageString);
-                            String calcDOB = "01/01/" + birthYear;
-                            mDOB.setText(calcDOB);
-                            dialog.dismiss();
-                        }
-                    });
-                    textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
-                    textInput.show();
+                        Calendar calendar = Calendar.getInstance();
+                        int curYear = calendar.get(Calendar.YEAR);
+                        int birthYear = curYear - Integer.valueOf(ageString);
+                        String calcDOB = "01/01/" + birthYear;
+                        mDOB.setText(calcDOB);
+                        dialog.dismiss();
+                    }
+                });
 
-                }
-             }
+                textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                textInput.show();
+            }
         });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -258,6 +252,21 @@ public class IdentificationActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method is primarily for data validation.
+     * First, the screen is checked to see if a gender was selected for the patient.
+     * If no gender selected, you get a dialog box telling you to do so.
+     *
+     * Next, if the DOB is after today's date, then you are asked to go back and correct it.
+     *
+     * Finally, all the text boxes are checked. With the text boxes, each EditText has a tag written in the XML.
+     * If an EditText box does not have a tag, then it is assumed to be required.
+     * Only optional fields have an "optional" tag on them in the XML.
+     * If any of the EditText validations fail, that box is brought to focus.
+     *
+     * Finally, after everything is checked and made sure to be correct, a Patient object is created.
+     * The object is filled with all the data that was provided, and then an Async Task is created to insert the information into the database.
+     */
     public void createNewPatient() {
 
         boolean cancel = false;
@@ -385,15 +394,19 @@ public class IdentificationActivity extends AppCompatActivity {
                 Snackbar.make(findViewById(R.id.cl_table), R.string.identification_screen_error_data_fields, Snackbar.LENGTH_SHORT);
             }
 
-            mTask = new InsertPatientTable(currentPatient);
-            mTask.execute((Void) null);
-
+            new InsertPatientTable(currentPatient).execute();
         }
     }
 
+    /**
+     * Once a picture of the patient is taken, this method timestamps the picture and stores it.
+     *
+     * @return File
+     * @throws IOException
+     */
     private File createImageFile() throws IOException {
         // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
 
         mFileName = "PATIENT_" + timeStamp;
         File storageDir = Environment.getExternalStoragePublicDirectory(
@@ -452,7 +465,11 @@ public class IdentificationActivity extends AppCompatActivity {
 
         ContentValues patientEntries = new ContentValues();
 
+        //Match data to columns in the database table.
         public void gatherEntries() {
+
+            //TODO: create new algorithm for ID generation
+
             patientEntries.put("first_name", patient.getFirstName());
             patientEntries.put("middle_name", patient.getMiddleName());
             patientEntries.put("last_name", patient.getLastName());
@@ -473,6 +490,8 @@ public class IdentificationActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             gatherEntries();
+
+            //Insert the patient into the table first, then get the row number to use as the ID
             SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
             patientID = localdb.insert(
                     "patient",
@@ -482,6 +501,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             patient.setId(patientID);
 
+            //Update the table with the patientID number now
             ContentValues contentValuesUpdate = new ContentValues();
             contentValuesUpdate.put("_id", patient.getId());
             String selection = "first_name = ?";
@@ -496,10 +516,6 @@ public class IdentificationActivity extends AppCompatActivity {
 
             Log.d(LOG_TAG, String.valueOf(patientID));
 
-            //Gson gson = new GsonBuilder().serializeNulls().create();
-            //Log.i("Patient", gson.toJson(patient));
-
-
             return null;
         }
 
@@ -509,9 +525,15 @@ public class IdentificationActivity extends AppCompatActivity {
             dialog.dismiss();
         }
 
+        /**
+         * Starting from Identification Activity, the patientID is passed between all activities.
+         * All activities will put the ID out from the intent, and then package it into the next one after.
+         * patientID - the ID number used for local storage; also used when posting to OpenMRS
+         * status - used for other activities that change based on "new" or "return" patients
+         * tag - used when the user edits a patient's information
+         */
         @Override
         protected void onPostExecute(Boolean aBoolean) {
-
             super.onPostExecute(aBoolean);
             Intent intent2 = new Intent(IdentificationActivity.this, ComplaintNodeActivity.class);
             intent2.putExtra("patientID", patientID);
@@ -527,15 +549,14 @@ public class IdentificationActivity extends AppCompatActivity {
             final String simCountry = tm.getSimCountryIso();
             if (simCountry != null && simCountry.length() == 2) { // SIM country code is available
                 return simCountry.toLowerCase(Locale.US);
-            }
-            else if (tm.getPhoneType() != TelephonyManager.PHONE_TYPE_CDMA) { // device is not 3G (would be unreliable)
+            } else if (tm.getPhoneType() != TelephonyManager.PHONE_TYPE_CDMA) { // device is not 3G (would be unreliable)
                 String networkCountry = tm.getNetworkCountryIso();
                 if (networkCountry != null && networkCountry.length() == 2) { // network country code is available
                     return networkCountry.toLowerCase(Locale.US);
                 }
             }
+        } catch (Exception e) {
         }
-        catch (Exception e) { }
         return null;
     }
 }
