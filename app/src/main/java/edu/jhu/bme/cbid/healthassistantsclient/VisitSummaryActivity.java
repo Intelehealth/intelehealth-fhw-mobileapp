@@ -145,8 +145,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        //For Testing
-//        patientID = Long.valueOf("1");
+
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -158,7 +157,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
             Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
-      identifierNumber = "40000" + String.valueOf(patientID);
+
+        //For Testing
+//        patientID = Long.valueOf("3");
+
+        identifierNumber = "30000" + String.valueOf(patientID);
 //        For Testing
 //        identifierNumber = "400014";
 
@@ -553,16 +556,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
 
-            int notifyID = 1;
-
-           mBuilder =
-                    new NotificationCompat.Builder(VisitSummaryActivity.this)
-                            .setContentTitle("My notification")
-                            .setContentText("Hello World!");
-
-            mNotificationManager.notify(
-                    notifyID,
-                    mBuilder.build());
+//            int notifyID = 1;
+//
+//           mBuilder =
+//                    new NotificationCompat.Builder(VisitSummaryActivity.this)
+//                            .setContentTitle("My notification")
+//                            .setContentText("Hello World!");
+//
+//            mNotificationManager.notify(
+//                    notifyID,
+//                    mBuilder.build());
 
             String personString =
                     String.format("{\"gender\":\"%s\", " +

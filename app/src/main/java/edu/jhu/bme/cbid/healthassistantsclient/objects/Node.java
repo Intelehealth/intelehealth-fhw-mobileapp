@@ -1,7 +1,5 @@
 package edu.jhu.bme.cbid.healthassistantsclient.objects;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -264,7 +262,7 @@ public class Node implements Serializable{
                 }
             }
         }
-        Log.d("Form language", mLanguage);
+        //Log.d("Form language", mLanguage);
         return mLanguage;
     }
 

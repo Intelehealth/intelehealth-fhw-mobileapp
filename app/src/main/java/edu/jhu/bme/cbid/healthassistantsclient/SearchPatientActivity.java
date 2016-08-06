@@ -91,6 +91,8 @@ public class SearchPatientActivity extends AppCompatActivity {
         // Find ListView to populate
         ListView lvItems = (ListView) findViewById(R.id.listview_search);
 
+
+
         try {
             // Setup cursor adapter and attach cursor adapter to the ListView
             mSearchAdapter = new SearchCursorAdapter(this, searchCursor, 0);

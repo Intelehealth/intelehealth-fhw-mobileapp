@@ -62,14 +62,14 @@ public class PatientDetailActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Snackbar.make(view, "Feature Coming Soon", Snackbar.LENGTH_LONG)
+                        .show();
             }
         });
 
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
-        if (intent != null && intent.getStringArrayListExtra("patientInfo") != null) {
+        if (intent != null && intent.getStringArrayListExtra("patientID") != null) {
             ArrayList<String> mPatientInfo = intent.getStringArrayListExtra("patientInfo");
             mPatientName = mPatientInfo.get(0) + ", " + mPatientInfo.get(1)
                     + " " + mPatientInfo.get(2);
@@ -100,7 +100,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             patHistButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(PatientDetailActivity.this, PatientHistoryActivity.class);
+                    Intent intent = new Intent(PatientDetailActivity.this, ViewHistoryActivity.class);
 //                    intent.putExtra("patientID", patientID);
 //                    intent.putExtra("status", patientStatus);
 //                    intent.putExtra("tag", "edit");

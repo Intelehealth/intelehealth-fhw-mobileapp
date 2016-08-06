@@ -229,7 +229,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     textInput.show();
 
                 }
-            }
+             }
         });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

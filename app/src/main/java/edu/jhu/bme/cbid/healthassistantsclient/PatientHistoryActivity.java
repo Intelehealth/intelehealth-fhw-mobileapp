@@ -50,6 +50,7 @@ public class PatientHistoryActivity extends AppCompatActivity {
             patientID = intent.getLongExtra("patientID", 1);
             patientStatus = intent.getStringExtra("status");
             intentTag = intent.getStringExtra("tag");
+            physicalExams = intent.getStringArrayListExtra("exams");
             Log.v(LOG_TAG, "Patient ID: " + patientID);
             Log.v(LOG_TAG, "Status: " + patientStatus);
             Log.v(LOG_TAG, "Intent Tag: " + intentTag);
