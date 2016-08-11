@@ -72,7 +72,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                     for (Node node : familyHistoryMap.getOptionsList()) {
                         if(node.isSelected()){
                             String familyString = node.generateLanguage();
-                            String toInsert = node.text() + " has " + familyString;
+                            String toInsert = node.getText() + " has " + familyString;
                             insertionList.add(toInsert);
 
                         }
@@ -140,7 +140,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             public void onGroupExpand(int groupPosition) {
                 Node clickedNode = familyHistoryMap.getOption(groupPosition);
 
-                if(clickedNode.type() != null){
+                if(clickedNode.getInputType() != null){
                     HelperMethods.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter);
                 }
 

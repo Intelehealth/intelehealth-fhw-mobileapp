@@ -99,7 +99,7 @@ public class HelperMethods {
 
 
 
-        subQuestion.setTitle(node.text());
+        subQuestion.setTitle(node.getText());
         ListView listView = (ListView) convertView.findViewById(R.id.dialog_subquestion_list_view);
         listView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
         listView.setClickable(true);
@@ -109,7 +109,7 @@ public class HelperMethods {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 node.getOption(position).toggleSelected();
                 adapter.notifyDataSetChanged();
-                if(node.getOption(position).type() != null){
+                if(node.getOption(position).getInputType() != null){
                     subHandleQuestion(node.getOption(position), context, adapter);
                 }
 
@@ -122,7 +122,7 @@ public class HelperMethods {
         subQuestion.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                node.changeText(node.generateLanguage());
+                node.setLanguage(node.generateLanguage());
                 callingAdapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -143,7 +143,7 @@ public class HelperMethods {
     }
 
     public static void handleQuestion(Node questionNode, final Activity context, final CustomExpandableListAdapter adapter) {
-        String type = questionNode.type();
+        String type = questionNode.getInputType();
         switch (type) {
             case "text":
                 HelperMethods.askText(questionNode, context, adapter);
@@ -179,7 +179,7 @@ public class HelperMethods {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 node.addLanguage(dialogEditText.getText().toString());
-                node.changeText(node.language());
+                node.setLanguage(node.getLanguage());
                 node.setSelected();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -208,7 +208,7 @@ public class HelperMethods {
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", context.getResources().getConfiguration().locale);
                         String dateString = simpleDateFormat.format(date);
                         node.addLanguage(dateString);
-                        node.changeText(node.language());
+                        node.setLanguage(node.getLanguage());
                         node.setSelected();
                         adapter.notifyDataSetChanged();
                     }
@@ -234,7 +234,7 @@ public class HelperMethods {
                 numberPicker.setValue(numberPicker.getValue());
                 String value = String.valueOf(numberPicker.getValue());
                 node.addLanguage(" " + value);
-                node.changeText(value);
+                node.setLanguage(value);
                 node.setSelected();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -275,7 +275,7 @@ public class HelperMethods {
                 lengthPicker.setValue(lengthPicker.getValue());
                 String durationString = String.valueOf(widthPicker.getValue()) + " X " + lengthPicker.getValue();
                 node.addLanguage(" " + durationString);
-                node.changeText(durationString);
+                node.setLanguage(durationString);
                 node.setSelected();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -314,7 +314,7 @@ public class HelperMethods {
                 endPicker.setValue(endPicker.getValue());
                 String durationString = String.valueOf(startPicker.getValue()) + " to " + endPicker.getValue();
                 node.addLanguage(" " + durationString);
-                node.changeText(durationString);
+                node.setLanguage(durationString);
                 node.setSelected();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -354,7 +354,7 @@ public class HelperMethods {
                 unitPicker.setValue(unitPicker.getValue());
                 String durationString = String.valueOf(quantityPicker.getValue()) + " " + doctorUnits[unitPicker.getValue()];
                 node.addLanguage(" " + durationString);
-                node.changeText(durationString);
+                node.setLanguage(durationString);
                 node.setSelected();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -393,7 +393,7 @@ public class HelperMethods {
                 unitPicker.setValue(unitPicker.getValue());
                 String durationString = String.valueOf(quantityPicker.getValue()) + " " + units[unitPicker.getValue()];
                 node.addLanguage(" " + durationString);
-                node.changeText(durationString);
+                node.setLanguage(durationString);
                 node.setSelected();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -409,7 +409,7 @@ public class HelperMethods {
     }
 
     public static void subHandleQuestion(Node questionNode, final Activity context, final CustomArrayAdapter adapter) {
-        String type = questionNode.type();
+        String type = questionNode.getInputType();
         switch (type) {
             case "text":
                 HelperMethods.subAskText(questionNode, context, adapter);
@@ -445,7 +445,7 @@ public class HelperMethods {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 node.addLanguage(dialogEditText.getText().toString());
-                node.changeText(node.language());
+                node.setLanguage(node.getLanguage());
                 node.setSelected();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -474,7 +474,7 @@ public class HelperMethods {
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", context.getResources().getConfiguration().locale);
                         String dateString = simpleDateFormat.format(date);
                         node.addLanguage(dateString);
-                        node.changeText(node.language());
+                        node.setLanguage(node.getLanguage());
                         node.setSelected();
                         adapter.notifyDataSetChanged();
                     }
@@ -499,7 +499,7 @@ public class HelperMethods {
                 numberPicker.setValue(numberPicker.getValue());
                 String value = String.valueOf(numberPicker.getValue());
                 node.addLanguage(" " + value);
-                node.changeText(value);
+                node.setLanguage(value);
                 node.setSelected();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -540,7 +540,7 @@ public class HelperMethods {
                 lengthPicker.setValue(lengthPicker.getValue());
                 String durationString = String.valueOf(widthPicker.getValue()) + " X " + lengthPicker.getValue();
                 node.addLanguage(" " + durationString);
-                node.changeText(durationString);
+                node.setLanguage(durationString);
                 node.setSelected();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -579,7 +579,7 @@ public class HelperMethods {
                 endPicker.setValue(endPicker.getValue());
                 String durationString = String.valueOf(startPicker.getValue()) + " to " + endPicker.getValue();
                 node.addLanguage(" " + durationString);
-                node.changeText(durationString);
+                node.setLanguage(durationString);
                 node.setSelected();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -619,7 +619,7 @@ public class HelperMethods {
                 unitPicker.setValue(unitPicker.getValue());
                 String durationString = String.valueOf(quantityPicker.getValue()) + " " + doctorUnits[unitPicker.getValue()];
                 node.addLanguage(" " + durationString);
-                node.changeText(durationString);
+                node.setLanguage(durationString);
                 node.setSelected();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -658,7 +658,7 @@ public class HelperMethods {
                 unitPicker.setValue(unitPicker.getValue());
                 String durationString = String.valueOf(quantityPicker.getValue()) + " " + units[unitPicker.getValue()];
                 node.addLanguage(" " + durationString);
-                node.changeText(durationString);
+                node.setLanguage(durationString);
                 node.setSelected();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -672,5 +672,7 @@ public class HelperMethods {
         });
         durationDialog.show();
     }
+
+
 
 }

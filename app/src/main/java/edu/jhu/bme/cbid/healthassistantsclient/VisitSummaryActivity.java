@@ -108,6 +108,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView patHistView;
     TextView physFindingsView;
 
+    String medHistory;
+
     NotificationManager mNotificationManager;
     NotificationCompat.Builder mBuilder;
     FloatingActionButton fab;
@@ -169,16 +171,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         Log.d(LOG_TAG, "check digit" + String.valueOf(checkedDigit));
 
         identifierNumber = identifierNumber + "-" + String.valueOf(checkedDigit);
-
-//        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss X");
-//        df.setTimeZone(TimeZone.getDefault());
-//        String formattedDate = df.format(c.getTime());
-//        Log.d(LOG_TAG, formattedDate);
-//        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-//        Date todayDate = new Date();
-//        String thisDate = currentDate.format(todayDate);
-//        Log.d(LOG_TAG, thisDate);
-
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit_summary);
@@ -307,12 +299,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         complaintView.setText(complaint.getValue());
         famHistView.setText(famHistory.getValue());
 
-        String medHistory = patHistory.getValue();
-        medHistory = medHistory.replace("\"", "");
-        medHistory = medHistory.replace("\n", "");
-        do {
-            medHistory = medHistory.replace("  ", "");
-        } while (medHistory.contains("  "));
         patHistory.setValue(medHistory);
         patHistView.setText(patHistory.getValue());
         physFindingsView.setText(physFindings.getValue());
@@ -380,6 +366,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
         switch (concept_id) {
             case 163187: //Medical History
                 patHistory.setValue(value);
+                if(!value.isEmpty()){
+                    medHistory = patHistory.getValue();
+                    medHistory = medHistory.replace("\"", "");
+                    medHistory = medHistory.replace("\n", "");
+                    do {
+                        medHistory = medHistory.replace("  ", "");
+                    } while (medHistory.contains("  "));
+                }
                 break;
             case 163188: //Family History
                 famHistory.setValue(value);
@@ -517,6 +511,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     }
 
+    //TODO: Change this to it's own class, or use along with Response class
     private class WebResponse {
 
         int responseCode = 1000;
@@ -569,21 +564,29 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             String personString =
                     String.format("{\"gender\":\"%s\", " +
-                                    "\"names\":[{\"givenName\":\"%s\", " +
-                                    "\"middleName\":\"%s\", " +
-                                    "\"familyName\":\"%s\"}], " +
-                                    "\"birthdate\":\"%s\"," +
-                                    "\"addresses\":[{\"address1\":\"%s\", " +
-                                    "\"address2\":\"%s\"," +
-                                    "\"cityVillage\":\"%s\"," +
-                                    "\"stateProvince\":\"%s\"," +
-                                    "\"country\":\"%s\"," +
-                                    "\"postalCode\":\"%s\"}]}",
+                                    "\"names\":[" +
+                                        "{\"givenName\":\"%s\", " +
+                                        "\"middleName\":\"%s\", " +
+                                        "\"familyName\":\"%s\"}], " +
+                                    "\"birthdate\":\"%s\", " +
+                                    "\"attributes\":[" +
+                                        "{\"attributeType\":\"14d4f066-15f5-102d-96e4-000c29c2a5d7\", " +
+                                        "\"value\": \"%s\"}, " +
+                                        "{\"attributeType\":\"8d87236c-c2cc-11de-8d13-0010c6dffd0f\", " +
+                                        "\"value\": \"Barhra\"}], " + //TODO: Change this attribute to the name of the clinic as listed in OpenMRS
+                                "\"addresses\":[" +
+                                        "{\"address1\":\"%s\", " +
+                                        "\"address2\":\"%s\"," +
+                                        "\"cityVillage\":\"%s\"," +
+                                        "\"stateProvince\":\"%s\"," +
+                                        "\"country\":\"%s\"," +
+                                        "\"postalCode\":\"%s\"}]}",
                             patient.getGender(),
                             patient.getFirstName(),
                             patient.getMiddleName(),
                             patient.getLastName(),
                             patient.getDateOfBirth(),
+                            patient.getPhoneNumber(),
                             patient.getAddress1(),
                             patient.getAddress2(),
                             patient.getCityVillage(),

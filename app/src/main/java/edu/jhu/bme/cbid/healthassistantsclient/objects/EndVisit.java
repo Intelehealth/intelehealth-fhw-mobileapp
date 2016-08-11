@@ -2,6 +2,7 @@ package edu.jhu.bme.cbid.healthassistantsclient.objects;
 
 /**
  * End-of-visit information class for Gson data serialization
+ * To be implemented in a future version.
  */
 public class EndVisit {
     private boolean printed;

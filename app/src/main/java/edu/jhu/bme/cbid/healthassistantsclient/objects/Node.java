@@ -17,11 +17,11 @@ public class Node implements Serializable{
     private String id;
     private String text;
     private String language;
+    private boolean multiChoice;
     private String inputType;
     private String physicalExams;
     private List<Node> optionsList;
     private String associatedComplaint;
-    //private List associatedComplaints; //To be implemented only when
     private String jobAidFile;
     private String jobAidType;
 
@@ -33,6 +33,29 @@ public class Node implements Serializable{
     private boolean selected;
     private boolean subSelected;
 
+    /**
+     * Nodes refer to the structure that is used for a decision tree or mindmap.
+     * The node object is stored in the same structure where the there is a root node which contains all the sub-nodes.
+     * The nodes are also tagged based on the attributes each JSON object shows.
+     *
+     * Most nodes are single choice questions. Therefore, they can just be clicked and selected.
+     * Some nodes may be multi-choice, in which case there must be an attribute within the JSON to dictate that.
+     *
+     * text - the text that is displayed on the app to user
+     * language - the text that is displayed after answering a question
+     *            differs from the text attribute in that this is the response form of a question
+     * inputType - dictates if the node is something other that choice-based
+     *             types include: text, number, date, duration, area, range, frequency
+     * physicalExams - any physical exams that should be triggered in the application if the node is selected
+     * optionsList - container of sub-nodes of the current node
+     * associatedComplaint - just like the name says
+     * jobAidFile - the filename of the job aid
+     *              should be stored in the physicalExamAssets folder within the app when compiling
+     * jobAidType - options are audio, video, or image
+     *
+     * @param jsonNode
+     * A JSON Object of a mindmap should be used here. The object that is generated will hold objects within it.
+     */
     public Node(JSONObject jsonNode) {
         try {
             this.id = jsonNode.getString("id");
@@ -52,7 +75,7 @@ public class Node implements Serializable{
             this.inputType = jsonNode.optString("input-type");
 
             this.physicalExams = jsonNode.optString("perform-physical-exam");
-            if (!physicalExams.isEmpty()) {
+            if (!(this.physicalExams == null)) {
                 this.complaint = true;
             } else {
                 this.complaint = false;
@@ -82,24 +105,47 @@ public class Node implements Serializable{
         }
     }
 
-    public Node(Node another) {
-        this.id = another.id;
-        this.text = another.text;
-        this.optionsList = another.optionsList;
-        this.terminal = another.terminal;
-        this.language = another.language;
-        this.inputType = another.inputType;
-        this.physicalExams = another.physicalExams;
-        this.complaint = another.complaint;
-        this.jobAidFile = another.jobAidFile;
-        this.jobAidType = another.jobAidType;
-        this.aidAvailable = another.aidAvailable;
-        this.associatedComplaint = another.associatedComplaint;
-        this.hasAssociations = another.hasAssociations;
+    /**
+     * Makes a copy of the node, so that the original reference node is not modified.
+     *
+     * @param source source node to copy into a new node. Will always default as unselected.
+     */
+    public Node(Node source) {
+        this.id = source.id;
+        this.text = source.text;
+        this.optionsList = source.optionsList;
+        this.terminal = source.terminal;
+        this.language = source.language;
+        this.inputType = source.inputType;
+        this.physicalExams = source.physicalExams;
+        this.complaint = source.complaint;
+        this.jobAidFile = source.jobAidFile;
+        this.jobAidType = source.jobAidType;
+        this.aidAvailable = source.aidAvailable;
+        this.associatedComplaint = source.associatedComplaint;
+        this.hasAssociations = source.hasAssociations;
         this.selected = false;
-        this.required = another.required;
+        this.required = source.required;
     }
 
+    /**
+     * Takes a JSON Array from a node and creates the sub-nodes to store within it.
+     * This is how we handle recursive construction.
+     * Nodes are stores within each other. This method is maintains good organizational structure, but makes it difficult to loop back to higher level nodes.
+     * This is will be modified as the knowledge curating method is updated.
+     *
+     * The current structure of the knowledge, and the way it is stored here, is as follows"
+     * Node 1 {
+     *     Node 1.1 {
+     *         Node 1.1.1
+     *         Node 1.1.2
+     *         Node 1.1.3
+     *     }
+     * }
+     *
+     * @param jsonArray JSON Array of JSON Objects, which are nodes in the knowledge
+     * @return List of nodes generated based on input JSON Array
+     */
     private List<Node> createOptions(JSONArray jsonArray) {
         List<Node> createdOptions = new ArrayList<>();
 
@@ -115,41 +161,25 @@ public class Node implements Serializable{
         return createdOptions;
     }
 
-    public String type() {
-        return inputType;
-    }
-
+    //Terminal nodes are important to identify to know so that the app does not keep looking for sub-nodes.
     public boolean isTerminal() {
         return terminal;
     }
 
+    //Only complaints should be presented to the user at Complaint Select.
     public boolean isComplaint() {
         return complaint;
     }
 
-    public boolean isRequired(){
-        return required;
-    }
-
-    public String language() {
-        return language;
-    }
-
+    //In certain instances, the input is added to the starter language given to the user.
     public void addLanguage(String newText) {
         if (language.contains("_")) {
             language = language.replace("_", newText);
         } else {
-            language = language + newText;
+            language = language + " " + newText;
         }
     }
 
-    public String text() {
-        return text;
-    }
-
-    public String id() {
-        return id;
-    }
 
     public int size() {
         return optionsList.size();
@@ -178,7 +208,7 @@ public class Node implements Serializable{
     public Node getOptionByName(String name) {
         Node foundNode = null;
         for (Node node : optionsList) {
-            if (node.text().equals(name)) {
+            if (node.getText().equals(name)) {
                 foundNode = node;
             }
         }
@@ -233,16 +263,19 @@ public class Node implements Serializable{
         }
     }
 
-    public void changeText(String newText) {
-        this.text = newText;
-    }
-
+    /*
+        Language needs to be built recursively for each first level question of a complaint.
+        In this context, all the language must be built by searching a node, and then looking at sub-nodes to determine which are selected.
+        Once a terminal node is found, then the "sentence" of the primary starting node is complete.
+        So for Question 1 of Complaint X, all of the nodes of Q1 are examined to see which are selected, and the selected branch's language attributes are merged.
+        Once the Q1 sentence is saved, Q2 is now formed.
+     */
     public String formLanguage() {
         List<String> stringsList = new ArrayList<>();
         List<Node> mOptions = optionsList;
         for (int i = 0; i < mOptions.size(); i++) {
             if (mOptions.get(i).isSelected()) {
-                stringsList.add(mOptions.get(i).language());
+                stringsList.add(mOptions.get(i).getLanguage());
                 if (!mOptions.get(i).isTerminal()) {
                     stringsList.add(mOptions.get(i).formLanguage());
                 }
@@ -277,6 +310,7 @@ public class Node implements Serializable{
         return formatted;
     }
 
+    //TODO: Check this, as associated complaints are not being triggered.
     public ArrayList<String> getSelectedAssociations() {
         ArrayList<String> selectedAssociations = new ArrayList<>();
         List<Node> mOptions = optionsList;
@@ -295,14 +329,6 @@ public class Node implements Serializable{
         this.optionsList = new ArrayList<>();
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getText() {
         return text;
     }
@@ -319,6 +345,10 @@ public class Node implements Serializable{
         this.language = language;
     }
 
+    public boolean isRequired() {
+        return required;
+    }
+
     public void setRequired(boolean required) {
         this.required = required;
     }
@@ -327,64 +357,8 @@ public class Node implements Serializable{
         return inputType;
     }
 
-    public void setInputType(String inputType) {
-        this.inputType = inputType;
-    }
-
-    public String getPhysicalExams() {
-        return physicalExams;
-    }
-
-    public void setPhysicalExams(String physicalExams) {
-        this.physicalExams = physicalExams;
-    }
-
-    public void setOptionsList(List<Node> optionsList) {
-        this.optionsList = optionsList;
-    }
-
-    public void setAssociatedComplaint(String associatedComplaint) {
-        this.associatedComplaint = associatedComplaint;
-    }
-
-    public void setJobAidFile(String jobAidFile) {
-        this.jobAidFile = jobAidFile;
-    }
-
-    public void setJobAidType(String jobAidType) {
-        this.jobAidType = jobAidType;
-    }
-
     public void setComplaint(boolean complaint) {
         this.complaint = complaint;
-    }
-
-    public void setTerminal(boolean terminal) {
-        this.terminal = terminal;
-    }
-
-    public boolean isHasAssociations() {
-        return hasAssociations;
-    }
-
-    public void setHasAssociations(boolean hasAssociations) {
-        this.hasAssociations = hasAssociations;
-    }
-
-    public void setAidAvailable(boolean aidAvailable) {
-        this.aidAvailable = aidAvailable;
-    }
-
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-    }
-
-    public boolean isSubSelected() {
-        return subSelected;
-    }
-
-    public void setSubSelected(boolean subSelected) {
-        this.subSelected = subSelected;
     }
 }
 

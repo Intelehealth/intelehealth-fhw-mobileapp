@@ -146,7 +146,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                     for (int i = 0; i < genExams.getOptionsList().size(); i++) {
                         Log.d(LOG_TAG, "current i value " + i);
                         if(!genExams.getOption(i).anySubSelected()){
-                            Log.d(LOG_TAG, genExams.getOption(i).text());
+                            Log.d(LOG_TAG, genExams.getOption(i).getText());
                             mViewPager.setCurrentItem(i);
                             return;
                         }
@@ -221,18 +221,18 @@ public class PhysicalExamActivity extends AppCompatActivity {
             PhysicalExam exams = (PhysicalExam) getArguments().getSerializable("maps");
             int viewNumber = getArguments().getInt(ARG_SECTION_NUMBER);
             final Node viewNode = exams.getExamNode(viewNumber - 1);
-            String nodeText = viewNode.text();
+            String nodeText = viewNode.getText();
             textView.setText(nodeText);
 
             Node displayNode = viewNode.getOption(0);
 
             if (displayNode.isAidAvailable()) {
                 String type = displayNode.getJobAidType();
-                //Log.d(displayNode.text(), type);
+                //Log.d(displayNode.getText(), type);
                 if(type.equals("video")){
                     imageView.setVisibility(View.GONE);
                 } else if (type.equals("image")){
-                    String drawableName = "physicalExamImages/" + displayNode.getJobAidFile() + ".jpg";
+                    String drawableName = "physicalExamAssets/" + displayNode.getJobAidFile() + ".jpg";
                     try
                     {
                         // get input stream
@@ -271,7 +271,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                     }
                     adapter.notifyDataSetChanged();
 
-                    if (question.type() != null) {
+                    if (question.getInputType() != null) {
                         HelperMethods.handleQuestion(question, (Activity) getContext(), adapter);
                     }
 
@@ -319,7 +319,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return exams.getTotalNumberofExams();
+            return exams.getTotalNumberOfExams();
         }
 
         @Override

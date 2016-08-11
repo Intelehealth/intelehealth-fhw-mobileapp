@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Physical Exam information class
+ * The creation of this class was so that the original physical exam engine can be modified for each specific use of it.
+ */
+
+/**
  * Created by Amal Afroz Alam on 28, April, 2016.
  * Contact me: contact@amal.io
  */
@@ -27,16 +32,28 @@ public class PhysicalExam extends Node {
 
     }
 
-
+    /**
+     * When this object is first created, the constructor requires an input string of the exams for the current patient.
+     * These exams are located first, and a copy of the original mind map is created using only those required exams.
+     * If no exams are selected, the general exams are triggered instead.
+     * Currently, exams are stored as follows:
+     * Location Node 1 {
+     *     Exam Node 1 {
+     *         Question Node 1.1
+     *         Question Node 1.2
+     *         Question Node 1.3
+     *     }
+     * }
+     */
     private List<Node> matchSelections() {
         List<Node> newOptionsList = new ArrayList<>();
         List<String> foundLocations = new ArrayList<>();
         //Add the general ones into here first
         newOptionsList.add(getOption(0));
         getOption(0).setRequired(true);
-        foundLocations.add(newOptionsList.get(0).text());
+        foundLocations.add(newOptionsList.get(0).getText());
 
-        //TODO: Physical exam mind map needs to be modified to include required attribute/
+        //TODO: Physical exam mind map needs to be modified to include required attribute
 
         for (int i = 0; i < getOption(0).getOptionsList().size(); i++) {
             getOption(0).getOption(i).setRequired(true);
@@ -54,7 +71,7 @@ public class PhysicalExam extends Node {
             for (int i = 0; i < selection.size(); i++) {
 
                 /*
-                First, he selection texts are taken individually, and split up into location:exam
+                First, the selection texts are taken individually, and split up into location:exam
                 The location node is identified first, and then the exam nodes
                  */
 
@@ -66,9 +83,9 @@ public class PhysicalExam extends Node {
                 String exam = split[1];
                 Log.d("Exam exam ", exam);
                 Node locationNodeRef = getOptionByName(location);
-                Log.d("Exam locRef", locationNodeRef.text());
+                Log.d("Exam locRef", locationNodeRef.getText());
                 Node examNodeRef = locationNodeRef.getOptionByName(exam);
-                Log.d("Exam examRef", examNodeRef.text());
+                Log.d("Exam examRef", examNodeRef.getText());
 
                 //The foundLocation list is to ensure that the same exam isn't display twice
                 if (foundLocations.contains(location)) {
@@ -112,14 +129,14 @@ public class PhysicalExam extends Node {
 
         for (Node node : selectedNodes) {
             for (Node subNode : node.getOptionsList()) {
-                titles.add(node.text() + " : " + subNode.text());
+                titles.add(node.getText() + " : " + subNode.getText());
             }
         }
 
         return titles;
     }
 
-    public int getTotalNumberofExams() {
+    public int getTotalNumberOfExams() {
         return totalExams;
     }
 
@@ -131,6 +148,11 @@ public class PhysicalExam extends Node {
         return pageTitles.get(index);
     }
 
+    /**
+     * Once the list of exams has been generated, this is used to populate the views for each exam.
+     * @param index View number
+     * @return Exam for that particular view
+     */
     public Node getExamNode(int index) {
 
         Node lvlTwoNode = null;
@@ -141,9 +163,9 @@ public class PhysicalExam extends Node {
         String levelTwo = split[1];
 
         for (Node selectedNode : selectedNodes) {
-            if (selectedNode.text().equals(levelOne)) {
+            if (selectedNode.getText().equals(levelOne)) {
                 for (Node node : selectedNode.getOptionsList()) {
-                    if (node.text().equals(levelTwo)) {
+                    if (node.getText().equals(levelTwo)) {
                         lvlTwoNode = node;
                     }
                 }
@@ -154,7 +176,7 @@ public class PhysicalExam extends Node {
 
     }
 
-
+    //Check to see if all required exams have been answered before moving on.
     public boolean areRequiredAnswered() {
 
         boolean allAnswered = true;
@@ -170,7 +192,7 @@ public class PhysicalExam extends Node {
         return allAnswered;
     }
 
-
+    //TODO: Physical exam map needs to modified to make language generation easier.
     public String generateFindings() {
         String mLanguage = "";
         List<String> stringsList = new ArrayList<>();
@@ -179,8 +201,8 @@ public class PhysicalExam extends Node {
         for (int i = 0; i < total; i++) {
             Node node = getExamNode(i);
             if (node.isSelected() | node.anySubSelected()) {
-                Log.d(node.text(), node.language());
-                stringsList.add(node.language());
+                Log.d(node.getText(), node.getLanguage());
+                stringsList.add(node.getLanguage());
                 if (!node.isTerminal()) {
                     stringsList.add(node.formLanguage());
                 }

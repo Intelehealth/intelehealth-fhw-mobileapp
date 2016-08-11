@@ -106,7 +106,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
                         }
                     }
                     String complaintString = currentNode.generateLanguage();
-                    String complaint = currentNode.text();
+                    String complaint = currentNode.getText();
                     complaintDetails.put(complaint, complaintString);
 
                     String insertion = complaint + ": " + complaintString;
@@ -154,7 +154,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 }
                 adapter.notifyDataSetChanged();
 
-                if (!question.type().isEmpty()) {
+                if (!question.getInputType().isEmpty()) {
                     HelperMethods.handleQuestion(question, QuestionNodeActivity.this, adapter);
                 }
 
@@ -207,7 +207,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
         questionListView.setAdapter(adapter);
         questionListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
         questionListView.expandGroup(0);
-        setTitle(currentNode.text());
+        setTitle(currentNode.getText());
     }
 
     public void questionsMissing() {

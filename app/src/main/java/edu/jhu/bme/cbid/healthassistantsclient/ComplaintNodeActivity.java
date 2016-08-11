@@ -33,11 +33,8 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
     ExpandableListView complaintListView;
 
+    //TODO: Add setting that allows you to choose directory of knowledge files
     Knowledge mKnowledge;
-    /**
-     * Eventually, the knowledge base will be selected from the Settings Menu.
-     * For now, the filename is listed here to be used later.
-     */
     String mFileName = "knowledge.json";
 
     @Override
@@ -97,10 +94,10 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         });
 
 
-        final List<Node> complaints = mKnowledge.getmComplaints();
+        final List<Node> complaints = mKnowledge.getComplaints();
         List<String> complaintTitles = new ArrayList<>();
         for (int i = 0; i < complaints.size(); i++) {
-            complaintTitles.add(i,complaints.get(i).text() );
+            complaintTitles.add(i,complaints.get(i).getText());
         }
         Log.d(LOG_TAG, complaintTitles.toString());
 
@@ -149,7 +146,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             View convertView = (View) inflater.inflate(R.layout.list_dialog_complaint, null);
             alertDialogBuilder.setView(convertView);
             ListView listView = (ListView) convertView.findViewById(R.id.complaint_dialog_list_view);
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, selection);
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, selection);
             listView.setAdapter(arrayAdapter);
             alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                 @Override

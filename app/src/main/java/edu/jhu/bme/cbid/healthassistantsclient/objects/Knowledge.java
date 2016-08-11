@@ -15,6 +15,11 @@ public class Knowledge extends Node {
     private List<Node> mComplaints;
     private int selectedCounter = 0;
 
+    /**
+     * This is just for the specific use case for the knowledge engine.
+     * This particular object as created as a way to gather all selected complaint nodes.
+     * @param jsonObject
+     */
     public Knowledge(JSONObject jsonObject) {
         super(jsonObject);
         /**
@@ -25,10 +30,17 @@ public class Knowledge extends Node {
 
     }
 
-    public List<Node> getmComplaints() {
+    public List<Node> getComplaints() {
         return mComplaints;
     }
 
+    /**
+     * This method was originally to make a way to compile a master list of complaints.
+     * This has become redundant due to the change in the way the knowledge engine is used.
+     * Now that first level nodes are always complaints, this is not necessary to do.
+     * @param node
+     * @return
+     */
     private List<Node> gatherComplaints(Node node) {
         List<Node> foundComplaints = new ArrayList<>();
         List<Node> mOptions = node.getOptionsList();
@@ -43,31 +55,32 @@ public class Knowledge extends Node {
         return foundComplaints;
     }
 
-
+    //Get the specific complaint that was given.
+    //Used when searching for an associated complaint.
     public Node getComplaint(String title) {
         Node foundComplaint = null;
         for (int i = 0; i < mComplaints.size(); i++) {
-            if (mComplaints.get(i).text().equals(title)) {
+            if (mComplaints.get(i).getText().equals(title)) {
                 foundComplaint = mComplaints.get(i);
             }
         }
         return foundComplaint;
     }
 
+    //Store the complaint nodes that were selected.
     public void storeSelectedComplaint(String title) {
         for (int i = 0; i < mComplaints.size(); i++) {
-            if (mComplaints.get(i).text() == title) {
+            if (mComplaints.get(i).getText() == title) {
                 mComplaints.get(i).toggleSelected();
             }
         }
     }
 
-
     public ArrayList<String> getSelectedComplaints() {
         ArrayList<String> selectedComplaints = new ArrayList<>();
         for (int i = 0; i < mComplaints.size(); i++) {
             if (mComplaints.get(i).isSelected()) {
-                selectedComplaints.add(mComplaints.get(i).text());
+                selectedComplaints.add(mComplaints.get(i).getText());
             }
         }
         return selectedComplaints;

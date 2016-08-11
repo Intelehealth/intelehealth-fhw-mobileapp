@@ -160,7 +160,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
                 //Formatted so that it can be read the way the user sets
                 //TODO: Settings option to change date format
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 dob.set(year, monthOfYear, dayOfMonth);
                 String dobString = simpleDateFormat.format(dob.getTime());
 
@@ -209,7 +209,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         Calendar calendar = Calendar.getInstance();
                         int curYear = calendar.get(Calendar.YEAR);
                         int birthYear = curYear - Integer.valueOf(ageString);
-                        String calcDOB = "01/01/" + birthYear;
+                        String calcDOB = String.valueOf(birthYear) + "-01-01";
                         mDOB.setText(calcDOB);
                         dialog.dismiss();
                     }
