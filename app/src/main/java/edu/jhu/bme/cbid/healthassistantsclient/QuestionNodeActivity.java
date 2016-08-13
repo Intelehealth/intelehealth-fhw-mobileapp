@@ -33,13 +33,13 @@ public class QuestionNodeActivity extends AppCompatActivity {
     String patientStatus;
     String intentTag;
 
-    Knowledge mKnowledge;
+    Knowledge mKnowledge; //Knowledge engine
     ExpandableListView questionListView;
-    String mFileName = "knowledge.json";
-    int complaintNumber = 0;
-    HashMap<String, String> complaintDetails;
-    ArrayList<String> complaints;
-    List<Node> complaintsNodes;
+    String mFileName = "knowledge.json"; //knowledge engine file
+    int complaintNumber = 0; //assuming there is at least one complaint, starting complaint number
+    HashMap<String, String> complaintDetails; //temporary storage of complaint findings
+    ArrayList<String> complaints; //list of complaints going to be used
+    List<Node> complaintsNodes; //actual nodes to be used
     ArrayList<String> physicalExams;
     Node currentNode;
     CustomExpandableListAdapter adapter;
@@ -84,63 +84,12 @@ public class QuestionNodeActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for (int i = 0; i < adapter.getGroupCount(); i++) {
-                    if (!currentNode.getOption(i).isSelected()) {
-                        nodeComplete = false;
-                        questionListView.expandGroup(i);
-                        break;
-                    } else {
-                        nodeComplete = true;
-                    }
-                }
-
-                if (!nodeComplete) {
-                    questionsMissing();
-                } else if (nodeComplete) {
-
-                    ArrayList<String> selectedAssociations = currentNode.getSelectedAssociations();
-                    for (int i = 0; i < selectedAssociations.size(); i++) {
-                        if (!complaints.contains(selectedAssociations.get(i))) {
-                            complaints.add(selectedAssociations.get(i));
-                            complaintsNodes.add(mKnowledge.getComplaint(selectedAssociations.get(i)));
-                        }
-                    }
-                    String complaintString = currentNode.generateLanguage();
-                    String complaint = currentNode.getText();
-                    complaintDetails.put(complaint, complaintString);
-
-                    String insertion = complaint + ": " + complaintString;
-
-                    long obsId = insertDb(insertion);
-
-                    physicalExams.addAll(parseExams(currentNode));
-
-                    if (complaintNumber < complaints.size() - 1) {
-                        complaintNumber++;
-                        setupQuestions(complaintNumber);
-                    } else {
-                        if (intentTag.equals("edit")) {
-                            Intent intent = new Intent(QuestionNodeActivity.this, PhysicalExamActivity.class);
-                            intent.putExtra("patientID", patientID);
-                            intent.putExtra("status", patientStatus);
-                            intent.putExtra("tag", intentTag);
-                            intent.putStringArrayListExtra("exams", physicalExams);
-                            startActivity(intent);
-                        } else {
-                            Intent intent = new Intent(QuestionNodeActivity.this, PatientHistoryActivity.class);
-                            intent.putExtra("patientID", patientID);
-                            intent.putExtra("status", patientStatus);
-                            intent.putExtra("tag", intentTag);
-                            intent.putStringArrayListExtra("exams", physicalExams);
-                            startActivity(intent);
-                        }
-                    }
-
-                }
+                fabClick();
             }
         });
 
         setupQuestions(complaintNumber);
+        //In the event there is more than one complaint, they will be prompted one at a time.
 
         questionListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
@@ -156,16 +105,20 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
                 if (!question.getInputType().isEmpty()) {
                     HelperMethods.handleQuestion(question, QuestionNodeActivity.this, adapter);
+                    //If there is an input type, then the question has a special method of data entry.
                 }
 
                 if (!question.isTerminal()) {
                     HelperMethods.subLevelQuestion(question, QuestionNodeActivity.this, adapter);
+                    //If the node is not terminal, that means there are more questions to be asked for this branch.
                 }
                 return false;
 
             }
         });
 
+        //Not a perfect method, but closes all other questions when a new one is clicked.
+        //Expandable Lists in Android are broken, so this is a band-aid fix.
         questionListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
@@ -180,13 +133,82 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Summarizes the information of the current complaint node.
+     * Then has that put into the database, and then checks to see if there are more complaint nodes.
+     * If there are more, presents the user with the next set of questions.
+     * All exams are also stored into a string, which will be passed through the activities to the Physical Exam Activity.
+     */
+    private void fabClick(){
+        for (int i = 0; i < adapter.getGroupCount(); i++) {
+            if (!currentNode.getOption(i).isSelected()) {
+                nodeComplete = false;
+                questionListView.expandGroup(i);
+                break;
+            } else {
+                nodeComplete = true;
+            }
+        }
+
+        if (!nodeComplete) {
+            questionsMissing();
+        } else if (nodeComplete) {
+
+            ArrayList<String> selectedAssociations = currentNode.getSelectedAssociations();
+            for (int i = 0; i < selectedAssociations.size(); i++) {
+                if (!complaints.contains(selectedAssociations.get(i))) {
+                    complaints.add(selectedAssociations.get(i));
+                    complaintsNodes.add(mKnowledge.getComplaint(selectedAssociations.get(i)));
+                }
+            }
+            String complaintString = currentNode.generateLanguage();
+            String complaint = currentNode.getText();
+            complaintDetails.put(complaint, complaintString);
+
+            String insertion = complaint + ": " + complaintString;
+
+            insertDb(insertion);
+
+            physicalExams.addAll(parseExams(currentNode));
+
+            if (complaintNumber < complaints.size() - 1) {
+                complaintNumber++;
+                setupQuestions(complaintNumber);
+            } else {
+                if (intentTag.equals("edit")) {
+                    Intent intent = new Intent(QuestionNodeActivity.this, PhysicalExamActivity.class);
+                    intent.putExtra("patientID", patientID);
+                    intent.putExtra("status", patientStatus);
+                    intent.putExtra("tag", intentTag);
+                    intent.putStringArrayListExtra("exams", physicalExams);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(QuestionNodeActivity.this, PatientHistoryActivity.class);
+                    intent.putExtra("patientID", patientID);
+                    intent.putExtra("status", patientStatus);
+                    intent.putExtra("tag", intentTag);
+                    intent.putStringArrayListExtra("exams", physicalExams);
+                    startActivity(intent);
+                }
+            }
+
+        }
+
+    }
+
+    /**
+     * Insert into DB could be made into a Helper Method, but isn't because there are specific concept IDs used each time.
+     * Although this could also be made into a function, for now it has now been.
+     * @param value String to put into DB
+     * @return DB Row number, never used
+     */
     private long insertDb(String value) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
 
-        final int VISIT_ID = 100; // TODO: Connect the proper VISIT_ID
-        final int CREATOR_ID = 42; // TODO: Connect the proper CREATOR_ID
+        final int VISIT_ID = 100;
+        final int CREATOR_ID = 42;
 
-        final int CONCEPT_ID = 163186; // RHK COMPLAINT
+        final int CONCEPT_ID = 163186; //OpenMRS complaint concept ID
 
         ContentValues complaintEntries = new ContentValues();
 
@@ -200,6 +222,10 @@ public class QuestionNodeActivity extends AppCompatActivity {
         return localdb.insert("obs", null, complaintEntries);
     }
 
+    /**
+     * Sets up the complaint node's questions.
+     * @param complaintIndex Index of complaint being displayed to user.
+     */
     private void setupQuestions(int complaintIndex) {
         nodeComplete = false;
         currentNode = mKnowledge.getComplaint(complaints.get(complaintIndex));
@@ -210,6 +236,9 @@ public class QuestionNodeActivity extends AppCompatActivity {
         setTitle(currentNode.getText());
     }
 
+    //Dialog Alert forcing user to answer all questions.
+    //Can be removed if necessary
+    //TODO: Add setting to allow for all questions unrequired.
     public void questionsMissing() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage(R.string.question_answer_all);
@@ -221,7 +250,6 @@ public class QuestionNodeActivity extends AppCompatActivity {
         });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-
     }
 
 
@@ -232,4 +260,6 @@ public class QuestionNodeActivity extends AppCompatActivity {
         examList.addAll(Arrays.asList(splitExams));
         return examList;
     }
+
+
 }

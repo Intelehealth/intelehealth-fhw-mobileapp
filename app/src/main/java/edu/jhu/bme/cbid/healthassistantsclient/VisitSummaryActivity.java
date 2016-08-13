@@ -50,6 +50,7 @@ import java.util.Locale;
 
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Obs;
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
+import edu.jhu.bme.cbid.healthassistantsclient.objects.WebResponse;
 
 public class VisitSummaryActivity extends AppCompatActivity {
 
@@ -509,29 +510,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         PrintJob printJob = printManager.print(jobName, printAdapter,
                 new PrintAttributes.Builder().build());
 
-    }
-
-    //TODO: Change this to it's own class, or use along with Response class
-    private class WebResponse {
-
-        int responseCode = 1000;
-        String responseString = "";
-
-        public int getResponseCode() {
-            return responseCode;
-        }
-
-        public void setResponseCode(int responseCode) {
-            this.responseCode = responseCode;
-        }
-
-        public String getResponseString() {
-            return responseString;
-        }
-
-        public void setResponseString(String responseString) {
-            this.responseString = responseString;
-        }
     }
 
     private class PostClass extends AsyncTask<String, Void, String> {

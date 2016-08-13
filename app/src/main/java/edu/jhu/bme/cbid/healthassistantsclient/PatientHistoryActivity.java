@@ -50,7 +50,7 @@ public class PatientHistoryActivity extends AppCompatActivity {
             patientID = intent.getLongExtra("patientID", 1);
             patientStatus = intent.getStringExtra("status");
             intentTag = intent.getStringExtra("tag");
-            physicalExams = intent.getStringArrayListExtra("exams");
+            physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
             Log.v(LOG_TAG, "Patient ID: " + patientID);
             Log.v(LOG_TAG, "Status: " + patientStatus);
             Log.v(LOG_TAG, "Intent Tag: " + intentTag);
@@ -69,7 +69,7 @@ public class PatientHistoryActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                //If nothing is selected, there is nothing to put into the database.
                 if(patientHistoryMap.anySubSelected()){
                     patientHistory = patientHistoryMap.generateLanguage();
 
@@ -96,9 +96,9 @@ public class PatientHistoryActivity extends AppCompatActivity {
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        patientHistoryMap = new Node(HelperMethods.encodeJSON(this, mFileName));
+        patientHistoryMap = new Node(HelperMethods.encodeJSON(this, mFileName)); //Load the patient history mind map
         historyListView = (ExpandableListView) findViewById(R.id.patient_history_expandable_list_view);
-        adapter = new CustomExpandableListAdapter(this, patientHistoryMap, this.getClass().getSimpleName());
+        adapter = new CustomExpandableListAdapter(this, patientHistoryMap, this.getClass().getSimpleName()); //The adapter might change depending on the activity.
         historyListView.setAdapter(adapter);
 
         historyListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
@@ -106,6 +106,8 @@ public class PatientHistoryActivity extends AppCompatActivity {
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 Node clickedNode = patientHistoryMap.getOption(groupPosition).getOption(childPosition);
                 clickedNode.toggleSelected();
+
+                //Nodes and the expandable list act funny, so if anything is clicked, a lot of stuff needs to be updated.
                 if (patientHistoryMap.getOption(groupPosition).anySubSelected()) {
                     patientHistoryMap.getOption(groupPosition).setSelected();
                 } else {
@@ -121,6 +123,7 @@ public class PatientHistoryActivity extends AppCompatActivity {
             }
         });
 
+        //Same fix as before, close all other groups when something is clicked.
         historyListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
@@ -135,11 +138,12 @@ public class PatientHistoryActivity extends AppCompatActivity {
 
     }
 
+
     private long insertDb(String value) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
 
-        final int VISIT_ID = 100; // TODO: Connect the proper VISIT_ID
-        final int CREATOR_ID = 42; // TODO: Connect the proper CREATOR_ID
+        final int VISIT_ID = 100;
+        final int CREATOR_ID = 42;
 
         final int CONCEPT_ID = 163187; // RHK MEDICAL HISTORY BLURB
 

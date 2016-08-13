@@ -53,6 +53,12 @@ public class HelperMethods {
         return period.getYears();
     }
 
+    /**
+     * Turns the mind map into a JOSN Object that can be manipulated.
+     * @param context The current context.
+     * @param fileName The name of the JSON file to use.
+     * @return fileName converted into the proper JSON Object to use
+     */
     public static JSONObject encodeJSON(Context context, String fileName) {
         String raw_json = null;
         JSONObject encoded = null;
@@ -78,70 +84,15 @@ public class HelperMethods {
 
     }
 
-    public static void subLevelQuestion(final Node node, final Activity context, final CustomExpandableListAdapter callingAdapter){
-        node.setSelected();
-        List<Node> mNodes = node.getOptionsList();
-        final CustomArrayAdapter adapter = new CustomArrayAdapter(context, R.layout.list_item_subquestion, mNodes);
-        final AlertDialog.Builder subQuestion = new AlertDialog.Builder(context);
-
-        final LayoutInflater inflater = context.getLayoutInflater();
-        View convertView = inflater.inflate(R.layout.dialog_subquestion, null);
-        ImageView imageView = (ImageView) convertView.findViewById(R.id.dialog_subquestion_image_view);
-        if(node.isAidAvailable()){
-            if(node.getJobAidType().equals("image")){
-                String drawableName = node.getJobAidFile();
-                int resID = context.getResources().getIdentifier(drawableName, "drawable",  context.getPackageName());
-                imageView.setImageResource(resID);
-            } else {
-                imageView.setVisibility(View.GONE);
-            }
-        }
-
-
-
-        subQuestion.setTitle(node.getText());
-        ListView listView = (ListView) convertView.findViewById(R.id.dialog_subquestion_list_view);
-        listView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
-        listView.setClickable(true);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                node.getOption(position).toggleSelected();
-                adapter.notifyDataSetChanged();
-                if(node.getOption(position).getInputType() != null){
-                    subHandleQuestion(node.getOption(position), context, adapter);
-                }
-
-                if(!node.getOption(position).isTerminal()){
-                    subLevelQuestion(node.getOption(position), context, callingAdapter);
-                }
-            }
-        });
-        subQuestion.setView(listView);
-        subQuestion.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                node.setLanguage(node.generateLanguage());
-                callingAdapter.notifyDataSetChanged();
-                dialog.dismiss();
-            }
-        });
-        subQuestion.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                node.toggleSelected();
-                callingAdapter.notifyDataSetChanged();
-                dialog.cancel();
-            }
-        });
-
-        subQuestion.setView(convertView);
-        subQuestion.show();
-
-
-    }
-
+    /**
+     * When a node is clicked, it may have a specified input-type.
+     * If there is an input, this method should be called, which will then call the appropriate method for the type.
+     * Give this method the node, it wil pass it to the right method, and you will get a dialog box with the right input type.
+     *
+     * @param questionNode Input node that has a "input-type" attribute.
+     * @param context The current context.
+     * @param adapter The adapter the node is in (typically CustomExpandableListAdapter or CustomArrayAdapter)
+     */
     public static void handleQuestion(Node questionNode, final Activity context, final CustomExpandableListAdapter adapter) {
         String type = questionNode.getInputType();
         switch (type) {
@@ -169,6 +120,8 @@ public class HelperMethods {
         }
     }
 
+    //Displays a dialog box with a text input
+    //TODO: change the title of this to the title of the calling node
     public static void askText(final Node node, Activity context, final CustomExpandableListAdapter adapter) {
         final AlertDialog.Builder textInput = new AlertDialog.Builder(context);
         textInput.setTitle(R.string.question_text_input);
@@ -194,6 +147,7 @@ public class HelperMethods {
         textInput.show();
     }
 
+    //Displays a calendar to choose a date from
     public static void askDate(final Node node, final Activity context, final CustomExpandableListAdapter adapter) {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(context,
@@ -217,7 +171,7 @@ public class HelperMethods {
         datePickerDialog.show();
     }
 
-
+    //Displays a number picker (the wheel thing)
     public static void askNumber(final Node node, Activity context, final CustomExpandableListAdapter adapter) {
 
         final AlertDialog.Builder numberDialog = new AlertDialog.Builder(context);
@@ -251,6 +205,8 @@ public class HelperMethods {
 
     }
 
+    //Displays two number pickers, with an X in the middle
+    //TODO: display units as well, needs to be changed in mind map
     public static void askArea(final Node node, Activity context, final CustomExpandableListAdapter adapter) {
 
         final AlertDialog.Builder areaDialog = new AlertDialog.Builder(context);
@@ -291,6 +247,7 @@ public class HelperMethods {
 
     }
 
+    //Displays two number pickers with a dash in between
     public static void askRange(final Node node, Activity context, final CustomExpandableListAdapter adapter) {
 
         final AlertDialog.Builder rangeDialog = new AlertDialog.Builder(context);
@@ -329,6 +286,7 @@ public class HelperMethods {
         rangeDialog.show();
     }
 
+    //Displays a number picker and a unit picker
     public static void askFrequency(final Node node, Activity context, final CustomExpandableListAdapter adapter) {
 
         final AlertDialog.Builder frequencyDialog = new AlertDialog.Builder(context);
@@ -370,6 +328,7 @@ public class HelperMethods {
 
     }
 
+    //Similar to above, just with a different unit value
     public static void askDuration(final Node node, Activity context, final CustomExpandableListAdapter adapter) {
         final AlertDialog.Builder durationDialog = new AlertDialog.Builder(context);
         durationDialog.setTitle(R.string.question_duration_picker);
@@ -408,6 +367,91 @@ public class HelperMethods {
         durationDialog.show();
     }
 
+    /**
+     * The subLevel questions refer to nodes which are contained within a level 3 node.
+     * Take a look at the structure below:
+     * Complaint {
+     *     Level 1 {
+     *         Level 2 {
+     *              Level 3{
+     *                  Level 4
+     *              }
+     *         }
+     *         Level 2
+     *         Level 2
+     *     }
+     * }
+     *
+     * Expandable lists only display 2 levels of information.
+     * In our case, that would mean level 1 would be a question, and level 2 is the answer choices.
+     * If the level 2 answer choice leads to yet another question, then this method should be called.
+     * This method is similar to the question handler from before, but it works specifically with Level 3 or further level questions.
+     *
+     *
+     * @param node The node that was selected.
+     * @param context The current context.
+     * @param callingAdapter The adapter that is holding the node.
+     */
+    public static void subLevelQuestion(final Node node, final Activity context, final CustomExpandableListAdapter callingAdapter){
+        node.setSelected();
+        List<Node> mNodes = node.getOptionsList();
+        final CustomArrayAdapter adapter = new CustomArrayAdapter(context, R.layout.list_item_subquestion, mNodes);
+        final AlertDialog.Builder subQuestion = new AlertDialog.Builder(context);
+
+        final LayoutInflater inflater = context.getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.dialog_subquestion, null);
+        ImageView imageView = (ImageView) convertView.findViewById(R.id.dialog_subquestion_image_view);
+        if(node.isAidAvailable()){
+            if(node.getJobAidType().equals("image")){
+                String drawableName = node.getJobAidFile();
+                int resID = context.getResources().getIdentifier(drawableName, "drawable",  context.getPackageName());
+                imageView.setImageResource(resID);
+            } else {
+                imageView.setVisibility(View.GONE);
+            }
+        }
+        subQuestion.setTitle(node.getText());
+        ListView listView = (ListView) convertView.findViewById(R.id.dialog_subquestion_list_view);
+        listView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
+        listView.setClickable(true);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                node.getOption(position).toggleSelected();
+                adapter.notifyDataSetChanged();
+                if(node.getOption(position).getInputType() != null){
+                    subHandleQuestion(node.getOption(position), context, adapter);
+                }
+
+                if(!node.getOption(position).isTerminal()){
+                    subLevelQuestion(node.getOption(position), context, callingAdapter);
+                }
+            }
+        });
+        subQuestion.setView(listView);
+        subQuestion.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                node.setLanguage(node.generateLanguage());
+                callingAdapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        subQuestion.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                node.toggleSelected();
+                callingAdapter.notifyDataSetChanged();
+                dialog.cancel();
+            }
+        });
+
+        subQuestion.setView(convertView);
+        subQuestion.show();
+    }
+
+    //All methods below do the same thing as above, but work with a different adapter and therefore needed to be separated.
     public static void subHandleQuestion(Node questionNode, final Activity context, final CustomArrayAdapter adapter) {
         String type = questionNode.getInputType();
         switch (type) {

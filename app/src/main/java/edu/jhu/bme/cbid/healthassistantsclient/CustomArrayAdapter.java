@@ -31,6 +31,12 @@ public class CustomArrayAdapter extends ArrayAdapter<Node> {
      *                 instantiating views.
      * @param nodes  The objects to represent in the ListView.
      */
+
+    /**
+     * The Array Adapter is primarily used for sub-questions that come off a node.
+     * For this reason, some of the nodes used with the array adapter might actually have a job aid with it that must be displayed.
+     * Currently, images are the only ones supported.
+     */
     public CustomArrayAdapter(Context context, int resource, List<Node> nodes) {
         super(context, resource, nodes);
         mContext = context;
@@ -38,6 +44,7 @@ public class CustomArrayAdapter extends ArrayAdapter<Node> {
         mNodes = nodes;
     }
 
+    //Each view is a node itself
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if(convertView == null){

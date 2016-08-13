@@ -15,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,47 +68,21 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        complaintListView = (ExpandableListView) findViewById(R.id.complaint_expandable_list_view);
-        if (complaintListView != null) {
-            complaintListView.setVisibility(View.GONE);
-        }
-        ListView complaintList = (ListView) findViewById(R.id.complaint_list_view);
+
 
         mKnowledge = new Knowledge(HelperMethods.encodeJSON(this, mFileName));
-        final CustomExpandableListAdapter adapter = new CustomExpandableListAdapter(this, mKnowledge, this.getClass().getSimpleName());
-        complaintListView.setAdapter(adapter);
-        complaintListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
-
-        complaintListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                TextView textView = (TextView) v.findViewById(R.id.expandable_list_item);
-
-                mKnowledge.storeSelectedComplaint(textView.getText().toString());
-
-                adapter.notifyDataSetChanged();
-
-                return false;
-            }
-        });
-
-
+        ListView complaintList = (ListView) findViewById(R.id.complaint_list_view);
         final List<Node> complaints = mKnowledge.getComplaints();
-        List<String> complaintTitles = new ArrayList<>();
-        for (int i = 0; i < complaints.size(); i++) {
-            complaintTitles.add(i,complaints.get(i).getText());
-        }
-        Log.d(LOG_TAG, complaintTitles.toString());
-
         if (complaintList != null) {
             complaintList.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
+            complaintList.setClickable(true);
         }
-        complaintList.setClickable(true);
 
         final CustomArrayAdapter listAdapter = new CustomArrayAdapter(ComplaintNodeActivity.this,
                 R.layout.list_item_subquestion,
                 complaints);
 
+        assert complaintList != null;
         complaintList.setAdapter(listAdapter);
 
         complaintList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -117,12 +90,16 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 complaints.get(position).toggleSelected();
                 listAdapter.notifyDataSetChanged();
+                //The adapter needs to be notified every time a node is clicked to ensure proper display of selected nodes.
             }
         });
 
 
     }
 
+    /**
+     * Method to confirm all the complaints that were selected, and ensure that the conversation with the patient is thorough.
+     */
     public void confirmComplaints() {
 
         final ArrayList<String> selection = mKnowledge.getSelectedComplaints();

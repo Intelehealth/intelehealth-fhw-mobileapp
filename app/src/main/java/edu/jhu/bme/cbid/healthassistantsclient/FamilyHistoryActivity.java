@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
 
@@ -51,7 +50,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             patientID = intent.getLongExtra("patientID", 1);
             patientStatus = intent.getStringExtra("status");
             intentTag = intent.getStringExtra("tag");
-            physicalExams = intent.getStringArrayListExtra("exams");
+            physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
             Log.v(LOG_TAG, "Patient ID: " + patientID);
             Log.v(LOG_TAG, "Status: " + patientStatus);
             Log.v(LOG_TAG, "Intent Tag: " + intentTag);
@@ -68,48 +67,12 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(familyHistoryMap.anySubSelected()){
-                    for (Node node : familyHistoryMap.getOptionsList()) {
-                        if(node.isSelected()){
-                            String familyString = node.generateLanguage();
-                            String toInsert = node.getText() + " has " + familyString;
-                            insertionList.add(toInsert);
-
-                        }
-                    }
-                }
-
-                for (int i = 0; i < insertionList.size(); i++) {
-                    if (i == 0){
-                        insertion = insertionList.get(i);
-                    } else {
-                        insertion = insertion + "; " + insertionList.get(i);
-                    }
-                }
-
-                long obsId = insertDb(insertion);
-
-                if (intentTag.equals("edit")){
-                    Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
-                    intent.putExtra("patientID", patientID);
-                    intent.putExtra("status", patientStatus);
-                    intent.putExtra("tag", intentTag);
-                    startActivity(intent);
-                } else {
-
-                    Intent intent = new Intent(FamilyHistoryActivity.this, TableExamActivity.class);
-                    intent.putExtra("patientID", patientID);
-                    intent.putExtra("status", patientStatus);
-                    intent.putExtra("tag", intentTag);
-                    intent.putStringArrayListExtra("exams", physicalExams);
-                    startActivity(intent);
-                }
-
+                onFabClick();
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        familyHistoryMap = new Node(HelperMethods.encodeJSON(this, mFileName));
+        familyHistoryMap = new Node(HelperMethods.encodeJSON(this, mFileName)); //Load the family history mind map
         familyListView = (ExpandableListView) findViewById(R.id.family_history_expandable_list_view);
         adapter = new CustomExpandableListAdapter(this, familyHistoryMap, this.getClass().getSimpleName());
         familyListView.setAdapter(adapter);
@@ -119,7 +82,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 Node clickedNode = familyHistoryMap.getOption(groupPosition).getOption(childPosition);
                 clickedNode.toggleSelected();
-                Log.d(LOG_TAG, String.valueOf(clickedNode.isSelected()));
+                //Log.d(LOG_TAG, String.valueOf(clickedNode.isSelected()));
                 if (familyHistoryMap.getOption(groupPosition).anySubSelected()) {
                     familyHistoryMap.getOption(groupPosition).setSelected();
                 } else {
@@ -154,6 +117,51 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 
     }
 
+    /*
+        Language here works funny.
+        The architecture for the language of the family history mind map needs to be modified, as it does not allow for nice sentence building.
+        It also has a weird thing with new line characters, and just the way that the language itself should be displayed.
+     */
+    private void onFabClick(){
+        if(familyHistoryMap.anySubSelected()){
+            for (Node node : familyHistoryMap.getOptionsList()) {
+                if(node.isSelected()){
+                    String familyString = node.generateLanguage();
+                    String toInsert = node.getText() + " has " + familyString;
+                    insertionList.add(toInsert);
+                }
+            }
+        }
+
+        for (int i = 0; i < insertionList.size(); i++) {
+            if (i == 0){
+                insertion = insertionList.get(i);
+            } else {
+                insertion = insertion + "; " + insertionList.get(i);
+            }
+        }
+
+        insertDb(insertion);
+
+        if (intentTag.equals("edit")){
+            Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
+            intent.putExtra("patientID", patientID);
+            intent.putExtra("status", patientStatus);
+            intent.putExtra("tag", intentTag);
+            startActivity(intent);
+        } else {
+
+            Intent intent = new Intent(FamilyHistoryActivity.this, TableExamActivity.class);
+            intent.putExtra("patientID", patientID);
+            intent.putExtra("status", patientStatus);
+            intent.putExtra("tag", intentTag);
+            intent.putStringArrayListExtra("exams", physicalExams);
+            startActivity(intent);
+        }
+
+
+    }
+
     private long insertDb(String value) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
 
@@ -173,15 +181,5 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
         return localdb.insert("obs", null, complaintEntries);
     }
-
-    private String generateString(HashMap<String, String> stringMap){
-        String generated = "";
-        for (String s : stringMap.keySet()) {
-            generated = generated.concat(stringMap.get(s) + ", ");
-        }
-        generated = generated.substring(0, generated.length() - 2);
-        return generated;
-    }
-
 
 }

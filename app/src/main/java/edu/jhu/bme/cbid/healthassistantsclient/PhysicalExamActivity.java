@@ -248,8 +248,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
                     {
                         ex.printStackTrace();
                     }
-//                    int resID = getResources().getIdentifier(drawableName, "drawable", getContext().getPackageName());
-//                    imageView.setImageResource(resID);
                 } else {
                     imageView.setVisibility(View.GONE);
                 }

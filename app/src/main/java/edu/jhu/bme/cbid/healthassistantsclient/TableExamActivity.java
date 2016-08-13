@@ -33,16 +33,11 @@ public class TableExamActivity extends AppCompatActivity {
 
     private ArrayList<String> physExams;
 
-    // EditText bmi = (EditText) findViewById(R.id.table_bmi);
-    // bmi.setFocusable(false);
-    // TODO: intent passes along patient id, gender
-    // TODO: autocalculation of bmi
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         //For Testing
-//        patientID = Long.valueOf("1");
+        //patientID = Long.valueOf("1");
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -69,6 +64,8 @@ public class TableExamActivity extends AppCompatActivity {
         mSpo2 = (EditText) findViewById(R.id.table_spo2);
 
         mBMI = (EditText) findViewById(R.id.table_bmi);
+
+        //BMI calculation is done in metric units
         mBMI.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,7 +73,7 @@ public class TableExamActivity extends AppCompatActivity {
                 double denominator = (Double.parseDouble(mHeight.getText().toString())) * (Double.parseDouble(mHeight.getText().toString()));
                 double bmi_value = numerator / denominator;
                 mBMI.setText(String.format(Locale.ENGLISH, "%,2f", bmi_value));
-                Log.d("BMI", String.valueOf(bmi_value));
+                //Log.d("BMI", String.valueOf(bmi_value));
             }
         });
 
@@ -102,15 +99,10 @@ public class TableExamActivity extends AppCompatActivity {
     }
 
     public void validateTable() {
-        // Reset errors.
-
-
-        // .getText().toString()
         boolean cancel = false;
         View focusView = null;
 
-        // TODO: bmi, patient id should go here
-        // Store values at the time of the login attempt.
+        // Store values at the time of the fab is clicked.
         ArrayList<EditText> values = new ArrayList<EditText>();
         values.add(mHeight);
         values.add(mWeight);
@@ -120,7 +112,7 @@ public class TableExamActivity extends AppCompatActivity {
         values.add(mTemperature);
         values.add(mSpo2);
 
-        // Check for a valid values.
+        // Check to see if values were inputted.
         for (int i = 0; i < values.size(); i++) {
             EditText et = values.get(i);
 
