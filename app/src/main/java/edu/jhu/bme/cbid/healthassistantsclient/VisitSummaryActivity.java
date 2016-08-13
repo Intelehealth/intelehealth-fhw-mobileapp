@@ -149,7 +149,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
 
-
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientID = intent.getLongExtra("patientID", 1);
@@ -255,11 +254,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(LOG_TAG, "Uploaded" + uploaded);
+                //Log.d(LOG_TAG, "Uploaded" + uploaded);
                 if (uploaded) {
+                    Snackbar.make(view, "Downloading from doctor", Snackbar.LENGTH_LONG).show();
                     retrieveOpenMRS(view);
                 } else if (!uploaded) {
-                    Snackbar.make(view, "Uploading to OpenMRS", Snackbar.LENGTH_LONG);
+                    Snackbar.make(view, "Uploading to doctor", Snackbar.LENGTH_LONG).show();
                     sendPost(view);
                 }
             }
@@ -367,7 +367,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         switch (concept_id) {
             case 163187: //Medical History
                 patHistory.setValue(value);
-                if(!value.isEmpty()){
+                if (!value.isEmpty()) {
                     medHistory = patHistory.getValue();
                     medHistory = medHistory.replace("\"", "");
                     medHistory = medHistory.replace("\n", "");
@@ -543,22 +543,22 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String personString =
                     String.format("{\"gender\":\"%s\", " +
                                     "\"names\":[" +
-                                        "{\"givenName\":\"%s\", " +
-                                        "\"middleName\":\"%s\", " +
-                                        "\"familyName\":\"%s\"}], " +
+                                    "{\"givenName\":\"%s\", " +
+                                    "\"middleName\":\"%s\", " +
+                                    "\"familyName\":\"%s\"}], " +
                                     "\"birthdate\":\"%s\", " +
                                     "\"attributes\":[" +
-                                        "{\"attributeType\":\"14d4f066-15f5-102d-96e4-000c29c2a5d7\", " +
-                                        "\"value\": \"%s\"}, " +
-                                        "{\"attributeType\":\"8d87236c-c2cc-11de-8d13-0010c6dffd0f\", " +
-                                        "\"value\": \"Barhra\"}], " + //TODO: Change this attribute to the name of the clinic as listed in OpenMRS
-                                "\"addresses\":[" +
-                                        "{\"address1\":\"%s\", " +
-                                        "\"address2\":\"%s\"," +
-                                        "\"cityVillage\":\"%s\"," +
-                                        "\"stateProvince\":\"%s\"," +
-                                        "\"country\":\"%s\"," +
-                                        "\"postalCode\":\"%s\"}]}",
+                                    "{\"attributeType\":\"14d4f066-15f5-102d-96e4-000c29c2a5d7\", " +
+                                    "\"value\": \"%s\"}, " +
+                                    "{\"attributeType\":\"8d87236c-c2cc-11de-8d13-0010c6dffd0f\", " +
+                                    "\"value\": \"Barhra\"}], " + //TODO: Change this attribute to the name of the clinic as listed in OpenMRS
+                                    "\"addresses\":[" +
+                                    "{\"address1\":\"%s\", " +
+                                    "\"address2\":\"%s\"," +
+                                    "\"cityVillage\":\"%s\"," +
+                                    "\"stateProvince\":\"%s\"," +
+                                    "\"country\":\"%s\"," +
+                                    "\"postalCode\":\"%s\"}]}",
                             patient.getGender(),
                             patient.getFirstName(),
                             patient.getMiddleName(),
@@ -686,8 +686,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             if (uploaded) {
                 fab.setImageResource(R.drawable.ic_file_download_white_48px);
+                Snackbar.make(fab, "Upload success! Waiting for doctor.", Snackbar.LENGTH_LONG).show();
             } else {
-                Snackbar.make(fab, "Upload failed.", Snackbar.LENGTH_LONG);
+                Snackbar.make(fab, "Upload failed.", Snackbar.LENGTH_LONG).show();
             }
             super.onPostExecute(s);
         }
@@ -706,11 +707,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             String queryString = "?q=" + identifierNumber;
-            Log.d(LOG_TAG, identifierNumber);
+            //Log.d(LOG_TAG, identifierNumber);
             WebResponse responseEncounter;
             responseEncounter = getCommand("encounter", queryString);
             if (responseEncounter != null && responseEncounter.getResponseCode() != 200) {
-                Log.d(LOG_TAG, "Encounter searching was unsuccessful");
+                //Log.d(LOG_TAG, "Encounter searching was unsuccessful");
                 return null;
             }
 
@@ -1038,35 +1039,37 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     public int checkDigit(String idWithoutCheckDigit) {
 
-// allowable characters within identifier
+        // allowable characters within identifier
         String validChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVYWXZ_";
 
-// remove leading or trailing whitespace, convert to uppercase
+        // remove leading or trailing whitespace, convert to uppercase
         idWithoutCheckDigit = idWithoutCheckDigit.trim().toUpperCase();
 
-// this will be a running total
+        // this will be a running total
         int sum = 0;
 
-// loop through digits from right to left
+        // loop through digits from right to left
         for (int i = 0; i < idWithoutCheckDigit.length(); i++) {
 
-//set ch to "current" character to be processed
+
+            //set ch to "current" character to be processed
             char ch = idWithoutCheckDigit
                     .charAt(idWithoutCheckDigit.length() - i - 1);
 
-// throw exception for invalid characters
-            if (validChars.indexOf(ch) == -1)
-            try {
-                throw new InvalidObjectException("\"" + ch + "\" is an invalid character");
-            } catch (InvalidObjectException e) {
-                e.printStackTrace();
-            }
 
-// our "digit" is calculated using ASCII value - 48
+            // throw exception for invalid characters
+            if (validChars.indexOf(ch) == -1)
+                try {
+                    throw new InvalidObjectException("\"" + ch + "\" is an invalid character");
+                } catch (InvalidObjectException e) {
+                    e.printStackTrace();
+                }
+
+            // our "digit" is calculated using ASCII value - 48
             int digit = (int) ch - 48;
 
-// weight will be the current digit's contribution to
-// the running total
+            // weight will be the current digit's contribution to
+            // the running total
             int weight;
             if (i % 2 == 0) {
 
@@ -1076,6 +1079,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 // following formula allows us to gracefully calculate a
                 // weight for non-numeric "digits" as well (from their
                 // ASCII value - 48).
+
                 weight = (2 * digit) - (int) (digit / 5) * 9;
 
             } else {
@@ -1086,17 +1090,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             }
 
-// keep a running total of weights
+            // keep a running total of weights
             sum += weight;
 
         }
 
-// avoid sum less than 10 (if characters below "0" allowed,
-// this could happen)
+
+        // avoid sum less than 10 (if characters below "0" allowed,
+        // this could happen)
         sum = Math.abs(sum) + 10;
 
-// check digit is amount needed to reach next number
-// divisible by ten
+        // check digit is amount needed to reach next number
+        // divisible by ten
         return (10 - (sum % 10)) % 10;
 
     }

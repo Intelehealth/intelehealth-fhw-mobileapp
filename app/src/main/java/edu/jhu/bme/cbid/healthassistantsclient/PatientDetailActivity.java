@@ -36,7 +36,11 @@ public class PatientDetailActivity extends AppCompatActivity {
     LocalRecordsDatabaseHelper mDbHelper;
     private WebView mWebView;
 
+    String LOG_TAG = "Patient Detail Activity";
 
+    Long patientID = null;
+    String patientStatus;
+    String intentTag = "";
     Patient patient = new Patient();
 
     String mPatientName;
@@ -69,17 +73,21 @@ public class PatientDetailActivity extends AppCompatActivity {
 
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
+        if (intent != null) {
+            patientID = intent.getLongExtra("patientID", 1);
+            patientStatus = intent.getStringExtra("status");
+            intentTag = intent.getStringExtra("tag");
+            Log.v(LOG_TAG, "Patient ID: " + patientID);
+            Log.v(LOG_TAG, "Status: " + patientStatus);
+            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
+        }
+
+
+        queryData(String.valueOf(patientID));
+
+        //Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null && intent.getStringArrayListExtra("patientID") != null) {
             ArrayList<String> mPatientInfo = intent.getStringArrayListExtra("patientInfo");
-            mPatientName = mPatientInfo.get(0) + ", " + mPatientInfo.get(1)
-                    + " " + mPatientInfo.get(2);
-            mPatientDob = "Date of Birth: " + mPatientInfo.get(3) + " (Age "
-                    + mPatientInfo.get(4) + ")";
-            mAddress = mPatientInfo.get(5);
-            mCityState = mPatientInfo.get(6);
-            mPhone = "Phone Number: " + mPatientInfo.get(7);
-            mSdw = "Son/Daughter/Wife of " + mPatientInfo.get(8);
-            mOccupation = "Occupation: " + mPatientInfo.get(9);
 
             //TextView textViewName = (TextView) findViewById(R.id.textview_patient_details);
             //textViewName.setText(this.mPatientName);
@@ -207,6 +215,9 @@ public class PatientDetailActivity extends AppCompatActivity {
         visitCursor.close();
     }
 
+    private void parseData(){
+
+    }
     /*
     private void parseData(int concept_id, String value) {
         switch (concept_id) {
@@ -245,6 +256,32 @@ public class PatientDetailActivity extends AppCompatActivity {
                 break;
             default:
                 break;
+
+
+
+
+                            String fName = searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name"));
+                            String mName = searchCursor.getString(searchCursor.getColumnIndexOrThrow("middle_name"));
+                            char mInitial = '\0';
+                            if (mName != null) mInitial = mName.charAt(0);
+                            String lName = searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name"));
+                            String dob = searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth"));
+                            int age = HelperMethods.getAge(dob);
+
+                            String addr1 = searchCursor.getString(searchCursor.getColumnIndexOrThrow("address1"));
+                            String addr2 = searchCursor.getString(searchCursor.getColumnIndexOrThrow("address2"));
+                            if (addr2 != null) addr1 = addr1 + " " + addr2;
+                            String cityVillage = searchCursor.getString(searchCursor.getColumnIndexOrThrow("city_village"));
+                            String stateProvince = searchCursor.getString(searchCursor.getColumnIndexOrThrow("state_province"));
+                            String postal = searchCursor.getString(searchCursor.getColumnIndexOrThrow("postal_code"));
+                            String phoneNumber = searchCursor.getString(searchCursor.getColumnIndexOrThrow("phone_number"));
+
+                            String sdw = searchCursor.getString(searchCursor.getColumnIndexOrThrow("patient_identifier1"));
+                            String occupation = searchCursor.getString(searchCursor.getColumnIndexOrThrow("patient_identifier2"));
+
+                            String patientIdCol = searchCursor.getString(searchCursor.getColumnIndexOrThrow("_id"));
+
+                            String photoLoc = searchCursor.getString(searchCursor.getColumnIndexOrThrow("patient_identifier3"));
 
         }
     }
@@ -314,8 +351,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Snackbar.make(findViewById(R.id.clayout_detail), "Refreshing patient data", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+            Snackbar.make(findViewById(R.id.clayout_detail), "Refreshing patient data", Snackbar.LENGTH_LONG).show();
         }
 
         @Override

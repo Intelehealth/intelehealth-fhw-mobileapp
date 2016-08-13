@@ -108,50 +108,14 @@ public class SearchPatientActivity extends AppCompatActivity {
                         // toast.show();
 
                         if (searchCursor.moveToPosition(position)) {
-                            String fName = searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name"));
-                            String mName = searchCursor.getString(searchCursor.getColumnIndexOrThrow("middle_name"));
-                            char mInitial = '\0';
-                            if (mName != null) mInitial = mName.charAt(0);
-                            String lName = searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name"));
-                            String dob = searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth"));
-                            int age = HelperMethods.getAge(dob);
+                            String patientID = searchCursor.getString(searchCursor.getColumnIndexOrThrow("patient_id"));
+                            String patientStatus = "returning";
+                            Intent intent = new Intent(SearchPatientActivity.this, PatientDetailActivity.class);
+                            intent.putExtra("patientID", patientID);
+                            intent.putExtra("status", patientStatus);
+                            intent.putExtra("tag", "");
+                            startActivity(intent);
 
-                            String addr1 = searchCursor.getString(searchCursor.getColumnIndexOrThrow("address1"));
-                            String addr2 = searchCursor.getString(searchCursor.getColumnIndexOrThrow("address2"));
-                            if (addr2 != null) addr1 = addr1 + " " + addr2;
-                            String cityVillage = searchCursor.getString(searchCursor.getColumnIndexOrThrow("city_village"));
-                            String stateProvince = searchCursor.getString(searchCursor.getColumnIndexOrThrow("state_province"));
-                            String postal = searchCursor.getString(searchCursor.getColumnIndexOrThrow("postal_code"));
-                            String phoneNumber = searchCursor.getString(searchCursor.getColumnIndexOrThrow("phone_number"));
-
-                            String sdw = searchCursor.getString(searchCursor.getColumnIndexOrThrow("patient_identifier1"));
-                            String occupation = searchCursor.getString(searchCursor.getColumnIndexOrThrow("patient_identifier2"));
-
-                            String patientIdCol = searchCursor.getString(searchCursor.getColumnIndexOrThrow("_id"));
-
-                            String photoLoc = searchCursor.getString(searchCursor.getColumnIndexOrThrow("patient_identifier3"));
-
-
-                            ArrayList<String> patientInfo = new ArrayList<String>();
-
-                            patientInfo.add(lName);
-                            patientInfo.add(fName);
-                            patientInfo.add(mInitial + "");
-                            patientInfo.add(dob);
-                            patientInfo.add(age + "");
-                            patientInfo.add(addr1);
-                            patientInfo.add(cityVillage + ", " + stateProvince + " " + postal);
-                            patientInfo.add(phoneNumber);
-                            patientInfo.add(sdw);
-                            patientInfo.add(occupation);
-                            patientInfo.add(patientIdCol);
-                            patientInfo.add(photoLoc);
-
-
-
-                            Intent patientIntent = new Intent(SearchPatientActivity.this, PatientDetailActivity.class);
-                            patientIntent.putStringArrayListExtra("patientInfo", patientInfo);
-                            startActivity(patientIntent);
                         }
                     }
                 });

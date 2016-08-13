@@ -43,7 +43,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //selectDiagnosticService();
-                Snackbar.make(v, R.string.generic_coming_soon, Snackbar.LENGTH_LONG);
+                Snackbar.make(v, R.string.generic_coming_soon, Snackbar.LENGTH_LONG).show();
             }
         });
 
@@ -85,6 +85,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void selectDiagnosticService() {
+
         Intent intent = new Intent(this, DiagnosticTestsSelectionActivity.class);
         startActivity(intent);
     }
@@ -96,7 +97,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void settings() {
-        // TODO: Settings Screen to come.
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 
     public void endOfDay() {
