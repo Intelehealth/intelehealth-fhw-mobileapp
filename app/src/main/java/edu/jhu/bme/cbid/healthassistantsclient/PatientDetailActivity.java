@@ -16,6 +16,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.URLSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -83,7 +87,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
 
-        queryData(String.valueOf(patientID));
+        //queryData(String.valueOf(patientID));
 
         //Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null && intent.getStringArrayListExtra("patientID") != null) {
@@ -91,6 +95,8 @@ public class PatientDetailActivity extends AppCompatActivity {
 
             //TextView textViewName = (TextView) findViewById(R.id.textview_patient_details);
             //textViewName.setText(this.mPatientName);
+
+            medHistButton = (Button) findViewById(R.id.button_hist);
 
             medHistButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -104,29 +110,31 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                 }
             });
+//
+//            patHistButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Intent intent = new Intent(PatientDetailActivity.this, ViewHistoryActivity.class);
+////                    intent.putExtra("patientID", patientID);
+////                    intent.putExtra("status", patientStatus);
+////                    intent.putExtra("tag", "edit");
+//                    startActivity(intent);
+//
+//                }
+//            }
+//            );
 
-            patHistButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(PatientDetailActivity.this, ViewHistoryActivity.class);
-//                    intent.putExtra("patientID", patientID);
-//                    intent.putExtra("status", patientStatus);
-//                    intent.putExtra("tag", "edit");
-                    startActivity(intent);
-
-                }
-            });
 
             getSupportActionBar().setTitle(mPatientName);
 
             TextView textViewDob = (TextView) findViewById(R.id.textview_patient_info_age);
-            textViewDob.setText(mPatientDob);
+            textViewDob.setText("05/10/1992");
 
             TextView textViewSdw = (TextView) findViewById(R.id.textView_sdw);
-            textViewSdw.setText(mSdw);
+            textViewSdw.setText("Saleha");
 
             TextView textViewOcc = (TextView) findViewById(R.id.textview_occup);
-            textViewOcc.setText(mOccupation);
+            textViewOcc.setText("Engineer");
 
             TextView textViewAddr = (TextView) findViewById(R.id.textView_addr1);
             textViewAddr.setText(mAddress);
@@ -143,6 +151,12 @@ public class PatientDetailActivity extends AppCompatActivity {
 
             UpdatePatientTask upd = new UpdatePatientTask();
             upd.execute(mPatientInfo.get(10));
+
+            TextView link1 = (TextView) findViewById(R.id.textview_table_date_1);
+            link1.setMovementMethod(LinkMovementMethod.getInstance());
+
+            makeTextViewHyperlink(link1);
+
         }
     }
 
@@ -371,6 +385,13 @@ public class PatientDetailActivity extends AppCompatActivity {
             // TODO: Update the image with the picture of the patient as stored on the filesystem
         }
 
+    }
+
+    public static void makeTextViewHyperlink(TextView tv) {
+        SpannableStringBuilder ssb = new SpannableStringBuilder();
+        ssb.append(tv.getText());
+        ssb.setSpan(new URLSpan("#"), 0, ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tv.setText(ssb, TextView.BufferType.SPANNABLE);
     }
 
 }

@@ -1,12 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.jhu.bme.cbid.healthassistantsclient.ViewHistoryActivity">
 
-</RelativeLayout>
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cardview_pathist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/padding_card"
+        android:layout_marginTop="@dimen/padding_card"
+        card_view:cardCornerRadius="@dimen/card_corner_radius"
+        card_view:cardElevation="2dp"
+        card_view:cardUseCompatPadding="true"
+        card_view:contentPadding="@dimen/padding_card">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textview_heading_pathist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/padding_card_title_text"
+                android:text="Patient Medical History"
+                android:textSize="@dimen/card_title_text_size" />
+
+            <ImageButton
+                android:id="@+id/imagebutton_edit_pathist"
+                android:layout_width="@dimen/edit_icon_width"
+                android:layout_height="@dimen/edit_icon_height"
+                android:layout_alignRight="@id/textview_heading_pathist"
+                android:background="@null"
+                android:padding="@dimen/padding_card_action"
+                android:src="@drawable/edit_icon" />
+
+            <TextView
+                android:id="@+id/textview_content_pathist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textview_heading_pathist"
+                android:paddingTop="@dimen/padding_card"
+                android:text="Patient has no history."
+                android:textSize="@dimen/card_content_text_size" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cardview_famhist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/padding_card"
+        android:layout_marginTop="@dimen/padding_card"
+        card_view:cardCornerRadius="@dimen/card_corner_radius"
+        card_view:cardElevation="2dp"
+        card_view:cardUseCompatPadding="true"
+        card_view:contentPadding="@dimen/padding_card">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textview_heading_famhist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/padding_card_title_text"
+                android:text="Patient Family Medical History"
+                android:textSize="@dimen/card_title_text_size" />
+
+            <ImageButton
+                android:id="@+id/imagebutton_edit_famhist"
+                android:layout_width="@dimen/edit_icon_width"
+                android:layout_height="@dimen/edit_icon_height"
+                android:layout_alignRight="@id/textview_heading_famhist"
+                android:background="@null"
+                android:padding="@dimen/padding_card_action"
+                android:src="@drawable/edit_icon" />
+
+            <TextView
+                android:id="@+id/textview_content_famhist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textview_heading_famhist"
+                android:paddingTop="@dimen/padding_card"
+                android:text="Mother has Asthma and Diabetes."
+                android:textSize="@dimen/card_content_text_size" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+
+</LinearLayout>

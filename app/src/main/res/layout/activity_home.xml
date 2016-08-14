@@ -43,15 +43,15 @@
         android:layout_height="wrap_content"
         android:layout_weight=".5">
 
-        <ImageButton
-            android:id="@+id/diagnosticServicesButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight=".5"
-            android:background="?android:attr/selectableItemBackground"
-            android:src="@drawable/diagnostic_tests_button"
-            android:text="@string/button_diagnostic_tests" />
+        <!--<ImageButton-->
+            <!--android:id="@+id/diagnosticServicesButton"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_weight=".5"-->
+            <!--android:background="?android:attr/selectableItemBackground"-->
+            <!--android:src="@drawable/diagnostic_tests_button"-->
+            <!--android:text="@string/button_diagnostic_tests" />-->
 
 
     </TableRow>

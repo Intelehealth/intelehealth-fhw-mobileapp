@@ -388,7 +388,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 } else {
                     currentPatient.setPatientIdentifier2(mOccupation.getText().toString());
                 }
-                currentPatient.setCountry(mCountry.getText().toString());
+                //currentPatient.setCountry(mCountry.getText().toString());
                 currentPatient.setGender(mGender);
             } catch (NullPointerException e) {
                 Snackbar.make(findViewById(R.id.cl_table), R.string.identification_screen_error_data_fields, Snackbar.LENGTH_SHORT);

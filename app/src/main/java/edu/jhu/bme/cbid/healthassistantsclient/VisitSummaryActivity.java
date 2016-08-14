@@ -161,7 +161,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 
         //For Testing
-//        patientID = Long.valueOf("3");
+        patientID = Long.valueOf("1");
 
         identifierNumber = "30000" + String.valueOf(patientID);
 //        For Testing
@@ -251,6 +251,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         assert fab != null;
+        uploaded = true;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -869,6 +870,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
+
+
+            diagnosisReturned = "No Diagnosis. I am a fake doctor";
+            rxReturned = "Say no to drugs";
+            adviceReturned = "Eat properly. Get 7 - 8 hours of sleep.";
+            testsReturned = "Get all the tests humanly possible done.";
+            additionalReturned = "I'm not a real doctor. Please remember that";
+            doctorName = "Dr. Fake Fake";
+
+
             if (!diagnosisReturned.isEmpty()) {
                 createNewCardView(getString(R.string.card_diagnosis), diagnosisReturned, 0);
                 createNewCardView(getString(R.string.card_rx), rxReturned, 1);
@@ -877,6 +888,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 createNewCardView(getString(R.string.card_additional_comments), additionalReturned, 4);
                 createNewCardView(getString(R.string.card_doctor_details), doctorName, 5);
                 Log.d(LOG_TAG, "Retrieval successful");
+
+
+
             }
             super.onPostExecute(s);
         }
@@ -1029,7 +1043,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     private void createNewCardView(String title, String content, int index) {
         final LayoutInflater inflater = VisitSummaryActivity.this.getLayoutInflater();
-        View convertView = inflater.inflate(R.layout.card_simple_content, null);
+        View convertView = inflater.inflate(R.layout.card_doctor_content, null);
         TextView titleView = (TextView) convertView.findViewById(R.id.textview_heading);
         TextView contentView = (TextView) convertView.findViewById(R.id.textview_content);
         titleView.setText(title);

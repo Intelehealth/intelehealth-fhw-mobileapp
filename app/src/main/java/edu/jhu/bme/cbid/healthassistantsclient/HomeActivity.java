@@ -2,7 +2,6 @@ package edu.jhu.bme.cbid.healthassistantsclient;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,6 +15,8 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        setTitle("Home");
 
 
         ImageButton newPtButton = (ImageButton) findViewById(R.id.newPatientButton);
@@ -37,15 +38,15 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        ImageButton diagnosticServicesButton = (ImageButton) findViewById(R.id.diagnosticServicesButton);
-        assert diagnosticServicesButton != null;
-        diagnosticServicesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //selectDiagnosticService();
-                Snackbar.make(v, R.string.generic_coming_soon, Snackbar.LENGTH_LONG).show();
-            }
-        });
+//        ImageButton diagnosticServicesButton = (ImageButton) findViewById(R.id.diagnosticServicesButton);
+//        assert diagnosticServicesButton != null;
+//        diagnosticServicesButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //selectDiagnosticService();
+//                Snackbar.make(v, R.string.generic_coming_soon, Snackbar.LENGTH_LONG).show();
+//            }
+//        });
 
     }
 
