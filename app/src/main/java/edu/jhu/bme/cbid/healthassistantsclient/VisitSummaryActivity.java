@@ -68,6 +68,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     Context context;
 
     Long patientID = null;
+    String patientName;
     String patientStatus;
     String intentTag;
 
@@ -152,16 +153,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientID = intent.getLongExtra("patientID", 1);
+            patientName = intent.getStringExtra("name");
             patientStatus = intent.getStringExtra("status");
             intentTag = intent.getStringExtra("tag");
             Log.v(LOG_TAG, "Patient ID: " + patientID);
+            Log.v(LOG_TAG, "Patient Name: " + patientName);
             Log.v(LOG_TAG, "Status: " + patientStatus);
             Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
 
+        setTitle(getTitle() + " for "  + patientName);
         //For Testing
-        patientID = Long.valueOf("1");
+        //patientID = Long.valueOf("1");
 
         identifierNumber = "30000" + String.valueOf(patientID);
 //        For Testing
@@ -195,6 +199,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent1 = new Intent(VisitSummaryActivity.this, TableExamActivity.class);
                 intent1.putExtra("patientID", patientID);
+                intent1.putExtra("name", patientName);
                 intent1.putExtra("status", patientStatus);
                 intent1.putExtra("tag", "edit");
                 startActivity(intent1);
@@ -206,6 +211,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent1 = new Intent(VisitSummaryActivity.this, ComplaintNodeActivity.class);
                 intent1.putExtra("patientID", patientID);
+                intent1.putExtra("name", patientName);
                 intent1.putExtra("status", patientStatus);
                 intent1.putExtra("tag", "edit");
                 startActivity(intent1);
@@ -218,6 +224,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent1 = new Intent(VisitSummaryActivity.this, PhysicalExamActivity.class);
                 intent1.putExtra("patientID", patientID);
+                intent1.putExtra("name", patientName);
                 intent1.putExtra("status", patientStatus);
                 intent1.putExtra("tag", "edit");
                 startActivity(intent1);
@@ -230,6 +237,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent1 = new Intent(VisitSummaryActivity.this, FamilyHistoryActivity.class);
                 intent1.putExtra("patientID", patientID);
+                intent1.putExtra("name", patientName);
                 intent1.putExtra("status", patientStatus);
                 intent1.putExtra("tag", "edit");
                 startActivity(intent1);
@@ -242,6 +250,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent1 = new Intent(VisitSummaryActivity.this, PatientHistoryActivity.class);
                 intent1.putExtra("patientID", patientID);
+                intent1.putExtra("name", patientName);
                 intent1.putExtra("status", patientStatus);
                 intent1.putExtra("tag", "edit");
                 startActivity(intent1);

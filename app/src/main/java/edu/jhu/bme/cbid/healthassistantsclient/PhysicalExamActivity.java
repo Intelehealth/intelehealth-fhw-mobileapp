@@ -52,6 +52,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
 
     Long patientID = null;
+    String patientName;
     String patientStatus;
     String intentTag;
 
@@ -78,10 +79,12 @@ public class PhysicalExamActivity extends AppCompatActivity {
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientID = intent.getLongExtra("patientID", 1);
+            patientName = intent.getStringExtra("name");
             patientStatus = intent.getStringExtra("status");
             intentTag = intent.getStringExtra("tag");
             selectedExamsList = intent.getStringArrayListExtra("exams");
             Log.v(LOG_TAG, "Patient ID: " + patientID);
+            Log.v(LOG_TAG, "Patient Name: " + patientName);
             Log.v(LOG_TAG, "Status: " + patientStatus);
             Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
@@ -102,6 +105,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
         //TODO: find a better solution to this. Toolbar back buttons disabled everywhere.
 
 
+        setTitle(getTitle() + ": "  + patientName);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), physicalExamMap);
@@ -131,12 +135,14 @@ public class PhysicalExamActivity extends AppCompatActivity {
                     if (intentTag.equals("edit")){
                         Intent intent = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
                         intent.putExtra("patientID", patientID);
+                        intent.putExtra("name", patientName);
                         intent.putExtra("status", patientStatus);
                         intent.putExtra("tag", intentTag);
                         startActivity(intent);
                     } else {
                         Intent intent1 = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
                         intent1.putExtra("patientID", patientID);
+                        intent1.putExtra("name", patientName);
                         intent1.putExtra("status", patientStatus);
                         intent1.putExtra("tag", intentTag);
                         startActivity(intent1);

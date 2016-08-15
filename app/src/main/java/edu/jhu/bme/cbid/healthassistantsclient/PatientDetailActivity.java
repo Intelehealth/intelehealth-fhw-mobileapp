@@ -43,6 +43,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     String LOG_TAG = "Patient Detail Activity";
 
     Long patientID = null;
+    String patientName;
     String patientStatus;
     String intentTag = "";
     Patient patient = new Patient();
@@ -70,8 +71,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Feature Coming Soon", Snackbar.LENGTH_LONG)
-                        .show();
+                Snackbar.make(view, "Feature Coming Soon", Snackbar.LENGTH_LONG).show();
             }
         });
 
@@ -79,15 +79,19 @@ public class PatientDetailActivity extends AppCompatActivity {
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientID = intent.getLongExtra("patientID", 1);
+            patientName = intent.getStringExtra("name");
             patientStatus = intent.getStringExtra("status");
             intentTag = intent.getStringExtra("tag");
             Log.v(LOG_TAG, "Patient ID: " + patientID);
+            Log.v(LOG_TAG, "Patient Name: " + patientName);
             Log.v(LOG_TAG, "Status: " + patientStatus);
             Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
 
         //queryData(String.valueOf(patientID));
+
+        setTitle(patientName);
 
         //Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null && intent.getStringArrayListExtra("patientID") != null) {

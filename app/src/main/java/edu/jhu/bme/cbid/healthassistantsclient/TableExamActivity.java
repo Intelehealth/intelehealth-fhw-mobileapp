@@ -28,6 +28,7 @@ public class TableExamActivity extends AppCompatActivity {
     final String LOG_TAG = "TableExamActivity";
 
     Long patientID = null;
+    String patientName;
     String patientStatus;
     String intentTag;
 
@@ -42,9 +43,11 @@ public class TableExamActivity extends AppCompatActivity {
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientID = intent.getLongExtra("patientID", 1);
+            patientName = intent.getStringExtra("name");
             patientStatus = intent.getStringExtra("status");
             intentTag = intent.getStringExtra("tag");
             Log.v(LOG_TAG, "Patient ID: " + patientID);
+            Log.v(LOG_TAG, "Patient Name: " + patientName);
             Log.v(LOG_TAG, "Status: " + patientStatus);
             Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
@@ -54,6 +57,9 @@ public class TableExamActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+
+        setTitle(getTitle() + ": "  + patientName);
 
         mHeight = (EditText) findViewById(R.id.table_height);
         mWeight = (EditText) findViewById(R.id.table_weight);
@@ -156,6 +162,7 @@ public class TableExamActivity extends AppCompatActivity {
         if (intentTag.equals("edit")){
             Intent intent = new Intent(TableExamActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientID", patientID);
+            intent.putExtra("name", patientName);
             intent.putExtra("status", patientStatus);
             intent.putExtra("tag", intentTag);
             startActivity(intent);
@@ -163,6 +170,7 @@ public class TableExamActivity extends AppCompatActivity {
 
             Intent intent = new Intent(TableExamActivity.this, PhysicalExamActivity.class);
             intent.putExtra("patientID", patientID);
+            intent.putExtra("name", patientName);
             intent.putExtra("status", patientStatus);
             intent.putExtra("tag", intentTag);
             intent.putStringArrayListExtra("exams", physExams);

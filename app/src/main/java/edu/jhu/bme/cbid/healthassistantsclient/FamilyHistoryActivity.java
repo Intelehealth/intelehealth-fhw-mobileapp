@@ -19,10 +19,8 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 
     String LOG_TAG = "Family History Activity";
 
-    String family = "family";
-
-
     Long patientID = null;
+    String patientName;
     String patientStatus;
     String intentTag;
 
@@ -48,19 +46,24 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientID = intent.getLongExtra("patientID", 1);
+            patientName = intent.getStringExtra("name");
             patientStatus = intent.getStringExtra("status");
             intentTag = intent.getStringExtra("tag");
             physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
             Log.v(LOG_TAG, "Patient ID: " + patientID);
+            Log.v(LOG_TAG, "Patient Name: " + patientName);
             Log.v(LOG_TAG, "Status: " + patientStatus);
             Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_family_history);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+        setTitle(getTitle() + ": "  + patientName);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         assert fab != null;
@@ -146,6 +149,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         if (intentTag.equals("edit")){
             Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientID", patientID);
+            intent.putExtra("name", patientName);
             intent.putExtra("status", patientStatus);
             intent.putExtra("tag", intentTag);
             startActivity(intent);
@@ -153,6 +157,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 
             Intent intent = new Intent(FamilyHistoryActivity.this, TableExamActivity.class);
             intent.putExtra("patientID", patientID);
+            intent.putExtra("name", patientName);
             intent.putExtra("status", patientStatus);
             intent.putExtra("tag", intentTag);
             intent.putStringArrayListExtra("exams", physicalExams);

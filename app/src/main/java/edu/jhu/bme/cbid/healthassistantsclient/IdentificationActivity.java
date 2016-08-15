@@ -536,7 +536,9 @@ public class IdentificationActivity extends AppCompatActivity {
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             Intent intent2 = new Intent(IdentificationActivity.this, ComplaintNodeActivity.class);
+            String fullName = patient.getFirstName() + " " + patient.getLastName();
             intent2.putExtra("patientID", patientID);
+            intent2.putExtra("name", fullName);
             intent2.putExtra("status", "new");
             intent2.putExtra("tag", "");
             startActivity(intent2);
@@ -556,6 +558,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }
