@@ -35,7 +35,7 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             "postal_code varchar(50)," +
             "country varchar(50)," +
             "gender varchar(50)," +
-            "portrait_name varchar(255)," +
+            "portrait varchar(255)," +
             "patient_identifier1 varchar(255)," +
             "patient_identifier2 varchar(255)," +
             "patient_identifier3 varchar(255)" +

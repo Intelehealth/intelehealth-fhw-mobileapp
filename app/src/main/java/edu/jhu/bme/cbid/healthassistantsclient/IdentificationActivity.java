@@ -484,7 +484,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientEntries.put("postal_code", patient.getPostalCode());
             patientEntries.put("country", patient.getCountry());
             patientEntries.put("gender", patient.getGender());
-            patientEntries.put("portrait_name", mCurrentPhotoPath);
+            patientEntries.put("portrait", mCurrentPhotoPath);
             patientEntries.put("patient_identifier1", patient.getPatientIdentifier1());
             patientEntries.put("patient_identifier2", patient.getPatientIdentifier2());
         }

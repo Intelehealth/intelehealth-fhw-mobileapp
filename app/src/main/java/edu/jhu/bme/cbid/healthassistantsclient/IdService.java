@@ -123,7 +123,7 @@ public class IdService extends IntentService {
 
         Gson gson = new GsonBuilder().serializeNulls().create();
         Patient patient = new Patient();
-        patient.setId(Long.parseLong(patientCursor.getString(0)));
+        patient.setId(patientCursor.getString(0));
         patient.setFirstName(patientCursor.getString(1));
         patient.setMiddleName(patientCursor.getString(2));
         patient.setLastName(patientCursor.getString(3));

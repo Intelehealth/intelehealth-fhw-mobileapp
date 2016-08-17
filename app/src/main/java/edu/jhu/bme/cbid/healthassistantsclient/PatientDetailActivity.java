@@ -54,6 +54,13 @@ public class PatientDetailActivity extends AppCompatActivity {
     String mSdw;
     String mOccupation;
 
+    TextView dobAgeView;
+    TextView occupation;
+    TextView sDW;
+    TextView addressLine1;
+    TextView addressLine2;
+    TextView phone;
+
     Button medHistButton;
     Button patHistButton;
 
@@ -64,15 +71,6 @@ public class PatientDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Feature Coming Soon", Snackbar.LENGTH_LONG).show();
-            }
-        });
-
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -86,9 +84,15 @@ public class PatientDetailActivity extends AppCompatActivity {
             Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
-        setTitle(patientName);
+        dobAgeView = (TextView) findViewById(R.id.textView_patient_info_age);
+        occupation = (TextView) findViewById(R.id.textView_occup);
+        sDW = (TextView) findViewById(R.id.textView_sdw);
+        addressLine1 = (TextView) findViewById(R.id.textView_addr1);
+        addressLine2 = (TextView) findViewById(R.id.textView_addr2);
+        phone = (TextView) findViewById(R.id.textView_phone);
 
         queryDisplay(String.valueOf(patientID));
+        setTitle(mPatientName);
 
         String tempString="Copyright";
         //TextView text=(TextView)findViewById(R.id.text);
@@ -97,6 +101,15 @@ public class PatientDetailActivity extends AppCompatActivity {
         //text.setText(spanString);
 
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        if (fab != null) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar.make(view, "Feature Coming Soon", Snackbar.LENGTH_LONG).show();
+                }
+            });
+        }
 
     }
 
@@ -131,24 +144,25 @@ public class PatientDetailActivity extends AppCompatActivity {
         String table = "patient";
         String[] columnsToReturn = {"first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
-                "postal_code", "phone_number", "gender", "patient_identifier1", "patient_identifier2"};
+                "postal_code", "phone_number", "gender", "portrait", "patient_identifier1", "patient_identifier2"};
         final Cursor idCursor = db.query(table, columnsToReturn, selection, args, null, null, null);
 
         if (idCursor.moveToFirst()) {
             do {
-                patient.setFirstName(idCursor.getString(idCursor.getColumnIndex("first_name")));
-                patient.setMiddleName(idCursor.getString(idCursor.getColumnIndex("middle_name")));
-                patient.setLastName(idCursor.getString(idCursor.getColumnIndex("last_name")));
-                patient.setDateOfBirth(idCursor.getString(idCursor.getColumnIndex("date_of_birth")));
-                patient.setAddress1(idCursor.getString(idCursor.getColumnIndex("address1")));
-                patient.setAddress2(idCursor.getString(idCursor.getColumnIndex("address2")));
-                patient.setCityVillage(idCursor.getString(idCursor.getColumnIndex("city_village")));
-                patient.setStateProvince(idCursor.getString(idCursor.getColumnIndex("state_province")));
-                patient.setPostalCode(idCursor.getString(idCursor.getColumnIndex("postal_code")));
-                patient.setPhoneNumber(idCursor.getString(idCursor.getColumnIndex("phone_number")));
-                patient.setGender(idCursor.getString(idCursor.getColumnIndex("gender")));
-                patient.setPatientIdentifier1(idCursor.getString(idCursor.getColumnIndex("patient_identifier1")));
-                patient.setPatientIdentifier2(idCursor.getString(idCursor.getColumnIndex("patient_identifier2")));
+                patient.setFirstName(idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")));
+                patient.setMiddleName(idCursor.getString(idCursor.getColumnIndexOrThrow("middle_name")));
+                patient.setLastName(idCursor.getString(idCursor.getColumnIndexOrThrow("last_name")));
+                patient.setDateOfBirth(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
+                patient.setAddress1(idCursor.getString(idCursor.getColumnIndexOrThrow("address1")));
+                patient.setAddress2(idCursor.getString(idCursor.getColumnIndexOrThrow("address2")));
+                patient.setCityVillage(idCursor.getString(idCursor.getColumnIndexOrThrow("city_village")));
+                patient.setStateProvince(idCursor.getString(idCursor.getColumnIndexOrThrow("state_province")));
+                patient.setPostalCode(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
+                patient.setPhoneNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
+                patient.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                patient.setPortrait_name(idCursor.getString(idCursor.getColumnIndexOrThrow("portrait")));
+                patient.setPatientIdentifier1(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_identifier1")));
+                patient.setPatientIdentifier2(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_identifier2")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -161,12 +175,38 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         if (visitCursor.moveToFirst()) {
             do {
-                int dbConceptID = visitCursor.getInt(visitCursor.getColumnIndex("concept_id"));
-                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                int dbConceptID = visitCursor.getInt(visitCursor.getColumnIndexOrThrow("concept_id"));
+                String dbValue = visitCursor.getString(visitCursor.getColumnIndexOrThrow("value"));
                 //parseData(dbConceptID, dbValue);
             } while (visitCursor.moveToNext());
         }
         visitCursor.close();
+
+        if(patient.getMiddleName().equals("")){
+            mPatientName = patient.getFirstName() + " " + patient.getLastName();
+        } else {
+            mPatientName = patient.getFirstName() + " " + patient.getMiddleName() + " " + patient.getLastName();
+        }
+
+        int age = HelperMethods.getAge(patient.getDateOfBirth());
+        mPatientDob = "DOB: " + patient.getDateOfBirth() + " Age: " + String.valueOf(age);
+        dobAgeView.setText(mPatientDob);
+
+        mOccupation = patient.getPatientIdentifier1();
+        occupation.setText(mOccupation);
+
+        mSdw = patient.getPatientIdentifier2();
+        sDW.setText(mSdw);
+
+        mAddress = patient.getAddress1() + ", " + patient.getAddress2();
+        addressLine1.setText(mAddress);
+
+        mCityState = patient.getCityVillage() + ", " + patient.getStateProvince() + " " + patient.getPostalCode();
+        addressLine2.setText(mCityState);
+
+        mPhone = patient.getPhoneNumber();
+        phone.setText(mPhone);
+
     }
 
     private void parseData(){
