@@ -27,7 +27,7 @@ public class TableExamActivity extends AppCompatActivity {
     Long obsID;
     final String LOG_TAG = "TableExamActivity";
 
-    Long patientID = null;
+    String patientID = "1";
     String patientName;
     String patientStatus;
     String intentTag;
@@ -42,7 +42,7 @@ public class TableExamActivity extends AppCompatActivity {
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
-            patientID = intent.getLongExtra("patientID", 1);
+            patientID = intent.getStringExtra("patientID");
             patientName = intent.getStringExtra("name");
             patientStatus = intent.getStringExtra("status");
             intentTag = intent.getStringExtra("tag");
@@ -59,7 +59,7 @@ public class TableExamActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
 
-        setTitle(getTitle() + ": "  + patientName);
+        setTitle(patientName + ": " + getTitle());
 
         mHeight = (EditText) findViewById(R.id.table_height);
         mWeight = (EditText) findViewById(R.id.table_weight);

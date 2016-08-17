@@ -24,8 +24,11 @@ import java.util.ArrayList;
 
 public class SearchPatientActivity extends AppCompatActivity {
 
+    final String LOG_TAG = "Search Patient Activity";
+
     LocalRecordsDatabaseHelper mDbHelper;
     SearchCursorAdapter mSearchAdapter;
+    SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // Get the intent, verify the action and get the query
         Intent intent = getIntent();
@@ -46,10 +50,14 @@ public class SearchPatientActivity extends AppCompatActivity {
             doQuery(query);
         }
 
+
+
         // TODO: Clear Suggestions
         // SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
         // SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
         // suggestions.clearHistory();
+
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         assert fab != null;
@@ -69,10 +77,14 @@ public class SearchPatientActivity extends AppCompatActivity {
 
         // Get the SearchView and set the searchable configuration
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         // Assumes current activity is the searchable activity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+        searchView.setFocusable(true);
+        searchView.requestFocus();
+
 
         return true;
     }
@@ -103,12 +115,10 @@ public class SearchPatientActivity extends AppCompatActivity {
                 lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                        // Toast
-                        // Toast toast = Toast.makeText(getActivity(), mAdapter.getItem(position), Toast.LENGTH_SHORT);
-                        // toast.show();
 
                         if (searchCursor.moveToPosition(position)) {
                             String patientID = searchCursor.getString(searchCursor.getColumnIndexOrThrow("_id"));
+                            Log.d(LOG_TAG, patientID);
                             String patientStatus = "returning";
                             Intent intent = new Intent(SearchPatientActivity.this, PatientDetailActivity.class);
                             intent.putExtra("patientID", patientID);

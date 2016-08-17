@@ -51,7 +51,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
     private ViewPager mViewPager;
 
 
-    Long patientID = null;
+    String patientID = "1";
     String patientName;
     String patientStatus;
     String intentTag;
@@ -78,7 +78,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
-            patientID = intent.getLongExtra("patientID", 1);
+            patientID = intent.getStringExtra("patientID");
             patientName = intent.getStringExtra("name");
             patientStatus = intent.getStringExtra("status");
             intentTag = intent.getStringExtra("tag");
@@ -101,11 +101,11 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        //TODO: find a better solution to this. Toolbar back buttons disabled everywhere.
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
 
-
-        setTitle(getTitle() + ": "  + patientName);
+        setTitle(patientName + ": " + getTitle());
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), physicalExamMap);

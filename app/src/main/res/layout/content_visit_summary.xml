@@ -26,7 +26,7 @@
 
         <!-- Vitals Card contains a TableView-->
         <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/cardview_vitals"
+            android:id="@+id/cardView_vitals"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -42,18 +42,18 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/textview_heading_vitals"
+                    android:id="@+id/textView_heading_vitals"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/padding_card_title_text"
-                    android:text="Vitals"
+                    android:text="@string/visit_summary_vitals_heading"
                     android:textSize="@dimen/card_title_text_size" />
 
                 <ImageButton
                     android:id="@+id/imagebutton_edit_vitals"
                     android:layout_width="@dimen/edit_icon_width"
                     android:layout_height="@dimen/edit_icon_height"
-                    android:layout_alignRight="@id/textview_heading_vitals"
+                    android:layout_alignRight="@id/textView_heading_vitals"
                     android:background="@null"
                     android:padding="@dimen/padding_card_action"
                     android:src="@drawable/edit_icon" />
@@ -61,76 +61,73 @@
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/textview_heading_vitals">
+                    android:layout_below="@id/textView_heading_vitals">
 
                     <!--Height-->
                     <TableRow>
 
                         <TextView
-                            android:id="@+id/textview_height"
+                            android:id="@+id/textView_height"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:paddingTop="@dimen/padding_card"
-                            android:text="Height (cm)"
+                            android:text="@string/visit_summary_height_heading"
                             android:textSize="@dimen/card_content_text_size" />
 
                         <TextView
-                            android:id="@+id/textview_height_value"
+                            android:id="@+id/textView_height_value"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:paddingTop="@dimen/padding_card"
-                            android:text="@string/visit_height_value"
                             android:textSize="@dimen/card_content_text_size" />
                     </TableRow>
                     <!--Weight-->
                     <TableRow>
 
                         <TextView
-                            android:id="@+id/textview_weight"
+                            android:id="@+id/textView_weight"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Weight (kg)"
+                            android:text="@string/visit_summary_weight"
                             android:textSize="@dimen/card_content_text_size" />
 
                         <TextView
-                            android:id="@+id/textview_weight_value"
+                            android:id="@+id/textView_weight_value"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/visit_weight_value"
                             android:textSize="@dimen/card_content_text_size" />
                     </TableRow>
                     <!--BMI-->
                     <TableRow>
 
                         <TextView
-                            android:id="@+id/textview_bmi"
+                            android:id="@+id/textView_bmi"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="BMI"
+                            android:text="@string/visit_summary_bmi"
                             android:textSize="@dimen/card_content_text_size" />
 
                         <TextView
-                            android:id="@+id/textview_bmi_value"
+                            android:id="@+id/textView_bmi_value"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/visit_bmi_value"
                             android:textSize="@dimen/card_content_text_size" />
                     </TableRow>
                     <!--Blood Pressure-->
                     <TableRow>
 
                         <TextView
-                            android:id="@+id/textview_bp"
+                            android:id="@+id/textView_bp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="BP"
+                            android:text="@string/visit_summary_bp"
                             android:textSize="@dimen/card_content_text_size" />
 
                         <LinearLayout
@@ -140,11 +137,10 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/textview_bp_value"
-                                android:layout_width="wrap_content"
+                                android:id="@+id/textView_bp_value"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="@string/visit_bpsys_value"
                                 android:textSize="@dimen/card_content_text_size" />
                         </LinearLayout>
                     </TableRow>
@@ -152,57 +148,54 @@
                     <TableRow>
 
                         <TextView
-                            android:id="@+id/textview_pulse"
+                            android:id="@+id/textView_pulse"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Pulse"
+                            android:text="@string/visit_summary_pulse"
                             android:textSize="@dimen/card_content_text_size" />
 
                         <TextView
-                            android:id="@+id/textview_pulse_value"
+                            android:id="@+id/textView_pulse_value"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/visit_pulse_value"
                             android:textSize="@dimen/card_content_text_size" />
                     </TableRow>
                     <!--Temperature-->
                     <TableRow>
 
                         <TextView
-                            android:id="@+id/textview_temp"
+                            android:id="@+id/textView_temp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Temperature (F)"
+                            android:text="@string/visit_summary_temperature"
                             android:textSize="@dimen/card_content_text_size" />
 
                         <TextView
-                            android:id="@+id/textview_temp_value"
+                            android:id="@+id/textView_temp_value"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/visit_temp_value"
                             android:textSize="@dimen/card_content_text_size" />
                     </TableRow>
                     <!--sPO2-->
                     <TableRow>
 
                         <TextView
-                            android:id="@+id/textview_pulseox"
+                            android:id="@+id/textView_pulseox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="sPO2"
+                            android:text="@string/visit_summary_pulseox"
                             android:textSize="@dimen/card_content_text_size" />
 
                         <TextView
-                            android:id="@+id/textview_pulseox_value"
+                            android:id="@+id/textView_pulseox_value"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/visit_pulseox_value"
                             android:textSize="@dimen/card_content_text_size" />
                     </TableRow>
 
@@ -212,7 +205,7 @@
 
         <!--C/O Card contains text-->
         <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/cardview_complaint"
+            android:id="@+id/cardView_complaint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -228,36 +221,35 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/textview_heading_complaint"
+                    android:id="@+id/textView_heading_complaint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/padding_card_title_text"
-                    android:text="@string/card_complaint"
+                    android:text="@string/visit_summary_complaint"
                     android:textSize="@dimen/card_title_text_size" />
 
                 <ImageButton
                     android:id="@+id/imagebutton_edit_complaint"
                     android:layout_width="@dimen/edit_icon_width"
                     android:layout_height="@dimen/edit_icon_height"
-                    android:layout_alignRight="@id/textview_heading_complaint"
+                    android:layout_alignRight="@id/textView_heading_complaint"
                     android:background="@null"
                     android:padding="@dimen/padding_card_action"
                     android:src="@drawable/edit_icon" />
 
                 <TextView
-                    android:id="@+id/textview_content_complaint"
+                    android:id="@+id/textView_content_complaint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textview_heading_complaint"
+                    android:layout_below="@+id/textView_heading_complaint"
                     android:paddingTop="@dimen/padding_card"
-                    android:text="@string/visit_complaint_content"
                     android:textSize="@dimen/card_content_text_size" />
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
         <!--Physical Exam Card contains text-->
         <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/cardview_physexam"
+            android:id="@+id/cardView_physexam"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -273,36 +265,35 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/textview_heading_physexam"
+                    android:id="@+id/textView_heading_physexam"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/padding_card_title_text"
-                    android:text="@string/card_on_examination"
+                    android:text="@string/visit_summary_on_examination"
                     android:textSize="@dimen/card_title_text_size" />
 
                 <ImageButton
                     android:id="@+id/imagebutton_edit_physexam"
                     android:layout_width="@dimen/edit_icon_width"
                     android:layout_height="@dimen/edit_icon_height"
-                    android:layout_alignRight="@id/textview_heading_physexam"
+                    android:layout_alignRight="@id/textView_heading_physexam"
                     android:background="@null"
                     android:padding="@dimen/padding_card_action"
                     android:src="@drawable/edit_icon" />
 
                 <TextView
-                    android:id="@+id/textview_content_physexam"
+                    android:id="@+id/textView_content_physexam"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textview_heading_physexam"
+                    android:layout_below="@+id/textView_heading_physexam"
                     android:paddingTop="@dimen/padding_card"
-                    android:text="@string/visit_physexam_content"
                     android:textSize="@dimen/card_content_text_size" />
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
         <!--Patient History Card contains text-->
         <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/cardview_pathist"
+            android:id="@+id/cardView_pathist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -318,29 +309,28 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/textview_heading_pathist"
+                    android:id="@+id/textView_heading_pathist"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/padding_card_title_text"
-                    android:text="@string/card_medical_history"
+                    android:text="@string/visit_summary_medical_history"
                     android:textSize="@dimen/card_title_text_size" />
 
                 <ImageButton
                     android:id="@+id/imagebutton_edit_pathist"
                     android:layout_width="@dimen/edit_icon_width"
                     android:layout_height="@dimen/edit_icon_height"
-                    android:layout_alignRight="@id/textview_heading_pathist"
+                    android:layout_alignRight="@id/textView_heading_pathist"
                     android:background="@null"
                     android:padding="@dimen/padding_card_action"
                     android:src="@drawable/edit_icon" />
 
                 <TextView
-                    android:id="@+id/textview_content_pathist"
+                    android:id="@+id/textView_content_pathist"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textview_heading_pathist"
+                    android:layout_below="@+id/textView_heading_pathist"
                     android:paddingTop="@dimen/padding_card"
-                    android:text="@string/visit_pathist_content"
                     android:textSize="@dimen/card_content_text_size" />
             </RelativeLayout>
 
@@ -348,7 +338,7 @@
 
         <!--Family History Card contains text-->
         <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/cardview_famhist"
+            android:id="@+id/cardView_famhist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -364,36 +354,35 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/textview_heading_famhist"
+                    android:id="@+id/textView_heading_famhist"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/padding_card_title_text"
-                    android:text="@string/card_family_history"
+                    android:text="@string/visit_summary_family_history"
                     android:textSize="@dimen/card_title_text_size" />
 
                 <ImageButton
                     android:id="@+id/imagebutton_edit_famhist"
                     android:layout_width="@dimen/edit_icon_width"
                     android:layout_height="@dimen/edit_icon_height"
-                    android:layout_alignRight="@id/textview_heading_famhist"
+                    android:layout_alignRight="@id/textView_heading_famhist"
                     android:background="@null"
                     android:padding="@dimen/padding_card_action"
                     android:src="@drawable/edit_icon" />
 
                 <TextView
-                    android:id="@+id/textview_content_famhist"
+                    android:id="@+id/textView_content_famhist"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textview_heading_famhist"
+                    android:layout_below="@+id/textView_heading_famhist"
                     android:paddingTop="@dimen/padding_card"
-                    android:text="@string/visit_famhist_content"
                     android:textSize="@dimen/card_content_text_size" />
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
         <!--Previous Reports Card contains a list of links to image files of the previous reports-->
         <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/cardview_prevreports"
+            android:id="@+id/cardView_prevreports"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -409,27 +398,26 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/textview_heading_prevreports"
+                    android:id="@+id/textView_heading_prevreports"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/padding_card_title_text"
-                    android:text="Previous Reports"
+                    android:text="@string/visit_summary_previous_reports"
                     android:textSize="@dimen/card_title_text_size" />
-                <!--<ImageButton-->
-                <!--android:id="@+id/imagebutton_edit_prevreports"-->
-                <!--android:layout_width="@dimen/edit_icon_width"-->
-                <!--android:layout_height="@dimen/edit_icon_height"-->
-                <!--android:src="@drawable/edit_icon"-->
-                <!--android:padding="@dimen/padding_card_action"-->
-                <!--android:layout_alignRight="@id/textview_heading_prevreports"-->
-                <!--android:background="@null"/>-->
+                <ImageButton
+                android:id="@+id/imageButton_edit_prevreports"
+                android:layout_width="@dimen/edit_icon_width"
+                android:layout_height="@dimen/edit_icon_height"
+                android:src="@drawable/edit_icon"
+                android:padding="@dimen/padding_card_action"
+                android:layout_alignRight="@id/textView_heading_prevreports"
+                android:background="@null"/>
                 <TextView
-                    android:id="@+id/textview_content_prevreports"
+                    android:id="@+id/textView_content_prevreports"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textview_heading_prevreports"
+                    android:layout_below="@+id/textView_heading_prevreports"
                     android:paddingTop="@dimen/padding_card"
-                    android:text="@string/visit_prevreports_content"
                     android:textSize="@dimen/card_content_text_size" />
             </RelativeLayout>
 
@@ -437,7 +425,7 @@
 
         <!--HA details Card contains text-->
         <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/cardview_hadetails"
+            android:id="@+id/cardView_hadetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -453,27 +441,18 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/textview_heading_hadetails"
+                    android:id="@+id/textView_heading_hadetails"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/padding_card_title_text"
-                    android:text="HA on duty"
+                    android:text="@string/visit_summary_hw_on_duty"
                     android:textSize="@dimen/card_title_text_size" />
-                <!--<ImageButton-->
-                <!--android:id="@+id/imagebutton_edit_hadetails"-->
-                <!--android:layout_width="@dimen/edit_icon_width"-->
-                <!--android:layout_height="@dimen/edit_icon_height"-->
-                <!--android:src="@drawable/edit_icon"-->
-                <!--android:padding="@dimen/padding_card_action"-->
-                <!--android:layout_alignRight="@id/textview_heading_hadetails"-->
-                <!--android:background="@null"/>-->
                 <TextView
-                    android:id="@+id/textview_content_hadetails"
+                    android:id="@+id/textView_content_hadetails"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textview_heading_hadetails"
+                    android:layout_below="@+id/textView_heading_hadetails"
                     android:paddingTop="@dimen/padding_card"
-                    android:text="@string/visit_hadetails_content"
                     android:textSize="@dimen/card_content_text_size" />
             </RelativeLayout>
         </android.support.v7.widget.CardView>

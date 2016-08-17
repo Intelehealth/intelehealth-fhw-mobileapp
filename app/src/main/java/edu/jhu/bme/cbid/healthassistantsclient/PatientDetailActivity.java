@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.print.PrintAttributes;
@@ -16,10 +14,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
-import android.text.method.LinkMovementMethod;
 import android.text.style.URLSpan;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,7 +27,6 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -42,7 +40,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     String LOG_TAG = "Patient Detail Activity";
 
-    Long patientID = null;
+    String patientID = "1";
     String patientName;
     String patientStatus;
     String intentTag = "";
@@ -78,7 +76,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
-            patientID = intent.getLongExtra("patientID", 1);
+            patientID = intent.getStringExtra("patientID");
             patientName = intent.getStringExtra("name");
             patientStatus = intent.getStringExtra("status");
             intentTag = intent.getStringExtra("tag");
@@ -88,80 +86,18 @@ public class PatientDetailActivity extends AppCompatActivity {
             Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
-
-        //queryData(String.valueOf(patientID));
-
         setTitle(patientName);
 
-        //Intent intent = this.getIntent(); // The intent was passed to the activity
-        if (intent != null && intent.getStringArrayListExtra("patientID") != null) {
-            ArrayList<String> mPatientInfo = intent.getStringArrayListExtra("patientInfo");
+        queryDisplay(String.valueOf(patientID));
 
-            //TextView textViewName = (TextView) findViewById(R.id.textview_patient_details);
-            //textViewName.setText(this.mPatientName);
-
-            medHistButton = (Button) findViewById(R.id.button_hist);
-
-            medHistButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //TODO: Create new activity to display patient previous medications
-                    Intent intent = new Intent(PatientDetailActivity.this, PatientHistoryActivity.class);
-                    //intent1.putExtra("patientID", patientID);
-                    //intent1.putExtra("status", patientStatus);
-                    //intent.putExtra("tag", "edit");
-                    startActivity(intent);
-
-                }
-            });
-//
-//            patHistButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(PatientDetailActivity.this, ViewHistoryActivity.class);
-////                    intent.putExtra("patientID", patientID);
-////                    intent.putExtra("status", patientStatus);
-////                    intent.putExtra("tag", "edit");
-//                    startActivity(intent);
-//
-//                }
-//            }
-//            );
+        String tempString="Copyright";
+        //TextView text=(TextView)findViewById(R.id.text);
+        SpannableString spanString = new SpannableString(tempString);
+        spanString.setSpan(new UnderlineSpan(), 0, spanString.length(), 0);
+        //text.setText(spanString);
 
 
-            getSupportActionBar().setTitle(mPatientName);
 
-            TextView textViewDob = (TextView) findViewById(R.id.textview_patient_info_age);
-            textViewDob.setText("05/10/1992");
-
-            TextView textViewSdw = (TextView) findViewById(R.id.textView_sdw);
-            textViewSdw.setText("Saleha");
-
-            TextView textViewOcc = (TextView) findViewById(R.id.textview_occup);
-            textViewOcc.setText("Engineer");
-
-            TextView textViewAddr = (TextView) findViewById(R.id.textView_addr1);
-            textViewAddr.setText(mAddress);
-
-            TextView textViewCityState = (TextView) findViewById(R.id.textView_addr2);
-            textViewCityState.setText(mCityState);
-
-            TextView textViewPhone = (TextView) findViewById(R.id.textView_phone);
-            textViewPhone.setText(mPhone);
-
-            Bitmap imageBitmap = BitmapFactory.decodeFile(mPatientInfo.get(11));
-            ImageView mImageView = (ImageView) findViewById(R.id.detail_image);
-            mImageView.setImageBitmap(imageBitmap);
-
-            UpdatePatientTask upd = new UpdatePatientTask();
-            upd.execute(mPatientInfo.get(10));
-
-            TextView link1 = (TextView) findViewById(R.id.textview_table_date_1);
-            link1.setMovementMethod(LinkMovementMethod.getInstance());
-
-            makeTextViewHyperlink(link1);
-
-        }
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -183,7 +119,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
     }
 
-    public void queryData(String dataString) {
+    public void queryDisplay(String dataString) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 

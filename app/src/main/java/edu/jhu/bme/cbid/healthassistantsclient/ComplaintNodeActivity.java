@@ -26,7 +26,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
     final String LOG_TAG = "Complaint Node Activity";
 
-    Long patientID = null;
+    String patientID = "1";
     String patientName;
     String patientStatus;
     String intentTag;
@@ -45,7 +45,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
-            patientID = intent.getLongExtra("patientID", 1);
+            patientID = intent.getStringExtra("patientID");
             patientName = intent.getStringExtra("name");
             patientStatus = intent.getStringExtra("status");
             intentTag = intent.getStringExtra("tag");
@@ -55,7 +55,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
-        setTitle(getTitle() + " for " + patientName);
+        setTitle(patientName + ": " + getTitle());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complaint_node);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

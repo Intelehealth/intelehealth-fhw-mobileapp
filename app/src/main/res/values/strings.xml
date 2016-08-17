@@ -9,6 +9,9 @@
     <string name="generic_ok">OK</string>
     <string name="generic_cancel">Cancel</string>
     <string name="generic_coming_soon">Coming Soon.....</string>
+    <string name="action_print">Print</string>
+    <string name="action_home">Home</string>
+    <string name="action_settings">Settings</string>
 
     //Database Schema Names
     <string name="db_first_name">first_name</string>
@@ -27,6 +30,20 @@
     <string name="db_patient_id2">patient_identifier2</string>
     <string name="db_patient_id3">patient_identifier3</string>
 
+    //Login Screen
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_login">Intelehealth</string>
+    <string name="prompt_email">Username</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Login</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This username is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email completions."
+    </string>
+    <string name="device_id">Device ID: </string>
 
     //Home Screen (after login)
     <string name="title_home_screen">Home</string>
@@ -63,32 +80,96 @@
     <string name="identification_screen_dialog_error_dob">Error: DOB is set for date after today</string>
     <string name="identification_screen_dialog_error_gender">Error: Gender is not selected</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_login">Intelehealth</string>
-
-    <!-- Strings related to login -->
-    <string name="prompt_email">Username</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Login</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This username is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
-    <string name="device_id">Device ID: </string>
+    //Active Patients Screen
     <string name="title_activity_active_patient">ActivePatientActivity</string>
-    <string name="title_activity_patient_detail">Patient Detail</string>
-    <string name="title_activity_patient_summary">Visit Summary</string>
 
-    <string name="action_settings">Settings</string>
+    //Patient History Screen
     <string name="title_activity_get_patient_history">Patient History</string>
     <string name="title_activity_search_patient">Patient Lookup</string>
+
+    //Complaint Node Screen
+    <string name="title_activity_complaint_select">Select Complaints</string>
+    <string name="title_activity_complaint_questions">Answer All Questions</string>
+    <string name="title_activity_complaint_node">Select Complaints</string>
+    <string name="complaint_category_selected">Selected Categories:</string>
+    <string name="complaint_complaint_selected">Selected Complaints:</string>
+    <string name="complaint_dialog_title">Complaints</string>
+    <string name="complaint_required">Complaint must be selected!</string>
+
+    //Question Node Screen
+    <string name="title_activity_question_node">QuestionNodeActivity</string>
+    <string name="complaint_change_selected">Modify</string>
+    <string name="question_answer_all">Please answer all questions!</string>
+    <string name="question_duration_picker">Please enter duration</string>
+    <string name="question_text_input">Please enter text</string>
+    <string name="question_date_picker">Please select date</string>
+    <string name="question_location_picker">Please select locations</string>
+    <string name="question_number_picker">Please enter number</string>
+    <string name="question_area_picker">Please enter the area (width X length)</string>
+    <string name="question_range_picker">Please enter a range</string>
+    <string name="question_frequency_picker">Please enter how many times</string>
+
+
+    //Table Exam Screen
+    <string name="title_activity_table_exam">Table Exam</string>
+    <string name="table_hw">Body Measurements</string>
+    <string name="table_height">Height (cm)</string>
+    <string name="table_weight">Weight (kg)</string>
+    <string name="table_bmi">BMI (click to calculate)</string>
+    <string name="table_pulse">Pulse (bpm)</string>
+    <string name="table_bp">Vital Signs</string>
+    <string name="table_bpsys">Systolic Pressure</string>
+    <string name="table_bpdia">Diastolic Pressure</string>
+    <string name="table_temp">Temperature (F)</string>
+    <string name="table_spo2">SpO2 (%)</string>
+
+    //Patient Search Screen
+    <string name="search_hint">Type to search patient by name…</string>
+    <string name="action_search">Search</string>
+
+    //Patient Medical History Screen
+    <string name="title_activity_patient_history">Patient Medical History</string>
+
+    //Visit Summary Screen
+    <string name="title_activity_family_history">Family History</string>
+    <string name="title_activity_physical_exam">Physical Exam</string>
+    <string name="title_activity_patient_summary">Visit Summary</string>
+    <string name="visit_summary_temperature">Temperature (F)</string>
+    <string name="visit_summary_pulseox">sPO2</string>
+    <string name="visit_summary_hw_on_duty">CHW On Duty</string>
+    <string name="visit_summary_vitals_heading">Vitals</string>
+    <string name="visit_summary_height_heading">Height (cm)</string>
+    <string name="visit_summary_weight">Weight (kg)</string>
+    <string name="visit_summary_bmi">BMI</string>
+    <string name="visit_summary_bp">BP</string>
+    <string name="visit_summary_pulse">Pulse</string>
+    <string name="visit_summary_previous_reports">Previous Reports</string>
+    <string name="visit_summary_medical_history">Medical History</string>
+    <string name="visit_summary_family_history">Family History</string>
+    <string name="visit_summary_on_examination">On Examination</string>
+    <string name="visit_summary_complaint">C/O</string>
+    <string name="visit_summary_doctor_details">Doctor Details</string>
+    <string name="visit_summary_rx">Prescribed Medications</string>
+    <string name="visit_summary_diagnosis">Diagnosis</string>
+    <string name="visit_summary_advice">Medical Advice</string>
+    <string name="visit_summary_tests_prescribed">Tests/Referrals</string>
+    <string name="visit_summary_additional_comments">Additional Comments</string>
+
+
+    //Patient Detail Screen
+    <string name="header_patient_detail">Basic Information</string>
+    <string name="header_last_five">Recent Visits</string>
+    <string name="header_contact">Address and Contact</string>
+    <string name="button_history">Patient History</string>
+    <string name="title_activity_patient_detail">Patient Detail</string>
+    <string name="patient_detail_visit_date_header">Visit Date</string>
+    <string name="patient_detail_ha_name_header">HA Name</string>
+    <string name="patient_detail_doctor_name_header">Doctor\'s Name</string>
+
+    //Diagnostic Tests Screen
     <string name="title_activity_diagnostic_tests_list">Choose a Diagnostic Test</string>
 
-    <string name="large_text">
+        <string name="large_text">
         "Material is the metaphor.\n\n"
 
         "A material metaphor is the unifying theory of a rationalized space and a system of motion."
@@ -177,152 +258,5 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
-    <string name="title_activity_table_exam">Table Exam</string>
-
-    <!-- Complaint Node Strings -->
-    <string name="complaint_category_selected">Selected Categories:</string>
-    <string name="complaint_complaint_selected">Selected Complaints:</string>
-    <string name="complaint_dialog_title">Complaints</string>
-    <string name="complaint_required">Complaint must be selected!</string>
-
-    <!-- Question Node Strings -->
-    <string name="complaint_change_selected">Modify</string>
-    <string name="question_answer_all">Please answer all questions!</string>
-    <string name="question_duration_picker">Please enter duration</string>
-    <string name="question_text_input">Please enter text</string>
-    <string name="question_date_picker">Please select date</string>
-    <string name="question_location_picker">Please select locations</string>
-    <string name="question_number_picker">Please enter number</string>
-    <string name="question_area_picker">Please enter the area (width X length)</string>
-    <string name="question_range_picker">Please enter a range</string>
-    <string name="question_frequency_picker">Please enter how many times</string>
-
-
-    <!-- Table exam strings -->
-    <string name="table_hw">Body Measurements</string>
-    <string name="table_height">Height (cm)</string>
-    <string name="table_weight">Weight (kg)</string>
-    <string name="table_bmi">BMI (click to calculate)</string>
-    <string name="table_pulse">Pulse (bpm)</string>
-    <string name="table_bp">Vital Signs</string>
-    <string name="table_bpsys">Systolic Pressure</string>
-    <string name="table_bpdia">Diastolic Pressure</string>
-    <string name="table_temp">Temperature (F)</string>
-    <string name="table_spo2">SpO2 (%)</string>
-
-    <string name="search_hint">Type to search…</string>
-    <string name="action_search">Search</string>
-    <string name="title_activity_complaint_select">Select Complaints</string>
-    <string name="title_activity_complaint_questions">Answer All Questions</string>
-    <string name="title_activity_scrolling">ScrollingActivity</string>
-
-    <!-- Patient Detail -->
-    <string name="header_patient_detail">Basic Information</string>
-    <string name="header_last_five">Recent Visits</string>
-    <string name="header_contact">Address and Contact</string>
-    <string name="button_history">Patient History</string>
-    <string name="button_meds">Medications</string>
-
-    <string name="action_print">Print</string>
-    <string name="action_home">Home</string>
-
-
-    <string name="title_activity_complaint_node">Select Complaints</string>
-    <string name="title_activity_question_node">QuestionNodeActivity</string>
-    <string name="title_activity_patient_history">Patient Medical History</string>
-
-    <!--Visit summary strings-->
-
-    <string name="visit_height_value"></string>
-    <string name="visit_weight_value"></string>
-    <string name="visit_bmi_value"></string>
-    <string name="visit_bpsys_value"></string>
-    <string name="visit_bpdia_value"></string>
-    <string name="visit_pulse_value"></string>
-    <string name="visit_temp_value"></string>
-    <string name="visit_pulseox_value"></string>
-    <string name="visit_complaint_content"></string>
-    <string name="visit_physexam_content"></string>
-    <string name="visit_famhist_content"></string>
-    <string name="visit_pathist_content"></string>
-    <string name="visit_prevreports_content"></string>
-    <string name="visit_hadetails_content"></string>
-    <string name="visit_diagnosis_content"></string>
-    <string name="visit_medications_content"></string>
-    <string name="visit_tests_content"></string>
-    <string name="visit_advice_content"></string>
-    <string name="visit_drdetails_content"></string>
-    <string name="title_activity_family_history">Family History</string>
-    <string name="title_activity_physical_exam">Physical Exam</string>
-    <string name="section_format">Hello World from section: %1$d</string>
-    <string name="card_medical_history">Medical History</string>
-    <string name="card_family_history">Family History</string>
-    <string name="card_on_examination">On Examination</string>
-    <string name="card_complaint">C/O</string>
-    <string name="card_doctor_details">Doctor Details</string>
-    <string name="card_rx">Prescribed Medications</string>
-    <string name="card_diagnosis">Diagnosis</string>
-    <string name="card_advice">Medical Advice</string>
-    <string name="card_tests_prescribed">Tests/Referrals</string>
-    <string name="card_additional_comments">Additional Comments</string>
-    <string name="title_activity_settings">Settings</string>
-
-    <!-- Strings related to Settings -->
-
-    <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
-
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact
-        based on your message history
-    </string>
-
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
-
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_example_list_values">
-        <item>1</item>
-        <item>0</item>
-        <item>-1</item>
-    </string-array>
-
-    <!-- Example settings for Data & Sync -->
-    <string name="pref_header_data_sync">Data &amp; sync</string>
-
-    <string name="pref_title_sync_frequency">Sync frequency</string>
-    <string-array name="pref_sync_frequency_titles">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_sync_frequency_values">
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>360</item>
-        <item>-1</item>
-    </string-array>
-
-    <string name="pref_title_system_sync_settings">System sync settings</string>
-
-    <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications">Notifications</string>
-
-    <string name="pref_title_new_message_notifications">New message notifications</string>
-
-    <string name="pref_title_ringtone">Ringtone</string>
-    <string name="pref_ringtone_silent">Silent</string>
-
-    <string name="pref_title_vibrate">Vibrate</string>
 
 </resources>

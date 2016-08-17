@@ -74,7 +74,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     Context context;
 
-    Long patientID = null;
+    String patientID = "1";
     String patientName;
     String patientStatus;
     String intentTag;
@@ -159,7 +159,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
-            patientID = intent.getLongExtra("patientID", 1);
+            patientID = intent.getStringExtra("patientID");
             patientName = intent.getStringExtra("name");
             patientStatus = intent.getStringExtra("status");
             intentTag = intent.getStringExtra("tag");
@@ -169,8 +169,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
-
-        setTitle(getTitle() + " for " + patientName);
+        setTitle(patientName + ": " + getTitle());
         //For Testing
         //patientID = Long.valueOf("1");
 
@@ -284,17 +283,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         queryData(String.valueOf(patientID));
 
-        heightView = (TextView) findViewById(R.id.textview_height_value);
-        weightView = (TextView) findViewById(R.id.textview_weight_value);
-        pulseView = (TextView) findViewById(R.id.textview_pulse_value);
-        bpView = (TextView) findViewById(R.id.textview_bp_value);
-        tempView = (TextView) findViewById(R.id.textview_temp_value);
-        spO2View = (TextView) findViewById(R.id.textview_pulseox_value);
-        bmiView = (TextView) findViewById(R.id.textview_bmi_value);
-        complaintView = (TextView) findViewById(R.id.textview_content_complaint);
-        famHistView = (TextView) findViewById(R.id.textview_content_famhist);
-        patHistView = (TextView) findViewById(R.id.textview_content_pathist);
-        physFindingsView = (TextView) findViewById(R.id.textview_content_physexam);
+        heightView = (TextView) findViewById(R.id.textView_height_value);
+        weightView = (TextView) findViewById(R.id.textView_weight_value);
+        pulseView = (TextView) findViewById(R.id.textView_pulse_value);
+        bpView = (TextView) findViewById(R.id.textView_bp_value);
+        tempView = (TextView) findViewById(R.id.textView_temp_value);
+        spO2View = (TextView) findViewById(R.id.textView_pulseox_value);
+        bmiView = (TextView) findViewById(R.id.textView_bmi_value);
+        complaintView = (TextView) findViewById(R.id.textView_content_complaint);
+        famHistView = (TextView) findViewById(R.id.textView_content_famhist);
+        patHistView = (TextView) findViewById(R.id.textView_content_pathist);
+        physFindingsView = (TextView) findViewById(R.id.textView_content_physexam);
 
         heightView.setText(height.getValue());
         weightView.setText(weight.getValue());
@@ -545,17 +544,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-
-//            int notifyID = 1;
-//
-//           mBuilder =
-//                    new NotificationCompat.Builder(VisitSummaryActivity.this)
-//                            .setContentTitle("My notification")
-//                            .setContentText("Hello World!");
-//
-//            mNotificationManager.notify(
-//                    notifyID,
-//                    mBuilder.build());
 
             String personString =
                     String.format("{\"gender\":\"%s\", " +
@@ -887,22 +875,22 @@ public class VisitSummaryActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             if (!diagnosisReturned.isEmpty()) {
-                createNewCardView(getString(R.string.card_diagnosis), diagnosisReturned, 0);
+                createNewCardView(getString(R.string.visit_summary_diagnosis), diagnosisReturned, 0);
             }
             if (!rxReturned.isEmpty()) {
-                createNewCardView(getString(R.string.card_rx), rxReturned, 1);
+                createNewCardView(getString(R.string.visit_summary_rx), rxReturned, 1);
             }
             if (!adviceReturned.isEmpty()) {
-                createNewCardView(getString(R.string.card_advice), adviceReturned, 2);
+                createNewCardView(getString(R.string.visit_summary_advice), adviceReturned, 2);
             }
             if (!testsReturned.isEmpty()) {
-                createNewCardView(getString(R.string.card_tests_prescribed), testsReturned, 3);
+                createNewCardView(getString(R.string.visit_summary_tests_prescribed), testsReturned, 3);
             }
             if (!additionalReturned.isEmpty()) {
-                createNewCardView(getString(R.string.card_additional_comments), additionalReturned, 4);
+                createNewCardView(getString(R.string.visit_summary_additional_comments), additionalReturned, 4);
             }
             if (!doctorName.isEmpty()) {
-                createNewCardView(getString(R.string.card_doctor_details), doctorName, 5);
+                createNewCardView(getString(R.string.visit_summary_doctor_details), doctorName, 5);
             }
 
             super.onPostExecute(s);

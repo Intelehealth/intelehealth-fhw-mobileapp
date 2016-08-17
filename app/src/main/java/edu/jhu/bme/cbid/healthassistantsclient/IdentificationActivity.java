@@ -456,7 +456,8 @@ public class IdentificationActivity extends AppCompatActivity {
     public class InsertPatientTable extends AsyncTask<Void, Void, Boolean>
             implements DialogInterface.OnCancelListener {
 
-        Long patientID;
+        Long patientIDLong;
+        String patientID;
         Patient patient;
 
         InsertPatientTable(Patient currentPatient) {
@@ -494,12 +495,13 @@ public class IdentificationActivity extends AppCompatActivity {
 
             //Insert the patient into the table first, then get the row number to use as the ID
             SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
-            patientID = localdb.insert(
+            patientIDLong = localdb.insert(
                     "patient",
                     null,
                     patientEntries
             );
 
+            patientID = String.valueOf(patientIDLong);
             patient.setId(patientID);
 
             //Update the table with the patientID number now
