@@ -163,7 +163,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
 
-        setTitle(getTitle() + " for "  + patientName);
+        setTitle(getTitle() + " for " + patientName);
         //For Testing
         //patientID = Long.valueOf("1");
 
@@ -879,28 +879,25 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
-
-
-            diagnosisReturned = "No Diagnosis. I am a fake doctor";
-            rxReturned = "Say no to drugs";
-            adviceReturned = "Eat properly. Get 7 - 8 hours of sleep.";
-            testsReturned = "Get all the tests humanly possible done.";
-            additionalReturned = "I'm not a real doctor. Please remember that";
-            doctorName = "Dr. Fake Fake";
-
-
             if (!diagnosisReturned.isEmpty()) {
                 createNewCardView(getString(R.string.card_diagnosis), diagnosisReturned, 0);
-                createNewCardView(getString(R.string.card_rx), rxReturned, 1);
-                createNewCardView(getString(R.string.card_advice), adviceReturned, 2);
-                createNewCardView(getString(R.string.card_tests_prescribed), testsReturned, 3);
-                createNewCardView(getString(R.string.card_additional_comments), additionalReturned, 4);
-                createNewCardView(getString(R.string.card_doctor_details), doctorName, 5);
-                Log.d(LOG_TAG, "Retrieval successful");
-
-
-
             }
+            if (!rxReturned.isEmpty()) {
+                createNewCardView(getString(R.string.card_rx), rxReturned, 1);
+            }
+            if (!adviceReturned.isEmpty()) {
+                createNewCardView(getString(R.string.card_advice), adviceReturned, 2);
+            }
+            if (!testsReturned.isEmpty()) {
+                createNewCardView(getString(R.string.card_tests_prescribed), testsReturned, 3);
+            }
+            if (!additionalReturned.isEmpty()) {
+                createNewCardView(getString(R.string.card_additional_comments), additionalReturned, 4);
+            }
+            if (!doctorName.isEmpty()) {
+                createNewCardView(getString(R.string.card_doctor_details), doctorName, 5);
+            }
+
             super.onPostExecute(s);
         }
 

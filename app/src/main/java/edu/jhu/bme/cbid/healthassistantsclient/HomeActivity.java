@@ -98,8 +98,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void settings() {
-        Intent intent = new Intent(this, SettingsActivity.class);
-        startActivity(intent);
     }
 
     public void endOfDay() {

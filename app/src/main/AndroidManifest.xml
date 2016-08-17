@@ -147,9 +147,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.jhu.bme.cbid.healthassistantsclient.PatientHistoryActivity" />
         </activity>
-        <activity
-            android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
     </application>
 
 </manifest>

@@ -68,7 +68,7 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mOccupation;
     DatePickerDialog mDOBPicker;
 
-    String mFileName;
+    String mPhoto;
 
     Calendar today = Calendar.getInstance();
     Calendar dob = Calendar.getInstance();
@@ -112,7 +112,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
         //This is supposed to get the country that the tablet was set to, yet is not working due to unknown reasons.
         //TODO: Country should be auto-filled.
-        String country = getUserCountry(IdentificationActivity.this);
+        String country = getUserCountryFunction(IdentificationActivity.this);
+        //Log.d(LOG_TAG, country);
         mCountry.setText(country);
 
         //Check to see if the permission was given to take pictures.
@@ -334,57 +335,57 @@ public class IdentificationActivity extends AppCompatActivity {
             try {
                 currentPatient.setFirstName(mFirstName.getText().toString());
                 if (TextUtils.isEmpty(mMiddleName.getText().toString())) {
-                    currentPatient.setMiddleName(null);
+                    currentPatient.setMiddleName("");
                 } else {
                     currentPatient.setMiddleName(mMiddleName.getText().toString());
                 }
                 if (TextUtils.isEmpty(mLastName.getText().toString())) {
-                    currentPatient.setLastName(null);
+                    currentPatient.setLastName("");
                 } else {
                     currentPatient.setLastName(mLastName.getText().toString());
                 }
                 if (TextUtils.isEmpty(mDOB.getText().toString())) {
-                    currentPatient.setDateOfBirth(null);
+                    currentPatient.setDateOfBirth("");
                 } else {
                     currentPatient.setDateOfBirth(mDOB.getText().toString());
                 }
                 if (TextUtils.isEmpty(mPhoneNum.getText().toString())) {
-                    currentPatient.setPhoneNumber(null);
+                    currentPatient.setPhoneNumber("");
                 } else {
                     currentPatient.setPhoneNumber(mPhoneNum.getText().toString());
                 }
                 if (TextUtils.isEmpty(mAddress1.getText().toString())) {
-                    currentPatient.setAddress1(null);
+                    currentPatient.setAddress1("");
                 } else {
                     currentPatient.setAddress1(mAddress1.getText().toString());
                 }
                 if (TextUtils.isEmpty(mAddress2.getText().toString())) {
-                    currentPatient.setAddress2(null);
+                    currentPatient.setAddress2("");
                 } else {
                     currentPatient.setAddress2(mAddress2.getText().toString());
                 }
                 if (TextUtils.isEmpty(mCity.getText().toString())) {
-                    currentPatient.setCityVillage(null);
+                    currentPatient.setCityVillage("");
                 } else {
                     currentPatient.setCityVillage(mCity.getText().toString());
                 }
                 if (TextUtils.isEmpty(mState.getText().toString())) {
-                    currentPatient.setStateProvince(null);
+                    currentPatient.setStateProvince("");
                 } else {
                     currentPatient.setStateProvince(mState.getText().toString());
                 }
                 if (TextUtils.isEmpty(mPostal.getText().toString())) {
-                    currentPatient.setPostalCode(null);
+                    currentPatient.setPostalCode("");
                 } else {
                     currentPatient.setPostalCode(mPostal.getText().toString());
                 }
                 if (TextUtils.isEmpty(mRelationship.getText().toString())) {
-                    currentPatient.setPatientIdentifier1(null);
+                    currentPatient.setPatientIdentifier1("");
                 } else {
                     currentPatient.setPatientIdentifier1(mRelationship.getText().toString());
                 }
                 if (TextUtils.isEmpty(mOccupation.getText().toString())) {
-                    currentPatient.setPatientIdentifier2(null);
+                    currentPatient.setPatientIdentifier2("");
                 } else {
                     currentPatient.setPatientIdentifier2(mOccupation.getText().toString());
                 }
@@ -408,11 +409,11 @@ public class IdentificationActivity extends AppCompatActivity {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
 
-        mFileName = "PATIENT_" + timeStamp;
+        mPhoto = "PATIENT_" + timeStamp;
         File storageDir = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
-                mFileName,  /* prefix */
+                mPhoto,  /* prefix */
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
@@ -420,7 +421,7 @@ public class IdentificationActivity extends AppCompatActivity {
         // Save a file: path for use with ACTION_VIEW intents
         // mCurrentPhotoPath = "file:" + image.getAbsolutePath();
         mCurrentPhotoPath = image.getAbsolutePath();
-
+        //TODO: upload this to google drive using a service, and then store the public share link into android
         return image;
     }
 
@@ -482,9 +483,9 @@ public class IdentificationActivity extends AppCompatActivity {
             patientEntries.put("postal_code", patient.getPostalCode());
             patientEntries.put("country", patient.getCountry());
             patientEntries.put("gender", patient.getGender());
+            patientEntries.put("portrait_name", mCurrentPhotoPath);
             patientEntries.put("patient_identifier1", patient.getPatientIdentifier1());
             patientEntries.put("patient_identifier2", patient.getPatientIdentifier2());
-            patientEntries.put("patient_identifier3", mCurrentPhotoPath);
         }
 
         @Override
@@ -545,14 +546,17 @@ public class IdentificationActivity extends AppCompatActivity {
         }
     }
 
-    public static String getUserCountry(Context context) {
+    public static String getUserCountryFunction(Context context) {
+        Log.d("function", "called");
         try {
             final TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
             final String simCountry = tm.getSimCountryIso();
+            Log.d("Country", simCountry);
             if (simCountry != null && simCountry.length() == 2) { // SIM country code is available
                 return simCountry.toLowerCase(Locale.US);
             } else if (tm.getPhoneType() != TelephonyManager.PHONE_TYPE_CDMA) { // device is not 3G (would be unreliable)
                 String networkCountry = tm.getNetworkCountryIso();
+                Log.d("Country", networkCountry);
                 if (networkCountry != null && networkCountry.length() == 2) { // network country code is available
                     return networkCountry.toLowerCase(Locale.US);
                 }
