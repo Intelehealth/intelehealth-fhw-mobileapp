@@ -56,6 +56,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     String LOG_TAG = "Patient Summary Activity";
 
+
+    final String USERNAME = "Admin";
+    final String PASSWORD = "CBIDtiger123";
+    final String BASE_URL = "http://openmrs.amal.io:8080/openmrs/ws/rest/v1/";
+    //Change when used with a different organization.
+    //This is a demo server.
+
     private WebView mWebView;
     private LinearLayout mLayout;
 
@@ -916,10 +923,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         try {
 
-            final String USERNAME = "Admin";
-            final String PASSWORD = "CBIDtiger123";
-            String urlString =
-                    String.format("http://openmrs.amal.io:8080/openmrs/ws/rest/v1/%s%s", urlModifier, dataString);
+            String urlString = BASE_URL + urlModifier;
 
             URL url = new URL(urlString);
 
@@ -976,11 +980,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         WebResponse webResponse = new WebResponse();
 
         try {
-
-            final String USERNAME = "Admin";
-            final String PASSWORD = "CBIDtiger123";
-            String urlString =
-                    String.format("http://openmrs.amal.io:8080/openmrs/ws/rest/v1/%s", urlModifier);
+            String urlString = BASE_URL + urlModifier;
 
             URL url = new URL(urlString);
 
