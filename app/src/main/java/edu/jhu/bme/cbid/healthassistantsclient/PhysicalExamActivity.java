@@ -58,7 +58,8 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
     ArrayList<String> selectedExamsList = new ArrayList<>();
 
-    String mFileName = "physexam.json";
+//    String mFileName = "physExam.json";
+    String mFileName = "physExamDemo.json";
 
     String storageName = "physical";
 

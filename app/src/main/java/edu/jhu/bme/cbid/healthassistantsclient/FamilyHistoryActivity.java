@@ -26,7 +26,8 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 
     ArrayList<String> physicalExams;
 
-    String mFileName = "famhist.json";
+//    String mFileName = "famHist.json";
+    String mFileName = "famHistDemo.json";
 
     int lastExpandedPosition = -1;
 

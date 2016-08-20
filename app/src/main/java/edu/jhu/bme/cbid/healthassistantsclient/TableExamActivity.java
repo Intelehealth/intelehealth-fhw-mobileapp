@@ -32,7 +32,7 @@ public class TableExamActivity extends AppCompatActivity {
     String patientStatus;
     String intentTag;
 
-    private ArrayList<String> physExams;
+    ArrayList<String> physicalExams;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +46,7 @@ public class TableExamActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("name");
             patientStatus = intent.getStringExtra("status");
             intentTag = intent.getStringExtra("tag");
+            physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
             Log.v(LOG_TAG, "Patient ID: " + patientID);
             Log.v(LOG_TAG, "Patient Name: " + patientName);
             Log.v(LOG_TAG, "Status: " + patientStatus);
@@ -173,7 +174,7 @@ public class TableExamActivity extends AppCompatActivity {
             intent.putExtra("name", patientName);
             intent.putExtra("status", patientStatus);
             intent.putExtra("tag", intentTag);
-            intent.putStringArrayListExtra("exams", physExams);
+            intent.putStringArrayListExtra("exams", physicalExams);
             startActivity(intent);
         }
     }

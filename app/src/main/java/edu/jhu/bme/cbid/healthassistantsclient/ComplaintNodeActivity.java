@@ -33,9 +33,9 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
     ExpandableListView complaintListView;
 
-    //TODO: Add setting that allows you to choose directory of knowledge files
     Knowledge mKnowledge;
-    String mFileName = "knowledge.json";
+//    String mFileName = "knowledge.json";
+    String mFileName = "knowledgeDemo.json";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
