@@ -98,6 +98,8 @@ public class IdentificationActivity extends AppCompatActivity {
         mDbHelper = new LocalRecordsDatabaseHelper(this);
         localdb = mDbHelper.getWritableDatabase();
         deviceId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+        deviceId = deviceId.toUpperCase();
+
 
         mFirstName = (EditText) findViewById(R.id.identification_first_name);
         mMiddleName = (EditText) findViewById(R.id.identification_middle_name);
@@ -509,6 +511,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     patientEntries
             );
 
+
             String table = "patient";
             String[] columnsToReturn = {"_id"};
             String orderBy = "_id";
@@ -517,13 +520,21 @@ public class IdentificationActivity extends AppCompatActivity {
             String lastIDString = idCursor.getString(idCursor.getColumnIndexOrThrow("_id")); //Grab the last patientID
             idCursor.close();
 
-            String lastID = lastIDString.substring(lastIDString.length() - 1); //Grab the last integer of the patientID
-            Integer newInteger = Integer.valueOf(lastID) + 1; //Increment it by 1
-            patientID = deviceId + String.valueOf(newInteger); //This patient is assigned the new incremented number
-            Log.d(LOG_TAG, patientID);
-            patient.setId(patientID);
+            if (lastIDString != null){
+                String lastID = lastIDString.substring(lastIDString.length() - 1); //Grab the last integer of the patientID
+                Log.d(LOG_TAG, String.valueOf(lastID));
+                Integer newInteger = Integer.valueOf(lastID) + 1; //Increment it by 1
+                Log.d(LOG_TAG, String.valueOf(newInteger));
+                patientID = deviceId + String.valueOf(newInteger); //This patient is assigned the new incremented number
+                Log.d(LOG_TAG, patientID);
+                patient.setId(patientID);
+            } else {
+                patientID = deviceId + String.valueOf(1); //This patient is assigned the new incremented number
+                Log.d(LOG_TAG, patientID);
+                patient.setId(patientID);
+            }
 
-            //Update the table with the patientID number now
+            //Update the table with the patientID
             ContentValues contentValuesUpdate = new ContentValues();
             contentValuesUpdate.put("_id", patient.getId());
             String selection = "first_name = ?";
