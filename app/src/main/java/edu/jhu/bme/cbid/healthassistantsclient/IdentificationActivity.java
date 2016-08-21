@@ -16,6 +16,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -76,6 +77,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
     LocalRecordsDatabaseHelper mDbHelper;
     SQLiteDatabase localdb;
+    String deviceId;
 
     ImageView mImageView;
     String mCurrentPhotoPath;
@@ -95,6 +97,7 @@ public class IdentificationActivity extends AppCompatActivity {
         //Initialize the local database to store patient information
         mDbHelper = new LocalRecordsDatabaseHelper(this);
         localdb = mDbHelper.getWritableDatabase();
+        deviceId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
         mFirstName = (EditText) findViewById(R.id.identification_first_name);
         mMiddleName = (EditText) findViewById(R.id.identification_middle_name);
@@ -511,13 +514,13 @@ public class IdentificationActivity extends AppCompatActivity {
             String orderBy = "_id";
             final Cursor idCursor = localdb.query(table, columnsToReturn, null, null, null, null, orderBy);
             idCursor.moveToLast();
-            String lastID = idCursor.getString(idCursor.getColumnIndexOrThrow("_id"));
+            String lastIDString = idCursor.getString(idCursor.getColumnIndexOrThrow("_id")); //Grab the last patientID
             idCursor.close();
 
-            Integer lastIDInteger = Integer.valueOf(lastID);
-            lastIDInteger = lastIDInteger + 1;
-            patientID = String.valueOf(lastIDInteger);
-//            Log.d(LOG_TAG, patientID);
+            String lastID = lastIDString.substring(lastIDString.length() - 1); //Grab the last integer of the patientID
+            Integer newInteger = Integer.valueOf(lastID) + 1; //Increment it by 1
+            patientID = deviceId + String.valueOf(newInteger); //This patient is assigned the new incremented number
+            Log.d(LOG_TAG, patientID);
             patient.setId(patientID);
 
             //Update the table with the patientID number now
