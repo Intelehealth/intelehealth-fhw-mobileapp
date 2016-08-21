@@ -19,7 +19,6 @@ public class Patient {
     private String postal_code;
     private String country; // ISO 3166-1 alpha-2
     private String gender;
-    private String portrait_name;
     private String patient_identifier1;
     private String patient_identifier2;
     private String patient_identifier3;
@@ -159,14 +158,6 @@ public class Patient {
 
     public void setPatientIdentifier3(String patient_identifier3) {
         this.patient_identifier3 = patient_identifier3;
-    }
-
-    public String getPortrait_name() {
-        return portrait_name;
-    }
-
-    public void setPortrait_name(String portrait_name) {
-        this.portrait_name = portrait_name;
     }
 
     @Override

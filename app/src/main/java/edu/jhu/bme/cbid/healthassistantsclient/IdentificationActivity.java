@@ -16,7 +16,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -77,7 +76,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
     LocalRecordsDatabaseHelper mDbHelper;
     SQLiteDatabase localdb;
-    String deviceId;
+    String idPreFix;
+    String visitID;
 
     ImageView mImageView;
     String mCurrentPhotoPath;
@@ -97,9 +97,7 @@ public class IdentificationActivity extends AppCompatActivity {
         //Initialize the local database to store patient information
         mDbHelper = new LocalRecordsDatabaseHelper(this);
         localdb = mDbHelper.getWritableDatabase();
-        deviceId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
-        deviceId = deviceId.toUpperCase();
-
+        idPreFix = "JHU";
 
         mFirstName = (EditText) findViewById(R.id.identification_first_name);
         mMiddleName = (EditText) findViewById(R.id.identification_middle_name);
@@ -265,14 +263,14 @@ public class IdentificationActivity extends AppCompatActivity {
      * This method is primarily for data validation.
      * First, the screen is checked to see if a gender was selected for the patient.
      * If no gender selected, you get a dialog box telling you to do so.
-     *
+     * <p/>
      * Next, if the DOB is after today's date, then you are asked to go back and correct it.
-     *
+     * <p/>
      * Finally, all the text boxes are checked. With the text boxes, each EditText has a tag written in the XML.
      * If an EditText box does not have a tag, then it is assumed to be required.
      * Only optional fields have an "optional" tag on them in the XML.
      * If any of the EditText validations fail, that box is brought to focus.
-     *
+     * <p/>
      * Finally, after everything is checked and made sure to be correct, a Patient object is created.
      * The object is filled with all the data that was provided, and then an Async Task is created to insert the information into the database.
      */
@@ -429,7 +427,10 @@ public class IdentificationActivity extends AppCompatActivity {
         // Save a file: path for use with ACTION_VIEW intents
         // mCurrentPhotoPath = "file:" + image.getAbsolutePath();
         mCurrentPhotoPath = image.getAbsolutePath();
+
         //TODO: upload this to google drive using a service, and then store the public share link into android
+
+
         return image;
     }
 
@@ -464,7 +465,6 @@ public class IdentificationActivity extends AppCompatActivity {
     public class InsertPatientTable extends AsyncTask<Void, Void, Boolean>
             implements DialogInterface.OnCancelListener {
 
-        Long patientIDLong;
         String patientID;
         Patient patient;
 
@@ -474,12 +474,34 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
         ContentValues patientEntries = new ContentValues();
+        ContentValues visitData = new ContentValues();
 
-        //Match data to columns in the database table.
+        public void generateID(){
+            String table = "patient";
+            String[] columnsToReturn = {"_id"};
+            String orderBy = "_id";
+            final Cursor idCursor = localdb.query(table, columnsToReturn, null, null, null, null, orderBy);
+            idCursor.moveToLast();
+            String lastIDString = idCursor.getString(idCursor.getColumnIndexOrThrow("_id")); //Grab the last patientID
+            idCursor.close();
+
+            if (lastIDString != null) {
+                String lastID = lastIDString.substring(lastIDString.length() - 1); //Grab the last integer of the patientID
+                Log.d(LOG_TAG, String.valueOf(lastID));
+                Integer newInteger = Integer.valueOf(lastID) + 1; //Increment it by 1
+                Log.d(LOG_TAG, String.valueOf(newInteger));
+                patientID = idPreFix + String.valueOf(newInteger); //This patient is assigned the new incremented number
+                Log.d(LOG_TAG, patientID);
+                patient.setId(patientID);
+            } else {
+                patientID = idPreFix + String.valueOf(1); //This patient is assigned the new incremented number
+                Log.d(LOG_TAG, patientID);
+                patient.setId(patientID);
+            }
+        }
+
         public void gatherEntries() {
-
-            //TODO: create new algorithm for ID generation
-
+            patientEntries.put("_id", patient.getId());
             patientEntries.put("first_name", patient.getFirstName());
             patientEntries.put("middle_name", patient.getMiddleName());
             patientEntries.put("last_name", patient.getLastName());
@@ -492,60 +514,58 @@ public class IdentificationActivity extends AppCompatActivity {
             patientEntries.put("postal_code", patient.getPostalCode());
             patientEntries.put("country", patient.getCountry());
             patientEntries.put("gender", patient.getGender());
-            patientEntries.put("patient_identifier1", patient.getPatientIdentifier1());
-            patientEntries.put("patient_identifier2", patient.getPatientIdentifier2());
+            patientEntries.put("patient_photo", mCurrentPhotoPath);
 
             //TODO: move identifier1 and id2 from patient table to patient_attribute table
+
+
         }
 
-//        patientEntries.put("portrait", mCurrentPhotoPath);
+        public void gatherVisitData() {
+            String table = "visit";
+            String[] columnsToReturn = {"_id"};
+            String orderBy = "_id";
+            final Cursor visitCursor = localdb.query(table, columnsToReturn, null, null, null, null, orderBy);
+            visitCursor.moveToLast();
+            String lastVisitIDString = visitCursor.getString(visitCursor.getColumnIndexOrThrow("_id")); //Grab the last patientID
+            visitCursor.close();
+            if (lastVisitIDString != null) {
+                Integer newVisitID = Integer.valueOf(lastVisitIDString) + 1; //Increment it by 1
+                Log.d(LOG_TAG, String.valueOf(newVisitID));
+                visitID = String.valueOf(newVisitID); //This patient is assigned the new incremented number
+                Log.d(LOG_TAG, visitID);
+            } else {
+                visitID = "1"; //This patient is assigned the new incremented number
+                Log.d(LOG_TAG, visitID);
+            }
+
+            SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+            Date todayDate = new Date();
+            String thisDate = currentDate.format(todayDate);
+            visitData.put("_id", visitID);
+            visitData.put("patient_id", patient.getId());
+            visitData.put("start_datetime", thisDate);
+        }
+
 
         @Override
         protected Boolean doInBackground(Void... params) {
+            generateID();
             gatherEntries();
+            gatherVisitData();
 
-            //Insert the patient into the table first, then get the row number to use as the ID
-            patientIDLong = localdb.insert(
+            localdb.insert(
                     "patient",
                     null,
                     patientEntries
             );
 
-
-            String table = "patient";
-            String[] columnsToReturn = {"_id"};
-            String orderBy = "_id";
-            final Cursor idCursor = localdb.query(table, columnsToReturn, null, null, null, null, orderBy);
-            idCursor.moveToLast();
-            String lastIDString = idCursor.getString(idCursor.getColumnIndexOrThrow("_id")); //Grab the last patientID
-            idCursor.close();
-
-            if (lastIDString != null){
-                String lastID = lastIDString.substring(lastIDString.length() - 1); //Grab the last integer of the patientID
-                Log.d(LOG_TAG, String.valueOf(lastID));
-                Integer newInteger = Integer.valueOf(lastID) + 1; //Increment it by 1
-                Log.d(LOG_TAG, String.valueOf(newInteger));
-                patientID = deviceId + String.valueOf(newInteger); //This patient is assigned the new incremented number
-                Log.d(LOG_TAG, patientID);
-                patient.setId(patientID);
-            } else {
-                patientID = deviceId + String.valueOf(1); //This patient is assigned the new incremented number
-                Log.d(LOG_TAG, patientID);
-                patient.setId(patientID);
-            }
-
-            //Update the table with the patientID
-            ContentValues contentValuesUpdate = new ContentValues();
-            contentValuesUpdate.put("_id", patient.getId());
-            String selection = "first_name = ?";
-            String[] args = {patient.getFirstName()};
-
-            localdb.update(
-                    "patient",
-                    contentValuesUpdate,
-                    selection,
-                    args
+            localdb.insert(
+                    "visit",
+                    null,
+                    visitData
             );
+
 
             return null;
         }

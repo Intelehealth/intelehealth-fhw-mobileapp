@@ -144,7 +144,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         String table = "patient";
         String[] columnsToReturn = {"first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
-                "postal_code", "phone_number", "gender", "patient_identifier1", "patient_identifier2"};
+                "postal_code", "phone_number", "gender", "patient_identifier1", "patient_identifier2", "patient_identifier3"};
         final Cursor idCursor = db.query(table, columnsToReturn, selection, args, null, null, null);
 
         if (idCursor.moveToFirst()) {
@@ -162,6 +162,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 patient.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 patient.setPatientIdentifier1(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_identifier1")));
                 patient.setPatientIdentifier2(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_identifier2")));
+
+                patient.setPatientIdentifier2(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_identifier3")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();

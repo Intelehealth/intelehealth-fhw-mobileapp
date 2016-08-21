@@ -79,6 +79,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String patientName;
     String patientStatus;
     String intentTag;
+    String startDateTime;
 
     LocalRecordsDatabaseHelper mDbHelper;
     SQLiteDatabase db;
@@ -127,6 +128,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     NotificationCompat.Builder mBuilder;
     FloatingActionButton fab;
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -174,15 +176,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
         setTitle(patientName + ": " + getTitle());
-        //For Testing
-        //patientID = Long.valueOf("1");
 
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         db = mDbHelper.getWritableDatabase();
 
-        identifierNumber = "30000" + String.valueOf(patientID);
-//        For Testing
-//        identifierNumber = "400014";
+        identifierNumber = patientID;
 
         int checkedDigit = checkDigit(identifierNumber);
         Log.d(LOG_TAG, "check digit" + String.valueOf(checkedDigit));
@@ -346,7 +344,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String table = "patient";
         String[] columnsToReturn = {"first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
-                "postal_code", "phone_number", "gender", "patient_identifier1", "patient_identifier2"};
+                "postal_code", "phone_number", "gender", "patient_photo"};
         final Cursor idCursor = db.query(table, columnsToReturn, selection, args, null, null, null);
 
         if (idCursor.moveToFirst()) {
@@ -362,8 +360,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 patient.setPostalCode(idCursor.getString(idCursor.getColumnIndex("postal_code")));
                 patient.setPhoneNumber(idCursor.getString(idCursor.getColumnIndex("phone_number")));
                 patient.setGender(idCursor.getString(idCursor.getColumnIndex("gender")));
-                patient.setPatientIdentifier1(idCursor.getString(idCursor.getColumnIndex("patient_identifier1")));
-                patient.setPatientIdentifier2(idCursor.getString(idCursor.getColumnIndex("patient_identifier2")));
+                patient.setPatientIdentifier1(idCursor.getString(idCursor.getColumnIndex("patient_photo")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -609,27 +606,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 return null;
             }
 
-
-            SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            Date todayDate = new Date();
-            String thisDate = currentDate.format(todayDate);
-
-            //TODO: Location UUID needs to be found before doing these
             assert responsePatient != null;
-            String visitString =
-                    String.format("{\"startDatetime\":\"%s\"," +
-                                    "\"visitType\":\"Telemedicine\"," +
-                                    "\"patient\":\"%s\"," +
-                                    "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\"}",
-                            thisDate, responsePatient.getResponseString());
-            Log.d(LOG_TAG, "Visit String: " + visitString);
-            WebResponse responseVisit;
-            responseVisit = postCommand("visit", visitString);
-            if (responseVisit != null && responseVisit.getResponseCode() != 201) {
-                Log.d(LOG_TAG, "Visit posting was unsuccessful");
-                return null;
-            }
-
             ContentValues contentValuesOpenMRSID = new ContentValues();
             contentValuesOpenMRSID.put("openmrs_id", responsePatient.getResponseString());
             String selection = "_id = ?";
@@ -642,7 +619,45 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     args
             );
 
+            String table = "visit";
+            String[] columnsToReturn = {"start_datetime"};
+            String orderBy = "start_datetime";
+            String visitSelection = "patientID = ?";
+            String[] visitArgs = {patientID};
+            final Cursor visitCursor = db.query(table, columnsToReturn, visitSelection, visitArgs, null, null, orderBy);
+            visitCursor.moveToLast();
+            startDateTime = visitCursor.getString(visitCursor.getColumnIndexOrThrow("start_datetime"));
+            visitCursor.close();
+
+            //TODO: Location UUID needs to be found before doing these
+            String visitString =
+                    String.format("{\"startDatetime\":\"%s\"," +
+                                    "\"visitType\":\"Telemedicine\"," +
+                                    "\"patient\":\"%s\"," +
+                                    "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\"}",
+                            startDateTime, responsePatient.getResponseString());
+            Log.d(LOG_TAG, "Visit String: " + visitString);
+            WebResponse responseVisit;
+            responseVisit = postCommand("visit", visitString);
+            if (responseVisit != null && responseVisit.getResponseCode() != 201) {
+                Log.d(LOG_TAG, "Visit posting was unsuccessful");
+                return null;
+            }
+
             assert responseVisit != null;
+
+            ContentValues contentValuesVisit = new ContentValues();
+            contentValuesVisit.put("openmrs_visit_id", responseVisit.getResponseString());
+            String visitUpdateSelection = "start_datetime = ?";
+            String[] visitUpdateArgs = {startDateTime};
+
+            db.update(
+                    "visit",
+                    contentValuesVisit,
+                    visitUpdateSelection,
+                    visitUpdateArgs
+            );
+
             String vitalsString =
                     String.format("{\"encounterDatetime\":\"%s\"," +
                                     " \"patient\":\"%s\"," +
@@ -658,7 +673,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "{\"concept\":\"5092AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\", \"value\":\"%s\"}]," + //Sp02
                                     "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\"}",
 
-                            thisDate, responsePatient.getResponseString(), responseVisit.getResponseString(),
+                            startDateTime, responsePatient.getResponseString(), responseVisit.getResponseString(),
                             weight.getValue(), height.getValue(), temperature.getValue(),
                             pulse.getValue(), bpSys.getValue(),
                             bpDias.getValue(), spO2.getValue()
@@ -686,7 +701,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "{\"concept\":\"e1761e85-9b50-48ae-8c4d-e6b7eeeba084\",\"value\":\"%s\"}]," + //physical exam
                                     "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\"}",
 
-                            thisDate, responsePatient.getResponseString(), responseVisit.getResponseString(),
+                            startDateTime, responsePatient.getResponseString(), responseVisit.getResponseString(),
                             patient.getPatientIdentifier1(), patient.getPatientIdentifier2(),
                             patHistory.getValue(), famHistory.getValue(),
                             complaint.getValue(), physFindings.getValue()
@@ -928,7 +943,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         try {
 
-            String urlString = BASE_URL + urlModifier;
+            String urlString = BASE_URL + urlModifier + dataString;
 
             URL url = new URL(urlString);
 
@@ -1130,6 +1145,5 @@ public class VisitSummaryActivity extends AppCompatActivity {
         return (10 - (sum % 10)) % 10;
 
     }
-
 
 }
