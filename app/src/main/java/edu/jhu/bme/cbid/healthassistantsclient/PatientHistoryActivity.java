@@ -32,8 +32,8 @@ public class PatientHistoryActivity extends AppCompatActivity {
 
     int lastExpandedPosition = -1;
 
-//    String mFileName = "pathist.json";
-    String mFileName = "patHistDemo.json";
+    String mFileName = "patHist.json";
+//    String mFileName = "patHistDemo.json";
 
     Node patientHistoryMap;
     CustomExpandableListAdapter adapter;

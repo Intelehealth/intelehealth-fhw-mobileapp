@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -74,6 +75,7 @@ public class IdentificationActivity extends AppCompatActivity {
     Calendar dob = Calendar.getInstance();
 
     LocalRecordsDatabaseHelper mDbHelper;
+    SQLiteDatabase localdb;
 
     ImageView mImageView;
     String mCurrentPhotoPath;
@@ -92,6 +94,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         //Initialize the local database to store patient information
         mDbHelper = new LocalRecordsDatabaseHelper(this);
+        localdb = mDbHelper.getWritableDatabase();
 
         mFirstName = (EditText) findViewById(R.id.identification_first_name);
         mMiddleName = (EditText) findViewById(R.id.identification_middle_name);
@@ -484,24 +487,37 @@ public class IdentificationActivity extends AppCompatActivity {
             patientEntries.put("postal_code", patient.getPostalCode());
             patientEntries.put("country", patient.getCountry());
             patientEntries.put("gender", patient.getGender());
-            patientEntries.put("portrait", mCurrentPhotoPath);
             patientEntries.put("patient_identifier1", patient.getPatientIdentifier1());
             patientEntries.put("patient_identifier2", patient.getPatientIdentifier2());
+
+            //TODO: move identifier1 and id2 from patient table to patient_attribute table
         }
+
+//        patientEntries.put("portrait", mCurrentPhotoPath);
 
         @Override
         protected Boolean doInBackground(Void... params) {
             gatherEntries();
 
             //Insert the patient into the table first, then get the row number to use as the ID
-            SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
             patientIDLong = localdb.insert(
                     "patient",
                     null,
                     patientEntries
             );
 
-            patientID = String.valueOf(patientIDLong);
+            String table = "patient";
+            String[] columnsToReturn = {"_id"};
+            String orderBy = "_id";
+            final Cursor idCursor = localdb.query(table, columnsToReturn, null, null, null, null, orderBy);
+            idCursor.moveToLast();
+            String lastID = idCursor.getString(idCursor.getColumnIndexOrThrow("_id"));
+            idCursor.close();
+
+            Integer lastIDInteger = Integer.valueOf(lastID);
+            lastIDInteger = lastIDInteger + 1;
+            patientID = String.valueOf(lastIDInteger);
+//            Log.d(LOG_TAG, patientID);
             patient.setId(patientID);
 
             //Update the table with the patientID number now
@@ -516,8 +532,6 @@ public class IdentificationActivity extends AppCompatActivity {
                     selection,
                     args
             );
-
-            Log.d(LOG_TAG, String.valueOf(patientID));
 
             return null;
         }
@@ -549,7 +563,6 @@ public class IdentificationActivity extends AppCompatActivity {
     }
 
     public static String getUserCountryFunction(Context context) {
-        Log.d("function", "called");
         try {
             final TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
             final String simCountry = tm.getSimCountryIso();

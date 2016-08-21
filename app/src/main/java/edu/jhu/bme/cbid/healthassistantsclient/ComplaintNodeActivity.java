@@ -34,8 +34,8 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     ExpandableListView complaintListView;
 
     Knowledge mKnowledge;
-//    String mFileName = "knowledge.json";
-    String mFileName = "knowledgeDemo.json";
+    String mFileName = "knowledge.json";
+//    String mFileName = "knowledgeDemo.json";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

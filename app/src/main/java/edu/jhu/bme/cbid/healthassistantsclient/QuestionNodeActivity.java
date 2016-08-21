@@ -36,8 +36,8 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
     Knowledge mKnowledge; //Knowledge engine
     ExpandableListView questionListView;
-//    String mFileName = "knowledge.json"; //knowledge engine file
-    String mFileName = "knowledgeDemo.json";
+    String mFileName = "knowledge.json"; //knowledge engine file
+//    String mFileName = "knowledgeDemo.json";
     int complaintNumber = 0; //assuming there is at least one complaint, starting complaint number
     HashMap<String, String> complaintDetails; //temporary storage of complaint findings
     ArrayList<String> complaints; //list of complaints going to be used

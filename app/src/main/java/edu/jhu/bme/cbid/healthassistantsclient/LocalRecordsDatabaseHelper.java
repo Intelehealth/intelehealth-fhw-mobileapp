@@ -35,7 +35,6 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             "postal_code varchar(50)," +
             "country varchar(50)," +
             "gender varchar(50)," +
-            "portrait varchar(255)," +
             "patient_identifier1 varchar(255)," +
             "patient_identifier2 varchar(255)," +
             "patient_identifier3 varchar(255)" +
@@ -44,7 +43,7 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             "_id integer PRIMARY KEY," +
             "attribute_type_id integer(10) NOT NULL," +
             "patient_id integer(10) NOT NULL," +
-            "value varchar(50)," +
+            "value varchar(255)," +
             "FOREIGN KEY (patient_id) REFERENCES patient(_id)" +
             ")";
     public static final String CREATE_VISIT = "CREATE TABLE IF NOT EXISTS visit (" +

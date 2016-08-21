@@ -1,6 +1,7 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
 import android.app.NotificationManager;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -78,6 +79,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String patientName;
     String patientStatus;
     String intentTag;
+
+    LocalRecordsDatabaseHelper mDbHelper;
+    SQLiteDatabase db;
 
     Patient patient = new Patient();
     Obs complaint = new Obs();
@@ -172,6 +176,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
         setTitle(patientName + ": " + getTitle());
         //For Testing
         //patientID = Long.valueOf("1");
+
+        mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
+        db = mDbHelper.getWritableDatabase();
 
         identifierNumber = "30000" + String.valueOf(patientID);
 //        For Testing
@@ -330,8 +337,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     public void queryData(String dataString) {
-        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         String selection = "_id MATCH ?";
         String[] args = {dataString};
@@ -624,6 +629,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 Log.d(LOG_TAG, "Visit posting was unsuccessful");
                 return null;
             }
+
+            ContentValues contentValuesOpenMRSID = new ContentValues();
+            contentValuesOpenMRSID.put("openmrs_id", responsePatient.getResponseString());
+            String selection = "_id = ?";
+            String[] args = {patientID};
+
+            db.update(
+                    "patient",
+                    contentValuesOpenMRSID,
+                    selection,
+                    args
+            );
 
             assert responseVisit != null;
             String vitalsString =
