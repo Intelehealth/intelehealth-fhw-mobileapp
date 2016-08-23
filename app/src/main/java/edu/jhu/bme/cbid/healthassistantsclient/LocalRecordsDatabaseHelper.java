@@ -14,42 +14,42 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "localRecords.db";
     public static final String CREATE_PATIENT = "CREATE VIRTUAL TABLE IF NOT EXISTS patient USING fts3(" +
-            "_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-            "openmrs_id varchar," +
-            "first_name varchar(50)," +
-            "middle_name varchar(50)," +
-            "last_name varchar(50)," +
-            "date_of_birth TEXT," +
-            "phone_number integer(10)," +
-            "address1 varchar(255)," +
-            "address2 varchar(255)," +
-            "city_village varchar(255)," +
-            "state_province varchar(255)," +
-            "postal_code varchar(50)," +
-            "country varchar(50)," +
-            "gender varchar(50)," +
-            "patient_photo varchar(255)" +
+            "patient_id," +
+            "openmrs_uuid," +
+            "first_name," +
+            "middle_name," +
+            "last_name," +
+            "date_of_birth," +
+            "phone_number," +
+            "address1," +
+            "address2," +
+            "city_village," +
+            "state_province," +
+            "postal_code," +
+            "country," +
+            "gender," +
+            "patient_photo" +
             ")";
     public static final String CREATE_ATTRIB = "CREATE TABLE IF NOT EXISTS patient_attribute (" +
-            "_id integer PRIMARY KEY AUTOINCREMENT NOT NULL," +
+            "_id integer PRIMARY KEY," +
             "attribute_type_id integer(10) NOT NULL," +
-            "patient_id varchar(255)  NOT NULL," +
+            "patient_id TEXT  NOT NULL," +
             "value varchar(255)," +
-            "FOREIGN KEY (patient_id) REFERENCES patient(_id)" +
+            "FOREIGN KEY (patient_id) REFERENCES patient(patient_id)" +
             ")";
     public static final String CREATE_VISIT = "CREATE TABLE IF NOT EXISTS visit (" +
-            "_id integer PRIMARY KEY AUTOINCREMENT NOT NULL," +
-            "patient_id integer(10)," +
+            "_id integer PRIMARY KEY," +
+            "patient_id TEXT," +
             "start_datetime TEXT NOT NULL," +
             "end_datetime TEXT," +
             "visit_type_id integer(10)," +
             "visit_location_id integer(10) NOT NULL," +
             "visit_creator integer(10) NOT NULL," +
-            "openmrs_visit_id TEXT" +
+            "openmrs_visit_uuid TEXT" +
             ")";
     public static final String CREATE_OBS = "CREATE TABLE IF NOT EXISTS obs (" +
-            "_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-            "patient_id integer(10)," +
+            "_id integer PRIMARY KEY," +
+            "patient_id TEXT," +
             "visit_id integer(10) NOT NULL," +
             "value text," +
             "concept_id integer(10) NOT NULL," +
@@ -58,7 +58,7 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             "openmrs_obs_id integer(10)" +
             ")";
     public static final String CREATE_USER = "CREATE TABLE IF NOT EXISTS user_provider (" +
-            "_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+            "_id integer PRIMARY KEY," +
             "openmrs_provider_id integer(10)," +
             "openmrs_user_id integer(10)," +
             "openmrs_role varchar(50)," +
@@ -75,7 +75,7 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             "changed_by integer(10) NOT NULL" +
             ")";
     public static final String CREATE_LOCATION = "CREATE TABLE location_details (" +
-            "_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+            "_id integer PRIMARY KEY," +
             "tablet_id integer(10) NOT NULL," +
             "location_name varchar(255) NOT NULL," +
             "openmrs_location_id integer(255) NOT NULL" +

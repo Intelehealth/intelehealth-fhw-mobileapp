@@ -24,6 +24,7 @@ public class PatientHistoryActivity extends AppCompatActivity {
 
 
     String patientID = "1";
+    String visitID;
     String patientName;
     String patientStatus;
     String intentTag;
@@ -50,11 +51,13 @@ public class PatientHistoryActivity extends AppCompatActivity {
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientID = intent.getStringExtra("patientID");
+            visitID = intent.getStringExtra("visitID");
             patientName = intent.getStringExtra("name");
             patientStatus = intent.getStringExtra("status");
             intentTag = intent.getStringExtra("tag");
             physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
             Log.v(LOG_TAG, "Patient ID: " + patientID);
+            Log.v(LOG_TAG, "Visit ID: " + visitID);
             Log.v(LOG_TAG, "Patient Name: " + patientName);
             Log.v(LOG_TAG, "Status: " + patientStatus);
             Log.v(LOG_TAG, "Intent Tag: " + intentTag);
@@ -86,6 +89,7 @@ public class PatientHistoryActivity extends AppCompatActivity {
                 if (intentTag.equals("edit")){
                     Intent intent = new Intent(PatientHistoryActivity.this, VisitSummaryActivity.class);
                     intent.putExtra("patientID", patientID);
+                    intent.putExtra("visitID", visitID);
                     intent.putExtra("name", patientName);
                     intent.putExtra("status", patientStatus);
                     intent.putExtra("tag", intentTag);
@@ -93,6 +97,7 @@ public class PatientHistoryActivity extends AppCompatActivity {
                 } else {
                     Intent intent = new Intent(PatientHistoryActivity.this, FamilyHistoryActivity.class);
                     intent.putExtra("patientID", patientID);
+                    intent.putExtra("visitID", visitID);
                     intent.putExtra("name", patientName);
                     intent.putExtra("status", patientStatus);
                     intent.putExtra("tag", intentTag);

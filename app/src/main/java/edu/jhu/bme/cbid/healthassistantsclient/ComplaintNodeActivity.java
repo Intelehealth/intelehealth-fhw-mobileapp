@@ -27,6 +27,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     final String LOG_TAG = "Complaint Node Activity";
 
     String patientID = "1";
+    String visitID;
     String patientName;
     String patientStatus;
     String intentTag;
@@ -46,10 +47,12 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientID = intent.getStringExtra("patientID");
+            visitID = intent.getStringExtra("visitID");
             patientName = intent.getStringExtra("name");
             patientStatus = intent.getStringExtra("status");
             intentTag = intent.getStringExtra("tag");
             Log.v(LOG_TAG, "Patient ID: " + patientID);
+            Log.v(LOG_TAG, "Visit ID: " + visitID);
             Log.v(LOG_TAG, "Patient Name: " + patientName);
             Log.v(LOG_TAG, "Status: " + patientStatus);
             Log.v(LOG_TAG, "Intent Tag: " + intentTag);
@@ -135,6 +138,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     dialog.dismiss();
                     Intent intent = new Intent(ComplaintNodeActivity.this, QuestionNodeActivity.class);
                     intent.putExtra("patientID", patientID);
+                    intent.putExtra("visitID", visitID);
                     intent.putExtra("name", patientName);
                     intent.putExtra("status", patientStatus);
                     intent.putExtra("tag", intentTag);

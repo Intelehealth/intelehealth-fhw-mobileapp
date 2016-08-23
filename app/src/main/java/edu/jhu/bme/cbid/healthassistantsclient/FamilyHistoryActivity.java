@@ -20,6 +20,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     String LOG_TAG = "Family History Activity";
 
     String patientID = "1";
+    String visitID;
     String patientName;
     String patientStatus;
     String intentTag;
@@ -47,11 +48,13 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientID = intent.getStringExtra("patientID");
+            visitID = intent.getStringExtra("visitID");
             patientName = intent.getStringExtra("name");
             patientStatus = intent.getStringExtra("status");
             intentTag = intent.getStringExtra("tag");
             physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
             Log.v(LOG_TAG, "Patient ID: " + patientID);
+            Log.v(LOG_TAG, "Visit ID: " + visitID);
             Log.v(LOG_TAG, "Patient Name: " + patientName);
             Log.v(LOG_TAG, "Status: " + patientStatus);
             Log.v(LOG_TAG, "Intent Tag: " + intentTag);
@@ -150,14 +153,16 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         if (intentTag.equals("edit")){
             Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientID", patientID);
+            intent.putExtra("visitID", visitID);
             intent.putExtra("name", patientName);
             intent.putExtra("status", patientStatus);
             intent.putExtra("tag", intentTag);
             startActivity(intent);
         } else {
 
-            Intent intent = new Intent(FamilyHistoryActivity.this, TableExamActivity.class);
+            Intent intent = new Intent(FamilyHistoryActivity.this, PatientDetailActivity.class);
             intent.putExtra("patientID", patientID);
+            intent.putExtra("visitID", visitID);
             intent.putExtra("name", patientName);
             intent.putExtra("status", patientStatus);
             intent.putExtra("tag", intentTag);

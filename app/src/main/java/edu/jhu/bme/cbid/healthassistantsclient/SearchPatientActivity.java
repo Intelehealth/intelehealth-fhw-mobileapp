@@ -94,7 +94,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         String table = "patient";
         String[] columns = {"_id", "first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
-                "postal_code", "phone_number", "patient_identifier1", "patient_identifier2, patient_identifier3"};
+                "postal_code", "phone_number", "patient_photo"};
         String selection = "patient MATCH ?";
         String[] args = new String[1];
         args[0] = String.format("%s", query);

@@ -76,10 +76,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
     Context context;
 
     String patientID = "1";
+    String visitID;
     String patientName;
     String patientStatus;
     String intentTag;
-    String startDateTime;
 
     LocalRecordsDatabaseHelper mDbHelper;
     SQLiteDatabase db;
@@ -166,10 +166,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientID = intent.getStringExtra("patientID");
+            visitID = intent.getStringExtra("visitID");
             patientName = intent.getStringExtra("name");
             patientStatus = intent.getStringExtra("status");
             intentTag = intent.getStringExtra("tag");
             Log.v(LOG_TAG, "Patient ID: " + patientID);
+            Log.v(LOG_TAG, "Visit ID: " + visitID);
             Log.v(LOG_TAG, "Patient Name: " + patientName);
             Log.v(LOG_TAG, "Status: " + patientStatus);
             Log.v(LOG_TAG, "Intent Tag: " + intentTag);
@@ -210,6 +212,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent1 = new Intent(VisitSummaryActivity.this, TableExamActivity.class);
                 intent1.putExtra("patientID", patientID);
+                intent1.putExtra("visitID", visitID);
                 intent1.putExtra("name", patientName);
                 intent1.putExtra("status", patientStatus);
                 intent1.putExtra("tag", "edit");
@@ -222,6 +225,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent1 = new Intent(VisitSummaryActivity.this, ComplaintNodeActivity.class);
                 intent1.putExtra("patientID", patientID);
+                intent1.putExtra("visitID", visitID);
                 intent1.putExtra("name", patientName);
                 intent1.putExtra("status", patientStatus);
                 intent1.putExtra("tag", "edit");
@@ -235,6 +239,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent1 = new Intent(VisitSummaryActivity.this, PhysicalExamActivity.class);
                 intent1.putExtra("patientID", patientID);
+                intent1.putExtra("visitID", visitID);
                 intent1.putExtra("name", patientName);
                 intent1.putExtra("status", patientStatus);
                 intent1.putExtra("tag", "edit");
@@ -248,6 +253,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent1 = new Intent(VisitSummaryActivity.this, FamilyHistoryActivity.class);
                 intent1.putExtra("patientID", patientID);
+                intent1.putExtra("visitID", visitID);
                 intent1.putExtra("name", patientName);
                 intent1.putExtra("status", patientStatus);
                 intent1.putExtra("tag", "edit");
@@ -261,6 +267,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent1 = new Intent(VisitSummaryActivity.this, PatientHistoryActivity.class);
                 intent1.putExtra("patientID", patientID);
+                intent1.putExtra("visitID", visitID);
                 intent1.putExtra("name", patientName);
                 intent1.putExtra("status", patientStatus);
                 intent1.putExtra("tag", "edit");
@@ -336,7 +343,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     public void queryData(String dataString) {
 
-        String selection = "_id MATCH ?";
+        String selection = "patient_id MATCH ?";
         String[] args = {dataString};
 
         ArrayList<String> uploadedFields = new ArrayList<>();
@@ -608,8 +615,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             assert responsePatient != null;
             ContentValues contentValuesOpenMRSID = new ContentValues();
-            contentValuesOpenMRSID.put("openmrs_id", responsePatient.getResponseString());
-            String selection = "_id = ?";
+            contentValuesOpenMRSID.put("openmrs_uuid", responsePatient.getResponseString());
+            String selection = "patient_id = ?";
             String[] args = {patientID};
 
             db.update(
@@ -626,7 +633,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String[] visitArgs = {patientID};
             final Cursor visitCursor = db.query(table, columnsToReturn, visitSelection, visitArgs, null, null, orderBy);
             visitCursor.moveToLast();
-            startDateTime = visitCursor.getString(visitCursor.getColumnIndexOrThrow("start_datetime"));
+            String startDateTime = visitCursor.getString(visitCursor.getColumnIndexOrThrow("start_datetime"));
             visitCursor.close();
 
             //TODO: Location UUID needs to be found before doing these
@@ -647,7 +654,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             assert responseVisit != null;
 
             ContentValues contentValuesVisit = new ContentValues();
-            contentValuesVisit.put("openmrs_visit_id", responseVisit.getResponseString());
+            contentValuesVisit.put("openmrs_visit_uuid", responseVisit.getResponseString());
             String visitUpdateSelection = "start_datetime = ?";
             String[] visitUpdateArgs = {startDateTime};
 
