@@ -10,23 +10,18 @@ import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.URLSpan;
-import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -61,9 +56,6 @@ public class PatientDetailActivity extends AppCompatActivity {
     TextView addressLine2;
     TextView phone;
 
-    Button medHistButton;
-    Button patHistButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,23 +85,6 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         queryDisplay(String.valueOf(patientID));
         setTitle(mPatientName);
-
-        String tempString="Copyright";
-        //TextView text=(TextView)findViewById(R.id.text);
-        SpannableString spanString = new SpannableString(tempString);
-        spanString.setSpan(new UnderlineSpan(), 0, spanString.length(), 0);
-        //text.setText(spanString);
-
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        if (fab != null) {
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Snackbar.make(view, "Feature Coming Soon", Snackbar.LENGTH_LONG).show();
-                }
-            });
-        }
 
     }
 

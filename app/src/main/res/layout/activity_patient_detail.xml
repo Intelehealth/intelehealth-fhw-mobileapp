@@ -44,13 +44,4 @@
 
     <include layout="@layout/content_patient_detail" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_mode_edit_white_48px"
-        app:layout_anchor="@id/app_bar"
-        app:layout_anchorGravity="bottom|end" />
-
 </android.support.design.widget.CoordinatorLayout>
