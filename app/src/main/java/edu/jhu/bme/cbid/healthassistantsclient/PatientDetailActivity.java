@@ -49,13 +49,6 @@ public class PatientDetailActivity extends AppCompatActivity {
     String mSdw;
     String mOccupation;
 
-    TextView dobAgeView;
-    TextView occupation;
-    TextView sDW;
-    TextView addressLine1;
-    TextView addressLine2;
-    TextView phone;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,14 +69,9 @@ public class PatientDetailActivity extends AppCompatActivity {
             Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
-        dobAgeView = (TextView) findViewById(R.id.textView_patient_info_age);
-        occupation = (TextView) findViewById(R.id.textView_occup);
-        sDW = (TextView) findViewById(R.id.textView_sdw);
-        addressLine1 = (TextView) findViewById(R.id.textView_addr1);
-        addressLine2 = (TextView) findViewById(R.id.textView_addr2);
-        phone = (TextView) findViewById(R.id.textView_phone);
 
-        queryDisplay(String.valueOf(patientID));
+
+        //queryDisplay(String.valueOf(patientID));
         setTitle(mPatientName);
 
     }
@@ -166,22 +154,6 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         int age = HelperMethods.getAge(patient.getDateOfBirth());
         mPatientDob = "DOB: " + patient.getDateOfBirth() + " Age: " + String.valueOf(age);
-        dobAgeView.setText(mPatientDob);
-
-        mOccupation = patient.getPatientIdentifier1();
-        occupation.setText(mOccupation);
-
-        mSdw = patient.getPatientIdentifier2();
-        sDW.setText(mSdw);
-
-        mAddress = patient.getAddress1() + ", " + patient.getAddress2();
-        addressLine1.setText(mAddress);
-
-        mCityState = patient.getCityVillage() + ", " + patient.getStateProvince() + " " + patient.getPostalCode();
-        addressLine2.setText(mCityState);
-
-        mPhone = patient.getPhoneNumber();
-        phone.setText(mPhone);
 
     }
 

@@ -156,16 +156,6 @@
     <string name="visit_summary_additional_comments">Additional Comments</string>
 
 
-    //Patient Detail Screen
-    <string name="header_patient_detail">Basic Information</string>
-    <string name="header_last_five">Recent Visits</string>
-    <string name="header_contact">Address and Contact</string>
-    <string name="button_history">Patient History</string>
-    <string name="title_activity_patient_detail">Patient Detail</string>
-    <string name="patient_detail_visit_date_header">Visit Date</string>
-    <string name="patient_detail_ha_name_header">HA Name</string>
-    <string name="patient_detail_doctor_name_header">Doctor\'s Name</string>
-
     //Diagnostic Tests Screen
     <string name="title_activity_diagnostic_tests_list">Choose a Diagnostic Test</string>
 
@@ -258,5 +248,16 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+
+    //Patient Detail Screen
+    <string name="header_patient_detail">Patient Information</string>
+    <string name="button_history">Patient History</string>
+    <string name="title_activity_patient_detail">Patient Detail</string>
+    <string name="header_medical_history">History</string>
+    <string name="button_new_visit">Start New Visit</string>
+    <string name="header_previous_visits">Previous Visits</string>
+    <string name="header_patient_history">Medical History</string>
+    <string name="header_family_history">Family History</string>
+
 
 </resources>

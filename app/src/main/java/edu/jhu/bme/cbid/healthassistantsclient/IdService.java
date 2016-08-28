@@ -90,7 +90,6 @@ public class IdService extends IntentService {
 
     }
 
-    // TODO: test this code segement
     public String serialize(String dataString) {
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -173,7 +172,7 @@ public class IdService extends IntentService {
     }
 
     public String sendData(String jsonString) {
-        final String serverAddress = "openmrs.amal.io:8443/openmrs/ws/rest/v1/"; // TODO: get string
+        final String serverAddress = "openmrs.amal.io:8443/openmrs/ws/rest/v1/";
 
         HttpURLConnection urlConnection;
         DataOutputStream printout;

@@ -166,7 +166,6 @@ public class IdentificationActivity extends AppCompatActivity {
                 dob.set(year, monthOfYear, dayOfMonth);
 
                 //Formatted so that it can be read the way the user sets
-                //TODO: Settings option to change date format
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 dob.set(year, monthOfYear, dayOfMonth);
                 String dobString = simpleDateFormat.format(dob.getTime());

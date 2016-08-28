@@ -159,9 +159,4 @@ public class Patient {
     public void setPatientIdentifier3(String patient_identifier3) {
         this.patient_identifier3 = patient_identifier3;
     }
-
-    @Override
-    public String toString() {
-        return super.toString(); // TODO
-    }
 }
