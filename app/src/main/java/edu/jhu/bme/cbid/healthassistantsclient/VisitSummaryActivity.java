@@ -343,7 +343,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     public void queryData(String dataString) {
 
-        String selection = "patient_id MATCH ?";
+        String selection = "_id MATCH ?";
         String[] args = {dataString};
 
         ArrayList<String> uploadedFields = new ArrayList<>();

@@ -112,7 +112,8 @@ public class SearchPatientActivity extends AppCompatActivity {
                 noneFound(lvItems);
             } else if (searchCursor.moveToFirst()) {
                 lvItems.setAdapter(mSearchAdapter);
-                lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                lvItems.setOnItemClickListener(
+                        new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 

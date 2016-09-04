@@ -17,6 +17,9 @@ public class SearchCursorAdapter extends CursorAdapter {
         super(context, cursor, 0);
     }
 
+
+
+
     // The newView method is used to inflate a new view and return it,
     // you don't bind any data to the view at this point.
     @Override

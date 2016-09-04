@@ -54,7 +54,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
     String patientID = "1";
     String visitID;
     String patientName;
-    String patientStatus;
     String intentTag;
 
     ArrayList<String> selectedExamsList = new ArrayList<>();
@@ -83,13 +82,11 @@ public class PhysicalExamActivity extends AppCompatActivity {
             patientID = intent.getStringExtra("patientID");
             visitID = intent.getStringExtra("visitID");
             patientName = intent.getStringExtra("name");
-            patientStatus = intent.getStringExtra("status");
             intentTag = intent.getStringExtra("tag");
             selectedExamsList = intent.getStringArrayListExtra("exams");
             Log.v(LOG_TAG, "Patient ID: " + patientID);
             Log.v(LOG_TAG, "Visit ID: " + visitID);
             Log.v(LOG_TAG, "Patient Name: " + patientName);
-            Log.v(LOG_TAG, "Status: " + patientStatus);
             Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
@@ -141,7 +138,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
                         intent.putExtra("patientID", patientID);
                         intent.putExtra("visitID", visitID);
                         intent.putExtra("name", patientName);
-                        intent.putExtra("status", patientStatus);
                         intent.putExtra("tag", intentTag);
                         startActivity(intent);
                     } else {
@@ -149,7 +145,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
                         intent1.putExtra("patientID", patientID);
                         intent1.putExtra("visitID", visitID);
                         intent1.putExtra("name", patientName);
-                        intent1.putExtra("status", patientStatus);
                         intent1.putExtra("tag", intentTag);
                         startActivity(intent1);
                     }

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 
@@ -22,7 +21,6 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     String patientID = "1";
     String visitID;
     String patientName;
-    String patientStatus;
     String intentTag;
 
     ArrayList<String> physicalExams;
@@ -50,14 +48,11 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             patientID = intent.getStringExtra("patientID");
             visitID = intent.getStringExtra("visitID");
             patientName = intent.getStringExtra("name");
-            patientStatus = intent.getStringExtra("status");
             intentTag = intent.getStringExtra("tag");
-            physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
-            Log.v(LOG_TAG, "Patient ID: " + patientID);
-            Log.v(LOG_TAG, "Visit ID: " + visitID);
-            Log.v(LOG_TAG, "Patient Name: " + patientName);
-            Log.v(LOG_TAG, "Status: " + patientStatus);
-            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
+//            Log.v(LOG_TAG, "Patient ID: " + patientID);
+//            Log.v(LOG_TAG, "Visit ID: " + visitID);
+//            Log.v(LOG_TAG, "Patient Name: " + patientName);
+//            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
 
@@ -155,7 +150,6 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);
             intent.putExtra("name", patientName);
-            intent.putExtra("status", patientStatus);
             intent.putExtra("tag", intentTag);
             startActivity(intent);
         } else {
@@ -164,7 +158,6 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);
             intent.putExtra("name", patientName);
-            intent.putExtra("status", patientStatus);
             intent.putExtra("tag", intentTag);
             intent.putStringArrayListExtra("exams", physicalExams);
             startActivity(intent);
@@ -176,7 +169,6 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     private long insertDb(String value) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
 
-        final int VISIT_ID = 100; // TODO: Connect the proper VISIT_ID
         final int CREATOR_ID = 42; // TODO: Connect the proper CREATOR_ID
 
         final int CONCEPT_ID = 163188; // RHK FAMILY HISTORY BLURB
@@ -184,10 +176,10 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         ContentValues complaintEntries = new ContentValues();
 
         complaintEntries.put("patient_id", patientID);
-        complaintEntries.put("visit_id", VISIT_ID);
-        complaintEntries.put("creator", CREATOR_ID);
+        complaintEntries.put("visit_id", visitID);
         complaintEntries.put("value", value);
         complaintEntries.put("concept_id", CONCEPT_ID);
+        complaintEntries.put("creator", CREATOR_ID);
 
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
         return localdb.insert("obs", null, complaintEntries);

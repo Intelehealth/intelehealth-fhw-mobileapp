@@ -7,11 +7,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
-
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -26,7 +23,6 @@ public class PatientHistoryActivity extends AppCompatActivity {
     String patientID = "1";
     String visitID;
     String patientName;
-    String patientStatus;
     String intentTag;
 
     ArrayList<String> physicalExams;
@@ -53,14 +49,11 @@ public class PatientHistoryActivity extends AppCompatActivity {
             patientID = intent.getStringExtra("patientID");
             visitID = intent.getStringExtra("visitID");
             patientName = intent.getStringExtra("name");
-            patientStatus = intent.getStringExtra("status");
             intentTag = intent.getStringExtra("tag");
-            physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
-            Log.v(LOG_TAG, "Patient ID: " + patientID);
-            Log.v(LOG_TAG, "Visit ID: " + visitID);
-            Log.v(LOG_TAG, "Patient Name: " + patientName);
-            Log.v(LOG_TAG, "Status: " + patientStatus);
-            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
+//            Log.v(LOG_TAG, "Patient ID: " + patientID);
+//            Log.v(LOG_TAG, "Visit ID: " + visitID);
+//            Log.v(LOG_TAG, "Patient Name: " + patientName);
+//            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
 
@@ -82,7 +75,7 @@ public class PatientHistoryActivity extends AppCompatActivity {
                 if(patientHistoryMap.anySubSelected()){
                     patientHistory = patientHistoryMap.generateLanguage();
 
-                    long obsId = insertDb(patientHistory);
+                    insertDb(patientHistory);
                 }
 
 
@@ -91,7 +84,6 @@ public class PatientHistoryActivity extends AppCompatActivity {
                     intent.putExtra("patientID", patientID);
                     intent.putExtra("visitID", visitID);
                     intent.putExtra("name", patientName);
-                    intent.putExtra("status", patientStatus);
                     intent.putExtra("tag", intentTag);
                     startActivity(intent);
                 } else {
@@ -99,7 +91,6 @@ public class PatientHistoryActivity extends AppCompatActivity {
                     intent.putExtra("patientID", patientID);
                     intent.putExtra("visitID", visitID);
                     intent.putExtra("name", patientName);
-                    intent.putExtra("status", patientStatus);
                     intent.putExtra("tag", intentTag);
                     intent.putStringArrayListExtra("exams", physicalExams);
                     startActivity(intent);
@@ -155,27 +146,25 @@ public class PatientHistoryActivity extends AppCompatActivity {
     private long insertDb(String value) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
 
-        final int VISIT_ID = 100;
         final int CREATOR_ID = 42;
+        //TODO: Get the right creator_ID
+
 
         final int CONCEPT_ID = 163187; // RHK MEDICAL HISTORY BLURB
-
-
-        Gson gson = new Gson();
-        String toInsert = gson.toJson(value);
-
-        Log.d(LOG_TAG, toInsert);
+        //Eventually will be stored in a separate table
 
         ContentValues complaintEntries = new ContentValues();
 
         complaintEntries.put("patient_id", patientID);
-        complaintEntries.put("visit_id", VISIT_ID);
-        complaintEntries.put("creator", CREATOR_ID);
-        complaintEntries.put("value", toInsert);
+        complaintEntries.put("visit_id", visitID);
+        complaintEntries.put("value", value);
         complaintEntries.put("concept_id", CONCEPT_ID);
+        complaintEntries.put("creator", CREATOR_ID);
 
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
         return localdb.insert("obs", null, complaintEntries);
+
+
     }
 
 

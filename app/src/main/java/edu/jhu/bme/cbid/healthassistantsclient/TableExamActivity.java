@@ -30,7 +30,6 @@ public class TableExamActivity extends AppCompatActivity {
     String patientID = "1";
     String visitID;
     String patientName;
-    String patientStatus;
     String intentTag;
 
     ArrayList<String> physicalExams;
@@ -46,13 +45,11 @@ public class TableExamActivity extends AppCompatActivity {
             patientID = intent.getStringExtra("patientID");
             visitID = intent.getStringExtra("visitID");
             patientName = intent.getStringExtra("name");
-            patientStatus = intent.getStringExtra("status");
             intentTag = intent.getStringExtra("tag");
             physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
             Log.v(LOG_TAG, "Patient ID: " + patientID);
             Log.v(LOG_TAG, "Visit ID: " + visitID);
             Log.v(LOG_TAG, "Patient Name: " + patientName);
-            Log.v(LOG_TAG, "Status: " + patientStatus);
             Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
@@ -168,7 +165,6 @@ public class TableExamActivity extends AppCompatActivity {
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);
             intent.putExtra("name", patientName);
-            intent.putExtra("status", patientStatus);
             intent.putExtra("tag", intentTag);
             startActivity(intent);
         } else {
@@ -177,7 +173,6 @@ public class TableExamActivity extends AppCompatActivity {
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);
             intent.putExtra("name", patientName);
-            intent.putExtra("status", patientStatus);
             intent.putExtra("tag", intentTag);
             intent.putStringArrayListExtra("exams", physicalExams);
             startActivity(intent);

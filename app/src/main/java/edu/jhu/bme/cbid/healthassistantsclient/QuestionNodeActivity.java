@@ -20,6 +20,7 @@ import java.util.List;
 
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Knowledge;
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
+import edu.jhu.bme.cbid.healthassistantsclient.objects.TableExam;
 
 
 public class QuestionNodeActivity extends AppCompatActivity {
@@ -32,7 +33,6 @@ public class QuestionNodeActivity extends AppCompatActivity {
     String patientID = "1";
     String visitID;
     String patientName;
-    String patientStatus;
     String intentTag;
 
     Knowledge mKnowledge; //Knowledge engine
@@ -59,13 +59,11 @@ public class QuestionNodeActivity extends AppCompatActivity {
             patientID = intent.getStringExtra("patientID");
             visitID = intent.getStringExtra("visitID");
             patientName = intent.getStringExtra("name");
-            patientStatus = intent.getStringExtra("status");
             intentTag = intent.getStringExtra("tag");
             complaints = intent.getStringArrayListExtra("complaints");
             Log.v(LOG_TAG, "Patient ID: " + patientID);
             Log.v(LOG_TAG, "Visit ID: " + visitID);
             Log.v(LOG_TAG, "Patient Name: " + patientName);
-            Log.v(LOG_TAG, "Status: " + patientStatus);
             Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
@@ -187,16 +185,14 @@ public class QuestionNodeActivity extends AppCompatActivity {
                     intent.putExtra("patientID", patientID);
                     intent.putExtra("visitID", visitID);
                     intent.putExtra("name", patientName);
-                    intent.putExtra("status", patientStatus);
                     intent.putExtra("tag", intentTag);
                     intent.putStringArrayListExtra("exams", physicalExams);
                     startActivity(intent);
                 } else {
-                    Intent intent = new Intent(QuestionNodeActivity.this, PatientHistoryActivity.class);
+                    Intent intent = new Intent(QuestionNodeActivity.this, TableExamActivity.class);
                     intent.putExtra("patientID", patientID);
                     intent.putExtra("visitID", visitID);
                     intent.putExtra("name", patientName);
-                    intent.putExtra("status", patientStatus);
                     intent.putExtra("tag", intentTag);
                     intent.putStringArrayListExtra("exams", physicalExams);
                     startActivity(intent);

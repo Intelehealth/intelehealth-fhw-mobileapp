@@ -13,18 +13,17 @@ import android.print.PrintManager;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.style.URLSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TableRow;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
 
@@ -35,19 +34,13 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     String LOG_TAG = "Patient Detail Activity";
 
-    String patientID = "1";
+    String patientID = "JHU1";
     String patientName;
-    String patientStatus;
     String intentTag = "";
     Patient patient = new Patient();
 
-    String mPatientName;
-    String mPatientDob;
-    String mAddress;
-    String mCityState;
-    String mPhone;
-    String mSdw;
-    String mOccupation;
+    Button newVisit;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,18 +54,31 @@ public class PatientDetailActivity extends AppCompatActivity {
         if (intent != null) {
             patientID = intent.getStringExtra("patientID");
             patientName = intent.getStringExtra("name");
-            patientStatus = intent.getStringExtra("status");
             intentTag = intent.getStringExtra("tag");
-            Log.v(LOG_TAG, "Patient ID: " + patientID);
-            Log.v(LOG_TAG, "Patient Name: " + patientName);
-            Log.v(LOG_TAG, "Status: " + patientStatus);
-            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
+//            Log.v(LOG_TAG, "Patient ID: " + patientID);
+//            Log.v(LOG_TAG, "Patient Name: " + patientName);
+//            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
+        patient.setId(patientID);
+        setDisplay(String.valueOf(patientID));
+
+        //IMMEDIATELY CREATE THE PATIENT. HIT OPENMRS NOW.
+
+        newVisit = (Button) findViewById(R.id.button_new_visit);
+        newVisit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent2 = new Intent(PatientDetailActivity.this, ComplaintNodeActivity.class);
+                String fullName = patient.getFirstName() + " " + patient.getLastName();
+                intent2.putExtra("patientID", patientID);
+                intent2.putExtra("name", fullName);
+                intent2.putExtra("tag", "");
+                startActivity(intent2);
+            }
+        });
 
 
-        //queryDisplay(String.valueOf(patientID));
-        setTitle(mPatientName);
 
     }
 
@@ -87,6 +93,10 @@ public class PatientDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
+            case R.id.detail_home:
+                Intent intent = new Intent(PatientDetailActivity.this, HomeActivity.class);
+                startActivity(intent);
+                return true;
             case R.id.detail_print:
                 doWebViewPrint();
                 return true;
@@ -95,20 +105,16 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
     }
 
-    public void queryDisplay(String dataString) {
+    public void setDisplay(String dataString) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-        String selection = "_id MATCH ?";
-        String[] args = {dataString};
-
-        ArrayList<String> uploadedFields = new ArrayList<>();
-
-        String table = "patient";
-        String[] columnsToReturn = {"first_name", "middle_name", "last_name",
+        String patientSelection = "_id MATCH ?";
+        String[] patientArgs = {dataString};
+        String[] patientColumns = {"first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
-                "postal_code", "phone_number", "gender", "patient_identifier1", "patient_identifier2", "patient_identifier3"};
-        final Cursor idCursor = db.query(table, columnsToReturn, selection, args, null, null, null);
+                "postal_code", "phone_number", "gender", "patient_photo"};
+        final Cursor idCursor = db.query("patient", patientColumns, patientSelection, patientArgs, null, null, null);
 
         if (idCursor.moveToFirst()) {
             do {
@@ -123,111 +129,85 @@ public class PatientDetailActivity extends AppCompatActivity {
                 patient.setPostalCode(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
                 patient.setPhoneNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
                 patient.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
-                patient.setPatientIdentifier1(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_identifier1")));
-                patient.setPatientIdentifier2(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_identifier2")));
-
-                patient.setPatientIdentifier2(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_identifier3")));
+                patient.setPatientIdentifier1(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();
 
-        selection = "patient_id = ?";
+        ImageView photoView = (ImageView) findViewById(R.id.imageView_patient);
 
-        String[] columns = {"value", " concept_id"};
-        String orderBy = "concept_id";
-        Cursor visitCursor = db.query("obs", columns, selection, args, null, null, orderBy);
+        TextView idView = (TextView) findViewById(R.id.textView_ID);
+        TextView dobView = (TextView) findViewById(R.id.textView_DOB);
+        TextView ageView = (TextView) findViewById(R.id.textView_age);
+        TextView addr1View = (TextView) findViewById(R.id.textView_address_1);
+        TableRow addr2Row = (TableRow) findViewById(R.id.tableRow_addr2);
+        TextView addr2View = (TextView) findViewById(R.id.textView_address2);
+        TextView addrFinalView = (TextView) findViewById(R.id.textView_address_final);
+        TextView phoneView = (TextView) findViewById(R.id.textView_phone);
 
-        if (visitCursor.moveToFirst()) {
-            do {
-                int dbConceptID = visitCursor.getInt(visitCursor.getColumnIndexOrThrow("concept_id"));
-                String dbValue = visitCursor.getString(visitCursor.getColumnIndexOrThrow("value"));
-                //parseData(dbConceptID, dbValue);
-            } while (visitCursor.moveToNext());
-        }
-        visitCursor.close();
+        TextView medHistView = (TextView) findViewById(R.id.textView_patHist);
+        TextView famHistView = (TextView) findViewById(R.id.textView_famHist);
 
-        if(patient.getMiddleName().equals("")){
-            mPatientName = patient.getFirstName() + " " + patient.getLastName();
+        if (patient.getMiddleName() == null) {
+            patientName = patient.getFirstName() + " " + patient.getLastName();
         } else {
-            mPatientName = patient.getFirstName() + " " + patient.getMiddleName() + " " + patient.getLastName();
+            patientName = patient.getFirstName() + " " + patient.getMiddleName() + " " + patient.getLastName();
+        }
+        setTitle(patientName);
+
+        if(patient.getPatientIdentifier1() != null){
+            //Develop picture naming convention
         }
 
+
+        idView.setText(patient.getId());
         int age = HelperMethods.getAge(patient.getDateOfBirth());
-        mPatientDob = "DOB: " + patient.getDateOfBirth() + " Age: " + String.valueOf(age);
-
-    }
-
-    private void parseData(){
-
-    }
-    /*
-    private void parseData(int concept_id, String value) {
-        switch (concept_id) {
-            case 163187: //Medical History
-                patHistory.setValue(value);
-                break;
-            case 163188: //Family History
-                famHistory.setValue(value);
-                break;
-            case 163186: //Current Complaint
-                complaint.setValue(value);
-                break;
-            case 163189: //Physical Examination
-                physFindings.setValue(value);
-                break;
-            case 5090: //Height
-                height.setValue(value);
-                break;
-            case 5089: //Weight
-                weight.setValue(value);
-                break;
-            case 5087: //Pulse
-                pulse.setValue(value);
-                break;
-            case 5085: //Systolic BP
-                bpSys.setValue(value);
-                break;
-            case 5086: //Diastolic BP
-                bpDias.setValue(value);
-                break;
-            case 163202: //Temperature
-                temperature.setValue(value);
-                break;
-            case 5092: //SpO2
-                spO2.setValue(value);
-                break;
-            default:
-                break;
-
-
-
-
-                            String fName = searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name"));
-                            String mName = searchCursor.getString(searchCursor.getColumnIndexOrThrow("middle_name"));
-                            char mInitial = '\0';
-                            if (mName != null) mInitial = mName.charAt(0);
-                            String lName = searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name"));
-                            String dob = searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth"));
-                            int age = HelperMethods.getAge(dob);
-
-                            String addr1 = searchCursor.getString(searchCursor.getColumnIndexOrThrow("address1"));
-                            String addr2 = searchCursor.getString(searchCursor.getColumnIndexOrThrow("address2"));
-                            if (addr2 != null) addr1 = addr1 + " " + addr2;
-                            String cityVillage = searchCursor.getString(searchCursor.getColumnIndexOrThrow("city_village"));
-                            String stateProvince = searchCursor.getString(searchCursor.getColumnIndexOrThrow("state_province"));
-                            String postal = searchCursor.getString(searchCursor.getColumnIndexOrThrow("postal_code"));
-                            String phoneNumber = searchCursor.getString(searchCursor.getColumnIndexOrThrow("phone_number"));
-
-                            String sdw = searchCursor.getString(searchCursor.getColumnIndexOrThrow("patient_identifier1"));
-                            String occupation = searchCursor.getString(searchCursor.getColumnIndexOrThrow("patient_identifier2"));
-
-                            String patientIdCol = searchCursor.getString(searchCursor.getColumnIndexOrThrow("_id"));
-
-                            String photoLoc = searchCursor.getString(searchCursor.getColumnIndexOrThrow("patient_identifier3"));
-
+        ageView.setText(String.valueOf(age));
+        dobView.setText(patient.getDateOfBirth());
+        addr1View.setText(patient.getAddress1());
+        if (patient.getAddress2() == null ^ patient.getAddress2().equals("")) {
+            addr2Row.setVisibility(View.GONE);
+        } else {
+            addr2View.setText(patient.getAddress2());
         }
+        String addrFinalLine =
+                String.format("%s, %s %s %s",
+                        patient.getCityVillage(), patient.getStateProvince(),
+                        patient.getPostalCode(), patient.getCountry());
+        addrFinalView.setText(addrFinalLine);
+        phoneView.setText(patient.getPhoneNumber());
+
+
+        String medHistSelection = "patient_id = ? AND concept_id = ?";
+        String[] medHistArgs = {dataString, "163187"};
+        String[] medHistColumms = {"value", " concept_id"};
+        Cursor medHistCursor = db.query("obs", medHistColumms, medHistSelection, medHistArgs, null, null, null);
+        medHistCursor.moveToLast();
+        String medHistValue = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+        medHistCursor.close();
+
+        if(medHistValue != null && !medHistValue.equals("")){
+            medHistView.setText(medHistValue);
+        } else {
+            medHistView.setText(getString(R.string.string_no_hist));
+        }
+
+
+        String famHistSelection = "patient_id = ? AND concept_id = ?";
+        String[] famHistArgs = {dataString, "163188"};
+        String[] famHistColumns = {"value", " concept_id"};
+        Cursor famHistCursor = db.query("obs", famHistColumns, famHistSelection, famHistArgs, null, null, null);
+        famHistCursor.moveToLast();
+        String famHistValue = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
+        famHistCursor.close();
+
+        if(famHistValue != null && !famHistValue.equals("")){
+            famHistView.setText(famHistValue);
+        } else {
+            famHistView.setText(getString(R.string.string_no_hist));
+        }
+
     }
-    */
 
     private void doWebViewPrint() {
         // Create a WebView object specifically for printing
@@ -247,24 +227,25 @@ public class PatientDetailActivity extends AppCompatActivity {
         });
 
         // Generate an HTML document on the fly:
-        String htmlDocument =
-                String.format("<h1 id=\"Intelehealth-patient-detail\">Intelehealth Patient Detail</h1>\n" +
-                "<h1>%s</h1>\n" +
-                "<h2 id=\"basic-information\">Basic Information</h2>\n" +
-                "<ul>\n" +
-                "<li>%s</li>\n" +
-                "<li>%s</li>\n" +
-                "<li>%s</li>\n" +
-                "</ul>\n" +
-                "<h2 id=\"address-and-contact\">Address and Contact</h2>\n" +
-                "<p>%s</p>\n" +
-                "<p>%s</p>\n" +
-                "<p>%s</p>\n" +
-                "<h2 id=\"recent-vists\">Recent Vists</h2>\n" +
-                "<h2 id=\"patient-history\">Patient History</h2>\n" +
-                "<h2 id=\"family-history\">Family History</h2>\n" +
-                "<h2 id=\"current-medications\">Current Medications</h2>",
-                mPatientName, mPatientDob, mOccupation, mSdw, mAddress, mCityState, mPhone);
+//        String htmlDocument =
+//                String.format("<h1 id=\"Intelehealth-patient-detail\">Intelehealth Patient Detail</h1>\n" +
+//                                "<h1>%s</h1>\n" +
+//                                "<h2 id=\"basic-information\">Basic Information</h2>\n" +
+//                                "<ul>\n" +
+//                                "<li>%s</li>\n" +
+//                                "<li>%s</li>\n" +
+//                                "<li>%s</li>\n" +
+//                                "</ul>\n" +
+//                                "<h2 id=\"address-and-contact\">Address and Contact</h2>\n" +
+//                                "<p>%s</p>\n" +
+//                                "<p>%s</p>\n" +
+//                                "<p>%s</p>\n" +
+//                                "<h2 id=\"recent-vists\">Recent Vists</h2>\n" +
+//                                "<h2 id=\"patient-history\">Patient History</h2>\n" +
+//                                "<h2 id=\"family-history\">Family History</h2>\n" +
+//                                "<h2 id=\"current-medications\">Current Medications</h2>",
+//                        mPatientName, mPatientDob, mOccupation, mSdw, mAddress, mCityState, mPhone);
+        String htmlDocument = "";
         webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
 
         // Keep a reference to WebView object until you pass the PrintDocumentAdapter
@@ -315,11 +296,6 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     }
 
-    public static void makeTextViewHyperlink(TextView tv) {
-        SpannableStringBuilder ssb = new SpannableStringBuilder();
-        ssb.append(tv.getText());
-        ssb.setSpan(new URLSpan("#"), 0, ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tv.setText(ssb, TextView.BufferType.SPANNABLE);
-    }
+
 
 }

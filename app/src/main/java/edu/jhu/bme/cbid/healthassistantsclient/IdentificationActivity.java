@@ -477,14 +477,13 @@ public class IdentificationActivity extends AppCompatActivity {
 
         public void generateID(){
             String table = "patient";
-            String[] columnsToReturn = {"patient_id"};
-            String orderBy = "patient_id";
+            String[] columnsToReturn = {"_id"};
+            String orderBy = "_id";
             final Cursor idCursor = localdb.query(table, columnsToReturn, null, null, null, null, orderBy);
             idCursor.moveToLast();
-            String lastIDString = idCursor.getString(idCursor.getColumnIndexOrThrow("_id")); //Grab the last patientID
-            idCursor.close();
 
-            if (lastIDString != null) {
+            if (idCursor.getCount() > 0) {
+                String lastIDString = idCursor.getString(idCursor.getColumnIndexOrThrow("_id")); //Grab the last patientID
                 String lastID = lastIDString.substring(idPreFix.length()); //Grab the last integer of the patientID
                 Log.d(LOG_TAG, String.valueOf(lastID));
                 Integer newInteger = Integer.valueOf(lastID) + 1; //Increment it by 1
@@ -498,11 +497,12 @@ public class IdentificationActivity extends AppCompatActivity {
                 patient.setId(patientID);
             }
 
+            idCursor.close();
             patientID = patient.getId();
         }
 
         public void gatherEntries() {
-            patientEntries.put("patient_id", patient.getId());
+            patientEntries.put("_id", patient.getId());
             patientEntries.put("first_name", patient.getFirstName());
             patientEntries.put("middle_name", patient.getMiddleName());
             patientEntries.put("last_name", patient.getLastName());
@@ -568,7 +568,6 @@ public class IdentificationActivity extends AppCompatActivity {
          * Starting from Identification Activity, the patientID is passed between all activities.
          * All activities will put the ID out from the intent, and then package it into the next one after.
          * patientID - the ID number used for local storage; also used when posting to OpenMRS
-         * status - used for other activities that change based on "new" or "return" patients
          * tag - used when the user edits a patient's information
          */
         @Override
@@ -579,7 +578,6 @@ public class IdentificationActivity extends AppCompatActivity {
             intent2.putExtra("patientID", patientID);
             intent2.putExtra("visitID", visitID);
             intent2.putExtra("name", fullName);
-            intent2.putExtra("status", "new");
             intent2.putExtra("tag", "");
             startActivity(intent2);
         }

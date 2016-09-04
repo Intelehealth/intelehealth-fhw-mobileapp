@@ -14,7 +14,7 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "localRecords.db";
     public static final String CREATE_PATIENT = "CREATE VIRTUAL TABLE IF NOT EXISTS patient USING fts3(" +
-            "patient_id," +
+            "_id," +
             "openmrs_uuid," +
             "first_name," +
             "middle_name," +
