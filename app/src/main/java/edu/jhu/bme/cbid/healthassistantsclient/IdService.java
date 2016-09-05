@@ -134,9 +134,6 @@ public class IdService extends IntentService {
         patient.setStateProvince(patientCursor.getString(9));
         patient.setCountry(patientCursor.getString(10));
         patient.setGender(patientCursor.getString(11));
-        patient.setPatientIdentifier1(patientCursor.getString(12));
-        patient.setPatientIdentifier2(patientCursor.getString(13));
-        patient.setPatientIdentifier3(patientCursor.getString(14));
 
         String json = gson.toJson(patient);
         Log.d(LOG_TAG + "/Gson", json);

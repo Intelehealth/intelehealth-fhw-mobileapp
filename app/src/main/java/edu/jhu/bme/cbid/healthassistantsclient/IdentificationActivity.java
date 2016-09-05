@@ -384,16 +384,21 @@ public class IdentificationActivity extends AppCompatActivity {
                 } else {
                     currentPatient.setPostalCode(mPostal.getText().toString());
                 }
-                if (TextUtils.isEmpty(mRelationship.getText().toString())) {
-                    currentPatient.setPatientIdentifier1("");
-                } else {
-                    currentPatient.setPatientIdentifier1(mRelationship.getText().toString());
-                }
-                if (TextUtils.isEmpty(mOccupation.getText().toString())) {
-                    currentPatient.setPatientIdentifier2("");
-                } else {
-                    currentPatient.setPatientIdentifier2(mOccupation.getText().toString());
-                }
+
+
+
+//                if (TextUtils.isEmpty(mRelationship.getText().toString())) {
+//                    currentPatient.setPatientIdentifier1("");
+//                } else {
+//                    currentPatient.setPatientIdentifier1(mRelationship.getText().toString());
+//                }
+//                if (TextUtils.isEmpty(mOccupation.getText().toString())) {
+//                    currentPatient.setPatientIdentifier2("");
+//                } else {
+//                    currentPatient.setPatientIdentifier2(mOccupation.getText().toString());
+//                }
+
+
                 //currentPatient.setCountry(mCountry.getText().toString());
                 currentPatient.setGender(mGender);
             } catch (NullPointerException e) {

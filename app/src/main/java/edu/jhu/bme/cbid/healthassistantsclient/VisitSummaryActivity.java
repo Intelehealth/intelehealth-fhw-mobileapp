@@ -367,7 +367,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 patient.setPostalCode(idCursor.getString(idCursor.getColumnIndex("postal_code")));
                 patient.setPhoneNumber(idCursor.getString(idCursor.getColumnIndex("phone_number")));
                 patient.setGender(idCursor.getString(idCursor.getColumnIndex("gender")));
-                patient.setPatientIdentifier1(idCursor.getString(idCursor.getColumnIndex("patient_photo")));
+                patient.setPatientPhoto(idCursor.getString(idCursor.getColumnIndex("patient_photo")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -459,8 +459,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String mAddress = patient.getAddress1() + "\n" + patient.getAddress2();
         String mCityState = patient.getCityVillage();
         String mPhone = patient.getPhoneNumber();
-        String mSdw = patient.getPatientIdentifier1();
-        String mOccupation = patient.getPatientIdentifier2();
+//        String mSdw = patient.getPatientIdentifier1();
+//        String mOccupation = patient.getPatientIdentifier2();
         String mGender = patient.getGender();
 
         Calendar c = Calendar.getInstance();
@@ -512,7 +512,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 "<li>%s</li>\n" +
                                 "<h2 id=\"examination\">On Examination</h2>" +
                                 "<p>%s</p>\n",
-                        mPatientName, mDate, mPatientDob, mOccupation, mSdw, mAddress, mCityState, mPhone, mHeight, mWeight,
+                        mPatientName, mDate, mPatientDob, "Database error", "Database error", mAddress, mCityState, mPhone, mHeight, mWeight,
                         mBMI, mBP, mPulse, mTemp, mSPO2, mPatHist, mFamHist, mComplaint, mExam);
         webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
 
@@ -709,7 +709,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\"}",
 
                             startDateTime, responsePatient.getResponseString(), responseVisit.getResponseString(),
-                            patient.getPatientIdentifier1(), patient.getPatientIdentifier2(),
+                            "Database error on Android", "Database error on Android",
+//                            patient.getPatientIdentifier1(), patient.getPatientIdentifier2(),
                             patHistory.getValue(), famHistory.getValue(),
                             complaint.getValue(), physFindings.getValue()
                     );

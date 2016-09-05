@@ -19,9 +19,7 @@ public class Patient {
     private String postal_code;
     private String country; // ISO 3166-1 alpha-2
     private String gender;
-    private String patient_identifier1;
-    private String patient_identifier2;
-    private String patient_identifier3;
+    private String patient_photo;
 
 
     public String getId() {
@@ -136,27 +134,11 @@ public class Patient {
         this.gender = gender;
     }
 
-    public String getPatientIdentifier1() {
-        return patient_identifier1;
+    public String getPatientPhoto() {
+        return patient_photo;
     }
 
-    public void setPatientIdentifier1(String patient_identifier1) {
-        this.patient_identifier1 = patient_identifier1;
-    }
-
-    public String getPatientIdentifier2() {
-        return patient_identifier2;
-    }
-
-    public void setPatientIdentifier2(String patient_identifier2) {
-        this.patient_identifier2 = patient_identifier2;
-    }
-
-    public String getPatientIdentifier3() {
-        return patient_identifier3;
-    }
-
-    public void setPatientIdentifier3(String patient_identifier3) {
-        this.patient_identifier3 = patient_identifier3;
+    public void setPatientPhoto(String patient_photo) {
+        this.patient_photo = patient_photo;
     }
 }

@@ -36,6 +36,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     String patientID = "JHU1";
     String patientName;
+    String visitID;
     String intentTag = "";
     Patient patient = new Patient();
 
@@ -54,6 +55,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         if (intent != null) {
             patientID = intent.getStringExtra("patientID");
             patientName = intent.getStringExtra("name");
+            visitID = intent.getStringExtra("visitID");
             intentTag = intent.getStringExtra("tag");
 //            Log.v(LOG_TAG, "Patient ID: " + patientID);
 //            Log.v(LOG_TAG, "Patient Name: " + patientName);
@@ -72,6 +74,11 @@ public class PatientDetailActivity extends AppCompatActivity {
                 Intent intent2 = new Intent(PatientDetailActivity.this, ComplaintNodeActivity.class);
                 String fullName = patient.getFirstName() + " " + patient.getLastName();
                 intent2.putExtra("patientID", patientID);
+
+                if(visitID!=null){
+                    intent2.putExtra("visitID", visitID);
+                }
+
                 intent2.putExtra("name", fullName);
                 intent2.putExtra("tag", "");
                 startActivity(intent2);
@@ -129,7 +136,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 patient.setPostalCode(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
                 patient.setPhoneNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
                 patient.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
-                patient.setPatientIdentifier1(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
+                patient.setPatientPhoto(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -155,7 +162,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
         setTitle(patientName);
 
-        if(patient.getPatientIdentifier1() != null){
+        if(patient.getPatientPhoto() != null){
             //Develop picture naming convention
         }
 

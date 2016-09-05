@@ -25,8 +25,6 @@ public class PatientHistoryActivity extends AppCompatActivity {
     String patientName;
     String intentTag;
 
-    ArrayList<String> physicalExams;
-
     int lastExpandedPosition = -1;
 
     String mFileName = "patHist.json";
@@ -92,7 +90,6 @@ public class PatientHistoryActivity extends AppCompatActivity {
                     intent.putExtra("visitID", visitID);
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
-                    intent.putStringArrayListExtra("exams", physicalExams);
                     startActivity(intent);
                 }
 

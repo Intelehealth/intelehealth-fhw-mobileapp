@@ -159,7 +159,6 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             intent.putExtra("visitID", visitID);
             intent.putExtra("name", patientName);
             intent.putExtra("tag", intentTag);
-            intent.putStringArrayListExtra("exams", physicalExams);
             startActivity(intent);
         }
 
