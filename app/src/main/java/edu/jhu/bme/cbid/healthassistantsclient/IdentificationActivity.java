@@ -21,6 +21,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -156,8 +157,19 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (!Settings.System.canWrite(IdentificationActivity.this)) {
-                        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_READ_EXTERNAL);
+                        if (ContextCompat.checkSelfPermission(IdentificationActivity.this,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                != PackageManager.PERMISSION_GRANTED) {
+                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_READ_EXTERNAL);
+                        } else if (ContextCompat.checkSelfPermission(IdentificationActivity.this,
+                                Manifest.permission.CAMERA)
+                                != PackageManager.PERMISSION_GRANTED) {
+                            requestPermissions(new String[]{Manifest.permission.CAMERA,
+                                    Manifest.permission.CAMERA}, REQUEST_CAMERA);
+                        } else {
+                            dispatchTakePictureIntent();
+                        }
                     } else {
                         dispatchTakePictureIntent();
                     }
@@ -629,10 +641,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 Log.e("Camera Permissions", "Permission Denied");
             }
         } else if (requestCode == REQUEST_READ_EXTERNAL) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                dispatchTakePictureIntent();
-            } else {
-                Log.e("Camera Permissions", "Permission Denied");
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+
+                Log.e("Read/Write Permissions", "Permission Denied");
             }
         }
     }
