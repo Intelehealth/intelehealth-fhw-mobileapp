@@ -8,15 +8,8 @@ import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.NumberPicker;
-import android.widget.TextView;
-
+import android.widget.*;
+import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
@@ -29,8 +22,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
 
 /**
  * Created by tusharjois on 3/22/16.
@@ -54,7 +45,7 @@ public class HelperMethods {
     }
 
     /**
-     * Turns the mind map into a JOSN Object that can be manipulated.
+     * Turns the mind map into a JSON Object that can be manipulated.
      * @param context The current context.
      * @param fileName The name of the JSON file to use.
      * @return fileName converted into the proper JSON Object to use
@@ -74,7 +65,6 @@ public class HelperMethods {
         }
 
         try {
-
             encoded = new JSONObject(raw_json);
         } catch (JSONException e) {
             e.printStackTrace();

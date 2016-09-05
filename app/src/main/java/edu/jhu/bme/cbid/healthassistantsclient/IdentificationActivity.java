@@ -13,13 +13,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -32,6 +33,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,8 +42,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
-import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
 
 /**
  * Created by Amal Afroz Alam on 3/25/16.
@@ -81,8 +81,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
     ImageView mImageView;
     String mCurrentPhotoPath;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-    static final int REQUEST_TAKE_PHOTO = 1;
+    private static final int REQUEST_CAMERA = 0; // To identify a camera permissions request
+    private static final int REQUEST_READ_EXTERNAL = 1;
 
 
     @Override
@@ -123,13 +123,13 @@ public class IdentificationActivity extends AppCompatActivity {
         mCountry.setText(country);
 
         //Check to see if the permission was given to take pictures.
-        if (ContextCompat.checkSelfPermission(IdentificationActivity.this,
+        /*if (ContextCompat.checkSelfPermission(IdentificationActivity.this,
                 Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(IdentificationActivity.this,
-                    new String[]{Manifest.permission.CAMERA}, 2); // 2 is a constant
-        }
+                    new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
+        }*/
 
         //When either button is clicked, that information needs to be stored.
         mGenderF.setOnClickListener(new View.OnClickListener() {
@@ -154,7 +154,16 @@ public class IdentificationActivity extends AppCompatActivity {
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dispatchTakePictureIntent();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (!Settings.System.canWrite(IdentificationActivity.this)) {
+                        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_READ_EXTERNAL);
+                    } else {
+                        dispatchTakePictureIntent();
+                    }
+                } else {
+                    dispatchTakePictureIntent();
+                }
             }
         });
 
@@ -448,19 +457,22 @@ public class IdentificationActivity extends AppCompatActivity {
                 photoFile = createImageFile();
             } catch (IOException ex) {
                 // Error occurred while creating the File
+                Log.e(LOG_TAG, ex.getMessage());
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                         Uri.fromFile(photoFile));
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                startActivityForResult(takePictureIntent, REQUEST_CAMERA);
             }
+        } else {
+            Log.e(LOG_TAG, "No camera activity to handle image capture");
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_CAMERA && resultCode == RESULT_OK) {
             Bitmap imageBitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
             mImageView.setImageBitmap(imageBitmap);
         }
@@ -606,6 +618,23 @@ public class IdentificationActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CAMERA) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                dispatchTakePictureIntent();
+            } else {
+                Log.e("Camera Permissions", "Permission Denied");
+            }
+        } else if (requestCode == REQUEST_READ_EXTERNAL) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                dispatchTakePictureIntent();
+            } else {
+                Log.e("Camera Permissions", "Permission Denied");
+            }
+        }
     }
 }
 
