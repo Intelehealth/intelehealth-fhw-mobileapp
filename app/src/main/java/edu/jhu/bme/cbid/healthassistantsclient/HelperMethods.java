@@ -1,11 +1,22 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
@@ -16,17 +27,21 @@ import org.joda.time.PeriodType;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by tusharjois on 3/22/16.
  */
 public class HelperMethods {
+
+    public static final String LOG_TAG = "Helper Methods";
 
     public static int getAge(String s) {
         if (s == null) return 0;
@@ -707,6 +722,94 @@ public class HelperMethods {
         durationDialog.show();
     }
 
+    // Camera as an Input Type
+    // All Activities that use this code need to implement onActivityResult and onRequestPermissionsResult
+    public static final int REQUEST_CAMERA = 0; // To identify a camera permissions request
+    public static final int REQUEST_READ_EXTERNAL = 1;
 
+
+    static File createImageFile(String uuidString) throws IOException {
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                uuidString,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+
+
+        //TODO: upload this to google drive using a service, and then store the public share link into android
+
+
+        return image;
+    }
+
+    static String[] startImageCapture(Context context, Activity activity) {
+
+        String[] results = null;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.System.canWrite(context)) {
+                if (ContextCompat.checkSelfPermission(context,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_READ_EXTERNAL);
+                } else if (ContextCompat.checkSelfPermission(context,
+                        Manifest.permission.CAMERA)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA,
+                            Manifest.permission.CAMERA}, REQUEST_CAMERA);
+                } else {
+                    results = dispatchTakePictureIntent(REQUEST_CAMERA, activity);
+                }
+            } else {
+                results = dispatchTakePictureIntent(REQUEST_CAMERA, activity);
+            }
+        } else {
+            results = dispatchTakePictureIntent(REQUEST_CAMERA, activity);
+        }
+
+        return results;
+    }
+
+    static String[] dispatchTakePictureIntent(int requestType, Activity activity) {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        String[] results = null;
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(activity.getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+
+            try {
+                String uuidString = UUID.randomUUID().toString();
+                photoFile = HelperMethods.createImageFile(uuidString);
+
+                // Save a file: path for use with ACTION_VIEW intents
+                String imagePath = photoFile.getAbsolutePath();
+
+                results = new String[2];
+                results[0] = uuidString;
+                results[1] = imagePath;
+
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                Log.e(LOG_TAG, ex.getMessage());
+            }
+
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                        Uri.fromFile(photoFile));
+                activity.startActivityForResult(takePictureIntent, requestType);
+            }
+
+        } else {
+            Log.e(LOG_TAG, "No camera activity to handle image capture");
+        }
+
+        return results;
+    }
 
 }

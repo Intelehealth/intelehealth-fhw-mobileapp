@@ -1,6 +1,5 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
-import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.*;
 import android.content.pm.PackageManager;
@@ -8,18 +7,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -34,10 +27,14 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
 
-import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
+import static edu.jhu.bme.cbid.healthassistantsclient.HelperMethods.REQUEST_CAMERA;
+import static edu.jhu.bme.cbid.healthassistantsclient.HelperMethods.REQUEST_READ_EXTERNAL;
 
 /**
  * Created by Amal Afroz Alam on 3/25/16.
@@ -77,8 +74,6 @@ public class IdentificationActivity extends AppCompatActivity {
 
     ImageView mImageView;
     String mCurrentPhotoPath;
-    private static final int REQUEST_CAMERA = 0; // To identify a camera permissions request
-    private static final int REQUEST_READ_EXTERNAL = 1;
 
 
     @Override
@@ -152,26 +147,11 @@ public class IdentificationActivity extends AppCompatActivity {
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (!Settings.System.canWrite(IdentificationActivity.this)) {
-                        if (ContextCompat.checkSelfPermission(IdentificationActivity.this,
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                != PackageManager.PERMISSION_GRANTED) {
-                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                    Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_READ_EXTERNAL);
-                        } else if (ContextCompat.checkSelfPermission(IdentificationActivity.this,
-                                Manifest.permission.CAMERA)
-                                != PackageManager.PERMISSION_GRANTED) {
-                            requestPermissions(new String[]{Manifest.permission.CAMERA,
-                                    Manifest.permission.CAMERA}, REQUEST_CAMERA);
-                        } else {
-                            dispatchTakePictureIntent();
-                        }
-                    } else {
-                        dispatchTakePictureIntent();
-                    }
-                } else {
-                    dispatchTakePictureIntent();
+                String[] results = HelperMethods.startImageCapture(IdentificationActivity.this,
+                        IdentificationActivity.this);
+                if (results != null) {
+                    mPhoto = results[0];
+                    mCurrentPhotoPath = results[1];
                 }
             }
         });
@@ -427,59 +407,8 @@ public class IdentificationActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Once a picture of the patient is taken, this method timestamps the picture and stores it.
-     *
-     * @return File
-     * @throws IOException
-     */
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        // String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        // mPhoto = "PATIENT_" + timeStamp;
-
-        mPhoto = UUID.randomUUID().toString();
-
-        File storageDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                mPhoto,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        // mCurrentPhotoPath = "file:" + image.getAbsolutePath();
-        mCurrentPhotoPath = image.getAbsolutePath();
-
-        //TODO: upload this to google drive using a service, and then store the public share link into android
 
 
-        return image;
-    }
-
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-                Log.e(LOG_TAG, ex.getMessage());
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                        Uri.fromFile(photoFile));
-                startActivityForResult(takePictureIntent, REQUEST_CAMERA);
-            }
-        } else {
-            Log.e(LOG_TAG, "No camera activity to handle image capture");
-        }
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -648,13 +577,16 @@ public class IdentificationActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_CAMERA) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                dispatchTakePictureIntent();
+                String[] results = HelperMethods.dispatchTakePictureIntent(REQUEST_CAMERA, IdentificationActivity.this);
+                if (results != null) {
+                    mPhoto = results[0];
+                    mCurrentPhotoPath = results[1];
+                }
             } else {
                 Log.e("Camera Permissions", "Permission Denied");
             }
         } else if (requestCode == REQUEST_READ_EXTERNAL) {
             if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-
                 Log.e("Read/Write Permissions", "Permission Denied");
             }
         }
