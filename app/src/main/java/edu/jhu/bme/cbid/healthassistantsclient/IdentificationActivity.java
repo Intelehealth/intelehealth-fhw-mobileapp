@@ -2,10 +2,7 @@ package edu.jhu.bme.cbid.healthassistantsclient;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.*;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -39,10 +37,7 @@ import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * Created by Amal Afroz Alam on 3/25/16.
@@ -98,7 +93,9 @@ public class IdentificationActivity extends AppCompatActivity {
         //Initialize the local database to store patient information
         mDbHelper = new LocalRecordsDatabaseHelper(this);
         localdb = mDbHelper.getWritableDatabase();
-        idPreFix = "JHU";
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        idPreFix = sharedPref.getString(SettingsActivity.KEY_PREF_ID_PREFIX, "");
 
         mFirstName = (EditText) findViewById(R.id.identification_first_name);
         mMiddleName = (EditText) findViewById(R.id.identification_middle_name);
@@ -438,9 +435,11 @@ public class IdentificationActivity extends AppCompatActivity {
      */
     private File createImageFile() throws IOException {
         // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        // String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        // mPhoto = "PATIENT_" + timeStamp;
 
-        mPhoto = "PATIENT_" + timeStamp;
+        mPhoto = UUID.randomUUID().toString();
+
         File storageDir = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
@@ -513,10 +512,23 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if (idCursor.getCount() > 0) {
                 String lastIDString = idCursor.getString(idCursor.getColumnIndexOrThrow("_id")); //Grab the last patientID
-                String lastID = lastIDString.substring(idPreFix.length()); //Grab the last integer of the patientID
-                Log.d(LOG_TAG, String.valueOf(lastID));
-                Integer newInteger = Integer.valueOf(lastID) + 1; //Increment it by 1
-                Log.d(LOG_TAG, String.valueOf(newInteger));
+
+                Integer newInteger = 0;
+                // TODO: Handle case where ID is changed to something else and then changed back
+                // The above will most likely be solved by the automatic assignment of IDs in the future
+                try {
+                    if (lastIDString.substring(0, lastIDString.length() - 1) == idPreFix) { // ID hasn't changed
+                        String lastID = lastIDString.substring(idPreFix.length()); //Grab the last integer of the patientID
+                        Log.d(LOG_TAG, String.valueOf(lastID));
+                        newInteger = Integer.valueOf(lastID);
+                    }
+                } catch(Exception e) {
+                    newInteger = 0; // ID was probably changed
+                } finally {
+                    Log.d(LOG_TAG, String.valueOf(newInteger));
+                    newInteger++; //Increment it by 1
+                }
+
                 patientID = idPreFix + String.valueOf(newInteger); //This patient is assigned the new incremented number
                 Log.d(LOG_TAG, patientID);
                 patient.setId(patientID);

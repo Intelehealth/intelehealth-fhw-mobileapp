@@ -193,8 +193,16 @@ public class PatientDetailActivity extends AppCompatActivity {
         String[] medHistColumms = {"value", " concept_id"};
         Cursor medHistCursor = db.query("obs", medHistColumms, medHistSelection, medHistArgs, null, null, null);
         medHistCursor.moveToLast();
-        String medHistValue = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
-        medHistCursor.close();
+
+        String medHistValue;
+
+        try {
+            medHistValue = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+        } catch (Exception e) {
+            medHistValue = "";
+        } finally {
+            medHistCursor.close();
+        }
 
         if(medHistValue != null && !medHistValue.equals("")){
             medHistView.setText(medHistValue);
@@ -208,8 +216,15 @@ public class PatientDetailActivity extends AppCompatActivity {
         String[] famHistColumns = {"value", " concept_id"};
         Cursor famHistCursor = db.query("obs", famHistColumns, famHistSelection, famHistArgs, null, null, null);
         famHistCursor.moveToLast();
-        String famHistValue = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
-        famHistCursor.close();
+        String famHistValue;
+
+        try {
+            famHistValue = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
+        } catch (IllegalArgumentException e) {
+            famHistValue = "";
+        } finally {
+            famHistCursor.close();
+        }
 
         if(famHistValue != null && !famHistValue.equals("")){
             famHistView.setText(famHistValue);
