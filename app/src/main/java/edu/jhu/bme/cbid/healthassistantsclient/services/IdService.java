@@ -1,9 +1,10 @@
-package edu.jhu.bme.cbid.healthassistantsclient;
+package edu.jhu.bme.cbid.healthassistantsclient.services;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
@@ -12,23 +13,21 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.v7.app.NotificationCompat;
 import android.util.Base64;
 import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
+import edu.jhu.bme.cbid.healthassistantsclient.LocalRecordsDatabaseHelper;
+import edu.jhu.bme.cbid.healthassistantsclient.R;
+import edu.jhu.bme.cbid.healthassistantsclient.SettingsActivity;
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
 import edu.jhu.bme.cbid.healthassistantsclient.objects.PatientImage;
+
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Sends Identification data to OpenMRS and receives the OpenMRS ID of the newly-created patient
@@ -169,7 +168,8 @@ public class IdService extends IntentService {
     }
 
     public String sendData(String jsonString) {
-        final String serverAddress = "openmrs.amal.io:8443/openmrs/ws/rest/v1/";
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        final String serverAddress = sharedPref.getString(SettingsActivity.KEY_PREF_SERVER_URL, "");
 
         HttpURLConnection urlConnection;
         DataOutputStream printout;

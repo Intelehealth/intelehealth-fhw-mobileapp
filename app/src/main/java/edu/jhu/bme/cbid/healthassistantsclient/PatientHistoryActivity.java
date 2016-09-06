@@ -9,9 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ExpandableListView;
-
-import java.util.ArrayList;
-
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
 
 public class PatientHistoryActivity extends AppCompatActivity {

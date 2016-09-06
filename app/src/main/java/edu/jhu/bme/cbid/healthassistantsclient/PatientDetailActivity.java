@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.print.PrintAttributes;
@@ -24,7 +26,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TableRow;
 import android.widget.TextView;
-
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
 
 public class PatientDetailActivity extends AppCompatActivity {
@@ -156,14 +157,16 @@ public class PatientDetailActivity extends AppCompatActivity {
         TextView famHistView = (TextView) findViewById(R.id.textView_famHist);
 
         if (patient.getMiddleName() == null) {
-            patientName = patient.getFirstName() + " " + patient.getLastName();
+            patientName = patient.getLastName() + ", " + patient.getFirstName();
         } else {
-            patientName = patient.getFirstName() + " " + patient.getMiddleName() + " " + patient.getLastName();
+            patientName = patient.getLastName() + ", " + patient.getFirstName() + " " + patient.getMiddleName();
         }
         setTitle(patientName);
 
-        if(patient.getPatientPhoto() != null){
-            //Develop picture naming convention
+        if (patient.getPatientPhoto() != null || patient.getPatientPhoto() != ""){
+            Bitmap imageBitmap = BitmapFactory.decodeFile(patient.getPatientPhoto());
+            ImageView mImageView = (ImageView) findViewById(R.id.imageView_patient);
+            mImageView.setImageBitmap(imageBitmap);
         }
 
 
@@ -190,8 +193,16 @@ public class PatientDetailActivity extends AppCompatActivity {
         String[] medHistColumms = {"value", " concept_id"};
         Cursor medHistCursor = db.query("obs", medHistColumms, medHistSelection, medHistArgs, null, null, null);
         medHistCursor.moveToLast();
-        String medHistValue = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
-        medHistCursor.close();
+
+        String medHistValue;
+
+        try {
+            medHistValue = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+        } catch (Exception e) {
+            medHistValue = "";
+        } finally {
+            medHistCursor.close();
+        }
 
         if(medHistValue != null && !medHistValue.equals("")){
             medHistView.setText(medHistValue);
@@ -205,14 +216,23 @@ public class PatientDetailActivity extends AppCompatActivity {
         String[] famHistColumns = {"value", " concept_id"};
         Cursor famHistCursor = db.query("obs", famHistColumns, famHistSelection, famHistArgs, null, null, null);
         famHistCursor.moveToLast();
-        String famHistValue = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
-        famHistCursor.close();
+        String famHistValue;
+
+        try {
+            famHistValue = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
+        } catch (IllegalArgumentException e) {
+            famHistValue = "";
+        } finally {
+            famHistCursor.close();
+        }
 
         if(famHistValue != null && !famHistValue.equals("")){
             famHistView.setText(famHistValue);
         } else {
             famHistView.setText(getString(R.string.string_no_hist));
         }
+
+
 
     }
 
@@ -233,26 +253,39 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
         });
 
+        String patientDob = ((TextView) findViewById(R.id.textView_DOB)).getText().toString();
+        String patientAge = ((TextView) findViewById(R.id.textView_age)).getText().toString();
+        String patientAddr1 = ((TextView) findViewById(R.id.textView_address_1)).getText().toString();
+        String patientAddr2 = ((TextView) findViewById(R.id.textView_address2)).getText().toString();
+        String patientAddrFinal = ((TextView) findViewById(R.id.textView_address_final)).getText().toString();
+        String patientPhone = ((TextView) findViewById(R.id.textView_phone)).getText().toString();
+        String patientMedHist = ((TextView) findViewById(R.id.textView_patHist)).getText().toString();
+        String patientFamHist = ((TextView) findViewById(R.id.textView_famHist)).getText().toString();
+
+
+
+
         // Generate an HTML document on the fly:
-//        String htmlDocument =
-//                String.format("<h1 id=\"Intelehealth-patient-detail\">Intelehealth Patient Detail</h1>\n" +
-//                                "<h1>%s</h1>\n" +
-//                                "<h2 id=\"basic-information\">Basic Information</h2>\n" +
-//                                "<ul>\n" +
-//                                "<li>%s</li>\n" +
-//                                "<li>%s</li>\n" +
-//                                "<li>%s</li>\n" +
-//                                "</ul>\n" +
-//                                "<h2 id=\"address-and-contact\">Address and Contact</h2>\n" +
-//                                "<p>%s</p>\n" +
-//                                "<p>%s</p>\n" +
-//                                "<p>%s</p>\n" +
-//                                "<h2 id=\"recent-vists\">Recent Vists</h2>\n" +
-//                                "<h2 id=\"patient-history\">Patient History</h2>\n" +
-//                                "<h2 id=\"family-history\">Family History</h2>\n" +
-//                                "<h2 id=\"current-medications\">Current Medications</h2>",
-//                        mPatientName, mPatientDob, mOccupation, mSdw, mAddress, mCityState, mPhone);
-        String htmlDocument = "";
+        String htmlDocument =
+                String.format("<h1 id=\"Intelehealth-patient-detail\">Intelehealth Patient Detail</h1>\n" +
+                                "<h1>%s</h1>\n" +
+                                "<h2 id=\"basic-information\">Basic Information</h2>\n" +
+                                "<p><b>Patient ID</b>: %s</p>\n" +
+                                "<p><b>Date of Birth</b>: %s</p>\n" +
+                                "<p><b>Age</b>: %s</p>\n" +
+                                "<h2 id=\"address-and-contact\">Address and Contact</h2>\n" +
+                                "<p>%s</p>\n" +
+                                "<p>%s</p>\n" +
+                                "<p>%s</p>\n" +
+                                "<p>Phone Number: %s</p>\n" +
+                                "<h2 id=\"recent-vists\">Recent Vists</h2>\n" +
+                                "<h2 id=\"patient-history\">Patient History</h2>\n" +
+                                "<p>%s</p>\n" +
+                                "<h2 id=\"family-history\">Family History</h2>\n" +
+                                "<p>%s</p>\n" +
+                                "<h2 id=\"current-medications\">Current Medications</h2>",
+                        patientName, patientID, patientDob, patientAge, patientAddr1,
+                        patientAddr2, patientAddrFinal, patientPhone, patientMedHist, patientFamHist);
         webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
 
         // Keep a reference to WebView object until you pass the PrintDocumentAdapter

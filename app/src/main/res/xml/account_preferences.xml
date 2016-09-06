@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/generic_coming_soon" />
+    <PreferenceScreen
+            android:key="key1"
+            android:title="@string/generic_coming_soon"
+            android:summary="@string/generic_coming_soon">
+        <intent
+                android:action="key1.ACTION"
+                android:targetPackage="key1.package"
+                android:targetClass="key1.class" />
+    </PreferenceScreen>
+</PreferenceScreen>
