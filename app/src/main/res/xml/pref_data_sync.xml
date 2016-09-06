@@ -6,7 +6,7 @@
     <EditTextPreference
             android:key="server_url"
             android:title="@string/pref_title_server_url"
-            android:defaultValue="https://openmrs.amal.io:8443/openmrs/ws/rest/v1/"
+            android:defaultValue="http://openmrs.amal.io:8080/openmrs/ws/rest/v1/"
             android:negativeButtonText="@string/generic_cancel"
             android:positiveButtonText="@string/generic_ok"
             android:inputType="textUri"
