@@ -724,6 +724,7 @@ public class HelperMethods {
 
     // Camera as an Input Type
     // All Activities that use this code need to implement onActivityResult and onRequestPermissionsResult
+    // See IdentificationActivity for implementation details
     public static final int REQUEST_CAMERA = 0; // To identify a camera permissions request
     public static final int REQUEST_READ_EXTERNAL = 1;
 
@@ -736,8 +737,6 @@ public class HelperMethods {
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
-
-
 
         //TODO: upload this to google drive using a service, and then store the public share link into android
 

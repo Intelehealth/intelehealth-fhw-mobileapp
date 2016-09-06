@@ -54,6 +54,8 @@
     <string name="menu_option_sync">Sync Data</string>
     <string name="menu_option_settings">Settings</string>
     <string name="menu_option_end_of_day">End of Day</string>
+    <string name="menu_option_logout">Logout</string>
+
 
     //Identification Screen
     <string name="title_activity_identification">Add New Patient</string>

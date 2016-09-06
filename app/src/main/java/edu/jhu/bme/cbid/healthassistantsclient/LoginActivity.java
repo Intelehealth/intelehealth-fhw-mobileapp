@@ -1,17 +1,17 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.provider.Settings;
-import android.support.v7.app.AppCompatActivity;
-
 import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.Settings;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -51,11 +51,25 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    protected AccountManager manager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // Persistent login information
+        manager = AccountManager.get(LoginActivity.this);
+        Account[] accountList = manager.getAccountsByType("io.intelehealth.openmrs");
+        if (accountList.length > 0) {
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+
+
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         // populateAutoComplete(); TODO: create our own autocomplete code
@@ -315,6 +329,7 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 // Simulate network access.
                 Thread.sleep(2000);
+
             } catch (InterruptedException e) {
                 return false;
             }
@@ -327,7 +342,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
 
-            return true;
+            return false;
         }
 
         @Override
@@ -336,6 +351,9 @@ public class LoginActivity extends AppCompatActivity {
             showProgress(false);
 
             if (success) {
+                final Account account = new Account(mEmail, "io.intelehealth.openmrs");
+                manager.addAccountExplicitly(account, mPassword, null);
+
                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                 startActivity(intent);
                 finish();

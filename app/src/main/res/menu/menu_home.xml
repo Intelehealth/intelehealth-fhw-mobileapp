@@ -18,5 +18,10 @@
             android:title="@string/menu_option_end_of_day"
             android:orderInCategory="200" />
 
+        <item
+                android:id="@+id/logoutOption"
+                android:title="@string/menu_option_logout"
+                android:orderInCategory="400" />
+
     </group>
 </menu>

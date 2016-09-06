@@ -1,6 +1,9 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -70,6 +73,9 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.endOfDayOption:
                 endOfDay();
                 return true;
+            case R.id.logoutOption:
+                logout();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -106,6 +112,21 @@ public class HomeActivity extends AppCompatActivity {
         // TODO: sync all the data recorded to EHR, and sync back locally
         // Information to sync includes credentials and patient info
         // Bandwidth heavy task
+    }
+
+    public void logout() {
+        AccountManager manager = AccountManager.get(HomeActivity.this);
+        Account[] accountList = manager.getAccountsByType("io.intelehealth.openmrs");
+        if (accountList.length > 0) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                manager.removeAccount(accountList[0], HomeActivity.this, null, null);
+            } else {
+                manager.removeAccount(accountList[0], null, null); // Legacy implementation
+            }
+            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
 }

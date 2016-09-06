@@ -1,4 +1,4 @@
-package edu.jhu.bme.cbid.healthassistantsclient;
+package edu.jhu.bme.cbid.healthassistantsclient.services;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -19,6 +19,9 @@ import android.util.Base64;
 import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import edu.jhu.bme.cbid.healthassistantsclient.LocalRecordsDatabaseHelper;
+import edu.jhu.bme.cbid.healthassistantsclient.R;
+import edu.jhu.bme.cbid.healthassistantsclient.SettingsActivity;
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
 import edu.jhu.bme.cbid.healthassistantsclient.objects.PatientImage;
 
