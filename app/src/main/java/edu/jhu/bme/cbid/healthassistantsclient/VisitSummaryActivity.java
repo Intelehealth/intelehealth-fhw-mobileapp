@@ -75,10 +75,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     Context context;
 
-    String patientID = "1";
+    String patientID;
     String visitID;
     String patientName;
-    String patientStatus;
     String intentTag;
 
     LocalRecordsDatabaseHelper mDbHelper;
@@ -168,16 +167,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
             patientID = intent.getStringExtra("patientID");
             visitID = intent.getStringExtra("visitID");
             patientName = intent.getStringExtra("name");
-            patientStatus = intent.getStringExtra("status");
             intentTag = intent.getStringExtra("tag");
             Log.v(LOG_TAG, "Patient ID: " + patientID);
             Log.v(LOG_TAG, "Visit ID: " + visitID);
             Log.v(LOG_TAG, "Patient Name: " + patientName);
-            Log.v(LOG_TAG, "Status: " + patientStatus);
             Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
-        setTitle(patientName + ": " + getTitle());
+        String titleSequence = patientName + ": " + getTitle();
+        setTitle(titleSequence);
 
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         db = mDbHelper.getWritableDatabase();
@@ -214,7 +212,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 intent1.putExtra("patientID", patientID);
                 intent1.putExtra("visitID", visitID);
                 intent1.putExtra("name", patientName);
-                intent1.putExtra("status", patientStatus);
                 intent1.putExtra("tag", "edit");
                 startActivity(intent1);
             }
@@ -227,7 +224,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 intent1.putExtra("patientID", patientID);
                 intent1.putExtra("visitID", visitID);
                 intent1.putExtra("name", patientName);
-                intent1.putExtra("status", patientStatus);
                 intent1.putExtra("tag", "edit");
                 startActivity(intent1);
 
@@ -241,7 +237,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 intent1.putExtra("patientID", patientID);
                 intent1.putExtra("visitID", visitID);
                 intent1.putExtra("name", patientName);
-                intent1.putExtra("status", patientStatus);
                 intent1.putExtra("tag", "edit");
                 startActivity(intent1);
 
@@ -255,7 +250,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 intent1.putExtra("patientID", patientID);
                 intent1.putExtra("visitID", visitID);
                 intent1.putExtra("name", patientName);
-                intent1.putExtra("status", patientStatus);
                 intent1.putExtra("tag", "edit");
                 startActivity(intent1);
 
@@ -269,7 +263,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 intent1.putExtra("patientID", patientID);
                 intent1.putExtra("visitID", visitID);
                 intent1.putExtra("name", patientName);
-                intent1.putExtra("status", patientStatus);
                 intent1.putExtra("tag", "edit");
                 startActivity(intent1);
 
@@ -316,12 +309,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
         Double mWeight = Double.parseDouble(weight.getValue());
         Double mHeight = Double.parseDouble(height.getValue());
 
-        double numerator = mWeight;
+        double numerator = mWeight * 10000;
         double denominator = (mHeight) * (mHeight);
-
         double bmi_value = numerator / denominator;
-
         mBMI = String.format(Locale.ENGLISH, "%,2f", bmi_value);
+
+
         bmiView.setText(mBMI);
         tempView.setText(temperature.getValue());
         spO2View.setText(spO2.getValue());
@@ -343,8 +336,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     public void queryData(String dataString) {
 
-        String selection = "_id MATCH ?";
-        String[] args = {dataString};
+        String patientSelection = "_id MATCH ?";
+        String[] patientArgs = {dataString};
 
         ArrayList<String> uploadedFields = new ArrayList<>();
 
@@ -352,7 +345,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String[] columnsToReturn = {"first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "phone_number", "gender", "patient_photo"};
-        final Cursor idCursor = db.query(table, columnsToReturn, selection, args, null, null, null);
+        final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
 
         if (idCursor.moveToFirst()) {
             do {
@@ -372,12 +365,37 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         idCursor.close();
 
-        selection = "patient_id = ?";
+        String famHistSelection = "patient_id = ? AND concept_id = ?";
+        String[] famHistArgs = {dataString, "163187"};
 
         String[] columns = {"value", " concept_id"};
-        String orderBy = "concept_id";
-        Cursor visitCursor = db.query("obs", columns, selection, args, null, null, orderBy);
+        String orderBy = "visit_id";
+        Cursor famHistCursor = db.query("obs", columns, famHistSelection, famHistArgs, null, null, orderBy);
+        famHistCursor.moveToLast();
+        String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
+        famHistory.setValue(famHistText);
+        famHistCursor.close();
 
+
+        String medHistSelection = "patient_id = ? AND concept_id = ?";
+        String[] medHistArgs = {dataString, "163188"};
+        Cursor medHistCursor = db.query("obs", columns, medHistSelection, medHistArgs, null, null, orderBy);
+        medHistCursor.moveToLast();
+        String medHistText = medHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
+        patHistory.setValue(medHistText);
+        if (!medHistText.isEmpty()) {
+            medHistory = patHistory.getValue();
+            medHistory = medHistory.replace("\"", "");
+            medHistory = medHistory.replace("\n", "");
+            do {
+                medHistory = medHistory.replace("  ", "");
+            } while (medHistory.contains("  "));
+        }
+        medHistCursor.close();
+
+        String visitSelection = "patient_id = ? AND visit_id = ?";
+        String[] visitArgs = {dataString, visitID};
+        Cursor visitCursor = db.query("obs", columns, visitSelection, visitArgs, null, null, orderBy);
         if (visitCursor.moveToFirst()) {
             do {
                 int dbConceptID = visitCursor.getInt(visitCursor.getColumnIndex("concept_id"));
@@ -390,20 +408,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     private void parseData(int concept_id, String value) {
         switch (concept_id) {
-            case 163187: //Medical History
-                patHistory.setValue(value);
-                if (!value.isEmpty()) {
-                    medHistory = patHistory.getValue();
-                    medHistory = medHistory.replace("\"", "");
-                    medHistory = medHistory.replace("\n", "");
-                    do {
-                        medHistory = medHistory.replace("  ", "");
-                    } while (medHistory.contains("  "));
-                }
-                break;
-            case 163188: //Family History
-                famHistory.setValue(value);
-                break;
             case 163186: //Current Complaint
                 complaint.setValue(value);
                 break;
@@ -486,6 +490,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 String.format("<h1 id=\"intelecare-patient-detail\">Intelehealth Visit Summary</h1>\n" +
                                 "<h1>%s</h1>\n" +
                                 "<p>%s</p>\n" +
+                                "<p>%s</p>\n" +
                                 "<h2 id=\"patient-information\">Patient Information</h2>\n" +
                                 "<ul>\n" +
                                 "<li>%s</li>\n" +
@@ -511,9 +516,21 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 "<h2 id=\"complaint\">Complaint and Observations</h2>" +
                                 "<li>%s</li>\n" +
                                 "<h2 id=\"examination\">On Examination</h2>" +
-                                "<p>%s</p>\n",
-                        mPatientName, mDate, mPatientDob, "Database error", "Database error", mAddress, mCityState, mPhone, mHeight, mWeight,
-                        mBMI, mBP, mPulse, mTemp, mSPO2, mPatHist, mFamHist, mComplaint, mExam);
+                                "<p>%s</p>\n" +
+                                "<h2 id=\"complaint\">Diagnosis</h2>" +
+                                "<li>%s</li>\n" +
+                                "<h2 id=\"complaint\">Prescription</h2>" +
+                                "<li>%s</li>\n" +
+                                "<h2 id=\"complaint\">Tests To Be Performed</h2>" +
+                                "<li>%s</li>\n" +
+                                "<h2 id=\"complaint\">General Advices</h2>" +
+                                "<li>%s</li>\n" +
+                                "<h2 id=\"complaint\">Doctor's Name</h2>" +
+                                "<li>%s</li>\n" +
+                                "<h2 id=\"complaint\">Additional Comments</h2>" +
+                                "<li>%s</li>\n",
+                        mPatientName, patientID, mDate, mPatientDob, "Database error", "Database error", mAddress, mCityState, mPhone, mHeight, mWeight,
+                        mBMI, mBP, mPulse, mTemp, mSPO2, mPatHist, mFamHist, mComplaint, mExam, diagnosisReturned, rxReturned, testsReturned, adviceReturned, doctorName, additionalReturned);
         webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
 
         // Keep a reference to WebView object until you pass the PrintDocumentAdapter
