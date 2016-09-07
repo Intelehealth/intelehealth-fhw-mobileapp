@@ -174,18 +174,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
             Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
-        patientID = "AAA1";
-        visitID = "1";
-        patientName = "Amal Alam";
-
         String titleSequence = patientName + ": " + getTitle();
         setTitle(titleSequence);
 
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         db = mDbHelper.getWritableDatabase();
 
-        //identifierNumber = patientID;
-        identifierNumber = "AAA4";
+        identifierNumber = patientID;
 
         int checkedDigit = checkDigit(identifierNumber);
         Log.d(LOG_TAG, "check digit" + String.valueOf(checkedDigit));
@@ -796,7 +791,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 Log.d(LOG_TAG, thisDate);
 
-                String searchString = "ADULTINITIAL " + thisDate;
+                String searchString = "Visit Note " + thisDate;
 
                 if (resultsArray.length() != 0) {
                     for (int i = 0; i < resultsArray.length(); i++) {
