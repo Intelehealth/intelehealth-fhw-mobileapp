@@ -75,10 +75,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     Context context;
 
-    String patientID = "1";
+    String patientID;
     String visitID;
     String patientName;
-    String patientStatus;
     String intentTag;
 
     LocalRecordsDatabaseHelper mDbHelper;
@@ -168,16 +167,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
             patientID = intent.getStringExtra("patientID");
             visitID = intent.getStringExtra("visitID");
             patientName = intent.getStringExtra("name");
-            patientStatus = intent.getStringExtra("status");
             intentTag = intent.getStringExtra("tag");
             Log.v(LOG_TAG, "Patient ID: " + patientID);
             Log.v(LOG_TAG, "Visit ID: " + visitID);
             Log.v(LOG_TAG, "Patient Name: " + patientName);
-            Log.v(LOG_TAG, "Status: " + patientStatus);
             Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
-        setTitle(patientName + ": " + getTitle());
+        String titleSequence = patientName + ": " + getTitle() + "\nID: " + patientID;
+        setTitle(titleSequence);
 
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         db = mDbHelper.getWritableDatabase();
@@ -214,7 +212,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 intent1.putExtra("patientID", patientID);
                 intent1.putExtra("visitID", visitID);
                 intent1.putExtra("name", patientName);
-                intent1.putExtra("status", patientStatus);
                 intent1.putExtra("tag", "edit");
                 startActivity(intent1);
             }
@@ -227,7 +224,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 intent1.putExtra("patientID", patientID);
                 intent1.putExtra("visitID", visitID);
                 intent1.putExtra("name", patientName);
-                intent1.putExtra("status", patientStatus);
                 intent1.putExtra("tag", "edit");
                 startActivity(intent1);
 
@@ -241,7 +237,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 intent1.putExtra("patientID", patientID);
                 intent1.putExtra("visitID", visitID);
                 intent1.putExtra("name", patientName);
-                intent1.putExtra("status", patientStatus);
                 intent1.putExtra("tag", "edit");
                 startActivity(intent1);
 
@@ -255,7 +250,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 intent1.putExtra("patientID", patientID);
                 intent1.putExtra("visitID", visitID);
                 intent1.putExtra("name", patientName);
-                intent1.putExtra("status", patientStatus);
                 intent1.putExtra("tag", "edit");
                 startActivity(intent1);
 
@@ -269,7 +263,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 intent1.putExtra("patientID", patientID);
                 intent1.putExtra("visitID", visitID);
                 intent1.putExtra("name", patientName);
-                intent1.putExtra("status", patientStatus);
                 intent1.putExtra("tag", "edit");
                 startActivity(intent1);
 
@@ -316,12 +309,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
         Double mWeight = Double.parseDouble(weight.getValue());
         Double mHeight = Double.parseDouble(height.getValue());
 
-        double numerator = mWeight;
+        double numerator = mWeight * 10000;
         double denominator = (mHeight) * (mHeight);
-
         double bmi_value = numerator / denominator;
-
         mBMI = String.format(Locale.ENGLISH, "%,2f", bmi_value);
+
+
         bmiView.setText(mBMI);
         tempView.setText(temperature.getValue());
         spO2View.setText(spO2.getValue());
@@ -388,7 +381,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String[] medHistArgs = {dataString, "163188"};
         Cursor medHistCursor = db.query("obs", columns, medHistSelection, medHistArgs, null, null, orderBy);
         medHistCursor.moveToLast();
-        String medHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
+        String medHistText = medHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
         patHistory.setValue(medHistText);
         if (!medHistText.isEmpty()) {
             medHistory = patHistory.getValue();
@@ -402,7 +395,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         String visitSelection = "patient_id = ? AND visit_id = ?";
         String[] visitArgs = {dataString, visitID};
-        Cursor visitCursor = db.query("obs", columns, visitSelection, visitArgs, null, null, null);
+        Cursor visitCursor = db.query("obs", columns, visitSelection, visitArgs, null, null, orderBy);
         if (visitCursor.moveToFirst()) {
             do {
                 int dbConceptID = visitCursor.getInt(visitCursor.getColumnIndex("concept_id"));
@@ -497,6 +490,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 String.format("<h1 id=\"intelecare-patient-detail\">Intelehealth Visit Summary</h1>\n" +
                                 "<h1>%s</h1>\n" +
                                 "<p>%s</p>\n" +
+                                "<p>%s</p>\n" +
                                 "<h2 id=\"patient-information\">Patient Information</h2>\n" +
                                 "<ul>\n" +
                                 "<li>%s</li>\n" +
@@ -535,7 +529,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 "<li>%s</li>\n" +
                                 "<h2 id=\"complaint\">Additional Comments</h2>" +
                                 "<li>%s</li>\n",
-                        mPatientName, mDate, mPatientDob, "Database error", "Database error", mAddress, mCityState, mPhone, mHeight, mWeight,
+                        mPatientName, patientID, mDate, mPatientDob, "Database error", "Database error", mAddress, mCityState, mPhone, mHeight, mWeight,
                         mBMI, mBP, mPulse, mTemp, mSPO2, mPatHist, mFamHist, mComplaint, mExam, diagnosisReturned, rxReturned, testsReturned, adviceReturned, doctorName, additionalReturned);
         webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
 

@@ -1,5 +1,6 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -26,6 +27,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
 
 public class PatientDetailActivity extends AppCompatActivity {
@@ -78,6 +84,29 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                 if(visitID!=null){
                     intent2.putExtra("visitID", visitID);
+                } else {
+                    SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+                    Date todayDate = new Date();
+                    String thisDate = currentDate.format(todayDate);
+
+                    ContentValues visitData = new ContentValues();
+                    visitData.put("patient_id", patient.getId());
+                    visitData.put("start_datetime", thisDate);
+                    visitData.put("visit_type_id", 0);
+                    visitData.put("visit_location_id", 0);
+                    visitData.put("visit_creator", 0);
+
+                    LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(PatientDetailActivity.this);
+                    SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+                    Long visitLong = localdb.insert(
+                            "visit",
+                            null,
+                            visitData
+                    );
+
+                    visitID = String.valueOf(visitLong);
+                    localdb.close();
+
                 }
 
                 intent2.putExtra("name", fullName);
@@ -335,7 +364,6 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
     }
-
 
 
 }
