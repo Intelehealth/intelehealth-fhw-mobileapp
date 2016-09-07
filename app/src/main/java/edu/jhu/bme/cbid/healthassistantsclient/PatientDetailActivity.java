@@ -106,6 +106,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                     visitID = String.valueOf(visitLong);
                     localdb.close();
+                    intent2.putExtra("visitID", visitID);
 
                 }
 

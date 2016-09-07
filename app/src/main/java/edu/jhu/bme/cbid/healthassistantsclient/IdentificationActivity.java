@@ -1,7 +1,11 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
 import android.app.DatePickerDialog;
-import android.content.*;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -25,13 +29,14 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
-import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
 
 import static edu.jhu.bme.cbid.healthassistantsclient.HelperMethods.REQUEST_CAMERA;
 import static edu.jhu.bme.cbid.healthassistantsclient.HelperMethods.REQUEST_READ_EXTERNAL;

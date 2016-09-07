@@ -174,13 +174,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
             Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
+        patientID = "AAA1";
+        visitID = "1";
+        patientName = "Amal Alam";
+
         String titleSequence = patientName + ": " + getTitle();
         setTitle(titleSequence);
 
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         db = mDbHelper.getWritableDatabase();
 
-        identifierNumber = patientID;
+        //identifierNumber = patientID;
+        identifierNumber = "AAA4";
 
         int checkedDigit = checkDigit(identifierNumber);
         Log.d(LOG_TAG, "check digit" + String.valueOf(checkedDigit));
@@ -271,7 +276,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         assert fab != null;
-        uploaded = true;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -633,7 +637,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             assert responsePatient != null;
             ContentValues contentValuesOpenMRSID = new ContentValues();
             contentValuesOpenMRSID.put("openmrs_uuid", responsePatient.getResponseString());
-            String selection = "patient_id = ?";
+            String selection = "_id = ?";
             String[] args = {patientID};
 
             db.update(
@@ -646,8 +650,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String table = "visit";
             String[] columnsToReturn = {"start_datetime"};
             String orderBy = "start_datetime";
-            String visitSelection = "patientID = ?";
-            String[] visitArgs = {patientID};
+            String visitSelection = "_id = ?";
+            String[] visitArgs = {visitID};
             final Cursor visitCursor = db.query(table, columnsToReturn, visitSelection, visitArgs, null, null, orderBy);
             visitCursor.moveToLast();
             String startDateTime = visitCursor.getString(visitCursor.getColumnIndexOrThrow("start_datetime"));
@@ -792,7 +796,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 Log.d(LOG_TAG, thisDate);
 
-                String searchString = "Visit Note " + thisDate;
+                String searchString = "ADULTINITIAL " + thisDate;
 
                 if (resultsArray.length() != 0) {
                     for (int i = 0; i < resultsArray.length(); i++) {
