@@ -183,7 +183,6 @@ public class TableExamActivity extends AppCompatActivity {
     private long insertDb(double objValue, int CONCEPT_ID) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
 
-        final int VISIT_ID = 100; // TODO: Connect the proper VISIT_ID
         final int CREATOR_ID = 42; // TODO: Connect the proper CREATOR_ID
 
         String value = String.valueOf(objValue);
@@ -191,7 +190,7 @@ public class TableExamActivity extends AppCompatActivity {
         ContentValues complaintEntries = new ContentValues();
 
         complaintEntries.put("patient_id", patientID);
-        complaintEntries.put("visit_id", VISIT_ID);
+        complaintEntries.put("visit_id", visitID);
         complaintEntries.put("creator", CREATOR_ID);
         complaintEntries.put("value", value);
         complaintEntries.put("concept_id", CONCEPT_ID);

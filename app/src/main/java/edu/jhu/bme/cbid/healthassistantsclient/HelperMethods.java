@@ -805,6 +805,7 @@ public class HelperMethods {
             }
 
         } else {
+            Toast.makeText(activity, "No camera installed.", Toast.LENGTH_LONG).show();
             Log.e(LOG_TAG, "No camera activity to handle image capture");
         }
 

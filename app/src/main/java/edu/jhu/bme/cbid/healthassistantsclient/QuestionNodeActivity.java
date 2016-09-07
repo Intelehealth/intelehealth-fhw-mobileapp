@@ -212,7 +212,6 @@ public class QuestionNodeActivity extends AppCompatActivity {
     private long insertDb(String value) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
 
-        final int VISIT_ID = 100;
         final int CREATOR_ID = 42;
 
         final int CONCEPT_ID = 163186; //OpenMRS complaint concept ID
@@ -220,7 +219,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
         ContentValues complaintEntries = new ContentValues();
 
         complaintEntries.put("patient_id", patientID);
-        complaintEntries.put("visit_id", VISIT_ID);
+        complaintEntries.put("visit_id", visitID);
         complaintEntries.put("creator", CREATOR_ID);
         complaintEntries.put("value", value);
         complaintEntries.put("concept_id", CONCEPT_ID);
