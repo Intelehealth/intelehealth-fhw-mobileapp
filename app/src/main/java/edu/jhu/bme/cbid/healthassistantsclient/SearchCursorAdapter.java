@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 /**
  * Class to populate the patient search system with information from the database
  */
@@ -41,14 +43,17 @@ public class SearchCursorAdapter extends CursorAdapter {
         String mName = cursor.getString(cursor.getColumnIndexOrThrow("middle_name"));
         char mInitial = '\0';
         if (!mName.equals("")) mInitial = mName.charAt(0);
+        String phoneNum = cursor.getString(cursor.getColumnIndexOrThrow("phone_number"));
 
         String lName = cursor.getString(cursor.getColumnIndexOrThrow("last_name"));
-        String header = String.format("%s, %s %c - ID: %s", lName, fName, mInitial, patientID);
+        String header = String.format("%s %s - ID: %s", fName, lName, patientID);
 
         String dob = cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth"));
         int age = HelperMethods.getAge(dob);
         // String gender = cursor.getString(cursor.getColumnIndexOrThrow("gender"));
-        String body = String.format("Date of Birth: %s (Age %d)", dob, age);
+        String body = String.format("ID Number: %s \n " +
+                "Phone Number: %s\n" +
+                "Date of Birth: %s (Age %d)", patientID, phoneNum, dob, age);
 
         // Populate fields with extracted properties
         tvHead.setText(header);
