@@ -174,7 +174,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
-        String titleSequence = patientName + ": " + getTitle() + "\nID: " + patientID;
+        String titleSequence = patientName + ": " + getTitle();
         setTitle(titleSequence);
 
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());

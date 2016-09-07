@@ -41,7 +41,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     String LOG_TAG = "Patient Detail Activity";
 
-    String patientID = "JHU1";
+    String patientID;
     String patientName;
     String visitID;
     String intentTag = "";
