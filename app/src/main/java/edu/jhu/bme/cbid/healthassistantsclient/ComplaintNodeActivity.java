@@ -49,10 +49,10 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             visitID = intent.getStringExtra("visitID");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
-            Log.v(LOG_TAG, "Patient ID: " + patientID);
-            Log.v(LOG_TAG, "Visit ID: " + visitID);
-            Log.v(LOG_TAG, "Patient Name: " + patientName);
-            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
+//            Log.v(LOG_TAG, "Patient ID: " + patientID);
+//            Log.v(LOG_TAG, "Visit ID: " + visitID);
+//            Log.v(LOG_TAG, "Patient Name: " + patientName);
+//            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
         setTitle(patientName + ": " + getTitle());

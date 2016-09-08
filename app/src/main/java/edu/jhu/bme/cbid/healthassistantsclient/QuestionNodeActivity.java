@@ -61,10 +61,10 @@ public class QuestionNodeActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             complaints = intent.getStringArrayListExtra("complaints");
-            Log.v(LOG_TAG, "Patient ID: " + patientID);
-            Log.v(LOG_TAG, "Visit ID: " + visitID);
-            Log.v(LOG_TAG, "Patient Name: " + patientName);
-            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
+//            Log.v(LOG_TAG, "Patient ID: " + patientID);
+//            Log.v(LOG_TAG, "Visit ID: " + visitID);
+//            Log.v(LOG_TAG, "Patient Name: " + patientName);
+//            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
         complaintDetails = new HashMap<>();

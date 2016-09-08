@@ -453,22 +453,22 @@ public class IdentificationActivity extends AppCompatActivity {
                 try {
                     if (lastIDString.substring(0, lastIDString.length() - 1) == idPreFix) { // ID hasn't changed
                         String lastID = lastIDString.substring(idPreFix.length()); //Grab the last integer of the patientID
-                        Log.d(LOG_TAG, String.valueOf(lastID));
+//                        Log.d(LOG_TAG, String.valueOf(lastID));
                         newInteger = Integer.valueOf(lastID);
                     }
                 } catch(Exception e) {
                     newInteger = 0; // ID was probably changed
                 } finally {
-                    Log.d(LOG_TAG, String.valueOf(newInteger));
+//                    Log.d(LOG_TAG, String.valueOf(newInteger));
                     newInteger++; //Increment it by 1
                 }
 
                 patientID = idPreFix + String.valueOf(newInteger); //This patient is assigned the new incremented number
-                Log.d(LOG_TAG, patientID);
+//                Log.d(LOG_TAG, patientID);
                 patient.setId(patientID);
             } else {
                 patientID = idPreFix + String.valueOf(1); //This patient is assigned the new incremented number
-                Log.d(LOG_TAG, patientID);
+//                Log.d(LOG_TAG, patientID);
                 patient.setId(patientID);
             }
 
@@ -562,12 +562,12 @@ public class IdentificationActivity extends AppCompatActivity {
         try {
             final TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
             final String simCountry = tm.getSimCountryIso();
-            Log.d("Country", simCountry);
+//            Log.d("Country", simCountry);
             if (simCountry != null && simCountry.length() == 2) { // SIM country code is available
                 return simCountry.toLowerCase(Locale.US);
             } else if (tm.getPhoneType() != TelephonyManager.PHONE_TYPE_CDMA) { // device is not 3G (would be unreliable)
                 String networkCountry = tm.getNetworkCountryIso();
-                Log.d("Country", networkCountry);
+//                Log.d("Country", networkCountry);
                 if (networkCountry != null && networkCountry.length() == 2) { // network country code is available
                     return networkCountry.toLowerCase(Locale.US);
                 }

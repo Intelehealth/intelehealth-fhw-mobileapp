@@ -277,7 +277,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                Log.i("Patient WebView", "page finished loading " + url);
+//                Log.i("Patient WebView", "page finished loading " + url);
                 createWebPrintJob(view);
                 mWebView = null;
             }

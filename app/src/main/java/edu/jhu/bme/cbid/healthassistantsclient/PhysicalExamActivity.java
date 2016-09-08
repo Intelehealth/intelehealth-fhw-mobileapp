@@ -84,17 +84,17 @@ public class PhysicalExamActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             selectedExamsList = intent.getStringArrayListExtra("exams");
-            Log.v(LOG_TAG, "Patient ID: " + patientID);
-            Log.v(LOG_TAG, "Visit ID: " + visitID);
-            Log.v(LOG_TAG, "Patient Name: " + patientName);
-            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
+//            Log.v(LOG_TAG, "Patient ID: " + patientID);
+//            Log.v(LOG_TAG, "Visit ID: " + visitID);
+//            Log.v(LOG_TAG, "Patient Name: " + patientName);
+//            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
-        if (selectedExamsList == null) {
-            Log.d(LOG_TAG, "No additional exams were triggered");
-        } else {
-            Log.d(LOG_TAG, selectedExamsList.toString());
-        }
+//        if (selectedExamsList == null) {
+//            Log.d(LOG_TAG, "No additional exams were triggered");
+//        } else {
+//            Log.d(LOG_TAG, selectedExamsList.toString());
+//        }
         physicalExamMap = new PhysicalExam(HelperMethods.encodeJSON(this, mFileName), selectedExamsList);
 
         super.onCreate(savedInstanceState);
@@ -151,9 +151,9 @@ public class PhysicalExamActivity extends AppCompatActivity {
                 } else {
                     Node genExams = physicalExamMap.getOption(0);
                     for (int i = 0; i < genExams.getOptionsList().size(); i++) {
-                        Log.d(LOG_TAG, "current i value " + i);
+//                        Log.d(LOG_TAG, "current i value " + i);
                         if(!genExams.getOption(i).anySubSelected()){
-                            Log.d(LOG_TAG, genExams.getOption(i).getText());
+//                            Log.d(LOG_TAG, genExams.getOption(i).getText());
                             mViewPager.setCurrentItem(i);
                             return;
                         }

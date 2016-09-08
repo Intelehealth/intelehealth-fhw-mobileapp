@@ -47,10 +47,10 @@ public class TableExamActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
-            Log.v(LOG_TAG, "Patient ID: " + patientID);
-            Log.v(LOG_TAG, "Visit ID: " + visitID);
-            Log.v(LOG_TAG, "Patient Name: " + patientName);
-            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
+//            Log.v(LOG_TAG, "Patient ID: " + patientID);
+//            Log.v(LOG_TAG, "Visit ID: " + visitID);
+//            Log.v(LOG_TAG, "Patient Name: " + patientName);
+//            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
         super.onCreate(savedInstanceState);

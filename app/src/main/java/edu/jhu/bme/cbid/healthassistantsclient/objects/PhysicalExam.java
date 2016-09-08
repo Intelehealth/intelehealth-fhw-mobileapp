@@ -76,27 +76,27 @@ public class PhysicalExam extends Node {
                  */
 
                 String current = selection.get(i);
-                Log.d("Exam current ", current);
+//                Log.d("Exam current ", current);
                 String[] split = current.split(":");
                 String location = split[0];
-                Log.d("Exam location ", location);
+//                Log.d("Exam location ", location);
                 String exam = split[1];
-                Log.d("Exam exam ", exam);
+//                Log.d("Exam exam ", exam);
                 Node locationNodeRef = getOptionByName(location);
-                Log.d("Exam locRef", locationNodeRef.getText());
+//                Log.d("Exam locRef", locationNodeRef.getText());
                 Node examNodeRef = locationNodeRef.getOptionByName(exam);
-                Log.d("Exam examRef", examNodeRef.getText());
+//                Log.d("Exam examRef", examNodeRef.getText());
 
                 //The foundLocation list is to ensure that the same exam isn't display twice
                 if (foundLocations.contains(location)) {
-                    Log.d("Exam if", "location in foundLocations");
+//                    Log.d("Exam if", "location in foundLocations");
                     int locationIndex = foundLocations.indexOf(location);
                     Node foundLocationNode = newOptionsList.get(locationIndex);
                     foundLocationNode.addOptions(new Node(examNodeRef));
                 } else {
 
                     //If it's a new exam, the location needs to be added to the list of things to check
-                    Log.d("Exam if", "not found");
+//                    Log.d("Exam if", "not found");
                     foundLocations.add(location);
                     Node locationNode = new Node(locationNodeRef);
                     locationNode.removeOptionsList();
@@ -201,7 +201,7 @@ public class PhysicalExam extends Node {
         for (int i = 0; i < total; i++) {
             Node node = getExamNode(i);
             if (node.isSelected() | node.anySubSelected()) {
-                Log.d(node.getText(), node.getLanguage());
+//                Log.d(node.getText(), node.getLanguage());
                 stringsList.add(node.getLanguage());
                 if (!node.isTerminal()) {
                     stringsList.add(node.formLanguage());
