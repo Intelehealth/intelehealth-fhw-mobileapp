@@ -502,7 +502,9 @@ public class HelperMethods {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 node.addLanguage(dialogEditText.getText().toString());
+                Log.d(LOG_TAG, dialogEditText.getText().toString());
                 node.setLanguage(node.getLanguage());
+                Log.d(LOG_TAG, node.getLanguage());
                 node.setSelected();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();

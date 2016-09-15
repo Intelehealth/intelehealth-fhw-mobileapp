@@ -9,6 +9,8 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
 
 /**
@@ -144,5 +146,11 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
+    }
+
+    public void updateNodeList(Node newNode){
+        mNode = null;
+        mNode = newNode;
+        this.notifyDataSetChanged();
     }
 }

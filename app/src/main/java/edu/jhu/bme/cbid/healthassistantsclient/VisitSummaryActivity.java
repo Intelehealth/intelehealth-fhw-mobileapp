@@ -168,9 +168,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
-//            Log.v(LOG_TAG, "Patient ID: " + patientID);
-//            Log.v(LOG_TAG, "Visit ID: " + visitID);
-//            Log.v(LOG_TAG, "Patient Name: " + patientName);
+            Log.v(LOG_TAG, "Patient ID: " + patientID);
+            Log.v(LOG_TAG, "Visit ID: " + visitID);
+            Log.v(LOG_TAG, "Patient Name: " + patientName);
 //            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
@@ -181,11 +181,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
         db = mDbHelper.getWritableDatabase();
 
         identifierNumber = patientID;
+//        identifierNumber = "AAA2";
 
         int checkedDigit = checkDigit(identifierNumber);
-//        Log.d(LOG_TAG, "check digit" + String.valueOf(checkedDigit));
 
         identifierNumber = identifierNumber + "-" + String.valueOf(checkedDigit);
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit_summary);
@@ -343,7 +344,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String table = "patient";
         String[] columnsToReturn = {"first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
-                "postal_code", "phone_number", "gender", "patient_photo"};
+                "postal_code", "phone_number", "gender", "sdw", "occupation", "patient_photo"};
         final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
 
         if (idCursor.moveToFirst()) {
@@ -737,8 +738,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "\"encounterType\":\"ADULTINITIAL\"," +
                                     "\"visit\":\"%s\"," +
                                     "\"obs\":[" +
-                                    "{\"concept\":\"35c3afdd-bb96-4b61-afb9-22a5fc2d088e\", \"value\":\"%s\"}," + //son wife daughter
-                                    "{\"concept\":\"5fe2ef6f-bbf7-45df-a6ea-a284aee82ddc\",\"value\":\"%s\"}, " + //occupation
+                                    //"{\"concept\":\"35c3afdd-bb96-4b61-afb9-22a5fc2d088e\", \"value\":\"%s\"}," + //son wife daughter
+                                    //"{\"concept\":\"5fe2ef6f-bbf7-45df-a6ea-a284aee82ddc\",\"value\":\"%s\"}, " + //occupation
                                     "{\"concept\":\"62bff84b-795a-45ad-aae1-80e7f5163a82\",\"value\":\"%s\"}," + //medical history
                                     "{\"concept\":\"d63ae965-47fb-40e8-8f08-1f46a8a60b2b\",\"value\":\"%s\"}," + //family history
                                     "{\"concept\":\"3edb0e09-9135-481e-b8f0-07a26fa9a5ce\",\"value\":\"%s\"}," + //current complaint
@@ -746,7 +747,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\"}",
 
                             startDateTime, openMRSUUID, responseVisit.getResponseString(),
-                            patient.getSdw(), patient.getOccupation(),
+                            //patient.getSdw(), patient.getOccupation(),
+                            //TODO: add logic to remove SDW and occupation when they are empty
                             patHistory.getValue(), famHistory.getValue(),
                             complaint.getValue(), physFindings.getValue()
                     );

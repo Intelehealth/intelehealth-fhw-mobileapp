@@ -108,7 +108,6 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 } else {
                     currentNode.getOption(groupPosition).setUnselected();
                 }
-                adapter.notifyDataSetChanged();
 
                 if (!question.getInputType().isEmpty()) {
                     HelperMethods.handleQuestion(question, QuestionNodeActivity.this, adapter);
@@ -119,6 +118,8 @@ public class QuestionNodeActivity extends AppCompatActivity {
                     HelperMethods.subLevelQuestion(question, QuestionNodeActivity.this, adapter);
                     //If the node is not terminal, that means there are more questions to be asked for this branch.
                 }
+
+                adapter.notifyDataSetChanged();
                 return false;
 
             }

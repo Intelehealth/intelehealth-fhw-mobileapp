@@ -95,7 +95,7 @@ public class IdentificationActivity extends AppCompatActivity {
         localdb = mDbHelper.getWritableDatabase();
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        idPreFix = sharedPref.getString(SettingsActivity.KEY_PREF_ID_PREFIX, "");
+        idPreFix = sharedPref.getString(SettingsActivity.KEY_PREF_ID_PREFIX, "JHU");
 
         mFirstName = (EditText) findViewById(R.id.identification_first_name);
         mMiddleName = (EditText) findViewById(R.id.identification_middle_name);
@@ -448,7 +448,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 // TODO: Handle case where ID is changed to something else and then changed back
                 // The above will most likely be solved by the automatic assignment of IDs in the future
                 try {
-                    if (lastIDString.substring(0, lastIDString.length() - 1) == idPreFix) { // ID hasn't changed
+                    if (lastIDString.substring(0, lastIDString.length() - 1).equals(idPreFix)) { // ID hasn't changed
                         String lastID = lastIDString.substring(idPreFix.length()); //Grab the last integer of the patientID
 //                        Log.d(LOG_TAG, String.valueOf(lastID));
                         newInteger = Integer.valueOf(lastID);

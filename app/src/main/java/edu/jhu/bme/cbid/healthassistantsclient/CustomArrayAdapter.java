@@ -75,4 +75,10 @@ public class CustomArrayAdapter extends ArrayAdapter<Node> {
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
     }
+
+    public void updateNodeList(List<Node> newNodes){
+        mNodes.clear();
+        mNodes.addAll(newNodes);
+        this.notifyDataSetChanged();
+    }
 }

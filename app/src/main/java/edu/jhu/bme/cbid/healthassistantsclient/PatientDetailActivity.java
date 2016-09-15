@@ -186,7 +186,9 @@ public class PatientDetailActivity extends AppCompatActivity {
         TextView addrFinalView = (TextView) findViewById(R.id.textView_address_final);
         TextView phoneView = (TextView) findViewById(R.id.textView_phone);
         TextView sdwView = (TextView) findViewById(R.id.textView_SDW);
+        TableRow sdwRow = (TableRow) findViewById(R.id.tableRow_SDW);
         TextView occuView = (TextView) findViewById(R.id.textView_occupation);
+        TableRow occuRow = (TableRow) findViewById(R.id.tableRow_Occupation);
 
         TextView medHistView = (TextView) findViewById(R.id.textView_patHist);
         TextView famHistView = (TextView) findViewById(R.id.textView_famHist);
@@ -225,13 +227,13 @@ public class PatientDetailActivity extends AppCompatActivity {
         if(patient.getSdw() != null && !patient.getSdw().equals("")){
             sdwView.setText(patient.getSdw());
         } else {
-            sdwView.setVisibility(View.GONE);
+            sdwRow.setVisibility(View.GONE);
         }
 
         if(patient.getOccupation() != null && !patient.getOccupation().equals("")){
             occuView.setText(patient.getOccupation());
         } else {
-            occuView.setVisibility(View.GONE);
+            occuRow.setVisibility(View.GONE);
         }
 
         String medHistSelection = "patient_id = ? AND concept_id = ?";
@@ -266,7 +268,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         try {
             famHistValue = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             famHistValue = "";
         } finally {
             famHistCursor.close();

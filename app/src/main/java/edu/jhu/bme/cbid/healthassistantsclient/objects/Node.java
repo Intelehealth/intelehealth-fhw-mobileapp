@@ -1,5 +1,7 @@
 package edu.jhu.bme.cbid.healthassistantsclient.objects;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,7 +60,7 @@ public class Node implements Serializable{
      */
     public Node(JSONObject jsonNode) {
         try {
-            this.id = jsonNode.getString("id");
+            //this.id = jsonNode.getString("id");
 
             this.text = jsonNode.getString("text");
 
@@ -111,7 +113,7 @@ public class Node implements Serializable{
      * @param source source node to copy into a new node. Will always default as unselected.
      */
     public Node(Node source) {
-        this.id = source.id;
+        //this.id = source.id;
         this.text = source.text;
         this.optionsList = source.optionsList;
         this.terminal = source.terminal;
@@ -173,10 +175,13 @@ public class Node implements Serializable{
 
     //In certain instances, the input is added to the starter language given to the user.
     public void addLanguage(String newText) {
+        Log.d("Node", language);
         if (language.contains("_")) {
             language = language.replace("_", newText);
+            Log.d("Node", language);
         } else {
             language = language + " " + newText;
+            Log.d("Node", language);
         }
     }
 
