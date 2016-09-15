@@ -9,6 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ExpandableListView;
+
+import java.util.ArrayList;
+
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
 
 public class PatientHistoryActivity extends AppCompatActivity {
@@ -19,9 +22,11 @@ public class PatientHistoryActivity extends AppCompatActivity {
 
     String patientID = "1";
     String visitID;
+    String state;
     String patientName;
     String intentTag;
 
+    ArrayList<String> physicalExams;
     int lastExpandedPosition = -1;
 
     String mFileName = "patHist.json";
@@ -43,8 +48,10 @@ public class PatientHistoryActivity extends AppCompatActivity {
         if (intent != null) {
             patientID = intent.getStringExtra("patientID");
             visitID = intent.getStringExtra("visitID");
+            state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
+            physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
 //            Log.v(LOG_TAG, "Patient ID: " + patientID);
 //            Log.v(LOG_TAG, "Visit ID: " + visitID);
 //            Log.v(LOG_TAG, "Patient Name: " + patientName);
@@ -78,6 +85,7 @@ public class PatientHistoryActivity extends AppCompatActivity {
                     Intent intent = new Intent(PatientHistoryActivity.this, VisitSummaryActivity.class);
                     intent.putExtra("patientID", patientID);
                     intent.putExtra("visitID", visitID);
+                    intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
                     startActivity(intent);
@@ -85,8 +93,10 @@ public class PatientHistoryActivity extends AppCompatActivity {
                     Intent intent = new Intent(PatientHistoryActivity.this, FamilyHistoryActivity.class);
                     intent.putExtra("patientID", patientID);
                     intent.putExtra("visitID", visitID);
+                    intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
+                    intent.putStringArrayListExtra("exams", physicalExams);
                     startActivity(intent);
                 }
 

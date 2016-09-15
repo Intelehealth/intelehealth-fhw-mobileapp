@@ -84,6 +84,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                 if(visitID!=null){
                     intent2.putExtra("visitID", visitID);
+                    intent2.putExtra("state", "new");
                 } else {
                     SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
                     Date todayDate = new Date();
@@ -151,7 +152,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         String[] patientArgs = {dataString};
         String[] patientColumns = {"first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
-                "postal_code", "phone_number", "gender", "patient_photo"};
+                "postal_code", "phone_number", "gender", "sdw", "occupation", "patient_photo"};
         final Cursor idCursor = db.query("patient", patientColumns, patientSelection, patientArgs, null, null, null);
 
         if (idCursor.moveToFirst()) {
@@ -167,6 +168,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 patient.setPostalCode(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
                 patient.setPhoneNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
                 patient.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                patient.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
+                patient.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
                 patient.setPatientPhoto(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
             } while (idCursor.moveToNext());
         }
@@ -182,6 +185,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         TextView addr2View = (TextView) findViewById(R.id.textView_address2);
         TextView addrFinalView = (TextView) findViewById(R.id.textView_address_final);
         TextView phoneView = (TextView) findViewById(R.id.textView_phone);
+        TextView sdwView = (TextView) findViewById(R.id.textView_SDW);
+        TextView occuView = (TextView) findViewById(R.id.textView_occupation);
 
         TextView medHistView = (TextView) findViewById(R.id.textView_patHist);
         TextView famHistView = (TextView) findViewById(R.id.textView_famHist);
@@ -217,6 +222,17 @@ public class PatientDetailActivity extends AppCompatActivity {
         addrFinalView.setText(addrFinalLine);
         phoneView.setText(patient.getPhoneNumber());
 
+        if(patient.getSdw() != null && !patient.getSdw().equals("")){
+            sdwView.setText(patient.getSdw());
+        } else {
+            sdwView.setVisibility(View.GONE);
+        }
+
+        if(patient.getOccupation() != null && !patient.getOccupation().equals("")){
+            occuView.setText(patient.getOccupation());
+        } else {
+            occuView.setVisibility(View.GONE);
+        }
 
         String medHistSelection = "patient_id = ? AND concept_id = ?";
         String[] medHistArgs = {dataString, "163187"};

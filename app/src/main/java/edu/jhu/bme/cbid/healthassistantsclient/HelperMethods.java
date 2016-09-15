@@ -16,20 +16,28 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
 import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
+import edu.jhu.bme.cbid.healthassistantsclient.objects.WebResponse;
+
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -810,6 +818,146 @@ public class HelperMethods {
         }
 
         return results;
+    }
+
+    static WebResponse getCommand(String urlModifier, String dataString) {
+        BufferedReader reader;
+        String JSONString;
+
+        WebResponse webResponse = new WebResponse();
+
+        try {
+
+            final String USERNAME = "Admin";
+            final String PASSWORD = "CBIDtiger123";
+            final String BASE_URL = "http://openmrs.amal.io:8080/openmrs/ws/rest/v1/";
+
+            String urlString = BASE_URL + urlModifier + dataString;
+
+            URL url = new URL(urlString);
+
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
+            connection.setRequestProperty("Authorization", "Basic " + encoded);
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
+            connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
+
+            int responseCode = connection.getResponseCode();
+            webResponse.setResponseCode(responseCode);
+
+            Log.d(LOG_TAG, "GET URL: " + url);
+            Log.d(LOG_TAG, "Response Code from Server: " + String.valueOf(responseCode));
+
+            // Read the input stream into a String
+            InputStream inputStream = connection.getInputStream();
+            StringBuffer buffer = new StringBuffer();
+            if (inputStream == null) {
+                // Do Nothing.
+                return null;
+            }
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
+                // But it does make debugging a *lot* easier if you print out the completed
+                // buffer for debugging.
+                buffer.append(line + "\n");
+            }
+
+            if (buffer.length() == 0) {
+                // Stream was empty.  No point in parsing.
+                return null;
+            }
+
+            JSONString = buffer.toString();
+
+            Log.d(LOG_TAG, "JSON Response: " + JSONString);
+            webResponse.setResponseString(JSONString);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return webResponse;
+    }
+
+    static WebResponse postCommand(String urlModifier, String dataString) {
+        BufferedReader reader;
+        String JSONString;
+
+        WebResponse webResponse = new WebResponse();
+
+        try {
+            final String USERNAME = "Admin";
+            final String PASSWORD = "CBIDtiger123";
+            final String BASE_URL = "http://openmrs.amal.io:8080/openmrs/ws/rest/v1/";
+
+            String urlString = BASE_URL + urlModifier;
+
+            URL url = new URL(urlString);
+
+            byte[] outputInBytes = dataString.getBytes("UTF-8");
+
+
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
+            connection.setRequestProperty("Authorization", "Basic " + encoded);
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
+            connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setDoOutput(true);
+            DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
+            dStream.write(outputInBytes);
+            dStream.flush();
+            dStream.close();
+            int responseCode = connection.getResponseCode();
+            webResponse.setResponseCode(responseCode);
+
+
+            Log.d(LOG_TAG, "POST URL: " + url);
+            Log.d(LOG_TAG, "Response Code from Server: " + String.valueOf(responseCode));
+
+            // Read the input stream into a String
+            InputStream inputStream = connection.getInputStream();
+            StringBuffer buffer = new StringBuffer();
+            if (inputStream == null) {
+                // Nothing to do.
+                return null;
+            }
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
+                // But it does make debugging a *lot* easier if you print out the completed
+                // buffer for debugging.
+                buffer.append(line + "\n");
+            }
+
+            if (buffer.length() == 0) {
+                // Stream was empty.  No point in parsing.
+                return null;
+            }
+
+            JSONString = buffer.toString();
+
+            Log.d(LOG_TAG, "JSON Response: " + JSONString);
+
+            try {
+                JSONObject JSONResponse = new JSONObject(JSONString);
+                webResponse.setResponseString(JSONResponse.getString("uuid"));
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return webResponse;
     }
 
 }

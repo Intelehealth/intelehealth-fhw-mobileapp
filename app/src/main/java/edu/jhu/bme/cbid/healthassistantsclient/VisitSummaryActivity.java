@@ -58,9 +58,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String LOG_TAG = "Patient Summary Activity";
 
 
-    final String USERNAME = "Admin";
-    final String PASSWORD = "CBIDtiger123";
-    final String BASE_URL = "http://openmrs.amal.io:8080/openmrs/ws/rest/v1/";
+
     //Change when used with a different organization.
     //This is a demo server.
 
@@ -77,6 +75,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     String patientID;
     String visitID;
+    String state;
     String patientName;
     String intentTag;
 
@@ -166,6 +165,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (intent != null) {
             patientID = intent.getStringExtra("patientID");
             visitID = intent.getStringExtra("visitID");
+            state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
 //            Log.v(LOG_TAG, "Patient ID: " + patientID);
@@ -359,13 +359,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 patient.setPostalCode(idCursor.getString(idCursor.getColumnIndex("postal_code")));
                 patient.setPhoneNumber(idCursor.getString(idCursor.getColumnIndex("phone_number")));
                 patient.setGender(idCursor.getString(idCursor.getColumnIndex("gender")));
+                patient.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
+                patient.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
                 patient.setPatientPhoto(idCursor.getString(idCursor.getColumnIndex("patient_photo")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();
 
         String famHistSelection = "patient_id = ? AND concept_id = ?";
-        String[] famHistArgs = {dataString, "163187"};
+        String[] famHistArgs = {dataString, "163188"};
 
         String[] columns = {"value", " concept_id"};
         String orderBy = "visit_id";
@@ -377,7 +379,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 
         String medHistSelection = "patient_id = ? AND concept_id = ?";
-        String[] medHistArgs = {dataString, "163188"};
+        String[] medHistArgs = {dataString, "163187"};
         Cursor medHistCursor = db.query("obs", columns, medHistSelection, medHistArgs, null, null, orderBy);
         medHistCursor.moveToLast();
         String medHistText = medHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
@@ -570,77 +572,96 @@ public class VisitSummaryActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
 
-            String personString =
-                    String.format("{\"gender\":\"%s\", " +
-                                    "\"names\":[" +
-                                    "{\"givenName\":\"%s\", " +
-                                    "\"middleName\":\"%s\", " +
-                                    "\"familyName\":\"%s\"}], " +
-                                    "\"birthdate\":\"%s\", " +
-                                    "\"attributes\":[" +
-                                    "{\"attributeType\":\"14d4f066-15f5-102d-96e4-000c29c2a5d7\", " +
-                                    "\"value\": \"%s\"}, " +
-                                    "{\"attributeType\":\"8d87236c-c2cc-11de-8d13-0010c6dffd0f\", " +
-                                    "\"value\": \"Barhra\"}], " + //TODO: Change this attribute to the name of the clinic as listed in OpenMRS
-                                    "\"addresses\":[" +
-                                    "{\"address1\":\"%s\", " +
-                                    "\"address2\":\"%s\"," +
-                                    "\"cityVillage\":\"%s\"," +
-                                    "\"stateProvince\":\"%s\"," +
-                                    "\"country\":\"%s\"," +
-                                    "\"postalCode\":\"%s\"}]}",
-                            patient.getGender(),
-                            patient.getFirstName(),
-                            patient.getMiddleName(),
-                            patient.getLastName(),
-                            patient.getDateOfBirth(),
-                            patient.getPhoneNumber(),
-                            patient.getAddress1(),
-                            patient.getAddress2(),
-                            patient.getCityVillage(),
-                            patient.getStateProvince(),
-                            patient.getCountry(),
-                            patient.getPostalCode());
+            String openMRSUUID = null;
 
-            Log.d(LOG_TAG, "Person String: " + personString);
-            WebResponse responsePerson;
-            responsePerson = postCommand("person", personString);
-            if (responsePerson != null && responsePerson.getResponseCode() != 201) {
-                Log.d(LOG_TAG, "Person posting was unsuccessful");
-                return null;
+            if(state.equals("new")){
+
+                String personString =
+                        String.format("{\"gender\":\"%s\", " +
+                                        "\"names\":[" +
+                                        "{\"givenName\":\"%s\", " +
+                                        "\"middleName\":\"%s\", " +
+                                        "\"familyName\":\"%s\"}], " +
+                                        "\"birthdate\":\"%s\", " +
+                                        "\"attributes\":[" +
+                                        "{\"attributeType\":\"14d4f066-15f5-102d-96e4-000c29c2a5d7\", " +
+                                        "\"value\": \"%s\"}, " +
+                                        "{\"attributeType\":\"8d87236c-c2cc-11de-8d13-0010c6dffd0f\", " +
+                                        "\"value\": \"Barhra\"}], " + //TODO: Change this attribute to the name of the clinic as listed in OpenMRS
+                                        "\"addresses\":[" +
+                                        "{\"address1\":\"%s\", " +
+                                        "\"address2\":\"%s\"," +
+                                        "\"cityVillage\":\"%s\"," +
+                                        "\"stateProvince\":\"%s\"," +
+                                        "\"country\":\"%s\"," +
+                                        "\"postalCode\":\"%s\"}]}",
+                                patient.getGender(),
+                                patient.getFirstName(),
+                                patient.getMiddleName(),
+                                patient.getLastName(),
+                                patient.getDateOfBirth(),
+                                patient.getPhoneNumber(),
+                                patient.getAddress1(),
+                                patient.getAddress2(),
+                                patient.getCityVillage(),
+                                patient.getStateProvince(),
+                                patient.getCountry(),
+                                patient.getPostalCode());
+
+                Log.d(LOG_TAG, "Person String: " + personString);
+                WebResponse responsePerson;
+                responsePerson = HelperMethods.postCommand("person", personString);
+                if (responsePerson != null && responsePerson.getResponseCode() != 201) {
+                    Log.d(LOG_TAG, "Person posting was unsuccessful");
+                    return null;
+                }
+
+                assert responsePerson != null;
+
+                String patientString =
+                        String.format("{\"person\":\"%s\", " +
+                                        "\"identifiers\":[{\"identifier\":\"%s\", " +
+                                        "\"identifierType\":\"05a29f94-c0ed-11e2-94be-8c13b969e334\", " +
+                                        "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\", " +
+                                        "\"preferred\":true}]}",
+
+                                responsePerson.getResponseString(), identifierNumber);
+
+                Log.d(LOG_TAG, "Patient String: " + patientString);
+                WebResponse responsePatient;
+                responsePatient = HelperMethods.postCommand("patient", patientString);
+                if (responsePatient != null && responsePatient.getResponseCode() != 201) {
+                    Log.d(LOG_TAG, "Patient posting was unsuccessful");
+                    return null;
+                }
+
+                assert responsePatient != null;
+                ContentValues contentValuesOpenMRSID = new ContentValues();
+                contentValuesOpenMRSID.put("openmrs_uuid", responsePatient.getResponseString());
+                String selection = "_id = ?";
+                String[] args = {patientID};
+
+                db.update(
+                        "patient",
+                        contentValuesOpenMRSID,
+                        selection,
+                        args
+                );
+
+                openMRSUUID = responsePatient.getResponseString();
+            } else {
+                String patientSelection = "_id MATCH ?";
+                String[] patientArgs = {patientID};
+                String[] patientColumns = {"openmrs_uuid"};
+                final Cursor idCursor = db.query("patient", patientColumns, patientSelection, patientArgs, null, null, null);
+
+                if (idCursor.moveToFirst()) {
+                    do {
+                        openMRSUUID = idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_uuid"));
+                    } while (idCursor.moveToNext());
+                }
+                idCursor.close();
             }
-
-            assert responsePerson != null;
-
-            String patientString =
-                    String.format("{\"person\":\"%s\", " +
-                                    "\"identifiers\":[{\"identifier\":\"%s\", " +
-                                    "\"identifierType\":\"05a29f94-c0ed-11e2-94be-8c13b969e334\", " +
-                                    "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\", " +
-                                    "\"preferred\":true}]}",
-
-                            responsePerson.getResponseString(), identifierNumber);
-
-            Log.d(LOG_TAG, "Patient String: " + patientString);
-            WebResponse responsePatient;
-            responsePatient = postCommand("patient", patientString);
-            if (responsePatient != null && responsePatient.getResponseCode() != 201) {
-                Log.d(LOG_TAG, "Patient posting was unsuccessful");
-                return null;
-            }
-
-            assert responsePatient != null;
-            ContentValues contentValuesOpenMRSID = new ContentValues();
-            contentValuesOpenMRSID.put("openmrs_uuid", responsePatient.getResponseString());
-            String selection = "_id = ?";
-            String[] args = {patientID};
-
-            db.update(
-                    "patient",
-                    contentValuesOpenMRSID,
-                    selection,
-                    args
-            );
 
             String table = "visit";
             String[] columnsToReturn = {"start_datetime"};
@@ -658,10 +679,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "\"visitType\":\"Telemedicine\"," +
                                     "\"patient\":\"%s\"," +
                                     "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\"}",
-                            startDateTime, responsePatient.getResponseString());
+                            startDateTime, openMRSUUID);
             Log.d(LOG_TAG, "Visit String: " + visitString);
             WebResponse responseVisit;
-            responseVisit = postCommand("visit", visitString);
+            responseVisit = HelperMethods.postCommand("visit", visitString);
             if (responseVisit != null && responseVisit.getResponseCode() != 201) {
                 Log.d(LOG_TAG, "Visit posting was unsuccessful");
                 return null;
@@ -696,14 +717,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "{\"concept\":\"5092AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\", \"value\":\"%s\"}]," + //Sp02
                                     "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\"}",
 
-                            startDateTime, responsePatient.getResponseString(), responseVisit.getResponseString(),
+                            startDateTime, openMRSUUID, responseVisit.getResponseString(),
                             weight.getValue(), height.getValue(), temperature.getValue(),
                             pulse.getValue(), bpSys.getValue(),
                             bpDias.getValue(), spO2.getValue()
                     );
             Log.d(LOG_TAG, "Vitals Encounter String: " + vitalsString);
             WebResponse responseVitals;
-            responseVitals = postCommand("encounter", vitalsString);
+            responseVitals = HelperMethods.postCommand("encounter", vitalsString);
             if (responseVitals != null && responseVitals.getResponseCode() != 201) {
                 Log.d(LOG_TAG, "Encounter posting was unsuccessful");
                 return null;
@@ -724,15 +745,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "{\"concept\":\"e1761e85-9b50-48ae-8c4d-e6b7eeeba084\",\"value\":\"%s\"}]," + //physical exam
                                     "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\"}",
 
-                            startDateTime, responsePatient.getResponseString(), responseVisit.getResponseString(),
-                            "Database error on Android", "Database error on Android",
-//                            patient.getPatientIdentifier1(), patient.getPatientIdentifier2(),
+                            startDateTime, openMRSUUID, responseVisit.getResponseString(),
+                            patient.getSdw(), patient.getOccupation(),
                             patHistory.getValue(), famHistory.getValue(),
                             complaint.getValue(), physFindings.getValue()
                     );
             Log.d(LOG_TAG, "Notes Encounter String: " + noteString);
             WebResponse responseNotes;
-            responseNotes = postCommand("encounter", noteString);
+            responseNotes = HelperMethods.postCommand("encounter", noteString);
             if (responseNotes != null && responseNotes.getResponseCode() != 201) {
                 Log.d(LOG_TAG, "Notes Encounter posting was unsuccessful");
                 return null;
@@ -770,7 +790,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String queryString = "?q=" + identifierNumber;
             //Log.d(LOG_TAG, identifierNumber);
             WebResponse responseEncounter;
-            responseEncounter = getCommand("encounter", queryString);
+            responseEncounter = HelperMethods.getCommand("encounter", queryString);
             if (responseEncounter != null && responseEncounter.getResponseCode() != 200) {
                 //Log.d(LOG_TAG, "Encounter searching was unsuccessful");
                 return null;
@@ -807,7 +827,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             List<WebResponse> obsResponse = new ArrayList<>();
             for (int i = 0; i < uriList.size(); i++) {
-                obsResponse.add(i, getCommand("encounter", uriList.get(i)));
+                obsResponse.add(i, HelperMethods.getCommand("encounter", uriList.get(i)));
                 if (obsResponse.get(i) != null && obsResponse.get(i).getResponseCode() != 200) {
                     Log.d(LOG_TAG, "Obs get call number " + String.valueOf(i) + " of " + String.valueOf(uriList.size()) + " was unsuccessful");
                     return null;
@@ -959,137 +979,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     }
 
-    private WebResponse getCommand(String urlModifier, String dataString) {
-        BufferedReader reader;
-        String JSONString;
 
-        WebResponse webResponse = new WebResponse();
-
-        try {
-
-            String urlString = BASE_URL + urlModifier + dataString;
-
-            URL url = new URL(urlString);
-
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
-            connection.setRequestProperty("Authorization", "Basic " + encoded);
-            connection.setRequestMethod("GET");
-            connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
-            connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
-
-            int responseCode = connection.getResponseCode();
-            webResponse.setResponseCode(responseCode);
-
-            Log.d(LOG_TAG, "GET URL: " + url);
-            Log.d(LOG_TAG, "Response Code from Server: " + String.valueOf(responseCode));
-
-            // Read the input stream into a String
-            InputStream inputStream = connection.getInputStream();
-            StringBuffer buffer = new StringBuffer();
-            if (inputStream == null) {
-                // Do Nothing.
-                return null;
-            }
-            reader = new BufferedReader(new InputStreamReader(inputStream));
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
-                // But it does make debugging a *lot* easier if you print out the completed
-                // buffer for debugging.
-                buffer.append(line + "\n");
-            }
-
-            if (buffer.length() == 0) {
-                // Stream was empty.  No point in parsing.
-                return null;
-            }
-
-            JSONString = buffer.toString();
-
-            Log.d(LOG_TAG, "JSON Response: " + JSONString);
-            webResponse.setResponseString(JSONString);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return webResponse;
-    }
-
-    private WebResponse postCommand(String urlModifier, String dataString) {
-        BufferedReader reader;
-        String JSONString;
-
-        WebResponse webResponse = new WebResponse();
-
-        try {
-            String urlString = BASE_URL + urlModifier;
-
-            URL url = new URL(urlString);
-
-            byte[] outputInBytes = dataString.getBytes("UTF-8");
-
-
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
-            connection.setRequestProperty("Authorization", "Basic " + encoded);
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
-            connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
-            connection.setRequestProperty("Content-Type", "application/json");
-            connection.setDoOutput(true);
-            DataOutputStream dStream = new DataOutputStream(connection.getOutputStream());
-            dStream.write(outputInBytes);
-            dStream.flush();
-            dStream.close();
-            int responseCode = connection.getResponseCode();
-            webResponse.setResponseCode(responseCode);
-
-
-            Log.d(LOG_TAG, "POST URL: " + url);
-            Log.d(LOG_TAG, "Response Code from Server: " + String.valueOf(responseCode));
-
-            // Read the input stream into a String
-            InputStream inputStream = connection.getInputStream();
-            StringBuffer buffer = new StringBuffer();
-            if (inputStream == null) {
-                // Nothing to do.
-                return null;
-            }
-            reader = new BufferedReader(new InputStreamReader(inputStream));
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
-                // But it does make debugging a *lot* easier if you print out the completed
-                // buffer for debugging.
-                buffer.append(line + "\n");
-            }
-
-            if (buffer.length() == 0) {
-                // Stream was empty.  No point in parsing.
-                return null;
-            }
-
-            JSONString = buffer.toString();
-
-            Log.d(LOG_TAG, "JSON Response: " + JSONString);
-
-            try {
-                JSONObject JSONResponse = new JSONObject(JSONString);
-                webResponse.setResponseString(JSONResponse.getString("uuid"));
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return webResponse;
-    }
 
     private void createNewCardView(String title, String content, int index) {
         final LayoutInflater inflater = VisitSummaryActivity.this.getLayoutInflater();

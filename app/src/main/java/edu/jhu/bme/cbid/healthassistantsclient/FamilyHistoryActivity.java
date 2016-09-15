@@ -20,6 +20,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 
     String patientID = "1";
     String visitID;
+    String state;
     String patientName;
     String intentTag;
 
@@ -47,8 +48,10 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         if (intent != null) {
             patientID = intent.getStringExtra("patientID");
             visitID = intent.getStringExtra("visitID");
+            state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
+            physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
 //            Log.v(LOG_TAG, "Patient ID: " + patientID);
 //            Log.v(LOG_TAG, "Visit ID: " + visitID);
 //            Log.v(LOG_TAG, "Patient Name: " + patientName);
@@ -149,16 +152,19 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);
+            intent.putExtra("state", state);
             intent.putExtra("name", patientName);
             intent.putExtra("tag", intentTag);
             startActivity(intent);
         } else {
 
-            Intent intent = new Intent(FamilyHistoryActivity.this, PatientDetailActivity.class);
+            Intent intent = new Intent(FamilyHistoryActivity.this, TableExamActivity.class);
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);
+            intent.putExtra("state", state);
             intent.putExtra("name", patientName);
             intent.putExtra("tag", intentTag);
+            intent.putStringArrayListExtra("exams", physicalExams);
             startActivity(intent);
         }
 

@@ -28,6 +28,8 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             "postal_code," +
             "country," +
             "gender," +
+            "sdw," + //Temporary
+            "occupation," + //Temporary
             "patient_photo" +
             ")";
     public static final String CREATE_ATTRIB = "CREATE TABLE IF NOT EXISTS patient_attribute (" +

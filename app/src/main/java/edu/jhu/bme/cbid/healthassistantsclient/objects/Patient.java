@@ -20,6 +20,8 @@ public class Patient {
     private String country; // ISO 3166-1 alpha-2
     private String gender;
     private String patient_photo;
+    private String sdw;
+    private String occupation;
 
 
     public String getId() {
@@ -140,5 +142,21 @@ public class Patient {
 
     public void setPatientPhoto(String patient_photo) {
         this.patient_photo = patient_photo;
+    }
+
+    public String getSdw() {
+        return sdw;
+    }
+
+    public void setSdw(String sdw) {
+        this.sdw = sdw;
+    }
+
+    public String getOccupation() {
+        return occupation;
+    }
+
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
     }
 }

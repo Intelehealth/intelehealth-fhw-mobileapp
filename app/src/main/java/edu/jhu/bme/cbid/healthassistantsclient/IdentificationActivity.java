@@ -387,19 +387,16 @@ public class IdentificationActivity extends AppCompatActivity {
                 } else {
                     currentPatient.setPostalCode(mPostal.getText().toString());
                 }
-
-
-
-//                if (TextUtils.isEmpty(mRelationship.getText().toString())) {
-//                    currentPatient.setPatientIdentifier1("");
-//                } else {
-//                    currentPatient.setPatientIdentifier1(mRelationship.getText().toString());
-//                }
-//                if (TextUtils.isEmpty(mOccupation.getText().toString())) {
-//                    currentPatient.setPatientIdentifier2("");
-//                } else {
-//                    currentPatient.setPatientIdentifier2(mOccupation.getText().toString());
-//                }
+                if (TextUtils.isEmpty(mRelationship.getText().toString())) {
+                    currentPatient.setSdw("");
+                } else {
+                    currentPatient.setSdw(mRelationship.getText().toString());
+                }
+                if (TextUtils.isEmpty(mOccupation.getText().toString())) {
+                    currentPatient.setOccupation("");
+                } else {
+                    currentPatient.setOccupation(mOccupation.getText().toString());
+                }
 
 
                 //currentPatient.setCountry(mCountry.getText().toString());
@@ -490,6 +487,8 @@ public class IdentificationActivity extends AppCompatActivity {
             patientEntries.put("postal_code", patient.getPostalCode());
             patientEntries.put("country", patient.getCountry());
             patientEntries.put("gender", patient.getGender());
+            patientEntries.put("sdw", patient.getSdw());
+            patientEntries.put("occupation", patient.getOccupation());
             patientEntries.put("patient_photo", mCurrentPhotoPath);
 
             //TODO: move identifier1 and id2 from patient table to patient_attribute table
@@ -530,6 +529,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
             localdb.close();
 
+
+
             return null;
         }
 
@@ -548,7 +549,7 @@ public class IdentificationActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            Intent intent2 = new Intent(IdentificationActivity.this, PatientHistoryActivity.class);
+            Intent intent2 = new Intent(IdentificationActivity.this, PatientDetailActivity.class);
             String fullName = patient.getFirstName() + " " + patient.getLastName();
             intent2.putExtra("patientID", patientID);
             intent2.putExtra("visitID", visitID);

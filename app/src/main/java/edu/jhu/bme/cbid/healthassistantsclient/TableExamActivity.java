@@ -29,6 +29,7 @@ public class TableExamActivity extends AppCompatActivity {
 
     String patientID = "1";
     String visitID;
+    String state;
     String patientName;
     String intentTag;
 
@@ -44,6 +45,7 @@ public class TableExamActivity extends AppCompatActivity {
         if (intent != null) {
             patientID = intent.getStringExtra("patientID");
             visitID = intent.getStringExtra("visitID");
+            state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
@@ -164,6 +166,7 @@ public class TableExamActivity extends AppCompatActivity {
             Intent intent = new Intent(TableExamActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);
+            intent.putExtra("state", state);
             intent.putExtra("name", patientName);
             intent.putExtra("tag", intentTag);
             startActivity(intent);
@@ -172,6 +175,7 @@ public class TableExamActivity extends AppCompatActivity {
             Intent intent = new Intent(TableExamActivity.this, PhysicalExamActivity.class);
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);
+            intent.putExtra("state", state);
             intent.putExtra("name", patientName);
             intent.putExtra("tag", intentTag);
             intent.putStringArrayListExtra("exams", physicalExams);

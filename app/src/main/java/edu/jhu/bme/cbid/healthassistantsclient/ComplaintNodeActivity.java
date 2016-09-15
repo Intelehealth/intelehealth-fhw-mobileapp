@@ -28,6 +28,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
     String patientID = "1";
     String visitID;
+    String state;
     String patientName;
     String intentTag;
 
@@ -47,6 +48,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         if (intent != null) {
             patientID = intent.getStringExtra("patientID");
             visitID = intent.getStringExtra("visitID");
+            state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
 //            Log.v(LOG_TAG, "Patient ID: " + patientID);
@@ -136,6 +138,8 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     Intent intent = new Intent(ComplaintNodeActivity.this, QuestionNodeActivity.class);
                     intent.putExtra("patientID", patientID);
                     intent.putExtra("visitID", visitID);
+
+                    intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
                     intent.putStringArrayListExtra("complaints", selection);

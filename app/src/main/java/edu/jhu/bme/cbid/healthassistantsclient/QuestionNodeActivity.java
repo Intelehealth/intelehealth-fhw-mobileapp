@@ -32,6 +32,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
     String patientID = "1";
     String visitID;
+    String state;
     String patientName;
     String intentTag;
 
@@ -58,6 +59,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
         if (intent != null) {
             patientID = intent.getStringExtra("patientID");
             visitID = intent.getStringExtra("visitID");
+            state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             complaints = intent.getStringArrayListExtra("complaints");
@@ -184,14 +186,16 @@ public class QuestionNodeActivity extends AppCompatActivity {
                     Intent intent = new Intent(QuestionNodeActivity.this, PhysicalExamActivity.class);
                     intent.putExtra("patientID", patientID);
                     intent.putExtra("visitID", visitID);
+                    intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
                     intent.putStringArrayListExtra("exams", physicalExams);
                     startActivity(intent);
                 } else {
-                    Intent intent = new Intent(QuestionNodeActivity.this, TableExamActivity.class);
+                    Intent intent = new Intent(QuestionNodeActivity.this, PatientHistoryActivity.class);
                     intent.putExtra("patientID", patientID);
                     intent.putExtra("visitID", visitID);
+                    intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
                     intent.putStringArrayListExtra("exams", physicalExams);

@@ -53,6 +53,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
     String patientID = "1";
     String visitID;
+    String state;
     String patientName;
     String intentTag;
 
@@ -81,6 +82,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
         if (intent != null) {
             patientID = intent.getStringExtra("patientID");
             visitID = intent.getStringExtra("visitID");
+            state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             selectedExamsList = intent.getStringArrayListExtra("exams");
@@ -137,6 +139,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                         Intent intent = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
                         intent.putExtra("patientID", patientID);
                         intent.putExtra("visitID", visitID);
+                        intent.putExtra("state", state);
                         intent.putExtra("name", patientName);
                         intent.putExtra("tag", intentTag);
                         startActivity(intent);
@@ -144,6 +147,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                         Intent intent1 = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
                         intent1.putExtra("patientID", patientID);
                         intent1.putExtra("visitID", visitID);
+                        intent1.putExtra("state", state);
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("tag", intentTag);
                         startActivity(intent1);
