@@ -58,7 +58,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String LOG_TAG = "Patient Summary Activity";
 
 
-
     //Change when used with a different organization.
     //This is a demo server.
 
@@ -574,9 +573,22 @@ public class VisitSummaryActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
 
             String openMRSUUID = null;
+            String patientSelection = "_id MATCH ?";
+            String[] patientArgs = {patientID};
+            String[] patientColumns = {"openmrs_uuid"};
+            final Cursor idCursor = db.query("patient", patientColumns, patientSelection, patientArgs, null, null, null);
 
-            if(state.equals("new")){
+            idCursor.moveToLast();
+            openMRSUUID = idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_uuid"));
+            idCursor.close();
 
+//            if (idCursor.moveToFirst()) {
+//                do {
+//                } while (idCursor.moveToNext());
+//            }
+//            idCursor.close();
+
+            if(openMRSUUID == null){
                 String personString =
                         String.format("{\"gender\":\"%s\", " +
                                         "\"names\":[" +
@@ -650,19 +662,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 );
 
                 openMRSUUID = responsePatient.getResponseString();
-            } else {
-                String patientSelection = "_id MATCH ?";
-                String[] patientArgs = {patientID};
-                String[] patientColumns = {"openmrs_uuid"};
-                final Cursor idCursor = db.query("patient", patientColumns, patientSelection, patientArgs, null, null, null);
-
-                if (idCursor.moveToFirst()) {
-                    do {
-                        openMRSUUID = idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_uuid"));
-                    } while (idCursor.moveToNext());
-                }
-                idCursor.close();
             }
+
+//            if (state != null) {
+//                if (state.equals("new")) {
+//
+//
+//                }
+//            } else {
+//            }
 
             String table = "visit";
             String[] columnsToReturn = {"start_datetime"};
@@ -952,23 +960,26 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
-            if (!diagnosisReturned.isEmpty()) {
-                createNewCardView(getString(R.string.visit_summary_diagnosis), diagnosisReturned, 0);
-            }
-            if (!rxReturned.isEmpty()) {
-                createNewCardView(getString(R.string.visit_summary_rx), rxReturned, 1);
-            }
-            if (!adviceReturned.isEmpty()) {
-                createNewCardView(getString(R.string.visit_summary_advice), adviceReturned, 2);
-            }
-            if (!testsReturned.isEmpty()) {
-                createNewCardView(getString(R.string.visit_summary_tests_prescribed), testsReturned, 3);
+
+            if (!doctorName.isEmpty()) {
+                createNewCardView(getString(R.string.visit_summary_doctor_details), doctorName, 0);
             }
             if (!additionalReturned.isEmpty()) {
-                createNewCardView(getString(R.string.visit_summary_additional_comments), additionalReturned, 4);
+                createNewCardView(getString(R.string.visit_summary_additional_comments), additionalReturned, 0);
             }
-            if (!doctorName.isEmpty()) {
-                createNewCardView(getString(R.string.visit_summary_doctor_details), doctorName, 5);
+
+            if (!testsReturned.isEmpty()) {
+                createNewCardView(getString(R.string.visit_summary_tests_prescribed), testsReturned, 0);
+            }
+
+            if (!adviceReturned.isEmpty()) {
+                createNewCardView(getString(R.string.visit_summary_advice), adviceReturned, 0);
+            }
+            if (!rxReturned.isEmpty()) {
+                createNewCardView(getString(R.string.visit_summary_rx), rxReturned, 0);
+            }
+            if (!diagnosisReturned.isEmpty()) {
+                createNewCardView(getString(R.string.visit_summary_diagnosis), diagnosisReturned, 0);
             }
 
             super.onPostExecute(s);
@@ -980,7 +991,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
     }
-
 
 
     private void createNewCardView(String title, String content, int index) {

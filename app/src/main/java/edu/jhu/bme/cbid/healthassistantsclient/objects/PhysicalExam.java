@@ -63,49 +63,49 @@ public class PhysicalExam extends Node {
         }
 
 
-        //Find the other exams that need to be conducted and add them in
-        if (selection == null) {
-            //If no exams were required, just do the general ones
-            return newOptionsList;
-        } else if (!selection.isEmpty()) {
-            for (int i = 0; i < selection.size(); i++) {
-
-                /*
-                First, the selection texts are taken individually, and split up into location:exam
-                The location node is identified first, and then the exam nodes
-                 */
-
-                String current = selection.get(i);
+//        //Find the other exams that need to be conducted and add them in
+//        if (selection == null) {
+//            //If no exams were required, just do the general ones
+//            return newOptionsList;
+//        } else if (!selection.isEmpty()) {
+//            for (int i = 0; i < selection.size(); i++) {
+//
+//                /*
+//                First, the selection texts are taken individually, and split up into location:exam
+//                The location node is identified first, and then the exam nodes
+//                 */
+//
+//                String current = selection.get(i);
 //                Log.d("Exam current ", current);
-                String[] split = current.split(":");
-                String location = split[0];
+//                String[] split = current.split(":");
+//                String location = split[0];
 //                Log.d("Exam location ", location);
-                String exam = split[1];
+//                String exam = split[1];
 //                Log.d("Exam exam ", exam);
-                Node locationNodeRef = getOptionByName(location);
+//                Node locationNodeRef = getOptionByName(location);
 //                Log.d("Exam locRef", locationNodeRef.getText());
-                Node examNodeRef = locationNodeRef.getOptionByName(exam);
+//                Node examNodeRef = locationNodeRef.getOptionByName(exam);
 //                Log.d("Exam examRef", examNodeRef.getText());
-
-                //The foundLocation list is to ensure that the same exam isn't display twice
-                if (foundLocations.contains(location)) {
+//
+//                //The foundLocation list is to ensure that the same exam isn't display twice
+//                if (foundLocations.contains(location)) {
 //                    Log.d("Exam if", "location in foundLocations");
-                    int locationIndex = foundLocations.indexOf(location);
-                    Node foundLocationNode = newOptionsList.get(locationIndex);
-                    foundLocationNode.addOptions(new Node(examNodeRef));
-                } else {
-
-                    //If it's a new exam, the location needs to be added to the list of things to check
+//                    int locationIndex = foundLocations.indexOf(location);
+//                    Node foundLocationNode = newOptionsList.get(locationIndex);
+//                    foundLocationNode.addOptions(new Node(examNodeRef));
+//                } else {
+//
+//                    //If it's a new exam, the location needs to be added to the list of things to check
 //                    Log.d("Exam if", "not found");
-                    foundLocations.add(location);
-                    Node locationNode = new Node(locationNodeRef);
-                    locationNode.removeOptionsList();
-                    locationNode.addOptions(new Node(examNodeRef));
-                    newOptionsList.add(locationNode);
-                }
-
-            }
-        }
+//                    foundLocations.add(location);
+//                    Node locationNode = new Node(locationNodeRef);
+//                    locationNode.removeOptionsList();
+//                    locationNode.addOptions(new Node(examNodeRef));
+//                    newOptionsList.add(locationNode);
+//                }
+//
+//            }
+//        }
         return newOptionsList;
     }
 
