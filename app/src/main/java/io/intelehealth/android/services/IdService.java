@@ -52,7 +52,9 @@ public class IdService extends IntentService {
         super(name);
     }
 
-
+    public IdService(){
+        super("Intent Service");
+    }
 
     @Override
     protected void onHandleIntent(Intent intent) {
