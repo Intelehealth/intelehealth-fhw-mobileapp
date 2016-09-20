@@ -1,59 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".HomeActivity"
+    tools:context=".HomeActivity">
 
-    >
-
-
-    <TableRow
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight=".5">
-
-        <ImageButton
-            android:id="@+id/newPatientButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight=".5"
-            android:background="?android:attr/selectableItemBackground"
-            android:src="@drawable/new_patient_button"
-            android:text="@string/button_new_pt" />
+    <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/recyclerview_home"
+    />
 
 
-        <ImageButton
-            android:id="@+id/findPatientsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight=".5"
-            android:background="?android:attr/selectableItemBackground"
-            android:onClick=""
-            android:src="@drawable/find_patients_button"
-            android:text="@string/button_find_pt" />
-    </TableRow>
-
-    <TableRow
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight=".5">
-
-        <!--<ImageButton-->
-            <!--android:id="@+id/diagnosticServicesButton"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:layout_weight=".5"-->
-            <!--android:background="?android:attr/selectableItemBackground"-->
-            <!--android:src="@drawable/diagnostic_tests_button"-->
-            <!--android:text="@string/button_diagnostic_tests" />-->
-
-
-    </TableRow>
-
-</TableLayout>
+</LinearLayout>

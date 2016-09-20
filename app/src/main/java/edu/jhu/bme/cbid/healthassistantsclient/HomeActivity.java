@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageButton;
 import org.acra.ACRA;
 
 public class HomeActivity extends AppCompatActivity {
@@ -22,25 +22,32 @@ public class HomeActivity extends AppCompatActivity {
 
         setTitle("Home");
 
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview_home);
+        recyclerView.setHasFixedSize(true);
 
-        ImageButton newPtButton = (ImageButton) findViewById(R.id.newPatientButton);
-        assert newPtButton != null;
-        newPtButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startNewPatient();
-            }
-        });
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(HomeActivity.this, 1);
+        recyclerView.setLayoutManager(gridLayoutManager);
 
 
-        ImageButton findPatientButton = (ImageButton) findViewById(R.id.findPatientsButton);
-        assert findPatientButton != null;
-        findPatientButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                findPatient();
-            }
-        });
+
+        // ImageButton newPtButton = (ImageButton) findViewById(R.id.newPatientButton);
+        // assert newPtButton != null;
+        // newPtButton.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View v) {
+        //        startNewPatient();
+        //    }
+        //});
+
+
+        // ImageButton findPatientButton = (ImageButton) findViewById(R.id.findPatientsButton);
+        // assert findPatientButton != null;
+        // findPatientButton.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View v) {
+        //        findPatient();
+        //    }
+        //});
 
 //        ImageButton diagnosticServicesButton = (ImageButton) findViewById(R.id.diagnosticServicesButton);
 //        assert diagnosticServicesButton != null;
