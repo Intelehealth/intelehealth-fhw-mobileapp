@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,41 +18,23 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import edu.jhu.bme.cbid.healthassistantsclient.objects.Obs;
+import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
+import edu.jhu.bme.cbid.healthassistantsclient.objects.WebResponse;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.InvalidObjectException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
-import edu.jhu.bme.cbid.healthassistantsclient.objects.Obs;
-import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
-import edu.jhu.bme.cbid.healthassistantsclient.objects.WebResponse;
+import java.util.*;
 
 public class VisitSummaryActivity extends AppCompatActivity {
 
@@ -366,33 +349,40 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         idCursor.close();
 
-        String famHistSelection = "patient_id = ? AND concept_id = ?";
-        String[] famHistArgs = {dataString, "163188"};
-
         String[] columns = {"value", " concept_id"};
         String orderBy = "visit_id";
-        Cursor famHistCursor = db.query("obs", columns, famHistSelection, famHistArgs, null, null, orderBy);
-        famHistCursor.moveToLast();
-        String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
-        famHistory.setValue(famHistText);
-        famHistCursor.close();
 
-
-        String medHistSelection = "patient_id = ? AND concept_id = ?";
-        String[] medHistArgs = {dataString, "163187"};
-        Cursor medHistCursor = db.query("obs", columns, medHistSelection, medHistArgs, null, null, orderBy);
-        medHistCursor.moveToLast();
-        String medHistText = medHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
-        patHistory.setValue(medHistText);
-        if (!medHistText.isEmpty()) {
-            medHistory = patHistory.getValue();
-            medHistory = medHistory.replace("\"", "");
-            medHistory = medHistory.replace("\n", "");
-            do {
-                medHistory = medHistory.replace("  ", "");
-            } while (medHistory.contains("  "));
+        try {
+            String famHistSelection = "patient_id = ? AND concept_id = ?";
+            String[] famHistArgs = {dataString, "163188"};
+            Cursor famHistCursor = db.query("obs", columns, famHistSelection, famHistArgs, null, null, orderBy);
+            famHistCursor.moveToLast();
+            String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
+            famHistory.setValue(famHistText);
+            famHistCursor.close();
+        } catch (CursorIndexOutOfBoundsException e) {
+            famHistory.setValue(""); // if family history does not exist
         }
-        medHistCursor.close();
+
+        try {
+            String medHistSelection = "patient_id = ? AND concept_id = ?";
+            String[] medHistArgs = {dataString, "163187"};
+            Cursor medHistCursor = db.query("obs", columns, medHistSelection, medHistArgs, null, null, orderBy);
+            medHistCursor.moveToLast();
+            String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+            patHistory.setValue(medHistText);
+            if (!medHistText.isEmpty()) {
+                medHistory = patHistory.getValue();
+                medHistory = medHistory.replace("\"", "");
+                medHistory = medHistory.replace("\n", "");
+                do {
+                    medHistory = medHistory.replace("  ", "");
+                } while (medHistory.contains("  "));
+            }
+            medHistCursor.close();
+        } catch (CursorIndexOutOfBoundsException e) {
+            patHistory.setValue(""); // if medical history does not exist
+        }
 
         String visitSelection = "patient_id = ? AND visit_id = ?";
         String[] visitArgs = {dataString, visitID};

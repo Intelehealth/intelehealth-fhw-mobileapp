@@ -1,11 +1,7 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
 import android.app.DatePickerDialog;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -29,14 +25,13 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
-import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
 
 import static edu.jhu.bme.cbid.healthassistantsclient.HelperMethods.REQUEST_CAMERA;
 import static edu.jhu.bme.cbid.healthassistantsclient.HelperMethods.REQUEST_READ_EXTERNAL;
@@ -443,6 +438,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if (idCursor.getCount() > 0) {
                 String lastIDString = idCursor.getString(idCursor.getColumnIndexOrThrow("_id")); //Grab the last patientID
+                Log.d(LOG_TAG, lastIDString);
 
                 Integer newInteger = 0;
                 // TODO: Handle case where ID is changed to something else and then changed back
@@ -456,7 +452,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 } catch(Exception e) {
                     newInteger = 0; // ID was probably changed
                 } finally {
-//                    Log.d(LOG_TAG, String.valueOf(newInteger));
+                    Log.d(LOG_TAG, String.valueOf(newInteger));
                     newInteger++; //Increment it by 1
                 }
 
@@ -528,8 +524,6 @@ public class IdentificationActivity extends AppCompatActivity {
             visitID = String.valueOf(visitLong);
 
             localdb.close();
-
-
 
             return null;
         }
