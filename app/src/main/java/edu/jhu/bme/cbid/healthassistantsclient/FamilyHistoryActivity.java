@@ -9,10 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ExpandableListView;
+import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
 
 import java.util.ArrayList;
-
-import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
 
 public class FamilyHistoryActivity extends AppCompatActivity {
 
@@ -96,7 +95,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
 
                 if(!familyHistoryMap.getOption(groupPosition).getOption(childPosition).isTerminal()){
-                    HelperMethods.subLevelQuestion(clickedNode, FamilyHistoryActivity.this, adapter);
+                    Node.subLevelQuestion(clickedNode, FamilyHistoryActivity.this, adapter);
                 }
 
                 return false;
@@ -109,7 +108,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                 Node clickedNode = familyHistoryMap.getOption(groupPosition);
 
                 if(clickedNode.getInputType() != null){
-                    HelperMethods.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter);
+                    Node.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter);
                 }
 
                 if (lastExpandedPosition != -1

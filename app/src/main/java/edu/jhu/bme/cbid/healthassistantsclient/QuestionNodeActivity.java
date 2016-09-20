@@ -9,18 +9,15 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
+import edu.jhu.bme.cbid.healthassistantsclient.objects.Knowledge;
+import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-
-import edu.jhu.bme.cbid.healthassistantsclient.objects.Knowledge;
-import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
-import edu.jhu.bme.cbid.healthassistantsclient.objects.TableExam;
 
 
 public class QuestionNodeActivity extends AppCompatActivity {
@@ -110,12 +107,12 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 }
 
                 if (!question.getInputType().isEmpty()) {
-                    HelperMethods.handleQuestion(question, QuestionNodeActivity.this, adapter);
+                    Node.handleQuestion(question, QuestionNodeActivity.this, adapter);
                     //If there is an input type, then the question has a special method of data entry.
                 }
 
                 if (!question.isTerminal()) {
-                    HelperMethods.subLevelQuestion(question, QuestionNodeActivity.this, adapter);
+                    Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter);
                     //If the node is not terminal, that means there are more questions to be asked for this branch.
                 }
 

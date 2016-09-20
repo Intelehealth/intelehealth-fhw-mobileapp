@@ -9,10 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ExpandableListView;
+import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
 
 import java.util.ArrayList;
-
-import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
 
 public class PatientHistoryActivity extends AppCompatActivity {
 
@@ -124,7 +123,7 @@ public class PatientHistoryActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
 
                 if(!clickedNode.isTerminal()){
-                    HelperMethods.subLevelQuestion(clickedNode, PatientHistoryActivity.this, adapter);
+                    Node.subLevelQuestion(clickedNode, PatientHistoryActivity.this, adapter);
                 }
 
                 return false;
