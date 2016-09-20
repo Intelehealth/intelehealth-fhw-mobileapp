@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import org.acra.ACRA;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -112,6 +113,11 @@ public class HomeActivity extends AppCompatActivity {
         // TODO: sync all the data recorded to EHR, and sync back locally
         // Information to sync includes credentials and patient info
         // Bandwidth heavy task
+        try {
+            throw new NullPointerException();
+        } catch (NullPointerException caughtException) {
+            ACRA.getErrorReporter().handleException(caughtException);
+        }
     }
 
     public void logout() {
