@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="edu.jhu.bme.cbid.healthassistantsclient.PhysicalExamActivity">
+    tools:context="io.intelehealth.android.PhysicalExamActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
