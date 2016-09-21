@@ -2,6 +2,6 @@
 <searchable xmlns:android="http://schemas.android.com/apk/res/android"
     android:label="@string/search_hint"
     android:hint="@string/search_hint"
-    android:searchSuggestAuthority="edu.jhu.bme.cbid.healthassistantsclient.SearchSuggestionProvider"
+    android:searchSuggestAuthority="io.intelehealth.android.SearchSuggestionProvider"
     android:searchSuggestSelection=" ?">
 </searchable>
