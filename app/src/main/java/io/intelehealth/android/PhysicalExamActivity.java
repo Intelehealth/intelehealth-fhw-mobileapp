@@ -281,11 +281,11 @@ public class PhysicalExamActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
 
                     if (question.getInputType() != null) {
-                        HelperMethods.handleQuestion(question, (Activity) getContext(), adapter);
+                        Node.handleQuestion(question, (Activity) getContext(), adapter);
                     }
 
                     if (!question.isTerminal()) {
-                        HelperMethods.subLevelQuestion(question, (Activity) getContext(), adapter);
+                        Node.subLevelQuestion(question, (Activity) getContext(), adapter);
                     }
 
                     return false;

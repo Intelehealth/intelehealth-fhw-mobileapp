@@ -1,4 +1,4 @@
-package io.intelehealth.android;
+package edu.jhu.bme.cbid.healthassistantsclient;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -13,6 +13,9 @@ import android.widget.ExpandableListView;
 import java.util.ArrayList;
 
 import io.intelehealth.android.objects.Node;
+import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
+
+import java.util.ArrayList;
 
 public class PatientHistoryActivity extends AppCompatActivity {
 
@@ -124,7 +127,7 @@ public class PatientHistoryActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
 
                 if(!clickedNode.isTerminal()){
-                    HelperMethods.subLevelQuestion(clickedNode, PatientHistoryActivity.this, adapter);
+                    Node.subLevelQuestion(clickedNode, PatientHistoryActivity.this, adapter);
                 }
 
                 return false;

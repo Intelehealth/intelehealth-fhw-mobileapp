@@ -1,4 +1,4 @@
-package io.intelehealth.android;
+package edu.jhu.bme.cbid.healthassistantsclient;
 
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ExpandableListView;
+import edu.jhu.bme.cbid.healthassistantsclient.objects.Knowledge;
+import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -108,12 +110,12 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 }
 
                 if (!question.getInputType().isEmpty()) {
-                    HelperMethods.handleQuestion(question, QuestionNodeActivity.this, adapter);
+                    Node.handleQuestion(question, QuestionNodeActivity.this, adapter);
                     //If there is an input type, then the question has a special method of data entry.
                 }
 
                 if (!question.isTerminal()) {
-                    HelperMethods.subLevelQuestion(question, QuestionNodeActivity.this, adapter);
+                    Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter);
                     //If the node is not terminal, that means there are more questions to be asked for this branch.
                 }
 
