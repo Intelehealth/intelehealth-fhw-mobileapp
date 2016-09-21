@@ -15,7 +15,7 @@ import android.widget.TextView;
  */
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder> {
     final String[] options = {"New Patient", "Lookup Patient"};
-    final int[] icons = {R.drawable.ic_person_add_24dp, R.drawable.ic_group_24dp};
+    final int[] icons = {R.drawable.ic_person_add_24dp, R.drawable.ic_search_24dp};
 
     @Override
     public IconViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
