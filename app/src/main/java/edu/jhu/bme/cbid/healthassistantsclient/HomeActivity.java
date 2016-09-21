@@ -28,7 +28,7 @@ public class HomeActivity extends AppCompatActivity {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(HomeActivity.this, 1);
         recyclerView.setLayoutManager(gridLayoutManager);
 
-
+        recyclerView.setAdapter(new HomeAdapter());
 
         // ImageButton newPtButton = (ImageButton) findViewById(R.id.newPatientButton);
         // assert newPtButton != null;

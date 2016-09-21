@@ -1,5 +1,7 @@
 package edu.jhu.bme.cbid.healthassistantsclient;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,7 +20,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
     @Override
     public IconViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_home, parent, false);
-        return new IconViewHolder(v);
+        return new IconViewHolder(v, parent.getContext());
     }
 
     @Override
@@ -36,20 +38,25 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
         CardView cardView;
         TextView optionName;
         ImageView icon;
+        Context context;
 
-        IconViewHolder(View itemView) {
+        IconViewHolder(View itemView, Context activityContext) {
             super(itemView);
+            itemView.setOnClickListener(this);
             this.cardView = (CardView) itemView.findViewById(R.id.cardview_home);
             this.optionName = (TextView) itemView.findViewById(R.id.option_name);
             this.icon = (ImageView) itemView.findViewById(R.id.option_icon);
+            this.context = activityContext;
         }
 
         @Override
         public void onClick(View v) {
             if (this.optionName.getText().toString().equals("New Patient")) {
-
+                Intent intent = new Intent(this.context, IdentificationActivity.class);
+                this.context.startActivity(intent);
             } else if (this.optionName.getText().toString().equals("Lookup Patient")) {
-
+                Intent intent = new Intent(this.context, SearchPatientActivity.class);
+                this.context.startActivity(intent);
             }
         }
 
