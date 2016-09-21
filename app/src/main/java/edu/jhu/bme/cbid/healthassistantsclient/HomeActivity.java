@@ -20,7 +20,6 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        setTitle("Home");
 
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview_home);
         recyclerView.setHasFixedSize(true);
