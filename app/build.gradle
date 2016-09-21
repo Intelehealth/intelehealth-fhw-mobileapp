@@ -5,14 +5,17 @@ android {
     buildToolsVersion "24.0.2"
 
     defaultConfig {
-        applicationId "edu.jhu.bme.cbid.healthassistantsclient"
+        applicationId "io.intelehealth.android"
         minSdkVersion 19
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0"
+        versionName "1"
     }
     buildTypes {
         release {
+            lintOptions {
+                disable 'MissingTranslation'
+            }
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
