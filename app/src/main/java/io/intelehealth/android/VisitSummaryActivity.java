@@ -25,9 +25,9 @@ import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import edu.jhu.bme.cbid.healthassistantsclient.objects.Obs;
-import edu.jhu.bme.cbid.healthassistantsclient.objects.Patient;
-import edu.jhu.bme.cbid.healthassistantsclient.objects.WebResponse;
+import io.intelehealth.android.objects.Obs;
+import io.intelehealth.android.objects.Patient;
+import io.intelehealth.android.objects.WebResponse;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -351,9 +351,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } while (idCursor.moveToNext());
         }
         idCursor.close();
-
-        String famHistSelection = "patient_id = ? AND concept_id = ?";
-        String[] famHistArgs = {dataString, "163188"};
 
         String[] columns = {"value", " concept_id"};
         String orderBy = "visit_id";

@@ -1,4 +1,4 @@
-package edu.jhu.bme.cbid.healthassistantsclient;
+package io.intelehealth.android;
 
 import android.Manifest;
 import android.accounts.Account;
@@ -33,7 +33,7 @@ public class HomeActivity extends AppCompatActivity {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(HomeActivity.this, 1);
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        recyclerView.setAdapter(new HomeAdapter());
+        recyclerView.setAdapter(new io.intelehealth.android.HomeAdapter());
 
         // ImageButton newPtButton = (ImageButton) findViewById(R.id.newPatientButton);
         // assert newPtButton != null;

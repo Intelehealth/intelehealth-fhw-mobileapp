@@ -1,4 +1,4 @@
-package edu.jhu.bme.cbid.healthassistantsclient;
+package io.intelehealth.android;
 
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -11,8 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ExpandableListView;
-import edu.jhu.bme.cbid.healthassistantsclient.objects.Knowledge;
-import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
+import io.intelehealth.android.objects.Knowledge;
+import io.intelehealth.android.objects.Node;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package edu.jhu.bme.cbid.healthassistantsclient;
+package io.intelehealth.android;
 
 import android.Manifest;
 import android.app.Activity;

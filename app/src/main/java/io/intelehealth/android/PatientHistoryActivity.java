@@ -1,4 +1,4 @@
-package edu.jhu.bme.cbid.healthassistantsclient;
+package io.intelehealth.android;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -13,7 +13,7 @@ import android.widget.ExpandableListView;
 import java.util.ArrayList;
 
 import io.intelehealth.android.objects.Node;
-import edu.jhu.bme.cbid.healthassistantsclient.objects.Node;
+import io.intelehealth.android.objects.Node;
 
 import java.util.ArrayList;
 
