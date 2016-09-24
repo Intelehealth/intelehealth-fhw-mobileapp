@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="io.intelehealth.android">
+          package="io.intelehealth.telemedicine">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
@@ -19,48 +19,50 @@
     <uses-feature android:name="android.hardware.camera.autofocus"/>
 
     <application
-            android:name="io.intelehealth.android.IntelehealthApplication"
+            android:name="io.intelehealth.telemedicine.IntelehealthApplication"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name="io.intelehealth.android.HomeActivity"
-                android:label="@string/title_activity_login"/>
-        <activity
-                android:name="io.intelehealth.android.LoginActivity"
+        <activity android:name="io.intelehealth.telemedicine.HomeActivity"
                 android:label="@string/title_activity_login">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            </activity>
+        <activity
+                android:name="io.intelehealth.telemedicine.LoginActivity"
+                android:label="@string/title_activity_login">
         </activity>
         <activity
-                android:name="io.intelehealth.android.ActivePatientActivity"
+                android:name="io.intelehealth.telemedicine.ActivePatientActivity"
                 android:label="@string/title_activity_active_patient"
-                android:parentActivityName="io.intelehealth.android.HomeActivity"
+                android:parentActivityName="io.intelehealth.telemedicine.HomeActivity"
                 android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="io.intelehealth.android.HomeActivity"/>
+                    android:value="io.intelehealth.telemedicine.HomeActivity"/>
         </activity>
         <activity
-                android:name="io.intelehealth.android.PatientDetailActivity"
+                android:name="io.intelehealth.telemedicine.PatientDetailActivity"
                 android:label="@string/title_activity_patient_detail"
-                android:parentActivityName="io.intelehealth.android.ActivePatientActivity"
+                android:parentActivityName="io.intelehealth.telemedicine.ActivePatientActivity"
                 android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="io.intelehealth.android.ActivePatientActivity"/>
+                    android:value="io.intelehealth.telemedicine.ActivePatientActivity"/>
         </activity>
         <activity
-                android:name="io.intelehealth.android.VisitSummaryActivity"
+                android:name="io.intelehealth.telemedicine.VisitSummaryActivity"
                 android:label="@string/title_activity_patient_summary"
                 android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name="io.intelehealth.android.ViewHistoryActivity"/>
+        <activity android:name="io.intelehealth.telemedicine.ViewHistoryActivity"/>
         <activity
-                android:name="io.intelehealth.android.SearchPatientActivity"
+                android:name="io.intelehealth.telemedicine.SearchPatientActivity"
                 android:label="@string/title_activity_search_patient"
                 android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -72,19 +74,19 @@
                     android:resource="@xml/searchable"/>
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="io.intelehealth.android.HomeActivity"/>
+                    android:value="io.intelehealth.telemedicine.HomeActivity"/>
         </activity>
         <activity
-                android:name="io.intelehealth.android.DiagnosticTestsSelectionActivity"
+                android:name="io.intelehealth.telemedicine.DiagnosticTestsSelectionActivity"
                 android:label="@string/title_activity_diagnostic_tests_list"
                 android:theme="@style/AppTheme.NoActionBar"/>
 
         <service
-                android:name="io.intelehealth.android.services.IdService"
+                android:name="io.intelehealth.telemedicine.services.IdService"
                 android:exported="false"/>
 
         <service
-                android:name="io.intelehealth.android.services.OpenMRSAccountAuthenticatorService"
+                android:name="io.intelehealth.telemedicine.services.OpenMRSAccountAuthenticatorService"
                 android:exported="false">
         <intent-filter>
             <action android:name="android.accounts.AccountAuthenticator" />
@@ -95,26 +97,26 @@
 
 
     <activity
-                android:name="io.intelehealth.android.TableExamActivity"
+                android:name="io.intelehealth.telemedicine.TableExamActivity"
                 android:exported="true"
                 android:label="@string/title_activity_table_exam"
                 android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="io.intelehealth.android.FamilyHistoryActivity"/>
+                    android:value="io.intelehealth.telemedicine.FamilyHistoryActivity"/>
         </activity>
 
         <provider
-                android:name="io.intelehealth.android.SearchSuggestionProvider"
-                android:authorities="io.intelehealth.android.SearchSuggestionProvider"/>
+                android:name="io.intelehealth.telemedicine.SearchSuggestionProvider"
+                android:authorities="io.intelehealth.telemedicine.SearchSuggestionProvider"/>
 
         <activity
-                android:name="io.intelehealth.android.IdentificationActivity"
+                android:name="io.intelehealth.telemedicine.IdentificationActivity"
                 android:label="@string/title_activity_identification"
                 android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="io.intelehealth.android.HomeActivity"/>
+                    android:value="io.intelehealth.telemedicine.HomeActivity"/>
         </activity>
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
@@ -125,52 +127,52 @@
                 android:value="@integer/google_play_services_version"/>
 
         <activity
-                android:name="io.intelehealth.android.ComplaintNodeActivity"
+                android:name="io.intelehealth.telemedicine.ComplaintNodeActivity"
                 android:label="@string/title_activity_complaint_node"
-                android:parentActivityName="io.intelehealth.android.IdentificationActivity"
+                android:parentActivityName="io.intelehealth.telemedicine.IdentificationActivity"
                 android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="io.intelehealth.android.IdentificationActivity"/>
+                    android:value="io.intelehealth.telemedicine.IdentificationActivity"/>
         </activity>
         <activity
-                android:name="io.intelehealth.android.QuestionNodeActivity"
+                android:name="io.intelehealth.telemedicine.QuestionNodeActivity"
                 android:label="@string/title_activity_question_node"
                 android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-                android:name="io.intelehealth.android.PatientHistoryActivity"
+                android:name="io.intelehealth.telemedicine.PatientHistoryActivity"
                 android:label="@string/title_activity_patient_history"
-                android:parentActivityName="io.intelehealth.android.QuestionNodeActivity"
+                android:parentActivityName="io.intelehealth.telemedicine.QuestionNodeActivity"
                 android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="io.intelehealth.android.QuestionNodeActivity"/>
+                    android:value="io.intelehealth.telemedicine.QuestionNodeActivity"/>
         </activity>
         <activity
-                android:name="io.intelehealth.android.FamilyHistoryActivity"
+                android:name="io.intelehealth.telemedicine.FamilyHistoryActivity"
                 android:label="@string/title_activity_family_history"
-                android:parentActivityName="io.intelehealth.android.PatientHistoryActivity"
+                android:parentActivityName="io.intelehealth.telemedicine.PatientHistoryActivity"
                 android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="io.intelehealth.android.PatientHistoryActivity"/>
+                    android:value="io.intelehealth.telemedicine.PatientHistoryActivity"/>
         </activity>
         <activity
-                android:name="io.intelehealth.android.PhysicalExamActivity"
+                android:name="io.intelehealth.telemedicine.PhysicalExamActivity"
                 android:label="@string/title_activity_physical_exam"
-                android:parentActivityName="io.intelehealth.android.PatientHistoryActivity"
+                android:parentActivityName="io.intelehealth.telemedicine.PatientHistoryActivity"
                 android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="io.intelehealth.android.PatientHistoryActivity"/>
+                    android:value="io.intelehealth.telemedicine.PatientHistoryActivity"/>
         </activity>
         <activity
-                android:name="io.intelehealth.android.SettingsActivity"
+                android:name="io.intelehealth.telemedicine.SettingsActivity"
                 android:label="@string/title_activity_settings"
-                android:parentActivityName="io.intelehealth.android.HomeActivity">
+                android:parentActivityName="io.intelehealth.telemedicine.HomeActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="io.intelehealth.android.HomeActivity"/>
+                    android:value="io.intelehealth.telemedicine.HomeActivity"/>
         </activity>
     </application>
 
