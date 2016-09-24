@@ -15,6 +15,7 @@ import android.print.PrintJob;
 import android.print.PrintManager;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -235,48 +236,53 @@ public class PatientDetailActivity extends AppCompatActivity {
             occuRow.setVisibility(View.GONE);
         }
 
-        String medHistSelection = "patient_id = ? AND concept_id = ?";
-        String[] medHistArgs = {dataString, "163187"};
-        String[] medHistColumms = {"value", " concept_id"};
-        Cursor medHistCursor = db.query("obs", medHistColumms, medHistSelection, medHistArgs, null, null, null);
-        medHistCursor.moveToLast();
-
-        String medHistValue;
-
-        try {
-            medHistValue = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
-        } catch (Exception e) {
-            medHistValue = "";
-        } finally {
-            medHistCursor.close();
-        }
-
-        if(medHistValue != null && !medHistValue.equals("")){
-            medHistView.setText(medHistValue);
+        if(visitID!=null) {
+            CardView histCardView = (CardView) findViewById(R.id.cardView_history);
+            histCardView.setVisibility(View.GONE);
         } else {
-            medHistView.setText(getString(R.string.string_no_hist));
-        }
+            String medHistSelection = "patient_id = ? AND concept_id = ?";
+            String[] medHistArgs = {dataString, "163187"};
+            String[] medHistColumms = {"value", " concept_id"};
+            Cursor medHistCursor = db.query("obs", medHistColumms, medHistSelection, medHistArgs, null, null, null);
+            medHistCursor.moveToLast();
+
+            String medHistValue;
+
+            try {
+                medHistValue = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+            } catch (Exception e) {
+                medHistValue = "";
+            } finally {
+                medHistCursor.close();
+            }
+
+            if (medHistValue != null && !medHistValue.equals("")) {
+                medHistView.setText(medHistValue);
+            } else {
+                medHistView.setText(getString(R.string.string_no_hist));
+            }
 
 
-        String famHistSelection = "patient_id = ? AND concept_id = ?";
-        String[] famHistArgs = {dataString, "163188"};
-        String[] famHistColumns = {"value", " concept_id"};
-        Cursor famHistCursor = db.query("obs", famHistColumns, famHistSelection, famHistArgs, null, null, null);
-        famHistCursor.moveToLast();
-        String famHistValue;
+            String famHistSelection = "patient_id = ? AND concept_id = ?";
+            String[] famHistArgs = {dataString, "163188"};
+            String[] famHistColumns = {"value", " concept_id"};
+            Cursor famHistCursor = db.query("obs", famHistColumns, famHistSelection, famHistArgs, null, null, null);
+            famHistCursor.moveToLast();
+            String famHistValue;
 
-        try {
-            famHistValue = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
-        } catch (Exception e) {
-            famHistValue = "";
-        } finally {
-            famHistCursor.close();
-        }
+            try {
+                famHistValue = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
+            } catch (Exception e) {
+                famHistValue = "";
+            } finally {
+                famHistCursor.close();
+            }
 
-        if(famHistValue != null && !famHistValue.equals("")){
-            famHistView.setText(famHistValue);
-        } else {
-            famHistView.setText(getString(R.string.string_no_hist));
+            if (famHistValue != null && !famHistValue.equals("")) {
+                famHistView.setText(famHistValue);
+            } else {
+                famHistView.setText(getString(R.string.string_no_hist));
+            }
         }
 
 
