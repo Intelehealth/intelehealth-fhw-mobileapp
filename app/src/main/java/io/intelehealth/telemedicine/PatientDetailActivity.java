@@ -190,6 +190,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         TextView occuView = (TextView) findViewById(R.id.textView_occupation);
         TableRow occuRow = (TableRow) findViewById(R.id.tableRow_Occupation);
 
+//        TextView lastVisit = (TextView) findViewById(R.id.textView_last_visit);
+
         TextView medHistView = (TextView) findViewById(R.id.textView_patHist);
         TextView famHistView = (TextView) findViewById(R.id.textView_famHist);
 
@@ -285,6 +287,20 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
         }
 
+//        String visitSelection = "patient_id = ?";
+//        String[] visitArgs = {dataString};
+//        String[] visitColumns = {"start_datetime"};
+//        String visitOrderBy = "start_datetime";
+//        Cursor visitCursor = db.query("visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
+//        if(visitCursor.moveToLast()) {
+//            String lastVisitString = visitCursor.getString(visitCursor.getColumnIndexOrThrow("start_datetime"));
+//            lastVisitString = lastVisitString.substring(0, 10);
+//            lastVisit.setText(lastVisitString);
+//        } else {
+//            lastVisit.setText("No prior visits");
+//        }
+//        visitCursor.close();
+
 
 
     }
@@ -335,8 +351,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                                 "<h2 id=\"patient-history\">Patient History</h2>\n" +
                                 "<p>%s</p>\n" +
                                 "<h2 id=\"family-history\">Family History</h2>\n" +
-                                "<p>%s</p>\n" +
-                                "<h2 id=\"current-medications\">Current Medications</h2>",
+                                "<p>%s</p>\n",
+//                                "<h2 id=\"current-medications\">Current Medications</h2>",
                         patientName, patientID, patientDob, patientAge, patientAddr1,
                         patientAddr2, patientAddrFinal, patientPhone, patientMedHist, patientFamHist);
         webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);

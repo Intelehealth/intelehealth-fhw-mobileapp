@@ -75,18 +75,18 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.syncOption:
-                refreshDatabases();
-                return true;
+//            case R.id.syncOption:
+//                refreshDatabases();
+//                return true;
             case R.id.settingsOption:
                 settings();
                 return true;
-            case R.id.endOfDayOption:
-                endOfDay();
-                return true;
-            case R.id.logoutOption:
-                logout();
-                return true;
+//            case R.id.endOfDayOption:
+//                endOfDay();
+//                return true;
+//            case R.id.logoutOption:
+//                logout();
+//                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

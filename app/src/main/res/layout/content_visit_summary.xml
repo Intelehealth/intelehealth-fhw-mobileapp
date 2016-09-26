@@ -24,6 +24,7 @@
 
 
         <!-- Vitals Card contains a TableView-->
+
         <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_vitals"
             android:layout_width="match_parent"
@@ -376,85 +377,89 @@
                     android:layout_below="@+id/textView_heading_famhist"
                     android:paddingTop="@dimen/padding_card"
                     android:textSize="@dimen/card_content_text_size" />
+
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
         <!--Previous Reports Card contains a list of links to image files of the previous reports-->
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/cardView_prevreports"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/padding_card"
-            android:layout_marginTop="@dimen/padding_card"
-            card_view:cardCornerRadius="@dimen/card_corner_radius"
-            card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+        <!--<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"-->
+            <!--android:id="@+id/cardView_prevreports"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginBottom="@dimen/padding_card"-->
+            <!--android:layout_marginTop="@dimen/padding_card"-->
+            <!--card_view:cardCornerRadius="@dimen/card_corner_radius"-->
+            <!--card_view:cardElevation="2dp"-->
+            <!--card_view:cardUseCompatPadding="true"-->
+            <!--card_view:contentPadding="@dimen/padding_card">-->
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <!--<RelativeLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
 
-                <TextView
-                    android:id="@+id/textView_heading_prevreports"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding_card_title_text"
-                    android:text="@string/visit_summary_previous_reports"
-                    android:textSize="@dimen/card_title_text_size" />
-                <ImageButton
-                android:id="@+id/imageButton_edit_prevreports"
-                android:layout_width="@dimen/edit_icon_width"
-                android:layout_height="@dimen/edit_icon_height"
-                android:src="@drawable/edit_icon"
-                android:padding="@dimen/padding_card_action"
-                android:layout_alignRight="@id/textView_heading_prevreports"
-                android:background="@null"/>
-                <TextView
-                    android:id="@+id/textView_content_prevreports"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textView_heading_prevreports"
-                    android:paddingTop="@dimen/padding_card"
-                    android:textSize="@dimen/card_content_text_size" />
-            </RelativeLayout>
+                <!--<TextView-->
+                    <!--android:id="@+id/textView_heading_prevreports"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:paddingTop="@dimen/padding_card_title_text"-->
+                    <!--android:text="@string/visit_summary_previous_reports"-->
+                    <!--android:textSize="@dimen/card_title_text_size" />-->
+                <!--<ImageButton-->
+                <!--android:id="@+id/imageButton_edit_prevreports"-->
+                <!--android:layout_width="@dimen/edit_icon_width"-->
+                <!--android:layout_height="@dimen/edit_icon_height"-->
+                <!--android:src="@drawable/edit_icon"-->
+                <!--android:padding="@dimen/padding_card_action"-->
+                <!--android:layout_alignRight="@id/textView_heading_prevreports"-->
+                <!--android:background="@null"/>-->
+                <!--<TextView-->
+                    <!--android:id="@+id/textView_content_prevreports"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_below="@+id/textView_heading_prevreports"-->
+                    <!--android:paddingTop="@dimen/padding_card"-->
+                    <!--android:textSize="@dimen/card_content_text_size" />-->
+            <!--</RelativeLayout>-->
 
-        </android.support.v7.widget.CardView>
+        <!--</android.support.v7.widget.CardView>-->
 
         <!--HA details Card contains text-->
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/cardView_hadetails"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/padding_card"
-            android:layout_marginTop="@dimen/padding_card"
-            card_view:cardCornerRadius="@dimen/card_corner_radius"
-            card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+        <!--<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"-->
+            <!--android:id="@+id/cardView_hadetails"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginBottom="@dimen/padding_card"-->
+            <!--android:layout_marginTop="@dimen/padding_card"-->
+            <!--card_view:cardCornerRadius="@dimen/card_corner_radius"-->
+            <!--card_view:cardElevation="2dp"-->
+            <!--card_view:cardUseCompatPadding="true"-->
+            <!--card_view:contentPadding="@dimen/padding_card">-->
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <!--<RelativeLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
 
-                <TextView
-                    android:id="@+id/textView_heading_hadetails"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding_card_title_text"
-                    android:text="@string/visit_summary_hw_on_duty"
-                    android:textSize="@dimen/card_title_text_size" />
-                <TextView
-                    android:id="@+id/textView_content_hadetails"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textView_heading_hadetails"
-                    android:paddingTop="@dimen/padding_card"
-                    android:textSize="@dimen/card_content_text_size" />
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
+                <!--<TextView-->
+                    <!--android:id="@+id/textView_heading_hadetails"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:paddingTop="@dimen/padding_card_title_text"-->
+                    <!--android:text="@string/visit_summary_hw_on_duty"-->
+                    <!--android:textSize="@dimen/card_title_text_size" />-->
+                <!--<TextView-->
+                    <!--android:id="@+id/textView_content_hadetails"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_below="@+id/textView_heading_hadetails"-->
+                    <!--android:paddingTop="@dimen/padding_card"-->
+                    <!--android:textSize="@dimen/card_content_text_size" />-->
+            <!--</RelativeLayout>-->
+        <!--</android.support.v7.widget.CardView>-->
+
+
+
 
     </LinearLayout>
 

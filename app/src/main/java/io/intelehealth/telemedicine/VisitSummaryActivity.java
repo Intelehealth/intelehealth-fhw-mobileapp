@@ -313,7 +313,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         double numerator = mWeight * 10000;
         double denominator = (mHeight) * (mHeight);
         double bmi_value = numerator / denominator;
-        mBMI = String.format(Locale.ENGLISH, "%,2f", bmi_value);
+        mBMI = String.format(Locale.ENGLISH, "%.2fd", bmi_value);
 
 
         bmiView.setText(mBMI);
@@ -967,23 +967,29 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             if (!doctorName.isEmpty()) {
                 createNewCardView(getString(R.string.visit_summary_doctor_details), doctorName, 0);
+
             }
             if (!additionalReturned.isEmpty()) {
                 createNewCardView(getString(R.string.visit_summary_additional_comments), additionalReturned, 0);
+
             }
 
             if (!testsReturned.isEmpty()) {
                 createNewCardView(getString(R.string.visit_summary_tests_prescribed), testsReturned, 0);
+
             }
 
             if (!adviceReturned.isEmpty()) {
                 createNewCardView(getString(R.string.visit_summary_advice), adviceReturned, 0);
+
             }
             if (!rxReturned.isEmpty()) {
                 createNewCardView(getString(R.string.visit_summary_rx), rxReturned, 0);
+
             }
             if (!diagnosisReturned.isEmpty()) {
                 createNewCardView(getString(R.string.visit_summary_diagnosis), diagnosisReturned, 0);
+
             }
 
             super.onPostExecute(s);
@@ -1126,7 +1132,28 @@ public class VisitSummaryActivity extends AppCompatActivity {
         });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-        return;
+    }
+
+    private long insertDb(String value) {
+        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
+
+        final int CREATOR_ID = 42;
+        //TODO: Get the right creator_ID
+
+
+        final int CONCEPT_ID = 163187; // RHK MEDICAL HISTORY BLURB
+        //Eventually will be stored in a separate table
+
+        ContentValues complaintEntries = new ContentValues();
+
+        complaintEntries.put("patient_id", patientID);
+        complaintEntries.put("visit_id", visitID);
+        complaintEntries.put("value", value);
+        complaintEntries.put("concept_id", CONCEPT_ID);
+        complaintEntries.put("creator", CREATOR_ID);
+
+        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+        return localdb.insert("obs", null, complaintEntries);
     }
 
 }

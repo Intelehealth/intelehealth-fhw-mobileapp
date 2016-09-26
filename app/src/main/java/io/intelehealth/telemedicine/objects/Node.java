@@ -8,10 +8,15 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.*;
-import io.intelehealth.telemedicine.CustomArrayAdapter;
-import io.intelehealth.telemedicine.CustomExpandableListAdapter;
-import io.intelehealth.telemedicine.R;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.NumberPicker;
+import android.widget.TextView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,6 +27,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import io.intelehealth.telemedicine.CustomArrayAdapter;
+import io.intelehealth.telemedicine.CustomExpandableListAdapter;
+import io.intelehealth.telemedicine.R;
 
 /**
  * Created by Amal Afroz Alam on 21, April, 2016.
@@ -639,7 +648,7 @@ public class Node implements Serializable {
                 }
             }
         }
-        //Log.d("Form language", mLanguage);
+        Log.d("Form language", mLanguage);
         return mLanguage;
     }
 
@@ -651,6 +660,7 @@ public class Node implements Serializable {
         } else {
             formatted = raw;
         }
+        Log.d("Generated language", formatted);
         return formatted;
     }
 

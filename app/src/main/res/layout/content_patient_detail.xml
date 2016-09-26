@@ -376,44 +376,50 @@
             android:layout_gravity="center_horizontal"
             android:text="@string/button_new_visit" />
 
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/padding_card"
-            android:layout_marginTop="@dimen/padding_card"
-            card_view:cardCornerRadius="@dimen/card_corner_radius"
-            card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+        <!--<android.support.v7.widget.CardView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginBottom="@dimen/padding_card"-->
+            <!--android:layout_marginTop="@dimen/padding_card"-->
+            <!--card_view:cardCornerRadius="@dimen/card_corner_radius"-->
+            <!--card_view:cardElevation="2dp"-->
+            <!--card_view:cardUseCompatPadding="true"-->
+            <!--card_view:contentPadding="@dimen/padding_card">-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="vertical">-->
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding_card_title_text"
-                    android:text="@string/header_previous_visits"
-                    android:textSize="@dimen/card_title_text_size" />
+                <!--<TextView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:paddingTop="@dimen/padding_card_title_text"-->
+                    <!--android:text="@string/header_previous_visits"-->
+                    <!--android:textSize="@dimen/card_title_text_size" />-->
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/row_open_visit"
-                    android:textSize="@dimen/card_content_text_size" />
+                <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:text="@string/row_open_visit"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:textSize="@dimen/card_content_text_size" />&ndash;&gt;-->
 
-                <ListView
-                    android:id="@+id/listView_visits"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding_card_action" />
+                <!--&lt;!&ndash;<ListView&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:id="@+id/listView_visits"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:paddingTop="@dimen/padding_card_action" />&ndash;&gt;-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/textView_last_visit"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textAppearance="?android:attr/textAppearanceLarge" />-->
 
 
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
+            <!--</LinearLayout>-->
+        <!--</android.support.v7.widget.CardView>-->
 
 
     </LinearLayout>

@@ -1,7 +1,11 @@
 package io.intelehealth.telemedicine;
 
 import android.app.DatePickerDialog;
-import android.content.*;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -32,9 +36,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import io.intelehealth.telemedicine.objects.Patient;
+
 import static io.intelehealth.telemedicine.HelperMethods.REQUEST_CAMERA;
 import static io.intelehealth.telemedicine.HelperMethods.REQUEST_READ_EXTERNAL;
-import io.intelehealth.telemedicine.objects.Patient;
 
 /**
  * Created by Amal Afroz Alam on 3/25/16.
@@ -559,12 +564,12 @@ public class IdentificationActivity extends AppCompatActivity {
             final String simCountry = tm.getSimCountryIso();
 //            Log.d("Country", simCountry);
             if (simCountry != null && simCountry.length() == 2) { // SIM country code is available
-                return simCountry.toLowerCase(Locale.US);
+                return simCountry.toUpperCase(Locale.US);
             } else if (tm.getPhoneType() != TelephonyManager.PHONE_TYPE_CDMA) { // device is not 3G (would be unreliable)
                 String networkCountry = tm.getNetworkCountryIso();
 //                Log.d("Country", networkCountry);
                 if (networkCountry != null && networkCountry.length() == 2) { // network country code is available
-                    return networkCountry.toLowerCase(Locale.US);
+                    return networkCountry.toUpperCase(Locale.US);
                 }
             }
         } catch (Exception e) {
