@@ -141,12 +141,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.summary_home:
-                endVisit();
-                return true;
+//            case R.id.summary_home:
+//                endVisit();
+//                return true;
             case R.id.summary_print:
                 doWebViewPrint();
                 return true;
+            case R.id.summary_endVisit:
+                endVisit();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -313,7 +315,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         double numerator = mWeight * 10000;
         double denominator = (mHeight) * (mHeight);
         double bmi_value = numerator / denominator;
-        mBMI = String.format(Locale.ENGLISH, "%.2fd", bmi_value);
+        mBMI = String.format(Locale.ENGLISH, "%.2f", bmi_value);
 
 
         bmiView.setText(mBMI);
@@ -335,7 +337,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         new RetrieveData(this).execute();
     }
 
-    private void endVisit(){
+    private void endVisit() {
         new EndVisit().execute();
     }
 
@@ -592,7 +594,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             openMRSUUID = idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_uuid"));
             idCursor.close();
 
-            if(openMRSUUID == null){
+            if (openMRSUUID == null) {
                 String personString =
                         String.format("{\"gender\":\"%s\", " +
                                         "\"names\":[" +
@@ -713,7 +715,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             );
 
             Double fTemp = Double.parseDouble(temperature.getValue());
-            Double cTemp = (fTemp - 32) * (5/9);
+            Double cTemp = (fTemp - 32) * (5 / 9);
             String tempString = String.valueOf(cTemp);
 
             String vitalsString =
@@ -746,6 +748,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
 
             assert responseVitals != null;
+
+            if (patHistory.getValue().isEmpty() || patHistory.getValue().equals("")) {
+                patHistory.setValue("None");
+            }
+            if (famHistory.getValue().isEmpty() || famHistory.getValue().equals("")) {
+                famHistory.setValue("None");
+            }
+
             String noteString =
                     String.format("{\"encounterDatetime\":\"%s\"," +
                                     " \"patient\":\"%s\"," +
@@ -788,7 +798,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } else {
                 Snackbar.make(fab, "Upload failed.", Snackbar.LENGTH_LONG).show();
             }
-            if(failedMessage != null){
+            if (failedMessage != null) {
                 failedStep(failedMessage);
             }
             super.onPostExecute(s);
@@ -1002,7 +1012,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     }
 
-    private class EndVisit extends AsyncTask<String, Void, String>{
+    private class EndVisit extends AsyncTask<String, Void, String> {
 
 
         WebResponse endResponse;
@@ -1033,7 +1043,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            if(endResponse != null && endResponse.getResponseCode() != 200){
+            if (endResponse != null && endResponse.getResponseCode() != 200) {
                 failedStep("Visit ending failed.");
             } else {
                 Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
