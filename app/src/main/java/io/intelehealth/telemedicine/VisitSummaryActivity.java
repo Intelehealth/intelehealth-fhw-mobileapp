@@ -201,69 +201,75 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editFamHist = (ImageButton) findViewById(R.id.imagebutton_edit_famhist);
         editMedHist = (ImageButton) findViewById(R.id.imagebutton_edit_pathist);
 
-        editVitals.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent1 = new Intent(VisitSummaryActivity.this, TableExamActivity.class);
-                intent1.putExtra("patientID", patientID);
-                intent1.putExtra("visitID", visitID);
-                intent1.putExtra("name", patientName);
-                intent1.putExtra("tag", "edit");
-                startActivity(intent1);
-            }
-        });
+        editComplaint.setVisibility(View.GONE);
+        editVitals.setVisibility(View.GONE);
+        editPhysical.setVisibility(View.GONE);
+        editFamHist.setVisibility(View.GONE);
+        editMedHist.setVisibility(View.GONE);
 
-        editComplaint.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent1 = new Intent(VisitSummaryActivity.this, ComplaintNodeActivity.class);
-                intent1.putExtra("patientID", patientID);
-                intent1.putExtra("visitID", visitID);
-                intent1.putExtra("name", patientName);
-                intent1.putExtra("tag", "edit");
-                startActivity(intent1);
-
-            }
-        });
-
-        editPhysical.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent1 = new Intent(VisitSummaryActivity.this, PhysicalExamActivity.class);
-                intent1.putExtra("patientID", patientID);
-                intent1.putExtra("visitID", visitID);
-                intent1.putExtra("name", patientName);
-                intent1.putExtra("tag", "edit");
-                startActivity(intent1);
-
-            }
-        });
-
-        editFamHist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent1 = new Intent(VisitSummaryActivity.this, FamilyHistoryActivity.class);
-                intent1.putExtra("patientID", patientID);
-                intent1.putExtra("visitID", visitID);
-                intent1.putExtra("name", patientName);
-                intent1.putExtra("tag", "edit");
-                startActivity(intent1);
-
-            }
-        });
-
-        editMedHist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent1 = new Intent(VisitSummaryActivity.this, PatientHistoryActivity.class);
-                intent1.putExtra("patientID", patientID);
-                intent1.putExtra("visitID", visitID);
-                intent1.putExtra("name", patientName);
-                intent1.putExtra("tag", "edit");
-                startActivity(intent1);
-
-            }
-        });
+//        editVitals.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent1 = new Intent(VisitSummaryActivity.this, TableExamActivity.class);
+//                intent1.putExtra("patientID", patientID);
+//                intent1.putExtra("visitID", visitID);
+//                intent1.putExtra("name", patientName);
+//                intent1.putExtra("tag", "edit");
+//                startActivity(intent1);
+//            }
+//        });
+//
+//        editComplaint.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent1 = new Intent(VisitSummaryActivity.this, ComplaintNodeActivity.class);
+//                intent1.putExtra("patientID", patientID);
+//                intent1.putExtra("visitID", visitID);
+//                intent1.putExtra("name", patientName);
+//                intent1.putExtra("tag", "edit");
+//                startActivity(intent1);
+//
+//            }
+//        });
+//
+//        editPhysical.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent1 = new Intent(VisitSummaryActivity.this, PhysicalExamActivity.class);
+//                intent1.putExtra("patientID", patientID);
+//                intent1.putExtra("visitID", visitID);
+//                intent1.putExtra("name", patientName);
+//                intent1.putExtra("tag", "edit");
+//                startActivity(intent1);
+//
+//            }
+//        });
+//
+//        editFamHist.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent1 = new Intent(VisitSummaryActivity.this, FamilyHistoryActivity.class);
+//                intent1.putExtra("patientID", patientID);
+//                intent1.putExtra("visitID", visitID);
+//                intent1.putExtra("name", patientName);
+//                intent1.putExtra("tag", "edit");
+//                startActivity(intent1);
+//
+//            }
+//        });
+//
+//        editMedHist.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent1 = new Intent(VisitSummaryActivity.this, PatientHistoryActivity.class);
+//                intent1.putExtra("patientID", patientID);
+//                intent1.putExtra("visitID", visitID);
+//                intent1.putExtra("name", patientName);
+//                intent1.putExtra("tag", "edit");
+//                startActivity(intent1);
+//
+//            }
+//        });
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         assert fab != null;
@@ -706,6 +712,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     visitUpdateArgs
             );
 
+            Double fTemp = Double.parseDouble(temperature.getValue());
+            Double cTemp = (fTemp - 32) * (5/9);
+            String tempString = String.valueOf(cTemp);
+
             String vitalsString =
                     String.format("{\"encounterDatetime\":\"%s\"," +
                                     " \"patient\":\"%s\"," +
@@ -722,7 +732,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\"}",
 
                             startDateTime, openMRSUUID, responseVisit.getResponseString(),
-                            weight.getValue(), height.getValue(), temperature.getValue(),
+                            weight.getValue(), height.getValue(), tempString,
                             pulse.getValue(), bpSys.getValue(),
                             bpDias.getValue(), spO2.getValue()
                     );
@@ -878,8 +888,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         return null;
                     }
 
-                    String index = obsString.substring( 0, obsString.indexOf(":"));
-                    String indexText = obsString.substring(obsString.indexOf(",") + 1, obsString.length());
+                    String index = obsString.substring(0, obsString.indexOf(":"));
+                    String indexText = obsString.substring(obsString.indexOf(":") + 1, obsString.length());
 
                     if (index.contains("TELEMEDICINE DIAGNOSIS")) {
                         if (!diagnosisReturned.contains(indexText) && !diagnosisReturned.isEmpty()) {
@@ -1017,7 +1027,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            if(endResponse != null && endResponse.getResponseCode() != 201){
+            if(endResponse != null && endResponse.getResponseCode() != 200){
                 failedStep("Visit ending failed.");
             } else {
                 Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
