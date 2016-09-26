@@ -3,6 +3,7 @@ package io.intelehealth.telemedicine;
 import android.app.NotificationManager;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
@@ -16,25 +17,36 @@ import android.print.PrintManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import io.intelehealth.telemedicine.objects.Obs;
-import io.intelehealth.telemedicine.objects.Patient;
-import io.intelehealth.telemedicine.objects.WebResponse;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InvalidObjectException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import io.intelehealth.telemedicine.objects.Obs;
+import io.intelehealth.telemedicine.objects.Patient;
+import io.intelehealth.telemedicine.objects.WebResponse;
 
 public class VisitSummaryActivity extends AppCompatActivity {
 
@@ -52,6 +64,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     boolean uploaded = false;
     boolean dataChanged = false;
+    String failedMessage;
 
     Context context;
 
@@ -60,6 +73,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String state;
     String patientName;
     String intentTag;
+    String visitUUID;
 
     LocalRecordsDatabaseHelper mDbHelper;
     SQLiteDatabase db;
@@ -128,8 +142,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.summary_home:
-                Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
-                startActivity(intent);
+                endVisit();
                 return true;
             case R.id.summary_print:
                 doWebViewPrint();
@@ -314,6 +327,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     public void retrieveOpenMRS(View view) {
         new RetrieveData(this).execute();
+    }
+
+    private void endVisit(){
+        new EndVisit().execute();
     }
 
     public void queryData(String dataString) {
@@ -556,9 +573,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             this.context = c;
         }
 
-        protected void onPreExecute() {
-        }
-
         @Override
         protected String doInBackground(String... params) {
 
@@ -571,12 +585,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             idCursor.moveToLast();
             openMRSUUID = idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_uuid"));
             idCursor.close();
-
-//            if (idCursor.moveToFirst()) {
-//                do {
-//                } while (idCursor.moveToNext());
-//            }
-//            idCursor.close();
 
             if(openMRSUUID == null){
                 String personString =
@@ -615,6 +623,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 WebResponse responsePerson;
                 responsePerson = HelperMethods.postCommand("person", personString);
                 if (responsePerson != null && responsePerson.getResponseCode() != 201) {
+                    failedMessage = "Person posting was unsuccessful";
                     Log.d(LOG_TAG, "Person posting was unsuccessful");
                     return null;
                 }
@@ -634,6 +643,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 WebResponse responsePatient;
                 responsePatient = HelperMethods.postCommand("patient", patientString);
                 if (responsePatient != null && responsePatient.getResponseCode() != 201) {
+                    failedMessage = "Patient posting was unsuccessful";
                     Log.d(LOG_TAG, "Patient posting was unsuccessful");
                     return null;
                 }
@@ -654,13 +664,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 openMRSUUID = responsePatient.getResponseString();
             }
 
-//            if (state != null) {
-//                if (state.equals("new")) {
-//
-//
-//                }
-//            } else {
-//            }
 
             String table = "visit";
             String[] columnsToReturn = {"start_datetime"};
@@ -683,14 +686,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
             WebResponse responseVisit;
             responseVisit = HelperMethods.postCommand("visit", visitString);
             if (responseVisit != null && responseVisit.getResponseCode() != 201) {
+                failedMessage = "Visit posting was unsuccessful";
                 Log.d(LOG_TAG, "Visit posting was unsuccessful");
                 return null;
             }
 
             assert responseVisit != null;
 
+            visitUUID = responseVisit.getResponseString();
             ContentValues contentValuesVisit = new ContentValues();
-            contentValuesVisit.put("openmrs_visit_uuid", responseVisit.getResponseString());
+            contentValuesVisit.put("openmrs_visit_uuid", visitUUID);
             String visitUpdateSelection = "start_datetime = ?";
             String[] visitUpdateArgs = {startDateTime};
 
@@ -725,6 +730,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             WebResponse responseVitals;
             responseVitals = HelperMethods.postCommand("encounter", vitalsString);
             if (responseVitals != null && responseVitals.getResponseCode() != 201) {
+                failedMessage = "Encounter posting was unsuccessful";
                 Log.d(LOG_TAG, "Encounter posting was unsuccessful");
                 return null;
             }
@@ -754,6 +760,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             WebResponse responseNotes;
             responseNotes = HelperMethods.postCommand("encounter", noteString);
             if (responseNotes != null && responseNotes.getResponseCode() != 201) {
+                failedMessage = "Notes posting was unsuccessful";
                 Log.d(LOG_TAG, "Notes Encounter posting was unsuccessful");
                 return null;
             }
@@ -770,6 +777,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 Snackbar.make(fab, "Upload success! Waiting for doctor.", Snackbar.LENGTH_LONG).show();
             } else {
                 Snackbar.make(fab, "Upload failed.", Snackbar.LENGTH_LONG).show();
+            }
+            if(failedMessage != null){
+                failedStep(failedMessage);
             }
             super.onPostExecute(s);
         }
@@ -792,6 +802,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             WebResponse responseEncounter;
             responseEncounter = HelperMethods.getCommand("encounter", queryString);
             if (responseEncounter != null && responseEncounter.getResponseCode() != 200) {
+                failedStep("Encounter search was unsuccessful");
                 //Log.d(LOG_TAG, "Encounter searching was unsuccessful");
                 return null;
             }
@@ -829,7 +840,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             for (int i = 0; i < uriList.size(); i++) {
                 obsResponse.add(i, HelperMethods.getCommand("encounter", uriList.get(i)));
                 if (obsResponse.get(i) != null && obsResponse.get(i).getResponseCode() != 200) {
-                    Log.d(LOG_TAG, "Obs get call number " + String.valueOf(i) + " of " + String.valueOf(uriList.size()) + " was unsuccessful");
+                    String errorMessage = "Obs get call number " + String.valueOf(i) + " of " + String.valueOf(uriList.size()) + " was unsuccessful";
+                    failedStep(errorMessage);
+                    Log.d(LOG_TAG, errorMessage);
                     return null;
                 }
             }
@@ -865,52 +878,49 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         return null;
                     }
 
-                    String[] obsSplit = obsString.split(":");
-                    //Log.d(LOG_TAG, obsString);
+                    String index = obsString.substring( 0, obsString.indexOf(":"));
+                    String indexText = obsString.substring(obsString.indexOf(",") + 1, obsString.length());
 
-                    String obsLocation = obsSplit[0];
-                    obsString = obsSplit[1];
-
-                    if (obsLocation.contains("Visit Diagnoses")) {
-                        if (!diagnosisReturned.contains(obsString) && !diagnosisReturned.isEmpty()) {
-                            diagnosisReturned = diagnosisReturned + "\n" + obsString;
+                    if (index.contains("TELEMEDICINE DIAGNOSIS")) {
+                        if (!diagnosisReturned.contains(indexText) && !diagnosisReturned.isEmpty()) {
+                            diagnosisReturned = diagnosisReturned + "\n" + indexText;
                         } else {
-                            diagnosisReturned = obsString;
+                            diagnosisReturned = indexText;
                         }
                     }
 
-                    if (obsLocation.contains("PRESCRIPTION")) {
-                        if (!rxReturned.contains(obsString) && !rxReturned.isEmpty()) {
-                            rxReturned = rxReturned + "\n" + obsString;
+                    if (index.contains("JSV MEDICATIONS")) {
+                        if (!rxReturned.contains(indexText) && !rxReturned.isEmpty()) {
+                            rxReturned = rxReturned + "\n" + indexText;
                         } else {
-                            rxReturned = obsString;
+                            rxReturned = indexText;
                         }
 
                     }
 
-                    if (obsLocation.contains("MEDICAL ADVICE")) {
-                        if (!adviceReturned.contains(obsString) && !adviceReturned.isEmpty()) {
-                            adviceReturned = adviceReturned + "\n" + obsString;
+                    if (index.contains("MEDICAL ADVICE")) {
+                        if (!adviceReturned.contains(indexText) && !adviceReturned.isEmpty()) {
+                            adviceReturned = adviceReturned + "\n" + indexText;
                         } else {
-                            adviceReturned = obsString;
+                            adviceReturned = indexText;
                         }
 
                     }
 
-                    if (obsLocation.contains("REQUESTED TESTS")) {
-                        if (!testsReturned.contains(obsString) && !testsReturned.isEmpty()) {
-                            testsReturned = testsReturned + "\n" + obsString;
+                    if (index.contains("REQUESTED TESTS")) {
+                        if (!testsReturned.contains(indexText) && !testsReturned.isEmpty()) {
+                            testsReturned = testsReturned + "\n" + indexText;
                         } else {
-                            testsReturned = obsString;
+                            testsReturned = indexText;
                         }
 
                     }
 
-                    if (obsLocation.contains("Additional Comments")) {
-                        if (!additionalReturned.contains(obsString) && !additionalReturned.isEmpty()) {
-                            additionalReturned = additionalReturned + "\n" + obsString;
+                    if (index.contains("Additional Comments")) {
+                        if (!additionalReturned.contains(indexText) && !additionalReturned.isEmpty()) {
+                            additionalReturned = additionalReturned + "\n" + indexText;
                         } else {
-                            additionalReturned = obsString;
+                            additionalReturned = indexText;
                         }
 
                     }
@@ -937,12 +947,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
 
                 }
-                Log.d(LOG_TAG, diagnosisReturned);
-                Log.d(LOG_TAG, rxReturned);
-                Log.d(LOG_TAG, adviceReturned);
-                Log.d(LOG_TAG, testsReturned);
-                Log.d(LOG_TAG, additionalReturned);
-                Log.d(LOG_TAG, doctorName);
             }
 
             return null;
@@ -982,6 +986,45 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     }
 
+    private class EndVisit extends AsyncTask<String, Void, String>{
+
+
+        WebResponse endResponse;
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            String urlModifier = "visit/" + visitUUID;
+
+            SimpleDateFormat endDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+            Date rightNow = new Date();
+            String endDateTime = endDate.format(rightNow);
+
+
+            String endString =
+                    String.format("{\"stopDatetime\":\"%s\"," +
+                                    "\"visitType\":\"a86ac96e-2e07-47a7-8e72-8216a1a75bfd\"}",
+                            endDateTime);
+
+            Log.d("End String", endString);
+
+            endResponse = HelperMethods.postCommand(urlModifier, endString);
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            if(endResponse != null && endResponse.getResponseCode() != 201){
+                failedStep("Visit ending failed.");
+            } else {
+                Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }
+        }
+    }
 
     private void createNewCardView(String title, String content, int index) {
         final LayoutInflater inflater = VisitSummaryActivity.this.getLayoutInflater();
@@ -1060,6 +1103,20 @@ public class VisitSummaryActivity extends AppCompatActivity {
         // divisible by ten
         return (10 - (sum % 10)) % 10;
 
+    }
+
+    public void failedStep(String message) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(VisitSummaryActivity.this);
+        alertDialogBuilder.setMessage(message);
+        alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+        return;
     }
 
 }
