@@ -13,11 +13,21 @@
     </item>
 
     <item
-        android:id="@+id/summary_home"
+        android:id="@+id/summary_endVisit"
         android:orderInCategory="200"
         app:showAsAction="ifRoom|withText"
-        android:title="@string/action_home">
+        android:title="End Visit">
 
     </item>
+
+    <!--<item-->
+        <!--android:id="@+id/summary_home"-->
+        <!--android:orderInCategory="200"-->
+        <!--app:showAsAction="ifRoom|withText"-->
+        <!--android:title="@string/action_home">-->
+
+    <!--</item>-->
+
+
 
 </menu>

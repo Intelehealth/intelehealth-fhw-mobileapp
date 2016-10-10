@@ -7,8 +7,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -57,16 +55,6 @@ public class SearchPatientActivity extends AppCompatActivity {
         // SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
         // suggestions.clearHistory();
 
-
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        assert fab != null;
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, R.string.generic_coming_soon, Snackbar.LENGTH_LONG).show();
-            }
-        });
     }
 
     @Override

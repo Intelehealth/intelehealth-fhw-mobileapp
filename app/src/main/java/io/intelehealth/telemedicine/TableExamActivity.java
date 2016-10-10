@@ -77,11 +77,28 @@ public class TableExamActivity extends AppCompatActivity {
         mBMI.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+//                if (mWeight.getText() == null || mHeight.getText() == null){
+//                        String message = "Please enter height and weight first.";
+//                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TableExamActivity.this);
+//                        alertDialogBuilder.setMessage(message);
+//                        alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.dismiss();
+//                            }
+//                        });
+//                        AlertDialog alertDialog = alertDialogBuilder.create();
+//                        alertDialog.show();
+//}
+
                 double numerator = Double.parseDouble(mWeight.getText().toString()) * 10000;
                 double denominator = (Double.parseDouble(mHeight.getText().toString())) * (Double.parseDouble(mHeight.getText().toString()));
                 double bmi_value = numerator / denominator;
                 mBMI.setText(String.format(Locale.ENGLISH, "%,2f", bmi_value));
                 //Log.d("BMI", String.valueOf(bmi_value));
+
+
             }
         });
 
@@ -124,7 +141,7 @@ public class TableExamActivity extends AppCompatActivity {
         for (int i = 0; i < values.size(); i++) {
             EditText et = values.get(i);
 
-            if (TextUtils.isEmpty(et.getText().toString()) && et.getTag() == null) {
+            if (TextUtils.isEmpty(et.getText().toString())) {
                 et.setError(getString(R.string.error_field_required));
                 focusView = et;
                 cancel = true;
@@ -161,7 +178,7 @@ public class TableExamActivity extends AppCompatActivity {
             insertDb(results.getSpo2(), 5092);
         }
 
-        if (intentTag.equals("edit")){
+        if (intentTag.equals("edit")) {
             Intent intent = new Intent(TableExamActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);
