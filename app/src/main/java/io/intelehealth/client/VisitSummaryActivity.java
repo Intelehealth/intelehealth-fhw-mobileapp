@@ -273,21 +273,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //            }
 //        });
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        assert fab != null;
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Log.d(LOG_TAG, "Uploaded" + uploaded);
-                if (uploaded) {
-                    Snackbar.make(view, "Downloading from doctor", Snackbar.LENGTH_LONG).show();
-                    retrieveOpenMRS(view);
-                } else if (!uploaded) {
-                    Snackbar.make(view, "Uploading to doctor", Snackbar.LENGTH_LONG).show();
-                    sendPost(view);
-                }
-            }
-        });
+
+        //TODO: Move this funtion into a new button
+//        fab = (FloatingActionButton) findViewById(R.id.fab);
+//        assert fab != null;
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //Log.d(LOG_TAG, "Uploaded" + uploaded);
+//                if (uploaded) {
+//                    Snackbar.make(view, "Downloading from doctor", Snackbar.LENGTH_LONG).show();
+//                    retrieveOpenMRS(view);
+//                } else if (!uploaded) {
+//                    Snackbar.make(view, "Uploading to doctor", Snackbar.LENGTH_LONG).show();
+//                    sendPost(view);
+//                }
+//            }
+//        });
 
         queryData(String.valueOf(patientID));
 
