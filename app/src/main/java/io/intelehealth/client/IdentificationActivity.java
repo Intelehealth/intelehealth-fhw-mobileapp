@@ -25,10 +25,13 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,15 +60,19 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mAddress1;
     EditText mAddress2;
     EditText mCity;
-    EditText mState;
     EditText mPostal;
-    EditText mCountry;
     RadioButton mGenderM;
     RadioButton mGenderF;
     String mGender;
     EditText mRelationship;
     EditText mOccupation;
     DatePickerDialog mDOBPicker;
+
+
+    EditText countryText;
+    EditText stateText;
+    Spinner mCountry;
+    Spinner mState;
 
     String mPhoto;
 
@@ -106,19 +113,61 @@ public class IdentificationActivity extends AppCompatActivity {
         mAddress1 = (EditText) findViewById(R.id.identification_address1);
         mAddress2 = (EditText) findViewById(R.id.identification_address2);
         mCity = (EditText) findViewById(R.id.identification_city);
-        mState = (EditText) findViewById(R.id.identification_state);
+        stateText = (EditText) findViewById(R.id.identification_state);
+        mState = (Spinner) findViewById(R.id.spinner_state);
         mPostal = (EditText) findViewById(R.id.identification_postal_code);
-        mCountry = (EditText) findViewById(R.id.identification_country);
+        countryText = (EditText) findViewById(R.id.identification_country);
+        mCountry = (Spinner) findViewById(R.id.spinner_country);
         mGenderM = (RadioButton) findViewById(R.id.identification_gender_male);
         mGenderF = (RadioButton) findViewById(R.id.identification_gender_female);
         mRelationship = (EditText) findViewById(R.id.identification_relationship);
         mOccupation = (EditText) findViewById(R.id.identification_occupation);
 
-        //This is supposed to get the country that the tablet was set to, yet is not working due to unknown reasons.
-        //TODO: Country should be auto-filled.
-        String country = getUserCountryFunction(IdentificationActivity.this);
-        //Log.d(LOG_TAG, country);
-        mCountry.setText(country);
+        ArrayAdapter<CharSequence> countryAdapter = ArrayAdapter.createFromResource(this,
+                R.array.countries, android.R.layout.simple_spinner_item);
+        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mCountry.setAdapter(countryAdapter);
+
+
+        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this,
+                R.array.state_error, android.R.layout.simple_spinner_item);
+        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mState.setAdapter(stateAdapter);
+
+        mCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i != 0) {
+                    String country = adapterView.getItemAtPosition(i).toString();
+
+                    if (country.matches("India")) {
+                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.states_india, android.R.layout.simple_spinner_item);
+                        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mState.setAdapter(stateAdapter);
+
+                    } else if (country.matches("United States")) {
+                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.states_us, android.R.layout.simple_spinner_item);
+                        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mState.setAdapter(stateAdapter);
+
+                    }
+                } else {
+                    ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                            R.array.state_error, android.R.layout.simple_spinner_item);
+                    stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    mState.setAdapter(stateAdapter);
+                }
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         //Check to see if the permission was given to take pictures.
         /*if (ContextCompat.checkSelfPermission(IdentificationActivity.this,
@@ -214,7 +263,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         String ageString = (dialogEditText.getText().toString());
 
-                        if (ageString.isEmpty() || ageString.matches("")){
+                        if (ageString.isEmpty() || ageString.matches("")) {
                             dialog.dismiss();
                         } else {
                             mAge.setText(ageString);
@@ -286,19 +335,6 @@ public class IdentificationActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-        if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
-            alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
-            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-            return;
-        }
 
         if (dob.after(today)) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
@@ -316,6 +352,7 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
+
         ArrayList<EditText> values = new ArrayList<>();
         values.add(mFirstName);
         values.add(mMiddleName);
@@ -325,9 +362,7 @@ public class IdentificationActivity extends AppCompatActivity {
         values.add(mAddress1);
         values.add(mAddress2);
         values.add(mCity);
-        values.add(mState);
         values.add(mPostal);
-        values.add(mCountry);
         values.add(mRelationship);
         values.add(mOccupation);
 
@@ -339,6 +374,33 @@ public class IdentificationActivity extends AppCompatActivity {
                 cancel = true;
                 break;
             }
+        }
+
+        if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
+            alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
+            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+            return;
+        }
+
+
+        if (mCountry.getSelectedItemPosition() == 0) {
+            countryText.setError(getString(R.string.error_field_required));
+            focusView = countryText;
+            cancel = true;
+        }
+
+        if (mState.getSelectedItemPosition() == 0) {
+            stateText.setError(getString(R.string.error_field_required));
+            focusView = stateText;
+            cancel = true;
         }
 
         if (cancel) {
@@ -382,11 +444,11 @@ public class IdentificationActivity extends AppCompatActivity {
                 } else {
                     currentPatient.setCityVillage(mCity.getText().toString());
                 }
-                if (TextUtils.isEmpty(mState.getText().toString())) {
-                    currentPatient.setStateProvince("");
-                } else {
-                    currentPatient.setStateProvince(mState.getText().toString());
-                }
+//                if (TextUtils.isEmpty(mState.getText().toString())) {
+//                    currentPatient.setStateProvince("");
+//                } else {
+//                    currentPatient.setStateProvince(mState.getText().toString());
+//                }
                 if (TextUtils.isEmpty(mPostal.getText().toString())) {
                     currentPatient.setPostalCode("");
                 } else {
@@ -415,8 +477,6 @@ public class IdentificationActivity extends AppCompatActivity {
     }
 
 
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CAMERA && resultCode == RESULT_OK) {
@@ -439,7 +499,7 @@ public class IdentificationActivity extends AppCompatActivity {
         ContentValues patientEntries = new ContentValues();
         ContentValues visitData = new ContentValues();
 
-        public void generateID(){
+        public void generateID() {
             String table = "patient";
             String[] columnsToReturn = {"_id"};
             String orderBy = "_id";
@@ -459,7 +519,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //                        Log.d(LOG_TAG, String.valueOf(lastID));
                         newInteger = Integer.valueOf(lastID);
                     }
-                } catch(Exception e) {
+                } catch (Exception e) {
                     newInteger = 0; // ID was probably changed
                 } finally {
                     Log.d(LOG_TAG, String.valueOf(newInteger));
