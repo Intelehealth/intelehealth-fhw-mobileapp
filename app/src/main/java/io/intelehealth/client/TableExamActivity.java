@@ -1,11 +1,13 @@
 package io.intelehealth.client;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -78,25 +80,30 @@ public class TableExamActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-//                if (mWeight.getText() == null || mHeight.getText() == null){
-//                        String message = "Please enter height and weight first.";
-//                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TableExamActivity.this);
-//                        alertDialogBuilder.setMessage(message);
-//                        alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.dismiss();
-//                            }
-//                        });
-//                        AlertDialog alertDialog = alertDialogBuilder.create();
-//                        alertDialog.show();
-//}
+                String heightValue = mHeight.getText().toString();
+                String weightValue = mWeight.getText().toString();
 
-                double numerator = Double.parseDouble(mWeight.getText().toString()) * 10000;
-                double denominator = (Double.parseDouble(mHeight.getText().toString())) * (Double.parseDouble(mHeight.getText().toString()));
-                double bmi_value = numerator / denominator;
-                mBMI.setText(String.format(Locale.ENGLISH, "%,2f", bmi_value));
-                //Log.d("BMI", String.valueOf(bmi_value));
+                if (heightValue.matches("") || weightValue.matches("")) {
+                    String message = "Please enter height and weight first.";
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TableExamActivity.this);
+                    alertDialogBuilder.setMessage(message);
+                    alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                } else {
+
+                    double numerator = Double.parseDouble(mWeight.getText().toString()) * 10000;
+                    double denominator = (Double.parseDouble(mHeight.getText().toString())) * (Double.parseDouble(mHeight.getText().toString()));
+                    double bmi_value = numerator / denominator;
+                    mBMI.setText(String.format(Locale.ENGLISH, "%,2f", bmi_value));
+                    //Log.d("BMI", String.valueOf(bmi_value));
+                }
+
 
 
             }

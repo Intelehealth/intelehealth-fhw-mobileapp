@@ -216,16 +216,16 @@ public class IdentificationActivity extends AppCompatActivity {
 
                         if (ageString.isEmpty() || ageString.matches("")){
                             dialog.dismiss();
-                            return;
+                        } else {
+                            mAge.setText(ageString);
+                            Calendar calendar = Calendar.getInstance();
+                            int curYear = calendar.get(Calendar.YEAR);
+                            int birthYear = curYear - Integer.valueOf(ageString);
+                            String calcDOB = String.valueOf(birthYear) + "-01-01";
+                            mDOB.setText(calcDOB);
+                            dialog.dismiss();
                         }
 
-                        mAge.setText(ageString);
-                        Calendar calendar = Calendar.getInstance();
-                        int curYear = calendar.get(Calendar.YEAR);
-                        int birthYear = curYear - Integer.valueOf(ageString);
-                        String calcDOB = String.valueOf(birthYear) + "-01-01";
-                        mDOB.setText(calcDOB);
-                        dialog.dismiss();
                     }
                 });
 
