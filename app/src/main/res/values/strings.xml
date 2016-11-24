@@ -156,6 +156,8 @@
     <string name="visit_summary_advice">Medical Advice</string>
     <string name="visit_summary_tests_prescribed">Tests/Referrals</string>
     <string name="visit_summary_additional_comments">Additional Comments</string>
+    <string name="visit_summary_heading_name">Name</string>
+    <string name="visit_summary_heading_id">ID</string>
 
 
     //Diagnostic Tests Screen

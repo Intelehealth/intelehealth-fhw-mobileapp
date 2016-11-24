@@ -104,6 +104,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ImageButton editFamHist;
     ImageButton editMedHist;
 
+    TextView nameView;
+    TextView idView;
     TextView heightView;
     TextView weightView;
     TextView pulseView;
@@ -292,6 +294,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //        });
 
         queryData(String.valueOf(patientID));
+        nameView = (TextView) findViewById(R.id.textView_name_value);
+        idView = (TextView) findViewById(R.id.textView_id_value);
+
+        nameView.setText(patientName);
+        idView.setText(patientID);
 
         heightView = (TextView) findViewById(R.id.textView_height_value);
         weightView = (TextView) findViewById(R.id.textView_weight_value);
@@ -375,6 +382,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } while (idCursor.moveToNext());
         }
         idCursor.close();
+
+
+
 
         String[] columns = {"value", " concept_id"};
         String orderBy = "visit_id";
