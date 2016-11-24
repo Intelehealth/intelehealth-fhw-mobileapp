@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:id="@+id/clayout_detail"
-    tools:context="io.intelehealth.telemedicine.PatientDetailActivity">
+    tools:context="io.intelehealth.client.PatientDetailActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
