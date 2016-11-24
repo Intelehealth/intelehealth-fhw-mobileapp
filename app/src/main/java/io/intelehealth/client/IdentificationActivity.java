@@ -213,8 +213,13 @@ public class IdentificationActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String ageString = (dialogEditText.getText().toString());
-                        mAge.setText(ageString);
 
+                        if (ageString.isEmpty() || ageString.matches("")){
+                            dialog.dismiss();
+                            return;
+                        }
+
+                        mAge.setText(ageString);
                         Calendar calendar = Calendar.getInstance();
                         int curYear = calendar.get(Calendar.YEAR);
                         int birthYear = curYear - Integer.valueOf(ageString);
