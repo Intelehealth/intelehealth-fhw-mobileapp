@@ -53,7 +53,7 @@ import io.intelehealth.client.objects.WebResponse;
 
 public class VisitSummaryActivity extends AppCompatActivity {
 
-    String LOG_TAG = "Patient Summary Activity";
+    String LOG_TAG = "Patient Summary";
 
 
     //Change when used with a different organization.
@@ -172,10 +172,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
-//            Log.v(LOG_TAG, "Patient ID: " + patientID);
-//            Log.v(LOG_TAG, "Visit ID: " + visitID);
-//            Log.v(LOG_TAG, "Patient Name: " + patientName);
-//            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
+            Log.v(LOG_TAG, "Patient ID: " + patientID);
+            Log.v(LOG_TAG, "Visit ID: " + visitID);
+            Log.v(LOG_TAG, "Patient Name: " + patientName);
+            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
         String titleSequence = patientName + ": " + getTitle();
@@ -216,23 +216,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editFamHist.setVisibility(View.GONE);
         editMedHist.setVisibility(View.GONE);
 
-
-        //TODO: Move this funtion into a new button
-//        fab = (FloatingActionButton) findViewById(R.id.fab);
-//        assert fab != null;
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                //Log.d(LOG_TAG, "Uploaded" + uploaded);
-//                if (uploaded) {
-//                    Snackbar.make(view, "Downloading from doctor", Snackbar.LENGTH_LONG).show();
-//                    retrieveOpenMRS(view);
-//                } else if (!uploaded) {
-//                }
-//            }
-//        });
-
-
         uploadButton = (Button) findViewById(R.id.button_upload);
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -241,6 +224,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 sendPost(view);
             }
         });
+
+        if(intentTag != null && intentTag.equals("prior")){
+            uploadButton.setEnabled(false);
+        }
 
 
         queryData(String.valueOf(patientID));
@@ -286,12 +273,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         patHistory.setValue(medHistory);
         patHistView.setText(patHistory.getValue());
         physFindingsView.setText(physFindings.getValue());
-
-
-        //when the visitsummary is called from the home screen, just see if the visit ID has an end-date
-        //if it has one, then don't add the seekbar at the bottom
-        //actually, if there's an enddate, just disable it, cause otherwise, the screen will animate it being added
-
 
     }
 

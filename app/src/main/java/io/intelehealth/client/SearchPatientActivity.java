@@ -97,7 +97,7 @@ public class SearchPatientActivity extends AppCompatActivity {
             // Setup cursor adapter and attach cursor adapter to the ListView
             mSearchAdapter = new SearchCursorAdapter(this, searchCursor, 0);
             if (mSearchAdapter.getCount() < 1) {
-                noneFound(lvItems);
+                noneFound(lvItems, query);
             } else if (searchCursor.moveToFirst()) {
                 lvItems.setAdapter(mSearchAdapter);
                 lvItems.setOnItemClickListener(
@@ -122,18 +122,19 @@ public class SearchPatientActivity extends AppCompatActivity {
 
 
         } catch (Exception e) {
-            noneFound(lvItems);
+            noneFound(lvItems, query);
             Log.e("Search Activity", "Exception", e);
 
         }
 
     }
 
-    public void noneFound(ListView lvItems)  {
+    public void noneFound(ListView lvItems, String query)  {
         ArrayAdapter<String> searchAdapter = new ArrayAdapter<>(this,
                 R.layout.list_item_search,
                 R.id.list_item_head,new ArrayList<String>());
-        searchAdapter.add(getString(R.string.alert_none_found));
+        String errorMessage = getString(R.string.alert_none_found).replace("_", query);
+        searchAdapter.add(errorMessage);
         lvItems.setAdapter(searchAdapter);
     }
 

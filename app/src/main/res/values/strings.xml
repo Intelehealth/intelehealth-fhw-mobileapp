@@ -128,7 +128,7 @@
     //Patient Search Screen
     <string name="search_hint">Type to search patient by name…</string>
     <string name="action_search">Search</string>
-    <string name="alert_none_found">No patients found for the given information.\nDid you spell their name correctly?</string>
+    <string name="alert_none_found">No patients found with name _.\nDid you spell their name correctly?</string>
 
     //Patient Medical History Screen
     <string name="title_activity_patient_history">Patient Medical History</string>

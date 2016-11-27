@@ -17,6 +17,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,8 +26,11 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -287,20 +291,53 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
         }
 
-//        String visitSelection = "patient_id = ?";
-//        String[] visitArgs = {dataString};
-//        String[] visitColumns = {"start_datetime"};
-//        String visitOrderBy = "start_datetime";
-//        Cursor visitCursor = db.query("visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
-//        if(visitCursor.moveToLast()) {
-//            String lastVisitString = visitCursor.getString(visitCursor.getColumnIndexOrThrow("start_datetime"));
-//            lastVisitString = lastVisitString.substring(0, 10);
-//            lastVisit.setText(lastVisitString);
-//        } else {
-//            lastVisit.setText("No prior visits");
-//        }
-//        visitCursor.close();
+        /*
 
+        String visitSelection = "patient_id = ?";
+        String[] visitArgs = {dataString};
+        String[] visitColumns = {"_id, start_datetime"};
+        String visitOrderBy = "start_datetime";
+        Cursor visitCursor = db.query("visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
+        if(visitCursor.moveToLast()) {
+
+            TextView textViewLastVisit = (TextView) findViewById(R.id.textView_last_visit);
+
+            String lastVisitString = visitCursor.getString(visitCursor.getColumnIndexOrThrow("start_datetime"));
+            lastVisitString = lastVisitString.substring(0, 10);
+//            String seenBy = visitCursor.getString(visitCursor.getColumnIndexOrThrow("visit_creator"));
+            String content = lastVisitString + "\nClick to open";
+            if (textViewLastVisit != null) {
+                textViewLastVisit.setText(content);
+                visitID = visitCursor.getString(visitCursor.getColumnIndexOrThrow("_id"));
+                intentTag = "prior";
+                textViewLastVisit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(PatientDetailActivity.this, VisitSummaryActivity.class);
+                        intent.putExtra("patientID", patientID);
+                        intent.putExtra("visitID", visitID);
+                        intent.putExtra("state", "");
+                        intent.putExtra("name", patientName);
+                        intent.putExtra("tag", intentTag);
+                        startActivity(intent);
+                    }
+                });
+            }
+
+        } else {
+            TextView textViewLastVisit = (TextView) findViewById(R.id.textView_last_visit);
+            if (textViewLastVisit != null) {
+                textViewLastVisit.setText("No prior visits");
+            }
+        }
+
+
+
+        visitCursor.close();
+*/
+
+        TextView textView = (TextView) findViewById(R.id.textView_last_visit);
+        textView.setText("Feature coming soon!:");
 
 
     }
