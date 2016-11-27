@@ -95,7 +95,8 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                 }
                 adapter.notifyDataSetChanged();
 
-                if(!familyHistoryMap.getOption(groupPosition).getOption(childPosition).isTerminal()){
+                if(!familyHistoryMap.getOption(groupPosition).getOption(childPosition).isTerminal() &&
+                        familyHistoryMap.getOption(groupPosition).getOption(childPosition).isSelected()){
                     Node.subLevelQuestion(clickedNode, FamilyHistoryActivity.this, adapter);
                 }
 

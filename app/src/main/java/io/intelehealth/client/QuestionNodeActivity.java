@@ -106,12 +106,12 @@ public class QuestionNodeActivity extends AppCompatActivity {
                     currentNode.getOption(groupPosition).setUnselected();
                 }
 
-                if (!question.getInputType().isEmpty()) {
+                if (!question.getInputType().isEmpty() && question.isSelected()) {
                     Node.handleQuestion(question, QuestionNodeActivity.this, adapter);
                     //If there is an input type, then the question has a special method of data entry.
                 }
 
-                if (!question.isTerminal()) {
+                if (!question.isTerminal() && question.isSelected()) {
                     Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter);
                     //If the node is not terminal, that means there are more questions to be asked for this branch.
                 }

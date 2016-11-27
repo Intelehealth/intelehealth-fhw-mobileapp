@@ -123,7 +123,7 @@ public class PatientHistoryActivity extends AppCompatActivity {
                 }
                 adapter.notifyDataSetChanged();
 
-                if(!clickedNode.isTerminal()){
+                if(!clickedNode.isTerminal() && clickedNode.isSelected()){
                     Node.subLevelQuestion(clickedNode, PatientHistoryActivity.this, adapter);
                 }
 
