@@ -133,7 +133,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         ArrayAdapter<String> searchAdapter = new ArrayAdapter<>(this,
                 R.layout.list_item_search,
                 R.id.list_item_head,new ArrayList<String>());
-        searchAdapter.add("No patients found for the given information.");
+        searchAdapter.add(getString(R.string.alert_none_found));
         lvItems.setAdapter(searchAdapter);
     }
 
