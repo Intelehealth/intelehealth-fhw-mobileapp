@@ -606,7 +606,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 responsePerson = HelperMethods.postCommand("person", personString);
                 if (responsePerson != null && responsePerson.getResponseCode() != 201) {
                     failedMessage = "Person posting was unsuccessful";
-                    failedStep(failedMessage);
+//                    failedStep(failedMessage);
                     Log.d(LOG_TAG, "Person posting was unsuccessful");
                     return null;
                 }
@@ -627,7 +627,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 responsePatient = HelperMethods.postCommand("patient", patientString);
                 if (responsePatient != null && responsePatient.getResponseCode() != 201) {
                     failedMessage = "Patient posting was unsuccessful";
-                    failedStep(failedMessage);
+//                    failedStep(failedMessage);
                     Log.d(LOG_TAG, "Patient posting was unsuccessful");
                     return null;
                 }
@@ -671,7 +671,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             responseVisit = HelperMethods.postCommand("visit", visitString);
             if (responseVisit != null && responseVisit.getResponseCode() != 201) {
                 failedMessage = "Visit posting was unsuccessful";
-                failedStep(failedMessage);
+//                failedStep(failedMessage);
                 Log.d(LOG_TAG, "Visit posting was unsuccessful");
                 return null;
             }
@@ -720,7 +720,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             responseVitals = HelperMethods.postCommand("encounter", vitalsString);
             if (responseVitals != null && responseVitals.getResponseCode() != 201) {
                 failedMessage = "Encounter posting was unsuccessful";
-                failedStep(failedMessage);
+//                failedStep(failedMessage);
                 Log.d(LOG_TAG, "Encounter posting was unsuccessful");
                 return null;
             }
@@ -759,7 +759,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             responseNotes = HelperMethods.postCommand("encounter", noteString);
             if (responseNotes != null && responseNotes.getResponseCode() != 201) {
                 failedMessage = "Notes posting was unsuccessful";
-                failedStep(failedMessage);
+//                failedStep(failedMessage);
                 Log.d(LOG_TAG, "Notes Encounter posting was unsuccessful");
                 return null;
             }
@@ -815,7 +815,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             WebResponse responseEncounter;
             responseEncounter = HelperMethods.getCommand("encounter", queryString);
             if (responseEncounter != null && responseEncounter.getResponseCode() != 200) {
-                failedStep("Encounter search was unsuccessful");
+//                failedStep("Encounter search was unsuccessful");
                 //Log.d(LOG_TAG, "Encounter searching was unsuccessful");
                 return null;
             }
@@ -854,7 +854,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 obsResponse.add(i, HelperMethods.getCommand("encounter", uriList.get(i)));
                 if (obsResponse.get(i) != null && obsResponse.get(i).getResponseCode() != 200) {
                     String errorMessage = "Obs get call number " + String.valueOf(i) + " of " + String.valueOf(uriList.size()) + " was unsuccessful";
-                    failedStep(errorMessage);
+//                    failedStep(errorMessage);
 //                    Log.d(LOG_TAG, errorMessage);
                     return null;
                 }
@@ -1039,7 +1039,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             super.onPostExecute(s);
 
             if (endResponse != null && endResponse.getResponseCode() != 200) {
-                failedStep("Visit ending failed.");
+//                failedStep("Visit ending failed.");
             } else {
                 Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
                 startActivity(intent);

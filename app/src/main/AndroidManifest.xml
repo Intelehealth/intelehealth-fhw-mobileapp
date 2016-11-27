@@ -37,7 +37,9 @@
         </activity>
         <activity
             android:name="io.intelehealth.client.LoginActivity"
-            android:label="@string/title_activity_login"></activity>
+            android:label="@string/title_activity_login">
+
+        </activity>
         <activity
             android:name="io.intelehealth.client.ActivePatientActivity"
             android:label="@string/title_activity_active_patient"
@@ -108,6 +110,7 @@
         </activity>
 
         <provider
+            android:exported="false"
             android:name="io.intelehealth.client.SearchSuggestionProvider"
             android:authorities="io.intelehealth.client.SearchSuggestionProvider" />
 
