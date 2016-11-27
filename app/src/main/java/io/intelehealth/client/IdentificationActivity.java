@@ -251,11 +251,19 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+
+
                 Context context = IdentificationActivity.this;
                 final AlertDialog.Builder textInput = new AlertDialog.Builder(context);
                 textInput.setTitle(R.string.identification_screen_dialog_age);
                 final EditText dialogEditText = new EditText(context);
                 dialogEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+                String prevValue = mAge.getText().toString();
+                if (!prevValue.isEmpty() || Integer.valueOf(prevValue) > 0){
+                    dialogEditText.setText(prevValue);
+                }
+
                 textInput.setView(dialogEditText);
 
                 textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
