@@ -19,6 +19,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,8 +29,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -122,7 +125,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     NotificationManager mNotificationManager;
     NotificationCompat.Builder mBuilder;
-    FloatingActionButton fab;
+
+    Button uploadButton;
+    Button downloadButton;
 
 
     @Override
@@ -211,70 +216,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editFamHist.setVisibility(View.GONE);
         editMedHist.setVisibility(View.GONE);
 
-//        editVitals.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent1 = new Intent(VisitSummaryActivity.this, TableExamActivity.class);
-//                intent1.putExtra("patientID", patientID);
-//                intent1.putExtra("visitID", visitID);
-//                intent1.putExtra("name", patientName);
-//                intent1.putExtra("tag", "edit");
-//                startActivity(intent1);
-//            }
-//        });
-//
-//        editComplaint.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent1 = new Intent(VisitSummaryActivity.this, ComplaintNodeActivity.class);
-//                intent1.putExtra("patientID", patientID);
-//                intent1.putExtra("visitID", visitID);
-//                intent1.putExtra("name", patientName);
-//                intent1.putExtra("tag", "edit");
-//                startActivity(intent1);
-//
-//            }
-//        });
-//
-//        editPhysical.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent1 = new Intent(VisitSummaryActivity.this, PhysicalExamActivity.class);
-//                intent1.putExtra("patientID", patientID);
-//                intent1.putExtra("visitID", visitID);
-//                intent1.putExtra("name", patientName);
-//                intent1.putExtra("tag", "edit");
-//                startActivity(intent1);
-//
-//            }
-//        });
-//
-//        editFamHist.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent1 = new Intent(VisitSummaryActivity.this, FamilyHistoryActivity.class);
-//                intent1.putExtra("patientID", patientID);
-//                intent1.putExtra("visitID", visitID);
-//                intent1.putExtra("name", patientName);
-//                intent1.putExtra("tag", "edit");
-//                startActivity(intent1);
-//
-//            }
-//        });
-//
-//        editMedHist.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent1 = new Intent(VisitSummaryActivity.this, PatientHistoryActivity.class);
-//                intent1.putExtra("patientID", patientID);
-//                intent1.putExtra("visitID", visitID);
-//                intent1.putExtra("name", patientName);
-//                intent1.putExtra("tag", "edit");
-//                startActivity(intent1);
-//
-//            }
-//        });
-
 
         //TODO: Move this funtion into a new button
 //        fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -287,11 +228,20 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //                    Snackbar.make(view, "Downloading from doctor", Snackbar.LENGTH_LONG).show();
 //                    retrieveOpenMRS(view);
 //                } else if (!uploaded) {
-//                    Snackbar.make(view, "Uploading to doctor", Snackbar.LENGTH_LONG).show();
-//                    sendPost(view);
 //                }
 //            }
 //        });
+
+
+        uploadButton = (Button) findViewById(R.id.button_upload);
+        uploadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Uploading to doctor.", Snackbar.LENGTH_LONG).show();
+                sendPost(view);
+            }
+        });
+
 
         queryData(String.valueOf(patientID));
         nameView = (TextView) findViewById(R.id.textView_name_value);
@@ -336,6 +286,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
         patHistory.setValue(medHistory);
         patHistView.setText(patHistory.getValue());
         physFindingsView.setText(physFindings.getValue());
+
+
+        //when the visitsummary is called from the home screen, just see if the visit ID has an end-date
+        //if it has one, then don't add the seekbar at the bottom
+        //actually, if there's an enddate, just disable it, cause otherwise, the screen will animate it being added
+
+
     }
 
     public void sendPost(View view) {
@@ -382,8 +339,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } while (idCursor.moveToNext());
         }
         idCursor.close();
-
-
 
 
         String[] columns = {"value", " concept_id"};
@@ -594,6 +549,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
         @Override
+        protected void onPreExecute() {
+            //remove the upload button
+            //Add a progress bar to the top
+            super.onPreExecute();
+        }
+
+        @Override
         protected String doInBackground(String... params) {
 
             String openMRSUUID = null;
@@ -644,6 +606,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 responsePerson = HelperMethods.postCommand("person", personString);
                 if (responsePerson != null && responsePerson.getResponseCode() != 201) {
                     failedMessage = "Person posting was unsuccessful";
+                    failedStep(failedMessage);
                     Log.d(LOG_TAG, "Person posting was unsuccessful");
                     return null;
                 }
@@ -664,6 +627,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 responsePatient = HelperMethods.postCommand("patient", patientString);
                 if (responsePatient != null && responsePatient.getResponseCode() != 201) {
                     failedMessage = "Patient posting was unsuccessful";
+                    failedStep(failedMessage);
                     Log.d(LOG_TAG, "Patient posting was unsuccessful");
                     return null;
                 }
@@ -707,6 +671,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             responseVisit = HelperMethods.postCommand("visit", visitString);
             if (responseVisit != null && responseVisit.getResponseCode() != 201) {
                 failedMessage = "Visit posting was unsuccessful";
+                failedStep(failedMessage);
                 Log.d(LOG_TAG, "Visit posting was unsuccessful");
                 return null;
             }
@@ -755,6 +720,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             responseVitals = HelperMethods.postCommand("encounter", vitalsString);
             if (responseVitals != null && responseVitals.getResponseCode() != 201) {
                 failedMessage = "Encounter posting was unsuccessful";
+                failedStep(failedMessage);
                 Log.d(LOG_TAG, "Encounter posting was unsuccessful");
                 return null;
             }
@@ -793,6 +759,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             responseNotes = HelperMethods.postCommand("encounter", noteString);
             if (responseNotes != null && responseNotes.getResponseCode() != 201) {
                 failedMessage = "Notes posting was unsuccessful";
+                failedStep(failedMessage);
                 Log.d(LOG_TAG, "Notes Encounter posting was unsuccessful");
                 return null;
             }
@@ -804,15 +771,29 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
+
             if (uploaded) {
-                fab.setImageResource(R.drawable.ic_file_download_white_48px);
-                Snackbar.make(fab, "Upload success! Waiting for doctor.", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(uploadButton, "Upload success! Waiting for doctor.", Snackbar.LENGTH_LONG).show();
+                mLayout.removeView(uploadButton);
+
+                downloadButton = new Button(VisitSummaryActivity.this);
+                downloadButton.setLayoutParams(new LinearLayoutCompat.LayoutParams(
+                        LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+                downloadButton.setText(R.string.visit_summary_button_download);
+
+                downloadButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Snackbar.make(view, "Downloading from doctor", Snackbar.LENGTH_LONG).show();
+                        retrieveOpenMRS(view);
+                    }
+                });
+
+                mLayout.addView(downloadButton, 0);
             } else {
-                Snackbar.make(fab, "Upload failed.", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(uploadButton, "Upload failed.", Snackbar.LENGTH_LONG).show();
             }
-            if (failedMessage != null) {
-                failedStep(failedMessage);
-            }
+
             super.onPostExecute(s);
         }
     }
@@ -874,7 +855,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 if (obsResponse.get(i) != null && obsResponse.get(i).getResponseCode() != 200) {
                     String errorMessage = "Obs get call number " + String.valueOf(i) + " of " + String.valueOf(uriList.size()) + " was unsuccessful";
                     failedStep(errorMessage);
-                    Log.d(LOG_TAG, errorMessage);
+//                    Log.d(LOG_TAG, errorMessage);
                     return null;
                 }
             }
@@ -1013,6 +994,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 createNewCardView(getString(R.string.visit_summary_diagnosis), diagnosisReturned, 0);
 
             }
+
+            mLayout.removeView(downloadButton);
 
             super.onPostExecute(s);
         }

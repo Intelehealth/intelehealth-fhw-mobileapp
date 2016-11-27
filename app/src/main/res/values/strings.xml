@@ -158,6 +158,8 @@
     <string name="visit_summary_additional_comments">Additional Comments</string>
     <string name="visit_summary_heading_name">Name</string>
     <string name="visit_summary_heading_id">ID</string>
+    <string name="visit_summary_button_download">Download from doctor</string>
+    <string name="name_button_download">button_download</string>
 
 
     //Diagnostic Tests Screen
