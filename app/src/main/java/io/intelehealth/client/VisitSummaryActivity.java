@@ -176,7 +176,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
             Log.v(LOG_TAG, "Visit ID: " + visitID);
             Log.v(LOG_TAG, "Patient Name: " + patientName);
             Log.v(LOG_TAG, "Intent Tag: " + intentTag);
+        } else {
+            patientID = "AND1";
+            visitID = "6";
+            state = "";
+            patientName = "John Alam";
+            intentTag = "";
         }
+
+
+
 
         String titleSequence = patientName + ": " + getTitle();
         setTitle(titleSequence);
@@ -677,10 +686,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String tempString = String.valueOf(cTemp);
 
             String vitalsString =
-                    String.format("{\"encounterDatetime\":\"%s\"," +
-                                    " \"patient\":\"%s\"," +
+                    String.format("{" +
+                            //"\"encounterDatetime\":\"%s\"," +
+                                    "\"patient\":\"%s\"," +
                                     "\"encounterType\":\"VITALS\"," +
-                                    " \"visit\":\"%s\"," +
+                                   // " \"visit\":\"%s\"," +
                                     "\"obs\":[" +
                                     "{\"concept\":\"5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\", \"value\":\"%s\"}," + //Weight
                                     "{\"concept\":\"5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"value\":\"%s\"}, " + //Height
@@ -691,7 +701,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "{\"concept\":\"5092AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\", \"value\":\"%s\"}]," + //Sp02
                                     "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\"}",
 
-                            startDateTime, openMRSUUID, responseVisit.getResponseString(),
+//                            startDateTime, openMRSUUID, responseVisit.getResponseString(),
+                            openMRSUUID,
                             weight.getValue(), height.getValue(), tempString,
                             pulse.getValue(), bpSys.getValue(),
                             bpDias.getValue(), spO2.getValue()
@@ -716,10 +727,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
 
             String noteString =
-                    String.format("{\"encounterDatetime\":\"%s\"," +
+                    String.format("{" +
+                            //"\"encounterDatetime\":\"%s\"," +
                                     " \"patient\":\"%s\"," +
                                     "\"encounterType\":\"ADULTINITIAL\"," +
-                                    "\"visit\":\"%s\"," +
+                                    //"\"visit\":\"%s\"," +
                                     "\"obs\":[" +
                                     //"{\"concept\":\"35c3afdd-bb96-4b61-afb9-22a5fc2d088e\", \"value\":\"%s\"}," + //son wife daughter
                                     //"{\"concept\":\"5fe2ef6f-bbf7-45df-a6ea-a284aee82ddc\",\"value\":\"%s\"}, " + //occupation
@@ -729,7 +741,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "{\"concept\":\"e1761e85-9b50-48ae-8c4d-e6b7eeeba084\",\"value\":\"%s\"}]," + //physical exam
                                     "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\"}",
 
-                            startDateTime, openMRSUUID, responseVisit.getResponseString(),
+//                            startDateTime, openMRSUUID, responseVisit.getResponseString(),
+                            openMRSUUID,
                             //patient.getSdw(), patient.getOccupation(),
                             //TODO: add logic to remove SDW and occupation when they are empty
                             patHistory.getValue(), famHistory.getValue(),
