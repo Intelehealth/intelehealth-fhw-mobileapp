@@ -36,6 +36,7 @@ import java.util.List;
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
 
+    public static final String KEY_PREF_SETUP_COMPLETE = "setup_complete";
     public static final String KEY_PREF_ID_PREFIX = "id_prefix";
     public static final String KEY_PREF_SERVER_URL = "server_url";
 

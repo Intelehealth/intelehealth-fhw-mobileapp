@@ -185,6 +185,8 @@ public class HelperMethods {
 
         try {
 
+            //TODO: grab the URL and the UN and PW from the sharedprefs, and the account
+
             final String USERNAME = "Admin";
             final String PASSWORD = "CBIDtiger123";
             final String BASE_URL = "http://openmrs.amal.io:8080/openmrs/ws/rest/v1/";
@@ -244,6 +246,8 @@ public class HelperMethods {
         String JSONString;
 
         WebResponse webResponse = new WebResponse();
+
+        //TODO: grab the URL and the UN and PW from the sharedprefs, and the account
 
         try {
             final String USERNAME = "Admin";
