@@ -182,6 +182,9 @@ public class HelperMethods {
     }
 
     static WebResponse getCommand(String urlModifier, String dataString, Context context) {
+
+
+        AccountManager manager;
         BufferedReader reader;
         String JSONString;
 
@@ -191,11 +194,31 @@ public class HelperMethods {
 
             //TODO: grab the URL and the UN and PW from the sharedprefs, and the account
 
-            final String USERNAME = "Admin";
-            final String PASSWORD = "CBIDtiger123";
 
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
             final String BASE_URL = sharedPref.getString(SettingsActivity.KEY_PREF_SERVER_URL, "");
+
+            String USERNAME = null;
+            String PASSWORD = null;
+
+            manager = AccountManager.get(context);
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+            }
+            Account[] accountList = manager.getAccountsByType("io.intelehealth.openmrs");
+            if(accountList.length == 1){
+                Account authAccount = accountList[0];
+                USERNAME = authAccount.name;
+                PASSWORD  = manager.getPassword(authAccount);
+            } else {
+                return null;
+            }
 
 
             String urlString = BASE_URL + urlModifier + dataString;
@@ -251,15 +274,34 @@ public class HelperMethods {
     static WebResponse postCommand(String urlModifier, String dataString, Context context) {
         BufferedReader reader;
         String JSONString;
-
+        AccountManager manager;
         WebResponse webResponse = new WebResponse();
 
         //TODO: grab the URL and the UN and PW from the sharedprefs, and the account
 
         try {
-            final String USERNAME = "Admin";
-            final String PASSWORD = "CBIDtiger123";
 
+            String USERNAME = null;
+            String PASSWORD = null;
+
+            manager = AccountManager.get(context);
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+            }
+            Account[] accountList = manager.getAccountsByType("io.intelehealth.openmrs");
+            if(accountList.length == 1){
+                Account authAccount = accountList[0];
+                USERNAME = authAccount.name;
+                PASSWORD  = manager.getPassword(authAccount);
+            } else {
+                return null;
+            }
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
             final String BASE_URL = sharedPref.getString(SettingsActivity.KEY_PREF_SERVER_URL, "");
 

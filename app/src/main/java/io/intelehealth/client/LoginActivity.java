@@ -353,8 +353,6 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
             BufferedReader reader;
             String JSONString;
 
@@ -365,8 +363,6 @@ public class LoginActivity extends AppCompatActivity {
 
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 final String BASE_URL = sharedPref.getString(SettingsActivity.KEY_PREF_SERVER_URL, "");
-
-                //TODO: grab the URL and the UN and PW from the sharedprefs, and the account
 
                 final String USERNAME = mEmail;
                 final String PASSWORD = mPassword;

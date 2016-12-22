@@ -241,8 +241,6 @@ public class SetupActivity extends AppCompatActivity {
 
             try {
 
-                //TODO: grab the URL and the UN and PW from the sharedprefs, and the account
-
                 Log.d(LOG_TAG, "UN: " + USERNAME);
                 Log.d(LOG_TAG, "PW: " + PASSWORD);
 
