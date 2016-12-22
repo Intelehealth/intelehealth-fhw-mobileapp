@@ -8,8 +8,6 @@ import android.os.Bundle;
 
 public class SplashActivity extends AppCompatActivity {
 
-    public static String KEY_PREF_SETUP_COMPLETE = "setup_complete";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,7 +17,7 @@ public class SplashActivity extends AppCompatActivity {
         Boolean setup = sharedPref.getBoolean(SettingsActivity.KEY_PREF_SETUP_COMPLETE, false);
 
         if (setup) {
-            Intent intent = new Intent(this, HomeActivity.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             finish();
         } else {

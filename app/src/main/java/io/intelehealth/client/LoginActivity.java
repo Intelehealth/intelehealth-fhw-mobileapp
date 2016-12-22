@@ -3,19 +3,25 @@ package io.intelehealth.client;
 import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.accounts.NetworkErrorException;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Base64;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,6 +31,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import io.intelehealth.client.objects.WebResponse;
+
 /**
  * A login screen that offers login via username/password.
  * Note that the default setup for this uses "email" as our username field
@@ -32,6 +47,7 @@ import android.widget.TextView;
  */
 public class LoginActivity extends AppCompatActivity {
 
+    private final String LOG_TAG = "LoginActivity";
     /**
      * Id to identity READ_CONTACTS permission request.
      */
@@ -82,7 +98,6 @@ public class LoginActivity extends AppCompatActivity {
         }
 
 
-
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         // populateAutoComplete(); TODO: create our own autocomplete code
@@ -103,6 +118,7 @@ public class LoginActivity extends AppCompatActivity {
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d(LOG_TAG, "button pressed");
                 attemptLogin();
             }
         });
@@ -115,7 +131,6 @@ public class LoginActivity extends AppCompatActivity {
         String deviceId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
         deviceId = getString(R.string.device_id) + deviceId;
         deviceIdView.setText(deviceId);
-
 
 
     }
@@ -217,6 +232,7 @@ public class LoginActivity extends AppCompatActivity {
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
+            Log.d(LOG_TAG, "attempting login");
         }
     }
 
@@ -339,23 +355,82 @@ public class LoginActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
+            BufferedReader reader;
+            String JSONString;
 
-            } catch (InterruptedException e) {
+            WebResponse loginAttempt = new WebResponse();
+
+            try {
+
+
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                final String BASE_URL = sharedPref.getString(SettingsActivity.KEY_PREF_SERVER_URL, "");
+
+                //TODO: grab the URL and the UN and PW from the sharedprefs, and the account
+
+                final String USERNAME = mEmail;
+                final String PASSWORD = mPassword;
+                Log.d(LOG_TAG, "UN: " + USERNAME);
+                Log.d(LOG_TAG, "PW: " + PASSWORD);
+
+                String urlModifier = "encounter";
+                String dataString = "?q=ABCDEFGH";
+
+                String urlString = BASE_URL + urlModifier + dataString;
+
+                URL url = new URL(urlString);
+
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
+                connection.setRequestProperty("Authorization", "Basic " + encoded);
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
+                connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
+
+                int responseCode = connection.getResponseCode();
+                loginAttempt.setResponseCode(responseCode);
+
+                Log.d(LOG_TAG, "GET URL: " + url);
+                Log.d(LOG_TAG, "Response Code from Server: " + String.valueOf(responseCode));
+
+                // Read the input stream into a String
+                InputStream inputStream = connection.getInputStream();
+                StringBuffer buffer = new StringBuffer();
+                if (inputStream == null) {
+                    // Do Nothing.
+                    return null;
+                }
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
+                    // But it does make debugging a *lot* easier if you print out the completed
+                    // buffer for debugging.
+                    buffer.append(line + "\n");
+                }
+
+                if (buffer.length() == 0) {
+                    // Stream was empty.  No point in parsing.
+                    return null;
+                }
+
+                JSONString = buffer.toString();
+
+                Log.d(LOG_TAG, "JSON Response: " + JSONString);
+                loginAttempt.setResponseString(JSONString);
+                if (loginAttempt != null && loginAttempt.getResponseCode() != 200) {
+                    Log.d(LOG_TAG, "Login get request was unsuccessful");
+                    return false;
+                }
+                return true;
+
+            } catch (IOException e) {
+                e.printStackTrace();
                 return false;
             }
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
 
-            return false;
         }
 
         @Override

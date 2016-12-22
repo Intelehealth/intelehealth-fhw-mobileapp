@@ -55,9 +55,9 @@ public class HomeActivity extends AppCompatActivity {
 //            case R.id.endOfDayOption:
 //                endOfDay();
 //                return true;
-//            case R.id.logoutOption:
-//                logout();
-//                return true;
+            case R.id.logoutOption:
+                logout();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

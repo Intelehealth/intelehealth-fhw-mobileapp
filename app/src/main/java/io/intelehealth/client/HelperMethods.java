@@ -1,13 +1,17 @@
 package io.intelehealth.client;
 
 import android.Manifest;
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
@@ -177,7 +181,7 @@ public class HelperMethods {
         return results;
     }
 
-    static WebResponse getCommand(String urlModifier, String dataString) {
+    static WebResponse getCommand(String urlModifier, String dataString, Context context) {
         BufferedReader reader;
         String JSONString;
 
@@ -189,7 +193,10 @@ public class HelperMethods {
 
             final String USERNAME = "Admin";
             final String PASSWORD = "CBIDtiger123";
-            final String BASE_URL = "http://openmrs.amal.io:8080/openmrs/ws/rest/v1/";
+
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+            final String BASE_URL = sharedPref.getString(SettingsActivity.KEY_PREF_SERVER_URL, "");
+
 
             String urlString = BASE_URL + urlModifier + dataString;
 
@@ -241,7 +248,7 @@ public class HelperMethods {
         return webResponse;
     }
 
-    static WebResponse postCommand(String urlModifier, String dataString) {
+    static WebResponse postCommand(String urlModifier, String dataString, Context context) {
         BufferedReader reader;
         String JSONString;
 
@@ -252,7 +259,10 @@ public class HelperMethods {
         try {
             final String USERNAME = "Admin";
             final String PASSWORD = "CBIDtiger123";
-            final String BASE_URL = "http://openmrs.amal.io:8080/openmrs/ws/rest/v1/";
+
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+            final String BASE_URL = sharedPref.getString(SettingsActivity.KEY_PREF_SERVER_URL, "");
+
 
             String urlString = BASE_URL + urlModifier;
 
@@ -320,7 +330,6 @@ public class HelperMethods {
         }
         return webResponse;
     }
-
 
 
 }

@@ -593,7 +593,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 Log.d(LOG_TAG, "Person String: " + personString);
                 WebResponse responsePerson;
-                responsePerson = HelperMethods.postCommand("person", personString);
+                responsePerson = HelperMethods.postCommand("person", personString, getApplicationContext());
                 if (responsePerson != null && responsePerson.getResponseCode() != 201) {
                     failedMessage = "Person posting was unsuccessful";
 //                    failedStep(failedMessage);
@@ -614,7 +614,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 Log.d(LOG_TAG, "Patient String: " + patientString);
                 WebResponse responsePatient;
-                responsePatient = HelperMethods.postCommand("patient", patientString);
+                responsePatient = HelperMethods.postCommand("patient", patientString, getApplicationContext());
                 if (responsePatient != null && responsePatient.getResponseCode() != 201) {
                     failedMessage = "Patient posting was unsuccessful";
 //                    failedStep(failedMessage);
@@ -658,7 +658,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             startDateTime, openMRSUUID);
             Log.d(LOG_TAG, "Visit String: " + visitString);
             WebResponse responseVisit;
-            responseVisit = HelperMethods.postCommand("visit", visitString);
+            responseVisit = HelperMethods.postCommand("visit", visitString, getApplicationContext());
             if (responseVisit != null && responseVisit.getResponseCode() != 201) {
                 failedMessage = "Visit posting was unsuccessful";
 //                failedStep(failedMessage);
@@ -709,7 +709,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     );
             Log.d(LOG_TAG, "Vitals Encounter String: " + vitalsString);
             WebResponse responseVitals;
-            responseVitals = HelperMethods.postCommand("encounter", vitalsString);
+            responseVitals = HelperMethods.postCommand("encounter", vitalsString, getApplicationContext());
             if (responseVitals != null && responseVitals.getResponseCode() != 201) {
                 failedMessage = "Encounter posting was unsuccessful";
 //                failedStep(failedMessage);
@@ -750,7 +750,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     );
             Log.d(LOG_TAG, "Notes Encounter String: " + noteString);
             WebResponse responseNotes;
-            responseNotes = HelperMethods.postCommand("encounter", noteString);
+            responseNotes = HelperMethods.postCommand("encounter", noteString, getApplicationContext());
             if (responseNotes != null && responseNotes.getResponseCode() != 201) {
                 failedMessage = "Notes posting was unsuccessful";
 //                failedStep(failedMessage);
@@ -807,7 +807,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String queryString = "?q=" + identifierNumber;
             //Log.d(LOG_TAG, identifierNumber);
             WebResponse responseEncounter;
-            responseEncounter = HelperMethods.getCommand("encounter", queryString);
+            responseEncounter = HelperMethods.getCommand("encounter", queryString, getApplicationContext());
             if (responseEncounter != null && responseEncounter.getResponseCode() != 200) {
 //                failedStep("Encounter search was unsuccessful");
                 //Log.d(LOG_TAG, "Encounter searching was unsuccessful");
@@ -845,7 +845,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             List<WebResponse> obsResponse = new ArrayList<>();
             for (int i = 0; i < uriList.size(); i++) {
-                obsResponse.add(i, HelperMethods.getCommand("encounter", uriList.get(i)));
+                obsResponse.add(i, HelperMethods.getCommand("encounter", uriList.get(i), getApplicationContext()));
                 if (obsResponse.get(i) != null && obsResponse.get(i).getResponseCode() != 200) {
                     String errorMessage = "Obs get call number " + String.valueOf(i) + " of " + String.valueOf(uriList.size()) + " was unsuccessful";
 //                    failedStep(errorMessage);
@@ -1023,7 +1023,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             Log.d("End String", endString);
 
-            endResponse = HelperMethods.postCommand(urlModifier, endString);
+            endResponse = HelperMethods.postCommand(urlModifier, endString, getApplicationContext());
 
             return null;
         }

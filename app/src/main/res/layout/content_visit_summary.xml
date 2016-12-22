@@ -534,11 +534,9 @@
 
         <Button
             android:id="@+id/button_upload"
-
             android:text="Upload to doctor"
             android:textColor="#FFFFFF"
             android:textSize="30sp"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:color="#00FF11"
