@@ -568,38 +568,16 @@ public class IdentificationActivity extends AppCompatActivity {
             //TODO: move identifier1 and id2 from patient table to patient_attribute table
         }
 
-        public void gatherVisitData() {
-            SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-            Date todayDate = new Date();
-            String thisDate = currentDate.format(todayDate);
-
-            visitData.put("patient_id", patient.getId());
-            visitData.put("start_datetime", thisDate);
-            visitData.put("visit_type_id", 0);
-            visitData.put("visit_location_id", 0);
-            visitData.put("visit_creator", 0);
-        }
-
-
         @Override
         protected Boolean doInBackground(Void... params) {
             generateID();
             gatherEntries();
-            gatherVisitData();
 
             localdb.insert(
                     "patient",
                     null,
                     patientEntries
             );
-
-            Long visitLong = localdb.insert(
-                    "visit",
-                    null,
-                    visitData
-            );
-
-            visitID = String.valueOf(visitLong);
 
             localdb.close();
 
@@ -624,7 +602,6 @@ public class IdentificationActivity extends AppCompatActivity {
             Intent intent2 = new Intent(IdentificationActivity.this, PatientDetailActivity.class);
             String fullName = patient.getFirstName() + " " + patient.getLastName();
             intent2.putExtra("patientID", patientID);
-            intent2.putExtra("visitID", visitID);
             intent2.putExtra("name", fullName);
             intent2.putExtra("tag", "");
             startActivity(intent2);

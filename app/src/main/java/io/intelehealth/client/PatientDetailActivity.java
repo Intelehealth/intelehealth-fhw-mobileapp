@@ -52,6 +52,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     Patient patient = new Patient();
 
     Button newVisit;
+    LinearLayout previousVisitsList;
 
 
     @Override
@@ -66,7 +67,6 @@ public class PatientDetailActivity extends AppCompatActivity {
         if (intent != null) {
             patientID = intent.getStringExtra("patientID");
             patientName = intent.getStringExtra("name");
-            visitID = intent.getStringExtra("visitID");
             intentTag = intent.getStringExtra("tag");
 //            Log.v(LOG_TAG, "Patient ID: " + patientID);
 //            Log.v(LOG_TAG, "Patient Name: " + patientName);
@@ -86,41 +86,33 @@ public class PatientDetailActivity extends AppCompatActivity {
                 String fullName = patient.getFirstName() + " " + patient.getLastName();
                 intent2.putExtra("patientID", patientID);
 
-                if(visitID!=null){
-                    intent2.putExtra("visitID", visitID);
-                    intent2.putExtra("state", "new");
-                } else {
-                    SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-                    Date todayDate = new Date();
-                    String thisDate = currentDate.format(todayDate);
+                SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+                Date todayDate = new Date();
+                String thisDate = currentDate.format(todayDate);
 
-                    ContentValues visitData = new ContentValues();
-                    visitData.put("patient_id", patient.getId());
-                    visitData.put("start_datetime", thisDate);
-                    visitData.put("visit_type_id", 0);
-                    visitData.put("visit_location_id", 0);
-                    visitData.put("visit_creator", 0);
+                ContentValues visitData = new ContentValues();
+                visitData.put("patient_id", patient.getId());
+                visitData.put("start_datetime", thisDate);
+                visitData.put("visit_type_id", 0);
+                visitData.put("visit_location_id", 0);
+                visitData.put("visit_creator", 0);
 
-                    LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(PatientDetailActivity.this);
-                    SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
-                    Long visitLong = localdb.insert(
-                            "visit",
-                            null,
-                            visitData
-                    );
+                LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(PatientDetailActivity.this);
+                SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+                Long visitLong = localdb.insert(
+                        "visit",
+                        null,
+                        visitData
+                );
 
-                    visitID = String.valueOf(visitLong);
-                    localdb.close();
-                    intent2.putExtra("visitID", visitID);
-
-                }
-
+                visitID = String.valueOf(visitLong);
+                localdb.close();
+                intent2.putExtra("visitID", visitID);
                 intent2.putExtra("name", fullName);
                 intent2.putExtra("tag", "");
                 startActivity(intent2);
             }
         });
-
 
 
     }
@@ -204,7 +196,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
         setTitle(patientName);
 
-        if (patient.getPatientPhoto() != null || patient.getPatientPhoto() != ""){
+        if (patient.getPatientPhoto() != null || patient.getPatientPhoto() != "") {
             Bitmap imageBitmap = BitmapFactory.decodeFile(patient.getPatientPhoto());
             ImageView mImageView = (ImageView) findViewById(R.id.imageView_patient);
             mImageView.setImageBitmap(imageBitmap);
@@ -228,19 +220,19 @@ public class PatientDetailActivity extends AppCompatActivity {
         addrFinalView.setText(addrFinalLine);
         phoneView.setText(patient.getPhoneNumber());
 
-        if(patient.getSdw() != null && !patient.getSdw().equals("")){
+        if (patient.getSdw() != null && !patient.getSdw().equals("")) {
             sdwView.setText(patient.getSdw());
         } else {
             sdwRow.setVisibility(View.GONE);
         }
 
-        if(patient.getOccupation() != null && !patient.getOccupation().equals("")){
+        if (patient.getOccupation() != null && !patient.getOccupation().equals("")) {
             occuView.setText(patient.getOccupation());
         } else {
             occuRow.setVisibility(View.GONE);
         }
 
-        if(visitID!=null) {
+        if (visitID != null) {
             CardView histCardView = (CardView) findViewById(R.id.cardView_history);
             histCardView.setVisibility(View.GONE);
         } else {
@@ -294,17 +286,12 @@ public class PatientDetailActivity extends AppCompatActivity {
         String[] visitColumns = {"_id, start_datetime"};
         String visitOrderBy = "start_datetime";
         Cursor visitCursor = db.query("visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
-        LinearLayout previousVisitsList = (LinearLayout) findViewById(R.id.linearLayout_previous_visits);
+        previousVisitsList = (LinearLayout) findViewById(R.id.linearLayout_previous_visits);
 
-        if (visitCursor.getCount() < 1){
-            //Add a view where it says no visits found
-            final LayoutInflater inflater = PatientDetailActivity.this.getLayoutInflater();
-            View newView = inflater.inflate(R.layout.list_item_previous_visit, null);
-            TextView newItem = (TextView) newView.findViewById(R.id.textView_visit_info);
-            newItem.setText("No prior visits");
-            previousVisitsList.addView(newItem);
+        if (visitCursor.getCount() < 1) {
+            neverSeen();
         } else {
-
+            createOldVisit("Dr. Balls", "never");
         }
 
         visitCursor.close();
@@ -336,8 +323,6 @@ public class PatientDetailActivity extends AppCompatActivity {
         String patientPhone = ((TextView) findViewById(R.id.textView_phone)).getText().toString();
         String patientMedHist = ((TextView) findViewById(R.id.textView_patHist)).getText().toString();
         String patientFamHist = ((TextView) findViewById(R.id.textView_famHist)).getText().toString();
-
-
 
 
         // Generate an HTML document on the fly:
@@ -411,5 +396,21 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     }
 
+    private void createOldVisit(String doctor, String datetime) {
+        final LayoutInflater inflater = PatientDetailActivity.this.getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.list_item_previous_visit, null);
+        TextView textView = (TextView) convertView.findViewById(R.id.textView_visit_info);
+        String visitString = String.format("Seen by %s on %s", doctor, datetime);
+        textView.setText(visitString);
+        previousVisitsList.addView(convertView);
+    }
 
+    private void neverSeen() {
+        final LayoutInflater inflater = PatientDetailActivity.this.getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.list_item_previous_visit, null);
+        TextView textView = (TextView) convertView.findViewById(R.id.textView_visit_info);
+        String visitString = "No prior visits.";
+        textView.setText(visitString);
+        previousVisitsList.addView(convertView);
+    }
 }
