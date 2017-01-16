@@ -30,8 +30,10 @@ import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import org.joda.time.DateTime;
 import org.w3c.dom.Text;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -284,16 +286,28 @@ public class PatientDetailActivity extends AppCompatActivity {
         String visitSelection = "patient_id = ?";
         String[] visitArgs = {dataString};
         String[] visitColumns = {"_id, start_datetime"};
-        String visitOrderBy = "start_datetime";
+        String visitOrderBy = "_id";
         Cursor visitCursor = db.query("visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
         previousVisitsList = (LinearLayout) findViewById(R.id.linearLayout_previous_visits);
 
         if (visitCursor.getCount() < 1) {
             neverSeen();
         } else {
-            createOldVisit("Dr. Balls", "never");
-        }
+            if (visitCursor.moveToLast()){
+                do {
+                    String date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("start_datetime"));
 
+                    SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    try {
+                        Date formatted = currentDate.parse(date);
+                        String visitDate = currentDate.format(formatted);
+                        createOldVisit(visitDate);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                } while (visitCursor.moveToPrevious());
+            }
+        }
         visitCursor.close();
 
     }
@@ -396,11 +410,11 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     }
 
-    private void createOldVisit(String doctor, String datetime) {
+    private void createOldVisit(String datetime) {
         final LayoutInflater inflater = PatientDetailActivity.this.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.list_item_previous_visit, null);
         TextView textView = (TextView) convertView.findViewById(R.id.textView_visit_info);
-        String visitString = String.format("Seen by %s on %s", doctor, datetime);
+        String visitString = String.format("Seen on %s", datetime);
         textView.setText(visitString);
         previousVisitsList.addView(convertView);
     }
