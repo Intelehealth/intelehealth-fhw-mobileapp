@@ -401,12 +401,7 @@
                     android:text="@string/header_previous_visits"
                     android:textSize="@dimen/card_title_text_size" />
 
-                <TextView
-                    android:id="@+id/textView_last_visit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding_card"
-                    android:textSize="@dimen/card_content_text_size" />
+
 
 
 

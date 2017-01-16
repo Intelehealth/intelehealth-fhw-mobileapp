@@ -260,7 +260,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 dialogEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
 
                 String prevValue = mAge.getText().toString();
-                if (!prevValue.isEmpty() || Integer.valueOf(prevValue) > 0){
+                if (!prevValue.isEmpty()){
                     dialogEditText.setText(prevValue);
                 }
 

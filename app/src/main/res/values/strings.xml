@@ -262,7 +262,7 @@
     <string name="title_activity_patient_detail">Patient Detail</string>
     <string name="header_medical_history">History</string>
     <string name="button_new_visit">Start New Visit</string>
-    <string name="header_previous_visits">Last Visit</string>
+    <string name="header_previous_visits">Previous Visits</string>
     <string name="header_patient_history">Medical History</string>
     <string name="header_family_history">Family History</string>
     <string name="string_no_hist">No history of illness</string>

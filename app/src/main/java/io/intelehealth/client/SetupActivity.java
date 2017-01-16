@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -328,18 +329,24 @@ public class SetupActivity extends AppCompatActivity {
                 final Account account = new Account(USERNAME, "io.intelehealth.openmrs");
                 manager.addAccountExplicitly(account, PASSWORD, null);
 
-                SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = sharedPref.edit();
+
                 editor.putString(SettingsActivity.KEY_PREF_SERVER_URL, BASE_URL);
-                editor.putBoolean(SettingsActivity.KEY_PREF_SETUP_COMPLETE, true);
+                Log.d(LOG_TAG, BASE_URL);
+                editor.apply();
+
                 editor.putString(SettingsActivity.KEY_PREF_ID_PREFIX, PREFIX);
-                editor.commit();
+                Log.d(LOG_TAG, PREFIX);
+                editor.apply();
 
-
+                editor.putBoolean(SettingsActivity.KEY_PREF_SETUP_COMPLETE, true);
+                editor.apply();
 
                 Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
                 startActivity(intent);
                 finish();
+
             } else if (success == 201) {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

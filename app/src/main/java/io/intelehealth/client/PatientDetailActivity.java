@@ -194,8 +194,6 @@ public class PatientDetailActivity extends AppCompatActivity {
         TextView occuView = (TextView) findViewById(R.id.textView_occupation);
         TableRow occuRow = (TableRow) findViewById(R.id.tableRow_Occupation);
 
-//        TextView lastVisit = (TextView) findViewById(R.id.textView_last_visit);
-
         TextView medHistView = (TextView) findViewById(R.id.textView_patHist);
         TextView famHistView = (TextView) findViewById(R.id.textView_famHist);
 
@@ -291,54 +289,25 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
         }
 
-        /*
-
         String visitSelection = "patient_id = ?";
         String[] visitArgs = {dataString};
         String[] visitColumns = {"_id, start_datetime"};
         String visitOrderBy = "start_datetime";
         Cursor visitCursor = db.query("visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
-        if(visitCursor.moveToLast()) {
+        LinearLayout previousVisitsList = (LinearLayout) findViewById(R.id.linearLayout_previous_visits);
 
-            TextView textViewLastVisit = (TextView) findViewById(R.id.textView_last_visit);
-
-            String lastVisitString = visitCursor.getString(visitCursor.getColumnIndexOrThrow("start_datetime"));
-            lastVisitString = lastVisitString.substring(0, 10);
-//            String seenBy = visitCursor.getString(visitCursor.getColumnIndexOrThrow("visit_creator"));
-            String content = lastVisitString + "\nClick to open";
-            if (textViewLastVisit != null) {
-                textViewLastVisit.setText(content);
-                visitID = visitCursor.getString(visitCursor.getColumnIndexOrThrow("_id"));
-                intentTag = "prior";
-                textViewLastVisit.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(PatientDetailActivity.this, VisitSummaryActivity.class);
-                        intent.putExtra("patientID", patientID);
-                        intent.putExtra("visitID", visitID);
-                        intent.putExtra("state", "");
-                        intent.putExtra("name", patientName);
-                        intent.putExtra("tag", intentTag);
-                        startActivity(intent);
-                    }
-                });
-            }
-
+        if (visitCursor.getCount() < 1){
+            //Add a view where it says no visits found
+            final LayoutInflater inflater = PatientDetailActivity.this.getLayoutInflater();
+            View newView = inflater.inflate(R.layout.list_item_previous_visit, null);
+            TextView newItem = (TextView) newView.findViewById(R.id.textView_visit_info);
+            newItem.setText("No prior visits");
+            previousVisitsList.addView(newItem);
         } else {
-            TextView textViewLastVisit = (TextView) findViewById(R.id.textView_last_visit);
-            if (textViewLastVisit != null) {
-                textViewLastVisit.setText("No prior visits");
-            }
+
         }
 
-
-
         visitCursor.close();
-*/
-
-        TextView textView = (TextView) findViewById(R.id.textView_last_visit);
-        textView.setText("Feature coming soon!:");
-
 
     }
 

@@ -302,12 +302,16 @@ public class HelperMethods {
             } else {
                 return null;
             }
+
+
+
+
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-            final String BASE_URL = sharedPref.getString(SettingsActivity.KEY_PREF_SERVER_URL, "");
+            String BASE_URL = sharedPref.getString(SettingsActivity.KEY_PREF_SERVER_URL, "");
 
 
             String urlString = BASE_URL + urlModifier;
-
+            Log.d(LOG_TAG, "URL POSTED TO: " + urlString);
             URL url = new URL(urlString);
 
             byte[] outputInBytes = dataString.getBytes("UTF-8");
