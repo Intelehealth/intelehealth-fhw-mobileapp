@@ -306,7 +306,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         String table = "patient";
         String[] columnsToReturn = {"first_name", "middle_name", "last_name",
-                "date_of_birth", "address1", "address2", "city_village", "state_province",
+                "date_of_birth", "address1", "address2", "city_village", "state_province", "country",
                 "postal_code", "phone_number", "gender", "sdw", "occupation", "patient_photo"};
         final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
 
@@ -320,6 +320,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 patient.setAddress2(idCursor.getString(idCursor.getColumnIndex("address2")));
                 patient.setCityVillage(idCursor.getString(idCursor.getColumnIndex("city_village")));
                 patient.setStateProvince(idCursor.getString(idCursor.getColumnIndex("state_province")));
+                patient.setCountry(idCursor.getString(idCursor.getColumnIndex("country")));
                 patient.setPostalCode(idCursor.getString(idCursor.getColumnIndex("postal_code")));
                 patient.setPhoneNumber(idCursor.getString(idCursor.getColumnIndex("phone_number")));
                 patient.setGender(idCursor.getString(idCursor.getColumnIndex("gender")));
@@ -436,8 +437,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String mAddress = patient.getAddress1() + "\n" + patient.getAddress2();
         String mCityState = patient.getCityVillage();
         String mPhone = patient.getPhoneNumber();
-//        String mSdw = patient.getPatientIdentifier1();
-//        String mOccupation = patient.getPatientIdentifier2();
+        String mState = patient.getStateProvince();
+        String mCountry = patient.getCountry();
+
+        String mSdw = patient.getSdw();
+        String mOccupation = patient.getOccupation();
         String mGender = patient.getGender();
 
         Calendar c = Calendar.getInstance();
@@ -467,8 +471,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 "<h2 id=\"patient-information\">Patient Information</h2>\n" +
                                 "<ul>\n" +
                                 "<li>%s</li>\n" +
-                                "<li>%s</li>\n" +
-                                "<li>%s</li>\n" +
+                                "<li>Son/Daughter/Wife of: %s</li>\n" +
+                                "<li>Occupation: %s</li>\n" +
                                 "</ul>\n" +
                                 "<h2 id=\"address-and-contact\">Address and Contact</h2>\n" +
                                 "<p>%s</p>\n" +
@@ -502,7 +506,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 "<li>%s</li>\n" +
                                 "<h2 id=\"complaint\">Additional Comments</h2>" +
                                 "<li>%s</li>\n",
-                        mPatientName, patientID, mDate, mPatientDob, "Database error", "Database error", mAddress, mCityState, mPhone, mHeight, mWeight,
+                        mPatientName, patientID, mDate, mPatientDob, mSdw, mOccupation, mAddress, mCityState, mPhone, mHeight, mWeight,
                         mBMI, mBP, mPulse, mTemp, mSPO2, mPatHist, mFamHist, mComplaint, mExam, diagnosisReturned, rxReturned, testsReturned, adviceReturned, doctorName, additionalReturned);
         webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
 

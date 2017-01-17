@@ -46,7 +46,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/padding_card_title_text"
-                    android:text="@string/visit_summary_vitals_heading"
+                    android:text="@string/visit_summary_patient_details"
                     android:textSize="@dimen/card_title_text_size" />
 
 

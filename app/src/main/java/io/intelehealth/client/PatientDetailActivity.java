@@ -417,6 +417,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         String visitString = String.format("Seen on %s", datetime);
         textView.setText(visitString);
         previousVisitsList.addView(convertView);
+        //TODO: add on click listener to open the previous visit
     }
 
     private void neverSeen() {

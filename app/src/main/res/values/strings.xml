@@ -411,6 +411,7 @@
         <item>Wyoming</item>
     </string-array>
     <string name="title_activity_setup">SetupActivity</string>
+    <string name="visit_summary_patient_details">Patient Details</string>
 
 
 </resources>

@@ -476,6 +476,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
                 //currentPatient.setCountry(mCountry.getText().toString());
                 currentPatient.setGender(mGender);
+                currentPatient.setCountry(mCountry.getSelectedItem().toString());
+                currentPatient.setStateProvince(mState.getSelectedItem().toString());
             } catch (NullPointerException e) {
                 Snackbar.make(findViewById(R.id.cl_table), R.string.identification_screen_error_data_fields, Snackbar.LENGTH_SHORT);
             }
