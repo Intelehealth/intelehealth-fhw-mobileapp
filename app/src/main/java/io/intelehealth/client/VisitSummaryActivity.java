@@ -1015,7 +1015,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             String urlModifier = "visit/" + visitUUID;
 
-            SimpleDateFormat endDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+            SimpleDateFormat endDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
             Date rightNow = new Date();
             String endDateTime = endDate.format(rightNow);
 

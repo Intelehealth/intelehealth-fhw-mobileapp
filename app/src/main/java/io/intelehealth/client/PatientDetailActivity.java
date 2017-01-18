@@ -88,7 +88,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 String fullName = patient.getFirstName() + " " + patient.getLastName();
                 intent2.putExtra("patientID", patientID);
 
-                SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+                SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
                 Date todayDate = new Date();
                 String thisDate = currentDate.format(todayDate);
 
