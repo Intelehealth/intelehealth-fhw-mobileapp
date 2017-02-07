@@ -4,6 +4,7 @@ import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -14,6 +15,7 @@ import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -65,6 +67,7 @@ public class SetupActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         // Persistent login information
         manager = AccountManager.get(SetupActivity.this);
 
@@ -115,37 +118,17 @@ public class SetupActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        so have a textbox that allows to input a URL
-        preset URL for the demo version of this app
-
-        Then have them insert a prefix
-        preset prefix can be JHU, and then they can test it
-
-        maybe sure it is changed
-        at least prefix MUST be changed before pressing submit
-
-        once submit is clicked, do a progress bar that says checking
-
-        if check works, say yes, and move on to home screen
-        also save URL and Prefix to sharedprefs
-
-        if check fails, then you say please check the URL
-        thats if you couldnt even connect
-
-        if you could connect, but the prefix returns ANYTHING then you need to do it again
-
-        if you could connect, and prefix returns NOTHING, then you save it, and then home screen it
-
-
-
-         */
-
-        //TODO: add fields where they have to log in
-        /* you can't set up a new prefix without having a login to test it against
-        so they need to input URL, prefix, a UN, and a password
-         */
-
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle(R.string.generic_warning);
+        alertDialogBuilder.setMessage(R.string.setup_internet);
+        alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
 
     }
 
@@ -293,7 +276,7 @@ public class SetupActivity extends AppCompatActivity {
                 Log.d(LOG_TAG, "JSON Response: " + JSONString);
                 loginAttempt.setResponseString(JSONString);
                 if (loginAttempt != null && loginAttempt.getResponseCode() != 200) {
-                    Log.d(LOG_TAG, "Login get request was unsuccessful");
+                    Log.d(LOG_TAG, "Login request was unsuccessful");
                     return loginAttempt.getResponseCode();
                 }
 

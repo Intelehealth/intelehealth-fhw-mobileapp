@@ -41,6 +41,12 @@ public class ClientService extends IntentService {
     public static final String LOG_TAG = "ClientService";
     public int mId = 1;
 
+    private String patientID;
+    private String visitID;
+    private String state;
+    private String patientName;
+    private String intentTag;
+
     NotificationManager mNotifyManager =
             (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
@@ -62,6 +68,15 @@ public class ClientService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        patientID = intent.getStringExtra("patientID");
+        visitID = intent.getStringExtra("visitID");
+        state = intent.getStringExtra("state");
+        patientName = intent.getStringExtra("name");
+        Log.v(LOG_TAG, "Patient ID: " + patientID);
+        Log.v(LOG_TAG, "Visit ID: " + visitID);
+        Log.v(LOG_TAG, "Patient Name: " + patientName);
+
+
         createNotification();
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
 
@@ -92,6 +107,9 @@ public class ClientService extends IntentService {
             if(sent) endNotification();
             else errorNotification();
         }
+
+
+
 
     }
 
@@ -240,6 +258,7 @@ public class ClientService extends IntentService {
         return result != null;
     }
 
+    /*
     public String uploadPatient(String... params) {
 
 
@@ -465,7 +484,7 @@ public class ClientService extends IntentService {
         return null;
     }
 
-
+*/
     public void errorNotification() {
         // TODO: determine error behavior
     }

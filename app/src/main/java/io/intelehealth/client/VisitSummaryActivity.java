@@ -705,7 +705,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "{\"concept\":\"5092AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\", \"value\":\"%s\"}]," + //Sp02
                                     "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\"}",
 
-                            startDateTime, openMRSUUID, responseVisit.getResponseString(),
+                            startDateTime, openMRSUUID, visitUUID,
 //                            openMRSUUID,
                             weight.getValue(), height.getValue(), tempString,
                             pulse.getValue(), bpSys.getValue(),

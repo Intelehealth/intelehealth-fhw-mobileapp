@@ -12,6 +12,7 @@
     <string name="action_print">Print</string>
     <string name="action_home">Home</string>
     <string name="action_settings">Settings</string>
+    <string name="generic_warning">Warning!</string>
 
     //Database Schema Names
     <string name="db_first_name">first_name</string>
@@ -412,6 +413,9 @@
     </string-array>
     <string name="title_activity_setup">SetupActivity</string>
     <string name="visit_summary_patient_details">Patient Details</string>
+
+    //Setup Activity
+    <string name="setup_internet">A strong Internet connection is required for setup.</string>
 
 
 </resources>
