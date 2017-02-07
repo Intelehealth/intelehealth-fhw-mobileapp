@@ -76,7 +76,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service
-            android:name=".services.IdService"
+            android:name=".services.ClientService"
             android:exported="false" />
         <service
             android:name=".services.OpenMRSAccountAuthenticatorService"

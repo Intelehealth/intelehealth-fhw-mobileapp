@@ -691,10 +691,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             String vitalsString =
                     String.format("{" +
-                            //"\"encounterDatetime\":\"%s\"," +
+                            "\"encounterDatetime\":\"%s\"," +
                                     "\"patient\":\"%s\"," +
                                     "\"encounterType\":\"VITALS\"," +
-                                   // " \"visit\":\"%s\"," +
+                                    " \"visit\":\"%s\"," +
                                     "\"obs\":[" +
                                     "{\"concept\":\"5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\", \"value\":\"%s\"}," + //Weight
                                     "{\"concept\":\"5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"value\":\"%s\"}, " + //Height
@@ -705,8 +705,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "{\"concept\":\"5092AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\", \"value\":\"%s\"}]," + //Sp02
                                     "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\"}",
 
-//                            startDateTime, openMRSUUID, responseVisit.getResponseString(),
-                            openMRSUUID,
+                            startDateTime, openMRSUUID, responseVisit.getResponseString(),
+//                            openMRSUUID,
                             weight.getValue(), height.getValue(), tempString,
                             pulse.getValue(), bpSys.getValue(),
                             bpDias.getValue(), spO2.getValue()
@@ -732,22 +732,22 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             String noteString =
                     String.format("{" +
-                            //"\"encounterDatetime\":\"%s\"," +
+                            "\"encounterDatetime\":\"%s\"," +
                                     " \"patient\":\"%s\"," +
                                     "\"encounterType\":\"ADULTINITIAL\"," +
-                                    //"\"visit\":\"%s\"," +
+                                    "\"visit\":\"%s\"," +
                                     "\"obs\":[" +
-                                    //"{\"concept\":\"35c3afdd-bb96-4b61-afb9-22a5fc2d088e\", \"value\":\"%s\"}," + //son wife daughter
-                                    //"{\"concept\":\"5fe2ef6f-bbf7-45df-a6ea-a284aee82ddc\",\"value\":\"%s\"}, " + //occupation
+                                    "{\"concept\":\"35c3afdd-bb96-4b61-afb9-22a5fc2d088e\", \"value\":\"%s\"}," + //son wife daughter
+                                    "{\"concept\":\"5fe2ef6f-bbf7-45df-a6ea-a284aee82ddc\",\"value\":\"%s\"}, " + //occupation
                                     "{\"concept\":\"62bff84b-795a-45ad-aae1-80e7f5163a82\",\"value\":\"%s\"}," + //medical history
                                     "{\"concept\":\"d63ae965-47fb-40e8-8f08-1f46a8a60b2b\",\"value\":\"%s\"}," + //family history
                                     "{\"concept\":\"3edb0e09-9135-481e-b8f0-07a26fa9a5ce\",\"value\":\"%s\"}," + //current complaint
                                     "{\"concept\":\"e1761e85-9b50-48ae-8c4d-e6b7eeeba084\",\"value\":\"%s\"}]," + //physical exam
                                     "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\"}",
 
-//                            startDateTime, openMRSUUID, responseVisit.getResponseString(),
-                            openMRSUUID,
-                            //patient.getSdw(), patient.getOccupation(),
+                            startDateTime, openMRSUUID, responseVisit.getResponseString(),
+//                            openMRSUUID,
+                            patient.getSdw(), patient.getOccupation(),
                             //TODO: add logic to remove SDW and occupation when they are empty
                             patHistory.getValue(), famHistory.getValue(),
                             complaint.getValue(), physFindings.getValue()
