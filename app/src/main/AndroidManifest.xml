@@ -27,8 +27,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".HomeActivity"
-            android:label="@string/title_activity_login">
-        </activity>
+            android:label="@string/title_activity_login"></activity>
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
@@ -172,8 +171,7 @@
         <activity
             android:name=".SetupActivity"
             android:label="@string/title_activity_setup"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".SplashActivity"
             android:theme="@style/SplashTheme">
@@ -182,6 +180,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
     </application>
 

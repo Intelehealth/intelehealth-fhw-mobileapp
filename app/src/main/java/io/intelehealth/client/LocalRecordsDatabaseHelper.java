@@ -1,6 +1,7 @@
 package io.intelehealth.client;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -108,4 +109,6 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // TODO: discuss upgrade policy
     }
+
+
 }

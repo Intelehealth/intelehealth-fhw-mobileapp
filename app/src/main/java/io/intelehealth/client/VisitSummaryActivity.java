@@ -50,6 +50,7 @@ import java.util.Locale;
 import io.intelehealth.client.objects.Obs;
 import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.objects.WebResponse;
+import io.intelehealth.client.services.ClientService;
 
 public class VisitSummaryActivity extends AppCompatActivity {
 
@@ -169,13 +170,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (intent != null) {
             patientID = intent.getStringExtra("patientID");
             visitID = intent.getStringExtra("visitID");
-            state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
-            Log.v(LOG_TAG, "Patient ID: " + patientID);
-            Log.v(LOG_TAG, "Visit ID: " + visitID);
-            Log.v(LOG_TAG, "Patient Name: " + patientName);
-            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
+//            Log.v(LOG_TAG, "Patient ID: " + patientID);
+//            Log.v(LOG_TAG, "Visit ID: " + visitID);
+//            Log.v(LOG_TAG, "Patient Name: " + patientName);
+//            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         } else {
             patientID = "AND1";
             visitID = "6";
@@ -194,12 +194,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         db = mDbHelper.getWritableDatabase();
 
         identifierNumber = patientID;
-//        identifierNumber = "AAA2";
-
-        int checkedDigit = checkDigit(identifierNumber);
-
-        identifierNumber = identifierNumber + "-" + String.valueOf(checkedDigit);
-
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit_summary);
@@ -230,7 +224,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Uploading to doctor.", Snackbar.LENGTH_LONG).show();
-                sendPost(view);
+
+                Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
+                serviceIntent.putExtra("serviceCall", "visit");
+                serviceIntent.putExtra("patientID", patientID);
+                serviceIntent.putExtra("visitID", visitID);
+                serviceIntent.putExtra("name", patientName);
+                startService(serviceIntent);
+
+                //sendPost(view);
             }
         });
 
@@ -301,8 +303,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         String patientSelection = "_id MATCH ?";
         String[] patientArgs = {dataString};
-
-        ArrayList<String> uploadedFields = new ArrayList<>();
 
         String table = "patient";
         String[] columnsToReturn = {"first_name", "middle_name", "last_name",

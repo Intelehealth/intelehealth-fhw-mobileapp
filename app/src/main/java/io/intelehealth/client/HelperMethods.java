@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -181,7 +183,7 @@ public class HelperMethods {
         return results;
     }
 
-    static WebResponse getCommand(String urlModifier, String dataString, Context context) {
+    public static WebResponse getCommand(String urlModifier, String dataString, Context context) {
 
 
         AccountManager manager;
@@ -271,7 +273,7 @@ public class HelperMethods {
         return webResponse;
     }
 
-    static WebResponse postCommand(String urlModifier, String dataString, Context context) {
+    public static WebResponse postCommand(String urlModifier, String dataString, Context context) {
         BufferedReader reader;
         String JSONString;
         AccountManager manager;

@@ -39,6 +39,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import io.intelehealth.client.objects.Patient;
+import io.intelehealth.client.services.ClientService;
 
 public class PatientDetailActivity extends AppCompatActivity {
 
@@ -78,7 +79,11 @@ public class PatientDetailActivity extends AppCompatActivity {
         patient.setId(patientID);
         setDisplay(String.valueOf(patientID));
 
-        //IMMEDIATELY CREATE THE PATIENT. HIT OPENMRS NOW.
+        Intent serviceIntent = new Intent(this, ClientService.class);
+        serviceIntent.putExtra("serviceCall", "patient");
+        serviceIntent.putExtra("patientID", patientID);
+        serviceIntent.putExtra("name", patientName);
+        startService(serviceIntent);
 
         newVisit = (Button) findViewById(R.id.button_new_visit);
         newVisit.setOnClickListener(new View.OnClickListener() {
@@ -113,6 +118,14 @@ public class PatientDetailActivity extends AppCompatActivity {
                 intent2.putExtra("name", fullName);
                 intent2.putExtra("tag", "");
                 startActivity(intent2);
+            }
+        });
+
+        final CardView patientSummary = (CardView) findViewById(R.id.cardView_patDetail_summary);
+        patientSummary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
 

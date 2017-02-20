@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
@@ -18,6 +19,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.NotificationCompat;
 import android.util.Base64;
 import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -25,6 +27,7 @@ import io.intelehealth.client.HelperMethods;
 import io.intelehealth.client.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.R;
 import io.intelehealth.client.SettingsActivity;
+import io.intelehealth.client.objects.Obs;
 import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.objects.PatientImage;
 import io.intelehealth.client.objects.WebResponse;
@@ -40,18 +43,14 @@ public class ClientService extends IntentService {
 
     public static final String LOG_TAG = "ClientService";
     public int mId = 1;
-
-    private String patientID;
-    private String visitID;
-    private String state;
-    private String patientName;
-    private String intentTag;
-
-    NotificationManager mNotifyManager =
-            (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
+    public int numMessages;
 
     LocalRecordsDatabaseHelper mDbHelper;
+    SQLiteDatabase db;
+
+    NotificationManager mNotifyManager;
+    NotificationCompat.Builder mBuilder;
+
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
@@ -62,22 +61,16 @@ public class ClientService extends IntentService {
         super(name);
     }
 
-    public ClientService(){
+    public ClientService() {
         super("Intent Service");
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        patientID = intent.getStringExtra("patientID");
-        visitID = intent.getStringExtra("visitID");
-        state = intent.getStringExtra("state");
-        patientName = intent.getStringExtra("name");
-        Log.v(LOG_TAG, "Patient ID: " + patientID);
-        Log.v(LOG_TAG, "Visit ID: " + visitID);
-        Log.v(LOG_TAG, "Patient Name: " + patientName);
-
-
-        createNotification();
+        mNotifyManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mBuilder = new NotificationCompat.Builder(this);
+        Boolean success = false;
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
 
         try {
@@ -88,27 +81,35 @@ public class ClientService extends IntentService {
             Log.e(LOG_TAG, "Waiting interrupted?");
         }
 
+        String serviceCall = intent.getStringExtra("serviceCall");
 
-        String dataString = intent.getDataString(); // The dataString is the _id of the patient to send
-        int id = Integer.parseInt(dataString);
-        String jsonToSend = serialize(dataString);
-
-        String resultString = sendData(jsonToSend);
-        boolean sent = sendPicture(id);
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        int openMrsId = Integer.parseInt(resultString);
-        if(resultString != null) {
-            String sql = "UPDATE patient SET opemrs_id = ? WHERE _id = ?";
-            SQLiteStatement stmt = db.compileStatement(sql);
-            stmt.bindLong(1, openMrsId); // SQL indices start at 1
-            stmt.bindLong(2, id);
-            int numberOfRowsAffected = stmt.executeUpdateDelete();
-            Log.v(LOG_TAG, "Updated Rows: " + numberOfRowsAffected);
-            if(sent) endNotification();
-            else errorNotification();
+        switch (serviceCall) {
+            case "patient":
+                String patientID = intent.getStringExtra("patientID");
+                String patientName = intent.getStringExtra("name");
+                Log.v(LOG_TAG, "Patient ID: " + patientID);
+                Log.v(LOG_TAG, "Patient Name: " + patientName);
+                createPatientNotification(patientName);
+                success = uploadPatient(patientID);
+                if (success) endNotification(patientName, "patient");
+                else errorNotification();
+                break;
+            case "visit":
+                patientID = intent.getStringExtra("patientID");
+                String visitID = intent.getStringExtra("visitID");
+                patientName = intent.getStringExtra("name");
+                Log.v(LOG_TAG, "Patient ID: " + patientID);
+                Log.v(LOG_TAG, "Visit ID: " + visitID);
+                Log.v(LOG_TAG, "Patient Name: " + patientName);
+                createVisitNotification(patientName);
+                success = uploadVisit(patientID, visitID);
+                if (success) endNotification(patientName, "visit");
+                else errorNotification();
+                break;
+            default:
+                //something
+                break;
         }
-
-
 
 
     }
@@ -164,23 +165,46 @@ public class ClientService extends IntentService {
         return json;
     }
 
-    public void createNotification() {
-        mBuilder.setContentTitle("Patient Data Upload")
-                .setContentText("Patient data upload in progress")
+    public void createPatientNotification(String patientName) {
+
+        String title = "Patient Data Upload";
+        String text = String.format("Uploading %s's data", patientName);
+
+
+        mBuilder.setContentTitle(title)
+                .setContentText(text)
                 .setSmallIcon(R.drawable.ic_cloud_upload);
         // Sets an activity indicator for an operation of indeterminate length
         mBuilder.setProgress(0, 0, true);
         // Issues the notification
         mNotifyManager.notify(mId, mBuilder.build());
+        numMessages = 0;
     }
 
-    public void endNotification() {
+    public void createVisitNotification(String patientName) {
+
+        String title = "Visit Data Upload";
+        String text = String.format("Uploading %s's visit data", patientName);
+
+
+        mBuilder.setContentTitle(title)
+                .setContentText(text)
+                .setSmallIcon(R.drawable.ic_cloud_upload);
+        // Sets an activity indicator for an operation of indeterminate length
+        mBuilder.setProgress(0, 0, true);
+        // Issues the notification
+        mNotifyManager.notify(mId, mBuilder.build());
+        numMessages = 0;
+    }
+
+    public void endNotification(String patientName, String type) {
         // mNotifyManager.cancel(mId);
 
         // When the loop is finished, updates the notification
-        mBuilder.setContentText("Upload complete")
+        String text = String.format("%s's %s data upload complete.", patientName, type);
+        mBuilder.setContentText(text)
                 // Removes the progress bar
-                .setProgress(0,0,false);
+                .setProgress(0, 0, false);
         mNotifyManager.notify(mId, mBuilder.build());
     }
 
@@ -212,7 +236,7 @@ public class ClientService extends IntentService {
             urlConnection.setRequestProperty("Content-Type", "application/json");
             urlConnection.connect();
 
-            if(urlConnection.getResponseCode() != HttpURLConnection.HTTP_OK) return null;
+            if (urlConnection.getResponseCode() != HttpURLConnection.HTTP_OK) return null;
 
             printout = new DataOutputStream(urlConnection.getOutputStream());
             printout.writeBytes(jsonString);
@@ -258,117 +282,257 @@ public class ClientService extends IntentService {
         return result != null;
     }
 
-    /*
-    public String uploadPatient(String... params) {
+    private boolean uploadPatient(String patientID) {
 
-
-        //so this service will need the patientID and the visitID
-        //EVERYTHING will need to be queried, and then stored into an object temporarily
-        //all of these will be be posted to openMRS
-        //once done, service should end
-
-
-
-        String openMRSUUID = null;
+        Patient patient = new Patient();
         String patientSelection = "_id MATCH ?";
         String[] patientArgs = {patientID};
-        String[] patientColumns = {"openmrs_uuid"};
-        final Cursor idCursor = db.query("patient", patientColumns, patientSelection, patientArgs, null, null, null);
 
-        idCursor.moveToLast();
-        openMRSUUID = idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_uuid"));
+
+        LocalRecordsDatabaseHelper mDbHelper;
+        SQLiteDatabase db;
+        mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
+        db = mDbHelper.getWritableDatabase();
+
+        String table = "patient";
+        String[] columnsToReturn = {"first_name", "middle_name", "last_name",
+                "date_of_birth", "address1", "address2", "city_village", "state_province", "country",
+                "postal_code", "phone_number", "gender", "sdw", "occupation", "patient_photo"};
+        final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
+
+        if (idCursor.moveToFirst()) {
+            do {
+                patient.setFirstName(idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")));
+                patient.setMiddleName(idCursor.getString(idCursor.getColumnIndexOrThrow("middle_name")));
+                patient.setLastName(idCursor.getString(idCursor.getColumnIndexOrThrow("last_name")));
+                patient.setDateOfBirth(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
+                patient.setAddress1(idCursor.getString(idCursor.getColumnIndexOrThrow("address1")));
+                patient.setAddress2(idCursor.getString(idCursor.getColumnIndexOrThrow("address2")));
+                patient.setCityVillage(idCursor.getString(idCursor.getColumnIndexOrThrow("city_village")));
+                patient.setStateProvince(idCursor.getString(idCursor.getColumnIndexOrThrow("state_province")));
+                patient.setCountry(idCursor.getString(idCursor.getColumnIndexOrThrow("country")));
+                patient.setPostalCode(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
+                patient.setPhoneNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
+                patient.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                patient.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
+                patient.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
+                patient.setPatientPhoto(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
+            } while (idCursor.moveToNext());
+        }
         idCursor.close();
 
-        if (openMRSUUID == null) {
-            String personString =
-                    String.format("{\"gender\":\"%s\", " +
-                                    "\"names\":[" +
-                                    "{\"givenName\":\"%s\", " +
-                                    "\"middleName\":\"%s\", " +
-                                    "\"familyName\":\"%s\"}], " +
-                                    "\"birthdate\":\"%s\", " +
-                                    "\"attributes\":[" +
-                                    "{\"attributeType\":\"14d4f066-15f5-102d-96e4-000c29c2a5d7\", " +
-                                    "\"value\": \"%s\"}, " +
-                                    "{\"attributeType\":\"8d87236c-c2cc-11de-8d13-0010c6dffd0f\", " +
-                                    "\"value\": \"Barhra\"}], " + //TODO: Change this attribute to the name of the clinic as listed in OpenMRS
-                                    "\"addresses\":[" +
-                                    "{\"address1\":\"%s\", " +
-                                    "\"address2\":\"%s\"," +
-                                    "\"cityVillage\":\"%s\"," +
-                                    "\"stateProvince\":\"%s\"," +
-                                    "\"country\":\"%s\"," +
-                                    "\"postalCode\":\"%s\"}]}",
-                            patient.getGender(),
-                            patient.getFirstName(),
-                            patient.getMiddleName(),
-                            patient.getLastName(),
-                            patient.getDateOfBirth(),
-                            patient.getPhoneNumber(),
-                            patient.getAddress1(),
-                            patient.getAddress2(),
-                            patient.getCityVillage(),
-                            patient.getStateProvince(),
-                            patient.getCountry(),
-                            patient.getPostalCode());
 
-            Log.d(LOG_TAG, "Person String: " + personString);
-            WebResponse responsePerson;
-            responsePerson = HelperMethods.postCommand("person", personString, getApplicationContext());
-            if (responsePerson != null && responsePerson.getResponseCode() != 201) {
-                failedMessage = "Person posting was unsuccessful";
-//                    failedStep(failedMessage);
-                Log.d(LOG_TAG, "Person posting was unsuccessful");
-                return null;
-            }
+        String personString =
+                String.format("{\"gender\":\"%s\", " +
+                                "\"names\":[" +
+                                "{\"givenName\":\"%s\", " +
+                                "\"middleName\":\"%s\", " +
+                                "\"familyName\":\"%s\"}], " +
+                                "\"birthdate\":\"%s\", " +
+                                "\"attributes\":[" +
+                                "{\"attributeType\":\"14d4f066-15f5-102d-96e4-000c29c2a5d7\", " +
+                                "\"value\": \"%s\"}, " +
+                                "{\"attributeType\":\"8d87236c-c2cc-11de-8d13-0010c6dffd0f\", " +
+                                "\"value\": \"Barhra\"}], " + //TODO: Change this attribute to the name of the clinic as listed in OpenMRS
+                                "\"addresses\":[" +
+                                "{\"address1\":\"%s\", " +
+                                "\"address2\":\"%s\"," +
+                                "\"cityVillage\":\"%s\"," +
+                                "\"stateProvince\":\"%s\"," +
+                                "\"country\":\"%s\"," +
+                                "\"postalCode\":\"%s\"}]}",
+                        patient.getGender(),
+                        patient.getFirstName(),
+                        patient.getMiddleName(),
+                        patient.getLastName(),
+                        patient.getDateOfBirth(),
+                        patient.getPhoneNumber(),
+                        patient.getAddress1(),
+                        patient.getAddress2(),
+                        patient.getCityVillage(),
+                        patient.getStateProvince(),
+                        patient.getCountry(),
+                        patient.getPostalCode());
 
-            assert responsePerson != null;
+        Log.d(LOG_TAG, "Person String: " + personString);
+        WebResponse responsePerson;
+        responsePerson = HelperMethods.postCommand("person", personString, getApplicationContext());
+        if (responsePerson != null && responsePerson.getResponseCode() != 201) {
 
-            String patientString =
-                    String.format("{\"person\":\"%s\", " +
-                                    "\"identifiers\":[{\"identifier\":\"%s\", " +
-                                    "\"identifierType\":\"05a29f94-c0ed-11e2-94be-8c13b969e334\", " +
-                                    "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\", " +
-                                    "\"preferred\":true}]}",
-
-                            responsePerson.getResponseString(), identifierNumber);
-
-            Log.d(LOG_TAG, "Patient String: " + patientString);
-            WebResponse responsePatient;
-            responsePatient = HelperMethods.postCommand("patient", patientString, getApplicationContext());
-            if (responsePatient != null && responsePatient.getResponseCode() != 201) {
-                failedMessage = "Patient posting was unsuccessful";
-//                    failedStep(failedMessage);
-                Log.d(LOG_TAG, "Patient posting was unsuccessful");
-                return null;
-            }
-
-            assert responsePatient != null;
-            ContentValues contentValuesOpenMRSID = new ContentValues();
-            contentValuesOpenMRSID.put("openmrs_uuid", responsePatient.getResponseString());
-            String selection = "_id = ?";
-            String[] args = {patientID};
-
-            db.update(
-                    "patient",
-                    contentValuesOpenMRSID,
-                    selection,
-                    args
-            );
-
-            openMRSUUID = responsePatient.getResponseString();
+            String newText = "Person was not created. Please check your connection.";
+            mBuilder.setContentText(newText).setNumber(++numMessages);
+            mNotifyManager.notify(mId, mBuilder.build());
+            Log.d(LOG_TAG, "Person posting was unsuccessful");
+            return false;
+        } else {
+            String newText = "Person created successfully.";
+            mBuilder.setContentText(newText).setNumber(++numMessages);
+            mNotifyManager.notify(mId, mBuilder.build());
         }
 
 
-        String table = "visit";
-        String[] columnsToReturn = {"start_datetime"};
-        String orderBy = "start_datetime";
-        String visitSelection = "_id = ?";
-        String[] visitArgs = {visitID};
-        final Cursor visitCursor = db.query(table, columnsToReturn, visitSelection, visitArgs, null, null, orderBy);
-        visitCursor.moveToLast();
-        String startDateTime = visitCursor.getString(visitCursor.getColumnIndexOrThrow("start_datetime"));
+        assert responsePerson != null;
+
+        String patientString =
+                String.format("{\"person\":\"%s\", " +
+                                "\"identifiers\":[{\"identifier\":\"%s\", " +
+                                "\"identifierType\":\"05a29f94-c0ed-11e2-94be-8c13b969e334\", " +
+                                "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\", " +
+                                "\"preferred\":true}]}",
+
+                        responsePerson.getResponseString(), patientID);
+
+        Log.d(LOG_TAG, "Patient String: " + patientString);
+        WebResponse responsePatient;
+        responsePatient = HelperMethods.postCommand("patient", patientString, getApplicationContext());
+        if (responsePatient != null && responsePatient.getResponseCode() != 201) {
+            String newText = "Patient was not created. Please check your connection.";
+            mBuilder.setContentText(newText).setNumber(++numMessages);
+            mNotifyManager.notify(mId, mBuilder.build());
+            Log.d(LOG_TAG, "Patient posting was unsuccessful");
+            return false;
+        } else {
+            String newText = "Patient created successfully.";
+            mBuilder.setContentText(newText).setNumber(++numMessages);
+            mNotifyManager.notify(mId, mBuilder.build());
+        }
+
+        assert responsePatient != null;
+        ContentValues contentValuesOpenMRSID = new ContentValues();
+        contentValuesOpenMRSID.put("openmrs_uuid", responsePatient.getResponseString());
+        String selection = "_id = ?";
+        String[] args = {patientID};
+
+        db.update(
+                "patient",
+                contentValuesOpenMRSID,
+                selection,
+                args
+        );
+
+        return true;
+    }
+
+    private boolean uploadVisit(String patientID, String visitID) {
+        Patient patient = new Patient();
+        Obs complaint = new Obs();
+        Obs famHistory = new Obs();
+        Obs patHistory = new Obs();
+        String medHistory;
+        Obs physFindings = new Obs();
+        Obs height = new Obs();
+        Obs weight = new Obs();
+        Obs pulse = new Obs();
+        Obs bpSys = new Obs();
+        Obs bpDias = new Obs();
+        Obs temperature = new Obs();
+        Obs spO2 = new Obs();
+
+        LocalRecordsDatabaseHelper mDbHelper;
+        SQLiteDatabase db;
+        mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
+        db = mDbHelper.getWritableDatabase();
+
+
+        String[] columns = {"value", " concept_id"};
+        String orderBy = "visit_id";
+
+        try {
+            String famHistSelection = "patient_id = ? AND concept_id = ?";
+            String[] famHistArgs = {patientID, "163188"};
+            Cursor famHistCursor = db.query("obs", columns, famHistSelection, famHistArgs, null, null, orderBy);
+            famHistCursor.moveToLast();
+            String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
+            famHistory.setValue(famHistText);
+            famHistCursor.close();
+        } catch (CursorIndexOutOfBoundsException e) {
+            famHistory.setValue(""); // if family history does not exist
+        }
+
+        try {
+            String medHistSelection = "patient_id = ? AND concept_id = ?";
+            String[] medHistArgs = {patientID, "163187"};
+            Cursor medHistCursor = db.query("obs", columns, medHistSelection, medHistArgs, null, null, orderBy);
+            medHistCursor.moveToLast();
+            String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+            patHistory.setValue(medHistText);
+            if (!medHistText.isEmpty()) {
+                medHistory = patHistory.getValue();
+                medHistory = medHistory.replace("\"", "");
+                medHistory = medHistory.replace("\n", "");
+                do {
+                    medHistory = medHistory.replace("  ", "");
+                } while (medHistory.contains("  "));
+            }
+            medHistCursor.close();
+        } catch (CursorIndexOutOfBoundsException e) {
+            patHistory.setValue(""); // if medical history does not exist
+        }
+
+        String visitSelection = "patient_id = ? AND visit_id = ?";
+        String[] visitArgs = {patientID, visitID};
+        Cursor visitCursor = db.query("obs", columns, visitSelection, visitArgs, null, null, orderBy);
+        if (visitCursor.moveToFirst()) {
+            do {
+                int dbConceptID = visitCursor.getInt(visitCursor.getColumnIndex("concept_id"));
+                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                switch (dbConceptID) {
+                    case 163186: //Current Complaint
+                        complaint.setValue(dbValue);
+                        break;
+                    case 163189: //Physical Examination
+                        physFindings.setValue(dbValue);
+                        break;
+                    case 5090: //Height
+                        height.setValue(dbValue);
+                        break;
+                    case 5089: //Weight
+                        weight.setValue(dbValue);
+                        break;
+                    case 5087: //Pulse
+                        pulse.setValue(dbValue);
+                        break;
+                    case 5085: //Systolic BP
+                        bpSys.setValue(dbValue);
+                        break;
+                    case 5086: //Diastolic BP
+                        bpDias.setValue(dbValue);
+                        break;
+                    case 163202: //Temperature
+                        temperature.setValue(dbValue);
+                        break;
+                    case 5092: //SpO2
+                        spO2.setValue(dbValue);
+                        break;
+                    default:
+                        break;
+                }
+            } while (visitCursor.moveToNext());
+        }
         visitCursor.close();
+
+        String[] columnsToReturn = {"start_datetime"};
+        String visitIDorderBy = "start_datetime";
+        String visitIDSelection = "_id = ?";
+        String[] visitIDArgs = {visitID};
+        final Cursor visitIDCursor = db.query("visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
+        visitIDCursor.moveToLast();
+        String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("start_datetime"));
+        visitIDCursor.close();
+
+        String patientSelection = "_id MATCH ?";
+        String[] patientArgs = {patientID};
+        String[] oMRSCol = {"openmrs_uuid", "sdw", "occupation"};
+        final Cursor idCursor = db.query("patient", oMRSCol, patientSelection, patientArgs, null, null, null);
+        if (idCursor.moveToFirst()) {
+            do {
+                patient.setOpenmrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_uuid")));
+                patient.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
+                patient.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
+            } while (idCursor.moveToNext());
+        }
+        idCursor.close();
+
 
         //TODO: Location UUID needs to be found before doing these
         String visitString =
@@ -376,20 +540,26 @@ public class ClientService extends IntentService {
                                 "\"visitType\":\"Telemedicine\"," +
                                 "\"patient\":\"%s\"," +
                                 "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\"}",
-                        startDateTime, openMRSUUID);
+                        startDateTime, patient.getOpenmrsId());
         Log.d(LOG_TAG, "Visit String: " + visitString);
         WebResponse responseVisit;
         responseVisit = HelperMethods.postCommand("visit", visitString, getApplicationContext());
         if (responseVisit != null && responseVisit.getResponseCode() != 201) {
-            failedMessage = "Visit posting was unsuccessful";
-//                failedStep(failedMessage);
+            String newText = "Visit was not created. Please check your connection.";
+            mBuilder.setContentText(newText).setNumber(++numMessages);
+            mNotifyManager.notify(mId, mBuilder.build());
             Log.d(LOG_TAG, "Visit posting was unsuccessful");
-            return null;
+            return false;
+        } else {
+            String newText = "Visit created successfully.";
+            mBuilder.setContentText(newText).setNumber(++numMessages);
+            mNotifyManager.notify(mId, mBuilder.build());
         }
+
 
         assert responseVisit != null;
 
-        visitUUID = responseVisit.getResponseString();
+        String visitUUID = responseVisit.getResponseString();
         ContentValues contentValuesVisit = new ContentValues();
         contentValuesVisit.put("openmrs_visit_uuid", visitUUID);
         String visitUpdateSelection = "start_datetime = ?";
@@ -422,7 +592,7 @@ public class ClientService extends IntentService {
                                 "{\"concept\":\"5092AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\", \"value\":\"%s\"}]," + //Sp02
                                 "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\"}",
 
-                        startDateTime, openMRSUUID, responseVisit.getResponseString(),
+                        startDateTime, patient.getOpenmrsId(), visitUUID,
 //                            openMRSUUID,
                         weight.getValue(), height.getValue(), tempString,
                         pulse.getValue(), bpSys.getValue(),
@@ -432,11 +602,17 @@ public class ClientService extends IntentService {
         WebResponse responseVitals;
         responseVitals = HelperMethods.postCommand("encounter", vitalsString, getApplicationContext());
         if (responseVitals != null && responseVitals.getResponseCode() != 201) {
-            failedMessage = "Encounter posting was unsuccessful";
-//                failedStep(failedMessage);
+            String newText = "Encounter was not created. Please check your connection.";
+            mBuilder.setContentText(newText).setNumber(++numMessages);
+            mNotifyManager.notify(mId, mBuilder.build());
             Log.d(LOG_TAG, "Encounter posting was unsuccessful");
-            return null;
+            return false;
+        } else {
+            String newText = "Encounter created successfully.";
+            mBuilder.setContentText(newText).setNumber(++numMessages);
+            mNotifyManager.notify(mId, mBuilder.build());
         }
+
 
         assert responseVitals != null;
 
@@ -462,7 +638,7 @@ public class ClientService extends IntentService {
                                 "{\"concept\":\"e1761e85-9b50-48ae-8c4d-e6b7eeeba084\",\"value\":\"%s\"}]," + //physical exam
                                 "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\"}",
 
-                        startDateTime, openMRSUUID, responseVisit.getResponseString(),
+                        startDateTime, patient.getOpenmrsId(), responseVisit.getResponseString(),
 //                            openMRSUUID,
                         patient.getSdw(), patient.getOccupation(),
                         //TODO: add logic to remove SDW and occupation when they are empty
@@ -473,19 +649,25 @@ public class ClientService extends IntentService {
         WebResponse responseNotes;
         responseNotes = HelperMethods.postCommand("encounter", noteString, getApplicationContext());
         if (responseNotes != null && responseNotes.getResponseCode() != 201) {
-            failedMessage = "Notes posting was unsuccessful";
-//                failedStep(failedMessage);
+            String newText = "Notes Encounter was not created. Please check your connection.";
+            mBuilder.setContentText(newText).setNumber(++numMessages);
+            mNotifyManager.notify(mId, mBuilder.build());
             Log.d(LOG_TAG, "Notes Encounter posting was unsuccessful");
-            return null;
+            return false;
+        } else
+
+        {
+            String newText = "Notes created successfully.";
+            mBuilder.setContentText(newText).setNumber(++numMessages);
+            mNotifyManager.notify(mId, mBuilder.build());
         }
 
-        uploaded = true;
+        return true;
 
-        return null;
     }
 
-*/
     public void errorNotification() {
         // TODO: determine error behavior
     }
+
 }
