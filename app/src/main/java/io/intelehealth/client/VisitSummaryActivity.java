@@ -232,6 +232,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 serviceIntent.putExtra("name", patientName);
                 startService(serviceIntent);
 
+                mLayout.removeView(uploadButton);
+
+                downloadButton = new Button(VisitSummaryActivity.this);
+                downloadButton.setLayoutParams(new LinearLayoutCompat.LayoutParams(
+                        LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+                downloadButton.setText(R.string.visit_summary_button_download);
+
+                downloadButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Snackbar.make(view, "Downloading from doctor", Snackbar.LENGTH_LONG).show();
+                        retrieveOpenMRS(view);
+                    }
+                });
+
+                mLayout.addView(downloadButton, 0);
+
                 //sendPost(view);
             }
         });
@@ -287,9 +304,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     }
 
-    public void sendPost(View view) {
-        new PostClass(this).execute();
-    }
 
     public void retrieveOpenMRS(View view) {
         new RetrieveData(this).execute();
@@ -529,271 +543,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         PrintJob printJob = printManager.print(jobName, printAdapter,
                 new PrintAttributes.Builder().build());
 
-    }
-
-    private class PostClass extends AsyncTask<String, Void, String> {
-
-        private final String LOG_TAG = PostClass.class.getSimpleName();
-
-        private final Context context;
-
-        public PostClass(Context c) {
-
-            this.context = c;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            //remove the upload button
-            //Add a progress bar to the top
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            String openMRSUUID = null;
-            String patientSelection = "_id MATCH ?";
-            String[] patientArgs = {patientID};
-            String[] patientColumns = {"openmrs_uuid"};
-            final Cursor idCursor = db.query("patient", patientColumns, patientSelection, patientArgs, null, null, null);
-
-            idCursor.moveToLast();
-            openMRSUUID = idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_uuid"));
-            idCursor.close();
-
-            if (openMRSUUID == null) {
-                String personString =
-                        String.format("{\"gender\":\"%s\", " +
-                                        "\"names\":[" +
-                                        "{\"givenName\":\"%s\", " +
-                                        "\"middleName\":\"%s\", " +
-                                        "\"familyName\":\"%s\"}], " +
-                                        "\"birthdate\":\"%s\", " +
-                                        "\"attributes\":[" +
-                                        "{\"attributeType\":\"14d4f066-15f5-102d-96e4-000c29c2a5d7\", " +
-                                        "\"value\": \"%s\"}, " +
-                                        "{\"attributeType\":\"8d87236c-c2cc-11de-8d13-0010c6dffd0f\", " +
-                                        "\"value\": \"Barhra\"}], " + //TODO: Change this attribute to the name of the clinic as listed in OpenMRS
-                                        "\"addresses\":[" +
-                                        "{\"address1\":\"%s\", " +
-                                        "\"address2\":\"%s\"," +
-                                        "\"cityVillage\":\"%s\"," +
-                                        "\"stateProvince\":\"%s\"," +
-                                        "\"country\":\"%s\"," +
-                                        "\"postalCode\":\"%s\"}]}",
-                                patient.getGender(),
-                                patient.getFirstName(),
-                                patient.getMiddleName(),
-                                patient.getLastName(),
-                                patient.getDateOfBirth(),
-                                patient.getPhoneNumber(),
-                                patient.getAddress1(),
-                                patient.getAddress2(),
-                                patient.getCityVillage(),
-                                patient.getStateProvince(),
-                                patient.getCountry(),
-                                patient.getPostalCode());
-
-                Log.d(LOG_TAG, "Person String: " + personString);
-                WebResponse responsePerson;
-                responsePerson = HelperMethods.postCommand("person", personString, getApplicationContext());
-                if (responsePerson != null && responsePerson.getResponseCode() != 201) {
-                    failedMessage = "Person posting was unsuccessful";
-//                    failedStep(failedMessage);
-                    Log.d(LOG_TAG, "Person posting was unsuccessful");
-                    return null;
-                }
-
-                assert responsePerson != null;
-
-                String patientString =
-                        String.format("{\"person\":\"%s\", " +
-                                        "\"identifiers\":[{\"identifier\":\"%s\", " +
-                                        "\"identifierType\":\"05a29f94-c0ed-11e2-94be-8c13b969e334\", " +
-                                        "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\", " +
-                                        "\"preferred\":true}]}",
-
-                                responsePerson.getResponseString(), identifierNumber);
-
-                Log.d(LOG_TAG, "Patient String: " + patientString);
-                WebResponse responsePatient;
-                responsePatient = HelperMethods.postCommand("patient", patientString, getApplicationContext());
-                if (responsePatient != null && responsePatient.getResponseCode() != 201) {
-                    failedMessage = "Patient posting was unsuccessful";
-//                    failedStep(failedMessage);
-                    Log.d(LOG_TAG, "Patient posting was unsuccessful");
-                    return null;
-                }
-
-                assert responsePatient != null;
-                ContentValues contentValuesOpenMRSID = new ContentValues();
-                contentValuesOpenMRSID.put("openmrs_uuid", responsePatient.getResponseString());
-                String selection = "_id = ?";
-                String[] args = {patientID};
-
-                db.update(
-                        "patient",
-                        contentValuesOpenMRSID,
-                        selection,
-                        args
-                );
-
-                openMRSUUID = responsePatient.getResponseString();
-            }
-
-
-            String table = "visit";
-            String[] columnsToReturn = {"start_datetime"};
-            String orderBy = "start_datetime";
-            String visitSelection = "_id = ?";
-            String[] visitArgs = {visitID};
-            final Cursor visitCursor = db.query(table, columnsToReturn, visitSelection, visitArgs, null, null, orderBy);
-            visitCursor.moveToLast();
-            String startDateTime = visitCursor.getString(visitCursor.getColumnIndexOrThrow("start_datetime"));
-            visitCursor.close();
-
-            //TODO: Location UUID needs to be found before doing these
-            String visitString =
-                    String.format("{\"startDatetime\":\"%s\"," +
-                                    "\"visitType\":\"Telemedicine\"," +
-                                    "\"patient\":\"%s\"," +
-                                    "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\"}",
-                            startDateTime, openMRSUUID);
-            Log.d(LOG_TAG, "Visit String: " + visitString);
-            WebResponse responseVisit;
-            responseVisit = HelperMethods.postCommand("visit", visitString, getApplicationContext());
-            if (responseVisit != null && responseVisit.getResponseCode() != 201) {
-                failedMessage = "Visit posting was unsuccessful";
-//                failedStep(failedMessage);
-                Log.d(LOG_TAG, "Visit posting was unsuccessful");
-                return null;
-            }
-
-            assert responseVisit != null;
-
-            visitUUID = responseVisit.getResponseString();
-            ContentValues contentValuesVisit = new ContentValues();
-            contentValuesVisit.put("openmrs_visit_uuid", visitUUID);
-            String visitUpdateSelection = "start_datetime = ?";
-            String[] visitUpdateArgs = {startDateTime};
-
-            db.update(
-                    "visit",
-                    contentValuesVisit,
-                    visitUpdateSelection,
-                    visitUpdateArgs
-            );
-
-            Double fTemp = Double.parseDouble(temperature.getValue());
-            Double cTemp = (fTemp - 32) * (5 / 9);
-            String tempString = String.valueOf(cTemp);
-
-            String vitalsString =
-                    String.format("{" +
-                            "\"encounterDatetime\":\"%s\"," +
-                                    "\"patient\":\"%s\"," +
-                                    "\"encounterType\":\"VITALS\"," +
-                                    " \"visit\":\"%s\"," +
-                                    "\"obs\":[" +
-                                    "{\"concept\":\"5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\", \"value\":\"%s\"}," + //Weight
-                                    "{\"concept\":\"5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"value\":\"%s\"}, " + //Height
-                                    "{\"concept\":\"5088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"value\":\"%s\"}," + //Temperature
-                                    "{\"concept\":\"5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"value\":\"%s\"}," + //Pulse
-                                    "{\"concept\":\"5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"value\":\"%s\"}," + //BpSYS
-                                    "{\"concept\":\"5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"value\":\"%s\"}," + //BpDias
-                                    "{\"concept\":\"5092AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\", \"value\":\"%s\"}]," + //Sp02
-                                    "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\"}",
-
-                            startDateTime, openMRSUUID, visitUUID,
-//                            openMRSUUID,
-                            weight.getValue(), height.getValue(), tempString,
-                            pulse.getValue(), bpSys.getValue(),
-                            bpDias.getValue(), spO2.getValue()
-                    );
-            Log.d(LOG_TAG, "Vitals Encounter String: " + vitalsString);
-            WebResponse responseVitals;
-            responseVitals = HelperMethods.postCommand("encounter", vitalsString, getApplicationContext());
-            if (responseVitals != null && responseVitals.getResponseCode() != 201) {
-                failedMessage = "Encounter posting was unsuccessful";
-//                failedStep(failedMessage);
-                Log.d(LOG_TAG, "Encounter posting was unsuccessful");
-                return null;
-            }
-
-            assert responseVitals != null;
-
-            if (patHistory.getValue().isEmpty() || patHistory.getValue().equals("")) {
-                patHistory.setValue("None");
-            }
-            if (famHistory.getValue().isEmpty() || famHistory.getValue().equals("")) {
-                famHistory.setValue("None");
-            }
-
-            String noteString =
-                    String.format("{" +
-                            "\"encounterDatetime\":\"%s\"," +
-                                    " \"patient\":\"%s\"," +
-                                    "\"encounterType\":\"ADULTINITIAL\"," +
-                                    "\"visit\":\"%s\"," +
-                                    "\"obs\":[" +
-                                    "{\"concept\":\"35c3afdd-bb96-4b61-afb9-22a5fc2d088e\", \"value\":\"%s\"}," + //son wife daughter
-                                    "{\"concept\":\"5fe2ef6f-bbf7-45df-a6ea-a284aee82ddc\",\"value\":\"%s\"}, " + //occupation
-                                    "{\"concept\":\"62bff84b-795a-45ad-aae1-80e7f5163a82\",\"value\":\"%s\"}," + //medical history
-                                    "{\"concept\":\"d63ae965-47fb-40e8-8f08-1f46a8a60b2b\",\"value\":\"%s\"}," + //family history
-                                    "{\"concept\":\"3edb0e09-9135-481e-b8f0-07a26fa9a5ce\",\"value\":\"%s\"}," + //current complaint
-                                    "{\"concept\":\"e1761e85-9b50-48ae-8c4d-e6b7eeeba084\",\"value\":\"%s\"}]," + //physical exam
-                                    "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\"}",
-
-                            startDateTime, openMRSUUID, responseVisit.getResponseString(),
-//                            openMRSUUID,
-                            patient.getSdw(), patient.getOccupation(),
-                            //TODO: add logic to remove SDW and occupation when they are empty
-                            patHistory.getValue(), famHistory.getValue(),
-                            complaint.getValue(), physFindings.getValue()
-                    );
-            Log.d(LOG_TAG, "Notes Encounter String: " + noteString);
-            WebResponse responseNotes;
-            responseNotes = HelperMethods.postCommand("encounter", noteString, getApplicationContext());
-            if (responseNotes != null && responseNotes.getResponseCode() != 201) {
-                failedMessage = "Notes posting was unsuccessful";
-//                failedStep(failedMessage);
-                Log.d(LOG_TAG, "Notes Encounter posting was unsuccessful");
-                return null;
-            }
-
-            uploaded = true;
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-
-            if (uploaded) {
-                Snackbar.make(uploadButton, "Upload success! Waiting for doctor.", Snackbar.LENGTH_LONG).show();
-                mLayout.removeView(uploadButton);
-
-                downloadButton = new Button(VisitSummaryActivity.this);
-                downloadButton.setLayoutParams(new LinearLayoutCompat.LayoutParams(
-                        LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
-                downloadButton.setText(R.string.visit_summary_button_download);
-
-                downloadButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Snackbar.make(view, "Downloading from doctor", Snackbar.LENGTH_LONG).show();
-                        retrieveOpenMRS(view);
-                    }
-                });
-
-                mLayout.addView(downloadButton, 0);
-            } else {
-                Snackbar.make(uploadButton, "Upload failed.", Snackbar.LENGTH_LONG).show();
-            }
-
-            super.onPostExecute(s);
-        }
     }
 
     private class RetrieveData extends AsyncTask<String, Void, String> {
@@ -1054,109 +803,4 @@ public class VisitSummaryActivity extends AppCompatActivity {
         contentView.setText(content);
         mLayout.addView(convertView, index);
     }
-
-    public int checkDigit(String idWithoutCheckDigit) {
-
-        // allowable characters within identifier
-        String validChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVYWXZ_";
-
-        // remove leading or trailing whitespace, convert to uppercase
-        idWithoutCheckDigit = idWithoutCheckDigit.trim().toUpperCase();
-
-        // this will be a running total
-        int sum = 0;
-
-        // loop through digits from right to left
-        for (int i = 0; i < idWithoutCheckDigit.length(); i++) {
-
-
-            //set ch to "current" character to be processed
-            char ch = idWithoutCheckDigit
-                    .charAt(idWithoutCheckDigit.length() - i - 1);
-
-
-            // throw exception for invalid characters
-            if (validChars.indexOf(ch) == -1)
-                try {
-                    throw new InvalidObjectException("\"" + ch + "\" is an invalid character");
-                } catch (InvalidObjectException e) {
-                    e.printStackTrace();
-                }
-
-            // our "digit" is calculated using ASCII value - 48
-            int digit = (int) ch - 48;
-
-            // weight will be the current digit's contribution to
-            // the running total
-            int weight;
-            if (i % 2 == 0) {
-
-                // for alternating digits starting with the rightmost, we
-                // use our formula this is the same as multiplying x 2 and
-                // adding digits together for values 0 to 9.  Using the
-                // following formula allows us to gracefully calculate a
-                // weight for non-numeric "digits" as well (from their
-                // ASCII value - 48).
-
-                weight = (2 * digit) - (int) (digit / 5) * 9;
-
-            } else {
-
-                // even-positioned digits just contribute their ascii
-                // value minus 48
-                weight = digit;
-
-            }
-
-            // keep a running total of weights
-            sum += weight;
-
-        }
-
-
-        // avoid sum less than 10 (if characters below "0" allowed,
-        // this could happen)
-        sum = Math.abs(sum) + 10;
-
-        // check digit is amount needed to reach next number
-        // divisible by ten
-        return (10 - (sum % 10)) % 10;
-
-    }
-
-    public void failedStep(String message) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(VisitSummaryActivity.this);
-        alertDialogBuilder.setMessage(message);
-        alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-    }
-
-    private long insertDb(String value) {
-        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
-
-        final int CREATOR_ID = 42;
-        //TODO: Get the right creator_ID
-
-
-        final int CONCEPT_ID = 163187; // RHK MEDICAL HISTORY BLURB
-        //Eventually will be stored in a separate table
-
-        ContentValues complaintEntries = new ContentValues();
-
-        complaintEntries.put("patient_id", patientID);
-        complaintEntries.put("visit_id", visitID);
-        complaintEntries.put("value", value);
-        complaintEntries.put("concept_id", CONCEPT_ID);
-        complaintEntries.put("creator", CREATOR_ID);
-
-        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
-        return localdb.insert("obs", null, complaintEntries);
-    }
-
 }

@@ -79,11 +79,15 @@ public class PatientDetailActivity extends AppCompatActivity {
         patient.setId(patientID);
         setDisplay(String.valueOf(patientID));
 
-        Intent serviceIntent = new Intent(this, ClientService.class);
-        serviceIntent.putExtra("serviceCall", "patient");
-        serviceIntent.putExtra("patientID", patientID);
-        serviceIntent.putExtra("name", patientName);
-        startService(serviceIntent);
+
+        if ((getCallingActivity() != null) && (getCallingActivity().toString().equals("IdentificationActivity"))){
+
+            Intent serviceIntent = new Intent(this, ClientService.class);
+            serviceIntent.putExtra("serviceCall", "patient");
+            serviceIntent.putExtra("patientID", patientID);
+            serviceIntent.putExtra("name", patientName);
+            startService(serviceIntent);
+        }
 
         newVisit = (Button) findViewById(R.id.button_new_visit);
         newVisit.setOnClickListener(new View.OnClickListener() {

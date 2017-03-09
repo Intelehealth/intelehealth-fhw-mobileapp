@@ -89,7 +89,7 @@ public class ClientService extends IntentService {
                 String patientName = intent.getStringExtra("name");
                 Log.v(LOG_TAG, "Patient ID: " + patientID);
                 Log.v(LOG_TAG, "Patient Name: " + patientName);
-                createPatientNotification(patientName);
+                createNotification("patient", patientName);
                 success = uploadPatient(patientID);
                 if (success) endNotification(patientName, "patient");
                 else errorNotification();
@@ -101,8 +101,20 @@ public class ClientService extends IntentService {
                 Log.v(LOG_TAG, "Patient ID: " + patientID);
                 Log.v(LOG_TAG, "Visit ID: " + visitID);
                 Log.v(LOG_TAG, "Patient Name: " + patientName);
-                createVisitNotification(patientName);
+                createNotification("visit", patientName);
                 success = uploadVisit(patientID, visitID);
+                if (success) endNotification(patientName, "visit");
+                else errorNotification();
+                break;
+            case "visitDownload":
+                patientID = intent.getStringExtra("patientID");
+                visitID = intent.getStringExtra("visitID");
+                patientName = intent.getStringExtra("name");
+                Log.v(LOG_TAG, "Patient ID: " + patientID);
+                Log.v(LOG_TAG, "Visit ID: " + visitID);
+                Log.v(LOG_TAG, "Patient Name: " + patientName);
+                createNotification("download", patientName);
+                success = downloadVisit(patientID, visitID);
                 if (success) endNotification(patientName, "visit");
                 else errorNotification();
                 break;
@@ -165,10 +177,26 @@ public class ClientService extends IntentService {
         return json;
     }
 
-    public void createPatientNotification(String patientName) {
+    public void createNotification(String type, String patientName) {
+        String title = "";
+        String text = "";
 
-        String title = "Patient Data Upload";
-        String text = String.format("Uploading %s's data", patientName);
+        switch (type){
+            case "patient":
+                 title = "Patient Data Upload";
+                 text = String.format("Uploading %s's data", patientName);
+                break;
+            case "visit":
+
+                 title = "Visit Data Upload";
+                 text = String.format("Uploading %s's visit data", patientName);
+                break;
+            case "download":
+
+                 title = "Visit Data Download";
+                 text = String.format("Downloading %s's visit data", patientName);
+                break;
+        }
 
 
         mBuilder.setContentTitle(title)
@@ -181,21 +209,6 @@ public class ClientService extends IntentService {
         numMessages = 0;
     }
 
-    public void createVisitNotification(String patientName) {
-
-        String title = "Visit Data Upload";
-        String text = String.format("Uploading %s's visit data", patientName);
-
-
-        mBuilder.setContentTitle(title)
-                .setContentText(text)
-                .setSmallIcon(R.drawable.ic_cloud_upload);
-        // Sets an activity indicator for an operation of indeterminate length
-        mBuilder.setProgress(0, 0, true);
-        // Issues the notification
-        mNotifyManager.notify(mId, mBuilder.build());
-        numMessages = 0;
-    }
 
     public void endNotification(String patientName, String type) {
         // mNotifyManager.cancel(mId);
@@ -664,6 +677,11 @@ public class ClientService extends IntentService {
 
         return true;
 
+    }
+
+    private boolean downloadVisit(String patientIDs, String visitIDs){
+
+        return true;
     }
 
     public void errorNotification() {
