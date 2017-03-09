@@ -11,6 +11,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ExpandableListView;
+
+import org.json.JSONObject;
+
 import io.intelehealth.client.objects.Knowledge;
 import io.intelehealth.client.objects.Node;
 
@@ -69,10 +72,13 @@ public class QuestionNodeActivity extends AppCompatActivity {
         complaintDetails = new HashMap<>();
         physicalExams = new ArrayList<>();
 
-        mKnowledge = new Knowledge(HelperMethods.encodeJSON(this, mFileName));
+        //mKnowledge = new Knowledge(HelperMethods.encodeJSON(this, mFileName));
         complaintsNodes = new ArrayList<>();
         for (int i = 0; i < complaints.size(); i++) {
-            complaintsNodes.add(mKnowledge.getComplaint(complaints.get(i)));
+            String fileLocation = "engines/" + complaints.get(i) + ".json";
+            JSONObject currentFile = HelperMethods.encodeJSON(this, fileLocation);
+            Node currentNode = new Node(currentFile);
+            complaintsNodes.add(currentNode);
         }
 
         super.onCreate(savedInstanceState);
@@ -163,7 +169,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
             for (int i = 0; i < selectedAssociations.size(); i++) {
                 if (!complaints.contains(selectedAssociations.get(i))) {
                     complaints.add(selectedAssociations.get(i));
-                    complaintsNodes.add(mKnowledge.getComplaint(selectedAssociations.get(i)));
+                    //complaintsNodes.add(mKnowledge.getComplaint(selectedAssociations.get(i)));
                 }
             }
             String complaintString = currentNode.generateLanguage();
@@ -236,7 +242,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
      */
     private void setupQuestions(int complaintIndex) {
         nodeComplete = false;
-        currentNode = mKnowledge.getComplaint(complaints.get(complaintIndex));
+        currentNode = complaintsNodes.get(complaintIndex);
         adapter = new CustomExpandableListAdapter(this, currentNode, this.getClass().getSimpleName());
         questionListView.setAdapter(adapter);
         questionListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);

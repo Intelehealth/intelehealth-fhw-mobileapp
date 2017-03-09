@@ -718,6 +718,9 @@ public class Node implements Serializable {
             }
 
             this.language = jsonNode.optString("language");
+            if(this.language.isEmpty()){
+                this.language = this.text;
+            }
 
             this.inputType = jsonNode.optString("input-type");
 
