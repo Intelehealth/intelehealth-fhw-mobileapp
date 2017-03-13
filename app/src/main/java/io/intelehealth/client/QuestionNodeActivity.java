@@ -165,18 +165,21 @@ public class QuestionNodeActivity extends AppCompatActivity {
             questionsMissing();
         } else if (nodeComplete) {
 
-            ArrayList<String> selectedAssociations = currentNode.getSelectedAssociations();
-            for (int i = 0; i < selectedAssociations.size(); i++) {
-                if (!complaints.contains(selectedAssociations.get(i))) {
-                    complaints.add(selectedAssociations.get(i));
-                    //complaintsNodes.add(mKnowledge.getComplaint(selectedAssociations.get(i)));
-                }
-            }
+            //TODO: Under this new scheme where there is just a list of existing JSONS, need to parse out associated symptoms
+//            ArrayList<String> selectedAssociations = currentNode.getSelectedAssociations();
+//            for (int i = 0; i < selectedAssociations.size(); i++) {
+//                if (!complaints.contains(selectedAssociations.get(i))) {
+//                    complaints.add(selectedAssociations.get(i));
+//                    complaintsNodes.add(mKnowledge.getComplaint(selectedAssociations.get(i)));
+//                }
+//            }
             String complaintString = currentNode.generateLanguage();
-            String complaint = currentNode.getText();
-            complaintDetails.put(complaint, complaintString);
+            String complaintFormatted = complaintString.replace("?,", "?:");
 
-            String insertion = complaint + ": " + complaintString;
+            String complaint = currentNode.getText();
+            complaintDetails.put(complaint, complaintFormatted);
+
+            String insertion = complaint + ": " + complaintFormatted;
 
             insertDb(insertion);
 
@@ -196,7 +199,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
                     intent.putStringArrayListExtra("exams", physicalExams);
                     startActivity(intent);
                 } else {
-                    Intent intent = new Intent(QuestionNodeActivity.this, PatientHistoryActivity.class);
+                    Intent intent = new Intent(QuestionNodeActivity.this, PastMedicalHistoryActivity.class);
                     intent.putExtra("patientID", patientID);
                     intent.putExtra("visitID", visitID);
                     intent.putExtra("state", state);

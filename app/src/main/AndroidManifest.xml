@@ -129,18 +129,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="io.intelehealth.client.IdentificationActivity" />
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".QuestionNodeActivity"
             android:label="@string/title_activity_question_node"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".PatientHistoryActivity"
+            android:name=".PastMedicalHistoryActivity"
             android:label="@string/title_activity_patient_history"
             android:parentActivityName=".QuestionNodeActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -151,20 +147,20 @@
         <activity
             android:name=".FamilyHistoryActivity"
             android:label="@string/title_activity_family_history"
-            android:parentActivityName=".PatientHistoryActivity"
+            android:parentActivityName=".PastMedicalHistoryActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.intelehealth.client.PatientHistoryActivity" />
+                android:value="io.intelehealth.client.PastMedicalHistoryActivity" />
         </activity>
         <activity
             android:name=".PhysicalExamActivity"
             android:label="@string/title_activity_physical_exam"
-            android:parentActivityName=".PatientHistoryActivity"
+            android:parentActivityName=".PastMedicalHistoryActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.intelehealth.client.PatientHistoryActivity" />
+                android:value="io.intelehealth.client.PastMedicalHistoryActivity" />
         </activity>
         <activity
             android:name=".SettingsActivity"
@@ -181,6 +177,11 @@
         <activity
             android:name=".SplashActivity"
             android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
         </activity>
     </application>

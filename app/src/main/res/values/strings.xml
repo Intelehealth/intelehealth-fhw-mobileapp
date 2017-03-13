@@ -131,8 +131,8 @@
     <string name="action_search">Search</string>
     <string name="alert_none_found">No patients found with name _.\nDid you spell their name correctly?</string>
 
-    //Patient Medical History Screen
-    <string name="title_activity_patient_history">Patient Medical History</string>
+    //Past Medical History Screen
+    <string name="title_activity_patient_history">Past Medical History</string>
 
     //Visit Summary Screen
     <string name="title_activity_family_history">Family History</string>

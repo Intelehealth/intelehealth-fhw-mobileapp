@@ -36,10 +36,10 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     String patientName;
     String intentTag;
 
-    Knowledge mKnowledge;
+    //Knowledge mKnowledge;
     List<Node> complaints;
     //    String mFileName = "knowledge.json";
-    String mFileName = "DemoBrain.json";
+    //String mFileName = "DemoBrain.json";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
