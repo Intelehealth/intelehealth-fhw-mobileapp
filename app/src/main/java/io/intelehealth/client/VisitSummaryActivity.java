@@ -310,7 +310,43 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     private void endVisit() {
-        new EndVisit().execute();
+        String[] columnsToReturn = {"openmrs_visit_uuid"};
+        String visitIDorderBy = "start_datetime";
+        String visitIDSelection = "_id = ?";
+        String[] visitIDArgs = {visitID};
+        final Cursor visitIDCursor = db.query("visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
+        if(visitIDCursor!=null && visitIDCursor.getCount()>0 && visitIDCursor.moveToLast()){
+            visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("openmrs_visit_uuid"));
+            visitIDCursor.close();
+        }
+        if (visitUUID == null){
+
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setMessage("Please upload first before attempting to end the visit.");
+            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+        } else {
+            Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
+            serviceIntent.putExtra("serviceCall", "endVisit");
+            serviceIntent.putExtra("patientID", patientID);
+            serviceIntent.putExtra("visitUUID", visitUUID);
+            serviceIntent.putExtra("name", patientName);
+            startService(serviceIntent);
+
+
+
+            Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
+            startActivity(intent);
+        }
+
+
     }
 
     public void queryData(String dataString) {
@@ -752,46 +788,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             super.onProgressUpdate(values);
         }
 
-    }
-
-    private class EndVisit extends AsyncTask<String, Void, String> {
-
-
-        WebResponse endResponse;
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            String urlModifier = "visit/" + visitUUID;
-
-            SimpleDateFormat endDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
-            Date rightNow = new Date();
-            String endDateTime = endDate.format(rightNow);
-
-
-            String endString =
-                    String.format("{\"stopDatetime\":\"%s\"," +
-                                    "\"visitType\":\"a86ac96e-2e07-47a7-8e72-8216a1a75bfd\"}",
-                            endDateTime);
-
-            Log.d("End String", endString);
-
-            endResponse = HelperMethods.postCommand(urlModifier, endString, getApplicationContext());
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-
-            if (endResponse != null && endResponse.getResponseCode() != 200) {
-//                failedStep("Visit ending failed.");
-            } else {
-                Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
-                startActivity(intent);
-            }
-        }
     }
 
     private void createNewCardView(String title, String content, int index) {

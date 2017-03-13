@@ -41,8 +41,8 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
     Knowledge mKnowledge; //Knowledge engine
     ExpandableListView questionListView;
-//    String mFileName = "knowledge.json"; //knowledge engine file
-    String mFileName = "DemoBrain.json";
+        String mFileName = "knowledge.json"; //knowledge engine file
+//    String mFileName = "DemoBrain.json";
     int complaintNumber = 0; //assuming there is at least one complaint, starting complaint number
     HashMap<String, String> complaintDetails; //temporary storage of complaint findings
     ArrayList<String> complaints; //list of complaints going to be used
@@ -72,6 +72,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
 //            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
+        /*
         complaintDetails = new HashMap<>();
         physicalExams = new ArrayList<>();
 
@@ -82,6 +83,16 @@ public class QuestionNodeActivity extends AppCompatActivity {
             JSONObject currentFile = HelperMethods.encodeJSON(this, fileLocation);
             Node currentNode = new Node(currentFile);
             complaintsNodes.add(currentNode);
+        }
+        */
+
+        complaintDetails = new HashMap<>();
+        physicalExams = new ArrayList<>();
+
+        mKnowledge = new Knowledge(HelperMethods.encodeJSON(this, mFileName));
+        complaintsNodes = new ArrayList<>();
+        for (int i = 0; i < complaints.size(); i++) {
+            complaintsNodes.add(mKnowledge.getComplaint(complaints.get(i)));
         }
 
         super.onCreate(savedInstanceState);
@@ -107,24 +118,56 @@ public class QuestionNodeActivity extends AppCompatActivity {
         questionListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                Node question = currentNode.getOption(groupPosition).getOption(childPosition);
-                question.toggleSelected();
-                if (currentNode.getOption(groupPosition).anySubSelected()) {
-                    currentNode.getOption(groupPosition).setSelected();
+
+                if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && !currentNode.getOption(groupPosition).anySubSelected()) {
+                    Node question = currentNode.getOption(groupPosition).getOption(childPosition);
+                    question.toggleSelected();
+                    if (currentNode.getOption(groupPosition).anySubSelected()) {
+                        currentNode.getOption(groupPosition).setSelected();
+                    } else {
+                        currentNode.getOption(groupPosition).setUnselected();
+                    }
+
+                    if (!question.getInputType().isEmpty() && question.isSelected()) {
+                        Node.handleQuestion(question, QuestionNodeActivity.this, adapter);
+                        //If there is an input type, then the question has a special method of data entry.
+                    }
+
+                    if (!question.isTerminal() && question.isSelected()) {
+                        Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter);
+                        //If the node is not terminal, that means there are more questions to be asked for this branch.
+                    }
+                } else if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && currentNode.getOption(groupPosition).anySubSelected()) {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(QuestionNodeActivity.this);
+                    alertDialogBuilder.setMessage("This question can have only one answer.");
+                    alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
                 } else {
-                    currentNode.getOption(groupPosition).setUnselected();
-                }
 
-                if (!question.getInputType().isEmpty() && question.isSelected()) {
-                    Node.handleQuestion(question, QuestionNodeActivity.this, adapter);
-                    //If there is an input type, then the question has a special method of data entry.
-                }
+                    Node question = currentNode.getOption(groupPosition).getOption(childPosition);
+                    question.toggleSelected();
+                    if (currentNode.getOption(groupPosition).anySubSelected()) {
+                        currentNode.getOption(groupPosition).setSelected();
+                    } else {
+                        currentNode.getOption(groupPosition).setUnselected();
+                    }
 
-                if (!question.isTerminal() && question.isSelected()) {
-                    Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter);
-                    //If the node is not terminal, that means there are more questions to be asked for this branch.
-                }
+                    if (!question.getInputType().isEmpty() && question.isSelected()) {
+                        Node.handleQuestion(question, QuestionNodeActivity.this, adapter);
+                        //If there is an input type, then the question has a special method of data entry.
+                    }
 
+                    if (!question.isTerminal() && question.isSelected()) {
+                        Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter);
+                        //If the node is not terminal, that means there are more questions to be asked for this branch.
+                    }
+                }
                 adapter.notifyDataSetChanged();
                 return false;
 
@@ -153,20 +196,21 @@ public class QuestionNodeActivity extends AppCompatActivity {
      * If there are more, presents the user with the next set of questions.
      * All exams are also stored into a string, which will be passed through the activities to the Physical Exam Activity.
      */
-    private void fabClick(){
-        for (int i = 0; i < adapter.getGroupCount(); i++) {
-            if (!currentNode.getOption(i).isSelected()) {
-                nodeComplete = false;
-                questionListView.expandGroup(i);
-                break;
-            } else {
-                nodeComplete = true;
-            }
-        }
+    private void fabClick() {
+//        for (int i = 0; i < adapter.getGroupCount(); i++) {
+//            if (!currentNode.getOption(i).isSelected()) {
+//                nodeComplete = false;
+//                questionListView.expandGroup(i);
+//                break;
+//            } else {
+//                nodeComplete = true;
+//            }
+//        }
+        nodeComplete = true;
 
-        if (!nodeComplete && !complaintConfirmed) {
+        if (!complaintConfirmed) {
             questionsMissing();
-        } else if (nodeComplete) {
+        } else {
 
             //TODO: Under this new scheme where there is just a list of existing JSONS, need to parse out associated symptoms
 //            ArrayList<String> selectedAssociations = currentNode.getSelectedAssociations();
@@ -221,6 +265,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
     /**
      * Insert into DB could be made into a Helper Method, but isn't because there are specific concept IDs used each time.
      * Although this could also be made into a function, for now it has now been.
+     *
      * @param value String to put into DB
      * @return DB Row number, never used
      */
@@ -245,6 +290,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
     /**
      * Sets up the complaint node's questions.
+     *
      * @param complaintIndex Index of complaint being displayed to user.
      */
     private void setupQuestions(int complaintIndex) {

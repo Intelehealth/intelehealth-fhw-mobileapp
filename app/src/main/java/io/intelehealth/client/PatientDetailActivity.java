@@ -79,9 +79,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         patient.setId(patientID);
         setDisplay(String.valueOf(patientID));
 
-
-        if ((getCallingActivity() != null) && (getCallingActivity().toString().equals("IdentificationActivity"))){
-
+        if(intentTag != null && intentTag.equals("new")){
             Intent serviceIntent = new Intent(this, ClientService.class);
             serviceIntent.putExtra("serviceCall", "patient");
             serviceIntent.putExtra("patientID", patientID);

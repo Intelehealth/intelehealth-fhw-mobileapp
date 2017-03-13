@@ -36,9 +36,9 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     String patientName;
     String intentTag;
 
-    //Knowledge mKnowledge;
+    Knowledge mKnowledge;
     List<Node> complaints;
-    //    String mFileName = "knowledge.json";
+    String mFileName = "knowledge.json";
     //String mFileName = "DemoBrain.json";
 
     @Override
@@ -79,41 +79,12 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
 
         ListView complaintList = (ListView) findViewById(R.id.complaint_list_view);
-
-        /*
-        first get a list of all the files in that folder
-        then put the strings into an array list
-        each time something is selected, you just add the id to the list, and if it deselected you remove it
-        then take the final list of what was selected, and attach as an extra into question node
-         */
-
-/*
-        ArrayList<String> availableComplaints = new ArrayList<>();
-        String[] fileNames = new String[0];
-        try {
-            fileNames = getApplicationContext().getAssets().list("engines");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        for(String name:fileNames){
-            String currentName = name;
-            String [] separated = currentName.split("\\.");
-            availableComplaints.add(separated[0]);
-        }
         if (complaintList != null) {
             complaintList.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
             complaintList.setClickable(true);
         }
 
-        ArrayAdapter adapter = new ArrayAdapter<String>(this,
-                R.layout.list_item_subquestion, availableComplaints);
-        complaintList.setAdapter(adapter);
-
-        */
-
-
-
-        //mKnowledge = new Knowledge(HelperMethods.encodeJSON(this, mFileName));
+        /*
         complaints = new ArrayList<>();
         String[] fileNames = new String[0];
         try {
@@ -126,12 +97,6 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             JSONObject currentFile = HelperMethods.encodeJSON(this, fileLocation);
             Node currentNode = new Node(currentFile);
             complaints.add(currentNode);
-        }
-
-
-        if (complaintList != null) {
-            complaintList.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
-            complaintList.setClickable(true);
         }
 
         final CustomArrayAdapter listAdapter = new CustomArrayAdapter(ComplaintNodeActivity.this,
@@ -150,6 +115,29 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 //The adapter needs to be notified every time a node is clicked to ensure proper display of selected nodes.
             }
         });
+        */
+
+
+
+        mKnowledge = new Knowledge(HelperMethods.encodeJSON(this, mFileName));
+        final List<Node> complaints = mKnowledge.getComplaints();
+
+        final CustomArrayAdapter listAdapter = new CustomArrayAdapter(ComplaintNodeActivity.this,
+                R.layout.list_item_subquestion,
+                complaints);
+
+        assert complaintList != null;
+        complaintList.setAdapter(listAdapter);
+
+        complaintList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                complaints.get(position).toggleSelected();
+                listAdapter.notifyDataSetChanged();
+                //The adapter needs to be notified every time a node is clicked to ensure proper display of selected nodes.
+            }
+        });
+
 
 
     }

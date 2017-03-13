@@ -35,6 +35,9 @@ import io.intelehealth.client.objects.WebResponse;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Sends Identification data to OpenMRS and receives the OpenMRS ID of the newly-created patient
@@ -106,15 +109,14 @@ public class ClientService extends IntentService {
                 if (success) endNotification(patientName, "visit");
                 else errorNotification();
                 break;
-            case "visitDownload":
+            case "endVisit":
                 patientID = intent.getStringExtra("patientID");
-                visitID = intent.getStringExtra("visitID");
+                String visitUUID = intent.getStringExtra("visitUUID");
                 patientName = intent.getStringExtra("name");
                 Log.v(LOG_TAG, "Patient ID: " + patientID);
-                Log.v(LOG_TAG, "Visit ID: " + visitID);
                 Log.v(LOG_TAG, "Patient Name: " + patientName);
                 createNotification("download", patientName);
-                success = downloadVisit(patientID, visitID);
+                success = endVisit(patientID, visitUUID);
                 if (success) endNotification(patientName, "visit");
                 else errorNotification();
                 break;
@@ -679,7 +681,35 @@ public class ClientService extends IntentService {
 
     }
 
-    private boolean downloadVisit(String patientIDs, String visitIDs){
+    private boolean endVisit(String patientIDs, String visitUUID){
+
+        String urlModifier = "visit/" + visitUUID;
+
+        SimpleDateFormat endDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+        Date rightNow = new Date();
+        String endDateTime = endDate.format(rightNow);
+
+
+        String endString =
+                String.format("{\"stopDatetime\":\"%s\"," +
+                                "\"visitType\":\"a86ac96e-2e07-47a7-8e72-8216a1a75bfd\"}",
+                        endDateTime);
+
+        Log.d("End String", endString);
+
+        WebResponse endResponse = HelperMethods.postCommand(urlModifier, endString, getApplicationContext());
+
+        if (endResponse != null && endResponse.getResponseCode() != 200) {
+            String newText = "Visit ending was unsuccessful. Please check your connection.";
+            mBuilder.setContentText(newText).setNumber(++numMessages);
+            mNotifyManager.notify(mId, mBuilder.build());
+            Log.d(LOG_TAG, "Visit ending was unsuccessful");
+            return false;        } else {
+
+            String newText = "Visit ended successfully.";
+            mBuilder.setContentText(newText).setNumber(++numMessages);
+            mNotifyManager.notify(mId, mBuilder.build());
+        }
 
         return true;
     }
