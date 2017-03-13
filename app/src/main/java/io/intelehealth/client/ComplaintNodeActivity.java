@@ -84,7 +84,6 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             complaintList.setClickable(true);
         }
 
-        /*
         complaints = new ArrayList<>();
         String[] fileNames = new String[0];
         try {
@@ -106,28 +105,6 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         assert complaintList != null;
         complaintList.setAdapter(listAdapter);
 
-
-        complaintList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                complaints.get(position).toggleSelected();
-                listAdapter.notifyDataSetChanged();
-                //The adapter needs to be notified every time a node is clicked to ensure proper display of selected nodes.
-            }
-        });
-        */
-
-
-
-        mKnowledge = new Knowledge(HelperMethods.encodeJSON(this, mFileName));
-        final List<Node> complaints = mKnowledge.getComplaints();
-
-        final CustomArrayAdapter listAdapter = new CustomArrayAdapter(ComplaintNodeActivity.this,
-                R.layout.list_item_subquestion,
-                complaints);
-
-        assert complaintList != null;
-        complaintList.setAdapter(listAdapter);
 
         complaintList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -185,7 +162,9 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
-                    intent.putExtra("tag", intentTag);
+                    if (intentTag != null) {
+                        intent.putExtra("tag", intentTag);
+                    }
                     intent.putStringArrayListExtra("complaints", selection);
                     startActivity(intent);
                 }

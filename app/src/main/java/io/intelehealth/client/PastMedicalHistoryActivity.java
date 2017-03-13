@@ -81,7 +81,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                 }
 
 
-                if (intentTag.equals("edit")){
+                if (intentTag != null && intentTag.equals("edit")){
                     Intent intent = new Intent(PastMedicalHistoryActivity.this, VisitSummaryActivity.class);
                     intent.putExtra("patientID", patientID);
                     intent.putExtra("visitID", visitID);

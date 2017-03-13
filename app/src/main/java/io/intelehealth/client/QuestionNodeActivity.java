@@ -72,7 +72,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
 //            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
-        /*
+
         complaintDetails = new HashMap<>();
         physicalExams = new ArrayList<>();
 
@@ -84,16 +84,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
             Node currentNode = new Node(currentFile);
             complaintsNodes.add(currentNode);
         }
-        */
 
-        complaintDetails = new HashMap<>();
-        physicalExams = new ArrayList<>();
-
-        mKnowledge = new Knowledge(HelperMethods.encodeJSON(this, mFileName));
-        complaintsNodes = new ArrayList<>();
-        for (int i = 0; i < complaints.size(); i++) {
-            complaintsNodes.add(mKnowledge.getComplaint(complaints.get(i)));
-        }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_node);
@@ -237,7 +228,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 setupQuestions(complaintNumber);
                 complaintConfirmed = false;
             } else {
-                if (intentTag.equals("edit")) {
+                if (intentTag != null && intentTag.equals("edit")) {
                     Intent intent = new Intent(QuestionNodeActivity.this, PhysicalExamActivity.class);
                     intent.putExtra("patientID", patientID);
                     intent.putExtra("visitID", visitID);

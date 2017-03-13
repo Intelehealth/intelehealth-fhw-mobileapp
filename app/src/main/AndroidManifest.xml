@@ -129,7 +129,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="io.intelehealth.client.IdentificationActivity" />
 
-
         </activity>
         <activity
             android:name=".QuestionNodeActivity"
@@ -182,6 +181,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
 
         </activity>
     </application>

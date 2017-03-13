@@ -57,7 +57,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
     String patientName;
     String intentTag;
 
-    ArrayList<String> selectedExamsList = new ArrayList<>();
+    ArrayList<String> selectedExamsList;
 
     String mFileName = "physExam.json";
 //    String mFileName = "DemoPhysical.json";
@@ -78,6 +78,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
         //For Testing
 //        patientID = Long.valueOf("1");
 
+        selectedExamsList = new ArrayList<>();
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientID = intent.getStringExtra("patientID");
@@ -92,7 +93,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
 //            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
-        if (selectedExamsList == null) {
+        if ((selectedExamsList == null) || selectedExamsList.isEmpty()) {
             Log.d(LOG_TAG, "No additional exams were triggered");
         } else {
             Log.d(LOG_TAG, selectedExamsList.toString());
@@ -135,7 +136,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                     physicalString = physicalExamMap.generateFindings();
 
                     long obsId = insertDb(physicalString);
-                    if (intentTag.equals("edit")){
+                    if (intentTag != null && intentTag.equals("edit")){
                         Intent intent = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
                         intent.putExtra("patientID", patientID);
                         intent.putExtra("visitID", visitID);
