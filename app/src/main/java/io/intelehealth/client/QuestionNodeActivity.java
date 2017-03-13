@@ -36,6 +36,9 @@ public class QuestionNodeActivity extends AppCompatActivity {
     String patientName;
     String intentTag;
 
+    Boolean complaintConfirmed = false;
+
+
     Knowledge mKnowledge; //Knowledge engine
     ExpandableListView questionListView;
 //    String mFileName = "knowledge.json"; //knowledge engine file
@@ -161,7 +164,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
             }
         }
 
-        if (!nodeComplete) {
+        if (!nodeComplete && !complaintConfirmed) {
             questionsMissing();
         } else if (nodeComplete) {
 
@@ -188,6 +191,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
             if (complaintNumber < complaints.size() - 1) {
                 complaintNumber++;
                 setupQuestions(complaintNumber);
+                complaintConfirmed = false;
             } else {
                 if (intentTag.equals("edit")) {
                     Intent intent = new Intent(QuestionNodeActivity.this, PhysicalExamActivity.class);
@@ -262,6 +266,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
         alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                complaintConfirmed = true;
                 dialog.dismiss();
             }
         });

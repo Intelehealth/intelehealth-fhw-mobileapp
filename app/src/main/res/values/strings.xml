@@ -102,7 +102,7 @@
     //Question Node Screen
     <string name="title_activity_question_node">QuestionNodeActivity</string>
     <string name="complaint_change_selected">Modify</string>
-    <string name="question_answer_all">Please answer all questions!</string>
+    <string name="question_answer_all">Please verify that you have answered all required questions.</string>
     <string name="question_duration_picker">Please enter duration</string>
     <string name="question_text_input">Please enter text</string>
     <string name="question_date_picker">Please select date</string>
