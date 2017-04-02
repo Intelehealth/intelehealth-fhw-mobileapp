@@ -127,10 +127,10 @@
                     android:id="@+id/imagebutton_edit_vitals"
                     android:layout_width="@dimen/edit_icon_width"
                     android:layout_height="@dimen/edit_icon_height"
-                    android:layout_alignRight="@id/textView_heading_vitals"
                     android:background="@null"
                     android:padding="@dimen/padding_card_action"
-                    android:src="@drawable/edit_icon" />
+                    android:src="@drawable/edit_icon"
+                    android:layout_alignParentEnd="true" />
 
                 <TableLayout
                     android:layout_width="match_parent"

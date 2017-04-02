@@ -2,6 +2,7 @@ package io.intelehealth.client;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
@@ -12,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -67,6 +69,8 @@ public class PhysicalExamActivity extends AppCompatActivity {
     PhysicalExam physicalExamMap;
 
     String physicalString;
+
+    Boolean complaintConfirmed = false;
 
     @Override
     public void onBackPressed(){
@@ -131,7 +135,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(physicalExamMap.areRequiredAnswered()){
+                if(complaintConfirmed){
 
                     physicalString = physicalExamMap.generateFindings();
 
@@ -154,15 +158,17 @@ public class PhysicalExamActivity extends AppCompatActivity {
                         startActivity(intent1);
                     }
                 } else {
-                    Node genExams = physicalExamMap.getOption(0);
-                    for (int i = 0; i < genExams.getOptionsList().size(); i++) {
-//                        Log.d(LOG_TAG, "current i value " + i);
-                        if(!genExams.getOption(i).anySubSelected()){
-//                            Log.d(LOG_TAG, genExams.getOption(i).getText());
-                            mViewPager.setCurrentItem(i);
-                            return;
-                        }
-                    }
+                    questionsMissing();
+
+//                    Node genExams = physicalExamMap.getOption(0);
+//                    for (int i = 0; i < genExams.getOptionsList().size(); i++) {
+////                        Log.d(LOG_TAG, "current i value " + i);
+//                        if(!genExams.getOption(i).anySubSelected()){
+////                            Log.d(LOG_TAG, genExams.getOption(i).getText());
+//                            mViewPager.setCurrentItem(i);
+//                            return;
+//                        }
+//                    }
                 }
             }
         });
@@ -356,6 +362,20 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
         return localdb.insert("obs", null, complaintEntries);
+    }
+
+    public void questionsMissing() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage(R.string.question_answer_all);
+        alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                complaintConfirmed = true;
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
 }

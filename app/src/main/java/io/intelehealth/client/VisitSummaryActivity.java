@@ -19,8 +19,11 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
+import android.text.style.TtsSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,8 +33,10 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -47,6 +52,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import io.intelehealth.client.objects.Node;
 import io.intelehealth.client.objects.Obs;
 import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.objects.WebResponse;
@@ -185,8 +191,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
 
-
-
         String titleSequence = patientName + ": " + getTitle();
         setTitle(titleSequence);
 
@@ -213,11 +217,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editFamHist = (ImageButton) findViewById(R.id.imagebutton_edit_famhist);
         editMedHist = (ImageButton) findViewById(R.id.imagebutton_edit_pathist);
 
-        editComplaint.setVisibility(View.GONE);
-        editVitals.setVisibility(View.GONE);
-        editPhysical.setVisibility(View.GONE);
-        editFamHist.setVisibility(View.GONE);
-        editMedHist.setVisibility(View.GONE);
 
         uploadButton = (Button) findViewById(R.id.button_upload);
         uploadButton.setOnClickListener(new View.OnClickListener() {
@@ -249,11 +248,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 mLayout.addView(downloadButton, 0);
 
-                //sendPost(view);
             }
         });
 
-        if(intentTag != null && intentTag.equals("prior")){
+        if (intentTag != null && intentTag.equals("prior")) {
             uploadButton.setEnabled(false);
         }
 
@@ -302,6 +300,145 @@ public class VisitSummaryActivity extends AppCompatActivity {
         patHistView.setText(patHistory.getValue());
         physFindingsView.setText(physFindings.getValue());
 
+        /*
+        final CardView complaintCard = (CardView) findViewById(R.id.cardView_complaint);
+        complaintCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        */
+
+        //editComplaint.setVisibility(View.GONE);
+        editVitals.setVisibility(View.GONE);
+        editPhysical.setVisibility(View.GONE);
+        editFamHist.setVisibility(View.GONE);
+        editMedHist.setVisibility(View.GONE);
+
+        editComplaint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final AlertDialog.Builder complaintDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
+                complaintDialog.setTitle("Complaint Observed");
+                final LayoutInflater inflater = getLayoutInflater();
+                View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
+                complaintDialog.setView(convertView);
+
+                final EditText complaintText = (EditText) convertView.findViewById(R.id.textView_entry);
+                complaintText.setText(complaint.getValue());
+                complaintText.setEnabled(false);
+
+                complaintDialog.setPositiveButton("Manual Entry", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        final AlertDialog.Builder textInput = new AlertDialog.Builder(context);
+                        textInput.setTitle(R.string.question_text_input);
+                        final EditText dialogEditText = new EditText(context);
+                        dialogEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+                        dialogEditText.setText(complaint.getValue());
+                        textInput.setView(dialogEditText);
+                        textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                //TODO: take the new text, and update the specific line in the database
+                                complaint.setValue(dialogEditText.getText().toString());
+
+                                dialog.dismiss();
+                            }
+                        });
+                        textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                //TODO: do nothing
+
+                                dialog.dismiss();
+                            }
+                        });
+                        textInput.show();
+                    }
+                });
+
+                complaintDialog.setNeutralButton("Erase and Re-Do", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent1 = new Intent(VisitSummaryActivity.this, ComplaintNodeActivity.class);
+                        intent1.putExtra("patientID", patientID);
+                        intent1.putExtra("visitID", visitID);
+                        intent1.putExtra("name", patientName);
+                        intent1.putExtra("tag", "edit");
+                        startActivity(intent1);
+                        dialogInterface.dismiss();
+                        //TODO: this time, when the edit tag is found, make the complaintnodeact update instead of insert
+
+                    }
+                });
+
+                complaintDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+
+
+            complaintDialog.show();
+            }
+        });
+
+
+/*
+    public static void subAskNumber(final Node node, Activity context, final CustomArrayAdapter adapter) {
+
+        final AlertDialog.Builder numberDialog = new AlertDialog.Builder(context);
+        numberDialog.setTitle(R.string.question_number_picker);
+        final LayoutInflater inflater = context.getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.dialog_1_number_picker, null);
+        numberDialog.setView(convertView);
+        final NumberPicker numberPicker = (NumberPicker) convertView.findViewById(R.id.dialog_1_number_picker);
+        numberPicker.setMinValue(0);
+        numberPicker.setMaxValue(100);
+        numberDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                numberPicker.setValue(numberPicker.getValue());
+                String value = String.valueOf(numberPicker.getValue());
+                if(node.getLanguage().contains("_")){
+                    node.setLanguage(node.getLanguage().replace("_", value));
+                } else {
+                    node.addLanguage(" " + value);
+                    node.setText(value);
+                    //node.setText(node.getLanguage());
+                }
+                node.setSelected();
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        numberDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+            }
+        });
+        numberDialog.show();
+
+    }
+
+        */
+        /*
+
+        cardView_vitals
+        cardView_complaint
+        cardView_physexam
+        cardView_pathist
+        cardView_famhist
+
+         */
+
     }
 
 
@@ -315,11 +452,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String visitIDSelection = "_id = ?";
         String[] visitIDArgs = {visitID};
         final Cursor visitIDCursor = db.query("visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
-        if(visitIDCursor!=null && visitIDCursor.getCount()>0 && visitIDCursor.moveToLast()){
+        if (visitIDCursor != null && visitIDCursor.getCount() > 0 && visitIDCursor.moveToLast()) {
             visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("openmrs_visit_uuid"));
             visitIDCursor.close();
         }
-        if (visitUUID == null){
+        if (visitUUID == null) {
 
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Please upload first before attempting to end the visit.");
@@ -339,7 +476,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             serviceIntent.putExtra("visitUUID", visitUUID);
             serviceIntent.putExtra("name", patientName);
             startService(serviceIntent);
-
 
 
             Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
