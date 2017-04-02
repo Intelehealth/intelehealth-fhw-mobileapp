@@ -232,7 +232,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 serviceIntent.putExtra("name", patientName);
                 startService(serviceIntent);
 
-                mLayout.removeView(uploadButton);
+                //mLayout.removeView(uploadButton);
 
                 downloadButton = new Button(VisitSummaryActivity.this);
                 downloadButton.setLayoutParams(new LinearLayoutCompat.LayoutParams(

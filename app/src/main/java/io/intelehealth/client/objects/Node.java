@@ -49,6 +49,9 @@ public class Node implements Serializable {
     private String jobAidFile;
     private String jobAidType;
 
+    //These are specific for physical exams
+    private boolean rootNode;
+
     private boolean complaint;
     private boolean required;
     private boolean terminal;
@@ -805,6 +808,13 @@ public class Node implements Serializable {
                 this.language = this.text;
             }
 
+            //Only for physical exams
+            if(!this.language.isEmpty()){
+                if(this.language.contains(":")){
+                    this.rootNode = true;
+                }
+            }
+
             this.inputType = jsonNode.optString("input-type");
 
             this.physicalExams = jsonNode.optString("perform-physical-exam");
@@ -1106,6 +1116,14 @@ public class Node implements Serializable {
 
     public void setChoiceType(String choiceType) {
         this.choiceType = choiceType;
+    }
+
+    public boolean isRootNode() {
+        return rootNode;
+    }
+
+    public void setRootNode(boolean rootNode) {
+        this.rootNode = rootNode;
     }
 }
 

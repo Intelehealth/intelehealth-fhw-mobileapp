@@ -200,7 +200,7 @@ public class PhysicalExam extends Node {
         int total = this.totalExams;
         for (int i = 0; i < total; i++) {
             Node node = getExamNode(i);
-            if (node.isSelected() | node.anySubSelected()) {
+            if ((node.isSelected() | node.anySubSelected()) && node.isRootNode()) {
 //                Log.d(node.getText(), node.getLanguage());
                 stringsList.add(node.getLanguage());
                 if (!node.isTerminal()) {
