@@ -41,13 +41,16 @@ public class Node implements Serializable {
     private String id;
     private String text;
     private String language;
-    private boolean multiChoice;
+    private String choiceType;
     private String inputType;
     private String physicalExams;
     private List<Node> optionsList;
     private String associatedComplaint;
     private String jobAidFile;
     private String jobAidType;
+
+    //These are specific for physical exams
+    private boolean rootNode;
 
     private boolean complaint;
     private boolean required;
@@ -159,8 +162,12 @@ public class Node implements Serializable {
         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                node.addLanguage(dialogEditText.getText().toString());
-                node.setText(node.getLanguage());
+                if(node.getLanguage().contains("_")){
+                    node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
+                } else {
+                    node.addLanguage(dialogEditText.getText().toString());
+                    //node.setText(node.getLanguage());
+                }
                 node.setSelected();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -188,8 +195,15 @@ public class Node implements Serializable {
                         Date date = cal.getTime();
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", context.getResources().getConfiguration().locale);
                         String dateString = simpleDateFormat.format(date);
-                        node.addLanguage(dateString);
-                        node.setText(node.getLanguage());
+
+
+                        if(node.getLanguage().contains("_")){
+                            node.setLanguage(node.getLanguage().replace("_", dateString));
+                        } else {
+                            node.addLanguage(" " + dateString);
+                            node.setText(node.getLanguage());
+                            //node.setText(node.getLanguage());
+                        }
                         node.setSelected();
                         adapter.notifyDataSetChanged();
                         //TODO:: Check if the language is actually what is intended to be displayed
@@ -224,10 +238,17 @@ public class Node implements Serializable {
             public void onClick(DialogInterface dialog, int which) {
                 numberPicker.setValue(numberPicker.getValue());
                 String value = String.valueOf(numberPicker.getValue());
-                node.addLanguage(" " + value);
-                node.setText(value);
+
+                if(node.getLanguage().contains("_")){
+                    node.setLanguage(node.getLanguage().replace("_", value));
+                } else {
+                    node.addLanguage(" " + value);
+                    node.setText(value);
+                    //node.setText(node.getLanguage());
+                }
                 node.setSelected();
                 adapter.notifyDataSetChanged();
+
                 dialog.dismiss();
             }
         });
@@ -265,10 +286,19 @@ public class Node implements Serializable {
                 widthPicker.setValue(widthPicker.getValue());
                 lengthPicker.setValue(lengthPicker.getValue());
                 String durationString = String.valueOf(widthPicker.getValue()) + " X " + lengthPicker.getValue();
-                node.addLanguage(" " + durationString);
-                node.setText(durationString);
+
+
+
+                if(node.getLanguage().contains("_")){
+                    node.setLanguage(node.getLanguage().replace("_", durationString));
+                } else {
+                    node.addLanguage(" " + durationString);
+                    node.setText(durationString);
+                    //node.setText(node.getLanguage());
+                }
                 node.setSelected();
                 adapter.notifyDataSetChanged();
+
                 dialog.dismiss();
             }
         });
@@ -305,8 +335,14 @@ public class Node implements Serializable {
                 endPicker.setValue(endPicker.getValue());
                 String durationString = String.valueOf(startPicker.getValue()) + " to " + endPicker.getValue();
                 //TODO gotta get the units of the range somehow. gotta see what they look like first
-                node.addLanguage(" " + durationString);
-                node.setText(durationString);
+
+                if(node.getLanguage().contains("_")){
+                    node.setLanguage(node.getLanguage().replace("_", durationString));
+                } else {
+                    node.addLanguage(" " + durationString);
+                    node.setText(durationString);
+                    //node.setText(node.getLanguage());
+                }
                 node.setSelected();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -345,8 +381,14 @@ public class Node implements Serializable {
                 quantityPicker.setValue(quantityPicker.getValue());
                 unitPicker.setValue(unitPicker.getValue());
                 String durationString = String.valueOf(quantityPicker.getValue()) + " " + doctorUnits[unitPicker.getValue()];
-                node.addLanguage(" " + durationString);
-                node.setText(durationString);
+
+                if(node.getLanguage().contains("_")){
+                    node.setLanguage(node.getLanguage().replace("_", durationString));
+                } else {
+                    node.addLanguage(" " + durationString);
+                    node.setText(durationString);
+                    //node.setText(node.getLanguage());
+                }
                 node.setSelected();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -384,8 +426,14 @@ public class Node implements Serializable {
                 quantityPicker.setValue(quantityPicker.getValue());
                 unitPicker.setValue(unitPicker.getValue());
                 String durationString = String.valueOf(quantityPicker.getValue()) + " " + units[unitPicker.getValue()];
-                node.addLanguage(" " + durationString);
-                node.setText(durationString);
+
+                if(node.getLanguage().contains("_")){
+                    node.setLanguage(node.getLanguage().replace("_", durationString));
+                } else {
+                    node.addLanguage(" " + durationString);
+                    node.setText(durationString);
+                    //node.setText(node.getLanguage());
+                }
                 node.setSelected();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -439,8 +487,12 @@ public class Node implements Serializable {
         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                node.addLanguage(dialogEditText.getText().toString());
-                node.setText(node.getLanguage());
+                if(node.getLanguage().contains("_")){
+                    node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
+                } else {
+                    node.addLanguage(dialogEditText.getText().toString());
+                    //node.setText(node.getLanguage());
+                }
                 node.setSelected();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -468,8 +520,13 @@ public class Node implements Serializable {
                         Date date = cal.getTime();
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", context.getResources().getConfiguration().locale);
                         String dateString = simpleDateFormat.format(date);
-                        node.addLanguage(dateString);
-                        node.setText(node.getLanguage());
+                        if(node.getLanguage().contains("_")){
+                            node.setLanguage(node.getLanguage().replace("_", dateString));
+                        } else {
+                            node.addLanguage(" " + dateString);
+                            node.setText(node.getLanguage());
+                            //node.setText(node.getLanguage());
+                        }
                         node.setSelected();
                         adapter.notifyDataSetChanged();
                         //TODO:: Check if the language is actually what is intended to be displayed
@@ -504,8 +561,13 @@ public class Node implements Serializable {
             public void onClick(DialogInterface dialog, int which) {
                 numberPicker.setValue(numberPicker.getValue());
                 String value = String.valueOf(numberPicker.getValue());
-                node.addLanguage(" " + value);
-                node.setText(value);
+                if(node.getLanguage().contains("_")){
+                    node.setLanguage(node.getLanguage().replace("_", value));
+                } else {
+                    node.addLanguage(" " + value);
+                    node.setText(value);
+                    //node.setText(node.getLanguage());
+                }
                 node.setSelected();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -545,8 +607,14 @@ public class Node implements Serializable {
                 widthPicker.setValue(widthPicker.getValue());
                 lengthPicker.setValue(lengthPicker.getValue());
                 String durationString = String.valueOf(widthPicker.getValue()) + " X " + lengthPicker.getValue();
-                node.addLanguage(" " + durationString);
-                node.setText(durationString);
+
+                if(node.getLanguage().contains("_")){
+                    node.setLanguage(node.getLanguage().replace("_", durationString));
+                } else {
+                    node.addLanguage(" " + durationString);
+                    node.setText(durationString);
+                    //node.setText(node.getLanguage());
+                }
                 node.setSelected();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -585,8 +653,14 @@ public class Node implements Serializable {
                 endPicker.setValue(endPicker.getValue());
                 String durationString = String.valueOf(startPicker.getValue()) + " to " + endPicker.getValue();
                 //TODO gotta get the units of the range somehow. gotta see what they look like first
-                node.addLanguage(" " + durationString);
-                node.setText(durationString);
+
+                if(node.getLanguage().contains("_")){
+                    node.setLanguage(node.getLanguage().replace("_", durationString));
+                } else {
+                    node.addLanguage(" " + durationString);
+                    node.setText(durationString);
+                    //node.setText(node.getLanguage());
+                }
                 node.setSelected();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -625,8 +699,14 @@ public class Node implements Serializable {
                 quantityPicker.setValue(quantityPicker.getValue());
                 unitPicker.setValue(unitPicker.getValue());
                 String durationString = String.valueOf(quantityPicker.getValue()) + " " + doctorUnits[unitPicker.getValue()];
-                node.addLanguage(" " + durationString);
-                node.setText(durationString);
+
+                if(node.getLanguage().contains("_")){
+                    node.setLanguage(node.getLanguage().replace("_", durationString));
+                } else {
+                    node.addLanguage(" " + durationString);
+                    node.setText(durationString);
+                    //node.setText(node.getLanguage());
+                }
                 node.setSelected();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -664,8 +744,14 @@ public class Node implements Serializable {
                 quantityPicker.setValue(quantityPicker.getValue());
                 unitPicker.setValue(unitPicker.getValue());
                 String durationString = String.valueOf(quantityPicker.getValue()) + " " + units[unitPicker.getValue()];
-                node.addLanguage(" " + durationString);
-                node.setText(durationString);
+
+                if(node.getLanguage().contains("_")){
+                    node.setLanguage(node.getLanguage().replace("_", durationString));
+                } else {
+                    node.addLanguage(" " + durationString);
+                    node.setText(durationString);
+                    //node.setText(node.getLanguage());
+                }
                 node.setSelected();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -718,6 +804,16 @@ public class Node implements Serializable {
             }
 
             this.language = jsonNode.optString("language");
+            if(this.language.isEmpty()){
+                this.language = this.text;
+            }
+
+            //Only for physical exams
+            if(!this.language.isEmpty()){
+                if(this.language.contains(":")){
+                    this.rootNode = true;
+                }
+            }
 
             this.inputType = jsonNode.optString("input-type");
 
@@ -744,6 +840,8 @@ public class Node implements Serializable {
             }
 
             this.selected = false;
+
+            this.choiceType = jsonNode.optString("choice-type");
 
             this.required = false;
 
@@ -1010,6 +1108,22 @@ public class Node implements Serializable {
 
     public void setComplaint(boolean complaint) {
         this.complaint = complaint;
+    }
+
+    public String getChoiceType() {
+        return choiceType;
+    }
+
+    public void setChoiceType(String choiceType) {
+        this.choiceType = choiceType;
+    }
+
+    public boolean isRootNode() {
+        return rootNode;
+    }
+
+    public void setRootNode(boolean rootNode) {
+        this.rootNode = rootNode;
     }
 }
 

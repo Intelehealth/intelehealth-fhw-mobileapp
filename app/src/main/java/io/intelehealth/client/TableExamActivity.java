@@ -185,7 +185,7 @@ public class TableExamActivity extends AppCompatActivity {
             insertDb(results.getSpo2(), 5092);
         }
 
-        if (intentTag.equals("edit")) {
+        if (intentTag != null && intentTag.equals("edit")) {
             Intent intent = new Intent(TableExamActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);

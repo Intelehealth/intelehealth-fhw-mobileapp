@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
@@ -15,6 +16,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,11 +36,10 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     String patientName;
     String intentTag;
 
-    ExpandableListView complaintListView;
-
     Knowledge mKnowledge;
-//    String mFileName = "knowledge.json";
-    String mFileName = "DemoBrain.json";
+    List<Node> complaints;
+    String mFileName = "knowledge.json";
+    //String mFileName = "DemoBrain.json";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,13 +78,24 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-
-        mKnowledge = new Knowledge(HelperMethods.encodeJSON(this, mFileName));
         ListView complaintList = (ListView) findViewById(R.id.complaint_list_view);
-        final List<Node> complaints = mKnowledge.getComplaints();
         if (complaintList != null) {
             complaintList.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
             complaintList.setClickable(true);
+        }
+
+        complaints = new ArrayList<>();
+        String[] fileNames = new String[0];
+        try {
+            fileNames = getApplicationContext().getAssets().list("engines");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for(String name:fileNames){
+            String fileLocation = "engines/" + name;
+            JSONObject currentFile = HelperMethods.encodeJSON(this, fileLocation);
+            Node currentNode = new Node(currentFile);
+            complaints.add(currentNode);
         }
 
         final CustomArrayAdapter listAdapter = new CustomArrayAdapter(ComplaintNodeActivity.this,
@@ -89,6 +104,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
         assert complaintList != null;
         complaintList.setAdapter(listAdapter);
+
 
         complaintList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -100,6 +116,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         });
 
 
+
     }
 
     /**
@@ -107,7 +124,12 @@ public class ComplaintNodeActivity extends AppCompatActivity {
      */
     public void confirmComplaints() {
 
-        final ArrayList<String> selection = mKnowledge.getSelectedComplaints();
+        final ArrayList<String> selection = new ArrayList<>();
+        for(Node node:complaints){
+            if(node.isSelected()){
+                selection.add(node.getText());
+            }
+        }
 
         if (selection.isEmpty()) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -140,7 +162,9 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
-                    intent.putExtra("tag", intentTag);
+                    if (intentTag != null) {
+                        intent.putExtra("tag", intentTag);
+                    }
                     intent.putStringArrayListExtra("complaints", selection);
                     startActivity(intent);
                 }

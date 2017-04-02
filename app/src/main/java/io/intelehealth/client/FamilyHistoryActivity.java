@@ -26,8 +26,8 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 
     ArrayList<String> physicalExams;
 
-//    String mFileName = "famHist.json";
-    String mFileName = "DemoFamily.json";
+    String mFileName = "famHist.json";
+//    String mFileName = "DemoFamily.json";
 
     int lastExpandedPosition = -1;
 
@@ -149,7 +149,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 
         insertDb(insertion);
 
-        if (intentTag.equals("edit")){
+        if (intentTag != null && intentTag.equals("edit")){
             Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);

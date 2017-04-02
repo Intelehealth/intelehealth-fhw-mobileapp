@@ -605,7 +605,7 @@ public class IdentificationActivity extends AppCompatActivity {
             String fullName = patient.getFirstName() + " " + patient.getLastName();
             intent2.putExtra("patientID", patientID);
             intent2.putExtra("name", fullName);
-            intent2.putExtra("tag", "");
+            intent2.putExtra("tag", "new");
             startActivity(intent2);
         }
     }

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 import io.intelehealth.client.objects.Node;
 
-public class PatientHistoryActivity extends AppCompatActivity {
+public class PastMedicalHistoryActivity extends AppCompatActivity {
 
     String LOG_TAG = "Patient History Activity";
     String patient = "patient";
@@ -29,8 +29,8 @@ public class PatientHistoryActivity extends AppCompatActivity {
     ArrayList<String> physicalExams;
     int lastExpandedPosition = -1;
 
-//    String mFileName = "patHist.json";
-    String mFileName = "DemoHistory.json";
+    String mFileName = "patHist.json";
+//    String mFileName = "DemoHistory.json";
 
     Node patientHistoryMap;
     CustomExpandableListAdapter adapter;
@@ -81,8 +81,8 @@ public class PatientHistoryActivity extends AppCompatActivity {
                 }
 
 
-                if (intentTag.equals("edit")){
-                    Intent intent = new Intent(PatientHistoryActivity.this, VisitSummaryActivity.class);
+                if (intentTag != null && intentTag.equals("edit")){
+                    Intent intent = new Intent(PastMedicalHistoryActivity.this, VisitSummaryActivity.class);
                     intent.putExtra("patientID", patientID);
                     intent.putExtra("visitID", visitID);
                     intent.putExtra("state", state);
@@ -90,7 +90,7 @@ public class PatientHistoryActivity extends AppCompatActivity {
                     intent.putExtra("tag", intentTag);
                     startActivity(intent);
                 } else {
-                    Intent intent = new Intent(PatientHistoryActivity.this, FamilyHistoryActivity.class);
+                    Intent intent = new Intent(PastMedicalHistoryActivity.this, FamilyHistoryActivity.class);
                     intent.putExtra("patientID", patientID);
                     intent.putExtra("visitID", visitID);
                     intent.putExtra("state", state);
@@ -124,7 +124,7 @@ public class PatientHistoryActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
 
                 if(!clickedNode.isTerminal() && clickedNode.isSelected()){
-                    Node.subLevelQuestion(clickedNode, PatientHistoryActivity.this, adapter);
+                    Node.subLevelQuestion(clickedNode, PastMedicalHistoryActivity.this, adapter);
                 }
 
                 return false;

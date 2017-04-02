@@ -79,9 +79,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         patient.setId(patientID);
         setDisplay(String.valueOf(patientID));
 
-
-        if ((getCallingActivity() != null) && (getCallingActivity().toString().equals("IdentificationActivity"))){
-
+        if(intentTag != null && intentTag.equals("new")){
             Intent serviceIntent = new Intent(this, ClientService.class);
             serviceIntent.putExtra("serviceCall", "patient");
             serviceIntent.putExtra("patientID", patientID);
@@ -120,7 +118,10 @@ public class PatientDetailActivity extends AppCompatActivity {
                 localdb.close();
                 intent2.putExtra("visitID", visitID);
                 intent2.putExtra("name", fullName);
-                intent2.putExtra("tag", "");
+
+
+
+                intent2.putExtra("tag", "new");
                 startActivity(intent2);
             }
         });

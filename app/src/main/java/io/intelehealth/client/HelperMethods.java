@@ -108,10 +108,6 @@ public class HelperMethods {
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
-
-        //TODO: upload this to google drive using a service, and then store the public share link into android
-
-
         return image;
     }
 

@@ -20,6 +20,7 @@ public class Knowledge extends Node {
      * This particular object as created as a way to gather all selected complaint nodes.
      * @param jsonObject
      */
+
     public Knowledge(JSONObject jsonObject) {
         super(jsonObject);
         /**
