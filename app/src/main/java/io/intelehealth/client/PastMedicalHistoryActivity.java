@@ -74,14 +74,16 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //If nothing is selected, there is nothing to put into the database.
-                if(patientHistoryMap.anySubSelected()){
-                    patientHistory = patientHistoryMap.generateLanguage();
-
-                    insertDb(patientHistory);
-                }
 
 
                 if (intentTag != null && intentTag.equals("edit")){
+                    if(patientHistoryMap.anySubSelected()){
+                        patientHistory = patientHistoryMap.generateLanguage();
+
+                        updateDatabase(patientHistory);
+                    }
+
+
                     Intent intent = new Intent(PastMedicalHistoryActivity.this, VisitSummaryActivity.class);
                     intent.putExtra("patientID", patientID);
                     intent.putExtra("visitID", visitID);
@@ -90,6 +92,13 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     intent.putExtra("tag", intentTag);
                     startActivity(intent);
                 } else {
+
+                    if(patientHistoryMap.anySubSelected()){
+                        patientHistory = patientHistoryMap.generateLanguage();
+
+                        insertDb(patientHistory);
+                    }
+
                     Intent intent = new Intent(PastMedicalHistoryActivity.this, FamilyHistoryActivity.class);
                     intent.putExtra("patientID", patientID);
                     intent.putExtra("visitID", visitID);
@@ -167,7 +176,25 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
         return localdb.insert("obs", null, complaintEntries);
+    }
 
+    private void updateDatabase(String string) {
+        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
+        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+
+        int conceptID = 163187;
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("value", string);
+
+        String selection = "patient_id = ? AND visit_id = ? concept_id = ?";
+        String[] args = {patientID, visitID, String.valueOf(conceptID)};
+
+        localdb.update(
+                "visit",
+                contentValues,
+                selection,
+                args
+        );
 
     }
 

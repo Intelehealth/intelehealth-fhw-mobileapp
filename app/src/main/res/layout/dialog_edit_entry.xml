@@ -5,28 +5,10 @@
     android:orientation="vertical">
 
 
-    <EditText
+    <TextView
         android:id="@+id/textView_entry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="TextView" />
-
-    <Button
-        android:id="@+id/button_manual_entry"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Manual Entry" />
-
-    <Button
-        android:id="@+id/button_erase_entry"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Erase Entry and Re-Do" />
-
-    <Button
-        android:id="@+id/button_cancel_entry"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Cancel" />
 
 </LinearLayout>

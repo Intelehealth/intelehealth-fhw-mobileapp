@@ -416,6 +416,9 @@
 
     //Setup Activity
     <string name="setup_internet">A strong Internet connection is required for setup.</string>
+    <string name="generic_manual_entry">Manual Entry</string>
+    <string name="generic_erase_redo">Erase and Re-Do</string>
+    <string name="visit_summary_edit_vitals">You can re-do the vitals from the vitals screen</string>
 
 
 </resources>

@@ -139,22 +139,25 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
                     physicalString = physicalExamMap.generateFindings();
 
-                    long obsId = insertDb(physicalString);
                     if (intentTag != null && intentTag.equals("edit")){
+                        updateDatabase(physicalString);
                         Intent intent = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
                         intent.putExtra("patientID", patientID);
                         intent.putExtra("visitID", visitID);
                         intent.putExtra("state", state);
                         intent.putExtra("name", patientName);
                         intent.putExtra("tag", intentTag);
+                        intent.putStringArrayListExtra("exams", selectedExamsList);
                         startActivity(intent);
                     } else {
+                        long obsId = insertDb(physicalString);
                         Intent intent1 = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
                         intent1.putExtra("patientID", patientID);
                         intent1.putExtra("visitID", visitID);
                         intent1.putExtra("state", state);
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("tag", intentTag);
+                        intent1.putStringArrayListExtra("exams", selectedExamsList);
                         startActivity(intent1);
                     }
                 } else {
@@ -376,6 +379,26 @@ public class PhysicalExamActivity extends AppCompatActivity {
         });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+    private void updateDatabase(String string) {
+        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
+        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+
+        int conceptID = 163189;
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("value", string);
+
+        String selection = "patient_id = ? AND visit_id = ? concept_id = ?";
+        String[] args = {patientID, visitID, String.valueOf(conceptID)};
+
+        localdb.update(
+                "visit",
+                contentValues,
+                selection,
+                args
+        );
+
     }
 
 }

@@ -3,6 +3,7 @@ package io.intelehealth.client;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -36,6 +37,11 @@ public class TableExamActivity extends AppCompatActivity {
 
     ArrayList<String> physicalExams;
 
+    LocalRecordsDatabaseHelper mDbHelper;
+    SQLiteDatabase db;
+
+    TableExam results = new TableExam();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -56,6 +62,9 @@ public class TableExamActivity extends AppCompatActivity {
 //            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
         }
 
+
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table_exam);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -74,6 +83,10 @@ public class TableExamActivity extends AppCompatActivity {
         mSpo2 = (EditText) findViewById(R.id.table_spo2);
 
         mBMI = (EditText) findViewById(R.id.table_bmi);
+
+        if (intentTag != null && intentTag.equals("edit")) {
+            loadPrevious();
+        }
 
         //BMI calculation is done in metric units
         mBMI.setOnClickListener(new View.OnClickListener() {
@@ -130,6 +143,53 @@ public class TableExamActivity extends AppCompatActivity {
         });
     }
 
+    public void loadPrevious(){
+        mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
+        db = mDbHelper.getWritableDatabase();
+        String[] columns = {"value", " concept_id"};
+        String orderBy = "visit_id";
+        String visitSelection = "patient_id = ? AND visit_id = ?";
+        String[] visitArgs = {patientID, visitID};
+        Cursor visitCursor = db.query("obs", columns, visitSelection, visitArgs, null, null, orderBy);
+        if (visitCursor.moveToFirst()) {
+            do {
+                int dbConceptID = visitCursor.getInt(visitCursor.getColumnIndex("concept_id"));
+                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                parseData(dbConceptID, dbValue);
+            } while (visitCursor.moveToNext());
+        }
+        visitCursor.close();
+    }
+
+    private void parseData(int concept_id, String value) {
+        switch (concept_id) {
+            case 5090: //Height
+                mHeight.setText(value);
+                break;
+            case 5089: //Weight
+                mWeight.setText(value);
+                break;
+            case 5087: //Pulse
+                mPulse.setText(value);
+                break;
+            case 5085: //Systolic BP
+                mBpSys.setText(value);
+                break;
+            case 5086: //Diastolic BP
+                mBpDia.setText(value);
+                break;
+            case 163202: //Temperature
+                mTemperature.setText(value);
+                break;
+            case 5092: //SpO2
+                mSpo2.setText(value);
+                break;
+            default:
+                break;
+
+        }
+    }
+
     public void validateTable() {
         boolean cancel = false;
         View focusView = null;
@@ -163,7 +223,6 @@ public class TableExamActivity extends AppCompatActivity {
             focusView.requestFocus();
             return;
         } else {
-            TableExam results = new TableExam();
             try {
                 results.setHeight(Double.parseDouble(mHeight.getText().toString()));
                 results.setWeight(Double.parseDouble(mWeight.getText().toString()));
@@ -176,6 +235,26 @@ public class TableExamActivity extends AppCompatActivity {
                 Snackbar.make(findViewById(R.id.cl_table), "Error: non-decimal number entered.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
 
+
+        }
+
+        if (intentTag != null && intentTag.equals("edit")) {
+            updateDatabase(results.getHeight(), 5090);
+            updateDatabase(results.getWeight(), 5089);
+            updateDatabase(results.getPulse(), 5087);
+            updateDatabase(results.getBpsys(), 5085);
+            updateDatabase(results.getBpdia(), 5086);
+            updateDatabase(results.getTemperature(), 163202);
+            updateDatabase(results.getSpo2(), 5092);
+            Intent intent = new Intent(TableExamActivity.this, VisitSummaryActivity.class);
+            intent.putExtra("patientID", patientID);
+            intent.putExtra("visitID", visitID);
+            intent.putExtra("state", state);
+            intent.putExtra("name", patientName);
+            intent.putExtra("tag", intentTag);
+            intent.putStringArrayListExtra("exams", physicalExams);
+            startActivity(intent);
+        } else {
             insertDb(results.getHeight(), 5090);
             insertDb(results.getWeight(), 5089);
             insertDb(results.getPulse(), 5087);
@@ -183,18 +262,6 @@ public class TableExamActivity extends AppCompatActivity {
             insertDb(results.getBpdia(), 5086);
             insertDb(results.getTemperature(), 163202);
             insertDb(results.getSpo2(), 5092);
-        }
-
-        if (intentTag != null && intentTag.equals("edit")) {
-            Intent intent = new Intent(TableExamActivity.this, VisitSummaryActivity.class);
-            intent.putExtra("patientID", patientID);
-            intent.putExtra("visitID", visitID);
-            intent.putExtra("state", state);
-            intent.putExtra("name", patientName);
-            intent.putExtra("tag", intentTag);
-            startActivity(intent);
-        } else {
-
             Intent intent = new Intent(TableExamActivity.this, PhysicalExamActivity.class);
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);
@@ -224,6 +291,25 @@ public class TableExamActivity extends AppCompatActivity {
 
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
         return localdb.insert("obs", null, complaintEntries);
+    }
+
+    private void updateDatabase(double objValue, int CONCEPT_ID) {
+        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
+        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("value", objValue);
+
+        String selection = "patient_id = ? AND visit_id = ? concept_id = ?";
+        String[] args = {patientID, visitID, String.valueOf(CONCEPT_ID)};
+
+        localdb.update(
+                "visit",
+                contentValues,
+                selection,
+                args
+        );
+
     }
 
 }

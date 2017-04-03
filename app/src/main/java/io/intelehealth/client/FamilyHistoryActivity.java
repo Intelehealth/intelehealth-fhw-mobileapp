@@ -147,9 +147,9 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             }
         }
 
-        insertDb(insertion);
 
         if (intentTag != null && intentTag.equals("edit")){
+            updateDatabase(insertion);
             Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);
@@ -159,6 +159,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             startActivity(intent);
         } else {
 
+            insertDb(insertion);
             Intent intent = new Intent(FamilyHistoryActivity.this, TableExamActivity.class);
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);
@@ -189,6 +190,27 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
         return localdb.insert("obs", null, complaintEntries);
+    }
+
+
+    private void updateDatabase(String string) {
+        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
+        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+
+        int conceptID = 163188;
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("value", string);
+
+        String selection = "patient_id = ? AND visit_id = ? concept_id = ?";
+        String[] args = {patientID, visitID, String.valueOf(conceptID)};
+
+        localdb.update(
+                "visit",
+                contentValues,
+                selection,
+                args
+        );
+
     }
 
 }

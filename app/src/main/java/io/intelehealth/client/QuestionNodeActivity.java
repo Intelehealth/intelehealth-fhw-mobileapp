@@ -219,7 +219,6 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
             String insertion = complaint + ": " + complaintFormatted;
 
-            insertDb(insertion);
 
             physicalExams.addAll(parseExams(currentNode));
 
@@ -229,6 +228,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 complaintConfirmed = false;
             } else {
                 if (intentTag != null && intentTag.equals("edit")) {
+                    updateDatabase(insertion);
                     Intent intent = new Intent(QuestionNodeActivity.this, PhysicalExamActivity.class);
                     intent.putExtra("patientID", patientID);
                     intent.putExtra("visitID", visitID);
@@ -238,6 +238,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
                     intent.putStringArrayListExtra("exams", physicalExams);
                     startActivity(intent);
                 } else {
+                    insertDb(insertion);
                     Intent intent = new Intent(QuestionNodeActivity.this, PastMedicalHistoryActivity.class);
                     intent.putExtra("patientID", patientID);
                     intent.putExtra("visitID", visitID);
@@ -279,6 +280,25 @@ public class QuestionNodeActivity extends AppCompatActivity {
         return localdb.insert("obs", null, complaintEntries);
     }
 
+    private void updateDatabase(String string) {
+        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
+        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+
+        int conceptID = 163186;
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("value", string);
+
+        String selection = "patient_id = ? AND visit_id = ? concept_id = ?";
+        String[] args = {patientID, visitID, String.valueOf(conceptID)};
+
+        localdb.update(
+                "visit",
+                contentValues,
+                selection,
+                args
+        );
+
+    }
     /**
      * Sets up the complaint node's questions.
      *
