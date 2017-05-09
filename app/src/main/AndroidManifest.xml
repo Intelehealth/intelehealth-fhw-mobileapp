@@ -14,8 +14,7 @@
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
 
     <uses-feature
-        android:name="android.hardware.camera"
-        android:required="true" />
+        android:name="android.hardware.camera" android:required="true" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
@@ -174,6 +173,11 @@
             android:label="@string/title_activity_setup"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
+            android:name=".camera.CameraActivity"
+            android:label="@string/title_activity_camera"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
             android:name=".SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -181,8 +185,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
         </activity>
     </application>
 

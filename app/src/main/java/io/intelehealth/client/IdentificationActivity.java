@@ -36,9 +36,9 @@ import android.widget.Spinner;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
+import io.intelehealth.client.camera.CameraActivity;
 import io.intelehealth.client.objects.Patient;
 
 import static io.intelehealth.client.HelperMethods.REQUEST_CAMERA;
@@ -86,6 +86,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
     ImageView mImageView;
     String mCurrentPhotoPath;
+
+    private final String TAG = IdentificationActivity.class.getSimpleName();
 
 
     @Override
@@ -201,12 +203,14 @@ public class IdentificationActivity extends AppCompatActivity {
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String[] results = HelperMethods.startImageCapture(IdentificationActivity.this,
-                        IdentificationActivity.this);
-                if (results != null) {
-                    mPhoto = results[0];
-                    mCurrentPhotoPath = results[1];
-                }
+                //String[] results = HelperMethods.startImageCapture(IdentificationActivity.this,
+                //        IdentificationActivity.this);
+                //if (results != null) {
+                //    mPhoto = results[0];
+                //    mCurrentPhotoPath = results[1];
+                //}
+                Intent cameraIntent = new Intent(IdentificationActivity.this, CameraActivity.class);
+                startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
             }
         });
 
@@ -252,7 +256,6 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onClick(View v) {
 
 
-
                 Context context = IdentificationActivity.this;
                 final AlertDialog.Builder textInput = new AlertDialog.Builder(context);
                 textInput.setTitle(R.string.identification_screen_dialog_age);
@@ -260,7 +263,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 dialogEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
 
                 String prevValue = mAge.getText().toString();
-                if (!prevValue.isEmpty()){
+                if (!prevValue.isEmpty()) {
                     dialogEditText.setText(prevValue);
                 }
 
@@ -489,9 +492,16 @@ public class IdentificationActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CAMERA && resultCode == RESULT_OK) {
-            Bitmap imageBitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
-            mImageView.setImageBitmap(imageBitmap);
+        Log.i(TAG,"Result Received");
+        if (requestCode == CameraActivity.TAKE_IMAGE) {
+            Log.i(TAG,"Request Code " + CameraActivity.TAKE_IMAGE);
+            if (resultCode == RESULT_OK) {
+                Log.i(TAG,"Result OK");
+                mCurrentPhotoPath = data.getStringExtra("RESULT");
+                Log.i("IdentificationActivity", mCurrentPhotoPath);
+                Bitmap imageBitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
+                mImageView.setImageBitmap(imageBitmap);
+            }
         }
     }
 

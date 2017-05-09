@@ -15,6 +15,7 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven { url 'https://jitpack.io' }
     }
 }
 
@@ -36,4 +37,6 @@ ext {
     arcaVersion = '4.9.2'
     gsonVersion = '2.8.0'
     firebaseVersion = '10.2.4'
+    cameraviewVersion= '9bbe07ba44'
+    permissionDispatcherVersion = '2.3.2'
 }

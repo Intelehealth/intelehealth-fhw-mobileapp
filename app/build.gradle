@@ -34,4 +34,9 @@ dependencies {
     compile "com.google.code.gson:gson:$rootProject.gsonVersion"
     compile "joda-time:joda-time:$rootProject.jodaTimeVersion"
     compile "ch.acra:acra:$rootProject.arcaVersion"
+
+    compile "com.github.hotchemi:permissionsdispatcher:$rootProject.permissionDispatcherVersion"
+    annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:$rootProject.permissionDispatcherVersion"
+
+    compile "com.github.google:cameraview:$rootProject.cameraviewVersion"
 }
