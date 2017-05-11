@@ -56,10 +56,10 @@ public class TableExamActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
-//            Log.v(LOG_TAG, "Patient ID: " + patientID);
-//            Log.v(LOG_TAG, "Visit ID: " + visitID);
-//            Log.v(LOG_TAG, "Patient Name: " + patientName);
-//            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
+//            Log.v(TAG, "Patient ID: " + patientID);
+//            Log.v(TAG, "Visit ID: " + visitID);
+//            Log.v(TAG, "Patient Name: " + patientName);
+//            Log.v(TAG, "Intent Tag: " + intentTag);
         }
 
 

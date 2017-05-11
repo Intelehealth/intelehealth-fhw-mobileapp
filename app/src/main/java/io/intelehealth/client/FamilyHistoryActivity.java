@@ -52,10 +52,10 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
-//            Log.v(LOG_TAG, "Patient ID: " + patientID);
-//            Log.v(LOG_TAG, "Visit ID: " + visitID);
-//            Log.v(LOG_TAG, "Patient Name: " + patientName);
-//            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
+//            Log.v(TAG, "Patient ID: " + patientID);
+//            Log.v(TAG, "Visit ID: " + visitID);
+//            Log.v(TAG, "Patient Name: " + patientName);
+//            Log.v(TAG, "Intent Tag: " + intentTag);
         }
 
 
@@ -87,7 +87,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 Node clickedNode = familyHistoryMap.getOption(groupPosition).getOption(childPosition);
                 clickedNode.toggleSelected();
-                //Log.d(LOG_TAG, String.valueOf(clickedNode.isSelected()));
+                //Log.d(TAG, String.valueOf(clickedNode.isSelected()));
                 if (familyHistoryMap.getOption(groupPosition).anySubSelected()) {
                     familyHistoryMap.getOption(groupPosition).setSelected();
                 } else {

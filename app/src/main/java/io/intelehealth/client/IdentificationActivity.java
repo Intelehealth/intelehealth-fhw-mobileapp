@@ -49,7 +49,7 @@ import static io.intelehealth.client.HelperMethods.REQUEST_READ_EXTERNAL;
  */
 
 public class IdentificationActivity extends AppCompatActivity {
-    String LOG_TAG = "Identification Activity";
+    String TAG = IdentificationActivity.class.getSimpleName();
 
     EditText mFirstName;
     EditText mMiddleName;
@@ -87,7 +87,7 @@ public class IdentificationActivity extends AppCompatActivity {
     ImageView mImageView;
     String mCurrentPhotoPath;
 
-    private final String TAG = IdentificationActivity.class.getSimpleName();
+
 
 
     @Override
@@ -210,6 +210,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 //    mCurrentPhotoPath = results[1];
                 //}
                 Intent cameraIntent = new Intent(IdentificationActivity.this, CameraActivity.class);
+                cameraIntent.putExtra(CameraActivity.SHOW_DIALOG_MESSAGE,getString(R.string.camera_dialog_default));
+                cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, "XYZ");
                 startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
             }
         });
@@ -492,13 +494,13 @@ public class IdentificationActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.i(TAG,"Result Received");
+        Log.v(TAG,"Result Received");
         if (requestCode == CameraActivity.TAKE_IMAGE) {
-            Log.i(TAG,"Request Code " + CameraActivity.TAKE_IMAGE);
+            Log.v(TAG,"Request Code " + CameraActivity.TAKE_IMAGE);
             if (resultCode == RESULT_OK) {
                 Log.i(TAG,"Result OK");
                 mCurrentPhotoPath = data.getStringExtra("RESULT");
-                Log.i("IdentificationActivity", mCurrentPhotoPath);
+                Log.v("IdentificationActivity", mCurrentPhotoPath);
                 Bitmap imageBitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
                 mImageView.setImageBitmap(imageBitmap);
             }
@@ -528,7 +530,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if (idCursor.getCount() > 0) {
                 String lastIDString = idCursor.getString(idCursor.getColumnIndexOrThrow("_id")); //Grab the last patientID
-                Log.d(LOG_TAG, lastIDString);
+                Log.d(TAG, lastIDString);
 
                 Integer newInteger = 0;
                 // TODO: Handle case where ID is changed to something else and then changed back
@@ -536,22 +538,22 @@ public class IdentificationActivity extends AppCompatActivity {
                 try {
                     if (lastIDString.substring(0, lastIDString.length() - 1).equals(idPreFix)) { // ID hasn't changed
                         String lastID = lastIDString.substring(idPreFix.length()); //Grab the last integer of the patientID
-//                        Log.d(LOG_TAG, String.valueOf(lastID));
+//                        Log.d(TAG, String.valueOf(lastID));
                         newInteger = Integer.valueOf(lastID);
                     }
                 } catch (Exception e) {
                     newInteger = 0; // ID was probably changed
                 } finally {
-                    Log.d(LOG_TAG, String.valueOf(newInteger));
+                    Log.d(TAG, String.valueOf(newInteger));
                     newInteger++; //Increment it by 1
                 }
 
                 patientID = idPreFix + String.valueOf(newInteger); //This patient is assigned the new incremented number
-//                Log.d(LOG_TAG, patientID);
+//                Log.d(TAG, patientID);
                 patient.setId(patientID);
             } else {
                 patientID = idPreFix + String.valueOf(1); //This patient is assigned the new incremented number
-//                Log.d(LOG_TAG, patientID);
+//                Log.d(TAG, patientID);
                 patient.setId(patientID);
             }
 

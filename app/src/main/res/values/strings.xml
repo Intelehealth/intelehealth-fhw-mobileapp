@@ -427,12 +427,16 @@
     <string name="permission_camera_never_askagain">Camera permission was denied with never ask again.</string>
     <string name="button_allow">Allow</string>
     <string name="button_deny">Deny</string>
+    <string name="button_ok">Ok</string>
     <string name="picture_taken">Picture taken</string>
     <string name="switch_flash">Switch flash</string>
     <string name="switch_camera">Switch camera</string>
     <string name="flash_auto">Flash auto</string>
     <string name="flash_off">Flash off</string>
     <string name="flash_on">Flash on</string>
+
+    //Camera Dialog
+    <string name="camera_dialog_default">Please click photo in good lighting conditions only. If photo is not clear, please retake the photo.</string>
 
 
 </resources>

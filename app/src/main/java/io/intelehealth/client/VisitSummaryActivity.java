@@ -173,10 +173,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
-//            Log.v(LOG_TAG, "Patient ID: " + patientID);
-//            Log.v(LOG_TAG, "Visit ID: " + visitID);
-//            Log.v(LOG_TAG, "Patient Name: " + patientName);
-//            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
+//            Log.v(TAG, "Patient ID: " + patientID);
+//            Log.v(TAG, "Visit ID: " + visitID);
+//            Log.v(TAG, "Patient Name: " + patientName);
+//            Log.v(TAG, "Intent Tag: " + intentTag);
         } else {
             patientID = "AND1";
             visitID = "6";
@@ -889,12 +889,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             String queryString = "?q=" + identifierNumber;
-            //Log.d(LOG_TAG, identifierNumber);
+            //Log.d(TAG, identifierNumber);
             WebResponse responseEncounter;
             responseEncounter = HelperMethods.getCommand("encounter", queryString, getApplicationContext());
             if (responseEncounter != null && responseEncounter.getResponseCode() != 200) {
 //                failedStep("Encounter search was unsuccessful");
-                //Log.d(LOG_TAG, "Encounter searching was unsuccessful");
+                //Log.d(TAG, "Encounter searching was unsuccessful");
                 return null;
             }
 
@@ -933,7 +933,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 if (obsResponse.get(i) != null && obsResponse.get(i).getResponseCode() != 200) {
                     String errorMessage = "Obs get call number " + String.valueOf(i) + " of " + String.valueOf(uriList.size()) + " was unsuccessful";
 //                    failedStep(errorMessage);
-//                    Log.d(LOG_TAG, errorMessage);
+//                    Log.d(TAG, errorMessage);
                     return null;
                 }
             }
@@ -944,8 +944,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             JSONArray providersArray;
 
             for (int i = 0; i < obsResponse.size(); i++) {
-                //Log.d(LOG_TAG, obsResponse.get(i).toString());
-                //Log.d(LOG_TAG, obsResponse.get(i).getResponseString());
+                //Log.d(TAG, obsResponse.get(i).toString());
+                //Log.d(TAG, obsResponse.get(i).getResponseString());
 
                 try {
                     responseObj = new JSONObject(obsResponse.get(i).getResponseString());
@@ -957,10 +957,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     return null;
                 }
 
-                //Log.d(LOG_TAG, obsArray.toString());
+                //Log.d(TAG, obsArray.toString());
                 for (int k = 0; k < obsArray.length(); k++) {
                     String obsString = "";
-                    //Log.d(LOG_TAG, obsString);
+                    //Log.d(TAG, obsString);
                     try {
                         JSONObject obsObj = obsArray.getJSONObject(k);
                         obsString = obsObj.getString("display");

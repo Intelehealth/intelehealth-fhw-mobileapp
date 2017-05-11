@@ -175,7 +175,7 @@
         <activity
             android:name=".camera.CameraActivity"
             android:label="@string/title_activity_camera"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/CameraActivityStyle">
         </activity>
         <activity
             android:name=".SplashActivity"

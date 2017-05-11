@@ -114,7 +114,7 @@ public class SearchPatientActivity extends AppCompatActivity {
 
                         if (searchCursor.moveToPosition(position)) {
                             String patientID = searchCursor.getString(searchCursor.getColumnIndexOrThrow("_id"));
-//                            Log.d(LOG_TAG, patientID);
+//                            Log.d(TAG, patientID);
                             String patientStatus = "returning";
                             Intent intent = new Intent(SearchPatientActivity.this, PatientDetailActivity.class);
                             intent.putExtra("patientID", patientID);

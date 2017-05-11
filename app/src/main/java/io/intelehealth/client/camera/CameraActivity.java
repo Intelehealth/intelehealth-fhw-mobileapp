@@ -10,7 +10,6 @@ import android.os.HandlerThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -21,14 +20,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.cameraview.AspectRatio;
 import com.google.android.cameraview.CameraView;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Set;
 
 import io.intelehealth.client.R;
 import permissions.dispatcher.NeedsPermission;
@@ -47,8 +44,9 @@ import permissions.dispatcher.RuntimePermissions;
 public class CameraActivity extends AppCompatActivity {
 
     private final String TAG = CameraActivity.class.getSimpleName();
-
     public static final int TAKE_IMAGE = 205;
+    public static final String SET_IMAGE_NAME = "IMG_NAME";
+    public static final String SHOW_DIALOG_MESSAGE = "DEFAULT_DLG";
 
     private static final int[] FLASH_OPTIONS = {
             CameraView.FLASH_AUTO,
@@ -74,9 +72,22 @@ public class CameraActivity extends AppCompatActivity {
 
     private Handler mBackgroundHandler;
 
+    //Pass Custom File Name Using intent.putExtra(CameraActivity.SET_IMAGE_NAME, "Image Name");
+    private String mImageName = null;
+    //Pass Dialog Message Using intent.putExtra(CameraActivity.SET_IMAGE_NAME, "Dialog Message");
+    private String mDialogMessage = null;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            if (extras.containsKey(SET_IMAGE_NAME)) mImageName = extras.getString(SET_IMAGE_NAME);
+            if (extras.containsKey(SHOW_DIALOG_MESSAGE))
+                mDialogMessage = extras.getString(SHOW_DIALOG_MESSAGE);
+        }
+
         setContentView(R.layout.activity_camera);
         mCameraView = (CameraView) findViewById(R.id.camera_surface_CameraView);
         mFab = (FloatingActionButton) findViewById(R.id.take_picture);
@@ -149,6 +160,17 @@ public class CameraActivity extends AppCompatActivity {
 
     @NeedsPermission(Manifest.permission.CAMERA)
     void startCamera() {
+        if (mDialogMessage != null) {
+            new AlertDialog.Builder(this)
+                    .setMessage(mDialogMessage)
+                    .setNeutralButton(R.string.button_ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .show();
+        }
         mCameraView.start();
     }
 
@@ -211,21 +233,24 @@ public class CameraActivity extends AppCompatActivity {
             getBackgroundHandler().post(new Runnable() {
                 @Override
                 public void run() {
+                    if (mImageName == null) {
+                        mImageName = String.valueOf(System.currentTimeMillis());
+                    }
                     File file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-                            "IMG_"+System.currentTimeMillis()+".jpg");
+                            "IMG_" + mImageName + ".jpg");
                     OutputStream os = null;
                     try {
                         os = new FileOutputStream(file);
                         os.write(data);
                         os.close();
-                        Intent intent=new Intent();
-                        intent.putExtra("RESULT",file.getAbsolutePath());
-                        setResult(RESULT_OK,intent);
-                        Log.i(TAG,file.getAbsolutePath());
+                        Intent intent = new Intent();
+                        intent.putExtra("RESULT", file.getAbsolutePath());
+                        setResult(RESULT_OK, intent);
+                        Log.i(TAG, file.getAbsolutePath());
                         finish();
                     } catch (IOException e) {
                         Log.w(TAG, "Cannot write to " + file, e);
-                        setResult(RESULT_CANCELED,new Intent());
+                        setResult(RESULT_CANCELED, new Intent());
                         finish();
                     } finally {
                         if (os != null) {
