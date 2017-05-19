@@ -45,7 +45,17 @@ public class CameraActivity extends AppCompatActivity {
 
     private final String TAG = CameraActivity.class.getSimpleName();
     public static final int TAKE_IMAGE = 205;
+
+    /**
+     * Bundle key used for the {@link String} setting custom Image Name
+     * for the file generated
+     */
     public static final String SET_IMAGE_NAME = "IMG_NAME";
+
+    /**
+     * Bundle key used for the {@link String} showing custom dialog
+     * message before starting the camera.
+     */
     public static final String SHOW_DIALOG_MESSAGE = "DEFAULT_DLG";
 
     private static final int[] FLASH_OPTIONS = {
@@ -92,16 +102,7 @@ public class CameraActivity extends AppCompatActivity {
         mCameraView = (CameraView) findViewById(R.id.camera_surface_CameraView);
         mFab = (FloatingActionButton) findViewById(R.id.take_picture);
 
-        if (mCameraView != null) mCameraView.addCallback(mCallback);
 
-        if (mFab != null) {
-            mFab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mCameraView != null) mCameraView.takePicture();
-                }
-            });
-        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
