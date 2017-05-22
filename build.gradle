@@ -5,7 +5,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.0'
+        classpath 'com.android.tools.build:gradle:2.3.1'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -15,9 +15,29 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven { url 'https://jitpack.io' }
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+// Define versions in a single place
+ext {
+    // Sdk and tools
+    minSdkVersion = 19
+    targetSdkVersion = 25
+    compileSdkVersion = 25
+    buildToolsVersion = '25.0.3'
+    multiDexVersion = '1.0.1'
+
+    // App dependencies
+    supportLibraryVersion = '25.3.1'
+    jodaTimeVersion = '2.9.3'
+    arcaVersion = '4.9.2'
+    firebaseVersion = '10.2.4'
+    cameraviewVersion= '9bbe07ba44'
+    permissionDispatcherVersion = '2.3.2'
+    debugDbVersion = '1.0.0'
 }

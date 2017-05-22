@@ -412,6 +412,7 @@
         <item>Wyoming</item>
     </string-array>
     <string name="title_activity_setup">SetupActivity</string>
+    <string name="title_activity_today_patient">"Today's Patients"</string>
     <string name="visit_summary_patient_details">Patient Details</string>
 
     //Setup Activity

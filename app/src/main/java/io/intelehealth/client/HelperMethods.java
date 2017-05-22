@@ -8,8 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -65,7 +63,8 @@ public class HelperMethods {
 
     /**
      * Turns the mind map into a JSON Object that can be manipulated.
-     * @param context The current context.
+     *
+     * @param context  The current context.
      * @param fileName The name of the JSON file to use.
      * @return fileName converted into the proper JSON Object to use
      */
@@ -210,10 +209,10 @@ public class HelperMethods {
                 // for ActivityCompat#requestPermissions for more details.
             }
             Account[] accountList = manager.getAccountsByType("io.intelehealth.openmrs");
-            if(accountList.length == 1){
+            if (accountList.length == 1) {
                 Account authAccount = accountList[0];
                 USERNAME = authAccount.name;
-                PASSWORD  = manager.getPassword(authAccount);
+                PASSWORD = manager.getPassword(authAccount);
             } else {
                 return null;
             }
@@ -293,15 +292,13 @@ public class HelperMethods {
                 // for ActivityCompat#requestPermissions for more details.
             }
             Account[] accountList = manager.getAccountsByType("io.intelehealth.openmrs");
-            if(accountList.length == 1){
+            if (accountList.length == 1) {
                 Account authAccount = accountList[0];
                 USERNAME = authAccount.name;
-                PASSWORD  = manager.getPassword(authAccount);
+                PASSWORD = manager.getPassword(authAccount);
             } else {
                 return null;
             }
-
-
 
 
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
@@ -374,6 +371,5 @@ public class HelperMethods {
         }
         return webResponse;
     }
-
 
 }

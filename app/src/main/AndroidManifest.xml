@@ -25,9 +25,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".HomeActivity"
-            android:label="@string/title_activity_login"></activity>
+            android:label="@string/title_activity_login" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
@@ -52,7 +53,11 @@
         <activity
             android:name=".VisitSummaryActivity"
             android:label="@string/title_activity_patient_summary"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".HomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomeActivity" /></activity>
         <activity android:name=".ViewHistoryActivity" />
         <activity
             android:name=".SearchPatientActivity"
@@ -128,7 +133,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="io.intelehealth.client.IdentificationActivity" />
-
         </activity>
         <activity
             android:name=".QuestionNodeActivity"
@@ -172,7 +176,7 @@
         <activity
             android:name=".SetupActivity"
             android:label="@string/title_activity_setup"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SplashActivity"
             android:theme="@style/SplashTheme">
@@ -181,9 +185,12 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
         </activity>
+        <activity android:name=".TodayPatientActivity"
+            android:label="@string/title_activity_today_patient"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+
     </application>
 
 </manifest>
