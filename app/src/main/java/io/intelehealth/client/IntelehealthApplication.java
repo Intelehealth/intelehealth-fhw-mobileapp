@@ -16,7 +16,7 @@ import org.acra.sender.HttpSender;
         httpMethod = HttpSender.Method.POST,
         formUriBasicAuthLogin = "thisheyetheentmornevessh",
         formUriBasicAuthPassword = "2bf554e018d200e27788367cd2b8ebc259cb80a7",
-        formKey = "", // This is required for backward compatibility but not used
+        //formKey = "", // This is required for backward compatibility but not used
         customReportContent = {
                 ReportField.APP_VERSION_CODE,
                 ReportField.APP_VERSION_NAME,

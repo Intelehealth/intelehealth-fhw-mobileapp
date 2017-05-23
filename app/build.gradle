@@ -6,17 +6,20 @@ android {
 
     defaultConfig {
         applicationId "io.intelehealth.client"
-        minSdkVersion 19
-        targetSdkVersion 25
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "B1"
+        //Change this to true to enable multidex support for Kitkat
+        multiDexEnabled false
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
             lintOptions {
                 disable 'MissingTranslation'
             }
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -25,13 +28,21 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile files('libs/gson-2.6.2.jar')
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:support-v4:23.4.0'
-    compile 'com.android.support:recyclerview-v7:23.4.0'
-    compile 'com.android.support:design:23.4.0'
-    compile 'com.android.support:cardview-v7:23.4.0'
-    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
-    compile 'joda-time:joda-time:2.9.3'
-    compile 'ch.acra:acra:4.5.0'
+    compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
+    compile "com.android.support:design:$rootProject.supportLibraryVersion"
+    compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
+    compile "com.android.support:support-vector-drawable:$rootProject.supportLibraryVersion"
+    //Uncomment below line to enable multidex support for Kitkat
+    //compile "com.android.support:multidex:$rootProject.multiDexVersion"
+    compile "com.google.firebase:firebase-appindexing:$rootProject.firebaseVersion"
+    compile "joda-time:joda-time:$rootProject.jodaTimeVersion"
+    compile "ch.acra:acra:$rootProject.arcaVersion"
+
+    compile "com.github.hotchemi:permissionsdispatcher:$rootProject.permissionDispatcherVersion"
+    annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:$rootProject.permissionDispatcherVersion"
+
+    compile "com.github.google:cameraview:$rootProject.cameraviewVersion"
+
+    //Used for debugging local SQLite Database.
+    debugCompile "com.amitshekhar.android:debug-db:$rootProject.debugDbVersion"
 }
