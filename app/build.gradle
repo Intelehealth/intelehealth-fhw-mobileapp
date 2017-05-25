@@ -34,9 +34,11 @@ dependencies {
     compile "com.android.support:support-vector-drawable:$rootProject.supportLibraryVersion"
     //Uncomment below line to enable multidex support for Kitkat
     //compile "com.android.support:multidex:$rootProject.multiDexVersion"
-    compile "com.google.firebase:firebase-appindexing:$rootProject.firebaseVersion"
     compile "joda-time:joda-time:$rootProject.jodaTimeVersion"
     compile "ch.acra:acra:$rootProject.arcaVersion"
+
+    compile "com.google.firebase:firebase-appindexing:$rootProject.firebaseVersion"
+    compile "com.google.firebase:firebase-messaging:$rootProject.firebaseVersion"
 
     compile "com.github.hotchemi:permissionsdispatcher:$rootProject.permissionDispatcherVersion"
     annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:$rootProject.permissionDispatcherVersion"
@@ -46,3 +48,5 @@ dependencies {
     //Used for debugging local SQLite Database.
     debugCompile "com.amitshekhar.android:debug-db:$rootProject.debugDbVersion"
 }
+
+apply plugin: 'com.google.gms.google-services'

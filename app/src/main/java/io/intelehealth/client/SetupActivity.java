@@ -46,6 +46,8 @@ import java.net.URL;
 import java.net.UnknownHostException;
 
 import io.intelehealth.client.objects.WebResponse;
+import io.intelehealth.client.offline_login.NetworkConnection;
+import io.intelehealth.client.offline_login.OfflineLogin;
 
 
 public class SetupActivity extends AppCompatActivity {
@@ -230,6 +232,7 @@ public class SetupActivity extends AppCompatActivity {
         }
     }
 
+
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
         return true;
@@ -371,6 +374,8 @@ public class SetupActivity extends AppCompatActivity {
 
                 editor.putBoolean(SettingsActivity.KEY_PREF_SETUP_COMPLETE, true);
                 editor.apply();
+
+                OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME,PASSWORD);
 
                 Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
                 startActivity(intent);
