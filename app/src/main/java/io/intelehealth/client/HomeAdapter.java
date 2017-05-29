@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,12 @@ import android.widget.TextView;
  * Created by tusharjois on 9/20/16.
  */
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder> {
-    final String[] options = {"New Patient", "Lookup Patient"};
-    final int[] icons = {R.drawable.ic_person_add_24dp, R.drawable.ic_search_24dp};
+
+    final static String TAG = HomeAdapter.class.getSimpleName();
+    final String[] options = {"New Patient","Lookup Patient","Today's Patient"};
+
+    //TODO: Change placeholder icon "android.R.drawable.ic_menu_my_calendar"
+    final int[] icons = {R.drawable.ic_person_add_24dp, R.drawable.ic_search_24dp, android.R.drawable.ic_menu_my_calendar};
 
     @Override
     public IconViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -51,13 +56,31 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
 
         @Override
         public void onClick(View v) {
-            if (this.optionName.getText().toString().equals("New Patient")) {
-                Intent intent = new Intent(this.context, IdentificationActivity.class);
-                this.context.startActivity(intent);
-            } else if (this.optionName.getText().toString().equals("Lookup Patient")) {
-                Intent intent = new Intent(this.context, SearchPatientActivity.class);
-                this.context.startActivity(intent);
+            switch (this.optionName.getText().toString()){
+                case "New Patient" : {
+                    Intent intent = new Intent(this.context, IdentificationActivity.class);
+                    this.context.startActivity(intent);
+                    break;
+                }
+                case "Lookup Patient" : {
+                    Intent intent = new Intent(this.context, SearchPatientActivity.class);
+                    this.context.startActivity(intent);
+                    break;
+                }
+                case "Today's Patient" : {
+
+                    //TODO: Change Activity after coding is done.
+
+                    // Query for today's patient
+                    // SELECT * FROM visit WHERE start_datetime LIKE "2017-05-08T%" ORDER BY start_datetime ASC
+                    Intent intent = new Intent(this.context, TodayPatientActivity.class);
+                    this.context.startActivity(intent);
+                    break;
+                }
+                default:
+                    Log.i(TAG,"Matching class not found");
             }
+
         }
 
     }

@@ -103,13 +103,22 @@ public class CameraActivity extends AppCompatActivity {
         mFab = (FloatingActionButton) findViewById(R.id.take_picture);
 
 
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(false);
 
+        }
+
+        if (mCameraView != null) mCameraView.addCallback(mCallback);
+        if (mFab != null) {
+            mFab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mCameraView != null) mCameraView.takePicture();
+                }
+            });
         }
     }
 
@@ -122,7 +131,7 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        mCameraView.stop();
+        if (mCameraView != null) mCameraView.stop();
     }
 
     @Override
@@ -154,7 +163,8 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         CameraActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 
@@ -31,6 +32,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
     String mFileName = "patHist.json";
 //    String mFileName = "DemoHistory.json";
+
+    private static final String TAG = PastMedicalHistoryActivity.class.getSimpleName();
 
     Node patientHistoryMap;
     CustomExpandableListAdapter adapter;
@@ -132,6 +135,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                 }
                 adapter.notifyDataSetChanged();
 
+                Log.i(TAG,String.valueOf(clickedNode.isTerminal()));
                 if(!clickedNode.isTerminal() && clickedNode.isSelected()){
                     Node.subLevelQuestion(clickedNode, PastMedicalHistoryActivity.this, adapter);
                 }
@@ -198,5 +202,16 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Node.TAKE_IMAGE_FOR_NODE) {
+            if (resultCode == RESULT_OK) {
+                String mCurrentPhotoPath = data.getStringExtra("RESULT");
+                patientHistoryMap.setImagePath(mCurrentPhotoPath);
+                Log.i(TAG,mCurrentPhotoPath);
+                patientHistoryMap.displayImage(this);
+            }
+        }
+    }
 }

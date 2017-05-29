@@ -340,5 +340,16 @@ public class QuestionNodeActivity extends AppCompatActivity {
         return examList;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Node.TAKE_IMAGE_FOR_NODE) {
+            if (resultCode == RESULT_OK) {
+                String mCurrentPhotoPath = data.getStringExtra("RESULT");
+                currentNode.setImagePath(mCurrentPhotoPath);
+                currentNode.displayImage(this);
+            }
+        }
+    }
 
 }
