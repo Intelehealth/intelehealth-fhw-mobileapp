@@ -36,7 +36,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import io.intelehealth.client.objects.WebResponse;
-import io.intelehealth.client.offline_login.NetworkConnection;
+import io.intelehealth.client.utils.NetworkConnection;
 import io.intelehealth.client.offline_login.OfflineLogin;
 
 /**
