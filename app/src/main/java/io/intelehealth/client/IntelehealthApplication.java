@@ -1,6 +1,8 @@
 package io.intelehealth.client;
 
 import android.app.Application;
+import android.content.Context;
+
 import org.acra.ACRA;
 import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
@@ -32,10 +34,17 @@ import org.acra.sender.HttpSender;
 
 public class IntelehealthApplication extends Application {
 
+    private static Context mContext;
+
     @Override
     public void onCreate() {
         super.onCreate();
         // The following line triggers the initialization of ACRA
+        this.mContext = getApplicationContext();
         ACRA.init(this);
+    }
+
+    public static Context getAppContext() {
+        return mContext;
     }
 }
