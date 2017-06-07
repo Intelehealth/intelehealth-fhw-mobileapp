@@ -59,6 +59,8 @@ public class SetupActivity extends AppCompatActivity {
     private EditText mUrlField;
     private EditText mPrefixField;
 
+    private Button mLoginButton;
+
 
     private static final int PERMISSION_ALL = 1;
 
@@ -77,6 +79,14 @@ public class SetupActivity extends AppCompatActivity {
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         // populateAutoComplete(); TODO: create our own autocomplete code
+
+        mLoginButton = (Button) findViewById(R.id.setup_submit_button);
+        mLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                attemptLogin();
+            }
+        });
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {

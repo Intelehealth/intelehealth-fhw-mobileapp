@@ -189,12 +189,10 @@ public class ClientService extends IntentService {
                  text = String.format("Uploading %s's data", patientName);
                 break;
             case "visit":
-
                  title = "Visit Data Upload";
                  text = String.format("Uploading %s's visit data", patientName);
                 break;
             case "download":
-
                  title = "Visit Data Download";
                  text = String.format("Downloading %s's visit data", patientName);
                 break;
