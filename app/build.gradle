@@ -47,7 +47,6 @@ dependencies {
     debugCompile "com.amitshekhar.android:debug-db:$rootProject.debugDbVersion"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
-
     compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:design:$rootProject.supportLibraryVersion"
     compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
@@ -57,7 +56,11 @@ dependencies {
     compile "com.google.firebase:firebase-appindexing:$rootProject.firebaseVersion"
     compile "joda-time:joda-time:$rootProject.jodaTimeVersion"
     compile "ch.acra:acra:$rootProject.arcaVersion"
+    compile "joda-time:joda-time:$rootProject.jodaTimeVersion"
+    compile "ch.acra:acra:$rootProject.arcaVersion"
 
+    compile "com.google.firebase:firebase-appindexing:$rootProject.firebaseVersion"
+    compile "com.google.firebase:firebase-messaging:$rootProject.firebaseVersion"
     compile "com.github.hotchemi:permissionsdispatcher:$rootProject.permissionDispatcherVersion"
     annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:$rootProject.permissionDispatcherVersion"
 
@@ -65,5 +68,8 @@ dependencies {
 
 }
 
+    //Used for debugging local SQLite Database.
+    debugCompile "com.amitshekhar.android:debug-db:$rootProject.debugDbVersion"
+}
 
-
+apply plugin: 'com.google.gms.google-services'

@@ -10,6 +10,7 @@ import android.provider.SearchRecentSuggestions;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,6 +28,7 @@ public class SearchPatientActivity extends AppCompatActivity {
     LocalRecordsDatabaseHelper mDbHelper;
     SearchCursorAdapter mSearchAdapter;
     SearchView searchView;
+    String query;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +43,12 @@ public class SearchPatientActivity extends AppCompatActivity {
         // Get the intent, verify the action and get the query
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
+            query = intent.getStringExtra(SearchManager.QUERY);
             SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
                     SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
             suggestions.saveRecentQuery(query, null);
             doQuery(query);
         }
-
-
 
         // TODO: Clear Suggestions
         // SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
@@ -59,7 +59,7 @@ public class SearchPatientActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the options menu from XML
+        // Inflate the options menu from XMLz
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_search, menu);
 
@@ -73,9 +73,27 @@ public class SearchPatientActivity extends AppCompatActivity {
         searchView.setFocusable(true);
         searchView.requestFocus();
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d("Hack", "in query text change");
+                SearchRecentSuggestions suggestions = new SearchRecentSuggestions(SearchPatientActivity.this,
+                        SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
+                suggestions.clearHistory();
+                doInstantSearch(newText);
+                return true;
+            }
+        });
+
 
         return true;
     }
+
 
     public void doQuery(String query) {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -99,7 +117,6 @@ public class SearchPatientActivity extends AppCompatActivity {
         ListView lvItems = (ListView) findViewById(R.id.listview_search);
 
 
-
         try {
             // Setup cursor adapter and attach cursor adapter to the ListView
             mSearchAdapter = new SearchCursorAdapter(this, searchCursor, 0);
@@ -109,8 +126,8 @@ public class SearchPatientActivity extends AppCompatActivity {
                 lvItems.setAdapter(mSearchAdapter);
                 lvItems.setOnItemClickListener(
                         new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
                         if (searchCursor.moveToPosition(position)) {
                             String patientID = searchCursor.getString(searchCursor.getColumnIndexOrThrow("_id"));
@@ -136,10 +153,60 @@ public class SearchPatientActivity extends AppCompatActivity {
 
     }
 
-    public void noneFound(ListView lvItems, String query)  {
+    //TODO: Hacked Code , needs cleaning.
+    public void doInstantSearch(String searchTerm) {
+        String search = searchTerm.trim();
+        ListView lvItems = (ListView) findViewById(R.id.listview_search);
+        if(TextUtils.isEmpty(search)) {
+            lvItems.setAdapter(null);
+        }
+        else {
+            SQLiteDatabase db = mDbHelper.getWritableDatabase();
+            String table = "patient";
+
+            final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " +
+                    "'" + search + "%' OR last_name LIKE '" + search + "%' OR middle_name LIKE '" + search + "%' " +
+                    "ORDER BY last_name ASC", null);
+            try {
+                // Setup cursor adapter and attach cursor adapter to the ListView
+                mSearchAdapter = new SearchCursorAdapter(this, searchCursor, 0);
+                if (mSearchAdapter.getCount() < 1) {
+
+                } else if (searchCursor.moveToFirst()) {
+                    lvItems.setAdapter(mSearchAdapter);
+                    lvItems.setOnItemClickListener(
+                            new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+                                    if (searchCursor.moveToPosition(position)) {
+                                        String patientID = searchCursor.getString(searchCursor.getColumnIndexOrThrow("_id"));
+//                            Log.d(LOG_TAG, patientID);
+                                        String patientStatus = "returning";
+                                        Intent intent = new Intent(SearchPatientActivity.this, PatientDetailActivity.class);
+                                        intent.putExtra("patientID", patientID);
+                                        intent.putExtra("status", patientStatus);
+                                        intent.putExtra("tag", "");
+                                        startActivity(intent);
+
+                                    }
+                                }
+                            });
+                }
+
+
+            } catch (Exception e) {
+                Log.d("Search Activity", "Exception", e);
+
+            }
+        }
+
+    }
+
+    public void noneFound(ListView lvItems, String query) {
         ArrayAdapter<String> searchAdapter = new ArrayAdapter<>(this,
                 R.layout.list_item_search,
-                R.id.list_item_head,new ArrayList<String>());
+                R.id.list_item_head, new ArrayList<String>());
         String errorMessage = getString(R.string.alert_none_found).replace("_", query);
         searchAdapter.add(errorMessage);
         lvItems.setAdapter(searchAdapter);

@@ -418,7 +418,7 @@
 
     <string name="visit_summary_patient_details">Patient Details</string>
 
-    //Setup Activity
+    <!--Setup Activity-->
     <string name="setup_internet">A strong Internet connection is required for setup.</string>
     <string name="generic_manual_entry">Manual Entry</string>
     <string name="generic_erase_redo">Erase and Re-Do</string>
@@ -440,6 +440,11 @@
 
     //Camera Dialog
     <string name="camera_dialog_default">Please click photo in good lighting conditions only. If photo is not clear, please retake the photo.</string>
+    <!--Offline Login Errors-->
+    <string name="offline_credentials_unavailable">Offline Login is not available.</string>
+    <string name="offline_user_does_not_match">User does not match..</string>
+    <string name="offline_authentication_not_possible">Unable to authenticate offline.</string>
+
 
 
 </resources>

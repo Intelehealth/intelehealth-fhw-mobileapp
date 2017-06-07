@@ -12,11 +12,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -31,7 +27,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,6 +41,7 @@ import java.net.URL;
 import java.net.UnknownHostException;
 
 import io.intelehealth.client.objects.WebResponse;
+import io.intelehealth.client.offline_login.OfflineLogin;
 
 
 public class SetupActivity extends AppCompatActivity {
@@ -240,6 +236,7 @@ public class SetupActivity extends AppCompatActivity {
         }
     }
 
+
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
         return true;
@@ -381,6 +378,8 @@ public class SetupActivity extends AppCompatActivity {
 
                 editor.putBoolean(SettingsActivity.KEY_PREF_SETUP_COMPLETE, true);
                 editor.apply();
+
+                OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME,PASSWORD);
 
                 Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
                 startActivity(intent);
