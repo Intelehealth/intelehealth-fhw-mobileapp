@@ -22,6 +22,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import io.intelehealth.client.offline_login.OfflineLogin;
+
 public class HomeActivity extends AppCompatActivity {
 
     @Override
@@ -85,6 +87,9 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void logout() {
+
+        OfflineLogin.getOfflineLogin().setOfflineLoginStatus(false);
+
         AccountManager manager = AccountManager.get(HomeActivity.this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -103,10 +108,11 @@ public class HomeActivity extends AppCompatActivity {
             } else {
                 manager.removeAccount(accountList[0], null, null); // Legacy implementation
             }
-            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
         }
+
+        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }

@@ -129,19 +129,19 @@ public class SearchPatientActivity extends AppCompatActivity {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-                                if (searchCursor.moveToPosition(position)) {
-                                    String patientID = searchCursor.getString(searchCursor.getColumnIndexOrThrow("_id"));
-//                            Log.d(LOG_TAG, patientID);
-                                    String patientStatus = "returning";
-                                    Intent intent = new Intent(SearchPatientActivity.this, PatientDetailActivity.class);
-                                    intent.putExtra("patientID", patientID);
-                                    intent.putExtra("status", patientStatus);
-                                    intent.putExtra("tag", "");
-                                    startActivity(intent);
+                        if (searchCursor.moveToPosition(position)) {
+                            String patientID = searchCursor.getString(searchCursor.getColumnIndexOrThrow("_id"));
+//                            Log.d(TAG, patientID);
+                            String patientStatus = "returning";
+                            Intent intent = new Intent(SearchPatientActivity.this, PatientDetailActivity.class);
+                            intent.putExtra("patientID", patientID);
+                            intent.putExtra("status", patientStatus);
+                            intent.putExtra("tag", "");
+                            startActivity(intent);
 
-                                }
-                            }
-                        });
+                        }
+                    }
+                });
             }
 
 
