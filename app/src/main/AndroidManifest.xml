@@ -170,6 +170,7 @@
             android:name=".PhysicalExamActivity"
             android:label="@string/title_activity_physical_exam"
             android:parentActivityName=".PastMedicalHistoryActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

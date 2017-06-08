@@ -81,7 +81,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
         //For Testing
 //        patientID = Long.valueOf("1");
-
         selectedExamsList = new ArrayList<>();
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
