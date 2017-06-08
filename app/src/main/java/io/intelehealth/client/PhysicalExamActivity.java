@@ -81,7 +81,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
         //For Testing
 //        patientID = Long.valueOf("1");
-
         selectedExamsList = new ArrayList<>();
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -262,8 +261,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
                         Drawable d = Drawable.createFromStream(ims, null);
                         // set image to ImageView
                         imageView.setImageDrawable(d);
-                        imageView.setMinimumHeight(500);
-                        imageView.setMinimumWidth(500);
                     }
                     catch(IOException ex)
                     {
