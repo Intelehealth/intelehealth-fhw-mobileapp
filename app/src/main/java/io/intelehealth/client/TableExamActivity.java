@@ -300,7 +300,7 @@ public class TableExamActivity extends AppCompatActivity {
         ContentValues contentValues = new ContentValues();
         contentValues.put("value", objValue);
 
-        String selection = "patient_id = ? AND visit_id = ? concept_id = ?";
+        String selection = "patient_id = ? AND visit_id = ? AND concept_id = ?";
         String[] args = {patientID, visitID, String.valueOf(CONCEPT_ID)};
 
         localdb.update(

@@ -336,6 +336,7 @@ public class ClientService extends IntentService {
         }
         idCursor.close();
 
+        //Location save description/name/uuid
 
         String personString =
                 String.format("{\"gender\":\"%s\", " +
@@ -388,6 +389,7 @@ public class ClientService extends IntentService {
 
         assert responsePerson != null;
 
+        //TODO: Replace location UUID
         String patientString =
                 String.format("{\"person\":\"%s\", " +
                                 "\"identifiers\":[{\"identifier\":\"%s\", " +

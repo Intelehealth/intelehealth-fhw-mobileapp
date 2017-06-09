@@ -45,4 +45,8 @@ dependencies {
 
     //Used for debugging local SQLite Database.
     debugCompile "com.amitshekhar.android:debug-db:$rootProject.debugDbVersion"
+
+    compile "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
+    compile "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
+
 }
