@@ -22,12 +22,14 @@ public class NetworkConnection {
         return netInfo != null && netInfo.isConnected();
     }
 
+
     public static boolean isConnecting(Context context) {
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
+
 
     public static String getConnectionType(Context context) {
         ConnectivityManager cm =
@@ -40,4 +42,7 @@ public class NetworkConnection {
         return TYPE_NOT_CONNECTED;
     }
 
+
 }
+
+

@@ -73,7 +73,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
     Boolean complaintConfirmed = false;
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
     }
 
     @Override
@@ -81,7 +81,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
         //For Testing
 //        patientID = Long.valueOf("1");
-
         selectedExamsList = new ArrayList<>();
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -91,10 +90,10 @@ public class PhysicalExamActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             selectedExamsList = intent.getStringArrayListExtra("exams");
-//            Log.v(LOG_TAG, "Patient ID: " + patientID);
-//            Log.v(LOG_TAG, "Visit ID: " + visitID);
-//            Log.v(LOG_TAG, "Patient Name: " + patientName);
-//            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
+//            Log.v(TAG, "Patient ID: " + patientID);
+//            Log.v(TAG, "Visit ID: " + visitID);
+//            Log.v(TAG, "Patient Name: " + patientName);
+//            Log.v(TAG, "Intent Tag: " + intentTag);
         }
 
         if ((selectedExamsList == null) || selectedExamsList.isEmpty()) {
@@ -109,7 +108,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
 
@@ -135,11 +134,11 @@ public class PhysicalExamActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(complaintConfirmed){
+                if (complaintConfirmed) {
 
                     physicalString = physicalExamMap.generateFindings();
 
-                    if (intentTag != null && intentTag.equals("edit")){
+                    if (intentTag != null && intentTag.equals("edit")) {
                         updateDatabase(physicalString);
                         Intent intent = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
                         intent.putExtra("patientID", patientID);
@@ -165,9 +164,9 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
 //                    Node genExams = physicalExamMap.getOption(0);
 //                    for (int i = 0; i < genExams.getOptionsList().size(); i++) {
-////                        Log.d(LOG_TAG, "current i value " + i);
+////                        Log.d(TAG, "current i value " + i);
 //                        if(!genExams.getOption(i).anySubSelected()){
-////                            Log.d(LOG_TAG, genExams.getOption(i).getText());
+////                            Log.d(TAG, genExams.getOption(i).getText());
 //                            mViewPager.setCurrentItem(i);
 //                            return;
 //                        }
@@ -250,12 +249,11 @@ public class PhysicalExamActivity extends AppCompatActivity {
             if (displayNode.isAidAvailable()) {
                 String type = displayNode.getJobAidType();
                 //Log.d(displayNode.getText(), type);
-                if(type.equals("video")){
+                if (type.equals("video")) {
                     imageView.setVisibility(View.GONE);
-                } else if (type.equals("image")){
+                } else if (type.equals("image")) {
                     String drawableName = "physicalExamAssets/" + displayNode.getJobAidFile() + ".jpg";
-                    try
-                    {
+                    try {
                         // get input stream
                         InputStream ims = getContext().getAssets().open(drawableName);
                         // load image as Drawable
@@ -264,9 +262,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                         imageView.setImageDrawable(d);
                         imageView.setMinimumHeight(500);
                         imageView.setMinimumWidth(500);
-                    }
-                    catch(IOException ex)
-                    {
+                    } catch (IOException ex) {
                         ex.printStackTrace();
                     }
                 } else {
@@ -399,6 +395,19 @@ public class PhysicalExamActivity extends AppCompatActivity {
                 args
         );
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == Node.TAKE_IMAGE_FOR_NODE) {
+            if (resultCode == RESULT_OK) {
+                String mCurrentPhotoPath = data.getStringExtra("RESULT");
+                physicalExamMap.setImagePath(mCurrentPhotoPath);
+                physicalExamMap.displayImage(this);
+            }
+        }
     }
 
 }
