@@ -42,9 +42,7 @@ ext {
     cameraviewVersion= '9bbe07ba44'
     permissionDispatcherVersion = '2.3.2'
     debugDbVersion = '1.0.0'
-
     retrofitVersion = '2.3.0'
 }
 
-}
 
