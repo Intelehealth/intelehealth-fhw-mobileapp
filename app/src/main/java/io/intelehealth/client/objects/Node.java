@@ -3,16 +3,21 @@ package io.intelehealth.client.objects;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -31,12 +36,13 @@ import java.util.List;
 import io.intelehealth.client.CustomArrayAdapter;
 import io.intelehealth.client.CustomExpandableListAdapter;
 import io.intelehealth.client.R;
+import io.intelehealth.client.camera.CameraActivity;
 
 /**
  * Created by Amal Afroz Alam on 21, April, 2016.
  * Contact me: contact@amal.io
  */
-public class Node implements Serializable {
+public class Node implements Serializable{
 
     private String id;
     private String text;
@@ -59,6 +65,13 @@ public class Node implements Serializable {
     private boolean aidAvailable;
     private boolean selected;
     private boolean subSelected;
+
+    private List<String> imagePathList;
+
+    private String imagePath;
+
+    public static final int TAKE_IMAGE_FOR_NODE = 507;
+    public static final String TAG = Node.class.getSimpleName();
 
     public static void subLevelQuestion(final Node node, final Activity context, final CustomExpandableListAdapter callingAdapter) {
         node.setSelected();
@@ -125,6 +138,7 @@ public class Node implements Serializable {
 
     public static void handleQuestion(Node questionNode, final Activity context, final CustomExpandableListAdapter adapter) {
         String type = questionNode.getInputType();
+        Log.d(TAG,type);
         switch (type) {
             case "text":
                 askText(questionNode, context, adapter);
@@ -150,8 +164,57 @@ public class Node implements Serializable {
             case "frequency":
                 askFrequency(questionNode, context, adapter);
                 break;
+            case "camera":
+                openCamera(context);
+                break;
         }
     }
+
+    public static void openCamera(Activity activity){
+        Log.d(TAG,"open Camera!");
+        Intent intent = new Intent(activity, CameraActivity.class);
+        activity.startActivityForResult(intent,Node.TAKE_IMAGE_FOR_NODE);
+    }
+
+    public void displayImage(final Activity context){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setPositiveButton(R.string.button_save, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                addImageToList();
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton(R.string.button_delete, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                imagePath = null;
+                dialog.dismiss();
+            }
+        });
+        final AlertDialog dialog = builder.create();
+        LayoutInflater inflater = context.getLayoutInflater();
+        View dialogLayout = inflater.inflate(R.layout.image_confirmation_dialog, null);
+        dialog.setView(dialogLayout);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface d) {
+                ImageView imageView = (ImageView) dialog.findViewById(R.id.confirmationImageView);
+                Bitmap img = BitmapFactory.decodeFile(imagePath);
+                float imageWidthInPX = (float)imageView.getWidth();
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(Math.round(imageWidthInPX),
+                        Math.round(imageWidthInPX * (float)img.getHeight() / (float)img.getWidth()));
+                imageView.setLayoutParams(layoutParams);
+                imageView.setImageBitmap(img);
+            }
+        });
+
+        dialog.show();
+
+    }
+
 
     public static void askText(final Node node, Activity context, final CustomExpandableListAdapter adapter) {
         final AlertDialog.Builder textInput = new AlertDialog.Builder(context);
@@ -450,6 +513,7 @@ public class Node implements Serializable {
 
     public static void subHandleQuestion(Node questionNode, final Activity context, final CustomArrayAdapter adapter) {
         String type = questionNode.getInputType();
+        Log.d(TAG,"subQ "+type);
         switch (type) {
             case "text":
                 subAskText(questionNode, context, adapter);
@@ -474,6 +538,9 @@ public class Node implements Serializable {
                 break;
             case "frequency":
                 subAskFrequency(questionNode, context, adapter);
+                break;
+            case "camera":
+                openCamera(context);
                 break;
         }
     }
@@ -1124,6 +1191,31 @@ public class Node implements Serializable {
 
     public void setRootNode(boolean rootNode) {
         this.rootNode = rootNode;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public List<String> getImagePathList() {
+        return imagePathList;
+    }
+
+    public void setImagePathList(List<String> imagePathList) {
+        this.imagePathList = imagePathList;
+    }
+
+    public void addImageToList(){
+        if(imagePathList==null){
+            imagePathList = new ArrayList<>();
+        }
+        if(imagePath!=null && !imagePath.isEmpty()){
+            imagePathList.add(imagePath);
+        }
     }
 }
 

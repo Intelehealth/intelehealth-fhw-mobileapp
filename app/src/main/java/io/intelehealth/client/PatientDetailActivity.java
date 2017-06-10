@@ -30,14 +30,12 @@ import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import org.joda.time.DateTime;
-import org.w3c.dom.Text;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import io.intelehealth.client.db.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.services.ClientService;
 
@@ -71,9 +69,9 @@ public class PatientDetailActivity extends AppCompatActivity {
             patientID = intent.getStringExtra("patientID");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
-//            Log.v(LOG_TAG, "Patient ID: " + patientID);
-//            Log.v(LOG_TAG, "Patient Name: " + patientName);
-//            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
+//            Log.v(TAG, "Patient ID: " + patientID);
+//            Log.v(TAG, "Patient Name: " + patientName);
+//            Log.v(TAG, "Intent Tag: " + intentTag);
         }
 
         patient.setId(patientID);
@@ -228,7 +226,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         ageView.setText(String.valueOf(age));
         dobView.setText(patient.getDateOfBirth());
         addr1View.setText(patient.getAddress1());
-        if (patient.getAddress2() == null ^ patient.getAddress2().equals("")) {
+        if (patient.getAddress2() == null || patient.getAddress2().equals("")) {
             addr2Row.setVisibility(View.GONE);
         } else {
             addr2View.setText(patient.getAddress2());

@@ -11,16 +11,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import org.acra.ACRA;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import io.intelehealth.client.offline_login.OfflineLogin;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -85,6 +82,9 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void logout() {
+
+        OfflineLogin.getOfflineLogin().setOfflineLoginStatus(false);
+
         AccountManager manager = AccountManager.get(HomeActivity.this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -103,10 +103,11 @@ public class HomeActivity extends AppCompatActivity {
             } else {
                 manager.removeAccount(accountList[0], null, null); // Legacy implementation
             }
-            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
         }
+
+        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }

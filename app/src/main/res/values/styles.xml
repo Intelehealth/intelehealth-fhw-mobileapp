@@ -17,6 +17,9 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="CameraActivityStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
 
     <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
         <item name="android:fontFamily">sans-serif-light</item>

@@ -1,7 +1,9 @@
 package io.intelehealth.client.services;
 
+import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -9,42 +11,64 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.NotificationCompat;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import io.intelehealth.client.HelperMethods;
-import io.intelehealth.client.LocalRecordsDatabaseHelper;
-import io.intelehealth.client.R;
-import io.intelehealth.client.SettingsActivity;
-import io.intelehealth.client.objects.Obs;
-import io.intelehealth.client.objects.Patient;
-import io.intelehealth.client.objects.PatientImage;
-import io.intelehealth.client.objects.WebResponse;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import io.intelehealth.client.HelperMethods;
+import io.intelehealth.client.R;
+import io.intelehealth.client.SettingsActivity;
+import io.intelehealth.client.db.DelayedJobQueueProvider;
+import io.intelehealth.client.db.LocalRecordsDatabaseHelper;
+import io.intelehealth.client.objects.Obs;
+import io.intelehealth.client.objects.Patient;
+import io.intelehealth.client.objects.PatientImage;
+import io.intelehealth.client.objects.WebResponse;
+import io.intelehealth.client.utils.NetworkConnection;
+
 /**
  * Sends Identification data to OpenMRS and receives the OpenMRS ID of the newly-created patient
  */
 public class ClientService extends IntentService {
 
-    public static final String LOG_TAG = "ClientService";
+    private static final String EXTRA_FAILED_ATTEMPTS = "io.intelehealth.client.EXTRA_FAILED_ATTEMPTS";
+    private static final String EXTRA_LAST_DELAY = "io.intelehealth.client.EXTRA_LAST_DELAY";
+    private static final int MAX_TRIES = 3;
+    private static final int RETRY_DELAY = 30000;
+
+    //For Upload Patient
+    public static final int STATUS_PERSON_NOT_CREATED = 101;
+    public static final int STATUS_PATIENT_NOT_CREATED = 102;
+
+    //For Upload Visit
+    public static final int STATUS_VISIT_NOT_CREATED = 101;
+    public static final int STATUS_ENCOUNTER_NOT_CREATED = 102;
+    public static final int STATUS_ENCOUNTER_NOTE_NOT_CREATED = 103;
+
+
+    private static int requestCode = 0;
+
+    public static final String LOG_TAG = ClientService.class.getSimpleName();
     public int mId = 1;
     public int numMessages;
 
@@ -54,6 +78,12 @@ public class ClientService extends IntentService {
     NotificationManager mNotifyManager;
     NotificationCompat.Builder mBuilder;
 
+    Integer statusCode = 0;
+
+    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+    String location_name = prefs.getString(SettingsActivity.KEY_PREF_LOCATION_NAME, null);
+    String location_uuid = prefs.getString(SettingsActivity.KEY_PREF_LOCATION_UUID, null);
+    String location_desc = prefs.getString(SettingsActivity.KEY_PREF_LOCATION_DESCRIPTION, null);
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
@@ -76,55 +106,52 @@ public class ClientService extends IntentService {
         Boolean success = false;
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
 
-        try {
-            while (!isOnline()) {
-                Thread.sleep(1000);
+        if (NetworkConnection.isOnline(this)) {
+            String serviceCall = intent.getStringExtra("serviceCall");
+
+            switch (serviceCall) {
+                case "patient":
+                    String patientID = intent.getStringExtra("patientID");
+                    String patientName = intent.getStringExtra("name");
+                    Log.v(LOG_TAG, "Patient ID: " + patientID);
+                    Log.v(LOG_TAG, "Patient Name: " + patientName);
+                    createNotification("patient", patientName);
+                    success = uploadPatient(patientID, intent);
+                    if (success) endNotification(patientName, "patient");
+                    else errorNotification();
+                    break;
+                case "visit":
+                    patientID = intent.getStringExtra("patientID");
+                    String visitID = intent.getStringExtra("visitID");
+                    patientName = intent.getStringExtra("name");
+                    Log.v(LOG_TAG, "Patient ID: " + patientID);
+                    Log.v(LOG_TAG, "Visit ID: " + visitID);
+                    Log.v(LOG_TAG, "Patient Name: " + patientName);
+                    createNotification("visit", patientName);
+                    success = uploadVisit(patientID, visitID, intent);
+                    if (success) endNotification(patientName, "visit");
+                    else errorNotification();
+                    break;
+                case "endVisit":
+                    patientID = intent.getStringExtra("patientID");
+                    String visitUUID = intent.getStringExtra("visitUUID");
+                    patientName = intent.getStringExtra("name");
+                    Log.v(LOG_TAG, "Patient ID: " + patientID);
+                    Log.v(LOG_TAG, "Patient Name: " + patientName);
+                    createNotification("download", patientName);
+                    success = endVisit(patientID, visitUUID, intent);
+                    if (success) endNotification(patientName, "visit");
+                    else errorNotification();
+                    break;
+                default:
+                    //something
+                    break;
             }
-        } catch (Exception e) {
-            Log.e(LOG_TAG, "Waiting interrupted?");
+        } else if (NetworkConnection.isConnecting(this)) {
+            retryAfterDelay(intent, 1, 5000);
+        } else {
+            addJobToQueue(intent);
         }
-
-        String serviceCall = intent.getStringExtra("serviceCall");
-
-        switch (serviceCall) {
-            case "patient":
-                String patientID = intent.getStringExtra("patientID");
-                String patientName = intent.getStringExtra("name");
-                Log.v(LOG_TAG, "Patient ID: " + patientID);
-                Log.v(LOG_TAG, "Patient Name: " + patientName);
-                createNotification("patient", patientName);
-                success = uploadPatient(patientID);
-                if (success) endNotification(patientName, "patient");
-                else errorNotification();
-                break;
-            case "visit":
-                patientID = intent.getStringExtra("patientID");
-                String visitID = intent.getStringExtra("visitID");
-                patientName = intent.getStringExtra("name");
-                Log.v(LOG_TAG, "Patient ID: " + patientID);
-                Log.v(LOG_TAG, "Visit ID: " + visitID);
-                Log.v(LOG_TAG, "Patient Name: " + patientName);
-                createNotification("visit", patientName);
-                success = uploadVisit(patientID, visitID);
-                if (success) endNotification(patientName, "visit");
-                else errorNotification();
-                break;
-            case "endVisit":
-                patientID = intent.getStringExtra("patientID");
-                String visitUUID = intent.getStringExtra("visitUUID");
-                patientName = intent.getStringExtra("name");
-                Log.v(LOG_TAG, "Patient ID: " + patientID);
-                Log.v(LOG_TAG, "Patient Name: " + patientName);
-                createNotification("download", patientName);
-                success = endVisit(patientID, visitUUID);
-                if (success) endNotification(patientName, "visit");
-                else errorNotification();
-                break;
-            default:
-                //something
-                break;
-        }
-
 
     }
 
@@ -183,20 +210,19 @@ public class ClientService extends IntentService {
         String title = "";
         String text = "";
 
-        switch (type){
+        switch (type) {
             case "patient":
-                 title = "Patient Data Upload";
-                 text = String.format("Uploading %s's data", patientName);
+                title = "Patient Data Upload";
+                text = String.format("Uploading %s's data", patientName);
                 break;
             case "visit":
-
-                 title = "Visit Data Upload";
-                 text = String.format("Uploading %s's visit data", patientName);
+                title = "Visit Data Upload";
+                text = String.format("Uploading %s's visit data", patientName);
                 break;
             case "download":
 
-                 title = "Visit Data Download";
-                 text = String.format("Downloading %s's visit data", patientName);
+                title = "Visit Data Download";
+                text = String.format("Downloading %s's visit data", patientName);
                 break;
         }
 
@@ -221,13 +247,6 @@ public class ClientService extends IntentService {
                 // Removes the progress bar
                 .setProgress(0, 0, false);
         mNotifyManager.notify(mId, mBuilder.build());
-    }
-
-    public boolean isOnline() {
-        ConnectivityManager connMgr = (ConnectivityManager)
-                getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        return (networkInfo != null && networkInfo.isConnected());
     }
 
     public String sendData(String jsonString) {
@@ -280,29 +299,59 @@ public class ClientService extends IntentService {
         return buffer.toString(); // returns the openMrsId OR "Picture received" (if picture)
     }
 
-    public boolean sendPicture(int patientId) {
-        String jpg = patientId + ".jpg";
-        Bitmap bm = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getPath() + "/patients/" + jpg);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
-        byte[] b = baos.toByteArray();
-        String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+    private boolean uploadPatient(String patientID, Intent current_intent) {
 
-        PatientImage image = new PatientImage(patientId, encodedImage);
-        Gson gson = new Gson();
-        String json = gson.toJson(image);
+        String responseCode = null;
+        boolean uploadDone = false;
+        if (current_intent.hasExtra("status")) {
+            int status = current_intent.getIntExtra("status", -1);
+            if (status != -1) {
+                switch (status) {
+                    case STATUS_PERSON_NOT_CREATED: {
+                        responseCode = uploadPersonData(patientID);
+                        if (responseCode != null) {
+                            current_intent.putExtra("status", STATUS_PATIENT_NOT_CREATED);
+                            current_intent.putExtra("personResponse", responseCode);
+                            uploadDone = uploadPatientData
+                                    (patientID, responseCode);
+                        } else {
+                            current_intent.putExtra("status", STATUS_PERSON_NOT_CREATED);
+                        }
+                        break;
+                    }
+                    case STATUS_PATIENT_NOT_CREATED: {
+                        responseCode = current_intent.getStringExtra("personResponse");
+                        uploadDone = uploadPatientData(patientID, responseCode);
+                        break;
+                    }
+                }
+            }
+        } else {
+            responseCode = uploadPersonData(patientID);
+            if (responseCode != null) {
+                current_intent.putExtra("status", STATUS_PATIENT_NOT_CREATED);
+                current_intent.putExtra("personResponse", responseCode);
+                uploadDone = uploadPatientData
+                        (patientID, responseCode);
+            } else {
+                current_intent.putExtra("status", STATUS_PERSON_NOT_CREATED);
+            }
+        }
+        if (uploadDone == false) {
+            retryAfterDelay(current_intent);
+        } else if (current_intent.hasExtra("queueId")) {
+            int queueId = current_intent.getIntExtra("queueId", -1);
+            removeJobFromQueue(queueId);
+        }
 
-        String result = sendData(json);
-
-        return result != null;
+        return uploadDone;
     }
 
-    private boolean uploadPatient(String patientID) {
+    private String uploadPersonData(String patientID) {
 
         Patient patient = new Patient();
         String patientSelection = "_id MATCH ?";
         String[] patientArgs = {patientID};
-
 
         LocalRecordsDatabaseHelper mDbHelper;
         SQLiteDatabase db;
@@ -348,7 +397,7 @@ public class ClientService extends IntentService {
                                 "{\"attributeType\":\"14d4f066-15f5-102d-96e4-000c29c2a5d7\", " +
                                 "\"value\": \"%s\"}, " +
                                 "{\"attributeType\":\"8d87236c-c2cc-11de-8d13-0010c6dffd0f\", " +
-                                "\"value\": \"Barhra\"}], " + //TODO: Change this attribute to the name of the clinic as listed in OpenMRS
+                                "\"value\": \"%s\"}], " + //TODO: Change this attribute to the name of the clinic as listed in OpenMRS
                                 "\"addresses\":[" +
                                 "{\"address1\":\"%s\", " +
                                 "\"address2\":\"%s\"," +
@@ -362,6 +411,7 @@ public class ClientService extends IntentService {
                         patient.getLastName(),
                         patient.getDateOfBirth(),
                         patient.getPhoneNumber(),
+                        location_name,
                         patient.getAddress1(),
                         patient.getAddress2(),
                         patient.getCityVillage(),
@@ -373,29 +423,35 @@ public class ClientService extends IntentService {
         WebResponse responsePerson;
         responsePerson = HelperMethods.postCommand("person", personString, getApplicationContext());
         if (responsePerson != null && responsePerson.getResponseCode() != 201) {
-
             String newText = "Person was not created. Please check your connection.";
             mBuilder.setContentText(newText).setNumber(++numMessages);
             mNotifyManager.notify(mId, mBuilder.build());
-            Log.d(LOG_TAG, "Person posting was unsuccessful");
-            return false;
-        } else {
+            Log.d(LOG_TAG, "Person posting was unsuccessful 1");
+            return null;
+        } else if (responsePerson ==null){
+            Log.d(LOG_TAG, "Person posting was unsuccessful 1");
+            return null;
+        }else {
             String newText = "Person created successfully.";
             mBuilder.setContentText(newText).setNumber(++numMessages);
             mNotifyManager.notify(mId, mBuilder.build());
+            Intent uploadPersonPhoto = new Intent(this, PersonPhotoUploadService.class);
+            uploadPersonPhoto.putExtra("person",responsePerson.getResponseString());
+            uploadPersonPhoto.putExtra("patientID",patientID);
+            uploadPersonPhoto.putExtra("name",patient.getFirstName()+patient.getLastName());
+            return responsePerson.getResponseString();
         }
+    }
 
-
-        assert responsePerson != null;
-
+    private boolean uploadPatientData(String patientID, String responseString) {
         String patientString =
                 String.format("{\"person\":\"%s\", " +
                                 "\"identifiers\":[{\"identifier\":\"%s\", " +
                                 "\"identifierType\":\"05a29f94-c0ed-11e2-94be-8c13b969e334\", " +
-                                "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\", " +
+                                "\"location\":\"%s\", " +
                                 "\"preferred\":true}]}",
-
-                        responsePerson.getResponseString(), patientID);
+                        responseString,
+                        patientID, location_uuid);
 
         Log.d(LOG_TAG, "Patient String: " + patientString);
         WebResponse responsePatient;
@@ -404,31 +460,36 @@ public class ClientService extends IntentService {
             String newText = "Patient was not created. Please check your connection.";
             mBuilder.setContentText(newText).setNumber(++numMessages);
             mNotifyManager.notify(mId, mBuilder.build());
-            Log.d(LOG_TAG, "Patient posting was unsuccessful");
+            Log.d(LOG_TAG, "Patient posting was unsuccessful 2");
             return false;
-        } else {
+        }else if(responsePatient== null){
+            Log.d(LOG_TAG, "Patient posting was unsuccessful 2");
+            return false;
+        }
+        else {
             String newText = "Patient created successfully.";
             mBuilder.setContentText(newText).setNumber(++numMessages);
             mNotifyManager.notify(mId, mBuilder.build());
+
+            ContentValues contentValuesOpenMRSID = new ContentValues();
+            contentValuesOpenMRSID.put("openmrs_uuid", responsePatient.getResponseString());
+            String selection = "_id = ?";
+            String[] args = {patientID};
+
+            db.update(
+                    "patient",
+                    contentValuesOpenMRSID,
+                    selection,
+                    args
+            );
+            return true;
         }
 
-        assert responsePatient != null;
-        ContentValues contentValuesOpenMRSID = new ContentValues();
-        contentValuesOpenMRSID.put("openmrs_uuid", responsePatient.getResponseString());
-        String selection = "_id = ?";
-        String[] args = {patientID};
-
-        db.update(
-                "patient",
-                contentValuesOpenMRSID,
-                selection,
-                args
-        );
-
-        return true;
     }
 
-    private boolean uploadVisit(String patientID, String visitID) {
+    private boolean uploadVisit(String patientID, String visitID, Intent current_intent) {
+
+
         Patient patient = new Patient();
         Obs complaint = new Obs();
         Obs famHistory = new Obs();
@@ -548,14 +609,101 @@ public class ClientService extends IntentService {
         }
         idCursor.close();
 
+        boolean uploadStatus = false;
+        Integer statusCode = STATUS_VISIT_NOT_CREATED;
+        if (current_intent.hasExtra("status")) {
+            statusCode = current_intent.getIntExtra("status", -1);
+            if (statusCode > 0) {
+                String visitUUID;
+
+                if (statusCode == STATUS_VISIT_NOT_CREATED) {
+                    visitUUID =
+                            uploadVisitData(patient, startDateTime);
+                    ContentValues contentValuesVisit = new ContentValues();
+                    contentValuesVisit.put("openmrs_visit_uuid", visitUUID);
+                    String visitUpdateSelection = "start_datetime = ?";
+                    String[] visitUpdateArgs = {startDateTime};
+
+                    db.update(
+                            "visit",
+                            contentValuesVisit,
+                            visitUpdateSelection,
+                            visitUpdateArgs
+                    );
+                } else visitUUID = current_intent.getStringExtra("visitResponse");
+
+
+                if (visitUUID != null) {
+                    current_intent.putExtra("visitResponse", visitUUID);
+                    if (statusCode == STATUS_ENCOUNTER_NOT_CREATED) {
+                        boolean encounter_vitals = uploadEncounterVitals(visitUUID, patient, startDateTime,
+                                temperature, weight, height, pulse, bpSys, bpDias, spO2);
+
+                        if (encounter_vitals) statusCode = STATUS_ENCOUNTER_NOTE_NOT_CREATED;
+
+                        boolean encounter_notes = uploadEncounterNotes(visitUUID, patient, startDateTime,
+                                patHistory, famHistory, complaint, physFindings);
+
+                        if (encounter_notes && encounter_vitals) uploadStatus = true;
+                    } else if (statusCode == STATUS_ENCOUNTER_NOTE_NOT_CREATED) {
+                        boolean encounter_notes = uploadEncounterNotes(visitUUID, patient, startDateTime,
+                                patHistory, famHistory, complaint, physFindings);
+                        uploadStatus = encounter_notes;
+                    }
+                }
+
+                current_intent.putExtra("status", statusCode);
+
+            }
+        } else {
+            String visitUUID;
+            visitUUID = uploadVisitData(patient, startDateTime);
+
+            ContentValues contentValuesVisit = new ContentValues();
+            contentValuesVisit.put("openmrs_visit_uuid", visitUUID);
+            String visitUpdateSelection = "start_datetime = ?";
+            String[] visitUpdateArgs = {startDateTime};
+
+            db.update(
+                    "visit",
+                    contentValuesVisit,
+                    visitUpdateSelection,
+                    visitUpdateArgs
+            );
+
+
+            if (visitUUID != null) {
+                current_intent.putExtra("visitResponse", visitUUID);
+                statusCode = STATUS_ENCOUNTER_NOT_CREATED;
+                boolean encounter_vitals = uploadEncounterVitals(visitUUID, patient, startDateTime,
+                        temperature, weight, height, pulse, bpSys, bpDias, spO2);
+                if (encounter_vitals) statusCode = STATUS_ENCOUNTER_NOTE_NOT_CREATED;
+                boolean encounter_notes = uploadEncounterNotes(visitUUID, patient, startDateTime,
+                        patHistory, famHistory, complaint, physFindings);
+                if (encounter_notes && encounter_vitals) uploadStatus = true;
+            }
+
+            current_intent.putExtra("status", statusCode);
+        }
+        if (!uploadStatus) retryAfterDelay(current_intent);
+        else if (current_intent.hasExtra("queueId")) {
+            int queueId = current_intent.getIntExtra("queueId", -1);
+            removeJobFromQueue(queueId);
+        }
+        return uploadStatus;
+
+    }
+
+    private String uploadVisitData(Patient patient, String startDateTime) {
+
 
         //TODO: Location UUID needs to be found before doing these
         String visitString =
                 String.format("{\"startDatetime\":\"%s\"," +
                                 "\"visitType\":\"Telemedicine\"," +
                                 "\"patient\":\"%s\"," +
-                                "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\"}",
-                        startDateTime, patient.getOpenmrsId());
+                                "\"location\":\"%s\"}",
+                        startDateTime, patient.getOpenmrsId(),location_uuid);
         Log.d(LOG_TAG, "Visit String: " + visitString);
         WebResponse responseVisit;
         responseVisit = HelperMethods.postCommand("visit", visitString, getApplicationContext());
@@ -564,29 +712,20 @@ public class ClientService extends IntentService {
             mBuilder.setContentText(newText).setNumber(++numMessages);
             mNotifyManager.notify(mId, mBuilder.build());
             Log.d(LOG_TAG, "Visit posting was unsuccessful");
-            return false;
         } else {
             String newText = "Visit created successfully.";
             mBuilder.setContentText(newText).setNumber(++numMessages);
             mNotifyManager.notify(mId, mBuilder.build());
         }
 
+        return responseVisit.getResponseString();
 
-        assert responseVisit != null;
+    }
 
-        String visitUUID = responseVisit.getResponseString();
-        ContentValues contentValuesVisit = new ContentValues();
-        contentValuesVisit.put("openmrs_visit_uuid", visitUUID);
-        String visitUpdateSelection = "start_datetime = ?";
-        String[] visitUpdateArgs = {startDateTime};
-
-        db.update(
-                "visit",
-                contentValuesVisit,
-                visitUpdateSelection,
-                visitUpdateArgs
-        );
-
+    private boolean uploadEncounterVitals(String visitUUID, Patient patient, String startDateTime,
+                                          Obs temperature, Obs weight, Obs height,
+                                          Obs pulse, Obs bpSys, Obs bpDias, Obs spO2) {
+        //---------------------
         Double fTemp = Double.parseDouble(temperature.getValue());
         Double cTemp = (fTemp - 32) * (5 / 9);
         String tempString = String.valueOf(cTemp);
@@ -605,13 +744,19 @@ public class ClientService extends IntentService {
                                 "{\"concept\":\"5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"value\":\"%s\"}," + //BpSYS
                                 "{\"concept\":\"5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"value\":\"%s\"}," + //BpDias
                                 "{\"concept\":\"5092AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\", \"value\":\"%s\"}]," + //Sp02
-                                "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\"}",
-
-                        startDateTime, patient.getOpenmrsId(), visitUUID,
+                                "\"location\":\"%s\"}",
+                        startDateTime,
+                        patient.getOpenmrsId(),
+                        visitUUID,
 //                            openMRSUUID,
-                        weight.getValue(), height.getValue(), tempString,
-                        pulse.getValue(), bpSys.getValue(),
-                        bpDias.getValue(), spO2.getValue()
+                        weight.getValue(),
+                        height.getValue(),
+                        tempString,
+                        pulse.getValue(),
+                        bpSys.getValue(),
+                        bpDias.getValue(),
+                        spO2.getValue(),
+                        location_uuid
                 );
         Log.d(LOG_TAG, "Vitals Encounter String: " + vitalsString);
         WebResponse responseVitals;
@@ -622,15 +767,20 @@ public class ClientService extends IntentService {
             mNotifyManager.notify(mId, mBuilder.build());
             Log.d(LOG_TAG, "Encounter posting was unsuccessful");
             return false;
-        } else {
+        } else if(responseVitals==null){
+            Log.d(LOG_TAG, "Encounter posting was unsuccessful");
+            return false;
+        }else {
             String newText = "Encounter created successfully.";
             mBuilder.setContentText(newText).setNumber(++numMessages);
             mNotifyManager.notify(mId, mBuilder.build());
+            return true;
         }
+        //---------------------
+    }
 
-
-        assert responseVitals != null;
-
+    private boolean uploadEncounterNotes(String visitUUID, Patient patient, String startDateTime,
+                                         Obs patHistory, Obs famHistory, Obs complaint, Obs physFindings) {
         if (patHistory.getValue().isEmpty() || patHistory.getValue().equals("")) {
             patHistory.setValue("None");
         }
@@ -651,14 +801,20 @@ public class ClientService extends IntentService {
                                 "{\"concept\":\"d63ae965-47fb-40e8-8f08-1f46a8a60b2b\",\"value\":\"%s\"}," + //family history
                                 "{\"concept\":\"3edb0e09-9135-481e-b8f0-07a26fa9a5ce\",\"value\":\"%s\"}," + //current complaint
                                 "{\"concept\":\"e1761e85-9b50-48ae-8c4d-e6b7eeeba084\",\"value\":\"%s\"}]," + //physical exam
-                                "\"location\":\"1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a\"}",
+                                "\"location\":\"%s\"}",
 
-                        startDateTime, patient.getOpenmrsId(), responseVisit.getResponseString(),
+                        startDateTime,
+                        patient.getOpenmrsId(),
+                        visitUUID,
 //                            openMRSUUID,
-                        patient.getSdw(), patient.getOccupation(),
+                        patient.getSdw(),
+                        patient.getOccupation(),
                         //TODO: add logic to remove SDW and occupation when they are empty
-                        patHistory.getValue(), famHistory.getValue(),
-                        complaint.getValue(), physFindings.getValue()
+                        patHistory.getValue(),
+                        famHistory.getValue(),
+                        complaint.getValue(),
+                        physFindings.getValue(),
+                        location_uuid
                 );
         Log.d(LOG_TAG, "Notes Encounter String: " + noteString);
         WebResponse responseNotes;
@@ -669,19 +825,19 @@ public class ClientService extends IntentService {
             mNotifyManager.notify(mId, mBuilder.build());
             Log.d(LOG_TAG, "Notes Encounter posting was unsuccessful");
             return false;
-        } else
-
-        {
+        } else if(responseNotes == null){
+            Log.d(LOG_TAG, "Notes Encounter posting was unsuccessful");
+            return false;
+        }else {
             String newText = "Notes created successfully.";
             mBuilder.setContentText(newText).setNumber(++numMessages);
             mNotifyManager.notify(mId, mBuilder.build());
+            return true;
         }
-
-        return true;
-
     }
 
-    private boolean endVisit(String patientIDs, String visitUUID){
+
+    private boolean endVisit(String patientIDs, String visitUUID, Intent current_intent) {
 
         String urlModifier = "visit/" + visitUUID;
 
@@ -704,18 +860,155 @@ public class ClientService extends IntentService {
             mBuilder.setContentText(newText).setNumber(++numMessages);
             mNotifyManager.notify(mId, mBuilder.build());
             Log.d(LOG_TAG, "Visit ending was unsuccessful");
-            return false;        } else {
+            retryAfterDelay(current_intent);
+            return false;
+        }else if(endResponse == null){
+            Log.d(LOG_TAG, "Visit ending was unsuccessful");
+            return false;
+        }
+        else {
 
             String newText = "Visit ended successfully.";
             mBuilder.setContentText(newText).setNumber(++numMessages);
             mNotifyManager.notify(mId, mBuilder.build());
+            if (current_intent.hasExtra("queueId")) {
+                int queueId = current_intent.getIntExtra("queueId", -1);
+                removeJobFromQueue(queueId);
+            }
+            return true;
         }
 
-        return true;
+
     }
 
     public void errorNotification() {
         // TODO: determine error behavior
     }
 
+    private void retryAfterDelay(Intent intent) {
+        retryAfterDelay(intent, MAX_TRIES, RETRY_DELAY);
+    }
+
+    private void retryAfterDelay(Intent intent, int max_retries, int retry_delay) {
+        // Get the number of previously failed attempts, and add one.
+        int failedAttempts = intent.getIntExtra(EXTRA_FAILED_ATTEMPTS, 0) + 1;
+        // if we have failed less than the max retries, reschedule the intent
+        Log.i(LOG_TAG, "Scheduling retry" + failedAttempts + "/" + max_retries);
+        if (failedAttempts <= max_retries) {
+            Log.i(LOG_TAG, "Retrying" + failedAttempts + "/" + max_retries);
+            // calculate the next delay
+            int lastDelay = intent.getIntExtra(EXTRA_LAST_DELAY, 0);
+            int thisDelay;
+            if (lastDelay == 0) {
+                thisDelay = retry_delay;
+            } else {
+                thisDelay = lastDelay * 2;
+            }
+            // update the intent with the latest retry info
+            intent.putExtra(EXTRA_FAILED_ATTEMPTS, failedAttempts);
+            intent.putExtra(EXTRA_LAST_DELAY, thisDelay);
+
+            // get the alarm manager
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            int requestCode = incrementAndGetRequestCode();
+            // make the pending intent
+            PendingIntent pendingIntent = PendingIntent
+                    .getService(getApplicationContext(), requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            // schedule the intent for future delivery
+            alarmManager.set(AlarmManager.RTC_WAKEUP,
+                    System.currentTimeMillis() + thisDelay, pendingIntent);
+        } else {
+            addJobToQueue(intent);
+        }
+
+
+    }
+
+    private static int incrementAndGetRequestCode() {
+        requestCode = requestCode++;
+        return requestCode;
+    }
+
+    private void addJobToQueue(Intent intent) {
+        if (!intent.hasExtra("queueId")) {
+            Log.d(LOG_TAG, "Adding to Queue");
+
+            String serviceCall = intent.getStringExtra("serviceCall");
+
+            // Add a new Delayed Job record
+            ContentValues values = new ContentValues();
+            values.put(DelayedJobQueueProvider.JOB_TYPE, serviceCall);
+            values.put(DelayedJobQueueProvider.JOB_PRIORITY, 1);
+            values.put(DelayedJobQueueProvider.JOB_REQUEST_CODE, requestCode);
+            values.put(DelayedJobQueueProvider.PATIENT_NAME, intent.getStringExtra("name"));
+            values.put(DelayedJobQueueProvider.PATIENT_ID, intent.getStringExtra("patientID"));
+
+            switch (serviceCall) {
+                case "patient": {
+                    values.put(DelayedJobQueueProvider.STATUS, intent.getIntExtra("status", -1));
+                    values.put(DelayedJobQueueProvider.DATA_RESPONSE, intent.getStringExtra("personResponse"));
+                    break;
+                }
+                case "visit": {
+                    values.put(DelayedJobQueueProvider.VISIT_ID, intent.getStringExtra("visitID"));
+                    values.put(DelayedJobQueueProvider.STATUS, intent.getIntExtra("status", -1));
+                    values.put(DelayedJobQueueProvider.DATA_RESPONSE, intent.getStringExtra("visitResponse"));
+                    break;
+                }
+                case "endVisit": {
+                    values.put(DelayedJobQueueProvider.VISIT_UUID, intent.getStringExtra("visitUUID"));
+                    break;
+                }
+                default:
+                    Log.e(LOG_TAG, "Does not match any Job Type");
+            }
+
+
+            Uri uri = getContentResolver().insert(
+                    DelayedJobQueueProvider.CONTENT_URI, values);
+
+            Toast.makeText(getBaseContext(),
+                    uri.toString(), Toast.LENGTH_LONG).show();
+        } else {
+            Log.i(LOG_TAG, "Queue id : " + intent.getIntExtra("queueId", -1));
+            String serviceCall = intent.getStringExtra("serviceCall");
+            ContentValues values = new ContentValues();
+            switch (serviceCall) {
+                case "patient": {
+                    values.put(DelayedJobQueueProvider.STATUS, intent.getIntExtra("status", -1));
+                    values.put(DelayedJobQueueProvider.DATA_RESPONSE, intent.getStringExtra("personResponse"));
+                    break;
+                }
+                case "visit": {
+                    values.put(DelayedJobQueueProvider.STATUS, intent.getIntExtra("status", -1));
+                    values.put(DelayedJobQueueProvider.DATA_RESPONSE, intent.getStringExtra("visitResponse"));
+                    break;
+                }
+            }
+            int queueId = intent.getIntExtra("queueId", -1);
+            String url = DelayedJobQueueProvider.URL + "/" + queueId;
+            Uri uri = Uri.parse(url);
+            int result = getContentResolver().update(uri, values, null, null);
+            if (result > 0) {
+                Log.i(LOG_TAG, result + " row deleted");
+            } else {
+                Log.e(LOG_TAG, "Database error while deleting row!");
+            }
+        }
+    }
+
+    private void removeJobFromQueue(int queueId) {
+        Log.d(LOG_TAG, "Removing from Queue");
+        if (queueId > -1) {
+            String url = DelayedJobQueueProvider.URL + "/" + queueId;
+            Uri uri = Uri.parse(url);
+            int result = getContentResolver().delete(uri, null, null);
+            if (result > 0) {
+                Log.i(LOG_TAG, result + " row deleted");
+            } else {
+                Log.e(LOG_TAG, "Database error while deleting row!");
+            }
+        }
+
+    }
 }

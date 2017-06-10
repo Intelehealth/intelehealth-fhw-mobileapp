@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
 
+import io.intelehealth.client.db.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Node;
 
 public class PastMedicalHistoryActivity extends AppCompatActivity {
@@ -31,6 +33,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
     String mFileName = "patHist.json";
 //    String mFileName = "DemoHistory.json";
+
+    private static final String TAG = PastMedicalHistoryActivity.class.getSimpleName();
 
     Node patientHistoryMap;
     CustomExpandableListAdapter adapter;
@@ -52,10 +56,10 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
-//            Log.v(LOG_TAG, "Patient ID: " + patientID);
-//            Log.v(LOG_TAG, "Visit ID: " + visitID);
-//            Log.v(LOG_TAG, "Patient Name: " + patientName);
-//            Log.v(LOG_TAG, "Intent Tag: " + intentTag);
+//            Log.v(TAG, "Patient ID: " + patientID);
+//            Log.v(TAG, "Visit ID: " + visitID);
+//            Log.v(TAG, "Patient Name: " + patientName);
+//            Log.v(TAG, "Intent Tag: " + intentTag);
         }
 
 
@@ -132,6 +136,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                 }
                 adapter.notifyDataSetChanged();
 
+                Log.i(TAG,String.valueOf(clickedNode.isTerminal()));
                 if(!clickedNode.isTerminal() && clickedNode.isSelected()){
                     Node.subLevelQuestion(clickedNode, PastMedicalHistoryActivity.this, adapter);
                 }
@@ -198,5 +203,16 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Node.TAKE_IMAGE_FOR_NODE) {
+            if (resultCode == RESULT_OK) {
+                String mCurrentPhotoPath = data.getStringExtra("RESULT");
+                patientHistoryMap.setImagePath(mCurrentPhotoPath);
+                Log.i(TAG,mCurrentPhotoPath);
+                patientHistoryMap.displayImage(this);
+            }
+        }
+    }
 }

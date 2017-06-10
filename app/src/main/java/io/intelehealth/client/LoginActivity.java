@@ -3,10 +3,10 @@ package io.intelehealth.client;
 import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.accounts.NetworkErrorException;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -14,10 +14,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -31,6 +29,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.firebase.jobdispatcher.Driver;
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.firebase.jobdispatcher.Job;
+import com.firebase.jobdispatcher.Lifetime;
+import com.firebase.jobdispatcher.Trigger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,6 +44,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import io.intelehealth.client.objects.WebResponse;
+import io.intelehealth.client.sync.JobDispatchService;
+import io.intelehealth.client.utils.NetworkConnection;
+import io.intelehealth.client.offline_login.OfflineLogin;
 
 /**
  * A login screen that offers login via username/password.
@@ -72,11 +80,15 @@ public class LoginActivity extends AppCompatActivity {
     private View mLoginFormView;
     protected AccountManager manager;
 
+    private OfflineLogin offlineLogin = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        offlineLogin = OfflineLogin.getOfflineLogin();
 
         // Persistent login information
         manager = AccountManager.get(LoginActivity.this);
@@ -90,11 +102,21 @@ public class LoginActivity extends AppCompatActivity {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
+
         Account[] accountList = manager.getAccountsByType("io.intelehealth.openmrs");
         if (accountList.length > 0) {
             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
             startActivity(intent);
             finish();
+        }
+
+        //Enforces Offline Login Check only if network not present
+        if (!NetworkConnection.isOnline(this)) {
+            if (OfflineLogin.getOfflineLogin().getOfflineLoginStatus()) {
+                Intent intent = new Intent(this, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
         }
 
 
@@ -133,7 +155,9 @@ public class LoginActivity extends AppCompatActivity {
         deviceIdView.setText(deviceId);
     }
 
+
     private void attemptLogin() {
+
         if (mAuthTask != null) {
             return;
         }
@@ -171,14 +195,17 @@ public class LoginActivity extends AppCompatActivity {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
             focusView.requestFocus();
-        } else {
+        } else if (NetworkConnection.isOnline(this)) {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
 //            showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
             Log.d(LOG_TAG, "attempting login");
+        } else {
+            offlineLogin.login(email, password);
         }
+
     }
 
     private boolean isEmailValid(String email) {
@@ -321,9 +348,11 @@ public class LoginActivity extends AppCompatActivity {
             if (success) {
                 final Account account = new Account(mEmail, "io.intelehealth.openmrs");
                 manager.addAccountExplicitly(account, mPassword, null);
-
+                offlineLogin.invalidateLoginCredentials();
+                offlineLogin.setUpOfflineLogin(mEmail, mPassword);
                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                 startActivity(intent);
+                startJobDispatcherService(LoginActivity.this);
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
@@ -336,6 +365,24 @@ public class LoginActivity extends AppCompatActivity {
             mAuthTask = null;
             showProgress(false);
         }
+    }
+
+    private void startJobDispatcherService(Context context) {
+        Driver driver = new GooglePlayDriver(context);
+        FirebaseJobDispatcher firebaseJobDispatcher = new FirebaseJobDispatcher(driver);
+
+        Job uploadCronJob = firebaseJobDispatcher.newJobBuilder()
+                .setService(JobDispatchService.class)
+                .setTag("Delayed Job Queue")
+                .setLifetime(Lifetime.FOREVER)
+                .setRecurring(true)
+                .setTrigger(Trigger.executionWindow(
+                        1770,1830
+                ))
+                .setReplaceCurrent(true)
+                .build();
+
+        firebaseJobDispatcher.schedule(uploadCronJob);
     }
 }
 

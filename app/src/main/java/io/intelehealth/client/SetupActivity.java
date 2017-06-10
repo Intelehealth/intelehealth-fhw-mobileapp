@@ -12,17 +12,14 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -30,6 +27,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,8 +42,18 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.intelehealth.client.objects.WebResponse;
+import io.intelehealth.client.offline_login.OfflineLogin;
+import io.intelehealth.client.retrofit.RestApi;
+import io.intelehealth.client.retrofit.ServiceGenerator;
+import io.intelehealth.client.retrofit.models.Results;
+import io.intelehealth.client.retrofit.models.resource.Location;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class SetupActivity extends AppCompatActivity {
@@ -63,8 +71,15 @@ public class SetupActivity extends AppCompatActivity {
     private EditText mUrlField;
     private EditText mPrefixField;
 
+    private Button mLoginButton;
+
+    private Spinner mDropdownLocation;
+
+    private List<Location> mLocations = new ArrayList<>();
+
 
     private static final int PERMISSION_ALL = 1;
+
 
 
     @Override
@@ -74,6 +89,7 @@ public class SetupActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mDropdownLocation = (Spinner) findViewById(R.id.spinner_location);
 
         // Persistent login information
         manager = AccountManager.get(SetupActivity.this);
@@ -81,6 +97,14 @@ public class SetupActivity extends AppCompatActivity {
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         // populateAutoComplete(); TODO: create our own autocomplete code
+
+        mLoginButton = (Button) findViewById(R.id.setup_submit_button);
+        mLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                attemptLogin();
+            }
+        });
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -108,7 +132,6 @@ public class SetupActivity extends AppCompatActivity {
 
         mUrlField = (EditText) findViewById(R.id.editText_URL);
         mPrefixField = (EditText) findViewById(R.id.editText_prefix);
-
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar_setup);
         Button submitButton = (Button) findViewById(R.id.setup_submit_button);
@@ -146,11 +169,42 @@ public class SetupActivity extends AppCompatActivity {
                 Manifest.permission.ACCOUNT_MANAGER
         };
 
-        if(!hasPermissions(this,PERMISSIONS))
+        if (!hasPermissions(this, PERMISSIONS))
 
         {
             ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
         }
+
+        mUrlField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    Toast.makeText(SetupActivity.this, "Working", Toast.LENGTH_LONG).show();
+                    // code to execute when EditText loses focus
+                    if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
+                        String BASE_URL = "http://" + mUrlField.getText().toString() + "/openmrs/ws/rest/v1/";
+                        getLocationFromServer(BASE_URL);
+
+                    }
+                }
+            }
+        });
+
+
+       /* mDropdownLocation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.i(LOG_TAG,"position :"+position);
+                if(mLocations!=null)
+                Log.i(LOG_TAG,mLocations.get(position).getName());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });*/
+
 
 
     }
@@ -184,6 +238,7 @@ public class SetupActivity extends AppCompatActivity {
             return;
         }
 
+
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
@@ -210,7 +265,15 @@ public class SetupActivity extends AppCompatActivity {
         } else if (!isEmailValid(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
+
+        }
+        Location location = null;
+        if(mDropdownLocation.getSelectedItemPosition()< 0){
             cancel = true;
+            Toast.makeText(SetupActivity.this,"Please select a value form the dropdown",Toast.LENGTH_LONG);
+        }
+        else{
+            location =  mLocations.get(mDropdownLocation.getSelectedItemPosition()-1);
         }
 
         if (cancel) {
@@ -220,15 +283,17 @@ public class SetupActivity extends AppCompatActivity {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-
-
-            String urlString = mUrlField.getText().toString();
-            String prefixString = mPrefixField.getText().toString();
-            mAuthTask = new TestSetup(urlString, prefixString, email, password);
-            mAuthTask.execute();
-            Log.d(LOG_TAG, "attempting setup");
+            if(location!=null) {
+                Log.i(LOG_TAG,location.getDisplay());
+                String urlString = mUrlField.getText().toString();
+                String prefixString = mPrefixField.getText().toString();
+                mAuthTask = new TestSetup(urlString, prefixString, email, password,location);
+                mAuthTask.execute();
+                Log.d(LOG_TAG, "attempting setup");
+            }
         }
     }
+
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
@@ -248,12 +313,15 @@ public class SetupActivity extends AppCompatActivity {
         private final String CLEAN_URL;
         private final String PREFIX;
         private String BASE_URL;
+        private Location LOCATION;
 
-        TestSetup(String url, String prefix, String username, String password) {
+
+        TestSetup(String url, String prefix, String username, String password,Location location) {
             CLEAN_URL = url;
             PREFIX = prefix;
             USERNAME = username;
             PASSWORD = password;
+            LOCATION = location;
         }
 
         @Override
@@ -274,10 +342,11 @@ public class SetupActivity extends AppCompatActivity {
                 Log.d(LOG_TAG, "UN: " + USERNAME);
                 Log.d(LOG_TAG, "PW: " + PASSWORD);
 
+             //TODO: Hack Code... Change This...
                 String urlModifier = "patient";
                 String dataString = "?q=" + PREFIX;
 
-                BASE_URL = "http://" + CLEAN_URL + ":8080/openmrs/ws/rest/v1/";
+                BASE_URL = "http://" + CLEAN_URL + "/openmrs/ws/rest/v1/";
                 String urlString = BASE_URL + urlModifier + dataString;
 
                 URL url = new URL(urlString);
@@ -361,6 +430,10 @@ public class SetupActivity extends AppCompatActivity {
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = sharedPref.edit();
 
+                editor.putString(SettingsActivity.KEY_PREF_LOCATION_NAME,LOCATION.getDisplay());
+                editor.putString(SettingsActivity.KEY_PREF_LOCATION_UUID,LOCATION.getUuid());
+                editor.putString(SettingsActivity.KEY_PREF_LOCATION_DESCRIPTION,LOCATION.getDescription());
+
                 editor.putString(SettingsActivity.KEY_PREF_SERVER_URL, BASE_URL);
                 Log.d(LOG_TAG, BASE_URL);
                 editor.apply();
@@ -371,6 +444,8 @@ public class SetupActivity extends AppCompatActivity {
 
                 editor.putBoolean(SettingsActivity.KEY_PREF_SETUP_COMPLETE, true);
                 editor.apply();
+
+                OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
 
                 Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
                 startActivity(intent);
@@ -387,5 +462,40 @@ public class SetupActivity extends AppCompatActivity {
                 mPrefixField.requestFocus();
             }
         }
+    }
+
+    private void getLocationFromServer(String url) {
+        ServiceGenerator.changeApiBaseUrl(url);
+        RestApi apiService =
+                ServiceGenerator.createService(RestApi.class);
+        Call<Results<Location>> call = apiService.getLocations(null);
+        call.enqueue(new Callback<Results<Location>>() {
+            @Override
+            public void onResponse(Call<Results<Location>> call, Response<Results<Location>> response) {
+                if (response.code() == 200) {
+                    Results<Location> locationList = response.body();
+                    mLocations =locationList.getResults();
+                    List<String> items = getLocationStringList(locationList.getResults());
+                    LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, items);
+                    mDropdownLocation.setAdapter(adapter);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Results<Location>> call, Throwable t) {
+                    Toast.makeText(SetupActivity.this,"Unable to fetch locations",Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+
+    private List<String> getLocationStringList(List<Location> locationList) {
+        List<String> list = new ArrayList<String>();
+        list.add(getString(R.string.login_location_select));
+        for (int i = 0; i < locationList.size(); i++) {
+            list.add(locationList.get(i).getDisplay());
+        }
+        return list;
     }
 }
