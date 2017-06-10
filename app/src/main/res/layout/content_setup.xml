@@ -11,7 +11,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="io.intelehealth.client.setup.SetupActivity"
+    tools:context="io.intelehealth.client.SetupActivity"
     tools:showIn="@layout/activity_setup">
 
 
@@ -57,7 +57,6 @@
             android:hint="Prefix" />
     </android.support.design.widget.TextInputLayout>
 
-
     <Space
         android:layout_width="match_parent"
         android:layout_height="20sp" />
@@ -67,7 +66,30 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:text="Please enter your username and password" />
+        android:text="Choose a location" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Spinner
+            android:id="@+id/spinner_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </android.support.design.widget.TextInputLayout>
+
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20sp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:text="Please enter your username and password"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"

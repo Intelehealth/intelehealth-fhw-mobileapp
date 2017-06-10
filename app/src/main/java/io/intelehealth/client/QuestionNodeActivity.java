@@ -14,6 +14,7 @@ import android.widget.ExpandableListView;
 
 import org.json.JSONObject;
 
+import io.intelehealth.client.db.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Knowledge;
 import io.intelehealth.client.objects.Node;
 

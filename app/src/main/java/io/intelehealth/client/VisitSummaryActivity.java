@@ -45,10 +45,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import io.intelehealth.client.db.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Obs;
 import io.intelehealth.client.objects.Patient;
-import io.intelehealth.client.objects.PhysicalExam;
-import io.intelehealth.client.objects.TableExam;
 import io.intelehealth.client.objects.WebResponse;
 import io.intelehealth.client.services.ClientService;
 
