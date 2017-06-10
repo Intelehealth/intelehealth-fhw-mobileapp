@@ -201,7 +201,6 @@
         <activity android:name=".TodayPatientActivity"
             android:label="@string/title_activity_today_patient"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-
         <!-- Firebase Services-->
         <service android:name=".firebase_cloud_messaging.MyFirebaseMessagingService">
             <intent-filter>
