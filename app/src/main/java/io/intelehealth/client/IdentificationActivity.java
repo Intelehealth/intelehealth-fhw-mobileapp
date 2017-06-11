@@ -219,14 +219,10 @@ public class IdentificationActivity extends AppCompatActivity {
                  filePath.mkdir();
                 }
                 Intent cameraIntent = new Intent(IdentificationActivity.this, CameraActivity.class);
-<<<<<<< HEAD
-                cameraIntent.putExtra(CameraActivity.SHOW_DIALOG_MESSAGE, getString(R.string.camera_dialog_default));
-                cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, "XYZ");
-=======
+
                 cameraIntent.putExtra(CameraActivity.SHOW_DIALOG_MESSAGE,getString(R.string.camera_dialog_default));
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, patientID);
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH,filePath);
->>>>>>> master
                 startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
             }
         });
