@@ -232,7 +232,7 @@ public class SetupActivity extends AppCompatActivity {
         }
         return true;
     }
-
+    
     private void attemptLogin() {
         if (mAuthTask != null) {
             return;

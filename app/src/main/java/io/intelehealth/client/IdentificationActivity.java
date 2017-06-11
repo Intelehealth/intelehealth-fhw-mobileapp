@@ -93,8 +93,6 @@ public class IdentificationActivity extends AppCompatActivity {
     String mCurrentPhotoPath;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -221,6 +219,7 @@ public class IdentificationActivity extends AppCompatActivity {
                  filePath.mkdir();
                 }
                 Intent cameraIntent = new Intent(IdentificationActivity.this, CameraActivity.class);
+
                 cameraIntent.putExtra(CameraActivity.SHOW_DIALOG_MESSAGE,getString(R.string.camera_dialog_default));
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, patientID);
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH,filePath);
@@ -397,7 +396,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 et.setError(getString(R.string.error_field_required));
                 focusView = et;
                 cancel = true;
-                break;
+                return;
+            } else {
+                et.setError(null);
             }
         }
 
@@ -420,12 +421,18 @@ public class IdentificationActivity extends AppCompatActivity {
             countryText.setError(getString(R.string.error_field_required));
             focusView = countryText;
             cancel = true;
+            return;
+        } else {
+            countryText.setError(null);
         }
 
         if (mState.getSelectedItemPosition() == 0) {
             stateText.setError(getString(R.string.error_field_required));
             focusView = stateText;
             cancel = true;
+            return;
+        }else {
+            stateText.setError(null);
         }
 
         if (cancel) {
@@ -506,11 +513,11 @@ public class IdentificationActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.v(TAG,"Result Received");
+        Log.v(TAG, "Result Received");
         if (requestCode == CameraActivity.TAKE_IMAGE) {
-            Log.v(TAG,"Request Code " + CameraActivity.TAKE_IMAGE);
+            Log.v(TAG, "Request Code " + CameraActivity.TAKE_IMAGE);
             if (resultCode == RESULT_OK) {
-                Log.i(TAG,"Result OK");
+                Log.i(TAG, "Result OK");
                 mCurrentPhotoPath = data.getStringExtra("RESULT");
                 Log.v("IdentificationActivity", mCurrentPhotoPath);
                 Bitmap imageBitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
