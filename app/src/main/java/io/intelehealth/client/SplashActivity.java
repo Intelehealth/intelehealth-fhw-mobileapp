@@ -1,18 +1,11 @@
 package io.intelehealth.client;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.preference.PreferenceManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
 
 
 public class SplashActivity extends AppCompatActivity {
@@ -25,7 +18,6 @@ public class SplashActivity extends AppCompatActivity {
     int PERMISSIONS_REQUEST_CAMERA = 6;
     int PERMISSIONS_REQUEST_INTERNET = 7;
     int PERMISSIONS_REQUEST_MANAGE_ACCOUNTS = 9;
-
 
 
     @Override
@@ -114,8 +106,6 @@ public class SplashActivity extends AppCompatActivity {
             finish();
         }
     }
-
-
 
 
 }

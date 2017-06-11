@@ -415,7 +415,6 @@
 
     <string name="title_activity_camera">Camera Activity</string>
     <string name="title_activity_today_patient">"Today's Patients"</string>
-
     <string name="visit_summary_patient_details">Patient Details</string>
 
     <!--Setup Activity-->
@@ -438,12 +437,17 @@
     <string name="flash_off">Flash off</string>
     <string name="flash_on">Flash on</string>
 
+    <string name="button_save">Save</string>
+    <string name="button_delete">Delete</string>
+
     //Camera Dialog
     <string name="camera_dialog_default">Please click photo in good lighting conditions only. If photo is not clear, please retake the photo.</string>
     <!--Offline Login Errors-->
     <string name="offline_credentials_unavailable">Offline Login is not available.</string>
     <string name="offline_user_does_not_match">User does not match..</string>
     <string name="offline_authentication_not_possible">Unable to authenticate offline.</string>
+
+    <string name="login_location_select">Session Location</string>
 
 
 

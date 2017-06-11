@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -33,12 +34,14 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
 import io.intelehealth.client.camera.CameraActivity;
+import io.intelehealth.client.db.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Patient;
 
 import static io.intelehealth.client.HelperMethods.REQUEST_CAMERA;
@@ -75,6 +78,8 @@ public class IdentificationActivity extends AppCompatActivity {
     Spinner mState;
 
     String mPhoto;
+    Patient patient;
+    String patientID;
 
     Calendar today = Calendar.getInstance();
     Calendar dob = Calendar.getInstance();
@@ -127,6 +132,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 R.array.countries, android.R.layout.simple_spinner_item);
         countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCountry.setAdapter(countryAdapter);
+
+        generateID();
 
 
         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this,
@@ -207,9 +214,19 @@ public class IdentificationActivity extends AppCompatActivity {
                 //    mPhoto = results[0];
                 //    mCurrentPhotoPath = results[1];
                 //}
+                File filePath = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES)+File.separator+"patient_photo");
+                if(!filePath.exists()){
+                 filePath.mkdir();
+                }
                 Intent cameraIntent = new Intent(IdentificationActivity.this, CameraActivity.class);
+<<<<<<< HEAD
                 cameraIntent.putExtra(CameraActivity.SHOW_DIALOG_MESSAGE, getString(R.string.camera_dialog_default));
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, "XYZ");
+=======
+                cameraIntent.putExtra(CameraActivity.SHOW_DIALOG_MESSAGE,getString(R.string.camera_dialog_default));
+                cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, patientID);
+                cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH,filePath);
+>>>>>>> master
                 startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
             }
         });
@@ -516,8 +533,6 @@ public class IdentificationActivity extends AppCompatActivity {
     public class InsertPatientTable extends AsyncTask<Void, Void, Boolean>
             implements DialogInterface.OnCancelListener {
 
-        String patientID;
-        Patient patient;
 
         InsertPatientTable(Patient currentPatient) {
             patient = currentPatient;
@@ -527,45 +542,6 @@ public class IdentificationActivity extends AppCompatActivity {
         ContentValues patientEntries = new ContentValues();
         ContentValues visitData = new ContentValues();
 
-        public void generateID() {
-            String table = "patient";
-            String[] columnsToReturn = {"_id"};
-            String orderBy = "_id";
-            final Cursor idCursor = localdb.query(table, columnsToReturn, null, null, null, null, orderBy);
-            idCursor.moveToLast();
-
-            if (idCursor.getCount() > 0) {
-                String lastIDString = idCursor.getString(idCursor.getColumnIndexOrThrow("_id")); //Grab the last patientID
-                Log.d(TAG, lastIDString);
-
-                Integer newInteger = 0;
-                // TODO: Handle case where ID is changed to something else and then changed back
-                // The above will most likely be solved by the automatic assignment of IDs in the future
-                try {
-                    if (lastIDString.substring(0, lastIDString.length() - 1).equals(idPreFix)) { // ID hasn't changed
-                        String lastID = lastIDString.substring(idPreFix.length()); //Grab the last integer of the patientID
-//                        Log.d(TAG, String.valueOf(lastID));
-                        newInteger = Integer.valueOf(lastID);
-                    }
-                } catch (Exception e) {
-                    newInteger = 0; // ID was probably changed
-                } finally {
-                    Log.d(TAG, String.valueOf(newInteger));
-                    newInteger++; //Increment it by 1
-                }
-
-                patientID = idPreFix + String.valueOf(newInteger); //This patient is assigned the new incremented number
-//                Log.d(TAG, patientID);
-                patient.setId(patientID);
-            } else {
-                patientID = idPreFix + String.valueOf(1); //This patient is assigned the new incremented number
-//                Log.d(TAG, patientID);
-                patient.setId(patientID);
-            }
-
-            idCursor.close();
-            patientID = patient.getId();
-        }
 
         public void gatherEntries() {
             patientEntries.put("_id", patient.getId());
@@ -590,7 +566,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            generateID();
+
             gatherEntries();
 
             localdb.insert(
@@ -665,6 +641,46 @@ public class IdentificationActivity extends AppCompatActivity {
                 Log.e("Read/Write Permissions", "Permission Denied");
             }
         }
+    }
+
+    public void generateID() {
+        String table = "patient";
+        String[] columnsToReturn = {"_id"};
+        String orderBy = "_id";
+        final Cursor idCursor = localdb.query(table, columnsToReturn, null, null, null, null, orderBy);
+        idCursor.moveToLast();
+
+        if (idCursor.getCount() > 0) {
+            String lastIDString = idCursor.getString(idCursor.getColumnIndexOrThrow("_id")); //Grab the last patientID
+            Log.d(TAG, lastIDString);
+
+            Integer newInteger = 0;
+            // TODO: Handle case where ID is changed to something else and then changed back
+            // The above will most likely be solved by the automatic assignment of IDs in the future
+            try {
+                if (lastIDString.substring(0, lastIDString.length() - 1).equals(idPreFix)) { // ID hasn't changed
+                    String lastID = lastIDString.substring(idPreFix.length()); //Grab the last integer of the patientID
+//                        Log.d(TAG, String.valueOf(lastID));
+                    newInteger = Integer.valueOf(lastID);
+                }
+            } catch (Exception e) {
+                newInteger = 0; // ID was probably changed
+            } finally {
+                Log.d(TAG, String.valueOf(newInteger));
+                newInteger++; //Increment it by 1
+            }
+
+            patientID = idPreFix + String.valueOf(newInteger); //This patient is assigned the new incremented number
+//                Log.d(TAG, patientID);
+            patient.setId(patientID);
+        } else {
+            patientID = idPreFix + String.valueOf(1); //This patient is assigned the new incremented number
+//                Log.d(TAG, patientID);
+            patient.setId(patientID);
+        }
+
+        idCursor.close();
+        patientID = patient.getId();
     }
 }
 

@@ -66,6 +66,8 @@ public class Node implements Serializable{
     private boolean selected;
     private boolean subSelected;
 
+    private List<String> imagePathList;
+
     private String imagePath;
 
     public static final int TAKE_IMAGE_FOR_NODE = 507;
@@ -176,9 +178,17 @@ public class Node implements Serializable{
 
     public void displayImage(final Activity context){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setNeutralButton(R.string.button_ok, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.button_save, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                addImageToList();
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton(R.string.button_delete, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                imagePath = null;
                 dialog.dismiss();
             }
         });
@@ -1189,6 +1199,23 @@ public class Node implements Serializable{
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    public List<String> getImagePathList() {
+        return imagePathList;
+    }
+
+    public void setImagePathList(List<String> imagePathList) {
+        this.imagePathList = imagePathList;
+    }
+
+    public void addImageToList(){
+        if(imagePathList==null){
+            imagePathList = new ArrayList<>();
+        }
+        if(imagePath!=null && !imagePath.isEmpty()){
+            imagePathList.add(imagePath);
+        }
     }
 }
 

@@ -21,6 +21,8 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import io.intelehealth.client.db.LocalRecordsDatabaseHelper;
+
 public class SearchPatientActivity extends AppCompatActivity {
 
     final String LOG_TAG = "Search Patient Activity";

@@ -9,10 +9,11 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-feature
         android:name="android.hardware.camera" android:required="true" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
@@ -114,11 +115,6 @@
                 android:value="io.intelehealth.client.FamilyHistoryActivity" />
         </activity>
 
-        <provider
-            android:name=".SearchSuggestionProvider"
-            android:authorities="io.intelehealth.client.SearchSuggestionProvider"
-            android:exported="false" />
-
         <activity
             android:name=".IdentificationActivity"
             android:label="@string/title_activity_identification"
@@ -205,7 +201,6 @@
         <activity android:name=".TodayPatientActivity"
             android:label="@string/title_activity_today_patient"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-
         <!-- Firebase Services-->
         <service android:name=".firebase_cloud_messaging.MyFirebaseMessagingService">
             <intent-filter>
@@ -216,6 +211,25 @@
         <service android:name=".firebase_cloud_messaging.MyFirebaseInstanceIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+        <provider
+            android:name=".db.DelayedJobQueueProvider"
+            android:authorities="io.intelehealth.client.db.DelayedJobQueueProvider"
+            android:enabled="true"
+            android:exported="false" />
+
+        <provider
+            android:name=".SearchSuggestionProvider"
+            android:authorities="io.intelehealth.client.SearchSuggestionProvider"
+            android:exported="false" />
+
+        <service
+            android:name=".sync.JobDispatchService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
             </intent-filter>
         </service>
     </application>

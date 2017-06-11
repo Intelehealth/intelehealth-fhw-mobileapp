@@ -21,6 +21,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import io.intelehealth.client.db.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.TableExam;
 
 public class TableExamActivity extends AppCompatActivity {
@@ -300,7 +301,7 @@ public class TableExamActivity extends AppCompatActivity {
         ContentValues contentValues = new ContentValues();
         contentValues.put("value", objValue);
 
-        String selection = "patient_id = ? AND visit_id = ? concept_id = ?";
+        String selection = "patient_id = ? AND visit_id = ? AND concept_id = ?";
         String[] args = {patientID, visitID, String.valueOf(CONCEPT_ID)};
 
         localdb.update(

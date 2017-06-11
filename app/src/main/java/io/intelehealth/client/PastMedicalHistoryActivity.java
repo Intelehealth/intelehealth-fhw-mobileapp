@@ -13,6 +13,7 @@ import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
 
+import io.intelehealth.client.db.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Node;
 
 public class PastMedicalHistoryActivity extends AppCompatActivity {
