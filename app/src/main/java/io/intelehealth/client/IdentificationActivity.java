@@ -78,7 +78,7 @@ public class IdentificationActivity extends AppCompatActivity {
     Spinner mState;
 
     String mPhoto;
-    Patient patient;
+    Patient patient = new Patient();
     String patientID;
 
     Calendar today = Calendar.getInstance();
@@ -438,43 +438,43 @@ public class IdentificationActivity extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            Patient currentPatient = new Patient();
+
             try {
-                currentPatient.setFirstName(mFirstName.getText().toString());
+                patient.setFirstName(mFirstName.getText().toString());
                 if (TextUtils.isEmpty(mMiddleName.getText().toString())) {
-                    currentPatient.setMiddleName("");
+                    patient.setMiddleName("");
                 } else {
-                    currentPatient.setMiddleName(mMiddleName.getText().toString());
+                    patient.setMiddleName(mMiddleName.getText().toString());
                 }
                 if (TextUtils.isEmpty(mLastName.getText().toString())) {
-                    currentPatient.setLastName("");
+                    patient.setLastName("");
                 } else {
-                    currentPatient.setLastName(mLastName.getText().toString());
+                    patient.setLastName(mLastName.getText().toString());
                 }
                 if (TextUtils.isEmpty(mDOB.getText().toString())) {
-                    currentPatient.setDateOfBirth("");
+                    patient.setDateOfBirth("");
                 } else {
-                    currentPatient.setDateOfBirth(mDOB.getText().toString());
+                    patient.setDateOfBirth(mDOB.getText().toString());
                 }
                 if (TextUtils.isEmpty(mPhoneNum.getText().toString())) {
-                    currentPatient.setPhoneNumber("");
+                    patient.setPhoneNumber("");
                 } else {
-                    currentPatient.setPhoneNumber(mPhoneNum.getText().toString());
+                    patient.setPhoneNumber(mPhoneNum.getText().toString());
                 }
                 if (TextUtils.isEmpty(mAddress1.getText().toString())) {
-                    currentPatient.setAddress1("");
+                    patient.setAddress1("");
                 } else {
-                    currentPatient.setAddress1(mAddress1.getText().toString());
+                    patient.setAddress1(mAddress1.getText().toString());
                 }
                 if (TextUtils.isEmpty(mAddress2.getText().toString())) {
-                    currentPatient.setAddress2("");
+                    patient.setAddress2("");
                 } else {
-                    currentPatient.setAddress2(mAddress2.getText().toString());
+                    patient.setAddress2(mAddress2.getText().toString());
                 }
                 if (TextUtils.isEmpty(mCity.getText().toString())) {
-                    currentPatient.setCityVillage("");
+                    patient.setCityVillage("");
                 } else {
-                    currentPatient.setCityVillage(mCity.getText().toString());
+                    patient.setCityVillage(mCity.getText().toString());
                 }
 //                if (TextUtils.isEmpty(mState.getText().toString())) {
 //                    currentPatient.setStateProvince("");
@@ -482,31 +482,31 @@ public class IdentificationActivity extends AppCompatActivity {
 //                    currentPatient.setStateProvince(mState.getText().toString());
 //                }
                 if (TextUtils.isEmpty(mPostal.getText().toString())) {
-                    currentPatient.setPostalCode("");
+                    patient.setPostalCode("");
                 } else {
-                    currentPatient.setPostalCode(mPostal.getText().toString());
+                    patient.setPostalCode(mPostal.getText().toString());
                 }
                 if (TextUtils.isEmpty(mRelationship.getText().toString())) {
-                    currentPatient.setSdw("");
+                    patient.setSdw("");
                 } else {
-                    currentPatient.setSdw(mRelationship.getText().toString());
+                    patient.setSdw(mRelationship.getText().toString());
                 }
                 if (TextUtils.isEmpty(mOccupation.getText().toString())) {
-                    currentPatient.setOccupation("");
+                    patient.setOccupation("");
                 } else {
-                    currentPatient.setOccupation(mOccupation.getText().toString());
+                    patient.setOccupation(mOccupation.getText().toString());
                 }
 
 
                 //currentPatient.setCountry(mCountry.getText().toString());
-                currentPatient.setGender(mGender);
-                currentPatient.setCountry(mCountry.getSelectedItem().toString());
-                currentPatient.setStateProvince(mState.getSelectedItem().toString());
+                patient.setGender(mGender);
+                patient.setCountry(mCountry.getSelectedItem().toString());
+                patient.setStateProvince(mState.getSelectedItem().toString());
             } catch (NullPointerException e) {
                 Snackbar.make(findViewById(R.id.cl_table), R.string.identification_screen_error_data_fields, Snackbar.LENGTH_SHORT);
             }
 
-            new InsertPatientTable(currentPatient).execute();
+            new InsertPatientTable(patient).execute();
         }
     }
 

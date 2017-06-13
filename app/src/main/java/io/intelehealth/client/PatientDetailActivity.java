@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -29,11 +30,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import io.intelehealth.client.db.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Patient;
@@ -54,6 +59,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     Button newVisit;
     LinearLayout previousVisitsList;
+
 
 
     @Override
@@ -77,7 +83,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         patient.setId(patientID);
         setDisplay(String.valueOf(patientID));
 
-        if(intentTag != null && intentTag.equals("new")){
+        if (intentTag != null && intentTag.equals("new")) {
             Intent serviceIntent = new Intent(this, ClientService.class);
             serviceIntent.putExtra("serviceCall", "patient");
             serviceIntent.putExtra("patientID", patientID);
@@ -116,7 +122,6 @@ public class PatientDetailActivity extends AppCompatActivity {
                 localdb.close();
                 intent2.putExtra("visitID", visitID);
                 intent2.putExtra("name", fullName);
-
 
 
                 intent2.putExtra("tag", "new");
@@ -166,7 +171,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         String[] patientArgs = {dataString};
         String[] patientColumns = {"first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
-                "postal_code", "phone_number", "gender", "sdw", "occupation", "patient_photo"};
+                "postal_code","country","phone_number", "gender", "sdw", "occupation", "patient_photo"};
         final Cursor idCursor = db.query("patient", patientColumns, patientSelection, patientArgs, null, null, null);
 
         if (idCursor.moveToFirst()) {
@@ -180,6 +185,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 patient.setCityVillage(idCursor.getString(idCursor.getColumnIndexOrThrow("city_village")));
                 patient.setStateProvince(idCursor.getString(idCursor.getColumnIndexOrThrow("state_province")));
                 patient.setPostalCode(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
+                patient.setCountry(idCursor.getString(idCursor.getColumnIndexOrThrow("country")));
                 patient.setPhoneNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
                 patient.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 patient.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
@@ -225,16 +231,33 @@ public class PatientDetailActivity extends AppCompatActivity {
         int age = HelperMethods.getAge(patient.getDateOfBirth());
         ageView.setText(String.valueOf(age));
         dobView.setText(patient.getDateOfBirth());
-        addr1View.setText(patient.getAddress1());
+        if (patient.getAddress1() == null || patient.getAddress2().equals("")) {
+            addr1View.setVisibility(View.GONE);
+        } else {
+            addr1View.setText(patient.getAddress1());
+        }
         if (patient.getAddress2() == null || patient.getAddress2().equals("")) {
             addr2Row.setVisibility(View.GONE);
         } else {
             addr2View.setText(patient.getAddress2());
         }
+        String city_village;
+        if (patient.getCityVillage() != null) {
+            city_village = patient.getCityVillage().trim();
+        } else {
+            city_village = "";
+        }
+        String postal_code;
+        if (patient.getPostalCode() != null) {
+            postal_code = patient.getPostalCode().trim()+",";
+        } else {
+            postal_code = "";
+        }
+
         String addrFinalLine =
-                String.format("%s, %s %s %s",
-                        patient.getCityVillage(), patient.getStateProvince(),
-                        patient.getPostalCode(), patient.getCountry());
+                String.format("%s, %s, %s %s",
+                        city_village, patient.getStateProvince(),
+                        postal_code, patient.getCountry());
         addrFinalView.setText(addrFinalLine);
         phoneView.setText(patient.getPhoneNumber());
 
@@ -309,15 +332,16 @@ public class PatientDetailActivity extends AppCompatActivity {
         if (visitCursor.getCount() < 1) {
             neverSeen();
         } else {
-            if (visitCursor.moveToLast()){
+
+            if (visitCursor.moveToLast()) {
                 do {
                     String date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("start_datetime"));
-
+                    Integer visit_id = visitCursor.getInt(visitCursor.getColumnIndexOrThrow("_id"));
                     SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                     try {
                         Date formatted = currentDate.parse(date);
                         String visitDate = currentDate.format(formatted);
-                        createOldVisit(visitDate);
+                        createOldVisit(visitDate,visit_id);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -426,13 +450,56 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     }
 
-    private void createOldVisit(String datetime) {
-        final LayoutInflater inflater = PatientDetailActivity.this.getLayoutInflater();
-        View convertView = inflater.inflate(R.layout.list_item_previous_visit, null);
-        TextView textView = (TextView) convertView.findViewById(R.id.textView_visit_info);
-        String visitString = String.format("Seen on %s", datetime);
+    private void createOldVisit(String datetime,int visit_id) {
+       // final LayoutInflater inflater = PatientDetailActivity.this.getLayoutInflater();
+      //  View convertView = inflater.inflate(R.layout.list_item_previous_visit, null);
+      //  TextView textView = (TextView) convertView.findViewById(R.id.textView_visit_info);
+        TextView textView = new TextView(this);
+        String visitString = String.format("Seen on %s.", datetime);
         textView.setText(visitString);
-        previousVisitsList.addView(convertView);
+        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams
+                (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        llp.setMargins(25, 25,25, 25);
+        textView.setLayoutParams(llp);
+        textView.setTag(visit_id);
+       /* textView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Disallow ScrollView to intercept touch events.
+                        Toast.makeText(PatientDetailActivity.this,"Touch Down",Toast.LENGTH_SHORT).show();
+                        v.getParent().getParent().getParent()
+                                .requestDisallowInterceptTouchEvent(true);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        // Allow ScrollView to intercept touch events.
+                        Toast.makeText(PatientDetailActivity.this,"Touch Up",Toast.LENGTH_SHORT).show();
+                        v.getParent().getParent()
+                                .requestDisallowInterceptTouchEvent(false);
+
+                        break;
+                }
+                return true;
+            }
+        });*/
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(PatientDetailActivity.this,"Click",Toast.LENGTH_SHORT).show();
+                int position  = (Integer)v.getTag();
+                Intent visitSummary = new Intent(PatientDetailActivity.this,VisitSummaryActivity.class);
+                visitSummary.putExtra("visitID", String.valueOf(position));
+                visitSummary.putExtra("patientID", patientID);
+                visitSummary.putExtra("name", patientName);
+                visitSummary.putExtra("tag", intentTag);
+                visitSummary.putExtra("pastVisit", true);
+                startActivity(visitSummary);
+            }
+        });
+        previousVisitsList.addView(textView);
         //TODO: add on click listener to open the previous visit
     }
 
@@ -444,4 +511,5 @@ public class PatientDetailActivity extends AppCompatActivity {
         textView.setText(visitString);
         previousVisitsList.addView(convertView);
     }
+
 }

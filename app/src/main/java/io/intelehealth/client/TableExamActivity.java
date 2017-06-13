@@ -3,9 +3,11 @@ package io.intelehealth.client;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -278,7 +280,9 @@ public class TableExamActivity extends AppCompatActivity {
     private long insertDb(double objValue, int CONCEPT_ID) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
 
-        final int CREATOR_ID = 42; // TODO: Connect the proper CREATOR_ID
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        final String CREATOR_ID = prefs.getString("creatorid", null);
 
         String value = String.valueOf(objValue);
 

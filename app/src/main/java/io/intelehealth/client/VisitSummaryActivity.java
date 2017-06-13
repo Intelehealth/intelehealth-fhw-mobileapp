@@ -129,11 +129,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
     Button downloadButton;
     ArrayList<String> physicalExams;
 
+    Boolean isPast = false;
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_visit_summary, menu);
+        MenuItem menuItem = menu.findItem(R.id.summary_endVisit);
+        if(isPast) menuItem.setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -172,6 +176,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
+            isPast = intent.getBooleanExtra("pastVisit",false);
+
 //            Log.v(TAG, "Patient ID: " + patientID);
 //            Log.v(TAG, "Visit ID: " + visitID);
 //            Log.v(TAG, "Patient Name: " + patientName);
@@ -210,9 +216,20 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editPhysical = (ImageButton) findViewById(R.id.imagebutton_edit_physexam);
         editFamHist = (ImageButton) findViewById(R.id.imagebutton_edit_famhist);
         editMedHist = (ImageButton) findViewById(R.id.imagebutton_edit_pathist);
-
-
         uploadButton = (Button) findViewById(R.id.button_upload);
+
+        if(isPast){
+            editVitals.setVisibility(View.GONE);
+            editComplaint.setVisibility(View.GONE);
+            editPhysical.setVisibility(View.GONE);
+            editFamHist.setVisibility(View.GONE);
+            editMedHist.setVisibility(View.GONE);
+            uploadButton.setVisibility(View.GONE);
+            invalidateOptionsMenu();
+        }
+
+
+
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

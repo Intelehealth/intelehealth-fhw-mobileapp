@@ -194,6 +194,7 @@ public class HelperMethods {
 
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
             final String BASE_URL = sharedPref.getString(SettingsActivity.KEY_PREF_SERVER_URL, "");
+            final String session_id = sharedPref.getString("sessionid",null);
 
             String USERNAME = null;
             String PASSWORD = null;
@@ -225,6 +226,12 @@ public class HelperMethods {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
             connection.setRequestProperty("Authorization", "Basic " + encoded);
+            if(session_id!=null) {
+                connection.setRequestProperty("Cookie", "jsessionid=" + session_id);
+            }
+            else{
+                connection.setRequestProperty("Authorization", "Basic " + encoded);
+            }
             connection.setRequestMethod("GET");
             connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
             connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
@@ -303,6 +310,7 @@ public class HelperMethods {
 
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
             String BASE_URL = sharedPref.getString(SettingsActivity.KEY_PREF_SERVER_URL, "");
+            final String session_id = sharedPref.getString("sessionid",null);
 
 
             String urlString = BASE_URL + urlModifier;
@@ -314,7 +322,12 @@ public class HelperMethods {
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
-            connection.setRequestProperty("Authorization", "Basic " + encoded);
+            if(session_id!=null) {
+                connection.setRequestProperty("Cookie", "jsessionid=" + session_id);
+            }
+            else{
+                connection.setRequestProperty("Authorization", "Basic " + encoded);
+            }
             connection.setRequestMethod("POST");
             connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
             connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");

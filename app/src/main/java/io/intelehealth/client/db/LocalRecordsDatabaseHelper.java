@@ -47,7 +47,7 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             "end_datetime TEXT," +
             "visit_type_id integer(10)," +
             "visit_location_id integer(10) NOT NULL," +
-            "visit_creator integer(10) NOT NULL," +
+            "visit_creator TEXT NOT NULL," +
             "openmrs_visit_uuid TEXT" +
             ")";
     public static final String CREATE_OBS = "CREATE TABLE IF NOT EXISTS obs (" +
@@ -56,7 +56,7 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             "visit_id integer(10) NOT NULL," +
             "value text," +
             "concept_id integer(10) NOT NULL," +
-            "creator integer(10) NOT NULL," +
+            "creator TEXT NOT NULL," +
             "openmrs_encounter_id integer(10)," +
             "openmrs_obs_id integer(10)" +
             ")";
@@ -73,7 +73,7 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             "secret_question varchar(255) NOT NULL," +
             "secret_answer varchar(255) NOT NULL," +
             "date_created TEXT NOT NULL," +
-            "creator integer(10) NOT NULL," +
+            "creator TEXT NOT NULL," +
             "date_changed TEXT NOT NULL," +
             "changed_by integer(10) NOT NULL" +
             ")";

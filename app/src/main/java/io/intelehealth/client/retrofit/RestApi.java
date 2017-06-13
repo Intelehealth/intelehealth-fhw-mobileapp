@@ -2,6 +2,7 @@ package io.intelehealth.client.retrofit;
 
 
 
+import io.intelehealth.client.objects.Response;
 import io.intelehealth.client.retrofit.models.Results;
 import io.intelehealth.client.retrofit.models.resource.Location;
 import io.intelehealth.client.retrofit.models.resource.PatientPhoto;
