@@ -36,6 +36,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import io.intelehealth.client.HelperMethods;
+import io.intelehealth.client.IntelehealthApplication;
 import io.intelehealth.client.R;
 import io.intelehealth.client.SettingsActivity;
 import io.intelehealth.client.db.DelayedJobQueueProvider;
@@ -80,7 +81,7 @@ public class ClientService extends IntentService {
 
     Integer statusCode = 0;
 
-    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(IntelehealthApplication.getAppContext());
     String location_name = prefs.getString(SettingsActivity.KEY_PREF_LOCATION_NAME, null);
     String location_uuid = prefs.getString(SettingsActivity.KEY_PREF_LOCATION_UUID, null);
     String location_desc = prefs.getString(SettingsActivity.KEY_PREF_LOCATION_DESCRIPTION, null);

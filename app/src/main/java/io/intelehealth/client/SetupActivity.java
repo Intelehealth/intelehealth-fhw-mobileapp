@@ -31,6 +31,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -268,7 +271,7 @@ public class SetupActivity extends AppCompatActivity {
 
         }
         Location location = null;
-        if(mDropdownLocation.getSelectedItemPosition()< 0){
+        if(mDropdownLocation.getSelectedItemPosition()<=0){
             cancel = true;
             Toast.makeText(SetupActivity.this,"Please select a value form the dropdown",Toast.LENGTH_LONG);
         }
@@ -338,38 +341,41 @@ public class SetupActivity extends AppCompatActivity {
             WebResponse loginAttempt = new WebResponse();
 
             try {
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
                 Log.d(LOG_TAG, "UN: " + USERNAME);
                 Log.d(LOG_TAG, "PW: " + PASSWORD);
 
-             //TODO: Hack Code... Change This...
-                String urlModifier = "patient";
-                String dataString = "?q=" + PREFIX;
+                String urlModifier = "session";
+
 
                 BASE_URL = "http://" + CLEAN_URL + "/openmrs/ws/rest/v1/";
-                String urlString = BASE_URL + urlModifier + dataString;
+                String urlString = BASE_URL + urlModifier;
 
                 URL url = new URL(urlString);
 
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
-                connection.setRequestProperty("Authorization", "Basic " + encoded);
+
+                connection.setRequestProperty("Authorization", "Basic "+ encoded);
                 connection.setRequestMethod("GET");
                 connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
                 connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
+                Log.d(LOG_TAG, "GET URL: " + url);
+                Log.i(LOG_TAG,connection.getRequestProperties().toString());
 
                 int responseCode = connection.getResponseCode();
                 loginAttempt.setResponseCode(responseCode);
 
                 Log.d(LOG_TAG, "GET URL: " + url);
-                Log.d(LOG_TAG, "Response Code from Server: " + String.valueOf(responseCode));
+                Log.d(LOG_TAG, "Response Code from Server: " + connection.getResponseCode());
 
                 // Read the input stream into a String
                 InputStream inputStream = connection.getInputStream();
                 StringBuffer buffer = new StringBuffer();
                 if (inputStream == null) {
                     // Do Nothing.
-                    return null;
+                    return 201;
                 }
                 reader = new BufferedReader(new InputStreamReader(inputStream));
 
@@ -383,7 +389,7 @@ public class SetupActivity extends AppCompatActivity {
 
                 if (buffer.length() == 0) {
                     // Stream was empty.  No point in parsing.
-                    return null;
+                    return 201;
                 }
 
                 JSONString = buffer.toString();
@@ -395,27 +401,29 @@ public class SetupActivity extends AppCompatActivity {
                     return loginAttempt.getResponseCode();
                 }
 
-                if (!loginAttempt.getResponseString().isEmpty()) {
-                    try {
-                        JSONObject responseObject = new JSONObject(loginAttempt.getResponseString());
-                        JSONArray results = responseObject.getJSONArray("results");
-                        if (results.length() == 0) {
-                            return 1;
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        return 201;
+                else if (loginAttempt == null) {
+                    return 201;
+                } else {
+                    JsonObject responseObject = new JsonParser().parse(loginAttempt.getResponseString()).getAsJsonObject();
+                    if (responseObject.get("authenticated").getAsBoolean()) {
+
+                        JsonObject userObject= responseObject.get("user").getAsJsonObject();
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putString("sessionid", responseObject.get("sessionId").getAsString());
+                        editor.putString("creatorid", userObject.get("uuid").getAsString());
+                        editor.commit();
+                        return 1;
+                    } else {
+                        return 3;
                     }
                 }
             } catch (UnknownHostException e) {
                 e.printStackTrace();
-                return 3;
+                return 201;
             } catch (IOException e) {
                 e.printStackTrace();
                 return 201;
             }
-
-            return 201;
         }
 
         @Override

@@ -35,6 +35,10 @@ import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.firebase.jobdispatcher.Job;
 import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.Trigger;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -44,9 +48,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import io.intelehealth.client.objects.WebResponse;
+import io.intelehealth.client.offline_login.OfflineLogin;
 import io.intelehealth.client.sync.JobDispatchService;
 import io.intelehealth.client.utils.NetworkConnection;
-import io.intelehealth.client.offline_login.OfflineLogin;
 
 /**
  * A login screen that offers login via username/password.
@@ -280,10 +284,10 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d(LOG_TAG, "UN: " + USERNAME);
                 Log.d(LOG_TAG, "PW: " + PASSWORD);
 
-                String urlModifier = "encounter";
-                String dataString = "?q=ABCDEFGH";
+                String urlModifier = "session";
 
-                String urlString = BASE_URL + urlModifier + dataString;
+
+                String urlString = BASE_URL + urlModifier;
 
                 URL url = new URL(urlString);
 
@@ -329,8 +333,20 @@ public class LoginActivity extends AppCompatActivity {
                 if (loginAttempt != null && loginAttempt.getResponseCode() != 200) {
                     Log.d(LOG_TAG, "Login get request was unsuccessful");
                     return false;
+                } else if (loginAttempt == null) {
+                    return false;
+                } else {
+                    JsonObject jsonObject = new JsonParser().parse(loginAttempt.getResponseString()).getAsJsonObject();
+                    if (jsonObject.get("authenticated").getAsBoolean()){
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putString("sessionid", jsonObject.get("sessionId").getAsString());
+                        editor.commit();
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
                 }
-                return true;
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -377,7 +393,7 @@ public class LoginActivity extends AppCompatActivity {
                 .setLifetime(Lifetime.FOREVER)
                 .setRecurring(true)
                 .setTrigger(Trigger.executionWindow(
-                        1770,1830
+                        1770, 1830
                 ))
                 .setReplaceCurrent(true)
                 .build();

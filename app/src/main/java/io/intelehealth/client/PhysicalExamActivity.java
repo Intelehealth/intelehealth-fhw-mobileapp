@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -348,7 +350,9 @@ public class PhysicalExamActivity extends AppCompatActivity {
     private long insertDb(String value) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
 
-        final int CREATOR_ID = 42; // TODO: Connect the proper CREATOR_ID
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        final String CREATOR_ID = prefs.getString("creatorid", null);
 
         final int CONCEPT_ID = 163189; // RHK ON EXAM
 
@@ -386,7 +390,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
         ContentValues contentValues = new ContentValues();
         contentValues.put("value", string);
 
-        String selection = "patient_id = ? AND visit_id = ? concept_id = ?";
+        String selection = "patient_id = ? AND visit_id = ? AND concept_id = ?";
         String[] args = {patientID, visitID, String.valueOf(conceptID)};
 
         localdb.update(
