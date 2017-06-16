@@ -46,7 +46,7 @@ import io.intelehealth.client.services.ClientService;
 
 /**
  * This class displays all details about the patient.It also enables to print these details.
- * It creates summary for older visits of patient.
+ * It creates a summary list of older visits of patient.
  */
 public class PatientDetailActivity extends AppCompatActivity {
 
@@ -168,7 +168,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     }
 
     /**
-     * This method displays details about patient.
+     * This method displays basic details about patient (eg: name, address).
      * @param dataString variable of type String
      * @return           void
      */
@@ -363,7 +363,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
 
     /**
-     * This method prints the details of patient.
+     * This method prints the basic details of patient.
      * It makes use of PRINT_SERVICE from PrintManager
      * @return void
      */
@@ -474,7 +474,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     }
 
     /**
-     * This method takes datetime and visit_id as input and retrieves details about patient's old visits.
+     * This method retrieves details about patient's old visits.
      * @param datetime variable of type String.
      * @param visit_id variable of type int.
      * @return void
