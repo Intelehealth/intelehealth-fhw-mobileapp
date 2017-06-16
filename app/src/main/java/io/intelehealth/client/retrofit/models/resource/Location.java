@@ -18,6 +18,9 @@ import com.google.gson.annotations.Expose;
 
 import io.intelehealth.client.retrofit.models.resource.Resource;
 
+/**
+ * This class contains various get() and set() methods for location details of patient.
+ */
 public class Location extends Resource {
     @Expose
     private Long id;

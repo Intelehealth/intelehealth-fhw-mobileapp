@@ -19,6 +19,10 @@ import org.acra.ACRA;
 
 import io.intelehealth.client.offline_login.OfflineLogin;
 
+/**
+ * This class manages flow control by using methods that manages log-out and settings for user.
+ * It uses ACRA to manage crash reporting feature.
+ */
 public class HomeActivity extends AppCompatActivity {
 
     @Override
@@ -65,10 +69,20 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method starts intent to another activity to change settings
+     * @return void
+     */
     public void settings() {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
+
+    /**
+     * This method sync all the data recorded to EHR and sync back locally.
+     * It uses ACRA to manage crash reporting feature.
+     * @return void
+     */
 
     public void endOfDay() {
         // TODO: sync all the data recorded to EHR, and sync back locally
@@ -81,6 +95,10 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Logs out the user. It removes user account using AccountManager.
+     * @return void
+     */
     public void logout() {
 
         OfflineLogin.getOfflineLogin().setOfflineLoginStatus(false);

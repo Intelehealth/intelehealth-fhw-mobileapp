@@ -6,9 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Amal Afroz Alam on 24, April, 2016.
- * Contact me: contact@amal.io
+ * This class extends Node class.An object of this class gathers all selected complaint nodes.
+ * Methods of this class can gather all complaints or only the selected ones.
  */
+
 public class Knowledge extends Node {
 
     private String LOG_TAG = "Knowledge Class";

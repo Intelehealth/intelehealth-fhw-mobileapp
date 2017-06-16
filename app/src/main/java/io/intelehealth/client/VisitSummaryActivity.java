@@ -51,6 +51,11 @@ import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.objects.WebResponse;
 import io.intelehealth.client.services.ClientService;
 
+/**
+ * This class updates data about patient to database. It also creates a summary about it which can be viewed
+ * using WebView and printed.
+ */
+
 public class VisitSummaryActivity extends AppCompatActivity {
 
     String LOG_TAG = "Patient Summary";
@@ -616,11 +621,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     }
 
-
+    /**
+     * This method creates new object of type RetrieveData.
+     * @param view variable of type View
+     * @return     void
+     */
     public void retrieveOpenMRS(View view) {
         new RetrieveData(this).execute();
     }
 
+    /**
+     * This method collects data from  patient visit and passes data to ClientService, to send it to OpenMRS.
+     * @return    void
+     */
     private void endVisit() {
         String[] columnsToReturn = {"openmrs_visit_uuid"};
         String visitIDorderBy = "start_datetime";
@@ -659,6 +672,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 
     }
+
+    /**
+     * This methods retrieves patient data from database.
+     * @param dataString  variable of type String
+     * @return                   void
+     */
 
     public void queryData(String dataString) {
 
@@ -741,6 +760,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         visitCursor.close();
     }
 
+    /**
+     * This method distinguishes between different concepts using switch case.
+     * @param concept_id variable of type int.
+     * @param value      variable of type String.
+     */
     private void parseData(int concept_id, String value) {
         switch (concept_id) {
             case 163186: //Current Complaint
@@ -776,6 +800,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method creates a web view for printing patient's various details.
+     * @return void
+     */
     private void doWebViewPrint() {
         // Create a WebView object specifically for printing
         WebView webView = new WebView(this);
@@ -876,6 +904,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mWebView = webView;
     }
 
+    /**
+     * This method creates a print job using PrintManager instance and PrintAdapter Instance
+     * @param webView  object of type WebView.
+     */
     private void createWebPrintJob(WebView webView) {
 
         // Get a PrintManager instance
@@ -1101,6 +1133,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *
+     * @param title   variable of type String
+     * @param content variable of type String
+     * @param index  variable of type int
+     */
     private void createNewCardView(String title, String content, int index) {
         final LayoutInflater inflater = VisitSummaryActivity.this.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.card_doctor_content, null);
@@ -1110,6 +1148,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
         contentView.setText(content);
         mLayout.addView(convertView, index);
     }
+
+    /**
+     * This method updates patient details to database.
+     * @param string  variable of type String
+     * @param conceptID variable of type int
+     */
 
     private void updateDatabase(String string, int conceptID) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);

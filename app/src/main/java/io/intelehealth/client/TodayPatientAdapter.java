@@ -17,6 +17,9 @@ import io.intelehealth.client.objects.TodayPatientModel;
  * Github : @dbarretto
  */
 
+/**
+ * This class implements all methods of RecyclerView and sets data using Adapter.
+ */
 public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientViewHolder> {
 
     List<TodayPatientModel> todayPatientModelList;

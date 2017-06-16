@@ -10,6 +10,9 @@ import android.widget.TextView;
  * Github : @dbarretto
  */
 
+/**
+ * This class has all get() and set() methods for fields in RecyclerView.
+ */
 public class TodayPatientViewHolder extends RecyclerView.ViewHolder {
 
     private TextView headTextView;
@@ -25,30 +28,64 @@ public class TodayPatientViewHolder extends RecyclerView.ViewHolder {
         rootView = itemView;
     }
 
+    /**
+     *
+     * @return TextView variable of type TextView
+     */
     public TextView getHeadTextView() {
         return headTextView;
     }
 
+    /**
+     *
+     * @param headTextView variable of type TextView
+     *   @return                  void
+     */
     public void setHeadTextView(TextView headTextView) {
         this.headTextView = headTextView;
     }
 
+
+    /**
+     *
+     * @return TextView variable of type TextView
+     */
     public TextView getBodyTextView() {
         return bodyTextView;
     }
 
+    /**
+     *
+     * @param bodyTextView  variable of type TextView
+     * @return              void
+     */
     public void setBodyTextView(TextView bodyTextView) {
         this.bodyTextView = bodyTextView;
     }
 
+
+    /**
+     *
+     * @return ImageView variable of type ImageView
+     */
     public ImageView getIndicatorImageView() {
         return indicatorImageView;
     }
+
+    /**
+     *
+     * @param indicatorImageView variable of type ImageView
+     *@return                    void
+     */
 
     public void setIndicatorImageView(ImageView indicatorImageView) {
         this.indicatorImageView = indicatorImageView;
     }
 
+    /**
+     *
+     * @return variable of type View
+     */
     public View getRootView() {
         return rootView;
     }
