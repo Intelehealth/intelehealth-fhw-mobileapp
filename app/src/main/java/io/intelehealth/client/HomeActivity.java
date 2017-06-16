@@ -20,8 +20,7 @@ import org.acra.ACRA;
 import io.intelehealth.client.offline_login.OfflineLogin;
 
 /**
- * This class manages flow control by using methods that manages log-out and settings for user.
- * It uses ACRA to manage crash reporting feature.
+ * Home Screen
  */
 public class HomeActivity extends AppCompatActivity {
 
@@ -79,8 +78,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     /**
-     * This method sync all the data recorded to EHR and sync back locally.
-     * It uses ACRA to manage crash reporting feature.
+     * This method sync all the data recorded to server and sync back locally.
      * @return void
      */
 
