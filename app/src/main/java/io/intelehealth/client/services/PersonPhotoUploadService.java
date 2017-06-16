@@ -18,7 +18,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 import io.intelehealth.client.HelperMethods;
-import io.intelehealth.client.db.DelayedJobQueueProvider;
+import io.intelehealth.client.database.DelayedJobQueueProvider;
 import io.intelehealth.client.objects.WebResponse;
 
 /**
