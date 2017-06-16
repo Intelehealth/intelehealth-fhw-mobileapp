@@ -3,9 +3,8 @@ package io.intelehealth.client;
 import android.content.SearchRecentSuggestionsProvider;
 
 /**
- * This class extends SearchRecentSuggestionsProvider.]
- 
- *Created by tusharjois on 3/22/16.
+ * This class extends SearchRecentSuggestionsProvider
+ * Created by tusharjois on 3/22/16.
  */
 
 public class SearchSuggestionProvider extends SearchRecentSuggestionsProvider {
