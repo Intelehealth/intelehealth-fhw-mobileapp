@@ -166,7 +166,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
     }
 
     /**
-     * This method inserts complaints into database
+     * This method inserts medical history of patient in database.
      * @param value variable of type String
      * @return      long
      */
