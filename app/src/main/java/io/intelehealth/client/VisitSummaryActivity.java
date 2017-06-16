@@ -630,10 +630,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         new RetrieveData(this).execute();
     }
 
-    /**
-     * This method collects data from  patient visit and passes data to ClientService, to send it to OpenMRS.
-     * @return    void
-     */
     private void endVisit() {
         String[] columnsToReturn = {"openmrs_visit_uuid"};
         String visitIDorderBy = "start_datetime";
@@ -761,7 +757,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     /**
-     * This method distinguishes between different concepts using switch case.
+     * This method distinguishes between different concepts using switch case to populate the information into the relevant sections (eg:complaints, physical exam, vitals, etc.).
      * @param concept_id variable of type int.
      * @param value      variable of type String.
      */
