@@ -5,6 +5,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.intelehealth.client.node.Node;
+
 /**
  * Created by Amal Afroz Alam on 24, April, 2016.
  * Contact me: contact@amal.io

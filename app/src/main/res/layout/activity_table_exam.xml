@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:id="@+id/cl_table"
-    tools:context="io.intelehealth.client.TableExamActivity">
+    tools:context="io.intelehealth.client.activities.table_exam_activity.TableExamActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

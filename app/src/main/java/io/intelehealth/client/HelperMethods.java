@@ -36,6 +36,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.UUID;
 
+import io.intelehealth.client.activities.settings_activity.SettingsActivity;
 import io.intelehealth.client.objects.WebResponse;
 
 /**
@@ -139,7 +140,7 @@ public class HelperMethods {
         return results;
     }
 
-    static String[] dispatchTakePictureIntent(int requestType, Activity activity) {
+   public static String[] dispatchTakePictureIntent(int requestType, Activity activity) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         String[] results = null;
         // Ensure that there's a camera activity to handle the intent
