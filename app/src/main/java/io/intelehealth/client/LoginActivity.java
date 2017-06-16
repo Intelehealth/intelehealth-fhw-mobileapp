@@ -344,13 +344,12 @@ public class LoginActivity extends AppCompatActivity {
                     return false;
                 } else {
                     JsonObject jsonObject = new JsonParser().parse(loginAttempt.getResponseString()).getAsJsonObject();
-                    if (jsonObject.get("authenticated").getAsBoolean()){
+                    if (jsonObject.get("authenticated").getAsBoolean()) {
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("sessionid", jsonObject.get("sessionId").getAsString());
                         editor.commit();
                         return true;
-                    }
-                    else {
+                    } else {
                         return false;
                     }
                 }

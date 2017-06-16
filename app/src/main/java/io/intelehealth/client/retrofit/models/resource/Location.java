@@ -41,7 +41,8 @@ public class Location extends Resource {
     private String postalCode;
 
 
-    public Location() {}
+    public Location() {
+    }
 
     public Location(String display) {
         this.display = display;

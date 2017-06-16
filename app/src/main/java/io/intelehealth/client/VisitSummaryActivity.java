@@ -137,7 +137,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_visit_summary, menu);
         MenuItem menuItem = menu.findItem(R.id.summary_endVisit);
-        if(isPast) menuItem.setVisible(false);
+        if (isPast) menuItem.setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -176,7 +176,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
-            isPast = intent.getBooleanExtra("pastVisit",false);
+            isPast = intent.getBooleanExtra("pastVisit", false);
 
 //            Log.v(TAG, "Patient ID: " + patientID);
 //            Log.v(TAG, "Visit ID: " + visitID);
@@ -218,7 +218,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editMedHist = (ImageButton) findViewById(R.id.imagebutton_edit_pathist);
         uploadButton = (Button) findViewById(R.id.button_upload);
 
-        if(isPast){
+        if (isPast) {
             editVitals.setVisibility(View.GONE);
             editComplaint.setVisibility(View.GONE);
             editPhysical.setVisibility(View.GONE);
@@ -227,7 +227,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             uploadButton.setVisibility(View.GONE);
             invalidateOptionsMenu();
         }
-
 
 
         uploadButton.setOnClickListener(new View.OnClickListener() {

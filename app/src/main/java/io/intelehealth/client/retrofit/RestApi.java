@@ -1,7 +1,6 @@
 package io.intelehealth.client.retrofit;
 
 
-
 import io.intelehealth.client.objects.Response;
 import io.intelehealth.client.retrofit.models.Results;
 import io.intelehealth.client.retrofit.models.resource.Location;
@@ -15,9 +14,10 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
- * Calls the respective apis.
- * @see <a href="http://square.github.io/retrofit/">http://square.github.io/retrofit</a>
+ * List of the apis used.
  *
+ * @see <a href="http://square.github.io/retrofit/">http://square.github.io/retrofit</a>de
+ * <p>
  * Created by Dexter Barretto on 6/9/17.
  * Github : @dbarretto
  */

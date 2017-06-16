@@ -7,7 +7,7 @@ public class PatientImage {
     private int patientId;
     private String encodedString;
 
-    public PatientImage (int id, String string) {
+    public PatientImage(int id, String string) {
         this.patientId = id;
         this.encodedString = string;
     }

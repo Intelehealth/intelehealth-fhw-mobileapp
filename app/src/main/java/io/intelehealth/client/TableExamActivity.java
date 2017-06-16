@@ -69,8 +69,6 @@ public class TableExamActivity extends AppCompatActivity {
         }
 
 
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table_exam);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -124,7 +122,6 @@ public class TableExamActivity extends AppCompatActivity {
                 }
 
 
-
             }
         });
 
@@ -149,7 +146,7 @@ public class TableExamActivity extends AppCompatActivity {
         });
     }
 
-    public void loadPrevious(){
+    public void loadPrevious() {
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         db = mDbHelper.getWritableDatabase();
         String[] columns = {"value", " concept_id"};

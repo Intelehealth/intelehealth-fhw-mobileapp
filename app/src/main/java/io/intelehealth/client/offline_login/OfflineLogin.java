@@ -17,7 +17,7 @@ import io.intelehealth.client.R;
 
 /**
  * Provides necessary login alternative if offline.
- *
+ * <p>
  * Created by Dexter Barretto on 5/24/17.
  * Github : @dbarretto
  */
@@ -38,6 +38,7 @@ public class OfflineLogin {
 
     /**
      * Stores login credentials in shared preferences after hashing.
+     *
      * @param username The username
      * @param password The password
      */
@@ -130,6 +131,7 @@ public class OfflineLogin {
 
     /**
      * Provides application context.
+     *
      * @return {@link OfflineLogin}
      */
     public static OfflineLogin getOfflineLogin() {

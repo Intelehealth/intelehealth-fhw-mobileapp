@@ -2,7 +2,7 @@ package io.intelehealth.client.objects;
 
 /**
  * Container for patient vitals {@link io.intelehealth.client.TableExamActivity}
- *
+ * <p>
  * Table exam information class for Gson data serialization
  */
 public class TableExam {

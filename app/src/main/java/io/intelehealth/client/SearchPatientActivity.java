@@ -131,19 +131,19 @@ public class SearchPatientActivity extends AppCompatActivity {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-                        if (searchCursor.moveToPosition(position)) {
-                            String patientID = searchCursor.getString(searchCursor.getColumnIndexOrThrow("_id"));
+                                if (searchCursor.moveToPosition(position)) {
+                                    String patientID = searchCursor.getString(searchCursor.getColumnIndexOrThrow("_id"));
 //                            Log.d(TAG, patientID);
-                            String patientStatus = "returning";
-                            Intent intent = new Intent(SearchPatientActivity.this, PatientDetailActivity.class);
-                            intent.putExtra("patientID", patientID);
-                            intent.putExtra("status", patientStatus);
-                            intent.putExtra("tag", "");
-                            startActivity(intent);
+                                    String patientStatus = "returning";
+                                    Intent intent = new Intent(SearchPatientActivity.this, PatientDetailActivity.class);
+                                    intent.putExtra("patientID", patientID);
+                                    intent.putExtra("status", patientStatus);
+                                    intent.putExtra("tag", "");
+                                    startActivity(intent);
 
-                        }
-                    }
-                });
+                                }
+                            }
+                        });
             }
 
 
@@ -159,10 +159,9 @@ public class SearchPatientActivity extends AppCompatActivity {
     public void doInstantSearch(String searchTerm) {
         String search = searchTerm.trim();
         ListView lvItems = (ListView) findViewById(R.id.listview_search);
-        if(TextUtils.isEmpty(search)) {
+        if (TextUtils.isEmpty(search)) {
             lvItems.setAdapter(null);
-        }
-        else {
+        } else {
             SQLiteDatabase db = mDbHelper.getWritableDatabase();
             String table = "patient";
 

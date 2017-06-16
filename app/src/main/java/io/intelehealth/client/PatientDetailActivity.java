@@ -61,7 +61,6 @@ public class PatientDetailActivity extends AppCompatActivity {
     LinearLayout previousVisitsList;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -171,7 +170,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         String[] patientArgs = {dataString};
         String[] patientColumns = {"first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
-                "postal_code","country","phone_number", "gender", "sdw", "occupation", "patient_photo"};
+                "postal_code", "country", "phone_number", "gender", "sdw", "occupation", "patient_photo"};
         final Cursor idCursor = db.query("patient", patientColumns, patientSelection, patientArgs, null, null, null);
 
         if (idCursor.moveToFirst()) {
@@ -249,7 +248,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
         String postal_code;
         if (patient.getPostalCode() != null) {
-            postal_code = patient.getPostalCode().trim()+",";
+            postal_code = patient.getPostalCode().trim() + ",";
         } else {
             postal_code = "";
         }
@@ -341,7 +340,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     try {
                         Date formatted = currentDate.parse(date);
                         String visitDate = currentDate.format(formatted);
-                        createOldVisit(visitDate,visit_id);
+                        createOldVisit(visitDate, visit_id);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -450,16 +449,16 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     }
 
-    private void createOldVisit(String datetime,int visit_id) {
-       // final LayoutInflater inflater = PatientDetailActivity.this.getLayoutInflater();
-      //  View convertView = inflater.inflate(R.layout.list_item_previous_visit, null);
-      //  TextView textView = (TextView) convertView.findViewById(R.id.textView_visit_info);
+    private void createOldVisit(String datetime, int visit_id) {
+        // final LayoutInflater inflater = PatientDetailActivity.this.getLayoutInflater();
+        //  View convertView = inflater.inflate(R.layout.list_item_previous_visit, null);
+        //  TextView textView = (TextView) convertView.findViewById(R.id.textView_visit_info);
         TextView textView = new TextView(this);
         String visitString = String.format("Seen on %s.", datetime);
         textView.setText(visitString);
         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams
                 (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        llp.setMargins(25, 25,25, 25);
+        llp.setMargins(25, 25, 25, 25);
         textView.setLayoutParams(llp);
         textView.setTag(visit_id);
        /* textView.setOnTouchListener(new View.OnTouchListener() {
@@ -488,9 +487,9 @@ public class PatientDetailActivity extends AppCompatActivity {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(PatientDetailActivity.this,"Click",Toast.LENGTH_SHORT).show();
-                int position  = (Integer)v.getTag();
-                Intent visitSummary = new Intent(PatientDetailActivity.this,VisitSummaryActivity.class);
+                Toast.makeText(PatientDetailActivity.this, "Click", Toast.LENGTH_SHORT).show();
+                int position = (Integer) v.getTag();
+                Intent visitSummary = new Intent(PatientDetailActivity.this, VisitSummaryActivity.class);
                 visitSummary.putExtra("visitID", String.valueOf(position));
                 visitSummary.putExtra("patientID", patientID);
                 visitSummary.putExtra("name", patientName);

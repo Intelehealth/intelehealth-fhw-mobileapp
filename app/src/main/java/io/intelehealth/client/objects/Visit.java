@@ -3,7 +3,7 @@ package io.intelehealth.client.objects;
 /**
  * Visit information class for Gson data serialization
  */
-public class Visit  {
+public class Visit {
     private String id;
     private Integer patient_id;
     private String start_datetime;

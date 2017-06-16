@@ -66,7 +66,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
 
         setTitle(R.string.title_activity_patient_history);
-        setTitle(getTitle() + ": "  + patientName);
+        setTitle(getTitle() + ": " + patientName);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_history);
@@ -82,8 +82,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                 //If nothing is selected, there is nothing to put into the database.
 
 
-                if (intentTag != null && intentTag.equals("edit")){
-                    if(patientHistoryMap.anySubSelected()){
+                if (intentTag != null && intentTag.equals("edit")) {
+                    if (patientHistoryMap.anySubSelected()) {
                         patientHistory = patientHistoryMap.generateLanguage();
 
                         updateDatabase(patientHistory);
@@ -99,7 +99,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else {
 
-                    if(patientHistoryMap.anySubSelected()){
+                    if (patientHistoryMap.anySubSelected()) {
                         patientHistory = patientHistoryMap.generateLanguage();
 
                         insertDb(patientHistory);
@@ -138,8 +138,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                 }
                 adapter.notifyDataSetChanged();
 
-                Log.i(TAG,String.valueOf(clickedNode.isTerminal()));
-                if(!clickedNode.isTerminal() && clickedNode.isSelected()){
+                Log.i(TAG, String.valueOf(clickedNode.isTerminal()));
+                if (!clickedNode.isTerminal() && clickedNode.isSelected()) {
                     Node.subLevelQuestion(clickedNode, PastMedicalHistoryActivity.this, adapter);
                 }
 
@@ -214,7 +214,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
                 patientHistoryMap.setImagePath(mCurrentPhotoPath);
-                Log.i(TAG,mCurrentPhotoPath);
+                Log.i(TAG, mCurrentPhotoPath);
                 patientHistoryMap.displayImage(this);
             }
         }

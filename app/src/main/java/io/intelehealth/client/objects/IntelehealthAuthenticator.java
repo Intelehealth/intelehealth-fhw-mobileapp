@@ -7,14 +7,14 @@ import android.os.Bundle;
 import android.provider.SyncStateContract;
 
 /**
- * Add account in OpenMRS.
- *
+ * Adds an Intelehealth android account which can be accessed through Android's Settings Screen..
+ * <p>
  * Created by tusharjois on 9/5/16.
  */
-public class OpenMRSAccountAuthenticator extends AbstractAccountAuthenticator {
+public class IntelehealthAuthenticator extends AbstractAccountAuthenticator {
     private Context mContext;
 
-    public OpenMRSAccountAuthenticator(Context context) {
+    public IntelehealthAuthenticator(Context context) {
         super(context);
         this.mContext = context;
     }
@@ -31,7 +31,7 @@ public class OpenMRSAccountAuthenticator extends AbstractAccountAuthenticator {
         final Bundle result;
         final Intent intent;
 
-        intent = new Intent(this.mContext, OpenMRSAccountAuthenticator.class);
+        intent = new Intent(this.mContext, IntelehealthAuthenticator.class);
         intent.putExtra(SyncStateContract.Constants.ACCOUNT_TYPE, authTokenType);
         intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
 

@@ -17,8 +17,8 @@ import android.text.TextUtils;
 import java.util.HashMap;
 
 /**
- * Provide methods for handling patient data locally if offline.
- *
+ * Content provider for performing CRUD operations on delayed_jobs table.
+ * <p>
  * Created by Dexter Barretto on 5/31/17.
  * Github : @dbarretto
  */
@@ -125,7 +125,7 @@ public class DelayedJobQueueProvider extends ContentProvider {
             /**
              * By default sort on priority and id
              */
-            sortOrder =  _ID;
+            sortOrder = _ID;
         }
 
         Cursor c = qb.query(db, projection, selection,

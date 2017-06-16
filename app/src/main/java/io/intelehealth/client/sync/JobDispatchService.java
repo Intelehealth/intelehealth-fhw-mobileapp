@@ -13,7 +13,7 @@ import io.intelehealth.client.services.ClientService;
 
 /**
  * Start {@link ClientService} when online to upload the queued data.
- *
+ * <p>
  * Created by Dexter Barretto on 5/31/17.
  * Github : @dbarretto
  */

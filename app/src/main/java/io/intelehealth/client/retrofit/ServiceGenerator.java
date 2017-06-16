@@ -17,9 +17,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Manages api call requests.
- * @see <a href="http://square.github.io/retrofit/">http://square.github.io/retrofit</a>
+ * Sets up api call requests.
  *
+ * @see <a href="http://square.github.io/retrofit/">http://square.github.io/retrofit</a>
+ * <p>
  * Created by dexterbarretto on 06/05/16.
  */
 public class ServiceGenerator {
@@ -43,7 +44,9 @@ public class ServiceGenerator {
     static {
 
 
-
+        /**
+         * If debug flavour {@link HttpLoggingInterceptor} is used.
+         */
         if (BuildConfig.BUILD_TYPE.equals("debug")) {
             httpClient = new OkHttpClient.Builder()
                     .connectTimeout(15, TimeUnit.SECONDS)
@@ -75,7 +78,6 @@ public class ServiceGenerator {
         Retrofit retrofit = builder.client(httpClient.build()).build();
         return retrofit.create(serviceClass);
     }
-
 
 
 }

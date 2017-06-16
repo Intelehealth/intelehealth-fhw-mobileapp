@@ -2,7 +2,7 @@ package io.intelehealth.client.objects;
 
 /**
  * Container for {@link io.intelehealth.client.TodayPatientActivity}
- *
+ * <p>
  * Created by Dexter Barretto on 5/22/17.
  * Github : @dbarretto
  */

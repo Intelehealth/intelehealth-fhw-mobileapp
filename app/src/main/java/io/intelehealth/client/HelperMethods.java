@@ -180,9 +180,10 @@ public class HelperMethods {
 
     /**
      * Perform GET request to the server.
+     *
      * @param urlModifier modification in the url
-     * @param dataString data content
-     * @param context context of the activity
+     * @param dataString  data content
+     * @param context     context of the activity
      * @return {@link WebResponse}
      */
     public static WebResponse getCommand(String urlModifier, String dataString, Context context) {
@@ -201,7 +202,7 @@ public class HelperMethods {
 
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
             final String BASE_URL = sharedPref.getString(SettingsActivity.KEY_PREF_SERVER_URL, "");
-            final String session_id = sharedPref.getString("sessionid",null);
+            final String session_id = sharedPref.getString("sessionid", null);
 
             String USERNAME = null;
             String PASSWORD = null;
@@ -233,10 +234,9 @@ public class HelperMethods {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
             connection.setRequestProperty("Authorization", "Basic " + encoded);
-            if(session_id!=null) {
+            if (session_id != null) {
                 connection.setRequestProperty("Cookie", "jsessionid=" + session_id);
-            }
-            else{
+            } else {
                 connection.setRequestProperty("Authorization", "Basic " + encoded);
             }
             connection.setRequestMethod("GET");
@@ -284,9 +284,10 @@ public class HelperMethods {
 
     /**
      * Perform POST request to the server.
+     *
      * @param urlModifier modification in url
-     * @param dataString data content
-     * @param context context of the activity
+     * @param dataString  data content
+     * @param context     context of the activity
      * @return {@link WebResponse}
      */
     public static WebResponse postCommand(String urlModifier, String dataString, Context context) {
@@ -324,7 +325,7 @@ public class HelperMethods {
 
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
             String BASE_URL = sharedPref.getString(SettingsActivity.KEY_PREF_SERVER_URL, "");
-            final String session_id = sharedPref.getString("sessionid",null);
+            final String session_id = sharedPref.getString("sessionid", null);
 
 
             String urlString = BASE_URL + urlModifier;
@@ -336,10 +337,9 @@ public class HelperMethods {
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
-            if(session_id!=null) {
+            if (session_id != null) {
                 connection.setRequestProperty("Cookie", "jsessionid=" + session_id);
-            }
-            else{
+            } else {
                 connection.setRequestProperty("Authorization", "Basic " + encoded);
             }
             connection.setRequestMethod("POST");

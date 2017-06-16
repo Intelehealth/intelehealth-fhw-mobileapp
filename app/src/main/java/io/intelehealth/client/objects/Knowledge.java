@@ -18,6 +18,7 @@ public class Knowledge extends Node {
     /**
      * This is just for the specific use case for the knowledge engine.
      * This particular object as created as a way to gather all selected complaint nodes.
+     *
      * @param jsonObject
      */
 
@@ -39,6 +40,7 @@ public class Knowledge extends Node {
      * This method was originally to make a way to compile a master list of complaints.
      * This has become redundant due to the change in the way the knowledge engine is used.
      * Now that first level nodes are always complaints, this is not necessary to do.
+     *
      * @param node
      * @return
      */
