@@ -1,7 +1,8 @@
 package io.intelehealth.client.objects;
 
 /**
- *This class contains get() and set() methods for details of Medical history.
+ * This class contains get() and set() methods for details of Medical history.
+ * Created by Amal Afroz Alam on 28, April, 2016.
  */
 public class MedicalHistory {
 
