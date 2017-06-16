@@ -12,6 +12,8 @@ import android.widget.TextView;
 import io.intelehealth.client.objects.Node;
 
 /**
+ * Creates list of complaints.
+ * <p>
  * Created by Amal Afroz Alam on 23, April, 2016.
  * Contact me: contact@amal.io
  */
@@ -37,7 +39,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        if(mNode.getOption(groupPosition).isTerminal()){
+        if (mNode.getOption(groupPosition).isTerminal()) {
             return 0;
         }
         return mNode.getOption(groupPosition).size();
@@ -146,7 +148,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         super.notifyDataSetChanged();
     }
 
-    public void updateNodeList(Node newNode){
+    public void updateNodeList(Node newNode) {
         mNode = null;
         mNode = newNode;
         this.notifyDataSetChanged();

@@ -17,7 +17,7 @@ import android.widget.TextView;
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder> {
 
     final static String TAG = HomeAdapter.class.getSimpleName();
-    final String[] options = {"New Patient","Lookup Patient","Today's Patient"};
+    final String[] options = {"New Patient", "Lookup Patient", "Today's Patient"};
 
     //TODO: Change placeholder icon "android.R.drawable.ic_menu_my_calendar"
     final int[] icons = {R.drawable.ic_person_add_24dp, R.drawable.ic_search_24dp, android.R.drawable.ic_menu_my_calendar};
@@ -39,7 +39,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
         return this.options.length;
     }
 
-    public static class IconViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public static class IconViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CardView cardView;
         TextView optionName;
         ImageView icon;
@@ -56,18 +56,18 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
 
         @Override
         public void onClick(View v) {
-            switch (this.optionName.getText().toString()){
-                case "New Patient" : {
+            switch (this.optionName.getText().toString()) {
+                case "New Patient": {
                     Intent intent = new Intent(this.context, IdentificationActivity.class);
                     this.context.startActivity(intent);
                     break;
                 }
-                case "Lookup Patient" : {
+                case "Lookup Patient": {
                     Intent intent = new Intent(this.context, SearchPatientActivity.class);
                     this.context.startActivity(intent);
                     break;
                 }
-                case "Today's Patient" : {
+                case "Today's Patient": {
 
                     //TODO: Change Activity after coding is done.
 
@@ -78,7 +78,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
                     break;
                 }
                 default:
-                    Log.i(TAG,"Matching class not found");
+                    Log.i(TAG, "Matching class not found");
             }
 
         }

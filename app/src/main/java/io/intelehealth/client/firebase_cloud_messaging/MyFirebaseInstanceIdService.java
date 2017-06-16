@@ -10,7 +10,7 @@ import com.google.firebase.iid.FirebaseInstanceIdService;
  * Github : @dbarretto
  */
 
-public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService{
+public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
 
     private static final String TAG = MyFirebaseInstanceIdService.class.getSimpleName();
 

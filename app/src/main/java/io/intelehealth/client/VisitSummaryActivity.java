@@ -1,3 +1,4 @@
+
 package io.intelehealth.client;
 
 import android.app.NotificationManager;
@@ -1170,3 +1171,4 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     }
 }
+

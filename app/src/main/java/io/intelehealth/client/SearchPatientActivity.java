@@ -1,3 +1,4 @@
+
 package io.intelehealth.client;
 
 import android.app.SearchManager;
@@ -235,3 +236,4 @@ public class SearchPatientActivity extends AppCompatActivity {
     }
 
 }
+

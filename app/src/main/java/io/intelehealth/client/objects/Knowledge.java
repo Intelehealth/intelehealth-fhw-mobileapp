@@ -1,3 +1,4 @@
+
 package io.intelehealth.client.objects;
 
 import org.json.JSONObject;
@@ -90,3 +91,4 @@ public class Knowledge extends Node {
     }
 
 }
+

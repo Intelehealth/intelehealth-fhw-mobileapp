@@ -30,17 +30,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         //Displaying data in log
         //It is optional
         Log.d(TAG, "From: " + remoteMessage.getFrom());
-        Log.d(TAG, "Notification Message Title: "+ remoteMessage.getNotification().getTitle());
+        Log.d(TAG, "Notification Message Title: " + remoteMessage.getNotification().getTitle());
         Log.d(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());
 
         parseMessage(remoteMessage.getNotification().getTitle(),
                 remoteMessage.getNotification().getBody());
     }
 
-    private void parseMessage(String messageTitle, String messageBody){
+    private void parseMessage(String messageTitle, String messageBody) {
 
-        switch (messageBody){
-            case "INVALIDATE_OFFLINE_LOGIN" : {
+        switch (messageBody) {
+            case "INVALIDATE_OFFLINE_LOGIN": {
                 //Invalidating Offline credentials
                 OfflineLogin.getOfflineLogin().invalidateLoginCredentials();
                 break;
@@ -60,7 +60,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
-        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Firebase Push Notification")

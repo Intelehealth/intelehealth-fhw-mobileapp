@@ -214,15 +214,15 @@ public class IdentificationActivity extends AppCompatActivity {
                 //    mPhoto = results[0];
                 //    mCurrentPhotoPath = results[1];
                 //}
-                File filePath = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES)+File.separator+"patient_photo");
-                if(!filePath.exists()){
-                 filePath.mkdir();
+                File filePath = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator + "patient_photo");
+                if (!filePath.exists()) {
+                    filePath.mkdir();
                 }
                 Intent cameraIntent = new Intent(IdentificationActivity.this, CameraActivity.class);
 
-                cameraIntent.putExtra(CameraActivity.SHOW_DIALOG_MESSAGE,getString(R.string.camera_dialog_default));
+                cameraIntent.putExtra(CameraActivity.SHOW_DIALOG_MESSAGE, getString(R.string.camera_dialog_default));
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, patientID);
-                cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH,filePath);
+                cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, filePath);
                 startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
             }
         });
@@ -431,7 +431,7 @@ public class IdentificationActivity extends AppCompatActivity {
             focusView = stateText;
             cancel = true;
             return;
-        }else {
+        } else {
             stateText.setError(null);
         }
 

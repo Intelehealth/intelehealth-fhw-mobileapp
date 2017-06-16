@@ -1,3 +1,4 @@
+
 /*
  * The contents of this file are subject to the OpenMRS Public License
  * Version 1.0 (the "License"); you may not use this file except in
@@ -143,3 +144,4 @@ public class Location extends Resource {
         this.postalCode = postalCode;
     }
 }
+

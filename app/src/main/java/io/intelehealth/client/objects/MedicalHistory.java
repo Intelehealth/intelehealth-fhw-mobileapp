@@ -1,3 +1,4 @@
+
 package io.intelehealth.client.objects;
 
 /**
@@ -34,3 +35,4 @@ public class MedicalHistory {
         this.data = data;
     }
 }
+

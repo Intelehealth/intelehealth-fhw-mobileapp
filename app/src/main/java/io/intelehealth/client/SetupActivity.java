@@ -58,7 +58,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
+/**
+ * One time setup which requires OpenMRS server URL and user permissions
+ */
 public class SetupActivity extends AppCompatActivity {
 
     private final String LOG_TAG = "SetupActivity";
@@ -82,7 +84,6 @@ public class SetupActivity extends AppCompatActivity {
 
 
     private static final int PERMISSION_ALL = 1;
-
 
 
     @Override
@@ -145,8 +146,8 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 attemptLogin();
-//                progressBar.setVisibility(View.VISIBLE);
-//                progressBar.setProgress(0);
+                //progressBar.setVisibility(View.VISIBLE);
+                //progressBar.setProgress(0);
 
             }
         });
@@ -209,7 +210,6 @@ public class SetupActivity extends AppCompatActivity {
         });*/
 
 
-
     }
 
     @Override
@@ -235,7 +235,11 @@ public class SetupActivity extends AppCompatActivity {
         }
         return true;
     }
-    
+
+    /**
+     * Check username and password validations.
+     * Get user selected location.
+     */
     private void attemptLogin() {
         if (mAuthTask != null) {
             return;
@@ -271,12 +275,11 @@ public class SetupActivity extends AppCompatActivity {
 
         }
         Location location = null;
-        if(mDropdownLocation.getSelectedItemPosition()<=0){
+        if (mDropdownLocation.getSelectedItemPosition() <= 0) {
             cancel = true;
-            Toast.makeText(SetupActivity.this,"Please select a value form the dropdown",Toast.LENGTH_LONG);
-        }
-        else{
-            location =  mLocations.get(mDropdownLocation.getSelectedItemPosition()-1);
+            Toast.makeText(SetupActivity.this, "Please select a value form the dropdown", Toast.LENGTH_LONG);
+        } else {
+            location = mLocations.get(mDropdownLocation.getSelectedItemPosition() - 1);
         }
 
         if (cancel) {
@@ -286,11 +289,11 @@ public class SetupActivity extends AppCompatActivity {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            if(location!=null) {
-                Log.i(LOG_TAG,location.getDisplay());
+            if (location != null) {
+                Log.i(LOG_TAG, location.getDisplay());
                 String urlString = mUrlField.getText().toString();
                 String prefixString = mPrefixField.getText().toString();
-                mAuthTask = new TestSetup(urlString, prefixString, email, password,location);
+                mAuthTask = new TestSetup(urlString, prefixString, email, password, location);
                 mAuthTask.execute();
                 Log.d(LOG_TAG, "attempting setup");
             }
@@ -308,7 +311,11 @@ public class SetupActivity extends AppCompatActivity {
         return password.length() > 4;
     }
 
-
+    /**
+     * Attempts login to the OpenMRS server.
+     * If successful cretes a new {@link Account}
+     * If unsuccessful details are saved in SharedPreferences.
+     */
     private class TestSetup extends AsyncTask<Void, Void, Integer> {
 
         private final String USERNAME;
@@ -319,7 +326,7 @@ public class SetupActivity extends AppCompatActivity {
         private Location LOCATION;
 
 
-        TestSetup(String url, String prefix, String username, String password,Location location) {
+        TestSetup(String url, String prefix, String username, String password, Location location) {
             CLEAN_URL = url;
             PREFIX = prefix;
             USERNAME = username;
@@ -357,12 +364,12 @@ public class SetupActivity extends AppCompatActivity {
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
 
-                connection.setRequestProperty("Authorization", "Basic "+ encoded);
+                connection.setRequestProperty("Authorization", "Basic " + encoded);
                 connection.setRequestMethod("GET");
                 connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
                 connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
                 Log.d(LOG_TAG, "GET URL: " + url);
-                Log.i(LOG_TAG,connection.getRequestProperties().toString());
+                Log.i(LOG_TAG, connection.getRequestProperties().toString());
 
                 int responseCode = connection.getResponseCode();
                 loginAttempt.setResponseCode(responseCode);
@@ -399,15 +406,13 @@ public class SetupActivity extends AppCompatActivity {
                 if (loginAttempt != null && loginAttempt.getResponseCode() != 200) {
                     Log.d(LOG_TAG, "Login request was unsuccessful");
                     return loginAttempt.getResponseCode();
-                }
-
-                else if (loginAttempt == null) {
+                } else if (loginAttempt == null) {
                     return 201;
                 } else {
                     JsonObject responseObject = new JsonParser().parse(loginAttempt.getResponseString()).getAsJsonObject();
                     if (responseObject.get("authenticated").getAsBoolean()) {
 
-                        JsonObject userObject= responseObject.get("user").getAsJsonObject();
+                        JsonObject userObject = responseObject.get("user").getAsJsonObject();
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("sessionid", responseObject.get("sessionId").getAsString());
                         editor.putString("creatorid", userObject.get("uuid").getAsString());
@@ -438,9 +443,9 @@ public class SetupActivity extends AppCompatActivity {
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = sharedPref.edit();
 
-                editor.putString(SettingsActivity.KEY_PREF_LOCATION_NAME,LOCATION.getDisplay());
-                editor.putString(SettingsActivity.KEY_PREF_LOCATION_UUID,LOCATION.getUuid());
-                editor.putString(SettingsActivity.KEY_PREF_LOCATION_DESCRIPTION,LOCATION.getDescription());
+                editor.putString(SettingsActivity.KEY_PREF_LOCATION_NAME, LOCATION.getDisplay());
+                editor.putString(SettingsActivity.KEY_PREF_LOCATION_UUID, LOCATION.getUuid());
+                editor.putString(SettingsActivity.KEY_PREF_LOCATION_DESCRIPTION, LOCATION.getDescription());
 
                 editor.putString(SettingsActivity.KEY_PREF_SERVER_URL, BASE_URL);
                 Log.d(LOG_TAG, BASE_URL);
@@ -472,6 +477,11 @@ public class SetupActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Parse locations fetched through api and provide the appropriate dropdown.
+     *
+     * @param url string of url.
+     */
     private void getLocationFromServer(String url) {
         ServiceGenerator.changeApiBaseUrl(url);
         RestApi apiService =
@@ -482,7 +492,7 @@ public class SetupActivity extends AppCompatActivity {
             public void onResponse(Call<Results<Location>> call, Response<Results<Location>> response) {
                 if (response.code() == 200) {
                     Results<Location> locationList = response.body();
-                    mLocations =locationList.getResults();
+                    mLocations = locationList.getResults();
                     List<String> items = getLocationStringList(locationList.getResults());
                     LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, items);
                     mDropdownLocation.setAdapter(adapter);
@@ -492,12 +502,18 @@ public class SetupActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Results<Location>> call, Throwable t) {
-                    Toast.makeText(SetupActivity.this,"Unable to fetch locations",Toast.LENGTH_LONG).show();
+                Toast.makeText(SetupActivity.this, "Unable to fetch locations", Toast.LENGTH_LONG).show();
             }
         });
     }
 
-
+    /**
+     * Returns list of locations.
+     *
+     * @param locationList a list of type {@link Location}.
+     * @return list of type string.
+     * @see Location
+     */
     private List<String> getLocationStringList(List<Location> locationList) {
         List<String> list = new ArrayList<String>();
         list.add(getString(R.string.login_location_select));

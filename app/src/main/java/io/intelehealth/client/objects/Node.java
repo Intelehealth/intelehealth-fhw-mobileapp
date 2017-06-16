@@ -42,7 +42,7 @@ import io.intelehealth.client.camera.CameraActivity;
  * Created by Amal Afroz Alam on 21, April, 2016.
  * Contact me: contact@amal.io
  */
-public class Node implements Serializable{
+public class Node implements Serializable {
 
     private String id;
     private String text;
@@ -138,7 +138,7 @@ public class Node implements Serializable{
 
     public static void handleQuestion(Node questionNode, final Activity context, final CustomExpandableListAdapter adapter) {
         String type = questionNode.getInputType();
-        Log.d(TAG,type);
+        Log.d(TAG, type);
         switch (type) {
             case "text":
                 askText(questionNode, context, adapter);
@@ -170,13 +170,13 @@ public class Node implements Serializable{
         }
     }
 
-    public static void openCamera(Activity activity){
-        Log.d(TAG,"open Camera!");
+    public static void openCamera(Activity activity) {
+        Log.d(TAG, "open Camera!");
         Intent intent = new Intent(activity, CameraActivity.class);
-        activity.startActivityForResult(intent,Node.TAKE_IMAGE_FOR_NODE);
+        activity.startActivityForResult(intent, Node.TAKE_IMAGE_FOR_NODE);
     }
 
-    public void displayImage(final Activity context){
+    public void displayImage(final Activity context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setPositiveButton(R.string.button_save, new DialogInterface.OnClickListener() {
             @Override
@@ -203,9 +203,9 @@ public class Node implements Serializable{
             public void onShow(DialogInterface d) {
                 ImageView imageView = (ImageView) dialog.findViewById(R.id.confirmationImageView);
                 Bitmap img = BitmapFactory.decodeFile(imagePath);
-                float imageWidthInPX = (float)imageView.getWidth();
+                float imageWidthInPX = (float) imageView.getWidth();
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(Math.round(imageWidthInPX),
-                        Math.round(imageWidthInPX * (float)img.getHeight() / (float)img.getWidth()));
+                        Math.round(imageWidthInPX * (float) img.getHeight() / (float) img.getWidth()));
                 imageView.setLayoutParams(layoutParams);
                 imageView.setImageBitmap(img);
             }
@@ -225,7 +225,7 @@ public class Node implements Serializable{
         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(node.getLanguage().contains("_")){
+                if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
                 } else {
                     node.addLanguage(dialogEditText.getText().toString());
@@ -260,7 +260,7 @@ public class Node implements Serializable{
                         String dateString = simpleDateFormat.format(date);
 
 
-                        if(node.getLanguage().contains("_")){
+                        if (node.getLanguage().contains("_")) {
                             node.setLanguage(node.getLanguage().replace("_", dateString));
                         } else {
                             node.addLanguage(" " + dateString);
@@ -302,7 +302,7 @@ public class Node implements Serializable{
                 numberPicker.setValue(numberPicker.getValue());
                 String value = String.valueOf(numberPicker.getValue());
 
-                if(node.getLanguage().contains("_")){
+                if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", value));
                 } else {
                     node.addLanguage(" " + value);
@@ -351,8 +351,7 @@ public class Node implements Serializable{
                 String durationString = String.valueOf(widthPicker.getValue()) + " X " + lengthPicker.getValue();
 
 
-
-                if(node.getLanguage().contains("_")){
+                if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", durationString));
                 } else {
                     node.addLanguage(" " + durationString);
@@ -399,7 +398,7 @@ public class Node implements Serializable{
                 String durationString = String.valueOf(startPicker.getValue()) + " to " + endPicker.getValue();
                 //TODO gotta get the units of the range somehow. gotta see what they look like first
 
-                if(node.getLanguage().contains("_")){
+                if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", durationString));
                 } else {
                     node.addLanguage(" " + durationString);
@@ -445,7 +444,7 @@ public class Node implements Serializable{
                 unitPicker.setValue(unitPicker.getValue());
                 String durationString = String.valueOf(quantityPicker.getValue()) + " " + doctorUnits[unitPicker.getValue()];
 
-                if(node.getLanguage().contains("_")){
+                if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", durationString));
                 } else {
                     node.addLanguage(" " + durationString);
@@ -490,7 +489,7 @@ public class Node implements Serializable{
                 unitPicker.setValue(unitPicker.getValue());
                 String durationString = String.valueOf(quantityPicker.getValue()) + " " + units[unitPicker.getValue()];
 
-                if(node.getLanguage().contains("_")){
+                if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", durationString));
                 } else {
                     node.addLanguage(" " + durationString);
@@ -513,7 +512,7 @@ public class Node implements Serializable{
 
     public static void subHandleQuestion(Node questionNode, final Activity context, final CustomArrayAdapter adapter) {
         String type = questionNode.getInputType();
-        Log.d(TAG,"subQ "+type);
+        Log.d(TAG, "subQ " + type);
         switch (type) {
             case "text":
                 subAskText(questionNode, context, adapter);
@@ -554,7 +553,7 @@ public class Node implements Serializable{
         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(node.getLanguage().contains("_")){
+                if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
                 } else {
                     node.addLanguage(dialogEditText.getText().toString());
@@ -587,7 +586,7 @@ public class Node implements Serializable{
                         Date date = cal.getTime();
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", context.getResources().getConfiguration().locale);
                         String dateString = simpleDateFormat.format(date);
-                        if(node.getLanguage().contains("_")){
+                        if (node.getLanguage().contains("_")) {
                             node.setLanguage(node.getLanguage().replace("_", dateString));
                         } else {
                             node.addLanguage(" " + dateString);
@@ -628,7 +627,7 @@ public class Node implements Serializable{
             public void onClick(DialogInterface dialog, int which) {
                 numberPicker.setValue(numberPicker.getValue());
                 String value = String.valueOf(numberPicker.getValue());
-                if(node.getLanguage().contains("_")){
+                if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", value));
                 } else {
                     node.addLanguage(" " + value);
@@ -675,7 +674,7 @@ public class Node implements Serializable{
                 lengthPicker.setValue(lengthPicker.getValue());
                 String durationString = String.valueOf(widthPicker.getValue()) + " X " + lengthPicker.getValue();
 
-                if(node.getLanguage().contains("_")){
+                if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", durationString));
                 } else {
                     node.addLanguage(" " + durationString);
@@ -721,7 +720,7 @@ public class Node implements Serializable{
                 String durationString = String.valueOf(startPicker.getValue()) + " to " + endPicker.getValue();
                 //TODO gotta get the units of the range somehow. gotta see what they look like first
 
-                if(node.getLanguage().contains("_")){
+                if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", durationString));
                 } else {
                     node.addLanguage(" " + durationString);
@@ -767,7 +766,7 @@ public class Node implements Serializable{
                 unitPicker.setValue(unitPicker.getValue());
                 String durationString = String.valueOf(quantityPicker.getValue()) + " " + doctorUnits[unitPicker.getValue()];
 
-                if(node.getLanguage().contains("_")){
+                if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", durationString));
                 } else {
                     node.addLanguage(" " + durationString);
@@ -812,7 +811,7 @@ public class Node implements Serializable{
                 unitPicker.setValue(unitPicker.getValue());
                 String durationString = String.valueOf(quantityPicker.getValue()) + " " + units[unitPicker.getValue()];
 
-                if(node.getLanguage().contains("_")){
+                if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", durationString));
                 } else {
                     node.addLanguage(" " + durationString);
@@ -871,13 +870,13 @@ public class Node implements Serializable{
             }
 
             this.language = jsonNode.optString("language");
-            if(this.language.isEmpty()){
+            if (this.language.isEmpty()) {
                 this.language = this.text;
             }
 
             //Only for physical exams
-            if(!this.language.isEmpty()){
-                if(this.language.contains(":")){
+            if (!this.language.isEmpty()) {
+                if (this.language.contains(":")) {
                     this.rootNode = true;
                 }
             }
@@ -1209,11 +1208,11 @@ public class Node implements Serializable{
         this.imagePathList = imagePathList;
     }
 
-    public void addImageToList(){
-        if(imagePathList==null){
+    public void addImageToList() {
+        if (imagePathList == null) {
             imagePathList = new ArrayList<>();
         }
-        if(imagePath!=null && !imagePath.isEmpty()){
+        if (imagePath != null && !imagePath.isEmpty()) {
             imagePathList.add(imagePath);
         }
     }

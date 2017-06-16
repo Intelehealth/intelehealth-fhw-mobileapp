@@ -1,3 +1,4 @@
+
 package io.intelehealth.client;
 
 import android.content.ContentValues;
@@ -546,3 +547,4 @@ public class PatientDetailActivity extends AppCompatActivity {
     }
 
 }
+
