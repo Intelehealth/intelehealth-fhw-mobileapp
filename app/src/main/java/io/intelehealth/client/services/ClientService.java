@@ -300,6 +300,12 @@ public class ClientService extends IntentService {
         return buffer.toString(); // returns the openMrsId OR "Picture received" (if picture)
     }
 
+    /**
+     * Checks whether upload of patient and person data to the server is a success.
+     * @param patientID Unique id of the patient
+     * @param current_intent this intent
+     * @return uploadDone
+     */
     private boolean uploadPatient(String patientID, Intent current_intent) {
 
         String responseCode = null;
@@ -348,6 +354,11 @@ public class ClientService extends IntentService {
         return uploadDone;
     }
 
+    /**
+     * Stores person data locally then posts it to the OpenMRS server.
+     * @param patientID Unique id of the patient
+     * @return responseString
+     */
     private String uploadPersonData(String patientID) {
 
         Patient patient = new Patient();
@@ -444,6 +455,12 @@ public class ClientService extends IntentService {
         }
     }
 
+    /**
+     * Uploads Patient data on the OpenMRS server.
+     * @param patientID Unique Id of the patient.
+     * @param responseString Response JSON string
+     * @return boolean value representing success or failure.
+     */
     private boolean uploadPatientData(String patientID, String responseString) {
         String patientString =
                 String.format("{\"person\":\"%s\", " +
@@ -488,6 +505,13 @@ public class ClientService extends IntentService {
 
     }
 
+    /**
+     * Retrieves Patient medical details and vitals from local database for uploading to the OpenMRS server.
+     * @param patientID Unique patient Id
+     * @param visitID Unique visit Id of the patient
+     * @param current_intent this intent
+     * @return uploadStatus
+     */
     private boolean uploadVisit(String patientID, String visitID, Intent current_intent) {
 
 
@@ -695,6 +719,12 @@ public class ClientService extends IntentService {
 
     }
 
+    /**
+     * Uploads visit details to the OpenMRS server.
+     * @param patient {@link Patient}
+     * @param startDateTime Start datetime in string
+     * @return responseVisit
+     */
     private String uploadVisitData(Patient patient, String startDateTime) {
 
 
@@ -723,6 +753,20 @@ public class ClientService extends IntentService {
 
     }
 
+    /**
+     * Upload the vitals of the patient to the OpenMRS server.
+     * @param visitUUID
+     * @param patient
+     * @param startDateTime
+     * @param temperature
+     * @param weight
+     * @param height
+     * @param pulse
+     * @param bpSys
+     * @param bpDias
+     * @param spO2
+     * @return boolean value representing success or failure.
+     */
     private boolean uploadEncounterVitals(String visitUUID, Patient patient, String startDateTime,
                                           Obs temperature, Obs weight, Obs height,
                                           Obs pulse, Obs bpSys, Obs bpDias, Obs spO2) {
@@ -837,7 +881,13 @@ public class ClientService extends IntentService {
         }
     }
 
-
+    /**
+     * Ends Patient visit session.
+     * @param patientIDs Unique patient Id
+     * @param visitUUID visit UUID
+     * @param current_intent this intent
+     * @return boolean value representing success or failure.
+     */
     private boolean endVisit(String patientIDs, String visitUUID, Intent current_intent) {
 
         String urlModifier = "visit/" + visitUUID;

@@ -16,6 +16,8 @@ import io.intelehealth.client.R;
 
 
 /**
+ * Provides necessary login alternative if offline.
+ *
  * Created by Dexter Barretto on 5/24/17.
  * Github : @dbarretto
  */
@@ -34,6 +36,11 @@ public class OfflineLogin {
                 context.getString(R.string.offline_login_shared_preference_key), Context.MODE_PRIVATE);
     }
 
+    /**
+     * Stores login credentials in shared preferences after hashing.
+     * @param username The username
+     * @param password The password
+     */
     public void setUpOfflineLogin(String username, String password) {
         StringEncryption stringEncryption = new StringEncryption();
         String random_salt = stringEncryption.getRandomSaltString();
@@ -121,6 +128,10 @@ public class OfflineLogin {
         Log.i(TAG, "Offline Login Invalidated");
     }
 
+    /**
+     * Provides application context.
+     * @return {@link OfflineLogin}
+     */
     public static OfflineLogin getOfflineLogin() {
         if (mOfflineLogin == null)
             mOfflineLogin = new OfflineLogin(IntelehealthApplication.getAppContext());

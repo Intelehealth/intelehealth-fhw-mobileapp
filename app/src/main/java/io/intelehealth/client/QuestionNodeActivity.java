@@ -25,7 +25,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-
+/**
+ * Gets more specifics of the ailment suffered by patient.
+ */
 public class QuestionNodeActivity extends AppCompatActivity {
 
     final String LOG_TAG = "Question Node Activity";

@@ -178,6 +178,13 @@ public class HelperMethods {
         return results;
     }
 
+    /**
+     * Perform GET request to the server.
+     * @param urlModifier modification in the url
+     * @param dataString data content
+     * @param context context of the activity
+     * @return {@link WebResponse}
+     */
     public static WebResponse getCommand(String urlModifier, String dataString, Context context) {
 
 
@@ -275,6 +282,13 @@ public class HelperMethods {
         return webResponse;
     }
 
+    /**
+     * Perform POST request to the server.
+     * @param urlModifier modification in url
+     * @param dataString data content
+     * @param context context of the activity
+     * @return {@link WebResponse}
+     */
     public static WebResponse postCommand(String urlModifier, String dataString, Context context) {
         BufferedReader reader;
         String JSONString;

@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.provider.SyncStateContract;
 
 /**
+ * Add account in OpenMRS.
+ *
  * Created by tusharjois on 9/5/16.
  */
 public class OpenMRSAccountAuthenticator extends AbstractAccountAuthenticator {

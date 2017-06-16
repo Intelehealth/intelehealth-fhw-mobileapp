@@ -15,6 +15,9 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
+ * Calls the respective apis.
+ * @see <a href="http://square.github.io/retrofit/">http://square.github.io/retrofit</a>
+ *
  * Created by Dexter Barretto on 6/9/17.
  * Github : @dbarretto
  */

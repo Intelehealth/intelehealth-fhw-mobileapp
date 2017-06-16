@@ -12,6 +12,8 @@ import android.widget.TextView;
 import io.intelehealth.client.objects.Node;
 
 /**
+ * Creates list of affliction to check.
+ *
  * Created by Amal Afroz Alam on 23, April, 2016.
  * Contact me: contact@amal.io
  */

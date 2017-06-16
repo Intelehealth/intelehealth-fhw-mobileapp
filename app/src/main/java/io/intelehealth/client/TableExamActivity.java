@@ -26,6 +26,9 @@ import java.util.Locale;
 import io.intelehealth.client.db.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.TableExam;
 
+/**
+ * Records the patient vitals in the {@link TableExam} container.
+ */
 public class TableExamActivity extends AppCompatActivity {
 
     EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mSpo2, mBMI;

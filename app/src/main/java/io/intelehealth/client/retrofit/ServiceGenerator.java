@@ -17,6 +17,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
+ * Manages api call requests.
+ * @see <a href="http://square.github.io/retrofit/">http://square.github.io/retrofit</a>
+ *
  * Created by dexterbarretto on 06/05/16.
  */
 public class ServiceGenerator {

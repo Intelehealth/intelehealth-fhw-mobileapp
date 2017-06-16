@@ -60,10 +60,12 @@ import io.intelehealth.client.utils.NetworkConnection;
 public class LoginActivity extends AppCompatActivity {
 
     private final String LOG_TAG = "LoginActivity";
+
     /**
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
+
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -152,7 +154,7 @@ public class LoginActivity extends AppCompatActivity {
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
-
+        // attempt to get device-Id for the phone
         TextView deviceIdView = (TextView) findViewById(R.id.textview_device_id);
         String deviceId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
         deviceId = getString(R.string.device_id) + deviceId;
@@ -256,6 +258,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * class UserLoginTask will authenticate user using email and password.
+     * Depending on server's response, user may or may not have successful login.
+     * This class also uses SharedPreferences to store session ID
+     */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mEmail;
@@ -360,6 +367,7 @@ public class LoginActivity extends AppCompatActivity {
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
             showProgress(false);
+
 
             if (success) {
                 final Account account = new Account(mEmail, "io.intelehealth.openmrs");

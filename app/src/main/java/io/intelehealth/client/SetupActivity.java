@@ -58,7 +58,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
+/**
+ * One time setup which requires OpenMRS server URL and user permissions
+ */
 public class SetupActivity extends AppCompatActivity {
 
     private final String LOG_TAG = "SetupActivity";
@@ -145,8 +147,8 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 attemptLogin();
-//                progressBar.setVisibility(View.VISIBLE);
-//                progressBar.setProgress(0);
+                //progressBar.setVisibility(View.VISIBLE);
+                //progressBar.setProgress(0);
 
             }
         });
@@ -235,7 +237,11 @@ public class SetupActivity extends AppCompatActivity {
         }
         return true;
     }
-    
+
+    /**
+     * Check username and password validations.
+     * Get user selected location.
+     */
     private void attemptLogin() {
         if (mAuthTask != null) {
             return;
@@ -308,7 +314,11 @@ public class SetupActivity extends AppCompatActivity {
         return password.length() > 4;
     }
 
-
+    /**
+     * Attempts login to the OpenMRS server.
+     * If successful cretes a new {@link Account}
+     * If unsuccessful details are saved in SharedPreferences.
+     */
     private class TestSetup extends AsyncTask<Void, Void, Integer> {
 
         private final String USERNAME;
@@ -472,6 +482,10 @@ public class SetupActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Parse locations fetched through api and provide the appropriate dropdown.
+     * @param  url string of url.
+     */
     private void getLocationFromServer(String url) {
         ServiceGenerator.changeApiBaseUrl(url);
         RestApi apiService =
@@ -497,7 +511,12 @@ public class SetupActivity extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * Returns list of locations.
+     * @param  locationList  a list of type {@link Location}.
+     * @return list of type string.
+     * @see Location
+     */
     private List<String> getLocationStringList(List<Location> locationList) {
         List<String> list = new ArrayList<String>();
         list.add(getString(R.string.login_location_select));

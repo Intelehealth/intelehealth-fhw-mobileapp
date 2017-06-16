@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import io.intelehealth.client.db.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Node;
 
+/**
+ * Creates the family history mindmap of the patient.
+ */
 public class FamilyHistoryActivity extends AppCompatActivity {
 
     String LOG_TAG = "Family History Activity";

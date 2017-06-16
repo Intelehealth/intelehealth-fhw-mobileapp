@@ -12,6 +12,8 @@ import io.intelehealth.client.db.DelayedJobQueueProvider;
 import io.intelehealth.client.services.ClientService;
 
 /**
+ * Start {@link ClientService} when online to upload the queued data.
+ *
  * Created by Dexter Barretto on 5/31/17.
  * Github : @dbarretto
  */

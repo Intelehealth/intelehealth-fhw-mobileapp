@@ -7,25 +7,26 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ExpandableListView;
 import android.widget.ListView;
 
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import io.intelehealth.client.objects.Knowledge;
 import io.intelehealth.client.objects.Node;
 
+/**
+ * Provides appropriate options to record patient's ailment.
+ * Goes through each JSON file corresponding to the ailment.
+ */
 public class ComplaintNodeActivity extends AppCompatActivity {
 
     final String LOG_TAG = "Complaint Node Activity";

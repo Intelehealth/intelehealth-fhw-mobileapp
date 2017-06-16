@@ -1,6 +1,8 @@
 package io.intelehealth.client.objects;
 
 /**
+ * Container for response code and string from server.
+ *
  * Created by Amal Afroz Alam on 12, August, 2016.
  * Contact me: contact@amal.io
  */
