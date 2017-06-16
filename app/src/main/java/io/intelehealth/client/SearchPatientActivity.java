@@ -167,7 +167,7 @@ public class SearchPatientActivity extends AppCompatActivity {
     //TODO: Hacked Code , needs cleaning.
 
     /**
-     * This method is used to search for details if smaller input size is given.
+     * This method is used to search for details with only a partial string.
      * @param searchTerm variable of type String
      * @return                  void
      */
