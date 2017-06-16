@@ -1,8 +1,10 @@
 package io.intelehealth.client.objects;
 
 /**
- * Created by tusharjois on 4/27/16.
+ *This class contains get() and set() methods for complaint's details.
+ * Created by tusharjois
  */
+
 public class Complaint {
 
     public Complaint() {

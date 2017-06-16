@@ -44,6 +44,10 @@ import io.intelehealth.client.db.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.services.ClientService;
 
+/**
+ * This class displays all details about the patient.It also enables to print these details.
+ * It creates a summary list of older visits of patient.
+ */
 public class PatientDetailActivity extends AppCompatActivity {
 
     LocalRecordsDatabaseHelper mDbHelper;
@@ -163,6 +167,11 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method displays basic details about patient (eg: name, address).
+     * @param dataString variable of type String
+     * @return           void
+     */
     public void setDisplay(String dataString) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -352,6 +361,13 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     }
 
+
+    /**
+     * This method prints the basic details of patient.
+     * It makes use of PRINT_SERVICE from PrintManager
+     * @return void
+     */
+
     private void doWebViewPrint() {
         // Create a WebView object specifically for printing
         WebView webView = new WebView(this);
@@ -407,6 +423,10 @@ public class PatientDetailActivity extends AppCompatActivity {
         mWebView = webView;
     }
 
+    /**
+     * This method creates a print job using PrintManager instance and PrintAdapter Instance
+     * @param webView  object of type WebView.
+     */
     private void createWebPrintJob(WebView webView) {
 
         // Get a PrintManager instance
@@ -423,6 +443,9 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This class updates patient details and image.
+     */
     protected class UpdatePatientTask extends AsyncTask<String, Void, Void> {
 
         @Override
@@ -450,6 +473,12 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This method retrieves details about patient's old visits.
+     * @param datetime variable of type String.
+     * @param visit_id variable of type int.
+     * @return void
+     */
     private void createOldVisit(String datetime,int visit_id) {
        // final LayoutInflater inflater = PatientDetailActivity.this.getLayoutInflater();
       //  View convertView = inflater.inflate(R.layout.list_item_previous_visit, null);
@@ -503,6 +532,10 @@ public class PatientDetailActivity extends AppCompatActivity {
         //TODO: add on click listener to open the previous visit
     }
 
+    /**
+     * This method is called when patient has no prior visits.
+     * @return void
+     */
     private void neverSeen() {
         final LayoutInflater inflater = PatientDetailActivity.this.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.list_item_previous_visit, null);
