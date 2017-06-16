@@ -1,3 +1,4 @@
+
 package io.intelehealth.client;
 
 import android.content.ContentValues;
@@ -44,6 +45,10 @@ import io.intelehealth.client.db.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.services.ClientService;
 
+/**
+ * This class displays all details about the patient.It also enables to print these details.
+ * It creates a summary list of older visits of patient.
+ */
 public class PatientDetailActivity extends AppCompatActivity {
 
     LocalRecordsDatabaseHelper mDbHelper;
@@ -59,6 +64,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     Button newVisit;
     LinearLayout previousVisitsList;
+
 
 
     @Override
@@ -162,6 +168,11 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method displays basic details about patient (eg: name, address).
+     * @param dataString variable of type String
+     * @return           void
+     */
     public void setDisplay(String dataString) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -170,7 +181,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         String[] patientArgs = {dataString};
         String[] patientColumns = {"first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
-                "postal_code", "country", "phone_number", "gender", "sdw", "occupation", "patient_photo"};
+                "postal_code","country","phone_number", "gender", "sdw", "occupation", "patient_photo"};
         final Cursor idCursor = db.query("patient", patientColumns, patientSelection, patientArgs, null, null, null);
 
         if (idCursor.moveToFirst()) {
@@ -248,7 +259,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
         String postal_code;
         if (patient.getPostalCode() != null) {
-            postal_code = patient.getPostalCode().trim() + ",";
+            postal_code = patient.getPostalCode().trim()+",";
         } else {
             postal_code = "";
         }
@@ -340,7 +351,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     try {
                         Date formatted = currentDate.parse(date);
                         String visitDate = currentDate.format(formatted);
-                        createOldVisit(visitDate, visit_id);
+                        createOldVisit(visitDate,visit_id);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -350,6 +361,13 @@ public class PatientDetailActivity extends AppCompatActivity {
         visitCursor.close();
 
     }
+
+
+    /**
+     * This method prints the basic details of patient.
+     * It makes use of PRINT_SERVICE from PrintManager
+     * @return void
+     */
 
     private void doWebViewPrint() {
         // Create a WebView object specifically for printing
@@ -406,6 +424,10 @@ public class PatientDetailActivity extends AppCompatActivity {
         mWebView = webView;
     }
 
+    /**
+     * This method creates a print job using PrintManager instance and PrintAdapter Instance
+     * @param webView  object of type WebView.
+     */
     private void createWebPrintJob(WebView webView) {
 
         // Get a PrintManager instance
@@ -422,6 +444,9 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This class updates patient details and image.
+     */
     protected class UpdatePatientTask extends AsyncTask<String, Void, Void> {
 
         @Override
@@ -449,16 +474,22 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     }
 
-    private void createOldVisit(String datetime, int visit_id) {
-        // final LayoutInflater inflater = PatientDetailActivity.this.getLayoutInflater();
-        //  View convertView = inflater.inflate(R.layout.list_item_previous_visit, null);
-        //  TextView textView = (TextView) convertView.findViewById(R.id.textView_visit_info);
+    /**
+     * This method retrieves details about patient's old visits.
+     * @param datetime variable of type String.
+     * @param visit_id variable of type int.
+     * @return void
+     */
+    private void createOldVisit(String datetime,int visit_id) {
+       // final LayoutInflater inflater = PatientDetailActivity.this.getLayoutInflater();
+      //  View convertView = inflater.inflate(R.layout.list_item_previous_visit, null);
+      //  TextView textView = (TextView) convertView.findViewById(R.id.textView_visit_info);
         TextView textView = new TextView(this);
         String visitString = String.format("Seen on %s.", datetime);
         textView.setText(visitString);
         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams
                 (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        llp.setMargins(25, 25, 25, 25);
+        llp.setMargins(25, 25,25, 25);
         textView.setLayoutParams(llp);
         textView.setTag(visit_id);
        /* textView.setOnTouchListener(new View.OnTouchListener() {
@@ -487,9 +518,9 @@ public class PatientDetailActivity extends AppCompatActivity {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(PatientDetailActivity.this, "Click", Toast.LENGTH_SHORT).show();
-                int position = (Integer) v.getTag();
-                Intent visitSummary = new Intent(PatientDetailActivity.this, VisitSummaryActivity.class);
+                Toast.makeText(PatientDetailActivity.this,"Click",Toast.LENGTH_SHORT).show();
+                int position  = (Integer)v.getTag();
+                Intent visitSummary = new Intent(PatientDetailActivity.this,VisitSummaryActivity.class);
                 visitSummary.putExtra("visitID", String.valueOf(position));
                 visitSummary.putExtra("patientID", patientID);
                 visitSummary.putExtra("name", patientName);
@@ -502,6 +533,10 @@ public class PatientDetailActivity extends AppCompatActivity {
         //TODO: add on click listener to open the previous visit
     }
 
+    /**
+     * This method is called when patient has no prior visits.
+     * @return void
+     */
     private void neverSeen() {
         final LayoutInflater inflater = PatientDetailActivity.this.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.list_item_previous_visit, null);
@@ -512,3 +547,4 @@ public class PatientDetailActivity extends AppCompatActivity {
     }
 
 }
+

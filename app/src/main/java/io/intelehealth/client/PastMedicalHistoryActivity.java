@@ -1,3 +1,4 @@
+
 package io.intelehealth.client;
 
 import android.content.ContentValues;
@@ -18,6 +19,9 @@ import java.util.ArrayList;
 import io.intelehealth.client.db.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Node;
 
+/**
+ * This class updates the medical records of patient based on his past medical history.
+ */
 public class PastMedicalHistoryActivity extends AppCompatActivity {
 
     String LOG_TAG = "Patient History Activity";
@@ -66,7 +70,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
 
         setTitle(R.string.title_activity_patient_history);
-        setTitle(getTitle() + ": " + patientName);
+        setTitle(getTitle() + ": "  + patientName);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_history);
@@ -82,14 +86,14 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                 //If nothing is selected, there is nothing to put into the database.
 
 
-                if (intentTag != null && intentTag.equals("edit")) {
-                    if (patientHistoryMap.anySubSelected()) {
+                if (intentTag != null && intentTag.equals("edit")){
+                    if(patientHistoryMap.anySubSelected()){
                         patientHistory = patientHistoryMap.generateLanguage();
 
-                        updateDatabase(patientHistory);
+                        updateDatabase(patientHistory); // update details of patient's visit
                     }
 
-
+                    // displaying all values in another activity
                     Intent intent = new Intent(PastMedicalHistoryActivity.this, VisitSummaryActivity.class);
                     intent.putExtra("patientID", patientID);
                     intent.putExtra("visitID", visitID);
@@ -99,7 +103,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else {
 
-                    if (patientHistoryMap.anySubSelected()) {
+                    if(patientHistoryMap.anySubSelected()){
                         patientHistory = patientHistoryMap.generateLanguage();
 
                         insertDb(patientHistory);
@@ -138,8 +142,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                 }
                 adapter.notifyDataSetChanged();
 
-                Log.i(TAG, String.valueOf(clickedNode.isTerminal()));
-                if (!clickedNode.isTerminal() && clickedNode.isSelected()) {
+                Log.i(TAG,String.valueOf(clickedNode.isTerminal()));
+                if(!clickedNode.isTerminal() && clickedNode.isSelected()){
                     Node.subLevelQuestion(clickedNode, PastMedicalHistoryActivity.this, adapter);
                 }
 
@@ -162,7 +166,11 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
     }
 
-
+    /**
+     * This method inserts medical history of patient in database.
+     * @param value variable of type String
+     * @return      long
+     */
     private long insertDb(String value) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
 
@@ -187,6 +195,11 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
         return localdb.insert("obs", null, complaintEntries);
     }
 
+    /**
+     * This method updates medical history of patient in database.
+     * @param string variable of type String
+     * @return              void
+     */
     private void updateDatabase(String string) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
@@ -214,9 +227,10 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
                 patientHistoryMap.setImagePath(mCurrentPhotoPath);
-                Log.i(TAG, mCurrentPhotoPath);
+                Log.i(TAG,mCurrentPhotoPath);
                 patientHistoryMap.displayImage(this);
             }
         }
     }
 }
+

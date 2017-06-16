@@ -1,3 +1,4 @@
+
 package io.intelehealth.client.objects;
 
 import org.json.JSONObject;
@@ -6,9 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * This class extends Node class.An object of this class gathers all selected complaint nodes.
+ * Methods of this class can gather all selected complaints.
  * Created by Amal Afroz Alam on 24, April, 2016.
- * Contact me: contact@amal.io
  */
+
 public class Knowledge extends Node {
 
     private String LOG_TAG = "Knowledge Class";
@@ -18,7 +21,6 @@ public class Knowledge extends Node {
     /**
      * This is just for the specific use case for the knowledge engine.
      * This particular object as created as a way to gather all selected complaint nodes.
-     *
      * @param jsonObject
      */
 
@@ -40,7 +42,6 @@ public class Knowledge extends Node {
      * This method was originally to make a way to compile a master list of complaints.
      * This has become redundant due to the change in the way the knowledge engine is used.
      * Now that first level nodes are always complaints, this is not necessary to do.
-     *
      * @param node
      * @return
      */
@@ -90,3 +91,4 @@ public class Knowledge extends Node {
     }
 
 }
+

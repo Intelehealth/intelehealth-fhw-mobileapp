@@ -1,3 +1,4 @@
+
 package io.intelehealth.client;
 
 import android.content.Context;
@@ -58,3 +59,4 @@ public class SearchCursorAdapter extends CursorAdapter {
 
 
 }
+

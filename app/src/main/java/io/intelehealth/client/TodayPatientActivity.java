@@ -1,3 +1,4 @@
+
 package io.intelehealth.client;
 
 import android.database.Cursor;
@@ -18,6 +19,9 @@ import java.util.List;
 import io.intelehealth.client.db.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.TodayPatientModel;
 
+/**
+ * This class retrieves information about patients with visits on current date and sets data to a RecyclerView.
+ */
 public class TodayPatientActivity extends AppCompatActivity {
 
     final String TAG = TodayPatientActivity.class.getSimpleName();
@@ -42,6 +46,10 @@ public class TodayPatientActivity extends AppCompatActivity {
         doQuery();
     }
 
+    /**
+     * This method retrieves visit details about patient for a particular date.
+     * @return void
+     */
     private void doQuery() {
         List<TodayPatientModel> todayPatientList = new ArrayList<>();
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -89,3 +97,4 @@ public class TodayPatientActivity extends AppCompatActivity {
 
 
 }
+

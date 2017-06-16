@@ -1,3 +1,4 @@
+
 package io.intelehealth.client;
 
 import android.Manifest;
@@ -54,8 +55,7 @@ import io.intelehealth.client.utils.NetworkConnection;
 
 /**
  * A login screen that offers login via username/password.
- * Note that the default setup for this uses "email" as our username field
- * TODO: refactor email into username
+ *
  */
 public class LoginActivity extends AppCompatActivity {
 
@@ -69,8 +69,9 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
+     *
      */
+    // TODO: remove after connecting to a real authentication system.
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "username:password", "admin:nimda"
     };
@@ -162,6 +163,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Returns void.
+     * This method checks if valid username and password are given as input.
+
+     * @return void
+     */
     private void attemptLogin() {
 
         if (mAuthTask != null) {
@@ -214,17 +221,32 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *
+     * @param email Email-id
+     * @return     boolean
+     */
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
         return true;
     }
 
+    /**
+     *
+     * @param password Password
+     * @return       boolean
+     */
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
         return password.length() > 4;
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    /**
+     * This method reflects the progress on UI for login.
+     * @param show variable of type boolean
+     * @return         void
+     */
     private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
@@ -262,6 +284,7 @@ public class LoginActivity extends AppCompatActivity {
      * class UserLoginTask will authenticate user using email and password.
      * Depending on server's response, user may or may not have successful login.
      * This class also uses SharedPreferences to store session ID
+
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
@@ -281,8 +304,6 @@ public class LoginActivity extends AppCompatActivity {
             WebResponse loginAttempt = new WebResponse();
 
             try {
-
-
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 final String BASE_URL = sharedPref.getString(SettingsActivity.KEY_PREF_SERVER_URL, "");
 
@@ -292,8 +313,6 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d(LOG_TAG, "PW: " + PASSWORD);
 
                 String urlModifier = "session";
-
-
                 String urlString = BASE_URL + urlModifier;
 
                 URL url = new URL(urlString);
@@ -344,12 +363,13 @@ public class LoginActivity extends AppCompatActivity {
                     return false;
                 } else {
                     JsonObject jsonObject = new JsonParser().parse(loginAttempt.getResponseString()).getAsJsonObject();
-                    if (jsonObject.get("authenticated").getAsBoolean()) {
+                    if (jsonObject.get("authenticated").getAsBoolean()){
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("sessionid", jsonObject.get("sessionId").getAsString());
                         editor.commit();
                         return true;
-                    } else {
+                    }
+                    else {
                         return false;
                     }
                 }
@@ -390,6 +410,13 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * A method of FirebaseJobDispatcher Library.
+     * It schedules background jobs for android app.
+     * @param context  Current context
+     * @return         returns void
+     *
+     */
     private void startJobDispatcherService(Context context) {
         Driver driver = new GooglePlayDriver(context);
         FirebaseJobDispatcher firebaseJobDispatcher = new FirebaseJobDispatcher(driver);

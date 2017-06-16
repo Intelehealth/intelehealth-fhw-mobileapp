@@ -1,3 +1,4 @@
+
 package io.intelehealth.client;
 
 import android.app.NotificationManager;
@@ -50,6 +51,11 @@ import io.intelehealth.client.objects.Obs;
 import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.objects.WebResponse;
 import io.intelehealth.client.services.ClientService;
+
+/**
+ * This class updates data about patient to database. It also creates a summary about it which can be viewed
+ * using WebView and printed.
+ */
 
 public class VisitSummaryActivity extends AppCompatActivity {
 
@@ -137,7 +143,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_visit_summary, menu);
         MenuItem menuItem = menu.findItem(R.id.summary_endVisit);
-        if (isPast) menuItem.setVisible(false);
+        if(isPast) menuItem.setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -176,7 +182,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
-            isPast = intent.getBooleanExtra("pastVisit", false);
+            isPast = intent.getBooleanExtra("pastVisit",false);
 
 //            Log.v(TAG, "Patient ID: " + patientID);
 //            Log.v(TAG, "Visit ID: " + visitID);
@@ -218,7 +224,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editMedHist = (ImageButton) findViewById(R.id.imagebutton_edit_pathist);
         uploadButton = (Button) findViewById(R.id.button_upload);
 
-        if (isPast) {
+        if(isPast){
             editVitals.setVisibility(View.GONE);
             editComplaint.setVisibility(View.GONE);
             editPhysical.setVisibility(View.GONE);
@@ -227,6 +233,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             uploadButton.setVisibility(View.GONE);
             invalidateOptionsMenu();
         }
+
 
 
         uploadButton.setOnClickListener(new View.OnClickListener() {
@@ -615,7 +622,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     }
 
-
+    /**
+     * This method creates new object of type RetrieveData.
+     * @param view variable of type View
+     * @return     void
+     */
     public void retrieveOpenMRS(View view) {
         new RetrieveData(this).execute();
     }
@@ -658,6 +669,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 
     }
+
+    /**
+     * This methods retrieves patient data from database.
+     * @param dataString  variable of type String
+     * @return                   void
+     */
 
     public void queryData(String dataString) {
 
@@ -740,6 +757,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         visitCursor.close();
     }
 
+    /**
+     * This method distinguishes between different concepts using switch case to populate the information into the relevant sections (eg:complaints, physical exam, vitals, etc.).
+     * @param concept_id variable of type int.
+     * @param value      variable of type String.
+     */
     private void parseData(int concept_id, String value) {
         switch (concept_id) {
             case 163186: //Current Complaint
@@ -775,6 +797,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method creates a web view for printing patient's various details.
+     * @return void
+     */
     private void doWebViewPrint() {
         // Create a WebView object specifically for printing
         WebView webView = new WebView(this);
@@ -875,6 +901,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mWebView = webView;
     }
 
+    /**
+     * This method creates a print job using PrintManager instance and PrintAdapter Instance
+     * @param webView  object of type WebView.
+     */
     private void createWebPrintJob(WebView webView) {
 
         // Get a PrintManager instance
@@ -1100,6 +1130,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *
+     * @param title   variable of type String
+     * @param content variable of type String
+     * @param index  variable of type int
+     */
     private void createNewCardView(String title, String content, int index) {
         final LayoutInflater inflater = VisitSummaryActivity.this.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.card_doctor_content, null);
@@ -1109,6 +1145,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
         contentView.setText(content);
         mLayout.addView(convertView, index);
     }
+
+    /**
+     * This method updates patient details to database.
+     * @param string  variable of type String
+     * @param conceptID variable of type int
+     */
 
     private void updateDatabase(String string, int conceptID) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
@@ -1129,3 +1171,4 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     }
 }
+

@@ -1,3 +1,4 @@
+
 package io.intelehealth.client;
 
 import android.app.SearchManager;
@@ -22,6 +23,10 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import io.intelehealth.client.db.LocalRecordsDatabaseHelper;
+
+/**
+ * This class helps to search for a patient from list of existing patients.
+ */
 
 public class SearchPatientActivity extends AppCompatActivity {
 
@@ -96,8 +101,13 @@ public class SearchPatientActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * This method retrieves data from database and sends it via Intent to PatientDetailActivity.
+     * @param query variable of type String
+     * @return             void
+     */
 
-    public void doQuery(String query) {
+    public void doQuery(String query) { // called in onCreate()
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         String table = "patient";
         String[] columns = {"_id", "first_name", "middle_name", "last_name",
@@ -131,19 +141,19 @@ public class SearchPatientActivity extends AppCompatActivity {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-                                if (searchCursor.moveToPosition(position)) {
-                                    String patientID = searchCursor.getString(searchCursor.getColumnIndexOrThrow("_id"));
+                        if (searchCursor.moveToPosition(position)) {
+                            String patientID = searchCursor.getString(searchCursor.getColumnIndexOrThrow("_id"));
 //                            Log.d(TAG, patientID);
-                                    String patientStatus = "returning";
-                                    Intent intent = new Intent(SearchPatientActivity.this, PatientDetailActivity.class);
-                                    intent.putExtra("patientID", patientID);
-                                    intent.putExtra("status", patientStatus);
-                                    intent.putExtra("tag", "");
-                                    startActivity(intent);
+                            String patientStatus = "returning";
+                            Intent intent = new Intent(SearchPatientActivity.this, PatientDetailActivity.class);
+                            intent.putExtra("patientID", patientID);
+                            intent.putExtra("status", patientStatus);
+                            intent.putExtra("tag", "");
+                            startActivity(intent);
 
-                                }
-                            }
-                        });
+                        }
+                    }
+                });
             }
 
 
@@ -156,12 +166,19 @@ public class SearchPatientActivity extends AppCompatActivity {
     }
 
     //TODO: Hacked Code , needs cleaning.
-    public void doInstantSearch(String searchTerm) {
+
+    /**
+     * This method is used to search for details with only a partial string.
+     * @param searchTerm variable of type String
+     * @return                  void
+     */
+    public void doInstantSearch(String searchTerm) { // called in onCreateOptionsMenu
         String search = searchTerm.trim();
         ListView lvItems = (ListView) findViewById(R.id.listview_search);
-        if (TextUtils.isEmpty(search)) {
+        if(TextUtils.isEmpty(search)) {
             lvItems.setAdapter(null);
-        } else {
+        }
+        else {
             SQLiteDatabase db = mDbHelper.getWritableDatabase();
             String table = "patient";
 
@@ -204,6 +221,11 @@ public class SearchPatientActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This method is called when no search result is found for patient.
+     * @param lvItems variable of type ListView
+     * @param query  variable of type String
+     */
     public void noneFound(ListView lvItems, String query) {
         ArrayAdapter<String> searchAdapter = new ArrayAdapter<>(this,
                 R.layout.list_item_search,
@@ -214,3 +236,4 @@ public class SearchPatientActivity extends AppCompatActivity {
     }
 
 }
+
