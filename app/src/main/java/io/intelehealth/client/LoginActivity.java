@@ -54,10 +54,8 @@ import io.intelehealth.client.utils.NetworkConnection;
 
 /**
  * A login screen that offers login via username/password.
- * Note that the default setup for this uses "email" as our username field
  *
  */
-//TODO: refactor email into username
 public class LoginActivity extends AppCompatActivity {
 
     private final String LOG_TAG = "LoginActivity";
@@ -245,7 +243,6 @@ public class LoginActivity extends AppCompatActivity {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     /**
      * This method reflects the progress on UI for login.
-     * It makes use of APIs available on Honeycomb MR2.
      * @param show variable of type boolean
      * @return         void
      */
