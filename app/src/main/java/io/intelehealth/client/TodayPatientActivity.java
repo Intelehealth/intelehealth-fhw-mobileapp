@@ -48,7 +48,11 @@ public class TodayPatientActivity extends AppCompatActivity {
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
         String query =
-                "SELECT * FROM visit, patient WHERE visit.patient_id = patient._id AND visit.start_datetime LIKE '" + currentDate + "T%'";
+                "SELECT visit._id, visit.patient_id, visit.start_datetime, visit.end_datetime," +
+                        "visit.openmrs_visit_uuid, patient.first_name, patient.middle_name, patient.last_name, " +
+                        "patient.date_of_birth,patient.phone_number FROM visit, patient WHERE visit.patient_id = patient._id " +
+                        "AND visit.start_datetime LIKE '" + currentDate + "T%'";
+              //  "SELECT * FROM visit, patient WHERE visit.patient_id = patient._id AND visit.start_datetime LIKE '" + currentDate + "T%'";
         Log.i(TAG, query);
         final Cursor cursor = db.rawQuery(query, null);
 
@@ -56,11 +60,11 @@ public class TodayPatientActivity extends AppCompatActivity {
             if (cursor.moveToFirst()) {
                 do {
                     todayPatientList.add(new TodayPatientModel(
-                            cursor.getColumnIndexOrThrow("_id"),
+                            cursor.getInt(cursor.getColumnIndexOrThrow("_id")),
                             cursor.getString(cursor.getColumnIndexOrThrow("patient_id")),
                             cursor.getString(cursor.getColumnIndexOrThrow("start_datetime")),
                             cursor.getString(cursor.getColumnIndexOrThrow("end_datetime")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("openmrs_uuid")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("openmrs_visit_uuid")),
                             cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
                             cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
                             cursor.getString(cursor.getColumnIndexOrThrow("last_name")),

@@ -177,7 +177,6 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
-
         }
     }
 

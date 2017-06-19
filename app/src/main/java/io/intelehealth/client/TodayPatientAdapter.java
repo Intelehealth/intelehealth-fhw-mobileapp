@@ -73,9 +73,11 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientViewHo
             @Override
             public void onClick(View v) {
                 String patientStatus = "returning";
-                Intent intent = new Intent(context, PatientDetailActivity.class);
+                Intent intent = new Intent(context, VisitSummaryActivity.class);
                 intent.putExtra("patientID", todayPatientModel.getPatient_id());
+                intent.putExtra("visitID", todayPatientModel.get_id().toString());
                 intent.putExtra("status", patientStatus);
+                intent.putExtra("name", todayPatientModel.getFirst_name() +" "+ todayPatientModel.getLast_name());
                 intent.putExtra("tag", "");
                 context.startActivity(intent);
             }

@@ -18,8 +18,8 @@
 
             <ImageView
                 android:id="@+id/option_icon"
-                android:layout_width="60sp"
-                android:layout_height="60sp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_alignParentStart="true"
                 android:layout_centerInParent="true"
                 android:layout_marginRight="16dp" />

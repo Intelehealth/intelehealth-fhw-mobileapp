@@ -38,8 +38,6 @@ import com.firebase.jobdispatcher.Trigger;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,7 +47,7 @@ import java.net.URL;
 
 import io.intelehealth.client.objects.WebResponse;
 import io.intelehealth.client.offline_login.OfflineLogin;
-import io.intelehealth.client.sync.JobDispatchService;
+import io.intelehealth.client.services.sync.JobDispatchService;
 import io.intelehealth.client.utils.NetworkConnection;
 
 /**

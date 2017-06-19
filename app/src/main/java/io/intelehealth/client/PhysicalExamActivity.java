@@ -174,6 +174,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
 //                            return;
 //                        }
 //                    }
+
                 }
             }
         });

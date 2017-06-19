@@ -9,13 +9,15 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <uses-feature
-        android:name="android.hardware.camera" android:required="true" />
+        android:name="android.hardware.camera"
+        android:required="true" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
@@ -64,11 +66,12 @@
         <activity
             android:name=".VisitSummaryActivity"
             android:label="@string/title_activity_patient_summary"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".HomeActivity">
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomeActivity" /></activity>
+                android:value=".HomeActivity" />
+        </activity>
         <activity android:name=".ViewHistoryActivity" />
         <activity
             android:name=".SearchPatientActivity"
@@ -187,8 +190,7 @@
         <activity
             android:name=".camera.CameraActivity"
             android:label="@string/title_activity_camera"
-            android:theme="@style/CameraActivityStyle">
-        </activity>
+            android:theme="@style/CameraActivityStyle"></activity>
         <activity
             android:name=".SplashActivity"
             android:theme="@style/SplashTheme">
@@ -198,9 +200,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TodayPatientActivity"
+        <activity
+            android:name=".TodayPatientActivity"
             android:label="@string/title_activity_today_patient"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity
+            android:name=".video_library.VideoLibraryActivity"
+            android:label="@string/title_activity_video_library"
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
         <!-- Firebase Services-->
         <service android:name=".firebase_cloud_messaging.MyFirebaseMessagingService">
             <intent-filter>
@@ -226,7 +236,7 @@
             android:exported="false" />
 
         <service
-            android:name=".sync.JobDispatchService"
+            android:name=".services.sync.JobDispatchService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />

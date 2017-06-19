@@ -11,16 +11,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import io.intelehealth.client.video_library.VideoLibraryActivity;
+import io.intelehealth.client.video_library.VideoLibraryAdapter;
+
 /**
  * Created by tusharjois on 9/20/16.
  */
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder> {
 
     final static String TAG = HomeAdapter.class.getSimpleName();
-    final String[] options = {"New Patient","Lookup Patient","Today's Patient"};
+    final String[] options = {"New Patient","Lookup Patient","Today's Patient","Video Library"};
 
     //TODO: Change placeholder icon "android.R.drawable.ic_menu_my_calendar"
-    final int[] icons = {R.drawable.ic_person_add_24dp, R.drawable.ic_search_24dp, android.R.drawable.ic_menu_my_calendar};
+    final int[] icons = {R.drawable.ic_person_add_24dp, R.drawable.ic_search_24dp,
+            android.R.drawable.ic_menu_my_calendar, R.drawable.ic_action_folder_open};
 
     @Override
     public IconViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -71,9 +75,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
 
                     //TODO: Change Activity after coding is done.
 
-                    // Query for today's patient
-                    // SELECT * FROM visit WHERE start_datetime LIKE "2017-05-08T%" ORDER BY start_datetime ASC
                     Intent intent = new Intent(this.context, TodayPatientActivity.class);
+                    this.context.startActivity(intent);
+                    break;
+                }
+                case "Video Library" : {
+                    Intent intent = new Intent(this.context, VideoLibraryActivity.class);
                     this.context.startActivity(intent);
                     break;
                 }
