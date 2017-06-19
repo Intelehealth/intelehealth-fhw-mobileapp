@@ -1,8 +1,9 @@
+
 package io.intelehealth.client.objects;
 
 /**
+ * This class contains get() and set() methods for details of Medical history.
  * Created by Amal Afroz Alam on 28, April, 2016.
- * Contact me: contact@amal.io
  */
 public class MedicalHistory {
 
@@ -34,3 +35,4 @@ public class MedicalHistory {
         this.data = data;
     }
 }
+

@@ -1,3 +1,4 @@
+
 /*
  * The contents of this file are subject to the OpenMRS Public License
  * Version 1.0 (the "License"); you may not use this file except in
@@ -18,6 +19,9 @@ import com.google.gson.annotations.Expose;
 
 import io.intelehealth.client.retrofit.models.resource.Resource;
 
+/**
+ * This class contains various get() and set() methods for location details of patient.
+ */
 public class Location extends Resource {
     @Expose
     private Long id;
@@ -140,3 +144,4 @@ public class Location extends Resource {
         this.postalCode = postalCode;
     }
 }
+

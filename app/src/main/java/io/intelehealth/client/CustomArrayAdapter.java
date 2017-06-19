@@ -47,7 +47,7 @@ public class CustomArrayAdapter extends ArrayAdapter<Node> {
     //Each view is a node itself
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if(convertView == null){
+        if (convertView == null) {
             LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
             convertView = inflater.inflate(layoutResourceID, parent, false);
         }
@@ -76,7 +76,7 @@ public class CustomArrayAdapter extends ArrayAdapter<Node> {
         super.notifyDataSetChanged();
     }
 
-    public void updateNodeList(List<Node> newNodes){
+    public void updateNodeList(List<Node> newNodes) {
         mNodes.clear();
         mNodes.addAll(newNodes);
         this.notifyDataSetChanged();

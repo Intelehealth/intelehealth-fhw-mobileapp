@@ -35,59 +35,46 @@ public class Resource implements Serializable {
     protected List<Link> links = new ArrayList<Link>();
 
     /**
-     *
-     * @return
-     *     The uuid
+     * @return The uuid
      */
     public String getUuid() {
         return uuid;
     }
 
     /**
-     *
-     * @param uuid
-     *     The uuid
+     * @param uuid The uuid
      */
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
 
     /**
-     *
-     * @return
-     *     The display
+     * @return The display
      */
     public String getDisplay() {
         return display;
     }
 
     /**
-     *
-     * @param display
-     *     The display
+     * @param display The display
      */
     public void setDisplay(String display) {
         this.display = display;
     }
 
     /**
-     *
-     * @return
-     *     The links
+     * @return The links
      */
     public List<Link> getLinks() {
         return links;
     }
 
     /**
-     *
-     * @param links
-     *     The links
+     * @param links The links
      */
     public void setLinks(List<Link> links) {
         this.links = links;
     }
-
 
 
 }

@@ -1,4 +1,5 @@
 package io.intelehealth.client.offline_login;
+
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -16,7 +17,7 @@ public class StringEncryption {
     SecureRandom secureRandom = null;
 
     public String getRandomSaltString() {
-        if(secureRandom == null) secureRandom = new SecureRandom();
+        if (secureRandom == null) secureRandom = new SecureRandom();
         return new BigInteger(130, secureRandom).toString(32);
     }
 
@@ -24,6 +25,6 @@ public class StringEncryption {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(text.getBytes("iso-8859-1"), 0, text.length());
         byte[] digest = md.digest();
-        return  String.format("%064x", new BigInteger(1, digest));
+        return String.format("%064x", new BigInteger(1, digest));
     }
 }

@@ -1,3 +1,4 @@
+
 package io.intelehealth.client.objects;
 
 import org.json.JSONObject;
@@ -6,9 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * This class extends Node class.An object of this class gathers all selected complaint nodes.
+ * Methods of this class can gather all selected complaints.
  * Created by Amal Afroz Alam on 24, April, 2016.
- * Contact me: contact@amal.io
  */
+
 public class Knowledge extends Node {
 
     private String LOG_TAG = "Knowledge Class";
@@ -88,3 +91,4 @@ public class Knowledge extends Node {
     }
 
 }
+

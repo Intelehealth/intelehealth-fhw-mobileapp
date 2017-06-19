@@ -1,3 +1,4 @@
+
 package io.intelehealth.client;
 
 import android.content.Context;
@@ -16,8 +17,6 @@ public class SearchCursorAdapter extends CursorAdapter {
     public SearchCursorAdapter(Context context, Cursor cursor, int flags) {
         super(context, cursor, 0);
     }
-
-
 
 
     // The newView method is used to inflate a new view and return it,
@@ -60,3 +59,4 @@ public class SearchCursorAdapter extends CursorAdapter {
 
 
 }
+

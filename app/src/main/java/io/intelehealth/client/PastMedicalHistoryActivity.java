@@ -1,3 +1,4 @@
+
 package io.intelehealth.client;
 
 import android.content.ContentValues;
@@ -18,6 +19,9 @@ import java.util.ArrayList;
 import io.intelehealth.client.db.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Node;
 
+/**
+ * This class updates the medical records of patient based on his past medical history.
+ */
 public class PastMedicalHistoryActivity extends AppCompatActivity {
 
     String LOG_TAG = "Patient History Activity";
@@ -86,10 +90,10 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     if(patientHistoryMap.anySubSelected()){
                         patientHistory = patientHistoryMap.generateLanguage();
 
-                        updateDatabase(patientHistory);
+                        updateDatabase(patientHistory); // update details of patient's visit
                     }
 
-
+                    // displaying all values in another activity
                     Intent intent = new Intent(PastMedicalHistoryActivity.this, VisitSummaryActivity.class);
                     intent.putExtra("patientID", patientID);
                     intent.putExtra("visitID", visitID);
@@ -162,7 +166,11 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
     }
 
-
+    /**
+     * This method inserts medical history of patient in database.
+     * @param value variable of type String
+     * @return      long
+     */
     private long insertDb(String value) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
 
@@ -187,6 +195,11 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
         return localdb.insert("obs", null, complaintEntries);
     }
 
+    /**
+     * This method updates medical history of patient in database.
+     * @param string variable of type String
+     * @return              void
+     */
     private void updateDatabase(String string) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
@@ -220,3 +233,4 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
         }
     }
 }
+

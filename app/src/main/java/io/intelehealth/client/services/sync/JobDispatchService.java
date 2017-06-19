@@ -1,3 +1,4 @@
+<<<<<<< HEAD:app/src/main/java/io/intelehealth/client/services/sync/JobDispatchService.java
 package io.intelehealth.client.services.sync;
 
 import android.content.Intent;
@@ -13,10 +14,11 @@ import io.intelehealth.client.services.ClientService;
 import io.intelehealth.client.services.PersonPhotoUploadService;
 
 /**
+ * Start {@link ClientService} when online to upload the queued data.
+ * <p>
  * Created by Dexter Barretto on 5/31/17.
  * Github : @dbarretto
  */
-
 public class JobDispatchService extends JobService {
 
     String URL = "io.intelehealth.client.db.DelayedJobQueueProvider";
@@ -95,4 +97,6 @@ public class JobDispatchService extends JobService {
 
         return false; // Answers the question: "Should this job be retried?"
     }
+
+
 }

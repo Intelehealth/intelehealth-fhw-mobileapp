@@ -84,17 +84,17 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             "openmrs_location_id integer(255) NOT NULL" +
             ")";
 
-    public static final String CREATE_DELAYED_JOBS = "CREATE TABLE "+DelayedJobQueueProvider.DELAYED_JOBS_TABLE_NAME+" (" +
-            DelayedJobQueueProvider._ID+" INTEGER PRIMARY KEY AUTOINCREMENT," +
-            DelayedJobQueueProvider.JOB_TYPE+" TEXT NOT NULL," +
-            DelayedJobQueueProvider.JOB_PRIORITY+" INTEGER NOT NULL," +
-            DelayedJobQueueProvider.JOB_REQUEST_CODE+" INTEGER NOT NULL," +
-            DelayedJobQueueProvider.PATIENT_NAME+" TEXT NOT NULL," +
-            DelayedJobQueueProvider.PATIENT_ID+" TEXT NOT NULL," +
-            DelayedJobQueueProvider.VISIT_ID+" TEXT," +
-            DelayedJobQueueProvider.VISIT_UUID+" TEXT," +
-            DelayedJobQueueProvider.STATUS+" INTEGER," +
-            DelayedJobQueueProvider.DATA_RESPONSE+" TEXT" +
+    public static final String CREATE_DELAYED_JOBS = "CREATE TABLE " + DelayedJobQueueProvider.DELAYED_JOBS_TABLE_NAME + " (" +
+            DelayedJobQueueProvider._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+            DelayedJobQueueProvider.JOB_TYPE + " TEXT NOT NULL," +
+            DelayedJobQueueProvider.JOB_PRIORITY + " INTEGER NOT NULL," +
+            DelayedJobQueueProvider.JOB_REQUEST_CODE + " INTEGER NOT NULL," +
+            DelayedJobQueueProvider.PATIENT_NAME + " TEXT NOT NULL," +
+            DelayedJobQueueProvider.PATIENT_ID + " TEXT NOT NULL," +
+            DelayedJobQueueProvider.VISIT_ID + " TEXT," +
+            DelayedJobQueueProvider.VISIT_UUID + " TEXT," +
+            DelayedJobQueueProvider.STATUS + " INTEGER," +
+            DelayedJobQueueProvider.DATA_RESPONSE + " TEXT" +
             ")";
     public static final String DROP = "DROP TABLE IF EXISTS";
 
@@ -107,6 +107,7 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
         super.onOpen(db);
         db.execSQL("PRAGMA foreign_keys=ON");
     }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("PRAGMA foreign_keys=ON");

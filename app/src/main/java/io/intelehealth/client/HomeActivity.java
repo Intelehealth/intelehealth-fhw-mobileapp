@@ -1,3 +1,4 @@
+
 package io.intelehealth.client;
 
 import android.Manifest;
@@ -19,6 +20,9 @@ import org.acra.ACRA;
 
 import io.intelehealth.client.offline_login.OfflineLogin;
 
+/**
+ * Home Screen
+ */
 public class HomeActivity extends AppCompatActivity {
 
     @Override
@@ -65,10 +69,19 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method starts intent to another activity to change settings
+     * @return void
+     */
     public void settings() {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
+
+    /**
+     * This method sync all the data recorded to server and sync back locally.
+     * @return void
+     */
 
     public void endOfDay() {
         // TODO: sync all the data recorded to EHR, and sync back locally
@@ -81,6 +94,10 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Logs out the user. It removes user account using AccountManager.
+     * @return void
+     */
     public void logout() {
 
         OfflineLogin.getOfflineLogin().setOfflineLoginStatus(false);

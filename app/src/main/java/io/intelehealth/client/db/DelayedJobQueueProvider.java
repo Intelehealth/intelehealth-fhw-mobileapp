@@ -17,6 +17,8 @@ import android.text.TextUtils;
 import java.util.HashMap;
 
 /**
+ * Content provider for performing CRUD operations on delayed_jobs table.
+ * <p>
  * Created by Dexter Barretto on 5/31/17.
  * Github : @dbarretto
  */
@@ -79,7 +81,7 @@ public class DelayedJobQueueProvider extends ContentProvider {
          */
 
         db = dbHelper.getWritableDatabase();
-        return (db == null) ? false : true;
+        return (db != null);
 
     }
 
@@ -123,13 +125,13 @@ public class DelayedJobQueueProvider extends ContentProvider {
             /**
              * By default sort on priority and id
              */
-            sortOrder =  _ID;
+            sortOrder = _ID;
         }
 
         Cursor c = qb.query(db, projection, selection,
                 selectionArgs, null, null, sortOrder);
         /**
-         * register to watch a content URI for changes
+         * Register to watch a content URI for changes
          */
         c.setNotificationUri(getContext().getContentResolver(), uri);
         return c;

@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import io.intelehealth.client.db.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Node;
 
+/**
+ * Creates the family history mindmap of the patient.
+ */
 public class FamilyHistoryActivity extends AppCompatActivity {
 
     String LOG_TAG = "Family History Activity";
@@ -98,8 +101,8 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                 }
                 adapter.notifyDataSetChanged();
 
-                if(!familyHistoryMap.getOption(groupPosition).getOption(childPosition).isTerminal() &&
-                        familyHistoryMap.getOption(groupPosition).getOption(childPosition).isSelected()){
+                if (!familyHistoryMap.getOption(groupPosition).getOption(childPosition).isTerminal() &&
+                        familyHistoryMap.getOption(groupPosition).getOption(childPosition).isSelected()) {
                     Node.subLevelQuestion(clickedNode, FamilyHistoryActivity.this, adapter);
                 }
 
@@ -112,7 +115,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             public void onGroupExpand(int groupPosition) {
                 Node clickedNode = familyHistoryMap.getOption(groupPosition);
 
-                if(clickedNode.getInputType() != null){
+                if (clickedNode.getInputType() != null) {
                     Node.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter);
                 }
 
@@ -131,10 +134,10 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         The architecture for the language of the family history mind map needs to be modified, as it does not allow for nice sentence building.
         It also has a weird thing with new line characters, and just the way that the language itself should be displayed.
      */
-    private void onFabClick(){
-        if(familyHistoryMap.anySubSelected()){
+    private void onFabClick() {
+        if (familyHistoryMap.anySubSelected()) {
             for (Node node : familyHistoryMap.getOptionsList()) {
-                if(node.isSelected()){
+                if (node.isSelected()) {
                     String familyString = node.generateLanguage();
                     String toInsert = node.getText() + " has " + familyString;
                     insertionList.add(toInsert);
@@ -143,7 +146,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         }
 
         for (int i = 0; i < insertionList.size(); i++) {
-            if (i == 0){
+            if (i == 0) {
                 insertion = insertionList.get(i);
             } else {
                 insertion = insertion + "; " + insertionList.get(i);
@@ -151,7 +154,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         }
 
 
-        if (intentTag != null && intentTag.equals("edit")){
+        if (intentTag != null && intentTag.equals("edit")) {
             updateDatabase(insertion);
             Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientID", patientID);

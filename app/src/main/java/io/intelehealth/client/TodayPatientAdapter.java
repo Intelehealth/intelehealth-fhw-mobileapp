@@ -91,3 +91,4 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientViewHo
         return todayPatientModelList.size();
     }
 }
+
