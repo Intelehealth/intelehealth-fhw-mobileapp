@@ -49,7 +49,7 @@ import java.net.URL;
 
 import io.intelehealth.client.objects.WebResponse;
 import io.intelehealth.client.offline_login.OfflineLogin;
-import io.intelehealth.client.sync.JobDispatchService;
+import io.intelehealth.client.services.sync.JobDispatchService;
 import io.intelehealth.client.utils.NetworkConnection;
 
 /**

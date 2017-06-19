@@ -1,4 +1,3 @@
-<<<<<<< HEAD:app/src/main/java/io/intelehealth/client/services/sync/JobDispatchService.java
 package io.intelehealth.client.services.sync;
 
 import android.content.Intent;
