@@ -55,7 +55,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/textView_heading_patient_details">
 
-                    <TableRow>
+                    <TableRow android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/textView_name"
@@ -75,7 +76,8 @@
                             android:textSize="@dimen/card_content_text_size" />
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/textView_id"
@@ -129,7 +131,7 @@
                     android:layout_height="@dimen/edit_icon_height"
                     android:background="@null"
                     android:padding="@dimen/padding_card_action"
-                    android:src="@drawable/edit_icon"
+                    app:srcCompat="@drawable/edit_icon"
                     android:layout_alignParentEnd="true" />
 
                 <TableLayout
@@ -138,7 +140,8 @@
                     android:layout_below="@id/textView_heading_vitals">
 
                     <!--Height-->
-                    <TableRow>
+                    <TableRow android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/textView_height"
@@ -158,7 +161,7 @@
                             android:textSize="@dimen/card_content_text_size" />
                     </TableRow>
                     <!--Weight-->
-                    <TableRow>
+                    <TableRow android:layout_width="match_parent">
 
                         <TextView
                             android:id="@+id/textView_weight"
@@ -309,7 +312,7 @@
                     android:layout_alignRight="@id/textView_heading_complaint"
                     android:background="@null"
                     android:padding="@dimen/padding_card_action"
-                    android:src="@drawable/edit_icon" />
+                    app:srcCompat="@drawable/edit_icon" />
 
                 <TextView
                     android:id="@+id/textView_content_complaint"
@@ -353,7 +356,7 @@
                     android:layout_alignRight="@id/textView_heading_physexam"
                     android:background="@null"
                     android:padding="@dimen/padding_card_action"
-                    android:src="@drawable/edit_icon" />
+                    app:srcCompat="@drawable/edit_icon" />
 
                 <TextView
                     android:id="@+id/textView_content_physexam"
@@ -397,7 +400,7 @@
                     android:layout_alignRight="@id/textView_heading_pathist"
                     android:background="@null"
                     android:padding="@dimen/padding_card_action"
-                    android:src="@drawable/edit_icon" />
+                    app:srcCompat="@drawable/edit_icon" />
 
                 <TextView
                     android:id="@+id/textView_content_pathist"
@@ -442,7 +445,7 @@
                     android:layout_alignRight="@id/textView_heading_famhist"
                     android:background="@null"
                     android:padding="@dimen/padding_card_action"
-                    android:src="@drawable/edit_icon" />
+                    app:srcCompat="@drawable/edit_icon" />
 
                 <TextView
                     android:id="@+id/textView_content_famhist"
@@ -532,20 +535,21 @@
         <!--</RelativeLayout>-->
         <!--</android.support.v7.widget.CardView>-->
 
-        <Button
-            android:id="@+id/button_upload"
-            android:text="Upload to doctor"
-            android:textColor="#FFFFFF"
-            android:textSize="30sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:color="#00FF11"
-            android:shadowColor="#A8A8A8"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="5"
-            />
 
+            <Button
+                android:id="@+id/button_upload"
+                android:text="  Upload to doctor  "
+                android:textColor="#FFFFFF"
+                android:textSize="30sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:color="#00FF11"
+
+                android:shadowColor="#A8A8A8"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="5"
+                />
 
     </LinearLayout>
 
