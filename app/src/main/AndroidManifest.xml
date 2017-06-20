@@ -9,13 +9,15 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <uses-feature
-        android:name="android.hardware.camera" android:required="true" />
+        android:name="android.hardware.camera"
+        android:required="true" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
@@ -57,18 +59,21 @@
             android:label="@string/title_activity_patient_detail"
             android:parentActivityName=".activities.active_patient_activity.ActivePatientActivity"
             android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.intelehealth.client.activities.active_patient_activity.ActivePatientActivity" />
         </activity>
         <activity
             android:name=".activities.visit_summary_activity.VisitSummaryActivity"
             android:label="@string/title_activity_patient_summary"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".activities.home_activity.HomeActivity">
+            android:parentActivityName=".activities.home_activity.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.home_activity.HomeActivity" /></activity>
+                android:value=".activities.home_activity.HomeActivity" />
+        </activity>
+        <activity
+            android:name=".activities.video_library_activity.VideoLibraryActivity"
+            android:label="@string/title_activity_video_library"
+            android:parentActivityName=".activities.home_activity.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".activities.view_history_activity.ViewHistoryActivity" />
         <activity
             android:name=".activities.search_patient_activity.SearchPatientActivity"
@@ -187,8 +192,7 @@
         <activity
             android:name=".activities.camera_activity.CameraActivity"
             android:label="@string/title_activity_camera"
-            android:theme="@style/CameraActivityStyle">
-        </activity>
+            android:theme="@style/CameraActivityStyle"></activity>
         <activity
             android:name=".activities.splash_activity.SplashActivity"
             android:theme="@style/SplashTheme">
@@ -198,7 +202,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.today_patient_activity.TodayPatientActivity"
+        <activity
+            android:name=".activities.today_patient_activity.TodayPatientActivity"
             android:label="@string/title_activity_today_patient"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <!-- Firebase Services-->

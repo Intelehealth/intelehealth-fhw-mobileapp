@@ -56,7 +56,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientViewHo
             Drawable drawable = DrawableHelper
                     .withContext(context)
                     //TODO: Dummy color. Change color before release.
-                    .withColor(R.color.colorAccent)
+                    .withColor(R.color.yellow)
                     .withDrawable(R.drawable.circle)
                     .tint()
                     .get();
@@ -65,7 +65,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientViewHo
             Drawable drawable = DrawableHelper
                     .withContext(context)
                     //TODO: Dummy color. Change color before release.
-                    .withColor(R.color.colorPrimary)
+                    .withColor(R.color.green)
                     .withDrawable(R.drawable.circle)
                     .tint()
                     .get();
