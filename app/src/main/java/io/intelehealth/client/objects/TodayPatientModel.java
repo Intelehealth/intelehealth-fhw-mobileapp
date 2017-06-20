@@ -1,7 +1,9 @@
 package io.intelehealth.client.objects;
 
+import io.intelehealth.client.activities.today_patient_activity.TodayPatientActivity;
+
 /**
- * Container for {@link io.intelehealth.client.TodayPatientActivity}
+ * Container for {@link TodayPatientActivity}
  * <p>
  * Created by Dexter Barretto on 5/22/17.
  * Github : @dbarretto

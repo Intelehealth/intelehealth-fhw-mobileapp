@@ -11,13 +11,9 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.NotificationCompat;
-import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -25,7 +21,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -35,17 +30,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import io.intelehealth.client.HelperMethods;
-import io.intelehealth.client.IntelehealthApplication;
+import io.intelehealth.client.utilities.HelperMethods;
+import io.intelehealth.client.application.IntelehealthApplication;
 import io.intelehealth.client.R;
-import io.intelehealth.client.SettingsActivity;
-import io.intelehealth.client.db.DelayedJobQueueProvider;
-import io.intelehealth.client.db.LocalRecordsDatabaseHelper;
+import io.intelehealth.client.activities.setting_activity.SettingsActivity;
+import io.intelehealth.client.database.DelayedJobQueueProvider;
+import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Obs;
 import io.intelehealth.client.objects.Patient;
-import io.intelehealth.client.objects.PatientImage;
 import io.intelehealth.client.objects.WebResponse;
-import io.intelehealth.client.utils.NetworkConnection;
+import io.intelehealth.client.utilities.NetworkConnection;
 
 /**
  * Sends Identification data to OpenMRS and receives the OpenMRS ID of the newly-created patient

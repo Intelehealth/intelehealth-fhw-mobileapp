@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context=".camera.CameraActivity">
+    tools:context=".activities.camera_activity.CameraActivity">
 
     <com.google.android.cameraview.CameraView
         android:id="@+id/camera_surface_CameraView"
