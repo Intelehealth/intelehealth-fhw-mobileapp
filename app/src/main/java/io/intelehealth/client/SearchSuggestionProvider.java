@@ -1,3 +1,4 @@
+
 package io.intelehealth.client;
 
 import android.content.SearchRecentSuggestionsProvider;
@@ -15,3 +16,4 @@ public class SearchSuggestionProvider extends SearchRecentSuggestionsProvider {
         setupSuggestions(AUTHORITY, MODE);
     }
 }
+

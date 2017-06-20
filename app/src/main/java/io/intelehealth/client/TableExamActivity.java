@@ -26,6 +26,9 @@ import java.util.Locale;
 import io.intelehealth.client.db.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.TableExam;
 
+/**
+ * Records the patient vitals in the {@link TableExam} container.
+ */
 public class TableExamActivity extends AppCompatActivity {
 
     EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mSpo2, mBMI;
@@ -64,8 +67,6 @@ public class TableExamActivity extends AppCompatActivity {
 //            Log.v(TAG, "Patient Name: " + patientName);
 //            Log.v(TAG, "Intent Tag: " + intentTag);
         }
-
-
 
 
         super.onCreate(savedInstanceState);
@@ -121,7 +122,6 @@ public class TableExamActivity extends AppCompatActivity {
                 }
 
 
-
             }
         });
 
@@ -146,7 +146,7 @@ public class TableExamActivity extends AppCompatActivity {
         });
     }
 
-    public void loadPrevious(){
+    public void loadPrevious() {
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         db = mDbHelper.getWritableDatabase();
         String[] columns = {"value", " concept_id"};

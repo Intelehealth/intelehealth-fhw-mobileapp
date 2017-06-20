@@ -1,3 +1,4 @@
+
 package io.intelehealth.client;
 
 import android.database.Cursor;
@@ -96,3 +97,4 @@ public class TodayPatientActivity extends AppCompatActivity {
 
 
 }
+

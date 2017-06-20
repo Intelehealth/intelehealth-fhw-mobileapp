@@ -39,11 +39,11 @@ public class PhysicalExam extends Node {
      * If no exams are selected, the general exams are triggered instead.
      * Currently, exams are stored as follows:
      * Location Node 1 {
-     *     Exam Node 1 {
-     *         Question Node 1.1
-     *         Question Node 1.2
-     *         Question Node 1.3
-     *     }
+     * Exam Node 1 {
+     * Question Node 1.1
+     * Question Node 1.2
+     * Question Node 1.3
+     * }
      * }
      */
     private List<Node> matchSelections() {
@@ -151,6 +151,7 @@ public class PhysicalExam extends Node {
 
     /**
      * Once the list of exams has been generated, this is used to populate the views for each exam.
+     *
      * @param index View number
      * @return Exam for that particular view
      */
@@ -185,7 +186,7 @@ public class PhysicalExam extends Node {
         int total = this.totalExams;
         for (int i = 0; i < total; i++) {
             Node node = getExamNode(i);
-            if(node.isRequired() && !node.anySubSelected()){
+            if (node.isRequired() && !node.anySubSelected()) {
                 allAnswered = false;
                 break;
             }
@@ -242,7 +243,6 @@ public class PhysicalExam extends Node {
         }
         return formatted;
     }
-
 
 
 }

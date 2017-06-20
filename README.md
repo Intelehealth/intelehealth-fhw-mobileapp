@@ -1,3 +1,4 @@
+
 # Intelehealth Android Client
 
 ## About
@@ -15,3 +16,4 @@ Intelehealth is an open source telemedicine platform that empowers local communi
 * The app independently guides the CHW through a series of questions and exams based on the patient’s presenting symptoms and medical history
 * The CHW uploads the gathered clinical data to a cloud server which houses the patients Electronic Health Record (EHR) system 
 * The remote doctor reviews uploaded data, offer medical advice and prescription, and refer patient if required
+

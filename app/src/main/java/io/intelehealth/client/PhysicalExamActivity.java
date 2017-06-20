@@ -36,6 +36,10 @@ import io.intelehealth.client.db.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Node;
 import io.intelehealth.client.objects.PhysicalExam;
 
+/**
+ * Contains a subclass of {@link Node} (that is {@link PhysicalExam}).
+ * It gives a series of tabbed questions which are to be responded by checking the patient physically.
+ */
 public class PhysicalExamActivity extends AppCompatActivity {
 
     final static String LOG_TAG = "Physical Exam Activity";

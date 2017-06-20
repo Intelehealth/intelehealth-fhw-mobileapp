@@ -42,8 +42,7 @@ public class LocationArrayAdapter extends ArrayAdapter<String> {
             tv.setHeight(0);
             tv.setVisibility(View.GONE);
             v = tv;
-        }
-        else {
+        } else {
             v = super.getDropDownView(position, null, parent);
         }
         parent.setVerticalScrollBarEnabled(false);

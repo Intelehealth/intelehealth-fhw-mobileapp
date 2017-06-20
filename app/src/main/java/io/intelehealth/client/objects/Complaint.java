@@ -1,3 +1,4 @@
+
 package io.intelehealth.client.objects;
 
 /**
@@ -35,3 +36,4 @@ public class Complaint {
         this.data = data;
     }
 }
+

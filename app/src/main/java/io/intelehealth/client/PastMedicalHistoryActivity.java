@@ -1,3 +1,4 @@
+
 package io.intelehealth.client;
 
 import android.content.ContentValues;
@@ -232,3 +233,4 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
         }
     }
 }
+

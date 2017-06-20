@@ -300,6 +300,13 @@ public class ClientService extends IntentService {
         return buffer.toString(); // returns the openMrsId OR "Picture received" (if picture)
     }
 
+    /**
+     * Checks whether upload of patient and person data to the server is a success.
+     *
+     * @param patientID      Unique id of the patient
+     * @param current_intent this intent
+     * @return uploadDone
+     */
     private boolean uploadPatient(String patientID, Intent current_intent) {
 
         String responseCode = null;
@@ -348,6 +355,12 @@ public class ClientService extends IntentService {
         return uploadDone;
     }
 
+    /**
+     * Stores person data locally then posts it to the OpenMRS server.
+     *
+     * @param patientID Unique id of the patient
+     * @return responseString
+     */
     private String uploadPersonData(String patientID) {
 
         Patient patient = new Patient();
@@ -429,21 +442,28 @@ public class ClientService extends IntentService {
             mNotifyManager.notify(mId, mBuilder.build());
             Log.d(LOG_TAG, "Person posting was unsuccessful 1");
             return null;
-        } else if (responsePerson ==null){
+        } else if (responsePerson == null) {
             Log.d(LOG_TAG, "Person posting was unsuccessful 1");
             return null;
-        }else {
+        } else {
             String newText = "Person created successfully.";
             mBuilder.setContentText(newText).setNumber(++numMessages);
             mNotifyManager.notify(mId, mBuilder.build());
             Intent uploadPersonPhoto = new Intent(this, PersonPhotoUploadService.class);
-            uploadPersonPhoto.putExtra("person",responsePerson.getResponseString());
-            uploadPersonPhoto.putExtra("patientID",patientID);
-            uploadPersonPhoto.putExtra("name",patient.getFirstName()+patient.getLastName());
+            uploadPersonPhoto.putExtra("person", responsePerson.getResponseString());
+            uploadPersonPhoto.putExtra("patientID", patientID);
+            uploadPersonPhoto.putExtra("name", patient.getFirstName() + patient.getLastName());
             return responsePerson.getResponseString();
         }
     }
 
+    /**
+     * Uploads Patient data on the OpenMRS server.
+     *
+     * @param patientID      Unique Id of the patient.
+     * @param responseString Response JSON string
+     * @return boolean value representing success or failure.
+     */
     private boolean uploadPatientData(String patientID, String responseString) {
         String patientString =
                 String.format("{\"person\":\"%s\", " +
@@ -463,11 +483,10 @@ public class ClientService extends IntentService {
             mNotifyManager.notify(mId, mBuilder.build());
             Log.d(LOG_TAG, "Patient posting was unsuccessful 2");
             return false;
-        }else if(responsePatient== null){
+        } else if (responsePatient == null) {
             Log.d(LOG_TAG, "Patient posting was unsuccessful 2");
             return false;
-        }
-        else {
+        } else {
             String newText = "Patient created successfully.";
             mBuilder.setContentText(newText).setNumber(++numMessages);
             mNotifyManager.notify(mId, mBuilder.build());
@@ -488,6 +507,14 @@ public class ClientService extends IntentService {
 
     }
 
+    /**
+     * Retrieves Patient medical details and vitals from local database for uploading to the OpenMRS server.
+     *
+     * @param patientID      Unique patient Id
+     * @param visitID        Unique visit Id of the patient
+     * @param current_intent this intent
+     * @return uploadStatus
+     */
     private boolean uploadVisit(String patientID, String visitID, Intent current_intent) {
 
 
@@ -695,6 +722,13 @@ public class ClientService extends IntentService {
 
     }
 
+    /**
+     * Uploads visit details to the OpenMRS server.
+     *
+     * @param patient       {@link Patient}
+     * @param startDateTime Start datetime in string
+     * @return responseVisit
+     */
     private String uploadVisitData(Patient patient, String startDateTime) {
 
 
@@ -704,7 +738,7 @@ public class ClientService extends IntentService {
                                 "\"visitType\":\"Telemedicine\"," +
                                 "\"patient\":\"%s\"," +
                                 "\"location\":\"%s\"}",
-                        startDateTime, patient.getOpenmrsId(),location_uuid);
+                        startDateTime, patient.getOpenmrsId(), location_uuid);
         Log.d(LOG_TAG, "Visit String: " + visitString);
         WebResponse responseVisit;
         responseVisit = HelperMethods.postCommand("visit", visitString, getApplicationContext());
@@ -723,6 +757,21 @@ public class ClientService extends IntentService {
 
     }
 
+    /**
+     * Upload the vitals of the patient to the OpenMRS server.
+     *
+     * @param visitUUID
+     * @param patient
+     * @param startDateTime
+     * @param temperature
+     * @param weight
+     * @param height
+     * @param pulse
+     * @param bpSys
+     * @param bpDias
+     * @param spO2
+     * @return boolean value representing success or failure.
+     */
     private boolean uploadEncounterVitals(String visitUUID, Patient patient, String startDateTime,
                                           Obs temperature, Obs weight, Obs height,
                                           Obs pulse, Obs bpSys, Obs bpDias, Obs spO2) {
@@ -768,10 +817,10 @@ public class ClientService extends IntentService {
             mNotifyManager.notify(mId, mBuilder.build());
             Log.d(LOG_TAG, "Encounter posting was unsuccessful");
             return false;
-        } else if(responseVitals==null){
+        } else if (responseVitals == null) {
             Log.d(LOG_TAG, "Encounter posting was unsuccessful");
             return false;
-        }else {
+        } else {
             String newText = "Encounter created successfully.";
             mBuilder.setContentText(newText).setNumber(++numMessages);
             mNotifyManager.notify(mId, mBuilder.build());
@@ -826,10 +875,10 @@ public class ClientService extends IntentService {
             mNotifyManager.notify(mId, mBuilder.build());
             Log.d(LOG_TAG, "Notes Encounter posting was unsuccessful");
             return false;
-        } else if(responseNotes == null){
+        } else if (responseNotes == null) {
             Log.d(LOG_TAG, "Notes Encounter posting was unsuccessful");
             return false;
-        }else {
+        } else {
             String newText = "Notes created successfully.";
             mBuilder.setContentText(newText).setNumber(++numMessages);
             mNotifyManager.notify(mId, mBuilder.build());
@@ -837,7 +886,14 @@ public class ClientService extends IntentService {
         }
     }
 
-
+    /**
+     * Ends Patient visit session.
+     *
+     * @param patientIDs     Unique patient Id
+     * @param visitUUID      visit UUID
+     * @param current_intent this intent
+     * @return boolean value representing success or failure.
+     */
     private boolean endVisit(String patientIDs, String visitUUID, Intent current_intent) {
 
         String urlModifier = "visit/" + visitUUID;
@@ -863,11 +919,10 @@ public class ClientService extends IntentService {
             Log.d(LOG_TAG, "Visit ending was unsuccessful");
             retryAfterDelay(current_intent);
             return false;
-        }else if(endResponse == null){
+        } else if (endResponse == null) {
             Log.d(LOG_TAG, "Visit ending was unsuccessful");
             return false;
-        }
-        else {
+        } else {
 
             String newText = "Visit ended successfully.";
             mBuilder.setContentText(newText).setNumber(++numMessages);

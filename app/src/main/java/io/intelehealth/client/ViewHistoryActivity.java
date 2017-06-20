@@ -11,6 +11,5 @@ public class ViewHistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_history);
 
 
-
     }
 }
