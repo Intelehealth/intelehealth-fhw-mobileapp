@@ -6,6 +6,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.intelehealth.client.node.Node;
+
 /**
  * This class extends Node class.An object of this class gathers all selected complaint nodes.
  * Methods of this class can gather all selected complaints.

@@ -1,7 +1,9 @@
 package io.intelehealth.client.objects;
 
+import io.intelehealth.client.activities.table_exam_activity.TableExamActivity;
+
 /**
- * Container for patient vitals {@link io.intelehealth.client.TableExamActivity}
+ * Container for patient vitals {@link TableExamActivity}
  * <p>
  * Table exam information class for Gson data serialization
  */
