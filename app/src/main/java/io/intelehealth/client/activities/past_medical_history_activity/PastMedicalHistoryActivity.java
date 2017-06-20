@@ -237,5 +237,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    public void onBackPressed() {
+    }
 }
 

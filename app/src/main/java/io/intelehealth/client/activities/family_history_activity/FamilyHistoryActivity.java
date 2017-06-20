@@ -14,9 +14,9 @@ import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
 
+import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
 import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.R;
-import io.intelehealth.client.activities.table_exam_activity.TableExamActivity;
 import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
 import io.intelehealth.client.activities.custom_expandable_list_adapter.CustomExpandableListAdapter;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
@@ -171,7 +171,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         } else {
 
             insertDb(insertion);
-            Intent intent = new Intent(FamilyHistoryActivity.this, TableExamActivity.class);
+            Intent intent = new Intent(FamilyHistoryActivity.this, VitalsActivity.class);
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);
             intent.putExtra("state", state);
@@ -224,6 +224,10 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                 args
         );
 
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 
 }

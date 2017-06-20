@@ -365,4 +365,8 @@ public class QuestionNodeActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+    }
+
 }

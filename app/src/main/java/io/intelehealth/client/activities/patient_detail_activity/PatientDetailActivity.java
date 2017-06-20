@@ -519,7 +519,6 @@ public class PatientDetailActivity extends AppCompatActivity {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(PatientDetailActivity.this,"Click",Toast.LENGTH_SHORT).show();
                 int position  = (Integer)v.getTag();
                 Intent visitSummary = new Intent(PatientDetailActivity.this,VisitSummaryActivity.class);
                 visitSummary.putExtra("visitID", String.valueOf(position));

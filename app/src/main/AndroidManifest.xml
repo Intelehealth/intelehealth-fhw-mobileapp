@@ -111,9 +111,9 @@
         </service>
 
         <activity
-            android:name=".activities.table_exam_activity.TableExamActivity"
+            android:name=".activities.vitals_activity.VitalsActivity"
             android:exported="true"
-            android:label="@string/title_activity_table_exam"
+            android:label="@string/title_activity_vitals"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
