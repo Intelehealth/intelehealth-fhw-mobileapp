@@ -7,7 +7,7 @@
     <item
         android:id="@+id/summary_print"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom|withText"
+        app:showAsAction="never"
         android:title="@string/action_print">
 
     </item>
@@ -15,19 +15,19 @@
     <item
         android:id="@+id/summary_endVisit"
         android:orderInCategory="200"
-        app:showAsAction="ifRoom|withText"
+        app:showAsAction="never"
         android:title="End Visit">
 
     </item>
 
-    <!--<item-->
-        <!--android:id="@+id/summary_home"-->
-        <!--android:orderInCategory="200"-->
-        <!--app:showAsAction="ifRoom|withText"-->
-        <!--android:title="@string/action_home">-->
 
-    <!--</item>-->
+    <item
+        android:id="@+id/internet_icon"
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        android:title=""
+        >
 
-
+    </item>
 
 </menu>

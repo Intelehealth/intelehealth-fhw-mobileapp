@@ -1,14 +1,17 @@
-
 package io.intelehealth.client;
 
 import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.print.PrintAttributes;
@@ -17,6 +20,7 @@ import android.print.PrintJob;
 import android.print.PrintManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
@@ -32,8 +36,10 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,6 +55,7 @@ import java.util.Locale;
 import io.intelehealth.client.db.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Obs;
 import io.intelehealth.client.objects.Patient;
+import io.intelehealth.client.objects.Visit;
 import io.intelehealth.client.objects.WebResponse;
 import io.intelehealth.client.services.ClientService;
 
@@ -60,6 +67,7 @@ import io.intelehealth.client.services.ClientService;
 public class VisitSummaryActivity extends AppCompatActivity {
 
     String LOG_TAG = "Patient Summary";
+
 
 
     //Change when used with a different organization.
@@ -138,11 +146,22 @@ public class VisitSummaryActivity extends AppCompatActivity {
     Boolean isPast = false;
 
 
+    private NetworkChangeReceiver receiver;
+    private boolean isConnected = false;
+    private Menu mymenu;
+    MenuItem internetCheck;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_visit_summary, menu);
         MenuItem menuItem = menu.findItem(R.id.summary_endVisit);
+        callBroadcastReceiver();
+
+        mymenu = menu;
+        internetCheck = mymenu.findItem(R.id.internet_icon);
+        MenuItemCompat.getActionView(internetCheck);
+
         if(isPast) menuItem.setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
@@ -166,6 +185,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 return true;
             case R.id.summary_endVisit:
                 endVisit();
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -174,7 +194,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
+      callBroadcastReceiver();
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientID = intent.getStringExtra("patientID");
@@ -1170,5 +1190,72 @@ public class VisitSummaryActivity extends AppCompatActivity {
         );
 
     }
-}
 
+
+    public void callBroadcastReceiver()
+    {
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        receiver = new NetworkChangeReceiver();
+        registerReceiver(receiver, filter);
+    }
+
+    @Override
+    public void onResume() // register the receiver here
+    {
+        super.onResume();
+        callBroadcastReceiver();
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
+
+
+    public class NetworkChangeReceiver extends BroadcastReceiver
+    {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            isNetworkAvailable(context);
+        }
+
+        private void isNetworkAvailable(Context context)
+        {
+            int flag=0;
+
+            ConnectivityManager connectivity = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            if(connectivity != null)
+            {
+                NetworkInfo[] info = connectivity.getAllNetworkInfo();
+                if(info !=null)
+                {
+                    for (int i = 0; i < info.length; i++)
+                    {
+                        if (info[i].getState() == NetworkInfo.State.CONNECTED)
+                        {
+                            if(!isConnected)
+                            {
+                                        if(mymenu!=null) {
+                                        internetCheck.setIcon(R.drawable.ic_action_circle_green);
+                                        flag = 1;
+                                    }
+                            }
+                        }
+                    }
+                }
+            }
+
+                      if(flag==0) {
+                       if(mymenu!=null) {
+                       internetCheck.setIcon(R.drawable.ic_action_circle_red);
+                    }
+
+            }
+
+        }
+    }
+
+}
