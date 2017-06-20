@@ -19,6 +19,7 @@ import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NavUtils;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
@@ -182,9 +183,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-//            case R.id.summary_home:
-//                endVisit();
-//                return true;
+            case R.id.summary_home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
             case R.id.summary_print:
                 doWebViewPrint();
                 return true;
@@ -234,7 +235,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_visit_summary);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         mLayout = (LinearLayout) findViewById(R.id.summary_layout);
         context = getApplicationContext();
 
