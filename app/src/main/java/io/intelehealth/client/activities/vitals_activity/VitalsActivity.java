@@ -1,4 +1,4 @@
-package io.intelehealth.client.activities.table_exam_activity;
+package io.intelehealth.client.activities.vitals_activity;
 
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -32,11 +32,11 @@ import io.intelehealth.client.objects.TableExam;
 /**
  * Records the patient vitals in the {@link TableExam} container.
  */
-public class TableExamActivity extends AppCompatActivity {
+public class VitalsActivity extends AppCompatActivity {
 
     EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mSpo2, mBMI;
     Long obsID;
-    final String LOG_TAG = "TableExamActivity";
+    final String LOG_TAG = "VitalsActivity";
 
     String patientID = "1";
     String visitID;
@@ -73,7 +73,7 @@ public class TableExamActivity extends AppCompatActivity {
 
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_table_exam);
+        setContentView(R.layout.activity_vitals);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -105,7 +105,7 @@ public class TableExamActivity extends AppCompatActivity {
 
                 if (heightValue.matches("") || weightValue.matches("")) {
                     String message = "Please enter height and weight first.";
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TableExamActivity.this);
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(VitalsActivity.this);
                     alertDialogBuilder.setMessage(message);
                     alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                         @Override
@@ -252,7 +252,7 @@ public class TableExamActivity extends AppCompatActivity {
             updateDatabase(results.getBpdia(), 5086);
             updateDatabase(results.getTemperature(), 163202);
             updateDatabase(results.getSpo2(), 5092);
-            Intent intent = new Intent(TableExamActivity.this, VisitSummaryActivity.class);
+            Intent intent = new Intent(VitalsActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);
             intent.putExtra("state", state);
@@ -268,7 +268,7 @@ public class TableExamActivity extends AppCompatActivity {
             insertDb(results.getBpdia(), 5086);
             insertDb(results.getTemperature(), 163202);
             insertDb(results.getSpo2(), 5092);
-            Intent intent = new Intent(TableExamActivity.this, PhysicalExamActivity.class);
+            Intent intent = new Intent(VitalsActivity.this, PhysicalExamActivity.class);
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);
             intent.putExtra("state", state);
@@ -318,6 +318,10 @@ public class TableExamActivity extends AppCompatActivity {
                 args
         );
 
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 
 }

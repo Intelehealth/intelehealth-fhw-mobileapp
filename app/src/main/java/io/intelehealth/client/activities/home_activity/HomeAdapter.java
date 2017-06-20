@@ -23,7 +23,7 @@ import io.intelehealth.client.activities.video_library_activity.VideoLibraryActi
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder> {
 
     final static String TAG = HomeAdapter.class.getSimpleName();
-    final String[] options = {"New Patient","Lookup Patient","Today's Patient","Video Library"};
+    final String[] options = {"New Patient","Find Patients","Today's Patients","Video Library"};
 
     //TODO: Change placeholder icon "android.R.drawable.ic_menu_my_calendar"
     final int[] icons = {R.drawable.ic_person_add_24dp, R.drawable.ic_search_24dp,
@@ -69,12 +69,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
                     this.context.startActivity(intent);
                     break;
                 }
-                case "Lookup Patient": {
+                case "Find Patients": {
                     Intent intent = new Intent(this.context, SearchPatientActivity.class);
                     this.context.startActivity(intent);
                     break;
                 }
-                case "Today's Patient": {
+                case "Today's Patients": {
 
                     //TODO: Change Activity after coding is done.
 

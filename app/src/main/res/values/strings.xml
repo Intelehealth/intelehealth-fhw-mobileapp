@@ -114,7 +114,7 @@
 
 
     //Table Exam Screen
-    <string name="title_activity_table_exam">Table Exam</string>
+    <string name="title_activity_vitals">Vitals</string>
     <string name="table_hw">Body Measurements</string>
     <string name="table_height">Height (cm)</string>
     <string name="table_weight">Weight (kg)</string>
