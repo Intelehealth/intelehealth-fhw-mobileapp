@@ -33,11 +33,21 @@ import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.parse.Parse;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.UnknownHostException;
@@ -53,6 +63,7 @@ import io.intelehealth.client.api.retrofit.RestApi;
 import io.intelehealth.client.api.retrofit.ServiceGenerator;
 import io.intelehealth.client.models.Results;
 import io.intelehealth.client.models.Location;
+import io.intelehealth.client.utilities.HelperMethods;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -83,6 +94,15 @@ public class SetupActivity extends AppCompatActivity {
 
 
     private static final int PERMISSION_ALL = 1;
+
+    private static final String PARSE_SERVER_URL = "http://192.168.1.102:1337/parse/";
+    private static final String FILES[] = {"Abdominal Pain.json",
+                                            "Chest Discomfort or Pain.json",
+                                            "Constipation.json",
+                                            "Dsyphagia or Difficulty Swallowing.json",
+                                            "Fever.json",
+                                            "Vomiting.json",
+                                            "Weight Loss.json"};
 
 
     @Override
@@ -207,6 +227,20 @@ public class SetupActivity extends AppCompatActivity {
 
             }
         });*/
+
+       //INITIALIZE PARSE CONFIGS
+       Parse.initialize(new Parse.Configuration.Builder(this)
+                .applicationId("app")
+                .server(PARSE_SERVER_URL)
+                .build()
+        );
+
+        //DOWNLOAD ALL MIND MAPS
+        for(String file : FILES){
+            String[] parts = file.split(".json");
+            //Log.i("DOWNLOADING-->",parts[0].replaceAll("\\s+",""));
+            new getJSONFile().execute(file,parts[0].replaceAll("\\s+",""));
+        }
 
 
     }
@@ -520,5 +554,103 @@ public class SetupActivity extends AppCompatActivity {
             list.add(locationList.get(i).getDisplay());
         }
         return list;
+    }
+
+
+    /**
+     * Gets json Files from Parse Server
+     */
+    private class getJSONFile extends AsyncTask<String, Void, String> {
+
+        String FILENAME,COLLECTION_NAME;
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            //SPACE SEPARATED NAMES ARE MADE UNDERSCORE SEPARATED
+            FILENAME = params[0].replace(' ','_');
+            COLLECTION_NAME = params[1];
+
+            try {
+                String servStr = PARSE_SERVER_URL + "classes/" + COLLECTION_NAME;
+                URL url = new URL(servStr);
+                Log.i("Connect",PARSE_SERVER_URL + "classes/" + COLLECTION_NAME);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.setRequestProperty("X-Parse-Application-Id", "app");
+                urlConnection.setRequestProperty("X-Parse-REST-API-Key", "undefined");
+                Log.i("RES->", "" + urlConnection.getResponseMessage());
+                try {
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    StringBuilder stringBuilder = new StringBuilder();
+                    String line;
+                    while ((line = bufferedReader.readLine()) != null) {
+                        stringBuilder.append(line).append("\n");
+                    }
+                    bufferedReader.close();
+                    return stringBuilder.toString();
+                } finally {
+                    urlConnection.disconnect();
+                }
+            } catch (Exception e) {
+                Log.e("ERROR", e.getMessage(), e);
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            if (response == null) {
+                Toast.makeText(SetupActivity.this, "Error Downloading Mind Maps", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            String writable = "";
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray jsonArray = jsonObject.getJSONArray("results");
+                JSONObject finalresponse = jsonArray.getJSONObject(0);
+                writable = finalresponse.getJSONObject("Main").toString();
+                Log.i("INFO", writable);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            //WRITE FILE
+            try {
+                FileOutputStream fileout = openFileOutput(FILENAME, MODE_PRIVATE);
+                OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
+                outputWriter.write(writable);
+                outputWriter.close();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            //readFile(FILENAME);
+        }
+    }
+
+    //READ FILE
+    private void readFile(String FILENAME) {
+        Log.i(LOG_TAG,"Reading from file");
+
+        try {
+            FileInputStream fileIn = openFileInput(FILENAME);
+            InputStreamReader InputRead = new InputStreamReader(fileIn);
+            final int READ_BLOCK_SIZE = 100;
+            char[] inputBuffer = new char[READ_BLOCK_SIZE];
+            String s="";
+            int charRead;
+
+            while ((charRead = InputRead.read(inputBuffer))>0) {
+                String readstring = String.copyValueOf(inputBuffer,0,charRead);
+                s += readstring;
+            }
+            InputRead.close();
+            Log.i("FILEREAD>",s);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
