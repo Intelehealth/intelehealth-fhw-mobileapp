@@ -37,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import io.intelehealth.client.activities.identification_activity.IdentificationActivity;
 import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
@@ -63,6 +64,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     String intentTag = "";
     Patient patient = new Patient();
 
+    Button editbtn;
     Button newVisit;
     LinearLayout previousVisitsList;
 
@@ -88,7 +90,16 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         patient.setId(patientID);
         setDisplay(String.valueOf(patientID));
+        editbtn=(Button)findViewById(R.id.edit_button);
+        editbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent2 = new Intent(PatientDetailActivity.this, IdentificationActivity.class);
+                intent2.putExtra("pid",patientID);
+                startActivity(intent2);
 
+            }
+        });
         if (intentTag != null && intentTag.equals("new")) {
             Intent serviceIntent = new Intent(this, ClientService.class);
             serviceIntent.putExtra("serviceCall", "patient");
