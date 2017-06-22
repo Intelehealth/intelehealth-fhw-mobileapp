@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ExpandableListView;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.intelehealth.client.utilities.HelperMethods;
@@ -89,8 +90,13 @@ public class QuestionNodeActivity extends AppCompatActivity {
         //mKnowledge = new Knowledge(HelperMethods.encodeJSON(this, mFileName));
         complaintsNodes = new ArrayList<>();
         for (int i = 0; i < complaints.size(); i++) {
-            String fileLocation = "engines/" + complaints.get(i) + ".json";
-            JSONObject currentFile = HelperMethods.encodeJSON(this, fileLocation);
+            //String fileLocation = "engines/" + complaints.get(i) + ".json";
+            JSONObject currentFile = null; //HelperMethods.encodeJSON(this, fileLocation);
+            try {
+                currentFile = new JSONObject(HelperMethods.readFile(complaints.get(i) + ".json",this));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             Node currentNode = new Node(currentFile);
             complaintsNodes.add(currentNode);
         }

@@ -47,16 +47,9 @@ public class HelperMethods {
 
     public static final String LOG_TAG = "Helper Methods";
 
-    public static final String PARSE_SERVER_URL = "http://192.168.0.11:1337/parse/";
+    public static final String PARSE_SERVER_URL = "http://139.59.73.230:1337/parse/";
     public static final String JSON_FOLDER = "Engines";
-    File base_dir;
-    public static final String FILES[] = {"Abdominal Pain.json",
-            "Chest Discomfort or Pain.json",
-            "Constipation.json",
-            "Dsyphagia or Difficulty Swallowing.json",
-            "Fever.json",
-            "Vomiting.json",
-            "Weight Loss.json"};
+    public static File base_dir;
 
     public static int getAge(String s) {
         if (s == null) return 0;

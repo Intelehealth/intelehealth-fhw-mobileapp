@@ -111,9 +111,9 @@ public class CameraActivity extends AppCompatActivity {
                     if (mImageName == null) {
                         mImageName = String.valueOf(System.currentTimeMillis());
                     }
-                    File file = null;
+                    File file;
                     if (mFilePath == null) {
-                        new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                        file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),
                                 mImageName + ".jpg");
 
                     } else {

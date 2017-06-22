@@ -14,14 +14,17 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.intelehealth.client.activities.setup_activity.SetupActivity;
 import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.activities.question_node_activity.QuestionNodeActivity;
 import io.intelehealth.client.R;
@@ -97,11 +100,13 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }*/
-        for (String name : HelperMethods.FILES) {
+        File base_dir = new File(getFilesDir().getAbsolutePath() + File.separator + HelperMethods.JSON_FOLDER);
+        File files[] = base_dir.listFiles();
+        for (File file : files) {
             //String fileLocation = "engines/" + name;
             JSONObject currentFile = null; //HelperMethods.encodeJSON(this, fileLocation);
             try {
-                currentFile = new JSONObject(HelperMethods.readFile(name,this));
+                currentFile = new JSONObject(HelperMethods.readFile(file.getName(),this));
             } catch (JSONException e) {
                 e.printStackTrace();
             }

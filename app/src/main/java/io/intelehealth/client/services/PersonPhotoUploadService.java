@@ -2,6 +2,7 @@ package io.intelehealth.client.services;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +14,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.parse.ParseFile;
+import com.parse.ParseObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -32,6 +37,10 @@ public class PersonPhotoUploadService extends IntentService {
      *
      * @param name Used to name the worker thread, important only for debugging.
      */
+
+    private String imageName;
+    private Bitmap bitmap;
+
     public PersonPhotoUploadService(String name) {
         super(name);
     }
@@ -59,9 +68,12 @@ public class PersonPhotoUploadService extends IntentService {
                 patientId + ".jpg";
 
         File profile_image = new File(filePath);
+        imageName = profile_image.getName();
+        imageName = imageName.replace('%', '_');
 
         if (profile_image != null) {
-            byte[] byteArray = bitmapToByteArray(BitmapFactory.decodeFile(filePath));
+            bitmap = BitmapFactory.decodeFile(filePath);
+            byte[] byteArray = bitmapToByteArray(bitmap);
             base64EncodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
         }
 
@@ -88,6 +100,7 @@ public class PersonPhotoUploadService extends IntentService {
 
             } else {
                 String newText = "Person Image Posted successfully.";
+                uploadImage();
                 mBuilder.setContentText(newText);
                 mNotifyManager.notify(mId, mBuilder.build());
                 if (intent.hasExtra("queueId")) {
@@ -98,6 +111,26 @@ public class PersonPhotoUploadService extends IntentService {
             }
 
         }
+    }
+
+    public void uploadImage() {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        // Compress image to lower quality scale 1 - 100
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] image = stream.toByteArray();
+        // Create the ParseFile
+        ParseFile file = new ParseFile(imageName + ".png", image);
+        // Upload the image into Parse Cloud
+        //file.saveInBackground();
+        // Create a New Class called "ImageUpload" in Parse
+        ParseObject imgupload = new ParseObject("ImageUpload");
+        // Create a column named "ImageName" and set the string
+        imgupload.put("Patient_ID", "test upload");
+        // Create a column named "ImageFile" and insert the image
+        imgupload.put("ImageFile", file);
+        // Create the class and the columns
+        imgupload.saveInBackground();
+        Toast.makeText(this, "Image Uploaded", Toast.LENGTH_SHORT).show();
     }
 
     private byte[] bitmapToByteArray(Bitmap image) {
