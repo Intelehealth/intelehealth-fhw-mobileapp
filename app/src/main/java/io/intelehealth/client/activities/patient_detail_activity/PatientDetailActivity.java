@@ -517,9 +517,13 @@ public class PatientDetailActivity extends AppCompatActivity {
             spannableString.setSpan(underlineSpan, 0, spannableString.length() - 7, 0);
             textView.setText(spannableString);
 
-            newVisit.setEnabled(false);
-            newVisit.setClickable(false);
-            newVisit.setBackgroundColor(getResources().getColor(R.color.divider));
+            if(newVisit.isEnabled()) {
+                newVisit.setEnabled(false);
+            }
+            if(newVisit.isClickable()) {
+                newVisit.setClickable(false);
+                newVisit.setBackgroundColor(getResources().getColor(R.color.divider));
+            }
 
         } else {
             textView.setText(visitString);
