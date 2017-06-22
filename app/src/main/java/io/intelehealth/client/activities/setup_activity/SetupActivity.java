@@ -33,7 +33,13 @@ import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.parse.FindCallback;
+import com.parse.GetDataCallback;
 import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,8 +47,6 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -94,8 +98,8 @@ public class SetupActivity extends AppCompatActivity {
 
 
     private static final int PERMISSION_ALL = 1;
-    File base_dir;
-
+    public static File base_dir;
+    public static String[] FILES;
 
 
     @Override
@@ -228,18 +232,49 @@ public class SetupActivity extends AppCompatActivity {
                 .build()
         );
 
-        //DOWNLOAD ALL MIND MAPS
+        //DOWNLOAD MIND MAP FILE LIST
+        downloadFilesInfo();
+
+    }
+
+    //DOWNLOAD ALL MIND MAPS
+    private void downloadMindMaps(){
         base_dir = new File(getFilesDir().getAbsolutePath(), HelperMethods.JSON_FOLDER);
         if (!base_dir.exists())
             base_dir.mkdirs();
-        for (String file : HelperMethods.FILES) {
+        for (String file : FILES) {
             String[] parts = file.split(".json");
             //Log.i("DOWNLOADING-->",parts[0].replaceAll("\\s+",""));
             new getJSONFile().execute(file, parts[0].replaceAll("\\s+", ""));
         }
-
-
     }
+
+    private void downloadFilesInfo() {
+        final ParseQuery<ParseObject> query = ParseQuery.getQuery("AllFiles");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null) {
+                    for (ParseObject obj : objects) {
+                        ParseFile fileObject = (ParseFile) obj.get("FILES");
+                        fileObject.getDataInBackground(new GetDataCallback() {
+                            public void done(byte[] data, ParseException e) {
+                                if (e == null) {
+                                    String tmp = new String(data);
+                                    String files[] = tmp.split("\n");
+                                    FILES = new String[files.length];
+                                    FILES = files;
+                                    downloadMindMaps();
+                                }
+                            }
+                        });
+                    }
+                } else {
+                    Toast.makeText(SetupActivity.this, "Network Error", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
@@ -611,12 +646,12 @@ public class SetupActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            //WRITE FILE
+            //WRITE FILE in base_dir
             try {
                 File mydir = new File(base_dir.getAbsolutePath(), FILENAME);
                 if (!mydir.exists())
                     mydir.getParentFile().mkdirs();
-                Log.i("FNAM",FILENAME);
+                Log.i("FNAM", FILENAME);
                 FileOutputStream fileout = new FileOutputStream(mydir);
                 OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
                 outputWriter.write(writable);

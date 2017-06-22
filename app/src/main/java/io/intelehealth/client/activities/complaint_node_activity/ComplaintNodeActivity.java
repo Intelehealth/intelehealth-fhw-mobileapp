@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.intelehealth.client.activities.setup_activity.SetupActivity;
 import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.activities.question_node_activity.QuestionNodeActivity;
 import io.intelehealth.client.R;
@@ -97,7 +98,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }*/
-        for (String name : HelperMethods.FILES) {
+        for (String name : SetupActivity.FILES) {
             //String fileLocation = "engines/" + name;
             JSONObject currentFile = null; //HelperMethods.encodeJSON(this, fileLocation);
             try {
