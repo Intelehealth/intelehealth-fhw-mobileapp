@@ -8,6 +8,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.print.PrintAttributes;
@@ -18,6 +20,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,21 +35,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.R;
-import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
 import io.intelehealth.client.activities.complaint_node_activity.ComplaintNodeActivity;
 import io.intelehealth.client.activities.home_activity.HomeActivity;
+import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.services.ClientService;
+import io.intelehealth.client.utilities.HelperMethods;
 
 /**
  * This class displays all details about the patient.It also enables to print these details.
@@ -67,7 +71,6 @@ public class PatientDetailActivity extends AppCompatActivity {
     LinearLayout previousVisitsList;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +89,8 @@ public class PatientDetailActivity extends AppCompatActivity {
 //            Log.v(TAG, "Intent Tag: " + intentTag);
         }
 
+        newVisit = (Button) findViewById(R.id.button_new_visit);
+
         patient.setId(patientID);
         setDisplay(String.valueOf(patientID));
 
@@ -97,7 +102,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             startService(serviceIntent);
         }
 
-        newVisit = (Button) findViewById(R.id.button_new_visit);
+
         newVisit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,8 +176,9 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     /**
      * This method displays basic details about patient (eg: name, address).
+     *
      * @param dataString variable of type String
-     * @return           void
+     * @return void
      */
     public void setDisplay(String dataString) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
@@ -182,7 +188,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         String[] patientArgs = {dataString};
         String[] patientColumns = {"first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
-                "postal_code","country","phone_number", "gender", "sdw", "occupation", "patient_photo"};
+                "postal_code", "country", "phone_number", "gender", "sdw", "occupation", "patient_photo"};
         final Cursor idCursor = db.query("patient", patientColumns, patientSelection, patientArgs, null, null, null);
 
         if (idCursor.moveToFirst()) {
@@ -260,7 +266,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
         String postal_code;
         if (patient.getPostalCode() != null) {
-            postal_code = patient.getPostalCode().trim()+",";
+            postal_code = patient.getPostalCode().trim() + ",";
         } else {
             postal_code = "";
         }
@@ -335,7 +341,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         String visitSelection = "patient_id = ?";
         String[] visitArgs = {dataString};
-        String[] visitColumns = {"_id, start_datetime"};
+        String[] visitColumns = {"_id, start_datetime", "end_datetime"};
         String visitOrderBy = "_id";
         Cursor visitCursor = db.query("visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
         previousVisitsList = (LinearLayout) findViewById(R.id.linearLayout_previous_visits);
@@ -347,12 +353,13 @@ public class PatientDetailActivity extends AppCompatActivity {
             if (visitCursor.moveToLast()) {
                 do {
                     String date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("start_datetime"));
+                    String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("end_datetime"));
                     Integer visit_id = visitCursor.getInt(visitCursor.getColumnIndexOrThrow("_id"));
                     SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                     try {
                         Date formatted = currentDate.parse(date);
                         String visitDate = currentDate.format(formatted);
-                        createOldVisit(visitDate,visit_id);
+                        createOldVisit(visitDate, visit_id, end_date);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -367,6 +374,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     /**
      * This method prints the basic details of patient.
      * It makes use of PRINT_SERVICE from PrintManager
+     *
      * @return void
      */
 
@@ -427,7 +435,8 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     /**
      * This method creates a print job using PrintManager instance and PrintAdapter Instance
-     * @param webView  object of type WebView.
+     *
+     * @param webView object of type WebView.
      */
     private void createWebPrintJob(WebView webView) {
 
@@ -477,20 +486,38 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     /**
      * This method retrieves details about patient's old visits.
+     *
      * @param datetime variable of type String.
      * @param visit_id variable of type int.
      * @return void
      */
-    private void createOldVisit(String datetime,int visit_id) {
-       // final LayoutInflater inflater = PatientDetailActivity.this.getLayoutInflater();
-      //  View convertView = inflater.inflate(R.layout.list_item_previous_visit, null);
-      //  TextView textView = (TextView) convertView.findViewById(R.id.textView_visit_info);
+    private void createOldVisit(String datetime, int visit_id, String end_datetime) {
+        // final LayoutInflater inflater = PatientDetailActivity.this.getLayoutInflater();
+        //  View convertView = inflater.inflate(R.layout.list_item_previous_visit, null);
+        //  TextView textView = (TextView) convertView.findViewById(R.id.textView_visit_info);
         TextView textView = new TextView(this);
         String visitString = String.format("Seen on %s.", datetime);
-        textView.setText(visitString);
+        if (end_datetime == null || end_datetime.isEmpty()) {
+            SpannableString spannableString = new SpannableString(visitString + " Active");
+            Object greenSpan = new BackgroundColorSpan(Color.GREEN);
+            Object underlineSpan = new UnderlineSpan();
+            spannableString.setSpan(greenSpan, spannableString.length() - 6, spannableString.length(), 0);
+            spannableString.setSpan(underlineSpan, 0, spannableString.length() - 7, 0);
+            textView.setText(spannableString);
+
+            newVisit.setEnabled(false);
+            newVisit.setClickable(false);
+            newVisit.setBackgroundColor(getResources().getColor(R.color.divider));
+
+        } else {
+            textView.setText(visitString);
+            textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        }
+
+        textView.setTextSize(18);
         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams
                 (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        llp.setMargins(25, 25,25, 25);
+        llp.setMargins(25, 25, 25, 25);
         textView.setLayoutParams(llp);
         textView.setTag(visit_id);
        /* textView.setOnTouchListener(new View.OnTouchListener() {
@@ -519,8 +546,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int position  = (Integer)v.getTag();
-                Intent visitSummary = new Intent(PatientDetailActivity.this,VisitSummaryActivity.class);
+                int position = (Integer) v.getTag();
+                Intent visitSummary = new Intent(PatientDetailActivity.this, VisitSummaryActivity.class);
                 visitSummary.putExtra("visitID", String.valueOf(position));
                 visitSummary.putExtra("patientID", patientID);
                 visitSummary.putExtra("name", patientName);
@@ -535,6 +562,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     /**
      * This method is called when patient has no prior visits.
+     *
      * @return void
      */
     private void neverSeen() {
