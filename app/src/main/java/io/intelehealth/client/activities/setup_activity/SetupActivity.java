@@ -94,17 +94,8 @@ public class SetupActivity extends AppCompatActivity {
 
 
     private static final int PERMISSION_ALL = 1;
-
-    private static final String PARSE_SERVER_URL = "http://192.168.1.102:1337/parse/";
-    private static final String JSON_FOLDER = "Engines";
     File base_dir;
-    private static final String FILES[] = {"Abdominal Pain.json",
-                                            "Chest Discomfort or Pain.json",
-                                            "Constipation.json",
-                                            "Dsyphagia or Difficulty Swallowing.json",
-                                            "Fever.json",
-                                            "Vomiting.json",
-                                            "Weight Loss.json"};
+
 
 
     @Override
@@ -233,15 +224,15 @@ public class SetupActivity extends AppCompatActivity {
         //INITIALIZE PARSE CONFIGS
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .applicationId("app")
-                .server(PARSE_SERVER_URL)
+                .server(HelperMethods.PARSE_SERVER_URL)
                 .build()
         );
 
         //DOWNLOAD ALL MIND MAPS
-        base_dir = new File(getFilesDir().getAbsolutePath(), JSON_FOLDER);
+        base_dir = new File(getFilesDir().getAbsolutePath(), HelperMethods.JSON_FOLDER);
         if (!base_dir.exists())
             base_dir.mkdirs();
-        for (String file : FILES) {
+        for (String file : HelperMethods.FILES) {
             String[] parts = file.split(".json");
             //Log.i("DOWNLOADING-->",parts[0].replaceAll("\\s+",""));
             new getJSONFile().execute(file, parts[0].replaceAll("\\s+", ""));
@@ -573,13 +564,13 @@ public class SetupActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
 
             //SPACE SEPARATED NAMES ARE MADE UNDERSCORE SEPARATED
-            FILENAME = params[0].replace(' ', '_');
+            FILENAME = params[0];
             COLLECTION_NAME = params[1];
 
             try {
-                String servStr = PARSE_SERVER_URL + "classes/" + COLLECTION_NAME;
+                String servStr = HelperMethods.PARSE_SERVER_URL + "classes/" + COLLECTION_NAME;
                 URL url = new URL(servStr);
-                Log.i("Connect", PARSE_SERVER_URL + "classes/" + COLLECTION_NAME);
+                Log.i("Connect", HelperMethods.PARSE_SERVER_URL + "classes/" + COLLECTION_NAME);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.setRequestProperty("X-Parse-Application-Id", "app");
@@ -625,6 +616,7 @@ public class SetupActivity extends AppCompatActivity {
                 File mydir = new File(base_dir.getAbsolutePath(), FILENAME);
                 if (!mydir.exists())
                     mydir.getParentFile().mkdirs();
+                Log.i("FNAM",FILENAME);
                 FileOutputStream fileout = new FileOutputStream(mydir);
                 OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
                 outputWriter.write(writable);
@@ -632,33 +624,7 @@ public class SetupActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            //readFile(FILENAME);
-        }
-    }
-
-    //READ FILE
-    private void readFile(String FILENAME) {
-        Log.i(LOG_TAG, "Reading from file");
-
-        try {
-            File myDir = new File(getFilesDir().getAbsolutePath() + File.separator + JSON_FOLDER + File.separator + FILENAME);
-            FileInputStream fileIn = new FileInputStream(myDir);
-            InputStreamReader InputRead = new InputStreamReader(fileIn);
-            final int READ_BLOCK_SIZE = 100;
-            char[] inputBuffer = new char[READ_BLOCK_SIZE];
-            String s = "";
-            int charRead;
-
-            while ((charRead = InputRead.read(inputBuffer)) > 0) {
-                String readstring = String.copyValueOf(inputBuffer, 0, charRead);
-                s += readstring;
-            }
-            InputRead.close();
-            Log.i("FILEREAD>", s);
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
+            //HelperMethods.readFile(FILENAME,SetupActivity.this);
         }
     }
 }

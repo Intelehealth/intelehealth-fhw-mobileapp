@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
@@ -14,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -89,15 +91,21 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         }
 
         complaints = new ArrayList<>();
-        String[] fileNames = new String[0];
+        /*String[] fileNames = new String[0];
         try {
             fileNames = getApplicationContext().getAssets().list("engines");
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        for (String name : fileNames) {
-            String fileLocation = "engines/" + name;
-            JSONObject currentFile = HelperMethods.encodeJSON(this, fileLocation);
+        }*/
+        for (String name : HelperMethods.FILES) {
+            //String fileLocation = "engines/" + name;
+            JSONObject currentFile = null; //HelperMethods.encodeJSON(this, fileLocation);
+            try {
+                currentFile = new JSONObject(HelperMethods.readFile(name,this));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.i("CNA",currentFile.toString());
             Node currentNode = new Node(currentFile);
             complaints.add(currentNode);
         }
