@@ -258,9 +258,9 @@ public class SetupActivity extends AppCompatActivity {
                             public void done(byte[] data, ParseException e) {
                                 if (e == null) {
                                     String tmp = new String(data);
-                                    String files[] = tmp.split("\r\n");
-                                    Log.i("FLEN",tmp);
-                                   // FILES = new String[files.length];
+                                    String files[] = tmp.split("\n");
+                                    Log.i("FLEN",""+files.length);
+                                    FILES = new String[files.length];
                                     FILES = files;
                                     downloadMindMaps();
                                 }

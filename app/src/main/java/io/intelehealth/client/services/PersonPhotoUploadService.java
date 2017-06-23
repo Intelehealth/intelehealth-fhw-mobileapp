@@ -100,7 +100,6 @@ public class PersonPhotoUploadService extends IntentService {
 
             } else {
                 String newText = "Person Image Posted successfully.";
-                uploadImage();
                 mBuilder.setContentText(newText);
                 mNotifyManager.notify(mId, mBuilder.build());
                 if (intent.hasExtra("queueId")) {
@@ -111,26 +110,6 @@ public class PersonPhotoUploadService extends IntentService {
             }
 
         }
-    }
-
-    public void uploadImage() {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        // Compress image to lower quality scale 1 - 100
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] image = stream.toByteArray();
-        // Create the ParseFile
-        ParseFile file = new ParseFile(imageName + ".png", image);
-        // Upload the image into Parse Cloud
-        //file.saveInBackground();
-        // Create a New Class called "ImageUpload" in Parse
-        ParseObject imgupload = new ParseObject("ImageUpload");
-        // Create a column named "ImageName" and set the string
-        imgupload.put("Patient_ID", "test upload");
-        // Create a column named "ImageFile" and insert the image
-        imgupload.put("ImageFile", file);
-        // Create the class and the columns
-        imgupload.saveInBackground();
-        Toast.makeText(this, "Image Uploaded", Toast.LENGTH_SHORT).show();
     }
 
     private byte[] bitmapToByteArray(Bitmap image) {
