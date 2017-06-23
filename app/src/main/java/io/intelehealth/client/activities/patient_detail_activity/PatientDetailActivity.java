@@ -507,6 +507,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         // final LayoutInflater inflater = PatientDetailActivity.this.getLayoutInflater();
         //  View convertView = inflater.inflate(R.layout.list_item_previous_visit, null);
         //  TextView textView = (TextView) convertView.findViewById(R.id.textView_visit_info);
+        final Boolean past_visit;
+
         TextView textView = new TextView(this);
         String visitString = String.format("Seen on %s.", datetime);
         if (end_datetime == null || end_datetime.isEmpty()) {
@@ -516,6 +518,8 @@ public class PatientDetailActivity extends AppCompatActivity {
             spannableString.setSpan(greenSpan, spannableString.length() - 6, spannableString.length(), 0);
             spannableString.setSpan(underlineSpan, 0, spannableString.length() - 7, 0);
             textView.setText(spannableString);
+
+            past_visit = false;
 
             if(newVisit.isEnabled()) {
                 newVisit.setEnabled(false);
@@ -527,6 +531,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         } else {
             textView.setText(visitString);
+            past_visit = true;
             textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         }
 
@@ -568,7 +573,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 visitSummary.putExtra("patientID", patientID);
                 visitSummary.putExtra("name", patientName);
                 visitSummary.putExtra("tag", intentTag);
-                visitSummary.putExtra("pastVisit", true);
+                visitSummary.putExtra("pastVisit", past_visit);
                 startActivity(visitSummary);
             }
         });

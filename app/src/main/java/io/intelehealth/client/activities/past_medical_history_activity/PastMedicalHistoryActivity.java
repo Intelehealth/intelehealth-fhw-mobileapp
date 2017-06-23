@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -82,8 +81,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_patient_history);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -129,7 +127,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
             }
         });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         patientHistoryMap = new Node(HelperMethods.encodeJSON(this, mFileName)); //Load the patient history mind map
         historyListView = (ExpandableListView) findViewById(R.id.patient_history_expandable_list_view);
