@@ -18,6 +18,8 @@ import java.util.List;
  */
 public class PhysicalExam extends Node {
 
+    private static final String LOG = PhysicalExam.class.getSimpleName();
+
     private ArrayList<String> selection;
     private List<Node> selectedNodes;
     private int totalExams;
@@ -68,14 +70,13 @@ public class PhysicalExam extends Node {
             //If no exams were required, just do the general ones
             return newOptionsList;
         } else {
-            for (int i = 0; i < selection.size(); i++) {
-
+            for (String current:selection) {
+                Log.i(LOG,"string -> "+current);
                 /*
                 First, the selection texts are taken individually, and split up into location:exam
                 The location node is identified first, and then the exam nodes
                  */
 
-                String current = selection.get(i);
                 Log.d("Exam current ", current);
                 String[] split = current.split(":");
                 String location = split[0];

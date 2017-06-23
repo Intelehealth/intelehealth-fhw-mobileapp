@@ -154,18 +154,12 @@
             android:label="@string/title_activity_patient_history"
             android:parentActivityName=".activities.question_node_activity.QuestionNodeActivity"
             android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.intelehealth.client.activities.question_node_activity.QuestionNodeActivity" />
         </activity>
         <activity
             android:name=".activities.family_history_activity.FamilyHistoryActivity"
             android:label="@string/title_activity_family_history"
             android:parentActivityName=".activities.past_medical_history_activity.PastMedicalHistoryActivity"
             android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.intelehealth.client.activities.past_medical_history_activity.PastMedicalHistoryActivity" />
         </activity>
         <activity
             android:name=".activities.physical_exam_activity.PhysicalExamActivity"
