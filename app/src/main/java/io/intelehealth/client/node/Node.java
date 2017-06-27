@@ -112,6 +112,9 @@ public class Node implements Serializable {
 
             this.display = jsonNode.optString("display");
             if(this.display.isEmpty()) {
+                this.display = jsonNode.optString("display ");
+            }
+            if(this.display.isEmpty()) {
                 this.display = this.text;
             }
 
