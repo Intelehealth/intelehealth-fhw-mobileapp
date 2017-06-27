@@ -29,6 +29,7 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -65,6 +66,7 @@ public class Node implements Serializable {
     private boolean aidAvailable;
     private boolean selected;
     private boolean subSelected;
+    private boolean hasPhysicalExams;
 
     private List<String> imagePathList;
 
@@ -885,9 +887,9 @@ public class Node implements Serializable {
 
             this.physicalExams = jsonNode.optString("perform-physical-exam");
             if (!(this.physicalExams == null)) {
-                this.complaint = true;
+                this.hasPhysicalExams = true;
             } else {
-                this.complaint = false;
+                this.hasPhysicalExams = false;
             }
 
             this.jobAidFile = jsonNode.optString("job-aid-file");
@@ -904,6 +906,7 @@ public class Node implements Serializable {
             } else {
                 this.hasAssociations = true;
             }
+
 
             this.selected = false;
 
@@ -935,6 +938,7 @@ public class Node implements Serializable {
         this.aidAvailable = source.aidAvailable;
         this.associatedComplaint = source.associatedComplaint;
         this.hasAssociations = source.hasAssociations;
+        this.hasPhysicalExams = source.hasPhysicalExams;
         this.selected = false;
         this.required = source.required;
     }
@@ -1003,6 +1007,10 @@ public class Node implements Serializable {
         return hasAssociations;
     }
 
+    public boolean isHasPhysicalExams() {
+        return hasPhysicalExams;
+    }
+
     public String getAssociatedComplaint() {
         return associatedComplaint;
     }
@@ -1011,9 +1019,6 @@ public class Node implements Serializable {
         return aidAvailable;
     }
 
-    public String getExams() {
-        return physicalExams;
-    }
 
     public List<Node> getOptionsList() {
         return optionsList;
@@ -1116,13 +1121,17 @@ public class Node implements Serializable {
     public String generateLanguage() {
         String raw = this.formLanguage();
         String formatted;
-        if (Character.toString(raw.charAt(0)).equals(",")) {
-            formatted = raw.substring(2);
-        } else {
-            formatted = raw;
+        if(!raw.isEmpty()) {
+            if (Character.toString(raw.charAt(0)).equals(",")) {
+                formatted = raw.substring(2);
+            } else {
+                formatted = raw;
+            }
+            Log.d("Generated language", formatted);
+
+            return formatted;
         }
-        Log.d("Generated language", formatted);
-        return formatted;
+        return null;
     }
 
     //TODO: Check this, as associated complaints are not being triggered.
@@ -1138,6 +1147,44 @@ public class Node implements Serializable {
             }
         }
         return selectedAssociations;
+    }
+
+
+    public ArrayList<String> getPhysicalExamList() {
+        ArrayList<String> selectedExams = new ArrayList<>();
+        List<Node> mOptions = optionsList;
+        for (int i = 0; i < mOptions.size(); i++) {
+            if (mOptions.get(i).isSelected() & mOptions.get(i).isHasPhysicalExams()) {
+                String rawExams = mOptions.get(i).getPhysicalExams();
+                if(!rawExams.trim().isEmpty()) {
+                    String[] splitExams = rawExams.split(";");
+                    selectedExams.addAll(Arrays.asList(splitExams));
+                }
+                if (!mOptions.get(i).isTerminal()) {
+                    selectedExams.addAll(mOptions.get(i).getPhysicalExamList());
+                }
+            }
+        }
+        return selectedExams;
+    }
+
+   /* public ArrayList<String> getPhysicalExams() {
+        ArrayList<String> selectedAssociations = new ArrayList<>();
+        List<Node> mOptions = optionsList;
+        for (int i = 0; i < mOptions.size(); i++) {
+            if (mOptions.get(i).isSelected() & mOptions.get(i).hasAssociations()) {
+                selectedAssociations.add(mOptions.get(i).getAssociatedComplaint());
+                if (!mOptions.get(i).isTerminal()) {
+                    selectedAssociations.addAll(mOptions.get(i).getSelectedAssociations());
+                }
+            }
+        }
+        return selectedAssociations;
+    }
+    */
+
+    public String getPhysicalExams() {
+        return physicalExams;
     }
 
     public void removeOptionsList() {
