@@ -128,9 +128,12 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     public void confirmComplaints() {
 
         final ArrayList<String> selection = new ArrayList<>();
+        final ArrayList<String> displaySelection = new ArrayList<>();
+
         for (Node node : complaints) {
             if (node.isSelected()) {
                 selection.add(node.getText());
+                displaySelection.add(node.findDisplay());
             }
         }
 
@@ -153,7 +156,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             View convertView = (View) inflater.inflate(R.layout.list_dialog_complaint, null);
             alertDialogBuilder.setView(convertView);
             ListView listView = (ListView) convertView.findViewById(R.id.complaint_dialog_list_view);
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, selection);
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, displaySelection);
             listView.setAdapter(arrayAdapter);
             alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                 @Override
