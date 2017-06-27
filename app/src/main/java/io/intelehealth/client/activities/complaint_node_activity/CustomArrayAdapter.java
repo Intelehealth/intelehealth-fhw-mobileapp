@@ -56,7 +56,7 @@ public class CustomArrayAdapter extends ArrayAdapter<Node> {
         final Node thisNode = mNodes.get(position);
 
         TextView textViewItem = (TextView) convertView.findViewById(R.id.subquestion_text_view);
-        textViewItem.setText(thisNode.getText());
+        textViewItem.setText(thisNode.findDisplay());
 
         ImageView imageView = (ImageView) convertView.findViewById(R.id.subquestion_image_view);
 
