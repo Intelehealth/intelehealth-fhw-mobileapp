@@ -86,7 +86,6 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                 onFabClick();
             }
         });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         familyHistoryMap = new Node(HelperMethods.encodeJSON(this, mFileName)); //Load the family history mind map
         familyListView = (ExpandableListView) findViewById(R.id.family_history_expandable_list_view);

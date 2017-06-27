@@ -11,24 +11,25 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 
 import org.json.JSONObject;
 
-import io.intelehealth.client.utilities.HelperMethods;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.custom_expandable_list_adapter.CustomExpandableListAdapter;
 import io.intelehealth.client.activities.past_medical_history_activity.PastMedicalHistoryActivity;
 import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
-import io.intelehealth.client.objects.Knowledge;
 import io.intelehealth.client.node.Node;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import io.intelehealth.client.objects.Knowledge;
+import io.intelehealth.client.utilities.HelperMethods;
 
 /**
  * Gets more specifics of the ailment suffered by patient.
@@ -222,15 +223,33 @@ public class QuestionNodeActivity extends AppCompatActivity {
 //                }
 //            }
             String complaintString = currentNode.generateLanguage();
-            String complaintFormatted = complaintString.replace("?,", "?:");
+            String insertion = null;
+            if(complaintString !=null && !complaintString.isEmpty()) {
+                String complaintFormatted = complaintString.replace("?,", "?:");
 
-            String complaint = currentNode.getText();
-            complaintDetails.put(complaint, complaintFormatted);
+                String complaint = currentNode.getText();
+                complaintDetails.put(complaint, complaintFormatted);
 
-            String insertion = complaint + ": " + complaintFormatted;
+                insertion = complaint + ": " + complaintFormatted;
+            }
+            ArrayList<String> selectedAssociatedComplaintsList = currentNode.getSelectedAssociations();
+            if (selectedAssociatedComplaintsList != null && !selectedAssociatedComplaintsList.isEmpty()) {
+                for (String associatedComplaint : selectedAssociatedComplaintsList) {
+                    if (!complaints.contains(associatedComplaint)) {
+                        complaints.add(associatedComplaint);
+                        String fileLocation = "engines/" + associatedComplaint + ".json";
+                        JSONObject currentFile = HelperMethods.encodeJSON(this, fileLocation);
+                        Node currentNode = new Node(currentFile);
+                        complaintsNodes.add(currentNode);
+                    }
+                }
+            }
 
+            ArrayList<String> childNodeSelectedPhysicalExams = currentNode.getPhysicalExamList();
+            if(!childNodeSelectedPhysicalExams.isEmpty()) physicalExams.addAll(childNodeSelectedPhysicalExams); //For Selected child nodes
 
-            physicalExams.addAll(parseExams(currentNode));
+            ArrayList<String> rootNodePhysicalExams = parseExams(currentNode);
+            if(!rootNodePhysicalExams.isEmpty())physicalExams.addAll(rootNodePhysicalExams); //For Root Node
 
             if (complaintNumber < complaints.size() - 1) {
                 complaintNumber++;
@@ -246,6 +265,8 @@ public class QuestionNodeActivity extends AppCompatActivity {
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
                     intent.putStringArrayListExtra("exams", physicalExams);
+                    Log.i(LOG_TAG, String.valueOf(physicalExams.size()));
+                    for (String exams : physicalExams) Log.i(LOG_TAG, exams);
                     startActivity(intent);
                 } else {
                     insertDb(insertion);
@@ -256,6 +277,8 @@ public class QuestionNodeActivity extends AppCompatActivity {
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
                     intent.putStringArrayListExtra("exams", physicalExams);
+                    Log.i(LOG_TAG, String.valueOf(physicalExams.size()));
+                    for (String exams : physicalExams) Log.i(LOG_TAG, exams);
                     startActivity(intent);
                 }
             }
@@ -329,7 +352,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
     //Dialog Alert forcing user to answer all questions.
     //Can be removed if necessary
-    //TODO: Add setting to allow for all questions unrequired.
+    //TODO: Add setting to allow for all questions unrequired..addAll(Arrays.asList(splitExams))
     public void questionsMissing() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage(R.string.question_answer_all);
@@ -347,10 +370,13 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
     private ArrayList<String> parseExams(Node node) {
         ArrayList<String> examList = new ArrayList<>();
-        String rawExams = node.getExams();
-        String[] splitExams = rawExams.split(";");
-        examList.addAll(Arrays.asList(splitExams));
-        return examList;
+        String rawExams = node.getPhysicalExams();
+        if(rawExams!=null) {
+            String[] splitExams = rawExams.split(";");
+            examList.addAll(Arrays.asList(splitExams));
+            return examList;
+        }
+        return null;
     }
 
     @Override
