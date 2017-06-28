@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -17,6 +18,7 @@ import android.widget.ExpandableListView;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -24,6 +26,7 @@ import java.util.List;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.custom_expandable_list_adapter.CustomExpandableListAdapter;
+import io.intelehealth.client.activities.family_history_activity.FamilyHistoryActivity;
 import io.intelehealth.client.activities.past_medical_history_activity.PastMedicalHistoryActivity;
 import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
@@ -46,6 +49,8 @@ public class QuestionNodeActivity extends AppCompatActivity {
     String state;
     String patientName;
     String intentTag;
+    String image_Prefix = "QN";
+    String imageDir = "Question Node";
 
     Boolean complaintConfirmed = false;
 
@@ -130,10 +135,23 @@ public class QuestionNodeActivity extends AppCompatActivity {
                         currentNode.getOption(groupPosition).setUnselected();
                     }
 
+
+
                     if (!question.getInputType().isEmpty() && question.isSelected()) {
-                        Node.handleQuestion(question, QuestionNodeActivity.this, adapter);
-                        //If there is an input type, then the question has a special method of data entry.
+                        if (question.getInputType().equals("camera")) {
+                            String imageName = patientID + "_" + visitID + "_" + image_Prefix;
+                            String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+                            File filePath = new File(baseDir+ File.separator+"Patient Images"+File.separator+
+                                    patientID+File.separator+visitID+File.separator+imageDir);
+                            if (!filePath.exists()) {
+                                filePath.mkdir();
+                            }
+                            Node.handleQuestion(question, QuestionNodeActivity.this, adapter, null, imageName);
+                        } else {
+                            Node.handleQuestion(question, QuestionNodeActivity.this, adapter, null, null);
+                        }
                     }
+
 
                     if (!question.isTerminal() && question.isSelected()) {
                         Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter);
@@ -161,7 +179,19 @@ public class QuestionNodeActivity extends AppCompatActivity {
                     }
 
                     if (!question.getInputType().isEmpty() && question.isSelected()) {
-                        Node.handleQuestion(question, QuestionNodeActivity.this, adapter);
+                        if (question.getInputType().equals("camera")) {
+                            String imageName = patientID + "_" + visitID + "_" + image_Prefix;
+                            String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+                            File filePath = new File(baseDir+ File.separator+"Patient Images"+File.separator+
+                                    patientID+File.separator+visitID+File.separator+imageDir);
+
+                            if (!filePath.exists()) {
+                                filePath.mkdir();
+                            }
+                            Node.handleQuestion(question, QuestionNodeActivity.this, adapter, null, imageName);
+                        } else {
+                            Node.handleQuestion(question, QuestionNodeActivity.this, adapter, null, null);
+                        }
                         //If there is an input type, then the question has a special method of data entry.
                     }
 

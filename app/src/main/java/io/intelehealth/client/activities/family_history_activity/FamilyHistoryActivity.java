@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ExpandableListView;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
@@ -34,6 +36,9 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     String state;
     String patientName;
     String intentTag;
+
+    String image_Prefix = "FH"; //Abbreviation for Family History
+    String imageDir = "Family History"; //Abbreviation for Family History
 
     ArrayList<String> physicalExams;
 
@@ -120,7 +125,19 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                 Node clickedNode = familyHistoryMap.getOption(groupPosition);
 
                 if (clickedNode.getInputType() != null) {
-                    Node.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter);
+                    if (clickedNode.getInputType().equals("camera")) {
+                        String imageName = patientID + "_" + visitID + "_" + image_Prefix;
+                        String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+                        File filePath = new File(baseDir+ File.separator+"Patient Images"+File.separator+
+                                patientID+File.separator+visitID+File.separator+imageDir);
+
+                        if (!filePath.exists()) {
+                            filePath.mkdir();
+                        }
+                        Node.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter, null, imageName);
+                    } else {
+                        Node.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter, null, null);
+                    }
                 }
 
                 if (lastExpandedPosition != -1

@@ -83,7 +83,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
     String mPhoto;
     Patient patient = new Patient();
-    Patient patient1=new Patient();
+    Patient patient1 = new Patient();
     String patientID;
     String patientID1;
 
@@ -115,7 +115,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
-            if(intent.hasExtra("pid")) {
+            if (intent.hasExtra("pid")) {
                 this.setTitle("Update Patient");
                 patientID1 = intent.getStringExtra("pid");
                 patient1.setId(patientID1);
@@ -163,37 +163,32 @@ public class IdentificationActivity extends AppCompatActivity {
         mCountry.setAdapter(countryAdapter);
 
         // generate patientid only if there is no intent for Identification activity
-        if(patientID1 == null) {
+        if (patientID1 == null) {
             generateID();
         }
 
         // setting radio button automatically according to the databse when user clicks edit details
-        if (patientID == null)
-        {
+        if (patientID == null) {
             if (patient1.getGender().equals("M")) {
                 mGenderM.setChecked(true);
                 if (mGenderF.isChecked())
                     mGenderF.setChecked(false);
                 Log.v(TAG, "yes");
-            }
-            else {
+            } else {
                 mGenderF.setChecked(true);
                 if (mGenderM.isChecked())
                     mGenderM.setChecked(false);
                 Log.v(TAG, "yes");
             }
         }
-        if (mGenderM.isChecked())
-        {
-            mGender="M";
-        }
-        else {
-            mGender="F";
+        if (mGenderM.isChecked()) {
+            mGender = "M";
+        } else {
+            mGender = "F";
         }
 
 
-
-        if(patientID1!= null) {
+        if (patientID1 != null) {
             // setting country accordig database
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
         }
@@ -214,8 +209,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mState.setAdapter(stateAdapter);
                         // setting state according database when user clicks edit details
-                        if (patientID1!=null)
-                        {
+                        if (patientID1 != null) {
                             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getStateProvince())));
                         }
 
@@ -224,8 +218,7 @@ public class IdentificationActivity extends AppCompatActivity {
                                 R.array.states_us, android.R.layout.simple_spinner_item);
                         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mState.setAdapter(stateAdapter);
-                        if (patientID1!=null)
-                        {
+                        if (patientID1 != null) {
                             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getStateProvince())));
                         }
 
@@ -284,7 +277,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 //    mPhoto = results[0];
                 //    mCurrentPhotoPath = results[1];
                 //}
-                File filePath = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator + "patient_photo");
+                File filePath = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator +
+                        "Patient_Images" + File.separator + patientID);
                 if (!filePath.exists()) {
                     filePath.mkdir();
                 }
@@ -434,12 +428,12 @@ public class IdentificationActivity extends AppCompatActivity {
             case R.id.identification_gender_male:
                 if (checked)
                     mGender = "M";
-                Log.v(TAG,"gender:"+mGender);
+                Log.v(TAG, "gender:" + mGender);
                 break;
             case R.id.identification_gender_female:
                 if (checked)
                     mGender = "F";
-                Log.v(TAG,"gender:"+mGender);
+                Log.v(TAG, "gender:" + mGender);
                 break;
         }
     }
@@ -630,15 +624,13 @@ public class IdentificationActivity extends AppCompatActivity {
                 patient1.setCountry(mCountry.getSelectedItem().toString());
                 patient.setStateProvince(mState.getSelectedItem().toString());
                 patient1.setStateProvince(mState.getSelectedItem().toString());
-                Log.v(TAG,""+mState.getSelectedItem());
+                Log.v(TAG, "" + mState.getSelectedItem());
             } catch (NullPointerException e) {
                 Snackbar.make(findViewById(R.id.cl_table), R.string.identification_screen_error_data_fields, Snackbar.LENGTH_SHORT);
             }
             if (patientID1 != null) {
                 new UpdatePatientTable(patient1).execute();
-            }
-            else
-            {
+            } else {
                 new InsertPatientTable(patient).execute();
             }
         }
@@ -664,11 +656,14 @@ public class IdentificationActivity extends AppCompatActivity {
             implements DialogInterface.OnCancelListener {
 
         SQLiteDatabase db4 = mDbHelper.getWritableDatabase();
+
         InsertPatientTable(Patient currentPatient) {
             patient = currentPatient;
         }
+
         ContentValues patientEntries = new ContentValues();
         ContentValues visitData = new ContentValues();
+
         public void gatherEntries() {
             patientEntries.put("_id", patient.getId());
             patientEntries.put("first_name", patient.getFirstName());
@@ -729,14 +724,12 @@ public class IdentificationActivity extends AppCompatActivity {
     }
 
     // This is a async method for updating the database if user changes any details of patient
-    public class UpdatePatientTable extends AsyncTask<Void, Void, Boolean> implements DialogInterface.OnCancelListener
-    {
+    public class UpdatePatientTable extends AsyncTask<Void, Void, Boolean> implements DialogInterface.OnCancelListener {
         SQLiteDatabase db1 = mDbHelper.getWritableDatabase();
 
-        UpdatePatientTable(Patient currepatient)
-        {
+        UpdatePatientTable(Patient currepatient) {
 
-            patient1=currepatient;
+            patient1 = currepatient;
         }
 
         ContentValues patientEntries1 = new ContentValues();
@@ -763,16 +756,18 @@ public class IdentificationActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             gatherEntries1();
-            db1.update("patient",patientEntries1,"_id=?",new String[]{String.valueOf(patient1.getId())});
+            db1.update("patient", patientEntries1, "_id=?", new String[]{String.valueOf(patient1.getId())});
 
             db1.close();
 
             return null;
         }
+
         @Override
         public void onCancel(DialogInterface dialog) {
 
         }
+
         @Override
         protected void onPostExecute(Boolean bBoolean) {
             super.onPostExecute(bBoolean);
@@ -811,7 +806,7 @@ public class IdentificationActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_CAMERA) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-             String[] results = HelperMethods.dispatchTakePictureIntent(REQUEST_CAMERA, IdentificationActivity.this);
+                String[] results = HelperMethods.dispatchTakePictureIntent(REQUEST_CAMERA, IdentificationActivity.this);
                 if (results != null) {
                     mPhoto = results[0];
                     mCurrentPhotoPath = results[1];

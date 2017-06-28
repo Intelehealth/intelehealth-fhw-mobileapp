@@ -138,7 +138,8 @@ public class Node implements Serializable {
 
     }
 
-    public static void handleQuestion(Node questionNode, final Activity context, final CustomExpandableListAdapter adapter) {
+    public static void handleQuestion(Node questionNode, final Activity context, final CustomExpandableListAdapter adapter,
+        final String imagePath,final String imageName){
         String type = questionNode.getInputType();
         Log.d(TAG, type);
         switch (type) {
