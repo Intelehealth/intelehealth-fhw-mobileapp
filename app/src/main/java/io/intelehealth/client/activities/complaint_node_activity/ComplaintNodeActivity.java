@@ -79,7 +79,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 confirmComplaints();
             }
         });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
 
         ListView complaintList = (ListView) findViewById(R.id.complaint_list_view);
@@ -186,6 +186,6 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+
     }
 }

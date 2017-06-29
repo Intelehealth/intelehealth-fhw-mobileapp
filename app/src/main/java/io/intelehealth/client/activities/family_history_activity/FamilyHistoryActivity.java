@@ -11,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
@@ -84,8 +85,21 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     // skip
-                    Intent i =new Intent(FamilyHistoryActivity.this,PhysicalExamActivity.class);
-                    startActivity(i);
+                    flag = false;
+                    insertDb(fhistory);
+                  //  PastMedicalHistoryActivity pmh = new PastMedicalHistoryActivity();
+                   // pmh.insertDb(phistory);
+
+                    Intent intent =new Intent(FamilyHistoryActivity.this,PhysicalExamActivity.class);
+                    intent.putExtra("patientID", patientID);
+                    intent.putExtra("visitID", visitID);
+                    intent.putExtra("state", state);
+                    intent.putExtra("name", patientName);
+                    intent.putExtra("tag", intentTag);
+                    intent.putStringArrayListExtra("exams", physicalExams);
+
+                    startActivity(intent);
+
                 }
             });
             alertdialog.show();
@@ -210,17 +224,20 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             {
                 // only if OK clicked, collect this new info (old patient)
                 fhistory = fhistory + "  " + insertion; // update only family history now
-                Toast.makeText(FamilyHistoryActivity.this, "inside flag", Toast.LENGTH_SHORT).show();
-                    FamilyHistoryActivity fmh = new FamilyHistoryActivity();
-                    fmh.insertDb(fhistory);
-                    PastMedicalHistoryActivity pmh = new PastMedicalHistoryActivity();
-                    pmh.insertDb(phistory);
+                    insertDb(fhistory);
+                   // PastMedicalHistoryActivity pmh = new PastMedicalHistoryActivity();
+                   // pmh.insertDb(phistory);
 
+                Toast.makeText(FamilyHistoryActivity.this,"new PMH: "+phistory,Toast.LENGTH_SHORT).show();
+                Toast.makeText(FamilyHistoryActivity.this,"new FH: "+fhistory,Toast.LENGTH_SHORT).show();
             }
             else {
                 insertDb(insertion); // new details of family history
             }
 
+            flag=false;
+            e.putBoolean("returning",false); // done with old patient, so unset flag and returning
+            e.commit();
             Intent intent = new Intent(FamilyHistoryActivity.this, PhysicalExamActivity.class); // earlier it was vitals
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);

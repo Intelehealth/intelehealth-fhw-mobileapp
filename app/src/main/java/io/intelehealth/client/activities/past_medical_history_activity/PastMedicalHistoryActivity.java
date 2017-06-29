@@ -85,8 +85,17 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                       // skip
-                    Intent i =new Intent(PastMedicalHistoryActivity.this,FamilyHistoryActivity.class);
-                    startActivity(i);
+                    flag = false;
+                    insertDb(phistory);
+                    Intent intent =new Intent(PastMedicalHistoryActivity.this,FamilyHistoryActivity.class);
+                    intent.putExtra("patientID", patientID);
+                    intent.putExtra("visitID", visitID);
+                    intent.putExtra("state", state);
+                    intent.putExtra("name", patientName);
+                    intent.putExtra("tag", intentTag);
+                    intent.putStringArrayListExtra("exams", physicalExams);
+                    startActivity(intent);
+
                 }
             });
             alertdialog.show();
@@ -152,6 +161,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                             e.putString("phistory",phistory);
                             e.putBoolean("returning",true);
                             e.commit();
+                            insertDb(phistory);
+
                             // however, we concat it here to patientHistory and pass it along to FH, not inserting into db
                         }
                         else  // new patient, directly insert into database

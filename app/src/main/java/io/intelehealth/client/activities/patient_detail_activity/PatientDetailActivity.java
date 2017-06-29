@@ -128,18 +128,21 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // before starting, we determine if it is new visit for a returning patient
                 // extract both FH and PMH
+
                 LocalRecordsDatabaseHelper mDatabaseHelper = new LocalRecordsDatabaseHelper(PatientDetailActivity.this);
                 SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
                  sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 e =sharedPreferences.edit();
-
+                returning = false;
+                e.putBoolean("returning",returning); // change in Sp
+                e.commit();
                 String phistory=""; String fhistory="";
                 String[] cols = {"value"};
                 Cursor cursor = sqLiteDatabase.query("obs",cols,"patient_id=? and concept_id=?",// querying for PMH
                         new String[] { patient.getId(),"163187"},
                        null,null,null);
 
-                if(cursor.moveToFirst())
+                if(cursor.moveToFirst()  && !(cursor.getString(0).equals(""))) // so that null data is not appended
                 {
                     // rows present
                     do {
@@ -148,7 +151,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     while (cursor.moveToNext());
                     returning = true;
                     e.putString("phistory",phistory);
-                    e.putBoolean("returning",returning);
+                    e.putBoolean("returning",true);
                     e.commit();
                 }
                 cursor.close();
@@ -156,7 +159,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 Cursor cursor1 = sqLiteDatabase.query("obs",cols,"patient_id=? and concept_id=?",// querying for FH
                         new String[] { patient.getId(),"163188"},
                         null,null,null);
-                if(cursor1.moveToFirst())
+                if(cursor1.moveToFirst() && !(cursor1.getString(0).equals("")) )
                 {
                     // rows present
                     do {
@@ -165,7 +168,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     while (cursor1.moveToNext());
                     returning = true;
                     e.putString("fhistory",fhistory);
-                    e.putBoolean("returning",returning);
+                    e.putBoolean("returning",true);
                     e.commit();
                 }
                 cursor1.close();

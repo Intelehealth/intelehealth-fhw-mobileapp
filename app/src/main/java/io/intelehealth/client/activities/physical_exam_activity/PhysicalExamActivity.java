@@ -81,7 +81,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
     PhysicalExam physicalExamMap;
 
     String physicalString;
-
     Boolean complaintConfirmed = false;
 
     @Override
