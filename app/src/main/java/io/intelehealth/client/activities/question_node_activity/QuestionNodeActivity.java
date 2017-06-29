@@ -126,6 +126,11 @@ public class QuestionNodeActivity extends AppCompatActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
+                String imageName = patientID + "_" + visitID + "_" + image_Prefix;
+                String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+                File filePath = new File(baseDir+ File.separator+"Patient Images"+File.separator+
+                        patientID+File.separator+visitID+File.separator+imageDir);
+
                 if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && !currentNode.getOption(groupPosition).anySubSelected()) {
                     Node question = currentNode.getOption(groupPosition).getOption(childPosition);
                     question.toggleSelected();
@@ -139,14 +144,10 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
                     if (!question.getInputType().isEmpty() && question.isSelected()) {
                         if (question.getInputType().equals("camera")) {
-                            String imageName = patientID + "_" + visitID + "_" + image_Prefix;
-                            String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-                            File filePath = new File(baseDir+ File.separator+"Patient Images"+File.separator+
-                                    patientID+File.separator+visitID+File.separator+imageDir);
                             if (!filePath.exists()) {
-                                filePath.mkdir();
+                                filePath.mkdirs();
                             }
-                            Node.handleQuestion(question, QuestionNodeActivity.this, adapter, null, imageName);
+                            Node.handleQuestion(question, QuestionNodeActivity.this, adapter, filePath.toString(), imageName);
                         } else {
                             Node.handleQuestion(question, QuestionNodeActivity.this, adapter, null, null);
                         }
@@ -154,7 +155,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
 
                     if (!question.isTerminal() && question.isSelected()) {
-                        Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter);
+                        Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter,filePath.toString(),imageName);
                         //If the node is not terminal, that means there are more questions to be asked for this branch.
                     }
                 } else if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && currentNode.getOption(groupPosition).anySubSelected()) {
@@ -180,15 +181,10 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
                     if (!question.getInputType().isEmpty() && question.isSelected()) {
                         if (question.getInputType().equals("camera")) {
-                            String imageName = patientID + "_" + visitID + "_" + image_Prefix;
-                            String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-                            File filePath = new File(baseDir+ File.separator+"Patient Images"+File.separator+
-                                    patientID+File.separator+visitID+File.separator+imageDir);
-
                             if (!filePath.exists()) {
-                                filePath.mkdir();
+                                filePath.mkdirs();
                             }
-                            Node.handleQuestion(question, QuestionNodeActivity.this, adapter, null, imageName);
+                            Node.handleQuestion(question, QuestionNodeActivity.this, adapter, filePath.toString(), imageName);
                         } else {
                             Node.handleQuestion(question, QuestionNodeActivity.this, adapter, null, null);
                         }
@@ -196,7 +192,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
                     }
 
                     if (!question.isTerminal() && question.isSelected()) {
-                        Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter);
+                        Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter,filePath.toString(),imageName);
                         //If the node is not terminal, that means there are more questions to be asked for this branch.
                     }
                 }
@@ -252,6 +248,15 @@ public class QuestionNodeActivity extends AppCompatActivity {
 //                    complaintsNodes.add(mKnowledge.getComplaint(selectedAssociations.get(i)));
 //                }
 //            }
+
+            List<String> imagePathList = currentNode.getImagePathList();
+
+            if (imagePathList != null) {
+                for (String imagePath : imagePathList) {
+                    updateImageDatabase(imagePath);
+                }
+            }
+
             String complaintString = currentNode.generateLanguage();
             String insertion = null;
             if(complaintString !=null && !complaintString.isEmpty()) {
@@ -343,6 +348,16 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
         return localdb.insert("obs", null, complaintEntries);
+    }
+
+    private void updateImageDatabase(String imagePath) {
+        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
+        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path) values("
+                +"'" +patientID +"'"+","
+                + visitID + ","
+                + "'"+imagePath +"'"+
+                ")");
     }
 
     private void updateDatabase(String string) {

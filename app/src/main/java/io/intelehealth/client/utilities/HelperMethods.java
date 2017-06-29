@@ -47,6 +47,7 @@ import io.intelehealth.client.objects.WebResponse;
 public class HelperMethods {
 
     public static final String LOG_TAG = "Helper Methods";
+    public static final String PARSE_SERVER_URL = "http://192.168.1.106:1337/parse";
 
     public static int getAge(String s) {
         if (s == null) return 0;
