@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
@@ -340,7 +341,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
         final String CREATOR_ID = prefs.getString("creatorid", null);
 
-        final int CONCEPT_ID = 163189; // RHK ON EXAM
+        final int CONCEPT_ID = ConceptId.PHYSICAL_EXAMINATION; // RHK ON EXAM
 
         ContentValues complaintEntries = new ContentValues();
 
@@ -372,7 +373,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
 
-        int conceptID = 163189;
+        int conceptID = ConceptId.PHYSICAL_EXAMINATION;
         ContentValues contentValues = new ContentValues();
         contentValues.put("value", string);
 

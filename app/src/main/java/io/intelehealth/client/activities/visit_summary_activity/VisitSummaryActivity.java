@@ -52,6 +52,7 @@ import java.util.List;
 import java.util.Locale;
 
 import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
+import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.complaint_node_activity.ComplaintNodeActivity;
@@ -73,7 +74,6 @@ import io.intelehealth.client.services.ClientService;
 public class VisitSummaryActivity extends AppCompatActivity {
 
     String LOG_TAG = "Patient Summary";
-
 
 
     //Change when used with a different organization.
@@ -168,7 +168,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         internetCheck = mymenu.findItem(R.id.internet_icon);
         MenuItemCompat.getActionView(internetCheck);
 
-        if(isPast) menuItem.setVisible(false);
+        if (isPast) menuItem.setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -200,7 +200,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-      callBroadcastReceiver();
+        callBroadcastReceiver();
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientID = intent.getStringExtra("patientID");
@@ -208,7 +208,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
-            isPast = intent.getBooleanExtra("pastVisit",false);
+            isPast = intent.getBooleanExtra("pastVisit", false);
 
 //            Log.v(TAG, "Patient ID: " + patientID);
 //            Log.v(TAG, "Visit ID: " + visitID);
@@ -250,7 +250,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editMedHist = (ImageButton) findViewById(R.id.imagebutton_edit_pathist);
         uploadButton = (Button) findViewById(R.id.button_upload);
 
-        if(isPast){
+        if (isPast) {
             editVitals.setVisibility(View.GONE);
             editComplaint.setVisibility(View.GONE);
             editPhysical.setVisibility(View.GONE);
@@ -259,7 +259,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             uploadButton.setVisibility(View.GONE);
             invalidateOptionsMenu();
         }
-
 
 
         uploadButton.setOnClickListener(new View.OnClickListener() {
@@ -474,7 +473,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 complaint.setValue(dialogEditText.getText().toString());
                                 complaintText.setText(complaint.getValue());
                                 complaintView.setText(complaint.getValue());
-                                updateDatabase(complaint.getValue(), 163186);
+                                updateDatabase(complaint.getValue(), ConceptId.CURRENT_COMPLAINT);
                                 dialog.dismiss();
                             }
                         });
@@ -540,7 +539,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 patHistory.setValue(dialogEditText.getText().toString());
                                 physicalText.setText(patHistory.getValue());
                                 physFindingsView.setText(patHistory.getValue());
-                                updateDatabase(patHistory.getValue(), 163189);
+                                updateDatabase(patHistory.getValue(), ConceptId.PHYSICAL_EXAMINATION);
                                 dialog.dismiss();
                             }
                         });
@@ -651,8 +650,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     /**
      * This method creates new object of type RetrieveData.
+     *
      * @param view variable of type View
-     * @return     void
+     * @return void
      */
     public void retrieveOpenMRS(View view) {
         new RetrieveData(this).execute();
@@ -699,8 +699,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     /**
      * This methods retrieves patient data from database.
-     * @param dataString  variable of type String
-     * @return                   void
+     *
+     * @param dataString variable of type String
+     * @return void
      */
 
     public void queryData(String dataString) {
@@ -753,7 +754,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         try {
             String medHistSelection = "patient_id = ? AND concept_id = ?";
-            String[] medHistArgs = {dataString, "163189"};
+            String[] medHistArgs = {dataString, String.valueOf(ConceptId.PHYSICAL_EXAMINATION)};
             Cursor medHistCursor = db.query("obs", columns, medHistSelection, medHistArgs, null, null, orderBy);
             medHistCursor.moveToLast();
             String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
@@ -786,36 +787,37 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     /**
      * This method distinguishes between different concepts using switch case to populate the information into the relevant sections (eg:complaints, physical exam, vitals, etc.).
+     *
      * @param concept_id variable of type int.
      * @param value      variable of type String.
      */
     private void parseData(int concept_id, String value) {
         switch (concept_id) {
-            case 163186: //Current Complaint
+            case ConceptId.CURRENT_COMPLAINT: //Current Complaint
                 complaint.setValue(value);
                 break;
-            case 163189: //Physical Examination
+            case ConceptId.PHYSICAL_EXAMINATION: //Physical Examination
                 patHistory.setValue(value);
                 break;
-            case 5090: //Height
+            case ConceptId.HEIGHT: //Height
                 height.setValue(value);
                 break;
-            case 5089: //Weight
+            case ConceptId.WEIGHT: //Weight
                 weight.setValue(value);
                 break;
-            case 5087: //Pulse
+            case ConceptId.PULSE: //Pulse
                 pulse.setValue(value);
                 break;
-            case 5085: //Systolic BP
+            case ConceptId.SYSTOLIC_BP: //Systolic BP
                 bpSys.setValue(value);
                 break;
-            case 5086: //Diastolic BP
+            case ConceptId.DIASTOLIC_BP: //Diastolic BP
                 bpDias.setValue(value);
                 break;
-            case 163202: //Temperature
+            case ConceptId.TEMPERATURE: //Temperature
                 temperature.setValue(value);
                 break;
-            case 5092: //SpO2
+            case ConceptId.SPO2: //SpO2
                 spO2.setValue(value);
                 break;
             default:
@@ -826,6 +828,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     /**
      * This method creates a web view for printing patient's various details.
+     *
      * @return void
      */
     private void doWebViewPrint() {
@@ -930,7 +933,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     /**
      * This method creates a print job using PrintManager instance and PrintAdapter Instance
-     * @param webView  object of type WebView.
+     *
+     * @param webView object of type WebView.
      */
     private void createWebPrintJob(WebView webView) {
 
@@ -1158,10 +1162,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     /**
-     *
      * @param title   variable of type String
      * @param content variable of type String
-     * @param index  variable of type int
+     * @param index   variable of type int
      */
     private void createNewCardView(String title, String content, int index) {
         final LayoutInflater inflater = VisitSummaryActivity.this.getLayoutInflater();
@@ -1175,7 +1178,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     /**
      * This method updates patient details to database.
-     * @param string  variable of type String
+     *
+     * @param string    variable of type String
      * @param conceptID variable of type int
      */
 
@@ -1199,8 +1203,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
 
-    public void callBroadcastReceiver()
-    {
+    public void callBroadcastReceiver() {
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         receiver = new NetworkChangeReceiver();
         registerReceiver(receiver, filter);
@@ -1214,51 +1217,43 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onPause()
-    {
+    public void onPause() {
         super.onPause();
         unregisterReceiver(receiver);
     }
 
 
-    public class NetworkChangeReceiver extends BroadcastReceiver
-    {
+    public class NetworkChangeReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
             isNetworkAvailable(context);
         }
 
-        private void isNetworkAvailable(Context context)
-        {
-            int flag=0;
+        private void isNetworkAvailable(Context context) {
+            int flag = 0;
 
-            ConnectivityManager connectivity = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            if(connectivity != null)
-            {
+            ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (connectivity != null) {
                 NetworkInfo[] info = connectivity.getAllNetworkInfo();
-                if(info !=null)
-                {
-                    for (int i = 0; i < info.length; i++)
-                    {
-                        if (info[i].getState() == NetworkInfo.State.CONNECTED)
-                        {
-                            if(!isConnected)
-                            {
-                                        if(mymenu!=null) {
-                                        internetCheck.setIcon(R.drawable.ic_action_circle_green);
-                                        flag = 1;
-                                    }
+                if (info != null) {
+                    for (int i = 0; i < info.length; i++) {
+                        if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+                            if (!isConnected) {
+                                if (mymenu != null) {
+                                    internetCheck.setIcon(R.drawable.ic_action_circle_green);
+                                    flag = 1;
+                                }
                             }
                         }
                     }
                 }
             }
 
-                      if(flag==0) {
-                       if(mymenu!=null) {
-                       internetCheck.setIcon(R.drawable.ic_action_circle_red);
-                    }
+            if (flag == 0) {
+                if (mymenu != null) {
+                    internetCheck.setIcon(R.drawable.ic_action_circle_red);
+                }
 
             }
 
