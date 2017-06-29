@@ -11,7 +11,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -41,14 +40,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-import io.intelehealth.client.utilities.HelperMethods;
-import io.intelehealth.client.activities.patient_detail_activity.PatientDetailActivity;
 import io.intelehealth.client.R;
-import io.intelehealth.client.activities.setting_activity.SettingsActivity;
 import io.intelehealth.client.activities.camera_activity.CameraActivity;
+import io.intelehealth.client.activities.patient_detail_activity.PatientDetailActivity;
+import io.intelehealth.client.activities.setting_activity.SettingsActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Patient;
-import io.intelehealth.client.utilities.StringUtils;
+import io.intelehealth.client.utilities.HelperMethods;
 
 import static io.intelehealth.client.utilities.HelperMethods.REQUEST_CAMERA;
 import static io.intelehealth.client.utilities.HelperMethods.REQUEST_READ_EXTERNAL;
@@ -83,7 +81,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
     String mPhoto;
     Patient patient = new Patient();
-    Patient patient1=new Patient();
+    Patient patient1 = new Patient();
     String patientID;
     String patientID1;
 
@@ -115,7 +113,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
-            if(intent.hasExtra("pid")) {
+            if (intent.hasExtra("pid")) {
                 this.setTitle("Update Patient");
                 patientID1 = intent.getStringExtra("pid");
                 patient1.setId(patientID1);
@@ -163,37 +161,32 @@ public class IdentificationActivity extends AppCompatActivity {
         mCountry.setAdapter(countryAdapter);
 
         // generate patientid only if there is no intent for Identification activity
-        if(patientID1 == null) {
+        if (patientID1 == null) {
             generateID();
         }
 
         // setting radio button automatically according to the databse when user clicks edit details
-        if (patientID == null)
-        {
+        if (patientID == null) {
             if (patient1.getGender().equals("M")) {
                 mGenderM.setChecked(true);
                 if (mGenderF.isChecked())
                     mGenderF.setChecked(false);
                 Log.v(TAG, "yes");
-            }
-            else {
+            } else {
                 mGenderF.setChecked(true);
                 if (mGenderM.isChecked())
                     mGenderM.setChecked(false);
                 Log.v(TAG, "yes");
             }
         }
-        if (mGenderM.isChecked())
-        {
-            mGender="M";
-        }
-        else {
-            mGender="F";
+        if (mGenderM.isChecked()) {
+            mGender = "M";
+        } else {
+            mGender = "F";
         }
 
 
-
-        if(patientID1!= null) {
+        if (patientID1 != null) {
             // setting country accordig database
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
         }
@@ -214,8 +207,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mState.setAdapter(stateAdapter);
                         // setting state according database when user clicks edit details
-                        if (patientID1!=null)
-                        {
+                        if (patientID1 != null) {
                             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getStateProvince())));
                         }
 
@@ -224,8 +216,7 @@ public class IdentificationActivity extends AppCompatActivity {
                                 R.array.states_us, android.R.layout.simple_spinner_item);
                         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mState.setAdapter(stateAdapter);
-                        if (patientID1!=null)
-                        {
+                        if (patientID1 != null) {
                             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getStateProvince())));
                         }
 
@@ -434,12 +425,12 @@ public class IdentificationActivity extends AppCompatActivity {
             case R.id.identification_gender_male:
                 if (checked)
                     mGender = "M";
-                Log.v(TAG,"gender:"+mGender);
+                Log.v(TAG, "gender:" + mGender);
                 break;
             case R.id.identification_gender_female:
                 if (checked)
                     mGender = "F";
-                Log.v(TAG,"gender:"+mGender);
+                Log.v(TAG, "gender:" + mGender);
                 break;
         }
     }
@@ -630,15 +621,13 @@ public class IdentificationActivity extends AppCompatActivity {
                 patient1.setCountry(mCountry.getSelectedItem().toString());
                 patient.setStateProvince(mState.getSelectedItem().toString());
                 patient1.setStateProvince(mState.getSelectedItem().toString());
-                Log.v(TAG,""+mState.getSelectedItem());
+                Log.v(TAG, "" + mState.getSelectedItem());
             } catch (NullPointerException e) {
                 Snackbar.make(findViewById(R.id.cl_table), R.string.identification_screen_error_data_fields, Snackbar.LENGTH_SHORT);
             }
             if (patientID1 != null) {
                 new UpdatePatientTable(patient1).execute();
-            }
-            else
-            {
+            } else {
                 new InsertPatientTable(patient).execute();
             }
         }
@@ -664,11 +653,14 @@ public class IdentificationActivity extends AppCompatActivity {
             implements DialogInterface.OnCancelListener {
 
         SQLiteDatabase db4 = mDbHelper.getWritableDatabase();
+
         InsertPatientTable(Patient currentPatient) {
             patient = currentPatient;
         }
+
         ContentValues patientEntries = new ContentValues();
         ContentValues visitData = new ContentValues();
+
         public void gatherEntries() {
             patientEntries.put("_id", patient.getId());
             patientEntries.put("first_name", patient.getFirstName());
@@ -729,14 +721,12 @@ public class IdentificationActivity extends AppCompatActivity {
     }
 
     // This is a async method for updating the database if user changes any details of patient
-    public class UpdatePatientTable extends AsyncTask<Void, Void, Boolean> implements DialogInterface.OnCancelListener
-    {
+    public class UpdatePatientTable extends AsyncTask<Void, Void, Boolean> implements DialogInterface.OnCancelListener {
         SQLiteDatabase db1 = mDbHelper.getWritableDatabase();
 
-        UpdatePatientTable(Patient currepatient)
-        {
+        UpdatePatientTable(Patient currepatient) {
 
-            patient1=currepatient;
+            patient1 = currepatient;
         }
 
         ContentValues patientEntries1 = new ContentValues();
@@ -763,16 +753,18 @@ public class IdentificationActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             gatherEntries1();
-            db1.update("patient",patientEntries1,"_id=?",new String[]{String.valueOf(patient1.getId())});
+            db1.update("patient", patientEntries1, "_id=?", new String[]{String.valueOf(patient1.getId())});
 
             db1.close();
 
             return null;
         }
+
         @Override
         public void onCancel(DialogInterface dialog) {
 
         }
+
         @Override
         protected void onPostExecute(Boolean bBoolean) {
             super.onPostExecute(bBoolean);
@@ -811,7 +803,7 @@ public class IdentificationActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_CAMERA) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-             String[] results = HelperMethods.dispatchTakePictureIntent(REQUEST_CAMERA, IdentificationActivity.this);
+                String[] results = HelperMethods.dispatchTakePictureIntent(REQUEST_CAMERA, IdentificationActivity.this);
                 if (results != null) {
                     mPhoto = results[0];
                     mCurrentPhotoPath = results[1];
@@ -828,38 +820,20 @@ public class IdentificationActivity extends AppCompatActivity {
 
     public void generateID() {
         SQLiteDatabase db1 = mDbHelper.getWritableDatabase();
-        String table = "patient";
-        String[] columnsToReturn = {"_id"};
-        String orderBy = "_id";
+        String table = "patient_content";
+        String[] columnsToReturn = {"docid"};
+        String orderBy = "docid";
         final Cursor idCursor = db1.query(table, columnsToReturn, null, null, null, null, orderBy);
         idCursor.moveToLast();
 
         if (idCursor.getCount() > 0) {
-            String lastIDString = idCursor.getString(idCursor.getColumnIndexOrThrow("_id")); //Grab the last patientID
-            Log.d(TAG, lastIDString);
-
-            Integer newInteger = 0;
-            // TODO: Handle case where ID is changed to something else and then changed back
-            // The above will most likely be solved by the automatic assignment of IDs in the future
-            try {
-                if (lastIDString.substring(0, lastIDString.length() - 1).equals(idPreFix)) { // ID hasn't changed
-                    String lastID = lastIDString.substring(idPreFix.length()); //Grab the last integer of the patientID
-//                        Log.d(TAG, String.valueOf(lastID));
-                    newInteger = Integer.valueOf(lastID);
-                }
-            } catch (Exception e) {
-                newInteger = 0; // ID was probably changed
-            } finally {
-                Log.d(TAG, String.valueOf(newInteger));
-                newInteger++; //Increment it by 1
-            }
-
-            patientID = idPreFix + String.valueOf(newInteger); //This patient is assigned the new incremented number
-//                Log.d(TAG, patientID);
+            Integer lastIntegerID = idCursor.getInt(idCursor.getColumnIndexOrThrow("docid"));
+            lastIntegerID++;
+            patientID = idPreFix + String.valueOf(lastIntegerID); //This patient is assigned the new incremented number
             patient.setId(patientID);
         } else {
             patientID = idPreFix + String.valueOf(1); //This patient is assigned the new incremented number
-//                Log.d(TAG, patientID);
+
             patient.setId(patientID);
         }
 
