@@ -77,10 +77,7 @@ public class ImageUploadService extends IntentService {
         localdb.close();
         for (String imagePath : imagePaths) {
             File file = new File(imagePath);
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = false;
-            options.inPreferredConfig = Bitmap.Config.RGB_565;
-            Bitmap bitmap = BitmapFactory.decodeFile(imagePath,options);
+            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
             int endIndex = imagePath.lastIndexOf(File.separator);
             String imageName = "Default.jpg";
             if (endIndex != -1) {
@@ -101,13 +98,14 @@ public class ImageUploadService extends IntentService {
                         .setContentTitle("Image Upload")
                         .setContentText(newText);
                 mNotifyManager.notify(mId, mBuilder.build());
-            } else {
+            }
+            else{
                 String newText = "Person Image posting unsuccessful";
                 mBuilder.setSmallIcon(R.mipmap.ic_launcher)
                         .setContentTitle("Image Upload")
                         .setContentText(newText);
                 mNotifyManager.notify(mId, mBuilder.build());
-                addJobToQueue(intent, imagePath);
+                addJobToQueue(intent,imagePath);
                 Log.d(LOG_TAG, "Person Image Posting Unsuccessful");
             }
         }
@@ -126,7 +124,7 @@ public class ImageUploadService extends IntentService {
         imgupload.saveInBackground();
     }
 
-    private void addJobToQueue(Intent intent, String imagePath) {
+    private void addJobToQueue(Intent intent,String imagePath) {
         if (!intent.hasExtra("queueId")) {
             Log.d(LOG_TAG, "Adding to Queue");
             // Add a new Delayed Job record
