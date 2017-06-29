@@ -23,6 +23,7 @@ import com.parse.ParseObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 
+import io.intelehealth.client.R;
 import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.database.DelayedJobQueueProvider;
 import io.intelehealth.client.objects.WebResponse;
@@ -39,8 +40,9 @@ public class PersonPhotoUploadService extends IntentService {
      * @param name Used to name the worker thread, important only for debugging.
      */
 
-    private String imageName;
     private Bitmap bitmap;
+
+    public PersonPhotoUploadService() {super("PersonPhotoUploadService");}
 
     public PersonPhotoUploadService(String name) {
         super(name);
@@ -62,40 +64,37 @@ public class PersonPhotoUploadService extends IntentService {
         patientId = intent.getStringExtra("patientID");
         String person = intent.getStringExtra("person");
         visitId = intent.getStringExtra("visitID");
-        String classname = intent.getStringExtra("Class");
-        if (classname == null)
-            classname = "Upload";
 
-        //String base64EncodedImage = null;
+        String base64EncodedImage = null;
 
         String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
         String filePath = baseDir + File.separator + "Patient_Images" + File.separator + patientId + File.separator +
                 patientId + ".jpg";
 
         File profile_image = new File(filePath);
-        imageName = profile_image.getName();
-        imageName = imageName.replace('%', '_');
 
         if (profile_image != null) {
             bitmap = BitmapFactory.decodeFile(filePath);
-            uploadImage(classname);
-            //byte[] byteArray = bitmapToByteArray(bitmap);
-            //base64EncodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+           // uploadImage(classname);
+            byte[] byteArray = bitmapToByteArray(bitmap);
+            base64EncodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
         }
 
-        /*if (bitmap!=null){//base64EncodedImage != null) {
-            *//*String photoString =
+        if (bitmap!=null){//base64EncodedImage != null) {
+            String photoString =
                     String.format("{\"person\":\"%s\"," +
                                     "\"base64EncodedImage\":\"%s\"}",
                             person,
-                            base64EncodedImage);*//*
+                            base64EncodedImage);
 
             WebResponse responsePersonImage;
-            //responsePersonImage = HelperMethods.postCommand("personimage", photoString, getApplicationContext());
+            responsePersonImage = HelperMethods.postCommand("personimage", photoString, getApplicationContext());
 
             if (responsePersonImage != null && responsePersonImage.getResponseCode() != 200) {
                 String newText = "Person Image posting unsuccessful";
-                mBuilder.setContentText(newText);
+                mBuilder.setContentText(newText)
+                        .setContentTitle("Profile Image Upload")
+                        .setSmallIcon(R.mipmap.ic_launcher);
                 mNotifyManager.notify(mId, mBuilder.build());
                 addJobToQueue(intent);
                 Log.d(LOG_TAG, "Person Image Posting Unsuccessful");
@@ -105,9 +104,11 @@ public class PersonPhotoUploadService extends IntentService {
                 Log.d(LOG_TAG, "Person Image Posting unsuccessful");
 
             } else {
+                uploadImage(patientId + ".jpg");
                 String newText = "Person Image Posted successfully.";
-                uploadImage();
-                mBuilder.setContentText(newText);
+                mBuilder.setContentText(newText)
+                        .setContentTitle("Profile Image Upload")
+                        .setSmallIcon(R.mipmap.ic_launcher);
                 mNotifyManager.notify(mId, mBuilder.build());
                 if (intent.hasExtra("queueId")) {
                     int queueId = intent.getIntExtra("queueId", -1);
@@ -116,25 +117,18 @@ public class PersonPhotoUploadService extends IntentService {
 
             }
 
-        }*/
+        }
     }
 
-    public void uploadImage(String classname) {
+    public void uploadImage(String imageName) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         byte[] image = stream.toByteArray();
-        ParseFile file = new ParseFile(imageName + ".png", image);
-        ParseObject imgupload = new ParseObject(classname);
+        ParseFile file = new ParseFile(imageName, image);
+        ParseObject imgupload = new ParseObject("Profile");
+        imgupload.put("Image",file);
         imgupload.put("PatientID", patientId);
-        if (!classname.contentEquals("Profile"))
-            imgupload.put("VisitID", visitId);
-        imgupload.put("Image", file);
-        try {
-            imgupload.saveInBackground();
-        } catch (ParseException e) {
-
-        }
-        Toast.makeText(this, "Image Uploaded", Toast.LENGTH_SHORT).show();
+        imgupload.saveInBackground();
     }
 
     private byte[] bitmapToByteArray(Bitmap image) {

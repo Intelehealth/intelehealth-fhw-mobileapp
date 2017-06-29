@@ -15,6 +15,7 @@ import android.widget.ExpandableListView;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
 import io.intelehealth.client.utilities.HelperMethods;
@@ -110,9 +111,14 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                 }
                 adapter.notifyDataSetChanged();
 
+                String imageName = patientID + "_" + visitID + "_" + image_Prefix;
+                String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+                File filePath = new File(baseDir + File.separator + "Patient Images" + File.separator +
+                        patientID + File.separator + visitID + File.separator + imageDir);
+
                 if (!familyHistoryMap.getOption(groupPosition).getOption(childPosition).isTerminal() &&
                         familyHistoryMap.getOption(groupPosition).getOption(childPosition).isSelected()) {
-                    Node.subLevelQuestion(clickedNode, FamilyHistoryActivity.this, adapter);
+                    Node.subLevelQuestion(clickedNode, FamilyHistoryActivity.this, adapter, filePath.toString(), imageName);
                 }
 
                 return false;
@@ -128,13 +134,12 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                     if (clickedNode.getInputType().equals("camera")) {
                         String imageName = patientID + "_" + visitID + "_" + image_Prefix;
                         String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-                        File filePath = new File(baseDir+ File.separator+"Patient Images"+File.separator+
-                                patientID+File.separator+visitID+File.separator+imageDir);
-
+                        File filePath = new File(baseDir + File.separator + "Patient Images" + File.separator +
+                                patientID + File.separator + visitID + File.separator + imageDir);
                         if (!filePath.exists()) {
-                            filePath.mkdir();
+                            filePath.mkdirs();
                         }
-                        Node.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter, null, imageName);
+                        Node.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter, filePath.toString(), imageName);
                     } else {
                         Node.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter, null, null);
                     }
@@ -171,6 +176,14 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                 insertion = insertionList.get(i);
             } else {
                 insertion = insertion + "; " + insertionList.get(i);
+            }
+        }
+
+        List<String> imagePathList = familyHistoryMap.getImagePathList();
+
+        if (imagePathList != null) {
+            for (String imagePath : imagePathList) {
+                updateImageDatabase(imagePath);
             }
         }
 
@@ -221,6 +234,15 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         return localdb.insert("obs", null, complaintEntries);
     }
 
+    private void updateImageDatabase(String imagePath) {
+        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
+        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path) values("
+                +"'" +patientID +"'"+","
+                + visitID + ","
+                + "'"+imagePath +"'"+
+                ")");
+    }
 
     private void updateDatabase(String string) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);

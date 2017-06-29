@@ -34,6 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import io.intelehealth.client.activities.family_history_activity.FamilyHistoryActivity;
 import io.intelehealth.client.utilities.HelperMethods;
@@ -61,7 +62,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
 
 
     /**
@@ -154,6 +154,14 @@ public class PhysicalExamActivity extends AppCompatActivity {
                 if (complaintConfirmed) {
 
                     physicalString = physicalExamMap.generateFindings();
+
+                    List<String> imagePathList = physicalExamMap.getImagePathList();
+
+                    if (imagePathList != null) {
+                        for (String imagePath : imagePathList) {
+                            updateImageDatabase(imagePath);
+                        }
+                    }
 
                     if (intentTag != null && intentTag.equals("edit")) {
                         updateDatabase(physicalString);
@@ -289,27 +297,28 @@ public class PhysicalExamActivity extends AppCompatActivity {
                     }
                     adapter.notifyDataSetChanged();
 
+                    String imageName = patientID + "_" + visitID + "_" + image_Prefix;
+                    String baseDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+                    File filePath = new File(baseDir + File.separator + "Patient Images" + File.separator +
+                            patientID + File.separator + visitID + File.separator + imageDir);
+
                     if (question.getInputType() != null && question.isSelected()) {
 
                         if (question.getInputType().equals("camera")) {
-                            String imageName = patientID + "_" + visitID + "_" + image_Prefix;
-                            String baseDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-                            File filePath = new File(baseDir+ File.separator+"Patient Images"+File.separator+
-                                    patientID+File.separator+visitID+File.separator+imageDir);
-
                             if (!filePath.exists()) {
-                                filePath.mkdir();
+                                boolean res = filePath.mkdirs();
+                                Log.i("RES>",""+filePath+" -> " + res);
                             }
-                            Node.handleQuestion(question,getActivity(), adapter, null, imageName);
+                            Node.handleQuestion(question, getActivity(), adapter, filePath.toString(), imageName);
                         } else {
-                            Node.handleQuestion(question, (Activity) getContext(), adapter,null,null);
+                            Node.handleQuestion(question, (Activity) getContext(), adapter, null, null);
                         }
 
 
                     }
 
                     if (!question.isTerminal() && question.isSelected()) {
-                        Node.subLevelQuestion(question, (Activity) getContext(), adapter);
+                        Node.subLevelQuestion(question, (Activity) getContext(), adapter,filePath.toString(),imageName);
                     }
 
                     return false;
@@ -347,7 +356,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1, exams,patientID,visitID);
+            return PlaceholderFragment.newInstance(position + 1, exams, patientID, visitID);
         }
 
         @Override
@@ -415,6 +424,16 @@ public class PhysicalExamActivity extends AppCompatActivity {
                 args
         );
 
+    }
+
+    private void updateImageDatabase(String imagePath) {
+        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
+        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path) values("
+                +"'" +patientID +"'"+","
+                + visitID + ","
+                + "'"+imagePath +"'"+
+                ")");
     }
 
     @Override
