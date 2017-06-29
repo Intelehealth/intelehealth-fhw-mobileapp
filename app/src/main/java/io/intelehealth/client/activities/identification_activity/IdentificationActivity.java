@@ -161,7 +161,10 @@ public class IdentificationActivity extends AppCompatActivity {
         mCountry.setAdapter(countryAdapter);
 
         // generate patientid only if there is no intent for Identification activity
+
         if (patientID_edit == null) {
+
+
             generateID();
         }
 
@@ -186,7 +189,9 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
 
+
         if (patientID_edit != null) {
+
             // setting country accordig database
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
         }
@@ -207,7 +212,9 @@ public class IdentificationActivity extends AppCompatActivity {
                         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mState.setAdapter(stateAdapter);
                         // setting state according database when user clicks edit details
+
                         if (patientID_edit != null) {
+
                             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getStateProvince())));
                         }
 
@@ -216,7 +223,9 @@ public class IdentificationActivity extends AppCompatActivity {
                                 R.array.states_us, android.R.layout.simple_spinner_item);
                         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mState.setAdapter(stateAdapter);
+
                         if (patientID_edit != null) {
+
                             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getStateProvince())));
                         }
 
@@ -827,31 +836,13 @@ public class IdentificationActivity extends AppCompatActivity {
         idCursor.moveToLast();
 
         if (idCursor.getCount() > 0) {
-            // String lastIDString = idCursor.getString(idCursor.getColumnIndexOrThrow("_id")); //Grab the last patientID
-            // Log.d(TAG, lastIDString);
-
             Integer lastIntegerID = idCursor.getInt(idCursor.getColumnIndexOrThrow("docid"));
-            // TODO: Handle case where ID is changed to something else and then changed back
-            // The above will most likely be solved by the automatic assignment of IDs in the future
-          /*  try {
-                if (lastIDString.substring(0, lastIDString.length() - 1).equals(idPreFix)) { // ID hasn't changed
-                    String lastID = lastIDString.substring(idPreFix.length()); //Grab the last integer of the patientID
-//                        Log.d(TAG, String.valueOf(lastID));
-                    newInteger = Integer.valueOf(lastID);
-                }
-            } catch (Exception e) {
-                newInteger = 0; // ID was probably changed
-            } finally {
-                Log.d(TAG, String.valueOf(newInteger));
-                newInteger++; //Increment it by 1
-            }*/
             lastIntegerID++;
             patientID = idPreFix + String.valueOf(lastIntegerID); //This patient is assigned the new incremented number
-//                Log.d(TAG, patientID);
             patient.setId(patientID);
         } else {
             patientID = idPreFix + String.valueOf(1); //This patient is assigned the new incremented number
-//                Log.d(TAG, patientID);
+
             patient.setId(patientID);
         }
 
