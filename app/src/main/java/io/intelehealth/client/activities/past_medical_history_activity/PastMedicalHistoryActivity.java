@@ -109,11 +109,11 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else {
 
-                    if(patientHistoryMap.anySubSelected()){
+                  //  if(patientHistoryMap.anySubSelected()){
                         patientHistory = patientHistoryMap.generateLanguage();
 
                         insertDb(patientHistory);
-                    }
+                   // }
 
                     Intent intent = new Intent(PastMedicalHistoryActivity.this, FamilyHistoryActivity.class);
                     intent.putExtra("patientID", patientID);
@@ -217,7 +217,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
         String[] args = {patientID, visitID, String.valueOf(conceptID)};
 
         localdb.update(
-                "visit",
+                "obs",
                 contentValues,
                 selection,
                 args
