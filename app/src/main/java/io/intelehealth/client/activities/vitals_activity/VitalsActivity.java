@@ -51,6 +51,16 @@ public class VitalsActivity extends AppCompatActivity {
 
     String maxh= "272";
     String maxw= "150";
+    String maxbpsys= "160";
+    String minbpsys= "50";
+    String maxbpdys= "120";
+    String minbpdys= "30";
+    String maxpulse ="150";
+    String minpulse= "30";
+    String maxte ="120";
+    String minte ="80";
+    String maxspo2 ="100";
+    String minspo2 ="1";
 
 
     ArrayList<String> physicalExams;
@@ -298,11 +308,11 @@ public class VitalsActivity extends AppCompatActivity {
         ArrayList<EditText> values = new ArrayList<EditText>();
         values.add(mHeight);
         values.add(mWeight);
-//        values.add(mPulse);
-//        values.add(mBpSys);
-//        values.add(mBpDia);
-//        values.add(mTemperature);
-//        values.add(mSpo2);
+        values.add(mPulse);
+        values.add(mBpSys);
+        values.add(mBpDia);
+        values.add(mTemperature);
+        values.add(mSpo2);
 
         // Check to see if values were inputted.
         for (int i = 0; i < values.size(); i++) {
@@ -314,7 +324,7 @@ public class VitalsActivity extends AppCompatActivity {
                         et.setError("Height should be between 0 and 272cm");
                         focusView = et;
                         cancel = true;
-                break;
+                        break;
                     } else {
                         cancel = false;
                     }
@@ -322,7 +332,7 @@ public class VitalsActivity extends AppCompatActivity {
                 } else {
                     cancel = false;
                 }
-            } else {
+            }else if(i==1) {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty()) {
@@ -330,7 +340,7 @@ public class VitalsActivity extends AppCompatActivity {
                         et.setError("Weight should be less than 150kg");
                         focusView = et;
                         cancel = true;
-                break;
+                        break;
                     } else {
                         cancel = false;
                     }
@@ -339,6 +349,100 @@ public class VitalsActivity extends AppCompatActivity {
                     cancel = false;
                 }
 
+            } else if(i==2)
+            {
+                EditText et = values.get(i);
+                String abc2 = et.getText().toString().trim();
+                if (abc2 != null && !abc2.isEmpty() && (!abc2.equals("0.0"))) {
+                    if ((Double.parseDouble(abc2) > Double.parseDouble(maxpulse)) ||
+                            (Double.parseDouble(abc2) < Double.parseDouble(minpulse))) {
+                        et.setError("Pulse should be in between 30 and 150");
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+//       }
+                } else {
+                    cancel = false;
+                }
+
+            }else if (i==3)
+            {
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(maxbpsys)) ||
+                            (Double.parseDouble(abc1) < Double.parseDouble(minbpsys))) {
+                        et.setError("Systolic pressure should be in between 50 ad 160");
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+//       }
+                } else {
+                    cancel = false;
+                }
+
+            }else if (i==4)
+            {
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(maxbpdys)) ||
+                            (Double.parseDouble(abc1) < Double.parseDouble(minbpdys))) {
+                        et.setError("Diastolic pressure should be in between 30 and 120");
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+//       }
+                } else {
+                    cancel = false;
+                }
+
+            }else if (i==5)
+            {
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(maxte)) ||
+                            (Double.parseDouble(abc1) < Double.parseDouble(minte))) {
+                        et.setError("Temperature should be in between 80 and 120");
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+//       }
+                } else {
+                    cancel = false;
+                }
+            }
+            else
+            {
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(maxspo2)) ||
+                    (Double.parseDouble(abc1) < Double.parseDouble(minspo2))) {
+                        et.setError("SpO2 should be in between 1 and 100");
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+//       }
+                } else {
+                    cancel = false;
+                }
             }
         }
 
