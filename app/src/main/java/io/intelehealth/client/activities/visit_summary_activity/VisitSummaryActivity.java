@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,6 +15,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
@@ -200,6 +202,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+
+
       callBroadcastReceiver();
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -342,6 +346,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         patHistory.setValue(medHistory);
         patHistView.setText(patHistory.getValue());
         physFindingsView.setText(patHistory.getValue());
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor e = sharedPreferences.edit();
 
 
         editVitals.setOnClickListener(new View.OnClickListener() {
@@ -682,6 +688,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             alertDialog.show();
 
         } else {
+            // when VisitSummary has been uploaded to doctor
+
             Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
             serviceIntent.putExtra("serviceCall", "endVisit");
             serviceIntent.putExtra("patientID", patientID);

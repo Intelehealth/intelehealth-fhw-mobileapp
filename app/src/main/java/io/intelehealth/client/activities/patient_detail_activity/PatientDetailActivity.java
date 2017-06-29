@@ -3,6 +3,7 @@ package io.intelehealth.client.activities.patient_detail_activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -11,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
@@ -22,6 +24,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,13 +37,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import io.intelehealth.client.activities.family_history_activity.FamilyHistoryActivity;
 import io.intelehealth.client.activities.identification_activity.IdentificationActivity;
+import io.intelehealth.client.activities.past_medical_history_activity.PastMedicalHistoryActivity;
 import io.intelehealth.client.utilities.HelperMethods;
 
 import io.intelehealth.client.R;
@@ -72,7 +78,9 @@ public class PatientDetailActivity extends AppCompatActivity {
     Button editbtn;
     Button newVisit;
     LinearLayout previousVisitsList;
-
+    SharedPreferences.Editor e;
+    SharedPreferences sharedPreferences;
+    boolean returning = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +126,54 @@ public class PatientDetailActivity extends AppCompatActivity {
         newVisit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // before starting, we determine if it is new visit for a returning patient
+                // extract both FH and PMH
+                LocalRecordsDatabaseHelper mDatabaseHelper = new LocalRecordsDatabaseHelper(PatientDetailActivity.this);
+                SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
+                 sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                e =sharedPreferences.edit();
+
+                String phistory=""; String fhistory="";
+                String[] cols = {"value"};
+                Cursor cursor = sqLiteDatabase.query("obs",cols,"patient_id=? and concept_id=?",// querying for PMH
+                        new String[] { patient.getId(),"163187"},
+                       null,null,null);
+
+                if(cursor.moveToFirst())
+                {
+                    // rows present
+                    do {
+                        phistory = phistory + cursor.getString(0);
+                       }
+                    while (cursor.moveToNext());
+                    returning = true;
+                    e.putString("phistory",phistory);
+                    e.putBoolean("returning",returning);
+                    e.commit();
+                }
+                cursor.close();
+
+                Cursor cursor1 = sqLiteDatabase.query("obs",cols,"patient_id=? and concept_id=?",// querying for FH
+                        new String[] { patient.getId(),"163188"},
+                        null,null,null);
+                if(cursor1.moveToFirst())
+                {
+                    // rows present
+                    do {
+                        fhistory = fhistory + cursor1.getString(0);
+                    }
+                    while (cursor1.moveToNext());
+                    returning = true;
+                    e.putString("fhistory",fhistory);
+                    e.putBoolean("returning",returning);
+                    e.commit();
+                }
+                cursor1.close();
+
+
+                Toast.makeText(PatientDetailActivity.this,"PMH: "+phistory,Toast.LENGTH_SHORT).show();
+                Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
+
                 Intent intent2 = new Intent(PatientDetailActivity.this, ComplaintNodeActivity.class);
                 String fullName = patient.getFirstName() + " " + patient.getLastName();
                 intent2.putExtra("patientID", patientID);
@@ -512,6 +568,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         TextView textView = new TextView(this);
         String visitString = String.format("Seen on %s.", datetime);
         if (end_datetime == null || end_datetime.isEmpty()) {
+            // visit has not yet ended
             SpannableString spannableString = new SpannableString(visitString + " Active");
             Object greenSpan = new BackgroundColorSpan(Color.GREEN);
             Object underlineSpan = new UnderlineSpan();
@@ -530,9 +587,12 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
 
         } else {
+            // when visit has ended
             textView.setText(visitString);
             past_visit = true;
             textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+
         }
 
         textView.setTextSize(18);

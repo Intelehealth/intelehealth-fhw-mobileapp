@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import io.intelehealth.client.R;
+import io.intelehealth.client.activities.family_history_activity.FamilyHistoryActivity;
+import io.intelehealth.client.activities.past_medical_history_activity.PastMedicalHistoryActivity;
 import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
 import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
@@ -147,7 +149,8 @@ public class VitalsActivity extends AppCompatActivity {
                 validateTable();
             }
         });
-    }
+
+       }
 
     public void loadPrevious() {
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
@@ -268,7 +271,7 @@ public class VitalsActivity extends AppCompatActivity {
             insertDb(results.getBpdia(), 5086);
             insertDb(results.getTemperature(), 163202);
             insertDb(results.getSpo2(), 5092);
-            Intent intent = new Intent(VitalsActivity.this, PhysicalExamActivity.class);
+            Intent intent = new Intent(VitalsActivity.this, VisitSummaryActivity.class); // earlier physicalexamactivity
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);
             intent.putExtra("state", state);
