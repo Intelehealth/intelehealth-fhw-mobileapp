@@ -225,7 +225,7 @@ public class SetupActivity extends AppCompatActivity {
 
         //INITIALIZE PARSE CONFIGS
         Parse.initialize(new Parse.Configuration.Builder(this)
-                .applicationId("app")
+                .applicationId(HelperMethods.PARSE_APP_ID)
                 .server(HelperMethods.PARSE_SERVER_URL)
                 .build()
         );
