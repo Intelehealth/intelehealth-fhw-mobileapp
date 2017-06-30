@@ -404,7 +404,7 @@ public class VitalsActivity extends AppCompatActivity {
         String[] args = {patientID, visitID, String.valueOf(CONCEPT_ID)};
 
         localdb.update(
-                "visit",
+                "obs",
                 contentValues,
                 selection,
                 args

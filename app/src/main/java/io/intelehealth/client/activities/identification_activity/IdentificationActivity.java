@@ -716,7 +716,9 @@ public class IdentificationActivity extends AppCompatActivity {
             intent2.putExtra("patientID", patientID);
             intent2.putExtra("name", fullName);
             intent2.putExtra("tag", "new");
+            intent2.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent2);
+            finish();
         }
     }
 
@@ -774,8 +776,9 @@ public class IdentificationActivity extends AppCompatActivity {
             intent3.putExtra("patientID", patientID1);
             intent3.putExtra("name", fullName);
             intent3.putExtra("tag", "new");
-
+            intent3.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent3);
+            finish();
         }
     }
 
