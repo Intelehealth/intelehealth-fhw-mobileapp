@@ -372,7 +372,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
         String[] args = {patientID, visitID, String.valueOf(conceptID)};
 
         localdb.update(
-                "visit",
+                "obs",
                 contentValues,
                 selection,
                 args
@@ -392,7 +392,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
         questionListView.setAdapter(adapter);
         questionListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
         questionListView.expandGroup(0);
-        setTitle(patientName + ": " + currentNode.getText());
+        setTitle(patientName + ": " + currentNode.findDisplay());
     }
 
     //Dialog Alert forcing user to answer all questions.

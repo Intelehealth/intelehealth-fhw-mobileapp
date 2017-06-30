@@ -256,7 +256,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         String[] args = {patientID, visitID, String.valueOf(conceptID)};
 
         localdb.update(
-                "visit",
+                "obs",
                 contentValues,
                 selection,
                 args

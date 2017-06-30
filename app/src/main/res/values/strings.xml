@@ -118,7 +118,7 @@
     <string name="table_hw">Body Measurements</string>
     <string name="table_height">Height (cm)</string>
     <string name="table_weight">Weight (kg)</string>
-    <string name="table_bmi">BMI (click to calculate)</string>
+    <string name="table_bmi">BMI </string>
     <string name="table_pulse">Pulse (bpm)</string>
     <string name="table_bp">Vital Signs</string>
     <string name="table_bpsys">Systolic Pressure</string>

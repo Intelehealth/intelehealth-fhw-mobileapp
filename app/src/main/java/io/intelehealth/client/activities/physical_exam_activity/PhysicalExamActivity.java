@@ -117,6 +117,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
             Log.d(LOG_TAG, "No additional exams were triggered");
         } else {
             Log.d(LOG_TAG, selectedExamsList.toString());
+          //  for(String string:selectedExamsList) Log.d(LOG_TAG,string);
         }
         physicalExamMap = new PhysicalExam(HelperMethods.encodeJSON(this, mFileName), selectedExamsList);
 
@@ -418,7 +419,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
         String[] args = {patientID, visitID, String.valueOf(conceptID)};
 
         localdb.update(
-                "visit",
+                "obs",
                 contentValues,
                 selection,
                 args
