@@ -3,6 +3,7 @@ package io.intelehealth.client.activities.setup_activity;
 import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,12 +22,14 @@ import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -100,6 +103,9 @@ public class SetupActivity extends AppCompatActivity {
     private static final int PERMISSION_ALL = 1;
     public File base_dir;
     public String[] FILES;
+
+    AlertDialog.Builder dialog;
+    String key = null;
 
 
     @Override
@@ -225,18 +231,15 @@ public class SetupActivity extends AppCompatActivity {
 
         //INITIALIZE PARSE CONFIGS
         Parse.initialize(new Parse.Configuration.Builder(this)
-                .applicationId("app")
+                .applicationId(HelperMethods.PARSE_APP_ID)
                 .server(HelperMethods.PARSE_SERVER_URL)
                 .build()
         );
 
-        //DOWNLOAD MIND MAP FILE LIST
-        downloadFilesInfo();
-
     }
 
     //DOWNLOAD ALL MIND MAPS
-    private void downloadMindMaps(){
+    private void downloadMindMaps() {
         base_dir = new File(getFilesDir().getAbsolutePath(), HelperMethods.JSON_FOLDER);
         if (!base_dir.exists())
             base_dir.mkdirs();
@@ -259,7 +262,7 @@ public class SetupActivity extends AppCompatActivity {
                                 if (e == null) {
                                     String tmp = new String(data);
                                     String files[] = tmp.split("\n");
-                                    Log.i("FLEN",""+files.length);
+                                    Log.i("FLEN", "" + files.length);
                                     FILES = new String[files.length];
                                     FILES = files;
                                     downloadMindMaps();
@@ -584,6 +587,70 @@ public class SetupActivity extends AppCompatActivity {
             list.add(locationList.get(i).getDisplay());
         }
         return list;
+    }
+
+    public void onRadioClick(View v) {
+        RadioButton r1 = (RadioButton) findViewById(R.id.demoMindmap);
+        RadioButton r2 = (RadioButton) findViewById(R.id.downloadMindmap);
+
+        boolean checked = ((RadioButton) v).isChecked();
+        switch (v.getId()) {
+            case R.id.demoMindmap:
+                if (checked) {
+                    r2.setChecked(false);
+                }
+                break;
+
+            case R.id.downloadMindmap:
+                if (checked) {
+                    r1.setChecked(false);
+
+                    dialog = new AlertDialog.Builder(this);
+                    LayoutInflater li = LayoutInflater.from(this);
+                    View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
+                    dialog.setTitle("Enter License Key")
+                            .setView(promptsView)
+
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Dialog d = (Dialog) dialog;
+
+                                    EditText text = (EditText) d.findViewById(R.id.licensekey);
+                                    key = text.getText().toString();
+                                    //Toast.makeText(SetupActivity.this, "" + key, Toast.LENGTH_SHORT).show();
+                                    if (keyVerified(key)) {
+                                        // create a shared pref to store the key
+                                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                        // SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("pref",MODE_PRIVATE);
+
+                                        //DOWNLOAD MIND MAP FILE LIST
+                                        downloadFilesInfo();
+
+                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                        editor.putString("licensekey", key);
+                                        editor.commit();
+                                    }
+                                }
+                            })
+
+                            .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    dialog.create().show();
+
+
+                }
+                break;
+        }
+    }
+
+    private boolean keyVerified(String key) {
+        //TODO: Verify License Key
+        return true;
     }
 
 

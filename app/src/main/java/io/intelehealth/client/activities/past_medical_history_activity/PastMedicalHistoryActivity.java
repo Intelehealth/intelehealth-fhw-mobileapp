@@ -83,6 +83,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
@@ -108,11 +109,11 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else {
 
-                    if(patientHistoryMap.anySubSelected()){
+                  //  if(patientHistoryMap.anySubSelected()){
                         patientHistory = patientHistoryMap.generateLanguage();
 
                         insertDb(patientHistory);
-                    }
+                   // }
 
                     Intent intent = new Intent(PastMedicalHistoryActivity.this, FamilyHistoryActivity.class);
                     intent.putExtra("patientID", patientID);
@@ -126,7 +127,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
             }
         });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         patientHistoryMap = new Node(HelperMethods.encodeJSON(this, mFileName)); //Load the patient history mind map
         historyListView = (ExpandableListView) findViewById(R.id.patient_history_expandable_list_view);
@@ -217,7 +217,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
         String[] args = {patientID, visitID, String.valueOf(conceptID)};
 
         localdb.update(
-                "visit",
+                "obs",
                 contentValues,
                 selection,
                 args
@@ -236,6 +236,10 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                 patientHistoryMap.displayImage(this);
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }
 

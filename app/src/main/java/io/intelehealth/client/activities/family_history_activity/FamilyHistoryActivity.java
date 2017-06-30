@@ -14,9 +14,9 @@ import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
 
+import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
 import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.R;
-import io.intelehealth.client.activities.table_exam_activity.TableExamActivity;
 import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
 import io.intelehealth.client.activities.custom_expandable_list_adapter.CustomExpandableListAdapter;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
@@ -86,7 +86,6 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                 onFabClick();
             }
         });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         familyHistoryMap = new Node(HelperMethods.encodeJSON(this, mFileName)); //Load the family history mind map
         familyListView = (ExpandableListView) findViewById(R.id.family_history_expandable_list_view);
@@ -171,7 +170,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         } else {
 
             insertDb(insertion);
-            Intent intent = new Intent(FamilyHistoryActivity.this, TableExamActivity.class);
+            Intent intent = new Intent(FamilyHistoryActivity.this, VitalsActivity.class);
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);
             intent.putExtra("state", state);
@@ -218,12 +217,16 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         String[] args = {patientID, visitID, String.valueOf(conceptID)};
 
         localdb.update(
-                "visit",
+                "obs",
                 contentValues,
                 selection,
                 args
         );
 
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 
 }

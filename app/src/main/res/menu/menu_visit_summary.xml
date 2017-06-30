@@ -6,7 +6,7 @@
 
     <item
         android:id="@+id/summary_print"
-        android:orderInCategory="100"
+        android:orderInCategory="200"
         app:showAsAction="never"
         android:title="@string/action_print">
 
@@ -14,12 +14,19 @@
 
     <item
         android:id="@+id/summary_endVisit"
-        android:orderInCategory="200"
+        android:orderInCategory="300"
         app:showAsAction="never"
         android:title="End Visit">
 
     </item>
 
+    <item
+        android:id="@+id/summary_home"
+        android:orderInCategory="400"
+        app:showAsAction="never"
+        android:title="@string/action_home">
+
+    </item>
 
     <item
         android:id="@+id/internet_icon"

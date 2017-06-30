@@ -82,7 +82,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         TextView textView = (TextView) convertView.findViewById(R.id.expandable_list_group);
         ImageView imageView = (ImageView) convertView.findViewById(R.id.expandable_list_group_image);
 
-        textView.setText(node.getText());
+        textView.setText(node.findDisplay());
         textView.setTypeface(Typeface.DEFAULT_BOLD);
 
         switch (callingClass) {
@@ -110,7 +110,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         }
         final Node node = (Node) getChild(groupPosition, childPosition);
         final TextView textView = (TextView) convertView.findViewById(R.id.expandable_list_item);
-        textView.setText(node.getText());
+        textView.setText(node.findDisplay());
 
         ImageView imageView = (ImageView) convertView.findViewById(R.id.expandable_list_item_image);
 

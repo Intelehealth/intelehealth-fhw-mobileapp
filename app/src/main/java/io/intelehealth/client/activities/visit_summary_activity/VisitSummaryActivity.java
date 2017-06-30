@@ -19,6 +19,7 @@ import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NavUtils;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
@@ -50,6 +51,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
 import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.complaint_node_activity.ComplaintNodeActivity;
@@ -57,7 +59,6 @@ import io.intelehealth.client.activities.family_history_activity.FamilyHistoryAc
 import io.intelehealth.client.activities.home_activity.HomeActivity;
 import io.intelehealth.client.activities.past_medical_history_activity.PastMedicalHistoryActivity;
 import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity;
-import io.intelehealth.client.activities.table_exam_activity.TableExamActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Obs;
 import io.intelehealth.client.objects.Patient;
@@ -104,6 +105,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     Obs complaint = new Obs();
     Obs famHistory = new Obs();
     Obs patHistory = new Obs();
+    Obs phyExam = new Obs();
     Obs height = new Obs();
     Obs weight = new Obs();
     Obs pulse = new Obs();
@@ -182,9 +184,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-//            case R.id.summary_home:
-//                endVisit();
-//                return true;
+            case R.id.summary_home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
             case R.id.summary_print:
                 doWebViewPrint();
                 return true;
@@ -234,7 +236,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_visit_summary);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         mLayout = (LinearLayout) findViewById(R.id.summary_layout);
         context = getApplicationContext();
 
@@ -340,7 +342,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         patHistory.setValue(medHistory);
         patHistView.setText(patHistory.getValue());
-        physFindingsView.setText(patHistory.getValue());
+        physFindingsView.setText(phyExam.getValue());
 
 
         editVitals.setOnClickListener(new View.OnClickListener() {
@@ -358,7 +360,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 vitalsDialog.setPositiveButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent1 = new Intent(VisitSummaryActivity.this, TableExamActivity.class);
+                        Intent intent1 = new Intent(VisitSummaryActivity.this, VitalsActivity.class);
                         intent1.putExtra("patientID", patientID);
                         intent1.putExtra("visitID", visitID);
                         intent1.putExtra("name", patientName);
@@ -383,7 +385,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final AlertDialog.Builder famHistDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
-                famHistDialog.setTitle(getString(R.string.visit_summary_complaint));
+                famHistDialog.setTitle(getString(R.string.visit_summary_family_history));
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 famHistDialog.setView(convertView);
@@ -421,22 +423,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 });
 
-                famHistDialog.setNeutralButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
+                famHistDialog.setNeutralButton(getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                famHistDialog.setNegativeButton(R.string.generic_erase_redo, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
                         Intent intent1 = new Intent(VisitSummaryActivity.this, FamilyHistoryActivity.class);
                         intent1.putExtra("patientID", patientID);
                         intent1.putExtra("visitID", visitID);
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("tag", "edit");
                         startActivity(intent1);
-                        dialogInterface.dismiss();
-                    }
-                });
-
-                famHistDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
                     }
                 });
@@ -476,7 +479,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 dialog.dismiss();
                             }
                         });
-                        textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                        textInput.setNeutralButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
@@ -487,7 +490,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 });
 
-                complaintDialog.setNeutralButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
+                complaintDialog.setNegativeButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Intent intent1 = new Intent(VisitSummaryActivity.this, ComplaintNodeActivity.class);
@@ -500,7 +503,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 });
 
-                complaintDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                complaintDialog.setNeutralButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
@@ -521,7 +524,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 physicalDialog.setView(convertView);
 
                 final TextView physicalText = (TextView) convertView.findViewById(R.id.textView_entry);
-                physicalText.setText(patHistory.getValue());
+                physicalText.setText(phyExam.getValue());
                 physicalText.setEnabled(false);
 
                 physicalDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -530,15 +533,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         final AlertDialog.Builder textInput = new AlertDialog.Builder(VisitSummaryActivity.this);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
-                        dialogEditText.setText(patHistory.getValue());
+                        dialogEditText.setText(phyExam.getValue());
                         textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                patHistory.setValue(dialogEditText.getText().toString());
-                                physicalText.setText(patHistory.getValue());
-                                physFindingsView.setText(patHistory.getValue());
-                                updateDatabase(patHistory.getValue(), 163189);
+                                phyExam.setValue(dialogEditText.getText().toString());
+                                physicalText.setText(phyExam.getValue());
+                                physFindingsView.setText(phyExam.getValue());
+                                updateDatabase(phyExam.getValue(), 163189);
                                 dialog.dismiss();
                             }
                         });
@@ -553,7 +556,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 });
 
-                physicalDialog.setNeutralButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
+                physicalDialog.setNegativeButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Intent intent1 = new Intent(VisitSummaryActivity.this, PhysicalExamActivity.class);
@@ -567,7 +570,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 });
 
-                physicalDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                physicalDialog.setNeutralButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
@@ -582,7 +585,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final AlertDialog.Builder historyDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
-                historyDialog.setTitle(getString(R.string.visit_summary_on_examination));
+                historyDialog.setTitle(getString(R.string.visit_summary_medical_history));
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 historyDialog.setView(convertView);
@@ -620,7 +623,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 });
 
-                historyDialog.setNeutralButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
+                historyDialog.setNegativeButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Intent intent1 = new Intent(VisitSummaryActivity.this, PastMedicalHistoryActivity.class);
@@ -633,7 +636,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 });
 
-                historyDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                historyDialog.setNeutralButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
@@ -756,7 +759,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             medHistCursor.moveToLast();
             String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
             patHistory.setValue(medHistText);
-            if (!medHistText.isEmpty()) {
+            if (medHistText!=null && !medHistText.isEmpty()) {
                 medHistory = patHistory.getValue();
                 medHistory = medHistory.replace("\"", "");
                 medHistory = medHistory.replace("\n", "");
@@ -793,7 +796,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 complaint.setValue(value);
                 break;
             case 163189: //Physical Examination
-                patHistory.setValue(value);
+                phyExam.setValue(value);
                 break;
             case 5090: //Height
                 height.setValue(value);

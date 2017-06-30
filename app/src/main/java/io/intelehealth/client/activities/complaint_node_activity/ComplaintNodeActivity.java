@@ -2,7 +2,9 @@ package io.intelehealth.client.activities.complaint_node_activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -84,7 +86,6 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 confirmComplaints();
             }
         });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         ListView complaintList = (ListView) findViewById(R.id.complaint_list_view);
@@ -94,25 +95,39 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         }
 
         complaints = new ArrayList<>();
-        /*String[] fileNames = new String[0];
-        try {
-            fileNames = getApplicationContext().getAssets().list("engines");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-        File base_dir = new File(getFilesDir().getAbsolutePath() + File.separator + HelperMethods.JSON_FOLDER);
-        File files[] = base_dir.listFiles();
-        for (File file : files) {
-            //String fileLocation = "engines/" + name;
-            JSONObject currentFile = null; //HelperMethods.encodeJSON(this, fileLocation);
+
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        boolean hasLicense = false;
+        if (sharedPreferences.contains("licensekey"))
+            hasLicense = true;
+        JSONObject currentFile = null;
+        if (hasLicense) {
+            File base_dir = new File(getFilesDir().getAbsolutePath() + File.separator + HelperMethods.JSON_FOLDER);
+            File files[] = base_dir.listFiles();
+            for (File file : files) {
+                try {
+                    currentFile = new JSONObject(HelperMethods.readFile(file.getName(), this));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Log.i("CNA", currentFile.toString());
+                Node currentNode = new Node(currentFile);
+                complaints.add(currentNode);
+            }
+        } else {
+            String[] fileNames = new String[0];
             try {
-                currentFile = new JSONObject(HelperMethods.readFile(file.getName(),this));
-            } catch (JSONException e) {
+                fileNames = getApplicationContext().getAssets().list("engines");
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-            Log.i("CNA",currentFile.toString());
-            Node currentNode = new Node(currentFile);
-            complaints.add(currentNode);
+            for (String name : fileNames) {
+                String fileLocation = "engines/" + name;
+                currentFile = HelperMethods.encodeJSON(this, fileLocation);
+                Node currentNode = new Node(currentFile);
+                complaints.add(currentNode);
+            }
         }
 
         final CustomArrayAdapter listAdapter = new CustomArrayAdapter(ComplaintNodeActivity.this,
@@ -141,9 +156,12 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     public void confirmComplaints() {
 
         final ArrayList<String> selection = new ArrayList<>();
+        final ArrayList<String> displaySelection = new ArrayList<>();
+
         for (Node node : complaints) {
             if (node.isSelected()) {
                 selection.add(node.getText());
+                displaySelection.add(node.findDisplay());
             }
         }
 
@@ -166,7 +184,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             View convertView = (View) inflater.inflate(R.layout.list_dialog_complaint, null);
             alertDialogBuilder.setView(convertView);
             ListView listView = (ListView) convertView.findViewById(R.id.complaint_dialog_list_view);
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, selection);
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, displaySelection);
             listView.setAdapter(arrayAdapter);
             alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                 @Override
@@ -197,4 +215,8 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
 }
