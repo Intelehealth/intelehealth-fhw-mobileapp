@@ -107,6 +107,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     Obs complaint = new Obs();
     Obs famHistory = new Obs();
     Obs patHistory = new Obs();
+    Obs phyExam = new Obs();
     Obs height = new Obs();
     Obs weight = new Obs();
     Obs pulse = new Obs();
@@ -345,16 +346,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         patHistory.setValue(medHistory);
         patHistView.setText(patHistory.getValue());
-        physFindingsView.setText(patHistory.getValue());
+
+        physFindingsView.setText(phyExam.getValue());
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor e = sharedPreferences.edit();
+
 
 
         editVitals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final AlertDialog.Builder vitalsDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
-                vitalsDialog.setTitle(getString(R.string.visit_summary_complaint));
+                vitalsDialog.setTitle(getString(R.string.visit_summary_vitals));
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 vitalsDialog.setView(convertView);
@@ -390,7 +393,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final AlertDialog.Builder famHistDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
-                famHistDialog.setTitle(getString(R.string.visit_summary_complaint));
+                famHistDialog.setTitle(getString(R.string.visit_summary_family_history));
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 famHistDialog.setView(convertView);
@@ -529,7 +532,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 physicalDialog.setView(convertView);
 
                 final TextView physicalText = (TextView) convertView.findViewById(R.id.textView_entry);
-                physicalText.setText(patHistory.getValue());
+                physicalText.setText(phyExam.getValue());
                 physicalText.setEnabled(false);
 
                 physicalDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -538,15 +541,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         final AlertDialog.Builder textInput = new AlertDialog.Builder(VisitSummaryActivity.this);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
-                        dialogEditText.setText(patHistory.getValue());
+                        dialogEditText.setText(phyExam.getValue());
                         textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                patHistory.setValue(dialogEditText.getText().toString());
-                                physicalText.setText(patHistory.getValue());
-                                physFindingsView.setText(patHistory.getValue());
-                                updateDatabase(patHistory.getValue(), 163189);
+                                phyExam.setValue(dialogEditText.getText().toString());
+                                physicalText.setText(phyExam.getValue());
+                                physFindingsView.setText(phyExam.getValue());
+                                updateDatabase(phyExam.getValue(), 163189);
                                 dialog.dismiss();
                             }
                         });
@@ -590,7 +593,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final AlertDialog.Builder historyDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
-                historyDialog.setTitle(getString(R.string.visit_summary_on_examination));
+                historyDialog.setTitle(getString(R.string.visit_summary_medical_history));
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 historyDialog.setView(convertView);
@@ -766,7 +769,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             medHistCursor.moveToLast();
             String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
             patHistory.setValue(medHistText);
-            if (!medHistText.isEmpty()) {
+            if (medHistText!=null && !medHistText.isEmpty()) {
                 medHistory = patHistory.getValue();
                 medHistory = medHistory.replace("\"", "");
                 medHistory = medHistory.replace("\n", "");
@@ -803,7 +806,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 complaint.setValue(value);
                 break;
             case 163189: //Physical Examination
-                patHistory.setValue(value);
+                phyExam.setValue(value);
                 break;
             case 5090: //Height
                 height.setValue(value);
@@ -1194,11 +1197,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         ContentValues contentValues = new ContentValues();
         contentValues.put("value", string);
 
-        String selection = "patient_id = ? AND visit_id = ? concept_id = ?";
+        String selection = "patient_id = ? AND visit_id = ? AND concept_id = ?";
         String[] args = {patientID, visitID, String.valueOf(conceptID)};
 
         localdb.update(
-                "visit",
+                "obs",
                 contentValues,
                 selection,
                 args

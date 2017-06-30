@@ -13,7 +13,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -39,12 +41,15 @@ public class VitalsActivity extends AppCompatActivity {
     EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mSpo2, mBMI;
     Long obsID;
     final String LOG_TAG = "VitalsActivity";
+    int flag_height =0, flag_weight=0;
 
     String patientID = "1";
     String visitID;
     String state;
     String patientName;
     String intentTag;
+    String heightvalue;
+    String weightvalue;
 
     ArrayList<String> physicalExams;
 
@@ -98,7 +103,7 @@ public class VitalsActivity extends AppCompatActivity {
         }
 
         //BMI calculation is done in metric units
-        mBMI.setOnClickListener(new View.OnClickListener() {
+      /* mBMI.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -130,6 +135,60 @@ public class VitalsActivity extends AppCompatActivity {
             }
         });
 
+        */
+
+        mHeight.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {  }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0)
+                {
+                    mBMI.getText().clear();
+                    flag_height =1;
+                    heightvalue = mHeight.getText().toString();
+
+                }
+                else
+                {
+                    flag_height=0;
+                    mBMI.getText().clear();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { calculateBMI();}
+        });
+
+        mWeight.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {  }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0)
+                {
+                    mBMI.getText().clear();
+                    flag_weight =1;
+                    weightvalue = mWeight.getText().toString();
+
+                }
+                else
+                {
+                    flag_weight=0;
+                    mBMI.getText().clear();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                calculateBMI(); }
+        });
+
+
+
         mSpo2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -151,6 +210,39 @@ public class VitalsActivity extends AppCompatActivity {
         });
 
        }
+
+    public void calculateBMI()
+    {
+        if(flag_height==1 && flag_weight==1)
+        {
+            mBMI.getText().clear();
+            double numerator = Double.parseDouble(weightvalue) * 10000;
+            double denominator = (Double.parseDouble(heightvalue)) * (Double.parseDouble(heightvalue));
+            double bmi_value = numerator / denominator;
+            mBMI.setText(String.format(Locale.ENGLISH, "%,2f", bmi_value));
+        }
+        else if(flag_height==0 || flag_weight==0)
+        {
+            // do nothing
+            mBMI.getText().clear();
+        }
+       /* else
+        {
+            String message = "Please enter height and weight first.";
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(VitalsActivity.this);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+        }*/
+
+    }
 
     public void loadPrevious() {
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
@@ -315,7 +407,7 @@ public class VitalsActivity extends AppCompatActivity {
         String[] args = {patientID, visitID, String.valueOf(CONCEPT_ID)};
 
         localdb.update(
-                "visit",
+                "obs",
                 contentValues,
                 selection,
                 args

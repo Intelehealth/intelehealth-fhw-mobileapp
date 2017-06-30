@@ -140,7 +140,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     if(patientHistoryMap.anySubSelected()){
                         patientHistory = patientHistoryMap.generateLanguage();
                         updateDatabase(patientHistory); // update details of patient's visit, when edit button on VisitSummary is pressed
-
                     }
 
                     // displaying all values in another activity
@@ -153,8 +152,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else {
 
-                    if(patientHistoryMap.anySubSelected()){
+                  //  if(patientHistoryMap.anySubSelected()){
                         patientHistory = patientHistoryMap.generateLanguage();
+
 
                         if(flag == true) { // only if OK clicked, collect this new info (old patient)
                             phistory = phistory + "  " + patientHistory; // only PMH updated
@@ -170,8 +170,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                             insertDb(patientHistory);
                         }
 
-                    }
-
                     Intent intent = new Intent(PastMedicalHistoryActivity.this, FamilyHistoryActivity.class);
                     intent.putExtra("patientID", patientID);
                     intent.putExtra("visitID", visitID);
@@ -180,10 +178,13 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     intent.putExtra("tag", intentTag);
                     intent.putStringArrayListExtra("exams", physicalExams);
                     startActivity(intent);
+
+                    }
                 }
 
-            }
-        });
+            });
+
+
 
         patientHistoryMap = new Node(HelperMethods.encodeJSON(this, mFileName)); //Load the patient history mind map
         historyListView = (ExpandableListView) findViewById(R.id.patient_history_expandable_list_view);
@@ -225,8 +226,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                 lastExpandedPosition = groupPosition;
             }
         });
+}
 
-    }
+
 
     /**
      * This method inserts medical history of patient in database.
@@ -274,7 +276,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
         String[] args = {patientID, visitID, String.valueOf(conceptID)};
 
         localdb.update(
-                "visit",
+                "obs",
                 contentValues,
                 selection,
                 args

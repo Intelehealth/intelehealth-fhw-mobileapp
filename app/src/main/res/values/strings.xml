@@ -118,7 +118,7 @@
     <string name="table_hw">Body Measurements</string>
     <string name="table_height">Height (cm)</string>
     <string name="table_weight">Weight (kg)</string>
-    <string name="table_bmi">BMI (click to calculate)</string>
+    <string name="table_bmi">BMI </string>
     <string name="table_pulse">Pulse (bpm)</string>
     <string name="table_bp">Vital Signs</string>
     <string name="table_bpsys">Systolic Pressure</string>
@@ -152,6 +152,7 @@
     <string name="visit_summary_family_history">Family History</string>
     <string name="visit_summary_on_examination">On Examination</string>
     <string name="visit_summary_complaint">C/O</string>
+    <string name="visit_summary_vitals">Vitals</string>
     <string name="visit_summary_doctor_details">Doctor Details</string>
     <string name="visit_summary_rx">Prescribed Medications</string>
     <string name="visit_summary_diagnosis">Diagnosis</string>

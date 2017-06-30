@@ -142,7 +142,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                         new String[] { patient.getId(),"163187"},
                        null,null,null);
 
-                if(cursor.moveToFirst()  && !(cursor.getString(0).equals(""))) // so that null data is not appended
+                if(cursor.moveToFirst() ) // so that null data is not appended
                 {
                     // rows present
                     do {
@@ -159,7 +159,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 Cursor cursor1 = sqLiteDatabase.query("obs",cols,"patient_id=? and concept_id=?",// querying for FH
                         new String[] { patient.getId(),"163188"},
                         null,null,null);
-                if(cursor1.moveToFirst() && !(cursor1.getString(0).equals("")) )
+                if(cursor1.moveToFirst() )
                 {
                     // rows present
                     do {
@@ -173,9 +173,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                 }
                 cursor1.close();
 
-
-                Toast.makeText(PatientDetailActivity.this,"PMH: "+phistory,Toast.LENGTH_SHORT).show();
-                Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
+                // Will display data for patient as it is present in database
+               // Toast.makeText(PatientDetailActivity.this,"PMH: "+phistory,Toast.LENGTH_SHORT).show();
+               // Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
 
                 Intent intent2 = new Intent(PatientDetailActivity.this, ComplaintNodeActivity.class);
                 String fullName = patient.getFirstName() + " " + patient.getLastName();
