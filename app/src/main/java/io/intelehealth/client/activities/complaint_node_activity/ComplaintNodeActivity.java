@@ -88,6 +88,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         });
 
 
+
         ListView complaintList = (ListView) findViewById(R.id.complaint_list_view);
         if (complaintList != null) {
             complaintList.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);

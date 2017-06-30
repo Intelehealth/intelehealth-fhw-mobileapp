@@ -240,7 +240,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
 //            }
             String complaintString = currentNode.generateLanguage();
             String insertion = null;
-            if (complaintString != null && !complaintString.isEmpty()) {
+            if(complaintString !=null && !complaintString.isEmpty()) {
                 String complaintFormatted = complaintString.replace("?,", "?:");
 
                 String complaint = currentNode.getText();
@@ -262,12 +262,10 @@ public class QuestionNodeActivity extends AppCompatActivity {
             }
 
             ArrayList<String> childNodeSelectedPhysicalExams = currentNode.getPhysicalExamList();
-            if (!childNodeSelectedPhysicalExams.isEmpty())
-                physicalExams.addAll(childNodeSelectedPhysicalExams); //For Selected child nodes
+            if(!childNodeSelectedPhysicalExams.isEmpty()) physicalExams.addAll(childNodeSelectedPhysicalExams); //For Selected child nodes
 
             ArrayList<String> rootNodePhysicalExams = parseExams(currentNode);
-            if (!rootNodePhysicalExams.isEmpty())
-                physicalExams.addAll(rootNodePhysicalExams); //For Root Node
+            if(!rootNodePhysicalExams.isEmpty())physicalExams.addAll(rootNodePhysicalExams); //For Root Node
 
             if (complaintNumber < complaints.size() - 1) {
                 complaintNumber++;
@@ -389,7 +387,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
     private ArrayList<String> parseExams(Node node) {
         ArrayList<String> examList = new ArrayList<>();
         String rawExams = node.getPhysicalExams();
-        if (rawExams != null) {
+        if(rawExams!=null) {
             String[] splitExams = rawExams.split(";");
             examList.addAll(Arrays.asList(splitExams));
             return examList;
