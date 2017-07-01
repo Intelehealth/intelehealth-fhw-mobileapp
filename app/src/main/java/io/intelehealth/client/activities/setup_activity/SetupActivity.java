@@ -3,6 +3,7 @@ package io.intelehealth.client.activities.setup_activity;
 import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,23 +22,39 @@ import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.parse.FindCallback;
+import com.parse.GetDataCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.UnknownHostException;
@@ -53,6 +70,7 @@ import io.intelehealth.client.api.retrofit.RestApi;
 import io.intelehealth.client.api.retrofit.ServiceGenerator;
 import io.intelehealth.client.models.Results;
 import io.intelehealth.client.models.Location;
+import io.intelehealth.client.utilities.HelperMethods;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -83,6 +101,11 @@ public class SetupActivity extends AppCompatActivity {
 
 
     private static final int PERMISSION_ALL = 1;
+    public File base_dir;
+    public String[] FILES;
+
+    AlertDialog.Builder dialog;
+    String key = null;
 
 
     @Override
@@ -201,15 +224,59 @@ public class SetupActivity extends AppCompatActivity {
                 if(mLocations!=null)
                 Log.i(LOG_TAG,mLocations.get(position).getName());
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });*/
 
+        //INITIALIZE PARSE CONFIGS
+        Parse.initialize(new Parse.Configuration.Builder(this)
+                .applicationId(HelperMethods.PARSE_APP_ID)
+                .server(HelperMethods.PARSE_SERVER_URL)
+                .build()
+        );
 
     }
+
+    //DOWNLOAD ALL MIND MAPS
+    private void downloadMindMaps() {
+        base_dir = new File(getFilesDir().getAbsolutePath(), HelperMethods.JSON_FOLDER);
+        if (!base_dir.exists())
+            base_dir.mkdirs();
+        for (String file : FILES) {
+            String[] parts = file.split(".json");
+            //Log.i("DOWNLOADING-->",parts[0].replaceAll("\\s+",""));
+            new getJSONFile().execute(file, parts[0].replaceAll("\\s+", ""));
+        }
+    }
+
+    private void downloadFilesInfo() {
+        final ParseQuery<ParseObject> query = ParseQuery.getQuery("AllFiles");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null) {
+                    for (ParseObject obj : objects) {
+                        ParseFile fileObject = (ParseFile) obj.get("FILES");
+                        fileObject.getDataInBackground(new GetDataCallback() {
+                            public void done(byte[] data, ParseException e) {
+                                if (e == null) {
+                                    String tmp = new String(data);
+                                    String files[] = tmp.split("\n");
+                                    Log.i("FLEN", "" + files.length);
+                                    FILES = new String[files.length];
+                                    FILES = files;
+                                    downloadMindMaps();
+                                }
+                            }
+                        });
+                    }
+                } else {
+                    Toast.makeText(SetupActivity.this, "Network Error", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
@@ -520,5 +587,145 @@ public class SetupActivity extends AppCompatActivity {
             list.add(locationList.get(i).getDisplay());
         }
         return list;
+    }
+
+    public void onRadioClick(View v) {
+        RadioButton r1 = (RadioButton) findViewById(R.id.demoMindmap);
+        RadioButton r2 = (RadioButton) findViewById(R.id.downloadMindmap);
+
+        boolean checked = ((RadioButton) v).isChecked();
+        switch (v.getId()) {
+            case R.id.demoMindmap:
+                if (checked) {
+                    r2.setChecked(false);
+                }
+                break;
+
+            case R.id.downloadMindmap:
+                if (checked) {
+                    r1.setChecked(false);
+
+                    dialog = new AlertDialog.Builder(this);
+                    LayoutInflater li = LayoutInflater.from(this);
+                    View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
+                    dialog.setTitle("Enter License Key")
+                            .setView(promptsView)
+
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Dialog d = (Dialog) dialog;
+
+                                    EditText text = (EditText) d.findViewById(R.id.licensekey);
+                                    key = text.getText().toString();
+                                    //Toast.makeText(SetupActivity.this, "" + key, Toast.LENGTH_SHORT).show();
+                                    if (keyVerified(key)) {
+                                        // create a shared pref to store the key
+                                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                        // SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("pref",MODE_PRIVATE);
+
+                                        //DOWNLOAD MIND MAP FILE LIST
+                                        downloadFilesInfo();
+
+                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                        editor.putString("licensekey", key);
+                                        editor.commit();
+                                    }
+                                }
+                            })
+
+                            .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    dialog.create().show();
+
+
+                }
+                break;
+        }
+    }
+
+    private boolean keyVerified(String key) {
+        //TODO: Verify License Key
+        return true;
+    }
+
+
+    /**
+     * Gets json Files from Parse Server
+     */
+    private class getJSONFile extends AsyncTask<String, Void, String> {
+
+        String FILENAME, COLLECTION_NAME;
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            //SPACE SEPARATED NAMES ARE MADE UNDERSCORE SEPARATED
+            FILENAME = params[0];
+            COLLECTION_NAME = params[1];
+
+            try {
+                String servStr = HelperMethods.PARSE_SERVER_URL + "classes/" + COLLECTION_NAME;
+                URL url = new URL(servStr);
+                Log.i("Connect", HelperMethods.PARSE_SERVER_URL + "classes/" + COLLECTION_NAME);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.setRequestProperty("X-Parse-Application-Id", "app");
+                urlConnection.setRequestProperty("X-Parse-REST-API-Key", "undefined");
+                Log.i("RES->", "" + urlConnection.getResponseMessage());
+                try {
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    StringBuilder stringBuilder = new StringBuilder();
+                    String line;
+                    while ((line = bufferedReader.readLine()) != null) {
+                        stringBuilder.append(line).append("\n");
+                    }
+                    bufferedReader.close();
+                    return stringBuilder.toString();
+                } finally {
+                    urlConnection.disconnect();
+                }
+            } catch (Exception e) {
+                Log.e("ERROR", e.getMessage(), e);
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            if (response == null) {
+                Toast.makeText(SetupActivity.this, "Error Downloading Mind Maps", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            String writable = "";
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray jsonArray = jsonObject.getJSONArray("results");
+                JSONObject finalresponse = jsonArray.getJSONObject(0);
+                writable = finalresponse.getJSONObject("Main").toString();
+                Log.i("INFO", writable);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            //WRITE FILE in base_dir
+            try {
+                File mydir = new File(base_dir.getAbsolutePath(), FILENAME);
+                if (!mydir.exists())
+                    mydir.getParentFile().mkdirs();
+                Log.i("FNAM", FILENAME);
+                FileOutputStream fileout = new FileOutputStream(mydir);
+                OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
+                outputWriter.write(writable);
+                outputWriter.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            //HelperMethods.readFile(FILENAME,SetupActivity.this);
+        }
     }
 }

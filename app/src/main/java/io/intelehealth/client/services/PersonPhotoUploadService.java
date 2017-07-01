@@ -2,6 +2,7 @@ package io.intelehealth.client.services;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +14,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.parse.ParseFile;
+import com.parse.ParseObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -32,6 +37,10 @@ public class PersonPhotoUploadService extends IntentService {
      *
      * @param name Used to name the worker thread, important only for debugging.
      */
+
+    private String imageName;
+    private Bitmap bitmap;
+
     public PersonPhotoUploadService(String name) {
         super(name);
     }
@@ -59,9 +68,12 @@ public class PersonPhotoUploadService extends IntentService {
                 patientId + ".jpg";
 
         File profile_image = new File(filePath);
+        imageName = profile_image.getName();
+        imageName = imageName.replace('%', '_');
 
         if (profile_image != null) {
-            byte[] byteArray = bitmapToByteArray(BitmapFactory.decodeFile(filePath));
+            bitmap = BitmapFactory.decodeFile(filePath);
+            byte[] byteArray = bitmapToByteArray(bitmap);
             base64EncodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
         }
 

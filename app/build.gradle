@@ -57,7 +57,7 @@ dependencies {
 
     compile "com.firebase:firebase-jobdispatcher:$rootProject.jobDispatcherVersion"
     debugCompile "com.squareup.okhttp3:logging-interceptor:$rootProject.okHttpVersion"
-
+    compile 'com.parse:parse-android:1.15.7'
 }
 
 apply plugin: 'com.google.gms.google-services'
