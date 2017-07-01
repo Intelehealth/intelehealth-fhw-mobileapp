@@ -54,6 +54,8 @@ public class PersonPhotoUploadService extends IntentService {
     public int mId = 2;
     String patientId, visitId;
 
+    String imageName;
+
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
 
