@@ -49,6 +49,20 @@ public class VitalsActivity extends AppCompatActivity {
     String heightvalue;
     String weightvalue;
 
+    String maxh= "272";
+    String maxw= "150";
+    String maxbpsys= "160";
+    String minbpsys= "50";
+    String maxbpdys= "120";
+    String minbpdys= "30";
+    String maxpulse ="150";
+    String minpulse= "30";
+    String maxte ="120";
+    String minte ="80";
+    String maxspo2 ="100";
+    String minspo2 ="1";
+
+
     ArrayList<String> physicalExams;
 
     LocalRecordsDatabaseHelper mDbHelper;
@@ -146,7 +160,6 @@ public class VitalsActivity extends AppCompatActivity {
                     mBMI.getText().clear();
                     flag_height =1;
                     heightvalue = mHeight.getText().toString();
-
                 }
                 else
                 {
@@ -170,7 +183,6 @@ public class VitalsActivity extends AppCompatActivity {
                     mBMI.getText().clear();
                     flag_weight =1;
                     weightvalue = mWeight.getText().toString();
-
                 }
                 else
                 {
@@ -304,15 +316,133 @@ public class VitalsActivity extends AppCompatActivity {
 
         // Check to see if values were inputted.
         for (int i = 0; i < values.size(); i++) {
-            EditText et = values.get(i);
+            if (i == 0) {
+                EditText et = values.get(i);
+                String abc = et.getText().toString().trim();
+                if (abc != null && !abc.isEmpty()) {
+                    if (Double.parseDouble(abc) > Double.parseDouble(maxh)) {
+                        et.setError("Height should be between 0 and 272cm");
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+//       }
+                } else {
+                    cancel = false;
+                }
+            }else if(i==1) {
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (abc1 != null && !abc1.isEmpty()) {
+                    if (Double.parseDouble(abc1) > Double.parseDouble(maxw)) {
+                        et.setError("Weight should be less than 150kg");
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+//       }
+                } else {
+                    cancel = false;
+                }
 
-            if (TextUtils.isEmpty(et.getText().toString())) {
-                et.setError(getString(R.string.error_field_required));
-                focusView = et;
-                cancel = true;
-                break;
-            } else {
-                cancel = false;
+            } else if(i==2)
+            {
+                EditText et = values.get(i);
+                String abc2 = et.getText().toString().trim();
+                if (abc2 != null && !abc2.isEmpty() && (!abc2.equals("0.0"))) {
+                    if ((Double.parseDouble(abc2) > Double.parseDouble(maxpulse)) ||
+                            (Double.parseDouble(abc2) < Double.parseDouble(minpulse))) {
+                        et.setError("Pulse should be in between 30 and 150");
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+//       }
+                } else {
+                    cancel = false;
+                }
+
+            }else if (i==3)
+            {
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(maxbpsys)) ||
+                            (Double.parseDouble(abc1) < Double.parseDouble(minbpsys))) {
+                        et.setError("Systolic pressure should be in between 50 ad 160");
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+//       }
+                } else {
+                    cancel = false;
+                }
+
+            }else if (i==4)
+            {
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(maxbpdys)) ||
+                            (Double.parseDouble(abc1) < Double.parseDouble(minbpdys))) {
+                        et.setError("Diastolic pressure should be in between 30 and 120");
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+//       }
+                } else {
+                    cancel = false;
+                }
+
+            }else if (i==5)
+            {
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(maxte)) ||
+                            (Double.parseDouble(abc1) < Double.parseDouble(minte))) {
+                        et.setError("Temperature should be in between 80 and 120");
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+//       }
+                } else {
+                    cancel = false;
+                }
+            }
+            else
+            {
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(maxspo2)) ||
+                    (Double.parseDouble(abc1) < Double.parseDouble(minspo2))) {
+                        et.setError("SpO2 should be in between 1 and 100");
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+//       }
+                } else {
+                    cancel = false;
+                }
             }
         }
 
@@ -322,18 +452,41 @@ public class VitalsActivity extends AppCompatActivity {
             return;
         } else {
             try {
-                results.setHeight(Double.parseDouble(mHeight.getText().toString()));
-                results.setWeight(Double.parseDouble(mWeight.getText().toString()));
-                results.setPulse(Double.parseDouble(mPulse.getText().toString()));
-                results.setBpsys(Double.parseDouble(mBpSys.getText().toString()));
-                results.setBpdia(Double.parseDouble(mBpDia.getText().toString()));
-                results.setTemperature(Double.parseDouble(mTemperature.getText().toString()));
-                results.setSpo2(Double.parseDouble(mSpo2.getText().toString()));
+                if (mHeight.getText()!=null) {
+                    results.setHeight(Double.parseDouble(mHeight.getText().toString()));
+                }
+                if(mWeight.getText()!=null)
+                {
+                    results.setWeight(Double.parseDouble(mWeight.getText().toString()));
+                }
+                if(mPulse.getText()!=null)
+                {
+                    results.setPulse(Double.parseDouble(mPulse.getText().toString()));
+                }
+                if(mBpDia.getText()!=null)
+                {
+                    results.setBpdia(Double.parseDouble(mBpDia.getText().toString()));
+                }
+                if (mBpSys.getText()!=null)
+                {
+                    results.setBpsys(Double.parseDouble(mBpSys.getText().toString()));
+                }
+                if(mTemperature.getText()!=null)
+                {
+                    results.setTemperature(Double.parseDouble(mTemperature.getText().toString()));
+                }
+                if(mSpo2.getText()!=null)
+                {
+                    results.setSpo2(Double.parseDouble(mSpo2.getText().toString()));
+                }
+
+
+
             } catch (NumberFormatException e) {
                 Snackbar.make(findViewById(R.id.cl_table), "Error: non-decimal number entered.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
 
-
+//
         }
 
         if (intentTag != null && intentTag.equals("edit")) {
