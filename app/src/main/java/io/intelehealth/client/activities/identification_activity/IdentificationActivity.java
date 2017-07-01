@@ -275,7 +275,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 //    mPhoto = results[0];
                 //    mCurrentPhotoPath = results[1];
                 //}
-                File filePath = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator + "patient_photo");
+                File filePath = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator +
+                        "Patient_Images" + File.separator + patientID);
                 if (!filePath.exists()) {
                     filePath.mkdir();
                 }

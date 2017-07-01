@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -15,8 +16,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -24,6 +27,7 @@ import java.util.List;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.custom_expandable_list_adapter.CustomExpandableListAdapter;
+import io.intelehealth.client.activities.family_history_activity.FamilyHistoryActivity;
 import io.intelehealth.client.activities.past_medical_history_activity.PastMedicalHistoryActivity;
 import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
@@ -46,6 +50,8 @@ public class QuestionNodeActivity extends AppCompatActivity {
     String state;
     String patientName;
     String intentTag;
+    String image_Prefix = "QN";
+    String imageDir = "Question Node";
 
     Boolean complaintConfirmed = false;
 
@@ -89,9 +95,24 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
         //mKnowledge = new Knowledge(HelperMethods.encodeJSON(this, mFileName));
         complaintsNodes = new ArrayList<>();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        boolean hasLicense = false;
+        if (sharedPreferences.contains("licensekey"))
+            hasLicense = true;
+
+        JSONObject currentFile = null;
         for (int i = 0; i < complaints.size(); i++) {
-            String fileLocation = "engines/" + complaints.get(i) + ".json";
-            JSONObject currentFile = HelperMethods.encodeJSON(this, fileLocation);
+            if (hasLicense) {
+                try {
+                    currentFile = new JSONObject(HelperMethods.readFile(complaints.get(i) + ".json", this));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                String fileLocation = "engines/" + complaints.get(i) + ".json";
+                currentFile = HelperMethods.encodeJSON(this, fileLocation);
+            }
             Node currentNode = new Node(currentFile);
             complaintsNodes.add(currentNode);
         }
@@ -121,6 +142,11 @@ public class QuestionNodeActivity extends AppCompatActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
+                String imageName = patientID + "_" + visitID + "_" + image_Prefix;
+                String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+                File filePath = new File(baseDir+ File.separator+"Patient Images"+File.separator+
+                        patientID+File.separator+visitID+File.separator+imageDir);
+
                 if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && !currentNode.getOption(groupPosition).anySubSelected()) {
                     Node question = currentNode.getOption(groupPosition).getOption(childPosition);
                     question.toggleSelected();
@@ -130,13 +156,22 @@ public class QuestionNodeActivity extends AppCompatActivity {
                         currentNode.getOption(groupPosition).setUnselected();
                     }
 
+
+
                     if (!question.getInputType().isEmpty() && question.isSelected()) {
-                        Node.handleQuestion(question, QuestionNodeActivity.this, adapter);
-                        //If there is an input type, then the question has a special method of data entry.
+                        if (question.getInputType().equals("camera")) {
+                            if (!filePath.exists()) {
+                                filePath.mkdirs();
+                            }
+                            Node.handleQuestion(question, QuestionNodeActivity.this, adapter, filePath.toString(), imageName);
+                        } else {
+                            Node.handleQuestion(question, QuestionNodeActivity.this, adapter, null, null);
+                        }
                     }
 
+
                     if (!question.isTerminal() && question.isSelected()) {
-                        Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter);
+                        Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter,filePath.toString(),imageName);
                         //If the node is not terminal, that means there are more questions to be asked for this branch.
                     }
                 } else if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && currentNode.getOption(groupPosition).anySubSelected()) {
@@ -161,12 +196,19 @@ public class QuestionNodeActivity extends AppCompatActivity {
                     }
 
                     if (!question.getInputType().isEmpty() && question.isSelected()) {
-                        Node.handleQuestion(question, QuestionNodeActivity.this, adapter);
+                        if (question.getInputType().equals("camera")) {
+                            if (!filePath.exists()) {
+                                filePath.mkdirs();
+                            }
+                            Node.handleQuestion(question, QuestionNodeActivity.this, adapter, filePath.toString(), imageName);
+                        } else {
+                            Node.handleQuestion(question, QuestionNodeActivity.this, adapter, null, null);
+                        }
                         //If there is an input type, then the question has a special method of data entry.
                     }
 
                     if (!question.isTerminal() && question.isSelected()) {
-                        Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter);
+                        Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter,filePath.toString(),imageName);
                         //If the node is not terminal, that means there are more questions to be asked for this branch.
                     }
                 }
@@ -222,6 +264,15 @@ public class QuestionNodeActivity extends AppCompatActivity {
 //                    complaintsNodes.add(mKnowledge.getComplaint(selectedAssociations.get(i)));
 //                }
 //            }
+
+            List<String> imagePathList = currentNode.getImagePathList();
+
+            if (imagePathList != null) {
+                for (String imagePath : imagePathList) {
+                    updateImageDatabase(imagePath);
+                }
+            }
+
             String complaintString = currentNode.generateLanguage();
             String insertion = null;
             if(complaintString !=null && !complaintString.isEmpty()) {
@@ -313,6 +364,16 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
         return localdb.insert("obs", null, complaintEntries);
+    }
+
+    private void updateImageDatabase(String imagePath) {
+        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
+        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path) values("
+                +"'" +patientID +"'"+","
+                + visitID + ","
+                + "'"+imagePath +"'"+
+                ")");
     }
 
     private void updateDatabase(String string) {

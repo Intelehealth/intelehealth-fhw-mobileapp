@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -54,6 +55,7 @@ import java.util.List;
 import java.util.Locale;
 
 import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
+import io.intelehealth.client.services.ImageUploadService;
 import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.complaint_node_activity.ComplaintNodeActivity;
@@ -272,12 +274,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Uploading to doctor.", Snackbar.LENGTH_LONG).show();
 
+                Intent imageUpload = new Intent(VisitSummaryActivity.this, ImageUploadService.class);
+                imageUpload.putExtra("patientID",patientID);
+                imageUpload.putExtra("visitID",visitID);
+                startService(imageUpload);
+
                 Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
                 serviceIntent.putExtra("serviceCall", "visit");
                 serviceIntent.putExtra("patientID", patientID);
                 serviceIntent.putExtra("visitID", visitID);
                 serviceIntent.putExtra("name", patientName);
                 startService(serviceIntent);
+
 
                 //mLayout.removeView(uploadButton);
 
@@ -346,12 +354,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 
         patHistory.setValue(medHistory);
-        patHistView.setText(patHistory.getValue());
+
 
         physFindingsView.setText(phyExam.getValue());
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor e = sharedPreferences.edit();
-
 
 
         editVitals.setOnClickListener(new View.OnClickListener() {
@@ -771,7 +778,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
             patHistory.setValue(medHistText);
             if (medHistText!=null && !medHistText.isEmpty()) {
-
+              
                 medHistory = patHistory.getValue();
 
 

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -16,7 +17,9 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import io.intelehealth.client.activities.past_medical_history_activity.PastMedicalHistoryActivity;
 import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity;
@@ -40,6 +43,9 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     String state;
     String patientName;
     String intentTag;
+
+    String image_Prefix = "FH"; //Abbreviation for Family History
+    String imageDir = "Family History"; //Abbreviation for Family History
 
     ArrayList<String> physicalExams;
 
@@ -156,9 +162,14 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                 }
                 adapter.notifyDataSetChanged();
 
+                String imageName = patientID + "_" + visitID + "_" + image_Prefix;
+                String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+                File filePath = new File(baseDir + File.separator + "Patient Images" + File.separator +
+                        patientID + File.separator + visitID + File.separator + imageDir);
+
                 if (!familyHistoryMap.getOption(groupPosition).getOption(childPosition).isTerminal() &&
                         familyHistoryMap.getOption(groupPosition).getOption(childPosition).isSelected()) {
-                    Node.subLevelQuestion(clickedNode, FamilyHistoryActivity.this, adapter);
+                    Node.subLevelQuestion(clickedNode, FamilyHistoryActivity.this, adapter, filePath.toString(), imageName);
                 }
 
                 return false;
@@ -171,7 +182,18 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                 Node clickedNode = familyHistoryMap.getOption(groupPosition);
 
                 if (clickedNode.getInputType() != null) {
-                    Node.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter);
+                    if (clickedNode.getInputType().equals("camera")) {
+                        String imageName = patientID + "_" + visitID + "_" + image_Prefix;
+                        String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+                        File filePath = new File(baseDir + File.separator + "Patient Images" + File.separator +
+                                patientID + File.separator + visitID + File.separator + imageDir);
+                        if (!filePath.exists()) {
+                            filePath.mkdirs();
+                        }
+                        Node.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter, filePath.toString(), imageName);
+                    } else {
+                        Node.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter, null, null);
+                    }
                 }
 
                 if (lastExpandedPosition != -1
@@ -205,6 +227,14 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                 insertion = insertionList.get(i);
             } else {
                 insertion = insertion + "; " + insertionList.get(i);
+            }
+        }
+
+        List<String> imagePathList = familyHistoryMap.getImagePathList();
+
+        if (imagePathList != null) {
+            for (String imagePath : imagePathList) {
+                updateImageDatabase(imagePath);
             }
         }
 
@@ -276,6 +306,15 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         return localdb.insert("obs", null, complaintEntries);
     }
 
+    private void updateImageDatabase(String imagePath) {
+        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
+        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path) values("
+                +"'" +patientID +"'"+","
+                + visitID + ","
+                + "'"+imagePath +"'"+
+                ")");
+    }
 
     private void updateDatabase(String string) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);

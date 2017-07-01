@@ -2,21 +2,28 @@ package io.intelehealth.client.services;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ParseException;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.parse.ParseFile;
+import com.parse.ParseObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 
+import io.intelehealth.client.R;
 import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.database.DelayedJobQueueProvider;
 import io.intelehealth.client.objects.WebResponse;
@@ -32,6 +39,10 @@ public class PersonPhotoUploadService extends IntentService {
      *
      * @param name Used to name the worker thread, important only for debugging.
      */
+
+    private Bitmap bitmap;
+
+    public PersonPhotoUploadService() {super("PersonPhotoUploadService");}
     public PersonPhotoUploadService(String name) {
         super(name);
     }
@@ -41,31 +52,40 @@ public class PersonPhotoUploadService extends IntentService {
     NotificationManager mNotifyManager;
     NotificationCompat.Builder mBuilder;
     public int mId = 2;
+    String patientId, visitId;
+
+    String imageName;
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
 
-        mNotifyManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mBuilder = new NotificationCompat.Builder(this);
 
-        String patientId = intent.getStringExtra("patientID");
+        patientId = intent.getStringExtra("patientID");
         String person = intent.getStringExtra("person");
+        visitId = intent.getStringExtra("visitID");
 
         String base64EncodedImage = null;
 
         String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-        String filePath = baseDir + File.separator + "Profile_Images" + File.separator + "patient_photo" + File.separator +
+        String filePath = baseDir + File.separator + "Patient_Images" + File.separator + patientId + File.separator +
                 patientId + ".jpg";
 
         File profile_image = new File(filePath);
+        imageName = profile_image.getName();
+        imageName = imageName.replace('%', '_');
 
         if (profile_image != null) {
-            byte[] byteArray = bitmapToByteArray(BitmapFactory.decodeFile(filePath));
+            bitmap = BitmapFactory.decodeFile(filePath);
+
+           // uploadImage(classname);
+
+            byte[] byteArray = bitmapToByteArray(bitmap);
             base64EncodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
         }
 
-        if (base64EncodedImage != null) {
+        if (bitmap!=null){//base64EncodedImage != null) {
             String photoString =
                     String.format("{\"person\":\"%s\"," +
                                     "\"base64EncodedImage\":\"%s\"}",
@@ -77,7 +97,9 @@ public class PersonPhotoUploadService extends IntentService {
 
             if (responsePersonImage != null && responsePersonImage.getResponseCode() != 200) {
                 String newText = "Person Image posting unsuccessful";
-                mBuilder.setContentText(newText);
+                mBuilder.setContentText(newText)
+                        .setContentTitle("Profile Image Upload")
+                        .setSmallIcon(R.mipmap.ic_launcher);
                 mNotifyManager.notify(mId, mBuilder.build());
                 addJobToQueue(intent);
                 Log.d(LOG_TAG, "Person Image Posting Unsuccessful");
@@ -87,8 +109,11 @@ public class PersonPhotoUploadService extends IntentService {
                 Log.d(LOG_TAG, "Person Image Posting unsuccessful");
 
             } else {
+                uploadImage(patientId + ".jpg");
                 String newText = "Person Image Posted successfully.";
-                mBuilder.setContentText(newText);
+                mBuilder.setContentText(newText)
+                        .setContentTitle("Profile Image Upload")
+                        .setSmallIcon(R.mipmap.ic_launcher);
                 mNotifyManager.notify(mId, mBuilder.build());
                 if (intent.hasExtra("queueId")) {
                     int queueId = intent.getIntExtra("queueId", -1);
@@ -98,6 +123,17 @@ public class PersonPhotoUploadService extends IntentService {
             }
 
         }
+    }
+
+    public void uploadImage(String imageName) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] image = stream.toByteArray();
+        ParseFile file = new ParseFile(imageName, image);
+        ParseObject imgupload = new ParseObject("Profile");
+        imgupload.put("Image",file);
+        imgupload.put("PatientID", patientId);
+        imgupload.saveInBackground();
     }
 
     private byte[] bitmapToByteArray(Bitmap image) {

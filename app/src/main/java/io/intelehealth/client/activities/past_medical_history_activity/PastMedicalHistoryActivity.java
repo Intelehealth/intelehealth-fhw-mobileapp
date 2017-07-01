@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -16,7 +17,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.R;
@@ -43,6 +46,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
     int lastExpandedPosition = -1;
 
     String mFileName = "patHist.json";
+    String image_Prefix = "MH";
+    String imageDir = "Medical History";
+
 //    String mFileName = "DemoHistory.json";
 
     private static final String TAG = PastMedicalHistoryActivity.class.getSimpleName();
@@ -121,7 +127,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
 
         setTitle(R.string.title_activity_patient_history);
-        setTitle(getTitle() + ": "  + patientName);
+        setTitle(getTitle() + ": " + patientName);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_history);
@@ -137,9 +143,17 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //If nothing is selected, there is nothing to put into the database.
 
+                List<String> imagePathList = patientHistoryMap.getImagePathList();
 
-                if (intentTag != null && intentTag.equals("edit")){
-                    if(patientHistoryMap.anySubSelected()){
+                if (imagePathList != null) {
+                    for (String imagePath : imagePathList) {
+                        updateImageDatabase(imagePath);
+                    }
+                }
+
+
+                if (intentTag != null && intentTag.equals("edit")) {
+                    if (patientHistoryMap.anySubSelected()) {
                         patientHistory = patientHistoryMap.generateLanguage();
                         updateDatabase(patientHistory); // update details of patient's visit, when edit button on VisitSummary is pressed
                     }
@@ -156,7 +170,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
                   //  if(patientHistoryMap.anySubSelected()){
                         patientHistory = patientHistoryMap.generateLanguage();
-
 
                         if(flag == true) { // only if OK clicked, collect this new info (old patient)
                             phistory = phistory + patientHistory; // only PMH updated
@@ -207,9 +220,13 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                 }
                 adapter.notifyDataSetChanged();
 
-                Log.i(TAG,String.valueOf(clickedNode.isTerminal()));
-                if(!clickedNode.isTerminal() && clickedNode.isSelected()){
-                    Node.subLevelQuestion(clickedNode, PastMedicalHistoryActivity.this, adapter);
+                Log.i(TAG, String.valueOf(clickedNode.isTerminal()));
+                if (!clickedNode.isTerminal() && clickedNode.isSelected()) {
+                    String imageName = patientID + "_" + visitID + "_" + image_Prefix;
+                    String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+                    File filePath = new File(baseDir + File.separator + "Patient Images" + File.separator +
+                            patientID + File.separator + visitID + File.separator + imageDir);
+                    Node.subLevelQuestion(clickedNode, PastMedicalHistoryActivity.this, adapter, filePath.toString(), imageName);
                 }
 
                 return false;
@@ -234,8 +251,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
     /**
      * This method inserts medical history of patient in database.
+     *
      * @param value variable of type String
-     * @return      long
+     * @return long
      */
     public long insertDb(String value) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
@@ -261,10 +279,23 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
         return localdb.insert("obs", null, complaintEntries);
     }
 
+
+    private void updateImageDatabase(String imagePath) {
+        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
+        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path) values("
+                + "'" + patientID + "'" + ","
+                + visitID + ","
+                + "'" + imagePath + "'" +
+                ")");
+    }
+
+
     /**
      * This method updates medical history of patient in database.
+     *
      * @param string variable of type String
-     * @return              void
+     * @return void
      */
     private void updateDatabase(String string) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
@@ -293,7 +324,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
                 patientHistoryMap.setImagePath(mCurrentPhotoPath);
-                Log.i(TAG,mCurrentPhotoPath);
+                Log.i(TAG, mCurrentPhotoPath);
                 patientHistoryMap.displayImage(this);
             }
         }
