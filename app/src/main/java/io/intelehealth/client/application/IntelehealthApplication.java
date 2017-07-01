@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 
 
+import com.parse.Parse;
+
 import org.acra.ACRA;
 import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
@@ -11,6 +13,7 @@ import org.acra.annotation.ReportsCrashes;
 import org.acra.sender.HttpSender;
 
 import io.intelehealth.client.R;
+import io.intelehealth.client.utilities.HelperMethods;
 
 /**
  * Created by tusharjois on 9/20/16.
@@ -42,6 +45,11 @@ public class IntelehealthApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Parse.initialize(new Parse.Configuration.Builder(this)
+                .applicationId("app")
+                .server(HelperMethods.PARSE_SERVER_URL)
+                .build()
+        );
         // The following line triggers the initialization of ACRA
         this.mContext = getApplicationContext();
         ACRA.init(this);

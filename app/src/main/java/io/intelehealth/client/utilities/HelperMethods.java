@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -146,7 +148,7 @@ public class HelperMethods {
         return results;
     }
 
-   public static String[] dispatchTakePictureIntent(int requestType, Activity activity) {
+    public static String[] dispatchTakePictureIntent(int requestType, Activity activity) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         String[] results = null;
         // Ensure that there's a camera activity to handle the intent
@@ -406,30 +408,39 @@ public class HelperMethods {
         return webResponse;
     }
 
-    public static String readFile(String FILENAME,Context context) {
-        Log.i(LOG_TAG, "Reading from file");
 
-        try {
-            File myDir = new File(context.getFilesDir().getAbsolutePath() + File.separator + JSON_FOLDER + File.separator + FILENAME);
-            FileInputStream fileIn = new FileInputStream(myDir);
-            InputStreamReader InputRead = new InputStreamReader(fileIn);
-            final int READ_BLOCK_SIZE = 100;
-            char[] inputBuffer = new char[READ_BLOCK_SIZE];
-            String s = "";
-            int charRead;
-
-            while ((charRead = InputRead.read(inputBuffer)) > 0) {
-                String readstring = String.copyValueOf(inputBuffer, 0, charRead);
-                s += readstring;
-            }
-            InputRead.close();
-            Log.i("FILEREAD>", s);
-            return s;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return  null;
-        }
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+    
+        public static String readFile(String FILENAME,Context context) {
+            Log.i(LOG_TAG, "Reading from file");
 
-}
+            try {
+                File myDir = new File(context.getFilesDir().getAbsolutePath() + File.separator + JSON_FOLDER + File.separator + FILENAME);
+                FileInputStream fileIn = new FileInputStream(myDir);
+                InputStreamReader InputRead = new InputStreamReader(fileIn);
+                final int READ_BLOCK_SIZE = 100;
+                char[] inputBuffer = new char[READ_BLOCK_SIZE];
+                String s = "";
+                int charRead;
+
+                while ((charRead = InputRead.read(inputBuffer)) > 0) {
+                    String readstring = String.copyValueOf(inputBuffer, 0, charRead);
+                    s += readstring;
+                }
+                InputRead.close();
+                Log.i("FILEREAD>", s);
+                return s;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return  null;
+            }
+
+        }
+
+    }
