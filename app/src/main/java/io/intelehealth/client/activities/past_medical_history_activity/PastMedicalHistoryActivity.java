@@ -33,8 +33,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
     String LOG_TAG = "Patient History Activity";
     String patient = "patient";
-
-
     String patientID = "1";
     String visitID;
     String state;
@@ -66,11 +64,12 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
         // display pop-up to ask for update, if a returning patient
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
          e = sharedPreferences.edit();
-         phistory = sharedPreferences.getString("phistory",null);
+         phistory = sharedPreferences.getString("phistory","  ");
+
         boolean past = sharedPreferences.getBoolean("returning",false);
         if(past)
         {
-            Log.d("flag: ", String.valueOf(past));
+
             AlertDialog.Builder alertdialog = new AlertDialog.Builder(PastMedicalHistoryActivity.this);
             alertdialog.setTitle("Past-Medical History");
             alertdialog.setMessage("Do you want to update details?");
@@ -86,7 +85,10 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
                       // skip
                     flag = false;
-                    insertDb(phistory);
+                        if (phistory != null && !phistory.isEmpty() && !phistory.equals("null"))
+                        {
+                            phistory = "    ";
+                            insertDb(phistory);}
                     Intent intent =new Intent(PastMedicalHistoryActivity.this,FamilyHistoryActivity.class);
                     intent.putExtra("patientID", patientID);
                     intent.putExtra("visitID", visitID);
@@ -157,7 +159,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
 
                         if(flag == true) { // only if OK clicked, collect this new info (old patient)
-                            phistory = phistory + "  " + patientHistory; // only PMH updated
+                            phistory = phistory + patientHistory; // only PMH updated
                             e.putString("phistory",phistory);
                             e.putBoolean("returning",true);
                             e.commit();

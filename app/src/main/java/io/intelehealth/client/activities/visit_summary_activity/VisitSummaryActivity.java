@@ -344,6 +344,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         complaintView.setText(complaint.getValue());
         famHistView.setText(famHistory.getValue());
 
+
         patHistory.setValue(medHistory);
         patHistView.setText(patHistory.getValue());
 
@@ -770,7 +771,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
             patHistory.setValue(medHistText);
             if (medHistText!=null && !medHistText.isEmpty()) {
+
                 medHistory = patHistory.getValue();
+
+
                 medHistory = medHistory.replace("\"", "");
                 medHistory = medHistory.replace("\n", "");
                 do {

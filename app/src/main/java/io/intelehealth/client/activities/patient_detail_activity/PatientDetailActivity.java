@@ -81,6 +81,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     SharedPreferences.Editor e;
     SharedPreferences sharedPreferences;
     boolean returning = false;
+    String phistory=""; String fhistory="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,21 +137,23 @@ public class PatientDetailActivity extends AppCompatActivity {
                 returning = false;
                 e.putBoolean("returning",returning); // change in Sp
                 e.commit();
-                String phistory=""; String fhistory="";
+
                 String[] cols = {"value"};
                 Cursor cursor = sqLiteDatabase.query("obs",cols,"patient_id=? and concept_id=?",// querying for PMH
                         new String[] { patient.getId(),"163187"},
                        null,null,null);
 
-                if(cursor.moveToFirst() ) // so that null data is not appended
+                if(cursor.moveToFirst() )
                 {
                     // rows present
                     do {
+                       // so that null data is not appended
                         phistory = phistory + cursor.getString(0);
+
                        }
                     while (cursor.moveToNext());
                     returning = true;
-                    e.putString("phistory",phistory);
+                    e.putString("phistory",phistory);//Log.d("phist",phistory);
                     e.putBoolean("returning",true);
                     e.commit();
                 }
@@ -164,10 +167,10 @@ public class PatientDetailActivity extends AppCompatActivity {
                     // rows present
                     do {
                         fhistory = fhistory + cursor1.getString(0);
-                    }
+                       }
                     while (cursor1.moveToNext());
                     returning = true;
-                    e.putString("fhistory",fhistory);
+                    e.putString("fhistory",fhistory);//Log.d("fhist",fhistory);
                     e.putBoolean("returning",true);
                     e.commit();
                 }

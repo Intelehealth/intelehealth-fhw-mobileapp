@@ -66,8 +66,8 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         // display pop-up to ask for update, if a returning patient
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         e = sharedPreferences.edit();
-        fhistory = sharedPreferences.getString("fhistory",null);
-        phistory = sharedPreferences.getString("phistory",null);
+        fhistory = sharedPreferences.getString("fhistory"," ");
+        phistory = sharedPreferences.getString("phistory"," ");
         boolean past = sharedPreferences.getBoolean("returning",false);
         if(past)
         {
@@ -223,8 +223,11 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             if(flag == true)
             {
                 // only if OK clicked, collect this new info (old patient)
-                fhistory = fhistory + "  " + insertion; // update only family history now
+                if (insertion.length()>0) {
+                    fhistory = fhistory + insertion; }
+                else { fhistory = fhistory +""; }
                     insertDb(fhistory);
+
                    // PastMedicalHistoryActivity pmh = new PastMedicalHistoryActivity();
                    // pmh.insertDb(phistory);
 
