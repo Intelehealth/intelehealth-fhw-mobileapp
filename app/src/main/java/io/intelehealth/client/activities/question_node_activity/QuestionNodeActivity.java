@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -94,9 +95,24 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
         //mKnowledge = new Knowledge(HelperMethods.encodeJSON(this, mFileName));
         complaintsNodes = new ArrayList<>();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        boolean hasLicense = false;
+        if (sharedPreferences.contains("licensekey"))
+            hasLicense = true;
+
+        JSONObject currentFile = null;
         for (int i = 0; i < complaints.size(); i++) {
-            String fileLocation = "engines/" + complaints.get(i) + ".json";
-            JSONObject currentFile = HelperMethods.encodeJSON(this, fileLocation);
+            if (hasLicense) {
+                try {
+                    currentFile = new JSONObject(HelperMethods.readFile(complaints.get(i) + ".json", this));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                String fileLocation = "engines/" + complaints.get(i) + ".json";
+                currentFile = HelperMethods.encodeJSON(this, fileLocation);
+            }
             Node currentNode = new Node(currentFile);
             complaintsNodes.add(currentNode);
         }

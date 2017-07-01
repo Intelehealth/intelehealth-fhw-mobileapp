@@ -3,6 +3,7 @@ package io.intelehealth.client.application;
 import android.app.Application;
 import android.content.Context;
 
+
 import com.parse.Parse;
 
 import org.acra.ACRA;

@@ -43,7 +43,6 @@ public class PersonPhotoUploadService extends IntentService {
     private Bitmap bitmap;
 
     public PersonPhotoUploadService() {super("PersonPhotoUploadService");}
-
     public PersonPhotoUploadService(String name) {
         super(name);
     }
@@ -72,10 +71,14 @@ public class PersonPhotoUploadService extends IntentService {
                 patientId + ".jpg";
 
         File profile_image = new File(filePath);
+        imageName = profile_image.getName();
+        imageName = imageName.replace('%', '_');
 
         if (profile_image != null) {
             bitmap = BitmapFactory.decodeFile(filePath);
+
            // uploadImage(classname);
+
             byte[] byteArray = bitmapToByteArray(bitmap);
             base64EncodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
         }
