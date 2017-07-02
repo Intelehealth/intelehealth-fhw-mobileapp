@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
@@ -40,12 +41,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import io.intelehealth.client.activities.identification_activity.IdentificationActivity;
-import io.intelehealth.client.utilities.HelperMethods;
-
+import io.intelehealth.client.BuildConfig;
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.complaint_node_activity.ComplaintNodeActivity;
 import io.intelehealth.client.activities.home_activity.HomeActivity;
+import io.intelehealth.client.activities.identification_activity.IdentificationActivity;
 import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Patient;
@@ -96,12 +96,12 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         patient.setId(patientID);
         setDisplay(String.valueOf(patientID));
-        editbtn=(Button)findViewById(R.id.edit_button);
+        editbtn = (Button) findViewById(R.id.edit_button);
         editbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent2 = new Intent(PatientDetailActivity.this, IdentificationActivity.class);
-                intent2.putExtra("pid",patientID);
+                intent2.putExtra("pid", patientID);
                 startActivity(intent2);
 
             }
@@ -521,12 +521,14 @@ public class PatientDetailActivity extends AppCompatActivity {
 
             past_visit = false;
 
-            if(newVisit.isEnabled()) {
+            if (newVisit.isEnabled()) {
                 newVisit.setEnabled(false);
             }
-            if(newVisit.isClickable()) {
+            if (newVisit.isClickable()) {
                 newVisit.setClickable(false);
-                newVisit.setBackgroundColor(getResources().getColor(R.color.divider));
+                if (BuildConfig.VERSION_CODE >= Build.VERSION_CODES.M)
+                    newVisit.setBackgroundColor(getColor(R.color.divider));
+                else newVisit.setBackgroundColor(getResources().getColor(R.color.divider));
             }
 
         } else {

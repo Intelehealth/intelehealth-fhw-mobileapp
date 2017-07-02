@@ -15,8 +15,6 @@ import java.util.List;
 
 import io.intelehealth.client.R;
 
-import static android.support.constraint.R.id.parent;
-
 /**
  * Created by Dexter Barretto on 6/28/17.
  * Github : @dbarretto
@@ -27,33 +25,28 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
     private List<DocumentObject> documentList;
     private Context context;
 
-    private AdditionalDocumentContract contract;
 
     public AdditionalDocumentAdapter(Context context, List<DocumentObject> documentList) {
         this.documentList = documentList;
         this.context = context;
-        if(context instanceof AdditionalDocumentContract){
-            contract = (AdditionalDocumentContract) context;
-        }else{
 
-        }
     }
 
     @Override
     public AdditionalDocumentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_item_additional_doc, null);
+        View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_additional_doc, null);
         AdditionalDocumentViewHolder rcv = new AdditionalDocumentViewHolder(layoutView);
         return rcv;
     }
 
     @Override
-    public void onBindViewHolder(AdditionalDocumentViewHolder holder, int position) {
-        holder.documentName.setText(documentList.get(position).getDocumentName());
+    public void onBindViewHolder(AdditionalDocumentViewHolder holder, final int position) {
+        holder.getDocumentNameTextView().setText(documentList.get(position).getDocumentName());
         final File image = new File(documentList.get(position).getDocumentPhoto());
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(),bmOptions);
-        holder.documentPhoto.setImageBitmap(bitmap);
+        holder.getDocumentPhotoImageView().setImageBitmap(bitmap);
 
         holder.getRootView().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,11 +55,12 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
             }
         });
 
-        holder.getRootView().setOnLongClickListener(new View.OnLongClickListener() {
+        holder.getDeleteDocumentImageView().setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
-
-                return true;
+            public void onClick(View v) {
+                image.delete();
+                documentList.remove(position);
+                notifyItemRemoved(position);
             }
         });
     }
@@ -76,5 +70,10 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
     @Override
     public int getItemCount() {
         return this.documentList.size();
+    }
+
+    public void addDocumentToList(DocumentObject documentObject){
+        documentList.add(documentObject);
+        notifyDataSetChanged();
     }
 }

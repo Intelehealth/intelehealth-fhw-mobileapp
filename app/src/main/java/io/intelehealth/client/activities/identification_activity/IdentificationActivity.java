@@ -733,9 +733,9 @@ public class IdentificationActivity extends AppCompatActivity {
     public class UpdatePatientTable extends AsyncTask<Void, Void, Boolean> implements DialogInterface.OnCancelListener {
         SQLiteDatabase db1 = mDbHelper.getWritableDatabase();
 
-        UpdatePatientTable(Patient currepatient) {
+        UpdatePatientTable(Patient currentpatient) {
 
-            patient1 = currepatient;
+            patient1 = currentpatient;
         }
 
         ContentValues patientEntries1 = new ContentValues();

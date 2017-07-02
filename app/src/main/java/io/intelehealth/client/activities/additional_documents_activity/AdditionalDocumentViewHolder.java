@@ -14,27 +14,33 @@ import io.intelehealth.client.R;
 
 public class AdditionalDocumentViewHolder extends RecyclerView.ViewHolder{
 
-    public TextView documentName;
-    public ImageView documentPhoto;
-    public View rootView;
+    private TextView documentNameTextView;
+    private ImageView documentPhotoImageView;
+    private ImageView deleteDocumentImageView;
+    private View rootView;
 
     public AdditionalDocumentViewHolder(View itemView) {
         super(itemView);
-
         rootView = itemView;
-        documentName = (TextView)itemView.findViewById(R.id.document_name);
-        documentPhoto = (ImageView)itemView.findViewById(R.id.document_photo);
+        documentNameTextView = (TextView)itemView.findViewById(R.id.document_name_TextView);
+        documentPhotoImageView = (ImageView)itemView.findViewById(R.id.document_photo_ImageView);
+        deleteDocumentImageView = (ImageView)itemView.findViewById(R.id.document_delete_button_ImageView);
     }
 
-    public TextView getDocumentName() {
-        return documentName;
+    public TextView getDocumentNameTextView() {
+        return documentNameTextView;
     }
 
-    public ImageView getDocumentPhoto() {
-        return documentPhoto;
+    public ImageView getDocumentPhotoImageView() {
+        return documentPhotoImageView;
+    }
+
+    public ImageView getDeleteDocumentImageView() {
+        return deleteDocumentImageView;
     }
 
     public View getRootView() {
         return rootView;
     }
+
 }
