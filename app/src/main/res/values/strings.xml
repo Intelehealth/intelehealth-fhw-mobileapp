@@ -449,6 +449,8 @@
     <string name="offline_authentication_not_possible">Unable to authenticate offline.</string>
 
     <string name="login_location_select">Session Location</string>
-
+    <string name="prompt_licensekey">License Key</string>
+    <string name="setup_use_demo_mindmap">Use Demo Mind-Maps</string>
+    <string name="setup_download_mindmap">Download Mind-Maps</string>
 
 </resources>

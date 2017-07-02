@@ -284,7 +284,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 //    mPhoto = results[0];
                 //    mCurrentPhotoPath = results[1];
                 //}
-                File filePath = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator + "patient_photo");
+                File filePath = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator +
+                        "Patient_Images" + File.separator + patientID);
                 if (!filePath.exists()) {
                     filePath.mkdir();
                 }
@@ -725,7 +726,9 @@ public class IdentificationActivity extends AppCompatActivity {
             intent2.putExtra("patientID", patientID);
             intent2.putExtra("name", fullName);
             intent2.putExtra("tag", "new");
+            intent2.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent2);
+            finish();
         }
     }
 
@@ -783,8 +786,9 @@ public class IdentificationActivity extends AppCompatActivity {
             intent3.putExtra("patientID", patientID_edit);
             intent3.putExtra("name", fullName);
             intent3.putExtra("tag", "new");
-
+            intent3.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent3);
+            finish();
         }
     }
 

@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -52,6 +53,7 @@ import java.util.List;
 import java.util.Locale;
 
 import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
+import io.intelehealth.client.services.ImageUploadService;
 import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.complaint_node_activity.ComplaintNodeActivity;
@@ -105,6 +107,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     Obs complaint = new Obs();
     Obs famHistory = new Obs();
     Obs patHistory = new Obs();
+    Obs phyExam = new Obs();
     Obs height = new Obs();
     Obs weight = new Obs();
     Obs pulse = new Obs();
@@ -267,12 +270,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Uploading to doctor.", Snackbar.LENGTH_LONG).show();
 
+                Intent imageUpload = new Intent(VisitSummaryActivity.this, ImageUploadService.class);
+                imageUpload.putExtra("patientID",patientID);
+                imageUpload.putExtra("visitID",visitID);
+                startService(imageUpload);
+
                 Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
                 serviceIntent.putExtra("serviceCall", "visit");
                 serviceIntent.putExtra("patientID", patientID);
                 serviceIntent.putExtra("visitID", visitID);
                 serviceIntent.putExtra("name", patientName);
                 startService(serviceIntent);
+
 
                 //mLayout.removeView(uploadButton);
 
@@ -341,7 +350,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         patHistory.setValue(medHistory);
         patHistView.setText(patHistory.getValue());
-        physFindingsView.setText(patHistory.getValue());
+        physFindingsView.setText(phyExam.getValue());
 
 
         editVitals.setOnClickListener(new View.OnClickListener() {
@@ -384,7 +393,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final AlertDialog.Builder famHistDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
-                famHistDialog.setTitle(getString(R.string.visit_summary_complaint));
+                famHistDialog.setTitle(getString(R.string.visit_summary_family_history));
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 famHistDialog.setView(convertView);
@@ -523,7 +532,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 physicalDialog.setView(convertView);
 
                 final TextView physicalText = (TextView) convertView.findViewById(R.id.textView_entry);
-                physicalText.setText(patHistory.getValue());
+                physicalText.setText(phyExam.getValue());
                 physicalText.setEnabled(false);
 
                 physicalDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -532,15 +541,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         final AlertDialog.Builder textInput = new AlertDialog.Builder(VisitSummaryActivity.this);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
-                        dialogEditText.setText(patHistory.getValue());
+                        dialogEditText.setText(phyExam.getValue());
                         textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                patHistory.setValue(dialogEditText.getText().toString());
-                                physicalText.setText(patHistory.getValue());
-                                physFindingsView.setText(patHistory.getValue());
-                                updateDatabase(patHistory.getValue(), 163189);
+                                phyExam.setValue(dialogEditText.getText().toString());
+                                physicalText.setText(phyExam.getValue());
+                                physFindingsView.setText(phyExam.getValue());
+                                updateDatabase(phyExam.getValue(), 163189);
                                 dialog.dismiss();
                             }
                         });
@@ -584,7 +593,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final AlertDialog.Builder historyDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
-                historyDialog.setTitle(getString(R.string.visit_summary_on_examination));
+                historyDialog.setTitle(getString(R.string.visit_summary_medical_history));
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 historyDialog.setView(convertView);
@@ -753,12 +762,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         try {
             String medHistSelection = "patient_id = ? AND concept_id = ?";
-            String[] medHistArgs = {dataString, "163189"};
+            String[] medHistArgs = {dataString, "163187"};
             Cursor medHistCursor = db.query("obs", columns, medHistSelection, medHistArgs, null, null, orderBy);
             medHistCursor.moveToLast();
             String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
             patHistory.setValue(medHistText);
-            if (!medHistText.isEmpty()) {
+            if (medHistText!=null && !medHistText.isEmpty()) {
                 medHistory = patHistory.getValue();
                 medHistory = medHistory.replace("\"", "");
                 medHistory = medHistory.replace("\n", "");
@@ -795,7 +804,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 complaint.setValue(value);
                 break;
             case 163189: //Physical Examination
-                patHistory.setValue(value);
+                phyExam.setValue(value);
                 break;
             case 5090: //Height
                 height.setValue(value);

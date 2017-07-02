@@ -96,6 +96,15 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             ")";
     public static final String DROP = "DROP TABLE IF EXISTS";
 
+    public static final String CREATE_IMAGE_RECORDS = "CREATE TABLE image_records("+
+            "_id integer PRIMARY KEY AUTOINCREMENT," +
+            "patient_id TEXT NOT NULL," +
+            "visit_id integer(10)," +
+            "image_path TEXT NOT NULL"
+            +")";
+
+
+
     public LocalRecordsDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -116,6 +125,7 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_USER);
         db.execSQL(CREATE_LOCATION);
         db.execSQL(CREATE_DELAYED_JOBS);
+        db.execSQL(CREATE_IMAGE_RECORDS);
     }
 
     @Override
