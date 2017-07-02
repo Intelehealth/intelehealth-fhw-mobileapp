@@ -21,11 +21,14 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
 import io.intelehealth.client.R;
+import io.intelehealth.client.activities.family_history_activity.FamilyHistoryActivity;
+import io.intelehealth.client.activities.past_medical_history_activity.PastMedicalHistoryActivity;
 import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
 import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
@@ -35,6 +38,7 @@ import io.intelehealth.client.objects.TableExam;
  * Records the patient vitals in the {@link TableExam} container.
  */
 public class VitalsActivity extends AppCompatActivity {
+
 
     EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mSpo2, mBMI;
     Long obsID;
@@ -63,6 +67,7 @@ public class VitalsActivity extends AppCompatActivity {
     String minspo2 ="1";
 
 
+
     ArrayList<String> physicalExams;
 
     LocalRecordsDatabaseHelper mDbHelper;
@@ -70,11 +75,15 @@ public class VitalsActivity extends AppCompatActivity {
 
     TableExam results = new TableExam();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+
+
         //For Testing
         //patientID = Long.valueOf("1");
+
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -84,6 +93,8 @@ public class VitalsActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
+
+
 //            Log.v(TAG, "Patient ID: " + patientID);
 //            Log.v(TAG, "Visit ID: " + visitID);
 //            Log.v(TAG, "Patient Name: " + patientName);
@@ -160,6 +171,7 @@ public class VitalsActivity extends AppCompatActivity {
                     mBMI.getText().clear();
                     flag_height =1;
                     heightvalue = mHeight.getText().toString();
+
                 }
                 else
                 {
@@ -218,7 +230,8 @@ public class VitalsActivity extends AppCompatActivity {
                 validateTable();
             }
         });
-    }
+
+       }
 
     public void calculateBMI()
     {
@@ -252,6 +265,7 @@ public class VitalsActivity extends AppCompatActivity {
         }*/
 
     }
+
 
     public void loadPrevious() {
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
@@ -513,7 +527,7 @@ public class VitalsActivity extends AppCompatActivity {
             insertDb(results.getBpdia(), 5086);
             insertDb(results.getTemperature(), 163202);
             insertDb(results.getSpo2(), 5092);
-            Intent intent = new Intent(VitalsActivity.this, PhysicalExamActivity.class);
+            Intent intent = new Intent(VitalsActivity.this, VisitSummaryActivity.class); // earlier physicalexamactivity
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);
             intent.putExtra("state", state);

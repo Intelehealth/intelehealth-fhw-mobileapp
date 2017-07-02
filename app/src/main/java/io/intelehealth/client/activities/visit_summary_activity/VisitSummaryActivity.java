@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,6 +16,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
@@ -203,6 +205,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+
+
       callBroadcastReceiver();
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -341,23 +345,29 @@ public class VisitSummaryActivity extends AppCompatActivity {
         double bmi_value = numerator / denominator;
         mBMI = String.format(Locale.ENGLISH, "%.2f", bmi_value);
 
+        patHistory.setValue(medHistory);
 
         bmiView.setText(mBMI);
         tempView.setText(temperature.getValue());
         spO2View.setText(spO2.getValue());
         complaintView.setText(complaint.getValue());
         famHistView.setText(famHistory.getValue());
-
-        patHistory.setValue(medHistory);
         patHistView.setText(patHistory.getValue());
+
+
+
+
+
         physFindingsView.setText(phyExam.getValue());
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor e = sharedPreferences.edit();
 
 
         editVitals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final AlertDialog.Builder vitalsDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
-                vitalsDialog.setTitle(getString(R.string.visit_summary_complaint));
+                vitalsDialog.setTitle(getString(R.string.visit_summary_vitals));
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 vitalsDialog.setView(convertView);
@@ -691,6 +701,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             alertDialog.show();
 
         } else {
+            // when VisitSummary has been uploaded to doctor
+
             Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
             serviceIntent.putExtra("serviceCall", "endVisit");
             serviceIntent.putExtra("patientID", patientID);
@@ -768,7 +780,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
             patHistory.setValue(medHistText);
             if (medHistText!=null && !medHistText.isEmpty()) {
+              
                 medHistory = patHistory.getValue();
+
+
                 medHistory = medHistory.replace("\"", "");
                 medHistory = medHistory.replace("\n", "");
                 do {
@@ -1195,11 +1210,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         ContentValues contentValues = new ContentValues();
         contentValues.put("value", string);
 
-        String selection = "patient_id = ? AND visit_id = ? concept_id = ?";
+        String selection = "patient_id = ? AND visit_id = ? AND concept_id = ?";
         String[] args = {patientID, visitID, String.valueOf(conceptID)};
 
         localdb.update(
-                "visit",
+                "obs",
                 contentValues,
                 selection,
                 args
