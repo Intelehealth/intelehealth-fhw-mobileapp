@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -37,6 +38,7 @@ import io.intelehealth.client.objects.TableExam;
  * Records the patient vitals in the {@link TableExam} container.
  */
 public class VitalsActivity extends AppCompatActivity {
+
 
     EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mSpo2, mBMI;
     Long obsID;
@@ -73,11 +75,15 @@ public class VitalsActivity extends AppCompatActivity {
 
     TableExam results = new TableExam();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+
+
         //For Testing
         //patientID = Long.valueOf("1");
+
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -87,6 +93,8 @@ public class VitalsActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
+
+
 //            Log.v(TAG, "Patient ID: " + patientID);
 //            Log.v(TAG, "Visit ID: " + visitID);
 //            Log.v(TAG, "Patient Name: " + patientName);
@@ -258,38 +266,6 @@ public class VitalsActivity extends AppCompatActivity {
 
     }
 
-    public void calculateBMI()
-    {
-        if(flag_height==1 && flag_weight==1)
-        {
-            mBMI.getText().clear();
-            double numerator = Double.parseDouble(weightvalue) * 10000;
-            double denominator = (Double.parseDouble(heightvalue)) * (Double.parseDouble(heightvalue));
-            double bmi_value = numerator / denominator;
-            mBMI.setText(String.format(Locale.ENGLISH, "%,2f", bmi_value));
-        }
-        else if(flag_height==0 || flag_weight==0)
-        {
-            // do nothing
-            mBMI.getText().clear();
-        }
-       /* else
-        {
-            String message = "Please enter height and weight first.";
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(VitalsActivity.this);
-            alertDialogBuilder.setMessage(message);
-            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-
-        }*/
-
-    }
 
     public void loadPrevious() {
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());

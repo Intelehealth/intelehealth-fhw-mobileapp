@@ -345,15 +345,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
         double bmi_value = numerator / denominator;
         mBMI = String.format(Locale.ENGLISH, "%.2f", bmi_value);
 
+        patHistory.setValue(medHistory);
 
         bmiView.setText(mBMI);
         tempView.setText(temperature.getValue());
         spO2View.setText(spO2.getValue());
         complaintView.setText(complaint.getValue());
         famHistView.setText(famHistory.getValue());
+        patHistView.setText(patHistory.getValue());
 
 
-        patHistory.setValue(medHistory);
+
 
 
         physFindingsView.setText(phyExam.getValue());
