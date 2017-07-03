@@ -93,8 +93,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     flag = false;
                         if (phistory != null && !phistory.isEmpty() && !phistory.equals("null"))
                         {
-                            phistory = "    ";
-                            insertDb(phistory);}
+                            insertDb(phistory);
+                        }
+
                     Intent intent =new Intent(PastMedicalHistoryActivity.this,FamilyHistoryActivity.class);
                     intent.putExtra("patientID", patientID);
                     intent.putExtra("visitID", visitID);
