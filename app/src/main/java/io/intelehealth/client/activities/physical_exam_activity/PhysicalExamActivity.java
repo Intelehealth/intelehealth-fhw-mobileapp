@@ -2,12 +2,14 @@ package io.intelehealth.client.activities.physical_exam_activity;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -28,11 +30,16 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import io.intelehealth.client.utilities.ConceptId;
+import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
+import io.intelehealth.client.activities.family_history_activity.FamilyHistoryActivity;
+
 import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
@@ -59,6 +66,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
+
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -81,7 +89,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
     PhysicalExam physicalExamMap;
 
     String physicalString;
-
     Boolean complaintConfirmed = false;
 
     @Override
@@ -112,6 +119,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
             Log.d(LOG_TAG, "No additional exams were triggered");
         } else {
             Log.d(LOG_TAG, selectedExamsList.toString());
+          //  for(String string:selectedExamsList) Log.d(LOG_TAG,string);
         }
         physicalExamMap = new PhysicalExam(HelperMethods.encodeJSON(this, mFileName), selectedExamsList);
 
@@ -150,6 +158,14 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
                     physicalString = physicalExamMap.generateFindings();
 
+                    List<String> imagePathList = physicalExamMap.getImagePathList();
+
+                    if (imagePathList != null) {
+                        for (String imagePath : imagePathList) {
+                            updateImageDatabase(imagePath);
+                        }
+                    }
+
                     if (intentTag != null && intentTag.equals("edit")) {
                         updateDatabase(physicalString);
                         Intent intent = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
@@ -162,7 +178,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                         startActivity(intent);
                     } else {
                         long obsId = insertDb(physicalString);
-                        Intent intent1 = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
+                        Intent intent1 = new Intent(PhysicalExamActivity.this, VitalsActivity.class); // earlier visitsummary
                         intent1.putExtra("patientID", patientID);
                         intent1.putExtra("visitID", visitID);
                         intent1.putExtra("state", state);
@@ -198,6 +214,10 @@ public class PhysicalExamActivity extends AppCompatActivity {
          * The fragment argument representing the section number for this
          * fragment.
          */
+
+        String image_Prefix = "PEA";
+        String imageDir = "Physical Exam";
+
         private static final String ARG_SECTION_NUMBER = "section_number";
 
         public PlaceholderFragment() {
@@ -207,17 +227,19 @@ public class PhysicalExamActivity extends AppCompatActivity {
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int sectionNumber, PhysicalExam exams) {
+        public static PlaceholderFragment newInstance(int sectionNumber, PhysicalExam exams, String patientID, String visitID) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            args.putString("PATIENT_ID", patientID);
+            args.putString("VISIT_ID", visitID);
             args.putSerializable("maps", exams);
             fragment.setArguments(args);
             return fragment;
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_physical_exam, container, false);
 
@@ -230,6 +252,8 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
             PhysicalExam exams = (PhysicalExam) getArguments().getSerializable("maps");
             int viewNumber = getArguments().getInt(ARG_SECTION_NUMBER);
+            final String patientID = getArguments().getString("PATIENT_ID");
+            final String visitID = getArguments().getString("VISIT_ID");
             final Node viewNode = exams.getExamNode(viewNumber - 1);
             String nodeText = viewNode.getText();
             textView.setText(nodeText);
@@ -276,12 +300,28 @@ public class PhysicalExamActivity extends AppCompatActivity {
                     }
                     adapter.notifyDataSetChanged();
 
+                    String imageName = patientID + "_" + visitID + "_" + image_Prefix;
+                    String baseDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+                    File filePath = new File(baseDir + File.separator + "Patient Images" + File.separator +
+                            patientID + File.separator + visitID + File.separator + imageDir);
+
                     if (question.getInputType() != null && question.isSelected()) {
-                        Node.handleQuestion(question, (Activity) getContext(), adapter);
+
+                        if (question.getInputType().equals("camera")) {
+                            if (!filePath.exists()) {
+                                boolean res = filePath.mkdirs();
+                                Log.i("RES>",""+filePath+" -> " + res);
+                            }
+                            Node.handleQuestion(question, getActivity(), adapter, filePath.toString(), imageName);
+                        } else {
+                            Node.handleQuestion(question, (Activity) getContext(), adapter, null, null);
+                        }
+
+
                     }
 
                     if (!question.isTerminal() && question.isSelected()) {
-                        Node.subLevelQuestion(question, (Activity) getContext(), adapter);
+                        Node.subLevelQuestion(question, (Activity) getContext(), adapter,filePath.toString(),imageName);
                     }
 
                     return false;
@@ -319,7 +359,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1, exams);
+            return PlaceholderFragment.newInstance(position + 1, exams, patientID, visitID);
         }
 
         @Override
@@ -387,6 +427,16 @@ public class PhysicalExamActivity extends AppCompatActivity {
                 args
         );
 
+    }
+
+    private void updateImageDatabase(String imagePath) {
+        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
+        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path) values("
+                +"'" +patientID +"'"+","
+                + visitID + ","
+                + "'"+imagePath +"'"+
+                ")");
     }
 
     @Override

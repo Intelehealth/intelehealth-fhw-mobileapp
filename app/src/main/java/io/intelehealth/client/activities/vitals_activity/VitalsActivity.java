@@ -21,11 +21,14 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
 import io.intelehealth.client.R;
+import io.intelehealth.client.activities.family_history_activity.FamilyHistoryActivity;
+import io.intelehealth.client.activities.past_medical_history_activity.PastMedicalHistoryActivity;
 import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
 import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
@@ -36,6 +39,7 @@ import io.intelehealth.client.utilities.ConceptId;
  * Records the patient vitals in the {@link TableExam} container.
  */
 public class VitalsActivity extends AppCompatActivity {
+
 
     EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mSpo2, mBMI;
     Long obsID;
@@ -50,6 +54,21 @@ public class VitalsActivity extends AppCompatActivity {
     String heightvalue;
     String weightvalue;
 
+    String maxh= "272";
+    String maxw= "150";
+    String maxbpsys= "300";
+    String minbpsys= "50";
+    String maxbpdys= "150";
+    String minbpdys= "30";
+    String maxpulse ="200";
+    String minpulse= "30";
+    String maxte ="120";
+    String minte ="80";
+    String maxspo2 ="100";
+    String minspo2 ="1";
+
+
+
     ArrayList<String> physicalExams;
 
     LocalRecordsDatabaseHelper mDbHelper;
@@ -57,11 +76,15 @@ public class VitalsActivity extends AppCompatActivity {
 
     TableExam results = new TableExam();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+
+
         //For Testing
         //patientID = Long.valueOf("1");
+
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -71,6 +94,8 @@ public class VitalsActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
+
+
 //            Log.v(TAG, "Patient ID: " + patientID);
 //            Log.v(TAG, "Visit ID: " + visitID);
 //            Log.v(TAG, "Patient Name: " + patientName);
@@ -171,7 +196,6 @@ public class VitalsActivity extends AppCompatActivity {
                     mBMI.getText().clear();
                     flag_weight =1;
                     weightvalue = mWeight.getText().toString();
-
                 }
                 else
                 {
@@ -207,7 +231,8 @@ public class VitalsActivity extends AppCompatActivity {
                 validateTable();
             }
         });
-    }
+
+       }
 
     public void calculateBMI()
     {
@@ -241,6 +266,7 @@ public class VitalsActivity extends AppCompatActivity {
         }*/
 
     }
+
 
     public void loadPrevious() {
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
@@ -305,15 +331,133 @@ public class VitalsActivity extends AppCompatActivity {
 
         // Check to see if values were inputted.
         for (int i = 0; i < values.size(); i++) {
-            EditText et = values.get(i);
+            if (i == 0) {
+                EditText et = values.get(i);
+                String abc = et.getText().toString().trim();
+                if (abc != null && !abc.isEmpty()) {
+                    if (Double.parseDouble(abc) > Double.parseDouble(maxh)) {
+                        et.setError("Height should be between 0 and 272cm");
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+//       }
+                } else {
+                    cancel = false;
+                }
+            }else if(i==1) {
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (abc1 != null && !abc1.isEmpty()) {
+                    if (Double.parseDouble(abc1) > Double.parseDouble(maxw)) {
+                        et.setError("Weight should be less than 150kg");
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+//       }
+                } else {
+                    cancel = false;
+                }
 
-            if (TextUtils.isEmpty(et.getText().toString())) {
-                et.setError(getString(R.string.error_field_required));
-                focusView = et;
-                cancel = true;
-                break;
-            } else {
-                cancel = false;
+            } else if(i==2)
+            {
+                EditText et = values.get(i);
+                String abc2 = et.getText().toString().trim();
+                if (abc2 != null && !abc2.isEmpty() && (!abc2.equals("0.0"))) {
+                    if ((Double.parseDouble(abc2) > Double.parseDouble(maxpulse)) ||
+                            (Double.parseDouble(abc2) < Double.parseDouble(minpulse))) {
+                        et.setError("Pulse should be in between 30 and 150");
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+//       }
+                } else {
+                    cancel = false;
+                }
+
+            }else if (i==3)
+            {
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(maxbpsys)) ||
+                            (Double.parseDouble(abc1) < Double.parseDouble(minbpsys))) {
+                        et.setError("Systolic pressure should be in between 50 ad 160");
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+//       }
+                } else {
+                    cancel = false;
+                }
+
+            }else if (i==4)
+            {
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(maxbpdys)) ||
+                            (Double.parseDouble(abc1) < Double.parseDouble(minbpdys))) {
+                        et.setError("Diastolic pressure should be in between 30 and 120");
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+//       }
+                } else {
+                    cancel = false;
+                }
+
+            }else if (i==5)
+            {
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(maxte)) ||
+                            (Double.parseDouble(abc1) < Double.parseDouble(minte))) {
+                        et.setError("Temperature should be in between 80 and 120");
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+//       }
+                } else {
+                    cancel = false;
+                }
+            }
+            else
+            {
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(maxspo2)) ||
+                    (Double.parseDouble(abc1) < Double.parseDouble(minspo2))) {
+                        et.setError("SpO2 should be in between 1 and 100");
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+//       }
+                } else {
+                    cancel = false;
+                }
             }
         }
 
@@ -323,18 +467,41 @@ public class VitalsActivity extends AppCompatActivity {
             return;
         } else {
             try {
-                results.setHeight(Double.parseDouble(mHeight.getText().toString()));
-                results.setWeight(Double.parseDouble(mWeight.getText().toString()));
-                results.setPulse(Double.parseDouble(mPulse.getText().toString()));
-                results.setBpsys(Double.parseDouble(mBpSys.getText().toString()));
-                results.setBpdia(Double.parseDouble(mBpDia.getText().toString()));
-                results.setTemperature(Double.parseDouble(mTemperature.getText().toString()));
-                results.setSpo2(Double.parseDouble(mSpo2.getText().toString()));
+                if (mHeight.getText()!=null) {
+                    results.setHeight(Double.parseDouble(mHeight.getText().toString()));
+                }
+                if(mWeight.getText()!=null)
+                {
+                    results.setWeight(Double.parseDouble(mWeight.getText().toString()));
+                }
+                if(mPulse.getText()!=null)
+                {
+                    results.setPulse(Double.parseDouble(mPulse.getText().toString()));
+                }
+                if(mBpDia.getText()!=null)
+                {
+                    results.setBpdia(Double.parseDouble(mBpDia.getText().toString()));
+                }
+                if (mBpSys.getText()!=null)
+                {
+                    results.setBpsys(Double.parseDouble(mBpSys.getText().toString()));
+                }
+                if(mTemperature.getText()!=null)
+                {
+                    results.setTemperature(Double.parseDouble(mTemperature.getText().toString()));
+                }
+                if(mSpo2.getText()!=null)
+                {
+                    results.setSpo2(Double.parseDouble(mSpo2.getText().toString()));
+                }
+
+
+
             } catch (NumberFormatException e) {
                 Snackbar.make(findViewById(R.id.cl_table), "Error: non-decimal number entered.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
 
-
+//
         }
 
         if (intentTag != null && intentTag.equals("edit")) {
@@ -354,6 +521,7 @@ public class VitalsActivity extends AppCompatActivity {
             intent.putStringArrayListExtra("exams", physicalExams);
             startActivity(intent);
         } else {
+
             insertDb(results.getHeight(), ConceptId.HEIGHT);
             insertDb(results.getWeight(), ConceptId.WEIGHT);
             insertDb(results.getPulse(), ConceptId.PULSE);
@@ -361,7 +529,8 @@ public class VitalsActivity extends AppCompatActivity {
             insertDb(results.getBpdia(), ConceptId.DIASTOLIC_BP);
             insertDb(results.getTemperature(), ConceptId.TEMPERATURE);
             insertDb(results.getSpo2(), ConceptId.SPO2);
-            Intent intent = new Intent(VitalsActivity.this, PhysicalExamActivity.class);
+            Intent intent = new Intent(VitalsActivity.this, VisitSummaryActivity.class);
+
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);
             intent.putExtra("state", state);
@@ -405,7 +574,7 @@ public class VitalsActivity extends AppCompatActivity {
         String[] args = {patientID, visitID, String.valueOf(CONCEPT_ID)};
 
         localdb.update(
-                "visit",
+                "obs",
                 contentValues,
                 selection,
                 args

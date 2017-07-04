@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,6 +15,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
+import android.os.Environment;
+
+import android.preference.PreferenceManager;
+
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
@@ -25,6 +31,8 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,27 +52,34 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+
 import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
 import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.R;
+import io.intelehealth.client.activities.additional_documents_activity.AdditionalDocumentsActivity;
 import io.intelehealth.client.activities.complaint_node_activity.ComplaintNodeActivity;
 import io.intelehealth.client.activities.family_history_activity.FamilyHistoryActivity;
 import io.intelehealth.client.activities.home_activity.HomeActivity;
 import io.intelehealth.client.activities.past_medical_history_activity.PastMedicalHistoryActivity;
 import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity;
+import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Obs;
 import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.objects.WebResponse;
 import io.intelehealth.client.services.ClientService;
+import io.intelehealth.client.services.ImageUploadService;
+import io.intelehealth.client.utilities.HelperMethods;
 
 /**
  * This class updates data about patient to database. It also creates a summary about it which can be viewed
@@ -105,6 +120,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     Obs complaint = new Obs();
     Obs famHistory = new Obs();
     Obs patHistory = new Obs();
+    Obs phyExam = new Obs();
     Obs height = new Obs();
     Obs weight = new Obs();
     Obs pulse = new Obs();
@@ -125,6 +141,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ImageButton editPhysical;
     ImageButton editFamHist;
     ImageButton editMedHist;
+    ImageButton editAddDocs;
 
     TextView nameView;
     TextView idView;
@@ -156,6 +173,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private boolean isConnected = false;
     private Menu mymenu;
     MenuItem internetCheck;
+
+    private RecyclerView mAdditionalDocsRecyclerView;
+    private RecyclerView.LayoutManager mAdditionalDocsLayoutManager;
+
+    private RecyclerView mPhysicalExamsRecyclerView;
+    private RecyclerView.LayoutManager mPhysicalExamsLayoutManager;
+
+
+    String additionalDocumentDir = "Additional Documents";
+    String physicalExamDocumentDir = "Physical Exam";
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -201,6 +228,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         callBroadcastReceiver();
+
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientID = intent.getStringExtra("patientID");
@@ -239,6 +267,44 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mLayout = (LinearLayout) findViewById(R.id.summary_layout);
         context = getApplicationContext();
 
+        mAdditionalDocsRecyclerView = (RecyclerView) findViewById(R.id.recy_additional_documents);
+        mPhysicalExamsRecyclerView = (RecyclerView) findViewById(R.id.recy_physexam);
+
+        String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+
+        String filePathAddDoc = baseDir + File.separator + "Patient Images" + File.separator + patientID + File.separator +
+                visitID + File.separator + additionalDocumentDir;
+
+        String filePathPhyExam = baseDir + File.separator + "Patient Images" + File.separator + patientID + File.separator +
+                visitID + File.separator + physicalExamDocumentDir;
+
+        File addDocDir = new File(filePathAddDoc);
+        if (!addDocDir.exists()) {
+            addDocDir.mkdirs();
+            Log.v(LOG_TAG, "directory ceated " + addDocDir.getAbsolutePath());
+        } else {
+            File[] files = addDocDir.listFiles();
+            List<File> fileList = Arrays.asList(files);
+            HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
+            mAdditionalDocsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
+            mAdditionalDocsRecyclerView.setLayoutManager(mAdditionalDocsLayoutManager);
+            mAdditionalDocsRecyclerView.setAdapter(horizontalAdapter);
+
+        }
+
+        File phyExamDir = new File(filePathPhyExam);
+        if (!phyExamDir.exists()) {
+            phyExamDir.mkdirs();
+            Log.v(LOG_TAG, "directory ceated " + phyExamDir.getAbsolutePath());
+        } else {
+            File[] files = phyExamDir.listFiles();
+            List<File> fileList = Arrays.asList(files);
+            HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
+            mPhysicalExamsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
+            mPhysicalExamsRecyclerView.setLayoutManager(mPhysicalExamsLayoutManager);
+            mPhysicalExamsRecyclerView.setAdapter(horizontalAdapter);
+
+        }
 
         mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -248,6 +314,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editPhysical = (ImageButton) findViewById(R.id.imagebutton_edit_physexam);
         editFamHist = (ImageButton) findViewById(R.id.imagebutton_edit_famhist);
         editMedHist = (ImageButton) findViewById(R.id.imagebutton_edit_pathist);
+        editAddDocs = (ImageButton) findViewById(R.id.imagebutton_edit_additional_document);
         uploadButton = (Button) findViewById(R.id.button_upload);
 
         if (isPast) {
@@ -256,6 +323,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             editPhysical.setVisibility(View.GONE);
             editFamHist.setVisibility(View.GONE);
             editMedHist.setVisibility(View.GONE);
+            editAddDocs.setVisibility(View.GONE);
             uploadButton.setVisibility(View.GONE);
             invalidateOptionsMenu();
         }
@@ -266,12 +334,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Uploading to doctor.", Snackbar.LENGTH_LONG).show();
 
+                Intent imageUpload = new Intent(VisitSummaryActivity.this, ImageUploadService.class);
+                imageUpload.putExtra("patientID", patientID);
+                imageUpload.putExtra("visitID", visitID);
+                startService(imageUpload);
+
                 Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
                 serviceIntent.putExtra("serviceCall", "visit");
                 serviceIntent.putExtra("patientID", patientID);
                 serviceIntent.putExtra("visitID", visitID);
                 serviceIntent.putExtra("name", patientName);
                 startService(serviceIntent);
+
 
                 //mLayout.removeView(uploadButton);
 
@@ -331,23 +405,29 @@ public class VisitSummaryActivity extends AppCompatActivity {
         double bmi_value = numerator / denominator;
         mBMI = String.format(Locale.ENGLISH, "%.2f", bmi_value);
 
+        patHistory.setValue(medHistory);
 
         bmiView.setText(mBMI);
         tempView.setText(temperature.getValue());
         spO2View.setText(spO2.getValue());
         complaintView.setText(complaint.getValue());
         famHistView.setText(famHistory.getValue());
-
-        patHistory.setValue(medHistory);
         patHistView.setText(patHistory.getValue());
-        physFindingsView.setText(patHistory.getValue());
+
+
+
+
+
+        physFindingsView.setText(phyExam.getValue());
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor e = sharedPreferences.edit();
 
 
         editVitals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final AlertDialog.Builder vitalsDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
-                vitalsDialog.setTitle(getString(R.string.visit_summary_complaint));
+                vitalsDialog.setTitle(getString(R.string.visit_summary_vitals));
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 vitalsDialog.setView(convertView);
@@ -383,7 +463,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final AlertDialog.Builder famHistDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
-                famHistDialog.setTitle(getString(R.string.visit_summary_complaint));
+                famHistDialog.setTitle(getString(R.string.visit_summary_family_history));
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 famHistDialog.setView(convertView);
@@ -522,7 +602,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 physicalDialog.setView(convertView);
 
                 final TextView physicalText = (TextView) convertView.findViewById(R.id.textView_entry);
-                physicalText.setText(patHistory.getValue());
+                physicalText.setText(phyExam.getValue());
                 physicalText.setEnabled(false);
 
                 physicalDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -531,15 +611,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         final AlertDialog.Builder textInput = new AlertDialog.Builder(VisitSummaryActivity.this);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
-                        dialogEditText.setText(patHistory.getValue());
+                        dialogEditText.setText(phyExam.getValue());
                         textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                patHistory.setValue(dialogEditText.getText().toString());
-                                physicalText.setText(patHistory.getValue());
-                                physFindingsView.setText(patHistory.getValue());
-                                updateDatabase(patHistory.getValue(), ConceptId.PHYSICAL_EXAMINATION);
+
+                                phyExam.setValue(dialogEditText.getText().toString());
+                                physicalText.setText(phyExam.getValue());
+                                physFindingsView.setText(phyExam.getValue());
+                                updateDatabase(phyExam.getValue(), ConceptId.PHYSICAL_EXAMINATION);
                                 dialog.dismiss();
                             }
                         });
@@ -583,7 +664,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final AlertDialog.Builder historyDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
-                historyDialog.setTitle(getString(R.string.visit_summary_on_examination));
+                historyDialog.setTitle(getString(R.string.visit_summary_medical_history));
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 historyDialog.setView(convertView);
@@ -645,6 +726,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         });
 
+        editAddDocs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addDocs = new Intent(VisitSummaryActivity.this, AdditionalDocumentsActivity.class);
+                addDocs.putExtra("patientID", patientID);
+                addDocs.putExtra("visitID", visitID);
+                startActivity(addDocs);
+            }
+        });
+
 
     }
 
@@ -682,6 +773,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             alertDialog.show();
 
         } else {
+            // when VisitSummary has been uploaded to doctor
+
             Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
             serviceIntent.putExtra("serviceCall", "endVisit");
             serviceIntent.putExtra("patientID", patientID);
@@ -754,13 +847,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         try {
             String medHistSelection = "patient_id = ? AND concept_id = ?";
+            
             String[] medHistArgs = {dataString, String.valueOf(ConceptId.PHYSICAL_EXAMINATION)};
+
             Cursor medHistCursor = db.query("obs", columns, medHistSelection, medHistArgs, null, null, orderBy);
             medHistCursor.moveToLast();
             String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
             patHistory.setValue(medHistText);
-            if (!medHistText.isEmpty()) {
+            
+            if (medHistText != null && !medHistText.isEmpty()) {
+
                 medHistory = patHistory.getValue();
+
+
                 medHistory = medHistory.replace("\"", "");
                 medHistory = medHistory.replace("\n", "");
                 do {
@@ -796,8 +895,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
             case ConceptId.CURRENT_COMPLAINT: //Current Complaint
                 complaint.setValue(value);
                 break;
+
             case ConceptId.PHYSICAL_EXAMINATION: //Physical Examination
                 patHistory.setValue(value);
+
                 break;
             case ConceptId.HEIGHT: //Height
                 height.setValue(value);
@@ -1190,11 +1291,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         ContentValues contentValues = new ContentValues();
         contentValues.put("value", string);
 
-        String selection = "patient_id = ? AND visit_id = ? concept_id = ?";
+        String selection = "patient_id = ? AND visit_id = ? AND concept_id = ?";
         String[] args = {patientID, visitID, String.valueOf(conceptID)};
 
         localdb.update(
-                "visit",
+                "obs",
                 contentValues,
                 selection,
                 args

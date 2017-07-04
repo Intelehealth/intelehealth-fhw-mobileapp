@@ -152,6 +152,7 @@
     <string name="visit_summary_family_history">Family History</string>
     <string name="visit_summary_on_examination">On Examination</string>
     <string name="visit_summary_complaint">C/O</string>
+    <string name="visit_summary_vitals">Vitals</string>
     <string name="visit_summary_doctor_details">Doctor Details</string>
     <string name="visit_summary_rx">Prescribed Medications</string>
     <string name="visit_summary_diagnosis">Diagnosis</string>
@@ -413,7 +414,8 @@
     <string name="title_activity_setup">SetupActivity</string>
 
     <string name="title_activity_camera">Camera Activity</string>
-    <string name="title_activity_today_patient">"Today's Patients"</string>\
+    <string name="title_activity_today_patient">"Today's Patients"</string>
+    <string name="title_activity_additional_documents">"Additional Documents"</string>
     <string name="title_activity_video_library">"Video Library"</string>
     <string name="visit_summary_patient_details">Patient Details</string>
 
@@ -441,14 +443,15 @@
     <string name="button_delete">Delete</string>
 
     //Camera Dialog
-    <string name="camera_dialog_default">Please click photo in good lighting conditions only. If photo is not clear, please retake the photo.</string>
+    <string name="camera_dialog_default">Please click documentPhoto in good lighting conditions only. If documentPhoto is not clear, please retake the documentPhoto.</string>
     <!--Offline Login Errors-->
     <string name="offline_credentials_unavailable">Offline Login is not available.</string>
     <string name="offline_user_does_not_match">User does not match..</string>
     <string name="offline_authentication_not_possible">Unable to authenticate offline.</string>
 
     <string name="login_location_select">Session Location</string>
-
-
+    <string name="prompt_licensekey">License Key</string>
+    <string name="setup_use_demo_mindmap">Use Demo Mind-Maps</string>
+    <string name="setup_download_mindmap">Download Mind-Maps</string>
 
 </resources>

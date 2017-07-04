@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.util.Log;
@@ -26,6 +28,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,6 +41,7 @@ import io.intelehealth.client.activities.complaint_node_activity.CustomArrayAdap
 import io.intelehealth.client.activities.custom_expandable_list_adapter.CustomExpandableListAdapter;
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.camera_activity.CameraActivity;
+import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 
 /**
  * Created by Amal Afroz Alam on 21, April, 2016.
@@ -425,7 +429,8 @@ public class Node implements Serializable {
     public static final int TAKE_IMAGE_FOR_NODE = 507;
     public static final String TAG = Node.class.getSimpleName();
 
-    public static void subLevelQuestion(final Node node, final Activity context, final CustomExpandableListAdapter callingAdapter) {
+    public static void subLevelQuestion(final Node node, final Activity context, final CustomExpandableListAdapter callingAdapter,
+                                        final String imagePath, final String imageName) {
         node.setSelected();
         List<Node> mNodes = node.getOptionsList();
         final CustomArrayAdapter adapter = new CustomArrayAdapter(context, R.layout.list_item_subquestion, mNodes);
@@ -455,12 +460,12 @@ public class Node implements Serializable {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 node.getOption(position).toggleSelected();
                 adapter.notifyDataSetChanged();
-                if (node.getOption(position).getInputType() != null) {
-                    subHandleQuestion(node.getOption(position), context, adapter);
-                }
+                if (node.getOption(position).getInputType() != null)
+                    subHandleQuestion(node.getOption(position), context, adapter, imagePath, imageName);
+
 
                 if (!node.getOption(position).isTerminal()) {
-                    subLevelQuestion(node.getOption(position), context, callingAdapter);
+                    subLevelQuestion(node.getOption(position), context, callingAdapter, imagePath, imageName);
                 }
             }
         });
@@ -488,7 +493,8 @@ public class Node implements Serializable {
 
     }
 
-    public static void handleQuestion(Node questionNode, final Activity context, final CustomExpandableListAdapter adapter) {
+    public static void handleQuestion(Node questionNode, final Activity context, final CustomExpandableListAdapter adapter,
+                                      final String imagePath, final String imageName) {
         String type = questionNode.getInputType();
         Log.d(TAG, type);
         switch (type) {
@@ -517,15 +523,26 @@ public class Node implements Serializable {
                 askFrequency(questionNode, context, adapter);
                 break;
             case "camera":
-                openCamera(context);
+                openCamera(context, imagePath, imageName);
                 break;
         }
     }
 
-    public static void openCamera(Activity activity) {
+
+    public static void openCamera(Activity activity, String imagePath, String imageName) {
         Log.d(TAG, "open Camera!");
-        Intent intent = new Intent(activity, CameraActivity.class);
-        activity.startActivityForResult(intent, Node.TAKE_IMAGE_FOR_NODE);
+        Intent cameraIntent = new Intent(activity, CameraActivity.class);
+        if (imageName != null && imagePath != null) {
+            File filePath = new File(imagePath);
+            if (!filePath.exists()) {
+                boolean res = filePath.mkdirs();
+                Log.i("NODE>", ""+res);
+            }
+            cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
+            cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, imagePath);
+            Log.i("OPENCAM>", imagePath);
+        }
+        activity.startActivityForResult(cameraIntent, Node.TAKE_IMAGE_FOR_NODE);
     }
 
     public void displayImage(final Activity context) {
@@ -862,7 +879,8 @@ public class Node implements Serializable {
         durationDialog.show();
     }
 
-    public static void subHandleQuestion(Node questionNode, final Activity context, final CustomArrayAdapter adapter) {
+
+    public static void subHandleQuestion(Node questionNode, final Activity context, final CustomArrayAdapter adapter, final String imagePath, final String imageName) {
         String type = questionNode.getInputType();
         Log.d(TAG, "subQ " + type);
         switch (type) {
@@ -891,7 +909,7 @@ public class Node implements Serializable {
                 subAskFrequency(questionNode, context, adapter);
                 break;
             case "camera":
-                openCamera(context);
+                openCamera(context, imagePath, imageName);
                 break;
         }
     }
@@ -960,8 +978,6 @@ public class Node implements Serializable {
         locationDialog.setTitle(R.string.question_location_picker);
 
         //TODO: Issue #51 on GitHub
-
-
     }
 
     public static void subAskNumber(final Node node, Activity context, final CustomArrayAdapter adapter) {
@@ -1279,6 +1295,7 @@ public class Node implements Serializable {
         }
         if (imagePath != null && !imagePath.isEmpty()) {
             imagePathList.add(imagePath);
+
         }
     }
 }

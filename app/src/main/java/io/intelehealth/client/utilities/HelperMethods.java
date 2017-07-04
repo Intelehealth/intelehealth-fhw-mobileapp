@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -29,6 +31,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -45,6 +48,11 @@ import io.intelehealth.client.objects.WebResponse;
 public class HelperMethods {
 
     public static final String LOG_TAG = "Helper Methods";
+
+    public static final String PARSE_SERVER_URL = "http://139.59.73.230:1337/parse/";
+    public static final String PARSE_APP_ID = "app";
+    public static final String JSON_FOLDER = "Engines";
+    public static File base_dir;
 
     public static int getAge(String s) {
         if (s == null) return 0;
@@ -140,7 +148,7 @@ public class HelperMethods {
         return results;
     }
 
-   public static String[] dispatchTakePictureIntent(int requestType, Activity activity) {
+    public static String[] dispatchTakePictureIntent(int requestType, Activity activity) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         String[] results = null;
         // Ensure that there's a camera activity to handle the intent
@@ -400,4 +408,39 @@ public class HelperMethods {
         return webResponse;
     }
 
-}
+
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+    
+        public static String readFile(String FILENAME,Context context) {
+            Log.i(LOG_TAG, "Reading from file");
+
+            try {
+                File myDir = new File(context.getFilesDir().getAbsolutePath() + File.separator + JSON_FOLDER + File.separator + FILENAME);
+                FileInputStream fileIn = new FileInputStream(myDir);
+                InputStreamReader InputRead = new InputStreamReader(fileIn);
+                final int READ_BLOCK_SIZE = 100;
+                char[] inputBuffer = new char[READ_BLOCK_SIZE];
+                String s = "";
+                int charRead;
+
+                while ((charRead = InputRead.read(inputBuffer)) > 0) {
+                    String readstring = String.copyValueOf(inputBuffer, 0, charRead);
+                    s += readstring;
+                }
+                InputRead.close();
+                Log.i("FILEREAD>", s);
+                return s;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return  null;
+            }
+
+        }
+
+    }
