@@ -486,7 +486,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 famHistory.setValue(dialogEditText.getText().toString());
                                 famHistTest.setText(famHistory.getValue());
                                 famHistView.setText(famHistory.getValue());
-                                updateDatabase(famHistory.getValue(), 163188);
+                                updateDatabase(famHistory.getValue(), ConceptId.RHK_FAMILY_HISTORY_BLURB);
                                 dialog.dismiss();
                             }
                         });
@@ -687,7 +687,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 patHistory.setValue(dialogEditText.getText().toString());
                                 historyText.setText(patHistory.getValue());
                                 patHistView.setText(patHistory.getValue());
-                                updateDatabase(patHistory.getValue(), 163187);
+                                updateDatabase(patHistory.getValue(), ConceptId.RHK_MEDICAL_HISTORY_BLURB);
                                 dialog.dismiss();
                             }
                         });
@@ -835,7 +835,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         try {
             String famHistSelection = "patient_id = ? AND concept_id = ?";
-            String[] famHistArgs = {dataString, "163188"};
+            String[] famHistArgs = {dataString, String.valueOf(ConceptId.RHK_FAMILY_HISTORY_BLURB)};
             Cursor famHistCursor = db.query("obs", columns, famHistSelection, famHistArgs, null, null, orderBy);
             famHistCursor.moveToLast();
             String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));

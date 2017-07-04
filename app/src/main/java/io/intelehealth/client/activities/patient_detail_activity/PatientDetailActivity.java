@@ -52,6 +52,7 @@ import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActi
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.services.ClientService;
+import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.HelperMethods;
 
 /**
@@ -137,7 +138,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                 String[] cols = {"value"};
                 Cursor cursor = sqLiteDatabase.query("obs", cols, "patient_id=? and concept_id=?",// querying for PMH
-                        new String[]{patient.getId(), "163187"},
+                        new String[]{patient.getId(), String.valueOf(ConceptId.RHK_MEDICAL_HISTORY_BLURB)},
                         null, null, null);
 
                 if (cursor.moveToFirst()) {
@@ -156,7 +157,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 cursor.close();
 
                 Cursor cursor1 = sqLiteDatabase.query("obs", cols, "patient_id=? and concept_id=?",// querying for FH
-                        new String[]{patient.getId(), "163188"},
+                        new String[]{patient.getId(), String.valueOf(ConceptId.RHK_FAMILY_HISTORY_BLURB)},
                         null, null, null);
                 if (cursor1.moveToFirst()) {
                     // rows present
@@ -364,7 +365,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             histCardView.setVisibility(View.GONE);
         } else {
             String medHistSelection = "patient_id = ? AND concept_id = ?";
-            String[] medHistArgs = {dataString, "163187"};
+            String[] medHistArgs = {dataString, String.valueOf(ConceptId.RHK_MEDICAL_HISTORY_BLURB)};
             String[] medHistColumms = {"value", " concept_id"};
             Cursor medHistCursor = db.query("obs", medHistColumms, medHistSelection, medHistArgs, null, null, null);
             medHistCursor.moveToLast();
@@ -387,7 +388,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
 
             String famHistSelection = "patient_id = ? AND concept_id = ?";
-            String[] famHistArgs = {dataString, "163188"};
+            String[] famHistArgs = {dataString, String.valueOf(ConceptId.RHK_FAMILY_HISTORY_BLURB)};
             String[] famHistColumns = {"value", " concept_id"};
             Cursor famHistCursor = db.query("obs", famHistColumns, famHistSelection, famHistArgs, null, null, null);
             famHistCursor.moveToLast();
