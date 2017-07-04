@@ -11,12 +11,15 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
-import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
+import android.os.Environment;
+
 import android.preference.PreferenceManager;
+
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
@@ -28,6 +31,8 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,27 +52,30 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
-import io.intelehealth.client.services.ImageUploadService;
-import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.R;
+import io.intelehealth.client.activities.additional_documents_activity.AdditionalDocumentsActivity;
 import io.intelehealth.client.activities.complaint_node_activity.ComplaintNodeActivity;
 import io.intelehealth.client.activities.family_history_activity.FamilyHistoryActivity;
 import io.intelehealth.client.activities.home_activity.HomeActivity;
 import io.intelehealth.client.activities.past_medical_history_activity.PastMedicalHistoryActivity;
 import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity;
+import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Obs;
 import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.objects.WebResponse;
 import io.intelehealth.client.services.ClientService;
+import io.intelehealth.client.services.ImageUploadService;
+import io.intelehealth.client.utilities.HelperMethods;
 
 /**
  * This class updates data about patient to database. It also creates a summary about it which can be viewed
@@ -77,7 +85,6 @@ import io.intelehealth.client.services.ClientService;
 public class VisitSummaryActivity extends AppCompatActivity {
 
     String LOG_TAG = "Patient Summary";
-
 
 
     //Change when used with a different organization.
@@ -130,6 +137,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ImageButton editPhysical;
     ImageButton editFamHist;
     ImageButton editMedHist;
+    ImageButton editAddDocs;
 
     TextView nameView;
     TextView idView;
@@ -162,6 +170,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private Menu mymenu;
     MenuItem internetCheck;
 
+    private RecyclerView mAdditionalDocsRecyclerView;
+    private RecyclerView.LayoutManager mAdditionalDocsLayoutManager;
+
+    private RecyclerView mPhysicalExamsRecyclerView;
+    private RecyclerView.LayoutManager mPhysicalExamsLayoutManager;
+
+
+    String additionalDocumentDir = "Additional Documents";
+    String physicalExamDocumentDir = "Physical Exam";
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -173,7 +191,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         internetCheck = mymenu.findItem(R.id.internet_icon);
         MenuItemCompat.getActionView(internetCheck);
 
-        if(isPast) menuItem.setVisible(false);
+        if (isPast) menuItem.setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -206,8 +224,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
 
+        callBroadcastReceiver();
 
-      callBroadcastReceiver();
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientID = intent.getStringExtra("patientID");
@@ -215,7 +233,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
-            isPast = intent.getBooleanExtra("pastVisit",false);
+            isPast = intent.getBooleanExtra("pastVisit", false);
 
 //            Log.v(TAG, "Patient ID: " + patientID);
 //            Log.v(TAG, "Visit ID: " + visitID);
@@ -246,6 +264,44 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mLayout = (LinearLayout) findViewById(R.id.summary_layout);
         context = getApplicationContext();
 
+        mAdditionalDocsRecyclerView = (RecyclerView) findViewById(R.id.recy_additional_documents);
+        mPhysicalExamsRecyclerView = (RecyclerView) findViewById(R.id.recy_physexam);
+
+        String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+
+        String filePathAddDoc = baseDir + File.separator + "Patient Images" + File.separator + patientID + File.separator +
+                visitID + File.separator + additionalDocumentDir;
+
+        String filePathPhyExam = baseDir + File.separator + "Patient Images" + File.separator + patientID + File.separator +
+                visitID + File.separator + physicalExamDocumentDir;
+
+        File addDocDir = new File(filePathAddDoc);
+        if (!addDocDir.exists()) {
+            addDocDir.mkdirs();
+            Log.v(LOG_TAG, "directory ceated " + addDocDir.getAbsolutePath());
+        } else {
+            File[] files = addDocDir.listFiles();
+            List<File> fileList = Arrays.asList(files);
+            HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
+            mAdditionalDocsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
+            mAdditionalDocsRecyclerView.setLayoutManager(mAdditionalDocsLayoutManager);
+            mAdditionalDocsRecyclerView.setAdapter(horizontalAdapter);
+
+        }
+
+        File phyExamDir = new File(filePathPhyExam);
+        if (!phyExamDir.exists()) {
+            phyExamDir.mkdirs();
+            Log.v(LOG_TAG, "directory ceated " + phyExamDir.getAbsolutePath());
+        } else {
+            File[] files = phyExamDir.listFiles();
+            List<File> fileList = Arrays.asList(files);
+            HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
+            mPhysicalExamsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
+            mPhysicalExamsRecyclerView.setLayoutManager(mPhysicalExamsLayoutManager);
+            mPhysicalExamsRecyclerView.setAdapter(horizontalAdapter);
+
+        }
 
         mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -255,18 +311,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editPhysical = (ImageButton) findViewById(R.id.imagebutton_edit_physexam);
         editFamHist = (ImageButton) findViewById(R.id.imagebutton_edit_famhist);
         editMedHist = (ImageButton) findViewById(R.id.imagebutton_edit_pathist);
+        editAddDocs = (ImageButton) findViewById(R.id.imagebutton_edit_additional_document);
         uploadButton = (Button) findViewById(R.id.button_upload);
 
-        if(isPast){
+        if (isPast) {
             editVitals.setVisibility(View.GONE);
             editComplaint.setVisibility(View.GONE);
             editPhysical.setVisibility(View.GONE);
             editFamHist.setVisibility(View.GONE);
             editMedHist.setVisibility(View.GONE);
+            editAddDocs.setVisibility(View.GONE);
             uploadButton.setVisibility(View.GONE);
             invalidateOptionsMenu();
         }
-
 
 
         uploadButton.setOnClickListener(new View.OnClickListener() {
@@ -275,8 +332,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 Snackbar.make(view, "Uploading to doctor.", Snackbar.LENGTH_LONG).show();
 
                 Intent imageUpload = new Intent(VisitSummaryActivity.this, ImageUploadService.class);
-                imageUpload.putExtra("patientID",patientID);
-                imageUpload.putExtra("visitID",visitID);
+                imageUpload.putExtra("patientID", patientID);
+                imageUpload.putExtra("visitID", visitID);
                 startService(imageUpload);
 
                 Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
@@ -665,13 +722,24 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         });
 
+        editAddDocs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addDocs = new Intent(VisitSummaryActivity.this, AdditionalDocumentsActivity.class);
+                addDocs.putExtra("patientID", patientID);
+                addDocs.putExtra("visitID", visitID);
+                startActivity(addDocs);
+            }
+        });
+
 
     }
 
     /**
      * This method creates new object of type RetrieveData.
+     *
      * @param view variable of type View
-     * @return     void
+     * @return void
      */
     public void retrieveOpenMRS(View view) {
         new RetrieveData(this).execute();
@@ -720,8 +788,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     /**
      * This methods retrieves patient data from database.
-     * @param dataString  variable of type String
-     * @return                   void
+     *
+     * @param dataString variable of type String
+     * @return void
      */
 
     public void queryData(String dataString) {
@@ -779,8 +848,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             medHistCursor.moveToLast();
             String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
             patHistory.setValue(medHistText);
-            if (medHistText!=null && !medHistText.isEmpty()) {
-              
+            
+            if (medHistText != null && !medHistText.isEmpty()) {
+
                 medHistory = patHistory.getValue();
 
 
@@ -810,6 +880,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     /**
      * This method distinguishes between different concepts using switch case to populate the information into the relevant sections (eg:complaints, physical exam, vitals, etc.).
+     *
      * @param concept_id variable of type int.
      * @param value      variable of type String.
      */
@@ -850,6 +921,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     /**
      * This method creates a web view for printing patient's various details.
+     *
      * @return void
      */
     private void doWebViewPrint() {
@@ -954,7 +1026,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     /**
      * This method creates a print job using PrintManager instance and PrintAdapter Instance
-     * @param webView  object of type WebView.
+     *
+     * @param webView object of type WebView.
      */
     private void createWebPrintJob(WebView webView) {
 
@@ -1182,10 +1255,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     /**
-     *
      * @param title   variable of type String
      * @param content variable of type String
-     * @param index  variable of type int
+     * @param index   variable of type int
      */
     private void createNewCardView(String title, String content, int index) {
         final LayoutInflater inflater = VisitSummaryActivity.this.getLayoutInflater();
@@ -1199,7 +1271,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     /**
      * This method updates patient details to database.
-     * @param string  variable of type String
+     *
+     * @param string    variable of type String
      * @param conceptID variable of type int
      */
 
@@ -1223,8 +1296,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
 
-    public void callBroadcastReceiver()
-    {
+    public void callBroadcastReceiver() {
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         receiver = new NetworkChangeReceiver();
         registerReceiver(receiver, filter);
@@ -1238,51 +1310,43 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onPause()
-    {
+    public void onPause() {
         super.onPause();
         unregisterReceiver(receiver);
     }
 
 
-    public class NetworkChangeReceiver extends BroadcastReceiver
-    {
+    public class NetworkChangeReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
             isNetworkAvailable(context);
         }
 
-        private void isNetworkAvailable(Context context)
-        {
-            int flag=0;
+        private void isNetworkAvailable(Context context) {
+            int flag = 0;
 
-            ConnectivityManager connectivity = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            if(connectivity != null)
-            {
+            ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (connectivity != null) {
                 NetworkInfo[] info = connectivity.getAllNetworkInfo();
-                if(info !=null)
-                {
-                    for (int i = 0; i < info.length; i++)
-                    {
-                        if (info[i].getState() == NetworkInfo.State.CONNECTED)
-                        {
-                            if(!isConnected)
-                            {
-                                        if(mymenu!=null) {
-                                        internetCheck.setIcon(R.drawable.ic_action_circle_green);
-                                        flag = 1;
-                                    }
+                if (info != null) {
+                    for (int i = 0; i < info.length; i++) {
+                        if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+                            if (!isConnected) {
+                                if (mymenu != null) {
+                                    internetCheck.setIcon(R.drawable.ic_action_circle_green);
+                                    flag = 1;
+                                }
                             }
                         }
                     }
                 }
             }
 
-                      if(flag==0) {
-                       if(mymenu!=null) {
-                       internetCheck.setIcon(R.drawable.ic_action_circle_red);
-                    }
+            if (flag == 0) {
+                if (mymenu != null) {
+                    internetCheck.setIcon(R.drawable.ic_action_circle_red);
+                }
 
             }
 

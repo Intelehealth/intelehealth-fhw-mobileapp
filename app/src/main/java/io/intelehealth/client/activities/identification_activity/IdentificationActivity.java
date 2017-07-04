@@ -83,7 +83,7 @@ public class IdentificationActivity extends AppCompatActivity {
     Patient patient = new Patient();
     Patient patient1 = new Patient();
     String patientID;
-    String patientID1;
+    String patientID_edit;
 
     Calendar today = Calendar.getInstance();
     Calendar dob = Calendar.getInstance();
@@ -115,9 +115,9 @@ public class IdentificationActivity extends AppCompatActivity {
         if (intent != null) {
             if (intent.hasExtra("pid")) {
                 this.setTitle("Update Patient");
-                patientID1 = intent.getStringExtra("pid");
-                patient1.setId(patientID1);
-                setscreen(String.valueOf(patientID1));
+                patientID_edit = intent.getStringExtra("pid");
+                patient1.setId(patientID_edit);
+                setscreen(String.valueOf(patientID_edit));
             }
         }
 
@@ -161,7 +161,10 @@ public class IdentificationActivity extends AppCompatActivity {
         mCountry.setAdapter(countryAdapter);
 
         // generate patientid only if there is no intent for Identification activity
-        if (patientID1 == null) {
+
+        if (patientID_edit == null) {
+
+
             generateID();
         }
 
@@ -186,7 +189,9 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
 
-        if (patientID1 != null) {
+
+        if (patientID_edit != null) {
+
             // setting country accordig database
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
         }
@@ -207,7 +212,9 @@ public class IdentificationActivity extends AppCompatActivity {
                         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mState.setAdapter(stateAdapter);
                         // setting state according database when user clicks edit details
-                        if (patientID1 != null) {
+
+                        if (patientID_edit != null) {
+
                             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getStateProvince())));
                         }
 
@@ -216,7 +223,9 @@ public class IdentificationActivity extends AppCompatActivity {
                                 R.array.states_us, android.R.layout.simple_spinner_item);
                         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mState.setAdapter(stateAdapter);
-                        if (patientID1 != null) {
+
+                        if (patientID_edit != null) {
+
                             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getStateProvince())));
                         }
 
@@ -626,7 +635,7 @@ public class IdentificationActivity extends AppCompatActivity {
             } catch (NullPointerException e) {
                 Snackbar.make(findViewById(R.id.cl_table), R.string.identification_screen_error_data_fields, Snackbar.LENGTH_SHORT);
             }
-            if (patientID1 != null) {
+            if (patientID_edit != null) {
                 new UpdatePatientTable(patient1).execute();
             } else {
                 new InsertPatientTable(patient).execute();
@@ -727,9 +736,9 @@ public class IdentificationActivity extends AppCompatActivity {
     public class UpdatePatientTable extends AsyncTask<Void, Void, Boolean> implements DialogInterface.OnCancelListener {
         SQLiteDatabase db1 = mDbHelper.getWritableDatabase();
 
-        UpdatePatientTable(Patient currepatient) {
+        UpdatePatientTable(Patient currentpatient) {
 
-            patient1 = currepatient;
+            patient1 = currentpatient;
         }
 
         ContentValues patientEntries1 = new ContentValues();
@@ -774,7 +783,7 @@ public class IdentificationActivity extends AppCompatActivity {
             Intent intent3 = new Intent(IdentificationActivity.this, PatientDetailActivity.class);
             String fullName = patient1.getFirstName() + " " + patient1.getLastName();
 
-            intent3.putExtra("patientID", patientID1);
+            intent3.putExtra("patientID", patientID_edit);
             intent3.putExtra("name", fullName);
             intent3.putExtra("tag", "new");
             intent3.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);

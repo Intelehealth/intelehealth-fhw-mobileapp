@@ -55,11 +55,11 @@ public class VitalsActivity extends AppCompatActivity {
 
     String maxh= "272";
     String maxw= "150";
-    String maxbpsys= "160";
+    String maxbpsys= "300";
     String minbpsys= "50";
-    String maxbpdys= "120";
+    String maxbpdys= "150";
     String minbpdys= "30";
-    String maxpulse ="150";
+    String maxpulse ="200";
     String minpulse= "30";
     String maxte ="120";
     String minte ="80";
