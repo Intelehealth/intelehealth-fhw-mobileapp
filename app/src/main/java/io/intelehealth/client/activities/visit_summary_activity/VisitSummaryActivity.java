@@ -845,7 +845,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         try {
             String medHistSelection = "patient_id = ? AND concept_id = ?";
             
-            String[] medHistArgs = {dataString, String.valueOf(ConceptId.PHYSICAL_EXAMINATION)};
+            String[] medHistArgs = {dataString, String.valueOf(ConceptId.RHK_MEDICAL_HISTORY_BLURB)};
 
             Cursor medHistCursor = db.query("obs", columns, medHistSelection, medHistArgs, null, null, orderBy);
             medHistCursor.moveToLast();
@@ -894,7 +894,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 break;
 
             case ConceptId.PHYSICAL_EXAMINATION: //Physical Examination
-                patHistory.setValue(value);
+                phyExam.setValue(value);
 
                 break;
             case ConceptId.HEIGHT: //Height
