@@ -415,9 +415,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         patHistView.setText(patHistory.getValue());
 
 
-
-
-
         physFindingsView.setText(phyExam.getValue());
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor e = sharedPreferences.edit();
