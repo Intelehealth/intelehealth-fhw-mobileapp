@@ -61,6 +61,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+
+import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
+import io.intelehealth.client.utilities.ConceptId;
+import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.additional_documents_activity.AdditionalDocumentsActivity;
 import io.intelehealth.client.activities.complaint_node_activity.ComplaintNodeActivity;
@@ -222,7 +226,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
 
         callBroadcastReceiver();
 
@@ -483,7 +486,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 famHistory.setValue(dialogEditText.getText().toString());
                                 famHistTest.setText(famHistory.getValue());
                                 famHistView.setText(famHistory.getValue());
-                                updateDatabase(famHistory.getValue(), 163188);
+                                updateDatabase(famHistory.getValue(), ConceptId.RHK_FAMILY_HISTORY_BLURB);
                                 dialog.dismiss();
                             }
                         });
@@ -550,7 +553,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 complaint.setValue(dialogEditText.getText().toString());
                                 complaintText.setText(complaint.getValue());
                                 complaintView.setText(complaint.getValue());
-                                updateDatabase(complaint.getValue(), 163186);
+                                updateDatabase(complaint.getValue(), ConceptId.CURRENT_COMPLAINT);
                                 dialog.dismiss();
                             }
                         });
@@ -613,10 +616,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+
                                 phyExam.setValue(dialogEditText.getText().toString());
                                 physicalText.setText(phyExam.getValue());
                                 physFindingsView.setText(phyExam.getValue());
-                                updateDatabase(phyExam.getValue(), 163189);
+                                updateDatabase(phyExam.getValue(), ConceptId.PHYSICAL_EXAMINATION);
                                 dialog.dismiss();
                             }
                         });
@@ -683,7 +687,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 patHistory.setValue(dialogEditText.getText().toString());
                                 historyText.setText(patHistory.getValue());
                                 patHistView.setText(patHistory.getValue());
-                                updateDatabase(patHistory.getValue(), 163187);
+                                updateDatabase(patHistory.getValue(), ConceptId.RHK_MEDICAL_HISTORY_BLURB);
                                 dialog.dismiss();
                             }
                         });
@@ -831,7 +835,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         try {
             String famHistSelection = "patient_id = ? AND concept_id = ?";
-            String[] famHistArgs = {dataString, "163188"};
+            String[] famHistArgs = {dataString, String.valueOf(ConceptId.RHK_FAMILY_HISTORY_BLURB)};
             Cursor famHistCursor = db.query("obs", columns, famHistSelection, famHistArgs, null, null, orderBy);
             famHistCursor.moveToLast();
             String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
@@ -843,7 +847,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         try {
             String medHistSelection = "patient_id = ? AND concept_id = ?";
-            String[] medHistArgs = {dataString, "163187"};
+            
+            String[] medHistArgs = {dataString, String.valueOf(ConceptId.PHYSICAL_EXAMINATION)};
+
             Cursor medHistCursor = db.query("obs", columns, medHistSelection, medHistArgs, null, null, orderBy);
             medHistCursor.moveToLast();
             String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
@@ -886,31 +892,33 @@ public class VisitSummaryActivity extends AppCompatActivity {
      */
     private void parseData(int concept_id, String value) {
         switch (concept_id) {
-            case 163186: //Current Complaint
+            case ConceptId.CURRENT_COMPLAINT: //Current Complaint
                 complaint.setValue(value);
                 break;
-            case 163189: //Physical Examination
-                phyExam.setValue(value);
+
+            case ConceptId.PHYSICAL_EXAMINATION: //Physical Examination
+                patHistory.setValue(value);
+
                 break;
-            case 5090: //Height
+            case ConceptId.HEIGHT: //Height
                 height.setValue(value);
                 break;
-            case 5089: //Weight
+            case ConceptId.WEIGHT: //Weight
                 weight.setValue(value);
                 break;
-            case 5087: //Pulse
+            case ConceptId.PULSE: //Pulse
                 pulse.setValue(value);
                 break;
-            case 5085: //Systolic BP
+            case ConceptId.SYSTOLIC_BP: //Systolic BP
                 bpSys.setValue(value);
                 break;
-            case 5086: //Diastolic BP
+            case ConceptId.DIASTOLIC_BP: //Diastolic BP
                 bpDias.setValue(value);
                 break;
-            case 163202: //Temperature
+            case ConceptId.TEMPERATURE: //Temperature
                 temperature.setValue(value);
                 break;
-            case 5092: //SpO2
+            case ConceptId.SPO2: //SpO2
                 spO2.setValue(value);
                 break;
             default:

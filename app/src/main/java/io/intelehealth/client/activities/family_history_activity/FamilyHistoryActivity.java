@@ -24,6 +24,7 @@ import java.util.List;
 import io.intelehealth.client.activities.past_medical_history_activity.PastMedicalHistoryActivity;
 import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity;
 import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
+import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
@@ -292,7 +293,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 
         final String CREATOR_ID = prefs.getString("creatorid", null);// TODO: Connect the proper CREATOR_ID
 
-        final int CONCEPT_ID = 163188; // RHK FAMILY HISTORY BLURB
+        final int CONCEPT_ID = ConceptId.RHK_FAMILY_HISTORY_BLURB; // RHK FAMILY HISTORY BLURB
 
         ContentValues complaintEntries = new ContentValues();
 
@@ -320,7 +321,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
 
-        int conceptID = 163188;
+        int conceptID = ConceptId.RHK_FAMILY_HISTORY_BLURB;
         ContentValues contentValues = new ContentValues();
         contentValues.put("value", string);
 

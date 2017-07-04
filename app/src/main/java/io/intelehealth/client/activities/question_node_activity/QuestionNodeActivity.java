@@ -33,6 +33,7 @@ import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActi
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.node.Node;
 import io.intelehealth.client.objects.Knowledge;
+import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.HelperMethods;
 
 /**
@@ -352,7 +353,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
         final String CREATOR_ID = prefs.getString("creatorid", null);
 
-        final int CONCEPT_ID = 163186; //OpenMRS complaint concept ID
+        final int CONCEPT_ID = ConceptId.CURRENT_COMPLAINT; //OpenMRS complaint concept ID
 
         ContentValues complaintEntries = new ContentValues();
 
@@ -380,7 +381,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
 
-        int conceptID = 163186;
+        int conceptID = ConceptId.CURRENT_COMPLAINT;
         ContentValues contentValues = new ContentValues();
         contentValues.put("value", string);
 

@@ -33,6 +33,7 @@ import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActi
 import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.TableExam;
+import io.intelehealth.client.utilities.ConceptId;
 
 /**
  * Records the patient vitals in the {@link TableExam} container.
@@ -287,25 +288,25 @@ public class VitalsActivity extends AppCompatActivity {
 
     private void parseData(int concept_id, String value) {
         switch (concept_id) {
-            case 5090: //Height
+            case ConceptId.HEIGHT: //Height
                 mHeight.setText(value);
                 break;
-            case 5089: //Weight
+            case ConceptId.WEIGHT: //Weight
                 mWeight.setText(value);
                 break;
-            case 5087: //Pulse
+            case ConceptId.PULSE: //Pulse
                 mPulse.setText(value);
                 break;
-            case 5085: //Systolic BP
+            case ConceptId.SYSTOLIC_BP: //Systolic BP
                 mBpSys.setText(value);
                 break;
-            case 5086: //Diastolic BP
+            case ConceptId.DIASTOLIC_BP: //Diastolic BP
                 mBpDia.setText(value);
                 break;
-            case 163202: //Temperature
+            case ConceptId.TEMPERATURE: //Temperature
                 mTemperature.setText(value);
                 break;
-            case 5092: //SpO2
+            case ConceptId.SPO2: //SpO2
                 mSpo2.setText(value);
                 break;
             default:
@@ -504,13 +505,13 @@ public class VitalsActivity extends AppCompatActivity {
         }
 
         if (intentTag != null && intentTag.equals("edit")) {
-            updateDatabase(results.getHeight(), 5090);
-            updateDatabase(results.getWeight(), 5089);
-            updateDatabase(results.getPulse(), 5087);
-            updateDatabase(results.getBpsys(), 5085);
-            updateDatabase(results.getBpdia(), 5086);
-            updateDatabase(results.getTemperature(), 163202);
-            updateDatabase(results.getSpo2(), 5092);
+            updateDatabase(results.getHeight(), ConceptId.HEIGHT);
+            updateDatabase(results.getWeight(), ConceptId.WEIGHT);
+            updateDatabase(results.getPulse(), ConceptId.PULSE);
+            updateDatabase(results.getBpsys(), ConceptId.SYSTOLIC_BP);
+            updateDatabase(results.getBpdia(), ConceptId.DIASTOLIC_BP);
+            updateDatabase(results.getTemperature(), ConceptId.TEMPERATURE);
+            updateDatabase(results.getSpo2(), ConceptId.SPO2);
             Intent intent = new Intent(VitalsActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);
@@ -520,14 +521,16 @@ public class VitalsActivity extends AppCompatActivity {
             intent.putStringArrayListExtra("exams", physicalExams);
             startActivity(intent);
         } else {
-            insertDb(results.getHeight(), 5090);
-            insertDb(results.getWeight(), 5089);
-            insertDb(results.getPulse(), 5087);
-            insertDb(results.getBpsys(), 5085);
-            insertDb(results.getBpdia(), 5086);
-            insertDb(results.getTemperature(), 163202);
-            insertDb(results.getSpo2(), 5092);
-            Intent intent = new Intent(VitalsActivity.this, VisitSummaryActivity.class); // earlier physicalexamactivity
+
+            insertDb(results.getHeight(), ConceptId.HEIGHT);
+            insertDb(results.getWeight(), ConceptId.WEIGHT);
+            insertDb(results.getPulse(), ConceptId.PULSE);
+            insertDb(results.getBpsys(), ConceptId.SYSTOLIC_BP);
+            insertDb(results.getBpdia(), ConceptId.DIASTOLIC_BP);
+            insertDb(results.getTemperature(), ConceptId.TEMPERATURE);
+            insertDb(results.getSpo2(), ConceptId.SPO2);
+            Intent intent = new Intent(VitalsActivity.this, VisitSummaryActivity.class);
+
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);
             intent.putExtra("state", state);
