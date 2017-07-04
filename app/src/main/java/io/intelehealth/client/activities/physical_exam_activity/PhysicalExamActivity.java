@@ -2,7 +2,6 @@ package io.intelehealth.client.activities.physical_exam_activity;
 
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,8 +21,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
@@ -34,19 +31,19 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
-import io.intelehealth.client.utilities.ConceptId;
-import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
-import io.intelehealth.client.activities.family_history_activity.FamilyHistoryActivity;
-
-import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.R;
-import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
 import io.intelehealth.client.activities.custom_expandable_list_adapter.CustomExpandableListAdapter;
+import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
+import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.node.Node;
 import io.intelehealth.client.node.PhysicalExam;
+import io.intelehealth.client.utilities.ConceptId;
+import io.intelehealth.client.utilities.HelperMethods;
 
 /**
  * Contains a subclass of {@link Node} (that is {@link PhysicalExam}).
@@ -118,10 +115,15 @@ public class PhysicalExamActivity extends AppCompatActivity {
         if ((selectedExamsList == null) || selectedExamsList.isEmpty()) {
             Log.d(LOG_TAG, "No additional exams were triggered");
         } else {
+            Set<String> selectedExamsWithoutDuplicates = new LinkedHashSet<>(selectedExamsList);
             Log.d(LOG_TAG, selectedExamsList.toString());
-          //  for(String string:selectedExamsList) Log.d(LOG_TAG,string);
+            selectedExamsList.clear();
+            selectedExamsList.addAll(selectedExamsWithoutDuplicates);
+            Log.d(LOG_TAG, selectedExamsList.toString());
+            for(String string:selectedExamsList) Log.d(LOG_TAG,string);
+            physicalExamMap = new PhysicalExam(HelperMethods.encodeJSON(this, mFileName), selectedExamsList);
         }
-        physicalExamMap = new PhysicalExam(HelperMethods.encodeJSON(this, mFileName), selectedExamsList);
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_physical_exam);
@@ -145,6 +147,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         if (tabLayout != null) {
+            tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
             tabLayout.setupWithViewPager(mViewPager);
         }
 
@@ -310,7 +313,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                         if (question.getInputType().equals("camera")) {
                             if (!filePath.exists()) {
                                 boolean res = filePath.mkdirs();
-                                Log.i("RES>",""+filePath+" -> " + res);
+                                Log.i("RES>", "" + filePath + " -> " + res);
                             }
                             Node.handleQuestion(question, getActivity(), adapter, filePath.toString(), imageName);
                         } else {
@@ -321,7 +324,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                     }
 
                     if (!question.isTerminal() && question.isSelected()) {
-                        Node.subLevelQuestion(question, (Activity) getContext(), adapter,filePath.toString(),imageName);
+                        Node.subLevelQuestion(question, (Activity) getContext(), adapter, filePath.toString(), imageName);
                     }
 
                     return false;
@@ -433,9 +436,9 @@ public class PhysicalExamActivity extends AppCompatActivity {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
         localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path) values("
-                +"'" +patientID +"'"+","
+                + "'" + patientID + "'" + ","
                 + visitID + ","
-                + "'"+imagePath +"'"+
+                + "'" + imagePath + "'" +
                 ")");
     }
 
