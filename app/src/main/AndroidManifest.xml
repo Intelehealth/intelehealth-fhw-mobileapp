@@ -216,7 +216,8 @@
         </service>
 
         <activity android:name=".activities.additional_documents_activity.AdditionalDocumentsActivity"
-            android:label="@string/title_activity_additional_documents"></activity>
+            android:label="@string/title_activity_additional_documents"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <service
             android:name=".services.ImageUploadService"

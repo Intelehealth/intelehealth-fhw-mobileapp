@@ -109,7 +109,7 @@ public class CameraActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     if (mImageName == null) {
-                        mImageName = String.valueOf(System.currentTimeMillis());
+                        mImageName = "IMG";
                     }
                     File file;
                     if (mFilePath == null) {
@@ -117,7 +117,8 @@ public class CameraActivity extends AppCompatActivity {
                                 mImageName + "_" + System.currentTimeMillis() + ".jpg");
 
                     } else {
-                        file = new File(mFilePath + File.separator + mImageName + ".jpg");
+                        file = new File(mFilePath + File.separator + mImageName +
+                                "_" + System.currentTimeMillis() + ".jpg");
                     }
                     OutputStream os = null;
                     try {

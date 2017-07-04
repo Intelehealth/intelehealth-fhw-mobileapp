@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import java.io.File;
 import java.lang.reflect.Array;
@@ -37,9 +38,8 @@ public class AdditionalDocumentsActivity extends AppCompatActivity{
     private final String imgPrefix = "AD";
 
     final private String imageDir = "Additional Documents";
-    final private String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-    final private String filePath = baseDir + File.separator + "Patient Images" + File.separator + patientID + File.separator +
-            visitID + File.separator + imageDir;
+    private String baseDir;
+    private String filePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,30 +49,34 @@ public class AdditionalDocumentsActivity extends AppCompatActivity{
         Toolbar topToolBar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(topToolBar);
 
+        baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientID = intent.getStringExtra("patientID");
             visitID = intent.getStringExtra("visitID");
+
+            filePath = baseDir + File.separator + "Patient Images" + File.separator + patientID + File.separator +
+                    visitID + File.separator + imageDir;
+
+            File dir = new File(filePath);
+            if (!dir.exists()) dir.mkdirs();
+            List<File> fileList = Arrays.asList(dir.listFiles());
+            rowListItem = new ArrayList<>();
+
+            for (File file : fileList) {
+                rowListItem.add(new DocumentObject(file.getName(), file.getAbsolutePath()));
+            }
+
+            RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
+
+            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.document_RecyclerView);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(linearLayoutManager);
+
+            recyclerViewAdapter = new AdditionalDocumentAdapter(this, rowListItem);
+            recyclerView.setAdapter(recyclerViewAdapter);
         }
-
-        File dir = new File(filePath);
-        if(!dir.exists()) dir.mkdirs();
-        List <File> fileList = Arrays.asList(dir.listFiles());
-
-        rowListItem = new ArrayList<>();
-
-        for (File file : fileList){
-            rowListItem.add(new DocumentObject(file.getName(),file.getAbsolutePath()));
-        }
-
-        RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.document_RecyclerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(linearLayoutManager);
-
-        recyclerViewAdapter = new AdditionalDocumentAdapter(this, rowListItem);
-        recyclerView.setAdapter(recyclerViewAdapter);
     }
 
     @Override
@@ -86,12 +90,12 @@ public class AdditionalDocumentsActivity extends AppCompatActivity{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == Node.TAKE_IMAGE_FOR_NODE) {
+        if (requestCode == CameraActivity.TAKE_IMAGE) {
             if (resultCode == RESULT_OK) {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
                 File photo = new File(mCurrentPhotoPath);
                 if(photo.exists()){
-                    recyclerViewAdapter.addDocumentToList(new DocumentObject(photo.getName(),photo.getAbsolutePath()));
+                    recyclerViewAdapter.add(new DocumentObject(photo.getName(),photo.getAbsolutePath()));
                 }
             }
         }
@@ -110,6 +114,8 @@ public class AdditionalDocumentsActivity extends AppCompatActivity{
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
 
 
 }

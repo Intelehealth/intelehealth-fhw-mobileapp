@@ -1,16 +1,23 @@
 package io.intelehealth.client.activities.additional_documents_activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import io.intelehealth.client.R;
@@ -22,9 +29,10 @@ import io.intelehealth.client.R;
 
 public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDocumentViewHolder> {
 
-    private List<DocumentObject> documentList;
+    private List<DocumentObject> documentList = new ArrayList<>();
     private Context context;
 
+    private static final String TAG = AdditionalDocumentAdapter.class.getSimpleName();
 
     public AdditionalDocumentAdapter(Context context, List<DocumentObject> documentList) {
         this.documentList = documentList;
@@ -45,35 +53,63 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
         holder.getDocumentNameTextView().setText(documentList.get(position).getDocumentName());
         final File image = new File(documentList.get(position).getDocumentPhoto());
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(),bmOptions);
+        final Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(),bmOptions);
         holder.getDocumentPhotoImageView().setImageBitmap(bitmap);
 
         holder.getRootView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.fromFile(image)));
+                displayImage(bitmap);
             }
         });
 
         holder.getDeleteDocumentImageView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                image.delete();
+                if(image.exists()) image.delete();
                 documentList.remove(position);
                 notifyItemRemoved(position);
+                notifyItemRangeChanged(position,documentList.size());
             }
         });
     }
 
 
+    public void add(DocumentObject doc){
+        boolean bool = documentList.add(doc);
+        if (bool) Log.d(TAG, "add: Item added to list");
+        notifyDataSetChanged();
+    }
 
     @Override
     public int getItemCount() {
         return this.documentList.size();
     }
 
-    public void addDocumentToList(DocumentObject documentObject){
-        documentList.add(documentObject);
-        notifyDataSetChanged();
+
+    public void displayImage(final Bitmap bitmap) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        
+
+        final AlertDialog dialog = builder.create();
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogLayout = inflater.inflate(R.layout.image_confirmation_dialog, null);
+        dialog.setView(dialogLayout);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface d) {
+                ImageView imageView = (ImageView) dialog.findViewById(R.id.confirmationImageView);
+                float imageWidthInPX = (float) imageView.getWidth();
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(Math.round(imageWidthInPX),
+                        Math.round(imageWidthInPX * (float) bitmap.getHeight() / (float) bitmap.getWidth()));
+                imageView.setLayoutParams(layoutParams);
+                imageView.setImageBitmap(bitmap);
+            }
+        });
+
+        dialog.show();
+
     }
 }
