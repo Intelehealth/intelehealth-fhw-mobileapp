@@ -49,8 +49,10 @@ public class HelperMethods {
 
     public static final String LOG_TAG = "Helper Methods";
 
-    public static final String PARSE_SERVER_URL = "http://139.59.73.230:1337/parse/";
-    public static final String PARSE_APP_ID = "app";
+    public static final String MIND_MAP_SERVER_URL = "http://139.59.73.230:1337/parse/";
+    public static final String MIND_MAP_APP_ID = "app";
+    public static final String IMAGE_SERVER_URL = "http://139.59.73.230:13'38/parse/";
+    public static final String IMAGE_APP_ID = "app2";
     public static final String JSON_FOLDER = "Engines";
     public static File base_dir;
 

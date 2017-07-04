@@ -45,11 +45,6 @@ public class IntelehealthApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Parse.initialize(new Parse.Configuration.Builder(this)
-                .applicationId("app")
-                .server(HelperMethods.PARSE_SERVER_URL)
-                .build()
-        );
         // The following line triggers the initialization of ACRA
         this.mContext = getApplicationContext();
         ACRA.init(this);
