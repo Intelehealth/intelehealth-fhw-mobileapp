@@ -3,6 +3,7 @@ package io.intelehealth.client.activities.patient_detail_activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -12,6 +13,7 @@ import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
@@ -72,7 +74,11 @@ public class PatientDetailActivity extends AppCompatActivity {
     Button editbtn;
     Button newVisit;
     LinearLayout previousVisitsList;
-
+    SharedPreferences.Editor e;
+    SharedPreferences sharedPreferences;
+    boolean returning = false;
+    String phistory = "";
+    String fhistory = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +124,57 @@ public class PatientDetailActivity extends AppCompatActivity {
         newVisit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // before starting, we determine if it is new visit for a returning patient
+                // extract both FH and PMH
+
+                LocalRecordsDatabaseHelper mDatabaseHelper = new LocalRecordsDatabaseHelper(PatientDetailActivity.this);
+                SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
+                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                e = sharedPreferences.edit();
+                returning = false;
+                e.putBoolean("returning", returning); // change in Sp
+                e.commit();
+
+                String[] cols = {"value"};
+                Cursor cursor = sqLiteDatabase.query("obs", cols, "patient_id=? and concept_id=?",// querying for PMH
+                        new String[]{patient.getId(), "163187"},
+                        null, null, null);
+
+                if (cursor.moveToFirst()) {
+                    // rows present
+                    do {
+                        // so that null data is not appended
+                        phistory = phistory + cursor.getString(0);
+
+                    }
+                    while (cursor.moveToNext());
+                    returning = true;
+                    e.putString("phistory", phistory);//Log.d("phist",phistory);
+                    e.putBoolean("returning", true);
+                    e.commit();
+                }
+                cursor.close();
+
+                Cursor cursor1 = sqLiteDatabase.query("obs", cols, "patient_id=? and concept_id=?",// querying for FH
+                        new String[]{patient.getId(), "163188"},
+                        null, null, null);
+                if (cursor1.moveToFirst()) {
+                    // rows present
+                    do {
+                        fhistory = fhistory + cursor1.getString(0);
+                    }
+                    while (cursor1.moveToNext());
+                    returning = true;
+                    e.putString("fhistory", fhistory);//Log.d("fhist",fhistory);
+                    e.putBoolean("returning", true);
+                    e.commit();
+                }
+                cursor1.close();
+
+                // Will display data for patient as it is present in database
+                // Toast.makeText(PatientDetailActivity.this,"PMH: "+phistory,Toast.LENGTH_SHORT).show();
+                // Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
+
                 Intent intent2 = new Intent(PatientDetailActivity.this, ComplaintNodeActivity.class);
                 String fullName = patient.getFirstName() + " " + patient.getLastName();
                 intent2.putExtra("patientID", patientID);
@@ -512,6 +569,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         TextView textView = new TextView(this);
         String visitString = String.format("Seen on %s.", datetime);
         if (end_datetime == null || end_datetime.isEmpty()) {
+            // visit has not yet ended
             SpannableString spannableString = new SpannableString(visitString + " Active");
             Object greenSpan = new BackgroundColorSpan(Color.GREEN);
             Object underlineSpan = new UnderlineSpan();
@@ -532,9 +590,12 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
 
         } else {
+            // when visit has ended
             textView.setText(visitString);
             past_visit = true;
             textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+
         }
 
         textView.setTextSize(18);

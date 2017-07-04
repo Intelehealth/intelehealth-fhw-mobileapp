@@ -36,6 +36,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
 import io.intelehealth.client.activities.family_history_activity.FamilyHistoryActivity;
 import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.R;
@@ -86,7 +87,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
     PhysicalExam physicalExamMap;
 
     String physicalString;
-
     Boolean complaintConfirmed = false;
 
     @Override
@@ -176,7 +176,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                         startActivity(intent);
                     } else {
                         long obsId = insertDb(physicalString);
-                        Intent intent1 = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
+                        Intent intent1 = new Intent(PhysicalExamActivity.this, VitalsActivity.class); // earlier visitsummary
                         intent1.putExtra("patientID", patientID);
                         intent1.putExtra("visitID", visitID);
                         intent1.putExtra("state", state);

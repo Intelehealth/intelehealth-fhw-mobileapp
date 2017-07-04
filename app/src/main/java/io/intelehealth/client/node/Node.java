@@ -528,6 +528,7 @@ public class Node implements Serializable {
         }
     }
 
+
     public static void openCamera(Activity activity, String imagePath, String imageName) {
         Log.d(TAG, "open Camera!");
         Intent cameraIntent = new Intent(activity, CameraActivity.class);
@@ -878,6 +879,7 @@ public class Node implements Serializable {
         durationDialog.show();
     }
 
+
     public static void subHandleQuestion(Node questionNode, final Activity context, final CustomArrayAdapter adapter, final String imagePath, final String imageName) {
         String type = questionNode.getInputType();
         Log.d(TAG, "subQ " + type);
@@ -976,8 +978,6 @@ public class Node implements Serializable {
         locationDialog.setTitle(R.string.question_location_picker);
 
         //TODO: Issue #51 on GitHub
-
-
     }
 
     public static void subAskNumber(final Node node, Activity context, final CustomArrayAdapter adapter) {

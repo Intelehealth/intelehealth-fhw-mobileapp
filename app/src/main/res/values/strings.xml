@@ -152,6 +152,7 @@
     <string name="visit_summary_family_history">Family History</string>
     <string name="visit_summary_on_examination">On Examination</string>
     <string name="visit_summary_complaint">C/O</string>
+    <string name="visit_summary_vitals">Vitals</string>
     <string name="visit_summary_doctor_details">Doctor Details</string>
     <string name="visit_summary_rx">Prescribed Medications</string>
     <string name="visit_summary_diagnosis">Diagnosis</string>

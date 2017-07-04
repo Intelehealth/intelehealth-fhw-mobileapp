@@ -2,6 +2,7 @@
 package io.intelehealth.client.activities.past_medical_history_activity;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -34,8 +36,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
     String LOG_TAG = "Patient History Activity";
     String patient = "patient";
-
-
     String patientID = "1";
     String visitID;
     String state;
@@ -57,13 +57,60 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
     CustomExpandableListAdapter adapter;
     ExpandableListView historyListView;
 
-    String patientHistory;
+    String patientHistory;String phistory="";
+
+    boolean flag=false;SharedPreferences.Editor e;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         //For Testing
 //        patientID = Long.valueOf("1");
+
+        // display pop-up to ask for update, if a returning patient
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+         e = sharedPreferences.edit();
+         phistory = sharedPreferences.getString("phistory","  ");
+
+        boolean past = sharedPreferences.getBoolean("returning",false);
+        if(past)
+        {
+
+            AlertDialog.Builder alertdialog = new AlertDialog.Builder(PastMedicalHistoryActivity.this);
+            alertdialog.setTitle("Past-Medical History");
+            alertdialog.setMessage("Do you want to update details?");
+            alertdialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // allow to edit
+                    flag = true;
+                }
+            });
+            alertdialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                      // skip
+                    flag = false;
+                        if (phistory != null && !phistory.isEmpty() && !phistory.equals("null"))
+                        {
+                            insertDb(phistory);
+                        }
+
+                    Intent intent =new Intent(PastMedicalHistoryActivity.this,FamilyHistoryActivity.class);
+                    intent.putExtra("patientID", patientID);
+                    intent.putExtra("visitID", visitID);
+                    intent.putExtra("state", state);
+                    intent.putExtra("name", patientName);
+                    intent.putExtra("tag", intentTag);
+                    intent.putStringArrayListExtra("exams", physicalExams);
+                    startActivity(intent);
+
+                }
+            });
+            alertdialog.show();
+
+        }
+
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -109,8 +156,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                 if (intentTag != null && intentTag.equals("edit")) {
                     if (patientHistoryMap.anySubSelected()) {
                         patientHistory = patientHistoryMap.generateLanguage();
-
-                        updateDatabase(patientHistory); // update details of patient's visit
+                        updateDatabase(patientHistory); // update details of patient's visit, when edit button on VisitSummary is pressed
                     }
 
                     // displaying all values in another activity
@@ -125,8 +171,20 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
                   //  if(patientHistoryMap.anySubSelected()){
                         patientHistory = patientHistoryMap.generateLanguage();
-                        insertDb(patientHistory);
-                   // }
+
+                        if(flag == true) { // only if OK clicked, collect this new info (old patient)
+                            phistory = phistory + patientHistory; // only PMH updated
+                            e.putString("phistory",phistory);
+                            e.putBoolean("returning",true);
+                            e.commit();
+                            insertDb(phistory);
+
+                            // however, we concat it here to patientHistory and pass it along to FH, not inserting into db
+                        }
+                        else  // new patient, directly insert into database
+                        {
+                            insertDb(patientHistory);
+                        }
 
                     Intent intent = new Intent(PastMedicalHistoryActivity.this, FamilyHistoryActivity.class);
                     intent.putExtra("patientID", patientID);
@@ -136,10 +194,13 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     intent.putExtra("tag", intentTag);
                     intent.putStringArrayListExtra("exams", physicalExams);
                     startActivity(intent);
+
+                    }
                 }
 
-            }
-        });
+            });
+
+
 
         patientHistoryMap = new Node(HelperMethods.encodeJSON(this, mFileName)); //Load the patient history mind map
         historyListView = (ExpandableListView) findViewById(R.id.patient_history_expandable_list_view);
@@ -185,8 +246,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                 lastExpandedPosition = groupPosition;
             }
         });
+}
 
-    }
+
 
     /**
      * This method inserts medical history of patient in database.
@@ -194,7 +256,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
      * @param value variable of type String
      * @return long
      */
-    private long insertDb(String value) {
+    public long insertDb(String value) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);

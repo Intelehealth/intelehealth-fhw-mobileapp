@@ -1,6 +1,7 @@
 package io.intelehealth.client.activities.family_history_activity;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,15 +9,20 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.intelehealth.client.activities.past_medical_history_activity.PastMedicalHistoryActivity;
+import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity;
 import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
 import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.R;
@@ -53,13 +59,58 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     ExpandableListView familyListView;
 
     ArrayList<String> insertionList = new ArrayList<>();
-    String insertion = "";
+    String insertion = "" , phistory ="" , fhistory="";
+     boolean flag= false;
+    SharedPreferences.Editor e;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         //For Testing
 //        patientID = Long.valueOf("1");
+
+        // display pop-up to ask for update, if a returning patient
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        e = sharedPreferences.edit();
+        fhistory = sharedPreferences.getString("fhistory"," ");
+        phistory = sharedPreferences.getString("phistory"," ");
+        boolean past = sharedPreferences.getBoolean("returning",false);
+        if(past)
+        {
+            AlertDialog.Builder alertdialog = new AlertDialog.Builder(FamilyHistoryActivity.this);
+            alertdialog.setTitle("Family History");
+            alertdialog.setMessage("Do you want to update details?");
+            alertdialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // allow to edit
+                    flag = true;
+                }
+            });
+            alertdialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // skip
+                    flag = false;
+                    insertDb(fhistory);
+                  //  PastMedicalHistoryActivity pmh = new PastMedicalHistoryActivity();
+                   // pmh.insertDb(phistory);
+
+                    Intent intent =new Intent(FamilyHistoryActivity.this,PhysicalExamActivity.class);
+                    intent.putExtra("patientID", patientID);
+                    intent.putExtra("visitID", visitID);
+                    intent.putExtra("state", state);
+                    intent.putExtra("name", patientName);
+                    intent.putExtra("tag", intentTag);
+                    intent.putStringArrayListExtra("exams", physicalExams);
+
+                    startActivity(intent);
+
+                }
+            });
+            alertdialog.show();
+        }
+
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -199,8 +250,29 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             startActivity(intent);
         } else {
 
-            insertDb(insertion);
-            Intent intent = new Intent(FamilyHistoryActivity.this, VitalsActivity.class);
+            if(flag == true)
+            {
+                // only if OK clicked, collect this new info (old patient)
+                if (insertion.length()>0) {
+                    fhistory = fhistory + insertion; }
+                else { fhistory = fhistory +""; }
+                    insertDb(fhistory);
+
+                   // PastMedicalHistoryActivity pmh = new PastMedicalHistoryActivity();
+                   // pmh.insertDb(phistory);
+
+                // this will display history data as it is present in database
+               // Toast.makeText(FamilyHistoryActivity.this,"new PMH: "+phistory,Toast.LENGTH_SHORT).show();
+               // Toast.makeText(FamilyHistoryActivity.this,"new FH: "+fhistory,Toast.LENGTH_SHORT).show();
+            }
+            else {
+                insertDb(insertion); // new details of family history
+            }
+
+            flag=false;
+            e.putBoolean("returning",false); // done with old patient, so unset flag and returning
+            e.commit();
+            Intent intent = new Intent(FamilyHistoryActivity.this, PhysicalExamActivity.class); // earlier it was vitals
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);
             intent.putExtra("state", state);
@@ -213,7 +285,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 
     }
 
-    private long insertDb(String value) {
+    public long insertDb(String value) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
