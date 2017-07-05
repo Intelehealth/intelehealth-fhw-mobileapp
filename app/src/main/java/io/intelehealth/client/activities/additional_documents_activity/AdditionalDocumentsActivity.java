@@ -1,6 +1,7 @@
 package io.intelehealth.client.activities.additional_documents_activity;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -25,9 +26,10 @@ import java.util.List;
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.camera_activity.CameraActivity;
 import io.intelehealth.client.activities.identification_activity.IdentificationActivity;
+import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.node.Node;
 
-public class AdditionalDocumentsActivity extends AppCompatActivity{
+public class AdditionalDocumentsActivity extends AppCompatActivity {
 
 
     private String patientID;
@@ -60,13 +62,13 @@ public class AdditionalDocumentsActivity extends AppCompatActivity{
                     visitID + File.separator + imageDir;
 
             File dir = new File(filePath);
-            if (!dir.exists()) dir.mkdirs();
+            if (!dir.exists())
+                dir.mkdirs();
             List<File> fileList = Arrays.asList(dir.listFiles());
             rowListItem = new ArrayList<>();
 
-            for (File file : fileList) {
+            for (File file : fileList)
                 rowListItem.add(new DocumentObject(file.getName(), file.getAbsolutePath()));
-            }
 
             RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
@@ -74,7 +76,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity{
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(linearLayoutManager);
 
-            recyclerViewAdapter = new AdditionalDocumentAdapter(this, rowListItem);
+            recyclerViewAdapter = new AdditionalDocumentAdapter(this, rowListItem, filePath);
             recyclerView.setAdapter(recyclerViewAdapter);
         }
     }
@@ -94,11 +96,25 @@ public class AdditionalDocumentsActivity extends AppCompatActivity{
             if (resultCode == RESULT_OK) {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
                 File photo = new File(mCurrentPhotoPath);
-                if(photo.exists()){
-                    recyclerViewAdapter.add(new DocumentObject(photo.getName(),photo.getAbsolutePath()));
+                if (photo.exists()) {
+                    recyclerViewAdapter.add(new DocumentObject(photo.getName(), photo.getAbsolutePath()));
                 }
+                File base_dir = new File(filePath);
+                File files[] = base_dir.listFiles();
+                for (File file : files)
+                    updateImageDatabase(file.getAbsolutePath());
             }
         }
+    }
+
+    private void updateImageDatabase(String imagePath) {
+        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
+        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path) values("
+                + "'" + patientID + "'" + ","
+                + visitID + ","
+                + "'" + imagePath + "'" +
+                ")");
     }
 
     @Override
@@ -106,7 +122,8 @@ public class AdditionalDocumentsActivity extends AppCompatActivity{
         switch (item.getItemId()) {
             case R.id.action_add_docs:
                 Intent cameraIntent = new Intent(this, CameraActivity.class);
-                cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, patientID+"_"+visitID+"_"+imgPrefix);
+                String imageName = patientID + "_" + visitID + "_" + imgPrefix;
+                cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, filePath);
                 startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
                 return true;
@@ -114,8 +131,6 @@ public class AdditionalDocumentsActivity extends AppCompatActivity{
                 return super.onOptionsItemSelected(item);
         }
     }
-
-
 
 
 }
