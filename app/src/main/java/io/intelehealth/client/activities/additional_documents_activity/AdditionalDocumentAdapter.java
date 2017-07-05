@@ -3,9 +3,11 @@ package io.intelehealth.client.activities.additional_documents_activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.intelehealth.client.R;
+import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 
 /**
  * Created by Dexter Barretto on 6/28/17.
@@ -31,13 +34,14 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
 
     private List<DocumentObject> documentList = new ArrayList<>();
     private Context context;
+    private String filePath;
 
     private static final String TAG = AdditionalDocumentAdapter.class.getSimpleName();
 
-    public AdditionalDocumentAdapter(Context context, List<DocumentObject> documentList) {
+    public AdditionalDocumentAdapter(Context context, List<DocumentObject> documentList,String filePath) {
         this.documentList = documentList;
         this.context = context;
-
+        this.filePath = filePath;
     }
 
     @Override
@@ -49,7 +53,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
     }
 
     @Override
-    public void onBindViewHolder(AdditionalDocumentViewHolder holder, final int position) {
+    public void onBindViewHolder(final AdditionalDocumentViewHolder holder, final int position) {
         holder.getDocumentNameTextView().setText(documentList.get(position).getDocumentName());
         final File image = new File(documentList.get(position).getDocumentPhoto());
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
@@ -70,8 +74,17 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
                 documentList.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position,documentList.size());
+                String imageName = holder.getDocumentNameTextView().getText().toString();
+                String dir = filePath + File.separator + imageName;
+                deleteImageFromDatabase(dir);
             }
         });
+    }
+
+    private void deleteImageFromDatabase(String imagePath) {
+        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(context);
+        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+        localdb.execSQL("DELETE FROM image_records WHERE image_path=" + "'" + imagePath + "'");
     }
 
 
