@@ -38,12 +38,14 @@ import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import io.intelehealth.client.BuildConfig;
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.complaint_node_activity.ComplaintNodeActivity;
 import io.intelehealth.client.activities.home_activity.HomeActivity;
@@ -307,10 +309,13 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
         setTitle(patientName);
 
-        if (patient.getPatientPhoto() != null || patient.getPatientPhoto() != "") {
-            Bitmap imageBitmap = BitmapFactory.decodeFile(patient.getPatientPhoto());
-            ImageView mImageView = (ImageView) findViewById(R.id.imageView_patient);
-            mImageView.setImageBitmap(imageBitmap);
+        if (patient.getPatientPhoto() != null && patient.getPatientPhoto() != "") {
+            File image = new File(patient.getPatientPhoto());
+            Glide.with(this)
+                    .load(image)
+                    .thumbnail(0.3f)
+                    .centerCrop()
+                    .into(photoView);
         }
 
 
@@ -585,8 +590,9 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
             if (newVisit.isClickable()) {
                 newVisit.setClickable(false);
-                if (BuildConfig.VERSION_CODE >= Build.VERSION_CODES.M)
-                    newVisit.setBackgroundColor(getColor(R.color.divider));
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) newVisit.setBackgroundColor
+                        (getColor(R.color.divider));
                 else newVisit.setBackgroundColor(getResources().getColor(R.color.divider));
             }
 
