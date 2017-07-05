@@ -586,7 +586,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             if (newVisit.isClickable()) {
                 newVisit.setClickable(false);
                 if (BuildConfig.VERSION_CODE >= Build.VERSION_CODES.M)
-                    newVisit.setBackgroundColor(getColor(R.color.divider));
+                    newVisit.setBackgroundColor(getResources().getColor(R.color.divider));
                 else newVisit.setBackgroundColor(getResources().getColor(R.color.divider));
             }
 

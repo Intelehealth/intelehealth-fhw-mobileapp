@@ -64,6 +64,12 @@ public class ImageUploadService extends IntentService {
         patientId = intent.getStringExtra("patientID");
         visitId = intent.getStringExtra("visitID");
 
+        Parse.initialize(new Parse.Configuration.Builder(this)
+                .applicationId(HelperMethods.IMAGE_APP_ID)
+                .server(HelperMethods.IMAGE_SERVER_URL)
+                .build()
+        );
+
         String query = "SELECT image_path FROM image_records WHERE patient_id = ? AND visit_id = ?";
         LocalRecordsDatabaseHelper databaseHelper = new LocalRecordsDatabaseHelper(this);
         SQLiteDatabase localdb = databaseHelper.getWritableDatabase();

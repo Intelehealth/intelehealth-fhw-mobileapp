@@ -231,8 +231,8 @@ public class SetupActivity extends AppCompatActivity {
 
         //INITIALIZE PARSE CONFIGS
         Parse.initialize(new Parse.Configuration.Builder(this)
-                .applicationId(HelperMethods.PARSE_APP_ID)
-                .server(HelperMethods.PARSE_SERVER_URL)
+                .applicationId(HelperMethods.MIND_MAP_APP_ID)
+                .server(HelperMethods.MIND_MAP_SERVER_URL)
                 .build()
         );
 
@@ -669,9 +669,9 @@ public class SetupActivity extends AppCompatActivity {
             COLLECTION_NAME = params[1];
 
             try {
-                String servStr = HelperMethods.PARSE_SERVER_URL + "classes/" + COLLECTION_NAME;
+                String servStr = HelperMethods.MIND_MAP_SERVER_URL + "classes/" + COLLECTION_NAME;
                 URL url = new URL(servStr);
-                Log.i("Connect", HelperMethods.PARSE_SERVER_URL + "classes/" + COLLECTION_NAME);
+                Log.i("Connect", HelperMethods.MIND_MAP_SERVER_URL + "classes/" + COLLECTION_NAME);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.setRequestProperty("X-Parse-Application-Id", "app");
