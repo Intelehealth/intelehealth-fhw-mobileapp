@@ -4,6 +4,7 @@ import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -660,6 +661,16 @@ public class SetupActivity extends AppCompatActivity {
     private class getJSONFile extends AsyncTask<String, Void, String> {
 
         String FILENAME, COLLECTION_NAME;
+        ProgressDialog progress;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progress = new ProgressDialog(SetupActivity.this);
+            progress.setTitle("Please Wait");
+            progress.setMessage("Downloading...");
+            progress.show();
+        }
 
         @Override
         protected String doInBackground(String... params) {
@@ -725,6 +736,8 @@ public class SetupActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            progress.dismiss();
             //HelperMethods.readFile(FILENAME,SetupActivity.this);
         }
     }

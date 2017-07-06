@@ -97,7 +97,7 @@ public class ImageUploadService extends IntentService {
             if (HelperMethods.isNetworkAvailable(this)) {
                 uploadImage(classname, bitmap, imageName, intent, imagePath);
             } else {
-                String newText = "Person Image posting unsuccessful";
+                String newText = "Failed to Post Images.";
                 mBuilder.setSmallIcon(R.mipmap.ic_launcher)
                         .setContentTitle("Image Upload")
                         .setContentText(newText);
@@ -138,6 +138,7 @@ public class ImageUploadService extends IntentService {
                             .setContentTitle("Image Upload")
                             .setContentText(newText);
                     mNotifyManager.notify(mId, mBuilder.build());
+                    addJobToQueue(intent, imagePath);
                 }
             }
         });
