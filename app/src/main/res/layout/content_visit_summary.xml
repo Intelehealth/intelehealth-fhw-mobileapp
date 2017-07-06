@@ -511,6 +511,60 @@
 
         </android.support.v7.widget.CardView>
 
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/chw_and_doctor_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/padding_card"
+            android:layout_marginTop="@dimen/padding_card"
+            card_view:cardCornerRadius="@dimen/card_corner_radius"
+            card_view:cardElevation="2dp"
+            card_view:cardUseCompatPadding="true"
+            card_view:contentPadding="@dimen/padding_card">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!--<TextView
+                    android:id="@+id/title_doctor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:text="Doctor"
+                    android:textSize="@dimen/card_title_text_size" />
+
+                <TextView
+                    android:id="@+id/doctor_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/title_doctor"
+                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:text="Dr. T.M"
+                    android:textSize="18sp" />-->
+
+                <TextView
+                    android:id="@+id/title_health_worker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:text="Health Worker"
+                    android:textSize="@dimen/card_title_text_size" />
+
+                <TextView
+                    android:id="@+id/chw_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/title_health_worker"
+                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:text="Mr. John Doe"
+                    android:textSize="18sp" />
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
         <!--Previous Reports Card contains a list of links to image files of the previous reports-->
         <!--<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"-->
         <!--android:id="@+id/cardView_prevreports"-->

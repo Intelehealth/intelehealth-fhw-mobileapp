@@ -156,6 +156,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView famHistView;
     TextView patHistView;
     TextView physFindingsView;
+    TextView mCHWname;
 
     String medHistory;
     String baseDir;
@@ -195,6 +196,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mymenu = menu;
         internetCheck = mymenu.findItem(R.id.internet_icon);
         MenuItemCompat.getActionView(internetCheck);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        mCHWname = (TextView) findViewById(R.id.chw_details);
+        mCHWname.setText(sharedPreferences.getString("chwname", "----"));
 
         if (isPast) menuItem.setVisible(false);
         return super.onCreateOptionsMenu(menu);
@@ -828,14 +833,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         try {
             String medHistSelection = "patient_id = ? AND concept_id = ?";
-            
+
             String[] medHistArgs = {dataString, String.valueOf(ConceptId.RHK_MEDICAL_HISTORY_BLURB)};
 
             Cursor medHistCursor = db.query("obs", columns, medHistSelection, medHistArgs, null, null, orderBy);
             medHistCursor.moveToLast();
             String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
             patHistory.setValue(medHistText);
-            
+
             if (medHistText != null && !medHistText.isEmpty()) {
 
                 medHistory = patHistory.getValue();
@@ -1358,7 +1363,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         }
     }
-
 
 
 }
