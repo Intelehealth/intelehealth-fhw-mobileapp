@@ -3,15 +3,9 @@ package io.intelehealth.client.activities.visit_summary_activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,13 +20,10 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.List;
 
 import io.intelehealth.client.R;
-import io.intelehealth.client.application.IntelehealthApplication;
 
 
 /**
@@ -128,7 +119,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<MyViewHolder> {
                                 return false;
                             }
                         })
-                        .override(screen_width,screen_height)
+                        .override(screen_width, screen_height)
                         .into(imageView);
 
                /* new AsyncTask<Void, Void, Bitmap>() {
