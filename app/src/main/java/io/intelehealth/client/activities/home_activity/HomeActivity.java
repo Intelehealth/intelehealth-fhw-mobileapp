@@ -3,19 +3,31 @@ package io.intelehealth.client.activities.home_activity;
 import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import org.acra.ACRA;
+
+import java.io.IOException;
 
 import io.intelehealth.client.activities.login_activity.LoginActivity;
 import io.intelehealth.client.R;
@@ -30,6 +42,7 @@ import io.intelehealth.client.activities.login_activity.OfflineLogin;
 
 public class HomeActivity extends AppCompatActivity {
 
+    boolean flag ;
 
 
     @Override
@@ -46,6 +59,16 @@ public class HomeActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(new HomeAdapter());
 
+        Backup b= new Backup();
+        try {
+            b.createFileInMemory(HomeActivity.this);
+        } catch (IOException ie) {
+            ie.printStackTrace();
+        }
+
+
+
+
     }
 
     @Override
@@ -53,7 +76,8 @@ public class HomeActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_home, menu);
         return super.onCreateOptionsMenu(menu);
-    }
+
+        }
 
 
     @Override
@@ -68,6 +92,11 @@ public class HomeActivity extends AppCompatActivity {
 //            case R.id.endOfDayOption:
 //                endOfDay();
 //                return true;
+
+            case R.id.backupOption:
+                manageBackup();  // specify method to be called
+                 return true;
+
             case R.id.logoutOption:
                 logout();
                 return true;
@@ -133,6 +162,47 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+    public void manageBackup()
+    {
+
+        Backup b= new Backup();
+        boolean exists = b.checkDatabaseForData(HomeActivity.this);
+        Toast.makeText(this,"data:  "+exists,Toast.LENGTH_SHORT).show();
+        Log.d("data:",String.valueOf(exists) );
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor e = sharedPreferences.edit();
+        String value = "";
+
+        if(exists == true)
+        {
+            value = "yes";
+            e.putString("value",value); // true here, copy to file
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            dialog.setMessage("Backing up your data");
+            dialog.show();
+        }
+        else if (exists == false)
+        {
+            value = "no";
+            e.putString("value",value); // false here
+        }
+
+        e.apply();
+
+        try {
+
+            b.createFileInMemory(this); // call method second time here, because we need to decide on basis of SP
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+
+    }
+
+
+
+
+
 
 
 
