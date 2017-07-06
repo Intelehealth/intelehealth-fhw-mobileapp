@@ -84,7 +84,7 @@ public class OfflineLogin {
 
             String stored_username = mSharedPreference.getString(mContext.getString(R.string.offline_login_username_key), null);
 
-            if (stored_username != null && stored_username.equals(username)) {
+            if (stored_username != null) {
                 Log.i(TAG, "Username: " + username);
                 Log.i(TAG, "Stored Username: " + stored_username);
                 String stored_password = mSharedPreference.getString(mContext.getString(R.string.offline_login_password_key), null);
@@ -103,7 +103,7 @@ public class OfflineLogin {
                         e.printStackTrace();
                     }
                     Log.i(TAG, "Hashed Password : " + hash);
-                    if (hash != null && stored_password.equals(hash)) {
+                    if (hash != null && stored_password.equals(hash) && stored_username.equals(username)) {
                         Toast.makeText(mContext, "Offline Login Successful", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(mContext, HomeActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -116,7 +116,8 @@ public class OfflineLogin {
                 } else {
                     Toast.makeText(mContext, mContext.getString(R.string.offline_authentication_not_possible), Toast.LENGTH_LONG).show();
                 }
-            } else {
+            }
+            else {
                 Toast.makeText(mContext, mContext.getString(R.string.offline_credentials_unavailable), Toast.LENGTH_LONG).show();
             }
 
