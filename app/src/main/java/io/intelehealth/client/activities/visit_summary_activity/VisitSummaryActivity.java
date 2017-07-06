@@ -158,6 +158,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView physFindingsView;
 
     String medHistory;
+    String baseDir;
 
     NotificationManager mNotificationManager;
     NotificationCompat.Builder mBuilder;
@@ -270,27 +271,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mAdditionalDocsRecyclerView = (RecyclerView) findViewById(R.id.recy_additional_documents);
         mPhysicalExamsRecyclerView = (RecyclerView) findViewById(R.id.recy_physexam);
 
-        String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-
-        String filePathAddDoc = baseDir + File.separator + "Patient Images" + File.separator + patientID + File.separator +
-                visitID + File.separator + additionalDocumentDir;
+        baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
 
         String filePathPhyExam = baseDir + File.separator + "Patient Images" + File.separator + patientID + File.separator +
                 visitID + File.separator + physicalExamDocumentDir;
-
-        File addDocDir = new File(filePathAddDoc);
-        if (!addDocDir.exists()) {
-            addDocDir.mkdirs();
-            Log.v(LOG_TAG, "directory ceated " + addDocDir.getAbsolutePath());
-        } else {
-            File[] files = addDocDir.listFiles();
-            List<File> fileList = Arrays.asList(files);
-            HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
-            mAdditionalDocsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
-            mAdditionalDocsRecyclerView.setLayoutManager(mAdditionalDocsLayoutManager);
-            mAdditionalDocsRecyclerView.setAdapter(horizontalAdapter);
-
-        }
 
         File phyExamDir = new File(filePathPhyExam);
         if (!phyExamDir.exists()) {
@@ -413,10 +397,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         complaintView.setText(complaint.getValue());
         famHistView.setText(famHistory.getValue());
         patHistView.setText(patHistory.getValue());
-
-
-
-
 
         physFindingsView.setText(phyExam.getValue());
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -739,6 +719,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     }
 
+
     /**
      * This method creates new object of type RetrieveData.
      *
@@ -848,7 +829,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         try {
             String medHistSelection = "patient_id = ? AND concept_id = ?";
             
-            String[] medHistArgs = {dataString, String.valueOf(ConceptId.PHYSICAL_EXAMINATION)};
+            String[] medHistArgs = {dataString, String.valueOf(ConceptId.RHK_MEDICAL_HISTORY_BLURB)};
 
             Cursor medHistCursor = db.query("obs", columns, medHistSelection, medHistArgs, null, null, orderBy);
             medHistCursor.moveToLast();
@@ -897,7 +878,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 break;
 
             case ConceptId.PHYSICAL_EXAMINATION: //Physical Examination
-                patHistory.setValue(value);
+                phyExam.setValue(value);
 
                 break;
             case ConceptId.HEIGHT: //Height
@@ -1315,6 +1296,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
     {
         super.onResume();
         callBroadcastReceiver();
+
+        String filePathAddDoc = baseDir + File.separator + "Patient Images" + File.separator + patientID + File.separator +
+                visitID + File.separator + additionalDocumentDir;
+
+        File addDocDir = new File(filePathAddDoc);
+        if (!addDocDir.exists()) {
+            addDocDir.mkdirs();
+            Log.v(LOG_TAG, "directory ceated " + addDocDir.getAbsolutePath());
+        } else {
+            File[] files = addDocDir.listFiles();
+            List<File> fileList = Arrays.asList(files);
+            HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
+            mAdditionalDocsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
+            mAdditionalDocsRecyclerView.setLayoutManager(mAdditionalDocsLayoutManager);
+            mAdditionalDocsRecyclerView.setAdapter(horizontalAdapter);
+
+        }
     }
 
     @Override
@@ -1360,5 +1358,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         }
     }
+
+
 
 }

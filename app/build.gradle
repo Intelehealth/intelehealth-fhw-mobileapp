@@ -57,7 +57,13 @@ dependencies {
 
     compile "com.firebase:firebase-jobdispatcher:$rootProject.jobDispatcherVersion"
     debugCompile "com.squareup.okhttp3:logging-interceptor:$rootProject.okHttpVersion"
+
+    // glide library dependencies
+    compile 'com.github.bumptech.glide:glide:3.8.0'
+
+
     compile 'com.parse:parse-android:1.15.7'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

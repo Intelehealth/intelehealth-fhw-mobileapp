@@ -555,7 +555,7 @@ public class ClientService extends IntentService {
             medHistCursor.moveToLast();
             String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
             patHistory.setValue(medHistText);
-            if (medHistText!=null && !medHistText.isEmpty()) {
+            if (medHistText != null && !medHistText.isEmpty()) {
                 medHistory = patHistory.getValue();
                 medHistory = medHistory.replace("\"", "");
                 medHistory = medHistory.replace("\n", "");
@@ -717,6 +717,7 @@ public class ClientService extends IntentService {
 
     }
 
+
     /**
      * Uploads visit details to the OpenMRS server.
      *
@@ -826,10 +827,10 @@ public class ClientService extends IntentService {
 
     private boolean uploadEncounterNotes(String visitUUID, Patient patient, String startDateTime,
                                          Obs patHistory, Obs famHistory, Obs complaint, Obs physFindings) {
-        if (patHistory.getValue()!=null && (patHistory.getValue().isEmpty() || patHistory.getValue().equals(""))) {
+        if (patHistory.getValue() != null && (patHistory.getValue().isEmpty() || patHistory.getValue().equals(""))) {
             patHistory.setValue("None");
         }
-        if (famHistory.getValue()!=null && (famHistory.getValue().isEmpty() || famHistory.getValue().equals(""))) {
+        if (famHistory.getValue() != null && (famHistory.getValue().isEmpty() || famHistory.getValue().equals(""))) {
             famHistory.setValue("None");
         }
 

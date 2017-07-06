@@ -9,8 +9,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -33,6 +31,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+
+import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -187,7 +187,6 @@ public class IdentificationActivity extends AppCompatActivity {
         } else {
             mGender = "F";
         }
-
 
 
         if (patientID_edit != null) {
@@ -653,8 +652,10 @@ public class IdentificationActivity extends AppCompatActivity {
                 Log.i(TAG, "Result OK");
                 mCurrentPhotoPath = data.getStringExtra("RESULT");
                 Log.v("IdentificationActivity", mCurrentPhotoPath);
-                Bitmap imageBitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
-                mImageView.setImageBitmap(imageBitmap);
+                Glide.with(this)
+                        .load(new File(mCurrentPhotoPath))
+                        .thumbnail(0.25f)
+                        .into(mImageView);
             }
         }
     }
