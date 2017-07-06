@@ -131,6 +131,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 LocalRecordsDatabaseHelper mDatabaseHelper = new LocalRecordsDatabaseHelper(PatientDetailActivity.this);
                 SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
                 sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                String CREATOR_ID = sharedPreferences.getString("creatorid", null);
                 e = sharedPreferences.edit();
                 returning = false;
                 e.putBoolean("returning", returning); // change in Sp
@@ -189,7 +190,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 visitData.put("start_datetime", thisDate);
                 visitData.put("visit_type_id", 0);
                 visitData.put("visit_location_id", 0);
-                visitData.put("visit_creator", 0);
+                visitData.put("visit_creator", CREATOR_ID);
 
                 LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(PatientDetailActivity.this);
                 SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
