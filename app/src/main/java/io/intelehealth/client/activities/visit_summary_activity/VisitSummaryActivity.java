@@ -55,8 +55,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.additional_documents_activity.AdditionalDocumentsActivity;
@@ -181,6 +183,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String additionalDocumentDir = "Additional Documents";
     String physicalExamDocumentDir = "Physical Exam";
 
+    SharedPreferences mSharedPreference;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -227,12 +231,27 @@ public class VisitSummaryActivity extends AppCompatActivity {
         callBroadcastReceiver();
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
+
+
         if (intent != null) {
             patientID = intent.getStringExtra("patientID");
             visitID = intent.getStringExtra("visitID");
+            mSharedPreference = this.getSharedPreferences(
+                    "visit_summary", Context.MODE_PRIVATE);
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
-            physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
+            if (intent.hasExtra("exams")) {
+                physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
+                SharedPreferences.Editor editor = mSharedPreference.edit();
+                Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
+                editor.putStringSet("exam_" + patientID + "_" + visitID, selectedExams);
+                editor.commit();
+            } else {
+                Set<String> selectedExams = mSharedPreference.getStringSet("exam_" + patientID + "_" + visitID, null);
+                if (physicalExams == null) physicalExams = new ArrayList<>();
+                physicalExams.clear();
+                physicalExams.addAll(selectedExams);
+            }
             isPast = intent.getBooleanExtra("pastVisit", false);
 
 //            Log.v(TAG, "Patient ID: " + patientID);
@@ -616,12 +635,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (phyExamDir.exists()) {
                             String[] children = phyExamDir.list();
-                            if (children.length < 1) {
-                                for (int a = 0; a < children.length; a++) {
-                                    new File(phyExamDir, children[i]).delete();
-                                }
+                            List<String> childList = Arrays.asList(children);
+                            SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+                            for (String child : childList) {
+                                new File(phyExamDir, child).delete();
+                                localdb.execSQL("DELETE FROM image_records WHERE image_path=" +
+                                        "'" + phyExamDir.getAbsolutePath() + File.separator + child + "'");
                             }
                             phyExamDir.delete();
+                            localdb.close();
                         }
                         Intent intent1 = new Intent(VisitSummaryActivity.this, PhysicalExamActivity.class);
                         intent1.putExtra("patientID", patientID);
@@ -769,12 +791,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
             serviceIntent.putExtra("visitUUID", visitUUID);
             serviceIntent.putExtra("name", patientName);
             startService(serviceIntent);
-
-
+            SharedPreferences.Editor editor = context.getSharedPreferences(patientID + "_" + visitID, MODE_PRIVATE).edit();
+            editor.remove("exam_" + patientID + "_" + visitID);
+            editor.commit();
             Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
             startActivity(intent);
         }
-
 
     }
 
