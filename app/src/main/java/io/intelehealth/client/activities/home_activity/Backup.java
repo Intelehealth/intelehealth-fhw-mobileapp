@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -23,6 +24,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.channels.FileChannel;
+import java.security.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import io.intelehealth.client.activities.patient_detail_activity.PatientDetailActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
@@ -41,6 +46,9 @@ public class Backup
     String dbpath = "" , newfilepath = "";
     File dbfile , myfile;
     FileInputStream fis;FileOutputStream fos;
+    String value = "";
+    SharedPreferences sharedPreferences ;
+    SharedPreferences.Editor e ;
 
 
 
@@ -78,10 +86,17 @@ public class Backup
     // when to call??????????
     public void createFileInMemory(Context context) throws IOException {
 
+            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            e = sharedPreferences.edit();
+
+            value = sharedPreferences.getString("value","");
+
+
         // create a directory (folder) that will store documents
         // directory created inside: data/data/io.intelehealth/Documents/Hello.db
         // String baseDir = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath();
         try {
+
             File myDir = new File(Environment.getExternalStorageDirectory() + File.separator + "InteleHealth_DB");
             if (myDir.exists()) {
             } else {
@@ -90,12 +105,13 @@ public class Backup
             //file created inside internal memory, outside app package, doesnt delete if app is uninstalled
             newfilepath = Environment.getExternalStorageDirectory() + File.separator + "InteleHealth_DB" +
                     File.separator + "Intelehealth.db"; // directory: Intelehealth_DB   ,  filename: Intelehealth.db
-            Log.d("newfilepath",newfilepath);
+            Log.d("newfilepath", newfilepath);
             myfile = new File(newfilepath);
-            Log.d("myfile path",myfile.getPath().toString());
+            Log.d("myfile path", myfile.getPath().toString());
             if (myfile.exists()) {
                 //myfile.createNewFile();
-               // Toast.makeText(context,"yes my file exists",Toast.LENGTH_SHORT).show();
+                Toast.makeText(context,"yes my file exists",Toast.LENGTH_SHORT).show();
+
             } else {
                 //myfile.createNewFile();
             }
@@ -112,28 +128,25 @@ public class Backup
 
             //copyFile(new FileInputStream(dbfile), new FileOutputStream(myfile));
 
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-            SharedPreferences.Editor e = sharedPreferences.edit();
-            String value = sharedPreferences.getString("value","");
 
 
-            if(value.matches("yes")) {
+           if(value.matches("yes")) {
                 Toast.makeText(context,"Copying into your file",Toast.LENGTH_SHORT).show();
                 Log.d("Copying into your file",value);
                 fis = new FileInputStream(dbfile);
                 fos = new FileOutputStream(myfile);
                 readContents(context);
-                copyFile(fis, fos);
+                copyFile(context,fis, fos);
                 readContents(context);
             }
-            if(value.matches("no"))
+          if(value.matches("no"))
             {
                 Toast.makeText(context,"Copying into database",Toast.LENGTH_SHORT).show();
                 Log.d("Copying into database",value);
                 fis = new FileInputStream(myfile);
                 fos = new FileOutputStream(dbfile);
                 readContents(context);
-                copyFile(fis,fos);
+                copyFile(context,fis,fos);
                 readContents(context);
             }
 
@@ -149,7 +162,7 @@ public class Backup
 
 
 
-    public void copyFile(FileInputStream fromFile, FileOutputStream toFile) throws Exception {
+    public void copyFile(Context context,FileInputStream fromFile, FileOutputStream toFile) throws Exception {
         FileChannel fromChannel = null;
         FileChannel toChannel = null;
 
@@ -158,11 +171,14 @@ public class Backup
             toChannel = toFile.getChannel();
             try {
                 fromChannel.transferTo(0, fromChannel.size(), toChannel);
+
             } catch (IOException e) {
                 Log.d("transfer failed:", String.valueOf(e));
             }
         } finally {
-
+            //Long millisecond = myfile.lastModified();
+            //Date d = new Date(millisecond);
+            //Log.d("Last-Modified");
             try {
                 if (fromChannel != null) {
                     fromChannel.close();
@@ -185,22 +201,33 @@ public class Backup
             FileInputStream fis = new FileInputStream(myfile);
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader br = new BufferedReader(isr);
-
             String line = "";
-            while((line = br.readLine())!=null)
-            {
-                line = br.readLine();
-                sb.append(line);
-            }
 
+            while ((line = br.readLine()) != null)
+                 {
+                     line = br.readLine();
+                     sb.append(line);
+                 }
 
         } catch (Exception e) {
             Log.d("readerror",e.toString());
-            Toast.makeText(context,"not able to read",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,"Not able to read the file!!",Toast.LENGTH_SHORT).show();
         }
+       // String date = java.text.DateFormat.getDateTimeInstance().format(new Date());
+        Calendar c = Calendar.getInstance();
+        String time = String.valueOf(c.getTime());
+
+        SimpleDateFormat df2 = new SimpleDateFormat("dd-MM-yyyy");
+        String date = df2.format(c.getTime());
+
+        Log.d("Last backup time: ",time);
+        Log.d("Last backup date: ",date);
+        e.putString("date",date);
+        e.putString("time",time);
+        e.apply();
 
         Log.d("file contents: ", String.valueOf(sb));
-        Toast.makeText(context,"file contents::     "+String.valueOf(sb),Toast.LENGTH_SHORT).show();
+        Toast.makeText(context,"File contents::     "+String.valueOf(sb),Toast.LENGTH_SHORT).show();
     }
 
 

@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -28,6 +29,10 @@ import android.widget.Toast;
 import org.acra.ACRA;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.intelehealth.client.activities.login_activity.LoginActivity;
 import io.intelehealth.client.R;
@@ -42,7 +47,9 @@ import io.intelehealth.client.activities.login_activity.OfflineLogin;
 
 public class HomeActivity extends AppCompatActivity {
 
-    boolean flag ;
+    String value = "";SharedPreferences sharedPreferences;
+    SharedPreferences.Editor e;
+    String backupdate , backuptime;
 
 
     @Override
@@ -58,15 +65,43 @@ public class HomeActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(gridLayoutManager);
 
         recyclerView.setAdapter(new HomeAdapter());
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        e = sharedPreferences.edit();
+         backupdate = sharedPreferences.getString("date","");
+         backuptime = sharedPreferences.getString("time","");
 
-        Backup b= new Backup();
-        try {
-            b.createFileInMemory(HomeActivity.this);
-        } catch (IOException ie) {
-            ie.printStackTrace();
-        }
+        final Calendar date = Calendar.getInstance();
+        date.set(Calendar.HOUR,0);
+        date.set(Calendar.MINUTE,0);
+        date.set(Calendar.AM_PM,Calendar.AM); // morning
 
 
+        Calendar calendar = Calendar.getInstance();
+        long currentTimestamp = calendar.getTimeInMillis();
+
+        long diffTimestamp = date.getTimeInMillis() - currentTimestamp;
+        long myDelay = (diffTimestamp < 0 ? 0 : diffTimestamp);
+
+
+
+         Runnable mLaunchTask = new Runnable() {
+            public void run() {
+                Calendar calendar = Calendar.getInstance();
+                Log.d("test", "started at "
+                        + calendar.get(Calendar.HOUR_OF_DAY) + " "
+                        + calendar.get(Calendar.MINUTE) + " "
+                        + calendar.get(Calendar.SECOND)
+                );
+
+                Toast.makeText(HomeActivity.this,"Backup started",Toast.LENGTH_SHORT).show();
+                manageBackup();
+
+            }
+        };
+        new Handler().postDelayed(mLaunchTask, myDelay); // makes sure that our task starts at desired time with min delay
+
+
+       // every min---1000ms * 60 sec = 1 minute
 
 
     }
@@ -166,13 +201,12 @@ public class HomeActivity extends AppCompatActivity {
     public void manageBackup()
     {
 
+
         Backup b= new Backup();
         boolean exists = b.checkDatabaseForData(HomeActivity.this);
-        Toast.makeText(this,"data:  "+exists,Toast.LENGTH_SHORT).show();
+       Toast.makeText(this,"data:  "+exists,Toast.LENGTH_SHORT).show();
         Log.d("data:",String.valueOf(exists) );
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor e = sharedPreferences.edit();
-        String value = "";
+
 
         if(exists == true)
         {
