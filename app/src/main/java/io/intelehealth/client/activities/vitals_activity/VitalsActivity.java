@@ -468,31 +468,31 @@ public class VitalsActivity extends AppCompatActivity {
         } else {
             try {
                 if (mHeight.getText()!=null) {
-                    results.setHeight(Double.parseDouble(mHeight.getText().toString()));
+                    results.setHeight((mHeight.getText().toString()));
                 }
                 if(mWeight.getText()!=null)
                 {
-                    results.setWeight(Double.parseDouble(mWeight.getText().toString()));
+                    results.setWeight((mWeight.getText().toString()));
                 }
                 if(mPulse.getText()!=null)
                 {
-                    results.setPulse(Double.parseDouble(mPulse.getText().toString()));
+                    results.setPulse((mPulse.getText().toString()));
                 }
                 if(mBpDia.getText()!=null)
                 {
-                    results.setBpdia(Double.parseDouble(mBpDia.getText().toString()));
+                    results.setBpdia((mBpDia.getText().toString()));
                 }
                 if (mBpSys.getText()!=null)
                 {
-                    results.setBpsys(Double.parseDouble(mBpSys.getText().toString()));
+                    results.setBpsys((mBpSys.getText().toString()));
                 }
                 if(mTemperature.getText()!=null)
                 {
-                    results.setTemperature(Double.parseDouble(mTemperature.getText().toString()));
+                    results.setTemperature((mTemperature.getText().toString()));
                 }
                 if(mSpo2.getText()!=null)
                 {
-                    results.setSpo2(Double.parseDouble(mSpo2.getText().toString()));
+                    results.setSpo2((mSpo2.getText().toString()));
                 }
 
 
@@ -542,14 +542,14 @@ public class VitalsActivity extends AppCompatActivity {
     }
 
 
-    private long insertDb(double objValue, int CONCEPT_ID) {
+    private long insertDb(String objValue, int CONCEPT_ID) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         final String CREATOR_ID = prefs.getString("creatorid", null);
 
-        String value = String.valueOf(objValue);
+        String value = objValue;
 
         ContentValues complaintEntries = new ContentValues();
 
@@ -563,7 +563,7 @@ public class VitalsActivity extends AppCompatActivity {
         return localdb.insert("obs", null, complaintEntries);
     }
 
-    private void updateDatabase(double objValue, int CONCEPT_ID) {
+    private void updateDatabase(String objValue, int CONCEPT_ID) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
 

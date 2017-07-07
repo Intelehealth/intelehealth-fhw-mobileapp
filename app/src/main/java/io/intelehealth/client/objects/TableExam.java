@@ -9,14 +9,14 @@ import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
  */
 public class TableExam {
     private int patientId;
-    private double height;
-    private double weight;
-    private double bmi;
-    private double bpsys;
-    private double bpdia;
-    private double pulse;
-    private double temperature;
-    private double spo2;
+    private String height;
+    private String weight;
+    private String bmi;
+    private String bpsys;
+    private String bpdia;
+    private String pulse;
+    private String temperature;
+    private String spo2;
 
 
     public int getPatientId() {
@@ -27,67 +27,67 @@ public class TableExam {
         this.patientId = patientId;
     }
 
-    public double getHeight() {
+    public String getHeight() {
         return height;
     }
 
-    public void setHeight(double height) {
+    public void setHeight(String height) {
         this.height = height;
     }
 
-    public double getWeight() {
+    public String getWeight() {
         return weight;
     }
 
-    public void setWeight(double weight) {
+    public void setWeight(String weight) {
         this.weight = weight;
     }
 
-    public double getBmi() {
+    public String getBmi() {
         return bmi;
     }
 
-    public void setBmi(double bmi) {
+    public void setBmi(String bmi) {
         this.bmi = bmi;
     }
 
-    public double getBpsys() {
+    public String getBpsys() {
         return bpsys;
     }
 
-    public void setBpsys(double bpsys) {
+    public void setBpsys(String bpsys) {
         this.bpsys = bpsys;
     }
 
-    public double getBpdia() {
+    public String getBpdia() {
         return bpdia;
     }
 
-    public void setBpdia(double bpdia) {
+    public void setBpdia(String bpdia) {
         this.bpdia = bpdia;
     }
 
-    public double getTemperature() {
-        return temperature;
-    }
-
-    public void setTemperature(double temperature) {
-        this.temperature = temperature;
-    }
-
-    public double getSpo2() {
-        return spo2;
-    }
-
-    public void setSpo2(double spo2) {
-        this.spo2 = spo2;
-    }
-
-    public double getPulse() {
+    public String getPulse() {
         return pulse;
     }
 
-    public void setPulse(double pulse) {
+    public void setPulse(String pulse) {
         this.pulse = pulse;
+    }
+
+    public String getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(String temperature) {
+        this.temperature = temperature;
+    }
+
+    public String getSpo2() {
+        return spo2;
+    }
+
+    public void setSpo2(String spo2) {
+        this.spo2 = spo2;
     }
 }
