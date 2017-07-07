@@ -54,18 +54,18 @@ public class VitalsActivity extends AppCompatActivity {
     String heightvalue;
     String weightvalue;
 
-    String maxh= "272";
-    String maxw= "150";
-    String maxbpsys= "300";
-    String minbpsys= "50";
-    String maxbpdys= "150";
-    String minbpdys= "30";
-    String maxpulse ="200";
-    String minpulse= "30";
-    String maxte ="120";
-    String minte ="80";
-    String maxspo2 ="100";
-    String minspo2 ="1";
+    String maxh = "272";
+    String maxw = "150";
+    String maxbpsys = "300";
+    String minbpsys = "50";
+    String maxbpdys = "150";
+    String minbpdys = "30";
+    String maxpulse = "200";
+    String minpulse = "30";
+    String maxte = "120";
+    String minte = "80";
+    String maxspo2 = "100";
+    String minspo2 = "1";
 
 
 
@@ -336,7 +336,7 @@ public class VitalsActivity extends AppCompatActivity {
                 String abc = et.getText().toString().trim();
                 if (abc != null && !abc.isEmpty()) {
                     if (Double.parseDouble(abc) > Double.parseDouble(maxh)) {
-                        et.setError("Height should be between 0 and 272cm");
+                        et.setError("Height should be between 0 and " + maxh + "cm");
                         focusView = et;
                         cancel = true;
                         break;
@@ -352,7 +352,7 @@ public class VitalsActivity extends AppCompatActivity {
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty()) {
                     if (Double.parseDouble(abc1) > Double.parseDouble(maxw)) {
-                        et.setError("Weight should be less than 150kg");
+                        et.setError("Weight should be less than " + maxw + "kg");
                         focusView = et;
                         cancel = true;
                         break;
@@ -371,7 +371,7 @@ public class VitalsActivity extends AppCompatActivity {
                 if (abc2 != null && !abc2.isEmpty() && (!abc2.equals("0.0"))) {
                     if ((Double.parseDouble(abc2) > Double.parseDouble(maxpulse)) ||
                             (Double.parseDouble(abc2) < Double.parseDouble(minpulse))) {
-                        et.setError("Pulse should be in between 30 and 150");
+                        et.setError("Pulse should be in between " + minpulse + " and " + maxpulse);
                         focusView = et;
                         cancel = true;
                         break;
@@ -390,7 +390,7 @@ public class VitalsActivity extends AppCompatActivity {
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
                     if ((Double.parseDouble(abc1) > Double.parseDouble(maxbpsys)) ||
                             (Double.parseDouble(abc1) < Double.parseDouble(minbpsys))) {
-                        et.setError("Systolic pressure should be in between 50 ad 160");
+                        et.setError("Systolic pressure should be in between " + minbpsys + " and " + maxbpsys);
                         focusView = et;
                         cancel = true;
                         break;
@@ -409,7 +409,7 @@ public class VitalsActivity extends AppCompatActivity {
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
                     if ((Double.parseDouble(abc1) > Double.parseDouble(maxbpdys)) ||
                             (Double.parseDouble(abc1) < Double.parseDouble(minbpdys))) {
-                        et.setError("Diastolic pressure should be in between 30 and 120");
+                        et.setError("Diastolic pressure should be in between " + minbpdys + " and " + maxbpdys);
                         focusView = et;
                         cancel = true;
                         break;
@@ -428,7 +428,7 @@ public class VitalsActivity extends AppCompatActivity {
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
                     if ((Double.parseDouble(abc1) > Double.parseDouble(maxte)) ||
                             (Double.parseDouble(abc1) < Double.parseDouble(minte))) {
-                        et.setError("Temperature should be in between 80 and 120");
+                        et.setError("Temperature should be in between "+maxte+" and "+minte);
                         focusView = et;
                         cancel = true;
                         break;
@@ -447,7 +447,7 @@ public class VitalsActivity extends AppCompatActivity {
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
                     if ((Double.parseDouble(abc1) > Double.parseDouble(maxspo2)) ||
                     (Double.parseDouble(abc1) < Double.parseDouble(minspo2))) {
-                        et.setError("SpO2 should be in between 1 and 100");
+                        et.setError("SpO2 should be in between "+minspo2+" and "+maxspo2);
                         focusView = et;
                         cancel = true;
                         break;

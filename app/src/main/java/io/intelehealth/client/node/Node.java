@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +19,19 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.NumberPicker;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -567,16 +576,38 @@ public class Node implements Serializable {
         dialog.setView(dialogLayout);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+
+
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface d) {
+
+                DisplayMetrics displayMetrics = new DisplayMetrics();
+                ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                int screen_height = displayMetrics.heightPixels;
+                int screen_width = displayMetrics.widthPixels;
+
                 ImageView imageView = (ImageView) dialog.findViewById(R.id.confirmationImageView);
-                Bitmap img = BitmapFactory.decodeFile(imagePath);
-                float imageWidthInPX = (float) imageView.getWidth();
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(Math.round(imageWidthInPX),
-                        Math.round(imageWidthInPX * (float) img.getHeight() / (float) img.getWidth()));
-                imageView.setLayoutParams(layoutParams);
-                imageView.setImageBitmap(img);
+                final ProgressBar progressBar = (ProgressBar) dialog.findViewById(R.id.progressBar);
+                Glide.with(context)
+                        .load(new File(imagePath))
+                        .skipMemoryCache(true)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .listener(new RequestListener<File, GlideDrawable>() {
+                            @Override
+                            public boolean onException(Exception e, File file, Target<GlideDrawable> target, boolean b) {
+                                progressBar.setVisibility(View.GONE);
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(GlideDrawable glideDrawable, File file, Target<GlideDrawable> target, boolean b, boolean b1) {
+                                progressBar.setVisibility(View.GONE);
+                                return false;
+                            }
+                        })
+                        .override(screen_width,screen_height)
+                        .into(imageView);
             }
         });
 

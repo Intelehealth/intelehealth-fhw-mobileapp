@@ -214,13 +214,6 @@ public class CameraActivity extends AppCompatActivity {
                     mCameraView.setFlash(FLASH_OPTIONS[mCurrentFlash]);
                 }
                 return true;
-            case R.id.switch_camera:
-                if (mCameraView != null) {
-                    int facing = mCameraView.getFacing();
-                    mCameraView.setFacing(facing == CameraView.FACING_FRONT ?
-                            CameraView.FACING_BACK : CameraView.FACING_FRONT);
-                }
-                return true;
         }
         return super.onOptionsItemSelected(item);
     }

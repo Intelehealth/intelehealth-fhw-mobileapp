@@ -108,6 +108,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(context);
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
         localdb.execSQL("DELETE FROM image_records WHERE image_path=" + "'" + imagePath + "'");
+        localdb.close();
     }
 
 

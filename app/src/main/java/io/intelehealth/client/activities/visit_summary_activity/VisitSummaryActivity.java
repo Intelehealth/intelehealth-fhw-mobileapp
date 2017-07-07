@@ -15,11 +15,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
 import android.os.Environment;
-
 import android.preference.PreferenceManager;
-
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
@@ -58,13 +55,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
-
-import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
-import io.intelehealth.client.utilities.ConceptId;
-import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.additional_documents_activity.AdditionalDocumentsActivity;
 import io.intelehealth.client.activities.complaint_node_activity.ComplaintNodeActivity;
@@ -79,6 +74,7 @@ import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.objects.WebResponse;
 import io.intelehealth.client.services.ClientService;
 import io.intelehealth.client.services.ImageUploadService;
+import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.HelperMethods;
 
 /**
@@ -159,6 +155,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     String medHistory;
     String baseDir;
+    String filePathPhyExam;
+    File phyExamDir;
 
     NotificationManager mNotificationManager;
     NotificationCompat.Builder mBuilder;
@@ -184,6 +182,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     String additionalDocumentDir = "Additional Documents";
     String physicalExamDocumentDir = "Physical Exam";
+
+    SharedPreferences mSharedPreference;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -231,12 +231,27 @@ public class VisitSummaryActivity extends AppCompatActivity {
         callBroadcastReceiver();
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
+
+
         if (intent != null) {
             patientID = intent.getStringExtra("patientID");
             visitID = intent.getStringExtra("visitID");
+            mSharedPreference = this.getSharedPreferences(
+                    "visit_summary", Context.MODE_PRIVATE);
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
-            physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
+            if (intent.hasExtra("exams")) {
+                physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
+                SharedPreferences.Editor editor = mSharedPreference.edit();
+                Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
+                editor.putStringSet("exam_" + patientID + "_" + visitID, selectedExams);
+                editor.commit();
+            } else {
+                Set<String> selectedExams = mSharedPreference.getStringSet("exam_" + patientID + "_" + visitID, null);
+                if (physicalExams == null) physicalExams = new ArrayList<>();
+                physicalExams.clear();
+                physicalExams.addAll(selectedExams);
+            }
             isPast = intent.getBooleanExtra("pastVisit", false);
 
 //            Log.v(TAG, "Patient ID: " + patientID);
@@ -273,10 +288,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
 
-        String filePathPhyExam = baseDir + File.separator + "Patient Images" + File.separator + patientID + File.separator +
+        filePathPhyExam = baseDir + File.separator + "Patient Images" + File.separator + patientID + File.separator +
                 visitID + File.separator + physicalExamDocumentDir;
 
-        File phyExamDir = new File(filePathPhyExam);
+        phyExamDir = new File(filePathPhyExam);
         if (!phyExamDir.exists()) {
             phyExamDir.mkdirs();
             Log.v(TAG, "directory ceated " + phyExamDir.getAbsolutePath());
@@ -630,12 +645,26 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 physicalDialog.setNegativeButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        if (phyExamDir.exists()) {
+                            String[] children = phyExamDir.list();
+                            List<String> childList = Arrays.asList(children);
+                            SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+                            for (String child : childList) {
+                                new File(phyExamDir, child).delete();
+                                localdb.execSQL("DELETE FROM image_records WHERE image_path=" +
+                                        "'" + phyExamDir.getAbsolutePath() + File.separator + child + "'");
+                            }
+                            phyExamDir.delete();
+                            localdb.close();
+                        }
                         Intent intent1 = new Intent(VisitSummaryActivity.this, PhysicalExamActivity.class);
                         intent1.putExtra("patientID", patientID);
                         intent1.putExtra("visitID", visitID);
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("tag", "edit");
                         intent1.putStringArrayListExtra("exams", physicalExams);
+                        for (String string : physicalExams)
+                            Log.i(LOG_TAG, "onClick: " + string);
                         startActivity(intent1);
                         dialogInterface.dismiss();
                     }
@@ -774,12 +803,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
             serviceIntent.putExtra("visitUUID", visitUUID);
             serviceIntent.putExtra("name", patientName);
             startService(serviceIntent);
-
-
+            SharedPreferences.Editor editor = context.getSharedPreferences(patientID + "_" + visitID, MODE_PRIVATE).edit();
+            editor.remove("exam_" + patientID + "_" + visitID);
+            editor.commit();
             Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
             startActivity(intent);
         }
-
 
     }
 
@@ -840,14 +869,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         try {
             String medHistSelection = "patient_id = ? AND concept_id = ?";
-            
+
             String[] medHistArgs = {dataString, String.valueOf(ConceptId.RHK_MEDICAL_HISTORY_BLURB)};
 
             Cursor medHistCursor = db.query("obs", columns, medHistSelection, medHistArgs, null, null, orderBy);
             medHistCursor.moveToLast();
             String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
             patHistory.setValue(medHistText);
-            
+
             if (medHistText != null && !medHistText.isEmpty()) {
 
                 medHistory = patHistory.getValue();
@@ -1370,7 +1399,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         }
     }
-
 
 
 }
