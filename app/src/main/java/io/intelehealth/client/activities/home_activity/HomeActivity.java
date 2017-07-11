@@ -50,6 +50,8 @@ public class HomeActivity extends AppCompatActivity {
     String value = "";SharedPreferences sharedPreferences;
     SharedPreferences.Editor e;
     String backupdate , backuptime;
+    Calendar calendar;
+    Handler handler;
 
 
     @Override
@@ -70,39 +72,37 @@ public class HomeActivity extends AppCompatActivity {
          backupdate = sharedPreferences.getString("date","");
          backuptime = sharedPreferences.getString("time","");
 
-        final Calendar date = Calendar.getInstance();
-        date.set(Calendar.HOUR,0);
-        date.set(Calendar.MINUTE,0);
-        date.set(Calendar.AM_PM,Calendar.AM); // morning
+        final Calendar startDate = Calendar.getInstance();
+        startDate.set(Calendar.HOUR,12);
+        startDate.set(Calendar.MINUTE,0);
+        startDate.set(Calendar.AM_PM,Calendar.PM); // morning
 
 
-        Calendar calendar = Calendar.getInstance();
-        long currentTimestamp = calendar.getTimeInMillis();
+        final Calendar endDate = Calendar.getInstance();
+        endDate.set(Calendar.HOUR,12);
+        endDate.set(Calendar.MINUTE,20);
+        endDate.set(Calendar.AM_PM,Calendar.PM); // morning
 
-        long diffTimestamp = date.getTimeInMillis() - currentTimestamp;
-        long myDelay = (diffTimestamp < 0 ? 0 : diffTimestamp);
-
-
-
-         Runnable mLaunchTask = new Runnable() {
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
             public void run() {
-                Calendar calendar = Calendar.getInstance();
-                Log.d("test", "started at "
-                        + calendar.get(Calendar.HOUR_OF_DAY) + " "
-                        + calendar.get(Calendar.MINUTE) + " "
-                        + calendar.get(Calendar.SECOND)
-                );
-
-                Toast.makeText(HomeActivity.this,"Backup started",Toast.LENGTH_SHORT).show();
-                manageBackup();
-
+                Toast.makeText(HomeActivity.this,"Hello",Toast.LENGTH_SHORT).show();
+                Log.d("hello","hello");
+                if(startDate.getTimeInMillis() < calendar.getTimeInMillis()  &&
+                        calendar.getTimeInMillis() < endDate.getTimeInMillis() )
+                {
+                    Log.d("b","b");
+                    Toast.makeText(HomeActivity.this,"backup",Toast.LENGTH_SHORT).show();
+                    manageBackup();
+                }
+                handler.postDelayed(this,1000 * 60);
             }
-        };
-        new Handler().postDelayed(mLaunchTask, myDelay); // makes sure that our task starts at desired time with min delay
+        },1000 * 60);
 
 
-       // every min---1000ms * 60 sec = 1 minute
-
+ // every min---1000ms * 60 sec = 1 minute
+        handler = new Handler();
 
     }
 
