@@ -209,8 +209,9 @@ public class SetupActivity extends AppCompatActivity {
                     // code to execute when EditText loses focus
                     if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
                         String BASE_URL = "http://" + mUrlField.getText().toString() + ":8080/openmrs/ws/rest/v1/";
-                        if(URLUtil.isValidUrl(BASE_URL)) getLocationFromServer(BASE_URL);
-                        else Toast.makeText(SetupActivity.this,getString(R.string.url_invalid),Toast.LENGTH_LONG).show();
+                        if (URLUtil.isValidUrl(BASE_URL)) getLocationFromServer(BASE_URL);
+                        else
+                            Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_LONG).show();
 
                     }
                 }
@@ -230,13 +231,6 @@ public class SetupActivity extends AppCompatActivity {
             }
         });*/
 
-        //INITIALIZE PARSE CONFIGS
-        Parse.initialize(new Parse.Configuration.Builder(this)
-                .applicationId(HelperMethods.MIND_MAP_APP_ID)
-                .server(HelperMethods.MIND_MAP_SERVER_URL)
-                .build()
-        );
-
     }
 
     //DOWNLOAD ALL MIND MAPS
@@ -247,35 +241,8 @@ public class SetupActivity extends AppCompatActivity {
         for (String file : FILES) {
             String[] parts = file.split(".json");
             //Log.i("DOWNLOADING-->",parts[0].replaceAll("\\s+",""));
-            new getJSONFile().execute(file, parts[0].replaceAll("\\s+", ""));
+            new getJSONFile().execute(file, parts[0].replaceAll("\\s+", ""), null);
         }
-    }
-
-    private void downloadFilesInfo() {
-        final ParseQuery<ParseObject> query = ParseQuery.getQuery("AllFiles");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> objects, ParseException e) {
-                if (e == null) {
-                    for (ParseObject obj : objects) {
-                        ParseFile fileObject = (ParseFile) obj.get("FILES");
-                        fileObject.getDataInBackground(new GetDataCallback() {
-                            public void done(byte[] data, ParseException e) {
-                                if (e == null) {
-                                    String tmp = new String(data);
-                                    String files[] = tmp.split("\n");
-                                    Log.i("FLEN", "" + files.length);
-                                    FILES = new String[files.length];
-                                    FILES = files;
-                                    downloadMindMaps();
-                                }
-                            }
-                        });
-                    }
-                } else {
-                    Toast.makeText(SetupActivity.this, getString(R.string.error_network), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
     }
 
 
@@ -480,9 +447,11 @@ public class SetupActivity extends AppCompatActivity {
                     if (responseObject.get("authenticated").getAsBoolean()) {
 
                         JsonObject userObject = responseObject.get("user").getAsJsonObject();
+                        JsonObject personObject = userObject.get("person").getAsJsonObject();
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("sessionid", responseObject.get("sessionId").getAsString());
                         editor.putString("creatorid", userObject.get("uuid").getAsString());
+                        editor.putString("chwname", personObject.get("display").getAsString());
                         editor.commit();
                         return 1;
                     } else {
@@ -552,30 +521,30 @@ public class SetupActivity extends AppCompatActivity {
     private void getLocationFromServer(String url) {
         try {
             ServiceGenerator.changeApiBaseUrl(url);
-        RestApi apiService =
-                ServiceGenerator.createService(RestApi.class);
-        Call<Results<Location>> call = apiService.getLocations(null);
-        call.enqueue(new Callback<Results<Location>>() {
-            @Override
-            public void onResponse(Call<Results<Location>> call, Response<Results<Location>> response) {
-                if (response.code() == 200) {
-                    Results<Location> locationList = response.body();
-                    mLocations = locationList.getResults();
-                    List<String> items = getLocationStringList(locationList.getResults());
-                    LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, items);
-                    mDropdownLocation.setAdapter(adapter);
+            RestApi apiService =
+                    ServiceGenerator.createService(RestApi.class);
+            Call<Results<Location>> call = apiService.getLocations(null);
+            call.enqueue(new Callback<Results<Location>>() {
+                @Override
+                public void onResponse(Call<Results<Location>> call, Response<Results<Location>> response) {
+                    if (response.code() == 200) {
+                        Results<Location> locationList = response.body();
+                        mLocations = locationList.getResults();
+                        List<String> items = getLocationStringList(locationList.getResults());
+                        LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, items);
+                        mDropdownLocation.setAdapter(adapter);
+                    }
+
                 }
 
-            }
-
-            @Override
-            public void onFailure(Call<Results<Location>> call, Throwable t) {
-                Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_LONG).show();
-            }
-        });
-        }catch (IllegalArgumentException e){
-            Log.e(TAG, "changeApiBaseUrl: "+e.getMessage() );
-            Log.e(TAG, "changeApiBaseUrl: "+e.getStackTrace() );
+                @Override
+                public void onFailure(Call<Results<Location>> call, Throwable t) {
+                    Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_LONG).show();
+                }
+            });
+        } catch (IllegalArgumentException e) {
+            Log.e(TAG, "changeApiBaseUrl: " + e.getMessage());
+            Log.e(TAG, "changeApiBaseUrl: " + e.getStackTrace());
             mUrlField.setError(getString(R.string.url_invalid));
         }
     }
@@ -632,7 +601,7 @@ public class SetupActivity extends AppCompatActivity {
                                         // SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("pref",MODE_PRIVATE);
 
                                         //DOWNLOAD MIND MAP FILE LIST
-                                        downloadFilesInfo();
+                                        new getJSONFile().execute(null, "AllFiles", "TRUE");
 
                                         SharedPreferences.Editor editor = sharedPreferences.edit();
                                         editor.putString("licensekey", key);
@@ -666,7 +635,7 @@ public class SetupActivity extends AppCompatActivity {
      */
     private class getJSONFile extends AsyncTask<String, Void, String> {
 
-        String FILENAME, COLLECTION_NAME;
+        String FILENAME, COLLECTION_NAME, FILE_LIST;
         ProgressDialog progress;
 
         @Override
@@ -684,6 +653,7 @@ public class SetupActivity extends AppCompatActivity {
             //SPACE SEPARATED NAMES ARE MADE UNDERSCORE SEPARATED
             FILENAME = params[0];
             COLLECTION_NAME = params[1];
+            FILE_LIST = params[2];
 
             try {
                 String servStr = HelperMethods.MIND_MAP_SERVER_URL + "classes/" + COLLECTION_NAME;
@@ -723,24 +693,35 @@ public class SetupActivity extends AppCompatActivity {
                 JSONObject jsonObject = new JSONObject(response);
                 JSONArray jsonArray = jsonObject.getJSONArray("results");
                 JSONObject finalresponse = jsonArray.getJSONObject(0);
-                writable = finalresponse.getJSONObject("Main").toString();
+                if (FILE_LIST == null)
+                    writable = finalresponse.getJSONObject("Main").toString();
+                else
+                    writable = finalresponse.getString("FILES");
                 Log.i("INFO", writable);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            //WRITE FILE in base_dir
-            try {
-                File mydir = new File(base_dir.getAbsolutePath(), FILENAME);
-                if (!mydir.exists())
-                    mydir.getParentFile().mkdirs();
-                Log.i("FNAM", FILENAME);
-                FileOutputStream fileout = new FileOutputStream(mydir);
-                OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
-                outputWriter.write(writable);
-                outputWriter.close();
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (FILE_LIST == null) {
+                //WRITE FILE in base_dir
+                try {
+                    File mydir = new File(base_dir.getAbsolutePath(), FILENAME);
+                    if (!mydir.exists())
+                        mydir.getParentFile().mkdirs();
+                    Log.i("FNAM", FILENAME);
+                    FileOutputStream fileout = new FileOutputStream(mydir);
+                    OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
+                    outputWriter.write(writable);
+                    outputWriter.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                String files[] = writable.split("\n");
+                Log.i("FLEN", "" + files.length);
+                FILES = new String[files.length];
+                FILES = files;
+                downloadMindMaps();
             }
 
             progress.dismiss();

@@ -152,6 +152,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView famHistView;
     TextView patHistView;
     TextView physFindingsView;
+    TextView mCHWname;
 
     String medHistory;
     String baseDir;
@@ -195,6 +196,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mymenu = menu;
         internetCheck = mymenu.findItem(R.id.internet_icon);
         MenuItemCompat.getActionView(internetCheck);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        mCHWname = (TextView) findViewById(R.id.chw_details);
+        mCHWname.setText(sharedPreferences.getString("chwname", "----"));
 
         if (isPast) menuItem.setVisible(false);
         return super.onCreateOptionsMenu(menu);
