@@ -84,8 +84,8 @@ import io.intelehealth.client.utilities.HelperMethods;
 
 public class VisitSummaryActivity extends AppCompatActivity {
 
-    String LOG_TAG = "Patient Summary";
 
+    private static final String TAG = "VisitSummaryActivity";
 
     //Change when used with a different organization.
     //This is a demo server.
@@ -294,7 +294,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         phyExamDir = new File(filePathPhyExam);
         if (!phyExamDir.exists()) {
             phyExamDir.mkdirs();
-            Log.v(LOG_TAG, "directory ceated " + phyExamDir.getAbsolutePath());
+            Log.v(TAG, "directory ceated " + phyExamDir.getAbsolutePath());
         } else {
             File[] files = phyExamDir.listFiles();
             List<File> fileList = Arrays.asList(files);
@@ -393,17 +393,29 @@ public class VisitSummaryActivity extends AppCompatActivity {
         heightView.setText(height.getValue());
         weightView.setText(weight.getValue());
         pulseView.setText(pulse.getValue());
+
         String bpText = bpSys.getValue() + "/" + bpDias.getValue();
-        bpView.setText(bpText);
+        if(bpText.equals("/")) {
+            bpView.setText("");
+        }
+        else
+        {
+            bpView.setText(bpText);
+        }
 
-        Double mWeight = Double.parseDouble(weight.getValue());
-        Double mHeight = Double.parseDouble(height.getValue());
-
-        double numerator = mWeight * 10000;
-        double denominator = (mHeight) * (mHeight);
-        double bmi_value = numerator / denominator;
-        mBMI = String.format(Locale.ENGLISH, "%.2f", bmi_value);
-
+        Log.d(TAG, "onCreate: "+weight.getValue());
+        String mWeight = weight.getValue();
+        String mHeight = height.getValue();
+        if(!mHeight.isEmpty() && !mWeight.isEmpty() && (mHeight!=null && mWeight!=null)) {
+            double numerator = Double.parseDouble(mWeight) * 10000;
+            double denominator = Double.parseDouble(mHeight) * Double.parseDouble(mHeight);
+            double bmi_value = numerator / denominator;
+            mBMI = String.format(Locale.ENGLISH, "%.2f", bmi_value);
+        }
+        else
+        {
+            mBMI= "";
+        }
         patHistory.setValue(medHistory);
 
         bmiView.setText(mBMI);
@@ -1332,7 +1344,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         File addDocDir = new File(filePathAddDoc);
         if (!addDocDir.exists()) {
             addDocDir.mkdirs();
-            Log.v(LOG_TAG, "directory ceated " + addDocDir.getAbsolutePath());
+            Log.v(TAG, "directory ceated " + addDocDir.getAbsolutePath());
         } else {
             File[] files = addDocDir.listFiles();
             List<File> fileList = Arrays.asList(files);
