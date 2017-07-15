@@ -113,6 +113,7 @@ public class LoginActivity extends AppCompatActivity {
         Account[] accountList = manager.getAccountsByType("io.intelehealth.openmrs");
         if (accountList.length > 0) {
             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            startJobDispatcherService(LoginActivity.this);
             startActivity(intent);
             finish();
         }
@@ -123,6 +124,7 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, HomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                finish();
             }
         }
 
@@ -394,8 +396,8 @@ public class LoginActivity extends AppCompatActivity {
                 offlineLogin.invalidateLoginCredentials();
                 offlineLogin.setUpOfflineLogin(mEmail, mPassword);
                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                startActivity(intent);
                 startJobDispatcherService(LoginActivity.this);
+                startActivity(intent);
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

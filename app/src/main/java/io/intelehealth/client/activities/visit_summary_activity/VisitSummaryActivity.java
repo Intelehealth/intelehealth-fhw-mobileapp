@@ -343,6 +343,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 imageUpload.putExtra("visitID", visitID);
                 startService(imageUpload);
 
+
+
                 Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
                 serviceIntent.putExtra("serviceCall", "visit");
                 serviceIntent.putExtra("patientID", patientID);
@@ -353,20 +355,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 //mLayout.removeView(uploadButton);
 
-                downloadButton = new Button(VisitSummaryActivity.this);
-                downloadButton.setLayoutParams(new LinearLayoutCompat.LayoutParams(
-                        LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
-                downloadButton.setText(R.string.visit_summary_button_download);
+                if(downloadButton == null) {
+                    downloadButton = new Button(VisitSummaryActivity.this);
+                    downloadButton.setLayoutParams(new LinearLayoutCompat.LayoutParams(
+                            LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+                    downloadButton.setText(R.string.visit_summary_button_download);
 
-                downloadButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Snackbar.make(view, "Downloading from doctor", Snackbar.LENGTH_LONG).show();
-                        retrieveOpenMRS(view);
-                    }
-                });
+                    downloadButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Snackbar.make(view, "Downloading from doctor", Snackbar.LENGTH_LONG).show();
+                            retrieveOpenMRS(view);
+                        }
+                    });
 
-                mLayout.addView(downloadButton, 0);
+
+                    mLayout.addView(downloadButton, 0);
+                }
 
             }
         });
@@ -669,7 +674,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent1.putExtra("tag", "edit");
                         intent1.putStringArrayListExtra("exams", physicalExams);
                         for (String string : physicalExams)
-                            Log.i(LOG_TAG, "onClick: " + string);
+                            Log.i(TAG, "onClick: " + string);
                         startActivity(intent1);
                         dialogInterface.dismiss();
                     }
@@ -1094,6 +1099,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             String queryString = "?q=" + identifierNumber;
             //Log.d(TAG, identifierNumber);
+            Log.d(TAG, "doInBackground: "+ identifierNumber);
             WebResponse responseEncounter;
             responseEncounter = HelperMethods.getCommand("encounter", queryString, getApplicationContext());
             if (responseEncounter != null && responseEncounter.getResponseCode() != 200) {
@@ -1101,6 +1107,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 //Log.d(TAG, "Encounter searching was unsuccessful");
                 return null;
             }
+            Log.d(TAG, "doInBackground: "+ responseEncounter.getResponseCode()+"_"+responseEncounter.getResponseString());
 
 
             assert responseEncounter != null;

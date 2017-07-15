@@ -222,9 +222,9 @@ public class SetupActivity extends AppCompatActivity {
        /* mDropdownLocation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.i(LOG_TAG,"position :"+position);
+                Log.i(TAG,"position :"+position);
                 if(mLocations!=null)
-                Log.i(LOG_TAG,mLocations.get(position).getName());
+                Log.i(TAG,mLocations.get(position).getName());
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -455,10 +455,10 @@ public class SetupActivity extends AppCompatActivity {
                         editor.commit();
                         return 1;
                     } else {
-                        return 3;
+                        return 201;
                     }
                 }
-            } catch (UnknownHostException e) {
+            }    catch (UnknownHostException e) {
                 e.printStackTrace();
                 return 201;
             } catch (IOException e) {
