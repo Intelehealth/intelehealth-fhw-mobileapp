@@ -73,15 +73,15 @@ public class HomeActivity extends AppCompatActivity {
          backuptime = sharedPreferences.getString("time","");
 
         final Calendar startDate = Calendar.getInstance();
-        startDate.set(Calendar.HOUR,12);
-        startDate.set(Calendar.MINUTE,0);
-        startDate.set(Calendar.AM_PM,Calendar.PM); // morning
+        startDate.set(Calendar.HOUR,11);
+        startDate.set(Calendar.MINUTE,30);
+        startDate.set(Calendar.AM_PM,Calendar.AM); // morning
 
 
         final Calendar endDate = Calendar.getInstance();
-        endDate.set(Calendar.HOUR,12);
-        endDate.set(Calendar.MINUTE,20);
-        endDate.set(Calendar.AM_PM,Calendar.PM); // morning
+        endDate.set(Calendar.HOUR,11);
+        endDate.set(Calendar.MINUTE,55);
+        endDate.set(Calendar.AM_PM,Calendar.AM); // morning
 
         handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -89,10 +89,14 @@ public class HomeActivity extends AppCompatActivity {
             public void run() {
                 Toast.makeText(HomeActivity.this,"Hello",Toast.LENGTH_SHORT).show();
                 Log.d("hello","hello");
-                if(startDate.getTimeInMillis() < calendar.getTimeInMillis()  &&
-                        calendar.getTimeInMillis() < endDate.getTimeInMillis() )
+                long start = startDate.getTimeInMillis();
+                long end = endDate.getTimeInMillis();
+                calendar = Calendar.getInstance();
+
+                if(start < calendar.getTimeInMillis()  &&
+                        calendar.getTimeInMillis() < end )
                 {
-                    Log.d("b","b");
+                    Log.d("best","b");
                     Toast.makeText(HomeActivity.this,"backup",Toast.LENGTH_SHORT).show();
                     manageBackup();
                 }
@@ -212,9 +216,7 @@ public class HomeActivity extends AppCompatActivity {
         {
             value = "yes";
             e.putString("value",value); // true here, copy to file
-            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-            dialog.setMessage("Backing up your data");
-            dialog.show();
+
         }
         else if (exists == false)
         {
@@ -227,9 +229,19 @@ public class HomeActivity extends AppCompatActivity {
         try {
 
             b.createFileInMemory(this); // call method second time here, because we need to decide on basis of SP
+
         } catch (IOException e1) {
             e1.printStackTrace();
         }
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setMessage("Data Backup Completed!");
+        dialog.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
 
     }
 
