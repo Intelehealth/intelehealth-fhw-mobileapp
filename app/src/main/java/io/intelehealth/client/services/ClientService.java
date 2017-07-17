@@ -49,18 +49,26 @@ public class ClientService extends IntentService {
 
     private static final String EXTRA_FAILED_ATTEMPTS = "io.intelehealth.client.EXTRA_FAILED_ATTEMPTS";
     private static final String EXTRA_LAST_DELAY = "io.intelehealth.client.EXTRA_LAST_DELAY";
-    private static final int MAX_TRIES = 3;
-    private static final int RETRY_DELAY = 30000;
+    private static final int MAX_TRIES = 1;
+    private static final int RETRY_DELAY = 5000;
 
     //For Upload Patient
     public static final int STATUS_PERSON_NOT_CREATED = 101;
     public static final int STATUS_PATIENT_NOT_CREATED = 102;
 
-    //For Upload Visit
-    public static final int STATUS_VISIT_NOT_CREATED = 101;
-    public static final int STATUS_ENCOUNTER_NOT_CREATED = 102;
-    public static final int STATUS_ENCOUNTER_NOTE_NOT_CREATED = 103;
 
+    //For Upload Visit
+    public static final int STATUS_VISIT_NOT_CREATED = 301;
+    public static final int STATUS_ENCOUNTER_NOT_CREATED = 302;
+    public static final int STATUS_ENCOUNTER_NOTE_NOT_CREATED = 303;
+
+    public static final int STATUS_JOB_COMPLETE = 407;
+
+
+    //For Sync Status
+    public static final int STATUS_SYNC_STOPPED = 0;
+    public static final int STATUS_SYNC_IN_PROGRESS = 1;
+    public static final int STATUS_SYNC_COMPLETE = 2;
 
     private static int requestCode = 0;
 
@@ -106,46 +114,59 @@ public class ClientService extends IntentService {
         if (NetworkConnection.isOnline(this)) {
             String serviceCall = intent.getStringExtra("serviceCall");
 
+            if (!intent.hasExtra("queueId")) {
+                int id = addJobToQueue(intent);
+                intent.putExtra("queueId", id);
+            }
+
+            Log.d(TAG, "Queue id: " + intent.getIntExtra("queueId", -1));
+            Integer queueId = intent.getIntExtra("queueId", -1);
+
+            String patientID = intent.getStringExtra("patientID");
+            String patientName = intent.getStringExtra("name");
+            Log.v(TAG, "Patient ID: " + patientID);
+            Log.v(TAG, "Patient Name: " + patientName);
             switch (serviceCall) {
-                case "patient":
-                    String patientID = intent.getStringExtra("patientID");
-                    String patientName = intent.getStringExtra("name");
-                    Log.v(TAG, "Patient ID: " + patientID);
-                    Log.v(TAG, "Patient Name: " + patientName);
+                case "patient": {
+                    queueSyncStart(queueId);
                     createNotification("patient", patientName);
                     success = uploadPatient(patientID, intent);
                     if (success) endNotification(patientName, "patient");
-                    else errorNotification();
+                    else {
+                        errorNotification();
+                        queueSyncStop(queueId);
+                    }
                     break;
-                case "visit":
-                    patientID = intent.getStringExtra("patientID");
+                }
+                case "visit": {
+                    queueSyncStart(queueId);
                     String visitID = intent.getStringExtra("visitID");
-                    patientName = intent.getStringExtra("name");
-                    Log.v(TAG, "Patient ID: " + patientID);
                     Log.v(TAG, "Visit ID: " + visitID);
-                    Log.v(TAG, "Patient Name: " + patientName);
                     createNotification("visit", patientName);
                     success = uploadVisit(patientID, visitID, intent);
                     if (success) endNotification(patientName, "visit");
-                    else errorNotification();
+                    else {
+                        errorNotification();
+                        queueSyncStop(queueId);
+                    }
                     break;
-                case "endVisit":
-                    patientID = intent.getStringExtra("patientID");
+                }
+                case "endVisit": {
+                    queueSyncStart(queueId);
                     String visitUUID = intent.getStringExtra("visitUUID");
-                    patientName = intent.getStringExtra("name");
-                    Log.v(TAG, "Patient ID: " + patientID);
-                    Log.v(TAG, "Patient Name: " + patientName);
                     createNotification("download", patientName);
                     success = endVisit(patientID, visitUUID, intent);
                     if (success) endNotification(patientName, "visit");
-                    else errorNotification();
+                    else {
+                        errorNotification();
+                        queueSyncStop(queueId);
+                    }
                     break;
+                }
                 default:
                     //something
                     break;
             }
-        } else if (NetworkConnection.isConnecting(this)) {
-            retryAfterDelay(intent, 1, 5000);
         } else {
             addJobToQueue(intent);
         }
@@ -194,6 +215,8 @@ public class ClientService extends IntentService {
         patient.setStateProvince(patientCursor.getString(9));
         patient.setCountry(patientCursor.getString(10));
         patient.setGender(patientCursor.getString(11));
+
+        patientCursor.close();
 
         String json = gson.toJson(patient);
         Log.d(TAG + "/Gson", json);
@@ -625,7 +648,7 @@ public class ClientService extends IntentService {
         }
         idCursor.close();
 
-        if(patient.getOpenmrsId()==null || patient.getOpenmrsId().isEmpty()) {
+        if (patient.getOpenmrsId() == null || patient.getOpenmrsId().isEmpty()) {
             Toast.makeText(this, "Patient has not been uploaded", Toast.LENGTH_LONG).show();
             return uploadStatus;
         }
@@ -772,9 +795,10 @@ public class ClientService extends IntentService {
                                           Obs pulse, Obs bpSys, Obs bpDias, Obs spO2) {
         //---------------------;
         String tempString = "0.0";
-        Log.d(TAG,temperature.getValue());
+        Log.d(TAG, temperature.getValue());
         if (temperature.getValue() != null) {
-            if(temperature.getValue().isEmpty()){}else {
+            if (temperature.getValue().isEmpty()) {
+            } else {
                 Double fTemp = Double.parseDouble(temperature.getValue());
                 Double cTemp = (fTemp - 32) * (5 / 9);
                 tempString = String.valueOf(cTemp);
@@ -911,7 +935,7 @@ public class ClientService extends IntentService {
 
         WebResponse endResponse = HelperMethods.postCommand(urlModifier, endString, getApplicationContext());
 
-        Log.d(TAG,endResponse.getResponseCode()+"-"+endResponse.getResponseString());
+        Log.d(TAG, endResponse.getResponseCode() + "-" + endResponse.getResponseString());
 
         if (endResponse.getResponseString() != null && endResponse.getResponseCode() != 200) {
             String newText = "Visit ending was unsuccessful. Please check your connection.";
@@ -983,8 +1007,6 @@ public class ClientService extends IntentService {
             // schedule the intent for future delivery
             alarmManager.set(AlarmManager.RTC_WAKEUP,
                     System.currentTimeMillis() + thisDelay, pendingIntent);
-        } else {
-            addJobToQueue(intent);
         }
 
 
@@ -995,7 +1017,7 @@ public class ClientService extends IntentService {
         return requestCode;
     }
 
-    private void addJobToQueue(Intent intent) {
+    private int addJobToQueue(Intent intent) {
         if (!intent.hasExtra("queueId")) {
             Log.d(TAG, "Adding to Queue");
 
@@ -1008,16 +1030,21 @@ public class ClientService extends IntentService {
             values.put(DelayedJobQueueProvider.JOB_REQUEST_CODE, requestCode);
             values.put(DelayedJobQueueProvider.PATIENT_NAME, intent.getStringExtra("name"));
             values.put(DelayedJobQueueProvider.PATIENT_ID, intent.getStringExtra("patientID"));
+            values.put(DelayedJobQueueProvider.SYNC_STATUS, 0);
 
             switch (serviceCall) {
                 case "patient": {
-                    values.put(DelayedJobQueueProvider.STATUS, intent.getIntExtra("status", -1));
+                    if (intent.hasExtra("status")) values.put(DelayedJobQueueProvider.STATUS,
+                            intent.getIntExtra("status", -1));
+                    else values.put(DelayedJobQueueProvider.STATUS, STATUS_PERSON_NOT_CREATED);
                     values.put(DelayedJobQueueProvider.DATA_RESPONSE, intent.getStringExtra("personResponse"));
                     break;
                 }
                 case "visit": {
                     values.put(DelayedJobQueueProvider.VISIT_ID, intent.getStringExtra("visitID"));
-                    values.put(DelayedJobQueueProvider.STATUS, intent.getIntExtra("status", -1));
+                    if (intent.hasExtra("status"))
+                        values.put(DelayedJobQueueProvider.STATUS, intent.getIntExtra("status", -1));
+                    else values.put(DelayedJobQueueProvider.STATUS, STATUS_VISIT_NOT_CREATED);
                     values.put(DelayedJobQueueProvider.DATA_RESPONSE, intent.getStringExtra("visitResponse"));
                     break;
                 }
@@ -1033,8 +1060,11 @@ public class ClientService extends IntentService {
             Uri uri = getContentResolver().insert(
                     DelayedJobQueueProvider.CONTENT_URI, values);
 
+
             Toast.makeText(getBaseContext(),
                     uri.toString(), Toast.LENGTH_LONG).show();
+
+            return Integer.valueOf(uri.getLastPathSegment());
         } else {
             Log.i(TAG, "Queue id : " + intent.getIntExtra("queueId", -1));
             String serviceCall = intent.getStringExtra("serviceCall");
@@ -1056,10 +1086,11 @@ public class ClientService extends IntentService {
             Uri uri = Uri.parse(url);
             int result = getContentResolver().update(uri, values, null, null);
             if (result > 0) {
-                Log.i(TAG, result + " row deleted");
+                Log.i(TAG, result + " row updated");
             } else {
-                Log.e(TAG, "Database error while deleting row!");
+                Log.e(TAG, "Database error while updatingx row!");
             }
+            return intent.getIntExtra("queueId", -1);
         }
     }
 
@@ -1068,9 +1099,13 @@ public class ClientService extends IntentService {
         if (queueId > -1) {
             String url = DelayedJobQueueProvider.URL + "/" + queueId;
             Uri uri = Uri.parse(url);
-            int result = getContentResolver().delete(uri, null, null);
+            ContentValues values = new ContentValues();
+            values.put(DelayedJobQueueProvider.STATUS, STATUS_JOB_COMPLETE);
+            values.put(DelayedJobQueueProvider.SYNC_STATUS, STATUS_SYNC_COMPLETE);
+            int result = getContentResolver().update(uri, values, null, null);
+            //int result = getContentResolver().delete(uri, null, null);
             if (result > 0) {
-                Log.i(TAG, result + " row deleted");
+                Log.i(TAG, result + " sync completed");
             } else {
                 Log.e(TAG, "Database error while deleting row!");
             }
@@ -1078,8 +1113,21 @@ public class ClientService extends IntentService {
 
     }
 
-    private void queueSyncStart(int queueId){}
-    private void queueSyncStop(int queueId){}
+    private void queueSyncStart(int queueId) {
+        ContentValues values = new ContentValues();
+        values.put(DelayedJobQueueProvider.SYNC_STATUS, STATUS_SYNC_IN_PROGRESS);
+        String url = DelayedJobQueueProvider.URL + "/" + queueId;
+        Uri uri = Uri.parse(url);
+        getContentResolver().update(uri, values, null, null);
+    }
+
+    private void queueSyncStop(int queueId) {
+        ContentValues values = new ContentValues();
+        values.put(DelayedJobQueueProvider.SYNC_STATUS, STATUS_SYNC_STOPPED);
+        String url = DelayedJobQueueProvider.URL + "/" + queueId;
+        Uri uri = Uri.parse(url);
+        int result = getContentResolver().update(uri, values, null, null);
+    }
 
     private String numericDefaultString(String string) {
         if (string == null || string.isEmpty()) {
@@ -1095,10 +1143,10 @@ public class ClientService extends IntentService {
             return string;
     }
 
-    private String emptyStringToNull(String string){
+    private String emptyStringToNull(String string) {
         if (string == null || string.trim().isEmpty()) {
             return null;
-        }else {
+        } else {
             return string;
         }
     }

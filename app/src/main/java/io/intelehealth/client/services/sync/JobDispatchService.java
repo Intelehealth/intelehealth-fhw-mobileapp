@@ -81,6 +81,7 @@ public class JobDispatchService extends JobService {
                 startService(serviceIntent);
             } while (c.moveToNext());
         }
+        c.close();
         return false; // Answers the question: "Is there still work going on?"
     }
 
