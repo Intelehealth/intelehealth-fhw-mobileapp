@@ -73,22 +73,21 @@ public class HomeActivity extends AppCompatActivity {
          backuptime = sharedPreferences.getString("time","");
 
         final Calendar startDate = Calendar.getInstance();
-        startDate.set(Calendar.HOUR,11);
-        startDate.set(Calendar.MINUTE,30);
-        startDate.set(Calendar.AM_PM,Calendar.AM); // morning
+        startDate.set(Calendar.HOUR,10);
+        startDate.set(Calendar.MINUTE,00);
+        startDate.set(Calendar.AM_PM,Calendar.PM);
 
 
         final Calendar endDate = Calendar.getInstance();
-        endDate.set(Calendar.HOUR,11);
-        endDate.set(Calendar.MINUTE,55);
-        endDate.set(Calendar.AM_PM,Calendar.AM); // morning
+        endDate.set(Calendar.HOUR,10);
+        endDate.set(Calendar.MINUTE,15);
+        endDate.set(Calendar.AM_PM,Calendar.PM);
 
         handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(HomeActivity.this,"Hello",Toast.LENGTH_SHORT).show();
-                Log.d("hello","hello");
+
                 long start = startDate.getTimeInMillis();
                 long end = endDate.getTimeInMillis();
                 calendar = Calendar.getInstance();
@@ -96,16 +95,13 @@ public class HomeActivity extends AppCompatActivity {
                 if(start < calendar.getTimeInMillis()  &&
                         calendar.getTimeInMillis() < end )
                 {
-                    Log.d("best","b");
-                    Toast.makeText(HomeActivity.this,"backup",Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(HomeActivity.this,"backup started",Toast.LENGTH_SHORT).show();
                     manageBackup();
                 }
                 handler.postDelayed(this,1000 * 60);
             }
         },1000 * 60);
 
-
- // every min---1000ms * 60 sec = 1 minute
         handler = new Handler();
 
     }
@@ -133,7 +129,7 @@ public class HomeActivity extends AppCompatActivity {
 //                return true;
 
             case R.id.backupOption:
-                manageBackup();  // specify method to be called
+                manageBackup();  // to restore app data at any time of the day
                  return true;
 
             case R.id.logoutOption:
@@ -204,45 +200,28 @@ public class HomeActivity extends AppCompatActivity {
 
     public void manageBackup()
     {
-
-
         Backup b= new Backup();
         boolean exists = b.checkDatabaseForData(HomeActivity.this);
-       Toast.makeText(this,"data:  "+exists,Toast.LENGTH_SHORT).show();
         Log.d("data:",String.valueOf(exists) );
-
 
         if(exists == true)
         {
             value = "yes";
-            e.putString("value",value); // true here, copy to file
-
+            e.putString("value",value); //copy to file
         }
         else if (exists == false)
         {
             value = "no";
-            e.putString("value",value); // false here
+            e.putString("value",value);
         }
-
         e.apply();
 
         try {
-
-            b.createFileInMemory(this); // call method second time here, because we need to decide on basis of SP
-
+            b.createFileInMemory(this);
         } catch (IOException e1) {
             e1.printStackTrace();
         }
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        dialog.setMessage("Data Backup Completed!");
-        dialog.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-
+        Toast.makeText(this,"Backup Completed!",Toast.LENGTH_SHORT).show();
     }
 
 

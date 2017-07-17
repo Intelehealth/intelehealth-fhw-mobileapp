@@ -52,7 +52,7 @@ public class Backup
 
 
 
-    public boolean checkDatabaseForData(Context context) // checks if data exists in db
+    public boolean checkDatabaseForData(Context context)
     {
         SQLiteDatabase checkDB = null;
         boolean exists = false;
@@ -82,8 +82,6 @@ public class Backup
         return exists;
     }
 
-
-    // when to call??????????
     public void createFileInMemory(Context context) throws IOException {
 
             sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -91,12 +89,7 @@ public class Backup
 
             value = sharedPreferences.getString("value","");
 
-
-        // create a directory (folder) that will store documents
-        // directory created inside: data/data/io.intelehealth/Documents/Hello.db
-        // String baseDir = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath();
         try {
-
             File myDir = new File(Environment.getExternalStorageDirectory() + File.separator + "InteleHealth_DB");
             if (myDir.exists()) {
             } else {
@@ -108,30 +101,24 @@ public class Backup
             Log.d("newfilepath", newfilepath);
             myfile = new File(newfilepath);
             Log.d("myfile path", myfile.getPath().toString());
-            if (myfile.exists()) {
-                //myfile.createNewFile();
-                Toast.makeText(context,"yes my file exists",Toast.LENGTH_SHORT).show();
-
-            } else {
-                //myfile.createNewFile();
+            if (myfile.exists())
+            {
+               // Toast.makeText(context,"yes my file exists",Toast.LENGTH_SHORT).show();
             }
-
-            //dbfile = new File(dbpath);
+            else {}
             dbfile = new File(context.getDatabasePath("localRecords.db").getPath());
-            if (dbfile.exists()) {
+            if (dbfile.exists())
+            {
                 dbfile.createNewFile();
-
-            } else {
-                dbfile.createNewFile();
-                Toast.makeText(context, "dbfile doesnot exist", Toast.LENGTH_SHORT).show();
             }
-
-            //copyFile(new FileInputStream(dbfile), new FileOutputStream(myfile));
-
-
+            else
+            {
+                dbfile.createNewFile();
+               // Toast.makeText(context, "dbfile doesnot exist", Toast.LENGTH_SHORT).show();
+            }
 
            if(value.matches("yes")) {
-                Toast.makeText(context,"Copying into your file",Toast.LENGTH_SHORT).show();
+
                 Log.d("Copying into your file",value);
                 fis = new FileInputStream(dbfile);
                 fos = new FileOutputStream(myfile);
@@ -141,7 +128,7 @@ public class Backup
             }
           if(value.matches("no"))
             {
-                Toast.makeText(context,"Copying into database",Toast.LENGTH_SHORT).show();
+
                 Log.d("Copying into database",value);
                 fis = new FileInputStream(myfile);
                 fos = new FileOutputStream(dbfile);
@@ -176,10 +163,7 @@ public class Backup
                 Log.d("transfer failed:", String.valueOf(e));
             }
         } finally {
-            //Long millisecond = myfile.lastModified();
-            //Date d = new Date(millisecond);
-            //Log.d("Last-Modified");
-            try {
+        try {
                 if (fromChannel != null) {
                     fromChannel.close();
                 }
@@ -197,7 +181,7 @@ public class Backup
     {
         StringBuilder sb = new StringBuilder();
         try {
-            //FileInputStream fis = context.openFileInput(newfilepath);
+
             FileInputStream fis = new FileInputStream(myfile);
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader br = new BufferedReader(isr);
@@ -211,15 +195,13 @@ public class Backup
 
         } catch (Exception e) {
             Log.d("readerror",e.toString());
-            Toast.makeText(context,"Not able to read the file!!",Toast.LENGTH_SHORT).show();
+           // Toast.makeText(context,"Not able to read the file!!",Toast.LENGTH_SHORT).show();
         }
-       // String date = java.text.DateFormat.getDateTimeInstance().format(new Date());
         Calendar c = Calendar.getInstance();
         String time = String.valueOf(c.getTime());
 
         SimpleDateFormat df2 = new SimpleDateFormat("dd-MM-yyyy");
         String date = df2.format(c.getTime());
-
         Log.d("Last backup time: ",time);
         Log.d("Last backup date: ",date);
         e.putString("date",date);
@@ -227,7 +209,7 @@ public class Backup
         e.apply();
 
         Log.d("file contents: ", String.valueOf(sb));
-        Toast.makeText(context,"File contents::     "+String.valueOf(sb),Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context,"File contents::     "+String.valueOf(sb),Toast.LENGTH_SHORT).show();
     }
 
 
