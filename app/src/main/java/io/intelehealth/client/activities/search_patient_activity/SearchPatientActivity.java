@@ -213,7 +213,6 @@ public class SearchPatientActivity extends AppCompatActivity {
                                 }
                             });
                 }
-                searchCursor.close();
 
 
             } catch (Exception e) {

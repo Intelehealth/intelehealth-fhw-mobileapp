@@ -61,6 +61,5 @@ public class SearchCursorAdapter extends CursorAdapter {
         tvBody.setText(body);
     }
 
-
 }
 
