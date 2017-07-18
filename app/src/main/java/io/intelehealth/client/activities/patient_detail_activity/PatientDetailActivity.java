@@ -6,11 +6,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.print.PrintAttributes;
@@ -24,7 +23,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.UnderlineSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,25 +35,24 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import io.intelehealth.client.activities.family_history_activity.FamilyHistoryActivity;
-import io.intelehealth.client.activities.identification_activity.IdentificationActivity;
-import io.intelehealth.client.activities.past_medical_history_activity.PastMedicalHistoryActivity;
-import io.intelehealth.client.utilities.HelperMethods;
-
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.complaint_node_activity.ComplaintNodeActivity;
 import io.intelehealth.client.activities.home_activity.HomeActivity;
+import io.intelehealth.client.activities.identification_activity.IdentificationActivity;
 import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.services.ClientService;
+import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.HelperMethods;
 
 /**
@@ -81,7 +78,8 @@ public class PatientDetailActivity extends AppCompatActivity {
     SharedPreferences.Editor e;
     SharedPreferences sharedPreferences;
     boolean returning = false;
-    String phistory=""; String fhistory="";
+    String phistory = "";
+    String fhistory = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,12 +103,12 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         patient.setId(patientID);
         setDisplay(String.valueOf(patientID));
-        editbtn=(Button)findViewById(R.id.edit_button);
+        editbtn = (Button) findViewById(R.id.edit_button);
         editbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent2 = new Intent(PatientDetailActivity.this, IdentificationActivity.class);
-                intent2.putExtra("pid",patientID);
+                intent2.putExtra("pid", patientID);
                 startActivity(intent2);
 
             }
@@ -132,53 +130,52 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                 LocalRecordsDatabaseHelper mDatabaseHelper = new LocalRecordsDatabaseHelper(PatientDetailActivity.this);
                 SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
-                 sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                e =sharedPreferences.edit();
+                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                String CREATOR_ID = sharedPreferences.getString("creatorid", null);
+                e = sharedPreferences.edit();
                 returning = false;
-                e.putBoolean("returning",returning); // change in Sp
+                e.putBoolean("returning", returning); // change in Sp
                 e.commit();
 
                 String[] cols = {"value"};
-                Cursor cursor = sqLiteDatabase.query("obs",cols,"patient_id=? and concept_id=?",// querying for PMH
-                        new String[] { patient.getId(),"163187"},
-                       null,null,null);
+                Cursor cursor = sqLiteDatabase.query("obs", cols, "patient_id=? and concept_id=?",// querying for PMH
+                        new String[]{patient.getId(), String.valueOf(ConceptId.RHK_MEDICAL_HISTORY_BLURB)},
+                        null, null, null);
 
-                if(cursor.moveToFirst() )
-                {
+                if (cursor.moveToFirst()) {
                     // rows present
                     do {
-                       // so that null data is not appended
+                        // so that null data is not appended
                         phistory = phistory + cursor.getString(0);
 
-                       }
+                    }
                     while (cursor.moveToNext());
                     returning = true;
-                    e.putString("phistory",phistory);//Log.d("phist",phistory);
-                    e.putBoolean("returning",true);
+                    e.putString("phistory", phistory);//Log.d("phist",phistory);
+                    e.putBoolean("returning", true);
                     e.commit();
                 }
                 cursor.close();
 
-                Cursor cursor1 = sqLiteDatabase.query("obs",cols,"patient_id=? and concept_id=?",// querying for FH
-                        new String[] { patient.getId(),"163188"},
-                        null,null,null);
-                if(cursor1.moveToFirst() )
-                {
+                Cursor cursor1 = sqLiteDatabase.query("obs", cols, "patient_id=? and concept_id=?",// querying for FH
+                        new String[]{patient.getId(), String.valueOf(ConceptId.RHK_FAMILY_HISTORY_BLURB)},
+                        null, null, null);
+                if (cursor1.moveToFirst()) {
                     // rows present
                     do {
                         fhistory = fhistory + cursor1.getString(0);
-                       }
+                    }
                     while (cursor1.moveToNext());
                     returning = true;
-                    e.putString("fhistory",fhistory);//Log.d("fhist",fhistory);
-                    e.putBoolean("returning",true);
+                    e.putString("fhistory", fhistory);//Log.d("fhist",fhistory);
+                    e.putBoolean("returning", true);
                     e.commit();
                 }
                 cursor1.close();
 
                 // Will display data for patient as it is present in database
-               // Toast.makeText(PatientDetailActivity.this,"PMH: "+phistory,Toast.LENGTH_SHORT).show();
-               // Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
+                // Toast.makeText(PatientDetailActivity.this,"PMH: "+phistory,Toast.LENGTH_SHORT).show();
+                // Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
 
                 Intent intent2 = new Intent(PatientDetailActivity.this, ComplaintNodeActivity.class);
                 String fullName = patient.getFirstName() + " " + patient.getLastName();
@@ -193,7 +190,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 visitData.put("start_datetime", thisDate);
                 visitData.put("visit_type_id", 0);
                 visitData.put("visit_location_id", 0);
-                visitData.put("visit_creator", 0);
+                visitData.put("visit_creator", CREATOR_ID);
 
                 LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(PatientDetailActivity.this);
                 SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
@@ -311,10 +308,13 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
         setTitle(patientName);
 
-        if (patient.getPatientPhoto() != null || patient.getPatientPhoto() != "") {
-            Bitmap imageBitmap = BitmapFactory.decodeFile(patient.getPatientPhoto());
-            ImageView mImageView = (ImageView) findViewById(R.id.imageView_patient);
-            mImageView.setImageBitmap(imageBitmap);
+        if (patient.getPatientPhoto() != null && patient.getPatientPhoto() != "") {
+            File image = new File(patient.getPatientPhoto());
+            Glide.with(this)
+                    .load(image)
+                    .thumbnail(0.3f)
+                    .centerCrop()
+                    .into(photoView);
         }
 
 
@@ -369,7 +369,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             histCardView.setVisibility(View.GONE);
         } else {
             String medHistSelection = "patient_id = ? AND concept_id = ?";
-            String[] medHistArgs = {dataString, "163187"};
+            String[] medHistArgs = {dataString, String.valueOf(ConceptId.RHK_MEDICAL_HISTORY_BLURB)};
             String[] medHistColumms = {"value", " concept_id"};
             Cursor medHistCursor = db.query("obs", medHistColumms, medHistSelection, medHistArgs, null, null, null);
             medHistCursor.moveToLast();
@@ -392,7 +392,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
 
             String famHistSelection = "patient_id = ? AND concept_id = ?";
-            String[] famHistArgs = {dataString, "163188"};
+            String[] famHistArgs = {dataString, String.valueOf(ConceptId.RHK_FAMILY_HISTORY_BLURB)};
             String[] famHistColumns = {"value", " concept_id"};
             Cursor famHistCursor = db.query("obs", famHistColumns, famHistSelection, famHistArgs, null, null, null);
             famHistCursor.moveToLast();
@@ -584,12 +584,15 @@ public class PatientDetailActivity extends AppCompatActivity {
 
             past_visit = false;
 
-            if(newVisit.isEnabled()) {
+            if (newVisit.isEnabled()) {
                 newVisit.setEnabled(false);
             }
-            if(newVisit.isClickable()) {
+            if (newVisit.isClickable()) {
                 newVisit.setClickable(false);
-                newVisit.setBackgroundColor(getResources().getColor(R.color.divider));
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) newVisit.setBackgroundColor
+                        (getColor(R.color.divider));
+                else newVisit.setBackgroundColor(getResources().getColor(R.color.divider));
             }
 
         } else {

@@ -21,6 +21,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
@@ -265,7 +266,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
         //TODO: Get the right creator_ID
 
 
-        final int CONCEPT_ID = 163187; // RHK MEDICAL HISTORY BLURB
+        final int CONCEPT_ID = ConceptId.RHK_MEDICAL_HISTORY_BLURB; // RHK MEDICAL HISTORY BLURB
         //Eventually will be stored in a separate table
 
         ContentValues complaintEntries = new ContentValues();
@@ -302,7 +303,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
 
-        int conceptID = 163187;
+        int conceptID = ConceptId.RHK_MEDICAL_HISTORY_BLURB;
         ContentValues contentValues = new ContentValues();
         contentValues.put("value", string);
 

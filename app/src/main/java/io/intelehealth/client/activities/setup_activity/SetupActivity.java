@@ -4,6 +4,7 @@ import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,6 +26,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.webkit.URLUtil;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -80,7 +82,7 @@ import retrofit2.Response;
  */
 public class SetupActivity extends AppCompatActivity {
 
-    private final String LOG_TAG = "SetupActivity";
+    private static final String TAG = SetupActivity.class.getSimpleName();
 
     private TestSetup mAuthTask = null;
 
@@ -148,7 +150,6 @@ public class SetupActivity extends AppCompatActivity {
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(LOG_TAG, "button pressed");
                 attemptLogin();
             }
         });
@@ -205,11 +206,12 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    Toast.makeText(SetupActivity.this, "Working", Toast.LENGTH_LONG).show();
                     // code to execute when EditText loses focus
                     if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
-                        String BASE_URL = "http://" + mUrlField.getText().toString() + "/openmrs/ws/rest/v1/";
-                        getLocationFromServer(BASE_URL);
+                        String BASE_URL = "http://" + mUrlField.getText().toString() + ":8080/openmrs/ws/rest/v1/";
+                        if (URLUtil.isValidUrl(BASE_URL)) getLocationFromServer(BASE_URL);
+                        else
+                            Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_LONG).show();
 
                     }
                 }
@@ -229,13 +231,6 @@ public class SetupActivity extends AppCompatActivity {
             }
         });*/
 
-        //INITIALIZE PARSE CONFIGS
-        Parse.initialize(new Parse.Configuration.Builder(this)
-                .applicationId(HelperMethods.PARSE_APP_ID)
-                .server(HelperMethods.PARSE_SERVER_URL)
-                .build()
-        );
-
     }
 
     //DOWNLOAD ALL MIND MAPS
@@ -246,35 +241,8 @@ public class SetupActivity extends AppCompatActivity {
         for (String file : FILES) {
             String[] parts = file.split(".json");
             //Log.i("DOWNLOADING-->",parts[0].replaceAll("\\s+",""));
-            new getJSONFile().execute(file, parts[0].replaceAll("\\s+", ""));
+            new getJSONFile().execute(file, parts[0].replaceAll("\\s+", ""), null);
         }
-    }
-
-    private void downloadFilesInfo() {
-        final ParseQuery<ParseObject> query = ParseQuery.getQuery("AllFiles");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> objects, ParseException e) {
-                if (e == null) {
-                    for (ParseObject obj : objects) {
-                        ParseFile fileObject = (ParseFile) obj.get("FILES");
-                        fileObject.getDataInBackground(new GetDataCallback() {
-                            public void done(byte[] data, ParseException e) {
-                                if (e == null) {
-                                    String tmp = new String(data);
-                                    String files[] = tmp.split("\n");
-                                    Log.i("FLEN", "" + files.length);
-                                    FILES = new String[files.length];
-                                    FILES = files;
-                                    downloadMindMaps();
-                                }
-                            }
-                        });
-                    }
-                } else {
-                    Toast.makeText(SetupActivity.this, "Network Error", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
     }
 
 
@@ -343,7 +311,7 @@ public class SetupActivity extends AppCompatActivity {
         Location location = null;
         if (mDropdownLocation.getSelectedItemPosition() <= 0) {
             cancel = true;
-            Toast.makeText(SetupActivity.this, "Please select a value form the dropdown", Toast.LENGTH_LONG);
+            Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_selected), Toast.LENGTH_LONG);
         } else {
             location = mLocations.get(mDropdownLocation.getSelectedItemPosition() - 1);
         }
@@ -356,12 +324,12 @@ public class SetupActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             if (location != null) {
-                Log.i(LOG_TAG, location.getDisplay());
+                Log.i(TAG, location.getDisplay());
                 String urlString = mUrlField.getText().toString();
                 String prefixString = mPrefixField.getText().toString();
                 mAuthTask = new TestSetup(urlString, prefixString, email, password, location);
                 mAuthTask.execute();
-                Log.d(LOG_TAG, "attempting setup");
+                Log.d(TAG, "attempting setup");
             }
         }
     }
@@ -416,13 +384,13 @@ public class SetupActivity extends AppCompatActivity {
             try {
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-                Log.d(LOG_TAG, "UN: " + USERNAME);
-                Log.d(LOG_TAG, "PW: " + PASSWORD);
+                Log.d(TAG, "UN: " + USERNAME);
+                Log.d(TAG, "PW: " + PASSWORD);
 
                 String urlModifier = "session";
 
 
-                BASE_URL = "http://" + CLEAN_URL + "/openmrs/ws/rest/v1/";
+                BASE_URL = "http://" + CLEAN_URL + ":8080/openmrs/ws/rest/v1/";
                 String urlString = BASE_URL + urlModifier;
 
                 URL url = new URL(urlString);
@@ -434,14 +402,14 @@ public class SetupActivity extends AppCompatActivity {
                 connection.setRequestMethod("GET");
                 connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
                 connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
-                Log.d(LOG_TAG, "GET URL: " + url);
-                Log.i(LOG_TAG, connection.getRequestProperties().toString());
+                Log.d(TAG, "GET URL: " + url);
+                Log.i(TAG, connection.getRequestProperties().toString());
 
                 int responseCode = connection.getResponseCode();
                 loginAttempt.setResponseCode(responseCode);
 
-                Log.d(LOG_TAG, "GET URL: " + url);
-                Log.d(LOG_TAG, "Response Code from Server: " + connection.getResponseCode());
+                Log.d(TAG, "GET URL: " + url);
+                Log.d(TAG, "Response Code from Server: " + connection.getResponseCode());
 
                 // Read the input stream into a String
                 InputStream inputStream = connection.getInputStream();
@@ -467,10 +435,10 @@ public class SetupActivity extends AppCompatActivity {
 
                 JSONString = buffer.toString();
 
-                Log.d(LOG_TAG, "JSON Response: " + JSONString);
+                Log.d(TAG, "JSON Response: " + JSONString);
                 loginAttempt.setResponseString(JSONString);
                 if (loginAttempt != null && loginAttempt.getResponseCode() != 200) {
-                    Log.d(LOG_TAG, "Login request was unsuccessful");
+                    Log.d(TAG, "Login request was unsuccessful");
                     return loginAttempt.getResponseCode();
                 } else if (loginAttempt == null) {
                     return 201;
@@ -479,9 +447,11 @@ public class SetupActivity extends AppCompatActivity {
                     if (responseObject.get("authenticated").getAsBoolean()) {
 
                         JsonObject userObject = responseObject.get("user").getAsJsonObject();
+                        JsonObject personObject = userObject.get("person").getAsJsonObject();
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("sessionid", responseObject.get("sessionId").getAsString());
                         editor.putString("creatorid", userObject.get("uuid").getAsString());
+                        editor.putString("chwname", personObject.get("display").getAsString());
                         editor.commit();
                         return 1;
                     } else {
@@ -514,11 +484,11 @@ public class SetupActivity extends AppCompatActivity {
                 editor.putString(SettingsActivity.KEY_PREF_LOCATION_DESCRIPTION, LOCATION.getDescription());
 
                 editor.putString(SettingsActivity.KEY_PREF_SERVER_URL, BASE_URL);
-                Log.d(LOG_TAG, BASE_URL);
+                Log.d(TAG, BASE_URL);
                 editor.apply();
 
                 editor.putString(SettingsActivity.KEY_PREF_ID_PREFIX, PREFIX);
-                Log.d(LOG_TAG, PREFIX);
+                Log.d(TAG, PREFIX);
                 editor.apply();
 
                 editor.putBoolean(SettingsActivity.KEY_PREF_SETUP_COMPLETE, true);
@@ -534,10 +504,10 @@ public class SetupActivity extends AppCompatActivity {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
             } else if (success == 3) {
-                mUrlField.setError("Check your URL.");
+                mUrlField.setError(getString(R.string.url_invalid));
                 mUrlField.requestFocus();
             } else {
-                mPrefixField.setError("Select a different prefix!");
+                mPrefixField.setError(getString(R.string.prefix_invalid));
                 mPrefixField.requestFocus();
             }
         }
@@ -549,28 +519,34 @@ public class SetupActivity extends AppCompatActivity {
      * @param url string of url.
      */
     private void getLocationFromServer(String url) {
-        ServiceGenerator.changeApiBaseUrl(url);
-        RestApi apiService =
-                ServiceGenerator.createService(RestApi.class);
-        Call<Results<Location>> call = apiService.getLocations(null);
-        call.enqueue(new Callback<Results<Location>>() {
-            @Override
-            public void onResponse(Call<Results<Location>> call, Response<Results<Location>> response) {
-                if (response.code() == 200) {
-                    Results<Location> locationList = response.body();
-                    mLocations = locationList.getResults();
-                    List<String> items = getLocationStringList(locationList.getResults());
-                    LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, items);
-                    mDropdownLocation.setAdapter(adapter);
+        try {
+            ServiceGenerator.changeApiBaseUrl(url);
+            RestApi apiService =
+                    ServiceGenerator.createService(RestApi.class);
+            Call<Results<Location>> call = apiService.getLocations(null);
+            call.enqueue(new Callback<Results<Location>>() {
+                @Override
+                public void onResponse(Call<Results<Location>> call, Response<Results<Location>> response) {
+                    if (response.code() == 200) {
+                        Results<Location> locationList = response.body();
+                        mLocations = locationList.getResults();
+                        List<String> items = getLocationStringList(locationList.getResults());
+                        LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, items);
+                        mDropdownLocation.setAdapter(adapter);
+                    }
+
                 }
 
-            }
-
-            @Override
-            public void onFailure(Call<Results<Location>> call, Throwable t) {
-                Toast.makeText(SetupActivity.this, "Unable to fetch locations", Toast.LENGTH_LONG).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<Results<Location>> call, Throwable t) {
+                    Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_LONG).show();
+                }
+            });
+        } catch (IllegalArgumentException e) {
+            Log.e(TAG, "changeApiBaseUrl: " + e.getMessage());
+            Log.e(TAG, "changeApiBaseUrl: " + e.getStackTrace());
+            mUrlField.setError(getString(R.string.url_invalid));
+        }
     }
 
     /**
@@ -608,10 +584,10 @@ public class SetupActivity extends AppCompatActivity {
                     dialog = new AlertDialog.Builder(this);
                     LayoutInflater li = LayoutInflater.from(this);
                     View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
-                    dialog.setTitle("Enter License Key")
+                    dialog.setTitle(getString(R.string.enter_license_key))
                             .setView(promptsView)
 
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            .setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     Dialog d = (Dialog) dialog;
@@ -625,7 +601,7 @@ public class SetupActivity extends AppCompatActivity {
                                         // SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("pref",MODE_PRIVATE);
 
                                         //DOWNLOAD MIND MAP FILE LIST
-                                        downloadFilesInfo();
+                                        new getJSONFile().execute(null, "AllFiles", "TRUE");
 
                                         SharedPreferences.Editor editor = sharedPreferences.edit();
                                         editor.putString("licensekey", key);
@@ -634,7 +610,7 @@ public class SetupActivity extends AppCompatActivity {
                                 }
                             })
 
-                            .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                            .setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
@@ -659,7 +635,17 @@ public class SetupActivity extends AppCompatActivity {
      */
     private class getJSONFile extends AsyncTask<String, Void, String> {
 
-        String FILENAME, COLLECTION_NAME;
+        String FILENAME, COLLECTION_NAME, FILE_LIST;
+        ProgressDialog progress;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progress = new ProgressDialog(SetupActivity.this);
+            progress.setTitle(getString(R.string.please_wait_progress));
+            progress.setMessage(getString(R.string.downloading_mindmaps));
+            progress.show();
+        }
 
         @Override
         protected String doInBackground(String... params) {
@@ -667,11 +653,12 @@ public class SetupActivity extends AppCompatActivity {
             //SPACE SEPARATED NAMES ARE MADE UNDERSCORE SEPARATED
             FILENAME = params[0];
             COLLECTION_NAME = params[1];
+            FILE_LIST = params[2];
 
             try {
-                String servStr = HelperMethods.PARSE_SERVER_URL + "classes/" + COLLECTION_NAME;
+                String servStr = HelperMethods.MIND_MAP_SERVER_URL + "classes/" + COLLECTION_NAME;
                 URL url = new URL(servStr);
-                Log.i("Connect", HelperMethods.PARSE_SERVER_URL + "classes/" + COLLECTION_NAME);
+                Log.i("Connect", HelperMethods.MIND_MAP_SERVER_URL + "classes/" + COLLECTION_NAME);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.setRequestProperty("X-Parse-Application-Id", "app");
@@ -698,7 +685,7 @@ public class SetupActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String response) {
             if (response == null) {
-                Toast.makeText(SetupActivity.this, "Error Downloading Mind Maps", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SetupActivity.this, getString(R.string.error_downloading_mindmaps), Toast.LENGTH_SHORT).show();
                 return;
             }
             String writable = "";
@@ -706,25 +693,38 @@ public class SetupActivity extends AppCompatActivity {
                 JSONObject jsonObject = new JSONObject(response);
                 JSONArray jsonArray = jsonObject.getJSONArray("results");
                 JSONObject finalresponse = jsonArray.getJSONObject(0);
-                writable = finalresponse.getJSONObject("Main").toString();
+                if (FILE_LIST == null)
+                    writable = finalresponse.getJSONObject("Main").toString();
+                else
+                    writable = finalresponse.getString("FILES");
                 Log.i("INFO", writable);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            //WRITE FILE in base_dir
-            try {
-                File mydir = new File(base_dir.getAbsolutePath(), FILENAME);
-                if (!mydir.exists())
-                    mydir.getParentFile().mkdirs();
-                Log.i("FNAM", FILENAME);
-                FileOutputStream fileout = new FileOutputStream(mydir);
-                OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
-                outputWriter.write(writable);
-                outputWriter.close();
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (FILE_LIST == null) {
+                //WRITE FILE in base_dir
+                try {
+                    File mydir = new File(base_dir.getAbsolutePath(), FILENAME);
+                    if (!mydir.exists())
+                        mydir.getParentFile().mkdirs();
+                    Log.i("FNAM", FILENAME);
+                    FileOutputStream fileout = new FileOutputStream(mydir);
+                    OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
+                    outputWriter.write(writable);
+                    outputWriter.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                String files[] = writable.split("\n");
+                Log.i("FLEN", "" + files.length);
+                FILES = new String[files.length];
+                FILES = files;
+                downloadMindMaps();
             }
+
+            progress.dismiss();
             //HelperMethods.readFile(FILENAME,SetupActivity.this);
         }
     }

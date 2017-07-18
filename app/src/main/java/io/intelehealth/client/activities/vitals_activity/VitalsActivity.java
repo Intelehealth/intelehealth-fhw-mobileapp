@@ -33,6 +33,7 @@ import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActi
 import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.TableExam;
+import io.intelehealth.client.utilities.ConceptId;
 
 /**
  * Records the patient vitals in the {@link TableExam} container.
@@ -53,18 +54,18 @@ public class VitalsActivity extends AppCompatActivity {
     String heightvalue;
     String weightvalue;
 
-    String maxh= "272";
-    String maxw= "150";
-    String maxbpsys= "160";
-    String minbpsys= "50";
-    String maxbpdys= "120";
-    String minbpdys= "30";
-    String maxpulse ="150";
-    String minpulse= "30";
-    String maxte ="120";
-    String minte ="80";
-    String maxspo2 ="100";
-    String minspo2 ="1";
+    String maxh = "272";
+    String maxw = "150";
+    String maxbpsys = "300";
+    String minbpsys = "50";
+    String maxbpdys = "150";
+    String minbpdys = "30";
+    String maxpulse = "200";
+    String minpulse = "30";
+    String maxte = "120";
+    String minte = "80";
+    String maxspo2 = "100";
+    String minspo2 = "1";
 
 
 
@@ -287,25 +288,25 @@ public class VitalsActivity extends AppCompatActivity {
 
     private void parseData(int concept_id, String value) {
         switch (concept_id) {
-            case 5090: //Height
+            case ConceptId.HEIGHT: //Height
                 mHeight.setText(value);
                 break;
-            case 5089: //Weight
+            case ConceptId.WEIGHT: //Weight
                 mWeight.setText(value);
                 break;
-            case 5087: //Pulse
+            case ConceptId.PULSE: //Pulse
                 mPulse.setText(value);
                 break;
-            case 5085: //Systolic BP
+            case ConceptId.SYSTOLIC_BP: //Systolic BP
                 mBpSys.setText(value);
                 break;
-            case 5086: //Diastolic BP
+            case ConceptId.DIASTOLIC_BP: //Diastolic BP
                 mBpDia.setText(value);
                 break;
-            case 163202: //Temperature
+            case ConceptId.TEMPERATURE: //Temperature
                 mTemperature.setText(value);
                 break;
-            case 5092: //SpO2
+            case ConceptId.SPO2: //SpO2
                 mSpo2.setText(value);
                 break;
             default:
@@ -335,7 +336,7 @@ public class VitalsActivity extends AppCompatActivity {
                 String abc = et.getText().toString().trim();
                 if (abc != null && !abc.isEmpty()) {
                     if (Double.parseDouble(abc) > Double.parseDouble(maxh)) {
-                        et.setError("Height should be between 0 and 272cm");
+                        et.setError("Height should be between 0 and " + maxh + "cm");
                         focusView = et;
                         cancel = true;
                         break;
@@ -351,7 +352,7 @@ public class VitalsActivity extends AppCompatActivity {
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty()) {
                     if (Double.parseDouble(abc1) > Double.parseDouble(maxw)) {
-                        et.setError("Weight should be less than 150kg");
+                        et.setError("Weight should be less than " + maxw + "kg");
                         focusView = et;
                         cancel = true;
                         break;
@@ -370,7 +371,7 @@ public class VitalsActivity extends AppCompatActivity {
                 if (abc2 != null && !abc2.isEmpty() && (!abc2.equals("0.0"))) {
                     if ((Double.parseDouble(abc2) > Double.parseDouble(maxpulse)) ||
                             (Double.parseDouble(abc2) < Double.parseDouble(minpulse))) {
-                        et.setError("Pulse should be in between 30 and 150");
+                        et.setError("Pulse should be in between " + minpulse + " and " + maxpulse);
                         focusView = et;
                         cancel = true;
                         break;
@@ -389,7 +390,7 @@ public class VitalsActivity extends AppCompatActivity {
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
                     if ((Double.parseDouble(abc1) > Double.parseDouble(maxbpsys)) ||
                             (Double.parseDouble(abc1) < Double.parseDouble(minbpsys))) {
-                        et.setError("Systolic pressure should be in between 50 ad 160");
+                        et.setError("Systolic pressure should be in between " + minbpsys + " and " + maxbpsys);
                         focusView = et;
                         cancel = true;
                         break;
@@ -408,7 +409,7 @@ public class VitalsActivity extends AppCompatActivity {
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
                     if ((Double.parseDouble(abc1) > Double.parseDouble(maxbpdys)) ||
                             (Double.parseDouble(abc1) < Double.parseDouble(minbpdys))) {
-                        et.setError("Diastolic pressure should be in between 30 and 120");
+                        et.setError("Diastolic pressure should be in between " + minbpdys + " and " + maxbpdys);
                         focusView = et;
                         cancel = true;
                         break;
@@ -427,7 +428,7 @@ public class VitalsActivity extends AppCompatActivity {
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
                     if ((Double.parseDouble(abc1) > Double.parseDouble(maxte)) ||
                             (Double.parseDouble(abc1) < Double.parseDouble(minte))) {
-                        et.setError("Temperature should be in between 80 and 120");
+                        et.setError("Temperature should be in between "+maxte+" and "+minte);
                         focusView = et;
                         cancel = true;
                         break;
@@ -446,7 +447,7 @@ public class VitalsActivity extends AppCompatActivity {
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
                     if ((Double.parseDouble(abc1) > Double.parseDouble(maxspo2)) ||
                     (Double.parseDouble(abc1) < Double.parseDouble(minspo2))) {
-                        et.setError("SpO2 should be in between 1 and 100");
+                        et.setError("SpO2 should be in between "+minspo2+" and "+maxspo2);
                         focusView = et;
                         cancel = true;
                         break;
@@ -467,31 +468,31 @@ public class VitalsActivity extends AppCompatActivity {
         } else {
             try {
                 if (mHeight.getText()!=null) {
-                    results.setHeight(Double.parseDouble(mHeight.getText().toString()));
+                    results.setHeight((mHeight.getText().toString()));
                 }
                 if(mWeight.getText()!=null)
                 {
-                    results.setWeight(Double.parseDouble(mWeight.getText().toString()));
+                    results.setWeight((mWeight.getText().toString()));
                 }
                 if(mPulse.getText()!=null)
                 {
-                    results.setPulse(Double.parseDouble(mPulse.getText().toString()));
+                    results.setPulse((mPulse.getText().toString()));
                 }
                 if(mBpDia.getText()!=null)
                 {
-                    results.setBpdia(Double.parseDouble(mBpDia.getText().toString()));
+                    results.setBpdia((mBpDia.getText().toString()));
                 }
                 if (mBpSys.getText()!=null)
                 {
-                    results.setBpsys(Double.parseDouble(mBpSys.getText().toString()));
+                    results.setBpsys((mBpSys.getText().toString()));
                 }
                 if(mTemperature.getText()!=null)
                 {
-                    results.setTemperature(Double.parseDouble(mTemperature.getText().toString()));
+                    results.setTemperature((mTemperature.getText().toString()));
                 }
                 if(mSpo2.getText()!=null)
                 {
-                    results.setSpo2(Double.parseDouble(mSpo2.getText().toString()));
+                    results.setSpo2((mSpo2.getText().toString()));
                 }
 
 
@@ -504,13 +505,13 @@ public class VitalsActivity extends AppCompatActivity {
         }
 
         if (intentTag != null && intentTag.equals("edit")) {
-            updateDatabase(results.getHeight(), 5090);
-            updateDatabase(results.getWeight(), 5089);
-            updateDatabase(results.getPulse(), 5087);
-            updateDatabase(results.getBpsys(), 5085);
-            updateDatabase(results.getBpdia(), 5086);
-            updateDatabase(results.getTemperature(), 163202);
-            updateDatabase(results.getSpo2(), 5092);
+            updateDatabase(results.getHeight(), ConceptId.HEIGHT);
+            updateDatabase(results.getWeight(), ConceptId.WEIGHT);
+            updateDatabase(results.getPulse(), ConceptId.PULSE);
+            updateDatabase(results.getBpsys(), ConceptId.SYSTOLIC_BP);
+            updateDatabase(results.getBpdia(), ConceptId.DIASTOLIC_BP);
+            updateDatabase(results.getTemperature(), ConceptId.TEMPERATURE);
+            updateDatabase(results.getSpo2(), ConceptId.SPO2);
             Intent intent = new Intent(VitalsActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);
@@ -520,14 +521,16 @@ public class VitalsActivity extends AppCompatActivity {
             intent.putStringArrayListExtra("exams", physicalExams);
             startActivity(intent);
         } else {
-            insertDb(results.getHeight(), 5090);
-            insertDb(results.getWeight(), 5089);
-            insertDb(results.getPulse(), 5087);
-            insertDb(results.getBpsys(), 5085);
-            insertDb(results.getBpdia(), 5086);
-            insertDb(results.getTemperature(), 163202);
-            insertDb(results.getSpo2(), 5092);
-            Intent intent = new Intent(VitalsActivity.this, VisitSummaryActivity.class); // earlier physicalexamactivity
+
+            insertDb(results.getHeight(), ConceptId.HEIGHT);
+            insertDb(results.getWeight(), ConceptId.WEIGHT);
+            insertDb(results.getPulse(), ConceptId.PULSE);
+            insertDb(results.getBpsys(), ConceptId.SYSTOLIC_BP);
+            insertDb(results.getBpdia(), ConceptId.DIASTOLIC_BP);
+            insertDb(results.getTemperature(), ConceptId.TEMPERATURE);
+            insertDb(results.getSpo2(), ConceptId.SPO2);
+            Intent intent = new Intent(VitalsActivity.this, VisitSummaryActivity.class);
+
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);
             intent.putExtra("state", state);
@@ -539,14 +542,14 @@ public class VitalsActivity extends AppCompatActivity {
     }
 
 
-    private long insertDb(double objValue, int CONCEPT_ID) {
+    private long insertDb(String objValue, int CONCEPT_ID) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         final String CREATOR_ID = prefs.getString("creatorid", null);
 
-        String value = String.valueOf(objValue);
+        String value = objValue;
 
         ContentValues complaintEntries = new ContentValues();
 
@@ -560,7 +563,7 @@ public class VitalsActivity extends AppCompatActivity {
         return localdb.insert("obs", null, complaintEntries);
     }
 
-    private void updateDatabase(double objValue, int CONCEPT_ID) {
+    private void updateDatabase(String objValue, int CONCEPT_ID) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
 

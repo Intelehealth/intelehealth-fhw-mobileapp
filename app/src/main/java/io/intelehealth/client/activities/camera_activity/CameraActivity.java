@@ -109,14 +109,15 @@ public class CameraActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     if (mImageName == null) {
-                        mImageName = String.valueOf(System.currentTimeMillis());
+                        mImageName = "IMG";
                     }
                     File file;
                     if (mFilePath == null) {
                         file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),
                                         mImageName + "_" + System.currentTimeMillis() + ".jpg");
                     } else {
-                        file = new File(mFilePath + File.separator + mImageName + ".jpg");
+                        file = new File(mFilePath + File.separator + mImageName +
+                                "_" + System.currentTimeMillis() + ".jpg");
                     }
                     OutputStream os = null;
                     try {
@@ -211,13 +212,6 @@ public class CameraActivity extends AppCompatActivity {
                     item.setTitle(FLASH_TITLES[mCurrentFlash]);
                     item.setIcon(FLASH_ICONS[mCurrentFlash]);
                     mCameraView.setFlash(FLASH_OPTIONS[mCurrentFlash]);
-                }
-                return true;
-            case R.id.switch_camera:
-                if (mCameraView != null) {
-                    int facing = mCameraView.getFacing();
-                    mCameraView.setFacing(facing == CameraView.FACING_FRONT ?
-                            CameraView.FACING_BACK : CameraView.FACING_FRONT);
                 }
                 return true;
         }

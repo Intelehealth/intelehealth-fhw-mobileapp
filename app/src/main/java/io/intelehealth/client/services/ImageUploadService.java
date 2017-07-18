@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.parse.Parse;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -64,6 +65,12 @@ public class ImageUploadService extends IntentService {
         patientId = intent.getStringExtra("patientID");
         visitId = intent.getStringExtra("visitID");
 
+        Parse.initialize(new Parse.Configuration.Builder(this)
+                .applicationId(HelperMethods.IMAGE_APP_ID)
+                .server(HelperMethods.IMAGE_SERVER_URL)
+                .build()
+        );
+
         String query = "SELECT image_path FROM image_records WHERE patient_id = ? AND visit_id = ?";
         LocalRecordsDatabaseHelper databaseHelper = new LocalRecordsDatabaseHelper(this);
         SQLiteDatabase localdb = databaseHelper.getWritableDatabase();
@@ -88,31 +95,21 @@ public class ImageUploadService extends IntentService {
             classname = classname.replaceAll("\\s+", "");
             Log.i(LOG_TAG, classname);
             if (HelperMethods.isNetworkAvailable(this)) {
-                uploadImage(classname, bitmap, imageName);
-                if (intent.hasExtra("queueId")) {
-                    int queueId = intent.getIntExtra("queueId", -1);
-                    removeJobFromQueue(queueId);
-                }
-                String newText = "Person Image Posted successfully.";
+                uploadImage(classname, bitmap, imageName, intent, imagePath);
+            } else {
+                String newText = "Failed to Post Images.";
                 mBuilder.setSmallIcon(R.mipmap.ic_launcher)
                         .setContentTitle("Image Upload")
                         .setContentText(newText);
                 mNotifyManager.notify(mId, mBuilder.build());
-            }
-            else{
-                String newText = "Person Image posting unsuccessful";
-                mBuilder.setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("Image Upload")
-                        .setContentText(newText);
-                mNotifyManager.notify(mId, mBuilder.build());
-                addJobToQueue(intent,imagePath);
+                addJobToQueue(intent, imagePath);
                 Log.d(LOG_TAG, "Person Image Posting Unsuccessful");
             }
         }
     }
 
 
-    public void uploadImage(String classname, Bitmap bitmap, String imageName) {
+    public void uploadImage(String classname, Bitmap bitmap, final String imageName, final Intent intent, final String imagePath) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         byte[] image = stream.toByteArray();
@@ -121,10 +118,42 @@ public class ImageUploadService extends IntentService {
         imgupload.put("Image", file);
         imgupload.put("PatientID", patientId);
         imgupload.put("VisitID", visitId);
-        imgupload.saveInBackground();
+        imgupload.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(com.parse.ParseException e) {
+                if (e == null) {
+                    String newText = "Person Image Posted successfully.";
+                    mBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                            .setContentTitle("Image Upload")
+                            .setContentText(newText);
+                    mNotifyManager.notify(mId, mBuilder.build());
+                    if (intent.hasExtra("queueId")) {
+                        int queueId = intent.getIntExtra("queueId", -1);
+                        removeJobFromQueue(queueId);
+                    }
+                    deleteImageFromDatabase(imagePath);
+                } else {
+                    String newText = "Failed to Post Images.";
+                    mBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                            .setContentTitle("Image Upload")
+                            .setContentText(newText);
+                    mNotifyManager.notify(mId, mBuilder.build());
+                    addJobToQueue(intent, imagePath);
+                }
+            }
+        });
     }
 
-    private void addJobToQueue(Intent intent,String imagePath) {
+    private void deleteImageFromDatabase(String imagePath) {
+        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
+        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+        localdb.execSQL("DELETE FROM image_records WHERE patient_id=" +
+                "'" + patientId + "'" + " AND " +
+                "visit_id=" + "'" + visitId + "'" + " AND " +
+                "image_path=" + "'" + imagePath + "'");
+    }
+
+    private void addJobToQueue(Intent intent, String imagePath) {
         if (!intent.hasExtra("queueId")) {
             Log.d(LOG_TAG, "Adding to Queue");
             // Add a new Delayed Job record

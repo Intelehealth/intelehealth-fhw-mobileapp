@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="io.intelehealth.client">
+
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
@@ -13,27 +14,36 @@
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <application
         android:name=".application.IntelehealthApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:largeHeap="true"
         android:theme="@style/AppTheme">
-        <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
-     See README(https://goo.gl/l4GJaQ) for more. -->
+
+        <!--
+     Set custom default icon. This is used when no icon is set for incoming notification messages.
+     See README(https://goo.gl/l4GJaQ) for more.
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_notifications_black_24dp" />
-        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
-             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <!--
+             Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more.
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
+
         <activity
             android:name=".activities.home_activity.HomeActivity"
             android:label="@string/title_activity_login" />
@@ -53,8 +63,7 @@
             android:name=".activities.patient_detail_activity.PatientDetailActivity"
             android:label="@string/title_activity_patient_detail"
             android:parentActivityName=".activities.active_patient_activity.ActivePatientActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activities.visit_summary_activity.VisitSummaryActivity"
             android:label="@string/title_activity_patient_summary"
@@ -68,7 +77,7 @@
             android:name=".activities.video_library_activity.VideoLibraryActivity"
             android:label="@string/title_activity_video_library"
             android:parentActivityName=".activities.home_activity.HomeActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.view_history_activity.ViewHistoryActivity" />
         <activity
             android:name=".activities.search_patient_activity.SearchPatientActivity"
@@ -77,6 +86,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -88,6 +98,7 @@
             android:name=".activities.diagnostics_selection_test_activity.DiagnosticTestsSelectionActivity"
             android:label="@string/title_activity_diagnostic_tests_list"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <service
             android:name=".services.ClientService"
             android:exported="false" />
@@ -97,21 +108,21 @@
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
+
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
+
         <activity
             android:name=".activities.vitals_activity.VitalsActivity"
             android:exported="true"
             android:label="@string/title_activity_vitals"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activities.identification_activity.IdentificationActivity"
             android:label="@string/title_activity_identification"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -120,12 +131,12 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
         <activity
             android:name=".activities.complaint_node_activity.ComplaintNodeActivity"
             android:label="@string/title_activity_complaint_node"
             android:parentActivityName=".activities.identification_activity.IdentificationActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activities.question_node_activity.QuestionNodeActivity"
             android:label="@string/title_activity_question_node"
@@ -134,21 +145,18 @@
             android:name=".activities.past_medical_history_activity.PastMedicalHistoryActivity"
             android:label="@string/title_activity_patient_history"
             android:parentActivityName=".activities.question_node_activity.QuestionNodeActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activities.family_history_activity.FamilyHistoryActivity"
             android:label="@string/title_activity_family_history"
             android:parentActivityName=".activities.past_medical_history_activity.PastMedicalHistoryActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activities.physical_exam_activity.PhysicalExamActivity"
             android:label="@string/title_activity_physical_exam"
             android:parentActivityName=".activities.past_medical_history_activity.PastMedicalHistoryActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activities.setting_activity.SettingsActivity"
             android:label="@string/title_activity_settings"
@@ -164,20 +172,21 @@
         <activity
             android:name=".activities.camera_activity.CameraActivity"
             android:label="@string/title_activity_camera"
-            android:theme="@style/CameraActivityStyle"></activity>
+            android:theme="@style/CameraActivityStyle" />
         <activity
             android:name=".activities.splash_activity.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".activities.today_patient_activity.TodayPatientActivity"
             android:label="@string/title_activity_today_patient"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <!-- Firebase Services-->
+            android:theme="@style/AppTheme.NoActionBar" />
+        <!-- Firebase Services -->
         <service android:name=".services.firebase_services.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -188,6 +197,7 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
         <provider
             android:name=".database.DelayedJobQueueProvider"
             android:authorities="io.intelehealth.client.database.DelayedJobQueueProvider"
@@ -197,6 +207,7 @@
             android:name=".activities.search_patient_activity.SearchSuggestionProvider"
             android:authorities="io.intelehealth.client.activities.search_patient_activity.SearchSuggestionProvider"
             android:exported="false" />
+
         <service
             android:name=".services.sync.JobDispatchService"
             android:exported="false">
@@ -204,9 +215,16 @@
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
             </intent-filter>
         </service>
+
+        <activity android:name=".activities.additional_documents_activity.AdditionalDocumentsActivity"
+            android:label="@string/title_activity_additional_documents"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
         <service
             android:name=".services.ImageUploadService"
             android:exported="false">
         </service>
+
     </application>
+
 </manifest>

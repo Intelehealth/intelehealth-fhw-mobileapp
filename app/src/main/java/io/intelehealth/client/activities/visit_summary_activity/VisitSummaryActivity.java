@@ -11,11 +11,11 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
-import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
@@ -28,6 +28,8 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,27 +49,33 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
-import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
-import io.intelehealth.client.services.ImageUploadService;
-import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.R;
+import io.intelehealth.client.activities.additional_documents_activity.AdditionalDocumentsActivity;
 import io.intelehealth.client.activities.complaint_node_activity.ComplaintNodeActivity;
 import io.intelehealth.client.activities.family_history_activity.FamilyHistoryActivity;
 import io.intelehealth.client.activities.home_activity.HomeActivity;
 import io.intelehealth.client.activities.past_medical_history_activity.PastMedicalHistoryActivity;
 import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity;
+import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Obs;
 import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.objects.WebResponse;
 import io.intelehealth.client.services.ClientService;
+import io.intelehealth.client.services.ImageUploadService;
+import io.intelehealth.client.utilities.ConceptId;
+import io.intelehealth.client.utilities.HelperMethods;
 
 /**
  * This class updates data about patient to database. It also creates a summary about it which can be viewed
@@ -76,9 +84,8 @@ import io.intelehealth.client.services.ClientService;
 
 public class VisitSummaryActivity extends AppCompatActivity {
 
-    String LOG_TAG = "Patient Summary";
 
-
+    private static final String TAG = "VisitSummaryActivity";
 
     //Change when used with a different organization.
     //This is a demo server.
@@ -130,6 +137,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ImageButton editPhysical;
     ImageButton editFamHist;
     ImageButton editMedHist;
+    ImageButton editAddDocs;
 
     TextView nameView;
     TextView idView;
@@ -144,8 +152,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView famHistView;
     TextView patHistView;
     TextView physFindingsView;
+    TextView mCHWname;
 
     String medHistory;
+    String baseDir;
+    String filePathPhyExam;
+    File phyExamDir;
 
     NotificationManager mNotificationManager;
     NotificationCompat.Builder mBuilder;
@@ -162,6 +174,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private Menu mymenu;
     MenuItem internetCheck;
 
+    private RecyclerView mAdditionalDocsRecyclerView;
+    private RecyclerView.LayoutManager mAdditionalDocsLayoutManager;
+
+    private RecyclerView mPhysicalExamsRecyclerView;
+    private RecyclerView.LayoutManager mPhysicalExamsLayoutManager;
+
+
+    String additionalDocumentDir = "Additional Documents";
+    String physicalExamDocumentDir = "Physical Exam";
+
+    SharedPreferences mSharedPreference;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -173,7 +197,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         internetCheck = mymenu.findItem(R.id.internet_icon);
         MenuItemCompat.getActionView(internetCheck);
 
-        if(isPast) menuItem.setVisible(false);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        mCHWname = (TextView) findViewById(R.id.chw_details);
+        mCHWname.setText(sharedPreferences.getString("chwname", "----"));
+
+        if (isPast) menuItem.setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -205,17 +233,31 @@ public class VisitSummaryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        callBroadcastReceiver();
 
-
-      callBroadcastReceiver();
         Intent intent = this.getIntent(); // The intent was passed to the activity
+
+
         if (intent != null) {
             patientID = intent.getStringExtra("patientID");
             visitID = intent.getStringExtra("visitID");
+            mSharedPreference = this.getSharedPreferences(
+                    "visit_summary", Context.MODE_PRIVATE);
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
-            physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
-            isPast = intent.getBooleanExtra("pastVisit",false);
+            if (intent.hasExtra("exams")) {
+                physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
+                SharedPreferences.Editor editor = mSharedPreference.edit();
+                Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
+                editor.putStringSet("exam_" + patientID + "_" + visitID, selectedExams);
+                editor.commit();
+            } else {
+                Set<String> selectedExams = mSharedPreference.getStringSet("exam_" + patientID + "_" + visitID, null);
+                if (physicalExams == null) physicalExams = new ArrayList<>();
+                physicalExams.clear();
+                physicalExams.addAll(selectedExams);
+            }
+            isPast = intent.getBooleanExtra("pastVisit", false);
 
 //            Log.v(TAG, "Patient ID: " + patientID);
 //            Log.v(TAG, "Visit ID: " + visitID);
@@ -246,6 +288,27 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mLayout = (LinearLayout) findViewById(R.id.summary_layout);
         context = getApplicationContext();
 
+        mAdditionalDocsRecyclerView = (RecyclerView) findViewById(R.id.recy_additional_documents);
+        mPhysicalExamsRecyclerView = (RecyclerView) findViewById(R.id.recy_physexam);
+
+        baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+
+        filePathPhyExam = baseDir + File.separator + "Patient Images" + File.separator + patientID + File.separator +
+                visitID + File.separator + physicalExamDocumentDir;
+
+        phyExamDir = new File(filePathPhyExam);
+        if (!phyExamDir.exists()) {
+            phyExamDir.mkdirs();
+            Log.v(TAG, "directory ceated " + phyExamDir.getAbsolutePath());
+        } else {
+            File[] files = phyExamDir.listFiles();
+            List<File> fileList = Arrays.asList(files);
+            HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
+            mPhysicalExamsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
+            mPhysicalExamsRecyclerView.setLayoutManager(mPhysicalExamsLayoutManager);
+            mPhysicalExamsRecyclerView.setAdapter(horizontalAdapter);
+
+        }
 
         mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -255,18 +318,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editPhysical = (ImageButton) findViewById(R.id.imagebutton_edit_physexam);
         editFamHist = (ImageButton) findViewById(R.id.imagebutton_edit_famhist);
         editMedHist = (ImageButton) findViewById(R.id.imagebutton_edit_pathist);
+        editAddDocs = (ImageButton) findViewById(R.id.imagebutton_edit_additional_document);
         uploadButton = (Button) findViewById(R.id.button_upload);
 
-        if(isPast){
+        if (isPast) {
             editVitals.setVisibility(View.GONE);
             editComplaint.setVisibility(View.GONE);
             editPhysical.setVisibility(View.GONE);
             editFamHist.setVisibility(View.GONE);
             editMedHist.setVisibility(View.GONE);
+            editAddDocs.setVisibility(View.GONE);
             uploadButton.setVisibility(View.GONE);
             invalidateOptionsMenu();
         }
-
 
 
         uploadButton.setOnClickListener(new View.OnClickListener() {
@@ -275,8 +339,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 Snackbar.make(view, "Uploading to doctor.", Snackbar.LENGTH_LONG).show();
 
                 Intent imageUpload = new Intent(VisitSummaryActivity.this, ImageUploadService.class);
-                imageUpload.putExtra("patientID",patientID);
-                imageUpload.putExtra("visitID",visitID);
+                imageUpload.putExtra("patientID", patientID);
+                imageUpload.putExtra("visitID", visitID);
                 startService(imageUpload);
 
                 Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
@@ -334,17 +398,29 @@ public class VisitSummaryActivity extends AppCompatActivity {
         heightView.setText(height.getValue());
         weightView.setText(weight.getValue());
         pulseView.setText(pulse.getValue());
+
         String bpText = bpSys.getValue() + "/" + bpDias.getValue();
-        bpView.setText(bpText);
+        if(bpText.equals("/")) {
+            bpView.setText("");
+        }
+        else
+        {
+            bpView.setText(bpText);
+        }
 
-        Double mWeight = Double.parseDouble(weight.getValue());
-        Double mHeight = Double.parseDouble(height.getValue());
-
-        double numerator = mWeight * 10000;
-        double denominator = (mHeight) * (mHeight);
-        double bmi_value = numerator / denominator;
-        mBMI = String.format(Locale.ENGLISH, "%.2f", bmi_value);
-
+        Log.d(TAG, "onCreate: "+weight.getValue());
+        String mWeight = weight.getValue();
+        String mHeight = height.getValue();
+        if(!mHeight.isEmpty() && !mWeight.isEmpty() && (mHeight!=null && mWeight!=null)) {
+            double numerator = Double.parseDouble(mWeight) * 10000;
+            double denominator = Double.parseDouble(mHeight) * Double.parseDouble(mHeight);
+            double bmi_value = numerator / denominator;
+            mBMI = String.format(Locale.ENGLISH, "%.2f", bmi_value);
+        }
+        else
+        {
+            mBMI= "";
+        }
         patHistory.setValue(medHistory);
 
         bmiView.setText(mBMI);
@@ -353,10 +429,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         complaintView.setText(complaint.getValue());
         famHistView.setText(famHistory.getValue());
         patHistView.setText(patHistory.getValue());
-
-
-
-
 
         physFindingsView.setText(phyExam.getValue());
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -426,7 +498,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 famHistory.setValue(dialogEditText.getText().toString());
                                 famHistTest.setText(famHistory.getValue());
                                 famHistView.setText(famHistory.getValue());
-                                updateDatabase(famHistory.getValue(), 163188);
+                                updateDatabase(famHistory.getValue(), ConceptId.RHK_FAMILY_HISTORY_BLURB);
                                 dialog.dismiss();
                             }
                         });
@@ -493,7 +565,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 complaint.setValue(dialogEditText.getText().toString());
                                 complaintText.setText(complaint.getValue());
                                 complaintView.setText(complaint.getValue());
-                                updateDatabase(complaint.getValue(), 163186);
+                                updateDatabase(complaint.getValue(), ConceptId.CURRENT_COMPLAINT);
                                 dialog.dismiss();
                             }
                         });
@@ -556,10 +628,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+
                                 phyExam.setValue(dialogEditText.getText().toString());
                                 physicalText.setText(phyExam.getValue());
                                 physFindingsView.setText(phyExam.getValue());
-                                updateDatabase(phyExam.getValue(), 163189);
+                                updateDatabase(phyExam.getValue(), ConceptId.PHYSICAL_EXAMINATION);
                                 dialog.dismiss();
                             }
                         });
@@ -577,12 +650,26 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 physicalDialog.setNegativeButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        if (phyExamDir.exists()) {
+                            String[] children = phyExamDir.list();
+                            List<String> childList = Arrays.asList(children);
+                            SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+                            for (String child : childList) {
+                                new File(phyExamDir, child).delete();
+                                localdb.execSQL("DELETE FROM image_records WHERE image_path=" +
+                                        "'" + phyExamDir.getAbsolutePath() + File.separator + child + "'");
+                            }
+                            phyExamDir.delete();
+                            localdb.close();
+                        }
                         Intent intent1 = new Intent(VisitSummaryActivity.this, PhysicalExamActivity.class);
                         intent1.putExtra("patientID", patientID);
                         intent1.putExtra("visitID", visitID);
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("tag", "edit");
                         intent1.putStringArrayListExtra("exams", physicalExams);
+                        for (String string : physicalExams)
+                            Log.i(LOG_TAG, "onClick: " + string);
                         startActivity(intent1);
                         dialogInterface.dismiss();
                     }
@@ -626,7 +713,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 patHistory.setValue(dialogEditText.getText().toString());
                                 historyText.setText(patHistory.getValue());
                                 patHistView.setText(patHistory.getValue());
-                                updateDatabase(patHistory.getValue(), 163187);
+                                updateDatabase(patHistory.getValue(), ConceptId.RHK_MEDICAL_HISTORY_BLURB);
                                 dialog.dismiss();
                             }
                         });
@@ -665,13 +752,25 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         });
 
+        editAddDocs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addDocs = new Intent(VisitSummaryActivity.this, AdditionalDocumentsActivity.class);
+                addDocs.putExtra("patientID", patientID);
+                addDocs.putExtra("visitID", visitID);
+                startActivity(addDocs);
+            }
+        });
+
 
     }
 
+
     /**
      * This method creates new object of type RetrieveData.
+     *
      * @param view variable of type View
-     * @return     void
+     * @return void
      */
     public void retrieveOpenMRS(View view) {
         new RetrieveData(this).execute();
@@ -709,19 +808,20 @@ public class VisitSummaryActivity extends AppCompatActivity {
             serviceIntent.putExtra("visitUUID", visitUUID);
             serviceIntent.putExtra("name", patientName);
             startService(serviceIntent);
-
-
+            SharedPreferences.Editor editor = context.getSharedPreferences(patientID + "_" + visitID, MODE_PRIVATE).edit();
+            editor.remove("exam_" + patientID + "_" + visitID);
+            editor.commit();
             Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
             startActivity(intent);
         }
-
 
     }
 
     /**
      * This methods retrieves patient data from database.
-     * @param dataString  variable of type String
-     * @return                   void
+     *
+     * @param dataString variable of type String
+     * @return void
      */
 
     public void queryData(String dataString) {
@@ -762,7 +862,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         try {
             String famHistSelection = "patient_id = ? AND concept_id = ?";
-            String[] famHistArgs = {dataString, "163188"};
+            String[] famHistArgs = {dataString, String.valueOf(ConceptId.RHK_FAMILY_HISTORY_BLURB)};
             Cursor famHistCursor = db.query("obs", columns, famHistSelection, famHistArgs, null, null, orderBy);
             famHistCursor.moveToLast();
             String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
@@ -774,13 +874,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         try {
             String medHistSelection = "patient_id = ? AND concept_id = ?";
-            String[] medHistArgs = {dataString, "163187"};
+
+            String[] medHistArgs = {dataString, String.valueOf(ConceptId.RHK_MEDICAL_HISTORY_BLURB)};
+
             Cursor medHistCursor = db.query("obs", columns, medHistSelection, medHistArgs, null, null, orderBy);
             medHistCursor.moveToLast();
             String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
             patHistory.setValue(medHistText);
-            if (medHistText!=null && !medHistText.isEmpty()) {
-              
+
+            if (medHistText != null && !medHistText.isEmpty()) {
+
                 medHistory = patHistory.getValue();
 
 
@@ -810,36 +913,39 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     /**
      * This method distinguishes between different concepts using switch case to populate the information into the relevant sections (eg:complaints, physical exam, vitals, etc.).
+     *
      * @param concept_id variable of type int.
      * @param value      variable of type String.
      */
     private void parseData(int concept_id, String value) {
         switch (concept_id) {
-            case 163186: //Current Complaint
+            case ConceptId.CURRENT_COMPLAINT: //Current Complaint
                 complaint.setValue(value);
                 break;
-            case 163189: //Physical Examination
+
+            case ConceptId.PHYSICAL_EXAMINATION: //Physical Examination
                 phyExam.setValue(value);
+
                 break;
-            case 5090: //Height
+            case ConceptId.HEIGHT: //Height
                 height.setValue(value);
                 break;
-            case 5089: //Weight
+            case ConceptId.WEIGHT: //Weight
                 weight.setValue(value);
                 break;
-            case 5087: //Pulse
+            case ConceptId.PULSE: //Pulse
                 pulse.setValue(value);
                 break;
-            case 5085: //Systolic BP
+            case ConceptId.SYSTOLIC_BP: //Systolic BP
                 bpSys.setValue(value);
                 break;
-            case 5086: //Diastolic BP
+            case ConceptId.DIASTOLIC_BP: //Diastolic BP
                 bpDias.setValue(value);
                 break;
-            case 163202: //Temperature
+            case ConceptId.TEMPERATURE: //Temperature
                 temperature.setValue(value);
                 break;
-            case 5092: //SpO2
+            case ConceptId.SPO2: //SpO2
                 spO2.setValue(value);
                 break;
             default:
@@ -850,6 +956,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     /**
      * This method creates a web view for printing patient's various details.
+     *
      * @return void
      */
     private void doWebViewPrint() {
@@ -954,7 +1061,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     /**
      * This method creates a print job using PrintManager instance and PrintAdapter Instance
-     * @param webView  object of type WebView.
+     *
+     * @param webView object of type WebView.
      */
     private void createWebPrintJob(WebView webView) {
 
@@ -1182,10 +1290,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     /**
-     *
      * @param title   variable of type String
      * @param content variable of type String
-     * @param index  variable of type int
+     * @param index   variable of type int
      */
     private void createNewCardView(String title, String content, int index) {
         final LayoutInflater inflater = VisitSummaryActivity.this.getLayoutInflater();
@@ -1199,7 +1306,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     /**
      * This method updates patient details to database.
-     * @param string  variable of type String
+     *
+     * @param string    variable of type String
      * @param conceptID variable of type int
      */
 
@@ -1223,8 +1331,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
 
-    public void callBroadcastReceiver()
-    {
+    public void callBroadcastReceiver() {
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         receiver = new NetworkChangeReceiver();
         registerReceiver(receiver, filter);
@@ -1235,58 +1342,68 @@ public class VisitSummaryActivity extends AppCompatActivity {
     {
         super.onResume();
         callBroadcastReceiver();
+
+        String filePathAddDoc = baseDir + File.separator + "Patient Images" + File.separator + patientID + File.separator +
+                visitID + File.separator + additionalDocumentDir;
+
+        File addDocDir = new File(filePathAddDoc);
+        if (!addDocDir.exists()) {
+            addDocDir.mkdirs();
+            Log.v(TAG, "directory ceated " + addDocDir.getAbsolutePath());
+        } else {
+            File[] files = addDocDir.listFiles();
+            List<File> fileList = Arrays.asList(files);
+            HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
+            mAdditionalDocsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
+            mAdditionalDocsRecyclerView.setLayoutManager(mAdditionalDocsLayoutManager);
+            mAdditionalDocsRecyclerView.setAdapter(horizontalAdapter);
+
+        }
     }
 
     @Override
-    public void onPause()
-    {
+    public void onPause() {
         super.onPause();
         unregisterReceiver(receiver);
     }
 
 
-    public class NetworkChangeReceiver extends BroadcastReceiver
-    {
+    public class NetworkChangeReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
             isNetworkAvailable(context);
         }
 
-        private void isNetworkAvailable(Context context)
-        {
-            int flag=0;
+        private void isNetworkAvailable(Context context) {
+            int flag = 0;
 
-            ConnectivityManager connectivity = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            if(connectivity != null)
-            {
+            ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (connectivity != null) {
                 NetworkInfo[] info = connectivity.getAllNetworkInfo();
-                if(info !=null)
-                {
-                    for (int i = 0; i < info.length; i++)
-                    {
-                        if (info[i].getState() == NetworkInfo.State.CONNECTED)
-                        {
-                            if(!isConnected)
-                            {
-                                        if(mymenu!=null) {
-                                        internetCheck.setIcon(R.drawable.ic_action_circle_green);
-                                        flag = 1;
-                                    }
+                if (info != null) {
+                    for (int i = 0; i < info.length; i++) {
+                        if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+                            if (!isConnected) {
+                                if (mymenu != null) {
+                                    internetCheck.setIcon(R.drawable.ic_action_circle_green);
+                                    flag = 1;
+                                }
                             }
                         }
                     }
                 }
             }
 
-                      if(flag==0) {
-                       if(mymenu!=null) {
-                       internetCheck.setIcon(R.drawable.ic_action_circle_red);
-                    }
+            if (flag == 0) {
+                if (mymenu != null) {
+                    internetCheck.setIcon(R.drawable.ic_action_circle_red);
+                }
 
             }
 
         }
     }
+
 
 }
