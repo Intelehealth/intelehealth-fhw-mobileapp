@@ -465,5 +465,13 @@
     <string name="downloading_mindmaps">Downloading mindmaps</string>
     <string name="error_downloading_mindmaps">Error Downloading Mind Maps</string>
 
+    //Sync strings
+    <string name="sync_stopped">Sync stopped</string>
+    <string name="sync_in_progress">Sync in progress</string>
+    <string name="sync_complete">Sync Complete</string>
+    <string name="sync_error">Sync Error : No such status</string>
+
+    <string name="id_number">ID Number</string>
+    <string name="uploading">Uploading</string>
 
 </resources>

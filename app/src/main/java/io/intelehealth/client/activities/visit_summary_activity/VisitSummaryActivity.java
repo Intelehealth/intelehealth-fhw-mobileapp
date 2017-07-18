@@ -44,6 +44,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -68,6 +69,7 @@ import io.intelehealth.client.activities.home_activity.HomeActivity;
 import io.intelehealth.client.activities.past_medical_history_activity.PastMedicalHistoryActivity;
 import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity;
 import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
+import io.intelehealth.client.database.DelayedJobQueueProvider;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Obs;
 import io.intelehealth.client.objects.Patient;
@@ -338,35 +340,81 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Uploading to doctor.", Snackbar.LENGTH_LONG).show();
 
-                Intent imageUpload = new Intent(VisitSummaryActivity.this, ImageUploadService.class);
-                imageUpload.putExtra("patientID", patientID);
-                imageUpload.putExtra("visitID", visitID);
-                startService(imageUpload);
+                String[] DELAYED_JOBS_PROJECTION = new String[]{DelayedJobQueueProvider._ID, DelayedJobQueueProvider.SYNC_STATUS};
+                String SELECTION = DelayedJobQueueProvider.JOB_TYPE + "=? AND " +
+                        DelayedJobQueueProvider.PATIENT_ID + "=? AND " +
+                        DelayedJobQueueProvider.VISIT_ID + "=?";
+                String[] ARGS = new String[]{"visit", patientID, visitID};
 
-                Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
-                serviceIntent.putExtra("serviceCall", "visit");
-                serviceIntent.putExtra("patientID", patientID);
-                serviceIntent.putExtra("visitID", visitID);
-                serviceIntent.putExtra("name", patientName);
-                startService(serviceIntent);
+                Cursor c = getContentResolver().query(DelayedJobQueueProvider.CONTENT_URI,
+                        DELAYED_JOBS_PROJECTION, SELECTION, ARGS, null);
 
+                if (c.getCount() < 1) {
+
+                    Intent imageUpload = new Intent(VisitSummaryActivity.this, ImageUploadService.class);
+                    imageUpload.putExtra("patientID", patientID);
+                    imageUpload.putExtra("visitID", visitID);
+                    startService(imageUpload);
+
+
+                    Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
+                    serviceIntent.putExtra("serviceCall", "visit");
+                    serviceIntent.putExtra("patientID", patientID);
+                    serviceIntent.putExtra("visitID", visitID);
+                    serviceIntent.putExtra("name", patientName);
+                    startService(serviceIntent);
+
+                } else {
+                    int sync_status = c.getInt(c.getColumnIndexOrThrow(DelayedJobQueueProvider.SYNC_STATUS));
+                    switch (sync_status) {
+                        case ClientService.STATUS_SYNC_STOPPED: {
+                            Intent imageUpload = new Intent(VisitSummaryActivity.this, ImageUploadService.class);
+                            imageUpload.putExtra("patientID", patientID);
+                            imageUpload.putExtra("visitID", visitID);
+                            startService(imageUpload);
+
+
+                            Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
+                            serviceIntent.putExtra("serviceCall", "visit");
+                            serviceIntent.putExtra("patientID", patientID);
+                            serviceIntent.putExtra("visitID", visitID);
+                            serviceIntent.putExtra("name", patientName);
+                            startService(serviceIntent);
+
+                            break;
+                        }
+                        case ClientService.STATUS_SYNC_IN_PROGRESS: {
+                            Toast.makeText(context, getString(R.string.sync_in_progress), Toast.LENGTH_SHORT).show();
+                            break;
+                        }case ClientService.STATUS_SYNC_COMPLETE: {
+                            Toast.makeText(context, getString(R.string.sync_complete), Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                        default:
+                    }
+                }
+
+                c.close();
 
                 //mLayout.removeView(uploadButton);
 
-                downloadButton = new Button(VisitSummaryActivity.this);
-                downloadButton.setLayoutParams(new LinearLayoutCompat.LayoutParams(
-                        LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
-                downloadButton.setText(R.string.visit_summary_button_download);
+                if (downloadButton == null) {
+                    downloadButton = new Button(VisitSummaryActivity.this);
+                    downloadButton.setLayoutParams(new LinearLayoutCompat.LayoutParams(
+                            LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+                    downloadButton.setText(R.string.visit_summary_button_download);
 
-                downloadButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Snackbar.make(view, "Downloading from doctor", Snackbar.LENGTH_LONG).show();
-                        retrieveOpenMRS(view);
-                    }
-                });
+                    downloadButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Snackbar.make(view, "Downloading from doctor", Snackbar.LENGTH_LONG).show();
+                            retrieveOpenMRS(view);
+                        }
+                    });
 
-                mLayout.addView(downloadButton, 0);
+
+                    mLayout.addView(downloadButton, 0);
+                }
 
             }
         });
@@ -400,26 +448,22 @@ public class VisitSummaryActivity extends AppCompatActivity {
         pulseView.setText(pulse.getValue());
 
         String bpText = bpSys.getValue() + "/" + bpDias.getValue();
-        if(bpText.equals("/")) {
+        if (bpText.equals("/")) {
             bpView.setText("");
-        }
-        else
-        {
+        } else {
             bpView.setText(bpText);
         }
 
-        Log.d(TAG, "onCreate: "+weight.getValue());
+        Log.d(TAG, "onCreate: " + weight.getValue());
         String mWeight = weight.getValue();
         String mHeight = height.getValue();
-        if(!mHeight.isEmpty() && !mWeight.isEmpty() && (mHeight!=null && mWeight!=null)) {
+        if (!mHeight.isEmpty() && !mWeight.isEmpty() && (mHeight != null && mWeight != null)) {
             double numerator = Double.parseDouble(mWeight) * 10000;
             double denominator = Double.parseDouble(mHeight) * Double.parseDouble(mHeight);
             double bmi_value = numerator / denominator;
             mBMI = String.format(Locale.ENGLISH, "%.2f", bmi_value);
-        }
-        else
-        {
-            mBMI= "";
+        } else {
+            mBMI = "";
         }
         patHistory.setValue(medHistory);
 
@@ -669,7 +713,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent1.putExtra("tag", "edit");
                         intent1.putStringArrayListExtra("exams", physicalExams);
                         for (String string : physicalExams)
-                            Log.i(LOG_TAG, "onClick: " + string);
+                            Log.i(TAG, "onClick: " + string);
                         startActivity(intent1);
                         dialogInterface.dismiss();
                     }
@@ -802,17 +846,56 @@ public class VisitSummaryActivity extends AppCompatActivity {
         } else {
             // when VisitSummary has been uploaded to doctor
 
-            Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
-            serviceIntent.putExtra("serviceCall", "endVisit");
-            serviceIntent.putExtra("patientID", patientID);
-            serviceIntent.putExtra("visitUUID", visitUUID);
-            serviceIntent.putExtra("name", patientName);
-            startService(serviceIntent);
-            SharedPreferences.Editor editor = context.getSharedPreferences(patientID + "_" + visitID, MODE_PRIVATE).edit();
-            editor.remove("exam_" + patientID + "_" + visitID);
-            editor.commit();
-            Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
-            startActivity(intent);
+            String[] DELAYED_JOBS_PROJECTION = new String[]{DelayedJobQueueProvider._ID, DelayedJobQueueProvider.SYNC_STATUS};
+            String SELECTION = DelayedJobQueueProvider.JOB_TYPE + "=? AND " +
+                    DelayedJobQueueProvider.PATIENT_ID + "=? AND " +
+                    DelayedJobQueueProvider.VISIT_ID + "=?";
+            String[] ARGS = new String[]{"endVisit", patientID, visitID};
+
+            Cursor c = getContentResolver().query(DelayedJobQueueProvider.CONTENT_URI,
+                    DELAYED_JOBS_PROJECTION, SELECTION, ARGS, null);
+
+            if (c.getCount() < 1) {
+                Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
+                serviceIntent.putExtra("serviceCall", "endVisit");
+                serviceIntent.putExtra("patientID", patientID);
+                serviceIntent.putExtra("visitUUID", visitUUID);
+                serviceIntent.putExtra("name", patientName);
+                startService(serviceIntent);
+                SharedPreferences.Editor editor = context.getSharedPreferences(patientID + "_" + visitID, MODE_PRIVATE).edit();
+                editor.remove("exam_" + patientID + "_" + visitID);
+                editor.commit();
+                Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
+                startActivity(intent);
+            } else {
+                int sync_status = c.getInt(c.getColumnIndexOrThrow(DelayedJobQueueProvider.SYNC_STATUS));
+                switch (sync_status) {
+                    case ClientService.STATUS_SYNC_STOPPED: {
+                        Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
+                        serviceIntent.putExtra("serviceCall", "endVisit");
+                        serviceIntent.putExtra("patientID", patientID);
+                        serviceIntent.putExtra("visitUUID", visitUUID);
+                        serviceIntent.putExtra("name", patientName);
+                        startService(serviceIntent);
+                        SharedPreferences.Editor editor = context.getSharedPreferences(patientID + "_" + visitID, MODE_PRIVATE).edit();
+                        editor.remove("exam_" + patientID + "_" + visitID);
+                        editor.commit();
+                        Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                        break;
+                    }
+                    case ClientService.STATUS_SYNC_IN_PROGRESS: {
+                        Toast.makeText(context, getString(R.string.sync_in_progress), Toast.LENGTH_SHORT).show();
+                        break;
+                    }case ClientService.STATUS_SYNC_COMPLETE: {
+                        Toast.makeText(context, getString(R.string.sync_complete), Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                    default:
+                }
+            }
+
+            c.close();
         }
 
     }
@@ -1094,6 +1177,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             String queryString = "?q=" + identifierNumber;
             //Log.d(TAG, identifierNumber);
+            Log.d(TAG, "doInBackground: " + identifierNumber);
             WebResponse responseEncounter;
             responseEncounter = HelperMethods.getCommand("encounter", queryString, getApplicationContext());
             if (responseEncounter != null && responseEncounter.getResponseCode() != 200) {
@@ -1101,6 +1185,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 //Log.d(TAG, "Encounter searching was unsuccessful");
                 return null;
             }
+            Log.d(TAG, "doInBackground: " + responseEncounter.getResponseCode() + "_" + responseEncounter.getResponseString());
 
 
             assert responseEncounter != null;

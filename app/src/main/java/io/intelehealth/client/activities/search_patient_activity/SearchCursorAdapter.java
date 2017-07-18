@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.R;
+import io.intelehealth.client.utilities.HelperMethods;
 
 /**
  * Class to populate the patient search system with information from the database
@@ -46,14 +46,15 @@ public class SearchCursorAdapter extends CursorAdapter {
         String phoneNum = cursor.getString(cursor.getColumnIndexOrThrow("phone_number"));
 
         String lName = cursor.getString(cursor.getColumnIndexOrThrow("last_name"));
-        String header = String.format("%s %s - ID: %s", fName, lName, patientID);
+        String header = String.format("%s %s - " + context.getString(R.string.visit_summary_heading_id) + ": %s", fName, lName, patientID);
 
         String dob = cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth"));
         int age = HelperMethods.getAge(dob);
         // String gender = cursor.getString(cursor.getColumnIndexOrThrow("gender"));
-        String body = String.format("ID Number: %s \n " +
-                "Phone Number: %s\n" +
-                "Date of Birth: %s (Age %d)", patientID, phoneNum, dob, age);
+        String body = String.format(context.getString(R.string.id_number) +": %s \n " +
+                context.getString(R.string.identification_screen_prompt_phone_number) + ": %s\n" +
+                context.getString(R.string.identification_screen_prompt_birthday)+": %s (" +
+                context.getString(R.string.identification_screen_prompt_age)+" %d)", patientID, phoneNum, dob, age);
 
         // Populate fields with extracted properties
         tvHead.setText(header);

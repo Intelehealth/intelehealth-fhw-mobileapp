@@ -93,7 +93,8 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             DelayedJobQueueProvider.VISIT_ID + " TEXT," +
             DelayedJobQueueProvider.VISIT_UUID + " TEXT," +
             DelayedJobQueueProvider.STATUS + " INTEGER," +
-            DelayedJobQueueProvider.DATA_RESPONSE + " TEXT" +
+            DelayedJobQueueProvider.DATA_RESPONSE + " TEXT," +
+            DelayedJobQueueProvider.SYNC_STATUS + " INTEGER" +
             ")";
     public static final String DROP = "DROP TABLE IF EXISTS";
 
