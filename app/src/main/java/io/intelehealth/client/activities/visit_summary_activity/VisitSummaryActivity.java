@@ -349,8 +349,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 Cursor c = getContentResolver().query(DelayedJobQueueProvider.CONTENT_URI,
                         DELAYED_JOBS_PROJECTION, SELECTION, ARGS, null);
 
-                if (c.getCount() < 1) {
 
+                Log.i(TAG, "onClick: " + c.getCount());
+
+                if (c == null) {
                     Intent imageUpload = new Intent(VisitSummaryActivity.this, ImageUploadService.class);
                     imageUpload.putExtra("patientID", patientID);
                     imageUpload.putExtra("visitID", visitID);
@@ -364,7 +366,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     serviceIntent.putExtra("name", patientName);
                     startService(serviceIntent);
 
-                } else {
+                } else if (c != null && c.moveToFirst()) {
                     int sync_status = c.getInt(c.getColumnIndexOrThrow(DelayedJobQueueProvider.SYNC_STATUS));
                     switch (sync_status) {
                         case ClientService.STATUS_SYNC_STOPPED: {
@@ -386,7 +388,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         case ClientService.STATUS_SYNC_IN_PROGRESS: {
                             Toast.makeText(context, getString(R.string.sync_in_progress), Toast.LENGTH_SHORT).show();
                             break;
-                        }case ClientService.STATUS_SYNC_COMPLETE: {
+                        }
+                        case ClientService.STATUS_SYNC_COMPLETE: {
                             Toast.makeText(context, getString(R.string.sync_complete), Toast.LENGTH_SHORT).show();
                             break;
                         }
@@ -855,7 +858,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             Cursor c = getContentResolver().query(DelayedJobQueueProvider.CONTENT_URI,
                     DELAYED_JOBS_PROJECTION, SELECTION, ARGS, null);
 
-            if (c.getCount() < 1) {
+            if (c == null) {
                 Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
                 serviceIntent.putExtra("serviceCall", "endVisit");
                 serviceIntent.putExtra("patientID", patientID);
@@ -867,7 +870,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 editor.commit();
                 Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
                 startActivity(intent);
-            } else {
+            } else if (c != null && c.moveToFirst()) {
                 int sync_status = c.getInt(c.getColumnIndexOrThrow(DelayedJobQueueProvider.SYNC_STATUS));
                 switch (sync_status) {
                     case ClientService.STATUS_SYNC_STOPPED: {
@@ -887,7 +890,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     case ClientService.STATUS_SYNC_IN_PROGRESS: {
                         Toast.makeText(context, getString(R.string.sync_in_progress), Toast.LENGTH_SHORT).show();
                         break;
-                    }case ClientService.STATUS_SYNC_COMPLETE: {
+                    }
+                    case ClientService.STATUS_SYNC_COMPLETE: {
                         Toast.makeText(context, getString(R.string.sync_complete), Toast.LENGTH_SHORT).show();
                         break;
                     }

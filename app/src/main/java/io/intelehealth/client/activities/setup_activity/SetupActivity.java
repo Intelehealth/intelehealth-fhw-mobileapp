@@ -86,7 +86,6 @@ public class SetupActivity extends AppCompatActivity {
 
     private TestSetup mAuthTask = null;
 
-    ProgressBar progressBar;
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
@@ -160,10 +159,8 @@ public class SetupActivity extends AppCompatActivity {
         mUrlField = (EditText) findViewById(R.id.editText_URL);
         mPrefixField = (EditText) findViewById(R.id.editText_prefix);
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar_setup);
         Button submitButton = (Button) findViewById(R.id.setup_submit_button);
 
-        progressBar.setVisibility(View.GONE);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -359,6 +356,8 @@ public class SetupActivity extends AppCompatActivity {
         private String BASE_URL;
         private Location LOCATION;
 
+        ProgressDialog progress;
+
 
         TestSetup(String url, String prefix, String username, String password, Location location) {
             CLEAN_URL = url;
@@ -371,6 +370,10 @@ public class SetupActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            progress = new ProgressDialog(SetupActivity.this);
+            progress.setTitle(getString(R.string.please_wait_progress));
+            progress.setMessage(getString(R.string.logging_in));
+            progress.show();
         }
 
 
@@ -510,6 +513,8 @@ public class SetupActivity extends AppCompatActivity {
                 mPrefixField.setError(getString(R.string.prefix_invalid));
                 mPrefixField.requestFocus();
             }
+
+            progress.dismiss();
         }
     }
 

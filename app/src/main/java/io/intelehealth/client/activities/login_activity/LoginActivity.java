@@ -4,9 +4,8 @@ package io.intelehealth.client.activities.login_activity;
 import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -47,15 +46,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import io.intelehealth.client.R;
-import io.intelehealth.client.activities.setting_activity.SettingsActivity;
 import io.intelehealth.client.activities.home_activity.HomeActivity;
+import io.intelehealth.client.activities.setting_activity.SettingsActivity;
 import io.intelehealth.client.objects.WebResponse;
 import io.intelehealth.client.services.sync.JobDispatchService;
 import io.intelehealth.client.utilities.NetworkConnection;
 
 /**
  * A login screen that offers login via username/password.
- *
  */
 public class LoginActivity extends AppCompatActivity {
 
@@ -66,10 +64,10 @@ public class LoginActivity extends AppCompatActivity {
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
+    ProgressDialog progress;
 
     /**
      * A dummy authentication store containing known user names and passwords.
-     *
      */
     // TODO: remove after connecting to a real authentication system.
     private static final String[] DUMMY_CREDENTIALS = new String[]{
@@ -168,7 +166,7 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Returns void.
      * This method checks if valid username and password are given as input.
-
+     *
      * @return void
      */
     private void attemptLogin() {
@@ -224,9 +222,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     *
      * @param email Email-id
-     * @return     boolean
+     * @return boolean
      */
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
@@ -234,59 +231,28 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     *
      * @param password Password
-     * @return       boolean
+     * @return boolean
      */
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
         return password.length() > 4;
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    /**
-     * This method reflects the progress on UI for login.
-     * @param show variable of type boolean
-     * @return         void
-     */
     private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
-
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        if (progress == null) {
+            progress = new ProgressDialog(LoginActivity.this);
+            progress.setTitle(getString(R.string.please_wait_progress));
+            progress.setMessage(getString(R.string.logging_in));
         }
+        if(show) progress.show();
+        else progress.dismiss();
     }
-
 
     /**
      * class UserLoginTask will authenticate user using email and password.
      * Depending on server's response, user may or may not have successful login.
      * This class also uses SharedPreferences to store session ID
-
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
@@ -296,6 +262,12 @@ public class LoginActivity extends AppCompatActivity {
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showProgress(true);
         }
 
         @Override
@@ -365,13 +337,12 @@ public class LoginActivity extends AppCompatActivity {
                     return false;
                 } else {
                     JsonObject jsonObject = new JsonParser().parse(loginAttempt.getResponseString()).getAsJsonObject();
-                    if (jsonObject.get("authenticated").getAsBoolean()){
+                    if (jsonObject.get("authenticated").getAsBoolean()) {
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("sessionid", jsonObject.get("sessionId").getAsString());
                         editor.commit();
                         return true;
-                    }
-                    else {
+                    } else {
                         return false;
                     }
                 }
@@ -415,9 +386,9 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * A method of FirebaseJobDispatcher Library.
      * It schedules background jobs for android app.
-     * @param context  Current context
-     * @return         returns void
      *
+     * @param context Current context
+     * @return returns void
      */
     private void startJobDispatcherService(Context context) {
         Driver driver = new GooglePlayDriver(context);

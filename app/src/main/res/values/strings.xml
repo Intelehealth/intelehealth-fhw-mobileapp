@@ -463,6 +463,7 @@
 
     <string name="please_wait_progress">Please Wait</string>
     <string name="downloading_mindmaps">Downloading mindmaps</string>
+    <string name="logging_in">Logging in</string>
     <string name="error_downloading_mindmaps">Error Downloading Mind Maps</string>
 
     //Sync strings
