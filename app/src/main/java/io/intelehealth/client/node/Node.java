@@ -440,6 +440,8 @@ public class Node implements Serializable {
 
     public static void subLevelQuestion(final Node node, final Activity context, final CustomExpandableListAdapter callingAdapter,
                                         final String imagePath, final String imageName) {
+
+        Log.d(TAG, "subLevelQuestion: ");
         node.setSelected();
         List<Node> mNodes = node.getOptionsList();
         final CustomArrayAdapter adapter = new CustomArrayAdapter(context, R.layout.list_item_subquestion, mNodes);
@@ -464,26 +466,14 @@ public class Node implements Serializable {
         listView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
         listView.setClickable(true);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                node.getOption(position).toggleSelected();
-                adapter.notifyDataSetChanged();
-                if (node.getOption(position).getInputType() != null)
-                    subHandleQuestion(node.getOption(position), context, adapter, imagePath, imageName);
 
-
-                if (!node.getOption(position).isTerminal()) {
-                    subLevelQuestion(node.getOption(position), context, callingAdapter, imagePath, imageName);
-                }
-            }
-        });
         subQuestion.setView(listView);
         subQuestion.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 node.setText(node.generateLanguage());
                 callingAdapter.notifyDataSetChanged();
+                Log.d(TAG, "onClick:1");
                 dialog.dismiss();
             }
         });
@@ -492,20 +482,39 @@ public class Node implements Serializable {
             public void onClick(DialogInterface dialog, int which) {
                 node.toggleSelected();
                 callingAdapter.notifyDataSetChanged();
+                Log.d(TAG, "onClick:2");
                 dialog.cancel();
             }
         });
 
         subQuestion.setView(convertView);
-        subQuestion.show();
+        final AlertDialog alertDialog = subQuestion.show();
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                node.getOption(position).toggleSelected();
+                adapter.notifyDataSetChanged();
+                if (node.getOption(position).getInputType() != null) {
+                    Log.d(TAG, "onItemClick:1");
+                    alertDialog.dismiss();
+                    subHandleQuestion(node.getOption(position), context, adapter, imagePath, imageName);
+                }
+
+                if (!node.getOption(position).isTerminal()) {
+                    Log.d(TAG, "onItemClick:2");
+                    alertDialog.dismiss();
+                    subLevelQuestion(node.getOption(position), context, callingAdapter, imagePath, imageName);
+                }
+            }
+        });
 
     }
 
     public static void handleQuestion(Node questionNode, final Activity context, final CustomExpandableListAdapter adapter,
                                       final String imagePath, final String imageName) {
         String type = questionNode.getInputType();
-        Log.d(TAG, type);
+        Log.d(TAG, "handleQuestion: "+type);
         switch (type) {
             case "text":
                 askText(questionNode, context, adapter);

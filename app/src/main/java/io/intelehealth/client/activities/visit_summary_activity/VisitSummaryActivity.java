@@ -168,7 +168,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     Button downloadButton;
     ArrayList<String> physicalExams;
 
-    Boolean isPast = false;
+    Boolean isPastVisit = false;
 
 
     private NetworkChangeReceiver receiver;
@@ -203,7 +203,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mCHWname = (TextView) findViewById(R.id.chw_details);
         mCHWname.setText(sharedPreferences.getString("chwname", "----"));
 
-        if (isPast) menuItem.setVisible(false);
+        if (isPastVisit) menuItem.setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -247,19 +247,31 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     "visit_summary", Context.MODE_PRIVATE);
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
-            if (intent.hasExtra("exams")) {
-                physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
-                SharedPreferences.Editor editor = mSharedPreference.edit();
-                Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
-                editor.putStringSet("exam_" + patientID + "_" + visitID, selectedExams);
-                editor.commit();
-            } else {
-                Set<String> selectedExams = mSharedPreference.getStringSet("exam_" + patientID + "_" + visitID, null);
-                if (physicalExams == null) physicalExams = new ArrayList<>();
-                physicalExams.clear();
-                physicalExams.addAll(selectedExams);
+            isPastVisit = intent.getBooleanExtra("pastVisit", false);
+            if(!isPastVisit) {
+                if (intent.hasExtra("exams")) {
+                    physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
+                    SharedPreferences.Editor editor = mSharedPreference.edit();
+                    Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
+                    editor.putStringSet("exam_" + patientID + "_" + visitID, selectedExams);
+                    editor.commit();
+                } else {
+                    Set<String> selectedExams = mSharedPreference.getStringSet("exam_" + patientID + "_" + visitID, null);
+                    if (physicalExams == null) physicalExams = new ArrayList<>();
+                    physicalExams.clear();
+                    if (selectedExams != null && selectedExams.isEmpty()) {
+                        physicalExams.addAll(selectedExams);
+                    } else {
+                        Intent return_intent = new Intent(this, ComplaintNodeActivity.class);
+                        return_intent.putExtra("patientID", patientID);
+                        return_intent.putExtra("visitID", visitID);
+                        return_intent.putExtra("name", patientName);
+                        return_intent.putExtra("tag", intentTag);
+                        startActivity(return_intent);
+                    }
+                }
             }
-            isPast = intent.getBooleanExtra("pastVisit", false);
+
 
 //            Log.v(TAG, "Patient ID: " + patientID);
 //            Log.v(TAG, "Visit ID: " + visitID);
@@ -323,7 +335,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editAddDocs = (ImageButton) findViewById(R.id.imagebutton_edit_additional_document);
         uploadButton = (Button) findViewById(R.id.button_upload);
 
-        if (isPast) {
+        if (isPastVisit) {
             editVitals.setVisibility(View.GONE);
             editComplaint.setVisibility(View.GONE);
             editPhysical.setVisibility(View.GONE);
@@ -460,7 +472,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: " + weight.getValue());
         String mWeight = weight.getValue();
         String mHeight = height.getValue();
-        if (!mHeight.isEmpty() && !mWeight.isEmpty() && (mHeight != null && mWeight != null)) {
+        if ((mHeight != null && mWeight != null) && !mHeight.isEmpty() && !mWeight.isEmpty()) {
             double numerator = Double.parseDouble(mWeight) * 10000;
             double denominator = Double.parseDouble(mHeight) * Double.parseDouble(mHeight);
             double bmi_value = numerator / denominator;
