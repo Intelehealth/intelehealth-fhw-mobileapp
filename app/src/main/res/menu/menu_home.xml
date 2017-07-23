@@ -11,12 +11,18 @@
         <item
             android:id="@+id/settingsOption"
             android:title="@string/menu_option_settings"
-            android:orderInCategory="125" />
+            android:orderInCategory="100" />
 
         <!--<item-->
             <!--android:id="@+id/endOfDayOption"-->
             <!--android:title="@string/menu_option_end_of_day"-->
             <!--android:orderInCategory="100" />-->
+
+        <item
+            android:id="@+id/backupOption"
+            android:title="Restore"
+            android:orderInCategory="125" />
+
 
         <item
                 android:id="@+id/logoutOption"

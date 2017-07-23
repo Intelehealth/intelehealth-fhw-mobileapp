@@ -4,9 +4,8 @@ package io.intelehealth.client.activities.login_activity;
 import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -49,8 +48,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import io.intelehealth.client.R;
-import io.intelehealth.client.activities.setting_activity.SettingsActivity;
 import io.intelehealth.client.activities.home_activity.HomeActivity;
+import io.intelehealth.client.activities.setting_activity.SettingsActivity;
 import io.intelehealth.client.api.retrofit.RestApi;
 import io.intelehealth.client.api.retrofit.ServiceGenerator;
 import io.intelehealth.client.models.Location;
@@ -75,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
+    ProgressDialog progress;
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -121,6 +121,7 @@ public class LoginActivity extends AppCompatActivity {
         Account[] accountList = manager.getAccountsByType("io.intelehealth.openmrs");
         if (accountList.length > 0) {
             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            startJobDispatcherService(LoginActivity.this);
             startActivity(intent);
             finish();
         }
@@ -131,6 +132,7 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, HomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                finish();
             }
         }
 
@@ -254,35 +256,13 @@ public class LoginActivity extends AppCompatActivity {
      * @return void
      */
     private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
-
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        if (progress == null) {
+            progress = new ProgressDialog(LoginActivity.this);
+            progress.setTitle(getString(R.string.please_wait_progress));
+            progress.setMessage(getString(R.string.logging_in));
         }
+        if(show) progress.show();
+        else progress.dismiss();
     }
 
 
@@ -300,6 +280,12 @@ public class LoginActivity extends AppCompatActivity {
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showProgress(true);
         }
 
         @Override
@@ -399,8 +385,8 @@ public class LoginActivity extends AppCompatActivity {
                 offlineLogin.invalidateLoginCredentials();
                 offlineLogin.setUpOfflineLogin(mEmail, mPassword);
                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                startActivity(intent);
                 startJobDispatcherService(LoginActivity.this);
+                startActivity(intent);
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

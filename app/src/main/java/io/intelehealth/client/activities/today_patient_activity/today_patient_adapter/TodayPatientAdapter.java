@@ -10,10 +10,10 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.patient_detail_activity.PatientDetailActivity;
 import io.intelehealth.client.objects.TodayPatientModel;
+import io.intelehealth.client.utilities.HelperMethods;
 
 /**
  * Created by Dexter Barretto on 5/20/17.
@@ -43,12 +43,13 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientViewHo
     @Override
     public void onBindViewHolder(TodayPatientViewHolder holder, int position) {
         final TodayPatientModel todayPatientModel = todayPatientModelList.get(position);
-        String header = String.format("%s %s - ID: %s", todayPatientModel.getFirst_name(),
+        String header = String.format("%s %s - " + context.getString(R.string.visit_summary_heading_id) + ": %s", todayPatientModel.getFirst_name(),
                 todayPatientModel.getLast_name(), todayPatientModel.getPatient_id());
         int age = HelperMethods.getAge(todayPatientModel.getDate_of_birth());
-        String body = String.format("ID Number: %s \n " +
-                        "Phone Number: %s\n" +
-                        "Date of Birth: %s (Age %d)", todayPatientModel.getPatient_id(), todayPatientModel.getPhone_number(),
+        String body = String.format(context.getString(R.string.id_number) + ": %s \n " +
+                        context.getString(R.string.identification_screen_prompt_phone_number) + ": %s\n" +
+                        context.getString(R.string.identification_screen_prompt_birthday)+
+                        ": %s ("+context.getString(R.string.identification_screen_prompt_age)+" %d)", todayPatientModel.getPatient_id(), todayPatientModel.getPhone_number(),
                 todayPatientModel.getDate_of_birth(), age);
         holder.getHeadTextView().setText(header);
         holder.getBodyTextView().setText(body);

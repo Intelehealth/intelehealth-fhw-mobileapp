@@ -88,7 +88,6 @@ public class SetupActivity extends AppCompatActivity {
 
     private TestSetup mAuthTask = null;
 
-    ProgressBar progressBar;
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
@@ -162,10 +161,8 @@ public class SetupActivity extends AppCompatActivity {
         mUrlField = (EditText) findViewById(R.id.editText_URL);
         mPrefixField = (EditText) findViewById(R.id.editText_prefix);
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar_setup);
         Button submitButton = (Button) findViewById(R.id.setup_submit_button);
 
-        progressBar.setVisibility(View.GONE);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -224,9 +221,9 @@ public class SetupActivity extends AppCompatActivity {
        /* mDropdownLocation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.i(LOG_TAG,"position :"+position);
+                Log.i(TAG,"position :"+position);
                 if(mLocations!=null)
-                Log.i(LOG_TAG,mLocations.get(position).getName());
+                Log.i(TAG,mLocations.get(position).getName());
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -331,98 +328,9 @@ public class SetupActivity extends AppCompatActivity {
                 String prefixString = mPrefixField.getText().toString();
                 mAuthTask = new TestSetup(urlString, prefixString, email, password, location);
                 mAuthTask.execute();
-                //userLogin(urlString, prefixString, email, password, location);
                 Log.d(TAG, "attempting setup");
             }
         }
-    }
-
-    private void userLogin(String urlString, String prefixString, String email, String password, Location location) {
-
-        final String USERNAME = email;
-        final String PASSWORD = password;
-        final String CLEAN_URL = urlString;
-        final String PREFIX = prefixString;
-        final String BASE_URL = "http://" + CLEAN_URL + ":8080/openmrs/ws/rest/v1/";
-        final Location LOCATION = location;
-
-        try {
-            String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
-            RestApi apiService = ServiceGenerator.createService(RestApi.class);
-            Call<ResponseBody> call = apiService.loginTask("Basic " + encoded);
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    if (response.code() == 200) {
-                        BufferedReader reader = null;
-                        StringBuilder sb = new StringBuilder();
-                        WebResponse loginAttempt = new WebResponse();
-                        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-                        reader = new BufferedReader(new InputStreamReader(response.body().byteStream()));
-                        String line;
-                        try {
-                            while ((line = reader.readLine()) != null)
-                                sb.append(line);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                        String result = sb.toString();
-                        Log.i("SAA> ", result);
-                        loginAttempt.setResponseString(result);
-                        JsonObject responseObject = new JsonParser().parse(loginAttempt.getResponseString()).getAsJsonObject();
-                        if (responseObject.get("authenticated").getAsBoolean()) {
-
-                            JsonObject userObject = responseObject.get("user").getAsJsonObject();
-                            JsonObject personObject = userObject.get("person").getAsJsonObject();
-                            SharedPreferences.Editor editor = sharedPref.edit();
-                            editor.putString("sessionid", responseObject.get("sessionId").getAsString());
-                            editor.putString("creatorid", userObject.get("uuid").getAsString());
-                            editor.putString("chwname", personObject.get("display").getAsString());
-
-                            final Account account = new Account(USERNAME, "io.intelehealth.openmrs");
-                            manager.addAccountExplicitly(account, PASSWORD, null);
-
-                            editor.putString(SettingsActivity.KEY_PREF_LOCATION_NAME, LOCATION.getDisplay());
-                            editor.putString(SettingsActivity.KEY_PREF_LOCATION_UUID, LOCATION.getUuid());
-                            editor.putString(SettingsActivity.KEY_PREF_LOCATION_DESCRIPTION, LOCATION.getDescription());
-
-                            editor.putString(SettingsActivity.KEY_PREF_SERVER_URL, BASE_URL);
-                            Log.d(TAG, BASE_URL);
-                            editor.apply();
-
-                            editor.putString(SettingsActivity.KEY_PREF_ID_PREFIX, PREFIX);
-                            Log.d(TAG, PREFIX);
-                            editor.apply();
-
-                            editor.putBoolean(SettingsActivity.KEY_PREF_SETUP_COMPLETE, true);
-                            editor.apply();
-
-                            OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
-
-                            Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
-                            startActivity(intent);
-                            finish();
-
-                        } else {
-                            mUrlField.setError(getString(R.string.url_invalid));
-                            mUrlField.requestFocus();
-                        }
-
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                }
-            });
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
     }
 
     private boolean isEmailValid(String email) {
@@ -449,6 +357,8 @@ public class SetupActivity extends AppCompatActivity {
         private String BASE_URL;
         private Location LOCATION;
 
+        ProgressDialog progress;
+
 
         TestSetup(String url, String prefix, String username, String password, Location location) {
             CLEAN_URL = url;
@@ -461,6 +371,10 @@ public class SetupActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            progress = new ProgressDialog(SetupActivity.this);
+            progress.setTitle(getString(R.string.please_wait_progress));
+            progress.setMessage(getString(R.string.logging_in));
+            progress.show();
         }
 
 
@@ -484,43 +398,23 @@ public class SetupActivity extends AppCompatActivity {
                 String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
                 RestApi apiService = ServiceGenerator.createService(RestApi.class);
                 Call<ResponseBody> call = apiService.loginTask("Basic " + encoded);
-                /*String urlString = BASE_URL + urlModifier;
-
-                URL url = new URL(urlString);
-
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
-
-                connection.setRequestProperty("Authorization", "Basic " + encoded);
-                connection.setRequestMethod("GET");
-                connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
-                connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
-                Log.d(TAG, "GET URL: " + url);
-                Log.i(TAG, connection.getRequestProperties().toString());
-
-                int responseCode = connection.getResponseCode();
-                loginAttempt.setResponseCode(responseCode);*/
 
                 Response<ResponseBody> response = call.execute();
 
                 Log.d(TAG, "GET URL: " + BASE_URL+urlModifier);
-                //Log.d(TAG, "Response Code from Server: " + connection.getResponseCode());
                 Log.d(TAG, "Response Code from Server: " + response.code());
                 loginAttempt.setResponseCode(response.code());
 
-                // Read the input stream into a String
                 if(response.body()==null){
                     // Do Nothing.
                     return 201;
                 }
-                reader = new BufferedReader(new InputStreamReader(response.body().byteStream()));
-                /*InputStream inputStream = connection.getInputStream();
-                StringBuffer buffer = new StringBuffer();
+                InputStream inputStream = response.body().byteStream();
                 if (inputStream == null) {
                     // Do Nothing.
                     return 201;
                 }
-                reader = new BufferedReader(new InputStreamReader(inputStream));*/
+                reader = new BufferedReader(new InputStreamReader(inputStream));
 
                 StringBuffer buffer = new StringBuffer();
                 String line;
@@ -558,10 +452,10 @@ public class SetupActivity extends AppCompatActivity {
                         editor.apply();
                         return 1;
                     } else {
-                        return 3;
+                        return 201;
                     }
                 }
-            } catch (UnknownHostException e) {
+            }    catch (UnknownHostException e) {
                 e.printStackTrace();
                 return 201;
             } catch (IOException e) {
@@ -613,6 +507,8 @@ public class SetupActivity extends AppCompatActivity {
                 mPrefixField.setError(getString(R.string.prefix_invalid));
                 mPrefixField.requestFocus();
             }
+
+            progress.dismiss();
         }
     }
 

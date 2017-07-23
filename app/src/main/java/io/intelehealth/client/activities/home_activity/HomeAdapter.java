@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.search_patient_activity.SearchPatientActivity;
+import io.intelehealth.client.activities.sync_activity.ActivitySync;
 import io.intelehealth.client.activities.today_patient_activity.TodayPatientActivity;
 import io.intelehealth.client.activities.identification_activity.IdentificationActivity;
 import io.intelehealth.client.activities.video_library_activity.VideoLibraryActivity;
@@ -23,11 +24,12 @@ import io.intelehealth.client.activities.video_library_activity.VideoLibraryActi
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder> {
 
     final static String TAG = HomeAdapter.class.getSimpleName();
-    final String[] options = {"New Patient","Find Patients","Today's Patients","Video Library"};
+    final String[] options = {"New Patient","Find Patients","Today's Patients","Video Library","Sync"};
 
     //TODO: Change placeholder icon "android.R.drawable.ic_menu_my_calendar"
     final int[] icons = {R.drawable.ic_person_add_24dp, R.drawable.ic_search_24dp,
-            android.R.drawable.ic_menu_my_calendar, R.drawable.ic_action_folder_open};
+            android.R.drawable.ic_menu_my_calendar, R.drawable.ic_action_folder_open,
+            android.R.drawable.ic_menu_preferences};
 
     @Override
     public IconViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -86,6 +88,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
                 }
                 case "Video Library" : {
                     Intent intent = new Intent(this.context, VideoLibraryActivity.class);
+                    this.context.startActivity(intent);
+                    break;
+                }
+                case "Sync":{
+                    Intent intent = new Intent(this.context, ActivitySync.class);
                     this.context.startActivity(intent);
                     break;
                 }

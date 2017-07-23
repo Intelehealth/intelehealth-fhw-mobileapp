@@ -348,11 +348,9 @@ public class HelperMethods {
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
-            if (session_id != null) {
-                connection.setRequestProperty("Cookie", "jsessionid=" + session_id);
-            } else {
-                connection.setRequestProperty("Authorization", "Basic " + encoded);
-            }
+
+            connection.setRequestProperty("Authorization", "Basic " + encoded);
+            Log.d(LOG_TAG, USERNAME + "-" + PASSWORD);
             connection.setRequestMethod("POST");
             connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
             connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
@@ -417,32 +415,32 @@ public class HelperMethods {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
-    
-        public static String readFile(String FILENAME,Context context) {
-            Log.i(LOG_TAG, "Reading from file");
 
-            try {
-                File myDir = new File(context.getFilesDir().getAbsolutePath() + File.separator + JSON_FOLDER + File.separator + FILENAME);
-                FileInputStream fileIn = new FileInputStream(myDir);
-                InputStreamReader InputRead = new InputStreamReader(fileIn);
-                final int READ_BLOCK_SIZE = 100;
-                char[] inputBuffer = new char[READ_BLOCK_SIZE];
-                String s = "";
-                int charRead;
+    public static String readFile(String FILENAME, Context context) {
+        Log.i(LOG_TAG, "Reading from file");
 
-                while ((charRead = InputRead.read(inputBuffer)) > 0) {
-                    String readstring = String.copyValueOf(inputBuffer, 0, charRead);
-                    s += readstring;
-                }
-                InputRead.close();
-                Log.i("FILEREAD>", s);
-                return s;
+        try {
+            File myDir = new File(context.getFilesDir().getAbsolutePath() + File.separator + JSON_FOLDER + File.separator + FILENAME);
+            FileInputStream fileIn = new FileInputStream(myDir);
+            InputStreamReader InputRead = new InputStreamReader(fileIn);
+            final int READ_BLOCK_SIZE = 100;
+            char[] inputBuffer = new char[READ_BLOCK_SIZE];
+            String s = "";
+            int charRead;
 
-            } catch (Exception e) {
-                e.printStackTrace();
-                return  null;
+            while ((charRead = InputRead.read(inputBuffer)) > 0) {
+                String readstring = String.copyValueOf(inputBuffer, 0, charRead);
+                s += readstring;
             }
+            InputRead.close();
+            Log.i("FILEREAD>", s);
+            return s;
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
 
     }
+
+}

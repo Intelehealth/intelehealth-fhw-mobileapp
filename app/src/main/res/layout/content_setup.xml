@@ -64,7 +64,9 @@
                     android:id="@+id/editText_prefix"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Prefix" />
+                    android:hint="Prefix"
+                    android:inputType="text"
+                    android:maxLines="1"/>
             </android.support.design.widget.TextInputLayout>
 
             <Space
@@ -85,7 +87,9 @@
                 <Spinner
                     android:id="@+id/spinner_location"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:nextFocusForward="@+id/demoMindmap"
+                    />
             </android.support.design.widget.TextInputLayout>
 
 
@@ -109,6 +113,7 @@
                 android:id="@+id/demoMindmap"
                 android:text="@string/setup_use_demo_mindmap"
                 style="?android:textAppearanceMedium"
+                android:checked="true"
                 android:onClick="onRadioClick"/>
 
             <Space
@@ -146,7 +151,9 @@
                     android:hint="@string/prompt_email"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:nextFocusForward="@id/password"
+                    android:imeOptions="actionNext"
+                    />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -184,13 +191,6 @@
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="20sp" />
-
-            <ProgressBar
-                android:id="@+id/progressBar_setup"
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal" />
 
         </LinearLayout>
     </ScrollView>

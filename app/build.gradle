@@ -30,7 +30,6 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile "com.github.google:cameraview:$rootProject.cameraviewVersion"
 
-    testCompile 'junit:junit:4.12'
     compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:design:$rootProject.supportLibraryVersion"
     compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
@@ -38,7 +37,6 @@ dependencies {
     //Uncomment below line to enable multidex support for Kitkat
     //compile "com.android.support:multidex:$rootProject.multiDexVersion"
     compile "com.google.firebase:firebase-appindexing:$rootProject.firebaseVersion"
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     compile "ch.acra:acra:$rootProject.arcaVersion"
     compile "joda-time:joda-time:$rootProject.jodaTimeVersion"
@@ -59,11 +57,14 @@ dependencies {
     debugCompile "com.squareup.okhttp3:logging-interceptor:$rootProject.okHttpVersion"
 
     // glide library dependencies
+    
+
+
+
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.github.bumptech.glide:glide:3.8.0'
-
-
     compile 'com.parse:parse-android:1.15.7'
 
-}
+    testCompile 'junit:junit:4.12'}
 
 apply plugin: 'com.google.gms.google-services'

@@ -423,6 +423,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patient1.setPatientPhoto(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
 
             } while (idCursor.moveToNext());
+            idCursor.close();
         }
 
     }

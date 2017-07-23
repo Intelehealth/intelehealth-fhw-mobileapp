@@ -41,6 +41,7 @@ public class DelayedJobQueueProvider extends ContentProvider {
     public static final String VISIT_UUID = "visit_uuid"; //String
     public static final String STATUS = "status"; //Integer
     public static final String DATA_RESPONSE = "data_response"; //String
+    public static final String SYNC_STATUS = "sync_status"; //Integer
 
 
     private static HashMap<String, String> DELAYED_JOBS_PROJECTION_MAP;
