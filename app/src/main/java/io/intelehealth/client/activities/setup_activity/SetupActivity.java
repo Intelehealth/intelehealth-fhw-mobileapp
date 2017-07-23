@@ -64,6 +64,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.intelehealth.client.R;
+import io.intelehealth.client.activities.login_activity.LoginActivity;
 import io.intelehealth.client.activities.setting_activity.SettingsActivity;
 import io.intelehealth.client.activities.home_activity.HomeActivity;
 import io.intelehealth.client.objects.WebResponse;
@@ -73,6 +74,7 @@ import io.intelehealth.client.api.retrofit.ServiceGenerator;
 import io.intelehealth.client.models.Results;
 import io.intelehealth.client.models.Location;
 import io.intelehealth.client.utilities.HelperMethods;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -329,11 +331,99 @@ public class SetupActivity extends AppCompatActivity {
                 String prefixString = mPrefixField.getText().toString();
                 mAuthTask = new TestSetup(urlString, prefixString, email, password, location);
                 mAuthTask.execute();
+                //userLogin(urlString, prefixString, email, password, location);
                 Log.d(TAG, "attempting setup");
             }
         }
     }
 
+    private void userLogin(String urlString, String prefixString, String email, String password, Location location) {
+
+        final String USERNAME = email;
+        final String PASSWORD = password;
+        final String CLEAN_URL = urlString;
+        final String PREFIX = prefixString;
+        final String BASE_URL = "http://" + CLEAN_URL + ":8080/openmrs/ws/rest/v1/";
+        final Location LOCATION = location;
+
+        try {
+            String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
+            RestApi apiService = ServiceGenerator.createService(RestApi.class);
+            Call<ResponseBody> call = apiService.loginTask("Basic " + encoded);
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.code() == 200) {
+                        BufferedReader reader = null;
+                        StringBuilder sb = new StringBuilder();
+                        WebResponse loginAttempt = new WebResponse();
+                        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+                        reader = new BufferedReader(new InputStreamReader(response.body().byteStream()));
+                        String line;
+                        try {
+                            while ((line = reader.readLine()) != null)
+                                sb.append(line);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        String result = sb.toString();
+                        Log.i("SAA> ", result);
+                        loginAttempt.setResponseString(result);
+                        JsonObject responseObject = new JsonParser().parse(loginAttempt.getResponseString()).getAsJsonObject();
+                        if (responseObject.get("authenticated").getAsBoolean()) {
+
+                            JsonObject userObject = responseObject.get("user").getAsJsonObject();
+                            JsonObject personObject = userObject.get("person").getAsJsonObject();
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putString("sessionid", responseObject.get("sessionId").getAsString());
+                            editor.putString("creatorid", userObject.get("uuid").getAsString());
+                            editor.putString("chwname", personObject.get("display").getAsString());
+
+                            final Account account = new Account(USERNAME, "io.intelehealth.openmrs");
+                            manager.addAccountExplicitly(account, PASSWORD, null);
+
+                            editor.putString(SettingsActivity.KEY_PREF_LOCATION_NAME, LOCATION.getDisplay());
+                            editor.putString(SettingsActivity.KEY_PREF_LOCATION_UUID, LOCATION.getUuid());
+                            editor.putString(SettingsActivity.KEY_PREF_LOCATION_DESCRIPTION, LOCATION.getDescription());
+
+                            editor.putString(SettingsActivity.KEY_PREF_SERVER_URL, BASE_URL);
+                            Log.d(TAG, BASE_URL);
+                            editor.apply();
+
+                            editor.putString(SettingsActivity.KEY_PREF_ID_PREFIX, PREFIX);
+                            Log.d(TAG, PREFIX);
+                            editor.apply();
+
+                            editor.putBoolean(SettingsActivity.KEY_PREF_SETUP_COMPLETE, true);
+                            editor.apply();
+
+                            OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
+
+                            Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                            finish();
+
+                        } else {
+                            mUrlField.setError(getString(R.string.url_invalid));
+                            mUrlField.requestFocus();
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                }
+            });
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
@@ -391,7 +481,10 @@ public class SetupActivity extends AppCompatActivity {
 
 
                 BASE_URL = "http://" + CLEAN_URL + ":8080/openmrs/ws/rest/v1/";
-                String urlString = BASE_URL + urlModifier;
+                String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
+                RestApi apiService = ServiceGenerator.createService(RestApi.class);
+                Call<ResponseBody> call = apiService.loginTask("Basic " + encoded);
+                /*String urlString = BASE_URL + urlModifier;
 
                 URL url = new URL(urlString);
 
@@ -406,20 +499,30 @@ public class SetupActivity extends AppCompatActivity {
                 Log.i(TAG, connection.getRequestProperties().toString());
 
                 int responseCode = connection.getResponseCode();
-                loginAttempt.setResponseCode(responseCode);
+                loginAttempt.setResponseCode(responseCode);*/
 
-                Log.d(TAG, "GET URL: " + url);
-                Log.d(TAG, "Response Code from Server: " + connection.getResponseCode());
+                Response<ResponseBody> response = call.execute();
+
+                Log.d(TAG, "GET URL: " + BASE_URL+urlModifier);
+                //Log.d(TAG, "Response Code from Server: " + connection.getResponseCode());
+                Log.d(TAG, "Response Code from Server: " + response.code());
+                loginAttempt.setResponseCode(response.code());
 
                 // Read the input stream into a String
-                InputStream inputStream = connection.getInputStream();
+                if(response.body()==null){
+                    // Do Nothing.
+                    return 201;
+                }
+                reader = new BufferedReader(new InputStreamReader(response.body().byteStream()));
+                /*InputStream inputStream = connection.getInputStream();
                 StringBuffer buffer = new StringBuffer();
                 if (inputStream == null) {
                     // Do Nothing.
                     return 201;
                 }
-                reader = new BufferedReader(new InputStreamReader(inputStream));
+                reader = new BufferedReader(new InputStreamReader(inputStream));*/
 
+                StringBuffer buffer = new StringBuffer();
                 String line;
                 while ((line = reader.readLine()) != null) {
                     // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
@@ -452,7 +555,7 @@ public class SetupActivity extends AppCompatActivity {
                         editor.putString("sessionid", responseObject.get("sessionId").getAsString());
                         editor.putString("creatorid", userObject.get("uuid").getAsString());
                         editor.putString("chwname", personObject.get("display").getAsString());
-                        editor.commit();
+                        editor.apply();
                         return 1;
                     } else {
                         return 3;

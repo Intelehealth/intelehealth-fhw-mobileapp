@@ -29,6 +29,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.jobdispatcher.Driver;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
@@ -43,19 +44,27 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.setting_activity.SettingsActivity;
 import io.intelehealth.client.activities.home_activity.HomeActivity;
+import io.intelehealth.client.api.retrofit.RestApi;
+import io.intelehealth.client.api.retrofit.ServiceGenerator;
+import io.intelehealth.client.models.Location;
+import io.intelehealth.client.models.Results;
 import io.intelehealth.client.objects.WebResponse;
 import io.intelehealth.client.services.sync.JobDispatchService;
 import io.intelehealth.client.utilities.NetworkConnection;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A login screen that offers login via username/password.
- *
  */
 public class LoginActivity extends AppCompatActivity {
 
@@ -69,7 +78,6 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * A dummy authentication store containing known user names and passwords.
-     *
      */
     // TODO: remove after connecting to a real authentication system.
     private static final String[] DUMMY_CREDENTIALS = new String[]{
@@ -166,7 +174,7 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Returns void.
      * This method checks if valid username and password are given as input.
-
+     *
      * @return void
      */
     private void attemptLogin() {
@@ -222,9 +230,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     *
      * @param email Email-id
-     * @return     boolean
+     * @return boolean
      */
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
@@ -232,9 +239,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     *
      * @param password Password
-     * @return       boolean
+     * @return boolean
      */
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
@@ -245,7 +251,7 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * This method reflects the progress on UI for login.
      * @param show variable of type boolean
-     * @return         void
+     * @return void
      */
     private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
@@ -280,11 +286,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+
     /**
      * class UserLoginTask will authenticate user using email and password.
      * Depending on server's response, user may or may not have successful login.
      * This class also uses SharedPreferences to store session ID
-
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
@@ -363,13 +369,12 @@ public class LoginActivity extends AppCompatActivity {
                     return false;
                 } else {
                     JsonObject jsonObject = new JsonParser().parse(loginAttempt.getResponseString()).getAsJsonObject();
-                    if (jsonObject.get("authenticated").getAsBoolean()){
+                    if (jsonObject.get("authenticated").getAsBoolean()) {
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("sessionid", jsonObject.get("sessionId").getAsString());
                         editor.commit();
                         return true;
-                    }
-                    else {
+                    } else {
                         return false;
                     }
                 }
@@ -413,9 +418,9 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * A method of FirebaseJobDispatcher Library.
      * It schedules background jobs for android app.
-     * @param context  Current context
-     * @return         returns void
      *
+     * @param context Current context
+     * @return returns void
      */
     private void startJobDispatcherService(Context context) {
         Driver driver = new GooglePlayDriver(context);

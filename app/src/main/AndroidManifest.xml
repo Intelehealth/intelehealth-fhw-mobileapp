@@ -225,6 +225,11 @@
             android:exported="false">
         </service>
 
+        <service
+            android:name=".services.PersonPhotoUploadService"
+            android:exported="false">
+        </service>
+
     </application>
 
 </manifest>

@@ -448,6 +448,7 @@ public class ClientService extends IntentService {
             uploadPersonPhoto.putExtra("person", responsePerson.getResponseString());
             uploadPersonPhoto.putExtra("patientID", patientID);
             uploadPersonPhoto.putExtra("name", patient.getFirstName() + patient.getLastName());
+            startService(uploadPersonPhoto);
             return responsePerson.getResponseString();
         }
     }
