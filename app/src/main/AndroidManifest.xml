@@ -226,7 +226,11 @@
             android:name=".services.ImageUploadService"
             android:exported="false"></service>
 
-        <activity android:name=".activities.sync_activity.ActivitySync"></activity>
+        <service
+            android:name=".services.PersonPhotoUploadService"
+            android:exported="false">
+        </service>
+
     </application>
 
 </manifest>

@@ -64,6 +64,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.intelehealth.client.R;
+import io.intelehealth.client.activities.login_activity.LoginActivity;
 import io.intelehealth.client.activities.setting_activity.SettingsActivity;
 import io.intelehealth.client.activities.home_activity.HomeActivity;
 import io.intelehealth.client.objects.WebResponse;
@@ -73,6 +74,7 @@ import io.intelehealth.client.api.retrofit.ServiceGenerator;
 import io.intelehealth.client.models.Results;
 import io.intelehealth.client.models.Location;
 import io.intelehealth.client.utilities.HelperMethods;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -331,7 +333,6 @@ public class SetupActivity extends AppCompatActivity {
         }
     }
 
-
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
         return true;
@@ -394,35 +395,28 @@ public class SetupActivity extends AppCompatActivity {
 
 
                 BASE_URL = "http://" + CLEAN_URL + ":8080/openmrs/ws/rest/v1/";
-                String urlString = BASE_URL + urlModifier;
-
-                URL url = new URL(urlString);
-
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
+                RestApi apiService = ServiceGenerator.createService(RestApi.class);
+                Call<ResponseBody> call = apiService.loginTask("Basic " + encoded);
 
-                connection.setRequestProperty("Authorization", "Basic " + encoded);
-                connection.setRequestMethod("GET");
-                connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
-                connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
-                Log.d(TAG, "GET URL: " + url);
-                Log.i(TAG, connection.getRequestProperties().toString());
+                Response<ResponseBody> response = call.execute();
 
-                int responseCode = connection.getResponseCode();
-                loginAttempt.setResponseCode(responseCode);
+                Log.d(TAG, "GET URL: " + BASE_URL+urlModifier);
+                Log.d(TAG, "Response Code from Server: " + response.code());
+                loginAttempt.setResponseCode(response.code());
 
-                Log.d(TAG, "GET URL: " + url);
-                Log.d(TAG, "Response Code from Server: " + connection.getResponseCode());
-
-                // Read the input stream into a String
-                InputStream inputStream = connection.getInputStream();
-                StringBuffer buffer = new StringBuffer();
+                if(response.body()==null){
+                    // Do Nothing.
+                    return 201;
+                }
+                InputStream inputStream = response.body().byteStream();
                 if (inputStream == null) {
                     // Do Nothing.
                     return 201;
                 }
                 reader = new BufferedReader(new InputStreamReader(inputStream));
 
+                StringBuffer buffer = new StringBuffer();
                 String line;
                 while ((line = reader.readLine()) != null) {
                     // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
@@ -455,7 +449,7 @@ public class SetupActivity extends AppCompatActivity {
                         editor.putString("sessionid", responseObject.get("sessionId").getAsString());
                         editor.putString("creatorid", userObject.get("uuid").getAsString());
                         editor.putString("chwname", personObject.get("display").getAsString());
-                        editor.commit();
+                        editor.apply();
                         return 1;
                     } else {
                         return 201;

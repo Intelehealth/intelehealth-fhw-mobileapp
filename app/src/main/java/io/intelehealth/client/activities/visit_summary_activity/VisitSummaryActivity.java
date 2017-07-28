@@ -183,6 +183,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mPhysicalExamsLayoutManager;
 
 
+    private static final String LOG_TAG = VisitSummaryActivity.class.getSimpleName();
+
     String additionalDocumentDir = "Additional Documents";
     String physicalExamDocumentDir = "Physical Exam";
 

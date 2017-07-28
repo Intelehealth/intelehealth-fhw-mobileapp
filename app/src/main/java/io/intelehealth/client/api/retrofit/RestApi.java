@@ -4,10 +4,12 @@ package io.intelehealth.client.api.retrofit;
 import io.intelehealth.client.models.Results;
 import io.intelehealth.client.models.Location;
 import io.intelehealth.client.models.PatientPhoto;
+import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -25,6 +27,9 @@ public interface RestApi {
 
     @GET("location?tag=Login%20Location")
     Call<Results<Location>> getLocations(@Query("v") String representation);
+
+    @GET("session")
+    Call<ResponseBody> loginTask(@Header("Authorization") String authHeader);
 
     @POST("personimage/{uuid}")
     Call<PatientPhoto> uploadPatientPhoto(@Path("uuid") String uuid,

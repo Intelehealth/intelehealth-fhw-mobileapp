@@ -28,6 +28,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.jobdispatcher.Driver;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
@@ -42,15 +43,24 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.home_activity.HomeActivity;
 import io.intelehealth.client.activities.setting_activity.SettingsActivity;
+import io.intelehealth.client.api.retrofit.RestApi;
+import io.intelehealth.client.api.retrofit.ServiceGenerator;
+import io.intelehealth.client.models.Location;
+import io.intelehealth.client.models.Results;
 import io.intelehealth.client.objects.WebResponse;
 import io.intelehealth.client.services.sync.JobDispatchService;
 import io.intelehealth.client.utilities.NetworkConnection;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A login screen that offers login via username/password.
@@ -239,6 +249,12 @@ public class LoginActivity extends AppCompatActivity {
         return password.length() > 4;
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    /**
+     * This method reflects the progress on UI for login.
+     * @param show variable of type boolean
+     * @return void
+     */
     private void showProgress(final boolean show) {
         if (progress == null) {
             progress = new ProgressDialog(LoginActivity.this);
@@ -248,6 +264,8 @@ public class LoginActivity extends AppCompatActivity {
         if(show) progress.show();
         else progress.dismiss();
     }
+
+
 
     /**
      * class UserLoginTask will authenticate user using email and password.
