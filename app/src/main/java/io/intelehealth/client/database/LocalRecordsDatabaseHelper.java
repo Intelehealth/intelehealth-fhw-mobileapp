@@ -55,10 +55,21 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             "visit_id integer(10) NOT NULL," +
             "value text," +
             "concept_id integer(10) NOT NULL," +
-            "creator TEXT NOT NULL," +
+            "creator TEXT," +
             "openmrs_encounter_id integer(10)," +
             "openmrs_obs_id integer(10)" +
             ")";
+
+    public static final String CREATE_ENCOUNTER = "CREATE TABLE IF NOT EXISTS encounter ("+
+            "_id integer PRIMARY KEY," +
+            "openmrs_encounter_id integer(10) NOT NULL," +
+            "patient_id TEXT," +
+            "visit_id integer(10) NOT NULL," +
+            "openmrs_visit_uuid TEXT," +
+            "encounter_type TEXT" +
+            ")";
+
+
     public static final String CREATE_USER = "CREATE TABLE IF NOT EXISTS user_provider (" +
             "_id integer PRIMARY KEY," +
             "openmrs_provider_id integer(10)," +
@@ -124,6 +135,7 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_ATTRIB);
         db.execSQL(CREATE_VISIT);
         db.execSQL(CREATE_OBS);
+        db.execSQL(CREATE_ENCOUNTER);
         db.execSQL(CREATE_USER);
         db.execSQL(CREATE_LOCATION);
         db.execSQL(CREATE_DELAYED_JOBS);

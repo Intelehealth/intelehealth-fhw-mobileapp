@@ -396,6 +396,7 @@ public class HelperMethods {
             try {
                 JSONObject JSONResponse = new JSONObject(JSONString);
                 webResponse.setResponseString(JSONResponse.getString("uuid"));
+                webResponse.setResponseObject(JSONString);
 
             } catch (JSONException e) {
                 e.printStackTrace();

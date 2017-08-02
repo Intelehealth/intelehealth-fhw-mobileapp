@@ -1,5 +1,6 @@
 package io.intelehealth.client.activities.visit_summary_activity;
 
+import android.Manifest;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
@@ -13,7 +14,6 @@ import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -24,13 +24,17 @@ import android.print.PrintManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.telephony.SmsManager;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -46,16 +50,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
@@ -73,17 +72,21 @@ import io.intelehealth.client.database.DelayedJobQueueProvider;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Obs;
 import io.intelehealth.client.objects.Patient;
-import io.intelehealth.client.objects.WebResponse;
 import io.intelehealth.client.services.ClientService;
-import io.intelehealth.client.services.ImageUploadService;
+import io.intelehealth.client.services.PrescriptionDownloadService;
 import io.intelehealth.client.utilities.ConceptId;
-import io.intelehealth.client.utilities.HelperMethods;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
 
 /**
  * This class updates data about patient to database. It also creates a summary about it which can be viewed
  * using WebView and printed.
  */
-
+@RuntimePermissions
 public class VisitSummaryActivity extends AppCompatActivity {
 
 
@@ -168,8 +171,21 @@ public class VisitSummaryActivity extends AppCompatActivity {
     Button downloadButton;
     ArrayList<String> physicalExams;
 
+    CardView diagnosisCard;
+    CardView prescriptionCard;
+    CardView medicalAdviceCard;
+    CardView requestedTestsCard;
+    CardView additionalCommentsCard;
+
+    TextView diagnosisTextView;
+    TextView prescriptionTextView;
+    TextView medicalAdviceTextView;
+    TextView requestedTestsTextView;
+    TextView additionalCommentsTextView;
+
     Boolean isPastVisit = false;
 
+    public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
 
     private NetworkChangeReceiver receiver;
     private boolean isConnected = false;
@@ -218,15 +234,22 @@ public class VisitSummaryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.summary_home:
+            case R.id.summary_home: {
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
-            case R.id.summary_print:
+            }
+            case R.id.summary_print: {
                 doWebViewPrint();
                 return true;
-            case R.id.summary_endVisit:
+            }
+            case R.id.summary_sms: {
+                VisitSummaryActivityPermissionsDispatcher.sendSMSWithCheck(this);
+                return true;
+            }
+            case R.id.summary_endVisit: {
                 endVisit();
-
+                return true;
+            }
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -237,8 +260,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         callBroadcastReceiver();
 
-        Intent intent = this.getIntent(); // The intent was passed to the activity
-
+        final Intent intent = this.getIntent(); // The intent was passed to the activity
 
         if (intent != null) {
             patientID = intent.getStringExtra("patientID");
@@ -248,18 +270,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             isPastVisit = intent.getBooleanExtra("pastVisit", false);
-            if(!isPastVisit) {
+            if (!isPastVisit) {
                 if (intent.hasExtra("exams")) {
                     physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
                     SharedPreferences.Editor editor = mSharedPreference.edit();
                     Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
-                    editor.putStringSet("exam_" + patientID + "_" + visitID, selectedExams);
+                    editor.putStringSet("exam_" + patientID, selectedExams);
                     editor.commit();
                 } else {
-                    Set<String> selectedExams = mSharedPreference.getStringSet("exam_" + patientID + "_" + visitID, null);
+                    Set<String> selectedExams = mSharedPreference.getStringSet("exam_" + patientID, null);
                     if (physicalExams == null) physicalExams = new ArrayList<>();
                     physicalExams.clear();
-                    if (selectedExams != null && selectedExams.isEmpty()) {
+                    if (selectedExams != null && !selectedExams.isEmpty()) {
                         physicalExams.addAll(selectedExams);
                     } else {
                         Intent return_intent = new Intent(this, ComplaintNodeActivity.class);
@@ -277,12 +299,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //            Log.v(TAG, "Visit ID: " + visitID);
 //            Log.v(TAG, "Patient Name: " + patientName);
 //            Log.v(TAG, "Intent Tag: " + intentTag);
-        } else {
-            patientID = "AND1";
-            visitID = "6";
-            state = "";
-            patientName = "John Alam";
-            intentTag = "";
         }
 
 
@@ -305,6 +321,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mAdditionalDocsRecyclerView = (RecyclerView) findViewById(R.id.recy_additional_documents);
         mPhysicalExamsRecyclerView = (RecyclerView) findViewById(R.id.recy_physexam);
 
+        diagnosisCard = (CardView) findViewById(R.id.cardView_diagnosis);
+        prescriptionCard = (CardView) findViewById(R.id.cardView_rx);
+        medicalAdviceCard = (CardView) findViewById(R.id.cardView_medical_advice);
+        requestedTestsCard = (CardView) findViewById(R.id.cardView_tests);
+        additionalCommentsCard = (CardView) findViewById(R.id.cardView_additional_comments);
+
+        diagnosisTextView = (TextView) findViewById(R.id.textView_content_diagnosis);
+        prescriptionTextView = (TextView) findViewById(R.id.textView_content_rx);
+        medicalAdviceTextView = (TextView) findViewById(R.id.textView_content_medical_advice);
+        requestedTestsTextView = (TextView) findViewById(R.id.textView_content_tests);
+        additionalCommentsTextView = (TextView) findViewById(R.id.textView_content_additional_comments);
+
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
 
         filePathPhyExam = baseDir + File.separator + "Patient Images" + File.separator + patientID + File.separator +
@@ -321,7 +349,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             mPhysicalExamsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
             mPhysicalExamsRecyclerView.setLayoutManager(mPhysicalExamsLayoutManager);
             mPhysicalExamsRecyclerView.setAdapter(horizontalAdapter);
-
         }
 
         mNotificationManager =
@@ -344,6 +371,40 @@ public class VisitSummaryActivity extends AppCompatActivity {
             editAddDocs.setVisibility(View.GONE);
             uploadButton.setVisibility(View.GONE);
             invalidateOptionsMenu();
+        } else {
+            String[] columnsToReturn = {"openmrs_visit_uuid"};
+            String visitIDorderBy = "start_datetime";
+            String visitIDSelection = "_id = ?";
+            String[] visitIDArgs = {visitID};
+            final Cursor visitIDCursor = db.query("visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
+            if (visitIDCursor != null && visitIDCursor.moveToFirst() && visitIDCursor.getCount() > 0) {
+                visitIDCursor.moveToFirst();
+                visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("openmrs_visit_uuid"));
+            }
+            if (visitIDCursor != null) visitIDCursor.close();
+            if (visitUUID != null) {
+                downloadButton = new Button(VisitSummaryActivity.this);
+                downloadButton.setLayoutParams(new LinearLayoutCompat.LayoutParams(
+                        LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+                downloadButton.setText(R.string.visit_summary_button_download);
+
+                downloadButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Snackbar.make(view, "Downloading from doctor", Snackbar.LENGTH_LONG).show();
+                        Intent startDownload = new Intent(VisitSummaryActivity.this, PrescriptionDownloadService.class);
+                        startDownload.putExtra("patientID", patientID);
+                        startDownload.putExtra("visitID", visitID);
+                        startDownload.putExtra("name", patientName);
+                        startDownload.putExtra("visitUUID", visitUUID);
+                        startService(startDownload);
+
+                        //  retrieveOpenMRS(view);
+                    }
+                });
+                mLayout.addView(downloadButton, mLayout.getChildCount());
+            }
+
         }
 
 
@@ -364,13 +425,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 Log.i(TAG, "onClick: " + c.getCount());
 
-                if (c == null) {
-                    Intent imageUpload = new Intent(VisitSummaryActivity.this, ImageUploadService.class);
-                    imageUpload.putExtra("patientID", patientID);
-                    imageUpload.putExtra("visitID", visitID);
-                    startService(imageUpload);
+                if (c == null || c.getCount() == 0) {
 
+                    //query Visit Summary Table for openmrs uuid.
 
+                    Log.d(TAG, "onClick: In Null");
                     Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
                     serviceIntent.putExtra("serviceCall", "visit");
                     serviceIntent.putExtra("patientID", patientID);
@@ -379,14 +438,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     startService(serviceIntent);
 
                 } else if (c != null && c.moveToFirst()) {
+                    Log.d(TAG, "onClick: Not In Null");
                     int sync_status = c.getInt(c.getColumnIndexOrThrow(DelayedJobQueueProvider.SYNC_STATUS));
                     switch (sync_status) {
                         case ClientService.STATUS_SYNC_STOPPED: {
-                            Intent imageUpload = new Intent(VisitSummaryActivity.this, ImageUploadService.class);
-                            imageUpload.putExtra("patientID", patientID);
-                            imageUpload.putExtra("visitID", visitID);
-                            startService(imageUpload);
-
 
                             Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
                             serviceIntent.putExtra("serviceCall", "visit");
@@ -401,35 +456,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             Toast.makeText(context, getString(R.string.sync_in_progress), Toast.LENGTH_SHORT).show();
                             break;
                         }
-                        case ClientService.STATUS_SYNC_COMPLETE: {
-                            Toast.makeText(context, getString(R.string.sync_complete), Toast.LENGTH_SHORT).show();
-                            break;
-                        }
                         default:
                     }
                 }
 
                 c.close();
-
-                //mLayout.removeView(uploadButton);
-
-                if (downloadButton == null) {
-                    downloadButton = new Button(VisitSummaryActivity.this);
-                    downloadButton.setLayoutParams(new LinearLayoutCompat.LayoutParams(
-                            LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
-                    downloadButton.setText(R.string.visit_summary_button_download);
-
-                    downloadButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Snackbar.make(view, "Downloading from doctor", Snackbar.LENGTH_LONG).show();
-                            retrieveOpenMRS(view);
-                        }
-                    });
-
-
-                    mLayout.addView(downloadButton, 0);
-                }
 
             }
         });
@@ -513,6 +544,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent1.putExtra("patientID", patientID);
                         intent1.putExtra("visitID", visitID);
                         intent1.putExtra("name", patientName);
+                        intent.putStringArrayListExtra("exams", physicalExams);
                         intent1.putExtra("tag", "edit");
                         startActivity(intent1);
                         dialogInterface.dismiss();
@@ -825,42 +857,22 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * This method creates new object of type RetrieveData.
-     *
-     * @param view variable of type View
-     * @return void
-     */
-    public void retrieveOpenMRS(View view) {
-        new RetrieveData(this).execute();
-    }
-
     private void endVisit() {
-        String[] columnsToReturn = {"openmrs_visit_uuid"};
-        String visitIDorderBy = "start_datetime";
-        String visitIDSelection = "_id = ?";
-        String[] visitIDArgs = {visitID};
-        final Cursor visitIDCursor = db.query("visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
-        if (visitIDCursor != null && visitIDCursor.getCount() > 0 && visitIDCursor.moveToLast()) {
-            visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("openmrs_visit_uuid"));
-            visitIDCursor.close();
-        }
+        Log.d(TAG, "endVisit: ");
         if (visitUUID == null) {
-
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setMessage("Please upload first before attempting to end the visit.");
-            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-
-        } else {
-            // when VisitSummary has been uploaded to doctor
-
+            String[] columnsToReturn = {"openmrs_visit_uuid"};
+            String visitIDorderBy = "start_datetime";
+            String visitIDSelection = "_id = ?";
+            String[] visitIDArgs = {visitID};
+            final Cursor visitIDCursor = db.query("visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
+            if (visitIDCursor != null && visitIDCursor.moveToFirst() && visitIDCursor.getCount() > 0) {
+                visitIDCursor.moveToFirst();
+                visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("openmrs_visit_uuid"));
+            }
+            if (visitIDCursor != null) visitIDCursor.close();
+        }
+        if (visitUUID != null) {
+            Log.d(TAG, "endVisit: uuid ok");
             String[] DELAYED_JOBS_PROJECTION = new String[]{DelayedJobQueueProvider._ID, DelayedJobQueueProvider.SYNC_STATUS};
             String SELECTION = DelayedJobQueueProvider.JOB_TYPE + "=? AND " +
                     DelayedJobQueueProvider.PATIENT_ID + "=? AND " +
@@ -870,7 +882,28 @@ public class VisitSummaryActivity extends AppCompatActivity {
             Cursor c = getContentResolver().query(DelayedJobQueueProvider.CONTENT_URI,
                     DELAYED_JOBS_PROJECTION, SELECTION, ARGS, null);
 
-            if (c == null) {
+            if (c != null && c.moveToFirst() && c.getCount() > 0) {
+                int sync_status = c.getInt(c.getColumnIndexOrThrow(DelayedJobQueueProvider.SYNC_STATUS));
+                switch (sync_status) {
+                    case ClientService.STATUS_SYNC_STOPPED: {
+                        Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
+                        serviceIntent.putExtra("serviceCall", "endVisit");
+                        serviceIntent.putExtra("patientID", patientID);
+                        serviceIntent.putExtra("visitUUID", visitUUID);
+                        serviceIntent.putExtra("name", patientName);
+                        startService(serviceIntent);
+                        Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                        break;
+                    }
+                    case ClientService.STATUS_SYNC_IN_PROGRESS: {
+                        Toast.makeText(context, getString(R.string.sync_in_progress), Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                    default:
+                }
+            } else {
+                Log.d(TAG, "endVisit: delayed job first");
                 Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
                 serviceIntent.putExtra("serviceCall", "endVisit");
                 serviceIntent.putExtra("patientID", patientID);
@@ -882,37 +915,24 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 editor.commit();
                 Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
                 startActivity(intent);
-            } else if (c != null && c.moveToFirst()) {
-                int sync_status = c.getInt(c.getColumnIndexOrThrow(DelayedJobQueueProvider.SYNC_STATUS));
-                switch (sync_status) {
-                    case ClientService.STATUS_SYNC_STOPPED: {
-                        Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
-                        serviceIntent.putExtra("serviceCall", "endVisit");
-                        serviceIntent.putExtra("patientID", patientID);
-                        serviceIntent.putExtra("visitUUID", visitUUID);
-                        serviceIntent.putExtra("name", patientName);
-                        startService(serviceIntent);
-                        SharedPreferences.Editor editor = context.getSharedPreferences(patientID + "_" + visitID, MODE_PRIVATE).edit();
-                        editor.remove("exam_" + patientID + "_" + visitID);
-                        editor.commit();
-                        Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
-                        startActivity(intent);
-                        break;
-                    }
-                    case ClientService.STATUS_SYNC_IN_PROGRESS: {
-                        Toast.makeText(context, getString(R.string.sync_in_progress), Toast.LENGTH_SHORT).show();
-                        break;
-                    }
-                    case ClientService.STATUS_SYNC_COMPLETE: {
-                        Toast.makeText(context, getString(R.string.sync_complete), Toast.LENGTH_SHORT).show();
-                        break;
-                    }
-                    default:
-                }
             }
-
             c.close();
+        } else {
+
+            Log.d(TAG, "endVisit: null");
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setMessage("Please upload first before attempting to end the visit.");
+            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
         }
+
 
     }
 
@@ -1018,36 +1038,91 @@ public class VisitSummaryActivity extends AppCompatActivity {
      */
     private void parseData(int concept_id, String value) {
         switch (concept_id) {
-            case ConceptId.CURRENT_COMPLAINT: //Current Complaint
+            case ConceptId.CURRENT_COMPLAINT: { //Current Complaint
                 complaint.setValue(value);
                 break;
-
-            case ConceptId.PHYSICAL_EXAMINATION: //Physical Examination
+            }
+            case ConceptId.PHYSICAL_EXAMINATION: { //Physical Examination
                 phyExam.setValue(value);
-
                 break;
+            }
             case ConceptId.HEIGHT: //Height
+            {
                 height.setValue(value);
                 break;
+            }
             case ConceptId.WEIGHT: //Weight
+            {
                 weight.setValue(value);
                 break;
+            }
             case ConceptId.PULSE: //Pulse
+            {
                 pulse.setValue(value);
                 break;
+            }
             case ConceptId.SYSTOLIC_BP: //Systolic BP
+            {
                 bpSys.setValue(value);
                 break;
+            }
             case ConceptId.DIASTOLIC_BP: //Diastolic BP
+            {
                 bpDias.setValue(value);
                 break;
+            }
             case ConceptId.TEMPERATURE: //Temperature
+            {
                 temperature.setValue(value);
                 break;
+            }
             case ConceptId.SPO2: //SpO2
+            {
                 spO2.setValue(value);
                 break;
+            }
+            case ConceptId.TELEMEDICINE_DIAGNOSIS: {
+                diagnosisReturned = value;
+                if (diagnosisCard.getVisibility() != View.VISIBLE) {
+                    diagnosisCard.setVisibility(View.VISIBLE);
+                }
+                diagnosisTextView.setText(diagnosisReturned);
+                break;
+            }
+            case ConceptId.JSV_MEDICATIONS: {
+                rxReturned = value;
+                if (prescriptionCard.getVisibility() != View.VISIBLE) {
+                    prescriptionCard.setVisibility(View.VISIBLE);
+                }
+                prescriptionTextView.setText(rxReturned);
+                break;
+            }
+            case ConceptId.MEDICAL_ADVICE: {
+                adviceReturned = value;
+                if (medicalAdviceCard.getVisibility() != View.VISIBLE) {
+                    medicalAdviceCard.setVisibility(View.VISIBLE);
+                }
+                medicalAdviceTextView.setText(adviceReturned);
+                break;
+            }
+            case ConceptId.REQUESTED_TESTS: {
+                testsReturned = value;
+                if (requestedTestsCard.getVisibility() != View.VISIBLE) {
+                    requestedTestsCard.setVisibility(View.VISIBLE);
+                }
+                requestedTestsTextView.setText(testsReturned);
+                break;
+            }
+            case ConceptId.ADDITIONAL_COMMENTS: {
+                additionalReturned = value;
+                if (additionalCommentsCard.getVisibility() != View.VISIBLE) {
+                    additionalCommentsCard.setVisibility(View.VISIBLE);
+                }
+                additionalCommentsTextView.setText(additionalReturned);
+                break;
+            }
             default:
+                Log.i(TAG, "parseData: " + value);
                 break;
 
         }
@@ -1179,6 +1254,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     }
 
+    /*
     private class RetrieveData extends AsyncTask<String, Void, String> {
 
         private final String LOG_TAG = RetrieveData.class.getSimpleName();
@@ -1389,6 +1465,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
     }
+    */
 
     /**
      * @param title   variable of type String
@@ -1458,7 +1535,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             mAdditionalDocsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
             mAdditionalDocsRecyclerView.setLayoutManager(mAdditionalDocsLayoutManager);
             mAdditionalDocsRecyclerView.setAdapter(horizontalAdapter);
-
         }
     }
 
@@ -1507,4 +1583,181 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
 
+    @NeedsPermission({Manifest.permission.SEND_SMS, Manifest.permission.READ_PHONE_STATE})
+    public void sendSMS() {
+        final AlertDialog.Builder textInput = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+        textInput.setTitle(R.string.identification_screen_prompt_phone_number);
+        final EditText phoneNumberEditText = new EditText(context);
+        phoneNumberEditText.setInputType(InputType.TYPE_CLASS_PHONE);
+
+        textInput.setView(phoneNumberEditText);
+
+        textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                String sms = "";
+                if (diagnosisCard.getVisibility() == View.VISIBLE) {
+                    if (!diagnosisTextView.getText().toString().trim().isEmpty())
+                        sms = sms + getString(R.string.visit_summary_diagnosis) + ":" +
+                                diagnosisTextView.getText().toString().trim() + "\n";
+                }
+                if (prescriptionCard.getVisibility() == View.VISIBLE) {
+                    if (!prescriptionTextView.getText().toString().trim().isEmpty())
+                        sms = sms + getString(R.string.visit_summary_rx) + ":" +
+                                prescriptionTextView.getText().toString().trim() + "\n";
+                }
+                if (medicalAdviceCard.getVisibility() == View.VISIBLE) {
+                    if (!medicalAdviceTextView.getText().toString().trim().isEmpty())
+                        sms = sms + getString(R.string.visit_summary_advice) + ":" +
+                                medicalAdviceTextView.getText().toString().trim() + "\n";
+                }
+                if (requestedTestsCard.getVisibility() == View.VISIBLE) {
+                    if (!requestedTestsTextView.getText().toString().trim().isEmpty())
+                        sms = sms + getString(R.string.visit_summary_tests_prescribed) + ":" +
+                                requestedTestsTextView.getText().toString().trim() + "\n";
+                }
+                if (additionalCommentsCard.getVisibility() == View.VISIBLE) {
+                    if (!additionalCommentsTextView.getText().toString().trim().isEmpty())
+                        sms = sms + getString(R.string.visit_summary_additional_comments) + ":" +
+                                additionalCommentsTextView.getText().toString().trim() + "\n";
+                }
+
+
+                if (!phoneNumberEditText.getText().toString().trim().isEmpty()) {
+                    if (!sms.isEmpty()) {
+                        if (sms != null && sms.length() > 0) {
+                            sms = sms.substring(0, sms.length() - 2);
+                        }
+                        try {
+                            SmsManager sm = SmsManager.getDefault();
+                            String number = phoneNumberEditText.getText().toString();
+                            ArrayList<String> parts = sm.divideMessage(sms);
+
+                            sm.sendMultipartTextMessage(number, null, parts, null, null);
+
+                            Toast.makeText(getApplicationContext(), getString(R.string.sms_success),
+                                    Toast.LENGTH_LONG).show();
+                        } catch (Exception e) {
+                            Toast.makeText(getApplicationContext(), getString(R.string.error_sms),
+                                    Toast.LENGTH_LONG).show();
+                            Log.e(TAG, "onClick: " + e.getMessage());
+                        }
+
+                    } else {
+                        Toast.makeText(context, getString(R.string.error_no_data), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(context, getString(R.string.error_phone_number), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+        textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        textInput.show();
+    }
+
+    @OnShowRationale({Manifest.permission.SEND_SMS, Manifest.permission.READ_PHONE_STATE})
+    void showRationaleForCamera(final PermissionRequest request) {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.permission_sms_rationale)
+                .setPositiveButton(R.string.button_allow, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        request.proceed();
+                    }
+                })
+                .setNegativeButton(R.string.button_deny, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        request.cancel();
+                    }
+                })
+                .show();
+    }
+
+    @OnPermissionDenied({Manifest.permission.SEND_SMS, Manifest.permission.READ_PHONE_STATE})
+    void showDeniedForCamera() {
+        Toast.makeText(this, R.string.permission_sms_denied, Toast.LENGTH_SHORT).show();
+    }
+
+    @OnNeverAskAgain({Manifest.permission.SEND_SMS, Manifest.permission.READ_PHONE_STATE})
+    void showNeverAskForCamera() {
+        Toast.makeText(this, R.string.permission_sms_never_askagain, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        LocalBroadcastManager.getInstance(this).registerReceiver((mMessageReceiver), new IntentFilter(FILTER));
+    }
+
+    @Override
+    protected void onStop() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        super.onStop();
+    }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            handleMessage(intent);
+        }
+    };
+
+    private void handleMessage(Intent msg) {
+        Bundle data = msg.getExtras();
+        int check = data.getInt("Restart");
+        if (check == 100) {
+
+            String[] columns = {"value", " concept_id"};
+            String orderBy = "visit_id";
+            String visitSelection = "patient_id = ? AND visit_id = ?";
+            String[] visitArgs = {patientID, visitID};
+            Cursor visitCursor = db.query("obs", columns, visitSelection, visitArgs, null, null, orderBy);
+            if (visitCursor.moveToFirst()) {
+                do {
+                    int dbConceptID = visitCursor.getInt(visitCursor.getColumnIndex("concept_id"));
+                    String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                    parseData(dbConceptID, dbValue);
+                } while (visitCursor.moveToNext());
+            }
+            visitCursor.close();
+        } else if (check == 200) {
+            addDownloadButton();
+        }
+    }
+
+    private void addDownloadButton() {
+        if (downloadButton == null) {
+            downloadButton = new Button(VisitSummaryActivity.this);
+            downloadButton.setLayoutParams(new LinearLayoutCompat.LayoutParams(
+                    LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+            downloadButton.setText(R.string.visit_summary_button_download);
+
+            downloadButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar.make(view, "Downloading from doctor", Snackbar.LENGTH_LONG).show();
+                    Intent startDownload = new Intent(VisitSummaryActivity.this, PrescriptionDownloadService.class);
+                    startDownload.putExtra("patientID", patientID);
+                    startDownload.putExtra("visitID", visitID);
+                    startDownload.putExtra("name", patientName);
+                    startDownload.putExtra("visitUUID", visitUUID);
+                    startService(startDownload);
+
+                    //  retrieveOpenMRS(view);
+                }
+            });
+            mLayout.addView(downloadButton, mLayout.getChildCount());
+        }
+
+    }
 }

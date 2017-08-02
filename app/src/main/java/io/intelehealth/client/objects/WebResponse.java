@@ -11,6 +11,7 @@ public class WebResponse {
 
     int responseCode = 1000;
     String responseString = "";
+    String responseObject="";
 
     public int getResponseCode() {
         return responseCode;
@@ -26,5 +27,13 @@ public class WebResponse {
 
     public void setResponseString(String responseString) {
         this.responseString = responseString;
+    }
+
+    public String getResponseObject() {
+        return responseObject;
+    }
+
+    public void setResponseObject(String responseObject) {
+        this.responseObject = responseObject;
     }
 }

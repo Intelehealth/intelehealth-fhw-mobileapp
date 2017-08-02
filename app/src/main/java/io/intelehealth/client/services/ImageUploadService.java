@@ -9,14 +9,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.ParseException;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.parse.Parse;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.SaveCallback;
@@ -31,6 +29,9 @@ import io.intelehealth.client.database.DelayedJobQueueProvider;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.utilities.HelperMethods;
 
+import static io.intelehealth.client.services.ClientService.STATUS_SYNC_IN_PROGRESS;
+import static io.intelehealth.client.services.ClientService.STATUS_SYNC_STOPPED;
+
 /**
  * Created by harshish on 28/6/17.
  */
@@ -41,20 +42,24 @@ public class ImageUploadService extends IntentService {
      *
      * @param name Used to name the worker thread, important only for debugging.
      */
-
-    private static final String LOG_TAG = ImageUploadService.class.getSimpleName();
-    NotificationManager mNotifyManager;
-    public int mId = 2;
-    NotificationCompat.Builder mBuilder;
-    private String patientId, visitId;
-
-    public ImageUploadService() {
-        super(LOG_TAG);
-    }
-
     public ImageUploadService(String name) {
         super(name);
     }
+
+    public ImageUploadService(){
+        super(TAG);
+    }
+
+    private static final String TAG = ImageUploadService.class.getSimpleName();
+
+    private static final String LOG_TAG = ImageUploadService.class.getSimpleName();
+    NotificationManager mNotifyManager;
+    public int mId = 3;
+    NotificationCompat.Builder mBuilder;
+    private String patientId, visitId,patientUUID,visitUUID;
+
+    int queueId;
+
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
@@ -64,12 +69,15 @@ public class ImageUploadService extends IntentService {
         Log.i(LOG_TAG, "Running");
         patientId = intent.getStringExtra("patientID");
         visitId = intent.getStringExtra("visitID");
+        visitUUID = intent.getStringExtra("visitUUID");
+        patientUUID = intent.getStringExtra("patientUUID");
 
-        Parse.initialize(new Parse.Configuration.Builder(this)
-                .applicationId(HelperMethods.IMAGE_APP_ID)
-                .server(HelperMethods.IMAGE_SERVER_URL)
-                .build()
-        );
+        if (!intent.hasExtra("queueId")) {
+            int id = addJobToQueue(intent);
+            intent.putExtra("queueId", id);
+        }
+
+        queueId = intent.getIntExtra("queueId", -1);
 
         String query = "SELECT image_path FROM image_records WHERE patient_id = ? AND visit_id = ?";
         LocalRecordsDatabaseHelper databaseHelper = new LocalRecordsDatabaseHelper(this);
@@ -82,6 +90,7 @@ public class ImageUploadService extends IntentService {
         }
         cursor.close();
         localdb.close();
+        queueSyncStart(queueId);
         for (String imagePath : imagePaths) {
             File file = new File(imagePath);
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
@@ -102,10 +111,10 @@ public class ImageUploadService extends IntentService {
                         .setContentTitle("Image Upload")
                         .setContentText(newText);
                 mNotifyManager.notify(mId, mBuilder.build());
-                addJobToQueue(intent, imagePath);
                 Log.d(LOG_TAG, "Person Image Posting Unsuccessful");
             }
         }
+        queueSyncStop(queueId);
     }
 
 
@@ -116,8 +125,8 @@ public class ImageUploadService extends IntentService {
         ParseFile file = new ParseFile(imageName, image);
         ParseObject imgupload = new ParseObject(classname);
         imgupload.put("Image", file);
-        imgupload.put("PatientID", patientId);
-        imgupload.put("VisitID", visitId);
+        imgupload.put("PatientID", patientUUID);
+        imgupload.put("VisitID", visitUUID);
         imgupload.saveInBackground(new SaveCallback() {
             @Override
             public void done(com.parse.ParseException e) {
@@ -127,10 +136,7 @@ public class ImageUploadService extends IntentService {
                             .setContentTitle("Image Upload")
                             .setContentText(newText);
                     mNotifyManager.notify(mId, mBuilder.build());
-                    if (intent.hasExtra("queueId")) {
-                        int queueId = intent.getIntExtra("queueId", -1);
                         removeJobFromQueue(queueId);
-                    }
                     deleteImageFromDatabase(imagePath);
                 } else {
                     String newText = "Failed to Post Images.";
@@ -138,7 +144,6 @@ public class ImageUploadService extends IntentService {
                             .setContentTitle("Image Upload")
                             .setContentText(newText);
                     mNotifyManager.notify(mId, mBuilder.build());
-                    addJobToQueue(intent, imagePath);
                 }
             }
         });
@@ -153,18 +158,28 @@ public class ImageUploadService extends IntentService {
                 "image_path=" + "'" + imagePath + "'");
     }
 
-    private void addJobToQueue(Intent intent, String imagePath) {
-        if (!intent.hasExtra("queueId")) {
-            Log.d(LOG_TAG, "Adding to Queue");
-            // Add a new Delayed Job record
-            ContentValues values = new ContentValues();
-            values.put(DelayedJobQueueProvider.JOB_TYPE, "photoUpload");
-            values.put(DelayedJobQueueProvider.VISIT_ID, intent.getStringExtra("visitID"));
-            values.put(DelayedJobQueueProvider.JOB_PRIORITY, 1);
-            values.put(DelayedJobQueueProvider.JOB_REQUEST_CODE, 0);
-            values.put(DelayedJobQueueProvider.PATIENT_ID, intent.getStringExtra("patientID"));
-            values.put(DelayedJobQueueProvider.DATA_RESPONSE, imagePath);
-        }
+    private int addJobToQueue(Intent intent) {
+        Log.d(LOG_TAG, "Adding to Queue");
+        // Add a new Delayed Job record
+        ContentValues values = new ContentValues();
+        values.put(DelayedJobQueueProvider.JOB_TYPE, "imageUpload");
+        values.put(DelayedJobQueueProvider.VISIT_ID, intent.getStringExtra("visitID"));
+        values.put(DelayedJobQueueProvider.VISIT_UUID, intent.getStringExtra("visitUUID"));
+        values.put(DelayedJobQueueProvider.JOB_PRIORITY, 1);
+        values.put(DelayedJobQueueProvider.JOB_REQUEST_CODE, 0);
+        values.put(DelayedJobQueueProvider.PATIENT_ID, intent.getStringExtra("patientID"));
+        values.put(DelayedJobQueueProvider.DATA_RESPONSE, intent.getStringExtra("patientUUID"));
+        values.put(DelayedJobQueueProvider.PATIENT_NAME, intent.getStringExtra("patientUUID"));
+        values.put(DelayedJobQueueProvider.PATIENT_NAME, intent.getStringExtra("name"));
+
+        Uri uri = getContentResolver().insert(
+                DelayedJobQueueProvider.CONTENT_URI, values);
+
+
+        Toast.makeText(getBaseContext(),
+                uri.toString(), Toast.LENGTH_LONG).show();
+
+        return Integer.valueOf(uri.getLastPathSegment());
     }
 
     private void removeJobFromQueue(int queueId) {
@@ -180,6 +195,28 @@ public class ImageUploadService extends IntentService {
             }
         }
 
+    }
+
+    private void queueSyncStart(int queueId) {
+        ContentValues values = new ContentValues();
+        values.put(DelayedJobQueueProvider.SYNC_STATUS, STATUS_SYNC_IN_PROGRESS);
+        String url = DelayedJobQueueProvider.URL + "/" + queueId;
+        Uri uri = Uri.parse(url);
+        getContentResolver().update(uri, values, null, null);
+    }
+
+    private void queueSyncStop(int queueId) {
+        ContentValues values = new ContentValues();
+        values.put(DelayedJobQueueProvider.SYNC_STATUS, STATUS_SYNC_STOPPED);
+        String url = DelayedJobQueueProvider.URL + "/" + queueId;
+        Uri uri = Uri.parse(url);
+        int result = getContentResolver().update(uri, values, null, null);
+    }
+
+    @Override
+    public void onDestroy() {
+        queueSyncStop(queueId);
+        super.onDestroy();
     }
 
 }

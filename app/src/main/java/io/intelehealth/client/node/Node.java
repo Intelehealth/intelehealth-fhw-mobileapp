@@ -467,6 +467,23 @@ public class Node implements Serializable {
         listView.setClickable(true);
         listView.setAdapter(adapter);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                node.getOption(position).toggleSelected();
+                adapter.notifyDataSetChanged();
+                if (node.getOption(position).getInputType() != null) {
+                    Log.d(TAG, "onItemClick:1");
+                    subHandleQuestion(node.getOption(position), context, adapter, imagePath, imageName);
+                }
+
+                if (!node.getOption(position).isTerminal()) {
+                    Log.d(TAG, "onItemClick:2");
+                    subLevelQuestion(node.getOption(position), context, callingAdapter, imagePath, imageName);
+                }
+            }
+        });
+
         subQuestion.setView(listView);
         subQuestion.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
@@ -488,26 +505,6 @@ public class Node implements Serializable {
         });
 
         subQuestion.setView(convertView);
-        final AlertDialog alertDialog = subQuestion.show();
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                node.getOption(position).toggleSelected();
-                adapter.notifyDataSetChanged();
-                if (node.getOption(position).getInputType() != null) {
-                    Log.d(TAG, "onItemClick:1");
-                    alertDialog.dismiss();
-                    subHandleQuestion(node.getOption(position), context, adapter, imagePath, imageName);
-                }
-
-                if (!node.getOption(position).isTerminal()) {
-                    Log.d(TAG, "onItemClick:2");
-                    alertDialog.dismiss();
-                    subLevelQuestion(node.getOption(position), context, callingAdapter, imagePath, imageName);
-                }
-            }
-        });
 
     }
 

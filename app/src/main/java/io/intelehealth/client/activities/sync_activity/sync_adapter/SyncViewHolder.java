@@ -63,11 +63,6 @@ public class SyncViewHolder extends RecyclerView.ViewHolder {
                         .getString(R.string.sync_in_progress));
                 break;
             }
-            case ClientService.STATUS_SYNC_COMPLETE: {
-                getIndicatorTextView().setText(getRootView().getContext()
-                        .getString(R.string.sync_complete));
-                break;
-            }
             default: {
                 getIndicatorTextView().setText(getRootView().getContext().
                         getString(R.string.sync_error));

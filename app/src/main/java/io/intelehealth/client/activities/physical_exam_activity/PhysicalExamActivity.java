@@ -281,10 +281,13 @@ public class PhysicalExamActivity extends AppCompatActivity {
                         imageView.setMinimumWidth(500);
                     } catch (IOException ex) {
                         ex.printStackTrace();
+                        imageView.setVisibility(View.GONE);
                     }
                 } else {
                     imageView.setVisibility(View.GONE);
                 }
+            }else {
+                imageView.setVisibility(View.GONE);
             }
 
 

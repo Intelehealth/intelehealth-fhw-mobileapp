@@ -133,6 +133,7 @@ public class HomeActivity extends AppCompatActivity {
                  return true;
 
             case R.id.logoutOption:
+                manageBackup();
                 logout();
                 return true;
             default:

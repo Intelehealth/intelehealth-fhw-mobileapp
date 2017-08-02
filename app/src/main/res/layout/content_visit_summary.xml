@@ -511,6 +511,261 @@
 
         </android.support.v7.widget.CardView>
 
+        <!-- Diagnosis contains a TableView-->
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/cardView_diagnosis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/padding_card"
+            android:layout_marginTop="@dimen/padding_card"
+            card_view:cardCornerRadius="@dimen/card_corner_radius"
+            card_view:cardElevation="2dp"
+            card_view:cardUseCompatPadding="true"
+            card_view:contentPadding="@dimen/padding_card"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textView_heading_diagnosis"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:text="@string/visit_summary_diagnosis"
+                    android:textSize="@dimen/card_title_text_size" />
+
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textView_heading_diagnosis">
+
+                    <!--Diagnosis-->
+                    <TableRow android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textView_content_diagnosis"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingTop="@dimen/padding_card"
+                            android:text="@string/visit_summary_height_heading"
+                            android:textSize="@dimen/card_content_text_size" />
+
+                    </TableRow>
+
+                </TableLayout>
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+        <!-- Prescription contains a TableView-->
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/cardView_rx"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/padding_card"
+            android:layout_marginTop="@dimen/padding_card"
+            card_view:cardCornerRadius="@dimen/card_corner_radius"
+            card_view:cardElevation="2dp"
+            card_view:cardUseCompatPadding="true"
+            card_view:contentPadding="@dimen/padding_card"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textView_heading_rx"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:text="@string/visit_summary_rx"
+                    android:textSize="@dimen/card_title_text_size" />
+
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textView_heading_rx">
+
+                    <!--Prescription-->
+                    <TableRow android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textView_content_rx"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingTop="@dimen/padding_card"
+                            android:text="@string/visit_summary_height_heading"
+                            android:textSize="@dimen/card_content_text_size" />
+
+                    </TableRow>
+
+                </TableLayout>
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+        <!-- Medical Advice contains a TableView-->
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/cardView_medical_advice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/padding_card"
+            android:layout_marginTop="@dimen/padding_card"
+            card_view:cardCornerRadius="@dimen/card_corner_radius"
+            card_view:cardElevation="2dp"
+            card_view:cardUseCompatPadding="true"
+            card_view:contentPadding="@dimen/padding_card"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textView_heading_medical_advice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:text="@string/visit_summary_advice"
+                    android:textSize="@dimen/card_title_text_size" />
+
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textView_heading_medical_advice">
+
+                    <!--Medical Advice-->
+                    <TableRow android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textView_content_medical_advice"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingTop="@dimen/padding_card"
+                            android:text="@string/visit_summary_height_heading"
+                            android:textSize="@dimen/card_content_text_size" />
+
+                    </TableRow>
+
+                </TableLayout>
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+        <!-- Requested Tests contains a TableView-->
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/cardView_tests"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/padding_card"
+            android:layout_marginTop="@dimen/padding_card"
+            card_view:cardCornerRadius="@dimen/card_corner_radius"
+            card_view:cardElevation="2dp"
+            card_view:cardUseCompatPadding="true"
+            card_view:contentPadding="@dimen/padding_card"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textView_heading_tests"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:text="@string/visit_summary_tests_prescribed"
+                    android:textSize="@dimen/card_title_text_size" />
+
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textView_heading_tests">
+
+                    <!--Requsted Tests-->
+                    <TableRow android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textView_content_tests"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingTop="@dimen/padding_card"
+                            android:text="@string/visit_summary_height_heading"
+                            android:textSize="@dimen/card_content_text_size" />
+
+                    </TableRow>
+
+                </TableLayout>
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+        <!-- Additional Comments contains a TableView-->
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/cardView_additional_comments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/padding_card"
+            android:layout_marginTop="@dimen/padding_card"
+            card_view:cardCornerRadius="@dimen/card_corner_radius"
+            card_view:cardElevation="2dp"
+            card_view:cardUseCompatPadding="true"
+            card_view:contentPadding="@dimen/padding_card"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textView_heading_additional_comments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:text="@string/visit_summary_additional_comments"
+                    android:textSize="@dimen/card_title_text_size" />
+
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textView_heading_additional_comments">
+
+                    <!--Additional Comments-->
+                    <TableRow android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textView_content_additional_comments"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingTop="@dimen/padding_card"
+                            android:text="@string/visit_summary_height_heading"
+                            android:textSize="@dimen/card_content_text_size" />
+
+                    </TableRow>
+
+                </TableLayout>
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
         <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:id="@+id/chw_and_doctor_details"
             android:layout_width="match_parent"
@@ -558,12 +813,13 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/title_health_worker"
                     android:paddingTop="@dimen/padding_card_title_text"
-                    android:text="Mr. John Doe"
+                    android:text=""
                     android:textSize="18sp" />
 
             </RelativeLayout>
 
         </android.support.v7.widget.CardView>
+
 
         <!--Previous Reports Card contains a list of links to image files of the previous reports-->
         <!--<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"-->

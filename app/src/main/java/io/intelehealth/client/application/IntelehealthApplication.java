@@ -48,6 +48,12 @@ public class IntelehealthApplication extends Application {
         // The following line triggers the initialization of ACRA
         this.mContext = getApplicationContext();
         ACRA.init(this);
+
+        Parse.initialize(new Parse.Configuration.Builder(this)
+                .applicationId(HelperMethods.IMAGE_APP_ID)
+                .server(HelperMethods.IMAGE_SERVER_URL)
+                .build()
+        );
     }
 
     public static Context getAppContext() {

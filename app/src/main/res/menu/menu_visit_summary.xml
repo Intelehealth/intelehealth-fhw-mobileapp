@@ -16,13 +16,20 @@
         android:id="@+id/summary_endVisit"
         android:orderInCategory="300"
         app:showAsAction="never"
-        android:title="End Visit">
+        android:title="@string/action_end_visit">
+
+    </item>
+    <item
+        android:id="@+id/summary_sms"
+        android:orderInCategory="400"
+        app:showAsAction="never"
+        android:title="@string/action_sms">
 
     </item>
 
     <item
         android:id="@+id/summary_home"
-        android:orderInCategory="400"
+        android:orderInCategory="500"
         app:showAsAction="never"
         android:title="@string/action_home">
 

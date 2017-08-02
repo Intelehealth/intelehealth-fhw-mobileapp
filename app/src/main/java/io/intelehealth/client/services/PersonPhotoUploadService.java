@@ -2,31 +2,35 @@ package io.intelehealth.client.services;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
-import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.ParseException;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
-import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.intelehealth.client.R;
-import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.database.DelayedJobQueueProvider;
-import io.intelehealth.client.objects.WebResponse;
+import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
+
+import static io.intelehealth.client.services.ClientService.STATUS_SYNC_IN_PROGRESS;
+import static io.intelehealth.client.services.ClientService.STATUS_SYNC_STOPPED;
 
 /**
  * Created by Dexter Barretto on 6/9/17.
@@ -42,19 +46,26 @@ public class PersonPhotoUploadService extends IntentService {
 
     private Bitmap bitmap;
 
-    public PersonPhotoUploadService() {super("PersonPhotoUploadService");}
+
     public PersonPhotoUploadService(String name) {
         super(name);
     }
 
-    private static final String LOG_TAG = PersonPhotoUploadService.class.getSimpleName();
+    public PersonPhotoUploadService(){
+        super(TAG);
+    }
 
     NotificationManager mNotifyManager;
     NotificationCompat.Builder mBuilder;
     public int mId = 2;
-    String patientId, visitId;
+    String patientId;
+
+    Integer queueId = null;
 
     String imageName;
+    String patientUUID;
+
+    private static final String TAG = PersonPhotoUploadService.class.getSimpleName();
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
@@ -62,113 +73,138 @@ public class PersonPhotoUploadService extends IntentService {
         mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mBuilder = new NotificationCompat.Builder(this);
 
-        patientId = intent.getStringExtra("patientID");
-        String person = intent.getStringExtra("person");
-        visitId = intent.getStringExtra("visitID");
-
-        String base64EncodedImage = null;
-
-        String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-        String filePath = baseDir + File.separator + "Patient_Images" + File.separator + patientId + File.separator +
-                patientId + ".jpg";
-
-        File profile_image = new File(filePath);
-        imageName = profile_image.getName();
-        imageName = imageName.replace('%', '_');
-
-        if (profile_image != null) {
-            bitmap = BitmapFactory.decodeFile(filePath);
-
-           // uploadImage(classname);
-
-            byte[] byteArray = bitmapToByteArray(bitmap);
-            base64EncodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        if (!intent.hasExtra("queueId")) {
+            int id = addJobToQueue(intent);
+            intent.putExtra("queueId", id);
         }
 
-        if (bitmap!=null){//base64EncodedImage != null) {
-            String photoString =
-                    String.format("{\"person\":\"%s\"," +
-                                    "\"base64EncodedImage\":\"%s\"}",
-                            person,
-                            base64EncodedImage);
+        Log.d(TAG, "Queue id: " + intent.getIntExtra("queueId", -1));
+        queueId = intent.getIntExtra("queueId", -1);
+        patientUUID=intent.getStringExtra("patientUUID");
+        patientId = intent.getStringExtra("patientID");
 
-            WebResponse responsePersonImage;
-            responsePersonImage = HelperMethods.postCommand("personimage", photoString, getApplicationContext());
+        String query = "SELECT patient_photo FROM patient WHERE _id = ?";
+        LocalRecordsDatabaseHelper databaseHelper = new LocalRecordsDatabaseHelper(this);
+        SQLiteDatabase localdb = databaseHelper.getWritableDatabase();
+        Cursor cursor = localdb.rawQuery(query, new String[]{patientId});
+        List<String> imagePaths = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            imagePaths.add(cursor.getString(0));
+            Log.i(TAG + ">", cursor.getString(0));
+        }
+        cursor.close();
+        localdb.close();
+        if(!imagePaths.isEmpty()) {
+            String filePath = imagePaths.get(0);
 
-            if (responsePersonImage != null && responsePersonImage.getResponseCode() != 200) {
-                String newText = "Person Image posting unsuccessful";
-                mBuilder.setContentText(newText)
-                        .setContentTitle("Profile Image Upload")
-                        .setSmallIcon(R.mipmap.ic_launcher);
-                mNotifyManager.notify(mId, mBuilder.build());
-                addJobToQueue(intent);
-                Log.d(LOG_TAG, "Person Image Posting Unsuccessful");
+            File profile_image = new File(filePath);
+            imageName = profile_image.getName();
+            imageName = imageName.replace('%', '_');
 
-            } else if (responsePersonImage == null) {
-                addJobToQueue(intent);
-                Log.d(LOG_TAG, "Person Image Posting unsuccessful");
-
-            } else {
-                uploadImage(patientId + ".jpg");
-                String newText = "Person Image Posted successfully.";
-                mBuilder.setContentText(newText)
-                        .setContentTitle("Profile Image Upload")
-                        .setSmallIcon(R.mipmap.ic_launcher);
-                mNotifyManager.notify(mId, mBuilder.build());
-                if (intent.hasExtra("queueId")) {
-                    int queueId = intent.getIntExtra("queueId", -1);
-                    removeJobFromQueue(queueId);
-                }
-
+            if (profile_image != null) {
+                bitmap = BitmapFactory.decodeFile(filePath);
             }
 
+            if (bitmap != null) {
+                uploadImage("Profile", bitmap, imageName, intent);
+            }
         }
     }
 
-    public void uploadImage(String imageName) {
+    public void uploadImage(String classname, Bitmap bitmap, final String imageName, final Intent intent) {
+        queueSyncStart(queueId);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         byte[] image = stream.toByteArray();
         ParseFile file = new ParseFile(imageName, image);
-        ParseObject imgupload = new ParseObject("Profile");
-        imgupload.put("Image",file);
-        imgupload.put("PatientID", patientId);
-        imgupload.saveInBackground();
+        ParseObject imgupload = new ParseObject(classname);
+        imgupload.put("Image", file);
+        imgupload.put("PatientID", patientUUID);
+        imgupload.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(com.parse.ParseException e) {
+                if (e == null) {
+                    String newText = "Person Image Posted successfully.";
+                    mBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                            .setContentTitle("Image Upload")
+                            .setContentText(newText);
+                    mNotifyManager.notify(mId, mBuilder.build());
+                    if (intent.hasExtra("queueId")) {
+                        int queueId = intent.getIntExtra("queueId", -1);
+                        removeJobFromQueue(queueId);
+                    }
+                } else {
+                    String newText = "Failed to Post Images.";
+                    mBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                            .setContentTitle("Image Upload")
+                            .setContentText(newText);
+                    mNotifyManager.notify(mId, mBuilder.build());
+
+                }
+            }
+        });
+        queueSyncStop(queueId);
     }
 
-    private byte[] bitmapToByteArray(Bitmap image) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 0, byteArrayOutputStream);
-        return byteArrayOutputStream.toByteArray();
-    }
+
+    private int addJobToQueue(Intent intent) {
+
+        Log.d(TAG, "Adding to Queue");
+        // Add a new Delayed Job record
+        ContentValues values = new ContentValues();
+        values.put(DelayedJobQueueProvider.JOB_TYPE, "photoUpload");
+        values.put(DelayedJobQueueProvider.JOB_PRIORITY, 1);
+        values.put(DelayedJobQueueProvider.JOB_REQUEST_CODE, 0);
+        values.put(DelayedJobQueueProvider.PATIENT_ID, intent.getStringExtra("patientID"));
+        values.put(DelayedJobQueueProvider.PATIENT_NAME, intent.getStringExtra("name"));
+        values.put(DelayedJobQueueProvider.DATA_RESPONSE, intent.getStringExtra("patientUUID"));
+        values.put(DelayedJobQueueProvider.SYNC_STATUS, 0);
+
+        Uri uri = getContentResolver().insert(
+                DelayedJobQueueProvider.CONTENT_URI, values);
 
 
-    private void addJobToQueue(Intent intent) {
-        if (!intent.hasExtra("queueId")) {
-            Log.d(LOG_TAG, "Adding to Queue");
-            // Add a new Delayed Job record
-            ContentValues values = new ContentValues();
-            values.put(DelayedJobQueueProvider.JOB_TYPE, "photoUpload");
-            values.put(DelayedJobQueueProvider.PATIENT_NAME, intent.getStringExtra("name"));
-            values.put(DelayedJobQueueProvider.JOB_PRIORITY, 1);
-            values.put(DelayedJobQueueProvider.JOB_REQUEST_CODE, 0);
-            values.put(DelayedJobQueueProvider.PATIENT_ID, intent.getStringExtra("patientID"));
-            values.put(DelayedJobQueueProvider.DATA_RESPONSE, intent.getStringExtra("person"));
-        }
+        Toast.makeText(getBaseContext(),
+                uri.toString(), Toast.LENGTH_LONG).show();
+
+        return Integer.valueOf(uri.getLastPathSegment());
+
     }
 
     private void removeJobFromQueue(int queueId) {
-        Log.d(LOG_TAG, "Removing from Queue");
+        Log.d(TAG, "Removing from Queue");
         if (queueId > -1) {
             String url = DelayedJobQueueProvider.URL + "/" + queueId;
             Uri uri = Uri.parse(url);
             int result = getContentResolver().delete(uri, null, null);
             if (result > 0) {
-                Log.i(LOG_TAG, result + " row deleted");
+                Log.i(TAG, result + " row deleted");
             } else {
-                Log.e(LOG_TAG, "Database error while deleting row!");
+                Log.e(TAG, "Database error while deleting row!");
             }
         }
 
+    }
+
+    private void queueSyncStart(int queueId) {
+        ContentValues values = new ContentValues();
+        values.put(DelayedJobQueueProvider.SYNC_STATUS, STATUS_SYNC_IN_PROGRESS);
+        String url = DelayedJobQueueProvider.URL + "/" + queueId;
+        Uri uri = Uri.parse(url);
+        getContentResolver().update(uri, values, null, null);
+    }
+
+    private void queueSyncStop(int queueId) {
+        ContentValues values = new ContentValues();
+        values.put(DelayedJobQueueProvider.SYNC_STATUS, STATUS_SYNC_STOPPED);
+        String url = DelayedJobQueueProvider.URL + "/" + queueId;
+        Uri uri = Uri.parse(url);
+        int result = getContentResolver().update(uri, values, null, null);
+    }
+
+    @Override
+    public void onDestroy() {
+        queueSyncStop(queueId);
+        super.onDestroy();
     }
 }

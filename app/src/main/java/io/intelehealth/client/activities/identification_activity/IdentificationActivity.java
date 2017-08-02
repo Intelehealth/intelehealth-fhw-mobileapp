@@ -20,8 +20,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
+import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -190,9 +192,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
         if (patientID_edit != null) {
-
             // setting country accordig database
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
+        }else{
+            mCountry.setSelection(countryAdapter.getPosition("India"));
         }
 
         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.state_error, android.R.layout.simple_spinner_item);
@@ -213,8 +216,9 @@ public class IdentificationActivity extends AppCompatActivity {
                         // setting state according database when user clicks edit details
 
                         if (patientID_edit != null) {
-
                             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getStateProvince())));
+                        }else{
+                            mState.setSelection(stateAdapter.getPosition("Odisha"));
                         }
 
                     } else if (country.matches("United States")) {
@@ -329,12 +333,35 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
 
+        mAge.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.toString().trim().isEmpty()) {
+                    Calendar calendar = Calendar.getInstance();
+                    int curYear = calendar.get(Calendar.YEAR);
+                    int birthYear = curYear - Integer.valueOf(s.toString().trim());
+                    String calcDOB = String.valueOf(birthYear) + "-01-01";
+                    mDOB.setText(calcDOB);
+                }
+            }
+        });
+
         /*
         User has to have option where they can enter the age.
         Some patients do not actually know their DOB, but they remember their age.
         If only age is provided, then the DOB is calculated as January 1, the year being current year minus their age.
          */
-        mAge.setOnClickListener(new View.OnClickListener() {
+        /*mAge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -380,7 +407,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
                 textInput.show();
             }
-        });
+        });*/
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         assert fab != null;
@@ -761,6 +788,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientEntries1.put("gender", patient1.getGender());
             patientEntries1.put("sdw", patient1.getSdw());
             patientEntries1.put("occupation", patient1.getOccupation());
+            if(mCurrentPhotoPath!=null) patientEntries1.put("patient_photo",mCurrentPhotoPath);
 
         }
 

@@ -30,7 +30,6 @@ import android.webkit.URLUtil;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -38,13 +37,6 @@ import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.parse.FindCallback;
-import com.parse.GetDataCallback;
-import com.parse.Parse;
-import com.parse.ParseException;
-import com.parse.ParseFile;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -64,14 +56,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.intelehealth.client.R;
-import io.intelehealth.client.activities.setting_activity.SettingsActivity;
 import io.intelehealth.client.activities.home_activity.HomeActivity;
-import io.intelehealth.client.objects.WebResponse;
 import io.intelehealth.client.activities.login_activity.OfflineLogin;
+import io.intelehealth.client.activities.setting_activity.SettingsActivity;
 import io.intelehealth.client.api.retrofit.RestApi;
 import io.intelehealth.client.api.retrofit.ServiceGenerator;
-import io.intelehealth.client.models.Results;
 import io.intelehealth.client.models.Location;
+import io.intelehealth.client.models.Results;
+import io.intelehealth.client.objects.WebResponse;
 import io.intelehealth.client.utilities.HelperMethods;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -88,8 +80,6 @@ public class SetupActivity extends AppCompatActivity {
 
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
     protected AccountManager manager;
     private EditText mUrlField;
     private EditText mPrefixField;
@@ -153,8 +143,6 @@ public class SetupActivity extends AppCompatActivity {
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
 
         mUrlField = (EditText) findViewById(R.id.editText_URL);
         mPrefixField = (EditText) findViewById(R.id.editText_prefix);
@@ -461,7 +449,7 @@ public class SetupActivity extends AppCompatActivity {
                         return 201;
                     }
                 }
-            }    catch (UnknownHostException e) {
+            } catch (UnknownHostException e) {
                 e.printStackTrace();
                 return 201;
             } catch (IOException e) {

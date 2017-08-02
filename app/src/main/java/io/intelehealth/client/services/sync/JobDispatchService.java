@@ -10,6 +10,9 @@ import com.firebase.jobdispatcher.JobService;
 
 import io.intelehealth.client.database.DelayedJobQueueProvider;
 import io.intelehealth.client.services.ClientService;
+import io.intelehealth.client.services.ImageUploadService;
+import io.intelehealth.client.services.PersonPhotoUploadService;
+import io.intelehealth.client.services.PrescriptionDownloadService;
 
 /**
  * Start {@link ClientService} when online to upload the queued data.
@@ -26,68 +29,85 @@ public class JobDispatchService extends JobService {
     @Override
     public boolean onStartJob(JobParameters job) {
 
-        String[] DELAYED_JOBS_PROJECTION = new String[]{DelayedJobQueueProvider._ID,
-                DelayedJobQueueProvider.JOB_TYPE,
-                DelayedJobQueueProvider.JOB_PRIORITY,
-                DelayedJobQueueProvider.JOB_REQUEST_CODE,
-                DelayedJobQueueProvider.PATIENT_NAME,
-                DelayedJobQueueProvider.PATIENT_ID,
-                DelayedJobQueueProvider.VISIT_ID,
-                DelayedJobQueueProvider.VISIT_UUID};
-
         Uri jobs_uri = Uri.parse(URL);
-        Cursor c = getContentResolver().query(jobs_uri, null, null, null, null);
+        Cursor cursor = getContentResolver().query(jobs_uri, null, null, null, null);
+        if ((cursor != null) && (cursor.getCount() > 0)) {
+            if (cursor.moveToFirst()) {
+                do {
+                    String service_call = cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.JOB_TYPE));
+                    Intent serviceIntent = null;
 
-        if (c.moveToFirst()) {
-            do {
-                String service_call = c.getString(c.getColumnIndex(DelayedJobQueueProvider.JOB_TYPE));
-                Intent serviceIntent = new Intent(this, ClientService.class);
-                serviceIntent.putExtra("queueId", c.getInt(c.getColumnIndex(DelayedJobQueueProvider._ID)));
-                switch (service_call) {
-                    case "patient": {
-                        serviceIntent.putExtra("serviceCall", service_call);
-                        serviceIntent.putExtra("patientID", c.getString(c.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
-                        serviceIntent.putExtra("name", c.getString(c.getColumnIndex(DelayedJobQueueProvider.PATIENT_NAME)));
-                        serviceIntent.putExtra("status", c.getInt(c.getColumnIndex(DelayedJobQueueProvider.STATUS)));
-                        serviceIntent.putExtra("personResponse", c.getInt(c.getColumnIndex(DelayedJobQueueProvider.DATA_RESPONSE)));
-                        break;
+                    int sync_status = cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider.SYNC_STATUS));
+                    switch (service_call) {
+                        case "patient": {
+                            serviceIntent = new Intent(this, ClientService.class);
+                            serviceIntent.putExtra("serviceCall", service_call);
+                            serviceIntent.putExtra("patientID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
+                            serviceIntent.putExtra("name", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_NAME)));
+                            serviceIntent.putExtra("status", cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider.STATUS)));
+                            serviceIntent.putExtra("personResponse", cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider.DATA_RESPONSE)));
+                            break;
+                        }
+                        case "visit": {
+                            serviceIntent = new Intent(this, ClientService.class);
+                            serviceIntent.putExtra("serviceCall", service_call);
+                            serviceIntent.putExtra("patientID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
+                            serviceIntent.putExtra("name", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_NAME)));
+                            serviceIntent.putExtra("visitID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.VISIT_ID)));
+                            serviceIntent.putExtra("status", cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider.STATUS)));
+                            serviceIntent.putExtra("visitResponse", cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider.DATA_RESPONSE)));
+                            break;
+                        }
+                        case "endVisit": {
+                            serviceIntent = new Intent(this, ClientService.class);
+                            serviceIntent.putExtra("serviceCall", service_call);
+                            serviceIntent.putExtra("patientID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
+                            serviceIntent.putExtra("name", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_NAME)));
+                            serviceIntent.putExtra("visitUUID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.VISIT_UUID)));
+                            break;
+                        }
+                        case "photoUpload": {
+                            serviceIntent = new Intent(this, PersonPhotoUploadService.class);
+                            serviceIntent.putExtra("serviceCall", service_call);
+                            serviceIntent.putExtra("patientID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
+                            serviceIntent.putExtra("name", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_NAME)));
+                            serviceIntent.putExtra("patientUUID", cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider.DATA_RESPONSE)));
+                            break;
+                        }
+                        case "imageUpload": {
+                            serviceIntent = new Intent(this, ImageUploadService.class);
+                            serviceIntent.putExtra("serviceCall", service_call);
+                            serviceIntent.putExtra("patientID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
+                            serviceIntent.putExtra("name", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_NAME)));
+                            serviceIntent.putExtra("visitUUID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.VISIT_UUID)));
+                            serviceIntent.putExtra("patientUUID", cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider.DATA_RESPONSE)));
+                            break;
+                        }
+                        case"prescriptionDownload":{
+                            serviceIntent = new Intent(this, PrescriptionDownloadService.class);
+                            serviceIntent.putExtra("serviceCall", service_call);
+                            serviceIntent.putExtra("patientID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
+                            serviceIntent.putExtra("visitID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.VISIT_ID)));
+                            serviceIntent.putExtra("name", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_NAME)));
+                            serviceIntent.putExtra("visitUUID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.VISIT_UUID)));
+                            break;
+                        }
+                        default:
+                            Log.e(LOG_TAG, "Does not match any Job Type");
                     }
-                    case "visit": {
-                        serviceIntent.putExtra("serviceCall", service_call);
-                        serviceIntent.putExtra("patientID", c.getString(c.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
-                        serviceIntent.putExtra("name", c.getString(c.getColumnIndex(DelayedJobQueueProvider.PATIENT_NAME)));
-                        serviceIntent.putExtra("visitID", c.getString(c.getColumnIndex(DelayedJobQueueProvider.VISIT_ID)));
-                        serviceIntent.putExtra("status", c.getInt(c.getColumnIndex(DelayedJobQueueProvider.STATUS)));
-                        serviceIntent.putExtra("visitResponse", c.getInt(c.getColumnIndex(DelayedJobQueueProvider.DATA_RESPONSE)));
-                        break;
+                    if (serviceIntent != null) {
+                        serviceIntent.putExtra("queueId", cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider._ID)));
+                        startService(serviceIntent);
                     }
-                    case "endVisit": {
-                        serviceIntent.putExtra("serviceCall", service_call);
-                        serviceIntent.putExtra("patientID", c.getString(c.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
-                        serviceIntent.putExtra("name", c.getString(c.getColumnIndex(DelayedJobQueueProvider.PATIENT_NAME)));
-                        serviceIntent.putExtra("visitUUID", c.getString(c.getColumnIndex(DelayedJobQueueProvider.VISIT_UUID)));
-                        break;
-                    }
-                    case "photoUpload": {
-                        serviceIntent.putExtra("serviceCall", service_call);
-                        serviceIntent.putExtra("patientID", c.getString(c.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
-                        serviceIntent.putExtra("name", c.getString(c.getColumnIndex(DelayedJobQueueProvider.PATIENT_NAME)));
-                        serviceIntent.putExtra("person", c.getInt(c.getColumnIndex(DelayedJobQueueProvider.DATA_RESPONSE)));
-                        break;
-                    }
-                    default:
-                        Log.e(LOG_TAG, "Does not match any Job Type");
-                }
-                startService(serviceIntent);
-            } while (c.moveToNext());
+                } while (cursor.moveToNext());
+            }
         }
-        c.close();
+        if((cursor != null)) cursor.close();
         return false; // Answers the question: "Is there still work going on?"
     }
 
     @Override
     public boolean onStopJob(JobParameters job) {
-
         return false; // Answers the question: "Should this job be retried?"
     }
 }
