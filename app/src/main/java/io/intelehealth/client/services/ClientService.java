@@ -642,13 +642,14 @@ public class ClientService extends IntentService {
         }
         visitCursor.close();
 
-        String[] columnsToReturn = {"start_datetime"};
+        String[] columnsToReturn = {"start_datetime","lat_long"};
         String visitIDorderBy = "start_datetime";
         String visitIDSelection = "_id = ?";
         String[] visitIDArgs = {visitID};
         final Cursor visitIDCursor = db.query("visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
         visitIDCursor.moveToLast();
         String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("start_datetime"));
+        String location=visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("lat_long"));
         visitIDCursor.close();
 
         boolean uploadStatus = false;
@@ -680,7 +681,7 @@ public class ClientService extends IntentService {
 
                 if (statusCode == STATUS_VISIT_NOT_CREATED) {
                     visitUUID =
-                            uploadVisitData(patient, startDateTime, visitID);
+                            uploadVisitData(patient, startDateTime, visitID,location);
                     ContentValues contentValuesVisit = new ContentValues();
                     contentValuesVisit.put("openmrs_visit_uuid", visitUUID);
                     String visitUpdateSelection = "start_datetime = ?";
@@ -719,7 +720,7 @@ public class ClientService extends IntentService {
             }
         } else {
             String visitUUID;
-            visitUUID = uploadVisitData(patient, startDateTime, visitID);
+            visitUUID = uploadVisitData(patient, startDateTime, visitID,location);
 
             ContentValues contentValuesVisit = new ContentValues();
             contentValuesVisit.put("openmrs_visit_uuid", visitUUID);
@@ -764,7 +765,7 @@ public class ClientService extends IntentService {
      * @param startDateTime Start datetime in string
      * @return responseVisit
      */
-    private String uploadVisitData(Patient patient, String startDateTime, String visitID) {
+    private String uploadVisitData(Patient patient, String startDateTime, String visitID,String geolocation) {
 
 
         //TODO: Location UUID needs to be found before doing these
@@ -772,8 +773,9 @@ public class ClientService extends IntentService {
                 String.format("{\"startDatetime\":\"%s\"," +
                                 "\"visitType\":\"Telemedicine\"," +
                                 "\"patient\":\"%s\"," +
+                                "\"attribute\":[{\"fab95a42-53cc-4db0-af7d-4f826b85435c\":\"%s\"}]," +
                                 "\"location\":\"%s\"}",
-                        startDateTime, patient.getOpenmrsId(), location_uuid);
+                        startDateTime, patient.getOpenmrsId(), geolocation,location_uuid);
         Log.d(TAG, "Visit String: " + visitString);
         WebResponse responseVisit;
         responseVisit = HelperMethods.postCommand("visit", visitString, getApplicationContext());

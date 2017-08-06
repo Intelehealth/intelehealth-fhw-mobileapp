@@ -47,6 +47,7 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             "visit_type_id integer(10)," +
             "visit_location_id integer(10) NOT NULL," +
             "visit_creator TEXT NOT NULL," +
+            "lat_long TEXT," +
             "openmrs_visit_uuid TEXT" +
             ")";
     public static final String CREATE_OBS = "CREATE TABLE IF NOT EXISTS obs (" +

@@ -57,10 +57,10 @@ dependencies {
     debugCompile "com.squareup.okhttp3:logging-interceptor:$rootProject.okHttpVersion"
 
     // glide library dependencies
-    
 
 
 
+    compile 'com.google.android.gms:play-services:10.2.4'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.github.bumptech.glide:glide:3.8.0'
     compile 'com.parse:parse-android:1.15.7'

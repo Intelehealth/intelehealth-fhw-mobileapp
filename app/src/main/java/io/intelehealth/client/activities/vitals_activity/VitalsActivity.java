@@ -33,6 +33,7 @@ import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActi
 import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.TableExam;
+import io.intelehealth.client.services.LocationService;
 import io.intelehealth.client.utilities.ConceptId;
 
 /**
@@ -75,7 +76,7 @@ public class VitalsActivity extends AppCompatActivity {
     SQLiteDatabase db;
 
     TableExam results = new TableExam();
-
+    LocationService locationService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -329,6 +330,8 @@ public class VitalsActivity extends AppCompatActivity {
         values.add(mTemperature);
         values.add(mSpo2);
 
+        locationService = new LocationService(this);
+
         // Check to see if values were inputted.
         for (int i = 0; i < values.size(); i++) {
             if (i == 0) {
@@ -536,7 +539,11 @@ public class VitalsActivity extends AppCompatActivity {
             intent.putExtra("name", patientName);
             intent.putExtra("tag", intentTag);
             intent.putStringArrayListExtra("exams", physicalExams);
+            if(locationService.canGetLocation())
             startActivity(intent);
+            else {
+                locationService.showSettingsAlert();
+            }
         }
     }
 
