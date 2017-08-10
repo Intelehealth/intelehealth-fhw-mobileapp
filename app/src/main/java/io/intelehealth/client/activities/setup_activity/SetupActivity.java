@@ -57,6 +57,7 @@ import java.util.List;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.home_activity.HomeActivity;
+import io.intelehealth.client.activities.login_activity.AdminPassword;
 import io.intelehealth.client.activities.login_activity.OfflineLogin;
 import io.intelehealth.client.activities.setting_activity.SettingsActivity;
 import io.intelehealth.client.api.retrofit.RestApi;
@@ -80,6 +81,7 @@ public class SetupActivity extends AppCompatActivity {
 
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
+    private EditText mAdminPasswordView;
     protected AccountManager manager;
     private EditText mUrlField;
     private EditText mPrefixField;
@@ -124,7 +126,9 @@ public class SetupActivity extends AppCompatActivity {
         });
 
         mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+        mAdminPasswordView = (EditText) findViewById(R.id.admin_password);
+        mAdminPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
@@ -268,10 +272,12 @@ public class SetupActivity extends AppCompatActivity {
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
+        mAdminPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
+        String admin_password = mAdminPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -280,6 +286,12 @@ public class SetupActivity extends AppCompatActivity {
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
+            cancel = true;
+        }
+
+        if (!TextUtils.isEmpty(admin_password) && !isPasswordValid(admin_password)) {
+            mAdminPasswordView.setError(getString(R.string.error_invalid_password));
+            focusView = mAdminPasswordView;
             cancel = true;
         }
 
@@ -312,7 +324,7 @@ public class SetupActivity extends AppCompatActivity {
                 Log.i(TAG, location.getDisplay());
                 String urlString = mUrlField.getText().toString();
                 String prefixString = mPrefixField.getText().toString();
-                mAuthTask = new TestSetup(urlString, prefixString, email, password, location);
+                mAuthTask = new TestSetup(urlString, prefixString, email, password, admin_password, location);
                 mAuthTask.execute();
                 Log.d(TAG, "attempting setup");
             }
@@ -341,18 +353,20 @@ public class SetupActivity extends AppCompatActivity {
         private final String PASSWORD;
         private final String CLEAN_URL;
         private final String PREFIX;
+        private final String ADMIN_PASSWORD;
         private String BASE_URL;
         private Location LOCATION;
 
         ProgressDialog progress;
 
 
-        TestSetup(String url, String prefix, String username, String password, Location location) {
+        TestSetup(String url, String prefix, String username, String password, String adminPassword, Location location) {
             CLEAN_URL = url;
             PREFIX = prefix;
             USERNAME = username;
             PASSWORD = password;
             LOCATION = location;
+            ADMIN_PASSWORD = adminPassword;
         }
 
         @Override
@@ -439,13 +453,48 @@ public class SetupActivity extends AppCompatActivity {
 
                         JsonObject userObject = responseObject.get("user").getAsJsonObject();
                         JsonObject personObject = userObject.get("person").getAsJsonObject();
+
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("sessionid", responseObject.get("sessionId").getAsString());
                         editor.putString("creatorid", userObject.get("uuid").getAsString());
+                        editor.putString("personid", personObject.get("uuid").getAsString());
                         editor.putString("chwname", personObject.get("display").getAsString());
                         editor.commit();
-                        return 1;
-                    } else {
+
+                        String queryString = "?user=" + userObject.get("uuid").getAsString();
+                        WebResponse responseProvider;
+
+                        responseProvider = HelperMethods.getCommand(BASE_URL+"provider", queryString, SetupActivity.this,USERNAME,PASSWORD);
+
+                        if (responseProvider != null && responseProvider.getResponseCode() == 200) {
+                            String provider_uuid = "";
+
+                            JSONArray resultsArray = null;
+
+                            try {
+                                JSONObject JSONResponse = new JSONObject(responseProvider.getResponseString());
+                                resultsArray = JSONResponse.getJSONArray("results");
+
+                                Log.i(TAG, "doInBackground: " + JSONResponse.toString());
+
+                                if (resultsArray.length() != 0) {
+                                    for (int i = 0; i < resultsArray.length(); i++) {
+                                        JSONObject checking = resultsArray.getJSONObject(i);
+                                        Log.i(TAG, "doInBackground: " + checking.getString("uuid"));
+                                        provider_uuid = checking.getString("uuid");
+                                        editor.putString("providerid", provider_uuid);
+                                        editor.commit();
+                                    }
+                                    return 1;
+                                }
+                                return 201;
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                return 201;
+                            }
+
+                        }
+
                         return 201;
                     }
                 }
@@ -456,6 +505,7 @@ public class SetupActivity extends AppCompatActivity {
                 e.printStackTrace();
                 return 201;
             }
+            return 201;
         }
 
         @Override
@@ -486,6 +536,7 @@ public class SetupActivity extends AppCompatActivity {
                 editor.apply();
 
                 OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
+                AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
 
                 Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
                 startActivity(intent);
@@ -699,15 +750,14 @@ public class SetupActivity extends AppCompatActivity {
                 //WRITE FILE in base_dir
                 try {
                     File mydir = new File(base_dir.getAbsolutePath(), FILENAME);
-                    if (!mydir.exists())
-                        mydir.getParentFile().mkdirs();
+                    if (!mydir.exists()) mydir.getParentFile().mkdirs();
                     Log.i("FNAM", FILENAME);
                     FileOutputStream fileout = new FileOutputStream(mydir);
                     OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
                     outputWriter.write(writable);
                     outputWriter.close();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.e(TAG, "onPostExecute: ", e);
                 }
             } else {
                 String files[] = writable.split("\n");

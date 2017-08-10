@@ -2,6 +2,7 @@ package io.intelehealth.client.activities.complaint_node_activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +10,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.common.collect.ImmutableList;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import io.intelehealth.client.R;
+import io.intelehealth.client.activities.login_activity.LoginActivity;
 import io.intelehealth.client.node.Node;
 
 /**
@@ -22,7 +30,10 @@ public class CustomArrayAdapter extends ArrayAdapter<Node> {
 
     private Context mContext;
     private int layoutResourceID;
-    private List<Node> mNodes;
+    private ImmutableList<Node> mNodes;
+    private List<Node> mNodesFilter;
+
+    private static final String TAG = CustomArrayAdapter.class.getSimpleName();
 
     /**
      * Constructor
@@ -42,7 +53,8 @@ public class CustomArrayAdapter extends ArrayAdapter<Node> {
         super(context, resource, nodes);
         mContext = context;
         layoutResourceID = resource;
-        mNodes = nodes;
+        mNodesFilter = nodes;
+        mNodes= ImmutableList.copyOf(mNodesFilter);
     }
 
     //Each view is a node itself
@@ -53,7 +65,7 @@ public class CustomArrayAdapter extends ArrayAdapter<Node> {
             convertView = inflater.inflate(layoutResourceID, parent, false);
         }
 
-        final Node thisNode = mNodes.get(position);
+        final Node thisNode = mNodesFilter.get(position);
 
         TextView textViewItem = (TextView) convertView.findViewById(R.id.subquestion_text_view);
         textViewItem.setText(thisNode.findDisplay());
@@ -77,9 +89,37 @@ public class CustomArrayAdapter extends ArrayAdapter<Node> {
         super.notifyDataSetChanged();
     }
 
-    public void updateNodeList(List<Node> newNodes) {
-        mNodes.clear();
-        mNodes.addAll(newNodes);
-        this.notifyDataSetChanged();
+    // Filter Class
+    public void filter(String charText) {
+        Log.i(TAG, "filter: Entered Filter");
+        Log.i(TAG, "filter: "+ mNodes.size());
+        Log.i(TAG, "filter: "+ mNodesFilter.size());
+        mNodesFilter.clear();
+        Log.i(TAG, "filter: "+ mNodes.size());
+        Log.i(TAG, "filter: "+ mNodesFilter.size());
+        charText = charText.toLowerCase(Locale.getDefault());
+        Log.i(TAG, "filter: "+charText);
+        if (!charText.trim().isEmpty()) {
+            Log.i(TAG, "filter: Not Empty" );
+            for (Node node : mNodes) {
+                Log.i(TAG, "filter: " + node.getText());
+                Log.i(TAG, "filter: " + node.findDisplay());
+                if (!node.findDisplay().isEmpty()) {
+                    if (node.findDisplay().toLowerCase(Locale.getDefault())
+                            .contains(charText)) {
+                        mNodesFilter.add(node);
+                        Log.i(TAG, "filter: Node Matched");
+                    }
+                }
+            }
+        } else {
+            mNodesFilter.addAll(mNodes);
+        }
+        notifyDataSetChanged();
     }
+
+    public ImmutableList<Node> getmNodes() {
+        return mNodes;
+    }
+
 }

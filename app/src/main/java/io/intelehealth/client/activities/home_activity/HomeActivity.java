@@ -3,19 +3,14 @@ package io.intelehealth.client.activities.home_activity;
 import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,22 +18,18 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import org.acra.ACRA;
 
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import io.intelehealth.client.activities.login_activity.LoginActivity;
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.setting_activity.SettingsActivity;
 import io.intelehealth.client.activities.login_activity.OfflineLogin;
-
+import io.intelehealth.client.services.UpdateMindmapsTask;
 
 
 /**
@@ -53,12 +44,14 @@ public class HomeActivity extends AppCompatActivity {
     Calendar calendar;
     Handler handler;
 
+    private static final String TAG = HomeActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        Log.i(TAG, "onCreate: " + getFilesDir().toString());
 
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview_home);
         recyclerView.setHasFixedSize(true);
@@ -124,10 +117,14 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.settingsOption:
                 settings();
                 return true;
-//            case R.id.endOfDayOption:
-//                endOfDay();
-//                return true;
-
+            case R.id.updateMindmapsOption: {
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                if (sharedPreferences.contains("licensekey")) {
+                    UpdateMindmapsTask updateMindmapsTask = new UpdateMindmapsTask(this);
+                    updateMindmapsTask.execute(null, "AllFiles", "TRUE");
+                }
+                return true;
+            }
             case R.id.backupOption:
                 manageBackup();  // to restore app data at any time of the day
                  return true;

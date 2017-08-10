@@ -4,7 +4,7 @@
          dismiss it. -->
     <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
     <EditTextPreference
-            android:key="server_url"
+            android:key="serverurl"
             android:title="@string/pref_title_server_url"
             android:defaultValue="http://openmrs.amal.io:8080/openmrs/ws/rest/v1/"
             android:negativeButtonText="@string/generic_cancel"
@@ -14,7 +14,7 @@
             android:maxLines="1"/>
 
     <EditTextPreference
-            android:key="id_prefix"
+            android:key="idprefix"
             android:title="@string/pref_title_id_prefix"
             android:defaultValue="JHU"
             android:negativeButtonText="@string/generic_cancel"

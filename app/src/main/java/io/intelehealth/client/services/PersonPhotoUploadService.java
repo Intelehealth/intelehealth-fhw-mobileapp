@@ -10,7 +10,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
@@ -51,7 +50,7 @@ public class PersonPhotoUploadService extends IntentService {
         super(name);
     }
 
-    public PersonPhotoUploadService(){
+    public PersonPhotoUploadService() {
         super(TAG);
     }
 
@@ -70,6 +69,8 @@ public class PersonPhotoUploadService extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
 
+        Log.i(TAG, "onHandleIntent: Photo upload Start");
+
         mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mBuilder = new NotificationCompat.Builder(this);
 
@@ -80,7 +81,7 @@ public class PersonPhotoUploadService extends IntentService {
 
         Log.d(TAG, "Queue id: " + intent.getIntExtra("queueId", -1));
         queueId = intent.getIntExtra("queueId", -1);
-        patientUUID=intent.getStringExtra("patientUUID");
+        patientUUID = intent.getStringExtra("patientUUID");
         patientId = intent.getStringExtra("patientID");
 
         String query = "SELECT patient_photo FROM patient WHERE _id = ?";
@@ -88,25 +89,29 @@ public class PersonPhotoUploadService extends IntentService {
         SQLiteDatabase localdb = databaseHelper.getWritableDatabase();
         Cursor cursor = localdb.rawQuery(query, new String[]{patientId});
         List<String> imagePaths = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            imagePaths.add(cursor.getString(0));
-            Log.i(TAG + ">", cursor.getString(0));
+        if (cursor.moveToFirst() && cursor.getCount() != 0) {
+            do {
+                imagePaths.add(cursor.getString(0));
+            } while (cursor.moveToNext());
         }
         cursor.close();
         localdb.close();
-        if(!imagePaths.isEmpty()) {
+        if (!imagePaths.isEmpty()) {
             String filePath = imagePaths.get(0);
+            if (filePath != null) {
+                File profile_image = new File(filePath);
+                imageName = profile_image.getName();
+                imageName = imageName.replace('%', '_');
 
-            File profile_image = new File(filePath);
-            imageName = profile_image.getName();
-            imageName = imageName.replace('%', '_');
+                if (profile_image != null) {
+                    bitmap = BitmapFactory.decodeFile(filePath);
+                }
 
-            if (profile_image != null) {
-                bitmap = BitmapFactory.decodeFile(filePath);
-            }
-
-            if (bitmap != null) {
-                uploadImage("Profile", bitmap, imageName, intent);
+                if (bitmap != null) {
+                    uploadImage("Profile", bitmap, imageName, intent);
+                }
+            }else {
+                removeJobFromQueue(queueId);
             }
         }
     }

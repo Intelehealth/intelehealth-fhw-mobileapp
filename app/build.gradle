@@ -36,7 +36,7 @@ dependencies {
     compile "com.android.support:support-vector-drawable:$rootProject.supportLibraryVersion"
     //Uncomment below line to enable multidex support for Kitkat
     //compile "com.android.support:multidex:$rootProject.multiDexVersion"
-    compile "com.google.firebase:firebase-appindexing:$rootProject.firebaseVersion"
+    //compile "com.google.firebase:firebase-appindexing:$rootProject.firebaseVersion"
 
     compile "ch.acra:acra:$rootProject.arcaVersion"
     compile "joda-time:joda-time:$rootProject.jodaTimeVersion"
@@ -57,9 +57,9 @@ dependencies {
     debugCompile "com.squareup.okhttp3:logging-interceptor:$rootProject.okHttpVersion"
 
     // glide library dependencies
-    
 
 
+    compile 'com.google.guava:guava:22.0-android'
 
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.github.bumptech.glide:glide:3.8.0'

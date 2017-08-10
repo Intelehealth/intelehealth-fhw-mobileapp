@@ -45,6 +45,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 OfflineLogin.getOfflineLogin().invalidateLoginCredentials();
                 break;
             }
+            case "UPDATE_MIND_MAPS":{}
             default:
                 //Calling method to generate notification
                 sendNotification(messageBody);

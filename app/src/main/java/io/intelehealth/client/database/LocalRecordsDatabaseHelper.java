@@ -30,7 +30,10 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             "gender," +
             "sdw," + //Temporary
             "occupation," + //Temporary
-            "patient_photo"+
+            "patient_photo,"+
+            "economic_status,"+
+            "education_status,"+
+            "caste"+
             ")";
     public static final String CREATE_ATTRIB = "CREATE TABLE IF NOT EXISTS patient_attribute (" +
             "_id integer PRIMARY KEY," +
@@ -67,6 +70,7 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             "visit_id integer(10) NOT NULL," +
             "openmrs_visit_uuid TEXT," +
             "encounter_type TEXT" +
+            "encounter_provider TEXT" +
             ")";
 
 

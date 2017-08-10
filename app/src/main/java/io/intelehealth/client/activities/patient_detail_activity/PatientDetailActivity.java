@@ -23,6 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -174,7 +175,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 cursor1.close();
 
                 // Will display data for patient as it is present in database
-                // Toast.makeText(PatientDetailActivity.this,"PMH: "+phistory,Toast.LENGTH_SHORT).show();
+                // Toast.makeText(PatientDetailActivity.this,"PMH: "+phistory,Toast.LENGTH_SHORT).sƒhow();
                 // Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
 
                 Intent intent2 = new Intent(PatientDetailActivity.this, ComplaintNodeActivity.class);
@@ -187,6 +188,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                 ContentValues visitData = new ContentValues();
                 visitData.put("patient_id", patient.getId());
+                Log.i(LOG_TAG, "onClick: " + thisDate);
                 visitData.put("start_datetime", thisDate);
                 visitData.put("visit_type_id", 0);
                 visitData.put("visit_location_id", 0);
@@ -259,7 +261,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         String[] patientArgs = {dataString};
         String[] patientColumns = {"first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
-                "postal_code", "country", "phone_number", "gender", "sdw", "occupation", "patient_photo"};
+                "postal_code", "country", "phone_number", "gender", "sdw", "occupation",
+                "patient_photo","economic_status", "education_status","caste"};
         final Cursor idCursor = db.query("patient", patientColumns, patientSelection, patientArgs, null, null, null);
 
         if (idCursor.moveToFirst()) {
@@ -279,6 +282,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                 patient.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
                 patient.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
                 patient.setPatientPhoto(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
+                patient.setEconomic_status(idCursor.getString(idCursor.getColumnIndexOrThrow("economic_status")));
+                patient.setEducation_level(idCursor.getString(idCursor.getColumnIndexOrThrow("education_status")));
+                patient.setCaste(idCursor.getString(idCursor.getColumnIndexOrThrow("caste")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -292,6 +298,9 @@ public class PatientDetailActivity extends AppCompatActivity {
         TableRow addr2Row = (TableRow) findViewById(R.id.tableRow_addr2);
         TextView addr2View = (TextView) findViewById(R.id.textView_address2);
         TextView addrFinalView = (TextView) findViewById(R.id.textView_address_final);
+        TextView casteView = (TextView) findViewById(R.id.textView_caste);
+        TextView economic_statusView = (TextView) findViewById(R.id.textView_economic_status);
+        TextView education_statusView = (TextView) findViewById(R.id.textView_education_status);
         TextView phoneView = (TextView) findViewById(R.id.textView_phone);
         TextView sdwView = (TextView) findViewById(R.id.textView_SDW);
         TableRow sdwRow = (TableRow) findViewById(R.id.tableRow_SDW);
@@ -338,6 +347,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         } else {
             city_village = "";
         }
+
         String postal_code;
         if (patient.getPostalCode() != null) {
             postal_code = patient.getPostalCode().trim() + ",";
@@ -351,6 +361,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                         postal_code, patient.getCountry());
         addrFinalView.setText(addrFinalLine);
         phoneView.setText(patient.getPhoneNumber());
+        education_statusView.setText(patient.getEducation_level());
+        economic_statusView.setText(patient.getEconomic_status());
+        casteView.setText(patient.getCaste());
 
         if (patient.getSdw() != null && !patient.getSdw().equals("")) {
             sdwView.setText(patient.getSdw());

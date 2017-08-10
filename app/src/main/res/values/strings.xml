@@ -37,6 +37,7 @@
     <string name="title_activity_login">Intelehealth</string>
     <string name="prompt_email">Username</string>
     <string name="prompt_password">Password</string>
+    <string name="prompt_admin_password">Admin Password</string>
     <string name="action_sign_in">Login</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="url_invalid">Check your URL.</string>
@@ -73,6 +74,7 @@
     <string name="identification_screen_prompt_address">Address</string>
     <string name="identification_screen_prompt_address2">Address Line 2</string>
     <string name="identification_screen_prompt_phone_number">Phone Number</string>
+    <string name="admin_password_dialog_heading">Enter Admin Password</string>
     <string name="identification_screen_prompt_gender">Gender *</string>
     <string name="identification_screen_checkbox_male">Male</string>
     <string name="identification_screen_checkbox_female">Female</string>
@@ -80,6 +82,9 @@
     <string name="identification_screen_prompt_age">Age*</string>
     <string name="identification_screen_prompt_city">Village/Town/City *</string>
     <string name="identification_screen_prompt_state">State *</string>
+    <string name="identification_screen_prompt_caste">Caste</string>
+    <string name="identification_screen_prompt_economic_status">Economic</string>
+    <string name="identification_screen_prompt_education">Education</string>
     <string name="identification_screen_prompt_country">Country *</string>
     <string name="identification_screen_prompt_postal_code">Postal Code</string>
     <string name="identification_screen_prompt_relationship">Son/Daughter/Wife of</string>
@@ -332,6 +337,27 @@
         <item>United States</item>
     </string-array>
 
+    <string-array name="education">
+        <item>Illiterate</item>
+        <item>Primary</item>
+        <item>Secondary</item>
+        <item>Higher Secondary</item>
+        <item>Graduation &amp; Higher</item>
+    </string-array>
+
+    <string-array name="caste">
+        <item>General</item>
+        <item>OBC</item>
+        <item>SC</item>
+        <item>ST</item>
+        <item>others</item>
+    </string-array>
+
+    <string-array name="economic">
+        <item>APL</item>
+        <item>BPL</item>
+    </string-array>
+
     <string-array name="states_india">
         <item>Select State</item>
         <item>Andhra Pradesh</item>
@@ -418,6 +444,38 @@
         <item>Wisconsin</item>
         <item>Wyoming</item>
     </string-array>
+
+    <string-array name="odisha_villages">
+        <item>Satygaon</item>
+        <item>Banjha Munda</item>
+        <item>Baidehipur</item>
+        <item>Bhadramunda</item>
+        <item>Patamara</item>
+        <item>Ditikrushnapur</item>
+        <item>Pita Kulha Sahi</item>
+        <item>Kusumapal</item>
+        <item>Paunsia</item>
+        <item>Genjeimuni</item>
+        <item>Sagamanji Sahi</item>
+        <item>Bankhuli</item>
+        <item>Tandibereni</item>
+        <item>Nalasahi</item>
+        <item>Chanapal</item>
+        <item>Magarmuhan</item>
+        <item>Rangamatia</item>
+        <item>Suabasa</item>
+        <item>Kurumula</item>
+        <item>Ghenakani</item>
+        <item>Gopinnathpur</item>
+        <item>Kusubania</item>
+        <item>Hathimunda</item>
+        <item>Dhipasahi</item>
+        <item>Kuchinda</item>
+        <item>Chadakamara</item>
+        <item>Phuljhari</item>
+        <item>Khuntaposi</item>
+    </string-array>
+
     <string name="title_activity_setup">SetupActivity</string>
 
     <string name="title_activity_camera">Camera Activity</string>
@@ -461,6 +519,7 @@
     <string name="offline_credentials_unavailable">Offline Login is not available.</string>
     <string name="offline_user_does_not_match">User does not match..</string>
     <string name="offline_authentication_not_possible">Unable to authenticate offline.</string>
+    <string name="admin_authentication_not_possible">Unable to authenticate.</string>
 
     <string name="login_location_select">Session Location</string>
     <string name="prompt_licensekey">License Key</string>
@@ -480,6 +539,15 @@
 
     <string name="id_number">ID Number</string>
     <string name="uploading">Uploading</string>
+    <string name="downloading">Downloading</string>
+
+    <string name="visit">Visit</string>
+    <string name="visit_update">Visit Update</string>
+    <string name="patient">Patient</string>
+    <string name="patient_update">Patient Update</string>
+    <string name="patient_images">Patient Profile Image</string>
+    <string name="visit_images">Visit Images</string>
+    <string name="prescription">Prescription</string>
 
     <string name="error_no_data">Please download data from doctor first</string>
     <string name="error_phone_number">Phone number can\'t be empty</string>
@@ -487,5 +555,6 @@
 
     <string name="error_sms">SMS failed, please try again later!</string>
     <string name="sms_success">SMS Sent!</string>
+
 
 </resources>

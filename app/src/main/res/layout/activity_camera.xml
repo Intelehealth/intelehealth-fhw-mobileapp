@@ -18,6 +18,7 @@
         android:layout_alignParentTop="true"
         android:adjustViewBounds="true"
         android:background="@android:color/black"
+        app:aspectRatio="4:3"
         app:facing="back"/>
 
     <android.support.v7.widget.Toolbar

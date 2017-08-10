@@ -54,6 +54,7 @@ public class HelperMethods {
     public static final String IMAGE_SERVER_URL = "http://139.59.73.230:1338/parse/";
     public static final String IMAGE_APP_ID = "app2";
     public static final String JSON_FOLDER = "Engines";
+    public static final String JSON_FOLDER_Update = "Engines_Update";
     public static File base_dir;
 
     public static int getAge(String s) {
@@ -239,6 +240,82 @@ public class HelperMethods {
 
 
             String urlString = BASE_URL + urlModifier + dataString;
+
+            URL url = new URL(urlString);
+
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
+            connection.setRequestProperty("Authorization", "Basic " + encoded);
+            if (session_id != null) {
+                connection.setRequestProperty("Cookie", "jsessionid=" + session_id);
+            } else {
+                connection.setRequestProperty("Authorization", "Basic " + encoded);
+            }
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
+            connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
+
+            int responseCode = connection.getResponseCode();
+            webResponse.setResponseCode(responseCode);
+
+            Log.d(LOG_TAG, "GET URL: " + url);
+            Log.d(LOG_TAG, "Response Code from Server: " + String.valueOf(responseCode));
+
+            // Read the input stream into a String
+            InputStream inputStream = connection.getInputStream();
+            StringBuffer buffer = new StringBuffer();
+            if (inputStream == null) {
+                // Do Nothing.
+                return null;
+            }
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
+                // But it does make debugging a *lot* easier if you print out the completed
+                // buffer for debugging.
+                buffer.append(line + "\n");
+            }
+
+            if (buffer.length() == 0) {
+                // Stream was empty.  No point in parsing.
+                return null;
+            }
+
+            JSONString = buffer.toString();
+
+            Log.d(LOG_TAG, "JSON Response: " + JSONString);
+            webResponse.setResponseString(JSONString);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return webResponse;
+    }
+
+    public static WebResponse getCommand(String urlModifier, String dataString, Context context,String Username, String Password) {
+
+
+        BufferedReader reader;
+        String JSONString;
+
+        WebResponse webResponse = new WebResponse();
+
+        try {
+
+            //TODO: grab the URL and the UN and PW from the sharedprefs, and the account
+
+
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+            final String session_id = sharedPref.getString("sessionid", null);
+
+            String USERNAME = Username;
+            String PASSWORD = Password;
+
+
+
+            String urlString = urlModifier + dataString;
 
             URL url = new URL(urlString);
 

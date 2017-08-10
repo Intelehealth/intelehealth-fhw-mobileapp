@@ -98,6 +98,7 @@ public class ClientService extends IntentService {
     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(IntelehealthApplication.getAppContext());
     String location_name = prefs.getString(SettingsActivity.KEY_PREF_LOCATION_NAME, null);
     String location_uuid = prefs.getString(SettingsActivity.KEY_PREF_LOCATION_UUID, null);
+    String provider_uuid = prefs.getString("providerid", null);
     String location_desc = prefs.getString(SettingsActivity.KEY_PREF_LOCATION_DESCRIPTION, null);
 
     /**
@@ -158,7 +159,6 @@ public class ClientService extends IntentService {
                     success = uploadVisit(patientID, visitID, intent);
                     if (success) {
                         endNotification(patientName, "visit");
-                        sendResultMessage();
                     } else {
                         errorNotification(patientName, "visit");
                         queueSyncStop(queueId);
@@ -341,7 +341,7 @@ public class ClientService extends IntentService {
     private boolean uploadPatient(String patientID, Intent current_intent) {
 
         String responseCode = null;
-        boolean uploadDone = false;
+        String uploadDone = null;
         if (current_intent.hasExtra("status")) {
             int status = current_intent.getIntExtra("status", -1);
             if (status != -1) {
@@ -376,14 +376,21 @@ public class ClientService extends IntentService {
                 current_intent.putExtra("status", STATUS_PERSON_NOT_CREATED);
             }
         }
-        if (uploadDone == false) {
+        if (uploadDone == null) {
             retryAfterDelay(current_intent);
         } else if (current_intent.hasExtra("queueId")) {
+            Intent uploadPersonPhoto = new Intent(this, PersonPhotoUploadService.class);
+            uploadPersonPhoto.putExtra("patientID", patientID);
+            uploadPersonPhoto.putExtra("patientUUID", uploadDone);
+            uploadPersonPhoto.putExtra("name", patientName);
+            Log.i(TAG, "uploadPatient: Starting Service");
+            startService(uploadPersonPhoto);
             int queueId = current_intent.getIntExtra("queueId", -1);
             removeJobFromQueue(queueId);
         }
 
-        return uploadDone;
+        if (uploadDone != null) return true;
+        else return false;
     }
 
     /**
@@ -401,7 +408,8 @@ public class ClientService extends IntentService {
         String table = "patient";
         String[] columnsToReturn = {"first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province", "country",
-                "postal_code", "phone_number", "gender", "sdw", "occupation", "patient_photo"};
+                "postal_code", "phone_number", "gender", "sdw", "occupation", "patient_photo","economic_status",
+                "education_status","caste"};
         final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
 
         if (idCursor.moveToFirst()) {
@@ -421,6 +429,9 @@ public class ClientService extends IntentService {
                 patient.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
                 patient.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
                 patient.setPatientPhoto(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
+                patient.setEconomic_status(idCursor.getString(idCursor.getColumnIndexOrThrow("economic_status")));
+                patient.setEducation_level(idCursor.getString(idCursor.getColumnIndexOrThrow("education_status")));
+                patient.setCaste(idCursor.getString(idCursor.getColumnIndexOrThrow("caste")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -435,9 +446,17 @@ public class ClientService extends IntentService {
                                 "\"birthdate\":\"%s\", " +
                                 "\"attributes\":[" +
                                 "{\"attributeType\":\"%s\", " +
-                                "\"value\": \"%s\"}], " +
-                                //  "{\"attributeType\":\"%s\", " +
-                                // "\"value\": \"%s\"}], " + //TODO: Change this attribute to the name of the clinic as listed in OpenMRS
+                                "\"value\": \"%s\"}, " +
+                                "{\"attributeType\":\"%s\", " +
+                                "\"value\": \"%s\"}, " +
+                                "{\"attributeType\":\"%s\", " +
+                                "\"value\": \"%s\"}, " +
+                                "{\"attributeType\":\"%s\", " +
+                                "\"value\": \"%s\"}, " +
+                                "{\"attributeType\":\"%s\", " +
+                                "\"value\": \"%s\"}, " +
+                                "{\"attributeType\":\"%s\", " +
+                                "\"value\": \"%s\"}], " + //TODO: Change this attribute to the name of the clinic as listed in OpenMRS
                                 "\"addresses\":[" +
                                 "{\"address1\":\"%s\", " +
                                 "\"address2\":\"%s\"," +
@@ -452,8 +471,16 @@ public class ClientService extends IntentService {
                         patient.getDateOfBirth(),
                         UuidDictionary.ATTRIBUTE_PHONE_NUMBER,
                         patient.getPhoneNumber(),
-                        // UuidDictionary.ATTRIBUTE_HEALTH_CENTER,
-                        // "Barhra",
+                        UuidDictionary.ATTRIBUTE_CASTE,
+                        patient.getCaste(),
+                        UuidDictionary.ATTRIBUTE_ECONOMIC_STATUS,
+                        patient.getEconomic_status(),
+                        UuidDictionary.ATTRIBUTE_EDUCATION_LEVEL,
+                        patient.getEducation_level(),
+                        UuidDictionary.ATTRIBUTE_SON_WIFE_DAUGHTER,
+                        patient.getSdw(),
+                        UuidDictionary.ATTRIBUTE_OCCUPATION,
+                        patient.getOccupation(),
                         patient.getAddress1(),
                         patient.getAddress2(),
                         patient.getCityVillage(),
@@ -488,7 +515,7 @@ public class ClientService extends IntentService {
      * @param responseString Response JSON string
      * @return boolean value representing success or failure.
      */
-    private boolean uploadPatientData(String patientID, String responseString) {
+    private String uploadPatientData(String patientID, String responseString) {
         String patientString =
                 String.format("{\"person\":\"%s\", " +
                                 "\"identifiers\":[{\"identifier\":\"%s\", " +
@@ -510,17 +537,11 @@ public class ClientService extends IntentService {
             mNotifyManager.notify(mId, mBuilder.build());
             Log.d(TAG, "Patient posting was unsuccessful 2");
             Log.d(TAG, responsePatient.getResponseString());
-            return false;
+            return null;
         } else {
             String newText = "Patient created successfully.";
             mBuilder.setContentText(newText).setNumber(++numMessages);
             mNotifyManager.notify(mId, mBuilder.build());
-
-            Intent uploadPersonPhoto = new Intent(this, PersonPhotoUploadService.class);
-            uploadPersonPhoto.putExtra("patientID", patientID);
-            uploadPersonPhoto.putExtra("patientUUID", responsePatient.getResponseString());
-            uploadPersonPhoto.putExtra("name", patientName);
-            startService(uploadPersonPhoto);
 
             ContentValues contentValuesOpenMRSID = new ContentValues();
             Log.i(TAG, responsePatient.getResponseString());
@@ -534,7 +555,7 @@ public class ClientService extends IntentService {
                     selection,
                     args
             );
-            return true;
+            return responsePatient.getResponseString();
         }
 
     }
@@ -752,6 +773,11 @@ public class ClientService extends IntentService {
             int queueId = current_intent.getIntExtra("queueId", -1);
             removeJobFromQueue(queueId);
         }
+
+        if (uploadStatus) {
+            sendResultMessage();
+        }
+
         return uploadStatus;
 
     }
@@ -796,7 +822,7 @@ public class ClientService extends IntentService {
         imageUpload.putExtra("name", patientName);
         imageUpload.putExtra("patientUUID", patient.getOpenmrsId());
         imageUpload.putExtra("visitUUID", responseVisit.getResponseString());
-        imageUpload.putExtra("visitID", responseVisit.getResponseString());
+        imageUpload.putExtra("visitID", visitID);
         startService(imageUpload);
 
         return responseVisit.getResponseString();
@@ -886,10 +912,15 @@ public class ClientService extends IntentService {
                                 " \"visit\":\"%s\"," +
                                 "\"obs\":[" + formattedObs +
                                 "]," +
+                                "\"encounterProviders\":[{" +
+                                "\"encounterRole\":\"73bbb069-9781-4afc-a9d1-54b6b2270e04\"," +
+                                "\"provider\":\"%s\"" +
+                                "}]," +
                                 "\"location\":\"%s\"}",
                         startDateTime,
                         patient.getOpenmrsId(),
                         visitUUID,
+                        provider_uuid,
                         location_uuid
                 );
         Log.d(TAG, "Vitals Encounter String: " + vitalsString);
@@ -906,7 +937,18 @@ public class ClientService extends IntentService {
             try {
                 JSONObject JSONResponse = new JSONObject(responseVitals.getResponseObject());
                 JSONArray resultsArray = JSONResponse.getJSONArray("obs");
+                JSONArray encounterProviders = JSONResponse.getJSONArray("encounterProviders");
                 String encounterUUID = JSONResponse.getString("uuid");
+
+                String providers = "";
+
+                for (int i = 0; i > encounterProviders.length(); i++) {
+                    if (providers.trim().isEmpty()) {
+                        providers = encounterProviders.getJSONObject(i).getString("display");
+                    } else {
+                        providers = providers + "," + encounterProviders.getJSONObject(i).getString("display");
+                    }
+                }
 
                 ContentValues contentValuesEncounter = new ContentValues();
                 contentValuesEncounter.put("openmrs_encounter_id", encounterUUID);
@@ -914,6 +956,9 @@ public class ClientService extends IntentService {
                 contentValuesEncounter.put("visit_id", visitID);
                 contentValuesEncounter.put("openmrs_visit_uuid", visitUUID);
                 contentValuesEncounter.put("encounter_type", "VITALS");
+                if (!providers.trim().isEmpty()) {
+                    contentValuesEncounter.put("encounter_provider", providers);
+                }
 
                 db.insert(
                         "encounter",
@@ -990,26 +1035,12 @@ public class ClientService extends IntentService {
 
     private boolean uploadEncounterNotes(String visitID, String visitUUID, Patient patient, String startDateTime,
                                          Obs patHistory, Obs famHistory, Obs complaint, Obs physFindings) {
-        if (patHistory.getValue() != null && (patHistory.getValue().isEmpty() || patHistory.getValue().equals(""))) {
-            patHistory.setValue("None");
-        }
-        if (famHistory.getValue() != null && (famHistory.getValue().isEmpty() || famHistory.getValue().equals(""))) {
-            famHistory.setValue("None");
-        }
+
 
         String quote = "\"";
 
         String formattedObs = "";
-        //Son Wife Daughter
-        if (patient.getSdw() != null && !patient.getSdw().trim().isEmpty()) {
-            formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.SON_WIFE_DAUGHTER + quote + "," +
-                    quote + "value" + quote + ":" + quote + patient.getSdw() + quote + "},";
-        }
-        //Occupation
-        if (patient.getOccupation() != null && !patient.getOccupation().trim().isEmpty()) {
-            formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.OCCUPATION + quote + "," +
-                    quote + "value" + quote + ":" + quote + patient.getOccupation() + quote + "},";
-        }
+
         //MedicalHistory
         if (patHistory.getValue() != null && !patHistory.getValue().trim().isEmpty()) {
             formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.RHK_MEDICAL_HISTORY_BLURB + quote + "," +
@@ -1043,12 +1074,17 @@ public class ClientService extends IntentService {
                                 "\"encounterType\":\"ADULTINITIAL\"," +
                                 "\"visit\":\"%s\"," +
                                 "\"obs\":[" + formattedObs
-                                + "]," + //physical exam
+                                + "]," +
+                                "\"encounterProviders\":[{" +
+                                "\"encounterRole\":\"73bbb069-9781-4afc-a9d1-54b6b2270e04\"," +
+                                "\"provider\":\"%s\"" +
+                                "}]," +
                                 "\"location\":\"%s\"}",
 
                         startDateTime,
                         patient.getOpenmrsId(),
                         visitUUID,
+                        provider_uuid,
                         location_uuid
                 );
         Log.d(TAG, "Notes Encounter String: " + noteString);
@@ -1068,7 +1104,18 @@ public class ClientService extends IntentService {
             try {
                 JSONObject JSONResponse = new JSONObject(responseNotes.getResponseObject());
                 JSONArray resultsArray = JSONResponse.getJSONArray("obs");
+                JSONArray encounterProviders = JSONResponse.getJSONArray("encounterProviders");
                 String encounterUUID = JSONResponse.getString("uuid");
+
+                String providers = "";
+
+                for (int i = 0; i > encounterProviders.length(); i++) {
+                    if (providers.trim().isEmpty()) {
+                        providers = encounterProviders.getJSONObject(i).getString("display");
+                    } else {
+                        providers = providers + "," + encounterProviders.getJSONObject(i).getString("display");
+                    }
+                }
 
                 ContentValues contentValuesEncounter = new ContentValues();
                 contentValuesEncounter.put("openmrs_encounter_id", encounterUUID);
@@ -1076,6 +1123,9 @@ public class ClientService extends IntentService {
                 contentValuesEncounter.put("visit_id", visitID);
                 contentValuesEncounter.put("openmrs_visit_uuid", visitUUID);
                 contentValuesEncounter.put("encounter_type", "ADULTINITIAL");
+                if (!providers.trim().isEmpty()) {
+                    contentValuesEncounter.put("encounter_provider", providers);
+                }
 
                 db.insert(
                         "encounter",

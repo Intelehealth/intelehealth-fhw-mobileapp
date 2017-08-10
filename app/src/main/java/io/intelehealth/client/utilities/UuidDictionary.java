@@ -39,7 +39,13 @@ public class UuidDictionary {
 
     //Person Attribute Type
     public static final String ATTRIBUTE_PHONE_NUMBER = "14d4f066-15f5-102d-96e4-000c29c2a5d7";
+    public static final String ATTRIBUTE_CASTE = "5a889d96-0c84-4a04-88dc-59a6e37db2d3";
+    public static final String ATTRIBUTE_EDUCATION_LEVEL = "1c718819-345c-4368-aad6-d69b4c267db7";
+    public static final String ATTRIBUTE_ECONOMIC_STATUS = "f4af0ef3-579c-448a-8157-750283409122";
+    public static final String ATTRIBUTE_SON_WIFE_DAUGHTER = "1b2f34f7-2bf8-4ef7-9736-f5b858afc160";
+    public static final String ATTRIBUTE_OCCUPATION = "ecdaadb6-14a0-4ed9-b5b7-cfed87b44b87";
     public static final String ATTRIBUTE_HEALTH_CENTER = "8d87236c-c2cc-11de-8d13-0010c6dffd0f";
+
 
     //Visit Types
     public static final String VISIT_TELEMEDICINE = "a86ac96e-2e07-47a7-8e72-8216a1a75bfd";

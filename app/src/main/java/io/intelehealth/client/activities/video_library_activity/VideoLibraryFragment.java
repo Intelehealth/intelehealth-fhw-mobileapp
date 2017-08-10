@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import io.intelehealth.client.R;
+
+import static io.intelehealth.client.node.Node.TAG;
 
 
 public class VideoLibraryFragment extends Fragment {
@@ -59,6 +62,7 @@ public class VideoLibraryFragment extends Fragment {
         String filePath = bundle.getString("FILEPATH");
 
         File file = new File(filePath);
+        Log.i(TAG, "onActivityCreated: "+filePath);
         File[] files = file.listFiles();
         if (files == null || files.length == 0) {
             Toast.makeText(getContext(), "No Files in this directory", Toast.LENGTH_LONG).show();

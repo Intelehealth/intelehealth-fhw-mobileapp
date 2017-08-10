@@ -21,13 +21,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -68,7 +68,7 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mAge;
     EditText mAddress1;
     EditText mAddress2;
-    EditText mCity;
+    AutoCompleteTextView mCity;
     EditText mPostal;
     RadioButton mGenderM;
     RadioButton mGenderF;
@@ -80,6 +80,9 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText stateText;
     Spinner mCountry;
     Spinner mState;
+    Spinner mCaste;
+    Spinner mEducation;
+    Spinner mEconomicStatus;
 
     String mPhoto;
     Patient patient = new Patient();
@@ -96,6 +99,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
     ImageView mImageView;
     String mCurrentPhotoPath;
+
 
 
     @Override
@@ -131,7 +135,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mAge = (EditText) findViewById(R.id.identification_age);
         mAddress1 = (EditText) findViewById(R.id.identification_address1);
         mAddress2 = (EditText) findViewById(R.id.identification_address2);
-        mCity = (EditText) findViewById(R.id.identification_city);
+        mCity = (AutoCompleteTextView) findViewById(R.id.identification_city);
         stateText = (EditText) findViewById(R.id.identification_state);
         mState = (Spinner) findViewById(R.id.spinner_state);
         mPostal = (EditText) findViewById(R.id.identification_postal_code);
@@ -141,7 +145,9 @@ public class IdentificationActivity extends AppCompatActivity {
         mGenderF = (RadioButton) findViewById(R.id.identification_gender_female);
         mRelationship = (EditText) findViewById(R.id.identification_relationship);
         mOccupation = (EditText) findViewById(R.id.identification_occupation);
-
+        mCaste = (Spinner) findViewById(R.id.spinner_caste);
+        mEducation = (Spinner) findViewById(R.id.spinner_education);
+        mEconomicStatus = (Spinner) findViewById(R.id.spinner_economic_status);
 
         //setting the fields when user clikcs edit details
         mFirstName.setText(patient1.getFirstName());
@@ -161,6 +167,21 @@ public class IdentificationActivity extends AppCompatActivity {
                 R.array.countries, android.R.layout.simple_spinner_item);
         countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCountry.setAdapter(countryAdapter);
+
+        ArrayAdapter<CharSequence> casteAdapter = ArrayAdapter.createFromResource(this,
+                R.array.caste, android.R.layout.simple_spinner_item);
+        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mCaste.setAdapter(casteAdapter);
+
+        ArrayAdapter<CharSequence> economicStausAdapter = ArrayAdapter.createFromResource(this,
+                R.array.economic, android.R.layout.simple_spinner_item);
+        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mEconomicStatus.setAdapter(economicStausAdapter);
+
+        ArrayAdapter<CharSequence> educationAdapter = ArrayAdapter.createFromResource(this,
+                R.array.education, android.R.layout.simple_spinner_item);
+        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mEducation.setAdapter(educationAdapter);
 
         // generate patientid only if there is no intent for Identification activity
 
@@ -194,13 +215,37 @@ public class IdentificationActivity extends AppCompatActivity {
         if (patientID_edit != null) {
             // setting country accordig database
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
-        }else{
+            mEducation.setSelection(educationAdapter.getPosition(String.valueOf(patient1.getEducation_level())));
+            mEconomicStatus.setSelection(economicStausAdapter.getPosition(String.valueOf(patient1.getEconomic_status())));
+            mCaste.setSelection(casteAdapter.getPosition(String.valueOf(patient1.getCaste())));
+        } else {
             mCountry.setSelection(countryAdapter.getPosition("India"));
         }
 
         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.state_error, android.R.layout.simple_spinner_item);
         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mState.setAdapter(stateAdapter);
+
+        mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String state = parent.getItemAtPosition(position).toString();
+                if(state.matches("Odisha")){
+                    //Creating the instance of ArrayAdapter containing list of fruit names
+                    ArrayAdapter<CharSequence> adapter =  ArrayAdapter.createFromResource(IdentificationActivity.this,
+                            R.array.odisha_villages,android.R.layout.simple_spinner_item);
+                    mCity.setThreshold(1);//will start working from first character
+                    mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+                }else{
+                    mCity.setAdapter(null);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         mCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -217,7 +262,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
                         if (patientID_edit != null) {
                             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getStateProvince())));
-                        }else{
+                        } else {
                             mState.setSelection(stateAdapter.getPosition("Odisha"));
                         }
 
@@ -429,7 +474,8 @@ public class IdentificationActivity extends AppCompatActivity {
         String[] patientArgs = {str};
         String[] patientColumns = {"first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
-                "postal_code", "country", "phone_number", "gender", "sdw", "occupation", "patient_photo"};
+                "postal_code", "country", "phone_number", "gender", "sdw", "occupation", "patient_photo",
+                "economic_status", "education_status","caste"};
         Cursor idCursor = db.query("patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
@@ -448,6 +494,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 patient1.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
                 patient1.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
                 patient1.setPatientPhoto(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
+                patient1.setEconomic_status(idCursor.getString(idCursor.getColumnIndexOrThrow("economic_status")));
+                patient1.setEducation_level(idCursor.getString(idCursor.getColumnIndexOrThrow("education_status")));
+                patient1.setCaste(idCursor.getString(idCursor.getColumnIndexOrThrow("caste")));
 
             } while (idCursor.moveToNext());
             idCursor.close();
@@ -656,6 +705,12 @@ public class IdentificationActivity extends AppCompatActivity {
                 patient1.setGender(mGender);
                 patient.setCountry(mCountry.getSelectedItem().toString());
                 patient1.setCountry(mCountry.getSelectedItem().toString());
+                patient.setEconomic_status(mEconomicStatus.getSelectedItem().toString());
+                patient1.setEconomic_status(mEconomicStatus.getSelectedItem().toString());
+                patient.setEducation_level(mEducation.getSelectedItem().toString());
+                patient1.setEducation_level(mEducation.getSelectedItem().toString());
+                patient.setCaste(mCaste.getSelectedItem().toString());
+                patient1.setCaste(mCaste.getSelectedItem().toString());
                 patient.setStateProvince(mState.getSelectedItem().toString());
                 patient1.setStateProvince(mState.getSelectedItem().toString());
                 Log.v(TAG, "" + mState.getSelectedItem());
@@ -717,6 +772,9 @@ public class IdentificationActivity extends AppCompatActivity {
             patientEntries.put("sdw", patient.getSdw());
             patientEntries.put("occupation", patient.getOccupation());
             patientEntries.put("patient_photo", mCurrentPhotoPath);
+            patientEntries.put("economic_status", patient.getEconomic_status());
+            patientEntries.put("education_status", patient.getEducation_level());
+            patientEntries.put("caste", patient.getCaste());
 
             //TODO: move identifier1 and id2 from patient table to patient_attribute table
         }
@@ -788,7 +846,10 @@ public class IdentificationActivity extends AppCompatActivity {
             patientEntries1.put("gender", patient1.getGender());
             patientEntries1.put("sdw", patient1.getSdw());
             patientEntries1.put("occupation", patient1.getOccupation());
-            if(mCurrentPhotoPath!=null) patientEntries1.put("patient_photo",mCurrentPhotoPath);
+            patientEntries1.put("economic_status", patient1.getEconomic_status());
+            patientEntries1.put("education_status", patient1.getEducation_level());
+            patientEntries1.put("caste", patient1.getCaste());
+            if (mCurrentPhotoPath != null) patientEntries1.put("patient_photo", mCurrentPhotoPath);
 
         }
 

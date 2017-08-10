@@ -10,8 +10,8 @@ public class Obs {
     private String value;
     private Integer concept_id;
     private Integer creator;
-    private Integer openmrs_encounter_id;
-    private Integer openmrs_obs_id;
+    private String openmrs_encounter_id;
+    private String openmrs_obs_id;
 
     public Integer getId() {
         return id;
@@ -61,19 +61,19 @@ public class Obs {
         this.creator = creator;
     }
 
-    public Integer getOpenmrsEncounterId() {
+    public String getOpenmrsEncounterId() {
         return openmrs_encounter_id;
     }
 
-    public void setOpenmrsEncounterId(Integer openmrs_encounter_id) {
+    public void setOpenmrsEncounterId(String  openmrs_encounter_id) {
         this.openmrs_encounter_id = openmrs_encounter_id;
     }
 
-    public Integer getOpenmrsObsId() {
+    public String getOpenmrsObsId() {
         return openmrs_obs_id;
     }
 
-    public void setOpenmrsObsId(Integer openmrs_obs_id) {
+    public void setOpenmrsObsId(String openmrs_obs_id) {
         this.openmrs_obs_id = openmrs_obs_id;
     }
 }

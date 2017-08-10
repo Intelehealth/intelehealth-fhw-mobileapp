@@ -2,7 +2,9 @@ package io.intelehealth.client.activities.setting_activity;
 
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.media.Ringtone;
@@ -13,18 +15,22 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.MenuItem;
-import android.support.v4.app.NavUtils;
+import android.widget.EditText;
 
 import java.util.List;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.app_compat_preferences_activity.AppCompatPreferenceActivity;
+import io.intelehealth.client.activities.login_activity.AdminPassword;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -46,12 +52,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     public static final String KEY_PREF_LOCATION_NAME = "locationname";
     public static final String KEY_PREF_LOCATION_DESCRIPTION = "locationdesc";
 
+    private static boolean admin_password = false;
 
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
      */
-    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
+    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener =
+            new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
             String stringValue = value.toString();
@@ -133,6 +141,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupActionBar();
+
     }
 
     /**
@@ -258,13 +267,20 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_data_sync);
             setHasOptionsMenu(true);
 
+            displayLoginDialog(getActivity());
+
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-            bindPreferenceSummaryToValue(findPreference("id_prefix"));
-            bindPreferenceSummaryToValue(findPreference("server_url"));
+            bindPreferenceSummaryToValue(findPreference("idprefix"));
+            bindPreferenceSummaryToValue(findPreference("serverurl"));
 
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
         }
 
         @Override
@@ -276,5 +292,44 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    public static void displayLoginDialog(Context context) {
+
+        admin_password = false;
+
+        final Activity activity = (Activity) context;
+        final AlertDialog.Builder textInput = new AlertDialog.Builder(context, R.style.AlertDialogStyle);
+        textInput.setTitle(R.string.admin_password_dialog_heading);
+        final EditText passwordEditText = new EditText(context);
+        passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT |
+                InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
+        textInput.setView(passwordEditText);
+
+        textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                boolean bool = AdminPassword.getAdminPassword()
+                        .login(passwordEditText.getText().toString());
+                admin_password = bool;
+            }
+        });
+
+        textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+               admin_password = false;
+            }
+        });
+
+        textInput.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                if(!admin_password) activity.onBackPressed();
+            }
+        });
+
+        textInput.show();
     }
 }

@@ -22,6 +22,9 @@ public class Patient {
     private String patient_photo;
     private String sdw;
     private String occupation;
+    private String economic_status;
+    private String education_level;
+    private String caste;
 
 
     public String getId() {
@@ -158,5 +161,29 @@ public class Patient {
 
     public void setOccupation(String occupation) {
         this.occupation = occupation;
+    }
+
+    public String getEconomic_status() {
+        return economic_status;
+    }
+
+    public void setEconomic_status(String economic_status) {
+        this.economic_status = economic_status;
+    }
+
+    public String getEducation_level() {
+        return education_level;
+    }
+
+    public void setEducation_level(String education_level) {
+        this.education_level = education_level;
+    }
+
+    public String getCaste() {
+        return caste;
+    }
+
+    public void setCaste(String caste) {
+        this.caste = caste;
     }
 }

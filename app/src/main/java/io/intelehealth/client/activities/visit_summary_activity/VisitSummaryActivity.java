@@ -14,6 +14,7 @@ import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -74,6 +75,7 @@ import io.intelehealth.client.objects.Obs;
 import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.services.ClientService;
 import io.intelehealth.client.services.PrescriptionDownloadService;
+import io.intelehealth.client.services.UpdateVisitService;
 import io.intelehealth.client.utilities.ConceptId;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
@@ -184,13 +186,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView additionalCommentsTextView;
 
     Boolean isPastVisit = false;
+    Boolean isReceiverRegistered = false;
 
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
 
     private NetworkChangeReceiver receiver;
     private boolean isConnected = false;
     private Menu mymenu;
-    MenuItem internetCheck;
+    MenuItem internetCheck = null;
 
     private RecyclerView mAdditionalDocsRecyclerView;
     private RecyclerView.LayoutManager mAdditionalDocsLayoutManager;
@@ -209,11 +212,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_visit_summary, menu);
         MenuItem menuItem = menu.findItem(R.id.summary_endVisit);
-        callBroadcastReceiver();
 
-        mymenu = menu;
-        internetCheck = mymenu.findItem(R.id.internet_icon);
+        internetCheck = menu.findItem(R.id.internet_icon);
         MenuItemCompat.getActionView(internetCheck);
+
+        isNetworkAvailable(this);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         mCHWname = (TextView) findViewById(R.id.chw_details);
@@ -258,8 +261,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        callBroadcastReceiver();
-
         final Intent intent = this.getIntent(); // The intent was passed to the activity
 
         if (intent != null) {
@@ -292,6 +293,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         startActivity(return_intent);
                     }
                 }
+
             }
 
 
@@ -382,11 +384,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("openmrs_visit_uuid"));
             }
             if (visitIDCursor != null) visitIDCursor.close();
-            if (visitUUID != null) {
+            if (visitUUID != null && !visitUUID.isEmpty()) {
                 downloadButton = new Button(VisitSummaryActivity.this);
                 downloadButton.setLayoutParams(new LinearLayoutCompat.LayoutParams(
                         LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
                 downloadButton.setText(R.string.visit_summary_button_download);
+
 
                 downloadButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -411,13 +414,27 @@ public class VisitSummaryActivity extends AppCompatActivity {
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if (visitUUID == null || visitUUID.isEmpty()) {
+                    String[] columnsToReturn = {"openmrs_visit_uuid"};
+                    String visitIDorderBy = "start_datetime";
+                    String visitIDSelection = "_id = ?";
+                    String[] visitIDArgs = {visitID};
+                    final Cursor visitIDCursor = db.query("visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
+                    if (visitIDCursor != null && visitIDCursor.moveToFirst() && visitIDCursor.getCount() > 0) {
+                        visitIDCursor.moveToFirst();
+                        visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("openmrs_visit_uuid"));
+                    }
+                    if (visitIDCursor != null) visitIDCursor.close();
+                }
+
                 Snackbar.make(view, "Uploading to doctor.", Snackbar.LENGTH_LONG).show();
 
-                String[] DELAYED_JOBS_PROJECTION = new String[]{DelayedJobQueueProvider._ID, DelayedJobQueueProvider.SYNC_STATUS};
-                String SELECTION = DelayedJobQueueProvider.JOB_TYPE + "=? AND " +
+                String[] DELAYED_JOBS_PROJECTION = new String[]{DelayedJobQueueProvider._ID, DelayedJobQueueProvider.JOB_TYPE, DelayedJobQueueProvider.SYNC_STATUS};
+                String SELECTION = DelayedJobQueueProvider.JOB_TYPE + " IN (\"visit\",\"prescriptionDownload\") AND " +
                         DelayedJobQueueProvider.PATIENT_ID + "=? AND " +
                         DelayedJobQueueProvider.VISIT_ID + "=?";
-                String[] ARGS = new String[]{"visit", patientID, visitID};
+                String[] ARGS = new String[]{patientID, visitID};
 
                 Cursor c = getContentResolver().query(DelayedJobQueueProvider.CONTENT_URI,
                         DELAYED_JOBS_PROJECTION, SELECTION, ARGS, null);
@@ -427,29 +444,51 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 if (c == null || c.getCount() == 0) {
 
-                    //query Visit Summary Table for openmrs uuid.
-
-                    Log.d(TAG, "onClick: In Null");
-                    Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
-                    serviceIntent.putExtra("serviceCall", "visit");
-                    serviceIntent.putExtra("patientID", patientID);
-                    serviceIntent.putExtra("visitID", visitID);
-                    serviceIntent.putExtra("name", patientName);
-                    startService(serviceIntent);
+                    Intent serviceIntent;
+                    if (visitUUID != null && !visitUUID.isEmpty()) {
+                        Log.i(TAG, "onClick: new update");
+                        serviceIntent = new Intent(VisitSummaryActivity.this, UpdateVisitService.class);
+                        serviceIntent.putExtra("serviceCall", "obsUpdate");
+                        serviceIntent.putExtra("patientID", patientID);
+                        serviceIntent.putExtra("visitID", visitID);
+                        serviceIntent.putExtra("name", patientName);
+                        startService(serviceIntent);
+                    } else {
+                        Log.i(TAG, "onClick: new visit");
+                        serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
+                        serviceIntent.putExtra("serviceCall", "visit");
+                        serviceIntent.putExtra("patientID", patientID);
+                        serviceIntent.putExtra("visitID", visitID);
+                        serviceIntent.putExtra("name", patientName);
+                        startService(serviceIntent);
+                    }
 
                 } else if (c != null && c.moveToFirst()) {
                     Log.d(TAG, "onClick: Not In Null");
                     int sync_status = c.getInt(c.getColumnIndexOrThrow(DelayedJobQueueProvider.SYNC_STATUS));
                     switch (sync_status) {
                         case ClientService.STATUS_SYNC_STOPPED: {
-
-                            Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
-                            serviceIntent.putExtra("serviceCall", "visit");
-                            serviceIntent.putExtra("patientID", patientID);
-                            serviceIntent.putExtra("visitID", visitID);
-                            serviceIntent.putExtra("name", patientName);
-                            startService(serviceIntent);
-
+                            Intent serviceIntent;
+                            Log.i(TAG, "onClick: old visit delayed");
+                            if (c.getString(c.getColumnIndex(DelayedJobQueueProvider.JOB_TYPE)).equals("visit")) {
+                                serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
+                                serviceIntent.putExtra("serviceCall", "visit");
+                                serviceIntent.putExtra("patientID", patientID);
+                                serviceIntent.putExtra("visitID", visitID);
+                                serviceIntent.putExtra("name", patientName);
+                                serviceIntent.putExtra("queueId", c.getInt(c.getColumnIndex(DelayedJobQueueProvider._ID)));
+                                startService(serviceIntent);
+                            } else if (c.getString(c.getColumnIndex(DelayedJobQueueProvider.JOB_TYPE)).equals("obsUpdate")) {
+                                Log.i(TAG, "onClick: old obs delayed");
+                                serviceIntent = new Intent(VisitSummaryActivity.this, UpdateVisitService.class);
+                                serviceIntent.putExtra("serviceCall", "obsUpdate");
+                                serviceIntent.putExtra("patientID", patientID);
+                                serviceIntent.putExtra("visitID", visitID);
+                                serviceIntent.putExtra("name", patientName);
+                                serviceIntent.putExtra("queueId", c.getInt(c.getColumnIndex(DelayedJobQueueProvider._ID)));
+                                startService(serviceIntent);
+                            }
+                            ;
                             break;
                         }
                         case ClientService.STATUS_SYNC_IN_PROGRESS: {
@@ -859,7 +898,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     private void endVisit() {
         Log.d(TAG, "endVisit: ");
-        if (visitUUID == null) {
+        if (visitUUID == null || visitUUID.isEmpty()) {
             String[] columnsToReturn = {"openmrs_visit_uuid"};
             String visitIDorderBy = "start_datetime";
             String visitIDSelection = "_id = ?";
@@ -871,7 +910,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
             if (visitIDCursor != null) visitIDCursor.close();
         }
-        if (visitUUID != null) {
+        if (visitUUID != null && !visitUUID.isEmpty()) {
             Log.d(TAG, "endVisit: uuid ok");
             String[] DELAYED_JOBS_PROJECTION = new String[]{DelayedJobQueueProvider._ID, DelayedJobQueueProvider.SYNC_STATUS};
             String SELECTION = DelayedJobQueueProvider.JOB_TYPE + "=? AND " +
@@ -1082,7 +1121,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 break;
             }
             case ConceptId.TELEMEDICINE_DIAGNOSIS: {
-                diagnosisReturned = value;
+                if (!diagnosisReturned.isEmpty()) {
+                    diagnosisReturned = diagnosisReturned + "," + value;
+                } else {
+                    diagnosisReturned = value;
+                }
                 if (diagnosisCard.getVisibility() != View.VISIBLE) {
                     diagnosisCard.setVisibility(View.VISIBLE);
                 }
@@ -1090,7 +1133,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 break;
             }
             case ConceptId.JSV_MEDICATIONS: {
-                rxReturned = value;
+                if (!rxReturned.isEmpty()) {
+                    rxReturned = rxReturned + "," + value;
+                } else {
+                    rxReturned = value;
+                }
                 if (prescriptionCard.getVisibility() != View.VISIBLE) {
                     prescriptionCard.setVisibility(View.VISIBLE);
                 }
@@ -1098,7 +1145,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 break;
             }
             case ConceptId.MEDICAL_ADVICE: {
-                adviceReturned = value;
+                if (!adviceReturned.isEmpty()) {
+                    adviceReturned = adviceReturned + "," + value;
+                } else {
+                    adviceReturned = value;
+                }
                 if (medicalAdviceCard.getVisibility() != View.VISIBLE) {
                     medicalAdviceCard.setVisibility(View.VISIBLE);
                 }
@@ -1106,7 +1157,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 break;
             }
             case ConceptId.REQUESTED_TESTS: {
-                testsReturned = value;
+                if (!testsReturned.isEmpty()) {
+                    testsReturned = testsReturned + "," + value;
+                } else {
+                    testsReturned = value;
+                }
                 if (requestedTestsCard.getVisibility() != View.VISIBLE) {
                     requestedTestsCard.setVisibility(View.VISIBLE);
                 }
@@ -1114,7 +1169,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 break;
             }
             case ConceptId.ADDITIONAL_COMMENTS: {
-                additionalReturned = value;
+                if (!additionalReturned.isEmpty()) {
+                    additionalReturned = additionalReturned + "," + value;
+                } else {
+                    additionalReturned = value;
+                }
                 if (additionalCommentsCard.getVisibility() != View.VISIBLE) {
                     additionalCommentsCard.setVisibility(View.VISIBLE);
                 }
@@ -1184,8 +1243,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String htmlDocument =
                 String.format("<h1 id=\"intelecare-patient-detail\">Intelehealth Visit Summary</h1>\n" +
                                 "<h1>%s</h1>\n" +
-                                "<p>%s</p>\n" +
-                                "<p>%s</p>\n" +
+                                "<p>Patient Id: %s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                                "Date: %s</p>\n" +
                                 "<h2 id=\"patient-information\">Patient Information</h2>\n" +
                                 "<ul>\n" +
                                 "<li>%s</li>\n" +
@@ -1254,218 +1313,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     }
 
-    /*
-    private class RetrieveData extends AsyncTask<String, Void, String> {
-
-        private final String LOG_TAG = RetrieveData.class.getSimpleName();
-
-        private final Context context;
-
-        public RetrieveData(Context c) {
-            this.context = c;
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            String queryString = "?q=" + identifierNumber;
-            //Log.d(TAG, identifierNumber);
-            Log.d(TAG, "doInBackground: " + identifierNumber);
-            WebResponse responseEncounter;
-            responseEncounter = HelperMethods.getCommand("encounter", queryString, getApplicationContext());
-            if (responseEncounter != null && responseEncounter.getResponseCode() != 200) {
-//                failedStep("Encounter search was unsuccessful");
-                //Log.d(TAG, "Encounter searching was unsuccessful");
-                return null;
-            }
-            Log.d(TAG, "doInBackground: " + responseEncounter.getResponseCode() + "_" + responseEncounter.getResponseString());
-
-
-            assert responseEncounter != null;
-            JSONArray resultsArray = null;
-            List<String> uriList = new ArrayList<>();
-            try {
-                JSONObject JSONResponse = new JSONObject(responseEncounter.getResponseString());
-                resultsArray = JSONResponse.getJSONArray("results");
-
-
-                SimpleDateFormat currentDate = new SimpleDateFormat("dd/MM/yyyy");
-                Date todayDate = new Date();
-                String thisDate = currentDate.format(todayDate);
-
-                Log.d(LOG_TAG, thisDate);
-
-                String searchString = "Visit Note " + thisDate;
-
-                if (resultsArray.length() != 0) {
-                    for (int i = 0; i < resultsArray.length(); i++) {
-                        JSONObject checking = resultsArray.getJSONObject(i);
-                        if (checking.getString("display").equals(searchString)) {
-                            uriList.add("/" + checking.getString("uuid"));
-                        }
-                    }
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            List<WebResponse> obsResponse = new ArrayList<>();
-            for (int i = 0; i < uriList.size(); i++) {
-                obsResponse.add(i, HelperMethods.getCommand("encounter", uriList.get(i), getApplicationContext()));
-                if (obsResponse.get(i) != null && obsResponse.get(i).getResponseCode() != 200) {
-                    String errorMessage = "Obs get call number " + String.valueOf(i) + " of " + String.valueOf(uriList.size()) + " was unsuccessful";
-//                    failedStep(errorMessage);
-//                    Log.d(TAG, errorMessage);
-                    return null;
-                }
-            }
-
-
-            JSONObject responseObj;
-            JSONArray obsArray;
-            JSONArray providersArray;
-
-            for (int i = 0; i < obsResponse.size(); i++) {
-                //Log.d(TAG, obsResponse.get(i).toString());
-                //Log.d(TAG, obsResponse.get(i).getResponseString());
-
-                try {
-                    responseObj = new JSONObject(obsResponse.get(i).getResponseString());
-                    obsArray = responseObj.getJSONArray("obs");
-                    providersArray = responseObj.getJSONArray("encounterProviders");
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    return null;
-                }
-
-                //Log.d(TAG, obsArray.toString());
-                for (int k = 0; k < obsArray.length(); k++) {
-                    String obsString = "";
-                    //Log.d(TAG, obsString);
-                    try {
-                        JSONObject obsObj = obsArray.getJSONObject(k);
-                        obsString = obsObj.getString("display");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        return null;
-                    }
-
-                    String index = obsString.substring(0, obsString.indexOf(":"));
-                    String indexText = obsString.substring(obsString.indexOf(":") + 1, obsString.length());
-
-                    if (index.contains("TELEMEDICINE DIAGNOSIS")) {
-                        if (!diagnosisReturned.contains(indexText) && !diagnosisReturned.isEmpty()) {
-                            diagnosisReturned = diagnosisReturned + "\n" + indexText;
-                        } else {
-                            diagnosisReturned = indexText;
-                        }
-                    }
-
-                    if (index.contains("JSV MEDICATIONS")) {
-                        if (!rxReturned.contains(indexText) && !rxReturned.isEmpty()) {
-                            rxReturned = rxReturned + "\n" + indexText;
-                        } else {
-                            rxReturned = indexText;
-                        }
-
-                    }
-
-                    if (index.contains("MEDICAL ADVICE")) {
-                        if (!adviceReturned.contains(indexText) && !adviceReturned.isEmpty()) {
-                            adviceReturned = adviceReturned + "\n" + indexText;
-                        } else {
-                            adviceReturned = indexText;
-                        }
-
-                    }
-
-                    if (index.contains("REQUESTED TESTS")) {
-                        if (!testsReturned.contains(indexText) && !testsReturned.isEmpty()) {
-                            testsReturned = testsReturned + "\n" + indexText;
-                        } else {
-                            testsReturned = indexText;
-                        }
-
-                    }
-
-                    if (index.contains("Additional Comments")) {
-                        if (!additionalReturned.contains(indexText) && !additionalReturned.isEmpty()) {
-                            additionalReturned = additionalReturned + "\n" + indexText;
-                        } else {
-                            additionalReturned = indexText;
-                        }
-
-                    }
-
-                }
-
-                for (int j = 0; j < providersArray.length(); j++) {
-                    String providerName;
-
-                    try {
-                        JSONObject providerObj = providersArray.getJSONObject(j);
-                        providerName = providerObj.getString("display");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        return null;
-                    }
-
-                    String[] providerSplit = providerName.split(":");
-                    providerName = providerSplit[0];
-                    if (!doctorName.contains(providerName) && !doctorName.isEmpty()) {
-                        doctorName = doctorName + "\n" + providerName;
-                    } else {
-                        doctorName = providerName;
-                    }
-
-                }
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-
-            if (!doctorName.isEmpty()) {
-                createNewCardView(getString(R.string.visit_summary_doctor_details), doctorName, 0);
-
-            }
-            if (!additionalReturned.isEmpty()) {
-                createNewCardView(getString(R.string.visit_summary_additional_comments), additionalReturned, 0);
-
-            }
-
-            if (!testsReturned.isEmpty()) {
-                createNewCardView(getString(R.string.visit_summary_tests_prescribed), testsReturned, 0);
-
-            }
-
-            if (!adviceReturned.isEmpty()) {
-                createNewCardView(getString(R.string.visit_summary_advice), adviceReturned, 0);
-
-            }
-            if (!rxReturned.isEmpty()) {
-                createNewCardView(getString(R.string.visit_summary_rx), rxReturned, 0);
-
-            }
-            if (!diagnosisReturned.isEmpty()) {
-                createNewCardView(getString(R.string.visit_summary_diagnosis), diagnosisReturned, 0);
-
-            }
-
-            mLayout.removeView(downloadButton);
-
-            super.onPostExecute(s);
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
-        }
-
-    }
-    */
 
     /**
      * @param title   variable of type String
@@ -1510,15 +1357,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 
     public void callBroadcastReceiver() {
-        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        receiver = new NetworkChangeReceiver();
-        registerReceiver(receiver, filter);
+        if (!isReceiverRegistered) {
+            IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+            receiver = new NetworkChangeReceiver();
+            registerReceiver(receiver, filter);
+            isReceiverRegistered = true;
+        }
     }
 
     @Override
     public void onResume() // register the receiver here
     {
         super.onResume();
+
         callBroadcastReceiver();
 
         String filePathAddDoc = baseDir + File.separator + "Patient Images" + File.separator + patientID + File.separator +
@@ -1542,6 +1393,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         unregisterReceiver(receiver);
+        isReceiverRegistered = false;
     }
 
 
@@ -1552,34 +1404,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             isNetworkAvailable(context);
         }
 
-        private void isNetworkAvailable(Context context) {
-            int flag = 0;
-
-            ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            if (connectivity != null) {
-                NetworkInfo[] info = connectivity.getAllNetworkInfo();
-                if (info != null) {
-                    for (int i = 0; i < info.length; i++) {
-                        if (info[i].getState() == NetworkInfo.State.CONNECTED) {
-                            if (!isConnected) {
-                                if (mymenu != null) {
-                                    internetCheck.setIcon(R.drawable.ic_action_circle_green);
-                                    flag = 1;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (flag == 0) {
-                if (mymenu != null) {
-                    internetCheck.setIcon(R.drawable.ic_action_circle_red);
-                }
-
-            }
-
-        }
     }
 
 
@@ -1589,6 +1413,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         textInput.setTitle(R.string.identification_screen_prompt_phone_number);
         final EditText phoneNumberEditText = new EditText(context);
         phoneNumberEditText.setInputType(InputType.TYPE_CLASS_PHONE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            phoneNumberEditText.setTextColor(getColor(R.color.gray));
+        } else {
+            phoneNumberEditText.setTextColor(getResources().getColor(R.color.gray));
+        }
 
         textInput.setView(phoneNumberEditText);
 
@@ -1596,43 +1425,53 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                String sms = "";
+                String body = "";
+                String header = "";
+                String message = "";
+
+                header = "Patient Id: " + patientID + "\n"
+                        + "Patient Name: " + patient.getFirstName() + " " + patient.getLastName() + "\n"
+                        + "Patient DOB: " + patient.getDateOfBirth() + "\n"
+                        + "Patient Id: " + patientID + "\n";
+
+
                 if (diagnosisCard.getVisibility() == View.VISIBLE) {
                     if (!diagnosisTextView.getText().toString().trim().isEmpty())
-                        sms = sms + getString(R.string.visit_summary_diagnosis) + ":" +
-                                diagnosisTextView.getText().toString().trim() + "\n";
+                        body = body + getString(R.string.visit_summary_diagnosis) + ":" +
+                                diagnosisTextView.getText().toString() + "\n";
                 }
                 if (prescriptionCard.getVisibility() == View.VISIBLE) {
                     if (!prescriptionTextView.getText().toString().trim().isEmpty())
-                        sms = sms + getString(R.string.visit_summary_rx) + ":" +
-                                prescriptionTextView.getText().toString().trim() + "\n";
+                        body = body + getString(R.string.visit_summary_rx) + ":" +
+                                prescriptionTextView.getText().toString() + "\n";
                 }
                 if (medicalAdviceCard.getVisibility() == View.VISIBLE) {
                     if (!medicalAdviceTextView.getText().toString().trim().isEmpty())
-                        sms = sms + getString(R.string.visit_summary_advice) + ":" +
-                                medicalAdviceTextView.getText().toString().trim() + "\n";
+                        body = body + getString(R.string.visit_summary_advice) + ":" +
+                                medicalAdviceTextView.getText().toString() + "\n";
                 }
                 if (requestedTestsCard.getVisibility() == View.VISIBLE) {
                     if (!requestedTestsTextView.getText().toString().trim().isEmpty())
-                        sms = sms + getString(R.string.visit_summary_tests_prescribed) + ":" +
-                                requestedTestsTextView.getText().toString().trim() + "\n";
+                        body = body + getString(R.string.visit_summary_tests_prescribed) + ":" +
+                                requestedTestsTextView.getText().toString() + "\n";
                 }
                 if (additionalCommentsCard.getVisibility() == View.VISIBLE) {
                     if (!additionalCommentsTextView.getText().toString().trim().isEmpty())
-                        sms = sms + getString(R.string.visit_summary_additional_comments) + ":" +
-                                additionalCommentsTextView.getText().toString().trim() + "\n";
+                        body = body + getString(R.string.visit_summary_additional_comments) + ":" +
+                                additionalCommentsTextView.getText().toString() + "\n";
                 }
 
 
                 if (!phoneNumberEditText.getText().toString().trim().isEmpty()) {
-                    if (!sms.isEmpty()) {
-                        if (sms != null && sms.length() > 0) {
-                            sms = sms.substring(0, sms.length() - 2);
+                    if (!body.isEmpty()) {
+                        if (body != null && body.length() > 0) {
+                            body = body.substring(0, body.length() - 2);
+                            message = header + body;
                         }
                         try {
                             SmsManager sm = SmsManager.getDefault();
                             String number = phoneNumberEditText.getText().toString();
-                            ArrayList<String> parts = sm.divideMessage(sms);
+                            ArrayList<String> parts = sm.divideMessage(message);
 
                             sm.sendMultipartTextMessage(number, null, parts, null, null);
 
@@ -1713,10 +1552,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
     };
 
     private void handleMessage(Intent msg) {
+        Log.i(TAG, "handleMessage: Entered");
         Bundle data = msg.getExtras();
         int check = data.getInt("Restart");
         if (check == 100) {
-
+            Log.i(TAG, "handleMessage: 100");
+            diagnosisReturned = "";
+            rxReturned = "";
+            testsReturned = "";
+            adviceReturned = "";
+            additionalReturned = "";
             String[] columns = {"value", " concept_id"};
             String orderBy = "visit_id";
             String visitSelection = "patient_id = ? AND visit_id = ?";
@@ -1731,6 +1576,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
             visitCursor.close();
         } else if (check == 200) {
+            Log.i(TAG, "handleMessage: 200");
             addDownloadButton();
         }
     }
@@ -1742,21 +1588,90 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
             downloadButton.setText(R.string.visit_summary_button_download);
 
+            Toast.makeText(this, getString(R.string.visit_summary_button_download), Toast.LENGTH_SHORT).show();
+
             downloadButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Snackbar.make(view, "Downloading from doctor", Snackbar.LENGTH_LONG).show();
-                    Intent startDownload = new Intent(VisitSummaryActivity.this, PrescriptionDownloadService.class);
-                    startDownload.putExtra("patientID", patientID);
-                    startDownload.putExtra("visitID", visitID);
-                    startDownload.putExtra("name", patientName);
-                    startDownload.putExtra("visitUUID", visitUUID);
-                    startService(startDownload);
+                    String[] DELAYED_JOBS_PROJECTION = new String[]{DelayedJobQueueProvider._ID, DelayedJobQueueProvider.SYNC_STATUS};
+                    String SELECTION = DelayedJobQueueProvider.JOB_TYPE + "=? AND " +
+                            DelayedJobQueueProvider.PATIENT_ID + "=? AND " +
+                            DelayedJobQueueProvider.VISIT_ID + "=?";
+                    String[] ARGS = new String[]{"prescriptionDownload", patientID, visitID};
 
+                    Cursor c = getContentResolver().query(DelayedJobQueueProvider.CONTENT_URI,
+                            DELAYED_JOBS_PROJECTION, SELECTION, ARGS, null);
+
+
+                    Log.i(TAG, "onClick: " + c.getCount());
+
+                    if (c == null || c.getCount() == 0) {
+                        Snackbar.make(view, "Downloading from doctor", Snackbar.LENGTH_LONG).show();
+                        Intent startDownload = new Intent(VisitSummaryActivity.this, PrescriptionDownloadService.class);
+                        startDownload.putExtra("patientID", patientID);
+                        startDownload.putExtra("visitID", visitID);
+                        startDownload.putExtra("name", patientName);
+                        startDownload.putExtra("visitUUID", visitUUID);
+                        startService(startDownload);
+                    } else if (c != null && c.moveToFirst()) {
+                        Log.d(TAG, "onClick: Not In Null");
+                        int sync_status = c.getInt(c.getColumnIndexOrThrow(DelayedJobQueueProvider.SYNC_STATUS));
+                        switch (sync_status) {
+                            case ClientService.STATUS_SYNC_STOPPED: {
+
+                                Intent serviceIntent = new Intent(VisitSummaryActivity.this, PrescriptionDownloadService.class);
+                                serviceIntent.putExtra("serviceCall", "prescriptionDownload");
+                                serviceIntent.putExtra("patientID", patientID);
+                                serviceIntent.putExtra("visitID", visitID);
+                                serviceIntent.putExtra("name", patientName);
+                                serviceIntent.putExtra("visitUUID", visitUUID);
+                                serviceIntent.putExtra("visitUUID", visitUUID);
+                                serviceIntent.putExtra("queueId", c.getInt(c.getColumnIndex(DelayedJobQueueProvider._ID)));
+                                startService(serviceIntent);
+
+                                break;
+                            }
+                            case ClientService.STATUS_SYNC_IN_PROGRESS: {
+                                Toast.makeText(context, getString(R.string.sync_in_progress), Toast.LENGTH_SHORT).show();
+                                break;
+                            }
+                            default:
+                        }
+                    }
                     //  retrieveOpenMRS(view);
                 }
             });
             mLayout.addView(downloadButton, mLayout.getChildCount());
+        }
+
+    }
+
+    private void isNetworkAvailable(Context context) {
+        int flag = 0;
+
+        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null) {
+            NetworkInfo[] info = connectivity.getAllNetworkInfo();
+            if (info != null) {
+
+                for (int i = 0; i < info.length; i++) {
+                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+                        if (!isConnected) {
+                            if (internetCheck != null) {
+                                internetCheck.setIcon(R.drawable.ic_action_circle_green);
+                                flag = 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (flag == 0) {
+            if (internetCheck != null) {
+                internetCheck.setIcon(R.drawable.ic_action_circle_red);
+            }
+
         }
 
     }

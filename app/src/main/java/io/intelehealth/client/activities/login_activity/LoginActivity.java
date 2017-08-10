@@ -323,6 +323,8 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("sessionid", jsonObject.get("sessionId").getAsString());
                         editor.commit();
+
+                        OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
                         return true;
                     } else {
                         return false;

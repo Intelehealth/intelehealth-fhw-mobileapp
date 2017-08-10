@@ -92,6 +92,14 @@ public class JobDispatchService extends JobService {
                             serviceIntent.putExtra("visitUUID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.VISIT_UUID)));
                             break;
                         }
+                        case"obsUpdate":{
+                            serviceIntent = new Intent(this, PrescriptionDownloadService.class);
+                            serviceIntent.putExtra("serviceCall", service_call);
+                            serviceIntent.putExtra("patientID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
+                            serviceIntent.putExtra("visitID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.VISIT_ID)));
+                            serviceIntent.putExtra("name", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_NAME)));
+                            break;
+                        }
                         default:
                             Log.e(LOG_TAG, "Does not match any Job Type");
                     }

@@ -114,7 +114,7 @@ public class CameraActivity extends AppCompatActivity {
                     File file;
                     if (mFilePath == null) {
                         file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-                                        mImageName + "_" + System.currentTimeMillis() + ".jpg");
+                                mImageName + "_" + System.currentTimeMillis() + ".jpg");
                     } else {
                         file = new File(mFilePath + File.separator + mImageName +
                                 "_" + System.currentTimeMillis() + ".jpg");
@@ -128,6 +128,43 @@ public class CameraActivity extends AppCompatActivity {
                         intent.putExtra("RESULT", file.getAbsolutePath());
                         setResult(RESULT_OK, intent);
                         Log.i(TAG, file.getAbsolutePath());
+
+                        //TODO:Remove-Test Code only
+                        /*
+                        Bitmap b = BitmapFactory.decodeFile(file.getAbsolutePath());
+
+                        ArrayList<Bitmap> out_files = new ArrayList<Bitmap>();
+                        out_files.add(b); //Original
+                        out_files.add(Bitmap.createScaledBitmap(b, 600, 800, false));
+
+                        out_files.add(Bitmap.createScaledBitmap(b, 768, 1024, false));
+                        out_files.add(Bitmap.createScaledBitmap(b, 960, 1280, false)); //1MP
+                        out_files.add(Bitmap.createScaledBitmap(b, 1200, 1600, false)); //2MP
+                        out_files.add(Bitmap.createScaledBitmap(b, 1536, 2048, false)); //3MP
+                        out_files.add(Bitmap.createScaledBitmap(b, 1680, 2240, false)); //4MP
+                        out_files.add(Bitmap.createScaledBitmap(b, 1920, 2560, false)); //5MP
+                        out_files.add(Bitmap.createScaledBitmap(b, 2304, 3072, false)); //7MP
+                        out_files.add(Bitmap.createScaledBitmap(b, 2448, 3264, false)); //8MP
+
+                        int index = 0;
+                        for (Bitmap bitmap : out_files) {
+                            index++;
+                            File file_resize = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "resize" + index + ".jpg");
+                            FileOutputStream fOut;
+                            try {
+                                fOut = new FileOutputStream(file_resize);
+                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                                fOut.flush();
+                                fOut.close();
+                                bitmap.recycle();
+                            } catch (Exception e) {
+                            }
+                        }
+                        b.recycle();
+                        */
+
+                        //Remove-Test Code only
+
                         finish();
                     } catch (IOException e) {
                         Log.w(TAG, "Cannot write to " + file, e);

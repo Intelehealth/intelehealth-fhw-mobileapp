@@ -147,7 +147,6 @@ public class PrescriptionDownloadService extends IntentService {
                         }
                     }
 
-
                     JSONObject responseObj = null;
                     JSONArray obsArray = null;
                     JSONArray providersArray = null;
