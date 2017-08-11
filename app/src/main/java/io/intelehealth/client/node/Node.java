@@ -4,10 +4,6 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.util.DisplayMetrics;
@@ -19,9 +15,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
@@ -46,11 +40,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import io.intelehealth.client.activities.complaint_node_activity.CustomArrayAdapter;
-import io.intelehealth.client.activities.custom_expandable_list_adapter.CustomExpandableListAdapter;
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.camera_activity.CameraActivity;
-import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
+import io.intelehealth.client.activities.complaint_node_activity.CustomArrayAdapter;
+import io.intelehealth.client.activities.custom_expandable_list_adapter.CustomExpandableListAdapter;
 
 /**
  * Created by Amal Afroz Alam on 21, April, 2016.
@@ -124,10 +117,10 @@ public class Node implements Serializable {
             }
 
             this.display = jsonNode.optString("display");
-            if(this.display.isEmpty()) {
+            if (this.display.isEmpty()) {
                 this.display = jsonNode.optString("display ");
             }
-            if(this.display.isEmpty()) {
+            if (this.display.isEmpty()) {
                 this.display = this.text;
             }
 
@@ -258,8 +251,8 @@ public class Node implements Serializable {
         }
     }
 
-    public String findDisplay (){
-        if (display.isEmpty()){
+    public String findDisplay() {
+        if (display.isEmpty()) {
             return text;
         } else {
             return display;
@@ -359,25 +352,71 @@ public class Node implements Serializable {
     public String formLanguage() {
         List<String> stringsList = new ArrayList<>();
         List<Node> mOptions = optionsList;
+        boolean isTerminal = false;
         for (int i = 0; i < mOptions.size(); i++) {
             if (mOptions.get(i).isSelected()) {
-                stringsList.add(mOptions.get(i).getLanguage());
+                String test = mOptions.get(i).getLanguage();
+                if(test.equals("%")){}
+                else if(test.substring(0,1).equals("%")){
+                    stringsList.add(test.substring(1));
+                }
+                else {
+                    stringsList.add(test);
+                }
+                Log.i(TAG, mOptions.get(i).getLanguage());
                 if (!mOptions.get(i).isTerminal()) {
                     stringsList.add(mOptions.get(i).formLanguage());
+                    isTerminal = false;
+                    Log.d(TAG, "formLanguage: Not Terminal");
+                } else {
+                    isTerminal = true;
+                    Log.d(TAG, "formLanguage: Terminal");
                 }
             }
         }
 
-        String languageSeparator = ", ";
+        String languageSeparator;
+        if (isTerminal) {
+            languageSeparator = ", ";
+        } else {
+            languageSeparator = "";
+        }
         String mLanguage = "";
         for (int i = 0; i < stringsList.size(); i++) {
             if (i == 0) {
+                if (i == stringsList.size() - 1) {
+                    mLanguage = mLanguage.concat(stringsList.get(i) + ".");
+                    Log.i(TAG, "mLangif: " + mLanguage);
+                } else {
+                    if (!stringsList.get(i).isEmpty()) {
+                        mLanguage = mLanguage.concat(stringsList.get(i));
+                        Log.i(TAG, "mLangif: " + mLanguage);
+                    }
+                }
+            } else if (i == stringsList.size() - 1) {
                 if (!stringsList.get(i).isEmpty()) {
-                    mLanguage = mLanguage.concat(stringsList.get(i));
+                    Log.i(TAG, "formLanguageString: " +stringsList.get(i));
+                    char test = stringsList.get(i).charAt(stringsList.get(i).length() - 1);
+                    if (test == '.') {
+                        mLanguage = mLanguage.concat(stringsList.get(i));
+                        Log.i(TAG, "mLangelse: . " + mLanguage);
+                    } else {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i) + ".");
+                        Log.i(TAG, "mLangelse: " + mLanguage);
+                    }
                 }
             } else {
                 if (!stringsList.get(i).isEmpty()) {
-                    mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i));
+                    String test = stringsList.get(i).substring(stringsList.get(i).length() - 1);
+                    Log.i(TAG, "formLanguageTest: "+test);
+                    if (test.equals(".")) {
+                        //TODO: Change this "-"
+                        mLanguage = mLanguage.concat("-"+stringsList.get(i));
+                        Log.i(TAG, "mLangelse: . " + mLanguage);
+                    } else {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i));
+                        Log.i(TAG, "mLangelse: " + mLanguage);
+                    }
                 }
             }
         }
@@ -388,7 +427,7 @@ public class Node implements Serializable {
     public String generateLanguage() {
         String raw = this.formLanguage();
         String formatted;
-        if(!raw.isEmpty()) {
+        if (!raw.isEmpty()) {
             if (Character.toString(raw.charAt(0)).equals(",")) {
                 formatted = raw.substring(2);
             } else {
@@ -423,7 +462,7 @@ public class Node implements Serializable {
         for (int i = 0; i < mOptions.size(); i++) {
             if (mOptions.get(i).isSelected() & mOptions.get(i).isHasPhysicalExams()) {
                 String rawExams = mOptions.get(i).getPhysicalExams();
-                if(!rawExams.trim().isEmpty()) {
+                if (!rawExams.trim().isEmpty()) {
                     String[] splitExams = rawExams.split(";");
                     selectedExams.addAll(Arrays.asList(splitExams));
                 }
@@ -505,13 +544,14 @@ public class Node implements Serializable {
         });
 
         subQuestion.setView(convertView);
+        subQuestion.show();
 
     }
 
     public static void handleQuestion(Node questionNode, final Activity context, final CustomExpandableListAdapter adapter,
                                       final String imagePath, final String imageName) {
         String type = questionNode.getInputType();
-        Log.d(TAG, "handleQuestion: "+type);
+        Log.d(TAG, "handleQuestion: " + type);
         switch (type) {
             case "text":
                 askText(questionNode, context, adapter);
@@ -551,7 +591,7 @@ public class Node implements Serializable {
             File filePath = new File(imagePath);
             if (!filePath.exists()) {
                 boolean res = filePath.mkdirs();
-                Log.i("NODE>", ""+res);
+                Log.i("NODE>", "" + res);
             }
             cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
             cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, imagePath);
@@ -583,7 +623,6 @@ public class Node implements Serializable {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 
-
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface d) {
@@ -612,7 +651,7 @@ public class Node implements Serializable {
                                 return false;
                             }
                         })
-                        .override(screen_width,screen_height)
+                        .override(screen_width, screen_height)
                         .into(imageView);
             }
         });
