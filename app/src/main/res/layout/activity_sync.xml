@@ -7,7 +7,9 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/sync_RecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_width="585dp"
+        android:layout_height="810dp"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="8dp" />
 
     </android.support.constraint.ConstraintLayout>

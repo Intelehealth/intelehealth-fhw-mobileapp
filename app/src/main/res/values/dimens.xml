@@ -39,4 +39,6 @@
     <dimen name="physical_exam_img_min_height">150dp</dimen>
     <dimen name="physical_exam_img_max_height">200dp</dimen>
 
+    <dimen name="text_18sp">18sp</dimen>
+
 </resources>

@@ -22,7 +22,7 @@ public class UuidDictionary {
 
     public static final String TELEMEDICINE_DIAGNOSIS = "537bb20d-d09d-4f88-930b-cc45c7d662df";
     public static final String JSV_MEDICATIONS = "c38c0c50-2fd2-4ae3-b7ba-7dd25adca4ca";
-    public static final String MEDICAL_ADVICE = "67a050c1-35e5-451c-a4ab-fff9d57b0db1";
+    public static final String MEDICAL_ADVICE = "0308000d-77a2-46e0-a6fa-a8c1dcbc3141";
     public static final String REQUESTED_TESTS = "23601d71-50e6-483f-968d-aeef3031346d";
     public static final String ADDITIONAL_COMMENTS = "162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 

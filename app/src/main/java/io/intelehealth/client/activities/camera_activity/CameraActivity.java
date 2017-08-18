@@ -3,6 +3,8 @@ package io.intelehealth.client.activities.camera_activity;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -122,8 +124,14 @@ public class CameraActivity extends AppCompatActivity {
                     OutputStream os = null;
                     try {
                         os = new FileOutputStream(file);
-                        os.write(data);
+                        Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+                        Bitmap bitmap = Bitmap.createScaledBitmap(bmp, 800, 600, false);
+                        bmp.recycle();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+                        os.flush();
                         os.close();
+                        bitmap.recycle();
+
                         Intent intent = new Intent();
                         intent.putExtra("RESULT", file.getAbsolutePath());
                         setResult(RESULT_OK, intent);

@@ -532,10 +532,10 @@
     <string name="error_downloading_mindmaps">Error Downloading Mind Maps</string>
 
     //Sync strings
-    <string name="sync_stopped">Upload stopped</string>
-    <string name="sync_in_progress">Upload in progress</string>
-    <string name="sync_complete">Upload Complete</string>
-    <string name="sync_error">Upload Error : No such status</string>
+    <string name="sync_stopped">Stopped</string>
+    <string name="sync_in_progress">In progress</string>
+    <string name="sync_complete">Complete</string>
+    <string name="sync_error">Error : No such status</string>
 
     <string name="id_number">ID Number</string>
     <string name="uploading">Uploading</string>

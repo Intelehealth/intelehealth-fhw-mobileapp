@@ -45,6 +45,7 @@ public class UpdateVisitService extends IntentService {
     private String visitId;
     private String visitStartDateTime;
     private String patientUUID;
+    private String visitUUID;
     private String patientID;
 
     String quote = "\"";
@@ -80,14 +81,17 @@ public class UpdateVisitService extends IntentService {
             queueId = intent.getIntExtra("queueId", -1);
             queueSyncStart(queueId);
 
+
+
             String selection = "_id = ?";
-            String[] coloumns = {"start_datetime"};
+            String[] coloumns = {"start_datetime","openmrs_visit_uuid"};
             String[] args = {String.valueOf(visitId)};
 
             Cursor visitCursor = db.query("visit", coloumns, selection, args, null, null, null);
 
             if (visitCursor != null && visitCursor.moveToFirst() && visitCursor.getCount() > 0) {
                 visitStartDateTime = visitCursor.getString(visitCursor.getColumnIndex("start_datetime"));
+                visitUUID = visitCursor.getString(visitCursor.getColumnIndex("openmrs_visit_uuid"));
             }
 
             visitCursor.close();
@@ -105,6 +109,15 @@ public class UpdateVisitService extends IntentService {
                 }
 
                 patientCursor.close();
+
+                Intent imageUpload = new Intent(this, ImageUploadService.class);
+                imageUpload.putExtra("patientID", patientID);
+                imageUpload.putExtra("patientID", patientID);
+                imageUpload.putExtra("name", intent.getStringExtra("name"));
+                imageUpload.putExtra("patientUUID", patientUUID);
+                imageUpload.putExtra("visitUUID", visitUUID);
+                imageUpload.putExtra("visitID", visitId);
+                startService(imageUpload);
             }
 
             queryEncounterTable(visitId);

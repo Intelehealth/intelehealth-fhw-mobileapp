@@ -21,6 +21,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.intelehealth.client.R;
 import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
 import io.intelehealth.client.database.DelayedJobQueueProvider;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
@@ -91,15 +92,15 @@ public class PrescriptionDownloadService extends IntentService {
 
         Log.i(TAG, "onHandleIntent: "+ visitUUID);
 
-        //TODO: Define proper logic and add references to following methods
-        //TODO:removeJobFromQueue
-        //TODO:queueSyncStart
-        //TODO:queueSyncStop
-
-
         String queryString = "/" + visitUUID;
 
         queueSyncStart(queueId);
+
+        String newText = "Prescription Download Stated.";
+        mBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Prescription Download")
+                .setContentText(newText);
+        mNotifyManager.notify(mId, mBuilder.build());
 
         WebResponse responseVisit;
         responseVisit = HelperMethods.getCommand("visit", queryString, getApplicationContext());
@@ -332,9 +333,19 @@ public class PrescriptionDownloadService extends IntentService {
 
                         }
                     }
+                    newText = "Prescription Download Complete";
+                    mBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                            .setContentTitle("Prescription Download")
+                            .setContentText(newText);
+                    mNotifyManager.notify(mId, mBuilder.build());
                     removeJobFromQueue(queueId);
 
                 } else {
+                    newText = "No new data to download";
+                    mBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                            .setContentTitle("Prescription Download")
+                            .setContentText(newText);
+                    mNotifyManager.notify(mId, mBuilder.build());
                     removeJobFromQueue(queueId);
                 }
             }
@@ -415,6 +426,11 @@ public class PrescriptionDownloadService extends IntentService {
     }
 
     private void queueSyncStop(int queueId) {
+        String string = "Prescription Download Stopped";
+        mBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Prescription Download")
+                .setContentText(string);
+        mNotifyManager.notify(mId, mBuilder.build());
         ContentValues values = new ContentValues();
         values.put(DelayedJobQueueProvider.SYNC_STATUS, STATUS_SYNC_STOPPED);
         String url = DelayedJobQueueProvider.URL + "/" + queueId;

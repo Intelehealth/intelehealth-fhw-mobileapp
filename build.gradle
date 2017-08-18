@@ -18,6 +18,7 @@ allprojects {
     repositories {
         jcenter()
         maven { url 'https://jitpack.io' }
+        maven { url "https://maven.google.com" }
     }
 }
 
@@ -35,16 +36,18 @@ ext {
     multiDexVersion = '1.0.1'
 
     // App dependencies
-    supportLibraryVersion = '25.3.1'
+    supportLibraryVersion = '25.4.0'
     jodaTimeVersion = '2.9.3'
     arcaVersion = '4.9.2'
     firebaseVersion = '10.2.4'
-    cameraviewVersion= '9bbe07ba44'
+    cameraviewVersion = '9bbe07ba44'
     permissionDispatcherVersion = '2.3.2'
     debugDbVersion = '1.0.0'
     retrofitVersion = '2.3.0'
     okHttpVersion = '3.8.0'
-    jobDispatcherVersion='0.6.0'
-
-
+    jobDispatcherVersion = '0.6.0'
+    constraintLayoutVersion = '1.0.2'
+    glideVersion = '3.8.0'
+    parseAndroidVersion = '1.15.7'
+    guavaVersion = '22.0-android'
 }

@@ -45,8 +45,41 @@ public class SyncViewHolder extends RecyclerView.ViewHolder {
 
     public void bindItems(SyncModel syncModel) {
 
-        getHeadTextView().setText(getHeadTextView().getContext().getString(R.string.uploading) +
-                " " + syncModel.getJobType());
+        String serviceName;
+        switch (syncModel.getJobType()) {
+            case "patient": {
+                serviceName = "Uploading Patient Data";
+                break;
+            }
+            case "visit": {
+                serviceName = "Uploading Visit Data";
+                break;
+            }
+            case "endVisit": {
+                serviceName = "Uploading End Visit";
+                break;
+            }
+            case "photoUpload": {
+                serviceName = "UploadingPatient Photo";
+                break;
+            }
+            case "imageUpload": {
+                serviceName = "Uploading Visit Images";
+                break;
+            }
+            case "prescriptionDownload": {
+                serviceName = "Downloading Prescription";
+                break;
+            }
+            case "obsUpdate": {
+                serviceName = "Uploading Visit Updates";
+                break;
+            }
+            default:
+                serviceName = "";
+        }
+
+        getHeadTextView().setText(serviceName);
 
         getBodyTextView().setText(syncModel.getPatientName() + "\n" +
                 getBodyTextView().getContext().getString(R.string.id_number) + ":" +

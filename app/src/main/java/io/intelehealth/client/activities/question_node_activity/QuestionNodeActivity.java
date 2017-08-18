@@ -53,6 +53,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
     String intentTag;
     String image_Prefix = "QN";
     String imageDir = "Question Node";
+    String insertion = "";
 
     Boolean complaintConfirmed = false;
 
@@ -257,8 +258,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
             questionsMissing();
         } else {
 
-            //TODO: Under this new scheme where there is just a list of existing JSONS, need to parse out associated symptoms
-//            ArrayList<String> selectedAssociations = currentNode.getSelectedAssociations();
+            //TODO: Under this new scheme where there is just a list of existing JSONS, need to parse out associated symptomsArrayList<String> selectedAssociations = currentNode.getSelectedAssociations();
 //            for (int i = 0; i < selectedAssociations.size(); i++) {
 //                if (!complaints.contains(selectedAssociations.get(i))) {
 //                    complaints.add(selectedAssociations.get(i));
@@ -275,14 +275,14 @@ public class QuestionNodeActivity extends AppCompatActivity {
             }
 
             String complaintString = currentNode.generateLanguage();
-            String insertion = null;
+
             if(complaintString !=null && !complaintString.isEmpty()) {
-                String complaintFormatted = complaintString.replace("?,", "?:");
+           //     String complaintFormatted = complaintString.replace("?,", "?:");
 
                 String complaint = currentNode.getText();
-                complaintDetails.put(complaint, complaintFormatted);
+            //    complaintDetails.put(complaint, complaintFormatted);
 
-                insertion = complaint + ": " + complaintFormatted;
+                insertion = insertion.concat(complaint + ": " + complaintString + " ");
             }
             ArrayList<String> selectedAssociatedComplaintsList = currentNode.getSelectedAssociations();
             if (selectedAssociatedComplaintsList != null && !selectedAssociatedComplaintsList.isEmpty()) {
@@ -309,6 +309,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 complaintConfirmed = false;
             } else {
                 if (intentTag != null && intentTag.equals("edit")) {
+                    Log.i(LOG_TAG, "fabClick: update" +insertion);
                     updateDatabase(insertion);
                     Intent intent = new Intent(QuestionNodeActivity.this, PhysicalExamActivity.class);
                     intent.putExtra("patientID", patientID);
@@ -321,6 +322,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
                     for (String exams : physicalExams) Log.i(LOG_TAG, exams);
                     startActivity(intent);
                 } else {
+                    Log.i(LOG_TAG, "fabClick: " + insertion);
                     insertDb(insertion);
                     Intent intent = new Intent(QuestionNodeActivity.this, PastMedicalHistoryActivity.class);
                     intent.putExtra("patientID", patientID);
@@ -347,6 +349,8 @@ public class QuestionNodeActivity extends AppCompatActivity {
      * @return DB Row number, never used
      */
     private long insertDb(String value) {
+
+        Log.i(LOG_TAG, "insertDb: "+ patientID+" "+visitID+" "+ConceptId.CURRENT_COMPLAINT);
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -378,6 +382,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
     }
 
     private void updateDatabase(String string) {
+        Log.i(LOG_TAG, "updateDatabase: "+ patientID+" "+visitID+" "+ConceptId.CURRENT_COMPLAINT);
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
 

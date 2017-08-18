@@ -20,7 +20,7 @@ public class ConceptId {
 
     public static final int TELEMEDICINE_DIAGNOSIS = 163219;
     public static final int JSV_MEDICATIONS = 163202;
-    public static final int MEDICAL_ADVICE = 163205;
+    public static final int MEDICAL_ADVICE = 163216;
     public static final int REQUESTED_TESTS = 163206;
     public static final int ADDITIONAL_COMMENTS = 162169;
 

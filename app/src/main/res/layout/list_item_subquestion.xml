@@ -20,9 +20,7 @@
         android:textStyle="normal"
         android:paddingBottom="@dimen/padding_complaint_select"
         android:paddingTop="@dimen/padding_complaint_select"
-        android:textSize="@dimen/text_size_complaint"
+        android:textSize="@dimen/card_content_text_size"
         android:id="@+id/subquestion_text_view"/>
-
-
 
 </LinearLayout>

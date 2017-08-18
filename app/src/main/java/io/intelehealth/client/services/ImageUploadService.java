@@ -91,28 +91,33 @@ public class ImageUploadService extends IntentService {
         cursor.close();
         localdb.close();
         queueSyncStart(queueId);
-        for (String imagePath : imagePaths) {
-            File file = new File(imagePath);
-            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-            int endIndex = imagePath.lastIndexOf(File.separator);
-            String imageName = "Default.jpg";
-            if (endIndex != -1) {
-                imageName = imagePath.substring(endIndex + 1, imagePath.length());
-                Log.i(LOG_TAG, imageName);
+        if(!imagePaths.isEmpty()) {
+            for (String imagePath : imagePaths) {
+                File file = new File(imagePath);
+                Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+                int endIndex = imagePath.lastIndexOf(File.separator);
+                String imageName = "Default.jpg";
+                if (endIndex != -1) {
+                    imageName = imagePath.substring(endIndex + 1, imagePath.length());
+                    Log.i(LOG_TAG, imageName);
+                }
+                String classname = file.getParentFile().getName();
+                classname = classname.replaceAll("\\s+", "");
+                Log.i(LOG_TAG, classname);
+                if (HelperMethods.isNetworkAvailable(this)) {
+                    uploadImage(classname, bitmap, imageName, intent, imagePath);
+                } else {
+                    String newText = "Failed to Post Images.";
+                    mBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                            .setContentTitle("Image Upload")
+                            .setContentText(newText);
+                    mNotifyManager.notify(mId, mBuilder.build());
+                    Log.d(LOG_TAG, "Visit Image Posting Unsuccessful");
+                }
             }
-            String classname = file.getParentFile().getName();
-            classname = classname.replaceAll("\\s+", "");
-            Log.i(LOG_TAG, classname);
-            if (HelperMethods.isNetworkAvailable(this)) {
-                uploadImage(classname, bitmap, imageName, intent, imagePath);
-            } else {
-                String newText = "Failed to Post Images.";
-                mBuilder.setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("Image Upload")
-                        .setContentText(newText);
-                mNotifyManager.notify(mId, mBuilder.build());
-                Log.d(LOG_TAG, "Person Image Posting Unsuccessful");
-            }
+        }else{
+            queueSyncStop(queueId);
+            removeJobFromQueue(queueId);
         }
         queueSyncStop(queueId);
     }
@@ -131,7 +136,7 @@ public class ImageUploadService extends IntentService {
             @Override
             public void done(com.parse.ParseException e) {
                 if (e == null) {
-                    String newText = "Person Image Posted successfully.";
+                    String newText = "Visit Image Posted successfully.";
                     mBuilder.setSmallIcon(R.mipmap.ic_launcher)
                             .setContentTitle("Image Upload")
                             .setContentText(newText);

@@ -289,6 +289,7 @@ public class Node implements Serializable {
         for (Node node : optionsList) {
             if (node.getText().equals(name)) {
                 foundNode = node;
+                Log.i(TAG, "getOptionByName: FOUND NODE!");
             }
         }
         return foundNode;
@@ -356,11 +357,10 @@ public class Node implements Serializable {
         for (int i = 0; i < mOptions.size(); i++) {
             if (mOptions.get(i).isSelected()) {
                 String test = mOptions.get(i).getLanguage();
-                if(test.equals("%")){}
-                else if(test.substring(0,1).equals("%")){
+                if (test.equals("%")) {
+                } else if (test.substring(0, 1).equals("%")) {
                     stringsList.add(test.substring(1));
-                }
-                else {
+                } else {
                     stringsList.add(test);
                 }
                 Log.i(TAG, mOptions.get(i).getLanguage());
@@ -379,43 +379,28 @@ public class Node implements Serializable {
         if (isTerminal) {
             languageSeparator = ", ";
         } else {
-            languageSeparator = "";
+            languageSeparator = " - ";
         }
         String mLanguage = "";
         for (int i = 0; i < stringsList.size(); i++) {
             if (i == 0) {
-                if (i == stringsList.size() - 1) {
-                    mLanguage = mLanguage.concat(stringsList.get(i) + ".");
-                    Log.i(TAG, "mLangif: " + mLanguage);
-                } else {
-                    if (!stringsList.get(i).isEmpty()) {
-                        mLanguage = mLanguage.concat(stringsList.get(i));
-                        Log.i(TAG, "mLangif: " + mLanguage);
-                    }
-                }
-            } else if (i == stringsList.size() - 1) {
+
                 if (!stringsList.get(i).isEmpty()) {
-                    Log.i(TAG, "formLanguageString: " +stringsList.get(i));
-                    char test = stringsList.get(i).charAt(stringsList.get(i).length() - 1);
-                    if (test == '.') {
-                        mLanguage = mLanguage.concat(stringsList.get(i));
-                        Log.i(TAG, "mLangelse: . " + mLanguage);
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(stringsList.get(i) + ".");
                     } else {
-                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i) + ".");
-                        Log.i(TAG, "mLangelse: " + mLanguage);
+                        mLanguage = mLanguage.concat(stringsList.get(i));
+                        Log.i(TAG, "mLangif 2: " + mLanguage);
                     }
                 }
             } else {
                 if (!stringsList.get(i).isEmpty()) {
-                    String test = stringsList.get(i).substring(stringsList.get(i).length() - 1);
-                    Log.i(TAG, "formLanguageTest: "+test);
-                    if (test.equals(".")) {
-                        //TODO: Change this "-"
-                        mLanguage = mLanguage.concat("-"+stringsList.get(i));
-                        Log.i(TAG, "mLangelse: . " + mLanguage);
-                    } else {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i) + ".");
+                    }
+                    else {
                         mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i));
-                        Log.i(TAG, "mLangelse: " + mLanguage);
+                        Log.i(TAG, "mLangelse 4: " + mLanguage + " ");
                     }
                 }
             }
@@ -435,6 +420,10 @@ public class Node implements Serializable {
             }
             Log.d("Generated language", formatted);
 
+            formatted = formatted.replaceAll("\\. -",".");
+            Log.i(TAG, "generateLanguage2: " +formatted);
+            formatted = formatted.replaceAll("\\.,",", ");
+            Log.i(TAG, "generateLanguage3: " +formatted);
             return formatted;
         }
         return null;

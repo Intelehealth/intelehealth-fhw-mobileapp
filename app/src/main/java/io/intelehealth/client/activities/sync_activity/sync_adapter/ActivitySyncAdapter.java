@@ -31,12 +31,6 @@ public class ActivitySyncAdapter extends RecyclerViewCursorAdapter<SyncViewHolde
     public void onBindViewHolder(final SyncViewHolder holder, Cursor cursor) {
         SyncModel syncModel = new SyncModel(cursor);
         holder.bindItems(syncModel);
-        holder.getRootView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(holder.getRootView().getContext(), "View Clicked", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
 }

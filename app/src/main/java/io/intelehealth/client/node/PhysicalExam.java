@@ -56,55 +56,71 @@ public class PhysicalExam extends Node {
         foundLocations.add(newOptionsList.get(0).getText());
 
         //TODO: Physical exam mind map needs to be modified to include required attribute
-
-        for (int i = 0; i < getOption(0).getOptionsList().size(); i++) {
-            getOption(0).getOption(i).setRequired(true);
-            for (int j = 0; j < getOption(0).getOption(i).getOptionsList().size(); j++) {
-                getOption(0).getOption(i).getOption(j).setRequired(true);
+        if (getOption(0).getOptionsList() != null) {
+            for (int i = 0; i < getOption(0).getOptionsList().size(); i++) {
+                getOption(0).getOption(i).setRequired(true);
+                if (getOption(0).getOption(i).getOptionsList() != null) {
+                    for (int j = 0; j < getOption(0).getOption(i).getOptionsList().size(); j++) {
+                        getOption(0).getOption(i).getOption(j).setRequired(true);
+                    }
+                }
             }
-        }
 
 
-        //Find the other exams that need to be conducted and add them in
-        if (selection == null || selection.isEmpty()) {
-            //If no exams were required, just do the general ones
-            return newOptionsList;
-        } else {
-            for (String current:selection) {
-                if (!current.trim().isEmpty()) {
+            //Find the other exams that need to be conducted and add them in
+            if (selection == null || selection.isEmpty()) {
+                //If no exams were required, just do the general ones
+                return newOptionsList;
+            } else {
+                for (String current : selection) {
+                    if (!current.trim().isEmpty()) {
                 /*
                 First, the selection texts are taken individually, and split up into location:exam
                 The location node is identified first, and then the exam nodes
                  */
 
-                    Log.d("Exam current ", current);
-                    String[] split = current.split(":");
-                    String location = split[0];
-                    Log.d("Exam location ", location);
-                    String exam = split[1];
-                    Log.d("Exam exam ", exam);
-                    Node locationNodeRef = getOptionByName(location);
-                    Log.d("Exam locRef", locationNodeRef.getText());
-                    Node examNodeRef = locationNodeRef.getOptionByName(exam);
-                    Log.d("Exam examRef", examNodeRef.getText());
+                        if (current != null) {
+                            Log.d("Exam current ", current);
 
-                    //The foundLocation list is to ensure that the same exam isn't display twice
-                    if (foundLocations.contains(location)) {
-                        Log.d("Exam if", "location in foundLocations");
-                        int locationIndex = foundLocations.indexOf(location);
-                        Node foundLocationNode = newOptionsList.get(locationIndex);
-                        foundLocationNode.addOptions(new Node(examNodeRef));
-                    } else {
+                            String[] split = current.split(":");
+                            String location = split[0];
+                            String exam = split[1];
+                            if (location != null && !location.isEmpty() && exam != null && !exam.isEmpty()) {
+                                Node locationNodeRef = null;
+                                Log.d("Exam location ", location);
+                                Log.d("Exam exam ", exam);
 
-                        //If it's a new exam, the location needs to be added to the list of things to check
-                        Log.d("Exam if", "not found");
-                        foundLocations.add(location);
-                        Node locationNode = new Node(locationNodeRef);
-                        locationNode.removeOptionsList();
-                        locationNode.addOptions(new Node(examNodeRef));
-                        newOptionsList.add(locationNode);
+                                locationNodeRef = getOptionByName(location);
+
+                                Node examNodeRef = null;
+                                if (locationNodeRef != null) {
+                                    Log.d("Exam locRef", locationNodeRef.getText());
+                                    examNodeRef = locationNodeRef.getOptionByName(exam);
+                                }
+                                if (examNodeRef != null) {
+
+
+                                    Log.d("Exam examRef", examNodeRef.getText());
+
+                                    //The foundLocation list is to ensure that the same exam isn't display twice
+                                    if (foundLocations.contains(location)) {
+                                        Log.d("Exam if", "location in foundLocations");
+                                        int locationIndex = foundLocations.indexOf(location);
+                                        Node foundLocationNode = newOptionsList.get(locationIndex);
+                                        foundLocationNode.addOptions(new Node(examNodeRef));
+                                    } else {
+                                        //If it's a new exam, the location needs to be added to the list of things to check
+                                        Log.d("Exam if", "not found");
+                                        foundLocations.add(location);
+                                        Node locationNode = new Node(locationNodeRef);
+                                        locationNode.removeOptionsList();
+                                        locationNode.addOptions(new Node(examNodeRef));
+                                        newOptionsList.add(locationNode);
+                                    }
+                                }
+                            }
+                        }
                     }
-
                 }
             }
         }
@@ -203,14 +219,14 @@ public class PhysicalExam extends Node {
         int total = this.totalExams;
         for (int i = 0; i < total; i++) {
             Node node = getExamNode(i);
-            if ((node.isSelected() | node.anySubSelected()) && node.isRootNode()) {
-//                Log.d(node.getText(), node.getLanguage());
+            if ((node.isSelected() | node.anySubSelected())) {
+                Log.d(TAG, node.getText() + " - " + node.getLanguage());
                 stringsList.add(node.getLanguage());
                 if (!node.isTerminal()) {
                     stringsList.add(node.formLanguage());
                 }
             }
-            mLanguage = mLanguage + node.getLanguage();
+            //  mLanguage = mLanguage + node.getLanguage();
         }
 
 
@@ -229,8 +245,9 @@ public class PhysicalExam extends Node {
 //            }
         }
 
-        mLanguage = removeCharsFindings(mLanguage);
-
+//        mLanguage = removeCharsFindings(mLanguage);
+        mLanguage = mLanguage.replaceAll("\\. -",".");
+        mLanguage = mLanguage.replaceAll("\\.", "\\. ");
         return mLanguage;
     }
 

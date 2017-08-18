@@ -385,27 +385,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
             if (visitIDCursor != null) visitIDCursor.close();
             if (visitUUID != null && !visitUUID.isEmpty()) {
-                downloadButton = new Button(VisitSummaryActivity.this);
-                downloadButton.setLayoutParams(new LinearLayoutCompat.LayoutParams(
-                        LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
-                downloadButton.setText(R.string.visit_summary_button_download);
-
-
-                downloadButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Snackbar.make(view, "Downloading from doctor", Snackbar.LENGTH_LONG).show();
-                        Intent startDownload = new Intent(VisitSummaryActivity.this, PrescriptionDownloadService.class);
-                        startDownload.putExtra("patientID", patientID);
-                        startDownload.putExtra("visitID", visitID);
-                        startDownload.putExtra("name", patientName);
-                        startDownload.putExtra("visitUUID", visitUUID);
-                        startService(startDownload);
-
-                        //  retrieveOpenMRS(view);
-                    }
-                });
-                mLayout.addView(downloadButton, mLayout.getChildCount());
+              addDownloadButton();
             }
 
         }
@@ -1604,7 +1584,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 
                     Log.i(TAG, "onClick: " + c.getCount());
-
+                    if (visitUUID == null) {
+                        String[] columnsToReturn = {"openmrs_visit_uuid"};
+                        String visitIDorderBy = "start_datetime";
+                        String visitIDSelection = "_id = ?";
+                        String[] visitIDArgs = {visitID};
+                        final Cursor visitIDCursor = db.query("visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
+                        if (visitIDCursor != null && visitIDCursor.moveToFirst() && visitIDCursor.getCount() > 0) {
+                            visitIDCursor.moveToFirst();
+                            visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("openmrs_visit_uuid"));
+                        }
+                        if (visitIDCursor != null) visitIDCursor.close();
+                    }
                     if (c == null || c.getCount() == 0) {
                         Snackbar.make(view, "Downloading from doctor", Snackbar.LENGTH_LONG).show();
                         Intent startDownload = new Intent(VisitSummaryActivity.this, PrescriptionDownloadService.class);
@@ -1624,7 +1615,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 serviceIntent.putExtra("patientID", patientID);
                                 serviceIntent.putExtra("visitID", visitID);
                                 serviceIntent.putExtra("name", patientName);
-                                serviceIntent.putExtra("visitUUID", visitUUID);
                                 serviceIntent.putExtra("visitUUID", visitUUID);
                                 serviceIntent.putExtra("queueId", c.getInt(c.getColumnIndex(DelayedJobQueueProvider._ID)));
                                 startService(serviceIntent);
