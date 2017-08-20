@@ -39,6 +39,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.camera_activity.CameraActivity;
@@ -54,6 +55,7 @@ public class Node implements Serializable {
     private String id;
     private String text;
     private String display;
+    private String display_oriya;
     private String language;
     private String choiceType;
     private String inputType;
@@ -123,6 +125,15 @@ public class Node implements Serializable {
             if (this.display.isEmpty()) {
                 this.display = this.text;
             }
+
+            this.display_oriya = jsonNode.optString("display-or");
+            if (this.display_oriya.isEmpty()) {
+                this.display_oriya = jsonNode.optString("display-or");
+            }
+            if (this.display_oriya.isEmpty()) {
+                this.display_oriya = this.text;
+            }
+
 
             this.language = jsonNode.optString("language");
             if (this.language.isEmpty()) {
@@ -252,10 +263,34 @@ public class Node implements Serializable {
     }
 
     public String findDisplay() {
-        if (display.isEmpty()) {
-            return text;
-        } else {
-            return display;
+        String locale = Locale.getDefault().getISO3Language();
+        Log.d(TAG, "findDisplay: " + locale);
+        switch (locale) {
+            case "eng": {
+                Log.i(TAG, "findDisplay: en");
+                if (display.isEmpty()) {
+                    return text;
+                } else {
+                    return display;
+                }
+            }
+            case "ori": {
+                Log.i(TAG, "findDisplay: or");
+                if (display_oriya.isEmpty()) {
+                    return text;
+                } else {
+                    return display_oriya;
+                }
+            }
+            default: {
+                {
+                    if (display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
         }
     }
 
@@ -397,8 +432,7 @@ public class Node implements Serializable {
                 if (!stringsList.get(i).isEmpty()) {
                     if (i == stringsList.size() - 1 && isTerminal) {
                         mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i) + ".");
-                    }
-                    else {
+                    } else {
                         mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i));
                         Log.i(TAG, "mLangelse 4: " + mLanguage + " ");
                     }
@@ -420,10 +454,10 @@ public class Node implements Serializable {
             }
             Log.d("Generated language", formatted);
 
-            formatted = formatted.replaceAll("\\. -",".");
-            Log.i(TAG, "generateLanguage2: " +formatted);
-            formatted = formatted.replaceAll("\\.,",", ");
-            Log.i(TAG, "generateLanguage3: " +formatted);
+            formatted = formatted.replaceAll("\\. -", ".");
+            Log.i(TAG, "generateLanguage2: " + formatted);
+            formatted = formatted.replaceAll("\\.,", ", ");
+            Log.i(TAG, "generateLanguage3: " + formatted);
             return formatted;
         }
         return null;

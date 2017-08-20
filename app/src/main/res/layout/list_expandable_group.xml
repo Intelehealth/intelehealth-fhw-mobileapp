@@ -12,7 +12,7 @@
         android:paddingBottom="@dimen/padding_complaint_select"
         android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
         android:paddingTop="@dimen/padding_complaint_select"
-        android:textSize="@dimen/text_size_category" />
+        android:textSize="@dimen/text_size_complaint" />
 
     <ImageView
         android:id="@+id/expandable_list_group_image"
