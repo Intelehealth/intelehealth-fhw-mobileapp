@@ -139,6 +139,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.identification_activity.IdentificationActivity"
+            android:parentActivityName=".activities.home_activity.HomeActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_identification"
             android:screenOrientation="portrait"

@@ -93,7 +93,7 @@ public class VitalsActivity extends AppCompatActivity {
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
-            physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
+        //    physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
 
 
 //            Log.v(TAG, "Patient ID: " + patientID);
@@ -535,7 +535,7 @@ public class VitalsActivity extends AppCompatActivity {
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
             intent.putExtra("tag", intentTag);
-            intent.putStringArrayListExtra("exams", physicalExams);
+         //   intent.putStringArrayListExtra("exams", physicalExams);
             startActivity(intent);
         }
     }

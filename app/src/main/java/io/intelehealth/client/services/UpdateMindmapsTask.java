@@ -12,12 +12,15 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.channels.FileChannel;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.utilities.HelperMethods;
@@ -39,6 +42,7 @@ public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
 
     public File base_dir;
     public String[] FILES;
+
     public UpdateMindmapsTask(Activity activity) {
         mWeakActivity = new WeakReference<>(activity);
     }
@@ -53,10 +57,10 @@ public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
     protected void onPreExecute() {
         super.onPreExecute();
         Activity activity = mWeakActivity.get();
-        if (activity != null  && progress == null) {
+        if (activity != null && progress == null) {
             progress = new ProgressDialog(activity);
         }
-        if(progress!=null && !progress.isShowing()){
+        if (progress != null && !progress.isShowing()) {
             progress.setTitle(activity.getString(R.string.please_wait_progress));
             progress.setMessage(activity.getString(R.string.downloading_mindmaps));
             progress.setCanceledOnTouchOutside(false);
@@ -146,33 +150,73 @@ public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
             Log.i("FLEN", "" + files.length);
             FILES = new String[files.length];
             FILES = files;
-            downloadMindMaps(activity,files.length);
+            downloadMindMaps(activity, files.length);
         }
-        
+
 
         Log.i(TAG, "onPostExecute: " + isLastFile);
-        if(isLastFile){
+        if (isLastFile) {
             deleteFolder(new File(activity.getFilesDir().getAbsolutePath(), HelperMethods.JSON_FOLDER));
+            File physicalExam = new File(activity.getFilesDir().getAbsolutePath() + "/physExam.json");
+            Log.i(TAG, "onPostExecute: " + physicalExam.exists());
+            File familyHistory = new File(activity.getFilesDir().getAbsolutePath() + "/famHist.json");
+            Log.i(TAG, "onPostExecute: " + familyHistory);
+            File pastMedicalHistory = new File(activity.getFilesDir().getAbsolutePath() + "/patHist.json");
+            Log.i(TAG, "onPostExecute: " + pastMedicalHistory);
             File enginesDir = new File(activity.getFilesDir().getAbsolutePath(), HelperMethods.JSON_FOLDER);
             base_dir.renameTo(enginesDir);
-            Log.i(TAG, "onPostExecute: " + isLastFile);
+            File physExam = new File(enginesDir, "physExam.json");
+            if (physExam.exists()) {
+                Log.i(TAG, "onPostExecute: physExam");
+                physicalExam.delete();
+                try {
+                    copyFile(physExam, physicalExam);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                physExam.delete();
+            }
+
+            File famHist = new File(enginesDir, "famHist.json");
+            if (famHist.exists()) {
+                Log.i(TAG, "onPostExecute: famHist");
+                familyHistory.delete();
+                try {
+                    copyFile(famHist, familyHistory);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                famHist.delete();
+            }
+
+            File patHist = new File(enginesDir, "patHist.json");
+            if (patHist.exists()) {
+                Log.i(TAG, "onPostExecute: patHist");
+                pastMedicalHistory.delete();
+                try {
+                    copyFile(patHist, pastMedicalHistory);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                patHist.delete();
+            }
             progress.dismiss();
         }
     }
 
     //DOWNLOAD ALL MIND MAPS
-    private void downloadMindMaps(Activity activity,Integer length) {
+    private void downloadMindMaps(Activity activity, Integer length) {
         base_dir = new File(activity.getFilesDir().getAbsolutePath(), HelperMethods.JSON_FOLDER_Update);
         Log.i(TAG, "downloadMindMaps: " + activity.getFilesDir().getAbsolutePath());
         if (!base_dir.exists()) base_dir.mkdirs();
-        for (int i=0; i<length; i++){
+        for (int i = 0; i < length; i++) {
             String file = FILES[i];
             String[] parts = file.split(".json");
             //Log.i("DOWNLOADING-->",parts[0].replaceAll("\\s+",""));
-            if(i==length-1){
-                new UpdateMindmapsTask(activity, base_dir,true).execute(file, parts[0].replaceAll("\\s+", ""), null);
-            }else {
-                new UpdateMindmapsTask(activity, base_dir,false).execute(file, parts[0].replaceAll("\\s+", ""), null);
+            if (i == length - 1) {
+                new UpdateMindmapsTask(activity, base_dir, true).execute(file, parts[0].replaceAll("\\s+", ""), null);
+            } else {
+                new UpdateMindmapsTask(activity, base_dir, false).execute(file, parts[0].replaceAll("\\s+", ""), null);
             }
         }
     }
@@ -189,6 +233,31 @@ public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
             }
         }
         folder.delete();
+    }
+
+    public static void copyFile(File sourceFile, File destFile) throws IOException {
+        if (!destFile.exists()) {
+            destFile.createNewFile();
+            Log.i(TAG, "copyFile: DoesNotExists");
+        }
+
+        FileChannel origin = null;
+        FileChannel destination = null;
+        try {
+            origin = new FileInputStream(sourceFile).getChannel();
+            destination = new FileOutputStream(destFile).getChannel();
+
+            long count = 0;
+            long size = origin.size();
+            while ((count += destination.transferFrom(origin, count, size - count)) < size) ;
+        } finally {
+            if (origin != null) {
+                origin.close();
+            }
+            if (destination != null) {
+                destination.close();
+            }
+        }
     }
 
 }

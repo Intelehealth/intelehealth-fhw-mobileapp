@@ -5,7 +5,9 @@ import android.util.Log;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Physical Exam information class
@@ -18,7 +20,7 @@ import java.util.List;
  */
 public class PhysicalExam extends Node {
 
-    private static final String LOG = PhysicalExam.class.getSimpleName();
+    private static final String TAG = PhysicalExam.class.getSimpleName();
 
     private ArrayList<String> selection;
     private List<Node> selectedNodes;
@@ -214,26 +216,32 @@ public class PhysicalExam extends Node {
     //TODO: Physical exam map needs to modified to make language generation easier.
     public String generateFindings() {
         String mLanguage = "";
+        Set<String> rootStrings = new HashSet<>();
         List<String> stringsList = new ArrayList<>();
 
         int total = this.totalExams;
         for (int i = 0; i < total; i++) {
             Node node = getExamNode(i);
+            Log.d(TAG, getTitle(i) + " ::root:: ");
+            String title = getTitle(i);
+            String[] split = title.split(" : ");
+            String levelOne = split[0];
             if ((node.isSelected() | node.anySubSelected())) {
+                boolean checkSet = rootStrings.add(levelOne);
                 Log.d(TAG, node.getText() + " - " + node.getLanguage());
-                stringsList.add(node.getLanguage());
+                if (checkSet) stringsList.add(levelOne+": "+node.getLanguage());
+                else stringsList.add(node.getLanguage());
                 if (!node.isTerminal()) {
                     stringsList.add(node.formLanguage());
                 }
             }
-            //  mLanguage = mLanguage + node.getLanguage();
         }
 
 
-        String languageSeparator = ", ";
+        String languageSeparator = " - ";
 
         for (int i = 0; i < stringsList.size(); i++) {
-            mLanguage = mLanguage.concat(stringsList.get(i));
+            mLanguage = mLanguage.concat(stringsList.get(i) + languageSeparator);
 //            if (i == 0) {
 //                if (!stringsList.get(i).isEmpty()) {
 //                    mLanguage = mLanguage.concat(stringsList.get(i));
@@ -246,8 +254,9 @@ public class PhysicalExam extends Node {
         }
 
 //        mLanguage = removeCharsFindings(mLanguage);
-        mLanguage = mLanguage.replaceAll("\\. -",".");
+        mLanguage = mLanguage.replaceAll("\\. -", ".");
         mLanguage = mLanguage.replaceAll("\\.", "\\. ");
+        mLanguage = mLanguage.replaceAll("\\: -", "\\: ");
         return mLanguage;
     }
 

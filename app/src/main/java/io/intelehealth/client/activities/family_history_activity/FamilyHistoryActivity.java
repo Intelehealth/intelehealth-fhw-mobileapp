@@ -12,25 +12,25 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.intelehealth.client.activities.past_medical_history_activity.PastMedicalHistoryActivity;
-import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity;
-import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
-import io.intelehealth.client.utilities.ConceptId;
-import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.R;
-import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
 import io.intelehealth.client.activities.custom_expandable_list_adapter.CustomExpandableListAdapter;
+import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity;
+import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.node.Node;
+import io.intelehealth.client.node.PhysicalExam;
+import io.intelehealth.client.utilities.ConceptId;
+import io.intelehealth.client.utilities.HelperMethods;
 
 /**
  * Creates the family history mindmap of the patient.
@@ -60,8 +60,9 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     ExpandableListView familyListView;
 
     ArrayList<String> insertionList = new ArrayList<>();
-    String insertion = "" , phistory ="" , fhistory="";
-     boolean flag= false;
+    String insertion = "", phistory = "", fhistory = "";
+    boolean flag = false;
+    boolean hasLicense = false;
     SharedPreferences.Editor e;
 
     @Override
@@ -73,11 +74,10 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         // display pop-up to ask for update, if a returning patient
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         e = sharedPreferences.edit();
-        fhistory = sharedPreferences.getString("fhistory"," ");
-        phistory = sharedPreferences.getString("phistory"," ");
-        boolean past = sharedPreferences.getBoolean("returning",false);
-        if(past)
-        {
+        fhistory = sharedPreferences.getString("fhistory", " ");
+        phistory = sharedPreferences.getString("phistory", " ");
+        boolean past = sharedPreferences.getBoolean("returning", false);
+        if (past) {
             AlertDialog.Builder alertdialog = new AlertDialog.Builder(FamilyHistoryActivity.this);
             alertdialog.setTitle("Family History");
             alertdialog.setMessage("Do you want to update details?");
@@ -94,16 +94,16 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                     // skip
                     flag = false;
                     insertDb(fhistory);
-                  //  PastMedicalHistoryActivity pmh = new PastMedicalHistoryActivity();
-                   // pmh.insertDb(phistory);
+                    //  PastMedicalHistoryActivity pmh = new PastMedicalHistoryActivity();
+                    // pmh.insertDb(phistory);
 
-                    Intent intent =new Intent(FamilyHistoryActivity.this,PhysicalExamActivity.class);
+                    Intent intent = new Intent(FamilyHistoryActivity.this, PhysicalExamActivity.class);
                     intent.putExtra("patientID", patientID);
                     intent.putExtra("visitID", visitID);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
-                    intent.putStringArrayListExtra("exams", physicalExams);
+                    //  intent.putStringArrayListExtra("exams", physicalExams);
 
                     startActivity(intent);
 
@@ -120,7 +120,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
-            physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
+            //       physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
 //            Log.v(TAG, "Patient ID: " + patientID);
 //            Log.v(TAG, "Visit ID: " + visitID);
 //            Log.v(TAG, "Patient Name: " + patientName);
@@ -145,7 +145,22 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             }
         });
 
-        familyHistoryMap = new Node(HelperMethods.encodeJSON(this, mFileName)); //Load the family history mind map
+        if (sharedPreferences.contains("licensekey"))
+            hasLicense = true;
+
+        if (hasLicense) {
+            try {
+                JSONObject currentFile = null;
+                currentFile = new JSONObject(HelperMethods.readFileRoot(mFileName, this));
+                familyHistoryMap = new Node(currentFile); //Load the family history mind map
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            familyHistoryMap = new Node(HelperMethods.encodeJSON(this, mFileName)); //Load the family history mind map
+        }
+
+       // familyHistoryMap = new Node(HelperMethods.encodeJSON(this, mFileName)); //Load the family history mind map
         familyListView = (ExpandableListView) findViewById(R.id.family_history_expandable_list_view);
         adapter = new CustomExpandableListAdapter(this, familyHistoryMap, this.getClass().getSimpleName());
         familyListView.setAdapter(adapter);
@@ -251,27 +266,27 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             startActivity(intent);
         } else {
 
-            if(flag == true)
-            {
+            if (flag == true) {
                 // only if OK clicked, collect this new info (old patient)
-                if (insertion.length()>0) {
-                    fhistory = fhistory + insertion; }
-                else { fhistory = fhistory +""; }
-                    insertDb(fhistory);
+                if (insertion.length() > 0) {
+                    fhistory = fhistory + insertion;
+                } else {
+                    fhistory = fhistory + "";
+                }
+                insertDb(fhistory);
 
-                   // PastMedicalHistoryActivity pmh = new PastMedicalHistoryActivity();
-                   // pmh.insertDb(phistory);
+                // PastMedicalHistoryActivity pmh = new PastMedicalHistoryActivity();
+                // pmh.insertDb(phistory);
 
                 // this will display history data as it is present in database
-               // Toast.makeText(FamilyHistoryActivity.this,"new PMH: "+phistory,Toast.LENGTH_SHORT).show();
-               // Toast.makeText(FamilyHistoryActivity.this,"new FH: "+fhistory,Toast.LENGTH_SHORT).show();
-            }
-            else {
+                // Toast.makeText(FamilyHistoryActivity.this,"new PMH: "+phistory,Toast.LENGTH_SHORT).show();
+                // Toast.makeText(FamilyHistoryActivity.this,"new FH: "+fhistory,Toast.LENGTH_SHORT).show();
+            } else {
                 insertDb(insertion); // new details of family history
             }
 
-            flag=false;
-            e.putBoolean("returning",false); // done with old patient, so unset flag and returning
+            flag = false;
+            e.putBoolean("returning", false); // done with old patient, so unset flag and returning
             e.commit();
             Intent intent = new Intent(FamilyHistoryActivity.this, PhysicalExamActivity.class); // earlier it was vitals
             intent.putExtra("patientID", patientID);
@@ -279,7 +294,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
             intent.putExtra("tag", intentTag);
-            intent.putStringArrayListExtra("exams", physicalExams);
+            //   intent.putStringArrayListExtra("exams", physicalExams);
             startActivity(intent);
         }
 
@@ -310,10 +325,11 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     private void updateImageDatabase(String imagePath) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
-        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path) values("
-                +"'" +patientID +"'"+","
+        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path,image_type,delete_status) values("
+                + "'" + patientID + "'" + ","
                 + visitID + ","
-                + "'"+imagePath +"'"+
+                + "'" + imagePath + "','" + "FH" + "'," +
+                0 +
                 ")");
     }
 

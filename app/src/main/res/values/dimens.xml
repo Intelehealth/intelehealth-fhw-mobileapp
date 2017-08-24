@@ -22,7 +22,7 @@
 
 
     //Physical Exam Screen
-    <dimen name="physical_node_title">40sp</dimen>
+    <dimen name="physical_node_title">30sp</dimen>
 
     //Visit Summary Screen
     <dimen name="padding_visit_summary_screen">10dp</dimen>

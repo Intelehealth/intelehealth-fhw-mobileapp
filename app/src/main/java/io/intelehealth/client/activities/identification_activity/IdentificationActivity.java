@@ -101,7 +101,6 @@ public class IdentificationActivity extends AppCompatActivity {
     String mCurrentPhotoPath;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -109,7 +108,7 @@ public class IdentificationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_identification);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Initialize the local database to store patient information
         mDbHelper = new LocalRecordsDatabaseHelper(this);
@@ -230,13 +229,13 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String state = parent.getItemAtPosition(position).toString();
-                if(state.matches("Odisha")){
+                if (state.matches("Odisha")) {
                     //Creating the instance of ArrayAdapter containing list of fruit names
-                    ArrayAdapter<CharSequence> adapter =  ArrayAdapter.createFromResource(IdentificationActivity.this,
-                            R.array.odisha_villages,android.R.layout.simple_spinner_item);
+                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                            R.array.odisha_villages, android.R.layout.simple_spinner_item);
                     mCity.setThreshold(1);//will start working from first character
                     mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
-                }else{
+                } else {
                     mCity.setAdapter(null);
                 }
             }
@@ -358,7 +357,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 dob.set(year, monthOfYear, dayOfMonth);
                 String dobString = simpleDateFormat.format(dob.getTime());
 
-                mDOB.setText(dobString);
+
 
                 //Age should be calculated based on the date
                 int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
@@ -366,7 +365,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     age--;
                 }
                 mAge.setText(String.valueOf(age));
-
+                mDOB.setText(dobString);
             }
         }, today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH));
 
@@ -378,25 +377,26 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
 
+
         mAge.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 if (!s.toString().trim().isEmpty()) {
-                    Calendar calendar = Calendar.getInstance();
-                    int curYear = calendar.get(Calendar.YEAR);
-                    int birthYear = curYear - Integer.valueOf(s.toString().trim());
-                    String calcDOB = String.valueOf(birthYear) + "-01-01";
-                    mDOB.setText(calcDOB);
+                    if(getCurrentFocus().getId() == mAge.getId() || mDOB.getText().toString().trim().isEmpty()) {
+                        Calendar calendar = Calendar.getInstance();
+                        int curYear = calendar.get(Calendar.YEAR);
+                        int birthYear = curYear - Integer.valueOf(s.toString().trim());
+                        String calcDOB = String.valueOf(birthYear) + "-01-01";
+                        mDOB.setText(calcDOB);
+                    }
                 }
             }
         });
@@ -475,7 +475,7 @@ public class IdentificationActivity extends AppCompatActivity {
         String[] patientColumns = {"first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw", "occupation", "patient_photo",
-                "economic_status", "education_status","caste"};
+                "economic_status", "education_status", "caste"};
         Cursor idCursor = db.query("patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
@@ -943,6 +943,11 @@ public class IdentificationActivity extends AppCompatActivity {
 
         idCursor.close();
         patientID = patient.getId();
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 }
 

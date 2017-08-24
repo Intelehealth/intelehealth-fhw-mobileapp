@@ -264,10 +264,10 @@ public class Node implements Serializable {
 
     public String findDisplay() {
         String locale = Locale.getDefault().getISO3Language();
-        Log.d(TAG, "findDisplay: " + locale);
+
         switch (locale) {
             case "eng": {
-                Log.i(TAG, "findDisplay: en");
+
                 if (display.isEmpty()) {
                     return text;
                 } else {
@@ -275,9 +275,10 @@ public class Node implements Serializable {
                 }
             }
             case "ori": {
-                Log.i(TAG, "findDisplay: or");
+
                 if (display_oriya.isEmpty()) {
-                    return text;
+                    if (display.isEmpty()) return text;
+                    else return display;
                 } else {
                     return display_oriya;
                 }

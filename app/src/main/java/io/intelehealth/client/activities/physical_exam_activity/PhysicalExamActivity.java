@@ -2,6 +2,7 @@ package io.intelehealth.client.activities.physical_exam_activity;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,6 +27,9 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -78,6 +82,9 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
     ArrayList<String> selectedExamsList;
 
+    LocalRecordsDatabaseHelper mDbHelper;
+    SQLiteDatabase localdb;
+
     String mFileName = "physExam.json";
 //    String mFileName = "DemoPhysical.json";
 
@@ -95,6 +102,9 @@ public class PhysicalExamActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        mDbHelper = new LocalRecordsDatabaseHelper(this);
+        localdb = mDbHelper.getWritableDatabase();
+
         //For Testing
 //        patientID = Long.valueOf("1");
         selectedExamsList = new ArrayList<>();
@@ -105,11 +115,17 @@ public class PhysicalExamActivity extends AppCompatActivity {
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
-            selectedExamsList = intent.getStringArrayListExtra("exams");
+            //  selectedExamsList = intent.getStringArrayListExtra("exams");
 //            Log.v(TAG, "Patient ID: " + patientID);
 //            Log.v(TAG, "Visit ID: " + visitID);
 //            Log.v(TAG, "Patient Name: " + patientName);
 //            Log.v(TAG, "Intent Tag: " + intentTag);
+            SharedPreferences mSharedPreference = this.getSharedPreferences(
+                    "visit_summary", Context.MODE_PRIVATE);
+            Set<String> selectedExams = mSharedPreference.getStringSet("exam_" + patientID, null);
+            selectedExamsList.clear();
+            selectedExamsList.addAll(selectedExams);
+
         }
 
         if ((selectedExamsList == null) || selectedExamsList.isEmpty()) {
@@ -120,8 +136,25 @@ public class PhysicalExamActivity extends AppCompatActivity {
             selectedExamsList.clear();
             selectedExamsList.addAll(selectedExamsWithoutDuplicates);
             Log.d(LOG_TAG, selectedExamsList.toString());
-            for(String string:selectedExamsList) Log.d(LOG_TAG,string);
-            physicalExamMap = new PhysicalExam(HelperMethods.encodeJSON(this, mFileName), selectedExamsList);
+            for (String string : selectedExamsList) Log.d(LOG_TAG, string);
+
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            boolean hasLicense = false;
+            if (sharedPreferences.contains("licensekey"))
+                hasLicense = true;
+
+            if (hasLicense) {
+                try {
+                    JSONObject currentFile = null;
+                    currentFile = new JSONObject(HelperMethods.readFileRoot(mFileName, this));
+                    physicalExamMap = new PhysicalExam(currentFile, selectedExamsList);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                physicalExamMap = new PhysicalExam(HelperMethods.encodeJSON(this, mFileName), selectedExamsList);
+            }
+            //physicalExamMap = new PhysicalExam(HelperMethods.encodeJSON(this, mFileName), selectedExamsList);
         }
 
 
@@ -177,7 +210,10 @@ public class PhysicalExamActivity extends AppCompatActivity {
                         intent.putExtra("state", state);
                         intent.putExtra("name", patientName);
                         intent.putExtra("tag", intentTag);
-                        intent.putStringArrayListExtra("exams", selectedExamsList);
+                        for (String exams : selectedExamsList) {
+                            Log.i(LOG_TAG, "onClick:++ " + exams);
+                        }
+                        // intent.putStringArrayListExtra("exams", selectedExamsList);
                         startActivity(intent);
                     } else {
                         long obsId = insertDb(physicalString);
@@ -187,7 +223,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                         intent1.putExtra("state", state);
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("tag", intentTag);
-                        intent1.putStringArrayListExtra("exams", selectedExamsList);
+                        // intent1.putStringArrayListExtra("exams", selectedExamsList);
                         startActivity(intent1);
                     }
                 } else {
@@ -221,10 +257,13 @@ public class PhysicalExamActivity extends AppCompatActivity {
         String image_Prefix = "PEA";
         String imageDir = "Physical Exam";
 
+        public static PhysicalExam exam_list;
+
         private static final String ARG_SECTION_NUMBER = "section_number";
 
         public PlaceholderFragment() {
         }
+
 
         /**
          * Returns a new instance of this fragment for the given section
@@ -236,7 +275,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             args.putString("PATIENT_ID", patientID);
             args.putString("VISIT_ID", visitID);
-            args.putSerializable("maps", exams);
+            exam_list = exams;
             fragment.setArguments(args);
             return fragment;
         }
@@ -252,12 +291,10 @@ public class PhysicalExamActivity extends AppCompatActivity {
             //ListView listView = (ListView) rootView.findViewById(R.id.physical_exam_list_view);
             //VideoView videoView = (VideoView) rootView.findViewById(R.id.physical_exam_video_view);
 
-
-            PhysicalExam exams = (PhysicalExam) getArguments().getSerializable("maps");
             int viewNumber = getArguments().getInt(ARG_SECTION_NUMBER);
             final String patientID = getArguments().getString("PATIENT_ID");
             final String visitID = getArguments().getString("VISIT_ID");
-            final Node viewNode = exams.getExamNode(viewNumber - 1);
+            final Node viewNode = exam_list.getExamNode(viewNumber - 1);
             String nodeText = viewNode.getText();
             textView.setText(nodeText);
 
@@ -286,7 +323,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                 } else {
                     imageView.setVisibility(View.GONE);
                 }
-            }else {
+            } else {
                 imageView.setVisibility(View.GONE);
             }
 
@@ -381,7 +418,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
     }
 
     private long insertDb(String value) {
-        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -397,7 +433,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
         complaintEntries.put("value", value);
         complaintEntries.put("concept_id", CONCEPT_ID);
 
-        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
         return localdb.insert("obs", null, complaintEntries);
     }
 
@@ -416,8 +451,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
     }
 
     private void updateDatabase(String string) {
-        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
-        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+
 
         int conceptID = ConceptId.PHYSICAL_EXAMINATION;
         ContentValues contentValues = new ContentValues();
@@ -436,12 +470,11 @@ public class PhysicalExamActivity extends AppCompatActivity {
     }
 
     private void updateImageDatabase(String imagePath) {
-        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
-        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
-        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path) values("
+        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path,image_type,delete_status) values("
                 + "'" + patientID + "'" + ","
                 + visitID + ","
-                + "'" + imagePath + "'" +
+                + "'" + imagePath + "','" + "PE" + "'," +
+                0 +
                 ")");
     }
 
@@ -458,4 +491,8 @@ public class PhysicalExamActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
 }

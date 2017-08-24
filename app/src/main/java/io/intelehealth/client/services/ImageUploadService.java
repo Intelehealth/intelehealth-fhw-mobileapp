@@ -128,7 +128,7 @@ public class ImageUploadService extends IntentService {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         byte[] image = stream.toByteArray();
         ParseFile file = new ParseFile(imageName, image);
-        ParseObject imgupload = new ParseObject(classname);
+        final ParseObject imgupload = new ParseObject(classname);
         imgupload.put("Image", file);
         imgupload.put("PatientID", patientUUID);
         imgupload.put("VisitID", visitUUID);
@@ -142,6 +142,9 @@ public class ImageUploadService extends IntentService {
                             .setContentText(newText);
                     mNotifyManager.notify(mId, mBuilder.build());
                         removeJobFromQueue(queueId);
+                    //Getting Parse Object id
+                    String objectId = imgupload.getObjectId();
+
                     deleteImageFromDatabase(imagePath);
                 } else {
                     String newText = "Failed to Post Images.";
@@ -222,6 +225,12 @@ public class ImageUploadService extends IntentService {
     public void onDestroy() {
         queueSyncStop(queueId);
         super.onDestroy();
+    }
+
+    private class Images{
+        Long _id;
+        String image_path;
+        String image_type;
     }
 
 }

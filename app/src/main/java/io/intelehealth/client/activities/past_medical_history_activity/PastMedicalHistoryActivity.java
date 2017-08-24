@@ -17,6 +17,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +52,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
     String mFileName = "patHist.json";
     String image_Prefix = "MH";
     String imageDir = "Medical History";
+
+    boolean hasLicense = false;
 
 //    String mFileName = "DemoHistory.json";
 
@@ -103,7 +108,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
-                    intent.putStringArrayListExtra("exams", physicalExams);
+                //    intent.putStringArrayListExtra("exams", physicalExams);
                     startActivity(intent);
 
                 }
@@ -120,7 +125,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
-            physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
+      //      physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
 //            Log.v(TAG, "Patient ID: " + patientID);
 //            Log.v(TAG, "Visit ID: " + visitID);
 //            Log.v(TAG, "Patient Name: " + patientName);
@@ -193,7 +198,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
-                    intent.putStringArrayListExtra("exams", physicalExams);
+             //       intent.putStringArrayListExtra("exams", physicalExams);
                     startActivity(intent);
 
                     }
@@ -202,6 +207,19 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
             });
 
 
+        if (sharedPreferences.contains("licensekey")) hasLicense = true;
+
+        if (hasLicense) {
+            try {
+                JSONObject currentFile = null;
+                currentFile = new JSONObject(HelperMethods.readFileRoot(mFileName, this));
+                patientHistoryMap = new Node(currentFile); //Load the patient history mind map
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            patientHistoryMap = new Node(HelperMethods.encodeJSON(this, mFileName)); //Load the patient history mind map
+        }
 
         patientHistoryMap = new Node(HelperMethods.encodeJSON(this, mFileName)); //Load the patient history mind map
         historyListView = (ExpandableListView) findViewById(R.id.patient_history_expandable_list_view);
@@ -285,10 +303,11 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
     private void updateImageDatabase(String imagePath) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
-        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path) values("
+        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path,image_type,delete_status) values("
                 + "'" + patientID + "'" + ","
                 + visitID + ","
-                + "'" + imagePath + "'" +
+                + "'" + imagePath + "','" + "PH" + "'," +
+                0 +
                 ")");
     }
 

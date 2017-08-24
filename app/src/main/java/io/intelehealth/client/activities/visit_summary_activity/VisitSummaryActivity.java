@@ -271,6 +271,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             isPastVisit = intent.getBooleanExtra("pastVisit", false);
+
+                Set<String> selectedExams = mSharedPreference.getStringSet("exam_" + patientID, null);
+                if (physicalExams == null) physicalExams = new ArrayList<>();
+                physicalExams.clear();
+                if (selectedExams != null && !selectedExams.isEmpty()) {
+                    physicalExams.addAll(selectedExams);
+                }
+            /*
             if (!isPastVisit) {
                 if (intent.hasExtra("exams")) {
                     physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
@@ -294,7 +302,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 }
 
-            }
+            }*/
 
 
 //            Log.v(TAG, "Patient ID: " + patientID);
@@ -563,7 +571,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent1.putExtra("patientID", patientID);
                         intent1.putExtra("visitID", visitID);
                         intent1.putExtra("name", patientName);
-                        intent.putStringArrayListExtra("exams", physicalExams);
+                     //   intent.putStringArrayListExtra("exams", physicalExams);
                         intent1.putExtra("tag", "edit");
                         startActivity(intent1);
                         dialogInterface.dismiss();
@@ -777,7 +785,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent1.putExtra("visitID", visitID);
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("tag", "edit");
-                        intent1.putStringArrayListExtra("exams", physicalExams);
+                    //    intent1.putStringArrayListExtra("exams", physicalExams);
                         for (String string : physicalExams)
                             Log.i(TAG, "onClick: " + string);
                         startActivity(intent1);

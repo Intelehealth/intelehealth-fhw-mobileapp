@@ -1,6 +1,7 @@
 package io.intelehealth.client.activities.question_node_activity;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,7 +24,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.custom_expandable_list_adapter.CustomExpandableListAdapter;
@@ -56,6 +59,8 @@ public class QuestionNodeActivity extends AppCompatActivity {
     String insertion = "";
 
     Boolean complaintConfirmed = false;
+
+    SharedPreferences prefs;
 
 
     Knowledge mKnowledge; //Knowledge engine
@@ -317,9 +322,13 @@ public class QuestionNodeActivity extends AppCompatActivity {
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
-                    intent.putStringArrayListExtra("exams", physicalExams);
-                    Log.i(LOG_TAG, String.valueOf(physicalExams.size()));
-                    for (String exams : physicalExams) Log.i(LOG_TAG, exams);
+                    SharedPreferences sharedPreference = this.getSharedPreferences(
+                            "visit_summary", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreference.edit();
+                    Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
+                    editor.putStringSet("exam_" + patientID, selectedExams);
+                    editor.commit();
+                    //intent.putStringArrayListExtra("exams", physicalExams);
                     startActivity(intent);
                 } else {
                     Log.i(LOG_TAG, "fabClick: " + insertion);
@@ -330,9 +339,13 @@ public class QuestionNodeActivity extends AppCompatActivity {
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
-                    intent.putStringArrayListExtra("exams", physicalExams);
-                    Log.i(LOG_TAG, String.valueOf(physicalExams.size()));
-                    for (String exams : physicalExams) Log.i(LOG_TAG, exams);
+                    SharedPreferences sharedPreference = this.getSharedPreferences(
+                            "visit_summary", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreference.edit();
+                    Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
+                    editor.putStringSet("exam_" + patientID, selectedExams);
+                    editor.commit();
+                    //intent.putStringArrayListExtra("exams", physicalExams);
                     startActivity(intent);
                 }
             }
@@ -353,7 +366,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
         Log.i(LOG_TAG, "insertDb: "+ patientID+" "+visitID+" "+ConceptId.CURRENT_COMPLAINT);
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         final String CREATOR_ID = prefs.getString("creatorid", null);
 
@@ -374,10 +387,11 @@ public class QuestionNodeActivity extends AppCompatActivity {
     private void updateImageDatabase(String imagePath) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
-        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path) values("
-                +"'" +patientID +"'"+","
+        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path,image_type,delete_status) values("
+                + "'" + patientID + "'" + ","
                 + visitID + ","
-                + "'"+imagePath +"'"+
+                + "'" + imagePath + "','" + "CO" + "'," +
+                0 +
                 ")");
     }
 

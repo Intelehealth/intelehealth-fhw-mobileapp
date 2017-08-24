@@ -120,10 +120,11 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
     private void updateImageDatabase(String imagePath) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
-        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path) values("
+        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path,image_type,delete_status) values("
                 + "'" + patientID + "'" + ","
                 + visitID + ","
-                + "'" + imagePath + "'" +
+                + "'" + imagePath + "','" + "AD" + "'," +
+                0 +
                 ")");
     }
 

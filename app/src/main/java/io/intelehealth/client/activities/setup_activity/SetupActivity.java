@@ -65,6 +65,7 @@ import io.intelehealth.client.api.retrofit.ServiceGenerator;
 import io.intelehealth.client.models.Location;
 import io.intelehealth.client.models.Results;
 import io.intelehealth.client.objects.WebResponse;
+import io.intelehealth.client.services.UpdateMindmapsTask;
 import io.intelehealth.client.utilities.HelperMethods;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -222,17 +223,6 @@ public class SetupActivity extends AppCompatActivity {
 
     }
 
-    //DOWNLOAD ALL MIND MAPS
-    private void downloadMindMaps() {
-        base_dir = new File(getFilesDir().getAbsolutePath(), HelperMethods.JSON_FOLDER);
-        if (!base_dir.exists())
-            base_dir.mkdirs();
-        for (String file : FILES) {
-            String[] parts = file.split(".json");
-            //Log.i("DOWNLOADING-->",parts[0].replaceAll("\\s+",""));
-            new getJSONFile().execute(file, parts[0].replaceAll("\\s+", ""), null);
-        }
-    }
 
 
     @Override
@@ -464,7 +454,7 @@ public class SetupActivity extends AppCompatActivity {
                         String queryString = "?user=" + userObject.get("uuid").getAsString();
                         WebResponse responseProvider;
 
-                        responseProvider = HelperMethods.getCommand(BASE_URL+"provider", queryString, SetupActivity.this,USERNAME,PASSWORD);
+                        responseProvider = HelperMethods.getCommand(BASE_URL + "provider", queryString, SetupActivity.this, USERNAME, PASSWORD);
 
                         if (responseProvider != null && responseProvider.getResponseCode() == 200) {
                             String provider_uuid = "";
@@ -645,11 +635,16 @@ public class SetupActivity extends AppCompatActivity {
                                         // SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("pref",MODE_PRIVATE);
 
                                         //DOWNLOAD MIND MAP FILE LIST
-                                        new getJSONFile().execute(null, "AllFiles", "TRUE");
+                                        //upnew getJSONFile().execute(null, "AllFiles", "TRUE");
 
                                         SharedPreferences.Editor editor = sharedPreferences.edit();
                                         editor.putString("licensekey", key);
                                         editor.commit();
+
+                                        UpdateMindmapsTask updateMindmapsTask = new UpdateMindmapsTask(SetupActivity.this);
+                                        updateMindmapsTask.execute(null, "AllFiles", "TRUE");
+
+
                                     }
                                 }
                             })
@@ -673,102 +668,4 @@ public class SetupActivity extends AppCompatActivity {
         return true;
     }
 
-
-    /**
-     * Gets json Files from Parse Server
-     */
-    private class getJSONFile extends AsyncTask<String, Void, String> {
-
-        String FILENAME, COLLECTION_NAME, FILE_LIST;
-        ProgressDialog progress;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progress = new ProgressDialog(SetupActivity.this);
-            progress.setTitle(getString(R.string.please_wait_progress));
-            progress.setMessage(getString(R.string.downloading_mindmaps));
-            progress.show();
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            //SPACE SEPARATED NAMES ARE MADE UNDERSCORE SEPARATED
-            FILENAME = params[0];
-            COLLECTION_NAME = params[1];
-            FILE_LIST = params[2];
-
-            try {
-                String servStr = HelperMethods.MIND_MAP_SERVER_URL + "classes/" + COLLECTION_NAME;
-                URL url = new URL(servStr);
-                Log.i("Connect", HelperMethods.MIND_MAP_SERVER_URL + "classes/" + COLLECTION_NAME);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("GET");
-                urlConnection.setRequestProperty("X-Parse-Application-Id", "app");
-                urlConnection.setRequestProperty("X-Parse-REST-API-Key", "undefined");
-                Log.i("RES->", "" + urlConnection.getResponseMessage());
-                try {
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                    StringBuilder stringBuilder = new StringBuilder();
-                    String line;
-                    while ((line = bufferedReader.readLine()) != null) {
-                        stringBuilder.append(line).append("\n");
-                    }
-                    bufferedReader.close();
-                    return stringBuilder.toString();
-                } finally {
-                    urlConnection.disconnect();
-                }
-            } catch (Exception e) {
-                Log.e("ERROR", e.getMessage(), e);
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String response) {
-            if (response == null) {
-                Toast.makeText(SetupActivity.this, getString(R.string.error_downloading_mindmaps), Toast.LENGTH_SHORT).show();
-                return;
-            }
-            String writable = "";
-            try {
-                JSONObject jsonObject = new JSONObject(response);
-                JSONArray jsonArray = jsonObject.getJSONArray("results");
-                JSONObject finalresponse = jsonArray.getJSONObject(0);
-                if (FILE_LIST == null)
-                    writable = finalresponse.getJSONObject("Main").toString();
-                else
-                    writable = finalresponse.getString("FILES");
-                Log.i("INFO", writable);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            if (FILE_LIST == null) {
-                //WRITE FILE in base_dir
-                try {
-                    File mydir = new File(base_dir.getAbsolutePath(), FILENAME);
-                    if (!mydir.exists()) mydir.getParentFile().mkdirs();
-                    Log.i("FNAM", FILENAME);
-                    FileOutputStream fileout = new FileOutputStream(mydir);
-                    OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
-                    outputWriter.write(writable);
-                    outputWriter.close();
-                } catch (Exception e) {
-                    Log.e(TAG, "onPostExecute: ", e);
-                }
-            } else {
-                String files[] = writable.split("\n");
-                Log.i("FLEN", "" + files.length);
-                FILES = new String[files.length];
-                FILES = files;
-                downloadMindMaps();
-            }
-
-            progress.dismiss();
-            //HelperMethods.readFile(FILENAME,SetupActivity.this);
-        }
-    }
 }

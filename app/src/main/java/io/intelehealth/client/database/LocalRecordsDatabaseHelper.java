@@ -117,7 +117,10 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             "_id integer PRIMARY KEY AUTOINCREMENT," +
             "patient_id TEXT NOT NULL," +
             "visit_id integer(10)," +
-            "image_path TEXT NOT NULL"
+            "image_path TEXT NOT NULL,"+
+            "image_type TEXT NOT NULL,"+
+            "parse_id TEXT," +
+            "delete_status integer NOT NULL"
             +")";
 
 
