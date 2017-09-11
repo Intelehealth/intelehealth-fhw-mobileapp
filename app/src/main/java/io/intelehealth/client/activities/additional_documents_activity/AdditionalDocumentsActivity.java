@@ -6,29 +6,22 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.camera_activity.CameraActivity;
-import io.intelehealth.client.activities.identification_activity.IdentificationActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
-import io.intelehealth.client.node.Node;
 
 public class AdditionalDocumentsActivity extends AppCompatActivity {
 
@@ -108,14 +101,17 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
                 File photo = new File(mCurrentPhotoPath);
                 if (photo.exists()) {
                     recyclerViewAdapter.add(new DocumentObject(photo.getName(), photo.getAbsolutePath()));
+                    updateImageDatabase(photo.getAbsolutePath());
                 }
-                File base_dir = new File(filePath);
-                File files[] = base_dir.listFiles();
-                for (File file : files)
-                    updateImageDatabase(file.getAbsolutePath());
             }
         }
     }
+    // File base_dir = new File(filePath);
+    //File files[] = base_dir.listFiles();
+    //for (File file : files)
+
+    // }
+
 
     private void updateImageDatabase(String imagePath) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);

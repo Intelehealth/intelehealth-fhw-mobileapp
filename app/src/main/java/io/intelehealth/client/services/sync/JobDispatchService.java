@@ -11,6 +11,7 @@ import com.firebase.jobdispatcher.JobService;
 import io.intelehealth.client.database.DelayedJobQueueProvider;
 import io.intelehealth.client.services.ClientService;
 import io.intelehealth.client.services.ImageUploadService;
+import io.intelehealth.client.services.PatientUpdateService;
 import io.intelehealth.client.services.PersonPhotoUploadService;
 import io.intelehealth.client.services.PrescriptionDownloadService;
 
@@ -46,6 +47,13 @@ public class JobDispatchService extends JobService {
                             serviceIntent.putExtra("name", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_NAME)));
                             serviceIntent.putExtra("status", cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider.STATUS)));
                             serviceIntent.putExtra("personResponse", cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider.DATA_RESPONSE)));
+                            break;
+                        }
+                        case "patientUpdate": {
+                            serviceIntent = new Intent(this, PatientUpdateService.class);
+                            serviceIntent.putExtra("serviceCall", service_call);
+                            serviceIntent.putExtra("patientID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
+                            serviceIntent.putExtra("name", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_NAME)));
                             break;
                         }
                         case "visit": {

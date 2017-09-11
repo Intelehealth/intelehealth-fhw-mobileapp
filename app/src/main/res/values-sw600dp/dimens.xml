@@ -1,6 +1,5 @@
 <resources>
 
-    <dimen name="physical_exam_img_min_height">300dp</dimen>
-    <dimen name="physical_exam_img_max_height">350dp</dimen>
+    <dimen name="physical_exam_img_max_height">200dp</dimen>
 
 </resources>

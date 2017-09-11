@@ -80,6 +80,11 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText stateText;
     Spinner mCountry;
     Spinner mState;
+
+    EditText casteText;
+    EditText economicText;
+    EditText educationText;
+
     Spinner mCaste;
     Spinner mEducation;
     Spinner mEconomicStatus;
@@ -147,6 +152,10 @@ public class IdentificationActivity extends AppCompatActivity {
         mCaste = (Spinner) findViewById(R.id.spinner_caste);
         mEducation = (Spinner) findViewById(R.id.spinner_education);
         mEconomicStatus = (Spinner) findViewById(R.id.spinner_economic_status);
+
+        casteText = (EditText) findViewById(R.id.identification_caste);
+        educationText = (EditText) findViewById(R.id.identification_education);
+        economicText = (EditText) findViewById(R.id.identification_econiomic_status);
 
         //setting the fields when user clikcs edit details
         mFirstName.setText(patient1.getFirstName());
@@ -607,6 +616,33 @@ public class IdentificationActivity extends AppCompatActivity {
             countryText.setError(null);
         }
 
+        if (mCaste.getSelectedItemPosition() == 0) {
+            casteText.setError(getString(R.string.error_field_required));
+            focusView = casteText;
+            cancel = true;
+            return;
+        } else {
+            casteText.setError(null);
+        }
+
+        if (mEconomicStatus.getSelectedItemPosition() == 0) {
+            economicText.setError(getString(R.string.error_field_required));
+            focusView = economicText;
+            cancel = true;
+            return;
+        } else {
+            economicText.setError(null);
+        }
+
+        if (mEducation.getSelectedItemPosition() == 0) {
+            educationText.setError(getString(R.string.error_field_required));
+            focusView = educationText;
+            cancel = true;
+            return;
+        } else {
+            educationText.setError(null);
+        }
+
         if (mState.getSelectedItemPosition() == 0) {
             stateText.setError(getString(R.string.error_field_required));
             focusView = stateText;
@@ -876,7 +912,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             intent3.putExtra("patientID", patientID_edit);
             intent3.putExtra("name", fullName);
-            intent3.putExtra("tag", "new");
+            intent3.putExtra("tag", "edit");
             intent3.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent3);
             finish();

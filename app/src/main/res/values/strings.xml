@@ -8,6 +8,9 @@
     <string name="tag_optional">optional</string>
     <string name="generic_ok">OK</string>
     <string name="generic_cancel">Cancel</string>
+    <string name="generic_yes">Yes</string>
+    <string name="generic_no">No</string>
+    <string name="generic_back">Back</string>
     <string name="generic_coming_soon">Coming Soon.....</string>
     <string name="action_print">Print</string>
     <string name="action_sms">Sms</string>
@@ -83,8 +86,8 @@
     <string name="identification_screen_prompt_city">Village/Town/City *</string>
     <string name="identification_screen_prompt_state">State *</string>
     <string name="identification_screen_prompt_caste">Caste</string>
-    <string name="identification_screen_prompt_economic_status">Economic</string>
-    <string name="identification_screen_prompt_education">Education</string>
+    <string name="identification_screen_prompt_economic_status">Economic Status</string>
+    <string name="identification_screen_prompt_education">Education Level</string>
     <string name="identification_screen_prompt_country">Country *</string>
     <string name="identification_screen_prompt_postal_code">Postal Code</string>
     <string name="identification_screen_prompt_relationship">Son/Daughter/Wife of</string>
@@ -114,7 +117,8 @@
     //Question Node Screen
     <string name="title_activity_question_node">QuestionNodeActivity</string>
     <string name="complaint_change_selected">Modify</string>
-    <string name="question_answer_all">Please verify that you have answered all required questions.</string>
+    <string name="question_answer_all">Are you sure you have answered all questions.</string>
+    <string name="question_answer_all_phy_exam">Please answer all general exam questions.</string>
     <string name="question_duration_picker">Please enter duration</string>
     <string name="question_text_input">Please enter text</string>
     <string name="question_date_picker">Please select date</string>
@@ -133,8 +137,8 @@
     <string name="table_bmi">BMI </string>
     <string name="table_pulse">Pulse (bpm)</string>
     <string name="table_bp">Vital Signs</string>
-    <string name="table_bpsys">Systolic Pressure</string>
-    <string name="table_bpdia">Diastolic Pressure</string>
+    <string name="table_bpsys">BP Sys</string>
+    <string name="table_bpdia">BP Dia</string>
     <string name="table_temp">Temperature (F)</string>
     <string name="table_spo2">SpO2 (%)</string>
 
@@ -179,6 +183,9 @@
 
     //Diagnostic Tests Screen
     <string name="title_activity_diagnostic_tests_list">Choose a Diagnostic Test</string>
+
+    //Physical Exam Dialog
+    <string name="wash_hands">Remember to wash your hands</string>
 
     <string name="large_text">
         "Material is the metaphor.\n\n"
@@ -338,6 +345,7 @@
     </string-array>
 
     <string-array name="education">
+        <item>Select Education</item>
         <item>Illiterate</item>
         <item>Primary</item>
         <item>Secondary</item>
@@ -346,6 +354,7 @@
     </string-array>
 
     <string-array name="caste">
+        <item>Select Caste</item>
         <item>General</item>
         <item>OBC</item>
         <item>SC</item>
@@ -354,6 +363,7 @@
     </string-array>
 
     <string-array name="economic">
+        <item>Select Economic Status</item>
         <item>APL</item>
         <item>BPL</item>
     </string-array>

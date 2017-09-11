@@ -20,11 +20,11 @@
 
     <ImageView
         android:id="@+id/physical_exam_image_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
         android:layout_gravity="center_horizontal"
-        android:minHeight="@dimen/physical_exam_img_min_height"
-        android:maxHeight="@dimen/physical_exam_img_max_height"
+        android:layout_height="@dimen/physical_exam_img_max_height"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         />
 
     <ExpandableListView

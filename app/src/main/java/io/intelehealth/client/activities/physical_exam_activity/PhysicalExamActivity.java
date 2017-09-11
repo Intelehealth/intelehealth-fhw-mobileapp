@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -55,7 +56,7 @@ import io.intelehealth.client.utilities.HelperMethods;
  */
 public class PhysicalExamActivity extends AppCompatActivity {
 
-    final static String LOG_TAG = "Physical Exam Activity";
+    final static String TAG = PhysicalExamActivity.class.getSimpleName();
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -74,8 +75,8 @@ public class PhysicalExamActivity extends AppCompatActivity {
     private ViewPager mViewPager;
 
 
-    String patientID = "1";
-    String visitID;
+    static String patientID = "1";
+    static String visitID;
     String state;
     String patientName;
     String intentTag;
@@ -85,10 +86,17 @@ public class PhysicalExamActivity extends AppCompatActivity {
     LocalRecordsDatabaseHelper mDbHelper;
     SQLiteDatabase localdb;
 
-    String mFileName = "physExam.json";
-//    String mFileName = "DemoPhysical.json";
+    private static String image_Prefix = "PE";
+    private static String imageDir = "Physical Exam";
 
-    String storageName = "physical";
+    static String imageName = patientID + "_" + visitID + "_" + image_Prefix;
+    static String baseDir;
+    static File filePath;
+
+
+
+    String mFileName = "physExam.json";
+
 
     PhysicalExam physicalExamMap;
 
@@ -102,8 +110,21 @@ public class PhysicalExamActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+
         mDbHelper = new LocalRecordsDatabaseHelper(this);
         localdb = mDbHelper.getWritableDatabase();
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage(R.string.wash_hands);
+        alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
 
         //For Testing
 //        patientID = Long.valueOf("1");
@@ -125,18 +146,21 @@ public class PhysicalExamActivity extends AppCompatActivity {
             Set<String> selectedExams = mSharedPreference.getStringSet("exam_" + patientID, null);
             selectedExamsList.clear();
             selectedExamsList.addAll(selectedExams);
-
+            filePath = new File(baseDir + File.separator + "Patient Images" + File.separator +
+                    patientID + File.separator + visitID + File.separator + imageDir);
         }
 
+        imageName = patientID + "_" + visitID + "_" + image_Prefix;
+
         if ((selectedExamsList == null) || selectedExamsList.isEmpty()) {
-            Log.d(LOG_TAG, "No additional exams were triggered");
+            Log.d(TAG, "No additional exams were triggered");
         } else {
             Set<String> selectedExamsWithoutDuplicates = new LinkedHashSet<>(selectedExamsList);
-            Log.d(LOG_TAG, selectedExamsList.toString());
+            Log.d(TAG, selectedExamsList.toString());
             selectedExamsList.clear();
             selectedExamsList.addAll(selectedExamsWithoutDuplicates);
-            Log.d(LOG_TAG, selectedExamsList.toString());
-            for (String string : selectedExamsList) Log.d(LOG_TAG, string);
+            Log.d(TAG, selectedExamsList.toString());
+            for (String string : selectedExamsList) Log.d(TAG, string);
 
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             boolean hasLicense = false;
@@ -179,6 +203,15 @@ public class PhysicalExamActivity extends AppCompatActivity {
         }
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setSelectedTabIndicatorHeight(15);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            tabLayout.setSelectedTabIndicatorColor(getColor(R.color.amber));
+            tabLayout.setTabTextColors(getColor(R.color.white),getColor(R.color.amber));
+        }else{
+            tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.amber));
+            tabLayout.setTabTextColors(getResources().getColor(R.color.white),getResources().getColor(R.color.amber));
+        }
         if (tabLayout != null) {
             tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
             tabLayout.setupWithViewPager(mViewPager);
@@ -189,6 +222,8 @@ public class PhysicalExamActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                complaintConfirmed = physicalExamMap.areRequiredAnswered();
 
                 if (complaintConfirmed) {
 
@@ -211,7 +246,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                         intent.putExtra("name", patientName);
                         intent.putExtra("tag", intentTag);
                         for (String exams : selectedExamsList) {
-                            Log.i(LOG_TAG, "onClick:++ " + exams);
+                            Log.i(TAG, "onClick:++ " + exams);
                         }
                         // intent.putStringArrayListExtra("exams", selectedExamsList);
                         startActivity(intent);
@@ -226,9 +261,10 @@ public class PhysicalExamActivity extends AppCompatActivity {
                         // intent1.putStringArrayListExtra("exams", selectedExamsList);
                         startActivity(intent1);
                     }
+
                 } else {
                     questionsMissing();
-
+                }
 //                    Node genExams = physicalExamMap.getOption(0);
 //                    for (int i = 0; i < genExams.getOptionsList().size(); i++) {
 ////                        Log.d(TAG, "current i value " + i);
@@ -238,7 +274,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
 //                            return;
 //                        }
 //                    }
-                }
+
             }
         });
 
@@ -254,9 +290,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
          * fragment.
          */
 
-        String image_Prefix = "PEA";
-        String imageDir = "Physical Exam";
-
         public static PhysicalExam exam_list;
 
         private static final String ARG_SECTION_NUMBER = "section_number";
@@ -264,6 +297,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
         public PlaceholderFragment() {
         }
 
+        CustomExpandableListAdapter adapter;
 
         /**
          * Returns a new instance of this fragment for the given section
@@ -285,7 +319,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_physical_exam, container, false);
 
-            ImageView imageView = (ImageView) rootView.findViewById(R.id.physical_exam_image_view);
+            final ImageView imageView = (ImageView) rootView.findViewById(R.id.physical_exam_image_view);
             TextView textView = (TextView) rootView.findViewById(R.id.physical_exam_text_view);
             ExpandableListView expandableListView = (ExpandableListView) rootView.findViewById(R.id.physical_exam_expandable_list_view);
             //ListView listView = (ListView) rootView.findViewById(R.id.physical_exam_list_view);
@@ -295,7 +329,9 @@ public class PhysicalExamActivity extends AppCompatActivity {
             final String patientID = getArguments().getString("PATIENT_ID");
             final String visitID = getArguments().getString("VISIT_ID");
             final Node viewNode = exam_list.getExamNode(viewNumber - 1);
-            String nodeText = viewNode.getText();
+            final String parent_name = exam_list.getExamParentNodeName(viewNumber - 1);
+            String nodeText = parent_name + " : " + viewNode.findDisplay();
+
             textView.setText(nodeText);
 
             Node displayNode = viewNode.getOption(0);
@@ -328,7 +364,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
             }
 
 
-            final CustomExpandableListAdapter adapter = new CustomExpandableListAdapter(getContext(), viewNode, this.getClass().getSimpleName());
+            adapter = new CustomExpandableListAdapter(getContext(), viewNode, this.getClass().getSimpleName());
             expandableListView.setAdapter(adapter);
             expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
                 @Override
@@ -343,10 +379,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                     }
                     adapter.notifyDataSetChanged();
 
-                    String imageName = patientID + "_" + visitID + "_" + image_Prefix;
-                    String baseDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-                    File filePath = new File(baseDir + File.separator + "Patient Images" + File.separator +
-                            patientID + File.separator + visitID + File.separator + imageDir);
+
 
                     if (question.getInputType() != null && question.isSelected()) {
 
@@ -383,6 +416,10 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
             return rootView;
         }
+
+
+
+
     }
 
     /**
@@ -438,11 +475,10 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
     public void questionsMissing() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setMessage(R.string.question_answer_all);
+        alertDialogBuilder.setMessage(R.string.question_answer_all_phy_exam);
         alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                complaintConfirmed = true;
                 dialog.dismiss();
             }
         });
@@ -451,7 +487,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
     }
 
     private void updateDatabase(String string) {
-
 
         int conceptID = ConceptId.PHYSICAL_EXAMINATION;
         ContentValues contentValues = new ContentValues();
@@ -473,23 +508,28 @@ public class PhysicalExamActivity extends AppCompatActivity {
         localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path,image_type,delete_status) values("
                 + "'" + patientID + "'" + ","
                 + visitID + ","
-                + "'" + imagePath + "','" + "PE" + "'," +
+                + "'" + imagePath + "','" + image_Prefix + "'," +
                 0 +
                 ")");
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+            if (requestCode == Node.TAKE_IMAGE_FOR_NODE) {
+                if (resultCode == RESULT_OK) {
+                    String mCurrentPhotoPath = data.getStringExtra("RESULT");
+                    physicalExamMap.setImagePath(mCurrentPhotoPath);
+                    Log.i(TAG, mCurrentPhotoPath);
+                    physicalExamMap.displayImage(this,filePath.getAbsolutePath(),imageName);
 
-        if (requestCode == Node.TAKE_IMAGE_FOR_NODE) {
-            if (resultCode == RESULT_OK) {
-                String mCurrentPhotoPath = data.getStringExtra("RESULT");
-                physicalExamMap.setImagePath(mCurrentPhotoPath);
-                physicalExamMap.displayImage(this);
+                }
+
             }
-        }
     }
+
+
 
     @Override
     protected void onStop() {

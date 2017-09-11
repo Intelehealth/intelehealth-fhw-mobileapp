@@ -82,37 +82,31 @@ public class PhysicalExam extends Node {
                  */
 
                         if (current != null) {
-                            Log.d("Exam current ", current);
 
                             String[] split = current.split(":");
                             String location = split[0];
                             String exam = split[1];
                             if (location != null && !location.isEmpty() && exam != null && !exam.isEmpty()) {
                                 Node locationNodeRef = null;
-                                Log.d("Exam location ", location);
-                                Log.d("Exam exam ", exam);
 
                                 locationNodeRef = getOptionByName(location);
 
                                 Node examNodeRef = null;
                                 if (locationNodeRef != null) {
-                                    Log.d("Exam locRef", locationNodeRef.getText());
+                                    Log.i(TAG, "matchSelections: [Location]"+ location);
                                     examNodeRef = locationNodeRef.getOptionByName(exam);
                                 }
                                 if (examNodeRef != null) {
 
 
-                                    Log.d("Exam examRef", examNodeRef.getText());
 
                                     //The foundLocation list is to ensure that the same exam isn't display twice
                                     if (foundLocations.contains(location)) {
-                                        Log.d("Exam if", "location in foundLocations");
                                         int locationIndex = foundLocations.indexOf(location);
                                         Node foundLocationNode = newOptionsList.get(locationIndex);
                                         foundLocationNode.addOptions(new Node(examNodeRef));
                                     } else {
                                         //If it's a new exam, the location needs to be added to the list of things to check
-                                        Log.d("Exam if", "not found");
                                         foundLocations.add(location);
                                         Node locationNode = new Node(locationNodeRef);
                                         locationNode.removeOptionsList();
@@ -197,6 +191,22 @@ public class PhysicalExam extends Node {
 
     }
 
+    public String getExamParentNodeName(int index) {
+
+        String title = getTitle(index);
+        String[] split = title.split(" : ");
+
+        String parent_node = split[0];
+
+        for (Node selectedNode : selectedNodes) {
+            if (selectedNode.getText().equals(split[0])) {
+                parent_node = selectedNode.findDisplay();
+            }
+        }
+        return parent_node;
+
+    }
+
     //Check to see if all required exams have been answered before moving on.
     public boolean areRequiredAnswered() {
 
@@ -222,14 +232,14 @@ public class PhysicalExam extends Node {
         int total = this.totalExams;
         for (int i = 0; i < total; i++) {
             Node node = getExamNode(i);
-            Log.d(TAG, getTitle(i) + " ::root:: ");
+
             String title = getTitle(i);
             String[] split = title.split(" : ");
             String levelOne = split[0];
             if ((node.isSelected() | node.anySubSelected())) {
                 boolean checkSet = rootStrings.add(levelOne);
-                Log.d(TAG, node.getText() + " - " + node.getLanguage());
-                if (checkSet) stringsList.add(levelOne+": "+node.getLanguage());
+
+                if (checkSet) stringsList.add(levelOne + ": " + node.getLanguage());
                 else stringsList.add(node.getLanguage());
                 if (!node.isTerminal()) {
                     stringsList.add(node.formLanguage());
@@ -257,6 +267,7 @@ public class PhysicalExam extends Node {
         mLanguage = mLanguage.replaceAll("\\. -", ".");
         mLanguage = mLanguage.replaceAll("\\.", "\\. ");
         mLanguage = mLanguage.replaceAll("\\: -", "\\: ");
+        mLanguage = mLanguage.replaceAll("% - ", "");
         return mLanguage;
     }
 

@@ -1,14 +1,11 @@
 package io.intelehealth.client.activities.additional_documents_activity;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -18,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
@@ -50,7 +46,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
 
     private static final String TAG = AdditionalDocumentAdapter.class.getSimpleName();
 
-    public AdditionalDocumentAdapter(Context context, List<DocumentObject> documentList,String filePath) {
+    public AdditionalDocumentAdapter(Context context, List<DocumentObject> documentList, String filePath) {
         this.documentList = documentList;
         this.context = context;
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -93,10 +89,10 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
         holder.getDeleteDocumentImageView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(image.exists()) image.delete();
+                if (image.exists()) image.delete();
                 documentList.remove(position);
                 notifyItemRemoved(position);
-                notifyItemRangeChanged(position,documentList.size());
+                notifyItemRangeChanged(position, documentList.size());
                 String imageName = holder.getDocumentNameTextView().getText().toString();
                 String dir = filePath + File.separator + imageName;
                 deleteImageFromDatabase(dir);
@@ -107,12 +103,25 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
     private void deleteImageFromDatabase(String imagePath) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(context);
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
-        localdb.execSQL("DELETE FROM image_records WHERE image_path=" + "'" + imagePath + "'");
+        String[] coloumns = {"_id", "parse_id"};
+        String[] selectionArgs = {imagePath};
+        Cursor cursor = localdb.query("image_records", coloumns, "image_path = ?", selectionArgs, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            String parse_id = cursor.getString(cursor.getColumnIndexOrThrow("parse_id"));
+            if (parse_id != null && !parse_id.isEmpty()) {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put("delete_status", 1);
+                String[] whereArgs = {parse_id};
+                localdb.update("image_records", contentValues, "parse_id = ?", whereArgs);
+            } else {
+                localdb.execSQL("DELETE FROM image_records WHERE image_path=" + "'" + imagePath + "'");
+            }
+        }
         localdb.close();
     }
 
 
-    public void add(DocumentObject doc){
+    public void add(DocumentObject doc) {
         boolean bool = documentList.add(doc);
         if (bool) Log.d(TAG, "add: Item added to list");
         notifyDataSetChanged();
@@ -126,7 +135,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
 
     public void displayImage(final File file) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        
+
 
         final AlertDialog dialog = builder.create();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -156,7 +165,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
                                 return false;
                             }
                         })
-                        .override(screen_width,screen_height)
+                        .override(screen_width, screen_height)
                         .into(imageView);
             }
         });

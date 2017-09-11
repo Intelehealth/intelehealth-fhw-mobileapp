@@ -328,7 +328,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path,image_type,delete_status) values("
                 + "'" + patientID + "'" + ","
                 + visitID + ","
-                + "'" + imagePath + "','" + "FH" + "'," +
+                + "'" + imagePath + "','" + image_Prefix + "'," +
                 0 +
                 ")");
     }

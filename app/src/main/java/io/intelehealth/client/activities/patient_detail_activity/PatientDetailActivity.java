@@ -36,6 +36,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -53,6 +54,7 @@ import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActi
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.services.ClientService;
+import io.intelehealth.client.services.PatientUpdateService;
 import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.HelperMethods;
 
@@ -120,6 +122,14 @@ public class PatientDetailActivity extends AppCompatActivity {
             serviceIntent.putExtra("patientID", patientID);
             serviceIntent.putExtra("name", patientName);
             startService(serviceIntent);
+        }
+
+        if (intentTag != null && intentTag.equals("edit")) {
+            Intent serviceIntentUpdate = new Intent(this, PatientUpdateService.class);
+            serviceIntentUpdate.putExtra("serviceCall", "patientUpdate");
+            serviceIntentUpdate.putExtra("patientID", patientID);
+            serviceIntentUpdate.putExtra("name", patientName);
+            startService(serviceIntentUpdate);
         }
 
 

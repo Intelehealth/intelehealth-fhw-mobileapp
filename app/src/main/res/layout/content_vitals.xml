@@ -81,7 +81,7 @@
                     android:maxLines="1"
                     android:singleLine="true"
                     android:longClickable="false"
-                    android:inputType="numberDecimal"
+                    android:inputType="none"
                     android:tag="@string/tag_optional"  />
 
             </android.support.design.widget.TextInputLayout>

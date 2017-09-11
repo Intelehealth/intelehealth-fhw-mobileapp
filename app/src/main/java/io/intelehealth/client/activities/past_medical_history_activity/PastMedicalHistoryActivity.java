@@ -52,6 +52,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
     String mFileName = "patHist.json";
     String image_Prefix = "MH";
     String imageDir = "Medical History";
+    String imageName;
+    File filePath;
 
     boolean hasLicense = false;
 
@@ -242,9 +244,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
                 Log.i(TAG, String.valueOf(clickedNode.isTerminal()));
                 if (!clickedNode.isTerminal() && clickedNode.isSelected()) {
-                    String imageName = patientID + "_" + visitID + "_" + image_Prefix;
+                    imageName = patientID + "_" + visitID + "_" + image_Prefix;
                     String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-                    File filePath = new File(baseDir + File.separator + "Patient Images" + File.separator +
+                    filePath = new File(baseDir + File.separator + "Patient Images" + File.separator +
                             patientID + File.separator + visitID + File.separator + imageDir);
                     Node.subLevelQuestion(clickedNode, PastMedicalHistoryActivity.this, adapter, filePath.toString(), imageName);
                 }
@@ -306,7 +308,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
         localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path,image_type,delete_status) values("
                 + "'" + patientID + "'" + ","
                 + visitID + ","
-                + "'" + imagePath + "','" + "PH" + "'," +
+                + "'" + imagePath + "','" + image_Prefix + "'," +
                 0 +
                 ")");
     }
@@ -346,7 +348,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
                 patientHistoryMap.setImagePath(mCurrentPhotoPath);
                 Log.i(TAG, mCurrentPhotoPath);
-                patientHistoryMap.displayImage(this);
+                patientHistoryMap.displayImage(this,filePath.getAbsolutePath(),imageName);
             }
         }
     }

@@ -125,7 +125,7 @@ public class CameraActivity extends AppCompatActivity {
                     try {
                         os = new FileOutputStream(file);
                         Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-                        Bitmap bitmap = Bitmap.createScaledBitmap(bmp, 800, 600, false);
+                        Bitmap bitmap = Bitmap.createScaledBitmap(bmp, 600, 800, false);
                         bmp.recycle();
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
                         os.flush();
@@ -324,4 +324,8 @@ public class CameraActivity extends AppCompatActivity {
         return mBackgroundHandler;
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
 }

@@ -58,6 +58,8 @@ public class QuestionNodeActivity extends AppCompatActivity {
     String imageDir = "Question Node";
     String insertion = "";
 
+    String imageName;
+    File filePath;
     Boolean complaintConfirmed = false;
 
     SharedPreferences prefs;
@@ -149,9 +151,9 @@ public class QuestionNodeActivity extends AppCompatActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
-                String imageName = patientID + "_" + visitID + "_" + image_Prefix;
+                imageName = patientID + "_" + visitID + "_" + image_Prefix;
                 String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-                File filePath = new File(baseDir+ File.separator+"Patient Images"+File.separator+
+                filePath = new File(baseDir+ File.separator+"Patient Images"+File.separator+
                         patientID+File.separator+visitID+File.separator+imageDir);
 
                 if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && !currentNode.getOption(groupPosition).anySubSelected()) {
@@ -437,10 +439,17 @@ public class QuestionNodeActivity extends AppCompatActivity {
     public void questionsMissing() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage(R.string.question_answer_all);
-        alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 complaintConfirmed = true;
+                dialog.dismiss();
+                fabClick();
+            }
+        });
+        alertDialogBuilder.setNegativeButton(R.string.generic_back, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
@@ -467,7 +476,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
                 currentNode.setImagePath(mCurrentPhotoPath);
-                currentNode.displayImage(this);
+                currentNode.displayImage(this,filePath.getAbsolutePath(),imageName);
             }
         }
     }

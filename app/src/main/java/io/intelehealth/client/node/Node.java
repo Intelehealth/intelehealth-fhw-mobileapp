@@ -131,7 +131,7 @@ public class Node implements Serializable {
                 this.display_oriya = jsonNode.optString("display-or");
             }
             if (this.display_oriya.isEmpty()) {
-                this.display_oriya = this.text;
+                this.display_oriya = this.display;
             }
 
 
@@ -191,6 +191,8 @@ public class Node implements Serializable {
     public Node(Node source) {
         //this.id = source.id;
         this.text = source.text;
+        this.display = source.display;
+        this.display_oriya = source.display_oriya;
         this.optionsList = source.optionsList;
         this.terminal = source.terminal;
         this.language = source.language;
@@ -267,25 +269,34 @@ public class Node implements Serializable {
 
         switch (locale) {
             case "eng": {
-
-                if (display.isEmpty()) {
+                Log.i(TAG, "findDisplay: eng");
+                if (display != null && display.isEmpty()) {
+                    Log.i(TAG, "findDisplay: eng txt");
                     return text;
                 } else {
+                    Log.i(TAG, "findDisplay: eng dis");
                     return display;
                 }
             }
             case "ori": {
-
-                if (display_oriya.isEmpty()) {
-                    if (display.isEmpty()) return text;
-                    else return display;
-                } else {
+                Log.i(TAG, "findDisplay: ori");
+                if (display_oriya != null && !display_oriya.isEmpty()) {
+                    Log.i(TAG, "findDisplay: ori dis");
                     return display_oriya;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
                 }
             }
+
             default: {
                 {
-                    if (display.isEmpty()) {
+                    if (display != null && display.isEmpty()) {
                         return text;
                     } else {
                         return display;
@@ -322,12 +333,14 @@ public class Node implements Serializable {
 
     public Node getOptionByName(String name) {
         Node foundNode = null;
-        for (Node node : optionsList) {
-            if (node.getText().equals(name)) {
-                foundNode = node;
-                Log.i(TAG, "getOptionByName: FOUND NODE!");
+        if (optionsList != null) {
+            for (Node node : optionsList) {
+                if (node.getText().equals(name)) {
+                    foundNode = node;
+                }
             }
         }
+        if (foundNode == null) Log.i(TAG, "getOptionByName [Not Found]: " + name);
         return foundNode;
     }
 
@@ -399,14 +412,11 @@ public class Node implements Serializable {
                 } else {
                     stringsList.add(test);
                 }
-                Log.i(TAG, mOptions.get(i).getLanguage());
                 if (!mOptions.get(i).isTerminal()) {
                     stringsList.add(mOptions.get(i).formLanguage());
                     isTerminal = false;
-                    Log.d(TAG, "formLanguage: Not Terminal");
                 } else {
                     isTerminal = true;
-                    Log.d(TAG, "formLanguage: Terminal");
                 }
             }
         }
@@ -426,7 +436,6 @@ public class Node implements Serializable {
                         mLanguage = mLanguage.concat(stringsList.get(i) + ".");
                     } else {
                         mLanguage = mLanguage.concat(stringsList.get(i));
-                        Log.i(TAG, "mLangif 2: " + mLanguage);
                     }
                 }
             } else {
@@ -435,12 +444,10 @@ public class Node implements Serializable {
                         mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i) + ".");
                     } else {
                         mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i));
-                        Log.i(TAG, "mLangelse 4: " + mLanguage + " ");
                     }
                 }
             }
         }
-        Log.d("Form language", mLanguage);
         return mLanguage;
     }
 
@@ -453,12 +460,8 @@ public class Node implements Serializable {
             } else {
                 formatted = raw;
             }
-            Log.d("Generated language", formatted);
-
             formatted = formatted.replaceAll("\\. -", ".");
-            Log.i(TAG, "generateLanguage2: " + formatted);
             formatted = formatted.replaceAll("\\.,", ", ");
-            Log.i(TAG, "generateLanguage3: " + formatted);
             return formatted;
         }
         return null;
@@ -504,7 +507,6 @@ public class Node implements Serializable {
     public static void subLevelQuestion(final Node node, final Activity context, final CustomExpandableListAdapter callingAdapter,
                                         final String imagePath, final String imageName) {
 
-        Log.d(TAG, "subLevelQuestion: ");
         node.setSelected();
         List<Node> mNodes = node.getOptionsList();
         final CustomArrayAdapter adapter = new CustomArrayAdapter(context, R.layout.list_item_subquestion, mNodes);
@@ -536,12 +538,10 @@ public class Node implements Serializable {
                 node.getOption(position).toggleSelected();
                 adapter.notifyDataSetChanged();
                 if (node.getOption(position).getInputType() != null) {
-                    Log.d(TAG, "onItemClick:1");
                     subHandleQuestion(node.getOption(position), context, adapter, imagePath, imageName);
                 }
 
                 if (!node.getOption(position).isTerminal()) {
-                    Log.d(TAG, "onItemClick:2");
                     subLevelQuestion(node.getOption(position), context, callingAdapter, imagePath, imageName);
                 }
             }
@@ -553,7 +553,6 @@ public class Node implements Serializable {
             public void onClick(DialogInterface dialog, int which) {
                 node.setText(node.generateLanguage());
                 callingAdapter.notifyDataSetChanged();
-                Log.d(TAG, "onClick:1");
                 dialog.dismiss();
             }
         });
@@ -562,7 +561,6 @@ public class Node implements Serializable {
             public void onClick(DialogInterface dialog, int which) {
                 node.toggleSelected();
                 callingAdapter.notifyDataSetChanged();
-                Log.d(TAG, "onClick:2");
                 dialog.cancel();
             }
         });
@@ -575,7 +573,6 @@ public class Node implements Serializable {
     public static void handleQuestion(Node questionNode, final Activity context, final CustomExpandableListAdapter adapter,
                                       final String imagePath, final String imageName) {
         String type = questionNode.getInputType();
-        Log.d(TAG, "handleQuestion: " + type);
         switch (type) {
             case "text":
                 askText(questionNode, context, adapter);
@@ -615,16 +612,14 @@ public class Node implements Serializable {
             File filePath = new File(imagePath);
             if (!filePath.exists()) {
                 boolean res = filePath.mkdirs();
-                Log.i("NODE>", "" + res);
             }
             cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
             cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, imagePath);
-            Log.i("OPENCAM>", imagePath);
         }
         activity.startActivityForResult(cameraIntent, Node.TAKE_IMAGE_FOR_NODE);
     }
 
-    public void displayImage(final Activity context) {
+    public AlertDialog displayImage(final Activity context, final String path, final String name) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setPositiveButton(R.string.button_save, new DialogInterface.OnClickListener() {
             @Override
@@ -636,8 +631,11 @@ public class Node implements Serializable {
         builder.setNegativeButton(R.string.button_delete, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                File temp = new File(imagePath);
+                if (temp.exists()) temp.delete();
                 imagePath = null;
-                dialog.dismiss();
+                openCamera(context, path, name);
+                dialog.cancel();
             }
         });
         final AlertDialog dialog = builder.create();
@@ -681,6 +679,7 @@ public class Node implements Serializable {
         });
 
         dialog.show();
+        return dialog;
 
     }
 

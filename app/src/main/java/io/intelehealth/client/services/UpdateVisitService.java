@@ -1,12 +1,15 @@
 package io.intelehealth.client.services;
 
 import android.app.IntentService;
+import android.app.NotificationManager;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -15,6 +18,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import io.intelehealth.client.R;
 import io.intelehealth.client.database.DelayedJobQueueProvider;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Obs;
@@ -48,6 +52,10 @@ public class UpdateVisitService extends IntentService {
     private String visitUUID;
     private String patientID;
 
+    NotificationManager mNotifyManager;
+    public int mId = 5;
+    NotificationCompat.Builder mBuilder;
+
     String quote = "\"";
 
     Integer queueId = null;
@@ -61,8 +69,14 @@ public class UpdateVisitService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
+
+        mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mBuilder = new NotificationCompat.Builder(this);
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         db = mDbHelper.getWritableDatabase();
+
+        String text = String.format("Uploading %s's visit data", intent.getStringExtra("name"));
+        createNotification(text);
 
         if (!intent.hasExtra("queueId")) {
             int id = addJobToQueue(intent);
@@ -81,7 +95,7 @@ public class UpdateVisitService extends IntentService {
             queueId = intent.getIntExtra("queueId", -1);
             queueSyncStart(queueId);
 
-
+            createNotification("");
 
             String selection = "_id = ?";
             String[] coloumns = {"start_datetime","openmrs_visit_uuid"};
@@ -280,7 +294,16 @@ public class UpdateVisitService extends IntentService {
                 }
             }
             queueSyncStop(queueId);
-            if (check_all) removeJobFromQueue(queueId);
+
+            if (check_all) {
+                text = String.format("%s's visit data upload successful", intent.getStringExtra("name"));
+                createNotification(text);
+                removeJobFromQueue(queueId);
+            }
+            else{
+                text = String.format("%s's visit data upload unsuccessful", intent.getStringExtra("name"));
+                createNotification(text);
+            }
         }
     }
 
@@ -597,10 +620,6 @@ public class UpdateVisitService extends IntentService {
         Uri uri = getContentResolver().insert(
                 DelayedJobQueueProvider.CONTENT_URI, values);
 
-
-        Toast.makeText(getBaseContext(),
-                uri.toString(), Toast.LENGTH_LONG).show();
-
         return Integer.valueOf(uri.getLastPathSegment());
 
     }
@@ -634,6 +653,13 @@ public class UpdateVisitService extends IntentService {
         String url = DelayedJobQueueProvider.URL + "/" + queueId;
         Uri uri = Uri.parse(url);
         int result = getContentResolver().update(uri, values, null, null);
+    }
+
+    private void  createNotification(String message){
+        mBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Visit Data Update")
+                .setContentText(message);
+        mNotifyManager.notify(mId, mBuilder.build());
     }
 
     @Override

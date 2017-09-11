@@ -56,7 +56,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -272,12 +271,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
             intentTag = intent.getStringExtra("tag");
             isPastVisit = intent.getBooleanExtra("pastVisit", false);
 
-                Set<String> selectedExams = mSharedPreference.getStringSet("exam_" + patientID, null);
-                if (physicalExams == null) physicalExams = new ArrayList<>();
-                physicalExams.clear();
-                if (selectedExams != null && !selectedExams.isEmpty()) {
-                    physicalExams.addAll(selectedExams);
-                }
+            Set<String> selectedExams = mSharedPreference.getStringSet("exam_" + patientID, null);
+            if (physicalExams == null) physicalExams = new ArrayList<>();
+            physicalExams.clear();
+            if (selectedExams != null && !selectedExams.isEmpty()) {
+                physicalExams.addAll(selectedExams);
+            }
             /*
             if (!isPastVisit) {
                 if (intent.hasExtra("exams")) {
@@ -393,7 +392,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
             if (visitIDCursor != null) visitIDCursor.close();
             if (visitUUID != null && !visitUUID.isEmpty()) {
-              addDownloadButton();
+                addDownloadButton();
             }
 
         }
@@ -571,7 +570,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent1.putExtra("patientID", patientID);
                         intent1.putExtra("visitID", visitID);
                         intent1.putExtra("name", patientName);
-                     //   intent.putStringArrayListExtra("exams", physicalExams);
+                        //   intent.putStringArrayListExtra("exams", physicalExams);
                         intent1.putExtra("tag", "edit");
                         startActivity(intent1);
                         dialogInterface.dismiss();
@@ -774,8 +773,22 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
                             for (String child : childList) {
                                 new File(phyExamDir, child).delete();
-                                localdb.execSQL("DELETE FROM image_records WHERE image_path=" +
-                                        "'" + phyExamDir.getAbsolutePath() + File.separator + child + "'");
+
+                                String[] coloumns = {"_id", "parse_id"};
+                                String[] selectionArgs = {phyExamDir.getAbsolutePath() + File.separator + child};
+                                Cursor cursor = localdb.query("image_records", coloumns, "image_path = ?", selectionArgs, null, null, null);
+                                if (cursor != null && cursor.moveToFirst()) {
+                                    String parse_id = cursor.getString(cursor.getColumnIndexOrThrow("parse_id"));
+                                    if (parse_id != null && !parse_id.isEmpty()) {
+                                        ContentValues contentValues = new ContentValues();
+                                        contentValues.put("delete_status", 1);
+                                        String[] whereArgs = {parse_id};
+                                        localdb.update("image_records", contentValues, "parse_id = ?", whereArgs);
+                                    } else {
+                                        localdb.execSQL("DELETE FROM image_records WHERE image_path=" +
+                                                "'" + phyExamDir.getAbsolutePath() + File.separator + child + "'");
+                                    }
+                                }
                             }
                             phyExamDir.delete();
                             localdb.close();
@@ -785,7 +798,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent1.putExtra("visitID", visitID);
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("tag", "edit");
-                    //    intent1.putStringArrayListExtra("exams", physicalExams);
+                        //    intent1.putStringArrayListExtra("exams", physicalExams);
                         for (String string : physicalExams)
                             Log.i(TAG, "onClick: " + string);
                         startActivity(intent1);
@@ -1419,8 +1432,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 header = "Patient Id: " + patientID + "\n"
                         + "Patient Name: " + patient.getFirstName() + " " + patient.getLastName() + "\n"
-                        + "Patient DOB: " + patient.getDateOfBirth() + "\n"
-                        + "Patient Id: " + patientID + "\n";
+                        + "Patient DOB: " + patient.getDateOfBirth() + "\n";
 
 
                 if (diagnosisCard.getVisibility() == View.VISIBLE) {
@@ -1656,7 +1668,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     if (info[i].getState() == NetworkInfo.State.CONNECTED) {
                         if (!isConnected) {
                             if (internetCheck != null) {
-                                internetCheck.setIcon(R.drawable.ic_action_circle_green);
+                                internetCheck.setIcon(R.mipmap.ic_data_on);
                                 flag = 1;
                             }
                         }
@@ -1667,7 +1679,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         if (flag == 0) {
             if (internetCheck != null) {
-                internetCheck.setIcon(R.drawable.ic_action_circle_red);
+                internetCheck.setIcon(R.mipmap.ic_data_off);
             }
 
         }

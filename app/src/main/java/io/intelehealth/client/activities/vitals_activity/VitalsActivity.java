@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -86,6 +87,7 @@ public class VitalsActivity extends AppCompatActivity {
         //patientID = Long.valueOf("1");
 
 
+
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientID = intent.getStringExtra("patientID");
@@ -121,6 +123,8 @@ public class VitalsActivity extends AppCompatActivity {
         mSpo2 = (EditText) findViewById(R.id.table_spo2);
 
         mBMI = (EditText) findViewById(R.id.table_bmi);
+
+        mBMI.setEnabled(false);
 
         if (intentTag != null && intentTag.equals("edit")) {
             loadPrevious();
@@ -242,7 +246,9 @@ public class VitalsActivity extends AppCompatActivity {
             double numerator = Double.parseDouble(weightvalue) * 10000;
             double denominator = (Double.parseDouble(heightvalue)) * (Double.parseDouble(heightvalue));
             double bmi_value = numerator / denominator;
-            mBMI.setText(String.format(Locale.ENGLISH, "%,2f", bmi_value));
+            DecimalFormat df=new DecimalFormat("0.00");
+            mBMI.setText(df.format(bmi_value));
+            //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
         }
         else if(flag_height==0 || flag_weight==0)
         {

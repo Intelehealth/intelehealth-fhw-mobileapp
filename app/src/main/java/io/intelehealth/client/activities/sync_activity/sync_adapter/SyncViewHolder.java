@@ -75,6 +75,10 @@ public class SyncViewHolder extends RecyclerView.ViewHolder {
                 serviceName = "Uploading Visit Updates";
                 break;
             }
+            case "patientUpdate": {
+                serviceName = "Uploading Patient Updates";
+                break;
+            }
             default:
                 serviceName = "";
         }
