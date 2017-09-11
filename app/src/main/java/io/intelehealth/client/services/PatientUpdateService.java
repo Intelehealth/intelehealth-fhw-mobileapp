@@ -15,6 +15,13 @@ import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+import java.util.List;
+
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.setting_activity.SettingsActivity;
 import io.intelehealth.client.application.IntelehealthApplication;
@@ -267,13 +274,37 @@ public class PatientUpdateService extends IntentService {
                 mBuilder.setContentText(newText).setNumber(++numMessages);
                 mBuilder.setSmallIcon(R.drawable.ic_cloud_upload);
                 mNotifyManager.notify(mId, mBuilder.build());
+
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("Profile");
+                query.whereEqualTo("PatientID", patient.getOpenmrsId());
+                query.findInBackground(new FindCallback<ParseObject>() {
+                    @Override
+                    public void done(List<ParseObject> parseObjects, ParseException e) {
+                        if (e == null) {
+                            for (ParseObject delete : parseObjects) {
+                                delete.deleteInBackground();
+                                Toast.makeText(getApplicationContext(), "deleted", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(getApplicationContext(), "error in deleting", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+
+                Intent uploadPersonPhoto = new Intent(this, PersonPhotoUploadService.class);
+                uploadPersonPhoto.putExtra("patientID", patientId);
+                uploadPersonPhoto.putExtra("patientUUID", patient.getOpenmrsId());
+                uploadPersonPhoto.putExtra("name", patientName);
+                Log.i(TAG, "uploadPatient: Starting Service");
+                startService(uploadPersonPhoto);
+
                 return responsePerson.getResponseString();
             }
         } else {
             return null;
         }
     }
-
 
 
 }

@@ -9,6 +9,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -157,6 +159,12 @@ public class IdentificationActivity extends AppCompatActivity {
         educationText = (EditText) findViewById(R.id.identification_education);
         economicText = (EditText) findViewById(R.id.identification_econiomic_status);
 
+         /*
+        The patient's picture will be taken here and then stored using the method below.
+        This picture will then be displayed right after, allowing the user to verify the picture was well taken.
+        */
+        mImageView = (ImageView) findViewById(R.id.imageview_id_picture);
+
         //setting the fields when user clikcs edit details
         mFirstName.setText(patient1.getFirstName());
         mMiddleName.setText(patient1.getMiddleName());
@@ -169,6 +177,10 @@ public class IdentificationActivity extends AppCompatActivity {
         mPostal.setText(patient1.getPostalCode());
         mRelationship.setText(patient1.getSdw());
         mOccupation.setText(patient1.getOccupation());
+
+        if(patient1.getPatientPhoto()!=null && !patient1.getPatientPhoto().trim().isEmpty())
+        mImageView.setImageBitmap(BitmapFactory.decodeFile(patient1.getPatientPhoto()));
+
 
 
         ArrayAdapter<CharSequence> countryAdapter = ArrayAdapter.createFromResource(this,
@@ -326,11 +338,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        The patient's picture will be taken here and then stored using the method below.
-        This picture will then be displayed right after, allowing the user to verify the picture was well taken.
-        */
-        mImageView = (ImageView) findViewById(R.id.imageview_id_picture);
+
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -885,7 +893,13 @@ public class IdentificationActivity extends AppCompatActivity {
             patientEntries1.put("economic_status", patient1.getEconomic_status());
             patientEntries1.put("education_status", patient1.getEducation_level());
             patientEntries1.put("caste", patient1.getCaste());
-            if (mCurrentPhotoPath != null) patientEntries1.put("patient_photo", mCurrentPhotoPath);
+            if (mCurrentPhotoPath != null) {
+                if(patient1.getPatientPhoto()!=null && !patient1.getPatientPhoto().trim().isEmpty()){
+                    File file = new File(patient1.getPatientPhoto());
+                    file.delete();
+                }
+                patientEntries1.put("patient_photo", mCurrentPhotoPath);
+            }
 
         }
 

@@ -15,8 +15,11 @@ import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.parse.GetCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
@@ -116,11 +119,12 @@ public class PersonPhotoUploadService extends IntentService {
         }
     }
 
-    public void uploadImage(String classname, Bitmap bitmap, final String imageName, final Intent intent) {
+    public void uploadImage(String classname, Bitmap bitmap, final String imageName, final Intent intent){
         queueSyncStart(queueId);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         byte[] image = stream.toByteArray();
+
         ParseFile file = new ParseFile(imageName, image);
         ParseObject imgupload = new ParseObject(classname);
         imgupload.put("Image", file);
