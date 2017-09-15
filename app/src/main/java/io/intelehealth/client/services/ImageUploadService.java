@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.intelehealth.client.R;
-import io.intelehealth.client.activities.login_activity.LoginActivity;
 import io.intelehealth.client.database.DelayedJobQueueProvider;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.utilities.HelperMethods;
@@ -133,45 +132,47 @@ public class ImageUploadService extends IntentService {
                     String image_type = null;
                     switch (images.getImage_type()) {
                         case "AD": {
-                            image_type = "Additional Documents";
+                            image_type = "AdditionalDocuments";
                             break;
                         }
                         case "PE": {
-                            image_type = "Physical Exam";
-                            break;
-                        }
-                        case "FH": {
-                            image_type = "Family History";
+                            image_type = "PhysicalExam";
                             break;
                         }
                         case "MH": {
-                            image_type = "Medical History";
+                            image_type = "MedicalHistory";
                             break;
                         }
                     }
                     final String parseID = images.getParse_id();
                     if (parseID != null && !parseID.isEmpty()) {
                         ParseQuery<ParseObject> query_object = ParseQuery.getQuery(image_type);
-                        query_object.whereEqualTo("objectId", parseID);
-                        query_object.getFirstInBackground(new GetCallback<ParseObject>() {
+                        //query_object.whereEqualTo("objectId", parseID);
+                        try {
+                            ParseObject parseObject = query_object.get(parseID);
+                            parseObject.delete();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                     /*   query_object.getFirstInBackground(new GetCallback<ParseObject>() {
                             @Override
                             public void done(ParseObject object, ParseException e) {
-
-                                object.deleteInBackground(new DeleteCallback() {
-                                    @Override
-                                    public void done(ParseException e) {
-                                        if (e == null) {
-                                            deleteFromImageDatabase(parseID);
-                                            Log.i(TAG, "done: Image Delete");
-                                        } else {
-                                            Log.e(TAG, e.getMessage());
-                                            e.printStackTrace();
+                                if (object != null) {
+                                    object.deleteInBackground(new DeleteCallback() {
+                                        @Override
+                                        public void done(ParseException e) {
+                                            if (e == null) {
+                                                deleteFromImageDatabase(parseID);
+                                                Log.i(TAG, "done: Image Delete");
+                                            } else {
+                                                Log.e(TAG, e.getMessage());
+                                                e.printStackTrace();
+                                            }
                                         }
-                                    }
-                                });
-
+                                    });
+                                }
                             }
-                        });
+                        });*/
                     }
                 }
             }

@@ -795,7 +795,7 @@ public class ClientService extends IntentService {
         //TODO: Location UUID needs to be found before doing these
         String visitString =
                 String.format("{\"startDatetime\":\"%s\"," +
-                                "\"visitType\":\"Telemedicine\"," +
+                                "\"visitType\":\""+UuidDictionary.VISIT_TELEMEDICINE+"\"," +
                                 "\"patient\":\"%s\"," +
                                 "\"location\":\"%s\"}",
                         startDateTime, patient.getOpenmrsId(), location_uuid);
@@ -907,7 +907,7 @@ public class ClientService extends IntentService {
                 String.format("{" +
                                 "\"encounterDatetime\":\"%s\"," +
                                 "\"patient\":\"%s\"," +
-                                "\"encounterType\":\"VITALS\"," +
+                                "\"encounterType\":\""+UuidDictionary.ENCOUNTER_VITALS+"\"," +
                                 " \"visit\":\"%s\"," +
                                 "\"obs\":[" + formattedObs +
                                 "]," +
@@ -1070,7 +1070,7 @@ public class ClientService extends IntentService {
                 String.format("{" +
                                 "\"encounterDatetime\":\"%s\"," +
                                 " \"patient\":\"%s\"," +
-                                "\"encounterType\":\"ADULTINITIAL\"," +
+                                "\"encounterType\":\""+UuidDictionary.ENCOUNTER_ADULTINITIAL+"\"," +
                                 "\"visit\":\"%s\"," +
                                 "\"obs\":[" + formattedObs
                                 + "]," +
