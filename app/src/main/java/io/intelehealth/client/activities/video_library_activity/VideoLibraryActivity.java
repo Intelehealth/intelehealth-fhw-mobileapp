@@ -56,7 +56,7 @@ public class VideoLibraryActivity extends AppCompatActivity implements VideoLibr
             }
 
         } else {
-            Toast.makeText(this, "This feature is only available to devices with SD cards.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.error_no_sd), Toast.LENGTH_LONG).show();
         }
 
 

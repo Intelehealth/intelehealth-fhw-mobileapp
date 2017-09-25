@@ -1,0 +1,189 @@
+<resources>
+
+    <string-array name="pref_example_list_titles">
+        <item>Always</item>
+        <item>When possible</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+    <string-array name="state_error">
+        <item>Please select country first</item>
+    </string-array>
+    <string-array name="countries">
+        <item>Select Country</item>
+        <item>India</item>
+        <item>United States</item>
+    </string-array>
+
+    <string-array name="education">
+        <item>Select Education</item>
+        <item>Illiterate</item>
+        <item>Primary</item>
+        <item>Secondary</item>
+        <item>Higher Secondary</item>
+        <item>Graduation &amp; Higher</item>
+    </string-array>
+
+    <string-array name="caste">
+        <item>Select Caste</item>
+        <item>General</item>
+        <item>OBC</item>
+        <item>SC</item>
+        <item>ST</item>
+        <item>others</item>
+    </string-array>
+
+    <string-array name="economic">
+        <item>Select Economic Status</item>
+        <item>APL</item>
+        <item>BPL</item>
+    </string-array>
+
+    <string-array name="states_india">
+        <item>Select State</item>
+        <item>Andhra Pradesh</item>
+        <item>Arunachal Pradesh</item>
+        <item>Assam</item>
+        <item>Bihar</item>
+        <item>Chhattisgarh</item>
+        <item>Goa</item>
+        <item>Gujarat</item>
+        <item>Haryana</item>
+        <item>Himachal Pradesh</item>
+        <item>Jammu &amp; Kashmir</item>
+        <item>Jharkhand</item>
+        <item>Karnataka</item>
+        <item>Kerala</item>
+        <item>Madhya Pradesh</item>
+        <item>Maharashtra</item>
+        <item>Manipur</item>
+        <item>Meghalaya</item>
+        <item>Mizoram</item>
+        <item>Nagaland</item>
+        <item>Odisha</item>
+        <item>Punjab</item>
+        <item>Rajasthan</item>
+        <item>Sikkim</item>
+        <item>Tamil Nadu</item>
+        <item>Telangana</item>
+        <item>Tripura</item>
+        <item>Uttar Pradesh</item>
+        <item>Uttarakhand</item>
+        <item>West Bengal</item>
+    </string-array>
+
+    <string-array name="states_us">
+        <item>Select State</item>
+        <item>Alabama</item>
+        <item>Alaska</item>
+        <item>Arizona</item>
+        <item>Arkansas</item>
+        <item>California</item>
+        <item>Colorado</item>
+        <item>Connecticut</item>
+        <item>Delaware</item>
+        <item>Florida</item>
+        <item>Georgia</item>
+        <item>Hawaii</item>
+        <item>Idaho</item>
+        <item>Illinois</item>
+        <item>Indiana</item>
+        <item>Iowa</item>
+        <item>Kansas</item>
+        <item>Kentucky</item>
+        <item>Louisiana</item>
+        <item>Maine</item>
+        <item>Maryland</item>
+        <item>Massachusetts</item>
+        <item>Michigan</item>
+        <item>Minnesota</item>
+        <item>Mississippi</item>
+        <item>Missouri</item>
+        <item>Montana</item>
+        <item>Nebraska</item>
+        <item>Nevada</item>
+        <item>New Hampshire</item>
+        <item>New Jersey</item>
+        <item>New Mexico</item>
+        <item>New York</item>
+        <item>North Carolina</item>
+        <item>North Dakota</item>
+        <item>Ohio</item>
+        <item>Oklahoma</item>
+        <item>Oregon</item>
+        <item>Pennsylvania</item>
+        <item>Rhode Island</item>
+        <item>South Carolina</item>
+        <item>South Dakota</item>
+        <item>Tennessee</item>
+        <item>Texas</item>
+        <item>Utah</item>
+        <item>Vermont</item>
+        <item>Virginia</item>
+        <item>Washington</item>
+        <item>West Virginia</item>
+        <item>Wisconsin</item>
+        <item>Wyoming</item>
+    </string-array>
+
+    <string-array name="odisha_villages">
+        <item>Satygaon</item>
+        <item>Banjha Munda</item>
+        <item>Baidehipur</item>
+        <item>Bhadramunda</item>
+        <item>Patamara</item>
+        <item>Ditikrushnapur</item>
+        <item>Pita Kulha Sahi</item>
+        <item>Kusumapal</item>
+        <item>Paunsia</item>
+        <item>Genjeimuni</item>
+        <item>Sagamanji Sahi</item>
+        <item>Bankhuli</item>
+        <item>Tandibereni</item>
+        <item>Nalasahi</item>
+        <item>Chanapal</item>
+        <item>Magarmuhan</item>
+        <item>Rangamatia</item>
+        <item>Suabasa</item>
+        <item>Kurumula</item>
+        <item>Ghenakani</item>
+        <item>Gopinnathpur</item>
+        <item>Kusubania</item>
+        <item>Hathimunda</item>
+        <item>Dhipasahi</item>
+        <item>Kuchinda</item>
+        <item>Chadakamara</item>
+        <item>Phuljhari</item>
+        <item>Khuntaposi</item>
+    </string-array>
+
+    <string-array name="units">
+        <item>per Hour</item>
+        <item>per Day</item>
+        <item>Per Week</item>
+        <item>per Month</item>
+        <item>per Year</item>
+    </string-array>
+
+    <string-array name="doctor_units">
+        <item>times per hour</item>
+        <item>time per day</item>
+        <item>times per week</item>
+        <item>times per month</item>
+        <item>times per year</item>
+    </string-array>
+
+    <string-array name="duration_units">
+        <item>Hours</item>
+        <item>Days</item>
+        <item>Weeks</item>
+        <item>Months</item>
+        <item>Years</item>
+    </string-array>
+
+</resources>

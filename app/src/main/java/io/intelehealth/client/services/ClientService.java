@@ -688,7 +688,7 @@ public class ClientService extends IntentService {
         idCursor.close();
 
         if (patient.getOpenmrsId() == null || patient.getOpenmrsId().isEmpty()) {
-            Toast.makeText(this, "Patient has not been uploaded", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.patient_upload_error), Toast.LENGTH_LONG).show();
             return uploadStatus;
         }
 
@@ -1375,7 +1375,7 @@ public class ClientService extends IntentService {
             if (result > 0) {
                 Log.i(TAG, result + " row updated");
             } else {
-                Log.e(TAG, "Database error while updatingx row!");
+                Log.e(TAG, "Database error while updating row!");
             }
             return intent.getIntExtra("queueId", -1);
         }

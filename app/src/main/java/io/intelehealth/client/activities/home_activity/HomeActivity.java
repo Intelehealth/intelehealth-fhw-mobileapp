@@ -219,7 +219,7 @@ public class HomeActivity extends AppCompatActivity {
         } catch (IOException e1) {
             e1.printStackTrace();
         }
-        Toast.makeText(this,"Backup Completed!",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,getString(R.string.backup_completed),Toast.LENGTH_SHORT).show();
     }
 
 

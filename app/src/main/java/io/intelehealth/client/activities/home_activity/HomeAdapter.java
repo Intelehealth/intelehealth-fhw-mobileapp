@@ -17,6 +17,7 @@ import io.intelehealth.client.activities.sync_activity.ActivitySync;
 import io.intelehealth.client.activities.today_patient_activity.TodayPatientActivity;
 import io.intelehealth.client.activities.identification_activity.IdentificationActivity;
 import io.intelehealth.client.activities.video_library_activity.VideoLibraryActivity;
+import io.intelehealth.client.application.IntelehealthApplication;
 
 /**
  * Created by tusharjois on 9/20/16.
@@ -24,7 +25,12 @@ import io.intelehealth.client.activities.video_library_activity.VideoLibraryActi
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder> {
 
     final static String TAG = HomeAdapter.class.getSimpleName();
-    final String[] options = {"New Patient","Find Patients","Today's Patients","Video Library"};
+    final String[] options =
+            {IntelehealthApplication.getAppContext().getString(R.string.new_patient),
+                    IntelehealthApplication.getAppContext().getString(R.string.find_patient),
+                    IntelehealthApplication.getAppContext().getString(R.string.today_patient),
+                    IntelehealthApplication.getAppContext().getString(R.string.video_library),
+            "Sync"};
     //final String[] options = {"New Patient","Find Patients","Today's Patients","Video Library","Sync"};
 
     //TODO: Change placeholder icon "android.R.drawable.ic_menu_my_calendar"
@@ -33,7 +39,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
     //        android.R.drawable.ic_menu_preferences};
 
     final int[] icons = {R.drawable.ic_person_add_24dp, R.drawable.ic_search_24dp,
-            android.R.drawable.ic_menu_my_calendar, R.drawable.ic_action_folder_open};
+            android.R.drawable.ic_menu_my_calendar, R.drawable.ic_action_folder_open,
+            android.R.drawable.ic_menu_preferences};
 
     @Override
     public IconViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

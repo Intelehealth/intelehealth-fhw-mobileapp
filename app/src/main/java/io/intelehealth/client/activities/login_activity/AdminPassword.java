@@ -75,7 +75,7 @@ public class AdminPassword {
                 if (hash != null && stored_password.equals(hash)) {
                     return true;
                 } else {
-                    Toast.makeText(mContext, "Admin Password Wrong", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext,mContext.getString(R.string.error_admin_password), Toast.LENGTH_LONG).show();
                     return false;
                 }
 

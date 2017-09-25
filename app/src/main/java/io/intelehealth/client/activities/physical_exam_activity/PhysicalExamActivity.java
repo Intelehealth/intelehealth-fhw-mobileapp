@@ -145,7 +145,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                     "visit_summary", Context.MODE_PRIVATE);
             Set<String> selectedExams = mSharedPreference.getStringSet("exam_" + patientID, null);
             selectedExamsList.clear();
-            selectedExamsList.addAll(selectedExams);
+            if(selectedExams!=null) selectedExamsList.addAll(selectedExams);
             filePath = new File(baseDir + File.separator + "Patient Images" + File.separator +
                     patientID + File.separator + visitID + File.separator + imageDir);
         }

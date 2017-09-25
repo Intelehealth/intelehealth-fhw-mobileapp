@@ -115,7 +115,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Log.i("CNA", currentFile.toString());
+                Log.i(LOG_TAG, currentFile.toString());
                 Node currentNode = new Node(currentFile);
                 complaints.add(currentNode);
             }

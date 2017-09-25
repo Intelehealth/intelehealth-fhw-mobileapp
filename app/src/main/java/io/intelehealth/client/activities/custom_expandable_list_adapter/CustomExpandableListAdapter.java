@@ -20,7 +20,7 @@ import io.intelehealth.client.node.Node;
  */
 public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 
-    private String LOG_TAG = "Node Adapter";
+    private String TAG = CustomExpandableListAdapter.class.getSimpleName();
     private Context mContext;
     private Node mNode;
     private LayoutInflater mInflater;

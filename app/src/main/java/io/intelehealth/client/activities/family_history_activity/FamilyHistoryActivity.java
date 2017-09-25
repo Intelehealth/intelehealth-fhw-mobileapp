@@ -79,16 +79,16 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         boolean past = sharedPreferences.getBoolean("returning", false);
         if (past) {
             AlertDialog.Builder alertdialog = new AlertDialog.Builder(FamilyHistoryActivity.this);
-            alertdialog.setTitle("Family History");
-            alertdialog.setMessage("Do you want to update details?");
-            alertdialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            alertdialog.setTitle(getString(R.string.title_activity_family_history));
+            alertdialog.setMessage(getString(R.string.question_update_details));
+            alertdialog.setPositiveButton(getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     // allow to edit
                     flag = true;
                 }
             });
-            alertdialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            alertdialog.setNegativeButton(getString(R.string.generic_no), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     // skip

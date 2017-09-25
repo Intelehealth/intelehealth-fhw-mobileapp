@@ -78,7 +78,7 @@ public class PatientUpdateService extends IntentService {
         patientId = intent.getStringExtra("patientID");
         patientName = intent.getStringExtra("name");
 
-        Toast.makeText(this, "Update", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.generic_update), Toast.LENGTH_SHORT).show();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(IntelehealthApplication.getAppContext());
         location_uuid = prefs.getString(SettingsActivity.KEY_PREF_LOCATION_UUID, null);
@@ -283,10 +283,10 @@ public class PatientUpdateService extends IntentService {
                         if (e == null) {
                             for (ParseObject delete : parseObjects) {
                                 delete.deleteInBackground();
-                                Toast.makeText(getApplicationContext(), "deleted", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), getString(R.string.generic_deleted), Toast.LENGTH_SHORT).show();
                             }
                         } else {
-                            Toast.makeText(getApplicationContext(), "error in deleting", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.error_delete), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

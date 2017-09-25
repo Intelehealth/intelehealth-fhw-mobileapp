@@ -57,21 +57,9 @@
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.active_patient_activity.ActivePatientActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:label="@string/title_activity_active_patient"
-            android:parentActivityName=".activities.home_activity.HomeActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.intelehealth.client.activities.home_activity.HomeActivity" />
-        </activity>
-        <activity
             android:name=".activities.patient_detail_activity.PatientDetailActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_patient_detail"
-            android:parentActivityName=".activities.active_patient_activity.ActivePatientActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

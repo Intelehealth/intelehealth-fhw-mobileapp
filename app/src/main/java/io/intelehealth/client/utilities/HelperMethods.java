@@ -39,6 +39,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.UUID;
 
+import io.intelehealth.client.R;
 import io.intelehealth.client.activities.setting_activity.SettingsActivity;
 import io.intelehealth.client.objects.WebResponse;
 
@@ -183,7 +184,7 @@ public class HelperMethods {
             }
 
         } else {
-            Toast.makeText(activity, "No camera installed.", Toast.LENGTH_LONG).show();
+            Toast.makeText(activity, activity.getString(R.string.error_no_camera), Toast.LENGTH_LONG).show();
             Log.e(LOG_TAG, "No camera activity to handle image capture");
         }
 

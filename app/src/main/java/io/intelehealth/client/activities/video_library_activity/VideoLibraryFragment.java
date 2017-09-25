@@ -65,7 +65,7 @@ public class VideoLibraryFragment extends Fragment {
         Log.i(TAG, "onActivityCreated: "+filePath);
         File[] files = file.listFiles();
         if (files == null || files.length == 0) {
-            Toast.makeText(getContext(), "No Files in this directory", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), getString(R.string.error_no_file), Toast.LENGTH_LONG).show();
         } else {
             List<File> fileList = Arrays.asList(files);
             VideoLibraryAdapter adapter = new VideoLibraryAdapter(fileList, getActivity());
