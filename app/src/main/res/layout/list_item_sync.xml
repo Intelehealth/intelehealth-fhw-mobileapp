@@ -30,8 +30,7 @@
 
     <TextView
         android:id="@+id/list_item_indicator_text_view"
-        android:layout_width="0dp"
-        android:layout_weight="1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textAppearance="?android:attr/textAppearanceMedium"
