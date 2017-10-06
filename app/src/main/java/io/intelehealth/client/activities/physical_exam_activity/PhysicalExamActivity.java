@@ -75,7 +75,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
     private ViewPager mViewPager;
 
 
-    static String patientID = "1";
+    static Integer patientID;
     static String visitID;
     String state;
     String patientName;
@@ -131,7 +131,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
         selectedExamsList = new ArrayList<>();
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
-            patientID = intent.getStringExtra("patientID");
+            patientID = intent.getIntExtra("patientID",-1);
             visitID = intent.getStringExtra("visitID");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
@@ -303,11 +303,11 @@ public class PhysicalExamActivity extends AppCompatActivity {
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int sectionNumber, PhysicalExam exams, String patientID, String visitID) {
+        public static PlaceholderFragment newInstance(int sectionNumber, PhysicalExam exams, Integer patientID, String visitID) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            args.putString("PATIENT_ID", patientID);
+            args.putInt("PATIENT_ID", patientID);
             args.putString("VISIT_ID", visitID);
             exam_list = exams;
             fragment.setArguments(args);
@@ -326,7 +326,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
             //VideoView videoView = (VideoView) rootView.findViewById(R.id.physical_exam_video_view);
 
             int viewNumber = getArguments().getInt(ARG_SECTION_NUMBER);
-            final String patientID = getArguments().getString("PATIENT_ID");
+            final Integer patientID = getArguments().getInt("PATIENT_ID");
             final String visitID = getArguments().getString("VISIT_ID");
             final Node viewNode = exam_list.getExamNode(viewNumber - 1);
             final String parent_name = exam_list.getExamParentNodeName(viewNumber - 1);
@@ -493,7 +493,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
         contentValues.put("value", string);
 
         String selection = "patient_id = ? AND visit_id = ? AND concept_id = ?";
-        String[] args = {patientID, visitID, String.valueOf(conceptID)};
+        String[] args = {String.valueOf(patientID), visitID, String.valueOf(conceptID)};
 
         localdb.update(
                 "obs",

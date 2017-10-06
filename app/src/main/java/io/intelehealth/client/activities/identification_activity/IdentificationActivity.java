@@ -94,8 +94,8 @@ public class IdentificationActivity extends AppCompatActivity {
     String mPhoto;
     Patient patient = new Patient();
     Patient patient1 = new Patient();
-    String patientID;
-    String patientID_edit;
+    Integer patientID;
+    Integer patientID_edit = -1;
 
     Calendar today = Calendar.getInstance();
     Calendar dob = Calendar.getInstance();
@@ -127,7 +127,7 @@ public class IdentificationActivity extends AppCompatActivity {
         if (intent != null) {
             if (intent.hasExtra("pid")) {
                 this.setTitle("Update Patient");
-                patientID_edit = intent.getStringExtra("pid");
+                patientID_edit = intent.getIntExtra("pid",-1);
                 patient1.setId(patientID_edit);
                 setscreen(String.valueOf(patientID_edit));
             }
@@ -205,14 +205,12 @@ public class IdentificationActivity extends AppCompatActivity {
 
         // generate patientid only if there is no intent for Identification activity
 
-        if (patientID_edit == null) {
-
-
+        if (patientID_edit == -1) {
             generateID();
         }
 
         // setting radio button automatically according to the databse when user clicks edit details
-        if (patientID == null) {
+        if (patientID_edit!= -1) {
             if (patient1.getGender().equals("M")) {
                 mGenderM.setChecked(true);
                 if (mGenderF.isChecked())
@@ -232,7 +230,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
 
-        if (patientID_edit != null) {
+        if (patientID_edit != -1) {
             // setting country accordig database
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
             mEducation.setSelection(educationAdapter.getPosition(String.valueOf(patient1.getEducation_level())));
@@ -280,7 +278,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         mState.setAdapter(stateAdapter);
                         // setting state according database when user clicks edit details
 
-                        if (patientID_edit != null) {
+                        if (patientID_edit != -1) {
                             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getStateProvince())));
                         } else {
                             mState.setSelection(stateAdapter.getPosition("Odisha"));
@@ -292,7 +290,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mState.setAdapter(stateAdapter);
 
-                        if (patientID_edit != null) {
+                        if (patientID_edit != -1) {
 
                             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getStateProvince())));
                         }
@@ -487,7 +485,7 @@ public class IdentificationActivity extends AppCompatActivity {
     private void setscreen(String str) {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-        String patientSelection = "_id MATCH ?";
+        String patientSelection = "_id=?";
         String[] patientArgs = {str};
         String[] patientColumns = {"first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
@@ -761,7 +759,7 @@ public class IdentificationActivity extends AppCompatActivity {
             } catch (NullPointerException e) {
                 Snackbar.make(findViewById(R.id.cl_table), R.string.identification_screen_error_data_fields, Snackbar.LENGTH_SHORT);
             }
-            if (patientID_edit != null) {
+            if (patientID_edit != -1) {
                 new UpdatePatientTable(patient1).execute();
             } else {
                 new InsertPatientTable(patient).execute();
@@ -800,7 +798,6 @@ public class IdentificationActivity extends AppCompatActivity {
         ContentValues visitData = new ContentValues();
 
         public void gatherEntries() {
-            patientEntries.put("_id", patient.getId());
             patientEntries.put("first_name", patient.getFirstName());
             patientEntries.put("middle_name", patient.getMiddleName());
             patientEntries.put("last_name", patient.getLastName());
@@ -875,7 +872,6 @@ public class IdentificationActivity extends AppCompatActivity {
         ContentValues patientEntries1 = new ContentValues();
 
         public void gatherEntries1() {
-            patientEntries1.put("_id", patient1.getId());
             patientEntries1.put("first_name", patient1.getFirstName());
             patientEntries1.put("middle_name", patient1.getMiddleName());
             patientEntries1.put("last_name", patient1.getLastName());
@@ -974,20 +970,16 @@ public class IdentificationActivity extends AppCompatActivity {
 
     public void generateID() {
         SQLiteDatabase db1 = mDbHelper.getWritableDatabase();
-        String table = "patient_content";
-        String[] columnsToReturn = {"docid"};
-        String orderBy = "docid";
+        String table = "patient";
+        String[] columnsToReturn = {"_id"};
+        String orderBy = "_id";
         final Cursor idCursor = db1.query(table, columnsToReturn, null, null, null, null, orderBy);
         idCursor.moveToLast();
 
         if (idCursor.getCount() > 0) {
-            Integer lastIntegerID = idCursor.getInt(idCursor.getColumnIndexOrThrow("docid"));
+            Integer lastIntegerID = idCursor.getInt(idCursor.getColumnIndexOrThrow("_id"));
             lastIntegerID++;
-            patientID = idPreFix + String.valueOf(lastIntegerID); //This patient is assigned the new incremented number
-            patient.setId(patientID);
-        } else {
-            patientID = idPreFix + String.valueOf(1); //This patient is assigned the new incremented number
-
+            patientID = lastIntegerID; //This patient is assigned the new incremented number
             patient.setId(patientID);
         }
 

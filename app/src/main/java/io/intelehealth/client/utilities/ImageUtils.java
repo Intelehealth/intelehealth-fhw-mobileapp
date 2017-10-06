@@ -61,15 +61,14 @@ public final class ImageUtils {
         return inSampleSize;
     }
 
-    public static Bitmap resizePhoto(Bitmap photo) {
-        double HEIGHT = 500;
-        double WIDTH = 500;
-        int height = photo.getHeight();
-        int width = photo.getWidth();
-        double aspectRatio = Math.min(HEIGHT/height, WIDTH/width);
+    public static Bitmap resizePhoto(Bitmap photo, Double width, Double height) {
+
+        int photoHeight = photo.getHeight();
+        int wphotoWidthdth = photo.getWidth();
+        double aspectRatio = Math.min(height/photoHeight, width/wphotoWidthdth);
 
         if (0 < aspectRatio && aspectRatio < 1) {
-            return Bitmap.createScaledBitmap(photo, (int)(aspectRatio*width), (int)(aspectRatio*height), true);
+            return Bitmap.createScaledBitmap(photo, (int)(aspectRatio*wphotoWidthdth), (int)(aspectRatio*photoHeight), true);
         }
         return photo;
     }

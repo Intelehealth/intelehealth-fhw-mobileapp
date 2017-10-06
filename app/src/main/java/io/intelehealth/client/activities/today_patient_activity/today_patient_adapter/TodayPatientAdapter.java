@@ -43,8 +43,14 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientViewHo
     @Override
     public void onBindViewHolder(TodayPatientViewHolder holder, int position) {
         final TodayPatientModel todayPatientModel = todayPatientModelList.get(position);
-        String header = String.format("%s %s - " + context.getString(R.string.visit_summary_heading_id) + ": %s", todayPatientModel.getFirst_name(),
-                todayPatientModel.getLast_name(), todayPatientModel.getPatient_id());
+        String header;
+        if(todayPatientModel.getOpenmrs_id()!= null) {
+            header = String.format("%s %s - " + context.getString(R.string.visit_summary_heading_id) + ": %s", todayPatientModel.getFirst_name(),
+                    todayPatientModel.getLast_name(), todayPatientModel.getPatient_id());
+        }else{
+            header = String.format("%s %s" , todayPatientModel.getFirst_name(),
+                    todayPatientModel.getLast_name());
+        }
         int age = HelperMethods.getAge(todayPatientModel.getDate_of_birth());
         String body = String.format(context.getString(R.string.id_number) + ": %s \n " +
                         context.getString(R.string.identification_screen_prompt_phone_number) + ": %s\n" +

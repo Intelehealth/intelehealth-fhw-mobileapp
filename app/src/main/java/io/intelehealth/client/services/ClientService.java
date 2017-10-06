@@ -1,5 +1,7 @@
 package io.intelehealth.client.services;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -33,6 +35,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import io.intelehealth.client.R;
@@ -41,6 +44,7 @@ import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActi
 import io.intelehealth.client.application.IntelehealthApplication;
 import io.intelehealth.client.database.DelayedJobQueueProvider;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
+import io.intelehealth.client.models.Identifier;
 import io.intelehealth.client.objects.Obs;
 import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.objects.WebResponse;
@@ -92,7 +96,7 @@ public class ClientService extends IntentService {
 
     Integer statusCode = 0;
 
-    String patientID;
+    Integer patientID;
     String patientName;
 
     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(IntelehealthApplication.getAppContext());
@@ -135,7 +139,7 @@ public class ClientService extends IntentService {
             Log.d(TAG, "Queue id: " + intent.getIntExtra("queueId", -1));
             queueId = intent.getIntExtra("queueId", -1);
 
-            patientID = intent.getStringExtra("patientID");
+            patientID = intent.getIntExtra("patientID", -1);
             patientName = intent.getStringExtra("name");
             Log.v(TAG, "Patient ID: " + patientID);
             Log.v(TAG, "Patient Name: " + patientName);
@@ -217,7 +221,7 @@ public class ClientService extends IntentService {
 
         Gson gson = new GsonBuilder().serializeNulls().create();
         Patient patient = new Patient();
-        patient.setId(patientCursor.getString(0));
+        patient.setId(patientCursor.getInt(0));
         patient.setFirstName(patientCursor.getString(1));
         patient.setMiddleName(patientCursor.getString(2));
         patient.setLastName(patientCursor.getString(3));
@@ -337,7 +341,7 @@ public class ClientService extends IntentService {
      * @param current_intent this intent
      * @return uploadDone
      */
-    private boolean uploadPatient(String patientID, Intent current_intent) {
+    private boolean uploadPatient(Integer patientID, Intent current_intent) {
 
         String responseCode = null;
         String uploadDone = null;
@@ -398,17 +402,17 @@ public class ClientService extends IntentService {
      * @param patientID Unique id of the patient
      * @return responseString
      */
-    private String uploadPersonData(String patientID) {
+    private String uploadPersonData(Integer patientID) {
 
         Patient patient = new Patient();
-        String patientSelection = "_id MATCH ?";
-        String[] patientArgs = {patientID};
+        String patientSelection = "_id = ?";
+        String[] patientArgs = {String.valueOf(patientID)};
 
         String table = "patient";
         String[] columnsToReturn = {"first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province", "country",
-                "postal_code", "phone_number", "gender", "sdw", "occupation", "patient_photo","economic_status",
-                "education_status","caste"};
+                "postal_code", "phone_number", "gender", "sdw", "occupation", "patient_photo", "economic_status",
+                "education_status", "caste"};
         final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
 
         if (idCursor.moveToFirst()) {
@@ -514,49 +518,55 @@ public class ClientService extends IntentService {
      * @param responseString Response JSON string
      * @return boolean value representing success or failure.
      */
-    private String uploadPatientData(String patientID, String responseString) {
-        String patientString =
-                String.format("{\"person\":\"%s\", " +
-                                "\"identifiers\":[{\"identifier\":\"%s\", " +
-                                "\"identifierType\":\"%s\", " +
-                                "\"location\":\"%s\", " +
-                                "\"preferred\":true}]}",
-                        responseString,
-                        patientID,
-                        UuidDictionary.IDENTIFIER_OPENMRS_ID,
-                        location_uuid);
+    private String uploadPatientData(Integer patientID, String responseString) {
 
-        Log.d(TAG, "Patient String: " + patientString);
-        WebResponse responsePatient;
-        responsePatient = HelperMethods.postCommand("patient", patientString, getApplicationContext());
-        Log.d(TAG, "uploadPatientData: " + responsePatient.getResponseString());
-        if (responsePatient == null || responsePatient.getResponseCode() != 201) {
-            String newText = "Patient was not created. Please check your connection.";
-            mBuilder.setContentText(newText).setNumber(++numMessages);
-            mNotifyManager.notify(mId, mBuilder.build());
-            Log.d(TAG, "Patient posting was unsuccessful 2");
-            Log.d(TAG, responsePatient.getResponseString());
-            return null;
-        } else {
-            String newText = "Patient created successfully.";
-            mBuilder.setContentText(newText).setNumber(++numMessages);
-            mNotifyManager.notify(mId, mBuilder.build());
+        String identifier = getIdentifier();
 
-            ContentValues contentValuesOpenMRSID = new ContentValues();
-            Log.i(TAG, responsePatient.getResponseString());
-            contentValuesOpenMRSID.put("openmrs_uuid", responsePatient.getResponseString());
-            String selection = "_id MATCH ?";
-            String[] args = {patientID};
+        if (identifier != null) {
+            String patientString =
+                    String.format("{\"person\":\"%s\", " +
+                                    "\"identifiers\":[{\"identifier\":\"%s\", " +
+                                    "\"identifierType\":\"%s\", " +
+                                    "\"location\":\"%s\", " +
+                                    "\"preferred\":true}]}",
+                            responseString,
+                            identifier,
+                            UuidDictionary.IDENTIFIER_OPENMRS_ID,
+                            location_uuid);
 
-            db.update(
-                    "patient",
-                    contentValuesOpenMRSID,
-                    selection,
-                    args
-            );
-            return responsePatient.getResponseString();
+            Log.d(TAG, "Patient String: " + patientString);
+            WebResponse responsePatient;
+            responsePatient = HelperMethods.postCommand("patient", patientString, getApplicationContext());
+            Log.d(TAG, "uploadPatientData: " + responsePatient.getResponseString());
+            if (responsePatient == null || responsePatient.getResponseCode() != 201) {
+                String newText = "Patient was not created. Please check your connection.";
+                mBuilder.setContentText(newText).setNumber(++numMessages);
+                mNotifyManager.notify(mId, mBuilder.build());
+                Log.d(TAG, "Patient posting was unsuccessful 2");
+                Log.d(TAG, responsePatient.getResponseString());
+                return null;
+            } else {
+                String newText = "Patient created successfully.";
+                mBuilder.setContentText(newText).setNumber(++numMessages);
+                mNotifyManager.notify(mId, mBuilder.build());
+
+                ContentValues contentValuesOpenMRSID = new ContentValues();
+                Log.i(TAG, responsePatient.getResponseString());
+                contentValuesOpenMRSID.put("openmrs_uuid", responsePatient.getResponseString());
+                contentValuesOpenMRSID.put("openmrs_id", identifier);
+                String selection = "_id = ?";
+                String[] args = {String.valueOf(patientID)};
+
+                db.update(
+                        "patient",
+                        contentValuesOpenMRSID,
+                        selection,
+                        args
+                );
+                return responsePatient.getResponseString();
+            }
         }
-
+        return null;
     }
 
     /**
@@ -567,7 +577,7 @@ public class ClientService extends IntentService {
      * @param current_intent this intent
      * @return uploadStatus
      */
-    private boolean uploadVisit(String patientID, String visitID, Intent current_intent) {
+    private boolean uploadVisit(Integer patientID, String visitID, Intent current_intent) {
 
 
         Patient patient = new Patient();
@@ -590,7 +600,7 @@ public class ClientService extends IntentService {
 
         try {
             String famHistSelection = "patient_id = ? AND concept_id = ?";
-            String[] famHistArgs = {patientID, String.valueOf(ConceptId.RHK_FAMILY_HISTORY_BLURB)};
+            String[] famHistArgs = {String.valueOf(patientID), String.valueOf(ConceptId.RHK_FAMILY_HISTORY_BLURB)};
             Cursor famHistCursor = db.query("obs", columns, famHistSelection, famHistArgs, null, null, orderBy);
             famHistCursor.moveToLast();
             String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
@@ -602,7 +612,7 @@ public class ClientService extends IntentService {
 
         try {
             String medHistSelection = "patient_id = ? AND concept_id = ?";
-            String[] medHistArgs = {patientID, String.valueOf(ConceptId.RHK_MEDICAL_HISTORY_BLURB)};
+            String[] medHistArgs = {String.valueOf(patientID), String.valueOf(ConceptId.RHK_MEDICAL_HISTORY_BLURB)};
             Cursor medHistCursor = db.query("obs", columns, medHistSelection, medHistArgs, null, null, orderBy);
             medHistCursor.moveToLast();
             String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
@@ -621,7 +631,7 @@ public class ClientService extends IntentService {
         }
 
         String visitSelection = "patient_id = ? AND visit_id = ?";
-        String[] visitArgs = {patientID, visitID};
+        String[] visitArgs = {String.valueOf(patientID), visitID};
         Cursor visitCursor = db.query("obs", columns, visitSelection, visitArgs, null, null, orderBy);
         if (visitCursor.moveToFirst()) {
             do {
@@ -674,8 +684,8 @@ public class ClientService extends IntentService {
         boolean uploadStatus = false;
 
 
-        String patientSelection = "_id MATCH ?";
-        String[] patientArgs = {patientID};
+        String patientSelection = "_id = ?";
+        String[] patientArgs = {String.valueOf(patientID)};
         String[] oMRSCol = {"openmrs_uuid", "sdw", "occupation"};
         final Cursor idCursor = db.query("patient", oMRSCol, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
@@ -795,7 +805,7 @@ public class ClientService extends IntentService {
         //TODO: Location UUID needs to be found before doing these
         String visitString =
                 String.format("{\"startDatetime\":\"%s\"," +
-                                "\"visitType\":\""+UuidDictionary.VISIT_TELEMEDICINE+"\"," +
+                                "\"visitType\":\"" + UuidDictionary.VISIT_TELEMEDICINE + "\"," +
                                 "\"patient\":\"%s\"," +
                                 "\"location\":\"%s\"}",
                         startDateTime, patient.getOpenmrsId(), location_uuid);
@@ -907,7 +917,7 @@ public class ClientService extends IntentService {
                 String.format("{" +
                                 "\"encounterDatetime\":\"%s\"," +
                                 "\"patient\":\"%s\"," +
-                                "\"encounterType\":\""+UuidDictionary.ENCOUNTER_VITALS+"\"," +
+                                "\"encounterType\":\"" + UuidDictionary.ENCOUNTER_VITALS + "\"," +
                                 " \"visit\":\"%s\"," +
                                 "\"obs\":[" + formattedObs +
                                 "]," +
@@ -1070,7 +1080,7 @@ public class ClientService extends IntentService {
                 String.format("{" +
                                 "\"encounterDatetime\":\"%s\"," +
                                 " \"patient\":\"%s\"," +
-                                "\"encounterType\":\""+UuidDictionary.ENCOUNTER_ADULTINITIAL+"\"," +
+                                "\"encounterType\":\"" + UuidDictionary.ENCOUNTER_ADULTINITIAL + "\"," +
                                 "\"visit\":\"%s\"," +
                                 "\"obs\":[" + formattedObs
                                 + "]," +
@@ -1194,7 +1204,7 @@ public class ClientService extends IntentService {
      * @param current_intent this intent
      * @return boolean value representing success or failure.
      */
-    private boolean endVisit(String patientIDs, String visitUUID, Intent current_intent) {
+    private boolean endVisit(Integer patientIDs, String visitUUID, Intent current_intent) {
 
         Log.d(TAG, "endVisit: ");
 
@@ -1316,7 +1326,7 @@ public class ClientService extends IntentService {
             values.put(DelayedJobQueueProvider.JOB_PRIORITY, 1);
             values.put(DelayedJobQueueProvider.JOB_REQUEST_CODE, requestCode);
             values.put(DelayedJobQueueProvider.PATIENT_NAME, intent.getStringExtra("name"));
-            values.put(DelayedJobQueueProvider.PATIENT_ID, intent.getStringExtra("patientID"));
+            values.put(DelayedJobQueueProvider.PATIENT_ID, intent.getIntExtra("patientID", 0));
             values.put(DelayedJobQueueProvider.SYNC_STATUS, 0);
 
             switch (serviceCall) {
@@ -1422,5 +1432,56 @@ public class ClientService extends IntentService {
         Intent intent = new Intent(VisitSummaryActivity.FILTER);
         intent.putExtra("Restart", 200);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    private String getIdentifier() {
+        String returnString = null;
+        try {
+
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+            String serverAddress = sharedPref.getString(SettingsActivity.KEY_PREF_SERVER_URL_BASE, null);
+            if (serverAddress != null) {
+
+                AccountManager manager = AccountManager.get(this);
+
+                String USERNAME;
+                String PASSWORD;
+
+                Account[] accountList = manager.getAccountsByType("io.intelehealth.openmrs");
+                if (accountList.length == 1) {
+                    Account authAccount = accountList[0];
+                    USERNAME = authAccount.name;
+                    PASSWORD = manager.getPassword(authAccount);
+
+                    if (USERNAME != null && !USERNAME.isEmpty() && PASSWORD != null && !PASSWORD.isEmpty()) {
+
+
+                        WebResponse responseIdentifier;
+                        responseIdentifier = HelperMethods.getCommand(serverAddress + "/module/idgen/generateIdentifier.form",
+                                "?source=1&username=" + USERNAME + "&password=" + PASSWORD,
+                                getApplicationContext(), USERNAME, PASSWORD);
+
+                        if (responseIdentifier.getResponseString() != null && responseIdentifier.getResponseCode() == 200) {
+
+                            Gson gson = new Gson();
+                            Identifier i = gson.fromJson(responseIdentifier.getResponseString(), Identifier.class);
+
+                            List<String> identifiersList = i.getIdentifiers();
+                            for (String string : identifiersList) {
+                                Log.i(TAG, "getIdentifier: ++" + string);
+                            }
+                            returnString = identifiersList.get(0);
+                            Log.i(TAG, "getIdentifier: " + returnString);
+
+                        }
+                    }
+                }
+            }
+        } catch (IllegalArgumentException e) {
+            Log.e(TAG, "changeApiBaseUrl: " + e.getMessage());
+            Log.e(TAG, "changeApiBaseUrl: " + e.getStackTrace());
+            return null;
+        }
+        return returnString;
     }
 }

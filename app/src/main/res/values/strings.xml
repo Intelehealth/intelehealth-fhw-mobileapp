@@ -339,6 +339,7 @@
     <string name="invalidate_offline_login">"Offline Login Invalidated"</string>
 
     <string name="patient_upload_error">Patient has not been uploaded</string>
+    <string name="patient_not_registered">Patient not registered</string>
 
     <string name="action_sync_all">Sync All</string>
 </resources>

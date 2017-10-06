@@ -112,7 +112,7 @@ public class UpdateVisitService extends IntentService {
 
             if (patientID != null) {
 
-                String selection_patient = "_id MATCH ?";
+                String selection_patient = "_id = ?";
                 String[] coloumns_patient = {"openmrs_uuid"};
                 String[] args_patient = {patientID};
 
@@ -613,7 +613,7 @@ public class UpdateVisitService extends IntentService {
         values.put(DelayedJobQueueProvider.JOB_PRIORITY, 1);
         values.put(DelayedJobQueueProvider.JOB_REQUEST_CODE, 0);
         values.put(DelayedJobQueueProvider.PATIENT_NAME, intent.getStringExtra("name"));
-        values.put(DelayedJobQueueProvider.PATIENT_ID, intent.getStringExtra("patientID"));
+        values.put(DelayedJobQueueProvider.PATIENT_ID, intent.getIntExtra("patientID",-1));
         values.put(DelayedJobQueueProvider.VISIT_ID, intent.getStringExtra("visitID"));
         values.put(DelayedJobQueueProvider.SYNC_STATUS, 0);
 

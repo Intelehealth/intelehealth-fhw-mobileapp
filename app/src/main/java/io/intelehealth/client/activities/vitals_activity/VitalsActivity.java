@@ -47,7 +47,7 @@ public class VitalsActivity extends AppCompatActivity {
     final String LOG_TAG = "VitalsActivity";
     int flag_height =0, flag_weight=0;
 
-    String patientID = "1";
+    Integer patientID;
     String visitID;
     String state;
     String patientName;
@@ -90,7 +90,7 @@ public class VitalsActivity extends AppCompatActivity {
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
-            patientID = intent.getStringExtra("patientID");
+            patientID = intent.getIntExtra("patientID",-1);
             visitID = intent.getStringExtra("visitID");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
@@ -280,7 +280,7 @@ public class VitalsActivity extends AppCompatActivity {
         String[] columns = {"value", " concept_id"};
         String orderBy = "visit_id";
         String visitSelection = "patient_id = ? AND visit_id = ?";
-        String[] visitArgs = {patientID, visitID};
+        String[] visitArgs = {String.valueOf(patientID), visitID};
         Cursor visitCursor = db.query("obs", columns, visitSelection, visitArgs, null, null, orderBy);
         if (visitCursor.moveToFirst()) {
             do {
@@ -576,7 +576,7 @@ public class VitalsActivity extends AppCompatActivity {
         contentValues.put("value", objValue);
 
         String selection = "patient_id = ? AND visit_id = ? AND concept_id = ?";
-        String[] args = {patientID, visitID, String.valueOf(CONCEPT_ID)};
+        String[] args = {String.valueOf(patientID), visitID, String.valueOf(CONCEPT_ID)};
 
         localdb.update(
                 "obs",

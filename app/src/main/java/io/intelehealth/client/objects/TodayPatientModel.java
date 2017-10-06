@@ -12,25 +12,29 @@ import io.intelehealth.client.activities.today_patient_activity.TodayPatientActi
 public class TodayPatientModel {
 
     Integer _id;
-    String patient_id;
+    Integer patient_id;
     String start_datetime;
     String end_datetime;
     String openmrs_uuid;
+    String openmrs_id;
     String first_name;
     String middle_name;
     String last_name;
     String date_of_birth;
     String phone_number;
 
-    public TodayPatientModel(Integer _id, String patient_id, String start_datetime,
-                             String end_datetime, String openmrs_uuid, String first_name,
-                             String middle_name, String last_name, String date_of_birth,
+    public TodayPatientModel(Integer _id, Integer patient_id,
+                             String start_datetime, String end_datetime,
+                             String openmrs_uuid, String openmrs_id,
+                             String first_name, String middle_name,
+                             String last_name, String date_of_birth,
                              String phone_number) {
         this._id = _id;
         this.patient_id = patient_id;
         this.start_datetime = start_datetime;
         this.end_datetime = end_datetime;
         this.openmrs_uuid = openmrs_uuid;
+        this.openmrs_id = openmrs_id;
         this.first_name = first_name;
         this.middle_name = middle_name;
         this.last_name = last_name;
@@ -46,11 +50,11 @@ public class TodayPatientModel {
         this._id = _id;
     }
 
-    public String getPatient_id() {
+    public Integer getPatient_id() {
         return patient_id;
     }
 
-    public void setPatient_id(String patient_id) {
+    public void setPatient_id(Integer patient_id) {
         this.patient_id = patient_id;
     }
 
@@ -116,5 +120,13 @@ public class TodayPatientModel {
 
     public void setMiddle_name(String middle_name) {
         this.middle_name = middle_name;
+    }
+
+    public String getOpenmrs_id() {
+        return openmrs_id;
+    }
+
+    public void setOpenmrs_id(String openmrs_id) {
+        this.openmrs_id = openmrs_id;
     }
 }

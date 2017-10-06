@@ -114,7 +114,7 @@ public class PatientUpdateService extends IntentService {
         values.put(DelayedJobQueueProvider.JOB_TYPE, "patientUpdate");
         values.put(DelayedJobQueueProvider.JOB_PRIORITY, 1);
         values.put(DelayedJobQueueProvider.JOB_REQUEST_CODE, 0);
-        values.put(DelayedJobQueueProvider.PATIENT_ID, intent.getStringExtra("patientID"));
+        values.put(DelayedJobQueueProvider.PATIENT_ID, intent.getIntExtra("patientID",-1));
         values.put(DelayedJobQueueProvider.PATIENT_NAME, intent.getStringExtra("name"));
 
         Uri uri = getContentResolver().insert(
@@ -167,7 +167,7 @@ public class PatientUpdateService extends IntentService {
     private String uploadPersonData(String patientID) {
 
         Patient patient = new Patient();
-        String patientSelection = "_id MATCH ?";
+        String patientSelection = "_id = ?";
         String[] patientArgs = {patientID};
 
         String table = "patient";

@@ -985,17 +985,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     public void queryData(String dataString) {
 
-        String patientSelection = "_id MATCH ?";
+        String patientSelection = "_id = ?";
         String[] patientArgs = {dataString};
 
         String table = "patient";
-        String[] columnsToReturn = {"first_name", "middle_name", "last_name",
+        String[] columnsToReturn = {"openmrs_id","first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province", "country",
                 "postal_code", "phone_number", "gender", "sdw", "occupation", "patient_photo"};
         final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
 
         if (idCursor.moveToFirst()) {
             do {
+                patient.setFirstName(idCursor.getString(idCursor.getColumnIndex("openmrs_id")));
                 patient.setFirstName(idCursor.getString(idCursor.getColumnIndex("first_name")));
                 patient.setMiddleName(idCursor.getString(idCursor.getColumnIndex("middle_name")));
                 patient.setLastName(idCursor.getString(idCursor.getColumnIndex("last_name")));

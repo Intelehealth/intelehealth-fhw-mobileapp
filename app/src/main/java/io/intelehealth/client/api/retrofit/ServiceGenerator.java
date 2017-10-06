@@ -1,13 +1,25 @@
 package io.intelehealth.client.api.retrofit;
 
+import android.util.Log;
+import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.intelehealth.client.BuildConfig;
+import io.intelehealth.client.R;
+import io.intelehealth.client.activities.setup_activity.LocationArrayAdapter;
+import io.intelehealth.client.activities.setup_activity.SetupActivity;
+import io.intelehealth.client.models.Location;
+import io.intelehealth.client.models.Results;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 

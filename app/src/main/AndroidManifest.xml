@@ -80,7 +80,6 @@
             android:parentActivityName=".activities.home_activity.HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.view_history_activity.ViewHistoryActivity" />
         <activity
             android:name=".activities.search_patient_activity.SearchPatientActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -98,13 +97,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="io.intelehealth.client.activities.home_activity.HomeActivity" />
         </activity>
-        <activity
-            android:name=".activities.diagnostics_selection_test_activity.DiagnosticTestsSelectionActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:label="@string/title_activity_diagnostic_tests_list"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-
         <service
             android:name=".services.ClientService"
             android:exported="false" />

@@ -49,7 +49,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
     int lastExpandedPosition = -1;
 
 
-    String patientID = "1";
+    Integer patientID;
     String visitID;
     String state;
     String patientName;
@@ -86,7 +86,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
-            patientID = intent.getStringExtra("patientID");
+            patientID = intent.getIntExtra("patientID",-1);
             visitID = intent.getStringExtra("visitID");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
@@ -407,7 +407,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
         contentValues.put("value", string);
 
         String selection = "patient_id = ? AND visit_id = ? AND concept_id = ?";
-        String[] args = {patientID, visitID, String.valueOf(conceptID)};
+        String[] args = {String.valueOf(patientID), visitID, String.valueOf(conceptID)};
 
         localdb.update(
                 "obs",

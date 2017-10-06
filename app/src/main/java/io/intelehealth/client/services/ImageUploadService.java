@@ -251,7 +251,7 @@ public class ImageUploadService extends IntentService {
         values.put(DelayedJobQueueProvider.VISIT_UUID, intent.getStringExtra("visitUUID"));
         values.put(DelayedJobQueueProvider.JOB_PRIORITY, 1);
         values.put(DelayedJobQueueProvider.JOB_REQUEST_CODE, 0);
-        values.put(DelayedJobQueueProvider.PATIENT_ID, intent.getStringExtra("patientID"));
+        values.put(DelayedJobQueueProvider.PATIENT_ID, intent.getIntExtra("patientID",-1));
         values.put(DelayedJobQueueProvider.DATA_RESPONSE, intent.getStringExtra("patientUUID"));
         values.put(DelayedJobQueueProvider.PATIENT_NAME, intent.getStringExtra("name"));
 

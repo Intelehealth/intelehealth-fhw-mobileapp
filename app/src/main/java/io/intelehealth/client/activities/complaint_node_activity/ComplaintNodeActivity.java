@@ -42,7 +42,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
     final String LOG_TAG = "Complaint Node Activity";
 
-    String patientID = "1";
+    Integer patientID;
     String visitID;
     String state;
     String patientName;
@@ -65,7 +65,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
-            patientID = intent.getStringExtra("patientID");
+            patientID = intent.getIntExtra("patientID",-1);
             visitID = intent.getStringExtra("visitID");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");

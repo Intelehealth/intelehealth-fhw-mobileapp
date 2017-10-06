@@ -32,7 +32,7 @@ import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 
 public class SearchPatientActivity extends AppCompatActivity {
 
-    final String LOG_TAG = "Search Patient Activity";
+    final String TAG = SearchPatientActivity.class.getSimpleName();
 
     LocalRecordsDatabaseHelper mDbHelper;
     SearchCursorAdapter mSearchAdapter;
@@ -184,8 +184,12 @@ public class SearchPatientActivity extends AppCompatActivity {
             SQLiteDatabase db = mDbHelper.getWritableDatabase();
             String table = "patient";
 
-            final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " +
-                    "'" + search + "%' OR last_name LIKE '" + search + "%' OR middle_name LIKE '" + search + "%' " +
+
+            final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table +
+                    " WHERE first_name LIKE " + "'" + search +
+                    "%' OR last_name LIKE '" + search +
+                    "%' OR openmrs_id LIKE '" + search +
+                    "%' OR middle_name LIKE '" + search + "%' " +
                     "ORDER BY last_name ASC", null);
             try {
                 // Setup cursor adapter and attach cursor adapter to the ListView
@@ -200,8 +204,8 @@ public class SearchPatientActivity extends AppCompatActivity {
                                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
                                     if (searchCursor.moveToPosition(position)) {
-                                        String patientID = searchCursor.getString(searchCursor.getColumnIndexOrThrow("_id"));
-//                            Log.d(LOG_TAG, patientID);
+                                        Integer patientID = searchCursor.getInt(searchCursor.getColumnIndexOrThrow("_id"));
+                            Log.d(TAG, ""+patientID);
                                         String patientStatus = "returning";
                                         Intent intent = new Intent(SearchPatientActivity.this, PatientDetailActivity.class);
                                         intent.putExtra("patientID", patientID);
