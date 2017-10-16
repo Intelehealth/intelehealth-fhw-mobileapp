@@ -26,7 +26,7 @@ import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 public class AdditionalDocumentsActivity extends AppCompatActivity {
 
 
-    private String patientID;
+    private Integer patientID;
     private String visitID;
     private List<DocumentObject> rowListItem;
     private AdditionalDocumentAdapter recyclerViewAdapter;
@@ -58,7 +58,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
-            patientID = intent.getStringExtra("patientID");
+            patientID = intent.getIntExtra("patientID",-1);
             visitID = intent.getStringExtra("visitID");
 
             filePath = baseDir + File.separator + "Patient Images" + File.separator + patientID + File.separator +

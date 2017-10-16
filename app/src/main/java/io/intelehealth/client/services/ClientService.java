@@ -827,7 +827,6 @@ public class ClientService extends IntentService {
 
         Intent imageUpload = new Intent(this, ImageUploadService.class);
         imageUpload.putExtra("patientID", patientID);
-        imageUpload.putExtra("patientID", patientID);
         imageUpload.putExtra("name", patientName);
         imageUpload.putExtra("patientUUID", patient.getOpenmrsId());
         imageUpload.putExtra("visitUUID", responseVisit.getResponseString());

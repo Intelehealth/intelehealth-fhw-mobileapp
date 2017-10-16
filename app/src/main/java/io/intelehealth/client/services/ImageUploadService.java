@@ -86,7 +86,6 @@ public class ImageUploadService extends IntentService {
         SQLiteDatabase localdb = databaseHelper.getWritableDatabase();
         Cursor cursor = localdb.rawQuery(query, new String[]{String.valueOf(patientId), visitId});
         List<Images> imageList = new ArrayList<>();
-        if(cursor.moveToFirst()) {
             while (cursor.moveToNext()) {
                 imageList.add(new Images(cursor.getLong(cursor.getColumnIndexOrThrow("_id")),
                         cursor.getString(cursor.getColumnIndexOrThrow("image_path")),
@@ -97,7 +96,6 @@ public class ImageUploadService extends IntentService {
                 Log.i(LOG_TAG + ">", cursor.getString(0));
             }
             cursor.close();
-        }
         localdb.close();
         queueSyncStart(queueId);
         if (!imageList.isEmpty()) {
