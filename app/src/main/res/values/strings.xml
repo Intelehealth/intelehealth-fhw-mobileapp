@@ -277,7 +277,7 @@
     <string name="button_delete">Delete</string>
 
     //Camera Dialog
-    <string name="camera_dialog_default">Please click documentPhoto in good lighting conditions only. If documentPhoto is not clear, please retake the documentPhoto.</string>
+    <string name="camera_dialog_default">Please click photo in good lighting conditions only. If photo is not clear, please retake the photo.</string>
     <!--Offline Login Errors-->
     <string name="offline_credentials_unavailable">Offline Login is not available.</string>
     <string name="offline_user_does_not_match">User does not match..</string>

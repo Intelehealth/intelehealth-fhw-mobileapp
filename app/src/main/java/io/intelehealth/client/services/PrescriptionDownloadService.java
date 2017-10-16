@@ -58,7 +58,7 @@ public class PrescriptionDownloadService extends IntentService {
     public int mId = 4;
     NotificationCompat.Builder mBuilder;
 
-    String patientID;
+    Integer patientID;
     String visitID;
     String visitUUID;
     String diagnosisReturned = "";
@@ -85,7 +85,7 @@ public class PrescriptionDownloadService extends IntentService {
             intent.putExtra("queueId", id);
         }
 
-        patientID = intent.getStringExtra("patientID");
+        patientID = intent.getIntExtra("patientID",-1);
         visitID = intent.getStringExtra("visitID");
         visitUUID = intent.getStringExtra("visitUUID");
         queueId = intent.getIntExtra("queueId", -1);

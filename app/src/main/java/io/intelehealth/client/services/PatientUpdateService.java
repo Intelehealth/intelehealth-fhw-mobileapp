@@ -59,7 +59,8 @@ public class PatientUpdateService extends IntentService {
     NotificationManager mNotifyManager;
     public int mId = 3;
     NotificationCompat.Builder mBuilder;
-    private String patientId, patientName;
+    private String patientName;
+    private Integer patientId;
     public int numMessages;
 
     LocalRecordsDatabaseHelper mDbHelper;
@@ -75,7 +76,7 @@ public class PatientUpdateService extends IntentService {
 
         mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mBuilder = new NotificationCompat.Builder(this);
-        patientId = intent.getStringExtra("patientID");
+        patientId = intent.getIntExtra("patientID",-1);
         patientName = intent.getStringExtra("name");
 
         Toast.makeText(this, getString(R.string.generic_update), Toast.LENGTH_SHORT).show();
@@ -95,7 +96,7 @@ public class PatientUpdateService extends IntentService {
 
         queueSyncStart(queueId);
 
-        String response = uploadPersonData(patientId);
+        String response = uploadPersonData(String.valueOf(patientId));
 
         if (response == null || response.isEmpty()) {
             queueSyncStop(queueId);

@@ -981,7 +981,10 @@ public class IdentificationActivity extends AppCompatActivity {
             lastIntegerID++;
             patientID = lastIntegerID; //This patient is assigned the new incremented number
             patient.setId(patientID);
+        }else{
+            patient.setId(1);
         }
+
 
         idCursor.close();
         patientID = patient.getId();

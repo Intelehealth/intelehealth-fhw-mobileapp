@@ -96,7 +96,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             patientID = intent.getIntExtra("patientID", -1);
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
-//            Log.v(TAG, "Patient ID: " + patientID);
+            Log.v(LOG_TAG, "Patient ID: " + patientID);
 //            Log.v(TAG, "Patient Name: " + patientName);
 //            Log.v(TAG, "Intent Tag: " + intentTag);
         }
@@ -503,6 +503,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         String patientPhone = ((TextView) findViewById(R.id.textView_phone)).getText().toString();
         String patientMedHist = ((TextView) findViewById(R.id.textView_patHist)).getText().toString();
         String patientFamHist = ((TextView) findViewById(R.id.textView_famHist)).getText().toString();
+        String openMrsPatientID = ((TextView) findViewById(R.id.textView_ID)).getText().toString();
 
 
         // Generate an HTML document on the fly:
@@ -524,7 +525,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                                 "<h2 id=\"family-history\">Family History</h2>\n" +
                                 "<p>%s</p>\n",
 //                                "<h2 id=\"current-medications\">Current Medications</h2>",
-                        patientName, patientID, patientDob, patientAge, patientAddr1,
+                        patientName, openMrsPatientID, patientDob, patientAge, patientAddr1,
                         patientAddr2, patientAddrFinal, patientPhone, patientMedHist, patientFamHist);
         webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
 

@@ -108,7 +108,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     Context context;
 
-    String patientID;
+    Integer patientID;
     String visitID;
     String state;
     String patientName;
@@ -263,7 +263,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         final Intent intent = this.getIntent(); // The intent was passed to the activity
 
         if (intent != null) {
-            patientID = intent.getStringExtra("patientID");
+            patientID = intent.getIntExtra("patientID", -1);
             visitID = intent.getStringExtra("visitID");
             mSharedPreference = this.getSharedPreferences(
                     "visit_summary", Context.MODE_PRIVATE);
@@ -317,7 +317,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         db = mDbHelper.getWritableDatabase();
 
-        identifierNumber = patientID;
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit_summary);
@@ -418,10 +417,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 Snackbar.make(view, "Uploading to doctor.", Snackbar.LENGTH_LONG).show();
 
                 String[] DELAYED_JOBS_PROJECTION = new String[]{DelayedJobQueueProvider._ID, DelayedJobQueueProvider.JOB_TYPE, DelayedJobQueueProvider.SYNC_STATUS};
-                String SELECTION = DelayedJobQueueProvider.JOB_TYPE + " IN (\"visit\",\"prescriptionDownload\") AND " +
-                        DelayedJobQueueProvider.PATIENT_ID + "=? AND " +
-                        DelayedJobQueueProvider.VISIT_ID + "=?";
-                String[] ARGS = new String[]{patientID, visitID};
+                String SELECTION = DelayedJobQueueProvider.JOB_TYPE + " IN (\"visit\",\"pr Download\") AND " +
+                        DelayedJobQueueProvider.VISIT_ID + "= ?";
+                String[] ARGS = new String[]{visitID};
 
                 Cursor c = getContentResolver().query(DelayedJobQueueProvider.CONTENT_URI,
                         DELAYED_JOBS_PROJECTION, SELECTION, ARGS, null);
@@ -498,10 +496,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         queryData(String.valueOf(patientID));
         nameView = (TextView) findViewById(R.id.textView_name_value);
+
+        //OpenMRS Id
         idView = (TextView) findViewById(R.id.textView_id_value);
+        if (patient.getOpenmrs_patient_id() != null && !patient.getOpenmrs_patient_id().isEmpty()) {
+            idView.setText(patient.getOpenmrs_patient_id());
+        } else {
+            idView.setText(getString(R.string.patient_not_registered));
+        }
 
         nameView.setText(patientName);
-        idView.setText(patientID);
 
         heightView = (TextView) findViewById(R.id.textView_height_value);
         weightView = (TextView) findViewById(R.id.textView_weight_value);
@@ -917,7 +921,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String SELECTION = DelayedJobQueueProvider.JOB_TYPE + "=? AND " +
                     DelayedJobQueueProvider.PATIENT_ID + "=? AND " +
                     DelayedJobQueueProvider.VISIT_ID + "=?";
-            String[] ARGS = new String[]{"endVisit", patientID, visitID};
+            String[] ARGS = new String[]{"endVisit", String.valueOf(patientID), visitID};
 
             Cursor c = getContentResolver().query(DelayedJobQueueProvider.CONTENT_URI,
                     DELAYED_JOBS_PROJECTION, SELECTION, ARGS, null);
@@ -989,14 +993,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String[] patientArgs = {dataString};
 
         String table = "patient";
-        String[] columnsToReturn = {"openmrs_id","first_name", "middle_name", "last_name",
+        String[] columnsToReturn = {"openmrs_id", "first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province", "country",
                 "postal_code", "phone_number", "gender", "sdw", "occupation", "patient_photo"};
         final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
 
         if (idCursor.moveToFirst()) {
             do {
-                patient.setFirstName(idCursor.getString(idCursor.getColumnIndex("openmrs_id")));
+                patient.setOpenmrs_patient_id(idCursor.getString(idCursor.getColumnIndex("openmrs_id")));
                 patient.setFirstName(idCursor.getString(idCursor.getColumnIndex("first_name")));
                 patient.setMiddleName(idCursor.getString(idCursor.getColumnIndex("middle_name")));
                 patient.setLastName(idCursor.getString(idCursor.getColumnIndex("last_name")));
@@ -1015,6 +1019,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } while (idCursor.moveToNext());
         }
         idCursor.close();
+
 
 
         String[] columns = {"value", " concept_id"};
@@ -1212,6 +1217,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         });
 
         String mPatientName = patient.getFirstName() + " " + patient.getMiddleName() + " " + patient.getLastName();
+        String mPatientOpenMRSID = patient.getOpenmrs_patient_id();
         String mPatientDob = patient.getDateOfBirth();
         String mAddress = patient.getAddress1() + "\n" + patient.getAddress2();
         String mCityState = patient.getCityVillage();
@@ -1240,6 +1246,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String mComplaint = complaint.getValue();
         String mExam = patHistory.getValue();
 
+        if(mPatientOpenMRSID==null){
+            mPatientOpenMRSID = getString(R.string.patient_not_registered);
+        }
 
         // Generate an HTML document on the fly:
         String htmlDocument =
@@ -1285,7 +1294,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 "<li>%s</li>\n" +
                                 "<h2 id=\"complaint\">Additional Comments</h2>" +
                                 "<li>%s</li>\n",
-                        mPatientName, patientID, mDate, mPatientDob, mSdw, mOccupation, mAddress, mCityState, mPhone, mHeight, mWeight,
+                        mPatientName, mPatientOpenMRSID, mDate, mPatientDob, mSdw, mOccupation, mAddress, mCityState, mPhone, mHeight, mWeight,
                         mBMI, mBP, mPulse, mTemp, mSPO2, mPatHist, mFamHist, mComplaint, mExam, diagnosisReturned, rxReturned, testsReturned, adviceReturned, doctorName, additionalReturned);
         webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
 
@@ -1346,7 +1355,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         contentValues.put("value", string);
 
         String selection = "patient_id = ? AND visit_id = ? AND concept_id = ?";
-        String[] args = {patientID, visitID, String.valueOf(conceptID)};
+        String[] args = {String.valueOf(patientID), visitID, String.valueOf(conceptID)};
 
         localdb.update(
                 "obs",
@@ -1431,7 +1440,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 String header = "";
                 String message = "";
 
-                header = "Patient Id: " + patientID + "\n"
+                String openMRSID = patient.getOpenmrs_patient_id();
+                if(openMRSID==null){
+                    openMRSID = getString(R.string.patient_not_registered);
+                }
+
+                header = "Patient Id: " + patient.getOpenmrs_patient_id() + "\n"
                         + "Patient Name: " + patient.getFirstName() + " " + patient.getLastName() + "\n"
                         + "Patient DOB: " + patient.getDateOfBirth() + "\n";
 
@@ -1566,7 +1580,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String[] columns = {"value", " concept_id"};
             String orderBy = "visit_id";
             String visitSelection = "patient_id = ? AND visit_id = ?";
-            String[] visitArgs = {patientID, visitID};
+            String[] visitArgs = {String.valueOf(patientID), visitID};
             Cursor visitCursor = db.query("obs", columns, visitSelection, visitArgs, null, null, orderBy);
             if (visitCursor.moveToFirst()) {
                 do {
@@ -1598,7 +1612,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     String SELECTION = DelayedJobQueueProvider.JOB_TYPE + "=? AND " +
                             DelayedJobQueueProvider.PATIENT_ID + "=? AND " +
                             DelayedJobQueueProvider.VISIT_ID + "=?";
-                    String[] ARGS = new String[]{"prescriptionDownload", patientID, visitID};
+                    String[] ARGS = new String[]{"prescriptionDownload", String.valueOf(patientID), visitID};
 
                     Cursor c = getContentResolver().query(DelayedJobQueueProvider.CONTENT_URI,
                             DELAYED_JOBS_PROJECTION, SELECTION, ARGS, null);
