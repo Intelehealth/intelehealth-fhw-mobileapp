@@ -87,8 +87,9 @@ public class JobDispatchService extends JobService {
                         serviceIntent.putExtra("serviceCall", service_call);
                         serviceIntent.putExtra("patientID", cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
                         serviceIntent.putExtra("name", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_NAME)));
+                        serviceIntent.putExtra("visitID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.VISIT_ID)));
                         serviceIntent.putExtra("visitUUID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.VISIT_UUID)));
-                        serviceIntent.putExtra("patientUUID", cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider.DATA_RESPONSE)));
+                        serviceIntent.putExtra("patientUUID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.DATA_RESPONSE)));
                         break;
                     }
                     case "prescriptionDownload": {

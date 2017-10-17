@@ -82,10 +82,13 @@ public class ImageUploadService extends IntentService {
         queueId = intent.getIntExtra("queueId", -1);
 
         String query = "SELECT _id,image_path,image_type,parse_id,delete_status FROM image_records WHERE patient_id = ? AND visit_id = ?";
+
         LocalRecordsDatabaseHelper databaseHelper = new LocalRecordsDatabaseHelper(this);
         SQLiteDatabase localdb = databaseHelper.getWritableDatabase();
+        Log.i(TAG, "onHandleIntent: "+ visitId+","+patientId);
         Cursor cursor = localdb.rawQuery(query, new String[]{String.valueOf(patientId), visitId});
         List<Images> imageList = new ArrayList<>();
+        if(cursor.moveToFirst()) {
             while (cursor.moveToNext()) {
                 imageList.add(new Images(cursor.getLong(cursor.getColumnIndexOrThrow("_id")),
                         cursor.getString(cursor.getColumnIndexOrThrow("image_path")),
@@ -95,6 +98,7 @@ public class ImageUploadService extends IntentService {
                 ));
                 Log.i(LOG_TAG + ">", cursor.getString(0));
             }
+        }
             cursor.close();
         localdb.close();
         queueSyncStart(queueId);
@@ -149,28 +153,10 @@ public class ImageUploadService extends IntentService {
                         try {
                             ParseObject parseObject = query_object.get(parseID);
                             parseObject.delete();
+                            deleteFromImageDatabase(parseID);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                     /*   query_object.getFirstInBackground(new GetCallback<ParseObject>() {
-                            @Override
-                            public void done(ParseObject object, ParseException e) {
-                                if (object != null) {
-                                    object.deleteInBackground(new DeleteCallback() {
-                                        @Override
-                                        public void done(ParseException e) {
-                                            if (e == null) {
-                                                deleteFromImageDatabase(parseID);
-                                                Log.i(TAG, "done: Image Delete");
-                                            } else {
-                                                Log.e(TAG, e.getMessage());
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    });
-                                }
-                            }
-                        });*/
                     }
                 }
             }
