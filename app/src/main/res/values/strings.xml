@@ -87,9 +87,9 @@
     <string name="identification_screen_prompt_age">Age*</string>
     <string name="identification_screen_prompt_city">Village/Town/City *</string>
     <string name="identification_screen_prompt_state">State *</string>
-    <string name="identification_screen_prompt_caste">Caste</string>
-    <string name="identification_screen_prompt_economic_status">Economic Status</string>
-    <string name="identification_screen_prompt_education">Education Level</string>
+    <string name="identification_screen_prompt_caste">Caste*</string>
+    <string name="identification_screen_prompt_economic_status">Economic Status*</string>
+    <string name="identification_screen_prompt_education">Education Level*</string>
     <string name="identification_screen_prompt_country">Country *</string>
     <string name="identification_screen_prompt_postal_code">Postal Code</string>
     <string name="identification_screen_prompt_relationship">Son/Daughter/Wife of</string>
@@ -157,7 +157,7 @@
     <string name="title_activity_physical_exam">Physical Exam</string>
     <string name="title_activity_patient_summary">Visit Summary</string>
     <string name="visit_summary_temperature">Temperature (F)</string>
-    <string name="visit_summary_pulseox">sPO2</string>
+    <string name="visit_summary_pulseox">SpO2 (%)</string>
     <string name="visit_summary_hw_on_duty">CHW On Duty</string>
     <string name="visit_summary_vitals_heading">Vitals</string>
     <string name="visit_summary_height_heading">Height (cm)</string>
@@ -180,7 +180,7 @@
     <string name="visit_summary_heading_name">Name</string>
     <string name="visit_summary_heading_id">ID</string>
     <string name="visit_summary_button_download">Download from doctor</string>
-    <string name="name_button_download">button_download</string>
+    <string name="name_button_download" translatable="false">button_download</string>
 
 
     //Diagnostic Tests Screen
@@ -241,7 +241,7 @@
 
     <string name="title_activity_setup">SetupActivity</string>
 
-    <string name="title_activity_camera">Camera Activity</string>
+    <string name="title_activity_camera">Camera</string>
     <string name="title_activity_today_patient">"Today's Patients"</string>
     <string name="title_activity_additional_documents">"Additional Documents"</string>
     <string name="title_activity_video_library">"Video Library"</string>
@@ -277,10 +277,10 @@
     <string name="button_delete">Delete</string>
 
     //Camera Dialog
-    <string name="camera_dialog_default">Please click documentPhoto in good lighting conditions only. If documentPhoto is not clear, please retake the documentPhoto.</string>
+    <string name="camera_dialog_default">Please click document photo in good lighting conditions only. If document photo is not clear, please retake the document photo.</string>
     <!--Offline Login Errors-->
     <string name="offline_credentials_unavailable">Offline Login is not available.</string>
-    <string name="offline_user_does_not_match">User does not match..</string>
+    <string name="offline_user_does_not_match">User does not match.</string>
     <string name="offline_authentication_not_possible">Unable to authenticate offline.</string>
     <string name="admin_authentication_not_possible">Unable to authenticate.</string>
 
@@ -340,5 +340,5 @@
 
     <string name="patient_upload_error">Patient has not been uploaded</string>
 
-    <string name="action_sync_all">Sync All</string>
+    <string name="action_sync_all">Sync Data</string>
 </resources>
