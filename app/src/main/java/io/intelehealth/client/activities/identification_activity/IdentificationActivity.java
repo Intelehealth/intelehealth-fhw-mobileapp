@@ -231,7 +231,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
         if (patientID_edit != -1) {
-            // setting country accordig database
+            // setting country according database
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
             mEducation.setSelection(educationAdapter.getPosition(String.valueOf(patient1.getEducation_level())));
             mEconomicStatus.setSelection(economicStausAdapter.getPosition(String.valueOf(patient1.getEconomic_status())));

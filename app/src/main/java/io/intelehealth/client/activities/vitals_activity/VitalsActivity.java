@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -44,7 +45,7 @@ public class VitalsActivity extends AppCompatActivity {
 
     EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mSpo2, mBMI;
     Long obsID;
-    final String LOG_TAG = "VitalsActivity";
+    final String TAG = VitalsActivity.class.getSimpleName();
     int flag_height =0, flag_weight=0;
 
     Integer patientID;
@@ -130,41 +131,6 @@ public class VitalsActivity extends AppCompatActivity {
             loadPrevious();
         }
 
-        //BMI calculation is done in metric units
-      /* mBMI.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                String heightValue = mHeight.getText().toString();
-                String weightValue = mWeight.getText().toString();
-
-                if (heightValue.matches("") || weightValue.matches("")) {
-                    String message = "Please enter height and weight first.";
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(VitalsActivity.this);
-                    alertDialogBuilder.setMessage(message);
-                    alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
-                } else {
-
-                    double numerator = Double.parseDouble(mWeight.getText().toString()) * 10000;
-                    double denominator = (Double.parseDouble(mHeight.getText().toString())) * (Double.parseDouble(mHeight.getText().toString()));
-                    double bmi_value = numerator / denominator;
-                    mBMI.setText(String.format(Locale.ENGLISH, "%,2f", bmi_value));
-                    //Log.d("BMI", String.valueOf(bmi_value));
-                }
-
-
-            }
-        });
-
-        */
-
         mHeight.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {  }
@@ -176,6 +142,12 @@ public class VitalsActivity extends AppCompatActivity {
                     mBMI.getText().clear();
                     flag_height =1;
                     heightvalue = mHeight.getText().toString();
+                    if(Integer.valueOf(s.toString())> Integer.valueOf(maxh)) {
+                        mHeight.setError("Height should be between 0 and " + maxh + "cm");
+                    }
+                    else {
+                        mHeight.setError(null);
+                    }
 
                 }
                 else
@@ -200,12 +172,19 @@ public class VitalsActivity extends AppCompatActivity {
                     mBMI.getText().clear();
                     flag_weight =1;
                     weightvalue = mWeight.getText().toString();
+                    if(Integer.valueOf(s.toString())> Integer.valueOf(maxw)) {
+                        mWeight.setError("Weight should be less than " + maxw + "kg");
+                    }
+                    else {
+                        mWeight.setError(null);
+                    }
                 }
                 else
                 {
                     flag_weight=0;
                     mBMI.getText().clear();
                 }
+
             }
 
             @Override
@@ -224,6 +203,130 @@ public class VitalsActivity extends AppCompatActivity {
                     return true;
                 }
                 return false;
+            }
+        });
+
+        mSpo2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0) {
+                    if (Integer.valueOf(s.toString()) > Integer.valueOf(maxspo2) ||
+                            Integer.valueOf(s.toString()) < Integer.valueOf(minspo2)) {
+                        mSpo2.setError("SpO2 should be in between " + minspo2 + " and " + maxspo2);
+                    } else {
+                        mSpo2.setError(null);
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mTemperature.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0)
+                {
+                if(Integer.valueOf(s.toString())> Integer.valueOf(maxte) ||
+                        Integer.valueOf(s.toString())< Integer.valueOf(minte)) {
+                    mTemperature.setError("Temperature should be in between "+maxte+" and "+minte);
+                }
+                else {
+                    mTemperature.setError(null);
+                }}
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mPulse.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0)
+                {
+                if(Integer.valueOf(s.toString())> Integer.valueOf(maxpulse) ||
+                        Integer.valueOf(s.toString())< Integer.valueOf(minpulse)) {
+                    mPulse.setError("Pulse should be in between " + minpulse + " and " + maxpulse);
+                }
+                else {
+                    mPulse.setError(null);
+                }}
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mBpSys.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0)
+                {
+                if(Integer.valueOf(s.toString())> Integer.valueOf(maxbpsys) ||
+                        Integer.valueOf(s.toString())< Integer.valueOf(minbpsys)) {
+                    mBpSys.setError("Systolic pressure should be in between " + minbpsys + " and " + maxbpsys);
+                }
+                else {
+                    mBpSys.setError(null);
+                }}
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mBpDia.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0)
+                {
+                if(Integer.valueOf(s.toString())> Integer.valueOf(maxbpdys) ||
+                        Integer.valueOf(s.toString())< Integer.valueOf(minbpdys)) {
+                    mBpDia.setError("Diastolic pressure should be in between " + minbpdys + " and " + maxbpdys);
+                }
+                else {
+                    mBpDia.setError(null);
+                }
+            }}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
@@ -255,22 +358,6 @@ public class VitalsActivity extends AppCompatActivity {
             // do nothing
             mBMI.getText().clear();
         }
-       /* else
-        {
-            String message = "Please enter height and weight first.";
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(VitalsActivity.this);
-            alertDialogBuilder.setMessage(message);
-            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-
-        }*/
-
     }
 
 
@@ -578,12 +665,17 @@ public class VitalsActivity extends AppCompatActivity {
         String selection = "patient_id = ? AND visit_id = ? AND concept_id = ?";
         String[] args = {String.valueOf(patientID), visitID, String.valueOf(CONCEPT_ID)};
 
-        localdb.update(
+        int update = localdb.update(
                 "obs",
                 contentValues,
                 selection,
                 args
         );
+
+        //If no value is not found, then update fails so insert instead.
+        if(update == 0){
+            insertDb(objValue,CONCEPT_ID);
+        }
 
     }
 
