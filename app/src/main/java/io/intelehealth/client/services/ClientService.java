@@ -520,7 +520,7 @@ public class ClientService extends IntentService {
      */
     private String uploadPatientData(Integer patientID, String responseString) {
 
-        String identifier = getIdentifier();
+        String identifier = getOpenMrsIdentifier();
 
         if (identifier != null) {
             String patientString =
@@ -1429,7 +1429,7 @@ public class ClientService extends IntentService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
-    private String getIdentifier() {
+    private String getOpenMrsIdentifier() {
         String returnString = null;
         try {
 
@@ -1463,10 +1463,10 @@ public class ClientService extends IntentService {
 
                             List<String> identifiersList = i.getIdentifiers();
                             for (String string : identifiersList) {
-                                Log.i(TAG, "getIdentifier: ++" + string);
+                                Log.i(TAG, "getOpenMrsIdentifier: ++" + string);
                             }
                             returnString = identifiersList.get(0);
-                            Log.i(TAG, "getIdentifier: " + returnString);
+                            Log.i(TAG, "getOpenMrsIdentifier: " + returnString);
 
                         }
                     }

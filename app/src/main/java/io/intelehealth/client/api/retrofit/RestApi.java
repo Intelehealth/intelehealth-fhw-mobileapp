@@ -28,8 +28,4 @@ public interface RestApi {
     Call<Results<Location>> getLocations(@Query("v") String representation);
 
 
-    @GET("module/idgen/generateIdentifier.form?source=1")
-    Call<Identifier> getIdentifier(@Query("username") String username,
-                                   @Query("password") String password);
-
 }
