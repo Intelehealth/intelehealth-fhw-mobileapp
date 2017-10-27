@@ -422,6 +422,8 @@ public class HelperMethods {
             URL url = new URL(urlString);
 
             byte[] outputInBytes = dataString.getBytes("UTF-8");
+            int content = dataString.getBytes("UTF-8").length;
+
 
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();

@@ -22,8 +22,8 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-import io.intelehealth.client.activities.patient_detail_activity.PatientDetailActivity;
 import io.intelehealth.client.R;
+import io.intelehealth.client.activities.patient_detail_activity.PatientDetailActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 
 /**
@@ -94,7 +94,7 @@ public class SearchPatientActivity extends AppCompatActivity {
                 SearchRecentSuggestions suggestions = new SearchRecentSuggestions(SearchPatientActivity.this,
                         SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
                 suggestions.clearHistory();
-                doInstantSearch(newText);
+                doQuery(newText);
                 return true;
             }
         });
@@ -105,82 +105,18 @@ public class SearchPatientActivity extends AppCompatActivity {
 
     /**
      * This method retrieves data from database and sends it via Intent to PatientDetailActivity.
+     * This method can be used to search for details with a partial string also.
+     *
      * @param query variable of type String
-     * @return             void
+     * @return void
      */
 
     public void doQuery(String query) { // called in onCreate()
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        String table = "patient";
-        String[] columns = {"_id", "first_name", "middle_name", "last_name",
-                "date_of_birth", "address1", "address2", "city_village", "state_province",
-                "postal_code", "phone_number", "patient_photo"};
-
-        //String selection = "patient like ?"; //TODO: try using like instead of match
-        //String[] args = new String[1];
-        //args[0] = "%"
-        //String searchQuery = "%" + query + "%";
-
-        String selection = "patient MATCH ?";
-        String[] args = new String[1];
-        args[0] = String.format("%s", query);
-
-        String order = "last_name ASC";
-        final Cursor searchCursor = db.query(table, columns, selection, args, null, null, order);
-        // Find ListView to populate
+        String search = query.trim();
         ListView lvItems = (ListView) findViewById(R.id.listview_search);
-
-
-        try {
-            // Setup cursor adapter and attach cursor adapter to the ListView
-            mSearchAdapter = new SearchCursorAdapter(this, searchCursor, 0);
-            if (mSearchAdapter.getCount() < 1) {
-                noneFound(lvItems, query);
-            } else if (searchCursor.moveToFirst()) {
-                lvItems.setAdapter(mSearchAdapter);
-                lvItems.setOnItemClickListener(
-                        new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-
-                        if (searchCursor.moveToPosition(position)) {
-                            String patientID = searchCursor.getString(searchCursor.getColumnIndexOrThrow("_id"));
-//                            Log.d(TAG, patientID);
-                            String patientStatus = "returning";
-                            Intent intent = new Intent(SearchPatientActivity.this, PatientDetailActivity.class);
-                            intent.putExtra("patientID", patientID);
-                            intent.putExtra("status", patientStatus);
-                            intent.putExtra("tag", "");
-                            startActivity(intent);
-
-                        }
-                    }
-                });
-            }
-
-
-        } catch (Exception e) {
-            noneFound(lvItems, query);
-            Log.e("Search Activity", "Exception", e);
-
-        }
-
-    }
-
-    //TODO: Hacked Code , needs cleaning.
-
-    /**
-     * This method is used to search for details with only a partial string.
-     * @param searchTerm variable of type String
-     * @return                  void
-     */
-    public void doInstantSearch(String searchTerm) { // called in onCreateOptionsMenu
-        String search = searchTerm.trim();
-        ListView lvItems = (ListView) findViewById(R.id.listview_search);
-        if(TextUtils.isEmpty(search)) {
+        if (TextUtils.isEmpty(search)) {
             lvItems.setAdapter(null);
-        }
-        else {
+        } else {
             SQLiteDatabase db = mDbHelper.getWritableDatabase();
             String table = "patient";
 
@@ -195,7 +131,7 @@ public class SearchPatientActivity extends AppCompatActivity {
                 // Setup cursor adapter and attach cursor adapter to the ListView
                 mSearchAdapter = new SearchCursorAdapter(this, searchCursor, 0);
                 if (mSearchAdapter.getCount() < 1) {
-
+                    noneFound(lvItems, query);
                 } else if (searchCursor.moveToFirst()) {
                     lvItems.setAdapter(mSearchAdapter);
                     lvItems.setOnItemClickListener(
@@ -205,7 +141,7 @@ public class SearchPatientActivity extends AppCompatActivity {
 
                                     if (searchCursor.moveToPosition(position)) {
                                         Integer patientID = searchCursor.getInt(searchCursor.getColumnIndexOrThrow("_id"));
-                            Log.d(TAG, ""+patientID);
+                                        Log.d(TAG, "" + patientID);
                                         String patientStatus = "returning";
                                         Intent intent = new Intent(SearchPatientActivity.this, PatientDetailActivity.class);
                                         intent.putExtra("patientID", patientID);
@@ -223,14 +159,17 @@ public class SearchPatientActivity extends AppCompatActivity {
                 Log.d("Search Activity", "Exception", e);
 
             }
+
         }
 
     }
 
+
     /**
      * This method is called when no search result is found for patient.
+     *
      * @param lvItems variable of type ListView
-     * @param query  variable of type String
+     * @param query   variable of type String
      */
     public void noneFound(ListView lvItems, String query) {
         ArrayAdapter<String> searchAdapter = new ArrayAdapter<>(this,
