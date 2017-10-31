@@ -12,10 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import io.intelehealth.client.R;
+import io.intelehealth.client.activities.identification_activity.IdentificationActivity;
 import io.intelehealth.client.activities.search_patient_activity.SearchPatientActivity;
 import io.intelehealth.client.activities.sync_activity.ActivitySync;
 import io.intelehealth.client.activities.today_patient_activity.TodayPatientActivity;
-import io.intelehealth.client.activities.identification_activity.IdentificationActivity;
 import io.intelehealth.client.activities.video_library_activity.VideoLibraryActivity;
 import io.intelehealth.client.application.IntelehealthApplication;
 
@@ -25,19 +25,14 @@ import io.intelehealth.client.application.IntelehealthApplication;
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder> {
 
     final static String TAG = HomeAdapter.class.getSimpleName();
-    final static String new_patient = IntelehealthApplication.getAppContext().getString(R.string.new_patient);
-    final static String find_patient = IntelehealthApplication.getAppContext().getString(R.string.find_patient);
-    final static String today_patient = IntelehealthApplication.getAppContext().getString(R.string.today_patient);
-    final static String video_library = IntelehealthApplication.getAppContext().getString(R.string.video_library);
-    final static String action_sync_all = IntelehealthApplication.getAppContext().getString(R.string.action_sync_all);
-    final static String[] options = {new_patient,find_patient,today_patient,video_library,action_sync_all};
 
-    //final String[] options = {"New Patient","Find Patients","Today's Patients","Video Library","Sync"};
+    final String[] options = {IntelehealthApplication.getAppContext().getString(R.string.new_patient),
+            IntelehealthApplication.getAppContext().getString(R.string.find_patient),
+            IntelehealthApplication.getAppContext().getString(R.string.today_patient),
+            IntelehealthApplication.getAppContext().getString(R.string.video_library),
+            IntelehealthApplication.getAppContext().getString(R.string.action_sync_all)};
 
     //TODO: Change placeholder icon "android.R.drawable.ic_menu_my_calendar"
-    //final int[] icons = {R.drawable.ic_person_add_24dp, R.drawable.ic_search_24dp,
-    //        android.R.drawable.ic_menu_my_calendar, R.drawable.ic_action_folder_open,
-    //        android.R.drawable.ic_menu_preferences};
 
     final int[] icons = {R.drawable.ic_person_add_24dp, R.drawable.ic_search_24dp,
             android.R.drawable.ic_menu_my_calendar, R.drawable.ic_action_folder_open,
@@ -99,12 +94,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
                     this.context.startActivity(intent);
                     break;
                 }
-                case 3 : {
+                case 3: {
                     Intent intent = new Intent(this.context, VideoLibraryActivity.class);
                     this.context.startActivity(intent);
                     break;
                 }
-                case 4:{
+                case 4: {
                     Intent intent = new Intent(this.context, ActivitySync.class);
                     this.context.startActivity(intent);
                     break;
