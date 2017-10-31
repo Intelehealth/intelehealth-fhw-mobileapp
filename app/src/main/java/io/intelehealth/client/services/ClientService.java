@@ -73,8 +73,6 @@ public class ClientService extends IntentService {
     public static final int STATUS_ENCOUNTER_NOT_CREATED = 302;
     public static final int STATUS_ENCOUNTER_NOTE_NOT_CREATED = 303;
 
-    public static final int STATUS_JOB_COMPLETE = 407;
-
 
     //For Sync Status
     public static final int STATUS_SYNC_STOPPED = 0;
@@ -340,6 +338,8 @@ public class ClientService extends IntentService {
      * @param patientID      Unique id of the patient
      * @param current_intent this intent
      * @return uploadDone
+     *
+     * @link https://wiki.openmrs.org/display/docs/Create+Patient
      */
     private boolean uploadPatient(Integer patientID, Intent current_intent) {
 
