@@ -409,12 +409,16 @@ public class QuestionNodeActivity extends AppCompatActivity {
         String selection = "patient_id = ? AND visit_id = ? AND concept_id = ?";
         String[] args = {String.valueOf(patientID), visitID, String.valueOf(conceptID)};
 
-        localdb.update(
+        int i = localdb.update(
                 "obs",
                 contentValues,
                 selection,
                 args
         );
+
+        if(i==0){
+            insertDb(string);
+        }
 
     }
 
