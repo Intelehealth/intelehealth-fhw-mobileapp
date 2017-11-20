@@ -101,7 +101,7 @@
     <string name="identification_screen_dialog_error_gender">Error: Gender is not selected</string>
 
     //Active Patients Screen
-    <string name="title_activity_active_patient">ActivePatientActivity</string>
+    <string name="title_activity_active_patient" translatable="false">ActivePatientActivity</string>
 
     //Patient History Screen
     <string name="title_activity_get_patient_history">Patient History</string>
@@ -117,7 +117,7 @@
     <string name="complaint_required">Complaint must be selected!</string>
 
     //Question Node Screen
-    <string name="title_activity_question_node">QuestionNodeActivity</string>
+    <string name="title_activity_question_node" translatable="false">QuestionNodeActivity</string>
     <string name="complaint_change_selected">Modify</string>
     <string name="question_answer_all">Are you sure you have answered all questions.</string>
     <string name="question_answer_all_phy_exam">Please answer all general exam questions.</string>
@@ -221,8 +221,6 @@
     <string name="pref_title_display_name">Display name</string>
     <string name="pref_default_display_name">John Smith</string>
 
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-
 
     <!-- Example settings for Data & Sync -->
     <string name="pref_header_data_sync">Data &amp; sync</string>
@@ -239,7 +237,7 @@
     <string name="toast_crash">Application error encountered; report sent</string>
 
 
-    <string name="title_activity_setup">SetupActivity</string>
+    <string name="title_activity_setup" translatable="false">SetupActivity</string>
 
     <string name="title_activity_camera">Camera</string>
     <string name="title_activity_today_patient">"Today's Patients"</string>
@@ -278,6 +276,7 @@
 
     //Camera Dialog
     <string name="camera_dialog_default">Please click document photo in good lighting conditions only. If document photo is not clear, please retake the document photo.</string>
+
     <!--Offline Login Errors-->
     <string name="offline_credentials_unavailable">Offline Login is not available.</string>
     <string name="offline_user_does_not_match">User does not match.</string>
@@ -339,6 +338,17 @@
     <string name="invalidate_offline_login">"Offline Login Invalidated"</string>
 
     <string name="patient_upload_error">Patient has not been uploaded</string>
+    <string name="patient_not_registered">Patient not registered</string>
 
     <string name="action_sync_all">Sync Data</string>
+
+    <!-- Vitals Screen Error-->
+
+    <string name="weight_error">"Weight should be less than %1$s kg"</string>
+    <string name="height_error">"Height should be between 0 and %1$s cm"</string>
+    <string name="spo2_error">"SpO2 should be in between %1$s and %2$s"</string>
+    <string name="pulse_error">"Pulse should be in between %1$s and %2$s"</string>
+    <string name="bpsys_error">"Systolic pressure should be in between %1$s and %2$s"</string>
+    <string name="bpdia_error">"Diastolic pressure should be in between %1$s and %2$s"</string>
+    <string name="temp_error">"Temperature should be in between %1$s and %2$s"</string>
 </resources>

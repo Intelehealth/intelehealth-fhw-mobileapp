@@ -5,8 +5,9 @@ package io.intelehealth.client.objects;
  */
 public class Patient {
 
-    private String id;
+    private Integer id;
     private String openmrs_id;
+    private String openmrs_patient_id;
     private String first_name;
     private String middle_name;
     private String last_name;
@@ -27,11 +28,11 @@ public class Patient {
     private String caste;
 
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -185,5 +186,13 @@ public class Patient {
 
     public void setCaste(String caste) {
         this.caste = caste;
+    }
+
+    public String getOpenmrs_patient_id() {
+        return openmrs_patient_id;
+    }
+
+    public void setOpenmrs_patient_id(String openmrs_patient_id) {
+        this.openmrs_patient_id = openmrs_patient_id;
     }
 }

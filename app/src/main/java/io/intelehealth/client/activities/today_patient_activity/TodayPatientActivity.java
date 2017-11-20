@@ -72,7 +72,7 @@ public class TodayPatientActivity extends AppCompatActivity {
         String query =
                 "SELECT visit._id, visit.patient_id, visit.start_datetime, visit.end_datetime," +
                         "visit.openmrs_visit_uuid, patient.first_name, patient.middle_name, patient.last_name, " +
-                        "patient.date_of_birth,patient.phone_number FROM visit, patient WHERE visit.patient_id = patient._id " +
+                        "patient.date_of_birth,patient.openmrs_id,patient.phone_number FROM visit, patient WHERE visit.patient_id = patient._id " +
                         "AND visit.start_datetime LIKE '" + currentDate + "T%'";
         //  "SELECT * FROM visit, patient WHERE visit.patient_id = patient._id AND visit.start_datetime LIKE '" + currentDate + "T%'";
         Log.i(TAG, query);
@@ -83,10 +83,11 @@ public class TodayPatientActivity extends AppCompatActivity {
                 do {
                     todayPatientList.add(new TodayPatientModel(
                             cursor.getInt(cursor.getColumnIndexOrThrow("_id")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("patient_id")),
+                            cursor.getInt(cursor.getColumnIndexOrThrow("patient_id")),
                             cursor.getString(cursor.getColumnIndexOrThrow("start_datetime")),
                             cursor.getString(cursor.getColumnIndexOrThrow("end_datetime")),
                             cursor.getString(cursor.getColumnIndexOrThrow("openmrs_visit_uuid")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
                             cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
                             cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
                             cursor.getString(cursor.getColumnIndexOrThrow("last_name")),

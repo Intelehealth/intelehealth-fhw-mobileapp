@@ -40,7 +40,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
     String LOG_TAG = "Patient History Activity";
     String patient = "patient";
-    String patientID = "1";
+    Integer patientID;
     String visitID;
     String state;
     String patientName;
@@ -122,7 +122,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
-            patientID = intent.getStringExtra("patientID");
+            patientID = intent.getIntExtra("patientID",-1);
             visitID = intent.getStringExtra("visitID");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
@@ -329,7 +329,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
         contentValues.put("value", string);
 
         String selection = "patient_id = ? AND visit_id = ? AND concept_id = ?";
-        String[] args = {patientID, visitID, String.valueOf(conceptID)};
+        String[] args = {String.valueOf(patientID), visitID, String.valueOf(conceptID)};
 
         localdb.update(
                 "obs",

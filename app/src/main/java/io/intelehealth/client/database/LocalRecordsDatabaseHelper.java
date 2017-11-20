@@ -13,38 +13,39 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "localRecords.db";
-    public static final String CREATE_PATIENT = "CREATE VIRTUAL TABLE IF NOT EXISTS patient USING fts3(" +
-            "_id," +
-            "openmrs_uuid," +
-            "first_name," +
-            "middle_name," +
-            "last_name," +
-            "date_of_birth," +
-            "phone_number," +
-            "address1," +
-            "address2," +
-            "city_village," +
-            "state_province," +
-            "postal_code," +
-            "country," +
-            "gender," +
-            "sdw," + //Temporary
-            "occupation," + //Temporary
-            "patient_photo,"+
-            "economic_status,"+
-            "education_status,"+
-            "caste"+
+    public static final String CREATE_PATIENT = "CREATE TABLE IF NOT EXISTS patient(" +
+            "_id integer PRIMARY KEY," +
+            "openmrs_uuid TEXT," +
+            "openmrs_id TEXT," +
+            "first_name TEXT," +
+            "middle_name TEXT," +
+            "last_name TEXT," +
+            "date_of_birth TEXT," +
+            "phone_number TEXT," +
+            "address1 TEXT," +
+            "address2 TEXT," +
+            "city_village TEXT," +
+            "state_province TEXT," +
+            "postal_code TEXT," +
+            "country TEXT," +
+            "gender TEXT," +
+            "sdw TEXT," + //Temporary
+            "occupation TEXT," + //Temporary
+            "patient_photo TEXT,"+
+            "economic_status TEXT,"+
+            "education_status TEXT,"+
+            "caste TEXT"+
             ")";
     public static final String CREATE_ATTRIB = "CREATE TABLE IF NOT EXISTS patient_attribute (" +
             "_id integer PRIMARY KEY," +
             "attribute_type_id integer(10) NOT NULL," +
-            "patient_id TEXT  NOT NULL," +
+            "patient_id integer  NOT NULL," +
             "value varchar(255)," +
             "FOREIGN KEY (patient_id) REFERENCES patient(patient_id)" +
             ")";
     public static final String CREATE_VISIT = "CREATE TABLE IF NOT EXISTS visit (" +
             "_id integer PRIMARY KEY," +
-            "patient_id TEXT," +
+            "patient_id integer," +
             "start_datetime TEXT NOT NULL," +
             "end_datetime TEXT," +
             "visit_type_id integer(10)," +
@@ -54,7 +55,7 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             ")";
     public static final String CREATE_OBS = "CREATE TABLE IF NOT EXISTS obs (" +
             "_id integer PRIMARY KEY," +
-            "patient_id TEXT," +
+            "patient_id integer," +
             "visit_id integer(10) NOT NULL," +
             "value text," +
             "concept_id integer(10) NOT NULL," +
@@ -66,7 +67,7 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
     public static final String CREATE_ENCOUNTER = "CREATE TABLE IF NOT EXISTS encounter ("+
             "_id integer PRIMARY KEY," +
             "openmrs_encounter_id integer(10) NOT NULL," +
-            "patient_id TEXT," +
+            "patient_id integer," +
             "visit_id integer(10) NOT NULL," +
             "openmrs_visit_uuid TEXT," +
             "encounter_type TEXT" +
@@ -91,6 +92,7 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             "date_changed TEXT NOT NULL," +
             "changed_by integer(10) NOT NULL" +
             ")";
+
     public static final String CREATE_LOCATION = "CREATE TABLE location_details (" +
             "_id integer PRIMARY KEY," +
             "tablet_id integer(10) NOT NULL," +
@@ -104,7 +106,7 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             DelayedJobQueueProvider.JOB_PRIORITY + " INTEGER NOT NULL," +
             DelayedJobQueueProvider.JOB_REQUEST_CODE + " INTEGER NOT NULL," +
             DelayedJobQueueProvider.PATIENT_NAME + " TEXT NOT NULL," +
-            DelayedJobQueueProvider.PATIENT_ID + " TEXT NOT NULL," +
+            DelayedJobQueueProvider.PATIENT_ID + " INTEGER NOT NULL," +
             DelayedJobQueueProvider.VISIT_ID + " TEXT," +
             DelayedJobQueueProvider.VISIT_UUID + " TEXT," +
             DelayedJobQueueProvider.STATUS + " INTEGER," +
@@ -115,7 +117,7 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
 
     public static final String CREATE_IMAGE_RECORDS = "CREATE TABLE image_records("+
             "_id integer PRIMARY KEY AUTOINCREMENT," +
-            "patient_id TEXT NOT NULL," +
+            "patient_id integer NOT NULL," +
             "visit_id integer(10)," +
             "image_path TEXT NOT NULL,"+
             "image_type TEXT NOT NULL,"+

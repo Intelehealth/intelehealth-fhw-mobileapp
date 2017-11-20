@@ -36,7 +36,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -69,7 +68,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     String LOG_TAG = "Patient Detail Activity";
 
-    String patientID;
+    Integer patientID;
     String patientName;
     String visitID;
     String intentTag = "";
@@ -94,10 +93,10 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
-            patientID = intent.getStringExtra("patientID");
+            patientID = intent.getIntExtra("patientID", -1);
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
-//            Log.v(TAG, "Patient ID: " + patientID);
+            Log.v(LOG_TAG, "Patient ID: " + patientID);
 //            Log.v(TAG, "Patient Name: " + patientName);
 //            Log.v(TAG, "Intent Tag: " + intentTag);
         }
@@ -150,7 +149,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                 String[] cols = {"value"};
                 Cursor cursor = sqLiteDatabase.query("obs", cols, "patient_id=? and concept_id=?",// querying for PMH
-                        new String[]{patient.getId(), String.valueOf(ConceptId.RHK_MEDICAL_HISTORY_BLURB)},
+                        new String[]{String.valueOf(patient.getId()), String.valueOf(ConceptId.RHK_MEDICAL_HISTORY_BLURB)},
                         null, null, null);
 
                 if (cursor.moveToFirst()) {
@@ -169,7 +168,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 cursor.close();
 
                 Cursor cursor1 = sqLiteDatabase.query("obs", cols, "patient_id=? and concept_id=?",// querying for FH
-                        new String[]{patient.getId(), String.valueOf(ConceptId.RHK_FAMILY_HISTORY_BLURB)},
+                        new String[]{String.valueOf(patient.getId()), String.valueOf(ConceptId.RHK_FAMILY_HISTORY_BLURB)},
                         null, null, null);
                 if (cursor1.moveToFirst()) {
                     // rows present
@@ -267,16 +266,17 @@ public class PatientDetailActivity extends AppCompatActivity {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-        String patientSelection = "_id MATCH ?";
+        String patientSelection = "_id = ?";
         String[] patientArgs = {dataString};
-        String[] patientColumns = {"first_name", "middle_name", "last_name",
+        String[] patientColumns = {"openmrs_id", "first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw", "occupation",
-                "patient_photo","economic_status", "education_status","caste"};
+                "patient_photo", "economic_status", "education_status", "caste"};
         final Cursor idCursor = db.query("patient", patientColumns, patientSelection, patientArgs, null, null, null);
 
         if (idCursor.moveToFirst()) {
             do {
+                patient.setOpenmrs_patient_id(idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_id")));
                 patient.setFirstName(idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")));
                 patient.setMiddleName(idCursor.getString(idCursor.getColumnIndexOrThrow("middle_name")));
                 patient.setLastName(idCursor.getString(idCursor.getColumnIndexOrThrow("last_name")));
@@ -336,8 +336,11 @@ public class PatientDetailActivity extends AppCompatActivity {
                     .into(photoView);
         }
 
-
-        idView.setText(patient.getId());
+        if (patient.getOpenmrs_patient_id() != null && !patient.getOpenmrs_patient_id().isEmpty()) {
+            idView.setText(patient.getOpenmrs_patient_id());
+        }else{
+            idView.setText(getString(R.string.patient_not_registered));
+        }
         int age = HelperMethods.getAge(patient.getDateOfBirth());
         ageView.setText(String.valueOf(age));
         dobView.setText(patient.getDateOfBirth());
@@ -500,6 +503,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         String patientPhone = ((TextView) findViewById(R.id.textView_phone)).getText().toString();
         String patientMedHist = ((TextView) findViewById(R.id.textView_patHist)).getText().toString();
         String patientFamHist = ((TextView) findViewById(R.id.textView_famHist)).getText().toString();
+        String openMrsPatientID = ((TextView) findViewById(R.id.textView_ID)).getText().toString();
 
 
         // Generate an HTML document on the fly:
@@ -521,7 +525,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                                 "<h2 id=\"family-history\">Family History</h2>\n" +
                                 "<p>%s</p>\n",
 //                                "<h2 id=\"current-medications\">Current Medications</h2>",
-                        patientName, patientID, patientDob, patientAge, patientAddr1,
+                        patientName, openMrsPatientID, patientDob, patientAge, patientAddr1,
                         patientAddr2, patientAddrFinal, patientPhone, patientMedHist, patientFamHist);
         webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
 

@@ -13,10 +13,7 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.parse.DeleteCallback;
-import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -60,7 +57,8 @@ public class ImageUploadService extends IntentService {
     NotificationManager mNotifyManager;
     public int mId = 3;
     NotificationCompat.Builder mBuilder;
-    private String patientId, visitId, patientUUID, visitUUID;
+    private String visitId, patientUUID, visitUUID;
+    private Integer patientId;
 
     int queueId;
 
@@ -71,7 +69,7 @@ public class ImageUploadService extends IntentService {
         mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mBuilder = new NotificationCompat.Builder(this);
         Log.i(LOG_TAG, "Running");
-        patientId = intent.getStringExtra("patientID");
+        patientId = intent.getIntExtra("patientID", -1);
         visitId = intent.getStringExtra("visitID");
         visitUUID = intent.getStringExtra("visitUUID");
         patientUUID = intent.getStringExtra("patientUUID");
@@ -84,18 +82,24 @@ public class ImageUploadService extends IntentService {
         queueId = intent.getIntExtra("queueId", -1);
 
         String query = "SELECT _id,image_path,image_type,parse_id,delete_status FROM image_records WHERE patient_id = ? AND visit_id = ?";
+
         LocalRecordsDatabaseHelper databaseHelper = new LocalRecordsDatabaseHelper(this);
         SQLiteDatabase localdb = databaseHelper.getWritableDatabase();
-        Cursor cursor = localdb.rawQuery(query, new String[]{patientId, visitId});
+        Log.i(TAG, "onHandleIntent: " + visitId + "," + patientId);
+        Cursor cursor = localdb.rawQuery(query, new String[]{String.valueOf(patientId), visitId});
         List<Images> imageList = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            imageList.add(new Images(cursor.getLong(cursor.getColumnIndexOrThrow("_id")),
-                    cursor.getString(cursor.getColumnIndexOrThrow("image_path")),
-                    cursor.getString(cursor.getColumnIndexOrThrow("image_type")),
-                    cursor.getInt(cursor.getColumnIndexOrThrow("delete_status")),
-                    cursor.getString(cursor.getColumnIndexOrThrow("parse_id"))
-            ));
-            Log.i(LOG_TAG + ">", cursor.getString(0));
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    imageList.add(new Images(cursor.getLong(cursor.getColumnIndexOrThrow("_id")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("image_path")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("image_type")),
+                            cursor.getInt(cursor.getColumnIndexOrThrow("delete_status")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("parse_id"))
+                    ));
+                    Log.i(LOG_TAG + ">", ""+cursor.getInt(0));
+                } while (cursor.moveToNext());
+            }
         }
         cursor.close();
         localdb.close();
@@ -151,28 +155,10 @@ public class ImageUploadService extends IntentService {
                         try {
                             ParseObject parseObject = query_object.get(parseID);
                             parseObject.delete();
+                            deleteFromImageDatabase(images.get_id());
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                     /*   query_object.getFirstInBackground(new GetCallback<ParseObject>() {
-                            @Override
-                            public void done(ParseObject object, ParseException e) {
-                                if (object != null) {
-                                    object.deleteInBackground(new DeleteCallback() {
-                                        @Override
-                                        public void done(ParseException e) {
-                                            if (e == null) {
-                                                deleteFromImageDatabase(parseID);
-                                                Log.i(TAG, "done: Image Delete");
-                                            } else {
-                                                Log.e(TAG, e.getMessage());
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    });
-                                }
-                            }
-                        });*/
                     }
                 }
             }
@@ -225,19 +211,17 @@ public class ImageUploadService extends IntentService {
         ContentValues contentValues = new ContentValues();
         contentValues.put("parse_id", parse_id);
         String whereString = "patient_id=? AND visit_id=? AND image_path=?";
-        String[] whereArgs = {patientId, visitId, imagePath};
+        String[] whereArgs = {String.valueOf(patientId), visitId, imagePath};
         localdb.update("image_records", contentValues, whereString, whereArgs);
         localdb.close();
     }
 
-    private void deleteFromImageDatabase(String parse_id) {
+    private void deleteFromImageDatabase(Long id) {
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
 
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("parse_id", parse_id);
-        String whereString = "parse_id=?";
-        String[] whereArgs = {parse_id};
+        String whereString = "_id = ?";
+        String[] whereArgs = {String .valueOf(id)};
         localdb.delete("image_records", whereString, whereArgs);
         localdb.close();
     }
@@ -251,16 +235,12 @@ public class ImageUploadService extends IntentService {
         values.put(DelayedJobQueueProvider.VISIT_UUID, intent.getStringExtra("visitUUID"));
         values.put(DelayedJobQueueProvider.JOB_PRIORITY, 1);
         values.put(DelayedJobQueueProvider.JOB_REQUEST_CODE, 0);
-        values.put(DelayedJobQueueProvider.PATIENT_ID, intent.getStringExtra("patientID"));
+        values.put(DelayedJobQueueProvider.PATIENT_ID, intent.getIntExtra("patientID", -1));
         values.put(DelayedJobQueueProvider.DATA_RESPONSE, intent.getStringExtra("patientUUID"));
         values.put(DelayedJobQueueProvider.PATIENT_NAME, intent.getStringExtra("name"));
 
         Uri uri = getContentResolver().insert(
                 DelayedJobQueueProvider.CONTENT_URI, values);
-
-
-        Toast.makeText(getBaseContext(),
-                uri.toString(), Toast.LENGTH_LONG).show();
 
         return Integer.valueOf(uri.getLastPathSegment());
     }

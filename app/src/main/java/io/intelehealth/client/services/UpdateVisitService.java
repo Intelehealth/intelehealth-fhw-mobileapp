@@ -50,7 +50,7 @@ public class UpdateVisitService extends IntentService {
     private String visitStartDateTime;
     private String patientUUID;
     private String visitUUID;
-    private String patientID;
+    private Integer patientID;
 
     NotificationManager mNotifyManager;
     public int mId = 5;
@@ -85,7 +85,7 @@ public class UpdateVisitService extends IntentService {
 
         if (intent != null) {
             visitId = intent.getStringExtra("visitID");
-            patientID = intent.getStringExtra("patientID");
+            patientID = intent.getIntExtra("patientID",-1);
         }
 
         Log.i(TAG, "onHandleIntent: " + visitId);
@@ -112,9 +112,9 @@ public class UpdateVisitService extends IntentService {
 
             if (patientID != null) {
 
-                String selection_patient = "_id MATCH ?";
+                String selection_patient = "_id = ?";
                 String[] coloumns_patient = {"openmrs_uuid"};
-                String[] args_patient = {patientID};
+                String[] args_patient = {String.valueOf(patientID)};
 
                 Cursor patientCursor = db.query("patient", coloumns_patient, selection_patient, args_patient, null, null, null);
 
@@ -125,7 +125,6 @@ public class UpdateVisitService extends IntentService {
                 patientCursor.close();
 
                 Intent imageUpload = new Intent(this, ImageUploadService.class);
-                imageUpload.putExtra("patientID", patientID);
                 imageUpload.putExtra("patientID", patientID);
                 imageUpload.putExtra("name", intent.getStringExtra("name"));
                 imageUpload.putExtra("patientUUID", patientUUID);
@@ -613,7 +612,7 @@ public class UpdateVisitService extends IntentService {
         values.put(DelayedJobQueueProvider.JOB_PRIORITY, 1);
         values.put(DelayedJobQueueProvider.JOB_REQUEST_CODE, 0);
         values.put(DelayedJobQueueProvider.PATIENT_NAME, intent.getStringExtra("name"));
-        values.put(DelayedJobQueueProvider.PATIENT_ID, intent.getStringExtra("patientID"));
+        values.put(DelayedJobQueueProvider.PATIENT_ID, intent.getIntExtra("patientID",-1));
         values.put(DelayedJobQueueProvider.VISIT_ID, intent.getStringExtra("visitID"));
         values.put(DelayedJobQueueProvider.SYNC_STATUS, 0);
 

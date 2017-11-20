@@ -60,7 +60,7 @@ public class PersonPhotoUploadService extends IntentService {
     NotificationManager mNotifyManager;
     NotificationCompat.Builder mBuilder;
     public int mId = 2;
-    String patientId;
+    Integer patientId;
 
     Integer queueId = null;
 
@@ -85,12 +85,12 @@ public class PersonPhotoUploadService extends IntentService {
         Log.d(TAG, "Queue id: " + intent.getIntExtra("queueId", -1));
         queueId = intent.getIntExtra("queueId", -1);
         patientUUID = intent.getStringExtra("patientUUID");
-        patientId = intent.getStringExtra("patientID");
+        patientId = intent.getIntExtra("patientID",-1);;
 
         String query = "SELECT patient_photo FROM patient WHERE _id = ?";
         LocalRecordsDatabaseHelper databaseHelper = new LocalRecordsDatabaseHelper(this);
         SQLiteDatabase localdb = databaseHelper.getWritableDatabase();
-        Cursor cursor = localdb.rawQuery(query, new String[]{patientId});
+        Cursor cursor = localdb.rawQuery(query, new String[]{String.valueOf(patientId)});
         List<String> imagePaths = new ArrayList<>();
         if (cursor.moveToFirst() && cursor.getCount() != 0) {
             do {
@@ -164,7 +164,7 @@ public class PersonPhotoUploadService extends IntentService {
         values.put(DelayedJobQueueProvider.JOB_TYPE, "photoUpload");
         values.put(DelayedJobQueueProvider.JOB_PRIORITY, 1);
         values.put(DelayedJobQueueProvider.JOB_REQUEST_CODE, 0);
-        values.put(DelayedJobQueueProvider.PATIENT_ID, intent.getStringExtra("patientID"));
+        values.put(DelayedJobQueueProvider.PATIENT_ID, intent.getIntExtra("patientID",-1));
         values.put(DelayedJobQueueProvider.PATIENT_NAME, intent.getStringExtra("name"));
         values.put(DelayedJobQueueProvider.DATA_RESPONSE, intent.getStringExtra("patientUUID"));
         values.put(DelayedJobQueueProvider.SYNC_STATUS, 0);

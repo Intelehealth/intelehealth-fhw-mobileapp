@@ -43,7 +43,7 @@ public class JobDispatchService extends JobService {
                     case "patient": {
                         serviceIntent = new Intent(this, ClientService.class);
                         serviceIntent.putExtra("serviceCall", service_call);
-                        serviceIntent.putExtra("patientID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
+                        serviceIntent.putExtra("patientID", cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
                         serviceIntent.putExtra("name", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_NAME)));
                         serviceIntent.putExtra("status", cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider.STATUS)));
                         serviceIntent.putExtra("personResponse", cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider.DATA_RESPONSE)));
@@ -52,14 +52,14 @@ public class JobDispatchService extends JobService {
                     case "patientUpdate": {
                         serviceIntent = new Intent(this, PatientUpdateService.class);
                         serviceIntent.putExtra("serviceCall", service_call);
-                        serviceIntent.putExtra("patientID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
+                        serviceIntent.putExtra("patientID", cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
                         serviceIntent.putExtra("name", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_NAME)));
                         break;
                     }
                     case "visit": {
                         serviceIntent = new Intent(this, ClientService.class);
                         serviceIntent.putExtra("serviceCall", service_call);
-                        serviceIntent.putExtra("patientID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
+                        serviceIntent.putExtra("patientID", cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
                         serviceIntent.putExtra("name", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_NAME)));
                         serviceIntent.putExtra("visitID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.VISIT_ID)));
                         serviceIntent.putExtra("status", cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider.STATUS)));
@@ -69,7 +69,7 @@ public class JobDispatchService extends JobService {
                     case "endVisit": {
                         serviceIntent = new Intent(this, ClientService.class);
                         serviceIntent.putExtra("serviceCall", service_call);
-                        serviceIntent.putExtra("patientID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
+                        serviceIntent.putExtra("patientID", cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
                         serviceIntent.putExtra("name", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_NAME)));
                         serviceIntent.putExtra("visitUUID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.VISIT_UUID)));
                         break;
@@ -77,7 +77,7 @@ public class JobDispatchService extends JobService {
                     case "photoUpload": {
                         serviceIntent = new Intent(this, PersonPhotoUploadService.class);
                         serviceIntent.putExtra("serviceCall", service_call);
-                        serviceIntent.putExtra("patientID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
+                        serviceIntent.putExtra("patientID", cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
                         serviceIntent.putExtra("name", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_NAME)));
                         serviceIntent.putExtra("patientUUID", cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider.DATA_RESPONSE)));
                         break;
@@ -85,16 +85,17 @@ public class JobDispatchService extends JobService {
                     case "imageUpload": {
                         serviceIntent = new Intent(this, ImageUploadService.class);
                         serviceIntent.putExtra("serviceCall", service_call);
-                        serviceIntent.putExtra("patientID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
+                        serviceIntent.putExtra("patientID", cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
                         serviceIntent.putExtra("name", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_NAME)));
+                        serviceIntent.putExtra("visitID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.VISIT_ID)));
                         serviceIntent.putExtra("visitUUID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.VISIT_UUID)));
-                        serviceIntent.putExtra("patientUUID", cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider.DATA_RESPONSE)));
+                        serviceIntent.putExtra("patientUUID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.DATA_RESPONSE)));
                         break;
                     }
                     case "prescriptionDownload": {
                         serviceIntent = new Intent(this, PrescriptionDownloadService.class);
                         serviceIntent.putExtra("serviceCall", service_call);
-                        serviceIntent.putExtra("patientID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
+                        serviceIntent.putExtra("patientID", cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
                         serviceIntent.putExtra("visitID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.VISIT_ID)));
                         serviceIntent.putExtra("name", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_NAME)));
                         serviceIntent.putExtra("visitUUID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.VISIT_UUID)));
@@ -103,7 +104,7 @@ public class JobDispatchService extends JobService {
                     case "obsUpdate": {
                         serviceIntent = new Intent(this, PrescriptionDownloadService.class);
                         serviceIntent.putExtra("serviceCall", service_call);
-                        serviceIntent.putExtra("patientID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
+                        serviceIntent.putExtra("patientID", cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
                         serviceIntent.putExtra("visitID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.VISIT_ID)));
                         serviceIntent.putExtra("name", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_NAME)));
                         break;

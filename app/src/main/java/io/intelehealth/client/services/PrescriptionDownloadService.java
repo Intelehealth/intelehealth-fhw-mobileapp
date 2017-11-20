@@ -58,7 +58,7 @@ public class PrescriptionDownloadService extends IntentService {
     public int mId = 4;
     NotificationCompat.Builder mBuilder;
 
-    String patientID;
+    Integer patientID;
     String visitID;
     String visitUUID;
     String diagnosisReturned = "";
@@ -85,7 +85,7 @@ public class PrescriptionDownloadService extends IntentService {
             intent.putExtra("queueId", id);
         }
 
-        patientID = intent.getStringExtra("patientID");
+        patientID = intent.getIntExtra("patientID",-1);
         visitID = intent.getStringExtra("visitID");
         visitUUID = intent.getStringExtra("visitUUID");
         queueId = intent.getIntExtra("queueId", -1);
@@ -362,7 +362,7 @@ public class PrescriptionDownloadService extends IntentService {
         values.put(DelayedJobQueueProvider.JOB_PRIORITY, 1);
         values.put(DelayedJobQueueProvider.JOB_REQUEST_CODE, 0);
         values.put(DelayedJobQueueProvider.PATIENT_NAME, intent.getStringExtra("name"));
-        values.put(DelayedJobQueueProvider.PATIENT_ID, intent.getStringExtra("patientID"));
+        values.put(DelayedJobQueueProvider.PATIENT_ID, intent.getIntExtra("patientID",-1));
         values.put(DelayedJobQueueProvider.VISIT_ID, intent.getStringExtra("visitID"));
         values.put(DelayedJobQueueProvider.VISIT_UUID, intent.getStringExtra("visitUUID"));
         values.put(DelayedJobQueueProvider.SYNC_STATUS, 0);

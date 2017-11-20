@@ -1,6 +1,7 @@
 package io.intelehealth.client.api.retrofit;
 
 
+import io.intelehealth.client.models.Identifier;
 import io.intelehealth.client.models.Results;
 import io.intelehealth.client.models.Location;
 import io.intelehealth.client.models.PatientPhoto;
@@ -26,11 +27,5 @@ public interface RestApi {
     @GET("location?tag=Login%20Location")
     Call<Results<Location>> getLocations(@Query("v") String representation);
 
-    @POST("personimage/{uuid}")
-    Call<PatientPhoto> uploadPatientPhoto(@Path("uuid") String uuid,
-                                          @Body PatientPhoto patientPhoto);
-
-    @GET("personimage/{uuid}")
-    Call<ResponseBody> downloadPatientPhoto(@Path("uuid") String uuid);
 
 }
