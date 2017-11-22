@@ -65,6 +65,10 @@ public class Node implements Serializable {
     private String jobAidFile;
     private String jobAidType;
 
+    //for Associated Complaints and medical history only
+    private String positiveCondition;
+    private String negativeCondition;
+
     //These are specific for physical exams
     private boolean rootNode;
 
@@ -78,6 +82,7 @@ public class Node implements Serializable {
     private boolean hasPhysicalExams;
 
     private List<String> imagePathList;
+
 
     private String imagePath;
 
@@ -134,7 +139,6 @@ public class Node implements Serializable {
                 this.display_oriya = this.display;
             }
 
-
             this.language = jsonNode.optString("language");
             if (this.language.isEmpty()) {
                 this.language = this.text;
@@ -178,6 +182,9 @@ public class Node implements Serializable {
 
             this.required = false;
 
+            this.positiveCondition = jsonNode.optString("pos-condition");
+            this.negativeCondition = jsonNode.optString("neg-condition");
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -207,6 +214,8 @@ public class Node implements Serializable {
         this.hasPhysicalExams = source.hasPhysicalExams;
         this.selected = false;
         this.required = source.required;
+        this.positiveCondition = source.positiveCondition;
+        this.negativeCondition = source.negativeCondition;
     }
 
     /**
@@ -254,13 +263,13 @@ public class Node implements Serializable {
 
     //In certain instances, the input is added to the starter language given to the user.
     public void addLanguage(String newText) {
-        Log.d("Node", language);
+        //Log.d("Node", language);
         if (language.contains("_")) {
             language = language.replace("_", newText);
-            Log.d("Node", language);
+            //Log.d("Node", language);
         } else {
             language = language + " " + newText;
-            Log.d("Node", language);
+            //Log.d("Node", language);
         }
     }
 
@@ -269,26 +278,26 @@ public class Node implements Serializable {
 
         switch (locale) {
             case "eng": {
-                Log.i(TAG, "findDisplay: eng");
+                //Log.i(TAG, "findDisplay: eng");
                 if (display != null && display.isEmpty()) {
-                    Log.i(TAG, "findDisplay: eng txt");
+                    //Log.i(TAG, "findDisplay: eng txt");
                     return text;
                 } else {
-                    Log.i(TAG, "findDisplay: eng dis");
+                    //Log.i(TAG, "findDisplay: eng dis");
                     return display;
                 }
             }
             case "ori": {
-                Log.i(TAG, "findDisplay: ori");
+                //Log.i(TAG, "findDisplay: ori");
                 if (display_oriya != null && !display_oriya.isEmpty()) {
-                    Log.i(TAG, "findDisplay: ori dis");
+                    //Log.i(TAG, "findDisplay: ori dis");
                     return display_oriya;
                 } else {
                     if (display == null || display.isEmpty()) {
-                        Log.i(TAG, "findDisplay: eng/o txt");
+                        //Log.i(TAG, "findDisplay: eng/o txt");
                         return text;
                     } else {
-                        Log.i(TAG, "findDisplay: eng/o dis");
+                        //Log.i(TAG, "findDisplay: eng/o dis");
                         return display;
                     }
                 }
@@ -304,6 +313,22 @@ public class Node implements Serializable {
                 }
             }
         }
+    }
+
+    public String getPositiveCondition() {
+        return positiveCondition;
+    }
+
+    public void setPositiveCondition(String positiveCondition) {
+        this.positiveCondition = positiveCondition;
+    }
+
+    public String getNegativeCondition() {
+        return negativeCondition;
+    }
+
+    public void setNegativeCondition(String negativeCondition) {
+        this.negativeCondition = negativeCondition;
     }
 
     public int size() {
@@ -405,6 +430,12 @@ public class Node implements Serializable {
         boolean isTerminal = false;
         for (int i = 0; i < mOptions.size(); i++) {
             if (mOptions.get(i).isSelected()) {
+                String associatedTest = mOptions.get(i).getText();
+                if (associatedTest.equals("Associated symptoms") ||
+                        associatedTest.equals("Past medical history ")) {
+                    stringsList.add(generateAssociatedSymptomsOrHistory(mOptions.get(i)));
+                    continue;
+                }
                 String test = mOptions.get(i).getLanguage();
                 if (test.equals("%")) {
                 } else if (test.substring(0, 1).equals("%")) {
@@ -462,6 +493,7 @@ public class Node implements Serializable {
             }
             formatted = formatted.replaceAll("\\. -", ".");
             formatted = formatted.replaceAll("\\.,", ", ");
+            Log.i(TAG, "generateLanguage: " + formatted);
             return formatted;
         }
         return null;
@@ -1396,5 +1428,76 @@ public class Node implements Serializable {
 
         }
     }
+
+    private String generateAssociatedSymptomsOrHistory(Node associatedSymptomNode) {
+
+        List<String> positiveAssociations = new ArrayList<>();
+        List<String> negativeAssociations = new ArrayList<>();
+        List<String> finalTexts = new ArrayList<>();
+        List<Node> mOptions = associatedSymptomNode.getOptionsList();
+
+        String mLanguagePositive = associatedSymptomNode.getPositiveCondition();
+        String mLanguageNegative = associatedSymptomNode.getNegativeCondition();
+
+
+        for (int i = 0; i < mOptions.size(); i++) {
+
+
+            if (mOptions.get(i).isSelected()) {
+                if (mOptions.get(i).getLanguage().equals("%")) {
+                } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
+                    positiveAssociations.add(mOptions.get(i).getLanguage().substring(1));
+                } else if (mOptions.get(i).getLanguage().isEmpty()) {
+                    positiveAssociations.add(mOptions.get(i).getText());
+                } else {
+                    positiveAssociations.add(mOptions.get(i).getLanguage());
+                }
+                if (!mOptions.get(i).isTerminal()) {
+                    String tempString = mOptions.get(i).formLanguage();
+                    positiveAssociations.add(tempString);
+                }
+            } else {
+                if (mOptions.get(i).getLanguage().equals("%")) {
+                } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
+                    negativeAssociations.add(mOptions.get(i).getLanguage().substring(1));
+                } else if (mOptions.get(i).getLanguage().isEmpty()) {
+                    negativeAssociations.add(mOptions.get(i).getText());
+                } else {
+                    negativeAssociations.add(mOptions.get(i).getLanguage());
+                }
+            }
+        }
+
+        if (!positiveAssociations.isEmpty()) {
+            for (int j = 0; j < positiveAssociations.size(); j++) {
+                finalTexts.add(mLanguagePositive + " " + positiveAssociations.get(j));
+            }
+        }
+
+
+        if (!negativeAssociations.isEmpty()) {
+            for (int k = 0; k < negativeAssociations.size(); k++) {
+                finalTexts.add(mLanguageNegative + " " + negativeAssociations.get(k));
+            }
+        }
+
+        String final_language = "";
+
+        if (!finalTexts.isEmpty()) {
+            for (int l = 0; l < finalTexts.size(); l++) {
+                final_language = final_language + ", " + finalTexts.get(l);
+            }
+        }
+
+        final_language = final_language.replaceAll("with,", "with");
+        final_language = final_language.replaceAll("of,", "of");
+        final_language = final_language.replaceAll("\\, \\[", " [");
+        Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + final_language);
+
+        return final_language;
+
+    }
+
+
 }
 
