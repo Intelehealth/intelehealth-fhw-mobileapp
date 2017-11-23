@@ -47,7 +47,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     public static final String KEY_PREF_SETUP_COMPLETE = "setup";
     public static final String KEY_PREF_ID_PREFIX = "idprefix";
-    public static final String KEY_PREF_SERVER_URL = "serverurl";
+    public static final String KEY_PREF_SERVER_URL_REST = "serverurl";
+    public static final String KEY_PREF_SERVER_URL = "url";
     public static final String KEY_PREF_SERVER_URL_BASE = "serverurlbase";
     public static final String KEY_PREF_LOCATION_UUID = "locationuuid";
     public static final String KEY_PREF_LOCATION_NAME = "locationname";

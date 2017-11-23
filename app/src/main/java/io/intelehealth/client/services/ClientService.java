@@ -284,7 +284,7 @@ public class ClientService extends IntentService {
 
     public String sendData(String jsonString) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        final String serverAddress = sharedPref.getString(SettingsActivity.KEY_PREF_SERVER_URL, "");
+        final String serverAddress = sharedPref.getString(SettingsActivity.KEY_PREF_SERVER_URL_REST, "");
 
         HttpURLConnection urlConnection;
         DataOutputStream printout;

@@ -37,6 +37,7 @@ import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.parse.Parse;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,11 +45,9 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.UnknownHostException;
@@ -514,8 +513,9 @@ public class SetupActivity extends AppCompatActivity {
                 editor.putString(SettingsActivity.KEY_PREF_LOCATION_UUID, LOCATION.getUuid());
                 editor.putString(SettingsActivity.KEY_PREF_LOCATION_DESCRIPTION, LOCATION.getDescription());
 
-                editor.putString(SettingsActivity.KEY_PREF_SERVER_URL, BASE_URL);
+                editor.putString(SettingsActivity.KEY_PREF_SERVER_URL_REST, BASE_URL);
                 editor.putString(SettingsActivity.KEY_PREF_SERVER_URL_BASE, "http://" + CLEAN_URL + ":8080/openmrs");
+                editor.putString(SettingsActivity.KEY_PREF_SERVER_URL, CLEAN_URL);
                 Log.d(TAG, BASE_URL);
                 editor.apply();
 
@@ -528,6 +528,13 @@ public class SetupActivity extends AppCompatActivity {
 
                 OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
                 AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
+
+                Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
+                        .applicationId(HelperMethods.IMAGE_APP_ID)
+                        .server("http://"+CLEAN_URL+":1338/parse/")
+                        .build()
+                );
+                Log.i(TAG, "onPostExecute: Parse init");
 
                 Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
                 startActivity(intent);

@@ -261,7 +261,7 @@ public class LoginActivity extends AppCompatActivity {
 
             try {
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                final String BASE_URL = sharedPref.getString(SettingsActivity.KEY_PREF_SERVER_URL, "");
+                final String BASE_URL = sharedPref.getString(SettingsActivity.KEY_PREF_SERVER_URL_REST, "");
 
                 final String USERNAME = mEmail;
                 final String PASSWORD = mPassword;
