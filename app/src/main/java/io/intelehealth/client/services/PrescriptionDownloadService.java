@@ -370,10 +370,6 @@ public class PrescriptionDownloadService extends IntentService {
         Uri uri = getContentResolver().insert(
                 DelayedJobQueueProvider.CONTENT_URI, values);
 
-
-        Toast.makeText(getBaseContext(),
-                uri.toString(), Toast.LENGTH_LONG).show();
-
         return Integer.valueOf(uri.getLastPathSegment());
 
     }

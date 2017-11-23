@@ -11,7 +11,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -85,7 +84,7 @@ public class UpdateVisitService extends IntentService {
 
         if (intent != null) {
             visitId = intent.getStringExtra("visitID");
-            patientID = intent.getIntExtra("patientID",-1);
+            patientID = intent.getIntExtra("patientID", -1);
         }
 
         Log.i(TAG, "onHandleIntent: " + visitId);
@@ -98,7 +97,7 @@ public class UpdateVisitService extends IntentService {
             createNotification("");
 
             String selection = "_id = ?";
-            String[] coloumns = {"start_datetime","openmrs_visit_uuid"};
+            String[] coloumns = {"start_datetime", "openmrs_visit_uuid"};
             String[] args = {String.valueOf(visitId)};
 
             Cursor visitCursor = db.query("visit", coloumns, selection, args, null, null, null);
@@ -298,8 +297,7 @@ public class UpdateVisitService extends IntentService {
                 text = String.format("%s's visit data upload successful", intent.getStringExtra("name"));
                 createNotification(text);
                 removeJobFromQueue(queueId);
-            }
-            else{
+            } else {
                 text = String.format("%s's visit data upload unsuccessful", intent.getStringExtra("name"));
                 createNotification(text);
             }
@@ -612,7 +610,7 @@ public class UpdateVisitService extends IntentService {
         values.put(DelayedJobQueueProvider.JOB_PRIORITY, 1);
         values.put(DelayedJobQueueProvider.JOB_REQUEST_CODE, 0);
         values.put(DelayedJobQueueProvider.PATIENT_NAME, intent.getStringExtra("name"));
-        values.put(DelayedJobQueueProvider.PATIENT_ID, intent.getIntExtra("patientID",-1));
+        values.put(DelayedJobQueueProvider.PATIENT_ID, intent.getIntExtra("patientID", -1));
         values.put(DelayedJobQueueProvider.VISIT_ID, intent.getStringExtra("visitID"));
         values.put(DelayedJobQueueProvider.SYNC_STATUS, 0);
 
@@ -654,7 +652,7 @@ public class UpdateVisitService extends IntentService {
         int result = getContentResolver().update(uri, values, null, null);
     }
 
-    private void  createNotification(String message){
+    private void createNotification(String message) {
         mBuilder.setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Visit Data Update")
                 .setContentText(message);

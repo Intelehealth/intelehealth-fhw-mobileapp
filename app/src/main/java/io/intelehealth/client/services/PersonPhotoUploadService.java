@@ -173,9 +173,6 @@ public class PersonPhotoUploadService extends IntentService {
                 DelayedJobQueueProvider.CONTENT_URI, values);
 
 
-        Toast.makeText(getBaseContext(),
-                uri.toString(), Toast.LENGTH_LONG).show();
-
         return Integer.valueOf(uri.getLastPathSegment());
 
     }
