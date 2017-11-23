@@ -87,9 +87,9 @@
     <string name="identification_screen_prompt_age">Age*</string>
     <string name="identification_screen_prompt_city">Village/Town/City *</string>
     <string name="identification_screen_prompt_state">State *</string>
-    <string name="identification_screen_prompt_caste">Caste*</string>
-    <string name="identification_screen_prompt_economic_status">Economic Status*</string>
-    <string name="identification_screen_prompt_education">Education Level*</string>
+    <string name="identification_screen_prompt_caste">Caste</string>
+    <string name="identification_screen_prompt_economic_status">Economic Status</string>
+    <string name="identification_screen_prompt_education">Education Level</string>
     <string name="identification_screen_prompt_country">Country *</string>
     <string name="identification_screen_prompt_postal_code">Postal Code</string>
     <string name="identification_screen_prompt_relationship">Son/Daughter/Wife of</string>
@@ -351,4 +351,6 @@
     <string name="bpsys_error">"Systolic pressure should be in between %1$s and %2$s"</string>
     <string name="bpdia_error">"Diastolic pressure should be in between %1$s and %2$s"</string>
     <string name="temp_error">"Temperature should be in between %1$s and %2$s"</string>
+
+    <string name="not_provided">Not Provided</string>
 </resources>

@@ -74,10 +74,10 @@
     <string name="identification_screen_prompt_birthday">ଜନ୍ମ ତିଥି*</string>
     <string name="identification_screen_prompt_country">ଦେଶ *</string>
     <string name="identification_screen_prompt_city">ଗ୍ରାମ/ସହର/ନଗର *</string>
-    <string name="identification_screen_prompt_caste">ଜାତି *</string>
+    <string name="identification_screen_prompt_caste">ଜାତି</string>
     <string name="identification_screen_prompt_address2">ଠିକଣା ରେଖା 2</string>
-    <string name="identification_screen_prompt_economic_status">ର୍ଥଶାସ୍ତ୍ର *</string>
-    <string name="identification_screen_prompt_education">ଶିକ୍ଷା *</string>
+    <string name="identification_screen_prompt_economic_status">ର୍ଥଶାସ୍ତ୍ର</string>
+    <string name="identification_screen_prompt_education">ଶିକ୍ଷା</string>
     <string name="identification_screen_prompt_gender">ଲିଙ୍ଗ *</string>
     <string name="identification_screen_prompt_first_name">ପ୍ରଥମ ନାମ *</string>
     <string name="identification_screen_prompt_last_name">ଶେଷ ନାମ *</string>
