@@ -100,7 +100,6 @@ public class IdentificationActivity extends AppCompatActivity {
     Calendar dob = Calendar.getInstance();
 
     LocalRecordsDatabaseHelper mDbHelper;
-    String idPreFix;
     String visitID;
 
     ImageView mImageView;
@@ -118,9 +117,6 @@ public class IdentificationActivity extends AppCompatActivity {
 
         //Initialize the local database to store patient information
         mDbHelper = new LocalRecordsDatabaseHelper(this);
-
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        idPreFix = sharedPref.getString(SettingsActivity.KEY_PREF_ID_PREFIX, "JHU");
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {

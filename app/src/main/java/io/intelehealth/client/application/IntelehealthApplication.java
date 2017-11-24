@@ -66,7 +66,7 @@ public class IntelehealthApplication extends Application implements Application.
         else {
             Parse.initialize(new Parse.Configuration.Builder(this)
                     .applicationId(HelperMethods.IMAGE_APP_ID)
-                    .server("http://"+url+":1338/parse/")
+                    .server("http://"+url+":1337/parse/")
                     .build()
             );
             Log.i(TAG, "onCreate: Parse init");

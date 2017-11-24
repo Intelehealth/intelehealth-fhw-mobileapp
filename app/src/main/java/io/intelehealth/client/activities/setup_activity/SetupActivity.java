@@ -84,7 +84,6 @@ public class SetupActivity extends AppCompatActivity {
     private EditText mAdminPasswordView;
     protected AccountManager manager;
     private EditText mUrlField;
-    private EditText mPrefixField;
 
     private Button mLoginButton;
 
@@ -149,7 +148,6 @@ public class SetupActivity extends AppCompatActivity {
 
 
         mUrlField = (EditText) findViewById(R.id.editText_URL);
-        mPrefixField = (EditText) findViewById(R.id.editText_prefix);
 
         Button submitButton = (Button) findViewById(R.id.setup_submit_button);
 
@@ -312,8 +310,7 @@ public class SetupActivity extends AppCompatActivity {
             if (location != null) {
                 Log.i(TAG, location.getDisplay());
                 String urlString = mUrlField.getText().toString();
-                String prefixString = mPrefixField.getText().toString();
-                mAuthTask = new TestSetup(urlString, prefixString, email, password, admin_password, location);
+                mAuthTask = new TestSetup(urlString, email, password, admin_password, location);
                 mAuthTask.execute();
                 Log.d(TAG, "attempting setup");
             }
@@ -341,7 +338,6 @@ public class SetupActivity extends AppCompatActivity {
         private final String USERNAME;
         private final String PASSWORD;
         private final String CLEAN_URL;
-        private final String PREFIX;
         private final String ADMIN_PASSWORD;
         private String BASE_URL;
         private Location LOCATION;
@@ -349,9 +345,8 @@ public class SetupActivity extends AppCompatActivity {
         ProgressDialog progress;
 
 
-        TestSetup(String url, String prefix, String username, String password, String adminPassword, Location location) {
+        TestSetup(String url,String username, String password, String adminPassword, Location location) {
             CLEAN_URL = url;
-            PREFIX = prefix;
             USERNAME = username;
             PASSWORD = password;
             LOCATION = location;
@@ -519,10 +514,6 @@ public class SetupActivity extends AppCompatActivity {
                 Log.d(TAG, BASE_URL);
                 editor.apply();
 
-                editor.putString(SettingsActivity.KEY_PREF_ID_PREFIX, PREFIX);
-                Log.d(TAG, PREFIX);
-                editor.apply();
-
                 editor.putBoolean(SettingsActivity.KEY_PREF_SETUP_COMPLETE, true);
                 editor.apply();
 
@@ -531,7 +522,7 @@ public class SetupActivity extends AppCompatActivity {
 
                 Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
                         .applicationId(HelperMethods.IMAGE_APP_ID)
-                        .server("http://"+CLEAN_URL+":1338/parse/")
+                        .server("http://"+CLEAN_URL+":1337/parse/")
                         .build()
                 );
                 Log.i(TAG, "onPostExecute: Parse init");
@@ -546,9 +537,6 @@ public class SetupActivity extends AppCompatActivity {
             } else if (success == 3) {
                 mUrlField.setError(getString(R.string.url_invalid));
                 mUrlField.requestFocus();
-            } else {
-                mPrefixField.setError(getString(R.string.prefix_invalid));
-                mPrefixField.requestFocus();
             }
 
             progress.dismiss();
