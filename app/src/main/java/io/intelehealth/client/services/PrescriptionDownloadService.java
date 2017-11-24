@@ -105,8 +105,6 @@ public class PrescriptionDownloadService extends IntentService {
         WebResponse responseVisit;
         responseVisit = HelperMethods.getCommand("visit", queryString, getApplicationContext());
         if (responseVisit != null && responseVisit.getResponseCode() == 200) {
-//                failedStep("Encounter search was unsuccessful");
-            //Log.d(TAG, "Encounter searching was unsuccessful");
             Log.i(TAG, "onHandleIntent: Visit Checked");
 
             if (responseVisit != null) {
@@ -349,8 +347,9 @@ public class PrescriptionDownloadService extends IntentService {
                     removeJobFromQueue(queueId);
                 }
             }
+        }else{
+            queueSyncStop(queueId);
         }
-        queueSyncStop(queueId);
     }
 
     private int addJobToQueue(Intent intent) {
@@ -436,7 +435,6 @@ public class PrescriptionDownloadService extends IntentService {
 
     @Override
     public void onDestroy() {
-        queueSyncStop(queueId);
         super.onDestroy();
     }
 

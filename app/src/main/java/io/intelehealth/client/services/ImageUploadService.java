@@ -97,7 +97,7 @@ public class ImageUploadService extends IntentService {
                             cursor.getInt(cursor.getColumnIndexOrThrow("delete_status")),
                             cursor.getString(cursor.getColumnIndexOrThrow("parse_id"))
                     ));
-                    Log.i(LOG_TAG + ">", ""+cursor.getInt(0));
+                    Log.i(LOG_TAG + ">", "" + cursor.getInt(0));
                 } while (cursor.moveToNext());
             }
         }
@@ -130,6 +130,7 @@ public class ImageUploadService extends IntentService {
                                     .setContentText(newText);
                             mNotifyManager.notify(mId, mBuilder.build());
                             Log.d(LOG_TAG, "Visit Image Posting Unsuccessful");
+                            queueSyncStop(queueId);
                         }
                     }
                 } else {
@@ -151,7 +152,6 @@ public class ImageUploadService extends IntentService {
                     final String parseID = images.getParse_id();
                     if (parseID != null && !parseID.isEmpty()) {
                         ParseQuery<ParseObject> query_object = ParseQuery.getQuery(image_type);
-                        //query_object.whereEqualTo("objectId", parseID);
                         try {
                             ParseObject parseObject = query_object.get(parseID);
                             parseObject.delete();
@@ -162,14 +162,11 @@ public class ImageUploadService extends IntentService {
                     }
                 }
             }
-        } else
-
-        {
+        } else {
             queueSyncStop(queueId);
             removeJobFromQueue(queueId);
         }
 
-        queueSyncStop(queueId);
     }
 
 
@@ -221,7 +218,7 @@ public class ImageUploadService extends IntentService {
         SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
 
         String whereString = "_id = ?";
-        String[] whereArgs = {String .valueOf(id)};
+        String[] whereArgs = {String.valueOf(id)};
         localdb.delete("image_records", whereString, whereArgs);
         localdb.close();
     }
@@ -278,7 +275,6 @@ public class ImageUploadService extends IntentService {
 
     @Override
     public void onDestroy() {
-        queueSyncStop(queueId);
         super.onDestroy();
     }
 

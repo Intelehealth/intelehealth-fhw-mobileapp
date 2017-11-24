@@ -661,7 +661,6 @@ public class UpdateVisitService extends IntentService {
 
     @Override
     public void onDestroy() {
-        // queueSyncStop(queueId);
         super.onDestroy();
     }
 

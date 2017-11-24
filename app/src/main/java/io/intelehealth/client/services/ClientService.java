@@ -1418,7 +1418,6 @@ public class ClientService extends IntentService {
 
     @Override
     public void onDestroy() {
-        if (queueId != null) queueSyncStop(queueId);
         super.onDestroy();
     }
 

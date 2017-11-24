@@ -157,7 +157,7 @@ public class PatientUpdateService extends IntentService {
 
     @Override
     public void onDestroy() {
-        queueSyncStop(queueId);
+
         super.onDestroy();
     }
 
