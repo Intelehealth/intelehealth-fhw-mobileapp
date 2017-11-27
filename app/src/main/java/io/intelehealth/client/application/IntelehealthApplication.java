@@ -3,7 +3,10 @@ package io.intelehealth.client.application;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
 
 import com.parse.Parse;
@@ -15,6 +18,7 @@ import org.acra.annotation.ReportsCrashes;
 import org.acra.sender.HttpSender;
 
 import io.intelehealth.client.R;
+import io.intelehealth.client.activities.setting_activity.SettingsActivity;
 import io.intelehealth.client.utilities.HelperMethods;
 
 /**
@@ -45,6 +49,8 @@ public class IntelehealthApplication extends Application implements Application.
     private static Context mContext;
     private Activity currentActivity;
 
+    private static final String TAG = IntelehealthApplication.class.getSimpleName();
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -52,11 +58,19 @@ public class IntelehealthApplication extends Application implements Application.
         this.mContext = getApplicationContext();
         ACRA.init(this);
 
-        Parse.initialize(new Parse.Configuration.Builder(this)
-                .applicationId(HelperMethods.IMAGE_APP_ID)
-                .server(HelperMethods.IMAGE_SERVER_URL)
-                .build()
-        );
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String url = sharedPreferences.getString(SettingsActivity.KEY_PREF_SERVER_URL, null);
+        if(url==null){
+            Log.i(TAG, "onCreate: Parse not init");
+        }
+        else {
+            Parse.initialize(new Parse.Configuration.Builder(this)
+                    .applicationId(HelperMethods.IMAGE_APP_ID)
+                    .server("http://"+url+":1337/parse/")
+                    .build()
+            );
+            Log.i(TAG, "onCreate: Parse init");
+        }
 
         registerActivityLifecycleCallbacks(this);
     }

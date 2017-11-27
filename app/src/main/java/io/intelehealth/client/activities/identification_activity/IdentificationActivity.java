@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -101,7 +100,6 @@ public class IdentificationActivity extends AppCompatActivity {
     Calendar dob = Calendar.getInstance();
 
     LocalRecordsDatabaseHelper mDbHelper;
-    String idPreFix;
     String visitID;
 
     ImageView mImageView;
@@ -120,14 +118,11 @@ public class IdentificationActivity extends AppCompatActivity {
         //Initialize the local database to store patient information
         mDbHelper = new LocalRecordsDatabaseHelper(this);
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        idPreFix = sharedPref.getString(SettingsActivity.KEY_PREF_ID_PREFIX, "JHU");
-
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             if (intent.hasExtra("pid")) {
                 this.setTitle("Update Patient");
-                patientID_edit = intent.getIntExtra("pid",-1);
+                patientID_edit = intent.getIntExtra("pid", -1);
                 patient1.setId(patientID_edit);
                 setscreen(String.valueOf(patientID_edit));
             }
@@ -178,9 +173,8 @@ public class IdentificationActivity extends AppCompatActivity {
         mRelationship.setText(patient1.getSdw());
         mOccupation.setText(patient1.getOccupation());
 
-        if(patient1.getPatientPhoto()!=null && !patient1.getPatientPhoto().trim().isEmpty())
-        mImageView.setImageBitmap(BitmapFactory.decodeFile(patient1.getPatientPhoto()));
-
+        if (patient1.getPatientPhoto() != null && !patient1.getPatientPhoto().trim().isEmpty())
+            mImageView.setImageBitmap(BitmapFactory.decodeFile(patient1.getPatientPhoto()));
 
 
         ArrayAdapter<CharSequence> countryAdapter = ArrayAdapter.createFromResource(this,
@@ -210,7 +204,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         // setting radio button automatically according to the databse when user clicks edit details
-        if (patientID_edit!= -1) {
+        if (patientID_edit != -1) {
             if (patient1.getGender().equals("M")) {
                 mGenderM.setChecked(true);
                 if (mGenderF.isChecked())
@@ -233,9 +227,18 @@ public class IdentificationActivity extends AppCompatActivity {
         if (patientID_edit != -1) {
             // setting country according database
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
-            mEducation.setSelection(educationAdapter.getPosition(String.valueOf(patient1.getEducation_level())));
-            mEconomicStatus.setSelection(economicStausAdapter.getPosition(String.valueOf(patient1.getEconomic_status())));
-            mCaste.setSelection(casteAdapter.getPosition(String.valueOf(patient1.getCaste())));
+            if (patient1.getEducation_level().equals(getString(R.string.not_provided)))
+                mEducation.setSelection(0);
+            else
+                mEducation.setSelection(educationAdapter.getPosition(String.valueOf(patient1.getEducation_level())));
+            if (patient1.getEconomic_status().equals(getString(R.string.not_provided)))
+                mEconomicStatus.setSelection(0);
+            else
+                mEconomicStatus.setSelection(economicStausAdapter.getPosition(String.valueOf(patient1.getEconomic_status())));
+            if (patient1.getCaste().equals(getString(R.string.not_provided)))
+                mCaste.setSelection(0);
+            else
+                mCaste.setSelection(casteAdapter.getPosition(String.valueOf(patient1.getCaste())));
         } else {
             mCountry.setSelection(countryAdapter.getPosition("India"));
         }
@@ -373,7 +376,6 @@ public class IdentificationActivity extends AppCompatActivity {
                 String dobString = simpleDateFormat.format(dob.getTime());
 
 
-
                 //Age should be calculated based on the date
                 int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
                 if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
@@ -405,7 +407,7 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (!s.toString().trim().isEmpty()) {
-                    if(getCurrentFocus().getId() == mAge.getId() || mDOB.getText().toString().trim().isEmpty()) {
+                    if (getCurrentFocus().getId() == mAge.getId() || mDOB.getText().toString().trim().isEmpty()) {
                         Calendar calendar = Calendar.getInstance();
                         int curYear = calendar.get(Calendar.YEAR);
                         int birthYear = curYear - Integer.valueOf(s.toString().trim());
@@ -622,32 +624,6 @@ public class IdentificationActivity extends AppCompatActivity {
             countryText.setError(null);
         }
 
-        if (mCaste.getSelectedItemPosition() == 0) {
-            casteText.setError(getString(R.string.error_field_required));
-            focusView = casteText;
-            cancel = true;
-            return;
-        } else {
-            casteText.setError(null);
-        }
-
-        if (mEconomicStatus.getSelectedItemPosition() == 0) {
-            economicText.setError(getString(R.string.error_field_required));
-            focusView = economicText;
-            cancel = true;
-            return;
-        } else {
-            economicText.setError(null);
-        }
-
-        if (mEducation.getSelectedItemPosition() == 0) {
-            educationText.setError(getString(R.string.error_field_required));
-            focusView = educationText;
-            cancel = true;
-            return;
-        } else {
-            educationText.setError(null);
-        }
 
         if (mState.getSelectedItemPosition() == 0) {
             stateText.setError(getString(R.string.error_field_required));
@@ -747,12 +723,32 @@ public class IdentificationActivity extends AppCompatActivity {
                 patient1.setGender(mGender);
                 patient.setCountry(mCountry.getSelectedItem().toString());
                 patient1.setCountry(mCountry.getSelectedItem().toString());
-                patient.setEconomic_status(mEconomicStatus.getSelectedItem().toString());
-                patient1.setEconomic_status(mEconomicStatus.getSelectedItem().toString());
-                patient.setEducation_level(mEducation.getSelectedItem().toString());
-                patient1.setEducation_level(mEducation.getSelectedItem().toString());
-                patient.setCaste(mCaste.getSelectedItem().toString());
-                patient1.setCaste(mCaste.getSelectedItem().toString());
+
+
+                if (mCaste.getSelectedItemPosition() == 0) {
+                    patient.setCaste(getString(R.string.not_provided));
+                    patient1.setCaste(getString(R.string.not_provided));
+                } else {
+                    patient.setCaste(mCaste.getSelectedItem().toString());
+                    patient1.setCaste(mCaste.getSelectedItem().toString());
+                }
+
+                if (mEconomicStatus.getSelectedItemPosition() == 0) {
+                    patient.setEconomic_status(getString(R.string.not_provided));
+                    patient1.setEconomic_status(getString(R.string.not_provided));
+                } else {
+                    patient.setEconomic_status(mEconomicStatus.getSelectedItem().toString());
+                    patient1.setEconomic_status(mEconomicStatus.getSelectedItem().toString());
+                }
+
+                if (mEducation.getSelectedItemPosition() == 0) {
+                    patient.setEducation_level(getString(R.string.not_provided));
+                    patient1.setEducation_level(getString(R.string.not_provided));
+                } else {
+                    patient.setEducation_level(mEducation.getSelectedItem().toString());
+                    patient1.setEducation_level(mEducation.getSelectedItem().toString());
+                }
+
                 patient.setStateProvince(mState.getSelectedItem().toString());
                 patient1.setStateProvince(mState.getSelectedItem().toString());
                 Log.v(TAG, "" + mState.getSelectedItem());
@@ -890,7 +886,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientEntries1.put("education_status", patient1.getEducation_level());
             patientEntries1.put("caste", patient1.getCaste());
             if (mCurrentPhotoPath != null) {
-                if(patient1.getPatientPhoto()!=null && !patient1.getPatientPhoto().trim().isEmpty()){
+                if (patient1.getPatientPhoto() != null && !patient1.getPatientPhoto().trim().isEmpty()) {
                     File file = new File(patient1.getPatientPhoto());
                     file.delete();
                 }
@@ -981,7 +977,7 @@ public class IdentificationActivity extends AppCompatActivity {
             lastIntegerID++;
             patientID = lastIntegerID; //This patient is assigned the new incremented number
             patient.setId(patientID);
-        }else{
+        } else {
             patient.setId(1);
         }
 

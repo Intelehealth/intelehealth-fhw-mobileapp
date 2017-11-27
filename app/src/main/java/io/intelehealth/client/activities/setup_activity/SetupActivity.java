@@ -37,6 +37,7 @@ import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.parse.Parse;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,11 +45,9 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.UnknownHostException;
@@ -85,7 +84,6 @@ public class SetupActivity extends AppCompatActivity {
     private EditText mAdminPasswordView;
     protected AccountManager manager;
     private EditText mUrlField;
-    private EditText mPrefixField;
 
     private Button mLoginButton;
 
@@ -150,7 +148,6 @@ public class SetupActivity extends AppCompatActivity {
 
 
         mUrlField = (EditText) findViewById(R.id.editText_URL);
-        mPrefixField = (EditText) findViewById(R.id.editText_prefix);
 
         Button submitButton = (Button) findViewById(R.id.setup_submit_button);
 
@@ -313,8 +310,7 @@ public class SetupActivity extends AppCompatActivity {
             if (location != null) {
                 Log.i(TAG, location.getDisplay());
                 String urlString = mUrlField.getText().toString();
-                String prefixString = mPrefixField.getText().toString();
-                mAuthTask = new TestSetup(urlString, prefixString, email, password, admin_password, location);
+                mAuthTask = new TestSetup(urlString, email, password, admin_password, location);
                 mAuthTask.execute();
                 Log.d(TAG, "attempting setup");
             }
@@ -342,7 +338,6 @@ public class SetupActivity extends AppCompatActivity {
         private final String USERNAME;
         private final String PASSWORD;
         private final String CLEAN_URL;
-        private final String PREFIX;
         private final String ADMIN_PASSWORD;
         private String BASE_URL;
         private Location LOCATION;
@@ -350,9 +345,8 @@ public class SetupActivity extends AppCompatActivity {
         ProgressDialog progress;
 
 
-        TestSetup(String url, String prefix, String username, String password, String adminPassword, Location location) {
+        TestSetup(String url,String username, String password, String adminPassword, Location location) {
             CLEAN_URL = url;
-            PREFIX = prefix;
             USERNAME = username;
             PASSWORD = password;
             LOCATION = location;
@@ -514,13 +508,10 @@ public class SetupActivity extends AppCompatActivity {
                 editor.putString(SettingsActivity.KEY_PREF_LOCATION_UUID, LOCATION.getUuid());
                 editor.putString(SettingsActivity.KEY_PREF_LOCATION_DESCRIPTION, LOCATION.getDescription());
 
-                editor.putString(SettingsActivity.KEY_PREF_SERVER_URL, BASE_URL);
+                editor.putString(SettingsActivity.KEY_PREF_SERVER_URL_REST, BASE_URL);
                 editor.putString(SettingsActivity.KEY_PREF_SERVER_URL_BASE, "http://" + CLEAN_URL + ":8080/openmrs");
+                editor.putString(SettingsActivity.KEY_PREF_SERVER_URL, CLEAN_URL);
                 Log.d(TAG, BASE_URL);
-                editor.apply();
-
-                editor.putString(SettingsActivity.KEY_PREF_ID_PREFIX, PREFIX);
-                Log.d(TAG, PREFIX);
                 editor.apply();
 
                 editor.putBoolean(SettingsActivity.KEY_PREF_SETUP_COMPLETE, true);
@@ -528,6 +519,13 @@ public class SetupActivity extends AppCompatActivity {
 
                 OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
                 AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
+
+                Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
+                        .applicationId(HelperMethods.IMAGE_APP_ID)
+                        .server("http://"+CLEAN_URL+":1337/parse/")
+                        .build()
+                );
+                Log.i(TAG, "onPostExecute: Parse init");
 
                 Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
                 startActivity(intent);
@@ -539,9 +537,6 @@ public class SetupActivity extends AppCompatActivity {
             } else if (success == 3) {
                 mUrlField.setError(getString(R.string.url_invalid));
                 mUrlField.requestFocus();
-            } else {
-                mPrefixField.setError(getString(R.string.prefix_invalid));
-                mPrefixField.requestFocus();
             }
 
             progress.dismiss();

@@ -13,13 +13,9 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.parse.GetCallback;
-import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
@@ -85,7 +81,8 @@ public class PersonPhotoUploadService extends IntentService {
         Log.d(TAG, "Queue id: " + intent.getIntExtra("queueId", -1));
         queueId = intent.getIntExtra("queueId", -1);
         patientUUID = intent.getStringExtra("patientUUID");
-        patientId = intent.getIntExtra("patientID",-1);;
+        patientId = intent.getIntExtra("patientID", -1);
+        ;
 
         String query = "SELECT patient_photo FROM patient WHERE _id = ?";
         LocalRecordsDatabaseHelper databaseHelper = new LocalRecordsDatabaseHelper(this);
@@ -113,13 +110,13 @@ public class PersonPhotoUploadService extends IntentService {
                 if (bitmap != null) {
                     uploadImage("Profile", bitmap, imageName, intent);
                 }
-            }else {
+            } else {
                 removeJobFromQueue(queueId);
             }
         }
     }
 
-    public void uploadImage(String classname, Bitmap bitmap, final String imageName, final Intent intent){
+    public void uploadImage(String classname, Bitmap bitmap, final String imageName, final Intent intent) {
         queueSyncStart(queueId);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
@@ -148,11 +145,13 @@ public class PersonPhotoUploadService extends IntentService {
                             .setContentTitle("Image Upload")
                             .setContentText(newText);
                     mNotifyManager.notify(mId, mBuilder.build());
-
+                    if (queueId != null) {
+                        queueSyncStop(queueId);
+                    }
                 }
             }
         });
-        queueSyncStop(queueId);
+
     }
 
 
@@ -164,7 +163,7 @@ public class PersonPhotoUploadService extends IntentService {
         values.put(DelayedJobQueueProvider.JOB_TYPE, "photoUpload");
         values.put(DelayedJobQueueProvider.JOB_PRIORITY, 1);
         values.put(DelayedJobQueueProvider.JOB_REQUEST_CODE, 0);
-        values.put(DelayedJobQueueProvider.PATIENT_ID, intent.getIntExtra("patientID",-1));
+        values.put(DelayedJobQueueProvider.PATIENT_ID, intent.getIntExtra("patientID", -1));
         values.put(DelayedJobQueueProvider.PATIENT_NAME, intent.getStringExtra("name"));
         values.put(DelayedJobQueueProvider.DATA_RESPONSE, intent.getStringExtra("patientUUID"));
         values.put(DelayedJobQueueProvider.SYNC_STATUS, 0);
@@ -172,9 +171,6 @@ public class PersonPhotoUploadService extends IntentService {
         Uri uri = getContentResolver().insert(
                 DelayedJobQueueProvider.CONTENT_URI, values);
 
-
-        Toast.makeText(getBaseContext(),
-                uri.toString(), Toast.LENGTH_LONG).show();
 
         return Integer.valueOf(uri.getLastPathSegment());
 
@@ -211,9 +207,4 @@ public class PersonPhotoUploadService extends IntentService {
         int result = getContentResolver().update(uri, values, null, null);
     }
 
-    @Override
-    public void onDestroy() {
-        queueSyncStop(queueId);
-        super.onDestroy();
-    }
 }

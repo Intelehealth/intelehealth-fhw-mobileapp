@@ -52,7 +52,6 @@ public class HelperMethods {
 
     public static final String MIND_MAP_SERVER_URL = "http://139.59.73.230:1337/parse/";
     public static final String MIND_MAP_APP_ID = "app";
-    public static final String IMAGE_SERVER_URL = "http://139.59.73.230:1338/parse/";
     public static final String IMAGE_APP_ID = "app2";
     public static final String JSON_FOLDER = "Engines";
     public static final String JSON_FOLDER_Update = "Engines_Update";
@@ -214,7 +213,7 @@ public class HelperMethods {
 
 
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-            final String BASE_URL = sharedPref.getString(SettingsActivity.KEY_PREF_SERVER_URL, "");
+            final String BASE_URL = sharedPref.getString(SettingsActivity.KEY_PREF_SERVER_URL_REST, "");
             final String session_id = sharedPref.getString("sessionid", null);
 
             String USERNAME = null;
@@ -413,7 +412,7 @@ public class HelperMethods {
 
 
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-            String BASE_URL = sharedPref.getString(SettingsActivity.KEY_PREF_SERVER_URL, "");
+            String BASE_URL = sharedPref.getString(SettingsActivity.KEY_PREF_SERVER_URL_REST, "");
             final String session_id = sharedPref.getString("sessionid", null);
 
 

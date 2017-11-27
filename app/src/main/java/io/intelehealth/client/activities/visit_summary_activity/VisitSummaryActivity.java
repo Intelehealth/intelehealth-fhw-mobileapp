@@ -1244,7 +1244,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mTemp = temperature.getValue();
         mSPO2 = spO2.getValue();
         String mComplaint = complaint.getValue();
-        String mExam = patHistory.getValue();
+        String mExam = phyExam.getValue();
 
         if(mPatientOpenMRSID==null){
             mPatientOpenMRSID = getString(R.string.patient_not_registered);

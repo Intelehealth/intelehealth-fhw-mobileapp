@@ -2,9 +2,7 @@ package io.intelehealth.client.services.sync;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;

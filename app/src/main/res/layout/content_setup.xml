@@ -54,30 +54,6 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:text="Choose an ID-Prefix for this tablet" />
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/editText_prefix"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Prefix"
-                    android:inputType="text"
-                    android:maxLines="1"/>
-            </android.support.design.widget.TextInputLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="20sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:text="Choose a location" />
 
             <android.support.design.widget.TextInputLayout
@@ -179,11 +155,11 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/admin_password"
+                    android:id="@id/admin_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_admin_password"
-                    android:imeActionId="@+id/login"
+                    android:imeActionId="@id/login"
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
