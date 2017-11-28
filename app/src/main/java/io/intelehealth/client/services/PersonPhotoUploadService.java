@@ -14,8 +14,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ProgressCallback;
 import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
@@ -122,10 +124,29 @@ public class PersonPhotoUploadService extends IntentService {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         byte[] image = stream.toByteArray();
 
-        ParseFile file = new ParseFile(imageName, image);
+        final ParseFile file = new ParseFile(imageName, image);
         ParseObject imgupload = new ParseObject(classname);
         imgupload.put("Image", file);
         imgupload.put("PatientID", patientUUID);
+
+        file.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                Log.i(TAG, "done: "+  file.getUrl());
+            }
+        }, new ProgressCallback() {
+            @Override
+            public void done(Integer percentDone) {
+                String newText = "Image Uploading.";
+                mBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                        .setContentTitle(newText)
+                        .setContentText(newText);
+                mBuilder.setProgress(100,percentDone, false);
+                mNotifyManager.notify(mId, mBuilder.build());
+                Log.i(TAG, "done: " + percentDone);
+            }
+        });
+
         imgupload.saveInBackground(new SaveCallback() {
             @Override
             public void done(com.parse.ParseException e) {

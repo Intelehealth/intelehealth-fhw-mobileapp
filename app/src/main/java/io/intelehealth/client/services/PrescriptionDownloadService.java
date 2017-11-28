@@ -96,7 +96,7 @@ public class PrescriptionDownloadService extends IntentService {
 
         queueSyncStart(queueId);
 
-        String newText = "Prescription Download Stated.";
+        String newText = "Prescription Download Started.";
         mBuilder.setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Prescription Download")
                 .setContentText(newText);
@@ -339,7 +339,7 @@ public class PrescriptionDownloadService extends IntentService {
                     removeJobFromQueue(queueId);
 
                 } else {
-                    newText = "No new data to download";
+                    newText = "No data to download";
                     mBuilder.setSmallIcon(R.mipmap.ic_launcher)
                             .setContentTitle("Prescription Download")
                             .setContentText(newText);
@@ -421,7 +421,7 @@ public class PrescriptionDownloadService extends IntentService {
     }
 
     private void queueSyncStop(int queueId) {
-        String string = "Prescription Download Stopped";
+        String string = "Prescription Download Failed";
         mBuilder.setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Prescription Download")
                 .setContentText(string);

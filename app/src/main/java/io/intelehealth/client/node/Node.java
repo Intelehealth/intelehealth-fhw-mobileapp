@@ -431,8 +431,8 @@ public class Node implements Serializable {
         for (int i = 0; i < mOptions.size(); i++) {
             if (mOptions.get(i).isSelected()) {
                 String associatedTest = mOptions.get(i).getText();
-                if (associatedTest.equals("Associated symptoms") ||
-                        associatedTest.equals("Past medical history ")) {
+                if (associatedTest!=null&&(associatedTest.equals("Associated symptoms") ||
+                        associatedTest.equals("Past medical history "))) {
                     stringsList.add(generateAssociatedSymptomsOrHistory(mOptions.get(i)));
                     continue;
                 }
