@@ -280,7 +280,6 @@ public class PatientUpdateService extends IntentService {
                         if (e == null) {
                             for (ParseObject delete : parseObjects) {
                                 delete.deleteInBackground();
-                                Toast.makeText(getApplicationContext(), getString(R.string.generic_deleted), Toast.LENGTH_SHORT).show();
                             }
                         } else {
                             Toast.makeText(getApplicationContext(), getString(R.string.error_delete), Toast.LENGTH_SHORT).show();
