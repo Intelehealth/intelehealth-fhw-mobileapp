@@ -84,6 +84,7 @@ public class Node implements Serializable {
     private List<String> imagePathList;
 
     String bullet = "\u2022";
+    String bullet_hollow = "\u25CB";
 
     private String imagePath;
 
@@ -1493,6 +1494,7 @@ public class Node implements Serializable {
         }
 
         if (positiveAssociations != null && !positiveAssociations.isEmpty()) {
+            finalTexts.add(bullet_hollow);
             for (String string : positiveAssociations) {
                 Log.i(TAG, "generateAssociatedSymptomsOrHistory:  " + mLanguagePositive);
                 finalTexts.add(mLanguagePositive + " " + string);
@@ -1501,6 +1503,7 @@ public class Node implements Serializable {
 
 
         if (negativeAssociations != null && !negativeAssociations.isEmpty()) {
+            finalTexts.add(bullet_hollow);
             for (String string : negativeAssociations) {
                 Log.i(TAG, "generateAssociatedSymptomsOrHistory:  " + mLanguageNegative);
                 finalTexts.add(mLanguageNegative + " " + string);
@@ -1511,13 +1514,14 @@ public class Node implements Serializable {
 
         if (!finalTexts.isEmpty()) {
             for (int l = 0; l < finalTexts.size(); l++) {
-                final_language = final_language + " ," + finalTexts.get(l);
+                final_language = final_language + ", " + finalTexts.get(l);
             }
         }
 
         final_language = final_language.replaceAll("- ,", "- ");
         final_language = final_language.replaceAll("of,", "of");
         final_language = final_language.replaceAll("\\, \\[", " [");
+        final_language = final_language.replaceAll(", "+bullet_hollow+", "," "+bullet_hollow+" ");
         Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + final_language);
 
         return final_language;
