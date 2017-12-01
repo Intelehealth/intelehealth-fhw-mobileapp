@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -431,9 +432,9 @@ public class Node implements Serializable {
         for (int i = 0; i < mOptions.size(); i++) {
             if (mOptions.get(i).isSelected()) {
                 String associatedTest = mOptions.get(i).getText();
-                if (associatedTest!=null&&(associatedTest.equals("Associated symptoms") ||
+                if (associatedTest != null && (associatedTest.equals("Associated symptoms") ||
                         associatedTest.equals("Past medical history "))) {
-                    stringsList.add(generateAssociatedSymptomsOrHistory(mOptions.get(i)));
+                    stringsList.add(associatedTest +" -"+ generateAssociatedSymptomsOrHistory(mOptions.get(i)));
                     continue;
                 }
                 String test = mOptions.get(i).getLanguage();
@@ -1453,8 +1454,10 @@ public class Node implements Serializable {
                     positiveAssociations.add(mOptions.get(i).getLanguage());
                 }
                 if (!mOptions.get(i).isTerminal()) {
-                    String tempString = mOptions.get(i).formLanguage();
-                    positiveAssociations.add(tempString);
+                    String tempString = positiveAssociations.get(positiveAssociations.size() - 1) + " - " +
+                            mOptions.get(i).formLanguage();
+
+                    positiveAssociations.set(positiveAssociations.size() - 1, tempString);
                 }
             } else {
                 if (mOptions.get(i).getLanguage().equals("%")) {
@@ -1470,7 +1473,7 @@ public class Node implements Serializable {
 
         if (!positiveAssociations.isEmpty()) {
             for (int j = 0; j < positiveAssociations.size(); j++) {
-                finalTexts.add(mLanguagePositive + " " + positiveAssociations.get(j));
+                finalTexts.add(mLanguagePositive + "\n" + positiveAssociations.get(j));
             }
         }
 
@@ -1485,11 +1488,11 @@ public class Node implements Serializable {
 
         if (!finalTexts.isEmpty()) {
             for (int l = 0; l < finalTexts.size(); l++) {
-                final_language = final_language + ", " + finalTexts.get(l);
+                final_language = final_language + " ," + finalTexts.get(l);
             }
         }
 
-        final_language = final_language.replaceAll("with,", "with");
+        final_language = final_language.replaceAll("- ,", "- ");
         final_language = final_language.replaceAll("of,", "of");
         final_language = final_language.replaceAll("\\, \\[", " [");
         Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + final_language);
