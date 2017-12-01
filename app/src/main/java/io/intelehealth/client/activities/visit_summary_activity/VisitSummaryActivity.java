@@ -34,7 +34,10 @@ import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.telephony.PhoneStateListener;
+import android.telephony.SignalStrength;
 import android.telephony.SmsManager;
+import android.telephony.TelephonyManager;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -82,6 +85,7 @@ import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.OnShowRationale;
 import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
+
 
 /**
  * This class updates data about patient to database. It also creates a summary about it which can be viewed
@@ -187,6 +191,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     Boolean isPastVisit = false;
     Boolean isReceiverRegistered = false;
 
+    TelephonyManager tManager;
+
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
 
     private NetworkChangeReceiver receiver;
@@ -277,6 +283,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (selectedExams != null && !selectedExams.isEmpty()) {
                 physicalExams.addAll(selectedExams);
             }
+
+            tManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+            tManager.listen(new CustomPhoneStateListener(this),
+                    PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
             /*
             if (!isPastVisit) {
                 if (intent.hasExtra("exams")) {
@@ -1021,7 +1031,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         idCursor.close();
 
 
-
         String[] columns = {"value", " concept_id"};
         String orderBy = "visit_id";
 
@@ -1246,7 +1255,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String mComplaint = complaint.getValue();
         String mExam = phyExam.getValue();
 
-        if(mPatientOpenMRSID==null){
+        if (mPatientOpenMRSID == null) {
             mPatientOpenMRSID = getString(R.string.patient_not_registered);
         }
 
@@ -1441,7 +1450,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 String message = "";
 
                 String openMRSID = patient.getOpenmrs_patient_id();
-                if(openMRSID==null){
+                if (openMRSID == null) {
                     openMRSID = getString(R.string.patient_not_registered);
                 }
 
@@ -1700,4 +1709,59 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
     }
+
+    private class CustomPhoneStateListener extends PhoneStateListener {
+        Context mContext;
+
+        public CustomPhoneStateListener(Context context) {
+            mContext = context;
+        }
+
+
+        @Override
+        public void onSignalStrengthsChanged(SignalStrength signalStrength) {
+            super.onSignalStrengthsChanged(signalStrength);
+            Log.i(TAG, "onSignalStrengthsChanged: " + signalStrength);
+            if (signalStrength.isGsm()) {
+                Log.i(TAG, "onSignalStrengthsChanged: getGsmBitErrorRate "
+                        + signalStrength.getGsmBitErrorRate());
+                Log.i(TAG, "onSignalStrengthsChanged: getGsmSignalStrength "
+                        + signalStrength.getGsmSignalStrength());
+
+                /*
+                * Returns an integer value of which can be between 0 and 7 and reflects the quality of network.
+                * 0 is the best quality, 7 is the worst. 99 means Unknown status.
+                * Each value corresponds to an estimated number of bit errors in a number of bursts.
+                *
+                * Quality -- BER (Bit Error Rate)
+                * 0 -- BER<0.2%
+                * 1 -- 0.2%<BER<0.4%
+                * 2 -- 0.4%<BER<0.8%
+                * 3 -- 0.8%<BER<1.6%
+                * 4 -- 1.6%<BER<3.2%
+                * 5 -- 3.2%<BER<6.4%
+                * 6 -- 6.4%<BER<12.8%
+                * 7 -- 12.8%<BER
+                * */
+
+                //This feature can only provide an approximation of the network quality, so there is a chance
+                //that images may get uploaded even though the phone estimates that network quality is not
+                //good enough.
+
+                if (signalStrength.getGsmBitErrorRate() == 99) {
+                    //Do nothing as status is unknown
+                } else if (signalStrength.getGsmBitErrorRate() > 5) {
+                    //Not Suitable for Images
+                    if (internetCheck != null)
+                        internetCheck.setIcon(R.mipmap.ic_data_text_only);
+                } else {
+                    //Suitable
+                    if (internetCheck != null)
+                        internetCheck.setIcon(R.mipmap.ic_data_on);
+                }
+            }
+        }
+    }
+
+
 }
