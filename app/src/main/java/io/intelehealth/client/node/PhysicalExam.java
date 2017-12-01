@@ -81,37 +81,38 @@ public class PhysicalExam extends Node {
                 The location node is identified first, and then the exam nodes
                  */
 
-                        if (current != null) {
+                        if (current != null && !current.isEmpty()) {
 
                             String[] split = current.split(":");
-                            String location = split[0];
-                            String exam = split[1];
-                            if (location != null && !location.isEmpty() && exam != null && !exam.isEmpty()) {
-                                Node locationNodeRef = null;
+                            if (split.length > 1) {
+                                String location = split[0];
+                                String exam = split[1];
+                                if (location != null && !location.isEmpty() && exam != null && !exam.isEmpty()) {
+                                    Node locationNodeRef = null;
 
-                                locationNodeRef = getOptionByName(location);
+                                    locationNodeRef = getOptionByName(location);
 
-                                Node examNodeRef = null;
-                                if (locationNodeRef != null) {
-                                    Log.i(TAG, "matchSelections: [Location]"+ location);
-                                    examNodeRef = locationNodeRef.getOptionByName(exam);
-                                }
-                                if (examNodeRef != null) {
+                                    Node examNodeRef = null;
+                                    if (locationNodeRef != null) {
+                                        Log.i(TAG, "matchSelections: [Location]" + location);
+                                        examNodeRef = locationNodeRef.getOptionByName(exam);
+                                    }
+                                    if (examNodeRef != null) {
 
 
-
-                                    //The foundLocation list is to ensure that the same exam isn't display twice
-                                    if (foundLocations.contains(location)) {
-                                        int locationIndex = foundLocations.indexOf(location);
-                                        Node foundLocationNode = newOptionsList.get(locationIndex);
-                                        foundLocationNode.addOptions(new Node(examNodeRef));
-                                    } else {
-                                        //If it's a new exam, the location needs to be added to the list of things to check
-                                        foundLocations.add(location);
-                                        Node locationNode = new Node(locationNodeRef);
-                                        locationNode.removeOptionsList();
-                                        locationNode.addOptions(new Node(examNodeRef));
-                                        newOptionsList.add(locationNode);
+                                        //The foundLocation list is to ensure that the same exam isn't display twice
+                                        if (foundLocations.contains(location)) {
+                                            int locationIndex = foundLocations.indexOf(location);
+                                            Node foundLocationNode = newOptionsList.get(locationIndex);
+                                            foundLocationNode.addOptions(new Node(examNodeRef));
+                                        } else {
+                                            //If it's a new exam, the location needs to be added to the list of things to check
+                                            foundLocations.add(location);
+                                            Node locationNode = new Node(locationNodeRef);
+                                            locationNode.removeOptionsList();
+                                            locationNode.addOptions(new Node(examNodeRef));
+                                            newOptionsList.add(locationNode);
+                                        }
                                     }
                                 }
                             }
