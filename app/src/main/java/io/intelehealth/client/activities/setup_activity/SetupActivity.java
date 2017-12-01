@@ -18,7 +18,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
@@ -189,19 +191,34 @@ public class SetupActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
         }
 
-        mUrlField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        mUrlField.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
                     // code to execute when EditText loses focus
                     if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
                         String BASE_URL = "http://" + mUrlField.getText().toString() + ":8080/openmrs/ws/rest/v1/";
                         if (URLUtil.isValidUrl(BASE_URL)) getLocationFromServer(BASE_URL);
                         else
                             Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_LONG).show();
-
                     }
                 }
+
+        });
+
+        mUrlField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
             }
         });
 

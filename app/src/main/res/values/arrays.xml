@@ -133,7 +133,7 @@
 
     <string-array name="odisha_villages">
         <item>Satygaon</item>
-        <item>Banjha Munda</item>
+        <item>Bhanjamunda</item>
         <item>Baidehipur</item>
         <item>Bhadramunda</item>
         <item>Patamara</item>
@@ -144,9 +144,9 @@
         <item>Genjeimuni</item>
         <item>Sagamanji Sahi</item>
         <item>Bankhuli</item>
-        <item>Tandibereni</item>
+        <item>Tandiberani</item>
         <item>Nalasahi</item>
-        <item>Chanapal</item>
+        <item>Chanapala</item>
         <item>Magarmuhan</item>
         <item>Rangamatia</item>
         <item>Suabasa</item>
@@ -160,6 +160,37 @@
         <item>Chadakamara</item>
         <item>Phuljhari</item>
         <item>Khuntaposi</item>
+        <item>Jenapada</item>
+        <item>Monnakhul</item>
+        <item>Gopinathpur</item>
+        <item>Siarimalia Colony Sai</item>
+        <item>Siarimalia</item>
+        <item>Dangapala</item>
+        <item>Ditikrushnapur</item>
+        <item>Sanadhauragotha</item>
+        <item>Kunjam</item>
+        <item>Padang</item>
+        <item>Khulamunda</item>
+        <item>Priyambadapur</item>
+        <item>Jaganathpur</item>
+        <item>Roghunathpur</item>
+        <item>Muharmuhan</item>
+        <item>Saubasa</item>
+        <item>Bankuli</item>
+        <item>Sagamanghi Sai</item>
+        <item>Rengaromunda</item>
+        <item>Rangiapala</item>
+        <item>Benipathar</item>
+        <item>Debahali</item>
+        <item>Gentunali</item>
+        <item>Kakichanda(Munduribeda)</item>
+        <item>Dipasahi</item>
+        <item>Badasada</item>
+        <item>Kanteikali(Kanteigiri)</item>
+        <item>Purunapani</item>
+        <item>Fingamunda</item>
+        <item>Bijapani</item>
+        <item>Charakmunda</item>
     </string-array>
 
     <string-array name="units">

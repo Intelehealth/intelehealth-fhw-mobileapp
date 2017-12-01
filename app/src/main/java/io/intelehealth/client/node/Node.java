@@ -20,7 +20,6 @@ import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -84,6 +83,7 @@ public class Node implements Serializable {
 
     private List<String> imagePathList;
 
+    String bullet = "\u2022";
 
     private String imagePath;
 
@@ -429,26 +429,22 @@ public class Node implements Serializable {
         List<String> stringsList = new ArrayList<>();
         List<Node> mOptions = optionsList;
         boolean isTerminal = false;
-        for (int i = 0; i < mOptions.size(); i++) {
-            if (mOptions.get(i).isSelected()) {
-                String associatedTest = mOptions.get(i).getText();
-                if (associatedTest != null && (associatedTest.equals("Associated symptoms") ||
-                        associatedTest.equals("Past medical history "))) {
-                    stringsList.add(associatedTest +" -"+ generateAssociatedSymptomsOrHistory(mOptions.get(i)));
-                    continue;
-                }
-                String test = mOptions.get(i).getLanguage();
-                if (test.equals("%")) {
-                } else if (test.substring(0, 1).equals("%")) {
-                    stringsList.add(test.substring(1));
-                } else {
-                    stringsList.add(test);
-                }
-                if (!mOptions.get(i).isTerminal()) {
-                    stringsList.add(mOptions.get(i).formLanguage());
-                    isTerminal = false;
-                } else {
-                    isTerminal = true;
+        if (mOptions != null && !mOptions.isEmpty()) {
+            for (int i = 0; i < mOptions.size(); i++) {
+                if (mOptions.get(i).isSelected()) {
+                    String test = mOptions.get(i).getLanguage();
+                    if (test.equals("%")) {
+                    } else if (test.substring(0, 1).equals("%")) {
+                        stringsList.add(test.substring(1));
+                    } else {
+                        stringsList.add(test);
+                    }
+                    if (!mOptions.get(i).isTerminal()) {
+                        stringsList.add(mOptions.get(i).formLanguage());
+                        isTerminal = false;
+                    } else {
+                        isTerminal = true;
+                    }
                 }
             }
         }
@@ -484,7 +480,29 @@ public class Node implements Serializable {
     }
 
     public String generateLanguage() {
-        String raw = this.formLanguage();
+
+        String raw = "";
+        List<Node> mOptions = optionsList;
+        if (optionsList != null && !optionsList.isEmpty()) {
+            for (Node node_opt : mOptions) {
+                if (node_opt.isSelected()) {
+                    String associatedTest = node_opt.getText();
+                    if (associatedTest!=null && (associatedTest.trim().equals("Associated symptoms") ||
+                            associatedTest.trim().equals("H/o specific illness"))) {
+                        raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + generateAssociatedSymptomsOrHistory(node_opt));
+                    } else {
+                        if (node_opt.getLanguage().equals("%")) {
+                        } else if (node_opt.getLanguage().substring(0, 1).equals("%")) {
+                            raw = raw + (bullet + " " + node_opt.getLanguage().substring(1) + " - " + node_opt.formLanguage());
+                        } else {
+                            raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + node_opt.formLanguage());
+                        }
+                    }
+                    //raw = raw + ("\n"+"\n" + bullet +" "+ node_opt.formLanguage());
+                }
+            }
+        }
+
         String formatted;
         if (!raw.isEmpty()) {
             if (Character.toString(raw.charAt(0)).equals(",")) {
@@ -1437,8 +1455,11 @@ public class Node implements Serializable {
         List<String> finalTexts = new ArrayList<>();
         List<Node> mOptions = associatedSymptomNode.getOptionsList();
 
-        String mLanguagePositive = associatedSymptomNode.getPositiveCondition();
-        String mLanguageNegative = associatedSymptomNode.getNegativeCondition();
+        String mLanguagePositive = associatedSymptomNode.positiveCondition;
+        String mLanguageNegative = associatedSymptomNode.negativeCondition;
+
+        Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + mLanguagePositive);
+        Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + mLanguageNegative);
 
 
         for (int i = 0; i < mOptions.size(); i++) {
@@ -1471,16 +1492,18 @@ public class Node implements Serializable {
             }
         }
 
-        if (!positiveAssociations.isEmpty()) {
-            for (int j = 0; j < positiveAssociations.size(); j++) {
-                finalTexts.add(mLanguagePositive + "\n" + positiveAssociations.get(j));
+        if (positiveAssociations != null && !positiveAssociations.isEmpty()) {
+            for (String string : positiveAssociations) {
+                Log.i(TAG, "generateAssociatedSymptomsOrHistory:  " + mLanguagePositive);
+                finalTexts.add(mLanguagePositive + " " + string);
             }
         }
 
 
-        if (!negativeAssociations.isEmpty()) {
-            for (int k = 0; k < negativeAssociations.size(); k++) {
-                finalTexts.add(mLanguageNegative + " " + negativeAssociations.get(k));
+        if (negativeAssociations != null && !negativeAssociations.isEmpty()) {
+            for (String string : negativeAssociations) {
+                Log.i(TAG, "generateAssociatedSymptomsOrHistory:  " + mLanguageNegative);
+                finalTexts.add(mLanguageNegative + " " + string);
             }
         }
 
