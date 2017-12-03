@@ -214,9 +214,21 @@ public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
             String[] parts = file.split(".json");
             //Log.i("DOWNLOADING-->",parts[0].replaceAll("\\s+",""));
             if (i == length - 1) {
-                new UpdateMindmapsTask(activity, base_dir, true).execute(file, parts[0].replaceAll("\\s+", ""), null);
+                parts[0] = parts[0].replaceAll("\\s+", "")
+                        .replaceAll("&", "")
+                        .replaceAll(",", "")
+                        .replaceAll("\\(", "")
+                        .replaceAll("\\)", "");
+                Log.i(TAG, "parts: "+ parts[0]);
+                new UpdateMindmapsTask(activity, base_dir, true).execute(file,parts[0], null);
             } else {
-                new UpdateMindmapsTask(activity, base_dir, false).execute(file, parts[0].replaceAll("\\s+", ""), null);
+                parts[0] = parts[0].replaceAll("\\s+", "")
+                        .replaceAll("&", "")
+                        .replaceAll(",", "")
+                        .replaceAll("\\(", "")
+                        .replaceAll("\\)", "");
+                Log.i(TAG, "parts: "+ parts[0]);
+                new UpdateMindmapsTask(activity, base_dir, false).execute(file, parts[0], null);
             }
         }
     }
