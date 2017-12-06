@@ -217,6 +217,7 @@ public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
                 parts[0] = parts[0].replaceAll("\\s+", "")
                         .replaceAll("&", "")
                         .replaceAll(",", "")
+                        .replaceAll("-", "")
                         .replaceAll("\\(", "")
                         .replaceAll("\\)", "");
                 Log.i(TAG, "parts: "+ parts[0]);
@@ -225,6 +226,7 @@ public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
                 parts[0] = parts[0].replaceAll("\\s+", "")
                         .replaceAll("&", "")
                         .replaceAll(",", "")
+                        .replaceAll("-", "")
                         .replaceAll("\\(", "")
                         .replaceAll("\\)", "");
                 Log.i(TAG, "parts: "+ parts[0]);
