@@ -84,9 +84,13 @@ public class Node implements Serializable {
     private List<String> imagePathList;
 
     String bullet = "\u2022";
+    String big_bullet = "\u25CF";
     String bullet_hollow = "\u25CB";
     String next_line = "<br/>";
     String space = "\t";
+
+
+    //• = \u2022, ● = \u25CF, ○ = \u25CB, ▪ = \u25AA, ■ = \u25A0, □ = \u25A1, ► = \u25BA
 
     private String imagePath;
 
@@ -1534,21 +1538,34 @@ public class Node implements Serializable {
         List<String> stringsList = new ArrayList<>();
         List<Node> mOptions = optionsList;
 
-
         for (int i = 0; i < mOptions.size(); i++) {
             if (mOptions.get(i).isSelected()) {
-                String question =bullet + " " + mOptions.get(i).findDisplay();
-                String answer = mOptions.get(i).getLanguage();
-
-                if (answer.equals("%")) {
-                } else if (mOptions.get(i).findDisplay().equals(mOptions.get(i).getLanguage())) {
-                    stringsList.add(question + next_line);
-                } else if (answer.substring(0, 1).equals("%")) {
-                    stringsList.add("<b>" + question + "</b>" + next_line + bullet_hollow + answer.substring(1) + next_line);
+                String question;
+                if (level == 0) {
+                    question = big_bullet + " " + mOptions.get(i).findDisplay();
                 } else {
-                    stringsList.add("<b>" + question + "</b>" + next_line + bullet_hollow + answer + next_line);
+                    question = bullet + " " + mOptions.get(i).findDisplay();
                 }
-                if (!mOptions.get(i).isTerminal()) {
+                String answer = mOptions.get(i).getLanguage();
+                if (mOptions.get(i).isTerminal()) {
+                    if (mOptions.get(i).getInputType() != null && !mOptions.get(i).getInputType().trim().isEmpty()) {
+                        Log.i(TAG, "ipt: "+ mOptions.get(i).getInputType());
+                        if (mOptions.get(i).getInputType().equals("camera")) {
+                        } else {
+                            if (answer.equals("%")) {
+                            } else if (mOptions.get(i).getText().equals(mOptions.get(i).getLanguage())) {
+                                stringsList.add(bullet_hollow + answer + next_line);
+                            } else if (answer.substring(0, 1).equals("%")) {
+                                stringsList.add(bullet_hollow + answer.substring(1) + next_line);
+                            } else {
+                                stringsList.add(bullet_hollow + answer + next_line);
+                            }
+                        }
+                    } else {
+                        stringsList.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
+                    }
+                } else {
+                    stringsList.add(question + next_line);
                     stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
                 }
             }
