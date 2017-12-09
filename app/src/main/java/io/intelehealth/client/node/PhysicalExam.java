@@ -240,8 +240,9 @@ public class PhysicalExam extends Node {
             if ((node.isSelected() | node.anySubSelected())) {
                 boolean checkSet = rootStrings.add(levelOne);
 
-                if (checkSet) stringsList.add(levelOne + ": " + node.getLanguage());
-                else stringsList.add(node.getLanguage());
+                if (checkSet)
+                    stringsList.add(levelOne + ": " + Node.bullet + " " + node.getLanguage());
+                else stringsList.add(Node.bullet + " " + node.getLanguage());
                 if (!node.isTerminal()) {
                     stringsList.add(node.formLanguage());
                 }
