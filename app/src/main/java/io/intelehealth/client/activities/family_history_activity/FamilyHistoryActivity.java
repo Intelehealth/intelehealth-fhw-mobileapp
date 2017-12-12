@@ -12,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 
@@ -38,7 +39,7 @@ import io.intelehealth.client.utilities.HelperMethods;
  */
 public class FamilyHistoryActivity extends AppCompatActivity {
 
-    String LOG_TAG = "Family History Activity";
+    private static final String TAG = FamilyHistoryActivity.class.getSimpleName();
 
     Integer patientID;
     String visitID;
@@ -170,6 +171,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 Node clickedNode = familyHistoryMap.getOption(groupPosition).getOption(childPosition);
+                Log.i(TAG, "onChildClick: ");
                 clickedNode.toggleSelected();
                 //Log.d(TAG, String.valueOf(clickedNode.isSelected()));
                 if (familyHistoryMap.getOption(groupPosition).anySubSelected()) {
@@ -178,6 +180,12 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                     familyHistoryMap.getOption(groupPosition).setUnselected();
                 }
                 adapter.notifyDataSetChanged();
+
+                if(clickedNode.getInputType()!= null){
+                    if (!clickedNode.getInputType().equals("camera")) {
+                        Node.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter, null, null);
+                    }
+                }
 
                 String imageName = patientID + "_" + visitID + "_" + image_Prefix;
                 String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
@@ -199,6 +207,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                 Node clickedNode = familyHistoryMap.getOption(groupPosition);
 
                 if (clickedNode.getInputType() != null) {
+                    Log.i(TAG, "onGroupExpand:  input not null");
                     if (clickedNode.getInputType().equals("camera")) {
                         String imageName = patientID + "_" + visitID + "_" + image_Prefix;
                         String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
@@ -209,6 +218,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                         }
                         Node.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter, filePath.toString(), imageName);
                     } else {
+                        Log.i(TAG, "onGroupExpand: input not camera");
                         Node.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter, null, null);
                     }
                 }

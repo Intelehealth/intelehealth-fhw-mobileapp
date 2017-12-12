@@ -241,6 +241,12 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                 }
                 adapter.notifyDataSetChanged();
 
+                if(clickedNode.getInputType()!= null){
+                    if (!clickedNode.getInputType().equals("camera")) {
+                        Node.handleQuestion(clickedNode, PastMedicalHistoryActivity.this, adapter, null, null);
+                    }
+                }
+
                 Log.i(TAG, String.valueOf(clickedNode.isTerminal()));
                 if (!clickedNode.isTerminal() && clickedNode.isSelected()) {
                     imageName = patientID + "_" + visitID + "_" + image_Prefix;
