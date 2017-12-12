@@ -1272,14 +1272,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
             mPatientOpenMRSID = getString(R.string.patient_not_registered);
         }
 
-        String para_open = "<p style=\"font-size:8pt; margin: 0px; padding: 0px;\">";
+        String para_open = "<p style=\"font-size:12pt; margin: 0px; padding: 0px;\">";
         String para_close = "</p>";
 
         String rx_web = "";
 
         if (rxReturned != null && !rxReturned.isEmpty()) {
-            rx_web = para_open + Node.big_bullet +
-                    rxReturned.replaceAll("\n", para_close + para_open + Node.big_bullet)
+            rx_web = "<p style=\"font-size:14pt; margin: 0px; padding: 0px;\">" + Node.big_bullet +
+                    rxReturned.replaceAll("\n", para_close + "<p style=\"font-size:14pt; margin: 0px; padding: 0px;\">" + Node.big_bullet)
                     + para_close;
         }
 
@@ -1320,19 +1320,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         // Generate an HTML document on the fly:
         String htmlDocument =
-                String.format("<h2 id=\"intelecare-patient-detail\" style=\"font-size:14pt;line-height: 0.2;\">%s</h2>" +"<br/><br/>"+
-                                "<h2 style=\"font-size:14pt;line-height: 0.2;\">%s</h2>" +
-                                "<p style=\"font-size:8pt;line-height: 0.2;\">Patient Id: %s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                String.format("<h2 id=\"intelecare-patient-detail\" style=\"font-size:16pt; margin: 0px; padding: 0px;\">%s</h2>" +"<br/><br/>"+
+                                "<h2 style=\"font-size:16pt;margin: 0px; padding: 0px;\">%s</h2>" +
+                                para_open+"Patient Id: %s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
                                 "Date: %s"+para_close +
-                                "<h2 id=\"patient-information\" style=\"font-size:12pt;line-height: 0.2;\">Patient Information</h2>" +
+                                "<h2 id=\"patient-information\" style=\"font-size:14pt; margin: 0px; padding: 0px;\">Patient Information</h2>" +
                                 para_open + Node.big_bullet + "DOB: %s"+para_close +
                                 para_open + Node.big_bullet + "Son/Daughter/Wife of: %s"+para_close +
                                 para_open + Node.big_bullet + "Occupation: %s"+para_close +
-                                "<h2 id=\"address-and-contact\" style=\"font-size:12pt;line-height: 0.2;\">Address and Contact</h2>\n" +
-                                "<p style=\"font-size:8pt;line-height: 0.2;\">%s"+para_close +
-                                "<p style=\"font-size:8pt;line-height: 0.2;\">%s"+para_close +
-                                "<p style=\"font-size:8pt;line-height: 0.2;\">%s"+para_close +
-                                "<h2 id=\"vitals\" style=\"font-size:12pt;line-height: 0.2;\">Vitals</h2>" +
+                                "<h2 id=\"address-and-contact\" style=\"font-size:14pt; margin: 0px; padding: 0px;\">Address and Contact</h2>\n" +
+                                para_open+"%s"+para_close +
+                                para_open+"%s"+para_close +
+                                para_open+"%s"+para_close +
+                                "<h2 id=\"vitals\" style=\"font-size:14pt;margin: 0px; padding: 0px;\">Vitals</h2>" +
                                 para_open + Node.big_bullet + "Height: %s"+para_close +
                                 para_open + Node.big_bullet + "Weight: %s"+para_close +
                                 para_open + Node.big_bullet + "BMI: %s"+para_close +
@@ -1340,23 +1340,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 para_open + Node.big_bullet + "Pulse: %s"+para_close +
                                 para_open + Node.big_bullet + "Temperature: %s"+para_close +
                                 para_open + Node.big_bullet + "SpO2: %s"+para_close +
-                                "<h2 id=\"patient-history\" style=\"font-size:12pt;line-height: 0.2;\">Patient History</h2>" +
+                                "<h2 id=\"patient-history\" style=\"font-size:14pt;margin: 0px; padding: 0px;\">Patient History</h2>" +
                                 para_open +"%s"+para_close +
-                                "<h2 id=\"family-history\" style=\"font-size:12pt;line-height: 0.2;\">Family History</h2>" +
+                                "<h2 id=\"family-history\" style=\"font-size:14pt;margin: 0px; padding: 0px;\">Family History</h2>" +
                                 para_open +"%s"+para_close +
-                                "<h2 id=\"complaint\" style=\"font-size:12pt;line-height: 0.2;\">Complaint and Observations</h2>" +
+                                "<h2 id=\"complaint\" style=\"font-size:14pt;margin: 0px; padding: 0px;\">Complaint and Observations</h2>" +
                                 para_open+"%s" +para_close+
-                                "<h2 id=\"diagnosis\" style=\"font-size:12pt;line-height: 0.2;\">Diagnosis</h2>" +
+                                "<h2 id=\"diagnosis\" style=\"font-size:14pt;margin: 0px; padding: 0px;\">Diagnosis</h2>" +
                                 "%s" +
-                                "<h2 id=\"rx\" style=\"font-size:12pt;line-height: 0.2;\">Prescription</h2>" +
+                                "<h2 id=\"rx\" style=\"font-size:16pt;margin: 0px; padding: 0px;\">Prescription</h2>" +
                                 "%s" +
-                                "<h2 id=\"tests\" style=\"font-size:12pt;line-height: 0.2;\">Tests To Be Performed</h2>" +
+                                "<h2 id=\"tests\" style=\"font-size:14pt;margin: 0px; padding: 0px;\">Tests To Be Performed</h2>" +
                                 "%s" +
-                                "<h2 id=\"advice\" style=\"font-size:12pt;line-height: 0.2;\">General Advices</h2>" +
+                                "<h2 id=\"advice\" style=\"font-size:14pt;margin: 0px; padding: 0px;\">General Advices</h2>" +
                                 "%s" +
-                               // "<h2 id=\"doctor_name\" style=\"font-size:12pt;line-height: 0.2;\">Doctor's Name</h2>" +
+                               // "<h2 id=\"doctor_name\" style=\"font-size:12pt;margin: 0px; padding: 0px;\">Doctor's Name</h2>" +
                               //  para_open +"%s"+para_close +
-                                "<h2 id=\"comments\" style=\"font-size:12pt;line-height: 0.2;\">Doctor's Note</h2>" +
+                                "<h2 id=\"comments\" style=\"font-size:14pt;margin: 0px; padding: 0px;\">Doctor's Note</h2>" +
                                 "%s",
                         heading, mPatientName, mPatientOpenMRSID, mDate, mPatientDob, mSdw, mOccupation, mAddress, mCityState, mPhone, mHeight, mWeight,
                         mBMI, mBP, mPulse, mTemp, mSPO2, pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, /*doctorName,*/ additionalReturned);
