@@ -67,6 +67,10 @@ dependencies {
     //Parse SDK
     compile "com.parse:parse-android:$rootProject.parseAndroidVersion"
 
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+
+
     //Used for debugging local SQLite Database.
     debugCompile "com.amitshekhar.android:debug-db:$rootProject.debugDbVersion"
     debugCompile "com.squareup.okhttp3:logging-interceptor:$rootProject.okHttpVersion"

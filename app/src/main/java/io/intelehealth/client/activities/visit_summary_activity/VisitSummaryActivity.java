@@ -52,10 +52,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -242,7 +244,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 return true;
             }
             case R.id.summary_print: {
-                doWebViewPrint();
+                try {
+                    doWebViewPrint();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 return true;
             }
             case R.id.summary_sms: {
@@ -1202,7 +1208,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
      *
      * @return void
      */
-    private void doWebViewPrint() {
+    private void doWebViewPrint() throws ParseException {
         // Create a WebView object specifically for printing
         WebView webView = new WebView(this);
         webView.setWebViewClient(new WebViewClient() {
@@ -1258,11 +1264,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String colon = ":";
         for (String comp : complaints) {
             if (!comp.trim().isEmpty()) {
-                String complaint = comp;
-
-                Log.i(TAG, "doWebViewPrint: " + complaint);
-
-                mComplaint = mComplaint + comp.substring(0, comp.indexOf(colon)) + ", ";
+                mComplaint = mComplaint + Node.big_bullet + comp.substring(0, comp.indexOf(colon)) + "<br/>";
             }
         }
 
@@ -1272,14 +1274,27 @@ public class VisitSummaryActivity extends AppCompatActivity {
             mPatientOpenMRSID = getString(R.string.patient_not_registered);
         }
 
-        String para_open = "<p style=\"font-size:12pt; margin: 0px; padding: 0px;\">";
+        String para_open = "<p style=\"font-size:11pt; margin: 0px; padding: 0px;\">";
         String para_close = "</p>";
 
         String rx_web = "";
 
+        Calendar today = Calendar.getInstance();
+        Calendar dob = Calendar.getInstance();
+
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = sdf.parse(mPatientDob);
+        dob.setTime(date);
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
+            age--;
+        }
+
         if (rxReturned != null && !rxReturned.isEmpty()) {
-            rx_web = "<p style=\"font-size:14pt; margin: 0px; padding: 0px;\">" + Node.big_bullet +
-                    rxReturned.replaceAll("\n", para_close + "<p style=\"font-size:14pt; margin: 0px; padding: 0px;\">" + Node.big_bullet)
+            rx_web = para_open + Node.big_bullet +
+                    rxReturned.replaceAll("\n", para_close + para_open + Node.big_bullet)
                     + para_close;
         }
 
@@ -1305,61 +1320,68 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     + para_close;
         }
 
-        String heading = "Chikitsa Sahayta Kendra";
-
-        String fam_hist=mFamHist;
-        String pat_hist=mPatHist;
-
-        if(fam_hist.trim().isEmpty()){
-            fam_hist = "No history of illness in family provided.";
+        String comments_web = "";
+        if (adviceReturned != null && !adviceReturned.isEmpty()) {
+                comments_web = para_open + Node.big_bullet +
+                        adviceReturned.replaceAll("\n", para_close + para_open + Node.big_bullet)+
+                        para_close;
         }
 
-        if(pat_hist.trim().isEmpty()){
+        String heading = "ଚିକିତ୍ସା ସହାୟତା କେନ୍ଦ୍ର";
+        String heading2 = "Chikitsa Sahayta Kendra";
+        String heading3 = "<br/>";
+
+        String bp = mBP;
+        if (bp.equals("/")) bp = "";
+
+        String address = mAddress + " " + mCityState + " " + mPhone;
+
+        String fam_hist = mFamHist;
+        String pat_hist = mPatHist;
+
+        if (fam_hist.trim().isEmpty()) {
+            fam_hist = "No history of illness in family provided.";
+        } else {
+            fam_hist = fam_hist.replaceAll(Node.bullet, "<br/>" + Node.big_bullet);
+            fam_hist = org.apache.commons.lang3.StringUtils.right(fam_hist, fam_hist.length() - 5);
+        }
+
+        if (pat_hist.trim().isEmpty()) {
             pat_hist = "No history of patient's illness provided.";
         }
 
         // Generate an HTML document on the fly:
         String htmlDocument =
-                String.format("<h2 id=\"intelecare-patient-detail\" style=\"font-size:16pt; margin: 0px; padding: 0px;\">%s</h2>" +"<br/><br/>"+
-                                "<h2 style=\"font-size:16pt;margin: 0px; padding: 0px;\">%s</h2>" +
-                                para_open+"Patient Id: %s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-                                "Date: %s"+para_close +
-                                "<h2 id=\"patient-information\" style=\"font-size:14pt; margin: 0px; padding: 0px;\">Patient Information</h2>" +
-                                para_open + Node.big_bullet + "DOB: %s"+para_close +
-                                para_open + Node.big_bullet + "Son/Daughter/Wife of: %s"+para_close +
-                                para_open + Node.big_bullet + "Occupation: %s"+para_close +
-                                "<h2 id=\"address-and-contact\" style=\"font-size:14pt; margin: 0px; padding: 0px;\">Address and Contact</h2>\n" +
-                                para_open+"%s"+para_close +
-                                para_open+"%s"+para_close +
-                                para_open+"%s"+para_close +
-                                "<h2 id=\"vitals\" style=\"font-size:14pt;margin: 0px; padding: 0px;\">Vitals</h2>" +
-                                para_open + Node.big_bullet + "Height: %s"+para_close +
-                                para_open + Node.big_bullet + "Weight: %s"+para_close +
-                                para_open + Node.big_bullet + "BMI: %s"+para_close +
-                                para_open + Node.big_bullet + "Blood Pressure: %s"+para_close +
-                                para_open + Node.big_bullet + "Pulse: %s"+para_close +
-                                para_open + Node.big_bullet + "Temperature: %s"+para_close +
-                                para_open + Node.big_bullet + "SpO2: %s"+para_close +
-                                "<h2 id=\"patient-history\" style=\"font-size:14pt;margin: 0px; padding: 0px;\">Patient History</h2>" +
-                                para_open +"%s"+para_close +
-                                "<h2 id=\"family-history\" style=\"font-size:14pt;margin: 0px; padding: 0px;\">Family History</h2>" +
-                                para_open +"%s"+para_close +
-                                "<h2 id=\"complaint\" style=\"font-size:14pt;margin: 0px; padding: 0px;\">Complaint and Observations</h2>" +
-                                para_open+"%s" +para_close+
-                                "<h2 id=\"diagnosis\" style=\"font-size:14pt;margin: 0px; padding: 0px;\">Diagnosis</h2>" +
+                String.format("<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                                "<p id=\"heading_2\" style=\"font-size:11pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                                "<p id=\"heading_3\" style=\"font-size:11pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                                "<hr style=\"font-size:11pt;\">" + "<br/>" +
+                                "<p id=\"patient_name\" style=\"font-size:11pt; margin: 0px; padding: 0px;\">%s</p></b>" +
+                                "<p id=\"patient_details\" style=\"font-size:11pt; margin: 0px; padding: 0px;\">Age: %s |Son/Daughter/Wife of: %s |Occupation: %s </p>" +
+                                "<p id=\"address_and_contact\" style=\"font-size:11pt; margin: 0px; padding: 0px;\"><b>Address and Contact:</b> %s</p>" +
+                                "<b><p id=\"visit_details\" style=\"font-size:11pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p></b>" +
+                                "<b><p id=\"vitals_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
+                                "<p id=\"vitals\" style=\"font-size:11pt;margin:0px; padding: 0px;\">Height: %s | Weight: %s | BMI: %s | Blood Pressure: %s | Pulse: %s | Temperature: %s | SpO2: %s </p>" +
+                                "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
+                                "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p>" +
+                                "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
+                                "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p>" +
+                                "<b><p id=\"complaints_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Chief Complaint(s)</p></b>" +
+                                para_open + "%s" + para_close +
+                                "<b><p id=\"diagnosis_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b>" +
                                 "%s" +
-                                "<h2 id=\"rx\" style=\"font-size:16pt;margin: 0px; padding: 0px;\">Prescription</h2>" +
+                                "<b><p id=\"rx_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Prescription</p></b>" +
                                 "%s" +
-                                "<h2 id=\"tests\" style=\"font-size:14pt;margin: 0px; padding: 0px;\">Tests To Be Performed</h2>" +
+                                "<b><p id=\"tests_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Tests To Be Performed</p></b>" +
                                 "%s" +
-                                "<h2 id=\"advice\" style=\"font-size:14pt;margin: 0px; padding: 0px;\">General Advices</h2>" +
+                                "<b><p id=\"advice_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b>" +
                                 "%s" +
-                               // "<h2 id=\"doctor_name\" style=\"font-size:12pt;margin: 0px; padding: 0px;\">Doctor's Name</h2>" +
-                              //  para_open +"%s"+para_close +
-                                "<h2 id=\"comments\" style=\"font-size:14pt;margin: 0px; padding: 0px;\">Doctor's Note</h2>" +
-                                "%s",
-                        heading, mPatientName, mPatientOpenMRSID, mDate, mPatientDob, mSdw, mOccupation, mAddress, mCityState, mPhone, mHeight, mWeight,
-                        mBMI, mBP, mPulse, mTemp, mSPO2, pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, /*doctorName,*/ additionalReturned);
+                                "<b><p id=\"comments_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Doctor's Note</p></b>" +
+                                "%s"
+                                // +"<b><p id=\"doctor_name_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Doctor's Name</p></b>" +
+                                //  para_open +"%s"+para_close
+                        , heading, heading2, heading3, mPatientName, age, mSdw, mOccupation, address, mPatientOpenMRSID, mDate, mHeight, mWeight,
+                        mBMI, bp, mPulse, mTemp, mSPO2, pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, comments_web/*,doctorName*/);
         webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
 
         // Keep a reference to WebView object until you pass the PrintDocumentAdapter

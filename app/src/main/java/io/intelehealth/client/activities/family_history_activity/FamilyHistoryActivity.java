@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ExpandableListView;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -232,7 +233,12 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             for (Node node : familyHistoryMap.getOptionsList()) {
                 if (node.isSelected()) {
                     String familyString = node.generateLanguage();
-                    String toInsert = node.getText() + " has " + familyString;
+                    String toInsert = node.getText() + " : " + familyString;
+                    toInsert = toInsert.replaceAll(Node.bullet,"");
+                    toInsert = toInsert.replaceAll(" - ",", ");
+                    if(StringUtils.right(toInsert,2).equals(", ")){
+                     toInsert = toInsert.substring(0,toInsert.length()-2);
+                    }
                     insertionList.add(toInsert);
                 }
             }
@@ -240,9 +246,9 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 
         for (int i = 0; i < insertionList.size(); i++) {
             if (i == 0) {
-                insertion = insertionList.get(i);
+                insertion = Node.bullet + insertionList.get(i);
             } else {
-                insertion = insertion + "; " + insertionList.get(i);
+                insertion = insertion +" "+ Node.bullet + insertionList.get(i);
             }
         }
 
