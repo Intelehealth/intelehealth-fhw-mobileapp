@@ -70,6 +70,7 @@ import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActi
 import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
 import io.intelehealth.client.database.DelayedJobQueueProvider;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
+import io.intelehealth.client.node.Node;
 import io.intelehealth.client.objects.Obs;
 import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.services.ClientService;
@@ -1021,7 +1022,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         idCursor.close();
 
 
-
         String[] columns = {"value", " concept_id"};
         String orderBy = "visit_id";
 
@@ -1140,11 +1140,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 break;
             }
             case ConceptId.JSV_MEDICATIONS: {
-                if (!rxReturned.isEmpty()) {
-                    rxReturned = rxReturned + "," + value;
+                Log.i(TAG, "parseData: val:" + value);
+                Log.i(TAG, "parseData: rx" + rxReturned);
+                if (!rxReturned.trim().isEmpty()) {
+                    rxReturned = rxReturned + "\n" + value;
                 } else {
                     rxReturned = value;
                 }
+                Log.i(TAG, "parseData: rxfin" + rxReturned);
                 if (prescriptionCard.getVisibility() != View.VISIBLE) {
                     prescriptionCard.setVisibility(View.VISIBLE);
                 }
@@ -1236,7 +1239,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String mDate = df.format(c.getTime());
 
         String mPatHist = patHistory.getValue();
+        if (mPatHist == null) {
+            mPatHist = "";
+        }
         String mFamHist = famHistory.getValue();
+        if (mFamHist == null) {
+            mFamHist = "";
+        }
         mHeight = height.getValue();
         mWeight = weight.getValue();
         mBP = bpSys.getValue() + "/" + bpDias.getValue();
@@ -1244,58 +1253,113 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mTemp = temperature.getValue();
         mSPO2 = spO2.getValue();
         String mComplaint = complaint.getValue();
-        String mExam = phyExam.getValue();
+        String complaints[] = mComplaint.split(Node.bullet_arrow);
+        mComplaint = "";
+        String colon = ":";
+        for (String comp : complaints) {
+            if (!comp.trim().isEmpty()) {
+                String complaint = comp;
 
-        if(mPatientOpenMRSID==null){
+                Log.i(TAG, "doWebViewPrint: " + complaint);
+
+                mComplaint = mComplaint + comp.substring(0, comp.indexOf(colon)) + ", ";
+            }
+        }
+
+        mComplaint = mComplaint.substring(0, mComplaint.length() - 2);
+
+        if (mPatientOpenMRSID == null) {
             mPatientOpenMRSID = getString(R.string.patient_not_registered);
+        }
+
+        String para_open = "<p style=\"font-size:8pt; margin: 0px; padding: 0px;\">";
+        String para_close = "</p>";
+
+        String rx_web = "";
+
+        if (rxReturned != null && !rxReturned.isEmpty()) {
+            rx_web = para_open + Node.big_bullet +
+                    rxReturned.replaceAll("\n", para_close + para_open + Node.big_bullet)
+                    + para_close;
+        }
+
+        String tests_web = "";
+
+        if (testsReturned != null && !testsReturned.isEmpty()) {
+            tests_web = para_open + Node.big_bullet +
+                    testsReturned.replaceAll("\n", para_close + para_open + Node.big_bullet)
+                    + para_close;
+        }
+
+        String advice_web = "";
+        if (adviceReturned != null && !adviceReturned.isEmpty()) {
+            advice_web = para_open + Node.big_bullet +
+                    adviceReturned.replaceAll("\n", para_close + para_open + Node.big_bullet)
+                    + para_close;
+        }
+
+        String diagnosis_web = "";
+        if (diagnosisReturned != null && !diagnosisReturned.isEmpty()) {
+            diagnosis_web = para_open + Node.big_bullet +
+                    diagnosisReturned.replaceAll("\n", para_close + para_open + Node.big_bullet)
+                    + para_close;
+        }
+
+        String heading = "Chikitsa Sahayta Kendra";
+
+        String fam_hist=mFamHist;
+        String pat_hist=mPatHist;
+
+        if(fam_hist.trim().isEmpty()){
+            fam_hist = "No history of illness in family provided.";
+        }
+
+        if(pat_hist.trim().isEmpty()){
+            pat_hist = "No history of patient's illness provided.";
         }
 
         // Generate an HTML document on the fly:
         String htmlDocument =
-                String.format("<h1 id=\"intelecare-patient-detail\">Intelehealth Visit Summary</h1>\n" +
-                                "<h1>%s</h1>\n" +
-                                "<p>Patient Id: %s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-                                "Date: %s</p>\n" +
-                                "<h2 id=\"patient-information\">Patient Information</h2>\n" +
-                                "<ul>\n" +
-                                "<li>%s</li>\n" +
-                                "<li>Son/Daughter/Wife of: %s</li>\n" +
-                                "<li>Occupation: %s</li>\n" +
-                                "</ul>\n" +
-                                "<h2 id=\"address-and-contact\">Address and Contact</h2>\n" +
-                                "<p>%s</p>\n" +
-                                "<p>%s</p>\n" +
-                                "<p>%s</p>\n" +
-                                "<h2 id=\"vitals\">Vitals</h2>\n" +
-                                "<li>Height: %s</li>\n" +
-                                "<li>Weight: %s</li>\n" +
-                                "<li>BMI: %s</li>\n" +
-                                "<li>Blood Pressure: %s</li>\n" +
-                                "<li>Pulse: %s</li>\n" +
-                                "<li>Temperature: %s</li>\n" +
-                                "<li>SpO2: %s</li>\n" +
-                                "<h2 id=\"patient-history\">Patient History</h2>\n" +
-                                "<li>%s</li>\n" +
-                                "<h2 id=\"family-history\">Family History</h2>\n" +
-                                "<li>%s</li>\n" +
-                                "<h2 id=\"complaint\">Complaint and Observations</h2>" +
-                                "<li>%s</li>\n" +
-                                "<h2 id=\"examination\">On Examination</h2>" +
-                                "<p>%s</p>\n" +
-                                "<h2 id=\"complaint\">Diagnosis</h2>" +
-                                "<li>%s</li>\n" +
-                                "<h2 id=\"complaint\">Prescription</h2>" +
-                                "<li>%s</li>\n" +
-                                "<h2 id=\"complaint\">Tests To Be Performed</h2>" +
-                                "<li>%s</li>\n" +
-                                "<h2 id=\"complaint\">General Advices</h2>" +
-                                "<li>%s</li>\n" +
-                                "<h2 id=\"complaint\">Doctor's Name</h2>" +
-                                "<li>%s</li>\n" +
-                                "<h2 id=\"complaint\">Additional Comments</h2>" +
-                                "<li>%s</li>\n",
-                        mPatientName, mPatientOpenMRSID, mDate, mPatientDob, mSdw, mOccupation, mAddress, mCityState, mPhone, mHeight, mWeight,
-                        mBMI, mBP, mPulse, mTemp, mSPO2, mPatHist, mFamHist, mComplaint, mExam, diagnosisReturned, rxReturned, testsReturned, adviceReturned, doctorName, additionalReturned);
+                String.format("<h2 id=\"intelecare-patient-detail\" style=\"font-size:14pt;line-height: 0.2;\">%s</h2>" +"<br/><br/>"+
+                                "<h2 style=\"font-size:14pt;line-height: 0.2;\">%s</h2>" +
+                                "<p style=\"font-size:8pt;line-height: 0.2;\">Patient Id: %s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+                                "Date: %s"+para_close +
+                                "<h2 id=\"patient-information\" style=\"font-size:12pt;line-height: 0.2;\">Patient Information</h2>" +
+                                para_open + Node.big_bullet + "DOB: %s"+para_close +
+                                para_open + Node.big_bullet + "Son/Daughter/Wife of: %s"+para_close +
+                                para_open + Node.big_bullet + "Occupation: %s"+para_close +
+                                "<h2 id=\"address-and-contact\" style=\"font-size:12pt;line-height: 0.2;\">Address and Contact</h2>\n" +
+                                "<p style=\"font-size:8pt;line-height: 0.2;\">%s"+para_close +
+                                "<p style=\"font-size:8pt;line-height: 0.2;\">%s"+para_close +
+                                "<p style=\"font-size:8pt;line-height: 0.2;\">%s"+para_close +
+                                "<h2 id=\"vitals\" style=\"font-size:12pt;line-height: 0.2;\">Vitals</h2>" +
+                                para_open + Node.big_bullet + "Height: %s"+para_close +
+                                para_open + Node.big_bullet + "Weight: %s"+para_close +
+                                para_open + Node.big_bullet + "BMI: %s"+para_close +
+                                para_open + Node.big_bullet + "Blood Pressure: %s"+para_close +
+                                para_open + Node.big_bullet + "Pulse: %s"+para_close +
+                                para_open + Node.big_bullet + "Temperature: %s"+para_close +
+                                para_open + Node.big_bullet + "SpO2: %s"+para_close +
+                                "<h2 id=\"patient-history\" style=\"font-size:12pt;line-height: 0.2;\">Patient History</h2>" +
+                                para_open +"%s"+para_close +
+                                "<h2 id=\"family-history\" style=\"font-size:12pt;line-height: 0.2;\">Family History</h2>" +
+                                para_open +"%s"+para_close +
+                                "<h2 id=\"complaint\" style=\"font-size:12pt;line-height: 0.2;\">Complaint and Observations</h2>" +
+                                para_open+"%s" +para_close+
+                                "<h2 id=\"diagnosis\" style=\"font-size:12pt;line-height: 0.2;\">Diagnosis</h2>" +
+                                "%s" +
+                                "<h2 id=\"rx\" style=\"font-size:12pt;line-height: 0.2;\">Prescription</h2>" +
+                                "%s" +
+                                "<h2 id=\"tests\" style=\"font-size:12pt;line-height: 0.2;\">Tests To Be Performed</h2>" +
+                                "%s" +
+                                "<h2 id=\"advice\" style=\"font-size:12pt;line-height: 0.2;\">General Advices</h2>" +
+                                "%s" +
+                               // "<h2 id=\"doctor_name\" style=\"font-size:12pt;line-height: 0.2;\">Doctor's Name</h2>" +
+                              //  para_open +"%s"+para_close +
+                                "<h2 id=\"comments\" style=\"font-size:12pt;line-height: 0.2;\">Doctor's Note</h2>" +
+                                "%s",
+                        heading, mPatientName, mPatientOpenMRSID, mDate, mPatientDob, mSdw, mOccupation, mAddress, mCityState, mPhone, mHeight, mWeight,
+                        mBMI, mBP, mPulse, mTemp, mSPO2, pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, /*doctorName,*/ additionalReturned);
         webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
 
         // Keep a reference to WebView object until you pass the PrintDocumentAdapter
@@ -1441,7 +1505,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 String message = "";
 
                 String openMRSID = patient.getOpenmrs_patient_id();
-                if(openMRSID==null){
+                if (openMRSID == null) {
                     openMRSID = getString(R.string.patient_not_registered);
                 }
 
