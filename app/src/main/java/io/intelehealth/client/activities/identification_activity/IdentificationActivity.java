@@ -67,6 +67,7 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mDOB;
     EditText mPhoneNum;
     EditText mAge;
+    EditText monthsInAge;
     EditText mAddress1;
     EditText mAddress2;
     AutoCompleteTextView mCity;
