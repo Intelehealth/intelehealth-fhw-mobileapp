@@ -501,6 +501,7 @@ public class Node implements Serializable {
                         raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + generateAssociatedSymptomsOrHistory(node_opt));
                     } else {
                         if (node_opt.getLanguage().equals("%")) {
+                            raw = raw + bullet + " " + node_opt.formLanguage();
                         } else if (node_opt.getLanguage().substring(0, 1).equals("%")) {
                             raw = raw + (bullet + " " + node_opt.getLanguage().substring(1) + " - " + node_opt.formLanguage());
                         } else {
