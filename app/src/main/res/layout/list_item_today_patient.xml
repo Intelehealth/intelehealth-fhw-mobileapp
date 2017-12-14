@@ -27,12 +27,13 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/list_item_indicator_image_view"
+    <TextView
+        android:id="@+id/list_item_indicator_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/circle"
+        android:padding="5dp"
+        android:textStyle="bold"
         android:layout_margin="10dp"/>
 
 </LinearLayout>

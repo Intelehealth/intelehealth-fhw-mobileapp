@@ -35,8 +35,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.telephony.SmsManager;
+import android.text.Html;
 import android.text.InputType;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -50,6 +53,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.text.ParseException;
@@ -376,6 +381,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editMedHist = (ImageButton) findViewById(R.id.imagebutton_edit_pathist);
         editAddDocs = (ImageButton) findViewById(R.id.imagebutton_edit_additional_document);
         uploadButton = (Button) findViewById(R.id.button_upload);
+        downloadButton = (Button) findViewById(R.id.button_download);
+
+        downloadButton.setEnabled(false);
+        downloadButton.setVisibility(View.GONE);
 
         if (isPastVisit) {
             editVitals.setVisibility(View.GONE);
@@ -553,7 +562,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         bmiView.setText(mBMI);
         tempView.setText(temperature.getValue());
         spO2View.setText(spO2.getValue());
-        complaintView.setText(complaint.getValue());
+        complaintView.setText(Html.fromHtml(complaint.getValue()));
         famHistView.setText(famHistory.getValue());
         patHistView.setText(patHistory.getValue());
 
@@ -676,7 +685,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 complaintDialog.setView(convertView);
 
                 final TextView complaintText = (TextView) convertView.findViewById(R.id.textView_entry);
-                complaintText.setText(complaint.getValue());
+                complaintView.setText(Html.fromHtml(complaint.getValue()));;
                 complaintText.setEnabled(false);
 
                 complaintDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -691,7 +700,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 complaint.setValue(dialogEditText.getText().toString());
-                                complaintText.setText(complaint.getValue());
+                                complaintView.setText(Html.fromHtml(complaint.getValue()));;
                                 complaintView.setText(complaint.getValue());
                                 updateDatabase(complaint.getValue(), ConceptId.CURRENT_COMPLAINT);
                                 dialog.dismiss();
@@ -1259,12 +1268,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mTemp = temperature.getValue();
         mSPO2 = spO2.getValue();
         String mComplaint = complaint.getValue();
-        String complaints[] = mComplaint.split(Node.bullet_arrow);
+        String complaints[] = StringUtils.split(mComplaint, Node.bullet_arrow);
         mComplaint = "";
         String colon = ":";
-        for (String comp : complaints) {
-            if (!comp.trim().isEmpty()) {
-                mComplaint = mComplaint + Node.big_bullet + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+        if (complaints != null) {
+            for (String comp : complaints) {
+                if (!comp.trim().isEmpty()) {
+                    mComplaint = mComplaint + Node.big_bullet + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+                }
             }
         }
 
@@ -1322,9 +1333,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         String comments_web = "";
         if (adviceReturned != null && !adviceReturned.isEmpty()) {
-                comments_web = para_open + Node.big_bullet +
-                        adviceReturned.replaceAll("\n", para_close + para_open + Node.big_bullet)+
-                        para_close;
+            comments_web = para_open + Node.big_bullet +
+                    adviceReturned.replaceAll("\n", para_close + para_open + Node.big_bullet) +
+                    para_close;
         }
 
         String heading = "ଚିକିତ୍ସା ସହାୟତା କେନ୍ଦ୍ର";
@@ -1378,8 +1389,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 "%s" +
                                 "<b><p id=\"comments_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Doctor's Note</p></b>" +
                                 "%s"
-                                // +"<b><p id=\"doctor_name_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Doctor's Name</p></b>" +
-                                //  para_open +"%s"+para_close
+                        // +"<b><p id=\"doctor_name_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Doctor's Name</p></b>" +
+                        //  para_open +"%s"+para_close
                         , heading, heading2, heading3, mPatientName, age, mSdw, mOccupation, address, mPatientOpenMRSID, mDate, mHeight, mWeight,
                         mBMI, bp, mPulse, mTemp, mSPO2, pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, comments_web/*,doctorName*/);
         webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
@@ -1683,11 +1694,25 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     private void addDownloadButton() {
-        if (downloadButton == null) {
-            downloadButton = new Button(VisitSummaryActivity.this);
-            downloadButton.setLayoutParams(new LinearLayoutCompat.LayoutParams(
-                    LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+
+        if (!downloadButton.isEnabled()) {
+            downloadButton.setEnabled(true);
+            downloadButton.setVisibility(View.VISIBLE);
+            /*
+            final float scale = getResources().getDisplayMetrics().density;
+            int pixels = (int) (11 * scale + 0.5f);
+
+            downloadButton = new Button((new ContextThemeWrapper(context, R.style.RobotoButtonStyle)));
+            LinearLayoutCompat.LayoutParams layoutParams= new LinearLayoutCompat.LayoutParams(
+                    LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT);
+            layoutParams.setMargins(10,10,10,10);
+            downloadButton.setPadding(0,0,0,0);
+            downloadButton.setLayoutParams(layoutParams);
+            downloadButton.setAllCaps(false);
+            downloadButton.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
+            downloadButton.setBackgroundColor(getResources().getColor(R.color.divider));
             downloadButton.setText(R.string.visit_summary_button_download);
+            */
 
             Toast.makeText(this, getString(R.string.visit_summary_button_download), Toast.LENGTH_SHORT).show();
 
@@ -1752,7 +1777,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     //  retrieveOpenMRS(view);
                 }
             });
-            mLayout.addView(downloadButton, mLayout.getChildCount());
+            //mLayout.addView(downloadButton, mLayout.getChildCount());
         }
 
     }

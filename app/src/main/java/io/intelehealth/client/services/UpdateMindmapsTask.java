@@ -57,10 +57,12 @@ public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
     protected void onPreExecute() {
         super.onPreExecute();
         Activity activity = mWeakActivity.get();
-        if (activity != null && progress == null) {
+        if ((mWeakActivity.get() != null && !mWeakActivity.get().isFinishing())
+                && progress == null) {
             progress = new ProgressDialog(activity);
         }
-        if (progress != null && !progress.isShowing()) {
+        if ((mWeakActivity.get() != null && !mWeakActivity.get().isFinishing())
+                && progress != null && !progress.isShowing()) {
             progress.setTitle(activity.getString(R.string.please_wait_progress));
             progress.setMessage(activity.getString(R.string.downloading_mindmaps));
             progress.setCanceledOnTouchOutside(false);
@@ -109,7 +111,7 @@ public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
 
         Activity activity = mWeakActivity.get();
 
-        if (activity != null) {
+        if ((mWeakActivity.get() != null && !mWeakActivity.get().isFinishing())) {
             if (response == null) {
                 Toast.makeText(activity, activity.getString(R.string.error_downloading_mindmaps), Toast.LENGTH_SHORT).show();
                 return;
@@ -200,7 +202,11 @@ public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
                 }
                 patHist.delete();
             }
-            progress.dismiss();
+
+            if ((mWeakActivity.get() != null && !mWeakActivity.get().isFinishing())
+                    && progress != null && progress.isShowing()) {
+                progress.dismiss();
+            }
         }
     }
 
@@ -220,8 +226,8 @@ public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
                         .replaceAll("-", "")
                         .replaceAll("\\(", "")
                         .replaceAll("\\)", "");
-                Log.i(TAG, "parts: "+ parts[0]);
-                new UpdateMindmapsTask(activity, base_dir, true).execute(file,parts[0], null);
+                Log.i(TAG, "parts: " + parts[0]);
+                new UpdateMindmapsTask(activity, base_dir, true).execute(file, parts[0], null);
             } else {
                 parts[0] = parts[0].replaceAll("\\s+", "")
                         .replaceAll("&", "")
@@ -229,7 +235,7 @@ public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
                         .replaceAll("-", "")
                         .replaceAll("\\(", "")
                         .replaceAll("\\)", "");
-                Log.i(TAG, "parts: "+ parts[0]);
+                Log.i(TAG, "parts: " + parts[0]);
                 new UpdateMindmapsTask(activity, base_dir, false).execute(file, parts[0], null);
             }
         }

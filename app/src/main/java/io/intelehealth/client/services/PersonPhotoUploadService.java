@@ -84,7 +84,6 @@ public class PersonPhotoUploadService extends IntentService {
         queueId = intent.getIntExtra("queueId", -1);
         patientUUID = intent.getStringExtra("patientUUID");
         patientId = intent.getIntExtra("patientID", -1);
-        ;
 
         String query = "SELECT patient_photo FROM patient WHERE _id = ?";
         LocalRecordsDatabaseHelper databaseHelper = new LocalRecordsDatabaseHelper(this);
@@ -109,8 +108,11 @@ public class PersonPhotoUploadService extends IntentService {
                     bitmap = BitmapFactory.decodeFile(filePath);
                 }
 
-                if (bitmap != null) {
+                if (bitmap != null && patientUUID!=null && !patientUUID.isEmpty()) {
                     uploadImage("Profile", bitmap, imageName, intent);
+                }
+                else {
+                    Log.d(TAG, "onHandleIntent: Error uploading image | Image or patient uuid is null");
                 }
             } else {
                 removeJobFromQueue(queueId);

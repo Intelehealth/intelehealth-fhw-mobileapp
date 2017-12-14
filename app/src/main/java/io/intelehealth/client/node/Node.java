@@ -87,8 +87,7 @@ public class Node implements Serializable {
     public static String big_bullet = "\u25CF";
     public static String bullet_hollow = "\u25CB";
     public static String bullet_arrow = "\u25BA";
-    public static String next_line = "";
-    //public static String next_line = "<br/>";
+    public static String next_line = "<br/>";
     String space = "\t";
 
 
@@ -498,14 +497,14 @@ public class Node implements Serializable {
                     String associatedTest = node_opt.getText();
                     if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") ||
                             associatedTest.trim().equals("H/o specific illness"))) {
-                        raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + generateAssociatedSymptomsOrHistory(node_opt));
+                        raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                     } else {
                         if (node_opt.getLanguage().equals("%")) {
-                            raw = raw + bullet + " " + node_opt.formLanguage();
+                            raw = raw + bullet + " " + node_opt.formLanguage() + next_line;
                         } else if (node_opt.getLanguage().substring(0, 1).equals("%")) {
-                            raw = raw + (bullet + " " + node_opt.getLanguage().substring(1) + " - " + node_opt.formLanguage());
+                            raw = raw + (bullet + " " + node_opt.getLanguage().substring(1) + " - " + node_opt.formLanguage()) + next_line;
                         } else {
-                            raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + node_opt.formLanguage());
+                            raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + node_opt.formLanguage()) + next_line;
                         }
                     }
                     //raw = raw + ("\n"+"\n" + bullet +" "+ node_opt.formLanguage());
