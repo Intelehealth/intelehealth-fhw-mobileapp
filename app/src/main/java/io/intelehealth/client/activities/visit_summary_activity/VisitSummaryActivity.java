@@ -563,10 +563,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         tempView.setText(temperature.getValue());
         spO2View.setText(spO2.getValue());
         complaintView.setText(Html.fromHtml(complaint.getValue()));
-        famHistView.setText(famHistory.getValue());
-        patHistView.setText(patHistory.getValue());
+        famHistView.setText(Html.fromHtml(famHistory.getValue()));
+        patHistView.setText(Html.fromHtml(patHistory.getValue()));
 
-        physFindingsView.setText(phyExam.getValue());
+        physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor e = sharedPreferences.edit();
 
@@ -618,7 +618,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 famHistDialog.setView(convertView);
 
                 final TextView famHistTest = (TextView) convertView.findViewById(R.id.textView_entry);
-                famHistTest.setText(famHistory.getValue());
+                famHistTest.setText(Html.fromHtml(famHistory.getValue()));
                 famHistTest.setEnabled(false);
 
                 famHistDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -633,8 +633,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 famHistory.setValue(dialogEditText.getText().toString());
-                                famHistTest.setText(famHistory.getValue());
-                                famHistView.setText(famHistory.getValue());
+                                famHistTest.setText(Html.fromHtml(famHistory.getValue()));
+                                famHistView.setText(Html.fromHtml(famHistory.getValue()));
                                 updateDatabase(famHistory.getValue(), ConceptId.RHK_FAMILY_HISTORY_BLURB);
                                 dialog.dismiss();
                             }
@@ -685,7 +685,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 complaintDialog.setView(convertView);
 
                 final TextView complaintText = (TextView) convertView.findViewById(R.id.textView_entry);
-                complaintView.setText(Html.fromHtml(complaint.getValue()));;
+                complaintText.setText(Html.fromHtml(complaint.getValue()));
                 complaintText.setEnabled(false);
 
                 complaintDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -700,8 +700,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 complaint.setValue(dialogEditText.getText().toString());
-                                complaintView.setText(Html.fromHtml(complaint.getValue()));;
-                                complaintView.setText(complaint.getValue());
+                                complaintView.setText(Html.fromHtml(complaint.getValue()));
                                 updateDatabase(complaint.getValue(), ConceptId.CURRENT_COMPLAINT);
                                 dialog.dismiss();
                             }
@@ -751,7 +750,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 physicalDialog.setView(convertView);
 
                 final TextView physicalText = (TextView) convertView.findViewById(R.id.textView_entry);
-                physicalText.setText(phyExam.getValue());
+                physicalText.setText(Html.fromHtml(phyExam.getValue()));
                 physicalText.setEnabled(false);
 
                 physicalDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -760,15 +759,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         final AlertDialog.Builder textInput = new AlertDialog.Builder(VisitSummaryActivity.this);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
-                        dialogEditText.setText(phyExam.getValue());
+                        dialogEditText.setText(Html.fromHtml(phyExam.getValue()));
                         textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
                                 phyExam.setValue(dialogEditText.getText().toString());
-                                physicalText.setText(phyExam.getValue());
-                                physFindingsView.setText(phyExam.getValue());
+                                physicalText.setText(Html.fromHtml(phyExam.getValue()));
+                                physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
                                 updateDatabase(phyExam.getValue(), ConceptId.PHYSICAL_EXAMINATION);
                                 dialog.dismiss();
                             }
@@ -847,7 +846,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 historyDialog.setView(convertView);
 
                 final TextView historyText = (TextView) convertView.findViewById(R.id.textView_entry);
-                historyText.setText(patHistory.getValue());
+                historyText.setText(Html.fromHtml(patHistory.getValue()));
                 historyText.setEnabled(false);
 
                 historyDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -862,8 +861,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 patHistory.setValue(dialogEditText.getText().toString());
-                                historyText.setText(patHistory.getValue());
-                                patHistView.setText(patHistory.getValue());
+                                historyText.setText(Html.fromHtml(patHistory.getValue()));
+                                patHistView.setText(Html.fromHtml(patHistory.getValue()));
                                 updateDatabase(patHistory.getValue(), ConceptId.RHK_MEDICAL_HISTORY_BLURB);
                                 dialog.dismiss();
                             }

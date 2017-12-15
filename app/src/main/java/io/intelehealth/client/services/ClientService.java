@@ -262,7 +262,7 @@ public class ClientService extends IntentService {
 
         mBuilder.setContentTitle(title)
                 .setContentText(text)
-                .setSmallIcon(R.drawable.ic_cloud_upload);
+                .setSmallIcon(R.drawable.ic_cloud_upload_v);
         // Sets an activity indicator for an operation of indeterminate length
         mBuilder.setProgress(0, 0, true);
         // Issues the notification

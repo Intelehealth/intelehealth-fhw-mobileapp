@@ -259,7 +259,7 @@ public class PatientUpdateService extends IntentService {
             if (responsePerson != null && responsePerson.getResponseCode() != 200) {
                 String newText = "Person not updated. Please check your connection.";
                 mBuilder.setContentText(newText).setNumber(++numMessages);
-                mBuilder.setSmallIcon(R.drawable.ic_cloud_upload);
+                mBuilder.setSmallIcon(R.drawable.ic_cloud_upload_v);
                 mNotifyManager.notify(mId, mBuilder.build());
                 Log.d(TAG, "Person update was unsuccessful");
                 return null;
@@ -269,7 +269,7 @@ public class PatientUpdateService extends IntentService {
             } else {
                 String newText = "Person updated successfully.";
                 mBuilder.setContentText(newText).setNumber(++numMessages);
-                mBuilder.setSmallIcon(R.drawable.ic_cloud_upload);
+                mBuilder.setSmallIcon(R.drawable.ic_cloud_upload_v);
                 mNotifyManager.notify(mId, mBuilder.build());
 
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("Profile");

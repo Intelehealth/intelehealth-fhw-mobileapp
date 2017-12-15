@@ -161,7 +161,6 @@ public class PatientDetailActivity extends AppCompatActivity {
                     }
                     while (cursor.moveToNext());
                     returning = true;
-                    e.putString("phistory", phistory);//Log.d("phist",phistory);
                     e.putBoolean("returning", true);
                     e.commit();
                 }
@@ -177,7 +176,6 @@ public class PatientDetailActivity extends AppCompatActivity {
                     }
                     while (cursor1.moveToNext());
                     returning = true;
-                    e.putString("fhistory", fhistory);//Log.d("fhist",fhistory);
                     e.putBoolean("returning", true);
                     e.commit();
                 }

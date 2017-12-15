@@ -912,6 +912,11 @@
             android:background="@color/gray"
             android:textColor="@android:color/white"
             android:layout_marginBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textAlignment="center"
+            android:textSize="24dp"
+            android:drawableLeft="@drawable/ic_cloud_upload"
             />
 
         <Button
@@ -922,6 +927,11 @@
             android:text="@string/visit_summary_button_download"
             android:textColor="@android:color/white"
             android:layout_marginBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textAlignment="center"
+            android:textSize="24dp"
+            android:drawableLeft="@drawable/ic_cloud_download"
             />
 
     </LinearLayout>

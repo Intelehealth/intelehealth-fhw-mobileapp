@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
@@ -66,18 +68,20 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     boolean flag = false;
     boolean hasLicense = false;
     SharedPreferences.Editor e;
+    SQLiteDatabase localdb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
+        localdb = mDbHelper.getWritableDatabase();
         //For Testing
 //        patientID = Long.valueOf("1");
 
         // display pop-up to ask for update, if a returning patient
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         e = sharedPreferences.edit();
-        fhistory = sharedPreferences.getString("fhistory", " ");
-        phistory = sharedPreferences.getString("phistory", " ");
+
         boolean past = sharedPreferences.getBoolean("returning", false);
         if (past) {
             AlertDialog.Builder alertdialog = new AlertDialog.Builder(FamilyHistoryActivity.this);
@@ -95,7 +99,24 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     // skip
                     flag = false;
-                    insertDb(fhistory);
+
+                    String[] columns = {"value", " concept_id"};
+                    String orderBy = "visit_id";
+
+                    try {
+                        String famHistSelection = "patient_id = ? AND concept_id = ?";
+                        String[] famHistArgs = {String.valueOf(patientID), String.valueOf(ConceptId.RHK_FAMILY_HISTORY_BLURB)};
+                        Cursor famHistCursor = localdb.query("obs", columns, famHistSelection, famHistArgs, null, null, orderBy);
+                        famHistCursor.moveToLast();
+                        fhistory = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
+                        famHistCursor.close();
+                    } catch (CursorIndexOutOfBoundsException e) {
+                        fhistory=""; // if family history does not exist
+                    }
+
+                    if (fhistory != null && !fhistory.isEmpty() && !fhistory.equals("null")) {
+                        insertDb(fhistory);
+                    }
                     //  PastMedicalHistoryActivity pmh = new PastMedicalHistoryActivity();
                     // pmh.insertDb(phistory);
 
@@ -246,9 +267,11 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                     String toInsert = node.getText() + " : " + familyString;
                     toInsert = toInsert.replaceAll(Node.bullet,"");
                     toInsert = toInsert.replaceAll(" - ",", ");
+                    toInsert = toInsert.replaceAll("<br/>","");
                     if(StringUtils.right(toInsert,2).equals(", ")){
                      toInsert = toInsert.substring(0,toInsert.length()-2);
                     }
+                    toInsert = toInsert+".<br/>";
                     insertionList.add(toInsert);
                 }
             }
@@ -318,7 +341,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     }
 
     public long insertDb(String value) {
-        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
+
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -334,13 +357,12 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         complaintEntries.put("concept_id", CONCEPT_ID);
         complaintEntries.put("creator", CREATOR_ID);
 
-        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+
         return localdb.insert("obs", null, complaintEntries);
     }
 
     private void updateImageDatabase(String imagePath) {
-        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
-        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+
         localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path,image_type,delete_status) values("
                 + "'" + patientID + "'" + ","
                 + visitID + ","
@@ -350,8 +372,6 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     }
 
     private void updateDatabase(String string) {
-        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
-        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
 
         int conceptID = ConceptId.RHK_FAMILY_HISTORY_BLURB;
         ContentValues contentValues = new ContentValues();

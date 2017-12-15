@@ -2,6 +2,7 @@ package io.intelehealth.client.node;
 
 import android.util.Log;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -241,16 +242,18 @@ public class PhysicalExam extends Node {
                 boolean checkSet = rootStrings.add(levelOne);
 
                 if (checkSet)
-                    stringsList.add(levelOne + ": " + Node.bullet + " " + node.getLanguage());
+                    stringsList.add("<b>"+levelOne + ": "+"</b>" + Node.bullet + " " + node.getLanguage());
                 else stringsList.add(Node.bullet + " " + node.getLanguage());
                 if (!node.isTerminal()) {
-                    stringsList.add(node.formLanguage());
+                    String lang = node.formLanguage();
+                    Log.i(TAG, "generateFindings: "+ lang);
+                    stringsList.add(lang);
                 }
             }
         }
 
 
-        String languageSeparator = " - ";
+        String languageSeparator = Node.next_line;
 
         for (int i = 0; i < stringsList.size(); i++) {
             mLanguage = mLanguage.concat(stringsList.get(i) + languageSeparator);
@@ -270,6 +273,13 @@ public class PhysicalExam extends Node {
         mLanguage = mLanguage.replaceAll("\\.", "\\. ");
         mLanguage = mLanguage.replaceAll("\\: -", "\\: ");
         mLanguage = mLanguage.replaceAll("% - ", "");
+        mLanguage = mLanguage.replace(Node.next_line,"-");
+        mLanguage = mLanguage.replace("-"+Node.bullet,Node.next_line+Node.bullet);
+        mLanguage = mLanguage.replace("-"+"<b>",Node.next_line+"<b>");
+        mLanguage = mLanguage.replace("</b>"+Node.bullet,"</b>"+Node.next_line+Node.bullet);
+        if(StringUtils.right(mLanguage,2).equals(" -")){
+            mLanguage = mLanguage.substring(0,mLanguage.length()-2);
+        }
         return mLanguage;
     }
 
