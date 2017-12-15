@@ -30,7 +30,6 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -38,8 +37,6 @@ import android.telephony.SmsManager;
 import android.text.Html;
 import android.text.InputType;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -562,11 +559,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
         bmiView.setText(mBMI);
         tempView.setText(temperature.getValue());
         spO2View.setText(spO2.getValue());
-        complaintView.setText(Html.fromHtml(complaint.getValue()));
-        famHistView.setText(Html.fromHtml(famHistory.getValue()));
-        patHistView.setText(Html.fromHtml(patHistory.getValue()));
-
-        physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
+        if (complaint.getValue() != null)
+            complaintView.setText(Html.fromHtml(complaint.getValue()));
+        if (famHistory.getValue() != null)
+            famHistView.setText(Html.fromHtml(famHistory.getValue()));
+        if (patHistory.getValue() != null)
+            patHistView.setText(Html.fromHtml(patHistory.getValue()));
+        if (phyExam.getValue() != null)
+            physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor e = sharedPreferences.edit();
 
@@ -618,7 +618,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 famHistDialog.setView(convertView);
 
                 final TextView famHistTest = (TextView) convertView.findViewById(R.id.textView_entry);
-                famHistTest.setText(Html.fromHtml(famHistory.getValue()));
+                if (famHistory.getValue() != null)
+                    famHistTest.setText(Html.fromHtml(famHistory.getValue()));
                 famHistTest.setEnabled(false);
 
                 famHistDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -627,14 +628,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         final AlertDialog.Builder textInput = new AlertDialog.Builder(VisitSummaryActivity.this);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
-                        dialogEditText.setText(famHistory.getValue());
+                        if (famHistory.getValue() != null)
+                            dialogEditText.setText(famHistory.getValue());
+                        else
+                            dialogEditText.setText("");
                         textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 famHistory.setValue(dialogEditText.getText().toString());
-                                famHistTest.setText(Html.fromHtml(famHistory.getValue()));
-                                famHistView.setText(Html.fromHtml(famHistory.getValue()));
+                                if (famHistory.getValue() != null) {
+                                    famHistTest.setText(Html.fromHtml(famHistory.getValue()));
+                                    famHistView.setText(Html.fromHtml(famHistory.getValue()));
+                                }
                                 updateDatabase(famHistory.getValue(), ConceptId.RHK_FAMILY_HISTORY_BLURB);
                                 dialog.dismiss();
                             }
@@ -685,7 +691,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 complaintDialog.setView(convertView);
 
                 final TextView complaintText = (TextView) convertView.findViewById(R.id.textView_entry);
-                complaintText.setText(Html.fromHtml(complaint.getValue()));
+                if (complaint.getValue() != null)
+                    complaintText.setText(Html.fromHtml(complaint.getValue()));
                 complaintText.setEnabled(false);
 
                 complaintDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -694,13 +701,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         final AlertDialog.Builder textInput = new AlertDialog.Builder(VisitSummaryActivity.this);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
-                        dialogEditText.setText(complaint.getValue());
+                        if (complaint.getValue() != null)
+                            dialogEditText.setText(complaint.getValue());
+                        else
+                            dialogEditText.setText("");
                         textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 complaint.setValue(dialogEditText.getText().toString());
-                                complaintView.setText(Html.fromHtml(complaint.getValue()));
+                                if (complaint.getValue() != null) {
+                                    complaintText.setText(Html.fromHtml(complaint.getValue()));
+                                    complaintView.setText(Html.fromHtml(complaint.getValue()));
+                                }
                                 updateDatabase(complaint.getValue(), ConceptId.CURRENT_COMPLAINT);
                                 dialog.dismiss();
                             }
@@ -750,7 +763,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 physicalDialog.setView(convertView);
 
                 final TextView physicalText = (TextView) convertView.findViewById(R.id.textView_entry);
-                physicalText.setText(Html.fromHtml(phyExam.getValue()));
+                if (phyExam.getValue() != null)
+                    physicalText.setText(Html.fromHtml(phyExam.getValue()));
                 physicalText.setEnabled(false);
 
                 physicalDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -759,15 +773,20 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         final AlertDialog.Builder textInput = new AlertDialog.Builder(VisitSummaryActivity.this);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
-                        dialogEditText.setText(Html.fromHtml(phyExam.getValue()));
+                        if (phyExam.getValue() != null)
+                            dialogEditText.setText(phyExam.getValue());
+                        else
+                            dialogEditText.setText("");
                         textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
                                 phyExam.setValue(dialogEditText.getText().toString());
-                                physicalText.setText(Html.fromHtml(phyExam.getValue()));
-                                physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
+                                if (phyExam.getValue() != null) {
+                                    physicalText.setText(Html.fromHtml(phyExam.getValue()));
+                                    physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
+                                }
                                 updateDatabase(phyExam.getValue(), ConceptId.PHYSICAL_EXAMINATION);
                                 dialog.dismiss();
                             }
@@ -846,7 +865,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 historyDialog.setView(convertView);
 
                 final TextView historyText = (TextView) convertView.findViewById(R.id.textView_entry);
-                historyText.setText(Html.fromHtml(patHistory.getValue()));
+                if (patHistory.getValue() != null)
+                    historyText.setText(Html.fromHtml(patHistory.getValue()));
                 historyText.setEnabled(false);
 
                 historyDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -855,14 +875,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         final AlertDialog.Builder textInput = new AlertDialog.Builder(VisitSummaryActivity.this);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
-                        dialogEditText.setText(patHistory.getValue());
+                        if (patHistory.getValue() != null)
+                            dialogEditText.setText(patHistory.getValue());
+                        else
+                            dialogEditText.setText("");
                         textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 patHistory.setValue(dialogEditText.getText().toString());
-                                historyText.setText(Html.fromHtml(patHistory.getValue()));
-                                patHistView.setText(Html.fromHtml(patHistory.getValue()));
+                                if (patHistory.getValue() != null) {
+                                    historyText.setText(Html.fromHtml(patHistory.getValue()));
+                                    patHistView.setText(Html.fromHtml(patHistory.getValue()));
+                                }
                                 updateDatabase(patHistory.getValue(), ConceptId.RHK_MEDICAL_HISTORY_BLURB);
                                 dialog.dismiss();
                             }
@@ -1274,11 +1299,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
             for (String comp : complaints) {
                 if (!comp.trim().isEmpty()) {
                     mComplaint = mComplaint + Node.big_bullet + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+
                 }
             }
         }
 
         mComplaint = mComplaint.substring(0, mComplaint.length() - 2);
+        mComplaint = mComplaint.replaceAll("<b>","");
+        mComplaint = mComplaint.replaceAll("</b>","");
 
         if (mPatientOpenMRSID == null) {
             mPatientOpenMRSID = getString(R.string.patient_not_registered);
@@ -1352,8 +1380,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (fam_hist.trim().isEmpty()) {
             fam_hist = "No history of illness in family provided.";
         } else {
-            fam_hist = fam_hist.replaceAll(Node.bullet, "<br/>" + Node.big_bullet);
-            fam_hist = org.apache.commons.lang3.StringUtils.right(fam_hist, fam_hist.length() - 5);
+            fam_hist = fam_hist.replaceAll(Node.bullet,Node.big_bullet);
         }
 
         if (pat_hist.trim().isEmpty()) {

@@ -338,7 +338,6 @@ public class ClientService extends IntentService {
      * @param patientID      Unique id of the patient
      * @param current_intent this intent
      * @return uploadDone
-     *
      * @link https://wiki.openmrs.org/display/docs/Create+Patient
      */
     private boolean uploadPatient(Integer patientID, Intent current_intent) {
