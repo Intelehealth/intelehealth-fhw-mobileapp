@@ -1302,11 +1302,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 }
             }
+            if(!mComplaint.isEmpty()) {
+                mComplaint = mComplaint.substring(0, mComplaint.length() - 2);
+                mComplaint = mComplaint.replaceAll("<b>", "");
+                mComplaint = mComplaint.replaceAll("</b>", "");
+            }
         }
-
-        mComplaint = mComplaint.substring(0, mComplaint.length() - 2);
-        mComplaint = mComplaint.replaceAll("<b>","");
-        mComplaint = mComplaint.replaceAll("</b>","");
 
         if (mPatientOpenMRSID == null) {
             mPatientOpenMRSID = getString(R.string.patient_not_registered);

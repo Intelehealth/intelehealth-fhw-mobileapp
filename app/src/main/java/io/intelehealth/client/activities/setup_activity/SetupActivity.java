@@ -204,23 +204,16 @@ public class SetupActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                    // code to execute when EditText loses focus
-                    if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
-                        String BASE_URL = "http://" + mUrlField.getText().toString() + ":8080/openmrs/ws/rest/v1/";
-                        if (URLUtil.isValidUrl(BASE_URL)) getLocationFromServer(BASE_URL);
-                        else
-                            Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_LONG).show();
-                    }
+                if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
+                    String BASE_URL = "http://" + mUrlField.getText().toString() + ":8080/openmrs/ws/rest/v1/";
+                    if (URLUtil.isValidUrl(BASE_URL)) getLocationFromServer(BASE_URL);
+                    else
+                        Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
                 }
-
-        });
-
-        mUrlField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-
             }
+
         });
+
 
 
        /* mDropdownLocation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -236,7 +229,6 @@ public class SetupActivity extends AppCompatActivity {
         });*/
 
     }
-
 
 
     @Override
@@ -320,7 +312,8 @@ public class SetupActivity extends AppCompatActivity {
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
-            focusView.requestFocus();
+            if (focusView != null)
+                focusView.requestFocus();
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
@@ -362,7 +355,7 @@ public class SetupActivity extends AppCompatActivity {
         ProgressDialog progress;
 
 
-        TestSetup(String url,String username, String password, String adminPassword, Location location) {
+        TestSetup(String url, String username, String password, String adminPassword, Location location) {
             CLEAN_URL = url;
             USERNAME = username;
             PASSWORD = password;
@@ -539,7 +532,7 @@ public class SetupActivity extends AppCompatActivity {
 
                 Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
                         .applicationId(HelperMethods.IMAGE_APP_ID)
-                        .server("http://"+CLEAN_URL+":1337/parse/")
+                        .server("http://" + CLEAN_URL + ":1337/parse/")
                         .build()
                 );
                 Log.i(TAG, "onPostExecute: Parse init");
