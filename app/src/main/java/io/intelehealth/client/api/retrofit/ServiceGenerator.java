@@ -15,8 +15,8 @@ import io.intelehealth.client.activities.setup_activity.LocationArrayAdapter;
 import io.intelehealth.client.activities.setup_activity.SetupActivity;
 import io.intelehealth.client.models.Location;
 import io.intelehealth.client.models.Results;
+
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,10 +35,7 @@ public class ServiceGenerator {
     public static String apiBaseUrl = "http://openmrs.intelehealth.io";
     private static Retrofit retrofit;
 
-    private static HttpLoggingInterceptor logging = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
-    static Gson gson = new GsonBuilder()
-            .setDateFormat("MM-dd-yyyy'T'HH:mm:ss")
-            .create();
+
 
 
     private static Retrofit.Builder builder =
@@ -57,8 +54,7 @@ public class ServiceGenerator {
         if (BuildConfig.BUILD_TYPE.equals("debug")) {
             httpClient = new OkHttpClient.Builder()
                     .connectTimeout(15, TimeUnit.SECONDS)
-                    .readTimeout(30, TimeUnit.SECONDS)
-                    .addInterceptor(logging);
+                    .readTimeout(30, TimeUnit.SECONDS);
         } else {
             httpClient = new OkHttpClient.Builder()
                     .connectTimeout(15, TimeUnit.SECONDS)

@@ -147,6 +147,13 @@ public class IdentificationActivity extends AppCompatActivity {
         mEducation = (Spinner) findViewById(R.id.spinner_education);
         mEconomicStatus = (Spinner) findViewById(R.id.spinner_economic_status);
 
+        //TODO: Change this back for other deployments
+        mMiddleName.setVisibility(View.GONE);
+        mAddress1.setVisibility(View.GONE);
+        mAddress2.setVisibility(View.GONE);
+        mRelationship.setVisibility(View.GONE);
+        mPostal.setVisibility(View.GONE);
+
         casteText = (EditText) findViewById(R.id.identification_caste);
         educationText = (EditText) findViewById(R.id.identification_education);
         economicText = (EditText) findViewById(R.id.identification_econiomic_status);

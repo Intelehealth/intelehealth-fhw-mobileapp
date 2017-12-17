@@ -1484,10 +1484,12 @@ public class Node implements Serializable {
                     positiveAssociations.add(mOptions.get(i).getLanguage());
                 }
                 if (!mOptions.get(i).isTerminal()) {
-                    String tempString = positiveAssociations.get(positiveAssociations.size() - 1) + " - " +
-                            mOptions.get(i).formLanguage();
+                    if (positiveAssociations.size() > 0) {
+                        String tempString = positiveAssociations.get(positiveAssociations.size() - 1) + " - " +
+                                mOptions.get(i).formLanguage();
 
-                    positiveAssociations.set(positiveAssociations.size() - 1, tempString);
+                        positiveAssociations.set(positiveAssociations.size() - 1, tempString);
+                    }
                 }
             } else {
                 if (mOptions.get(i).getLanguage().equals("%")) {
@@ -1551,7 +1553,7 @@ public class Node implements Serializable {
                 String answer = mOptions.get(i).getLanguage();
                 if (mOptions.get(i).isTerminal()) {
                     if (mOptions.get(i).getInputType() != null && !mOptions.get(i).getInputType().trim().isEmpty()) {
-                        Log.i(TAG, "ipt: "+ mOptions.get(i).getInputType());
+                        Log.i(TAG, "ipt: " + mOptions.get(i).getInputType());
                         if (mOptions.get(i).getInputType().equals("camera")) {
                         } else {
                             if (answer.equals("%")) {

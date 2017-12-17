@@ -414,20 +414,88 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (visitUUID == null || visitUUID.isEmpty()) {
+                if (patient.getOpenmrsId() == null || patient.getOpenmrsId().isEmpty()) {
+                    String patientSelection = "_id = ?";
+                    String[] patientArgs = {String.valueOf(patient.getId())};
+
+                    String table = "patient";
+                    String[] columnsToReturn = {"openmrs_id"};
+                    final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
+
+
+                    if (idCursor.moveToFirst()) {
+                        do {
+                            patient.setOpenmrsId(idCursor.getString(idCursor.getColumnIndex("openmrs_id")));
+                        } while (idCursor.moveToNext());
+                    }
+                    idCursor.close();
+                }
+
+                if (patient.getOpenmrsId() == null || patient.getOpenmrsId().isEmpty()) {
+
+                    String[] DELAYED_JOBS_PROJECTION_PAT = new String[]{DelayedJobQueueProvider._ID, DelayedJobQueueProvider.PATIENT_ID,
+                            DelayedJobQueueProvider.JOB_TYPE, DelayedJobQueueProvider.PATIENT_NAME,
+                            DelayedJobQueueProvider.STATUS, DelayedJobQueueProvider.DATA_RESPONSE, DelayedJobQueueProvider.SYNC_STATUS};
+                    String SELECTION_PAT = DelayedJobQueueProvider.JOB_TYPE + "= \"patient\" AND " +
+                            DelayedJobQueueProvider.PATIENT_ID + "= ?";
+                    String[] ARGS_PAT = new String[]{String.valueOf(patientID)};
+
+                    Cursor cp = getContentResolver().query(DelayedJobQueueProvider.CONTENT_URI,
+                            DELAYED_JOBS_PROJECTION_PAT, SELECTION_PAT, ARGS_PAT, null);
+
+
+                    Log.i(TAG, "onClick: " + cp.getCount());
+
+                    if (cp != null && cp.moveToFirst()) {
+                        Log.d(TAG, "onClick: Not In Null");
+
+                        int sync_status = cp.getInt(cp.getColumnIndexOrThrow(DelayedJobQueueProvider.SYNC_STATUS));
+                        switch (sync_status) {
+                            case ClientService.STATUS_SYNC_STOPPED: {
+
+                                Intent serviceIntent;
+                                Log.i(TAG, "onClick: create patient delayed");
+                                if (cp.getString(cp.getColumnIndex(DelayedJobQueueProvider.JOB_TYPE)).equals("patient")) {
+
+                                    Snackbar.make(view, "Uploading Patient.", Snackbar.LENGTH_LONG).show();
+                                    serviceIntent = new Intent(getApplicationContext(), ClientService.class);
+                                    serviceIntent.putExtra("serviceCall", "patient");
+                                    serviceIntent.putExtra("patientID", cp.getInt(cp.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
+                                    serviceIntent.putExtra("name", cp.getString(cp.getColumnIndex(DelayedJobQueueProvider.PATIENT_NAME)));
+                                    serviceIntent.putExtra("status", cp.getInt(cp.getColumnIndex(DelayedJobQueueProvider.STATUS)));
+                                    serviceIntent.putExtra("personResponse", cp.getInt(cp.getColumnIndex(DelayedJobQueueProvider.DATA_RESPONSE)));
+                                    serviceIntent.putExtra("queueId", cp.getInt(cp.getColumnIndex(DelayedJobQueueProvider._ID)));
+                                    startService(serviceIntent);
+
+                                }
+                                break;
+                            }
+                            case ClientService.STATUS_SYNC_IN_PROGRESS: {
+                                break;
+                            }
+                        }
+
+                    }
+
+                    cp.close();
+                }
+
+                if(visitUUID == null || visitUUID.isEmpty()) {
                     String[] columnsToReturn = {"openmrs_visit_uuid"};
                     String visitIDorderBy = "start_datetime";
                     String visitIDSelection = "_id = ?";
                     String[] visitIDArgs = {visitID};
                     final Cursor visitIDCursor = db.query("visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
-                    if (visitIDCursor != null && visitIDCursor.moveToFirst() && visitIDCursor.getCount() > 0) {
-                        visitIDCursor.moveToFirst();
+                    if (visitIDCursor != null && visitIDCursor.moveToFirst()) {
                         visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("openmrs_visit_uuid"));
                     }
                     if (visitIDCursor != null) visitIDCursor.close();
                 }
 
                 Snackbar.make(view, "Uploading to doctor.", Snackbar.LENGTH_LONG).show();
+
+
+                //Checking for patient job
 
                 String[] DELAYED_JOBS_PROJECTION = new String[]{DelayedJobQueueProvider._ID, DelayedJobQueueProvider.JOB_TYPE, DelayedJobQueueProvider.SYNC_STATUS};
                 String SELECTION = DelayedJobQueueProvider.JOB_TYPE + " IN (\"visit\",\"pr Download\") AND " +
@@ -500,6 +568,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 c.close();
 
             }
+
         });
 
         if (intentTag != null && intentTag.equals("prior")) {
@@ -1302,7 +1371,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 }
             }
-            if(!mComplaint.isEmpty()) {
+            if (!mComplaint.isEmpty()) {
                 mComplaint = mComplaint.substring(0, mComplaint.length() - 2);
                 mComplaint = mComplaint.replaceAll("<b>", "");
                 mComplaint = mComplaint.replaceAll("</b>", "");
@@ -1381,7 +1450,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (fam_hist.trim().isEmpty()) {
             fam_hist = "No history of illness in family provided.";
         } else {
-            fam_hist = fam_hist.replaceAll(Node.bullet,Node.big_bullet);
+            fam_hist = fam_hist.replaceAll(Node.bullet, Node.big_bullet);
         }
 
         if (pat_hist.trim().isEmpty()) {

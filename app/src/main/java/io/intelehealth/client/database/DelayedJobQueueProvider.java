@@ -62,7 +62,7 @@ public class DelayedJobQueueProvider extends ContentProvider {
      */
 
     private SQLiteDatabase db;
-    static final String DELAYED_JOBS_TABLE_NAME = "delayed_jobs";
+    public static final String DELAYED_JOBS_TABLE_NAME = "delayed_jobs";
 
 
     LocalRecordsDatabaseHelper dbHelper;

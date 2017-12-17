@@ -274,12 +274,15 @@ public class PhysicalExam extends Node {
         mLanguage = mLanguage.replaceAll("\\: -", "\\: ");
         mLanguage = mLanguage.replaceAll("% - ", "");
         mLanguage = mLanguage.replace(Node.next_line,"-");
-        mLanguage = mLanguage.replace("-"+Node.bullet,Node.next_line+Node.bullet);
-        mLanguage = mLanguage.replace("-"+"<b>",Node.next_line+"<b>");
-        mLanguage = mLanguage.replace("</b>"+Node.bullet,"</b>"+Node.next_line+Node.bullet);
+        mLanguage = mLanguage.replaceAll("-"+Node.bullet,Node.next_line+Node.bullet);
+        mLanguage = mLanguage.replaceAll("-"+"<b>",Node.next_line+"<b>");
+        mLanguage = mLanguage.replaceAll("</b>"+Node.bullet,"</b>"+Node.next_line+Node.bullet);
+
         if(StringUtils.right(mLanguage,2).equals(" -")){
             mLanguage = mLanguage.substring(0,mLanguage.length()-2);
         }
+
+        mLanguage = mLanguage.replaceAll("%-"," ");
         return mLanguage;
     }
 

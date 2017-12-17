@@ -32,11 +32,12 @@ import io.intelehealth.client.utilities.HelperMethods;
 
 public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
     String FILENAME, COLLECTION_NAME, FILE_LIST;
-    static ProgressDialog progress;
+    private static ProgressDialog progress;
 
     private static final String TAG = UpdateMindmapsTask.class.getSimpleName();
 
     WeakReference<Activity> mWeakActivity;
+    Activity activity;
 
     private boolean isLastFile;
 
@@ -44,11 +45,13 @@ public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
     public String[] FILES;
 
     public UpdateMindmapsTask(Activity activity) {
-        mWeakActivity = new WeakReference<>(activity);
+        this.mWeakActivity = new WeakReference<>(activity);
+        this.activity = activity;
     }
 
     public UpdateMindmapsTask(Activity activity, File base_dir, boolean isLastFile) {
-        mWeakActivity = new WeakReference<>(activity);
+        this.mWeakActivity = new WeakReference<>(activity);
+        this.activity = activity;
         this.base_dir = base_dir;
         this.isLastFile = isLastFile;
     }
@@ -56,7 +59,6 @@ public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        Activity activity = mWeakActivity.get();
         if ((mWeakActivity.get() != null && !mWeakActivity.get().isFinishing())
                 && progress == null) {
             progress = new ProgressDialog(activity);
@@ -66,7 +68,11 @@ public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
             progress.setTitle(activity.getString(R.string.please_wait_progress));
             progress.setMessage(activity.getString(R.string.downloading_mindmaps));
             progress.setCanceledOnTouchOutside(false);
-            progress.show();
+            try {
+                progress.show();
+            } catch (Exception ex) {
+                Log.e(TAG, "onPreExecute: ", ex);
+            }
         }
     }
 
@@ -204,8 +210,9 @@ public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
             }
 
             if ((mWeakActivity.get() != null && !mWeakActivity.get().isFinishing())
-                    && progress != null && progress.isShowing()) {
+                    && (progress != null && progress.isShowing())) {
                 progress.dismiss();
+                progress = null;
             }
         }
     }

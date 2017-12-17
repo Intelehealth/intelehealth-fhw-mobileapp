@@ -351,10 +351,14 @@ public class ClientService extends IntentService {
                     case STATUS_PERSON_NOT_CREATED: {
                         responseCode = uploadPersonData(patientID);
                         if (responseCode != null) {
+                            if (!responseCode.isEmpty()) {
+                                current_intent.putExtra("status", STATUS_PATIENT_NOT_CREATED);
+
                             current_intent.putExtra("status", STATUS_PATIENT_NOT_CREATED);
                             current_intent.putExtra("personResponse", responseCode);
                             uploadDone = uploadPatientData
-                                    (patientID, responseCode);
+                                    (patientID, responseCode);}
+
                         } else {
                             current_intent.putExtra("status", STATUS_PERSON_NOT_CREATED);
                         }
@@ -593,7 +597,6 @@ public class ClientService extends IntentService {
         Obs temperature = new Obs();
         Obs spO2 = new Obs();
 
-
         String[] columns = {"value", " concept_id"};
         String orderBy = "visit_id";
 
@@ -697,8 +700,10 @@ public class ClientService extends IntentService {
         idCursor.close();
 
         if (patient.getOpenmrsId() == null || patient.getOpenmrsId().isEmpty()) {
-            Toast.makeText(this, getString(R.string.patient_upload_error), Toast.LENGTH_LONG).show();
-            return uploadStatus;
+
+
+            Toast.makeText(this, "Pa", Toast.LENGTH_SHORT).show();
+            return false;
         }
 
         Integer statusCode = STATUS_VISIT_NOT_CREATED;
@@ -708,8 +713,7 @@ public class ClientService extends IntentService {
                 String visitUUID;
 
                 if (statusCode == STATUS_VISIT_NOT_CREATED) {
-                    visitUUID =
-                            uploadVisitData(patient, startDateTime, visitID);
+                    visitUUID = uploadVisitData(patient, startDateTime, visitID);
                     ContentValues contentValuesVisit = new ContentValues();
                     contentValuesVisit.put("openmrs_visit_uuid", visitUUID);
                     String visitUpdateSelection = "start_datetime = ?";
@@ -721,16 +725,25 @@ public class ClientService extends IntentService {
                             visitUpdateSelection,
                             visitUpdateArgs
                     );
-                } else visitUUID = current_intent.getStringExtra("visitResponse");
+
+
+                } else {
+                    visitUUID = current_intent.getStringExtra("visitResponse");
+                }
 
 
                 if (visitUUID != null) {
                     current_intent.putExtra("visitResponse", visitUUID);
+                    current_intent.putExtra("status", statusCode);
+                    statusCode = STATUS_ENCOUNTER_NOT_CREATED;
                     if (statusCode == STATUS_ENCOUNTER_NOT_CREATED) {
                         boolean encounter_vitals = uploadEncounterVitals(visitID, visitUUID, patient, startDateTime,
                                 temperature, weight, height, pulse, bpSys, bpDias, spO2);
 
-                        if (encounter_vitals) statusCode = STATUS_ENCOUNTER_NOTE_NOT_CREATED;
+                        if (encounter_vitals) {
+                            statusCode = STATUS_ENCOUNTER_NOTE_NOT_CREATED;
+                            current_intent.putExtra("status", statusCode);
+                        }
 
                         boolean encounter_notes = uploadEncounterNotes(visitID, visitUUID, patient, startDateTime,
                                 patHistory, famHistory, complaint, physFindings);
@@ -745,6 +758,8 @@ public class ClientService extends IntentService {
 
                 current_intent.putExtra("status", statusCode);
 
+            } else if (patient.getOpenmrsId() == null || (patient.getOpenmrsId() != null && patient.getOpenmrsId().isEmpty())) {
+                current_intent.putExtra("status", statusCode);
             }
         } else {
             String visitUUID;
@@ -1073,6 +1088,11 @@ public class ClientService extends IntentService {
                 formattedObs = formattedObs.substring(0, formattedObs.length() - 1);
             }
         }
+
+        if(formattedObs.contains("%")){
+            formattedObs = formattedObs.replaceAll("%","");
+        }
+
 
         String noteString =
                 String.format("{" +
