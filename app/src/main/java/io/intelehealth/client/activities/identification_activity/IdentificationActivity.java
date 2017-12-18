@@ -37,6 +37,8 @@ import android.widget.Spinner;
 
 import com.bumptech.glide.Glide;
 
+import org.joda.time.Years;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,6 +53,7 @@ import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.utilities.HelperMethods;
 
+import static android.support.design.R.styleable.AlertDialog;
 import static io.intelehealth.client.utilities.HelperMethods.REQUEST_CAMERA;
 import static io.intelehealth.client.utilities.HelperMethods.REQUEST_READ_EXTERNAL;
 
@@ -67,7 +70,7 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mDOB;
     EditText mPhoneNum;
     EditText mAge;
-    EditText monthsInAge;
+    EditText mAgeInMonths;
     EditText mAddress1;
     EditText mAddress2;
     AutoCompleteTextView mCity;
@@ -135,6 +138,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mDOB = (EditText) findViewById(R.id.identification_birth_date_text_view);
         mPhoneNum = (EditText) findViewById(R.id.identification_phone_number);
         mAge = (EditText) findViewById(R.id.identification_age);
+        mAgeInMonths = (EditText) findViewById(R.id.identification_ageInMonths);
         mAddress1 = (EditText) findViewById(R.id.identification_address1);
         mAddress2 = (EditText) findViewById(R.id.identification_address2);
         mCity = (AutoCompleteTextView) findViewById(R.id.identification_city);
@@ -379,13 +383,18 @@ public class IdentificationActivity extends AppCompatActivity {
 
                 //Age should be calculated based on the date
                 int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+                int months = today.get(Calendar.MONTH) - dob.get(Calendar.MONTH);
                 if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
                     age--;
                 }
                 mAge.setText(String.valueOf(age));
+                mAgeInMonths.setText((String.valueOf(months)));
                 mDOB.setText(dobString);
+
             }
         }, today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH));
+            mDOBPicker.getDatePicker().setMaxDate(today.getTimeInMillis());
+
 
         //DOB Picker is shown when clicked
         mDOB.setOnClickListener(new View.OnClickListener() {
@@ -395,29 +404,33 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
 
+        mAge.addTextChangedListener(textWatcher);
+        mAgeInMonths.addTextChangedListener(textWatcher);
 
-        mAge.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
+//        mAge.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                if (!s.toString().trim().isEmpty()) {
+//                    if (getCurrentFocus().getId() == mAge.getId() || mDOB.getText().toString().trim().isEmpty()) {
+//                        Calendar calendar = Calendar.getInstance();
+//                        int curYear = calendar.get(Calendar.YEAR);
+//                        int birthYear = curYear - Integer.valueOf(s.toString().trim());
+//                        String calcDOB = String.valueOf(birthYear) + "-01-01";
+//                        mDOB.setText(calcDOB);
+//                    }
+//                }
+//            }
+//        });
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!s.toString().trim().isEmpty()) {
-                    if (getCurrentFocus().getId() == mAge.getId() || mDOB.getText().toString().trim().isEmpty()) {
-                        Calendar calendar = Calendar.getInstance();
-                        int curYear = calendar.get(Calendar.YEAR);
-                        int birthYear = curYear - Integer.valueOf(s.toString().trim());
-                        String calcDOB = String.valueOf(birthYear) + "-01-01";
-                        mDOB.setText(calcDOB);
-                    }
-                }
-            }
-        });
 
         /*
         User has to have option where they can enter the age.
@@ -459,7 +472,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         }
 
                     }
-                });
+                });                });
 
                 textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
                     @Override
@@ -483,6 +496,53 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
     }
+
+
+
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            setDobFromYearAndMonth();
+        }
+    };
+
+    private void setDobFromYearAndMonth(){
+        int year = 0;
+        int month = 0;
+        if(!TextUtils.isEmpty(mAge.getText())){
+            year = Integer.parseInt(mAge.getText().toString());
+            if(year < 0) {
+                mAge.setText("");
+            }
+        }
+        if(!TextUtils.isEmpty(mAgeInMonths.getText())){
+            month = Integer.parseInt(mAgeInMonths.getText().toString());
+            if(month > 12){
+                mAgeInMonths.setText("");
+            }
+        }
+
+        Calendar calendar =  Calendar.getInstance();
+        calendar.add(Calendar.YEAR, -year);
+        calendar.add(Calendar.MONTH, -month);
+        calendar.set(Calendar.DAY_OF_MONTH, 01);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
+        mDOB.setText(sdf.format(calendar.getTimeInMillis()));
+    }
+
+
+
 
     // This method is for setting the screen with existing values in database whenn user clicks edit details
     private void setscreen(String str) {
