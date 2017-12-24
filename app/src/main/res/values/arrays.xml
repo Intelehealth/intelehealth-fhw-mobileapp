@@ -16,8 +16,9 @@
     </string-array>
     <string-array name="countries">
         <item>Select Country</item>
-        <item>India</item>
-        <item>United States</item>
+        <item>Haiti</item>
+        <!--<item>India</item>-->
+        <!--<item>United States</item>-->
     </string-array>
 
     <string-array name="education">
@@ -28,15 +29,15 @@
         <item>Higher Secondary</item>
         <item>Graduation &amp; Higher</item>
     </string-array>
-
-    <string-array name="caste">
-        <item>Select Caste</item>
-        <item>General</item>
-        <item>OBC</item>
-        <item>SC</item>
-        <item>ST</item>
-        <item>others</item>
-    </string-array>
+<!--caste-->
+    <!--<string-array name="caste">-->
+        <!--<item>Select Caste</item>-->
+        <!--<item>General</item>-->
+        <!--<item>OBC</item>-->
+        <!--<item>SC</item>-->
+        <!--<item>ST</item>-->
+        <!--<item>others</item>-->
+    <!--</string-array>-->
 
     <string-array name="economic">
         <item>Select Economic Status</item>
@@ -44,38 +45,38 @@
         <item>BPL</item>
     </string-array>
 
-    <string-array name="states_india">
-        <item>Select State</item>
-        <item>Andhra Pradesh</item>
-        <item>Arunachal Pradesh</item>
-        <item>Assam</item>
-        <item>Bihar</item>
-        <item>Chhattisgarh</item>
-        <item>Goa</item>
-        <item>Gujarat</item>
-        <item>Haryana</item>
-        <item>Himachal Pradesh</item>
-        <item>Jammu &amp; Kashmir</item>
-        <item>Jharkhand</item>
-        <item>Karnataka</item>
-        <item>Kerala</item>
-        <item>Madhya Pradesh</item>
-        <item>Maharashtra</item>
-        <item>Manipur</item>
-        <item>Meghalaya</item>
-        <item>Mizoram</item>
-        <item>Nagaland</item>
-        <item>Odisha</item>
-        <item>Punjab</item>
-        <item>Rajasthan</item>
-        <item>Sikkim</item>
-        <item>Tamil Nadu</item>
-        <item>Telangana</item>
-        <item>Tripura</item>
-        <item>Uttar Pradesh</item>
-        <item>Uttarakhand</item>
-        <item>West Bengal</item>
-    </string-array>
+    <!--<string-array name="states_india">-->
+        <!--<item>Select State</item>-->
+        <!--<item>Andhra Pradesh</item>-->
+        <!--<item>Arunachal Pradesh</item>-->
+        <!--<item>Assam</item>-->
+        <!--<item>Bihar</item>-->
+        <!--<item>Chhattisgarh</item>-->
+        <!--<item>Goa</item>-->
+        <!--<item>Gujarat</item>-->
+        <!--<item>Haryana</item>-->
+        <!--<item>Himachal Pradesh</item>-->
+        <!--<item>Jammu &amp; Kashmir</item>-->
+        <!--<item>Jharkhand</item>-->
+        <!--<item>Karnataka</item>-->
+        <!--<item>Kerala</item>-->
+        <!--<item>Madhya Pradesh</item>-->
+        <!--<item>Maharashtra</item>-->
+        <!--<item>Manipur</item>-->
+        <!--<item>Meghalaya</item>-->
+        <!--<item>Mizoram</item>-->
+        <!--<item>Nagaland</item>-->
+        <!--<item>Odisha</item>-->
+        <!--<item>Punjab</item>-->
+        <!--<item>Rajasthan</item>-->
+        <!--<item>Sikkim</item>-->
+        <!--<item>Tamil Nadu</item>-->
+        <!--<item>Telangana</item>-->
+        <!--<item>Tripura</item>-->
+        <!--<item>Uttar Pradesh</item>-->
+        <!--<item>Uttarakhand</item>-->
+        <!--<item>West Bengal</item>-->
+    <!--</string-array>-->
 
     <string-array name="states_us">
         <item>Select State</item>
@@ -131,35 +132,49 @@
         <item>Wyoming</item>
     </string-array>
 
-    <string-array name="odisha_villages">
-        <item>Satygaon</item>
-        <item>Banjha Munda</item>
-        <item>Baidehipur</item>
-        <item>Bhadramunda</item>
-        <item>Patamara</item>
-        <item>Ditikrushnapur</item>
-        <item>Pita Kulha Sahi</item>
-        <item>Kusumapal</item>
-        <item>Paunsia</item>
-        <item>Genjeimuni</item>
-        <item>Sagamanji Sahi</item>
-        <item>Bankhuli</item>
-        <item>Tandibereni</item>
-        <item>Nalasahi</item>
-        <item>Chanapal</item>
-        <item>Magarmuhan</item>
-        <item>Rangamatia</item>
-        <item>Suabasa</item>
-        <item>Kurumula</item>
-        <item>Ghenakani</item>
-        <item>Gopinnathpur</item>
-        <item>Kusubania</item>
-        <item>Hathimunda</item>
-        <item>Dhipasahi</item>
-        <item>Kuchinda</item>
-        <item>Chadakamara</item>
-        <item>Phuljhari</item>
-        <item>Khuntaposi</item>
+    <!--<string-array name="odisha_villages">-->
+        <!--<item>Satygaon</item>-->
+        <!--<item>Banjha Munda</item>-->
+        <!--<item>Baidehipur</item>-->
+        <!--<item>Bhadramunda</item>-->
+        <!--<item>Patamara</item>-->
+        <!--<item>Ditikrushnapur</item>-->
+        <!--<item>Pita Kulha Sahi</item>-->
+        <!--<item>Kusumapal</item>-->
+        <!--<item>Paunsia</item>-->
+        <!--<item>Genjeimuni</item>-->
+        <!--<item>Sagamanji Sahi</item>-->
+        <!--<item>Bankhuli</item>-->
+        <!--<item>Tandibereni</item>-->
+        <!--<item>Nalasahi</item>-->
+        <!--<item>Chanapal</item>-->
+        <!--<item>Magarmuhan</item>-->
+        <!--<item>Rangamatia</item>-->
+        <!--<item>Suabasa</item>-->
+        <!--<item>Kurumula</item>-->
+        <!--<item>Ghenakani</item>-->
+        <!--<item>Gopinnathpur</item>-->
+        <!--<item>Kusubania</item>-->
+        <!--<item>Hathimunda</item>-->
+        <!--<item>Dhipasahi</item>-->
+        <!--<item>Kuchinda</item>-->
+        <!--<item>Chadakamara</item>-->
+        <!--<item>Phuljhari</item>-->
+        <!--<item>Khuntaposi</item>-->
+    <!--</string-array>-->
+
+
+    <string-array name = "Department">
+        <item>Ouest</item>
+        <item>Sud-Est</item>
+        <item>Nord</item>
+        <item>Nord-Est</item>
+        <item>Artibonite</item>
+        <item>Centre</item>
+        <item>Sud</item>
+        <item>Grande'Anse</item>
+        <item>Nord-Ouest</item>
+        <item>Nippes</item>
     </string-array>
 
     <string-array name="units">

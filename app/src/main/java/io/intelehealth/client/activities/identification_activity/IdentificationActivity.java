@@ -151,11 +151,11 @@ public class IdentificationActivity extends AppCompatActivity {
         mGenderF = (RadioButton) findViewById(R.id.identification_gender_female);
         mRelationship = (EditText) findViewById(R.id.identification_relationship);
         mOccupation = (EditText) findViewById(R.id.identification_occupation);
-        mCaste = (Spinner) findViewById(R.id.spinner_caste);
+//        mCaste = (Spinner) findViewById(R.id.spinner_caste);
         mEducation = (Spinner) findViewById(R.id.spinner_education);
         mEconomicStatus = (Spinner) findViewById(R.id.spinner_economic_status);
 
-        casteText = (EditText) findViewById(R.id.identification_caste);
+//        casteText = (EditText) findViewById(R.id.identification_caste);
         educationText = (EditText) findViewById(R.id.identification_education);
         economicText = (EditText) findViewById(R.id.identification_econiomic_status);
 
@@ -187,10 +187,10 @@ public class IdentificationActivity extends AppCompatActivity {
         countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCountry.setAdapter(countryAdapter);
 
-        ArrayAdapter<CharSequence> casteAdapter = ArrayAdapter.createFromResource(this,
-                R.array.caste, android.R.layout.simple_spinner_item);
-        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mCaste.setAdapter(casteAdapter);
+//        ArrayAdapter<CharSequence> casteAdapter = ArrayAdapter.createFromResource(this,
+//                R.array.caste, android.R.layout.simple_spinner_item);
+//        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        mCaste.setAdapter(casteAdapter);
 
         ArrayAdapter<CharSequence> economicStausAdapter = ArrayAdapter.createFromResource(this,
                 R.array.economic, android.R.layout.simple_spinner_item);
@@ -240,11 +240,11 @@ public class IdentificationActivity extends AppCompatActivity {
                 mEconomicStatus.setSelection(0);
             else
                 mEconomicStatus.setSelection(economicStausAdapter.getPosition(String.valueOf(patient1.getEconomic_status())));
-            if (patient1.getCaste().equals(getString(R.string.not_provided)))
-                mCaste.setSelection(0);
-            else
-                mCaste.setSelection(casteAdapter.getPosition(String.valueOf(patient1.getCaste())));
-        } else {
+//            if (patient1.getCaste().equals(getString(R.string.not_provided)))
+//                mCaste.setSelection(0);
+////            else
+////                mCaste.setSelection(casteAdapter.getPosition(String.valueOf(patient1.getCaste())));
+//        } else {
             mCountry.setSelection(countryAdapter.getPosition("India"));
         }
 
@@ -256,10 +256,10 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String state = parent.getItemAtPosition(position).toString();
-                if (state.matches("Odisha")) {
+                if (state.matches("Ouest")) {
                     //Creating the instance of ArrayAdapter containing list of fruit names
                     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                            R.array.odisha_villages, android.R.layout.simple_spinner_item);
+                            R.array.Department, android.R.layout.simple_spinner_item);
                     mCity.setThreshold(1);//will start working from first character
                     mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
                 } else {
@@ -279,9 +279,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (i != 0) {
                     String country = adapterView.getItemAtPosition(i).toString();
 
-                    if (country.matches("India")) {
+                    if (country.matches("Haiti")) {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                R.array.states_india, android.R.layout.simple_spinner_item);
+                                R.array.Department, android.R.layout.simple_spinner_item);
                         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mState.setAdapter(stateAdapter);
                         // setting state according database when user clicks edit details
