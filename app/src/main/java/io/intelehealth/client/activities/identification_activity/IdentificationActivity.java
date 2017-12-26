@@ -47,6 +47,7 @@ import java.util.Locale;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.camera_activity.CameraActivity;
+import io.intelehealth.client.activities.home_activity.HomeActivity;
 import io.intelehealth.client.activities.patient_detail_activity.PatientDetailActivity;
 import io.intelehealth.client.activities.setting_activity.SettingsActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
@@ -83,12 +84,23 @@ public class IdentificationActivity extends AppCompatActivity {
     DatePickerDialog mDOBPicker;
     EditText countryText;
     EditText stateText;
-    Spinner mCountry;
-    Spinner mState;
+    EditText cellNumber;
+    EditText prisonName;
+    EditText patientStatus;
+
+
+
 
     EditText casteText;
     EditText economicText;
     EditText educationText;
+
+
+    Spinner mCellNumber;
+    Spinner mCountry;
+    Spinner mState;
+    Spinner mPrisonName;
+    Spinner mPatientStatus;
 
     Spinner mCaste;
     Spinner mEducation;
@@ -144,6 +156,12 @@ public class IdentificationActivity extends AppCompatActivity {
         mCity = (AutoCompleteTextView) findViewById(R.id.identification_city);
         stateText = (EditText) findViewById(R.id.identification_state);
         mState = (Spinner) findViewById(R.id.spinner_state);
+        cellNumber = (EditText) findViewById(R.id.identification_cell_number);
+        mCellNumber = (Spinner)findViewById(R.id.spinner_cell_number);
+        prisonName = (EditText)findViewById(R.id.identification_prison_name);
+        mPrisonName = (Spinner)findViewById(R.id.spinner_prison_name);
+        patientStatus =(EditText)findViewById(R.id.identification_patient_status);
+        mPatientStatus =(Spinner)findViewById(R.id.spinner_patient_status);
         mPostal = (EditText) findViewById(R.id.identification_postal_code);
         countryText = (EditText) findViewById(R.id.identification_country);
         mCountry = (Spinner) findViewById(R.id.spinner_country);
@@ -192,10 +210,10 @@ public class IdentificationActivity extends AppCompatActivity {
 //        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //        mCaste.setAdapter(casteAdapter);
 
-        ArrayAdapter<CharSequence> economicStausAdapter = ArrayAdapter.createFromResource(this,
+        ArrayAdapter<CharSequence> economicStatusAdapter = ArrayAdapter.createFromResource(this,
                 R.array.economic, android.R.layout.simple_spinner_item);
         countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mEconomicStatus.setAdapter(economicStausAdapter);
+        mEconomicStatus.setAdapter(economicStatusAdapter);
 
         ArrayAdapter<CharSequence> educationAdapter = ArrayAdapter.createFromResource(this,
                 R.array.education, android.R.layout.simple_spinner_item);
@@ -239,7 +257,7 @@ public class IdentificationActivity extends AppCompatActivity {
             if (patient1.getEconomic_status().equals(getString(R.string.not_provided)))
                 mEconomicStatus.setSelection(0);
             else
-                mEconomicStatus.setSelection(economicStausAdapter.getPosition(String.valueOf(patient1.getEconomic_status())));
+                mEconomicStatus.setSelection(economicStatusAdapter.getPosition(String.valueOf(patient1.getEconomic_status())));
 //            if (patient1.getCaste().equals(getString(R.string.not_provided)))
 //                mCaste.setSelection(0);
 ////            else
@@ -319,6 +337,34 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
         });
+//
+
+
+
+
+        //cell number spinner
+        Integer[] items = new Integer[50];
+        for(int i = 0;i<items.length;i++) {
+            items[i] = i + 1; // 1 to 50
+
+            ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, items);
+            mCellNumber.setAdapter(adapter);
+        }
+
+        // prison name drop down
+
+        ArrayAdapter<CharSequence> prisonNameAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                R.array.PrisonName, android.R.layout.simple_spinner_item);
+        prisonNameAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mPrisonName.setAdapter(prisonNameAdapter);
+
+        // patient status
+
+        ArrayAdapter<CharSequence>patientStatusAdapter =  ArrayAdapter.createFromResource(IdentificationActivity.this,
+                R.array.PatientStatus,android.R.layout.simple_spinner_item);
+        patientStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mPatientStatus.setAdapter(patientStatusAdapter);
+
 
         //Check to see if the permission was given to take pictures.
         /*if (ContextCompat.checkSelfPermission(IdentificationActivity.this,
@@ -1049,7 +1095,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
+     Intent i = new Intent(getApplicationContext(), HomeActivity.class);
+     startActivity(i);
     }
+
+
 }
 

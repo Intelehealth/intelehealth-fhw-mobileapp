@@ -132,6 +132,10 @@
         <item>Wyoming</item>
     </string-array>
 
+    <string-array name="commune">
+        <item></item>
+    </string-array>
+
     <!--<string-array name="odisha_villages">-->
         <!--<item>Satygaon</item>-->
         <!--<item>Banjha Munda</item>-->
@@ -175,6 +179,23 @@
         <item>Grande'Anse</item>
         <item>Nord-Ouest</item>
         <item>Nippes</item>
+    </string-array>
+
+    <string-array name = "PrisonName">
+        <item>PCPAA</item>
+        <item>PCD</item>
+        <item>PCPV</item>
+        <item>PCC</item>
+        <item>PCCH</item>
+        <item>PCH</item>
+        <item>OTH</item>
+    </string-array>
+
+    <string-array name="PatientStatus">
+        <item>Active</item>
+        <item>Deceased</item>
+        <item>Transferred</item>
+        <item>Released</item>
     </string-array>
 
     <string-array name="units">
