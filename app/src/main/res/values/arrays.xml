@@ -20,6 +20,9 @@
         <!--<item>India</item>-->
         <!--<item>United States</item>-->
     </string-array>
+    <string-array name="commune_error">
+        <item>Please select Department first</item>
+    </string-array>
 
     <string-array name="education">
         <item>Select Education</item>
@@ -132,8 +135,183 @@
         <item>Wyoming</item>
     </string-array>
 
-    <string-array name="commune">
-        <item></item>
+    <string-array name="Ouest">
+        <item>Port-au-Prince</item>
+        <item>Delmas</item>
+        <item>Carrefour</item>
+        <item>Pétion-Ville</item>
+        <item>Kenscoff</item>
+        <item>Gressier</item>
+        <item>Cité Soleil</item>
+        <item>Tabarre</item>
+        <item>Léogâne</item>
+        <item>Petit-Goâve</item>
+
+        <item>Grand-Goâve</item>
+
+        <item>Croix-Des-Bouquets</item>
+
+        <item>Thomazeau</item>
+
+        <item>Ganthier</item>
+        <item>Cornillon / Grand Bois</item>
+        <item>Fonds-Verrettes</item>
+        <item>Arcahaie</item>
+        <item>Cabaret</item>
+        <item>Anse à Galets</item>
+        <item>Pointe à Raquette</item>
+        </string-array>
+
+
+        <string-array name ="Sud_Est">
+        <item>Jacmel</item>
+        <item>Marigot</item>
+        <item>Cayes-Jacmel</item>
+        <item>La Vallée</item>
+        <item>Bainet</item>
+        <item>Côtes de Fer</item>
+        <item>Belle Anse</item>
+        <item>Grand Gosier</item>
+        <item>Thiotte</item>
+        <item>Anse-à-Pître</item>
+        </string-array>
+    <string-array name="Nord">
+        <item>Cap-Haïtien</item>
+        <item>Quartier Morin</item>
+        <item>Limonade</item>
+        <item>Acul du Nord</item>
+        <item>Plaine du Nord</item>
+        <item>Milot</item>
+        <item>Grande Riviere Du Nord</item>
+        <item>Bahon</item>
+        <item>Saint-Raphaël</item>
+        <item>Dondon</item>
+        <item>Ranquitte</item>
+        <item>Pignon</item>
+        <item>La Victoire</item>
+        <item>Borgne</item>
+        <item>Port-Margot</item>
+        <item>Limbé</item>
+        <item>Bas Limbé</item>
+        <item>Plaisance</item>
+        <item>Pilate</item>
+    </string-array>
+    
+    <string-array name="Nord_Est">
+        <item>Fort-Liberté</item>
+        <item>Ferrier</item>
+        <item>Perches</item>
+        <item>Ouanaminthe</item>
+        <item>Capotille</item>
+        <item>Mont-Organisé</item>
+        <item>Trou du Nord</item>
+        <item>Sainte Suzanne</item>
+        <item>Terrier Rouge</item>
+        <item>Caracol</item>
+        <item>Vallières</item>
+        <item>Carice</item>
+        <item>Mombin Crochu</item>
+
+
+    </string-array>
+
+
+    <string-array name="Artibonite">
+        <item>Gonaïves</item>
+        <item>Ennery</item>
+        <item>L Estère</item>
+        <item>Gros Morne</item>
+        <item>Terre Neuve</item>
+
+        <item>Anse Rouge</item>
+        <item>Saint-Marc</item>
+        <item>VerrettesAquin</item>
+        <item>La Chapelle</item>
+        <item>Dessalines</item>
+        <item>Petite Rivière de l Artibonite</item>
+        <item>Grande Saline</item>
+        <item>Desdunes</item>
+        <item>Saint-Michel de l Attalaye</item>
+        <item>Marmelade</item>
+        
+    </string-array>
+    
+    <string-array name="Centre">
+        <item>Hinche</item>
+        <item>Maïssade</item>
+        <item>Thomonde</item>
+        <item>Cerca Carvajal</item>
+        <item>Mirebalais</item>
+        <item>Saut d'Eau</item>
+        <item>Boucan Carré</item>
+        <item>Lascahobas</item>
+        <item>Belladère</item>
+        <item>Savanette</item>
+        <item>Cerca La Source</item>
+        <item>Thomassique</item>
+
+    </string-array>
+    <string-array name="Sud">
+        <item>Les Cayes</item>
+        <item>Torbeck</item>
+        <item>Chantal</item>
+        <item>Camp-Perrin</item>
+        <item>Maniche</item>
+        <item>Île à Vache</item>
+        <item>Port-Salut</item>
+        <item>Saint Jean du Sud</item>
+        <item>Arniquet</item>
+        <item>Saint louis du Sud</item>
+        <item>Cavaillon</item>
+        <item>Côteaux</item>
+        <item>Port-à-Piment</item>
+
+        <item>Roche à Bâteau</item>
+        <item>Chardonnières</item>
+        <item>Les Anglais</item>
+        <item>Tiburon</item>
+        
+    </string-array>
+    
+    <string-array name="Grande_Anse">
+        <item>Jérémie</item>
+        <item>Abricots </item>
+        <item>Bonbon</item>
+        <item>Moron</item>
+        <item>Chambellan</item>
+        <item>Anse d'Hainault</item>
+        <item>Dame Marie</item>
+        <item>Les Irois</item>
+        <item>Corail</item>
+        <item>Roseaux</item>
+        <item>Beaumont</item>
+        <item>Pestel</item>
+    </string-array>
+    
+    <string-array name="Nord_Ouest">
+        <item>Port-de-Paix</item>
+        <item>La Tortue</item>
+        <item>Bassin Bleu</item>
+        <item>Chamsolme</item>
+        <item>Saint-Louis du Nord</item>
+        <item>Anse-à-Foleur</item>
+        <item>Môle Saint Nicolas</item>
+        <item>Baie de Henne</item>
+        <item>Bombardopolis</item>
+        <item>Jean Rabel</item>
+    </string-array>
+    <string-array name="Nippes">
+        <item>Miragoâne</item>
+        <item>Petite Rivière de Nippes</item>
+        <item>Fonds des Nègres</item>
+        <item>Paillant</item>
+        <item>Anse-à-Veau</item>
+        <item>Petit Trou de Nippes</item>
+        <item>L'Asile</item>
+        <item>Arnaud</item>
+        <item>Plaisance du Sud</item>
+        <item>Baradères</item>
+        <item>Grand-Boucan</item>
     </string-array>
 
     <!--<string-array name="odisha_villages">-->

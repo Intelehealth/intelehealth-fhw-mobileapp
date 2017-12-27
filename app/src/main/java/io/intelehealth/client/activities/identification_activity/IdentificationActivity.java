@@ -40,10 +40,13 @@ import com.bumptech.glide.Glide;
 import org.joda.time.Years;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+
+import javax.security.auth.callback.CallbackHandler;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.camera_activity.CameraActivity;
@@ -94,6 +97,7 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText casteText;
     EditText economicText;
     EditText educationText;
+    EditText commune;
 
 
     Spinner mCellNumber;
@@ -101,6 +105,7 @@ public class IdentificationActivity extends AppCompatActivity {
     Spinner mState;
     Spinner mPrisonName;
     Spinner mPatientStatus;
+    Spinner mCommune;
 
     Spinner mCaste;
     Spinner mEducation;
@@ -153,9 +158,10 @@ public class IdentificationActivity extends AppCompatActivity {
         mAgeInMonths = (EditText) findViewById(R.id.identification_ageInMonths);
         mAddress1 = (EditText) findViewById(R.id.identification_address1);
         mAddress2 = (EditText) findViewById(R.id.identification_address2);
-        mCity = (AutoCompleteTextView) findViewById(R.id.identification_city);
+//        mCity = (AutoCompleteTextView) findViewById(R.id.identification_city);
         stateText = (EditText) findViewById(R.id.identification_state);
         mState = (Spinner) findViewById(R.id.spinner_state);
+        mCommune = (Spinner)findViewById(R.id.spinner_commune);
         cellNumber = (EditText) findViewById(R.id.identification_cell_number);
         mCellNumber = (Spinner)findViewById(R.id.spinner_cell_number);
         prisonName = (EditText)findViewById(R.id.identification_prison_name);
@@ -191,7 +197,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mPhoneNum.setText(patient1.getPhoneNumber());
         mAddress1.setText(patient1.getAddress1());
         mAddress2.setText(patient1.getAddress2());
-        mCity.setText(patient1.getCityVillage());
+//        mCity.setText(patient1.getCityVillage());
         mPostal.setText(patient1.getPostalCode());
         mRelationship.setText(patient1.getSdw());
         mOccupation.setText(patient1.getOccupation());
@@ -266,23 +272,83 @@ public class IdentificationActivity extends AppCompatActivity {
             mCountry.setSelection(countryAdapter.getPosition("India"));
         }
 
-        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.state_error, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.Department, android.R.layout.simple_spinner_item);
         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mState.setAdapter(stateAdapter);
 
+//        mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                String state = parent.getItemAtPosition(position).toString();
+//                if (state.matches("Ouest")) {
+//                    //Creating the instance of ArrayAdapter containing list of fruit names
+//                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+//                            R.array.Department, android.R.layout.simple_spinner_item);
+////                    mCity.setThreshold(1);//will start working from first character
+////                    mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+////                } else {
+////                    mCity.setAdapter(null);
+////                }
+//                }
+////            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
+        ArrayAdapter<CharSequence> communeAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                R.array.Ouest,android.R.layout.simple_spinner_item);
+                mCommune.setAdapter(communeAdapter);
+//
         mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String state = parent.getItemAtPosition(position).toString();
-                if (state.matches("Ouest")) {
-                    //Creating the instance of ArrayAdapter containing list of fruit names
-                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                            R.array.Department, android.R.layout.simple_spinner_item);
-                    mCity.setThreshold(1);//will start working from first character
-                    mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
-                } else {
-                    mCity.setAdapter(null);
+                if(position!=0){
+                    String commune = parent.getItemAtPosition(position).toString();
+                    if(commune.matches("Centre")){
+                        ArrayAdapter<CharSequence> centreAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.Centre,android.R.layout.simple_spinner_item);
+                        mCommune.setAdapter(centreAdapter);
+                    }
+                    else if(commune.matches("Nord")){
+                        ArrayAdapter<CharSequence> nordAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.Nord,android.R.layout.simple_spinner_item);
+                        mCommune.setAdapter(nordAdapter);
+                    }
+                    else if(commune.matches("Artibonite")){
+                        ArrayAdapter<CharSequence> artiboniteAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.Artibonite,android.R.layout.simple_spinner_item);
+                        mCommune.setAdapter(artiboniteAdapter);
+                    }
+                    else if(commune.matches("Sud-Est")){
+                        ArrayAdapter<CharSequence> sud_EstAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.Sud_Est,android.R.layout.simple_spinner_item);
+                        mCommune.setAdapter(sud_EstAdapter);
+                    }
+                    else if(commune.matches("Sud")){
+                        ArrayAdapter<CharSequence> sudAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.Sud,android.R.layout.simple_spinner_item);
+                        mCommune.setAdapter(sudAdapter);
+                    }
+                    else if(commune.matches("Grande")){
+                        ArrayAdapter<CharSequence> grandeAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.Grande_Anse,android.R.layout.simple_spinner_item);
+                        mCommune.setAdapter(grandeAdapter);
+                    }
+                    else if(commune.matches("Nord-Ouest")){
+                        ArrayAdapter<CharSequence> nordOuestAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.Nord_Ouest,android.R.layout.simple_spinner_item);
+                        mCommune.setAdapter(nordOuestAdapter);
+                    }
+                    else if(commune.matches("Nippes")){
+                        ArrayAdapter<CharSequence> nippesAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.Nippes,android.R.layout.simple_spinner_item);
+                        mCommune.setAdapter(nippesAdapter);
+                    }
+
                 }
+
             }
 
             @Override
@@ -291,53 +357,56 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
 
-        mCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i != 0) {
-                    String country = adapterView.getItemAtPosition(i).toString();
-
-                    if (country.matches("Haiti")) {
-                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                R.array.Department, android.R.layout.simple_spinner_item);
-                        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        mState.setAdapter(stateAdapter);
-                        // setting state according database when user clicks edit details
-
-                        if (patientID_edit != -1) {
-                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getStateProvince())));
-                        } else {
-                            mState.setSelection(stateAdapter.getPosition("Odisha"));
-                        }
-
-                    } else if (country.matches("United States")) {
-                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                R.array.states_us, android.R.layout.simple_spinner_item);
-                        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        mState.setAdapter(stateAdapter);
-
-                        if (patientID_edit != -1) {
-
-                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getStateProvince())));
-                        }
-
-                    }
-                } else {
-                    ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                            R.array.state_error, android.R.layout.simple_spinner_item);
-                    stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    mState.setAdapter(stateAdapter);
-                }
 
 
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
 //
+//        mCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                if (i != 0) {
+//                    String country = adapterView.getItemAtPosition(i).toString();
+//
+//                    if (country.matches("Haiti")) {
+//                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+//                                R.array.Department, android.R.layout.simple_spinner_item);
+//                        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                        mState.setAdapter(stateAdapter);
+//                        // setting state according database when user clicks edit details
+//
+//                        if (patientID_edit != -1) {
+//                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getStateProvince())));
+//                        } else {
+//                            mState.setSelection(stateAdapter.getPosition("Odisha"));
+//                        }
+//
+//                    } else if (country.matches("United States")) {
+//                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+//                                R.array.states_us, android.R.layout.simple_spinner_item);
+//                        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                        mState.setAdapter(stateAdapter);
+//
+//                        if (patientID_edit != -1) {
+//
+//                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getStateProvince())));
+//                        }
+//
+//                    }
+//                } else {
+//                    ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+//                            R.array.state_error, android.R.layout.simple_spinner_item);
+//                    stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                    mState.setAdapter(stateAdapter);
+//                }
+//
+//
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
+////
 
 
 
@@ -609,7 +678,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patient1.setDateOfBirth(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
                 patient1.setAddress1(idCursor.getString(idCursor.getColumnIndexOrThrow("address1")));
                 patient1.setAddress2(idCursor.getString(idCursor.getColumnIndexOrThrow("address2")));
-                patient1.setCityVillage(idCursor.getString(idCursor.getColumnIndexOrThrow("city_village")));
+//                patient1.setCityVillage(idCursor.getString(idCursor.getColumnIndexOrThrow("city_village")));
                 patient1.setStateProvince(idCursor.getString(idCursor.getColumnIndexOrThrow("state_province")));
                 patient1.setPostalCode(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
                 patient1.setCountry(idCursor.getString(idCursor.getColumnIndexOrThrow("country")));
