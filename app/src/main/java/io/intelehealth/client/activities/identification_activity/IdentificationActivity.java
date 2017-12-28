@@ -58,6 +58,8 @@ import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.utilities.HelperMethods;
 
 import static android.support.design.R.styleable.AlertDialog;
+import static android.webkit.ConsoleMessage.MessageLevel.LOG;
+import static io.intelehealth.client.utilities.HelperMethods.LOG_TAG;
 import static io.intelehealth.client.utilities.HelperMethods.REQUEST_CAMERA;
 import static io.intelehealth.client.utilities.HelperMethods.REQUEST_READ_EXTERNAL;
 
@@ -202,6 +204,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mRelationship.setText(patient1.getSdw());
         mOccupation.setText(patient1.getOccupation());
 
+
         if (patient1.getPatientPhoto() != null && !patient1.getPatientPhoto().trim().isEmpty())
             mImageView.setImageBitmap(BitmapFactory.decodeFile(patient1.getPatientPhoto()));
 
@@ -272,9 +275,6 @@ public class IdentificationActivity extends AppCompatActivity {
             mCountry.setSelection(countryAdapter.getPosition("India"));
         }
 
-        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.Department, android.R.layout.simple_spinner_item);
-        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mState.setAdapter(stateAdapter);
 
 //        mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 //            @Override
@@ -297,19 +297,31 @@ public class IdentificationActivity extends AppCompatActivity {
 //
 //            }
 //        });
+////////////////////////// Department ////////////////////////////////////////////
+
+        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.Department, android.R.layout.simple_spinner_item);
+        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mState.setAdapter(stateAdapter);
+        ////////////////////commune /////////////////////////////////////////////
+
         ArrayAdapter<CharSequence> communeAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                 R.array.Ouest,android.R.layout.simple_spinner_item);
                 mCommune.setAdapter(communeAdapter);
-//
+
         mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position!=0){
+//                if(position!=0){
                     String commune = parent.getItemAtPosition(position).toString();
                     if(commune.matches("Centre")){
                         ArrayAdapter<CharSequence> centreAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                                 R.array.Centre,android.R.layout.simple_spinner_item);
                         mCommune.setAdapter(centreAdapter);
+                    }
+                    else if(commune.matches("Ouest")){
+                        ArrayAdapter<CharSequence> ouestAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.Ouest,android.R.layout.simple_spinner_item);
+                        mCommune.setAdapter(ouestAdapter);
                     }
                     else if(commune.matches("Nord")){
                         ArrayAdapter<CharSequence> nordAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
@@ -347,7 +359,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         mCommune.setAdapter(nippesAdapter);
                     }
 
-                }
+//                }
 
             }
 
@@ -665,7 +677,9 @@ public class IdentificationActivity extends AppCompatActivity {
 
         String patientSelection = "_id=?";
         String[] patientArgs = {str};
+        //create columns with cell, prison name,"patient status",Department,Commune,
         String[] patientColumns = {"first_name", "middle_name", "last_name",
+                "commune","cell_no","prison_name","patient_status",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw", "occupation", "patient_photo",
                 "economic_status", "education_status", "caste"};
@@ -680,6 +694,10 @@ public class IdentificationActivity extends AppCompatActivity {
                 patient1.setAddress2(idCursor.getString(idCursor.getColumnIndexOrThrow("address2")));
 //                patient1.setCityVillage(idCursor.getString(idCursor.getColumnIndexOrThrow("city_village")));
                 patient1.setStateProvince(idCursor.getString(idCursor.getColumnIndexOrThrow("state_province")));
+                patient1.setCommune(idCursor.getString(idCursor.getColumnIndexOrThrow("commune")));
+                patient1.setCellNo(idCursor.getString(idCursor.getColumnIndexOrThrow("cell_no")));
+                patient1.setPrisonName(idCursor.getString(idCursor.getColumnIndexOrThrow("prison_name")));
+                patient1.setPatientStatus(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_status")));
                 patient1.setPostalCode(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
                 patient1.setCountry(idCursor.getString(idCursor.getColumnIndexOrThrow("country")));
                 patient1.setPhoneNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
@@ -809,6 +827,19 @@ public class IdentificationActivity extends AppCompatActivity {
         } else {
             stateText.setError(null);
         }
+        if(mPrisonName.getSelectedItemPosition()==0){
+            prisonName.setText(getString(R.string.error_field_required));
+            focusView =  prisonName;
+            cancel = true;
+            return;
+        }
+        if(mPatientStatus.getSelectedItemPosition()==0){
+            patientStatus.setText(getString(R.string.error_field_required));
+            focusView =  patientStatus;
+            cancel= true;
+            return;
+        }
+        Log.i(TAG,"iam cool");
 
         if (cancel) {
             focusView.requestFocus();
@@ -893,12 +924,19 @@ public class IdentificationActivity extends AppCompatActivity {
                     patient.setOccupation(mOccupation.getText().toString());
                     patient1.setOccupation(mOccupation.getText().toString());
                 }
+                if(TextUtils.isEmpty(mOccupation.getText().toString()))
+                {
+                    patient.setPatientStatus("");
+
+                }
 
                 //currentPatient.setCountry(mCountry.getText().toString());
                 patient.setGender(mGender);
                 patient1.setGender(mGender);
                 patient.setCountry(mCountry.getSelectedItem().toString());
                 patient1.setCountry(mCountry.getSelectedItem().toString());
+
+                patient.setPatientStatus(mPatientStatus.getSelectedItem().toString());
 
 
                 if (mCaste.getSelectedItemPosition() == 0) {
@@ -928,6 +966,12 @@ public class IdentificationActivity extends AppCompatActivity {
                 patient.setStateProvince(mState.getSelectedItem().toString());
                 patient1.setStateProvince(mState.getSelectedItem().toString());
                 Log.v(TAG, "" + mState.getSelectedItem());
+
+
+                patient.setPatientStatus(mCommune.getSelectedItem().toString());
+                patient1.setPatientStatus(mCommune.getSelectedItem().toString());
+              Log.d("hey","hello"+mCommune.getSelectedItem());
+
             } catch (NullPointerException e) {
                 Snackbar.make(findViewById(R.id.cl_table), R.string.identification_screen_error_data_fields, Snackbar.LENGTH_SHORT);
             }
@@ -979,6 +1023,12 @@ public class IdentificationActivity extends AppCompatActivity {
             patientEntries.put("address2", patient.getAddress2());
             patientEntries.put("city_village", patient.getCityVillage());
             patientEntries.put("state_province", patient.getStateProvince());
+            patientEntries.put("commune",patient.getCommune());
+            patientEntries.put("prison_name",patient.getPrisonName());
+            patientEntries.put("cell_no",patient.getCellNo());
+            patientEntries.put("patient_status",patient.getPatientStatus());
+
+
             patientEntries.put("postal_code", patient.getPostalCode());
             patientEntries.put("country", patient.getCountry());
             patientEntries.put("gender", patient.getGender());
@@ -1055,6 +1105,10 @@ public class IdentificationActivity extends AppCompatActivity {
             patientEntries1.put("state_province", patient1.getStateProvince());
             patientEntries1.put("postal_code", patient1.getPostalCode());
             patientEntries1.put("country", patient1.getCountry());
+            patientEntries1.put("prison_name",patient1.getPrisonName());
+            patientEntries1.put("patient_status",patient1.getPatientStatus());
+            patientEntries1.put("cell_no",patient1.getCellNo());
+            patientEntries1.put("commune",patient1.getCommune());
             patientEntries1.put("gender", patient1.getGender());
             patientEntries1.put("sdw", patient1.getSdw());
             patientEntries1.put("occupation", patient1.getOccupation());
