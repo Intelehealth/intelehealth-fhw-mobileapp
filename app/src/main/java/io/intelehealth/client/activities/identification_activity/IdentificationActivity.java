@@ -924,11 +924,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     patient.setOccupation(mOccupation.getText().toString());
                     patient1.setOccupation(mOccupation.getText().toString());
                 }
-                if(TextUtils.isEmpty(mOccupation.getText().toString()))
-                {
-                    patient.setPatientStatus("");
 
-                }
 
                 //currentPatient.setCountry(mCountry.getText().toString());
                 patient.setGender(mGender);
@@ -971,6 +967,12 @@ public class IdentificationActivity extends AppCompatActivity {
                 patient.setPatientStatus(mCommune.getSelectedItem().toString());
                 patient1.setPatientStatus(mCommune.getSelectedItem().toString());
               Log.d("hey","hello"+mCommune.getSelectedItem());
+
+              patient.setPrisonName(mCommune.getSelectedItem().toString());
+              patient1.setPrisonName(mCommune.getSelectedItem().toString());
+
+              patient.setCellNo(mCommune.getSelectedItem().toString());
+              patient1.setCellNo(mCommune.getSelectedItem().toString());
 
             } catch (NullPointerException e) {
                 Snackbar.make(findViewById(R.id.cl_table), R.string.identification_screen_error_data_fields, Snackbar.LENGTH_SHORT);
