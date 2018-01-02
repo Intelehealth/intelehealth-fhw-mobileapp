@@ -66,7 +66,7 @@ import io.intelehealth.client.api.retrofit.ServiceGenerator;
 import io.intelehealth.client.models.Location;
 import io.intelehealth.client.models.Results;
 import io.intelehealth.client.objects.WebResponse;
-import io.intelehealth.client.services.UpdateMindmapsTask;
+import io.intelehealth.client.services.DownloadMindmapsTask;
 import io.intelehealth.client.utilities.HelperMethods;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -91,6 +91,9 @@ public class SetupActivity extends AppCompatActivity {
 
     private Spinner mDropdownLocation;
 
+
+    private RadioButton r1;
+    private RadioButton r2;
     private List<Location> mLocations = new ArrayList<>();
 
 
@@ -125,6 +128,9 @@ public class SetupActivity extends AppCompatActivity {
                 attemptLogin();
             }
         });
+
+        r1 = (RadioButton) findViewById(R.id.demoMindmap);
+        r2 = (RadioButton) findViewById(R.id.downloadMindmap);
 
         mPasswordView = (EditText) findViewById(R.id.password);
 
@@ -536,10 +542,20 @@ public class SetupActivity extends AppCompatActivity {
                         .build()
                 );
                 Log.i(TAG, "onPostExecute: Parse init");
-
                 Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
-                startActivity(intent);
-                finish();
+
+                if (r2.isChecked()) {
+                    if (sharedPref.contains("licensekey")) {
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(SetupActivity.this, "Please enter a valid license key", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    startActivity(intent);
+                    finish();
+                }
+
 
             } else if (success == 201) {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
@@ -606,8 +622,6 @@ public class SetupActivity extends AppCompatActivity {
     }
 
     public void onRadioClick(View v) {
-        RadioButton r1 = (RadioButton) findViewById(R.id.demoMindmap);
-        RadioButton r2 = (RadioButton) findViewById(R.id.downloadMindmap);
 
         boolean checked = ((RadioButton) v).isChecked();
         switch (v.getId()) {
@@ -637,19 +651,16 @@ public class SetupActivity extends AppCompatActivity {
                                     //Toast.makeText(SetupActivity.this, "" + key, Toast.LENGTH_SHORT).show();
                                     if (keyVerified(key)) {
                                         // create a shared pref to store the key
-                                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
                                         // SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("pref",MODE_PRIVATE);
 
                                         //DOWNLOAD MIND MAP FILE LIST
                                         //upnew getJSONFile().execute(null, "AllFiles", "TRUE");
 
-                                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                                        editor.putString("licensekey", key);
-                                        editor.commit();
-
-                                        UpdateMindmapsTask updateMindmapsTask = new UpdateMindmapsTask(SetupActivity.this);
-                                        updateMindmapsTask.execute(null, "AllFiles", "TRUE");
-
+                                        // UpdateMindmapsTask updateMindmapsTask = new UpdateMindmapsTask(SetupActivity.this);
+                                        // updateMindmapsTask.execute(null, "AllFiles", "TRUE");
+                                        DownloadMindmapsTask downloadMindmapsTask = new DownloadMindmapsTask(SetupActivity.this);
+                                        downloadMindmapsTask.execute(key);
 
                                     }
                                 }
