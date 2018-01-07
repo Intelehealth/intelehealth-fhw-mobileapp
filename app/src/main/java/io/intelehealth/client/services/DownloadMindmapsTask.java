@@ -42,6 +42,15 @@ public class DownloadMindmapsTask extends AsyncTask<String, String, String> {
     private static final String TAG = DownloadMindmapsTask.class.getSimpleName();
 
 
+
+
+
+
+
+
+
+
+
     private String parse_app_id = "ih_mm_server";
 
     WeakReference<Activity> mWeakActivity;
@@ -353,6 +362,8 @@ public class DownloadMindmapsTask extends AsyncTask<String, String, String> {
             // deleteFolder(base_dir);
         } catch (Exception e) {
             Log.e("ERROR", e.getMessage(), e);
+            publishProgress("Error downloading" +mindmap.getName());
+            return downloadMindMap(licensekey,mindmap);
             // deleteFolder(base_dir);
         } finally {
             if (urlConnection != null)
