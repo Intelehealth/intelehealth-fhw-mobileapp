@@ -42,15 +42,6 @@ public class DownloadMindmapsTask extends AsyncTask<String, String, String> {
     private static final String TAG = DownloadMindmapsTask.class.getSimpleName();
 
 
-
-
-
-
-
-
-
-
-
     private String parse_app_id = "ih_mm_server";
 
     WeakReference<Activity> mWeakActivity;
@@ -90,6 +81,11 @@ public class DownloadMindmapsTask extends AsyncTask<String, String, String> {
         mmList = downloadMindMapList(licenseKey);
         if (mmList != null && !mmList.isEmpty()) {
             for (Mindmap mm : mmList) {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 String content = downloadMindMap(licenseKey, mm);
                 mm.setContent(content);
                 if (mm.getName() != null && mm.getContent() != null &&
@@ -98,7 +94,7 @@ public class DownloadMindmapsTask extends AsyncTask<String, String, String> {
                 }
             }
 
-            publishProgress("progress","Saving files");
+            publishProgress("progress", "Saving files");
 
             File engines_dir = new File(activity.getFilesDir().getAbsolutePath(), HelperMethods.JSON_FOLDER);
             if (engines_dir.exists()) deleteFolder(engines_dir);
@@ -237,7 +233,7 @@ public class DownloadMindmapsTask extends AsyncTask<String, String, String> {
         Log.i(TAG, "licensekey: " + mmListRequest);
         HttpURLConnection urlConnection = null;
         try {
-            publishProgress("progress","Downloading Mindmap List");
+            publishProgress("progress", "Downloading Mindmap List");
             //Download List of Mindmaps Available
             String servStr = HelperMethods.MIND_MAP_SERVER_URL + "functions/downloadMindMapList";
             URL url = new URL(servStr);
@@ -284,7 +280,7 @@ public class DownloadMindmapsTask extends AsyncTask<String, String, String> {
                 String error = stringBuilder.toString();
                 if (error != null && !error.isEmpty()) {
                     JSONObject jsonObject = new JSONObject(error);
-                    publishProgress("toast",jsonObject.get("error").toString());
+                    publishProgress("toast", jsonObject.get("error").toString());
                 }
             } else {
                 Toast.makeText(IntelehealthApplication.getAppContext(), "Error Downloadind Mindmap List",
@@ -314,7 +310,7 @@ public class DownloadMindmapsTask extends AsyncTask<String, String, String> {
         Log.i(TAG, "licensekey: " + mmListRequest);
         HttpURLConnection urlConnection = null;
         try {
-            publishProgress("progress","Downloading Mindmap " + mindmap.name);
+            publishProgress("progress", "Downloading Mindmap " + mindmap.name);
             //Download List of Mindmaps Available
             String servStr = HelperMethods.MIND_MAP_SERVER_URL + "functions/downloadMindMap";
             URL url = new URL(servStr);
@@ -362,8 +358,8 @@ public class DownloadMindmapsTask extends AsyncTask<String, String, String> {
             // deleteFolder(base_dir);
         } catch (Exception e) {
             Log.e("ERROR", e.getMessage(), e);
-            publishProgress("Error downloading" +mindmap.getName());
-            return downloadMindMap(licensekey,mindmap);
+            publishProgress("Error downloading" + mindmap.getName());
+            return downloadMindMap(licensekey, mindmap);
             // deleteFolder(base_dir);
         } finally {
             if (urlConnection != null)

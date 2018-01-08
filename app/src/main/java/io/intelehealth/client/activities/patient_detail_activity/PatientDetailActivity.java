@@ -20,6 +20,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.UnderlineSpan;
@@ -406,7 +407,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
 
             if (medHistValue != null && !medHistValue.equals("")) {
-                medHistView.setText(medHistValue);
+                medHistView.setText(Html.fromHtml(medHistValue));
             } else {
                 medHistView.setText(getString(R.string.string_no_hist));
             }
@@ -428,7 +429,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
 
             if (famHistValue != null && !famHistValue.equals("")) {
-                famHistView.setText(famHistValue);
+                famHistView.setText(Html.fromHtml(famHistValue));
             } else {
                 famHistView.setText(getString(R.string.string_no_hist));
             }
