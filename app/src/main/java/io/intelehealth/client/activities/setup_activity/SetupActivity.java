@@ -18,7 +18,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
@@ -64,7 +66,7 @@ import io.intelehealth.client.api.retrofit.ServiceGenerator;
 import io.intelehealth.client.models.Location;
 import io.intelehealth.client.models.Results;
 import io.intelehealth.client.objects.WebResponse;
-import io.intelehealth.client.services.UpdateMindmapsTask;
+import io.intelehealth.client.services.DownloadMindmapsTask;
 import io.intelehealth.client.utilities.HelperMethods;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -89,6 +91,9 @@ public class SetupActivity extends AppCompatActivity {
 
     private Spinner mDropdownLocation;
 
+
+    private RadioButton r1;
+    private RadioButton r2;
     private List<Location> mLocations = new ArrayList<>();
 
 
@@ -123,6 +128,9 @@ public class SetupActivity extends AppCompatActivity {
                 attemptLogin();
             }
         });
+
+        r1 = (RadioButton) findViewById(R.id.demoMindmap);
+        r2 = (RadioButton) findViewById(R.id.downloadMindmap);
 
         mPasswordView = (EditText) findViewById(R.id.password);
 
@@ -189,21 +197,29 @@ public class SetupActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
         }
 
-        mUrlField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        mUrlField.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    // code to execute when EditText loses focus
-                    if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
-                        String BASE_URL = "http://" + mUrlField.getText().toString() + ":8080/openmrs/ws/rest/v1/";
-                        if (URLUtil.isValidUrl(BASE_URL)) getLocationFromServer(BASE_URL);
-                        else
-                            Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_LONG).show();
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                    }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
+                    String BASE_URL = "http://" + mUrlField.getText().toString() + ":8080/openmrs/ws/rest/v1/";
+                    if (URLUtil.isValidUrl(BASE_URL)) getLocationFromServer(BASE_URL);
+                    else
+                        Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
                 }
             }
+
         });
+
 
 
        /* mDropdownLocation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -219,7 +235,6 @@ public class SetupActivity extends AppCompatActivity {
         });*/
 
     }
-
 
 
     @Override
@@ -303,7 +318,8 @@ public class SetupActivity extends AppCompatActivity {
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
-            focusView.requestFocus();
+            if (focusView != null)
+                focusView.requestFocus();
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
@@ -345,7 +361,7 @@ public class SetupActivity extends AppCompatActivity {
         ProgressDialog progress;
 
 
-        TestSetup(String url,String username, String password, String adminPassword, Location location) {
+        TestSetup(String url, String username, String password, String adminPassword, Location location) {
             CLEAN_URL = url;
             USERNAME = username;
             PASSWORD = password;
@@ -522,14 +538,24 @@ public class SetupActivity extends AppCompatActivity {
 
                 Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
                         .applicationId(HelperMethods.IMAGE_APP_ID)
-                        .server("http://"+CLEAN_URL+":1337/parse/")
+                        .server("http://" + CLEAN_URL + ":1337/parse/")
                         .build()
                 );
                 Log.i(TAG, "onPostExecute: Parse init");
-
                 Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
-                startActivity(intent);
-                finish();
+
+                if (r2.isChecked()) {
+                    if (sharedPref.contains("licensekey")) {
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(SetupActivity.this, "Please enter a valid license key", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    startActivity(intent);
+                    finish();
+                }
+
 
             } else if (success == 201) {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
@@ -596,8 +622,6 @@ public class SetupActivity extends AppCompatActivity {
     }
 
     public void onRadioClick(View v) {
-        RadioButton r1 = (RadioButton) findViewById(R.id.demoMindmap);
-        RadioButton r2 = (RadioButton) findViewById(R.id.downloadMindmap);
 
         boolean checked = ((RadioButton) v).isChecked();
         switch (v.getId()) {
@@ -627,19 +651,16 @@ public class SetupActivity extends AppCompatActivity {
                                     //Toast.makeText(SetupActivity.this, "" + key, Toast.LENGTH_SHORT).show();
                                     if (keyVerified(key)) {
                                         // create a shared pref to store the key
-                                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
                                         // SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("pref",MODE_PRIVATE);
 
                                         //DOWNLOAD MIND MAP FILE LIST
                                         //upnew getJSONFile().execute(null, "AllFiles", "TRUE");
 
-                                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                                        editor.putString("licensekey", key);
-                                        editor.commit();
-
-                                        UpdateMindmapsTask updateMindmapsTask = new UpdateMindmapsTask(SetupActivity.this);
-                                        updateMindmapsTask.execute(null, "AllFiles", "TRUE");
-
+                                        // UpdateMindmapsTask updateMindmapsTask = new UpdateMindmapsTask(SetupActivity.this);
+                                        // updateMindmapsTask.execute(null, "AllFiles", "TRUE");
+                                        DownloadMindmapsTask downloadMindmapsTask = new DownloadMindmapsTask(SetupActivity.this);
+                                        downloadMindmapsTask.execute(key);
 
                                     }
                                 }

@@ -2,6 +2,7 @@ package io.intelehealth.client.activities.today_patient_activity.today_patient_a
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -60,16 +61,19 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientViewHo
         holder.getHeadTextView().setText(header);
         holder.getBodyTextView().setText(body);
         if (todayPatientModel.getEnd_datetime() == null) {
-            Drawable drawable = DrawableHelper
+        /*    Drawable drawable = DrawableHelper
                     .withContext(context)
                     //TODO: Dummy color. Change color before release.
-                    .withColor(R.color.yellow)
+                    .withColor(R.color.green)
                     .withDrawable(R.drawable.circle)
                     .tint()
                     .get();
-            holder.getIndicatorImageView().setImageDrawable(drawable);
+            holder.getIndicatorImageView().setImageDrawable(drawable);*/
+
+        holder.getIndicatorTextView().setText("Active");
+        holder.getIndicatorTextView().setBackgroundColor(Color.GREEN);
         } else {
-            Drawable drawable = DrawableHelper
+        /*    Drawable drawable = DrawableHelper
                     .withContext(context)
                     //TODO: Dummy color. Change color before release.
                     .withColor(R.color.red)
@@ -77,6 +81,9 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientViewHo
                     .tint()
                     .get();
             holder.getIndicatorImageView().setImageDrawable(drawable);
+            */
+            holder.getIndicatorTextView().setText("Closed");
+            holder.getIndicatorTextView().setBackgroundColor(Color.RED);
         }
 
         holder.getRootView().setOnClickListener(new View.OnClickListener() {

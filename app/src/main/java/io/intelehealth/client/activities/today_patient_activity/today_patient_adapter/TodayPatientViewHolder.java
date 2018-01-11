@@ -16,14 +16,14 @@ public class TodayPatientViewHolder extends RecyclerView.ViewHolder {
 
     private TextView headTextView;
     private TextView bodyTextView;
-    private ImageView indicatorImageView;
+    private TextView indicatorTextView;
     private View rootView;
 
     public TodayPatientViewHolder(View itemView) {
         super(itemView);
         headTextView = (TextView) itemView.findViewById(R.id.list_item_head_text_view);
         bodyTextView = (TextView) itemView.findViewById(R.id.list_item_body_text_view);
-        indicatorImageView = (ImageView) itemView.findViewById(R.id.list_item_indicator_image_view);
+        indicatorTextView = (TextView) itemView.findViewById(R.id.list_item_indicator_text_view);
         rootView = itemView;
     }
 
@@ -43,12 +43,12 @@ public class TodayPatientViewHolder extends RecyclerView.ViewHolder {
         this.bodyTextView = bodyTextView;
     }
 
-    public ImageView getIndicatorImageView() {
-        return indicatorImageView;
+    public TextView getIndicatorTextView() {
+        return indicatorTextView;
     }
 
-    public void setIndicatorImageView(ImageView indicatorImageView) {
-        this.indicatorImageView = indicatorImageView;
+    public void setIndicatorTextView(TextView indicatorTextView) {
+        this.indicatorTextView = indicatorTextView;
     }
 
     public View getRootView() {
