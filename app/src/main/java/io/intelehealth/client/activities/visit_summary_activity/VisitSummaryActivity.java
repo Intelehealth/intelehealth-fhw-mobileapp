@@ -36,11 +36,8 @@ import android.support.v7.widget.Toolbar;
 import android.telephony.PhoneStateListener;
 import android.telephony.SignalStrength;
 import android.telephony.SmsManager;
-<<<<<<< HEAD
 import android.telephony.TelephonyManager;
-=======
 import android.text.Html;
->>>>>>> #372-Associated-symptoms-is-not-added-to-language
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;

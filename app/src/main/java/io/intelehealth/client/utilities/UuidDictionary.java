@@ -45,6 +45,23 @@ public class UuidDictionary {
     public static final String ATTRIBUTE_SON_WIFE_DAUGHTER = "1b2f34f7-2bf8-4ef7-9736-f5b858afc160";
     public static final String ATTRIBUTE_OCCUPATION = "ecdaadb6-14a0-4ed9-b5b7-cfed87b44b87";
     public static final String ATTRIBUTE_HEALTH_CENTER = "8d87236c-c2cc-11de-8d13-0010c6dffd0f";
+    public static final String ATTRIBUTE_DEPARTMENT ="1d609ff3-6f45-44d3-a0b6-601976571979";
+    public static final String ATTRIBUTE_COMMUNE = "0f63da10-882f-4352-9507-8c2e295c4bf7";
+    public static final String ATTRIBUTE_CELL_NO = "99d5b4ef-db5a-4ae4-a5e2-2bf1ea0a251e";
+    public static final String ATTRIBUTE_PRISON_NAME = "cf17630b-b966-47e9-974b-8098ee87f773";
+    public static final String ATTRIBUTE_PATIENT_STATUS = "8197a5cb-d159-4282-b06f-dceb13839651";
+
+
+
+//          testing
+//    public static final String ATTRIBUTE_CELL_NO = "4289bdd8-fa31-4be9-a03d-bdf2ff1e7889";
+//    public static final String ATTRIBUTE_PRISON_NAME = "2fd85119-91dd-4c4d-b7c9-b7506c8b1dea";
+//    public static final String ATTRIBUTE_PATIENT_STATUS = "0aff8ae8-b7ad-4d02-aa7a-45e6d891afe6";
+//public static final String ATTRIBUTE_DEPARTMENT ="4334d465-d21e-4e2e-8076-2d7b3cd68546";
+//    public static final String ATTRIBUTE_COMMUNE = "c349ccc7-c0ed-48b4-9d9f-769feef80926";
+
+
+
 
 
     //Visit Types
