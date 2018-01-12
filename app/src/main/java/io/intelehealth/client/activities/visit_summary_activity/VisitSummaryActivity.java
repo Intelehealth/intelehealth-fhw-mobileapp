@@ -653,37 +653,38 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editVitals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder vitalsDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
-                vitalsDialog.setTitle(getString(R.string.visit_summary_vitals));
-                final LayoutInflater inflater = getLayoutInflater();
-                View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
-                vitalsDialog.setView(convertView);
+                Intent intent1 = new Intent(VisitSummaryActivity.this, VitalsActivity.class);
+                intent1.putExtra("patientID", patientID);
+                intent1.putExtra("visitID", visitID);
+                intent1.putExtra("name", patientName);
+                //   intent.putStringArrayListExtra("exams", physicalExams);
+                intent1.putExtra("tag", "edit");
+                startActivity(intent1);
+//                final AlertDialog.Builder vitalsDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
+//                vitalsDialog.setTitle(getString(R.string.visit_summary_vitals));
+//                final LayoutInflater inflater = getLayoutInflater();
+//                View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
+//                vitalsDialog.setView(convertView);
+//
+//                final TextView vitalsEditText = (TextView) convertView.findViewById(R.id.textView_entry);
+//                vitalsEditText.setText(R.string.visit_summary_edit_vitals);
+//
+//                vitalsDialog.setPositiveButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//
+//                        dialogInterface.dismiss();
+//                    }
+//                });
+//
+//                vitalsDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        dialogInterface.dismiss();
+//                    }
+//                });
 
-                final TextView vitalsEditText = (TextView) convertView.findViewById(R.id.textView_entry);
-                vitalsEditText.setText(R.string.visit_summary_edit_vitals);
-
-                vitalsDialog.setPositiveButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent1 = new Intent(VisitSummaryActivity.this, VitalsActivity.class);
-                        intent1.putExtra("patientID", patientID);
-                        intent1.putExtra("visitID", visitID);
-                        intent1.putExtra("name", patientName);
-                        //   intent.putStringArrayListExtra("exams", physicalExams);
-                        intent1.putExtra("tag", "edit");
-                        startActivity(intent1);
-                        dialogInterface.dismiss();
-                    }
-                });
-
-                vitalsDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-
-                vitalsDialog.show();
+//                vitalsDialog.show();
             }
         });
 
@@ -766,7 +767,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 final AlertDialog.Builder complaintDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
                 complaintDialog.setTitle(getString(R.string.visit_summary_complaint));
                 final LayoutInflater inflater = getLayoutInflater();
-                View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
+                View convertView = inflater.inflate(R.layout.dialog_edit_entry,null);
                 complaintDialog.setView(convertView);
 
                 final TextView complaintText = (TextView) convertView.findViewById(R.id.textView_entry);

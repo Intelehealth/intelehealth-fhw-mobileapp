@@ -195,6 +195,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         patientStatus =(EditText)findViewById(R.id.identification_patient_status);
         mPatientStatus =(Spinner)findViewById(R.id.spinner_patient_status);
+        mPatientStatus.setFocusable(true);
 
 
 
@@ -204,7 +205,7 @@ public class IdentificationActivity extends AppCompatActivity {
         */
         mImageView = (ImageView) findViewById(R.id.imageview_id_picture);
 
-        //setting the fields when user clikcs edit details
+        //setting the fields when user clicks edit details
         mFirstName.setText(patient1.getFirstName());
         mMiddleName.setText(patient1.getMiddleName());
         mLastName.setText(patient1.getLastName());
@@ -461,25 +462,25 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
         //cell number spinner
-//        Integer[] items = new Integer[50];
-//        for(int i = 0;i<items.length;i++) {
-//            items[i] = i + 1; // 1 to 50
-//
-//            ArrayAdapter<Integer> cellNoAdapter = new ArrayAdapter<Integer>(this,
-//                    android.R.layout.simple_spinner_item, items);
-//            mCellNo.setAdapter(cellNoAdapter);
-//            if (patientID_edit != -1) {
-////                mCellNo.setSelection(cellNoAdapter.getPosition(Integer.parseInt()patient1.setCellNo()));
-//            }
-//        }
+        Integer[] items = new Integer[100];
+        for(int i = 0;i<items.length;i++) {
+            items[i] = i + 1; // 1 to 100
 
-        ArrayAdapter<CharSequence> cellNoAdapter = ArrayAdapter.createFromResource(this,
-                R.array.cell_no,android.R.layout.simple_spinner_item);
-        cellNoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mCellNo.setAdapter(cellNoAdapter);
-        if(patientID_edit != -1){
-            mCellNo.setSelection(cellNoAdapter.getPosition(String.valueOf(patient1.getCellNo())));
+            ArrayAdapter<Integer> cellNoAdapter = new ArrayAdapter<Integer>(this,
+                    android.R.layout.simple_spinner_item, items);
+            mCellNo.setAdapter(cellNoAdapter);
+            if (patientID_edit != -1) {
+                mCellNo.setSelection(cellNoAdapter.getPosition(Integer.parseInt(patient1.getCellNo())));
+            }
         }
+
+//        ArrayAdapter<CharSequence> cellNoAdapter = ArrayAdapter.createFromResource(this,
+//                R.array.cell_no,android.R.layout.simple_spinner_item);
+//        cellNoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        mCellNo.setAdapter(cellNoAdapter);
+//        if(patientID_edit != -1){
+//            mCellNo.setSelection(cellNoAdapter.getPosition(String.valueOf(patient1.getCellNo())));
+//        }
 
 
 
