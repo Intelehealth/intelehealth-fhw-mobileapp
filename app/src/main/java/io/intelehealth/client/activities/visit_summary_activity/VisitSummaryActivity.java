@@ -33,10 +33,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.telephony.PhoneStateListener;
-import android.telephony.SignalStrength;
 import android.telephony.SmsManager;
-import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.text.InputType;
 import android.util.Log;
@@ -90,7 +87,6 @@ import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.OnShowRationale;
 import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
-
 
 /**
  * This class updates data about patient to database. It also creates a summary about it which can be viewed
@@ -196,8 +192,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
     Boolean isPastVisit = false;
     Boolean isReceiverRegistered = false;
 
-    TelephonyManager tManager;
-
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
 
     private NetworkChangeReceiver receiver;
@@ -292,10 +286,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (selectedExams != null && !selectedExams.isEmpty()) {
                 physicalExams.addAll(selectedExams);
             }
-
-            tManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-            tManager.listen(new CustomPhoneStateListener(this),
-                    PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
             /*
             if (!isPastVisit) {
                 if (intent.hasExtra("exams")) {
@@ -653,38 +643,37 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editVitals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(VisitSummaryActivity.this, VitalsActivity.class);
-                intent1.putExtra("patientID", patientID);
-                intent1.putExtra("visitID", visitID);
-                intent1.putExtra("name", patientName);
-                //   intent.putStringArrayListExtra("exams", physicalExams);
-                intent1.putExtra("tag", "edit");
-                startActivity(intent1);
-//                final AlertDialog.Builder vitalsDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
-//                vitalsDialog.setTitle(getString(R.string.visit_summary_vitals));
-//                final LayoutInflater inflater = getLayoutInflater();
-//                View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
-//                vitalsDialog.setView(convertView);
-//
-//                final TextView vitalsEditText = (TextView) convertView.findViewById(R.id.textView_entry);
-//                vitalsEditText.setText(R.string.visit_summary_edit_vitals);
-//
-//                vitalsDialog.setPositiveButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int i) {
-//
-//                        dialogInterface.dismiss();
-//                    }
-//                });
-//
-//                vitalsDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int i) {
-//                        dialogInterface.dismiss();
-//                    }
-//                });
+                final AlertDialog.Builder vitalsDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
+                vitalsDialog.setTitle(getString(R.string.visit_summary_vitals));
+                final LayoutInflater inflater = getLayoutInflater();
+                View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
+                vitalsDialog.setView(convertView);
 
-//                vitalsDialog.show();
+                final TextView vitalsEditText = (TextView) convertView.findViewById(R.id.textView_entry);
+                vitalsEditText.setText(R.string.visit_summary_edit_vitals);
+
+                vitalsDialog.setPositiveButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent1 = new Intent(VisitSummaryActivity.this, VitalsActivity.class);
+                        intent1.putExtra("patientID", patientID);
+                        intent1.putExtra("visitID", visitID);
+                        intent1.putExtra("name", patientName);
+                        //   intent.putStringArrayListExtra("exams", physicalExams);
+                        intent1.putExtra("tag", "edit");
+                        startActivity(intent1);
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                vitalsDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                vitalsDialog.show();
             }
         });
 
@@ -767,7 +756,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 final AlertDialog.Builder complaintDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
                 complaintDialog.setTitle(getString(R.string.visit_summary_complaint));
                 final LayoutInflater inflater = getLayoutInflater();
-                View convertView = inflater.inflate(R.layout.dialog_edit_entry,null);
+                View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 complaintDialog.setView(convertView);
 
                 final TextView complaintText = (TextView) convertView.findViewById(R.id.textView_entry);
@@ -1115,7 +1104,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String table = "patient";
         String[] columnsToReturn = {"openmrs_id", "first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province", "country",
-                "postal_code", "phone_number", "gender", "sdw", "occupation", "patient_photo"};
+                "postal_code", "phone_number", "gender", "sdw", "occupation", "patient_photo","department","commune"
+                , "cell_no","prison_name", "patient_status"};
         final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
 
         if (idCursor.moveToFirst()) {
@@ -1136,6 +1126,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 patient.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
                 patient.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
                 patient.setPatientPhoto(idCursor.getString(idCursor.getColumnIndex("patient_photo")));
+                patient.setDepartment(idCursor.getString(idCursor.getColumnIndexOrThrow("department")));
+                patient.setCommune(idCursor.getString(idCursor.getColumnIndexOrThrow("commune")));
+                patient.setCellNo(idCursor.getString(idCursor.getColumnIndexOrThrow("cell_no")));
+                patient.setPrisonName(idCursor.getString(idCursor.getColumnIndexOrThrow("prison_name")));
+                patient.setPatientStatus(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_status")));
+
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -1349,6 +1345,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         String mSdw = patient.getSdw();
         String mOccupation = patient.getOccupation();
+        String mDepartment = patient.getDepartment();
+        String mCommune = patient.getCommune();
+        String mCellNo = patient.getCellNo();
+        String mPrisonName = patient.getPrisonName();
+        String mPatientStatus = patient.getPatientStatus();
         String mGender = patient.getGender();
 
         Calendar c = Calendar.getInstance();
@@ -1446,8 +1447,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     para_close;
         }
 
-        String heading = "ଚିକିତ୍ସା ସହାୟତା କେନ୍ଦ୍ର";
-        String heading2 = "Chikitsa Sahayta Kendra";
+//        String heading = "ଚିକିତ୍ସା ସହାୟତା କେନ୍ଦ୍ର";
+        String heading2 = "Intelehealth Patient's Prescriptions";
         String heading3 = "<br/>";
 
         String bp = mBP;
@@ -1470,12 +1471,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         // Generate an HTML document on the fly:
         String htmlDocument =
-                String.format("<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                String.format("<b>" +
                                 "<p id=\"heading_2\" style=\"font-size:11pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                 "<p id=\"heading_3\" style=\"font-size:11pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                 "<hr style=\"font-size:11pt;\">" + "<br/>" +
                                 "<p id=\"patient_name\" style=\"font-size:11pt; margin: 0px; padding: 0px;\">%s</p></b>" +
-                                "<p id=\"patient_details\" style=\"font-size:11pt; margin: 0px; padding: 0px;\">Age: %s |Son/Daughter/Wife of: %s |Occupation: %s </p>" +
+                                "<p id=\"patient_details\" style=\"font-size:11pt; margin: 0px; padding: 0px;\">Age: %s <br>Occupation: %s <br>Department: %s <br>Commune: %s <br>CellNo: %s <br>PrisonName: %s <br>PatientStatus: %s"  + "</p>"+
                                 "<p id=\"address_and_contact\" style=\"font-size:11pt; margin: 0px; padding: 0px;\"><b>Address and Contact:</b> %s</p>" +
                                 "<b><p id=\"visit_details\" style=\"font-size:11pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p></b>" +
                                 "<b><p id=\"vitals_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
@@ -1498,7 +1499,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 "%s"
                         // +"<b><p id=\"doctor_name_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Doctor's Name</p></b>" +
                         //  para_open +"%s"+para_close
-                        , heading, heading2, heading3, mPatientName, age, mSdw, mOccupation, address, mPatientOpenMRSID, mDate, mHeight, mWeight,
+                        ,heading2, heading3, mPatientName, age, mOccupation,mDepartment,mCommune,mCellNo,mPrisonName,mPatientStatus, address, mPatientOpenMRSID, mDate, mHeight, mWeight,
                         mBMI, bp, mPulse, mTemp, mSPO2, pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, comments_web/*,doctorName*/);
         webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
 
@@ -1918,59 +1919,4 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
     }
-
-    private class CustomPhoneStateListener extends PhoneStateListener {
-        Context mContext;
-
-        public CustomPhoneStateListener(Context context) {
-            mContext = context;
-        }
-
-
-        @Override
-        public void onSignalStrengthsChanged(SignalStrength signalStrength) {
-            super.onSignalStrengthsChanged(signalStrength);
-            Log.i(TAG, "onSignalStrengthsChanged: " + signalStrength);
-            if (signalStrength.isGsm()) {
-                Log.i(TAG, "onSignalStrengthsChanged: getGsmBitErrorRate "
-                        + signalStrength.getGsmBitErrorRate());
-                Log.i(TAG, "onSignalStrengthsChanged: getGsmSignalStrength "
-                        + signalStrength.getGsmSignalStrength());
-
-                /*
-                * Returns an integer value of which can be between 0 and 7 and reflects the quality of network.
-                * 0 is the best quality, 7 is the worst. 99 means Unknown status.
-                * Each value corresponds to an estimated number of bit errors in a number of bursts.
-                *
-                * Quality -- BER (Bit Error Rate)
-                * 0 -- BER<0.2%
-                * 1 -- 0.2%<BER<0.4%
-                * 2 -- 0.4%<BER<0.8%
-                * 3 -- 0.8%<BER<1.6%
-                * 4 -- 1.6%<BER<3.2%
-                * 5 -- 3.2%<BER<6.4%
-                * 6 -- 6.4%<BER<12.8%
-                * 7 -- 12.8%<BER
-                * */
-
-                //This feature can only provide an approximation of the network quality, so there is a chance
-                //that images may get uploaded even though the phone estimates that network quality is not
-                //good enough.
-
-                if (signalStrength.getGsmBitErrorRate() == 99) {
-                    //Do nothing as status is unknown
-                } else if (signalStrength.getGsmBitErrorRate() > 5) {
-                    //Not Suitable for Images
-                    if (internetCheck != null)
-                        internetCheck.setIcon(R.mipmap.ic_data_text_only);
-                } else {
-                    //Suitable
-                    if (internetCheck != null)
-                        internetCheck.setIcon(R.mipmap.ic_data_on);
-                }
-            }
-        }
-    }
-
-
 }
