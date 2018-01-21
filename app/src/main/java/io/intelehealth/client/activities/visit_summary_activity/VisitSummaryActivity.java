@@ -108,6 +108,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String identifierNumber;
 
     boolean uploaded = false;
+    public static boolean downloaded =false;
     boolean dataChanged = false;
     String failedMessage;
 
@@ -405,6 +406,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (visitIDCursor != null) visitIDCursor.close();
             if (visitUUID != null && !visitUUID.isEmpty()) {
                 addDownloadButton();
+
+
             }
 
         }
@@ -1798,8 +1801,96 @@ public class VisitSummaryActivity extends AppCompatActivity {
         } else if (check == 200) {
             Log.i(TAG, "handleMessage: 200");
             addDownloadButton();
+
+
+
+
+//          <-----  code to end the visit only after doctor sends anything ----->
+
+
+            if(downloaded){
+                String[] columns = {"concept_id"};
+                String orderBy = "visit_id";
+
+
+                //obscursor checks in obs table
+                Cursor obsCursor = db.query("obs",columns,null,null,null,null,orderBy);
+
+                //dbconceptid will store data found in concept_id
+                int dbConceptID = obsCursor.getInt(obsCursor.getColumnIndex("concept_id"));
+
+
+                if(obsCursor.moveToFirst() && obsCursor.getCount()>1 ){
+
+//                    if obsCursor founds something move to next
+                    obsCursor.moveToNext();
+
+                    switch (dbConceptID) {
+                        //case values for each prescription
+                        case ConceptId.TELEMEDICINE_DIAGNOSIS:
+                            Log.i(TAG, "found diagnosis");
+                            break;
+                        case ConceptId.JSV_MEDICATIONS:
+                            Log.i(TAG, "found medications");
+                            break;
+                        case ConceptId.MEDICAL_ADVICE:
+                            Log.i(TAG, "found medical advice");
+                            break;
+                        case ConceptId.ADDITIONAL_COMMENTS:
+                            Log.i(TAG, "found additional comments");
+                            break;
+                        case ConceptId.REQUESTED_TESTS:
+                            Log.i(TAG, "found tests");
+                            break;
+                        default:
+                    }
+
+
+                          //if any obs  found then end the visit
+                        Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
+                        serviceIntent.putExtra("serviceCall", "endVisit");
+                        serviceIntent.putExtra("patientID", patientID);
+                        serviceIntent.putExtra("visitUUID", visitUUID);
+                        serviceIntent.putExtra("name", patientName);
+                        startService(serviceIntent);
+                        Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
+                        startActivity(intent);
+
+
+
+
+
+
+                    }
+
+                }
+//                    <-----if obs not found restrict user to end the visit ----->
+                else{
+                    downloaded=false;
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                alertDialogBuilder.setMessage("Please download first before attempting to end the visit.");
+                alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+                }
+
+            }
         }
-    }
+
+
+
+
+
+
+
+
 
     private void addDownloadButton() {
 
@@ -1878,17 +1969,29 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             case ClientService.STATUS_SYNC_IN_PROGRESS: {
                                 Toast.makeText(context, getString(R.string.sync_in_progress), Toast.LENGTH_SHORT).show();
                                 break;
+
+
+
                             }
                             default:
                         }
                     }
-                    //  retrieveOpenMRS(view);
+                    downloaded = true;
+
+
+
                 }
             });
             //mLayout.addView(downloadButton, mLayout.getChildCount());
+
+
         }
 
+
     }
+
+
+
 
     private void isNetworkAvailable(Context context) {
         int flag = 0;
