@@ -271,6 +271,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         final Intent intent = this.getIntent(); // The intent was passed to the activity
+        String myName = "aniket";
+        Log.i("NameOf","name is :"+myName);
 
         if (intent != null) {
             patientID = intent.getIntExtra("patientID", -1);
@@ -1804,64 +1806,223 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 
 
+            // code manipulated today
+
+            String query ="SELECT concept_id FROM obs where obs.patient_id = obs.visit_id AND obs.concept_id NOT NULL";
+            Cursor c = null;
+            c= db.rawQuery(query, null);
+
+            if(c!=null && c.moveToFirst()){
+                do {
+                    int  dbConceptID = c.getInt(c.getColumnIndexOrThrow("concept_id"));
+
+                }while(c.moveToNext());
+                int dbConceptID = c.getInt(c.getColumnIndexOrThrow("concept_id"));
+                //this value is getting logged
+                Log.d("dbconceptid","conceptid found"+dbConceptID);
+
+
+
+                switch (dbConceptID) {
+                    //case values for each prescription
+                    case ConceptId.TELEMEDICINE_DIAGNOSIS:
+                        Log.i(TAG, "found diagnosis");
+                        break;
+                    case ConceptId.JSV_MEDICATIONS:
+                        Log.i(TAG, "found medications");
+                        break;
+                    case ConceptId.MEDICAL_ADVICE:
+                        Log.i(TAG, "found medical advice");
+                        break;
+                    case ConceptId.ADDITIONAL_COMMENTS:
+                        Log.i(TAG, "found additional comments");
+                        break;
+                    case ConceptId.REQUESTED_TESTS:
+                        Log.i(TAG, "found tests");
+                        break;
+                    default:
+                }
+
+
+                //if any obs  found then end the visit
+//                Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
+//                serviceIntent.putExtra("serviceCall", "endVisit");
+//                serviceIntent.putExtra("patientID", patientID);
+//                serviceIntent.putExtra("visitUUID", visitUUID);
+//                serviceIntent.putExtra("name", patientName);
+//                startService(serviceIntent);
+//                Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
+//                startActivity(intent);
+
+
+
+
+
+
+            }
+
+//String[] columns = {"concept_id"};
+//                String orderBy = "visit_id";
+////                String q = "SELECT * FROM obs where concept_id = 163219";
+////
+////                Cursor c =null;
+////                c =db.rawQuery(q, null);
+////                if (c.moveToFirst()) {
+////                  while (!c.isAfterLast()){
+////                      int itemName = c.getInt(c.getColumnIndexOrThrow("concept_id"));
+////                      Log.i("item","item name is:"+itemName);
+////                  }
+////
+////                    Log.i(TAG,"sql query" +q);
+////
+////
+////                }
+//
+//                //obscursor checks in obs table
+//                Cursor obsCursor = db.query("obs",columns,null,null,null,null,orderBy);
+//
+//                //dbconceptid will store data found in concept_id
+//                int dbConceptID = obsCursor.getInt(obsCursor.getColumnIndex("concept_id"));
+//
+//
+//                if(obsCursor.moveToFirst() && obsCursor.getCount()>1 ){
+//
+////                    if obsCursor founds something move to next
+//                    obsCursor.moveToNext();
+//
+//                    switch (dbConceptID) {
+//                        //case values for each prescription
+//                        case ConceptId.TELEMEDICINE_DIAGNOSIS:
+//                            Log.i(TAG, "found diagnosis");
+//                            break;
+//                        case ConceptId.JSV_MEDICATIONS:
+//                            Log.i(TAG, "found medications");
+//                            break;
+//                        case ConceptId.MEDICAL_ADVICE:
+//                            Log.i(TAG, "found medical advice");
+//                            break;
+//                        case ConceptId.ADDITIONAL_COMMENTS:
+//                            Log.i(TAG, "found additional comments");
+//                            break;
+//                        case ConceptId.REQUESTED_TESTS:
+//                            Log.i(TAG, "found tests");
+//                            break;
+//                        default:
+//                    }
+//
+//
+//                          //if any obs  found then end the visit
+//                        Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
+//                        serviceIntent.putExtra("serviceCall", "endVisit");
+//                        serviceIntent.putExtra("patientID", patientID);
+//                        serviceIntent.putExtra("visitUUID", visitUUID);
+//                        serviceIntent.putExtra("name", patientName);
+//                        startService(serviceIntent);
+//                        Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
+//                        startActivity(intent);
+//
+//
+//
+//
+//
+//
+//                    }
+
 
 //          <-----  code to end the visit only after doctor sends anything ----->
 
 
             if(downloaded){
+
+
+
+
+
+
+
+
+
+
+
+
+
                 String[] columns = {"concept_id"};
-                String orderBy = "visit_id";
-
-
+//                String orderBy = "visit_id";
+//                String q = "SELECT * FROM obs where concept_id = 163219";
+//
+//                Cursor c =null;
+//                c =db.rawQuery(q, null);
+//                if (c.moveToFirst()) {
+//                    do{
+//
+//                    }while(c.moveToNext());
+//
+//                    Log.i(TAG,"sql query" +q);
+//
+//
+//                }
+//
                 //obscursor checks in obs table
-                Cursor obsCursor = db.query("obs",columns,null,null,null,null,orderBy);
+//                Cursor obsCursor = db.query("obs",columns,null,null,null,null,orderBy);
 
                 //dbconceptid will store data found in concept_id
-                int dbConceptID = obsCursor.getInt(obsCursor.getColumnIndex("concept_id"));
+//                int dbConceptID = obsCursor.getInt(obsCursor.getColumnIndex("concept_id"));
 
-
-                if(obsCursor.moveToFirst() && obsCursor.getCount()>1 ){
+//
+//                if(obsCursor.moveToFirst() && obsCursor.getCount()>1 ){
 
 //                    if obsCursor founds something move to next
-                    obsCursor.moveToNext();
-
-                    switch (dbConceptID) {
-                        //case values for each prescription
-                        case ConceptId.TELEMEDICINE_DIAGNOSIS:
-                            Log.i(TAG, "found diagnosis");
-                            break;
-                        case ConceptId.JSV_MEDICATIONS:
-                            Log.i(TAG, "found medications");
-                            break;
-                        case ConceptId.MEDICAL_ADVICE:
-                            Log.i(TAG, "found medical advice");
-                            break;
-                        case ConceptId.ADDITIONAL_COMMENTS:
-                            Log.i(TAG, "found additional comments");
-                            break;
-                        case ConceptId.REQUESTED_TESTS:
-                            Log.i(TAG, "found tests");
-                            break;
-                        default:
-                    }
-
-
-                          //if any obs  found then end the visit
-                        Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
-                        serviceIntent.putExtra("serviceCall", "endVisit");
-                        serviceIntent.putExtra("patientID", patientID);
-                        serviceIntent.putExtra("visitUUID", visitUUID);
-                        serviceIntent.putExtra("name", patientName);
-                        startService(serviceIntent);
-                        Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
-                        startActivity(intent);
+//                    obsCursor.moveToNext();
 
 
 
-
-
-
-                    }
+//
+//                String query ="SELECT concept_id FROM obs where obs.patient_id = obs.visit_id AND obs.concept_id NOT NULL";
+//                Cursor c = null;
+//                c= db.rawQuery(query, null);
+//
+//                if(c!=null && c.moveToNext()){
+//                    int dbConceptID = c.getInt(c.getColumnIndexOrThrow("concept_id"));
+//                    Log.d("dbconceptid","conceptid found"+dbConceptID);
+//
+//
+//                    switch (dbConceptID) {
+//                        //case values for each prescription
+//                        case ConceptId.TELEMEDICINE_DIAGNOSIS:
+//                            Log.i(TAG, "found diagnosis");
+//                            break;
+//                        case ConceptId.JSV_MEDICATIONS:
+//                            Log.i(TAG, "found medications");
+//                            break;
+//                        case ConceptId.MEDICAL_ADVICE:
+//                            Log.i(TAG, "found medical advice");
+//                            break;
+//                        case ConceptId.ADDITIONAL_COMMENTS:
+//                            Log.i(TAG, "found additional comments");
+//                            break;
+//                        case ConceptId.REQUESTED_TESTS:
+//                            Log.i(TAG, "found tests");
+//                            break;
+//                        default:
+//                    }
+//
+//
+//                          //if any obs  found then end the visit
+//                        Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
+//                        serviceIntent.putExtra("serviceCall", "endVisit");
+//                        serviceIntent.putExtra("patientID", patientID);
+//                        serviceIntent.putExtra("visitUUID", visitUUID);
+//                        serviceIntent.putExtra("name", patientName);
+//                        startService(serviceIntent);
+//                        Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
+//                        startActivity(intent);
+//
+//
+//
+//
+//
+//
+//                    }
 
                 }
 //                    <-----if obs not found restrict user to end the visit ----->
