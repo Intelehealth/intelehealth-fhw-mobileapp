@@ -171,7 +171,7 @@ public class PatientUpdateService extends IntentService {
         String[] columnsToReturn = {"openmrs_uuid", "first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province", "country",
                 "postal_code", "phone_number", "gender", "sdw", "occupation", "patient_photo", "economic_status",
-                "education_status", "caste"};
+                "education_status", "caste", "department", "commune", "cell_no", "prison_name", "patient_status"};
         final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
 
         if (idCursor.moveToFirst()) {
@@ -194,7 +194,11 @@ public class PatientUpdateService extends IntentService {
                 patient.setPatientPhoto(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
                 patient.setEconomic_status(idCursor.getString(idCursor.getColumnIndexOrThrow("economic_status")));
                 patient.setEducation_level(idCursor.getString(idCursor.getColumnIndexOrThrow("education_status")));
-                patient.setCaste(idCursor.getString(idCursor.getColumnIndexOrThrow("caste")));
+                patient.setDepartment(idCursor.getString(idCursor.getColumnIndexOrThrow("department")));
+                patient.setCommune(idCursor.getString(idCursor.getColumnIndexOrThrow("commune")));
+                patient.setCellNo(idCursor.getString(idCursor.getColumnIndexOrThrow("cell_no")));
+                patient.setPrisonName(idCursor.getString(idCursor.getColumnIndexOrThrow("prison_name")));
+                patient.setPatientStatus(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_status")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -232,6 +236,16 @@ public class PatientUpdateService extends IntentService {
                         patient.getMiddleName(),
                         patient.getLastName(),
                         patient.getDateOfBirth(),
+                        UuidDictionary.ATTRIBUTE_DEPARTMENT,
+                        patient.getDepartment(),
+                        UuidDictionary.ATTRIBUTE_COMMUNE,
+                        patient.getCommune(),
+                        UuidDictionary.ATTRIBUTE_CELL_NO,
+                        patient.getCellNo(),
+                        UuidDictionary.ATTRIBUTE_PRISON_NAME,
+                        patient.getPrisonName(),
+                        UuidDictionary.ATTRIBUTE_PATIENT_STATUS,
+                        patient.getPatientStatus(),
                         UuidDictionary.ATTRIBUTE_PHONE_NUMBER,
                         patient.getPhoneNumber(),
                         UuidDictionary.ATTRIBUTE_CASTE,
@@ -259,7 +273,7 @@ public class PatientUpdateService extends IntentService {
             if (responsePerson != null && responsePerson.getResponseCode() != 200) {
                 String newText = "Person not updated. Please check your connection.";
                 mBuilder.setContentText(newText).setNumber(++numMessages);
-                mBuilder.setSmallIcon(R.drawable.ic_cloud_upload);
+                mBuilder.setSmallIcon(R.drawable.ic_cloud_upload_v);
                 mNotifyManager.notify(mId, mBuilder.build());
                 Log.d(TAG, "Person update was unsuccessful");
                 return null;
@@ -269,7 +283,7 @@ public class PatientUpdateService extends IntentService {
             } else {
                 String newText = "Person updated successfully.";
                 mBuilder.setContentText(newText).setNumber(++numMessages);
-                mBuilder.setSmallIcon(R.drawable.ic_cloud_upload);
+                mBuilder.setSmallIcon(R.drawable.ic_cloud_upload_v);
                 mNotifyManager.notify(mId, mBuilder.build());
 
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("Profile");

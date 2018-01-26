@@ -20,7 +20,8 @@
         android:paddingLeft="@dimen/padding_visit_summary_screen"
         android:paddingRight="@dimen/padding_visit_summary_screen">
 
-
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <android.support.v7.widget.CardView
             android:id="@+id/cardView_patDetail_summary"
@@ -135,80 +136,8 @@
                     </TableRow>
 
 
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingTop="@dimen/padding_card_action"
-                            android:text="@string/row_address"
-                            android:textSize="@dimen/card_content_text_size" />
 
 
-                        <android.support.v4.widget.Space
-                            android:layout_width="10dp"
-                            android:layout_height="wrap_content" />
-
-                        <TextView
-                            android:id="@+id/textView_address_1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/card_content_text_size" />
-
-
-                    </TableRow>
-
-                    <TableRow
-                        android:id="@+id/tableRow_addr2"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingTop="@dimen/padding_card_action"
-                            android:textSize="@dimen/card_content_text_size" />
-
-
-                        <android.support.v4.widget.Space
-                            android:layout_width="10dp"
-                            android:layout_height="wrap_content" />
-
-                        <TextView
-                            android:id="@+id/textView_address2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/card_content_text_size" />
-
-
-                    </TableRow>
-
-
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingTop="@dimen/padding_card_action"
-                            android:textSize="@dimen/card_content_text_size" />
-
-
-                        <android.support.v4.widget.Space
-                            android:layout_width="10dp"
-                            android:layout_height="wrap_content" />
-
-                        <TextView
-                            android:id="@+id/textView_address_final"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/card_content_text_size" />
-
-
-                    </TableRow>
 
                     <TableRow
                         android:layout_width="match_parent"
@@ -234,6 +163,144 @@
 
 
                     </TableRow>
+
+
+                    <TableRow
+                        android:id="@+id/tableRow_department"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="@dimen/padding_card_action"
+                            android:text="Department"
+                            android:textSize="@dimen/card_content_text_size" />
+
+
+                        <android.support.v4.widget.Space
+                            android:layout_width="10dp"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/textView_department"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/card_content_text_size" />
+
+
+                    </TableRow>
+
+
+
+                    <TableRow
+                        android:id="@+id/tableRow_commune"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="@dimen/padding_card_action"
+                            android:text="Commune"
+                            android:textSize="@dimen/card_content_text_size" />
+
+
+                        <android.support.v4.widget.Space
+                            android:layout_width="10dp"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/textView_commune"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/card_content_text_size" />
+
+
+                    </TableRow>
+
+
+
+                    <TableRow
+                        android:id="@+id/tableRow_cell_no"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="@dimen/padding_card_action"
+                            android:text="Cell No"
+                            android:textSize="@dimen/card_content_text_size" />
+
+
+                        <android.support.v4.widget.Space
+                            android:layout_width="10dp"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/textView_cell_no"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/card_content_text_size" />
+
+
+                    </TableRow>
+
+
+
+                    <TableRow
+                        android:id="@+id/tableRow_prison_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="@dimen/padding_card_action"
+                            android:text="Prison Name"
+                            android:textSize="@dimen/card_content_text_size" />
+
+
+                        <android.support.v4.widget.Space
+                            android:layout_width="10dp"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/textView_prison_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/card_content_text_size" />
+
+
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/tableRow_patient_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="@dimen/padding_card_action"
+                            android:text="Patient Status"
+                            android:textSize="@dimen/card_content_text_size" />
+
+
+                        <android.support.v4.widget.Space
+                            android:layout_width="10dp"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/textView_patient_status"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/card_content_text_size" />
+
+
+                    </TableRow>
+
 
                     <TableRow
                         android:id="@+id/tableRow_SDW"
@@ -336,31 +403,81 @@
 
 
                     </TableRow>
-                    <TableRow
-                        android:id="@+id/tableRow_Caste"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingTop="@dimen/padding_card_action"
-                            android:text="Caste"
-                            android:textSize="@dimen/card_content_text_size" />
 
 
-                        <android.support.v4.widget.Space
-                            android:layout_width="10dp"
-                            android:layout_height="wrap_content" />
+                    <!--<TableRow-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent">-->
 
-                        <TextView
-                            android:id="@+id/textView_caste"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/card_content_text_size" />
+                    <!--<TextView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:paddingTop="@dimen/padding_card_action"-->
+                    <!--android:text="@string/row_address"-->
+                    <!--android:textSize="@dimen/card_content_text_size" />-->
 
 
-                    </TableRow>
+                    <!--<android.support.v4.widget.Space-->
+                    <!--android:layout_width="10dp"-->
+                    <!--android:layout_height="wrap_content" />-->
+
+                    <!--<TextView-->
+                    <!--android:id="@+id/textView_address_1"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textSize="@dimen/card_content_text_size" />-->
+
+
+                    <!--</TableRow>-->
+                    <!--<TableRow-->
+                    <!--android:id="@+id/tableRow_addr2"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent">-->
+
+                    <!--<TextView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:paddingTop="@dimen/padding_card_action"-->
+                    <!--android:textSize="@dimen/card_content_text_size" />-->
+
+
+                    <!--<android.support.v4.widget.Space-->
+                    <!--android:layout_width="10dp"-->
+                    <!--android:layout_height="wrap_content" />-->
+
+                    <!--<TextView-->
+                    <!--android:id="@+id/textView_address2"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textSize="@dimen/card_content_text_size" />-->
+
+
+                    <!--</TableRow>-->
+
+
+                    <!--<TableRow-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent">-->
+
+                    <!--<TextView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:paddingTop="@dimen/padding_card_action"-->
+                    <!--android:textSize="@dimen/card_content_text_size" />-->
+
+
+                    <!--<android.support.v4.widget.Space-->
+                    <!--android:layout_width="10dp"-->
+                    <!--android:layout_height="wrap_content" />-->
+
+                    <!--<TextView-->
+                    <!--android:id="@+id/textView_address_final"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textSize="@dimen/card_content_text_size" />-->
+
+
+                    <!--</TableRow>-->
 
                 </TableLayout>
 
@@ -489,6 +606,7 @@
 
             </LinearLayout>
         </android.support.v7.widget.CardView>
+
 
 
 

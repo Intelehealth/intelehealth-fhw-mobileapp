@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
@@ -12,9 +14,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,7 +41,7 @@ import io.intelehealth.client.utilities.HelperMethods;
  */
 public class FamilyHistoryActivity extends AppCompatActivity {
 
-    String LOG_TAG = "Family History Activity";
+    private static final String TAG = FamilyHistoryActivity.class.getSimpleName();
 
     Integer patientID;
     String visitID;
@@ -64,18 +68,20 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     boolean flag = false;
     boolean hasLicense = false;
     SharedPreferences.Editor e;
+    SQLiteDatabase localdb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
+        localdb = mDbHelper.getWritableDatabase();
         //For Testing
 //        patientID = Long.valueOf("1");
 
         // display pop-up to ask for update, if a returning patient
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         e = sharedPreferences.edit();
-        fhistory = sharedPreferences.getString("fhistory", " ");
-        phistory = sharedPreferences.getString("phistory", " ");
+
         boolean past = sharedPreferences.getBoolean("returning", false);
         if (past) {
             AlertDialog.Builder alertdialog = new AlertDialog.Builder(FamilyHistoryActivity.this);
@@ -93,7 +99,24 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     // skip
                     flag = false;
-                    insertDb(fhistory);
+
+                    String[] columns = {"value", " concept_id"};
+                    String orderBy = "visit_id";
+
+                    try {
+                        String famHistSelection = "patient_id = ? AND concept_id = ?";
+                        String[] famHistArgs = {String.valueOf(patientID), String.valueOf(ConceptId.RHK_FAMILY_HISTORY_BLURB)};
+                        Cursor famHistCursor = localdb.query("obs", columns, famHistSelection, famHistArgs, null, null, orderBy);
+                        famHistCursor.moveToLast();
+                        fhistory = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
+                        famHistCursor.close();
+                    } catch (CursorIndexOutOfBoundsException e) {
+                        fhistory=""; // if family history does not exist
+                    }
+
+                    if (fhistory != null && !fhistory.isEmpty() && !fhistory.equals("null")) {
+                        insertDb(fhistory);
+                    }
                     //  PastMedicalHistoryActivity pmh = new PastMedicalHistoryActivity();
                     // pmh.insertDb(phistory);
 
@@ -169,6 +192,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 Node clickedNode = familyHistoryMap.getOption(groupPosition).getOption(childPosition);
+                Log.i(TAG, "onChildClick: ");
                 clickedNode.toggleSelected();
                 //Log.d(TAG, String.valueOf(clickedNode.isSelected()));
                 if (familyHistoryMap.getOption(groupPosition).anySubSelected()) {
@@ -177,6 +201,12 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                     familyHistoryMap.getOption(groupPosition).setUnselected();
                 }
                 adapter.notifyDataSetChanged();
+
+                if(clickedNode.getInputType()!= null){
+                    if (!clickedNode.getInputType().equals("camera")) {
+                        Node.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter, null, null);
+                    }
+                }
 
                 String imageName = patientID + "_" + visitID + "_" + image_Prefix;
                 String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
@@ -198,6 +228,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                 Node clickedNode = familyHistoryMap.getOption(groupPosition);
 
                 if (clickedNode.getInputType() != null) {
+                    Log.i(TAG, "onGroupExpand:  input not null");
                     if (clickedNode.getInputType().equals("camera")) {
                         String imageName = patientID + "_" + visitID + "_" + image_Prefix;
                         String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
@@ -208,6 +239,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                         }
                         Node.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter, filePath.toString(), imageName);
                     } else {
+                        Log.i(TAG, "onGroupExpand: input not camera");
                         Node.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter, null, null);
                     }
                 }
@@ -232,7 +264,14 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             for (Node node : familyHistoryMap.getOptionsList()) {
                 if (node.isSelected()) {
                     String familyString = node.generateLanguage();
-                    String toInsert = node.getText() + " has " + familyString;
+                    String toInsert = node.getText() + " : " + familyString;
+                    toInsert = toInsert.replaceAll(Node.bullet,"");
+                    toInsert = toInsert.replaceAll(" - ",", ");
+                    toInsert = toInsert.replaceAll("<br/>","");
+                    if(StringUtils.right(toInsert,2).equals(", ")){
+                     toInsert = toInsert.substring(0,toInsert.length()-2);
+                    }
+                    toInsert = toInsert+".<br/>";
                     insertionList.add(toInsert);
                 }
             }
@@ -240,9 +279,9 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 
         for (int i = 0; i < insertionList.size(); i++) {
             if (i == 0) {
-                insertion = insertionList.get(i);
+                insertion = Node.bullet + insertionList.get(i);
             } else {
-                insertion = insertion + "; " + insertionList.get(i);
+                insertion = insertion +" "+ Node.bullet + insertionList.get(i);
             }
         }
 
@@ -302,7 +341,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     }
 
     public long insertDb(String value) {
-        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
+
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -318,13 +357,12 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         complaintEntries.put("concept_id", CONCEPT_ID);
         complaintEntries.put("creator", CREATOR_ID);
 
-        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+
         return localdb.insert("obs", null, complaintEntries);
     }
 
     private void updateImageDatabase(String imagePath) {
-        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
-        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+
         localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path,image_type,delete_status) values("
                 + "'" + patientID + "'" + ","
                 + visitID + ","
@@ -334,8 +372,6 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     }
 
     private void updateDatabase(String string) {
-        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
-        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
 
         int conceptID = ConceptId.RHK_FAMILY_HISTORY_BLURB;
         ContentValues contentValues = new ContentValues();

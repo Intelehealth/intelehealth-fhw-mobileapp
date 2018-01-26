@@ -8,8 +8,8 @@ android {
         applicationId "io.intelehealth.client"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "B1"
+        versionCode 2
+        versionName "B2"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled false
         vectorDrawables.useSupportLibrary = true
@@ -66,6 +66,10 @@ dependencies {
     compile "com.github.bumptech.glide:glide:$rootProject.glideVersion"
     //Parse SDK
     compile "com.parse:parse-android:$rootProject.parseAndroidVersion"
+
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+
 
     //Used for debugging local SQLite Database.
     debugCompile "com.amitshekhar.android:debug-db:$rootProject.debugDbVersion"

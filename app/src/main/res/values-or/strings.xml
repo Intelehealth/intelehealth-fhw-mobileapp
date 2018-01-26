@@ -180,7 +180,7 @@
     <string name="title_activity_video_library">ଭିଡ଼ିଓ ଲାଇବ୍ରେରୀ</string>
     <string name="title_activity_vitals">ପ୍ରଧାନ (ମହୂତ୍ତପର୍ଣ୍ଣ)</string>
     <string name="title_home_screen">ଘର</string>
-    <string name="today_patient">ଦିର ରୋଗୀ</string>
+    <string name="today_patient">ଆଜିର ରୋଗୀ</string>
     <string name="toast_crash">ବେଦ ତ୍ରଟି କୁ ମୁକାବିଲା କରିବାକୁ ପଡ଼େ; ରିପୋର୍ଟ ପଠାଗଲା</string>
     <string name="uploading">ପ୍ ଲୋଡ଼ିଙ୍ଗ</string>
     <string name="url_invalid">ନିଜର ୟୁଅାରଏଲ୍ କୁ ଯାଞ୍ଚ କରନ୍ତୁ</string>
@@ -213,4 +213,28 @@
     <string name="visit_summary_edit_vitals">ପଣ ପ୍ରମୂଖ ସ୍କନିରୁ ପ୍ରମୂଖ କରିପାରିବେ</string>
     <string name="generic_yes">ହଁ</string>
     <string name="generic_no">ନାହିଁ</string>
+    <string name="hint_required">ଜରୁରୀ </string>
+    <string name="generic_back">ପଛକୁ ଯାନ୍ତୁ </string>
+    <string name="generic_update">"ଅପଡେଟ "</string>
+    <string name="generic_deleted">ଦିଲେଟେଡ</string>
+    <string name="permission_rationale">"ଇ ମେଲ ପାଇଁ 'କଂଟକେଟ' ର ଅନୁମତି ଦରକାର "</string>
+    <string name="identification_screen_dialog_error_gender">"ଏରର: ଲିଙ୍ଗ ବାଛନ୍ତୁ "</string>
+    <string name="question_answer_all">"ଆପଣ ସବୁ ପ୍ରଶ୍ନର ଉତ୍ତର ଦେଇଛନ୍ତି କି? "</string>
+    <string name="question_answer_all_phy_exam">ଦୟାକରି ସବୁ ସାଧାରଣ ପରୀକ୍ଷା ପ୍ରଶ୍ନର ଉତ୍ତର ଦିୟ</string>
+    <string name="visit_summary_hw_on_duty">"ଆରୋଗ୍ୟ ସଂଯୋଜିକା କାମରେ ଅଛି "</string>
+    <string name="visit_summary_bp">ରକ୍ତଚାପ</string>
+    <string name="wash_hands">"ହାଥ ଧୋଇବା ପାଇଁ ମନେରଖ "</string>
+    <string name="pref_title_social_recommendations">"ସାମାଜିକ ଉପାୟ କୋ ଚଲାଅ "</string>
+    <string name="pref_description_social_recommendations">"ଆପଣଂକ ମେସେଜ ମାଧ୍ୟମ ରେ ବ୍ୟକ୍ତି ମାନକ ପାଖରେ ପହଂଚିବା ପାଇଁ ଉପାୟ "</string>
+    <string name="sync_stopped">"ବନ୍ଦ ହେଇ ଗଲା  "</string>
+    <string name="sync_in_progress">କାମ ଚାଲୁ ଅଛି</string>
+    <string name="question_update_details">"ଆପଣ ଡିଟେଲସ ଅପଡେଟ କରିବା ପାଇଁ ଚାହୁଁଛନ୍ତି କି "</string>
+    <string name="backup_completed">"SD card ମାଧ୍ୟାନ ରେ ଏହା ମୋବିଲେ ରେ ଚାଲି ପାରିବ "</string>
+    <string name="error_no_camera">କ୍ୟାମେରା ଲଗା ଯାଇ ନାହିଁ</string>
+    <string name="error_delete">"ଲିଭାଇ ବାରେ ଭୂଲ ହଉଚି "</string>
+    <string name="error_no_file">ଏହି ଡିରେକ୍ତରୀ ରେ କୋଣସି ଫାଇଲି ନାହିଁ</string>
+    <string name="error_offline_login">"ଇଣ୍ଟେର୍ନେଟ ବିନା ଲଗିଂ ହାଇପାରିବ ନାହିଁ  "</string>
+    <string name="invalidate_offline_login">"ଇଣ୍ଟେର୍ନେଟ ବିନା ଲଗିଂ ବୈଧ୍ୟ ହେବ ନାହିଁ  "</string>
+    <string name="patient_not_registered">"ରୋଗୀ ରେଜିଷ୍ଟ୍ରି ହେଇ ନାହିଁ "</string>
+
 </resources>

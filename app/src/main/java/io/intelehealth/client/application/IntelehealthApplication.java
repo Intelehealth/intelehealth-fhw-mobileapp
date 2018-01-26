@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -19,6 +21,8 @@ import org.acra.sender.HttpSender;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.setting_activity.SettingsActivity;
+import io.intelehealth.client.database.DelayedJobQueueProvider;
+import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.utilities.HelperMethods;
 
 /**
@@ -71,6 +75,14 @@ public class IntelehealthApplication extends Application implements Application.
             );
             Log.i(TAG, "onCreate: Parse init");
         }
+
+        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
+        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+
+        localdb.execSQL("UPDATE "+DelayedJobQueueProvider.DELAYED_JOBS_TABLE_NAME +" SET "+ DelayedJobQueueProvider.SYNC_STATUS+"=0");
+
+
+
 
         registerActivityLifecycleCallbacks(this);
     }

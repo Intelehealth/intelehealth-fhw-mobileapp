@@ -19,6 +19,9 @@
         <item>India</item>
         <item>United States</item>
     </string-array>
+    <string-array name="country">
+        <item>Haiti</item>
+    </string-array>
 
     <string-array name="education">
         <item>Select Education</item>
@@ -37,6 +40,214 @@
         <item>ST</item>
         <item>others</item>
     </string-array>
+
+    <string-array name = "department">
+        <item>Ouest</item>
+        <item>Sud-Est</item>
+        <item>Nord</item>
+        <item>Nord-Est</item>
+        <item>Artibonite</item>
+        <item>Centre</item>
+        <item>Sud</item>
+        <item>Grande'Anse</item>
+        <item>Nord-Ouest</item>
+        <item>Nippes</item>
+    </string-array>
+
+
+
+    <string-array name="Ouest">
+        <item>Port-au-Prince</item>
+        <item>Delmas</item>
+        <item>Carrefour</item>
+        <item>Pétion-Ville</item>
+        <item>Kenscoff</item>
+        <item>Gressier</item>
+        <item>Cité Soleil</item>
+        <item>Tabarre</item>
+        <item>Léogâne</item>
+        <item>Petit-Goâve</item>
+        <item>Grand-Goâve</item>
+        <item>Croix-Des-Bouquets</item>
+        <item>Thomazeau</item>
+        <item>Ganthier</item>
+        <item>Cornillon</item>
+        <item>Fonds-Verrettes</item>
+        <item>Arcahaie</item>
+        <item>Cabaret</item>
+        <item>Anse à Galets</item>
+        <item>Pointe à Raquette</item>
+    </string-array>
+
+
+    <string-array name ="Sud_Est">
+        <item>Jacmel</item>
+        <item>Marigot</item>
+        <item>Cayes-Jacmel</item>
+        <item>La Vallée</item>
+        <item>Bainet</item>
+        <item>Côtes de Fer</item>
+        <item>Belle Anse</item>
+        <item>Grand Gosier</item>
+        <item>Thiotte</item>
+        <item>Anse-à-Pître</item>
+    </string-array>
+    <string-array name="Nord">
+        <item>Cap-Haïtien</item>
+        <item>Quartier Morin</item>
+        <item>Limonade</item>
+        <item>Acul du Nord</item>
+        <item>Plaine du Nord</item>
+        <item>Milot</item>
+        <item>Grande Riviere Du Nord</item>
+        <item>Bahon</item>
+        <item>Saint-Raphaël</item>
+        <item>Dondon</item>
+        <item>Ranquitte</item>
+        <item>Pignon</item>
+        <item>La Victoire</item>
+        <item>Borgne</item>
+        <item>Port-Margot</item>
+        <item>Limbé</item>
+        <item>Bas Limbé</item>
+        <item>Plaisance</item>
+        <item>Pilate</item>
+    </string-array>
+
+    <string-array name="Nord_Est">
+        <item>Fort-Liberté</item>
+        <item>Ferrier</item>
+        <item>Perches</item>
+        <item>Ouanaminthe</item>
+        <item>Capotille</item>
+        <item>Mont-Organisé</item>
+        <item>Trou du Nord</item>
+        <item>Sainte Suzanne</item>
+        <item>Terrier Rouge</item>
+        <item>Caracol</item>
+        <item>Vallières</item>
+        <item>Carice</item>
+        <item>Mombin Crochu</item>
+
+
+    </string-array>
+
+
+    <string-array name="Artibonite">
+        <item>Gonaïves</item>
+        <item>Ennery</item>
+        <item>L Estère</item>
+        <item>Gros Morne</item>
+        <item>Terre Neuve</item>
+
+        <item>Anse Rouge</item>
+        <item>Saint-Marc</item>
+        <item>VerrettesAquin</item>
+        <item>La Chapelle</item>
+        <item>Dessalines</item>
+        <item>Petite Rivière de l Artibonite</item>
+        <item>Grande Saline</item>
+        <item>Desdunes</item>
+        <item>Saint-Michel de l Attalaye</item>
+        <item>Marmelade</item>
+
+    </string-array>
+
+    <string-array name="Centre">
+        <item>Hinche</item>
+        <item>Maïssade</item>
+        <item>Thomonde</item>
+        <item>Cerca Carvajal</item>
+        <item>Mirebalais</item>
+        <item>Saut d'Eau</item>
+        <item>Boucan Carré</item>
+        <item>Lascahobas</item>
+        <item>Belladère</item>
+        <item>Savanette</item>
+        <item>Cerca La Source</item>
+        <item>Thomassique</item>
+
+    </string-array>
+    <string-array name="Sud">
+        <item>Les Cayes</item>
+        <item>Torbeck</item>
+        <item>Chantal</item>
+        <item>Camp-Perrin</item>
+        <item>Maniche</item>
+        <item>Île à Vache</item>
+        <item>Port-Salut</item>
+        <item>Saint Jean du Sud</item>
+        <item>Arniquet</item>
+        <item>Saint louis du Sud</item>
+        <item>Cavaillon</item>
+        <item>Côteaux</item>
+        <item>Port-à-Piment</item>
+        <item>Roche à Bâteau</item>
+        <item>Chardonnières</item>
+        <item>Les Anglais</item>
+        <item>Tiburon</item>
+
+    </string-array>
+
+
+    <string-array name="Grande_Anse">
+        <item>Jérémie</item>
+        <item>Abricots </item>
+        <item>Bonbon</item>
+        <item>Moron</item>
+        <item>Chambellan</item>
+        <item>Anse d'Hainault</item>
+        <item>Dame Marie</item>
+        <item>Les Irois</item>
+        <item>Corail</item>
+        <item>Roseaux</item>
+        <item>Beaumont</item>
+        <item>Pestel</item>
+    </string-array>
+
+    <string-array name="Nord_Ouest">
+        <item>Port-de-Paix</item>
+        <item>La Tortue</item>
+        <item>Bassin Bleu</item>
+        <item>Chamsolme</item>
+        <item>Saint-Louis du Nord</item>
+        <item>Anse-à-Foleur</item>
+        <item>Môle Saint Nicolas</item>
+        <item>Baie de Henne</item>
+        <item>Bombardopolis</item>
+        <item>Jean Rabel</item>
+    </string-array>
+    <string-array name="Nippes">
+        <item>Miragoâne</item>
+        <item>Petite Rivière de Nippes</item>
+        <item>Fonds des Nègres</item>
+        <item>Paillant</item>
+        <item>Anse-à-Veau</item>
+        <item>Petit Trou de Nippes</item>
+        <item>L'Asile</item>
+        <item>Arnaud</item>
+        <item>Plaisance du Sud</item>
+        <item>Baradères</item>
+        <item>Grand-Boucan</item>
+    </string-array>
+    //prison Name
+    <string-array name = "PrisonName">
+        <item>PCPAA</item>
+        <item>PCD</item>
+        <item>PCPV</item>
+        <item>PCC</item>
+        <item>PCCH</item>
+        <item>PCH</item>
+        <item>OTH</item>
+    </string-array>
+    //patient Status
+    <string-array name="PatientStatus">
+        <item>Active</item>
+        <item>Deceased</item>
+        <item>Transferred</item>
+        <item>Released</item>
+    </string-array>
+
 
     <string-array name="economic">
         <item>Select Economic Status</item>
@@ -133,7 +344,7 @@
 
     <string-array name="odisha_villages">
         <item>Satygaon</item>
-        <item>Banjha Munda</item>
+        <item>Bhanjamunda</item>
         <item>Baidehipur</item>
         <item>Bhadramunda</item>
         <item>Patamara</item>
@@ -144,9 +355,9 @@
         <item>Genjeimuni</item>
         <item>Sagamanji Sahi</item>
         <item>Bankhuli</item>
-        <item>Tandibereni</item>
+        <item>Tandiberani</item>
         <item>Nalasahi</item>
-        <item>Chanapal</item>
+        <item>Chanapala</item>
         <item>Magarmuhan</item>
         <item>Rangamatia</item>
         <item>Suabasa</item>
@@ -160,6 +371,37 @@
         <item>Chadakamara</item>
         <item>Phuljhari</item>
         <item>Khuntaposi</item>
+        <item>Jenapada</item>
+        <item>Monnakhul</item>
+        <item>Gopinathpur</item>
+        <item>Siarimalia Colony Sai</item>
+        <item>Siarimalia</item>
+        <item>Dangapala</item>
+        <item>Ditikrushnapur</item>
+        <item>Sanadhauragotha</item>
+        <item>Kunjam</item>
+        <item>Padang</item>
+        <item>Khulamunda</item>
+        <item>Priyambadapur</item>
+        <item>Jaganathpur</item>
+        <item>Roghunathpur</item>
+        <item>Muharmuhan</item>
+        <item>Saubasa</item>
+        <item>Bankuli</item>
+        <item>Sagamanghi Sai</item>
+        <item>Rengaromunda</item>
+        <item>Rangiapala</item>
+        <item>Benipathar</item>
+        <item>Debahali</item>
+        <item>Gentunali</item>
+        <item>Kakichanda(Munduribeda)</item>
+        <item>Dipasahi</item>
+        <item>Badasada</item>
+        <item>Kanteikali(Kanteigiri)</item>
+        <item>Purunapani</item>
+        <item>Fingamunda</item>
+        <item>Bijapani</item>
+        <item>Charakmunda</item>
     </string-array>
 
     <string-array name="units">
@@ -184,6 +426,38 @@
         <item>Weeks</item>
         <item>Months</item>
         <item>Years</item>
+    </string-array>
+    <string-array name="cell_no">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+        <item>26</item>
+        <item>27</item>
+        <item>28</item>
+        <item>29</item>
+        <item>30</item>
     </string-array>
 
 </resources>

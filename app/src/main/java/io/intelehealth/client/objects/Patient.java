@@ -26,6 +26,12 @@ public class Patient {
     private String economic_status;
     private String education_level;
     private String caste;
+    private String department;
+    private String commune;
+
+    private String cell_no;
+    private String prison_name;
+    private  String patient_status;
 
 
     public Integer getId() {
@@ -66,6 +72,20 @@ public class Patient {
 
     public void setLastName(String last_name) {
         this.last_name = last_name;
+    }
+
+    public String getDepartment(){
+        return department;
+    }
+    public void setDepartment(String department){
+        this.department=department;
+    }
+
+    public String getCommune(){
+        return commune;
+    }
+    public void setCommune(String commune){
+        this.commune = commune;
     }
 
     public String getDateOfBirth() {
@@ -195,4 +215,34 @@ public class Patient {
     public void setOpenmrs_patient_id(String openmrs_patient_id) {
         this.openmrs_patient_id = openmrs_patient_id;
     }
+
+
+
+    public String getCellNo(){
+        return cell_no;
+    }
+
+    public void setCellNo(String cell_no){
+        this.cell_no = cell_no;
+    }
+
+
+    public String getPrisonName(){
+        return prison_name;
+    }
+
+    public void setPrisonName(String prison_name){
+        this.prison_name = prison_name;
+    }
+
+
+    public String getPatientStatus(){
+        return patient_status;
+    }
+    public void setPatientStatus(String patient_status){
+        this.patient_status = patient_status;
+    }
+
 }
+
+

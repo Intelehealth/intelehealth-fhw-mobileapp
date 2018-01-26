@@ -39,6 +39,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -161,7 +163,6 @@ public class PatientDetailActivity extends AppCompatActivity {
                     }
                     while (cursor.moveToNext());
                     returning = true;
-                    e.putString("phistory", phistory);//Log.d("phist",phistory);
                     e.putBoolean("returning", true);
                     e.commit();
                 }
@@ -177,7 +178,6 @@ public class PatientDetailActivity extends AppCompatActivity {
                     }
                     while (cursor1.moveToNext());
                     returning = true;
-                    e.putString("fhistory", fhistory);//Log.d("fhist",fhistory);
                     e.putBoolean("returning", true);
                     e.commit();
                 }
@@ -233,6 +233,9 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     }
 
+
+
+
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the options menu from XML
         MenuInflater inflater = getMenuInflater();
@@ -247,9 +250,6 @@ public class PatientDetailActivity extends AppCompatActivity {
             case R.id.detail_home:
                 Intent intent = new Intent(PatientDetailActivity.this, HomeActivity.class);
                 startActivity(intent);
-                return true;
-            case R.id.detail_print:
-                doWebViewPrint();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -271,7 +271,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         String[] patientColumns = {"openmrs_id", "first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw", "occupation",
-                "patient_photo", "economic_status", "education_status", "caste"};
+                "patient_photo", "economic_status", "education_status", "caste","department","commune", "cell_no", "prison_name", "patient_status"};
         final Cursor idCursor = db.query("patient", patientColumns, patientSelection, patientArgs, null, null, null);
 
         if (idCursor.moveToFirst()) {
@@ -295,6 +295,11 @@ public class PatientDetailActivity extends AppCompatActivity {
                 patient.setEconomic_status(idCursor.getString(idCursor.getColumnIndexOrThrow("economic_status")));
                 patient.setEducation_level(idCursor.getString(idCursor.getColumnIndexOrThrow("education_status")));
                 patient.setCaste(idCursor.getString(idCursor.getColumnIndexOrThrow("caste")));
+                patient.setDepartment(idCursor.getString(idCursor.getColumnIndexOrThrow("department")));
+                patient.setCommune(idCursor.getString(idCursor.getColumnIndexOrThrow("commune")));
+                patient.setCellNo(idCursor.getString(idCursor.getColumnIndexOrThrow("cell_no")));
+                patient.setPrisonName(idCursor.getString(idCursor.getColumnIndexOrThrow("prison_name")));
+                patient.setPatientStatus(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_status")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -304,11 +309,11 @@ public class PatientDetailActivity extends AppCompatActivity {
         TextView idView = (TextView) findViewById(R.id.textView_ID);
         TextView dobView = (TextView) findViewById(R.id.textView_DOB);
         TextView ageView = (TextView) findViewById(R.id.textView_age);
-        TextView addr1View = (TextView) findViewById(R.id.textView_address_1);
-        TableRow addr2Row = (TableRow) findViewById(R.id.tableRow_addr2);
-        TextView addr2View = (TextView) findViewById(R.id.textView_address2);
-        TextView addrFinalView = (TextView) findViewById(R.id.textView_address_final);
-        TextView casteView = (TextView) findViewById(R.id.textView_caste);
+//        TextView addr1View = (TextView) findViewById(R.id.textView_address_1);
+//        TableRow addr2Row = (TableRow) findViewById(R.id.tableRow_addr2);
+//        TextView addr2View = (TextView) findViewById(R.id.textView_address2);
+//        TextView addrFinalView = (TextView) findViewById(R.id.textView_address_final);
+//        TextView casteView = (TextView) findViewById(R.id.textView_caste);
         TextView economic_statusView = (TextView) findViewById(R.id.textView_economic_status);
         TextView education_statusView = (TextView) findViewById(R.id.textView_education_status);
         TextView phoneView = (TextView) findViewById(R.id.textView_phone);
@@ -317,8 +322,29 @@ public class PatientDetailActivity extends AppCompatActivity {
         TextView occuView = (TextView) findViewById(R.id.textView_occupation);
         TableRow occuRow = (TableRow) findViewById(R.id.tableRow_Occupation);
 
+        TextView departmentView = (TextView) findViewById(R.id.textView_department);
+        TableRow depatmentRow = (TableRow) findViewById(R.id.tableRow_department);
+
+
+        TextView communeView = (TextView) findViewById(R.id.textView_commune);
+        TableRow communeRow = (TableRow)findViewById(R.id.tableRow_commune);
+
+        TextView prison_nameView = (TextView) findViewById(R.id.textView_prison_name);
+        TableRow prison_nameRow = (TableRow)findViewById(R.id.tableRow_prison_name);
+
+        TextView cellNoView =(TextView) findViewById(R.id.textView_cell_no);
+        TableRow cell_noRow = (TableRow) findViewById(R.id.tableRow_cell_no);
+
+        TextView patientStatusView=(TextView)findViewById(R.id.textView_patient_status);
+        TableRow patient_StatusRow = (TableRow)findViewById(R.id.tableRow_patient_status);
+
         TextView medHistView = (TextView) findViewById(R.id.textView_patHist);
         TextView famHistView = (TextView) findViewById(R.id.textView_famHist);
+
+//
+//        addrFinalView.setVisibility(View.GONE);
+//        addr1View.setVisibility(View.GONE);
+//        addr2View.setVisibility(View.GONE);
 
         if (patient.getMiddleName() == null) {
             patientName = patient.getLastName() + ", " + patient.getFirstName();
@@ -344,16 +370,16 @@ public class PatientDetailActivity extends AppCompatActivity {
         int age = HelperMethods.getAge(patient.getDateOfBirth());
         ageView.setText(String.valueOf(age));
         dobView.setText(patient.getDateOfBirth());
-        if (patient.getAddress1() == null || patient.getAddress2().equals("")) {
-            addr1View.setVisibility(View.GONE);
-        } else {
-            addr1View.setText(patient.getAddress1());
-        }
-        if (patient.getAddress2() == null || patient.getAddress2().equals("")) {
-            addr2Row.setVisibility(View.GONE);
-        } else {
-            addr2View.setText(patient.getAddress2());
-        }
+//        if (patient.getAddress1() == null || patient.getAddress2().equals("")) {
+//            addr1View.setVisibility(View.GONE);
+//        } else {
+//            addr1View.setText(patient.getAddress1());
+//        }
+//        if (patient.getAddress2() == null || patient.getAddress2().equals("")) {
+//            addr2Row.setVisibility(View.GONE);
+//        } else {
+//            addr2View.setText(patient.getAddress2());
+//        }
         String city_village;
         if (patient.getCityVillage() != null) {
             city_village = patient.getCityVillage().trim();
@@ -372,11 +398,17 @@ public class PatientDetailActivity extends AppCompatActivity {
                 String.format("%s, %s, %s %s",
                         city_village, patient.getStateProvince(),
                         postal_code, patient.getCountry());
-        addrFinalView.setText(addrFinalLine);
+//        addrFinalView.setText(addrFinalLine);
         phoneView.setText(patient.getPhoneNumber());
         education_statusView.setText(patient.getEducation_level());
         economic_statusView.setText(patient.getEconomic_status());
-        casteView.setText(patient.getCaste());
+        departmentView.setText(patient.getDepartment());
+        communeView.setText(patient.getCommune());
+        prison_nameView.setText(patient.getPrisonName());
+        cellNoView.setText(patient.getCellNo());
+        patientStatusView.setText(patient.getPatientStatus());
+
+//        casteView.setText(patient.getCaste());
 
         if (patient.getSdw() != null && !patient.getSdw().equals("")) {
             sdwView.setText(patient.getSdw());
@@ -467,91 +499,6 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
         }
         visitCursor.close();
-
-    }
-
-
-    /**
-     * This method prints the basic details of patient.
-     * It makes use of PRINT_SERVICE from PrintManager
-     *
-     * @return void
-     */
-
-    private void doWebViewPrint() {
-        // Create a WebView object specifically for printing
-        WebView webView = new WebView(this);
-        webView.setWebViewClient(new WebViewClient() {
-
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return false;
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-//                Log.i("Patient WebView", "page finished loading " + url);
-                createWebPrintJob(view);
-                mWebView = null;
-            }
-        });
-
-        String patientDob = ((TextView) findViewById(R.id.textView_DOB)).getText().toString();
-        String patientAge = ((TextView) findViewById(R.id.textView_age)).getText().toString();
-        String patientAddr1 = ((TextView) findViewById(R.id.textView_address_1)).getText().toString();
-        String patientAddr2 = ((TextView) findViewById(R.id.textView_address2)).getText().toString();
-        String patientAddrFinal = ((TextView) findViewById(R.id.textView_address_final)).getText().toString();
-        String patientPhone = ((TextView) findViewById(R.id.textView_phone)).getText().toString();
-        String patientMedHist = ((TextView) findViewById(R.id.textView_patHist)).getText().toString();
-        String patientFamHist = ((TextView) findViewById(R.id.textView_famHist)).getText().toString();
-        String openMrsPatientID = ((TextView) findViewById(R.id.textView_ID)).getText().toString();
-
-
-        // Generate an HTML document on the fly:
-        String htmlDocument =
-                String.format("<h1 id=\"Intelehealth-patient-detail\">Intelehealth Patient Detail</h1>\n" +
-                                "<h1>%s</h1>\n" +
-                                "<h2 id=\"basic-information\">Basic Information</h2>\n" +
-                                "<p><b>Patient ID</b>: %s</p>\n" +
-                                "<p><b>Date of Birth</b>: %s</p>\n" +
-                                "<p><b>Age</b>: %s</p>\n" +
-                                "<h2 id=\"address-and-contact\">Address and Contact</h2>\n" +
-                                "<p>%s</p>\n" +
-                                "<p>%s</p>\n" +
-                                "<p>%s</p>\n" +
-                                "<p>Phone Number: %s</p>\n" +
-                                "<h2 id=\"recent-vists\">Recent Vists</h2>\n" +
-                                "<h2 id=\"patient-history\">Patient History</h2>\n" +
-                                "<p>%s</p>\n" +
-                                "<h2 id=\"family-history\">Family History</h2>\n" +
-                                "<p>%s</p>\n",
-//                                "<h2 id=\"current-medications\">Current Medications</h2>",
-                        patientName, openMrsPatientID, patientDob, patientAge, patientAddr1,
-                        patientAddr2, patientAddrFinal, patientPhone, patientMedHist, patientFamHist);
-        webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
-
-        // Keep a reference to WebView object until you pass the PrintDocumentAdapter
-        // to the PrintManager
-        mWebView = webView;
-    }
-
-    /**
-     * This method creates a print job using PrintManager instance and PrintAdapter Instance
-     *
-     * @param webView object of type WebView.
-     */
-    private void createWebPrintJob(WebView webView) {
-
-        // Get a PrintManager instance
-        PrintManager printManager = (PrintManager) this
-                .getSystemService(Context.PRINT_SERVICE);
-
-        // Get a print adapter instance
-        PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter();
-
-        // Create a print job with name and adapter instance
-        String jobName = getString(R.string.app_name) + " Patient Detail";
-        PrintJob printJob = printManager.print(jobName, printAdapter,
-                new PrintAttributes.Builder().build());
 
     }
 
