@@ -156,8 +156,6 @@ public class IdentificationActivity extends AppCompatActivity {
         mAddress1.setVisibility(View.GONE);
         mAddress2.setVisibility(View.GONE);
         mRelationship.setVisibility(View.GONE);
-        mPostal.setVisibility(View.GONE);
-
 
         casteText = (EditText) findViewById(R.id.identification_caste);
         educationText = (EditText) findViewById(R.id.identification_education);
