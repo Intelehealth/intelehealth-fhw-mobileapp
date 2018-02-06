@@ -14,6 +14,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -271,8 +272,10 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                     if(StringUtils.right(toInsert,2).equals(", ")){
                      toInsert = toInsert.substring(0,toInsert.length()-2);
                     }
-                    toInsert = toInsert+".<br/>";
+                    toInsert = toInsert+ ".<br/>";
+
                     insertionList.add(toInsert);
+
                 }
             }
         }
