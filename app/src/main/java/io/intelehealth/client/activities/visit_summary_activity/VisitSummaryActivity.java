@@ -30,13 +30,13 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.telephony.PhoneStateListener;
 import android.telephony.SignalStrength;
 import android.telephony.SmsManager;
+import android.text.Html;
 import android.telephony.TelephonyManager;
 import android.text.InputType;
 import android.util.Log;
@@ -54,11 +54,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.File;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -73,6 +77,7 @@ import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActi
 import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
 import io.intelehealth.client.database.DelayedJobQueueProvider;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
+import io.intelehealth.client.node.Node;
 import io.intelehealth.client.objects.Obs;
 import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.services.ClientService;
@@ -247,7 +252,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 return true;
             }
             case R.id.summary_print: {
-                doWebViewPrint();
+                try {
+                    doWebViewPrint();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 return true;
             }
             case R.id.summary_sms: {
@@ -379,6 +388,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editMedHist = (ImageButton) findViewById(R.id.imagebutton_edit_pathist);
         editAddDocs = (ImageButton) findViewById(R.id.imagebutton_edit_additional_document);
         uploadButton = (Button) findViewById(R.id.button_upload);
+        downloadButton = (Button) findViewById(R.id.button_download);
+
+        downloadButton.setEnabled(false);
+        downloadButton.setVisibility(View.GONE);
 
         if (isPastVisit) {
             editVitals.setVisibility(View.GONE);
@@ -411,20 +424,88 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (visitUUID == null || visitUUID.isEmpty()) {
+                if (patient.getOpenmrsId() == null || patient.getOpenmrsId().isEmpty()) {
+                    String patientSelection = "_id = ?";
+                    String[] patientArgs = {String.valueOf(patient.getId())};
+
+                    String table = "patient";
+                    String[] columnsToReturn = {"openmrs_id"};
+                    final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
+
+
+                    if (idCursor.moveToFirst()) {
+                        do {
+                            patient.setOpenmrsId(idCursor.getString(idCursor.getColumnIndex("openmrs_id")));
+                        } while (idCursor.moveToNext());
+                    }
+                    idCursor.close();
+                }
+
+                if (patient.getOpenmrsId() == null || patient.getOpenmrsId().isEmpty()) {
+
+                    String[] DELAYED_JOBS_PROJECTION_PAT = new String[]{DelayedJobQueueProvider._ID, DelayedJobQueueProvider.PATIENT_ID,
+                            DelayedJobQueueProvider.JOB_TYPE, DelayedJobQueueProvider.PATIENT_NAME,
+                            DelayedJobQueueProvider.STATUS, DelayedJobQueueProvider.DATA_RESPONSE, DelayedJobQueueProvider.SYNC_STATUS};
+                    String SELECTION_PAT = DelayedJobQueueProvider.JOB_TYPE + "= \"patient\" AND " +
+                            DelayedJobQueueProvider.PATIENT_ID + "= ?";
+                    String[] ARGS_PAT = new String[]{String.valueOf(patientID)};
+
+                    Cursor cp = getContentResolver().query(DelayedJobQueueProvider.CONTENT_URI,
+                            DELAYED_JOBS_PROJECTION_PAT, SELECTION_PAT, ARGS_PAT, null);
+
+
+                    Log.i(TAG, "onClick: " + cp.getCount());
+
+                    if (cp != null && cp.moveToFirst()) {
+                        Log.d(TAG, "onClick: Not In Null");
+
+                        int sync_status = cp.getInt(cp.getColumnIndexOrThrow(DelayedJobQueueProvider.SYNC_STATUS));
+                        switch (sync_status) {
+                            case ClientService.STATUS_SYNC_STOPPED: {
+
+                                Intent serviceIntent;
+                                Log.i(TAG, "onClick: create patient delayed");
+                                if (cp.getString(cp.getColumnIndex(DelayedJobQueueProvider.JOB_TYPE)).equals("patient")) {
+
+                                    Snackbar.make(view, "Uploading Patient.", Snackbar.LENGTH_LONG).show();
+                                    serviceIntent = new Intent(getApplicationContext(), ClientService.class);
+                                    serviceIntent.putExtra("serviceCall", "patient");
+                                    serviceIntent.putExtra("patientID", cp.getInt(cp.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
+                                    serviceIntent.putExtra("name", cp.getString(cp.getColumnIndex(DelayedJobQueueProvider.PATIENT_NAME)));
+                                    serviceIntent.putExtra("status", cp.getInt(cp.getColumnIndex(DelayedJobQueueProvider.STATUS)));
+                                    serviceIntent.putExtra("personResponse", cp.getInt(cp.getColumnIndex(DelayedJobQueueProvider.DATA_RESPONSE)));
+                                    serviceIntent.putExtra("queueId", cp.getInt(cp.getColumnIndex(DelayedJobQueueProvider._ID)));
+                                    startService(serviceIntent);
+
+                                }
+                                break;
+                            }
+                            case ClientService.STATUS_SYNC_IN_PROGRESS: {
+                                break;
+                            }
+                        }
+
+                    }
+
+                    cp.close();
+                }
+
+                if(visitUUID == null || visitUUID.isEmpty()) {
                     String[] columnsToReturn = {"openmrs_visit_uuid"};
                     String visitIDorderBy = "start_datetime";
                     String visitIDSelection = "_id = ?";
                     String[] visitIDArgs = {visitID};
                     final Cursor visitIDCursor = db.query("visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
-                    if (visitIDCursor != null && visitIDCursor.moveToFirst() && visitIDCursor.getCount() > 0) {
-                        visitIDCursor.moveToFirst();
+                    if (visitIDCursor != null && visitIDCursor.moveToFirst()) {
                         visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("openmrs_visit_uuid"));
                     }
                     if (visitIDCursor != null) visitIDCursor.close();
                 }
 
                 Snackbar.make(view, "Uploading to doctor.", Snackbar.LENGTH_LONG).show();
+
+
+                //Checking for patient job
 
                 String[] DELAYED_JOBS_PROJECTION = new String[]{DelayedJobQueueProvider._ID, DelayedJobQueueProvider.JOB_TYPE, DelayedJobQueueProvider.SYNC_STATUS};
                 String SELECTION = DelayedJobQueueProvider.JOB_TYPE + " IN (\"visit\",\"pr Download\") AND " +
@@ -497,6 +578,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 c.close();
 
             }
+
         });
 
         if (intentTag != null && intentTag.equals("prior")) {
@@ -556,11 +638,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
         bmiView.setText(mBMI);
         tempView.setText(temperature.getValue());
         spO2View.setText(spO2.getValue());
-        complaintView.setText(complaint.getValue());
-        famHistView.setText(famHistory.getValue());
-        patHistView.setText(patHistory.getValue());
-
-        physFindingsView.setText(phyExam.getValue());
+        if (complaint.getValue() != null)
+            complaintView.setText(Html.fromHtml(complaint.getValue()));
+        if (famHistory.getValue() != null)
+            famHistView.setText(Html.fromHtml(famHistory.getValue()));
+        if (patHistory.getValue() != null)
+            patHistView.setText(Html.fromHtml(patHistory.getValue()));
+        if (phyExam.getValue() != null)
+            physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor e = sharedPreferences.edit();
 
@@ -612,7 +697,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 famHistDialog.setView(convertView);
 
                 final TextView famHistTest = (TextView) convertView.findViewById(R.id.textView_entry);
-                famHistTest.setText(famHistory.getValue());
+                if (famHistory.getValue() != null)
+                    famHistTest.setText(Html.fromHtml(famHistory.getValue()));
                 famHistTest.setEnabled(false);
 
                 famHistDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -621,14 +707,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         final AlertDialog.Builder textInput = new AlertDialog.Builder(VisitSummaryActivity.this);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
-                        dialogEditText.setText(famHistory.getValue());
+                        if (famHistory.getValue() != null)
+                            dialogEditText.setText(famHistory.getValue());
+                        else
+                            dialogEditText.setText("");
                         textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 famHistory.setValue(dialogEditText.getText().toString());
-                                famHistTest.setText(famHistory.getValue());
-                                famHistView.setText(famHistory.getValue());
+                                if (famHistory.getValue() != null) {
+                                    famHistTest.setText(Html.fromHtml(famHistory.getValue()));
+                                    famHistView.setText(Html.fromHtml(famHistory.getValue()));
+                                }
                                 updateDatabase(famHistory.getValue(), ConceptId.RHK_FAMILY_HISTORY_BLURB);
                                 dialog.dismiss();
                             }
@@ -679,7 +770,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 complaintDialog.setView(convertView);
 
                 final TextView complaintText = (TextView) convertView.findViewById(R.id.textView_entry);
-                complaintText.setText(complaint.getValue());
+                if (complaint.getValue() != null)
+                    complaintText.setText(Html.fromHtml(complaint.getValue()));
                 complaintText.setEnabled(false);
 
                 complaintDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -688,14 +780,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         final AlertDialog.Builder textInput = new AlertDialog.Builder(VisitSummaryActivity.this);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
-                        dialogEditText.setText(complaint.getValue());
+                        if (complaint.getValue() != null)
+                            dialogEditText.setText(complaint.getValue());
+                        else
+                            dialogEditText.setText("");
                         textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 complaint.setValue(dialogEditText.getText().toString());
-                                complaintText.setText(complaint.getValue());
-                                complaintView.setText(complaint.getValue());
+                                if (complaint.getValue() != null) {
+                                    complaintText.setText(Html.fromHtml(complaint.getValue()));
+                                    complaintView.setText(Html.fromHtml(complaint.getValue()));
+                                }
                                 updateDatabase(complaint.getValue(), ConceptId.CURRENT_COMPLAINT);
                                 dialog.dismiss();
                             }
@@ -745,7 +842,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 physicalDialog.setView(convertView);
 
                 final TextView physicalText = (TextView) convertView.findViewById(R.id.textView_entry);
-                physicalText.setText(phyExam.getValue());
+                if (phyExam.getValue() != null)
+                    physicalText.setText(Html.fromHtml(phyExam.getValue()));
                 physicalText.setEnabled(false);
 
                 physicalDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -754,15 +852,20 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         final AlertDialog.Builder textInput = new AlertDialog.Builder(VisitSummaryActivity.this);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
-                        dialogEditText.setText(phyExam.getValue());
+                        if (phyExam.getValue() != null)
+                            dialogEditText.setText(phyExam.getValue());
+                        else
+                            dialogEditText.setText("");
                         textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
                                 phyExam.setValue(dialogEditText.getText().toString());
-                                physicalText.setText(phyExam.getValue());
-                                physFindingsView.setText(phyExam.getValue());
+                                if (phyExam.getValue() != null) {
+                                    physicalText.setText(Html.fromHtml(phyExam.getValue()));
+                                    physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
+                                }
                                 updateDatabase(phyExam.getValue(), ConceptId.PHYSICAL_EXAMINATION);
                                 dialog.dismiss();
                             }
@@ -841,7 +944,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 historyDialog.setView(convertView);
 
                 final TextView historyText = (TextView) convertView.findViewById(R.id.textView_entry);
-                historyText.setText(patHistory.getValue());
+                if (patHistory.getValue() != null)
+                    historyText.setText(Html.fromHtml(patHistory.getValue()));
                 historyText.setEnabled(false);
 
                 historyDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -850,14 +954,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         final AlertDialog.Builder textInput = new AlertDialog.Builder(VisitSummaryActivity.this);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
-                        dialogEditText.setText(patHistory.getValue());
+                        if (patHistory.getValue() != null)
+                            dialogEditText.setText(patHistory.getValue());
+                        else
+                            dialogEditText.setText("");
                         textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 patHistory.setValue(dialogEditText.getText().toString());
-                                historyText.setText(patHistory.getValue());
-                                patHistView.setText(patHistory.getValue());
+                                if (patHistory.getValue() != null) {
+                                    historyText.setText(Html.fromHtml(patHistory.getValue()));
+                                    patHistView.setText(Html.fromHtml(patHistory.getValue()));
+                                }
                                 updateDatabase(patHistory.getValue(), ConceptId.RHK_MEDICAL_HISTORY_BLURB);
                                 dialog.dismiss();
                             }
@@ -1149,11 +1258,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 break;
             }
             case ConceptId.JSV_MEDICATIONS: {
-                if (!rxReturned.isEmpty()) {
-                    rxReturned = rxReturned + "," + value;
+                Log.i(TAG, "parseData: val:" + value);
+                Log.i(TAG, "parseData: rx" + rxReturned);
+                if (!rxReturned.trim().isEmpty()) {
+                    rxReturned = rxReturned + "\n" + value;
                 } else {
                     rxReturned = value;
                 }
+                Log.i(TAG, "parseData: rxfin" + rxReturned);
                 if (prescriptionCard.getVisibility() != View.VISIBLE) {
                     prescriptionCard.setVisibility(View.VISIBLE);
                 }
@@ -1208,7 +1320,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
      *
      * @return void
      */
-    private void doWebViewPrint() {
+    private void doWebViewPrint() throws ParseException {
         // Create a WebView object specifically for printing
         WebView webView = new WebView(this);
         webView.setWebViewClient(new WebViewClient() {
@@ -1245,7 +1357,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String mDate = df.format(c.getTime());
 
         String mPatHist = patHistory.getValue();
+        if (mPatHist == null) {
+            mPatHist = "";
+        }
         String mFamHist = famHistory.getValue();
+        if (mFamHist == null) {
+            mFamHist = "";
+        }
         mHeight = height.getValue();
         mWeight = weight.getValue();
         mBP = bpSys.getValue() + "/" + bpDias.getValue();
@@ -1253,58 +1371,134 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mTemp = temperature.getValue();
         mSPO2 = spO2.getValue();
         String mComplaint = complaint.getValue();
-        String mExam = phyExam.getValue();
+        String complaints[] = StringUtils.split(mComplaint, Node.bullet_arrow);
+        mComplaint = "";
+        String colon = ":";
+        if (complaints != null) {
+            for (String comp : complaints) {
+                if (!comp.trim().isEmpty()) {
+                    mComplaint = mComplaint + Node.big_bullet + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+
+                }
+            }
+            if (!mComplaint.isEmpty()) {
+                mComplaint = mComplaint.substring(0, mComplaint.length() - 2);
+                mComplaint = mComplaint.replaceAll("<b>", "");
+                mComplaint = mComplaint.replaceAll("</b>", "");
+            }
+        }
 
         if (mPatientOpenMRSID == null) {
             mPatientOpenMRSID = getString(R.string.patient_not_registered);
         }
 
+        String para_open = "<p style=\"font-size:11pt; margin: 0px; padding: 0px;\">";
+        String para_close = "</p>";
+
+        String rx_web = "";
+
+        Calendar today = Calendar.getInstance();
+        Calendar dob = Calendar.getInstance();
+
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = sdf.parse(mPatientDob);
+        dob.setTime(date);
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
+            age--;
+        }
+
+        if (rxReturned != null && !rxReturned.isEmpty()) {
+            rx_web = para_open + Node.big_bullet +
+                    rxReturned.replaceAll("\n", para_close + para_open + Node.big_bullet)
+                    + para_close;
+        }
+
+        String tests_web = "";
+
+        if (testsReturned != null && !testsReturned.isEmpty()) {
+            tests_web = para_open + Node.big_bullet +
+                    testsReturned.replaceAll("\n", para_close + para_open + Node.big_bullet)
+                    + para_close;
+        }
+
+        String advice_web = "";
+        if (adviceReturned != null && !adviceReturned.isEmpty()) {
+            advice_web = para_open + Node.big_bullet +
+                    adviceReturned.replaceAll("\n", para_close + para_open + Node.big_bullet)
+                    + para_close;
+        }
+
+        String diagnosis_web = "";
+        if (diagnosisReturned != null && !diagnosisReturned.isEmpty()) {
+            diagnosis_web = para_open + Node.big_bullet +
+                    diagnosisReturned.replaceAll("\n", para_close + para_open + Node.big_bullet)
+                    + para_close;
+        }
+
+        String comments_web = "";
+        if (adviceReturned != null && !adviceReturned.isEmpty()) {
+            comments_web = para_open + Node.big_bullet +
+                    adviceReturned.replaceAll("\n", para_close + para_open + Node.big_bullet) +
+                    para_close;
+        }
+
+        String heading = "ଚିକିତ୍ସା ସହାୟତା କେନ୍ଦ୍ର";
+        String heading2 = "Chikitsa Sahayta Kendra";
+        String heading3 = "<br/>";
+
+        String bp = mBP;
+        if (bp.equals("/")) bp = "";
+
+        String address = mAddress + " " + mCityState + " " + mPhone;
+
+        String fam_hist = mFamHist;
+        String pat_hist = mPatHist;
+
+        if (fam_hist.trim().isEmpty()) {
+            fam_hist = "No history of illness in family provided.";
+        } else {
+            fam_hist = fam_hist.replaceAll(Node.bullet, Node.big_bullet);
+        }
+
+        if (pat_hist.trim().isEmpty()) {
+            pat_hist = "No history of patient's illness provided.";
+        }
+
         // Generate an HTML document on the fly:
         String htmlDocument =
-                String.format("<h1 id=\"intelecare-patient-detail\">Intelehealth Visit Summary</h1>\n" +
-                                "<h1>%s</h1>\n" +
-                                "<p>Patient Id: %s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-                                "Date: %s</p>\n" +
-                                "<h2 id=\"patient-information\">Patient Information</h2>\n" +
-                                "<ul>\n" +
-                                "<li>%s</li>\n" +
-                                "<li>Son/Daughter/Wife of: %s</li>\n" +
-                                "<li>Occupation: %s</li>\n" +
-                                "</ul>\n" +
-                                "<h2 id=\"address-and-contact\">Address and Contact</h2>\n" +
-                                "<p>%s</p>\n" +
-                                "<p>%s</p>\n" +
-                                "<p>%s</p>\n" +
-                                "<h2 id=\"vitals\">Vitals</h2>\n" +
-                                "<li>Height: %s</li>\n" +
-                                "<li>Weight: %s</li>\n" +
-                                "<li>BMI: %s</li>\n" +
-                                "<li>Blood Pressure: %s</li>\n" +
-                                "<li>Pulse: %s</li>\n" +
-                                "<li>Temperature: %s</li>\n" +
-                                "<li>SpO2: %s</li>\n" +
-                                "<h2 id=\"patient-history\">Patient History</h2>\n" +
-                                "<li>%s</li>\n" +
-                                "<h2 id=\"family-history\">Family History</h2>\n" +
-                                "<li>%s</li>\n" +
-                                "<h2 id=\"complaint\">Complaint and Observations</h2>" +
-                                "<li>%s</li>\n" +
-                                "<h2 id=\"examination\">On Examination</h2>" +
-                                "<p>%s</p>\n" +
-                                "<h2 id=\"complaint\">Diagnosis</h2>" +
-                                "<li>%s</li>\n" +
-                                "<h2 id=\"complaint\">Prescription</h2>" +
-                                "<li>%s</li>\n" +
-                                "<h2 id=\"complaint\">Tests To Be Performed</h2>" +
-                                "<li>%s</li>\n" +
-                                "<h2 id=\"complaint\">General Advices</h2>" +
-                                "<li>%s</li>\n" +
-                                "<h2 id=\"complaint\">Doctor's Name</h2>" +
-                                "<li>%s</li>\n" +
-                                "<h2 id=\"complaint\">Additional Comments</h2>" +
-                                "<li>%s</li>\n",
-                        mPatientName, mPatientOpenMRSID, mDate, mPatientDob, mSdw, mOccupation, mAddress, mCityState, mPhone, mHeight, mWeight,
-                        mBMI, mBP, mPulse, mTemp, mSPO2, mPatHist, mFamHist, mComplaint, mExam, diagnosisReturned, rxReturned, testsReturned, adviceReturned, doctorName, additionalReturned);
+                String.format("<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                                "<p id=\"heading_2\" style=\"font-size:11pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                                "<p id=\"heading_3\" style=\"font-size:11pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                                "<hr style=\"font-size:11pt;\">" + "<br/>" +
+                                "<p id=\"patient_name\" style=\"font-size:11pt; margin: 0px; padding: 0px;\">%s</p></b>" +
+                                "<p id=\"patient_details\" style=\"font-size:11pt; margin: 0px; padding: 0px;\">Age: %s |Son/Daughter/Wife of: %s |Occupation: %s </p>" +
+                                "<p id=\"address_and_contact\" style=\"font-size:11pt; margin: 0px; padding: 0px;\"><b>Address and Contact:</b> %s</p>" +
+                                "<b><p id=\"visit_details\" style=\"font-size:11pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p></b>" +
+                                "<b><p id=\"vitals_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
+                                "<p id=\"vitals\" style=\"font-size:11pt;margin:0px; padding: 0px;\">Height: %s | Weight: %s | BMI: %s | Blood Pressure: %s | Pulse: %s | Temperature: %s | SpO2: %s </p>" +
+                                "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
+                                "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p>" +
+                                "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
+                                "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p>" +
+                                "<b><p id=\"complaints_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Chief Complaint(s)</p></b>" +
+                                para_open + "%s" + para_close +
+                                "<b><p id=\"diagnosis_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b>" +
+                                "%s" +
+                                "<b><p id=\"rx_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Prescription</p></b>" +
+                                "%s" +
+                                "<b><p id=\"tests_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Tests To Be Performed</p></b>" +
+                                "%s" +
+                                "<b><p id=\"advice_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b>" +
+                                "%s" +
+                                "<b><p id=\"comments_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Doctor's Note</p></b>" +
+                                "%s"
+                        // +"<b><p id=\"doctor_name_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Doctor's Name</p></b>" +
+                        //  para_open +"%s"+para_close
+                        , heading, heading2, heading3, mPatientName, age, mSdw, mOccupation, address, mPatientOpenMRSID, mDate, mHeight, mWeight,
+                        mBMI, bp, mPulse, mTemp, mSPO2, pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, comments_web/*,doctorName*/);
         webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
 
         // Keep a reference to WebView object until you pass the PrintDocumentAdapter
@@ -1606,11 +1800,25 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     private void addDownloadButton() {
-        if (downloadButton == null) {
-            downloadButton = new Button(VisitSummaryActivity.this);
-            downloadButton.setLayoutParams(new LinearLayoutCompat.LayoutParams(
-                    LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT));
+
+        if (!downloadButton.isEnabled()) {
+            downloadButton.setEnabled(true);
+            downloadButton.setVisibility(View.VISIBLE);
+            /*
+            final float scale = getResources().getDisplayMetrics().density;
+            int pixels = (int) (11 * scale + 0.5f);
+
+            downloadButton = new Button((new ContextThemeWrapper(context, R.style.RobotoButtonStyle)));
+            LinearLayoutCompat.LayoutParams layoutParams= new LinearLayoutCompat.LayoutParams(
+                    LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT);
+            layoutParams.setMargins(10,10,10,10);
+            downloadButton.setPadding(0,0,0,0);
+            downloadButton.setLayoutParams(layoutParams);
+            downloadButton.setAllCaps(false);
+            downloadButton.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
+            downloadButton.setBackgroundColor(getResources().getColor(R.color.divider));
             downloadButton.setText(R.string.visit_summary_button_download);
+            */
 
             Toast.makeText(this, getString(R.string.visit_summary_button_download), Toast.LENGTH_SHORT).show();
 
@@ -1675,7 +1883,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     //  retrieveOpenMRS(view);
                 }
             });
-            mLayout.addView(downloadButton, mLayout.getChildCount());
+            //mLayout.addView(downloadButton, mLayout.getChildCount());
         }
 
     }

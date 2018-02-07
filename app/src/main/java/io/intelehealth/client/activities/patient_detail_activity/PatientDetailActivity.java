@@ -20,6 +20,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.UnderlineSpan;
@@ -161,7 +162,6 @@ public class PatientDetailActivity extends AppCompatActivity {
                     }
                     while (cursor.moveToNext());
                     returning = true;
-                    e.putString("phistory", phistory);//Log.d("phist",phistory);
                     e.putBoolean("returning", true);
                     e.commit();
                 }
@@ -177,7 +177,6 @@ public class PatientDetailActivity extends AppCompatActivity {
                     }
                     while (cursor1.moveToNext());
                     returning = true;
-                    e.putString("fhistory", fhistory);//Log.d("fhist",fhistory);
                     e.putBoolean("returning", true);
                     e.commit();
                 }
@@ -247,9 +246,6 @@ public class PatientDetailActivity extends AppCompatActivity {
             case R.id.detail_home:
                 Intent intent = new Intent(PatientDetailActivity.this, HomeActivity.class);
                 startActivity(intent);
-                return true;
-            case R.id.detail_print:
-                doWebViewPrint();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -411,7 +407,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
 
             if (medHistValue != null && !medHistValue.equals("")) {
-                medHistView.setText(medHistValue);
+                medHistView.setText(Html.fromHtml(medHistValue));
             } else {
                 medHistView.setText(getString(R.string.string_no_hist));
             }
@@ -433,7 +429,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
 
             if (famHistValue != null && !famHistValue.equals("")) {
-                famHistView.setText(famHistValue);
+                famHistView.setText(Html.fromHtml(famHistValue));
             } else {
                 famHistView.setText(getString(R.string.string_no_hist));
             }
@@ -467,91 +463,6 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
         }
         visitCursor.close();
-
-    }
-
-
-    /**
-     * This method prints the basic details of patient.
-     * It makes use of PRINT_SERVICE from PrintManager
-     *
-     * @return void
-     */
-
-    private void doWebViewPrint() {
-        // Create a WebView object specifically for printing
-        WebView webView = new WebView(this);
-        webView.setWebViewClient(new WebViewClient() {
-
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return false;
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-//                Log.i("Patient WebView", "page finished loading " + url);
-                createWebPrintJob(view);
-                mWebView = null;
-            }
-        });
-
-        String patientDob = ((TextView) findViewById(R.id.textView_DOB)).getText().toString();
-        String patientAge = ((TextView) findViewById(R.id.textView_age)).getText().toString();
-        String patientAddr1 = ((TextView) findViewById(R.id.textView_address_1)).getText().toString();
-        String patientAddr2 = ((TextView) findViewById(R.id.textView_address2)).getText().toString();
-        String patientAddrFinal = ((TextView) findViewById(R.id.textView_address_final)).getText().toString();
-        String patientPhone = ((TextView) findViewById(R.id.textView_phone)).getText().toString();
-        String patientMedHist = ((TextView) findViewById(R.id.textView_patHist)).getText().toString();
-        String patientFamHist = ((TextView) findViewById(R.id.textView_famHist)).getText().toString();
-        String openMrsPatientID = ((TextView) findViewById(R.id.textView_ID)).getText().toString();
-
-
-        // Generate an HTML document on the fly:
-        String htmlDocument =
-                String.format("<h1 id=\"Intelehealth-patient-detail\">Intelehealth Patient Detail</h1>\n" +
-                                "<h1>%s</h1>\n" +
-                                "<h2 id=\"basic-information\">Basic Information</h2>\n" +
-                                "<p><b>Patient ID</b>: %s</p>\n" +
-                                "<p><b>Date of Birth</b>: %s</p>\n" +
-                                "<p><b>Age</b>: %s</p>\n" +
-                                "<h2 id=\"address-and-contact\">Address and Contact</h2>\n" +
-                                "<p>%s</p>\n" +
-                                "<p>%s</p>\n" +
-                                "<p>%s</p>\n" +
-                                "<p>Phone Number: %s</p>\n" +
-                                "<h2 id=\"recent-vists\">Recent Vists</h2>\n" +
-                                "<h2 id=\"patient-history\">Patient History</h2>\n" +
-                                "<p>%s</p>\n" +
-                                "<h2 id=\"family-history\">Family History</h2>\n" +
-                                "<p>%s</p>\n",
-//                                "<h2 id=\"current-medications\">Current Medications</h2>",
-                        patientName, openMrsPatientID, patientDob, patientAge, patientAddr1,
-                        patientAddr2, patientAddrFinal, patientPhone, patientMedHist, patientFamHist);
-        webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
-
-        // Keep a reference to WebView object until you pass the PrintDocumentAdapter
-        // to the PrintManager
-        mWebView = webView;
-    }
-
-    /**
-     * This method creates a print job using PrintManager instance and PrintAdapter Instance
-     *
-     * @param webView object of type WebView.
-     */
-    private void createWebPrintJob(WebView webView) {
-
-        // Get a PrintManager instance
-        PrintManager printManager = (PrintManager) this
-                .getSystemService(Context.PRINT_SERVICE);
-
-        // Get a print adapter instance
-        PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter();
-
-        // Create a print job with name and adapter instance
-        String jobName = getString(R.string.app_name) + " Patient Detail";
-        PrintJob printJob = printManager.print(jobName, printAdapter,
-                new PrintAttributes.Builder().build());
 
     }
 

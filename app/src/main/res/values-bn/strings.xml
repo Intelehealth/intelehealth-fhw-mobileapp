@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Intelehealth Client</string>
-    <string name="db_country"></string>
     <string name="visit_summary_medical_history">চিকিৎসা ইতিহাস</string>
     <string name="identification_screen_prompt_address">ঠিকানা</string>
     <string name="identification_screen_prompt_address2">ঠিকানা 2</string>

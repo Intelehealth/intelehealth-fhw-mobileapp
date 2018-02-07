@@ -97,6 +97,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="io.intelehealth.client.activities.home_activity.HomeActivity" />
         </activity>
+
         <service
             android:name=".services.ClientService"
             android:exported="false" />
@@ -119,9 +120,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.identification_activity.IdentificationActivity"
-            android:parentActivityName=".activities.home_activity.HomeActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_identification"
+            android:parentActivityName=".activities.home_activity.HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <!--
@@ -139,7 +140,8 @@
             android:label="@string/title_activity_complaint_node"
             android:parentActivityName=".activities.identification_activity.IdentificationActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.question_node_activity.QuestionNodeActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -244,8 +246,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service
-        android:name=".services.ImageUploadService"
-        android:exported="false" />
+            android:name=".services.ImageUploadService"
+            android:exported="false" />
         <service
             android:name=".services.PersonPhotoUploadService"
             android:exported="false" />
@@ -255,6 +257,7 @@
         <service
             android:name=".services.PatientUpdateService"
             android:exported="false" />
+
         <activity
             android:name=".activities.sync_activity.ActivitySync"
             android:configChanges="orientation|keyboardHidden"

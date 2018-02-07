@@ -290,7 +290,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 String complaint = currentNode.getText();
             //    complaintDetails.put(complaint, complaintFormatted);
 
-                insertion = insertion.concat(complaint + ": " + complaintString + " ");
+                insertion = insertion.concat(Node.bullet_arrow+"<b>"+complaint +"</b>"+": "+Node.next_line + complaintString + " ");
             }
             ArrayList<String> selectedAssociatedComplaintsList = currentNode.getSelectedAssociations();
             if (selectedAssociatedComplaintsList != null && !selectedAssociatedComplaintsList.isEmpty()) {
@@ -443,7 +443,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
     //TODO: Add setting to allow for all questions unrequired..addAll(Arrays.asList(splitExams))
     public void questionsMissing() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer()));
+        alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
         alertDialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

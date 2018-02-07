@@ -5,6 +5,8 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
@@ -24,14 +26,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.intelehealth.client.utilities.ConceptId;
-import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.R;
-import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
 import io.intelehealth.client.activities.custom_expandable_list_adapter.CustomExpandableListAdapter;
 import io.intelehealth.client.activities.family_history_activity.FamilyHistoryActivity;
+import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.node.Node;
+import io.intelehealth.client.utilities.ConceptId;
+import io.intelehealth.client.utilities.HelperMethods;
 
 /**
  * This class updates the medical records of patient based on his past medical history.
@@ -55,6 +57,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
     String imageName;
     File filePath;
 
+    SQLiteDatabase localdb;
+
     boolean hasLicense = false;
 
 //    String mFileName = "DemoHistory.json";
@@ -65,24 +69,27 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
     CustomExpandableListAdapter adapter;
     ExpandableListView historyListView;
 
-    String patientHistory;String phistory="";
+    String patientHistory;
+    String phistory = "";
 
-    boolean flag=false;SharedPreferences.Editor e;
+    boolean flag = false;
+    SharedPreferences.Editor e;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
+        localdb = mDbHelper.getWritableDatabase();
 
         //For Testing
 //        patientID = Long.valueOf("1");
 
         // display pop-up to ask for update, if a returning patient
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-         e = sharedPreferences.edit();
-         phistory = sharedPreferences.getString("phistory","  ");
+        e = sharedPreferences.edit();
 
-        boolean past = sharedPreferences.getBoolean("returning",false);
-        if(past)
-        {
+        boolean past = sharedPreferences.getBoolean("returning", false);
+        if (past) {
 
             AlertDialog.Builder alertdialog = new AlertDialog.Builder(PastMedicalHistoryActivity.this);
             alertdialog.setTitle(getString(R.string.title_activity_patient_history));
@@ -97,20 +104,34 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
             alertdialog.setNegativeButton(getString(R.string.generic_no), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                      // skip
-                    flag = false;
-                        if (phistory != null && !phistory.isEmpty() && !phistory.equals("null"))
-                        {
-                            insertDb(phistory);
-                        }
 
-                    Intent intent =new Intent(PastMedicalHistoryActivity.this,FamilyHistoryActivity.class);
+                    String[] columns = {"value", " concept_id"};
+                    String orderBy = "visit_id";
+
+                    try {
+                        String medHistSelection = "patient_id = ? AND concept_id = ?";
+                        String[] medHistArgs = {String.valueOf(patientID), String.valueOf(ConceptId.RHK_MEDICAL_HISTORY_BLURB)};
+                        Cursor medHistCursor = localdb.query("obs", columns, medHistSelection, medHistArgs, null, null, orderBy);
+                        medHistCursor.moveToLast();
+                        phistory = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+                        medHistCursor.close();
+                    } catch (CursorIndexOutOfBoundsException e) {
+                        phistory=""; // if medical history does not exist
+                    }
+
+                    // skip
+                    flag = false;
+                    if (phistory != null && !phistory.isEmpty() && !phistory.equals("null")) {
+                        insertDb(phistory);
+                    }
+
+                    Intent intent = new Intent(PastMedicalHistoryActivity.this, FamilyHistoryActivity.class);
                     intent.putExtra("patientID", patientID);
                     intent.putExtra("visitID", visitID);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
-                //    intent.putStringArrayListExtra("exams", physicalExams);
+                    //    intent.putStringArrayListExtra("exams", physicalExams);
                     startActivity(intent);
 
                 }
@@ -122,12 +143,12 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
-            patientID = intent.getIntExtra("patientID",-1);
+            patientID = intent.getIntExtra("patientID", -1);
             visitID = intent.getStringExtra("visitID");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
-      //      physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
+            //      physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
 //            Log.v(TAG, "Patient ID: " + patientID);
 //            Log.v(TAG, "Visit ID: " + visitID);
 //            Log.v(TAG, "Patient Name: " + patientName);
@@ -177,22 +198,20 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else {
 
-                  //  if(patientHistoryMap.anySubSelected()){
-                        patientHistory = patientHistoryMap.generateLanguage();
+                    //  if(patientHistoryMap.anySubSelected()){
+                    patientHistory = patientHistoryMap.generateLanguage();
 
-                        if(flag == true) { // only if OK clicked, collect this new info (old patient)
-                            phistory = phistory + patientHistory; // only PMH updated
-                            e.putString("phistory",phistory);
-                            e.putBoolean("returning",true);
-                            e.commit();
-                            insertDb(phistory);
+                    if (flag == true) { // only if OK clicked, collect this new info (old patient)
+                        phistory = phistory + patientHistory; // only PMH updated
+                        e.putBoolean("returning", true);
+                        e.commit();
+                        insertDb(phistory);
 
-                            // however, we concat it here to patientHistory and pass it along to FH, not inserting into db
-                        }
-                        else  // new patient, directly insert into database
-                        {
-                            insertDb(patientHistory);
-                        }
+                        // however, we concat it here to patientHistory and pass it along to FH, not inserting into db
+                    } else  // new patient, directly insert into database
+                    {
+                        insertDb(patientHistory);
+                    }
 
                     Intent intent = new Intent(PastMedicalHistoryActivity.this, FamilyHistoryActivity.class);
                     intent.putExtra("patientID", patientID);
@@ -200,13 +219,13 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
-             //       intent.putStringArrayListExtra("exams", physicalExams);
+                    //       intent.putStringArrayListExtra("exams", physicalExams);
                     startActivity(intent);
 
-                    }
                 }
+            }
 
-            });
+        });
 
 
         if (sharedPreferences.contains("licensekey")) hasLicense = true;
@@ -223,7 +242,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
             patientHistoryMap = new Node(HelperMethods.encodeJSON(this, mFileName)); //Load the patient history mind map
         }
 
-        patientHistoryMap = new Node(HelperMethods.encodeJSON(this, mFileName)); //Load the patient history mind map
         historyListView = (ExpandableListView) findViewById(R.id.patient_history_expandable_list_view);
         adapter = new CustomExpandableListAdapter(this, patientHistoryMap, this.getClass().getSimpleName()); //The adapter might change depending on the activity.
         historyListView.setAdapter(adapter);
@@ -241,6 +259,12 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     patientHistoryMap.getOption(groupPosition).setUnselected();
                 }
                 adapter.notifyDataSetChanged();
+
+                if (clickedNode.getInputType() != null) {
+                    if (!clickedNode.getInputType().equals("camera")) {
+                        Node.handleQuestion(clickedNode, PastMedicalHistoryActivity.this, adapter, null, null);
+                    }
+                }
 
                 Log.i(TAG, String.valueOf(clickedNode.isTerminal()));
                 if (!clickedNode.isTerminal() && clickedNode.isSelected()) {
@@ -267,8 +291,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                 lastExpandedPosition = groupPosition;
             }
         });
-}
-
+    }
 
 
     /**
@@ -278,8 +301,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
      * @return long
      */
     public long insertDb(String value) {
-        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
-
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         final String CREATOR_ID = prefs.getString("creatorid", null);
@@ -297,14 +318,13 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
         complaintEntries.put("concept_id", CONCEPT_ID);
         complaintEntries.put("creator", CREATOR_ID);
 
-        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+
         return localdb.insert("obs", null, complaintEntries);
     }
 
 
     private void updateImageDatabase(String imagePath) {
-        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
-        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+
         localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path,image_type,delete_status) values("
                 + "'" + patientID + "'" + ","
                 + visitID + ","
@@ -321,9 +341,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
      * @return void
      */
     private void updateDatabase(String string) {
-        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
-        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
-
         int conceptID = ConceptId.RHK_MEDICAL_HISTORY_BLURB;
         ContentValues contentValues = new ContentValues();
         contentValues.put("value", string);
@@ -348,7 +365,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
                 patientHistoryMap.setImagePath(mCurrentPhotoPath);
                 Log.i(TAG, mCurrentPhotoPath);
-                patientHistoryMap.displayImage(this,filePath.getAbsolutePath(),imageName);
+                patientHistoryMap.displayImage(this, filePath.getAbsolutePath(), imageName);
             }
         }
     }

@@ -2,6 +2,7 @@ package io.intelehealth.client.node;
 
 import android.util.Log;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -81,37 +82,38 @@ public class PhysicalExam extends Node {
                 The location node is identified first, and then the exam nodes
                  */
 
-                        if (current != null) {
+                        if (current != null && !current.isEmpty()) {
 
                             String[] split = current.split(":");
-                            String location = split[0];
-                            String exam = split[1];
-                            if (location != null && !location.isEmpty() && exam != null && !exam.isEmpty()) {
-                                Node locationNodeRef = null;
+                            if (split.length > 1) {
+                                String location = split[0];
+                                String exam = split[1];
+                                if (location != null && !location.isEmpty() && exam != null && !exam.isEmpty()) {
+                                    Node locationNodeRef = null;
 
-                                locationNodeRef = getOptionByName(location);
+                                    locationNodeRef = getOptionByName(location);
 
-                                Node examNodeRef = null;
-                                if (locationNodeRef != null) {
-                                    Log.i(TAG, "matchSelections: [Location]"+ location);
-                                    examNodeRef = locationNodeRef.getOptionByName(exam);
-                                }
-                                if (examNodeRef != null) {
+                                    Node examNodeRef = null;
+                                    if (locationNodeRef != null) {
+                                        Log.i(TAG, "matchSelections: [Location]" + location);
+                                        examNodeRef = locationNodeRef.getOptionByName(exam);
+                                    }
+                                    if (examNodeRef != null) {
 
 
-
-                                    //The foundLocation list is to ensure that the same exam isn't display twice
-                                    if (foundLocations.contains(location)) {
-                                        int locationIndex = foundLocations.indexOf(location);
-                                        Node foundLocationNode = newOptionsList.get(locationIndex);
-                                        foundLocationNode.addOptions(new Node(examNodeRef));
-                                    } else {
-                                        //If it's a new exam, the location needs to be added to the list of things to check
-                                        foundLocations.add(location);
-                                        Node locationNode = new Node(locationNodeRef);
-                                        locationNode.removeOptionsList();
-                                        locationNode.addOptions(new Node(examNodeRef));
-                                        newOptionsList.add(locationNode);
+                                        //The foundLocation list is to ensure that the same exam isn't display twice
+                                        if (foundLocations.contains(location)) {
+                                            int locationIndex = foundLocations.indexOf(location);
+                                            Node foundLocationNode = newOptionsList.get(locationIndex);
+                                            foundLocationNode.addOptions(new Node(examNodeRef));
+                                        } else {
+                                            //If it's a new exam, the location needs to be added to the list of things to check
+                                            foundLocations.add(location);
+                                            Node locationNode = new Node(locationNodeRef);
+                                            locationNode.removeOptionsList();
+                                            locationNode.addOptions(new Node(examNodeRef));
+                                            newOptionsList.add(locationNode);
+                                        }
                                     }
                                 }
                             }
@@ -239,16 +241,19 @@ public class PhysicalExam extends Node {
             if ((node.isSelected() | node.anySubSelected())) {
                 boolean checkSet = rootStrings.add(levelOne);
 
-                if (checkSet) stringsList.add(levelOne + ": " + node.getLanguage());
-                else stringsList.add(node.getLanguage());
+                if (checkSet)
+                    stringsList.add("<b>"+levelOne + ": "+"</b>" + Node.bullet + " " + node.getLanguage());
+                else stringsList.add(Node.bullet + " " + node.getLanguage());
                 if (!node.isTerminal()) {
-                    stringsList.add(node.formLanguage());
+                    String lang = node.formLanguage();
+                    Log.i(TAG, "generateFindings: "+ lang);
+                    stringsList.add(lang);
                 }
             }
         }
 
 
-        String languageSeparator = " - ";
+        String languageSeparator = Node.next_line;
 
         for (int i = 0; i < stringsList.size(); i++) {
             mLanguage = mLanguage.concat(stringsList.get(i) + languageSeparator);
@@ -268,6 +273,16 @@ public class PhysicalExam extends Node {
         mLanguage = mLanguage.replaceAll("\\.", "\\. ");
         mLanguage = mLanguage.replaceAll("\\: -", "\\: ");
         mLanguage = mLanguage.replaceAll("% - ", "");
+        mLanguage = mLanguage.replace(Node.next_line,"-");
+        mLanguage = mLanguage.replaceAll("-"+Node.bullet,Node.next_line+Node.bullet);
+        mLanguage = mLanguage.replaceAll("-"+"<b>",Node.next_line+"<b>");
+        mLanguage = mLanguage.replaceAll("</b>"+Node.bullet,"</b>"+Node.next_line+Node.bullet);
+
+        if(StringUtils.right(mLanguage,2).equals(" -")){
+            mLanguage = mLanguage.substring(0,mLanguage.length()-2);
+        }
+
+        mLanguage = mLanguage.replaceAll("%-"," ");
         return mLanguage;
     }
 
