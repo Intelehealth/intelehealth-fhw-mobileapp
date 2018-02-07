@@ -95,6 +95,10 @@ public class Node implements Serializable {
 
     private String imagePath;
 
+    private String bullet = "\u2022";
+    private String big_bullet = "\u25CF";
+    private String next_line = "<br/>";
+
 
     /**
      * Nodes refer to the structure that is used for a decision tree or mindmap.
@@ -1573,8 +1577,6 @@ public class Node implements Serializable {
                     stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
                 }
             }
-
-
         }
 
         String mLanguage = "";
@@ -1588,7 +1590,5 @@ public class Node implements Serializable {
         Log.i(TAG, "formQuestionAnswer: " + mLanguage);
         return mLanguage;
     }
-
-
 }
 
