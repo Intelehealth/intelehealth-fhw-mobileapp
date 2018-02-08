@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 5;
     public static final String DATABASE_NAME = "localRecords.db";
     public static final String CREATE_PATIENT = "CREATE TABLE IF NOT EXISTS patient(" +
             "_id integer PRIMARY KEY," +
@@ -34,7 +34,12 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             "patient_photo TEXT,"+
             "economic_status TEXT,"+
             "education_status TEXT,"+
-            "caste TEXT"+
+            "caste TEXT,"+
+            "department TEXT,"+
+            "commune TEXT,"+
+            "cell_no TEXT,"+
+            "prison_name TEXT,"+
+            "patient_status TEXT"+
             ")";
     public static final String CREATE_ATTRIB = "CREATE TABLE IF NOT EXISTS patient_attribute (" +
             "_id integer PRIMARY KEY," +
@@ -124,7 +129,33 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             "parse_id TEXT," +
             "delete_status integer NOT NULL"
             +")";
+    //FOR VERSION 3
 
+    public static final String CREATE_DEPARTMENT_V3 = "ALTER TABLE patient ADD COLUMN department";
+
+    public static final String CREATE_COMMUNE_V3 = "ALTER TABLE patient ADD COLUMN commune";
+    public static final String CREATE_CELLNO_V3 = "ALTER TABLE patient ADD COLUMN cell_no";
+    public static final String CREATE_PRISONNAME_V3 = "ALTER TABLE patient ADD COLUMN prison_name";
+
+    public static final String CREATE_PATIENTSTATUS_V3 = "ALTER TABLE patient ADD COLUMN patient_status";
+    // FOR VERSION 4
+    public static final String CREATE_DEPARTMENT_V4 = "ALTER TABLE patient ADD COLUMN department";
+
+    public static final String CREATE_COMMUNE_V4 = "ALTER TABLE patient ADD COLUMN commune";
+    public static final String CREATE_CELLNO_V4 = "ALTER TABLE patient ADD COLUMN cell_no";
+    public static final String CREATE_PRISONNAME_V4 = "ALTER TABLE patient ADD COLUMN prison_name";
+
+    public static final String CREATE_PATIENTSTATUS_V4 = "ALTER TABLE patient ADD COLUMN patient_status";
+
+
+    // for version 5
+    public static final String CREATE_DEPARTMENT_V5 = "ALTER TABLE patient ADD COLUMN department";
+
+    public static final String CREATE_COMMUNE_V5 = "ALTER TABLE patient ADD COLUMN commune";
+    public static final String CREATE_CELLNO_V5 = "ALTER TABLE patient ADD COLUMN cell_no";
+    public static final String CREATE_PRISONNAME_V5 = "ALTER TABLE patient ADD COLUMN prison_name";
+
+    public static final String CREATE_PATIENTSTATUS_V5 = "ALTER TABLE patient ADD COLUMN patient_status";
 
 
     public LocalRecordsDatabaseHelper(Context context) {
@@ -134,12 +165,12 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onOpen(SQLiteDatabase db) {
         super.onOpen(db);
-        db.execSQL("PRAGMA foreign_keys=ON");
+        db.execSQL("PRAGMA foreign_keys=0");
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("PRAGMA foreign_keys=ON");
+        db.execSQL("PRAGMA foreign_keys=1");
         db.execSQL(CREATE_PATIENT);
         db.execSQL(CREATE_ATTRIB);
         db.execSQL(CREATE_VISIT);
@@ -154,6 +185,28 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // TODO: discuss upgrade policy
+        switch (oldVersion) {
+            case 3:
+                db.execSQL(CREATE_DEPARTMENT_V3);
+                db.execSQL(CREATE_COMMUNE_V3);
+                db.execSQL(CREATE_CELLNO_V3);
+                db.execSQL(CREATE_PRISONNAME_V3);
+                db.execSQL(CREATE_PATIENTSTATUS_V3);
+            case 4:
+                db.execSQL(CREATE_DEPARTMENT_V4);
+                db.execSQL(CREATE_COMMUNE_V4);
+                db.execSQL(CREATE_CELLNO_V4);
+                db.execSQL(CREATE_PRISONNAME_V4);
+                db.execSQL(CREATE_PATIENTSTATUS_V4);
+            case 5:
+                db.execSQL(CREATE_DEPARTMENT_V5);
+                db.execSQL(CREATE_COMMUNE_V5);
+                db.execSQL(CREATE_CELLNO_V5);
+                db.execSQL(CREATE_PRISONNAME_V5);
+                db.execSQL(CREATE_PATIENTSTATUS_V5);
+
+        }
+
     }
 
 

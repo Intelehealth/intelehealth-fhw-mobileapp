@@ -112,12 +112,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String identifierNumber;
 
     boolean uploaded = false;
+    public static boolean downloaded = false;
     boolean dataChanged = false;
     String failedMessage;
 
     Context context;
 
-    Integer patientID;
+
+    Integer conceptID;
+        Integer patientID;
     String visitID;
     String state;
     String patientName;
@@ -265,6 +268,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
             case R.id.summary_endVisit: {
                 endVisit();
+//                endDownloadVisit();
                 return true;
             }
             default:
@@ -274,6 +278,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//        endDownload();
+
+
+
 
         final Intent intent = this.getIntent(); // The intent was passed to the activity
 
@@ -415,6 +423,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (visitIDCursor != null) visitIDCursor.close();
             if (visitUUID != null && !visitUUID.isEmpty()) {
                 addDownloadButton();
+
+
             }
 
         }
@@ -490,7 +500,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     cp.close();
                 }
 
-                if(visitUUID == null || visitUUID.isEmpty()) {
+                if (visitUUID == null || visitUUID.isEmpty()) {
                     String[] columnsToReturn = {"openmrs_visit_uuid"};
                     String visitIDorderBy = "start_datetime";
                     String visitIDSelection = "_id = ?";
@@ -585,9 +595,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             uploadButton.setEnabled(false);
         }
 
-
         queryData(String.valueOf(patientID));
         nameView = (TextView) findViewById(R.id.textView_name_value);
+
 
         //OpenMRS Id
         idView = (TextView) findViewById(R.id.textView_id_value);
@@ -641,7 +651,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (complaint.getValue() != null)
             complaintView.setText(Html.fromHtml(complaint.getValue()));
         if (famHistory.getValue() != null)
-            famHistView.setText(Html.fromHtml(famHistory.getValue()));
+            famHistView.setText(Html.fromHtml(famHistory.getValue())); //sets for textview
         if (patHistory.getValue() != null)
             patHistView.setText(Html.fromHtml(patHistory.getValue()));
         if (phyExam.getValue() != null)
@@ -696,10 +706,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 famHistDialog.setView(convertView);
 
-                final TextView famHistTest = (TextView) convertView.findViewById(R.id.textView_entry);
+                final TextView famHistText = (TextView) convertView.findViewById(R.id.textView_entry);
                 if (famHistory.getValue() != null)
-                    famHistTest.setText(Html.fromHtml(famHistory.getValue()));
-                famHistTest.setEnabled(false);
+                    famHistText.setText(Html.fromHtml(famHistory.getValue()));
+                famHistText.setEnabled(false);
 
                 famHistDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
                     @Override
@@ -708,7 +718,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
                         if (famHistory.getValue() != null)
-                            dialogEditText.setText(famHistory.getValue());
+                            dialogEditText.setText(Html.fromHtml(famHistory.getValue()));
                         else
                             dialogEditText.setText("");
                         textInput.setView(dialogEditText);
@@ -717,7 +727,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 famHistory.setValue(dialogEditText.getText().toString());
                                 if (famHistory.getValue() != null) {
-                                    famHistTest.setText(Html.fromHtml(famHistory.getValue()));
+                                    famHistText.setText(Html.fromHtml(famHistory.getValue()));
                                     famHistView.setText(Html.fromHtml(famHistory.getValue()));
                                 }
                                 updateDatabase(famHistory.getValue(), ConceptId.RHK_FAMILY_HISTORY_BLURB);
@@ -781,7 +791,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
                         if (complaint.getValue() != null)
-                            dialogEditText.setText(complaint.getValue());
+                            dialogEditText.setText(Html.fromHtml(complaint.getValue()));
                         else
                             dialogEditText.setText("");
                         textInput.setView(dialogEditText);
@@ -853,7 +863,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
                         if (phyExam.getValue() != null)
-                            dialogEditText.setText(phyExam.getValue());
+                            dialogEditText.setText(Html.fromHtml(phyExam.getValue()));
                         else
                             dialogEditText.setText("");
                         textInput.setView(dialogEditText);
@@ -955,7 +965,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
                         if (patHistory.getValue() != null)
-                            dialogEditText.setText(patHistory.getValue());
+                            dialogEditText.setText(Html.fromHtml(patHistory.getValue()));
                         else
                             dialogEditText.setText("");
                         textInput.setView(dialogEditText);
@@ -1065,7 +1075,39 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                     default:
                 }
-            } else {
+            }
+//            else {
+//                Log.d(TAG, "endVisit: delayed job first");
+//                Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
+//                serviceIntent.putExtra("serviceCall", "endVisit");
+//                serviceIntent.putExtra("patientID", patientID);
+//                serviceIntent.putExtra("visitUUID", visitUUID);
+//                serviceIntent.putExtra("name", patientName);
+//                startService(serviceIntent);
+//                SharedPreferences.Editor editor = context.getSharedPreferences(patientID + "_" + visitID, MODE_PRIVATE).edit();
+//                editor.remove("exam_" + patientID + "_" + visitID);
+//                editor.commit();
+//                Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
+//                startActivity(intent);
+//            }
+//            c.close();
+            else if(downloaded && (!diagnosisReturned.isEmpty() || !additionalReturned.isEmpty() || !rxReturned.isEmpty()  || !testsReturned.isEmpty()   || !adviceReturned.isEmpty())){
+
+                String[] columns = {"value", " concept_id"};
+                String orderBy = "visit_id";
+
+
+                String visitSelection = "patient_id = ? AND visit_id = ?";
+                Cursor obsCursor = db.query("obs", columns, visitSelection, null, null, null,orderBy);
+                if (obsCursor.moveToFirst()) {
+                    do {
+                        int dbConceptID = obsCursor.getInt(obsCursor.getColumnIndex("concept_id"));
+                        String dbValue = obsCursor.getString(obsCursor.getColumnIndex("value"));
+                        parserData(dbConceptID, dbValue);
+                        Log.i("db value",dbValue);
+                    } while (obsCursor.moveToNext());
+                }
+                obsCursor.close();
                 Log.d(TAG, "endVisit: delayed job first");
                 Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
                 serviceIntent.putExtra("serviceCall", "endVisit");
@@ -1079,7 +1121,25 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
                 startActivity(intent);
             }
-            c.close();
+
+
+
+
+
+            else{
+                Log.d(TAG, "endVisit: null");
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                alertDialogBuilder.setMessage("Please download first before attempting to end the visit.");
+                alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+            }
+
         } else {
 
             Log.d(TAG, "endVisit: null");
@@ -1099,6 +1159,46 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     }
 
+    private void parserData(int concept_id, String value) {
+        switch (concept_id) {
+            case ConceptId.TELEMEDICINE_DIAGNOSIS: {
+                if (!diagnosisReturned.isEmpty()) {
+                    Log.i("value is ","value of diagnosis" +value);
+                }
+
+                break;
+            }
+            case ConceptId.JSV_MEDICATIONS: {
+                Log.i("value ", "value of medication" +value);
+                break;
+            }
+            case ConceptId.MEDICAL_ADVICE: {
+                if (!adviceReturned.isEmpty()) {
+                    Log.i("value ", "value of medical advice" + value);
+
+                }
+
+                break;
+            }
+            case ConceptId.REQUESTED_TESTS: {
+                if (!testsReturned.isEmpty()) {
+                    Log.i("value ", "value of test" + value);
+                }
+                break;
+            }
+            case ConceptId.ADDITIONAL_COMMENTS: {
+                if (!additionalReturned.isEmpty()) {
+                    Log.i("value ", "value of comments" +value);
+
+                }
+                break;
+            }
+            default:
+                break;
+
+        }
+    }
+
     /**
      * This methods retrieves patient data from database.
      *
@@ -1114,7 +1214,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String table = "patient";
         String[] columnsToReturn = {"openmrs_id", "first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province", "country",
-                "postal_code", "phone_number", "gender", "sdw", "occupation", "patient_photo"};
+                "postal_code", "phone_number", "gender", "sdw", "occupation", "patient_photo", "department", "commune"
+                , "cell_no", "prison_name", "patient_status"};
         final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
 
         if (idCursor.moveToFirst()) {
@@ -1135,6 +1236,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 patient.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
                 patient.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
                 patient.setPatientPhoto(idCursor.getString(idCursor.getColumnIndex("patient_photo")));
+                patient.setDepartment(idCursor.getString(idCursor.getColumnIndexOrThrow("department")));
+                patient.setCommune(idCursor.getString(idCursor.getColumnIndexOrThrow("commune")));
+                patient.setCellNo(idCursor.getString(idCursor.getColumnIndexOrThrow("cell_no")));
+                patient.setPrisonName(idCursor.getString(idCursor.getColumnIndexOrThrow("prison_name")));
+                patient.setPatientStatus(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_status")));
+
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -1154,7 +1261,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         } catch (CursorIndexOutOfBoundsException e) {
             famHistory.setValue(""); // if family history does not exist
         }
-
         try {
             String medHistSelection = "patient_id = ? AND concept_id = ?";
 
@@ -1180,6 +1286,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
         } catch (CursorIndexOutOfBoundsException e) {
             patHistory.setValue(""); // if medical history does not exist
         }
+
+
+        //aniket
 
         String visitSelection = "patient_id = ? AND visit_id = ?";
         String[] visitArgs = {dataString, visitID};
@@ -1348,6 +1457,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         String mSdw = patient.getSdw();
         String mOccupation = patient.getOccupation();
+        String mDepartment = patient.getDepartment();
+        String mCommune = patient.getCommune();
+        String mCellNo = patient.getCellNo();
+        String mPrisonName = patient.getPrisonName();
+        String mPatientStatus = patient.getPatientStatus();
         String mGender = patient.getGender();
 
         Calendar c = Calendar.getInstance();
@@ -1445,8 +1559,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     para_close;
         }
 
-        String heading = "ଚିକିତ୍ସା ସହାୟତା କେନ୍ଦ୍ର";
-        String heading2 = "Chikitsa Sahayta Kendra";
+//        String heading = "ଚିକିତ୍ସା ସହାୟତା କେନ୍ଦ୍ର";
+        String heading2 = "Intelehealth Patient's Prescriptions";
         String heading3 = "<br/>";
 
         String bp = mBP;
@@ -1469,12 +1583,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         // Generate an HTML document on the fly:
         String htmlDocument =
-                String.format("<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                String.format("<b>" +
                                 "<p id=\"heading_2\" style=\"font-size:11pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                 "<p id=\"heading_3\" style=\"font-size:11pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                 "<hr style=\"font-size:11pt;\">" + "<br/>" +
                                 "<p id=\"patient_name\" style=\"font-size:11pt; margin: 0px; padding: 0px;\">%s</p></b>" +
-                                "<p id=\"patient_details\" style=\"font-size:11pt; margin: 0px; padding: 0px;\">Age: %s |Son/Daughter/Wife of: %s |Occupation: %s </p>" +
+                                "<p id=\"patient_details\" style=\"font-size:11pt; margin: 0px; padding: 0px;\">Age: %s <br>Occupation: %s <br>Department: %s <br>Commune: %s <br>CellNo: %s <br>PrisonName: %s <br>PatientStatus: %s" + "</p>" +
                                 "<p id=\"address_and_contact\" style=\"font-size:11pt; margin: 0px; padding: 0px;\"><b>Address and Contact:</b> %s</p>" +
                                 "<b><p id=\"visit_details\" style=\"font-size:11pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p></b>" +
                                 "<b><p id=\"vitals_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
@@ -1497,7 +1611,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 "%s"
                         // +"<b><p id=\"doctor_name_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Doctor's Name</p></b>" +
                         //  para_open +"%s"+para_close
-                        , heading, heading2, heading3, mPatientName, age, mSdw, mOccupation, address, mPatientOpenMRSID, mDate, mHeight, mWeight,
+                        , heading2, heading3, mPatientName, age, mOccupation, mDepartment, mCommune, mCellNo, mPrisonName, mPatientStatus, address, mPatientOpenMRSID, mDate, mHeight, mWeight,
                         mBMI, bp, mPulse, mTemp, mSPO2, pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, comments_web/*,doctorName*/);
         webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
 
@@ -1796,8 +1910,314 @@ public class VisitSummaryActivity extends AppCompatActivity {
         } else if (check == 200) {
             Log.i(TAG, "handleMessage: 200");
             addDownloadButton();
+
+
+
+            // code manipulated today
+//
+//            String query ="SELECT concept_id FROM obs where obs.patient_id = obs.visit_id AND obs.concept_id NOT NULL";
+//            Cursor c = null;
+//            c= db.rawQuery(query, null);
+//
+//            if(c!=null && c.moveToFirst()){
+//                do {
+//                    int  dbConceptID = c.getInt(c.getColumnIndexOrThrow("concept_id"));
+//
+//                }while(c.moveToNext());
+//                int dbConceptID = c.getInt(c.getColumnIndexOrThrow("concept_id"));
+//                //this value is getting logged
+//                Log.d("dbconceptid","conceptid found"+dbConceptID);
+//
+//
+//
+//                switch (dbConceptID) {
+//                    //case values for each prescription
+//                    case ConceptId.TELEMEDICINE_DIAGNOSIS:
+//                        Log.i(TAG, "found diagnosis");
+//                        break;
+//                    case ConceptId.JSV_MEDICATIONS:
+//                        Log.i(TAG, "found medications");
+//                        break;
+//                    case ConceptId.MEDICAL_ADVICE:
+//                        Log.i(TAG, "found medical advice");
+//                        break;
+//                    case ConceptId.ADDITIONAL_COMMENTS:
+//                        Log.i(TAG, "found additional comments");
+//                        break;
+//                    case ConceptId.REQUESTED_TESTS:
+//                        Log.i(TAG, "found tests");
+//                        break;
+//                    default:
+//                }
+//
+
+            //if any obs  found then end the visit
+//                Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
+//                serviceIntent.putExtra("serviceCall", "endVisit");
+//                serviceIntent.putExtra("patientID", patientID);
+//                serviceIntent.putExtra("visitUUID", visitUUID);
+//                serviceIntent.putExtra("name", patientName);
+//                startService(serviceIntent);
+//                Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
+//                startActivity(intent);
+
+
+//        }
+
+//String[] columns = {"concept_id"};
+//                String orderBy = "visit_id";
+////                String q = "SELECT * FROM obs where concept_id = 163219";
+////
+////                Cursor c =null;
+////                c =db.rawQuery(q, null);
+////                if (c.moveToFirst()) {
+////                  while (!c.isAfterLast()){
+////                      int itemName = c.getInt(c.getColumnIndexOrThrow("concept_id"));
+////                      Log.i("item","item name is:"+itemName);
+////                  }
+////
+////                    Log.i(TAG,"sql query" +q);
+////
+////
+////                }
+//
+//                //obscursor checks in obs table
+//                Cursor obsCursor = db.query("obs",columns,null,null,null,null,orderBy);
+//
+//                //dbconceptid will store data found in concept_id
+//                int dbConceptID = obsCursor.getInt(obsCursor.getColumnIndex("concept_id"));
+//
+//
+//                if(obsCursor.moveToFirst() && obsCursor.getCount()>1 ){
+//
+////                    if obsCursor founds something move to next
+//                    obsCursor.moveToNext();
+//
+//                    switch (dbConceptID) {
+//                        //case values for each prescription
+//                        case ConceptId.TELEMEDICINE_DIAGNOSIS:
+//                            Log.i(TAG, "found diagnosis");
+//                            break;
+//                        case ConceptId.JSV_MEDICATIONS:
+//                            Log.i(TAG, "found medications");
+//                            break;
+//                        case ConceptId.MEDICAL_ADVICE:
+//                            Log.i(TAG, "found medical advice");
+//                            break;
+//                        case ConceptId.ADDITIONAL_COMMENTS:
+//                            Log.i(TAG, "found additional comments");
+//                            break;
+//                        case ConceptId.REQUESTED_TESTS:
+//                            Log.i(TAG, "found tests");
+//                            break;
+//                        default:
+//                    }
+//
+//
+//                          //if any obs  found then end the visit
+//                        Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
+//                        serviceIntent.putExtra("serviceCall", "endVisit");
+//                        serviceIntent.putExtra("patientID", patientID);
+//                        serviceIntent.putExtra("visitUUID", visitUUID);
+//                        serviceIntent.putExtra("name", patientName);
+//                        startService(serviceIntent);
+//                        Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
+//                        startActivity(intent);
+//
+//
+//
+//
+//
+//
+//                    }
+
+
+//          <-----  code to end the visit only after doctor sends anything ----->
+
+//
+//        if (downloaded) {
+//
+//
+//            String[] columns = {"concept_id"};
+//                String orderBy = "visit_id";
+//                String q = "SELECT * FROM obs where concept_id = 163219";
+//
+//                Cursor c =null;
+//                c =db.rawQuery(q, null);
+//                if (c.moveToFirst()) {
+//                    do{
+//
+//                    }while(c.moveToNext());
+//
+//                    Log.i(TAG,"sql query" +q);
+//
+//
+//                }
+//
+            //obscursor checks in obs table
+//                Cursor obsCursor = db.query("obs",columns,null,null,null,null,orderBy);
+
+            //dbconceptid will store data found in concept_id
+//                int dbConceptID = obsCursor.getInt(obsCursor.getColumnIndex("concept_id"));
+
+//
+//                if(obsCursor.moveToFirst() && obsCursor.getCount()>1 ){
+
+//                    if obsCursor founds something move to next
+//                    obsCursor.moveToNext();
+
+
+//
+//                String query ="SELECT concept_id FROM obs where obs.patient_id = obs.visit_id AND obs.concept_id NOT NULL";
+//                Cursor c = null;
+//                c= db.rawQuery(query, null);
+//
+//                if(c!=null && c.moveToNext()){
+//                    int dbConceptID = c.getInt(c.getColumnIndexOrThrow("concept_id"));
+//                    Log.d("dbconceptid","conceptid found"+dbConceptID);
+//
+//
+//                    switch (dbConceptID) {
+//                        //case values for each prescription
+//                        case ConceptId.TELEMEDICINE_DIAGNOSIS:
+//                            Log.i(TAG, "found diagnosis");
+//                            break;
+//                        case ConceptId.JSV_MEDICATIONS:
+//                            Log.i(TAG, "found medications");
+//                            break;
+//                        case ConceptId.MEDICAL_ADVICE:
+//                            Log.i(TAG, "found medical advice");
+//                            break;
+//                        case ConceptId.ADDITIONAL_COMMENTS:
+//                            Log.i(TAG, "found additional comments");
+//                            break;
+//                        case ConceptId.REQUESTED_TESTS:
+//                            Log.i(TAG, "found tests");
+//                            break;
+//                        default:
+//                    }
+//
+//
+//                          //if any obs  found then end the visit
+//                        Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
+//                        serviceIntent.putExtra("serviceCall", "endVisit");
+//                        serviceIntent.putExtra("patientID", patientID);
+//                        serviceIntent.putExtra("visitUUID", visitUUID);
+//                        serviceIntent.putExtra("name", patientName);
+//                        startService(serviceIntent);
+//                        Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
+//                        startActivity(intent);
+//
+//
+//
+//
+//
+//
+//                    }
+
+//        }
+////                    <-----if obs not found restrict user to end the visit ----->
+//        else {
+//            downloaded = false;
+//
+//            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+//            alertDialogBuilder.setMessage("Please download first before attempting to end the visit.");
+//            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    dialog.dismiss();
+//                }
+//            });
+//            AlertDialog alertDialog = alertDialogBuilder.create();
+//            alertDialog.show();
+//
+//        }
+//
+//    }
         }
     }
+
+
+
+//            public void endDownload(){
+//
+//                String[] columns = {"value", " concept_id"};
+//                String orderBy = "visit_id";
+//
+//
+//                String visitSelection = "patient_id = ? AND visit_id = ?";
+//                Cursor obsCursor = db.query("obs", columns, visitSelection, null, null, null,orderBy);
+//                if (obsCursor.moveToFirst()) {
+//                    do {
+//                        int dbConceptID = obsCursor.getInt(obsCursor.getColumnIndex("concept_id"));
+//                        String dbValue = obsCursor.getString(obsCursor.getColumnIndex("value"));
+//                        parserData(dbConceptID, dbValue);
+//                        Log.i("db value",dbValue);
+//                    } while (obsCursor.moveToNext());
+//                }
+//                obsCursor.close();
+//            }
+
+
+
+
+
+
+
+//    public void endDownloadVisit() {
+//        int failedDownloads = 0;
+//
+//            String query = "SELECT concept_id FROM obs WHERE obs.visit_id == obs.patient_id AND obs.concept_id NOT NULL";
+//        final Cursor obsCursor = db.rawQuery(query, null);
+//        if (obsCursor != null) {
+//            if (obsCursor.moveToFirst()) {
+//                do {
+//                    boolean result = endDvisit(
+//                            obsCursor.getInt(obsCursor.getColumnIndexOrThrow("concept_id"))
+//                    );
+//                    if (!result) {
+//                        failedDownloads++;
+//                    }
+//                } while (obsCursor.moveToNext());
+//            }
+//            obsCursor.close();
+//        }
+//        if (failedDownloads == 0) {
+//            Intent intent = new Intent(this, HomeActivity.class);
+//            startActivity(intent);
+//        } else {
+//            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+//            alertDialogBuilder.setMessage("Unable to end");
+//            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    dialog.dismiss();
+//                }
+//            });
+//            AlertDialog alertDialog = alertDialogBuilder.create();
+//            alertDialog.show();
+//        }
+//
+//    }
+//
+//
+//
+//            public boolean endDvisit(int conceptID){
+//
+//                 {
+//                    Intent serviceIntent = new Intent(this, ClientService.class);
+//                    serviceIntent.putExtra("serviceCall", "endVisit");
+//                    serviceIntent.putExtra("conceptID", conceptID);
+//
+//                    startService(serviceIntent);
+//                    return true;
+//                }
+//
+//
+//            }
+
+
+
 
     private void addDownloadButton() {
 
@@ -1876,17 +2296,32 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             case ClientService.STATUS_SYNC_IN_PROGRESS: {
                                 Toast.makeText(context, getString(R.string.sync_in_progress), Toast.LENGTH_SHORT).show();
                                 break;
+
+
+
                             }
                             default:
                         }
                     }
-                    //  retrieveOpenMRS(view);
+
+
+
+                    downloaded = true;
+
+
                 }
+
             });
             //mLayout.addView(downloadButton, mLayout.getChildCount());
+
+
         }
 
+
     }
+
+
+
 
     private void isNetworkAvailable(Context context) {
         int flag = 0;
