@@ -26,14 +26,12 @@ public class Patient {
     private String economic_status;
     private String education_level;
     private String caste;
-
     private String department;
     private String commune;
 
     private String cell_no;
     private String prison_name;
     private  String patient_status;
-
 
 
     public Integer getId() {
@@ -132,44 +130,12 @@ public class Patient {
 
     public String getStateProvince() {
         return state_province;
-
     }
 
     public void setStateProvince(String state_province) {
         this.state_province = state_province;
     }
 
-
-    public String getPatientStatus(){
-        return patient_status;
-    }
-    public void setPatientStatus(String patient_status){
-        this.patient_status = patient_status;
-    }
-
-
-    public String getCellNo(){
-        return cell_no;
-    }
-    public void setCellNo(String cell_no){
-        this.cell_no= cell_no;
-    }
-
-    public String getCommune(){
-        return commune;
-    }
-    public void setCommune(String commune){
-        this.commune=commune;
-    }
-
-
-    public String getPrisonName(){
-        return prison_name;
-    }
-
-    public void setPrisonName(String prison_name){
-        this.prison_name = prison_name;
-    }
     public String getPostalCode() {
         return postal_code;
     }
