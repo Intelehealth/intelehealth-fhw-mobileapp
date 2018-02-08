@@ -36,28 +36,19 @@ import android.widget.Spinner;
 
 import com.bumptech.glide.Glide;
 
-import org.joda.time.Years;
-
 import java.io.File;
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-import javax.security.auth.callback.CallbackHandler;
-
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.camera_activity.CameraActivity;
-import io.intelehealth.client.activities.home_activity.HomeActivity;
 import io.intelehealth.client.activities.patient_detail_activity.PatientDetailActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.utilities.HelperMethods;
 
-import static android.support.design.R.styleable.AlertDialog;
-import static android.webkit.ConsoleMessage.MessageLevel.LOG;
-import static io.intelehealth.client.utilities.HelperMethods.LOG_TAG;
 import static io.intelehealth.client.utilities.HelperMethods.REQUEST_CAMERA;
 import static io.intelehealth.client.utilities.HelperMethods.REQUEST_READ_EXTERNAL;
 
@@ -74,7 +65,6 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mDOB;
     EditText mPhoneNum;
     EditText mAge;
-    EditText mAgeInMonths;
     EditText mAddress1;
     EditText mAddress2;
     AutoCompleteTextView mCity;
@@ -87,25 +77,12 @@ public class IdentificationActivity extends AppCompatActivity {
     DatePickerDialog mDOBPicker;
     EditText countryText;
     EditText stateText;
-    EditText cellNumber;
-    EditText prisonName;
-    EditText patientStatus;
-
-
-
+    Spinner mCountry;
+    Spinner mState;
 
     EditText casteText;
     EditText economicText;
     EditText educationText;
-    EditText commune;
-
-
-    Spinner mCellNumber;
-    Spinner mCountry;
-    Spinner mState;
-    Spinner mPrisonName;
-    Spinner mPatientStatus;
-    Spinner mCommune;
 
 
 
@@ -169,19 +146,11 @@ public class IdentificationActivity extends AppCompatActivity {
         mDOB = (EditText) findViewById(R.id.identification_birth_date_text_view);
         mPhoneNum = (EditText) findViewById(R.id.identification_phone_number);
         mAge = (EditText) findViewById(R.id.identification_age);
-        mAgeInMonths = (EditText) findViewById(R.id.identification_ageInMonths);
         mAddress1 = (EditText) findViewById(R.id.identification_address1);
         mAddress2 = (EditText) findViewById(R.id.identification_address2);
-//        mCity = (AutoCompleteTextView) findViewById(R.id.identification_city);
+        mCity = (AutoCompleteTextView) findViewById(R.id.identification_city);
         stateText = (EditText) findViewById(R.id.identification_state);
         mState = (Spinner) findViewById(R.id.spinner_state);
-        mCommune = (Spinner)findViewById(R.id.spinner_commune);
-        cellNumber = (EditText) findViewById(R.id.identification_cell_number);
-        mCellNumber = (Spinner)findViewById(R.id.spinner_cell_number);
-        prisonName = (EditText)findViewById(R.id.identification_prison_name);
-        mPrisonName = (Spinner)findViewById(R.id.spinner_prison_name);
-        patientStatus =(EditText)findViewById(R.id.identification_patient_status);
-        mPatientStatus =(Spinner)findViewById(R.id.spinner_patient_status);
         mPostal = (EditText) findViewById(R.id.identification_postal_code);
         countryText = (EditText) findViewById(R.id.identification_country);
         mCountry = (Spinner) findViewById(R.id.spinner_country);
@@ -193,8 +162,6 @@ public class IdentificationActivity extends AppCompatActivity {
         mEducation = (Spinner) findViewById(R.id.spinner_education);
         mEconomicStatus = (Spinner) findViewById(R.id.spinner_economic_status);
 
-
-
         //TODO: Change this back for other deployments
         mMiddleName.setVisibility(View.GONE);
         mAddress1.setVisibility(View.GONE);
@@ -204,6 +171,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mState.setVisibility(View.GONE);
         stateText.setVisibility(View.GONE);
         mCity.setVisibility(View.GONE);
+
 
 //        casteText = (EditText) findViewById(R.id.identification_caste);
         educationText = (EditText) findViewById(R.id.identification_education);
@@ -245,10 +213,12 @@ public class IdentificationActivity extends AppCompatActivity {
         mPhoneNum.setText(patient1.getPhoneNumber());
         mAddress1.setText(patient1.getAddress1());
         mAddress2.setText(patient1.getAddress2());
-//        mCity.setText(patient1.getCityVillage());
+        mCity.setText(patient1.getCityVillage());
         mPostal.setText(patient1.getPostalCode());
         mRelationship.setText(patient1.getSdw());
         mOccupation.setText(patient1.getOccupation());
+
+
 
 
         if (patient1.getPatientPhoto() != null && !patient1.getPatientPhoto().trim().isEmpty())
@@ -261,7 +231,6 @@ public class IdentificationActivity extends AppCompatActivity {
         mCountry.setAdapter(countryAdapter);
 
 
-
         final ArrayAdapter<CharSequence> departmentAdapter = ArrayAdapter.createFromResource(this,
                 R.array.department, android.R.layout.simple_spinner_item);
         departmentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -269,16 +238,16 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
 
-
+//
 //        ArrayAdapter<CharSequence> casteAdapter = ArrayAdapter.createFromResource(this,
 //                R.array.caste, android.R.layout.simple_spinner_item);
 //        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //        mCaste.setAdapter(casteAdapter);
 
-        ArrayAdapter<CharSequence> economicStatusAdapter = ArrayAdapter.createFromResource(this,
+        ArrayAdapter<CharSequence> economicStausAdapter = ArrayAdapter.createFromResource(this,
                 R.array.economic, android.R.layout.simple_spinner_item);
         countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mEconomicStatus.setAdapter(economicStatusAdapter);
+        mEconomicStatus.setAdapter(economicStausAdapter);
 
         ArrayAdapter<CharSequence> educationAdapter = ArrayAdapter.createFromResource(this,
                 R.array.education, android.R.layout.simple_spinner_item);
@@ -333,8 +302,6 @@ public class IdentificationActivity extends AppCompatActivity {
             if (patient1.getEconomic_status().equals(getString(R.string.not_provided)))
                 mEconomicStatus.setSelection(0);
             else
-
-
                 mEconomicStatus.setSelection(economicStausAdapter.getPosition(String.valueOf(patient1.getEconomic_status())));
 //            if (patient1.getCaste().equals(getString(R.string.not_provided)))
 //                mCaste.setSelection(0);
@@ -345,92 +312,23 @@ public class IdentificationActivity extends AppCompatActivity {
 //            mDepartment.setSelection(departmentAdapter.getPosition("Ouest"));
         }
 
-
-//        mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                String state = parent.getItemAtPosition(position).toString();
-//                if (state.matches("Ouest")) {
-//                    //Creating the instance of ArrayAdapter containing list of fruit names
-//                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-//                            R.array.Department, android.R.layout.simple_spinner_item);
-////                    mCity.setThreshold(1);//will start working from first character
-////                    mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
-////                } else {
-////                    mCity.setAdapter(null);
-////                }
-//                }
-////            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-////////////////////////// Department ////////////////////////////////////////////
-
-        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.Department, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.state_error, android.R.layout.simple_spinner_item);
         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mState.setAdapter(stateAdapter);
-        ////////////////////commune /////////////////////////////////////////////
-
-        ArrayAdapter<CharSequence> communeAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                R.array.Ouest,android.R.layout.simple_spinner_item);
-                mCommune.setAdapter(communeAdapter);
 
         mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                if(position!=0){
-                    String commune = parent.getItemAtPosition(position).toString();
-                    if(commune.matches("Centre")){
-                        ArrayAdapter<CharSequence> centreAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                R.array.Centre,android.R.layout.simple_spinner_item);
-                        mCommune.setAdapter(centreAdapter);
-                    }
-                    else if(commune.matches("Ouest")){
-                        ArrayAdapter<CharSequence> ouestAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                R.array.Ouest,android.R.layout.simple_spinner_item);
-                        mCommune.setAdapter(ouestAdapter);
-                    }
-                    else if(commune.matches("Nord")){
-                        ArrayAdapter<CharSequence> nordAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                R.array.Nord,android.R.layout.simple_spinner_item);
-                        mCommune.setAdapter(nordAdapter);
-                    }
-                    else if(commune.matches("Artibonite")){
-                        ArrayAdapter<CharSequence> artiboniteAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                R.array.Artibonite,android.R.layout.simple_spinner_item);
-                        mCommune.setAdapter(artiboniteAdapter);
-                    }
-                    else if(commune.matches("Sud-Est")){
-                        ArrayAdapter<CharSequence> sud_EstAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                R.array.Sud_Est,android.R.layout.simple_spinner_item);
-                        mCommune.setAdapter(sud_EstAdapter);
-                    }
-                    else if(commune.matches("Sud")){
-                        ArrayAdapter<CharSequence> sudAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                R.array.Sud,android.R.layout.simple_spinner_item);
-                        mCommune.setAdapter(sudAdapter);
-                    }
-                    else if(commune.matches("Grande")){
-                        ArrayAdapter<CharSequence> grandeAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                R.array.Grande_Anse,android.R.layout.simple_spinner_item);
-                        mCommune.setAdapter(grandeAdapter);
-                    }
-                    else if(commune.matches("Nord-Ouest")){
-                        ArrayAdapter<CharSequence> nordOuestAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                R.array.Nord_Ouest,android.R.layout.simple_spinner_item);
-                        mCommune.setAdapter(nordOuestAdapter);
-                    }
-                    else if(commune.matches("Nippes")){
-                        ArrayAdapter<CharSequence> nippesAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                R.array.Nippes,android.R.layout.simple_spinner_item);
-                        mCommune.setAdapter(nippesAdapter);
-                    }
-
-//                }
-
+                String state = parent.getItemAtPosition(position).toString();
+                if (state.matches("Odisha")) {
+                    //Creating the instance of ArrayAdapter containing list of fruit names
+                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                            R.array.odisha_villages, android.R.layout.simple_spinner_item);
+                    mCity.setThreshold(1);//will start working from first character
+                    mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+                } else {
+                    mCity.setAdapter(null);
+                }
             }
 
             @Override
@@ -438,7 +336,6 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
         });
-
 
 //        mCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 //            @Override
@@ -560,7 +457,8 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
-
+            }
+        });
 
 
         //cell number spinner
@@ -671,6 +569,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
                 //Age should be calculated based on the date
                 int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
                 if(age<0){
                     mAge.setText("");
                 }else{
@@ -682,9 +581,6 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }, today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH));
         mDOBPicker.getDatePicker().setMaxDate(today.getTimeInMillis());
-              
-              
-              
         //DOB Picker is shown when clicked
         mDOB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -693,31 +589,6 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
 
-        mAge.addTextChangedListener(textWatcher);
-
-
-//        mAge.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                if (!s.toString().trim().isEmpty()) {
-//                    if (getCurrentFocus().getId() == mAge.getId() || mDOB.getText().toString().trim().isEmpty()) {
-//                        Calendar calendar = Calendar.getInstance();
-//                        int curYear = calendar.get(Calendar.YEAR);
-//                        int birthYear = curYear - Integer.valueOf(s.toString().trim());
-//                        String calcDOB = String.valueOf(birthYear) + "-01-01";
-//                        mDOB.setText(calcDOB);
-//                    }
-//                }
-//            }
-//        });
 
         mAge.addTextChangedListener(new TextWatcher() {
             @Override
@@ -743,7 +614,6 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
             }
         });
-
 
         /*
         User has to have option where they can enter the age.
@@ -785,7 +655,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         }
 
                     }
-                });                });
+                });
 
                 textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
                     @Override
@@ -810,62 +680,13 @@ public class IdentificationActivity extends AppCompatActivity {
 
     }
 
-
-
-    private TextWatcher textWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            setDobFromYearAndMonth();
-        }
-    };
-
-    private void setDobFromYearAndMonth(){
-        int year = 0;
-        int month = 0;
-        if(!TextUtils.isEmpty(mAge.getText())){
-            year = Integer.parseInt(mAge.getText().toString());
-            if(year < 0) {
-                mAge.setText("");
-            }
-        }
-        if(!TextUtils.isEmpty(mAgeInMonths.getText())){
-            month = Integer.parseInt(mAgeInMonths.getText().toString());
-            if(month > 12){
-                mAgeInMonths.setText("");
-            }
-        }
-
-        Calendar calendar =  Calendar.getInstance();
-        calendar.add(Calendar.YEAR, -year);
-        calendar.add(Calendar.MONTH, -month);
-        calendar.set(Calendar.DAY_OF_MONTH, 01);
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH);
-        mDOB.setText(sdf.format(calendar.getTimeInMillis()));
-    }
-
-
-
-
     // This method is for setting the screen with existing values in database whenn user clicks edit details
     private void setscreen(String str) {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         String patientSelection = "_id=?";
         String[] patientArgs = {str};
-        //create columns with cell, prison name,"patient status",Department,Commune,
         String[] patientColumns = {"first_name", "middle_name", "last_name",
-                "commune","cell_no","prison_name","patient_status",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw", "occupation", "patient_photo",
                 "economic_status", "education_status", "caste","department","commune","cell_no",
@@ -879,12 +700,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 patient1.setDateOfBirth(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
                 patient1.setAddress1(idCursor.getString(idCursor.getColumnIndexOrThrow("address1")));
                 patient1.setAddress2(idCursor.getString(idCursor.getColumnIndexOrThrow("address2")));
-//                patient1.setCityVillage(idCursor.getString(idCursor.getColumnIndexOrThrow("city_village")));
+                patient1.setCityVillage(idCursor.getString(idCursor.getColumnIndexOrThrow("city_village")));
                 patient1.setStateProvince(idCursor.getString(idCursor.getColumnIndexOrThrow("state_province")));
-                patient1.setCommune(idCursor.getString(idCursor.getColumnIndexOrThrow("commune")));
-                patient1.setCellNo(idCursor.getString(idCursor.getColumnIndexOrThrow("cell_no")));
-                patient1.setPrisonName(idCursor.getString(idCursor.getColumnIndexOrThrow("prison_name")));
-                patient1.setPatientStatus(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_status")));
                 patient1.setPostalCode(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
                 patient1.setCountry(idCursor.getString(idCursor.getColumnIndexOrThrow("country")));
                 patient1.setPhoneNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
@@ -1000,39 +817,6 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
 
-
-        if (mCountry.getSelectedItemPosition() == 0) {
-            countryText.setError(getString(R.string.error_field_required));
-            focusView = countryText;
-            cancel = true;
-            return;
-        } else {
-            countryText.setError(null);
-        }
-
-
-        if (mState.getSelectedItemPosition() == 0) {
-            stateText.setError(getString(R.string.error_field_required));
-            focusView = stateText;
-            cancel = true;
-            return;
-        } else {
-            stateText.setError(null);
-        }
-        if(mPrisonName.getSelectedItemPosition()==0){
-            prisonName.setText(getString(R.string.error_field_required));
-            focusView =  prisonName;
-            cancel = true;
-            return;
-        }
-        if(mPatientStatus.getSelectedItemPosition()==0){
-            patientStatus.setText(getString(R.string.error_field_required));
-            focusView =  patientStatus;
-            cancel= true;
-            return;
-        }
-        Log.i(TAG,"iam cool");
-
 //        if (mCountry.getSelectedItemPosition() == 0) {
 //            countryText.setError(getString(R.string.error_field_required));
 //            focusView = countryText;
@@ -1136,14 +920,11 @@ public class IdentificationActivity extends AppCompatActivity {
                     patient1.setOccupation(mOccupation.getText().toString());
                 }
 
-
                 //currentPatient.setCountry(mCountry.getText().toString());
                 patient.setGender(mGender);
                 patient1.setGender(mGender);
                 patient.setCountry(mCountry.getSelectedItem().toString());
                 patient1.setCountry(mCountry.getSelectedItem().toString());
-
-                patient.setPatientStatus(mPatientStatus.getSelectedItem().toString());
 
 
 //                if (mCaste.getSelectedItemPosition() == 0) {
@@ -1257,12 +1038,6 @@ public class IdentificationActivity extends AppCompatActivity {
             patientEntries.put("address2", patient.getAddress2());
             patientEntries.put("city_village", patient.getCityVillage());
             patientEntries.put("state_province", patient.getStateProvince());
-            patientEntries.put("commune",patient.getCommune());
-            patientEntries.put("prison_name",patient.getPrisonName());
-            patientEntries.put("cell_no",patient.getCellNo());
-            patientEntries.put("patient_status",patient.getPatientStatus());
-
-
             patientEntries.put("postal_code", patient.getPostalCode());
             patientEntries.put("country", patient.getCountry());
             patientEntries.put("gender", patient.getGender());
@@ -1344,10 +1119,6 @@ public class IdentificationActivity extends AppCompatActivity {
             patientEntries1.put("state_province", patient1.getStateProvince());
             patientEntries1.put("postal_code", patient1.getPostalCode());
             patientEntries1.put("country", patient1.getCountry());
-            patientEntries1.put("prison_name",patient1.getPrisonName());
-            patientEntries1.put("patient_status",patient1.getPatientStatus());
-            patientEntries1.put("cell_no",patient1.getCellNo());
-            patientEntries1.put("commune",patient1.getCommune());
             patientEntries1.put("gender", patient1.getGender());
             patientEntries1.put("sdw", patient1.getSdw());
             patientEntries1.put("occupation", patient1.getOccupation());
@@ -1462,10 +1233,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-     Intent i = new Intent(getApplicationContext(), HomeActivity.class);
-     startActivity(i);
+
     }
-
-
 }
 

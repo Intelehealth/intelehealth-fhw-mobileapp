@@ -177,8 +177,6 @@ public class PrescriptionDownloadService extends IntentService {
                                 } else {
                                     doctorName = providerName;
                                 }
-//                                Log.d(doctorName);
-                                Log.d("DoctorName",doctorName);
 
                                 Log.i(TAG, "onHandleIntent: pn "+ providerName);
 

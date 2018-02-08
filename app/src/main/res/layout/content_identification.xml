@@ -179,50 +179,6 @@
 
             </android.support.design.widget.TextInputLayout>
 
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/identification_ageInMonths"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="@string/identification_screen_prompt_ageInMonths"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="number"
-                    android:maxLines="1"
-                    android:singleLine="true"
-
-
-                    />
-
-            </android.support.design.widget.TextInputLayout>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -317,8 +273,6 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <!--Department-->
-
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -331,7 +285,7 @@
 
                     <EditText
                         android:id="@+id/identification_state"
-                        android:layout_width="150dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
                         android:clickable="false"
@@ -346,7 +300,7 @@
 
                     <Spinner
                         android:id="@+id/spinner_state"
-                        android:layout_width="200dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1" />
                 </LinearLayout>
@@ -355,7 +309,7 @@
             </android.support.design.widget.TextInputLayout>
 
 
-            <!--commmune-->
+
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -458,76 +412,14 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
 
-
                         >
 
                     </Spinner>
 
                 </LinearLayout>
             </android.support.design.widget.TextInputLayout>
-
-
-            <!--add cell number-->
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width = "match_parent"
-                android:layout_height = "wrap_content">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/identification_cell_number"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:freezesText="true"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textCapWords"
-                    android:text="@string/identification_screen_cell_number"
-
-                    />
-                    <Spinner
-                        android:id="@+id/spinner_cell_number"
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-
-                        >
-
-                    </Spinner>
-
-                </LinearLayout>
-            </android.support.design.widget.TextInputLayout>
-
-
-
-
-            <!--<android.support.design.widget.TextInputLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content">-->
-
-                <!--<AutoCompleteTextView-->
-                    <!--android:id="@+id/identification_commune"-->
-                    <!--android:layout_width="fill_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:freezesText="true"-->
-                    <!--android:hint="@string/identification_screen_prompt_commune"-->
-                    <!--android:imeOptions="actionUnspecified"-->
-                    <!--android:inputType="textCapWords"-->
-                    <!--android:maxLines="1" />-->
-
-            <!--</android.support.design.widget.TextInputLayout>-->
-
-
 
             <!--add prison name-->
-
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -608,7 +500,6 @@
                     android:tag="@string/tag_optional" />
 
             </android.support.design.widget.TextInputLayout>
-
 
 
             <android.support.design.widget.TextInputLayout
