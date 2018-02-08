@@ -180,6 +180,8 @@ public class PrescriptionDownloadService extends IntentService {
 //                                Log.d(doctorName);
                                 Log.d("DoctorName",doctorName);
 
+                                Log.i(TAG, "onHandleIntent: pn "+ providerName);
+
                             }
 
                         } catch (JSONException e) {
@@ -210,7 +212,6 @@ public class PrescriptionDownloadService extends IntentService {
                                 } else {
                                     diagnosisReturned = indexText;
                                 }
-                                Log.i(TAG, "onHandleIntent: TeleDiag");
                                 String[] obsArgs = {String.valueOf(ConceptId.TELEMEDICINE_DIAGNOSIS), visitID};
                                 Cursor cursor = queryDatabase(columns, obsSelection, obsArgs);
                                 if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -235,7 +236,6 @@ public class PrescriptionDownloadService extends IntentService {
                                 } else {
                                     rxReturned = indexText;
                                 }
-                                Log.i(TAG, "onHandleIntent: Medi");
                                 String[] obsArgs = {String.valueOf(ConceptId.JSV_MEDICATIONS), visitID};
                                 Cursor cursor = queryDatabase(columns, obsSelection, obsArgs);
                                 if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -260,7 +260,6 @@ public class PrescriptionDownloadService extends IntentService {
                                 } else {
                                     adviceReturned = indexText;
                                 }
-                                Log.i(TAG, "onHandleIntent: Advice");
                                 String[] obsArgs = {String.valueOf(ConceptId.MEDICAL_ADVICE), visitID};
                                 Cursor cursor = queryDatabase(columns, obsSelection, obsArgs);
                                 if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -285,7 +284,6 @@ public class PrescriptionDownloadService extends IntentService {
                                 } else {
                                     testsReturned = indexText;
                                 }
-                                Log.i(TAG, "onHandleIntent: Tests");
                                 String[] obsArgs = {String.valueOf(ConceptId.REQUESTED_TESTS), visitID};
                                 Cursor cursor = queryDatabase(columns, obsSelection, obsArgs);
                                 if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -310,7 +308,6 @@ public class PrescriptionDownloadService extends IntentService {
                                 } else {
                                     additionalReturned = indexText;
                                 }
-                                Log.i(TAG, "onHandleIntent: Comments");
                                 String[] obsArgs = {String.valueOf(ConceptId.ADDITIONAL_COMMENTS), visitID};
                                 Cursor cursor = queryDatabase(columns, obsSelection, obsArgs);
                                 if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {

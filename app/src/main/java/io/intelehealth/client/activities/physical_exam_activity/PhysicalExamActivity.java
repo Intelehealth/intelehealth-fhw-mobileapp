@@ -455,7 +455,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
     }
 
     private long insertDb(String value) {
-
+        Log.i(TAG, "insertDb: ");
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         final String CREATOR_ID = prefs.getString("creatorid", null);
@@ -495,17 +495,21 @@ public class PhysicalExamActivity extends AppCompatActivity {
         String selection = "patient_id = ? AND visit_id = ? AND concept_id = ?";
         String[] args = {String.valueOf(patientID), visitID, String.valueOf(conceptID)};
 
-        localdb.update(
+        int i = localdb.update(
                 "obs",
                 contentValues,
                 selection,
                 args
         );
+        Log.i(TAG, "updateDatabase: " + i);
+        if(i==0){
+            insertDb(string);
+        }
 
     }
 
     private void updateImageDatabase(String imagePath) {
-        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path,image_type,delete_status) values("
+       localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path,image_type,delete_status) values("
                 + "'" + patientID + "'" + ","
                 + visitID + ","
                 + "'" + imagePath + "','" + image_Prefix + "'," +

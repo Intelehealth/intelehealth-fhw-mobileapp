@@ -83,8 +83,21 @@ public class Node implements Serializable {
 
     private List<String> imagePathList;
 
+    public static String bullet = "\u2022";
+    public static String big_bullet = "\u25CF";
+    public static String bullet_hollow = "\u25CB";
+    public static String bullet_arrow = "\u25BA";
+    public static String next_line = "<br/>";
+    String space = "\t";
+
+
+    //• = \u2022, ● = \u25CF, ○ = \u25CB, ▪ = \u25AA, ■ = \u25A0, □ = \u25A1, ► = \u25BA
 
     private String imagePath;
+
+    private String bullet = "\u2022";
+    private String big_bullet = "\u25CF";
+    private String next_line = "<br/>";
 
 
     /**
@@ -428,26 +441,22 @@ public class Node implements Serializable {
         List<String> stringsList = new ArrayList<>();
         List<Node> mOptions = optionsList;
         boolean isTerminal = false;
-        for (int i = 0; i < mOptions.size(); i++) {
-            if (mOptions.get(i).isSelected()) {
-                String associatedTest = mOptions.get(i).getText();
-                if (associatedTest!=null&&(associatedTest.equals("Associated symptoms") ||
-                        associatedTest.equals("Past medical history "))) {
-                    stringsList.add(generateAssociatedSymptomsOrHistory(mOptions.get(i)));
-                    continue;
-                }
-                String test = mOptions.get(i).getLanguage();
-                if (test.equals("%")) {
-                } else if (test.substring(0, 1).equals("%")) {
-                    stringsList.add(test.substring(1));
-                } else {
-                    stringsList.add(test);
-                }
-                if (!mOptions.get(i).isTerminal()) {
-                    stringsList.add(mOptions.get(i).formLanguage());
-                    isTerminal = false;
-                } else {
-                    isTerminal = true;
+        if (mOptions != null && !mOptions.isEmpty()) {
+            for (int i = 0; i < mOptions.size(); i++) {
+                if (mOptions.get(i).isSelected()) {
+                    String test = mOptions.get(i).getLanguage();
+                    if (test.equals("%")) {
+                    } else if (test.substring(0, 1).equals("%")) {
+                        stringsList.add(test.substring(1));
+                    } else {
+                        stringsList.add(test);
+                    }
+                    if (!mOptions.get(i).isTerminal()) {
+                        stringsList.add(mOptions.get(i).formLanguage());
+                        isTerminal = false;
+                    } else {
+                        isTerminal = true;
+                    }
                 }
             }
         }
@@ -483,7 +492,30 @@ public class Node implements Serializable {
     }
 
     public String generateLanguage() {
-        String raw = this.formLanguage();
+
+        String raw = "";
+        List<Node> mOptions = optionsList;
+        if (optionsList != null && !optionsList.isEmpty()) {
+            for (Node node_opt : mOptions) {
+                if (node_opt.isSelected()) {
+                    String associatedTest = node_opt.getText();
+                    if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") ||
+                            associatedTest.trim().equals("H/o specific illness"))) {
+                        raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                    } else {
+                        if (node_opt.getLanguage().equals("%")) {
+                            raw = raw + bullet + " " + node_opt.formLanguage() + next_line;
+                        } else if (node_opt.getLanguage().substring(0, 1).equals("%")) {
+                            raw = raw + (bullet + " " + node_opt.getLanguage().substring(1) + " - " + node_opt.formLanguage()) + next_line;
+                        } else {
+                            raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + node_opt.formLanguage()) + next_line;
+                        }
+                    }
+                    //raw = raw + ("\n"+"\n" + bullet +" "+ node_opt.formLanguage());
+                }
+            }
+        }
+
         String formatted;
         if (!raw.isEmpty()) {
             if (Character.toString(raw.charAt(0)).equals(",")) {
@@ -1436,8 +1468,11 @@ public class Node implements Serializable {
         List<String> finalTexts = new ArrayList<>();
         List<Node> mOptions = associatedSymptomNode.getOptionsList();
 
-        String mLanguagePositive = associatedSymptomNode.getPositiveCondition();
-        String mLanguageNegative = associatedSymptomNode.getNegativeCondition();
+        String mLanguagePositive = associatedSymptomNode.positiveCondition;
+        String mLanguageNegative = associatedSymptomNode.negativeCondition;
+
+        Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + mLanguagePositive);
+        Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + mLanguageNegative);
 
 
         for (int i = 0; i < mOptions.size(); i++) {
@@ -1453,8 +1488,12 @@ public class Node implements Serializable {
                     positiveAssociations.add(mOptions.get(i).getLanguage());
                 }
                 if (!mOptions.get(i).isTerminal()) {
-                    String tempString = mOptions.get(i).formLanguage();
-                    positiveAssociations.add(tempString);
+                    if (positiveAssociations.size() > 0) {
+                        String tempString = positiveAssociations.get(positiveAssociations.size() - 1) + " - " +
+                                mOptions.get(i).formLanguage();
+
+                        positiveAssociations.set(positiveAssociations.size() - 1, tempString);
+                    }
                 }
             } else {
                 if (mOptions.get(i).getLanguage().equals("%")) {
@@ -1468,16 +1507,20 @@ public class Node implements Serializable {
             }
         }
 
-        if (!positiveAssociations.isEmpty()) {
-            for (int j = 0; j < positiveAssociations.size(); j++) {
-                finalTexts.add(mLanguagePositive + " " + positiveAssociations.get(j));
+        if (positiveAssociations != null && !positiveAssociations.isEmpty()) {
+            finalTexts.add(bullet_hollow);
+            for (String string : positiveAssociations) {
+                Log.i(TAG, "generateAssociatedSymptomsOrHistory:  " + mLanguagePositive);
+                finalTexts.add(mLanguagePositive + " " + string);
             }
         }
 
 
-        if (!negativeAssociations.isEmpty()) {
-            for (int k = 0; k < negativeAssociations.size(); k++) {
-                finalTexts.add(mLanguageNegative + " " + negativeAssociations.get(k));
+        if (negativeAssociations != null && !negativeAssociations.isEmpty()) {
+            finalTexts.add(bullet_hollow);
+            for (String string : negativeAssociations) {
+                Log.i(TAG, "generateAssociatedSymptomsOrHistory:  " + mLanguageNegative);
+                finalTexts.add(mLanguageNegative + " " + string);
             }
         }
 
@@ -1489,15 +1532,63 @@ public class Node implements Serializable {
             }
         }
 
-        final_language = final_language.replaceAll("with,", "with");
+        final_language = final_language.replaceAll("- ,", "- ");
         final_language = final_language.replaceAll("of,", "of");
         final_language = final_language.replaceAll("\\, \\[", " [");
+        final_language = final_language.replaceAll(", " + bullet_hollow + ", ", " " + bullet_hollow + " ");
         Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + final_language);
 
         return final_language;
 
     }
 
+    public String formQuestionAnswer(int level) {
+        List<String> stringsList = new ArrayList<>();
+        List<Node> mOptions = optionsList;
 
+        for (int i = 0; i < mOptions.size(); i++) {
+            if (mOptions.get(i).isSelected()) {
+                String question;
+                if (level == 0) {
+                    question = big_bullet + " " + mOptions.get(i).findDisplay();
+                } else {
+                    question = bullet + " " + mOptions.get(i).findDisplay();
+                }
+                String answer = mOptions.get(i).getLanguage();
+                if (mOptions.get(i).isTerminal()) {
+                    if (mOptions.get(i).getInputType() != null && !mOptions.get(i).getInputType().trim().isEmpty()) {
+                        Log.i(TAG, "ipt: " + mOptions.get(i).getInputType());
+                        if (mOptions.get(i).getInputType().equals("camera")) {
+                        } else {
+                            if (answer.equals("%")) {
+                            } else if (mOptions.get(i).getText().equals(mOptions.get(i).getLanguage())) {
+                                stringsList.add(bullet_hollow + answer + next_line);
+                            } else if (answer.substring(0, 1).equals("%")) {
+                                stringsList.add(bullet_hollow + answer.substring(1) + next_line);
+                            } else {
+                                stringsList.add(bullet_hollow + answer + next_line);
+                            }
+                        }
+                    } else {
+                        stringsList.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
+                    }
+                } else {
+                    stringsList.add(question + next_line);
+                    stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
+                }
+            }
+        }
+
+        String mLanguage = "";
+        for (int i = 0; i < stringsList.size(); i++) {
+
+            if (!stringsList.get(i).isEmpty()) {
+                mLanguage = mLanguage.concat(stringsList.get(i));
+            }
+
+        }
+        Log.i(TAG, "formQuestionAnswer: " + mLanguage);
+        return mLanguage;
+    }
 }
 

@@ -85,6 +85,7 @@
     <string name="identification_screen_checkbox_female">Female</string>
     <string name="identification_screen_prompt_birthday">Date of Birth*</string>
     <string name="identification_screen_prompt_age">Age*</string>
+
     <string name ="identification_screen_prompt_ageInMonths">AgeInMonths</string>
     <!--<string name="identification_screen_prompt_city">Village/Town/City *</string>-->
     <string name="identification_screen_prompt_commune">Commune</string>
@@ -92,10 +93,17 @@
     <string name="identification_screen_cell_number">Cell No*</string>
     <string name="identification_screen_prison_name">Prison Name*</string>
     <string name = "identification_screen_patient_status">Patient Status</string>
+  
+  
+    <string name="identification_screen_prompt_city">Village/Town/City *</string>
+    <string name="identification_screen_prompt_state">State *</string> 
+
     <string name="identification_screen_prompt_caste">Caste</string>
+
     <string name="identification_screen_prompt_economic_status">Economic Status</string>
     <string name="identification_screen_prompt_education">Education Level</string>
     <string name="identification_screen_prompt_country">Country *</string>
+
     <string name="identification_screen_prompt_postal_code">Postal Code</string>
     <string name="identification_screen_prompt_relationship">Son/Daughter/Wife of</string>
     <string name="identification_screen_prompt_occupation">Occupation</string>

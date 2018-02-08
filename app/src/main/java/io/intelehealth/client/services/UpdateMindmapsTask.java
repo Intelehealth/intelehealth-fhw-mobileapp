@@ -32,11 +32,12 @@ import io.intelehealth.client.utilities.HelperMethods;
 
 public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
     String FILENAME, COLLECTION_NAME, FILE_LIST;
-    static ProgressDialog progress;
+    private static ProgressDialog progress;
 
     private static final String TAG = UpdateMindmapsTask.class.getSimpleName();
 
     WeakReference<Activity> mWeakActivity;
+    Activity activity;
 
     private boolean isLastFile;
 
@@ -44,11 +45,13 @@ public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
     public String[] FILES;
 
     public UpdateMindmapsTask(Activity activity) {
-        mWeakActivity = new WeakReference<>(activity);
+        this.mWeakActivity = new WeakReference<>(activity);
+        this.activity = activity;
     }
 
     public UpdateMindmapsTask(Activity activity, File base_dir, boolean isLastFile) {
-        mWeakActivity = new WeakReference<>(activity);
+        this.mWeakActivity = new WeakReference<>(activity);
+        this.activity = activity;
         this.base_dir = base_dir;
         this.isLastFile = isLastFile;
     }
@@ -56,15 +59,20 @@ public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        Activity activity = mWeakActivity.get();
-        if (activity != null && progress == null) {
+        if ((mWeakActivity.get() != null && !mWeakActivity.get().isFinishing())
+                && progress == null) {
             progress = new ProgressDialog(activity);
         }
-        if (progress != null && !progress.isShowing()) {
+        if ((mWeakActivity.get() != null && !mWeakActivity.get().isFinishing())
+                && progress != null && !progress.isShowing()) {
             progress.setTitle(activity.getString(R.string.please_wait_progress));
             progress.setMessage(activity.getString(R.string.downloading_mindmaps));
             progress.setCanceledOnTouchOutside(false);
-            progress.show();
+            try {
+                progress.show();
+            } catch (Exception ex) {
+                Log.e(TAG, "onPreExecute: ", ex);
+            }
         }
     }
 
@@ -109,7 +117,7 @@ public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
 
         Activity activity = mWeakActivity.get();
 
-        if (activity != null) {
+        if ((mWeakActivity.get() != null && !mWeakActivity.get().isFinishing())) {
             if (response == null) {
                 Toast.makeText(activity, activity.getString(R.string.error_downloading_mindmaps), Toast.LENGTH_SHORT).show();
                 return;
@@ -200,7 +208,12 @@ public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
                 }
                 patHist.delete();
             }
-            progress.dismiss();
+
+            if ((mWeakActivity.get() != null && !mWeakActivity.get().isFinishing())
+                    && (progress != null && progress.isShowing())) {
+                progress.dismiss();
+                progress = null;
+            }
         }
     }
 
@@ -214,9 +227,23 @@ public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
             String[] parts = file.split(".json");
             //Log.i("DOWNLOADING-->",parts[0].replaceAll("\\s+",""));
             if (i == length - 1) {
-                new UpdateMindmapsTask(activity, base_dir, true).execute(file, parts[0].replaceAll("\\s+", ""), null);
+                parts[0] = parts[0].replaceAll("\\s+", "")
+                        .replaceAll("&", "")
+                        .replaceAll(",", "")
+                        .replaceAll("-", "")
+                        .replaceAll("\\(", "")
+                        .replaceAll("\\)", "");
+                Log.i(TAG, "parts: " + parts[0]);
+                new UpdateMindmapsTask(activity, base_dir, true).execute(file, parts[0], null);
             } else {
-                new UpdateMindmapsTask(activity, base_dir, false).execute(file, parts[0].replaceAll("\\s+", ""), null);
+                parts[0] = parts[0].replaceAll("\\s+", "")
+                        .replaceAll("&", "")
+                        .replaceAll(",", "")
+                        .replaceAll("-", "")
+                        .replaceAll("\\(", "")
+                        .replaceAll("\\)", "");
+                Log.i(TAG, "parts: " + parts[0]);
+                new UpdateMindmapsTask(activity, base_dir, false).execute(file, parts[0], null);
             }
         }
     }

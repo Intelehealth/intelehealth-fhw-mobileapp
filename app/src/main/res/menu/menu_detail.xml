@@ -3,13 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/detail_print"
-        android:orderInCategory="100"
-        android:title="@string/action_print"
-        android:icon="@drawable/ic_print_24dp"
-        app:showAsAction="ifRoom" />
-
-    <item
         android:id="@+id/detail_home"
         android:orderInCategory="100"
         android:title="@string/action_home"

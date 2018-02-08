@@ -142,7 +142,7 @@ public class VitalsActivity extends AppCompatActivity {
                     mBMI.getText().clear();
                     flag_height =1;
                     heightvalue = mHeight.getText().toString();
-                    if(Integer.valueOf(s.toString())> Integer.valueOf(maxh)) {
+                    if(Double.valueOf(s.toString())> Double.valueOf(maxh)) {
                         mHeight.setError(getString(R.string.height_error,maxh));
                     }
                     else {
@@ -172,7 +172,7 @@ public class VitalsActivity extends AppCompatActivity {
                     mBMI.getText().clear();
                     flag_weight =1;
                     weightvalue = mWeight.getText().toString();
-                    if(Integer.valueOf(s.toString())> Integer.valueOf(maxw)) {
+                    if(Double.valueOf(s.toString())> Double.valueOf(maxw)) {
                         mWeight.setError(getString(R.string.weight_error,maxw));
                     }
                     else {
@@ -215,8 +215,8 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() > 0) {
-                    if (Integer.valueOf(s.toString()) > Integer.valueOf(maxspo2) ||
-                            Integer.valueOf(s.toString()) < Integer.valueOf(minspo2)) {
+                    if (Double.valueOf(s.toString()) > Double.valueOf(maxspo2) ||
+                            Double.valueOf(s.toString()) < Double.valueOf(minspo2)) {
                         mSpo2.setError(getString(R.string.spo2_error,minspo2,maxspo2));
                     } else {
                         mSpo2.setError(null);
@@ -240,8 +240,8 @@ public class VitalsActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() > 0)
                 {
-                if(Integer.valueOf(s.toString())> Integer.valueOf(maxte) ||
-                        Integer.valueOf(s.toString())< Integer.valueOf(minte)) {
+                if(Double.valueOf(s.toString())> Double.valueOf(maxte) ||
+                        Double.valueOf(s.toString())< Double.valueOf(minte)) {
                     mTemperature.setError(getString(R.string.temp_error,minte,maxte));
                 }
                 else {
@@ -265,8 +265,8 @@ public class VitalsActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() > 0)
                 {
-                if(Integer.valueOf(s.toString())> Integer.valueOf(maxpulse) ||
-                        Integer.valueOf(s.toString())< Integer.valueOf(minpulse)) {
+                if(Double.valueOf(s.toString())> Double.valueOf(maxpulse) ||
+                        Double.valueOf(s.toString())< Double.valueOf(minpulse)) {
                     mPulse.setError(getString(R.string.pulse_error,minpulse,maxpulse));
                 }
                 else {
@@ -290,8 +290,8 @@ public class VitalsActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() > 0)
                 {
-                if(Integer.valueOf(s.toString())> Integer.valueOf(maxbpsys) ||
-                        Integer.valueOf(s.toString())< Integer.valueOf(minbpsys)) {
+                if(Double.valueOf(s.toString())> Double.valueOf(maxbpsys) ||
+                        Double.valueOf(s.toString())< Double.valueOf(minbpsys)) {
                     mBpSys.setError(getString(R.string.bpsys_error,minbpsys,maxbpsys));
                 }
                 else {
@@ -315,8 +315,8 @@ public class VitalsActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() > 0)
                 {
-                if(Integer.valueOf(s.toString())> Integer.valueOf(maxbpdys) ||
-                        Integer.valueOf(s.toString())< Integer.valueOf(minbpdys)) {
+                if(Double.valueOf(s.toString())> Double.valueOf(maxbpdys) ||
+                        Double.valueOf(s.toString())< Double.valueOf(minbpdys)) {
                     mBpDia.setError(getString(R.string.bpdia_error,minbpdys,maxbpdys));
                 }
                 else {
