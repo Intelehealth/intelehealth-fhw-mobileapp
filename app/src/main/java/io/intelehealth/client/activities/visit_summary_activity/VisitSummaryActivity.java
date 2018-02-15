@@ -641,7 +641,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (complaint.getValue() != null)
             complaintView.setText(Html.fromHtml(complaint.getValue()));
         if (famHistory.getValue() != null)
-            famHistView.setText(Html.fromHtml(famHistory.getValue()));
+            famHistView.setText(Html.fromHtml(famHistory.getValue())); //sets for textview
         if (patHistory.getValue() != null)
             patHistView.setText(Html.fromHtml(patHistory.getValue()));
         if (phyExam.getValue() != null)
@@ -696,10 +696,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 famHistDialog.setView(convertView);
 
-                final TextView famHistTest = (TextView) convertView.findViewById(R.id.textView_entry);
+                final TextView famHistText = (TextView) convertView.findViewById(R.id.textView_entry);
                 if (famHistory.getValue() != null)
-                    famHistTest.setText(Html.fromHtml(famHistory.getValue()));
-                famHistTest.setEnabled(false);
+                    famHistText.setText(Html.fromHtml(famHistory.getValue()));
+                famHistText.setEnabled(false);
 
                 famHistDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
                     @Override
@@ -708,7 +708,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
                         if (famHistory.getValue() != null)
-                            dialogEditText.setText(famHistory.getValue());
+                            dialogEditText.setText(Html.fromHtml(famHistory.getValue()));
                         else
                             dialogEditText.setText("");
                         textInput.setView(dialogEditText);
@@ -717,7 +717,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 famHistory.setValue(dialogEditText.getText().toString());
                                 if (famHistory.getValue() != null) {
-                                    famHistTest.setText(Html.fromHtml(famHistory.getValue()));
+                                    famHistText.setText(Html.fromHtml(famHistory.getValue()));
                                     famHistView.setText(Html.fromHtml(famHistory.getValue()));
                                 }
                                 updateDatabase(famHistory.getValue(), ConceptId.RHK_FAMILY_HISTORY_BLURB);
@@ -781,7 +781,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
                         if (complaint.getValue() != null)
-                            dialogEditText.setText(complaint.getValue());
+                            dialogEditText.setText(Html.fromHtml(complaint.getValue()));
                         else
                             dialogEditText.setText("");
                         textInput.setView(dialogEditText);
@@ -853,7 +853,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
                         if (phyExam.getValue() != null)
-                            dialogEditText.setText(phyExam.getValue());
+                            dialogEditText.setText(Html.fromHtml(phyExam.getValue()));
                         else
                             dialogEditText.setText("");
                         textInput.setView(dialogEditText);
@@ -955,7 +955,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
                         if (patHistory.getValue() != null)
-                            dialogEditText.setText(patHistory.getValue());
+                            dialogEditText.setText(Html.fromHtml(patHistory.getValue()));
                         else
                             dialogEditText.setText("");
                         textInput.setView(dialogEditText);
