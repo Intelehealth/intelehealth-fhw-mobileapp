@@ -39,7 +39,7 @@ ext {
     supportLibraryVersion = '25.4.0'
     jodaTimeVersion = '2.9.3'
     arcaVersion = '4.9.2'
-    firebaseVersion = '10.2.4'
+    firebaseVersion = '11.0.4'
     cameraviewVersion = '9bbe07ba44'
     permissionDispatcherVersion = '2.3.2'
     debugDbVersion = '1.0.0'

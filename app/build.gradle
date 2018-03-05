@@ -8,8 +8,8 @@ android {
         applicationId "io.intelehealth.client"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 2
-        versionName "B2"
+        versionCode 3
+        versionName "1.1"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled false
         vectorDrawables.useSupportLibrary = true
@@ -33,6 +33,7 @@ android {
 
 
 dependencies {
+    implementation "com.google.firebase:firebase-crash:$rootProject.firebaseVersion"
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
     compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
@@ -70,7 +71,6 @@ dependencies {
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
 
-
     //Used for debugging local SQLite Database.
     debugCompile "com.amitshekhar.android:debug-db:$rootProject.debugDbVersion"
     debugCompile "com.squareup.okhttp3:logging-interceptor:$rootProject.okHttpVersion"
@@ -79,12 +79,12 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     // Espresso dependencies
-    androidTestCompile ('com.android.support.test.espresso:espresso-core:3.0.0',{
+    androidTestCompile('com.android.support.test.espresso:espresso-core:3.0.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     androidTestCompile 'com.android.support.test.espresso:espresso-contrib:3.0.0'
     androidTestCompile 'com.android.support.test.espresso:espresso-intents:3.0.0'
-    androidTestCompile ('com.android.support.test:runner:1.0.0',{
+    androidTestCompile('com.android.support.test:runner:1.0.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     androidTestCompile 'org.hamcrest:hamcrest-library:1.3'
