@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 25
@@ -35,6 +36,11 @@ android {
 dependencies {
     implementation "com.google.firebase:firebase-crash:$rootProject.firebaseVersion"
     compile fileTree(include: ['*.jar'], dir: 'libs')
+
+    compile('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
+        transitive = true
+    }
+    compile "com.google.firebase:firebase-core:$rootProject.firebaseVersion"
 
     compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:design:$rootProject.supportLibraryVersion"
