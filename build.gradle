@@ -3,14 +3,14 @@
 
 buildscript {
     repositories {
+        jcenter()
         maven {
             url 'https://maven.fabric.io/public'
         }
-        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
-        classpath 'com.google.gms:google-services:3.1.0'
+        classpath 'com.google.gms:google-services:3.2.0'
         classpath 'io.fabric.tools:gradle:1.25.1'
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -22,7 +22,9 @@ allprojects {
     repositories {
         jcenter()
         maven { url 'https://jitpack.io' }
-        maven { url "https://maven.google.com" }
+        maven {
+            url 'https://maven.google.com/'
+        }
     }
 }
 
@@ -37,13 +39,13 @@ ext {
     targetSdkVersion = 25
     compileSdkVersion = 26
     buildToolsVersion = '26.0.2'
-    multiDexVersion = '1.0.1'
+    multiDexVersion = '1.0.3'
 
     // App dependencies
     supportLibraryVersion = '25.4.0'
     jodaTimeVersion = '2.9.3'
     arcaVersion = '4.9.2'
-    firebaseVersion = '11.0.4'
+    firebaseVersion = '11.8.0'
     cameraviewVersion = '9bbe07ba44'
     permissionDispatcherVersion = '2.3.2'
     debugDbVersion = '1.0.0'

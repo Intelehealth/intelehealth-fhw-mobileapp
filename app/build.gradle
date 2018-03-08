@@ -12,7 +12,7 @@ android {
         versionCode 3
         versionName "1.1"
         //Change this to true to enable multidex support for Kitkat
-        multiDexEnabled false
+        multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -35,6 +35,7 @@ android {
 
 dependencies {
     implementation "com.google.firebase:firebase-crash:$rootProject.firebaseVersion"
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
     compile('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
@@ -49,7 +50,7 @@ dependencies {
 
     compile "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
     //Uncomment below line to enable multidex support for Kitkat
-    //compile "com.android.support:multidex:$rootProject.multiDexVersion"
+    compile "com.android.support:multidex:$rootProject.multiDexVersion"
     //compile "com.google.firebase:firebase-appindexing:$rootProject.firebaseVersion"
 
     compile "ch.acra:acra:$rootProject.arcaVersion"
@@ -88,8 +89,8 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:3.0.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    androidTestCompile 'com.android.support.test.espresso:espresso-contrib:3.0.0'
-    androidTestCompile 'com.android.support.test.espresso:espresso-intents:3.0.0'
+    androidTestCompile 'com.android.support.test.espresso:espresso-contrib:3.0.1'
+    androidTestCompile 'com.android.support.test.espresso:espresso-intents:3.0.1'
     androidTestCompile('com.android.support.test:runner:1.0.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
