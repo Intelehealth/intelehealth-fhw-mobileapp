@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import io.intelehealth.client.R;
+import io.intelehealth.client.activities.complaint_node_activity.ComplaintNodeActivity;
 import io.intelehealth.client.activities.family_history_activity.FamilyHistoryActivity;
 import io.intelehealth.client.activities.past_medical_history_activity.PastMedicalHistoryActivity;
 import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
@@ -621,7 +622,7 @@ public class VitalsActivity extends AppCompatActivity {
             insertDb(results.getBpdia(), ConceptId.DIASTOLIC_BP);
             insertDb(results.getTemperature(), ConceptId.TEMPERATURE);
             insertDb(results.getSpo2(), ConceptId.SPO2);
-            Intent intent = new Intent(VitalsActivity.this, VisitSummaryActivity.class);
+            Intent intent = new Intent(VitalsActivity.this, ComplaintNodeActivity.class);
 
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);

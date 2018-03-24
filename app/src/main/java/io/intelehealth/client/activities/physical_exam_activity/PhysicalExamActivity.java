@@ -43,7 +43,6 @@ import java.util.Set;
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.custom_expandable_list_adapter.CustomExpandableListAdapter;
 import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
-import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.node.Node;
 import io.intelehealth.client.node.PhysicalExam;
@@ -252,7 +251,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                         startActivity(intent);
                     } else {
                         long obsId = insertDb(physicalString);
-                        Intent intent1 = new Intent(PhysicalExamActivity.this, VitalsActivity.class); // earlier visitsummary
+                        Intent intent1 = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class); // earlier visitsummary
                         intent1.putExtra("patientID", patientID);
                         intent1.putExtra("visitID", visitID);
                         intent1.putExtra("state", state);

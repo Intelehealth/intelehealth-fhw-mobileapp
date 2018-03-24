@@ -51,6 +51,7 @@ import io.intelehealth.client.activities.complaint_node_activity.ComplaintNodeAc
 import io.intelehealth.client.activities.home_activity.HomeActivity;
 import io.intelehealth.client.activities.identification_activity.IdentificationActivity;
 import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
+import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.services.ClientService;
@@ -186,7 +187,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 // Toast.makeText(PatientDetailActivity.this,"PMH: "+phistory,Toast.LENGTH_SHORT).sƒhow();
                 // Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
 
-                Intent intent2 = new Intent(PatientDetailActivity.this, ComplaintNodeActivity.class);
+                Intent intent2 = new Intent(PatientDetailActivity.this, VitalsActivity.class);
                 String fullName = patient.getFirstName() + " " + patient.getLastName();
                 intent2.putExtra("patientID", patientID);
 
@@ -214,8 +215,6 @@ public class PatientDetailActivity extends AppCompatActivity {
                 localdb.close();
                 intent2.putExtra("visitID", visitID);
                 intent2.putExtra("name", fullName);
-
-
                 intent2.putExtra("tag", "new");
                 startActivity(intent2);
             }
