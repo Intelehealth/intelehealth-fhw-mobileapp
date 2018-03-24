@@ -26,8 +26,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.acra.ACRA;
-
 import java.io.IOException;
 import java.util.Calendar;
 
@@ -200,7 +198,7 @@ public class HomeActivity extends AppCompatActivity {
         try {
             throw new NullPointerException();
         } catch (NullPointerException caughtException) {
-            ACRA.getErrorReporter().handleException(caughtException);
+
         }
     }
 

@@ -9,8 +9,8 @@ android {
         applicationId "io.intelehealth.client"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 4
-        versionName "1.1.1"
+        versionCode 5
+        versionName "1.2"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -34,13 +34,10 @@ android {
 
 
 dependencies {
-    implementation "com.google.firebase:firebase-crash:$rootProject.firebaseVersion"
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
-    compile('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
-        transitive = true
-    }
+    compile 'com.crashlytics.sdk.android:crashlytics:2.9.1'
     compile "com.google.firebase:firebase-core:$rootProject.firebaseVersion"
 
     compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
@@ -51,9 +48,7 @@ dependencies {
     compile "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
     //Uncomment below line to enable multidex support for Kitkat
     compile "com.android.support:multidex:$rootProject.multiDexVersion"
-    //compile "com.google.firebase:firebase-appindexing:$rootProject.firebaseVersion"
 
-    compile "ch.acra:acra:$rootProject.arcaVersion"
     compile "joda-time:joda-time:$rootProject.jodaTimeVersion"
 
     compile "com.google.firebase:firebase-messaging:$rootProject.firebaseVersion"

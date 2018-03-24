@@ -27,6 +27,7 @@ import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.webkit.URLUtil;
 import android.widget.AutoCompleteTextView;
@@ -37,6 +38,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.parse.Parse;
@@ -233,6 +235,8 @@ public class SetupActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });*/
+
+
 
     }
 
