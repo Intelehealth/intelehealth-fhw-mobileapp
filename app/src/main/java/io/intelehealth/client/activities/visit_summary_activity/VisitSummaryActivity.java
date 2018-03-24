@@ -108,6 +108,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String identifierNumber;
 
     boolean uploaded = false;
+    boolean downloaded = false;
     boolean dataChanged = false;
     String failedMessage;
 
@@ -405,6 +406,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (visitIDCursor != null) visitIDCursor.close();
             if (visitUUID != null && !visitUUID.isEmpty()) {
                 addDownloadButton();
+
             }
 
         }
@@ -643,37 +645,39 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editVitals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder vitalsDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
-                vitalsDialog.setTitle(getString(R.string.visit_summary_vitals));
-                final LayoutInflater inflater = getLayoutInflater();
-                View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
-                vitalsDialog.setView(convertView);
+                Intent intent1 = new Intent(VisitSummaryActivity.this, VitalsActivity.class);
+                intent1.putExtra("patientID", patientID);
+                intent1.putExtra("visitID", visitID);
+                intent1.putExtra("name", patientName);
+                //   intent.putStringArrayListExtra("exams", physicalExams);
+                intent1.putExtra("tag", "edit");
+                intent1.putExtra("tag", "edit");
+                startActivity(intent1);
+//                final AlertDialog.Builder vitalsDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
+//                vitalsDialog.setTitle(getString(R.string.visit_summary_vitals));
+//                final LayoutInflater inflater = getLayoutInflater();
+//                View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
+//                vitalsDialog.setView(convertView);
+//
+//                final TextView vitalsEditText = (TextView) convertView.findViewById(R.id.textView_entry);
+//                vitalsEditText.setText(R.string.visit_summary_edit_vitals);
+//
+//                vitalsDialog.setPositiveButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//
+//                        dialogInterface.dismiss();
+//                    }
+//                });
+//
+//                vitalsDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        dialogInterface.dismiss();
+//                    }
+//                });
 
-                final TextView vitalsEditText = (TextView) convertView.findViewById(R.id.textView_entry);
-                vitalsEditText.setText(R.string.visit_summary_edit_vitals);
-
-                vitalsDialog.setPositiveButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent1 = new Intent(VisitSummaryActivity.this, VitalsActivity.class);
-                        intent1.putExtra("patientID", patientID);
-                        intent1.putExtra("visitID", visitID);
-                        intent1.putExtra("name", patientName);
-                        //   intent.putStringArrayListExtra("exams", physicalExams);
-                        intent1.putExtra("tag", "edit");
-                        startActivity(intent1);
-                        dialogInterface.dismiss();
-                    }
-                });
-
-                vitalsDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-
-                vitalsDialog.show();
+//                vitalsDialog.show();
             }
         });
 
@@ -686,10 +690,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 famHistDialog.setView(convertView);
 
-                final TextView famHistTest = (TextView) convertView.findViewById(R.id.textView_entry);
+                final TextView famHistText = (TextView) convertView.findViewById(R.id.textView_entry);
                 if (famHistory.getValue() != null)
-                    famHistTest.setText(Html.fromHtml(famHistory.getValue()));
-                famHistTest.setEnabled(false);
+                    famHistText.setText(Html.fromHtml(famHistory.getValue()));
+                famHistText.setEnabled(false);
 
                 famHistDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
                     @Override
@@ -698,7 +702,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
                         if (famHistory.getValue() != null)
-                            dialogEditText.setText(famHistory.getValue());
+                            dialogEditText.setText(Html.fromHtml(famHistory.getValue()));
                         else
                             dialogEditText.setText("");
                         textInput.setView(dialogEditText);
@@ -707,7 +711,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 famHistory.setValue(dialogEditText.getText().toString());
                                 if (famHistory.getValue() != null) {
-                                    famHistTest.setText(Html.fromHtml(famHistory.getValue()));
+                                    famHistText.setText(Html.fromHtml(famHistory.getValue()));
                                     famHistView.setText(Html.fromHtml(famHistory.getValue()));
                                 }
                                 updateDatabase(famHistory.getValue(), ConceptId.RHK_FAMILY_HISTORY_BLURB);
@@ -771,7 +775,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
                         if (complaint.getValue() != null)
-                            dialogEditText.setText(complaint.getValue());
+                            dialogEditText.setText(Html.fromHtml(complaint.getValue()));
                         else
                             dialogEditText.setText("");
                         textInput.setView(dialogEditText);
@@ -843,7 +847,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
                         if (phyExam.getValue() != null)
-                            dialogEditText.setText(phyExam.getValue());
+                            dialogEditText.setText(Html.fromHtml(phyExam.getValue()));
                         else
                             dialogEditText.setText("");
                         textInput.setView(dialogEditText);
@@ -945,7 +949,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
                         if (patHistory.getValue() != null)
-                            dialogEditText.setText(patHistory.getValue());
+                            dialogEditText.setText(Html.fromHtml(patHistory.getValue()));
                         else
                             dialogEditText.setText("");
                         textInput.setView(dialogEditText);
@@ -1786,8 +1790,91 @@ public class VisitSummaryActivity extends AppCompatActivity {
         } else if (check == 200) {
             Log.i(TAG, "handleMessage: 200");
             addDownloadButton();
+
+
+
+
+
+//          <-----  code to end the visit only after doctor sends anything ----->
+
+
+            if(downloaded){
+                String[] columns = {"concept_id"};
+                String orderBy = "visit_id";
+
+
+                //obscursor checks in obs table
+                Cursor obsCursor = db.query("obs",columns,null,null,null,null,orderBy);
+
+                //dbconceptid will store data found in concept_id
+                int dbConceptID = obsCursor.getInt(obsCursor.getColumnIndex("concept_id"));
+
+
+                if(obsCursor.moveToFirst() && obsCursor.getCount()>1 ){
+
+//                    if obsCursor founds something move to next
+                    obsCursor.moveToNext();
+
+                    switch (dbConceptID) {
+                        //case values for each prescription
+                        case ConceptId.TELEMEDICINE_DIAGNOSIS:
+                            Log.i(TAG, "found diagnosis");
+                            break;
+                        case ConceptId.JSV_MEDICATIONS:
+                            Log.i(TAG, "found medications");
+                            break;
+                        case ConceptId.MEDICAL_ADVICE:
+                            Log.i(TAG, "found medical advice");
+                            break;
+                        case ConceptId.ADDITIONAL_COMMENTS:
+                            Log.i(TAG, "found additional comments");
+                            break;
+                        case ConceptId.REQUESTED_TESTS:
+                            Log.i(TAG, "found tests");
+                            break;
+                        default:
+                    }
+
+
+                    //if any obs  found then end the visit
+                    Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
+                    serviceIntent.putExtra("serviceCall", "endVisit");
+                    serviceIntent.putExtra("patientID", patientID);
+                    serviceIntent.putExtra("visitUUID", visitUUID);
+                    serviceIntent.putExtra("name", patientName);
+                    startService(serviceIntent);
+                    Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
+                    startActivity(intent);
+
+
+
+
+
+
+                }
+
+            }
+//                    <-----if obs not found restrict user to end the visit ----->
+            else{
+                downloaded=false;
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                alertDialogBuilder.setMessage("Please download first before attempting to end the visit.");
+                alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+            }
+
         }
+
     }
+
 
     private void addDownloadButton() {
 
@@ -1871,6 +1958,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         }
                     }
                     //  retrieveOpenMRS(view);
+                    downloaded = true;
+
                 }
             });
             //mLayout.addView(downloadButton, mLayout.getChildCount());
