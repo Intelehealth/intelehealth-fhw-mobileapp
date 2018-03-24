@@ -184,6 +184,26 @@
                 android:layout_height="wrap_content">
 
                 <EditText
+                    android:id="@+id/identification_ageInMonths"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/identification_screen_prompt_ageInMonths"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
                     android:id="@+id/identification_phone_number"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -405,7 +425,7 @@
                     <Spinner
                         android:id="@+id/spinner_caste"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
             </android.support.design.widget.TextInputLayout>
 
