@@ -179,6 +179,20 @@ public class ClientService extends IntentService {
                     }
                     break;
                 }
+                case "survey": {
+                    queueSyncStart(queueId);
+                    Log.v(TAG, "Exit Survey uploading");
+                    createNotification("survey", patientName);
+                    String visitID = intent.getStringExtra("visitID");
+                    success = uploadSurvey(patientID, visitID, intent);
+                    if (success) endNotification(patientName, "survey");
+                    else {
+                        errorNotification(patientName, "survey");
+                        queueSyncStop(queueId);
+                    }
+                    break;
+
+                }
                 default:
                     //something
                     break;
@@ -257,6 +271,9 @@ public class ClientService extends IntentService {
                 title = "Visit Data Download";
                 text = String.format("Downloading %s's visit data", patientName);
                 break;
+            case "survey":
+                title = "Exit Survey Upload";
+                text = "Uploading survey data";
         }
 
 
@@ -354,10 +371,11 @@ public class ClientService extends IntentService {
                             if (!responseCode.isEmpty()) {
                                 current_intent.putExtra("status", STATUS_PATIENT_NOT_CREATED);
 
-                            current_intent.putExtra("status", STATUS_PATIENT_NOT_CREATED);
-                            current_intent.putExtra("personResponse", responseCode);
-                            uploadDone = uploadPatientData
-                                    (patientID, responseCode);}
+                                current_intent.putExtra("status", STATUS_PATIENT_NOT_CREATED);
+                                current_intent.putExtra("personResponse", responseCode);
+                                uploadDone = uploadPatientData
+                                        (patientID, responseCode);
+                            }
 
                         } else {
                             current_intent.putExtra("status", STATUS_PERSON_NOT_CREATED);
@@ -1089,8 +1107,8 @@ public class ClientService extends IntentService {
             }
         }
 
-        if(formattedObs.contains("%")){
-            formattedObs = formattedObs.replaceAll("%","");
+        if (formattedObs.contains("%")) {
+            formattedObs = formattedObs.replaceAll("%", "");
         }
 
 
@@ -1212,6 +1230,93 @@ public class ClientService extends IntentService {
             mNotifyManager.notify(mId, mBuilder.build());
             return true;
         }
+    }
+
+    private boolean uploadSurvey(Integer patientID, String visitID, Intent intent){
+        Patient patient = new Patient();
+        String patientSelection = "_id = ?";
+        String[] patientArgs = {String.valueOf(patientID)};
+        String[] oMRSCol = {"openmrs_uuid", "sdw", "occupation"};
+        final Cursor idCursor = db.query("patient", oMRSCol, patientSelection, patientArgs, null, null, null);
+        if (idCursor.moveToFirst()) {
+            do {
+                patient.setOpenmrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_uuid")));
+                patient.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
+                patient.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
+            } while (idCursor.moveToNext());
+        }
+        idCursor.close();
+
+        if (patient.getOpenmrsId() == null || patient.getOpenmrsId().isEmpty()) {
+
+
+            Toast.makeText(this, "Pa", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        String[] columnsToReturn = {"openmrs_visit_uuid", "start_datetime"};
+        String visitIDorderBy = "start_datetime";
+        String visitIDSelection = "_id = ?";
+        String[] visitIDArgs = {visitID};
+        final Cursor visitIDCursor = db.query("visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
+        visitIDCursor.moveToLast();
+        String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("start_datetime"));
+        String visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("openmrs_visit_uuid"));
+        visitIDCursor.close();
+
+        String rating = intent.getStringExtra("rating");
+        String comments = intent.getStringExtra("comments");
+
+        String quote = "\"";
+        String formattedObs = "";
+
+        if (rating != null && !rating.isEmpty()) {
+            formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.RATING + quote + "," +
+                    quote + "value" + quote + ":" + quote + rating + quote + "},";
+        }
+
+        if (comments != null && !comments.isEmpty()) {
+            formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.COMMENTS + quote + "," +
+                    quote + "value" + quote + ":" + quote + comments + quote + "},";
+        }
+
+        String noteString =
+                String.format("{" +
+                                "\"encounterDatetime\":\"%s\"," +
+                                " \"patient\":\"%s\"," +
+                                "\"encounterType\":\"" + UuidDictionary.ENCOUNTER_PATIENT_EXIT_SURVEY + "\"," +
+                                "\"visit\":\"%s\"," +
+                                "\"obs\":[" + formattedObs
+                                + "]," +
+                                "\"encounterProviders\":[{" +
+                                "\"encounterRole\":\"73bbb069-9781-4afc-a9d1-54b6b2270e04\"," +
+                                "\"provider\":\"%s\"" +
+                                "}]," +
+                                "\"location\":\"%s\"}",
+
+                        startDateTime,
+                        patient.getOpenmrsId(),
+                        visitUUID,
+                        provider_uuid,
+                        location_uuid
+                );
+        Log.d(TAG, "Survey Encounter String: " + noteString);
+        WebResponse responseSurvey;
+        responseSurvey = HelperMethods.postCommand("encounter", noteString, getApplicationContext());
+        if (responseSurvey != null && responseSurvey.getResponseCode() != 201) {
+            String newText = "Survey Encounter was not created. Please check your connection.";
+            mBuilder.setContentText(newText).setNumber(++numMessages);
+            mNotifyManager.notify(mId, mBuilder.build());
+            Log.d(TAG, "Survey Encounter posting was unsuccessful");
+            return false;
+        } else if (responseSurvey == null) {
+            Log.d(TAG, "Survey Encounter posting was unsuccessful");
+            return false;
+        }
+        String newText = "Survey uploaded successfully.";
+        mBuilder.setContentText(newText).setNumber(++numMessages);
+        mNotifyManager.notify(mId, mBuilder.build());
+        return true;
     }
 
     /**

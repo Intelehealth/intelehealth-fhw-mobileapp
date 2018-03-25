@@ -27,4 +27,7 @@ public class ConceptId {
     public static final int SON_WIFE_DAUGHTER = 163207;
     public static final int OCCUPATION = 163208;
 
+    public static final int PATIENT_SATISFACTION = 163343;
+    public static final int COMMENTS = 163344;
+
 }

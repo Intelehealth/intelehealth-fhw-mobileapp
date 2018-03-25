@@ -70,6 +70,7 @@ import io.intelehealth.client.activities.complaint_node_activity.ComplaintNodeAc
 import io.intelehealth.client.activities.family_history_activity.FamilyHistoryActivity;
 import io.intelehealth.client.activities.home_activity.HomeActivity;
 import io.intelehealth.client.activities.past_medical_history_activity.PastMedicalHistoryActivity;
+import io.intelehealth.client.activities.patient_exit_survey_activity.PatientSurveyActivity;
 import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity;
 import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
 import io.intelehealth.client.database.DelayedJobQueueProvider;
@@ -287,37 +288,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (selectedExams != null && !selectedExams.isEmpty()) {
                 physicalExams.addAll(selectedExams);
             }
-            /*
-            if (!isPastVisit) {
-                if (intent.hasExtra("exams")) {
-                    physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
-                    SharedPreferences.Editor editor = mSharedPreference.edit();
-                    Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
-                    editor.putStringSet("exam_" + patientID, selectedExams);
-                    editor.commit();
-                } else {
-                    Set<String> selectedExams = mSharedPreference.getStringSet("exam_" + patientID, null);
-                    if (physicalExams == null) physicalExams = new ArrayList<>();
-                    physicalExams.clear();
-                    if (selectedExams != null && !selectedExams.isEmpty()) {
-                        physicalExams.addAll(selectedExams);
-                    } else {
-                        Intent return_intent = new Intent(this, ComplaintNodeActivity.class);
-                        return_intent.putExtra("patientID", patientID);
-                        return_intent.putExtra("visitID", visitID);
-                        return_intent.putExtra("name", patientName);
-                        return_intent.putExtra("tag", intentTag);
-                        startActivity(return_intent);
-                    }
-                }
-
-            }*/
-
-
-//            Log.v(TAG, "Patient ID: " + patientID);
-//            Log.v(TAG, "Visit ID: " + visitID);
-//            Log.v(TAG, "Patient Name: " + patientName);
-//            Log.v(TAG, "Intent Tag: " + intentTag);
         }
 
 
@@ -653,31 +623,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 intent1.putExtra("tag", "edit");
                 intent1.putExtra("tag", "edit");
                 startActivity(intent1);
-//                final AlertDialog.Builder vitalsDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
-//                vitalsDialog.setTitle(getString(R.string.visit_summary_vitals));
-//                final LayoutInflater inflater = getLayoutInflater();
-//                View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
-//                vitalsDialog.setView(convertView);
-//
-//                final TextView vitalsEditText = (TextView) convertView.findViewById(R.id.textView_entry);
-//                vitalsEditText.setText(R.string.visit_summary_edit_vitals);
-//
-//                vitalsDialog.setPositiveButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int i) {
-//
-//                        dialogInterface.dismiss();
-//                    }
-//                });
-//
-//                vitalsDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int i) {
-//                        dialogInterface.dismiss();
-//                    }
-//                });
-
-//                vitalsDialog.show();
             }
         });
 
@@ -1029,51 +974,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (visitIDCursor != null) visitIDCursor.close();
         }
         if (visitUUID != null && !visitUUID.isEmpty()) {
-            Log.d(TAG, "endVisit: uuid ok");
-            String[] DELAYED_JOBS_PROJECTION = new String[]{DelayedJobQueueProvider._ID, DelayedJobQueueProvider.SYNC_STATUS};
-            String SELECTION = DelayedJobQueueProvider.JOB_TYPE + "=? AND " +
-                    DelayedJobQueueProvider.PATIENT_ID + "=? AND " +
-                    DelayedJobQueueProvider.VISIT_ID + "=?";
-            String[] ARGS = new String[]{"endVisit", String.valueOf(patientID), visitID};
-
-            Cursor c = getContentResolver().query(DelayedJobQueueProvider.CONTENT_URI,
-                    DELAYED_JOBS_PROJECTION, SELECTION, ARGS, null);
-
-            if (c != null && c.moveToFirst() && c.getCount() > 0) {
-                int sync_status = c.getInt(c.getColumnIndexOrThrow(DelayedJobQueueProvider.SYNC_STATUS));
-                switch (sync_status) {
-                    case ClientService.STATUS_SYNC_STOPPED: {
-                        Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
-                        serviceIntent.putExtra("serviceCall", "endVisit");
-                        serviceIntent.putExtra("patientID", patientID);
-                        serviceIntent.putExtra("visitUUID", visitUUID);
-                        serviceIntent.putExtra("name", patientName);
-                        startService(serviceIntent);
-                        Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
-                        startActivity(intent);
-                        break;
-                    }
-                    case ClientService.STATUS_SYNC_IN_PROGRESS: {
-                        Toast.makeText(context, getString(R.string.sync_in_progress), Toast.LENGTH_SHORT).show();
-                        break;
-                    }
-                    default:
-                }
-            } else {
-                Log.d(TAG, "endVisit: delayed job first");
-                Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
-                serviceIntent.putExtra("serviceCall", "endVisit");
-                serviceIntent.putExtra("patientID", patientID);
-                serviceIntent.putExtra("visitUUID", visitUUID);
-                serviceIntent.putExtra("name", patientName);
-                startService(serviceIntent);
-                SharedPreferences.Editor editor = context.getSharedPreferences(patientID + "_" + visitID, MODE_PRIVATE).edit();
-                editor.remove("exam_" + patientID + "_" + visitID);
-                editor.commit();
-                Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
-                startActivity(intent);
-            }
-            c.close();
+            Intent intent = new Intent(VisitSummaryActivity.this, PatientSurveyActivity.class);
+            intent.putExtra("patientID", patientID);
+            intent.putExtra("visitID", visitID);
+            intent.putExtra("state", state);
+            intent.putExtra("name", patientName);
+            intent.putExtra("tag", intentTag);
+            //   intent.putStringArrayListExtra("exams", physicalExams);
+            startActivity(intent);
         } else {
 
             Log.d(TAG, "endVisit: null");
@@ -1089,8 +997,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             alertDialog.show();
 
         }
-
-
     }
 
     /**
@@ -1837,19 +1743,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 
                     //if any obs  found then end the visit
-                    Intent serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
-                    serviceIntent.putExtra("serviceCall", "endVisit");
-                    serviceIntent.putExtra("patientID", patientID);
-                    serviceIntent.putExtra("visitUUID", visitUUID);
-                    serviceIntent.putExtra("name", patientName);
-                    startService(serviceIntent);
-                    Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
-                    startActivity(intent);
-
-
-
-
-
+                    endVisit();
 
                 }
 
