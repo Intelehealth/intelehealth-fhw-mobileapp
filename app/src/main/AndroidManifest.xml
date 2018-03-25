@@ -265,7 +265,9 @@
 
         <service
             android:name=".services.UpdateVisitService"
-            android:exported="false"></service>
+            android:exported="false" />
+
+        <activity android:name=".activities.patient_exit_survey_activity.PatientExitSurveyActivity"></activity>
     </application>
 
 </manifest>
