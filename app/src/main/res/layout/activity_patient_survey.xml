@@ -37,7 +37,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:scaleType="centerInside"
+                android:scaleType="fitCenter"
+                android:tint="@color/scale_1"
                 android:src="@drawable/ic_scale_1" />
 
             <ImageButton
@@ -47,7 +48,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:scaleType="centerInside"
+                android:scaleType="fitCenter"
+                android:tint="@color/scale_2"
                 android:src="@drawable/ic_scale_2" />
 
             <ImageButton
@@ -57,7 +59,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:scaleType="centerInside"
+                android:scaleType="fitCenter"
+                android:tint="@color/scale_3"
                 android:src="@drawable/ic_scale_3" />
 
             <ImageButton
@@ -67,7 +70,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:scaleType="centerInside"
+                android:scaleType="fitCenter"
+                android:tint="@color/scale_4"
                 android:src="@drawable/ic_scale_4" />
 
             <ImageButton
@@ -77,7 +81,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:scaleType="centerInside"
+                android:scaleType="fitCenter"
+                android:tint="@color/scale_5"
                 android:src="@drawable/ic_scale_5" />
         </LinearLayout>
 

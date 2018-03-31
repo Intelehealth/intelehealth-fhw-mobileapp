@@ -97,6 +97,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
             ImageButton button = scale.get(i);
             button.setOnClickListener(listener);
         }
+        resetScale();
 
         mSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,8 +125,9 @@ public class PatientSurveyActivity extends AppCompatActivity {
         scale.add(mScaleButton5);
         for (int i = 0; i < scale.size(); i++) {
             ImageButton button = scale.get(i);
-            button.setBackgroundColor(getResources().getColor(R.color.white));
+            button.setBackgroundColor(getResources().getColor(R.color.transparent));
         }
+        rating = "";
     }
 
     private void uploadSurvey() {
