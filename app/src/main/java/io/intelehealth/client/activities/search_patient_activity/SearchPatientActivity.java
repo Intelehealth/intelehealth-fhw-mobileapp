@@ -57,6 +57,11 @@ public class SearchPatientActivity extends AppCompatActivity {
                     SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
             suggestions.saveRecentQuery(query, null);
             doQuery(query);
+        } else {
+            SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
+                    SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
+            suggestions.saveRecentQuery(query, null);
+            firstQuery();
         }
 
         // TODO: Clear Suggestions
@@ -101,6 +106,50 @@ public class SearchPatientActivity extends AppCompatActivity {
 
 
         return true;
+    }
+
+    public void firstQuery() { // called in onCreate()
+        ListView lvItems = (ListView) findViewById(R.id.listview_search);
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        String table = "patient";
+
+
+        final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table +
+                " ORDER BY last_name ASC", null);
+        try {
+            // Setup cursor adapter and attach cursor adapter to the ListView
+            mSearchAdapter = new SearchCursorAdapter(this, searchCursor, 0);
+            if (mSearchAdapter.getCount() < 1) {
+                noneFound(lvItems, query);
+            } else if (searchCursor.moveToFirst()) {
+                lvItems.setAdapter(mSearchAdapter);
+                lvItems.setOnItemClickListener(
+                        new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+                                if (searchCursor.moveToPosition(position)) {
+                                    Integer patientID = searchCursor.getInt(searchCursor.getColumnIndexOrThrow("_id"));
+                                    Log.d(TAG, "" + patientID);
+                                    String patientStatus = "returning";
+                                    Intent intent = new Intent(SearchPatientActivity.this, PatientDetailActivity.class);
+                                    intent.putExtra("patientID", patientID);
+                                    intent.putExtra("status", patientStatus);
+                                    intent.putExtra("tag", "");
+                                    startActivity(intent);
+
+                                }
+                            }
+                        });
+            }
+
+
+        } catch (Exception e) {
+            Log.d("Search Activity", "Exception", e);
+
+        }
+
+
     }
 
     /**
