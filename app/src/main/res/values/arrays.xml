@@ -20,7 +20,16 @@
         <item>United States</item>
     </string-array>
 
-    <string-array name="education">
+    <string-array name="education_or">
+        <item>ଶିକ୍ଷା ଚୟନ</item>
+        <item>ଅଶିକ୍ଷିତ</item>
+        <item>ମୌଳିକ ଶିକ୍ଷା</item>
+        <item>ମାଧ୍ୟମିକ ଶିକ୍ଷା</item>
+        <item>ଉଚ୍ଚ ମାଧ୍ୟମିକ ଶିକ୍ଷା</item>
+        <item>ସ୍ନାତକୋତର ଶିକ୍ଷା</item>
+    </string-array>
+
+    <string-array name="education_en">
         <item>Select Education</item>
         <item>Illiterate</item>
         <item>Primary</item>
@@ -38,8 +47,15 @@
         <item>others</item>
     </string-array>
 
-    <string-array name="economic">
+    <string-array name="economic_en">
         <item>Select Economic Status</item>
+        <item>APL</item>
+        <item>BPL</item>
+    </string-array>
+
+
+    <string-array name="economic_or">
+        <item>ଚୟନ</item>
         <item>APL</item>
         <item>BPL</item>
     </string-array>

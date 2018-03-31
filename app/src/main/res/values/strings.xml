@@ -99,7 +99,7 @@
     <string name="identification_screen_dialog_age">Please enter age in years</string>
     <string name="identification_screen_dialog_error_dob">Error: DOB is set for date after today</string>
     <string name="identification_screen_dialog_error_gender">Error: Gender is not selected</string>
-    <string name="identification_screen_prompt_ageInMonths">AgeInMonths</string>
+    <string name="identification_screen_prompt_ageInMonths">Age In Months</string>
 
     //Active Patients Screen
     <string name="title_activity_active_patient" translatable="false">ActivePatientActivity</string>
@@ -357,7 +357,7 @@
 
     <!-- Patient Exit Survey -->
     <string name="exit_survey_label">How was your experience?</string>
-    <string name="exit_survey_prompt">Enter your comments here...</string>
+    <string name="exit_survey_prompt">Enter your comments here</string>
     <string name="exit_survey_skip">Skip</string>
     <string name="exit_survey_submit">Submit</string>
 

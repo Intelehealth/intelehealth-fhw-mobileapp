@@ -19,6 +19,7 @@ public class UuidDictionary {
     public static final String SPO2 = "5092AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     public static final String RHK_MEDICAL_HISTORY_BLURB = "62bff84b-795a-45ad-aae1-80e7f5163a82";
     public static final String RHK_FAMILY_HISTORY_BLURB = "d63ae965-47fb-40e8-8f08-1f46a8a60b2b";
+    public static final String FOLLOW_UP_VISIT = "e8caffd6-5d22-41c4-8d6a-bc31a44d0c86";
 
     public static final String TELEMEDICINE_DIAGNOSIS = "537bb20d-d09d-4f88-930b-cc45c7d662df";
     public static final String JSV_MEDICATIONS = "c38c0c50-2fd2-4ae3-b7ba-7dd25adca4ca";
@@ -51,8 +52,8 @@ public class UuidDictionary {
     //Visit Types
     public static final String VISIT_TELEMEDICINE = "a86ac96e-2e07-47a7-8e72-8216a1a75bfd";
 
-    //Survey Types //TODO: FIX THESE
-    public static final String RATING = "12345";
-    public static final String COMMENTS = "12346";
+    //Survey Types
+    public static final String RATING = "78284507-fb71-4354-9b34-046ab205e18f";
+    public static final String COMMENTS = "36d207d6-bee7-4b3e-9196-7d053c6eddce";
 
 }
