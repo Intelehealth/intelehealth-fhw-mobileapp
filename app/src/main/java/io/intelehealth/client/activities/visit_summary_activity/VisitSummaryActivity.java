@@ -68,7 +68,6 @@ import io.intelehealth.client.R;
 import io.intelehealth.client.activities.additional_documents_activity.AdditionalDocumentsActivity;
 import io.intelehealth.client.activities.complaint_node_activity.ComplaintNodeActivity;
 import io.intelehealth.client.activities.family_history_activity.FamilyHistoryActivity;
-import io.intelehealth.client.activities.home_activity.HomeActivity;
 import io.intelehealth.client.activities.past_medical_history_activity.PastMedicalHistoryActivity;
 import io.intelehealth.client.activities.patient_exit_survey_activity.PatientSurveyActivity;
 import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity;
@@ -144,6 +143,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String adviceReturned = "";
     String doctorName = "";
     String additionalReturned = "";
+    String followUpDate = "";
 
     ImageButton editVitals;
     ImageButton editComplaint;
@@ -184,12 +184,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
     CardView medicalAdviceCard;
     CardView requestedTestsCard;
     CardView additionalCommentsCard;
+    CardView followUpDateCard;
 
     TextView diagnosisTextView;
     TextView prescriptionTextView;
     TextView medicalAdviceTextView;
     TextView requestedTestsTextView;
     TextView additionalCommentsTextView;
+    TextView followUpDateTextView;
 
     Boolean isPastVisit = false;
     Boolean isReceiverRegistered = false;
@@ -314,12 +316,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
         medicalAdviceCard = (CardView) findViewById(R.id.cardView_medical_advice);
         requestedTestsCard = (CardView) findViewById(R.id.cardView_tests);
         additionalCommentsCard = (CardView) findViewById(R.id.cardView_additional_comments);
+        followUpDateCard = findViewById(R.id.cardView_follow_up_date);
 
         diagnosisTextView = (TextView) findViewById(R.id.textView_content_diagnosis);
         prescriptionTextView = (TextView) findViewById(R.id.textView_content_rx);
         medicalAdviceTextView = (TextView) findViewById(R.id.textView_content_medical_advice);
         requestedTestsTextView = (TextView) findViewById(R.id.textView_content_tests);
         additionalCommentsTextView = (TextView) findViewById(R.id.textView_content_additional_comments);
+        followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
 
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
 
@@ -1208,6 +1212,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 additionalCommentsTextView.setText(additionalReturned);
                 break;
             }
+            case ConceptId.FOLLOW_UP_VISIT: {
+                if (!followUpDate.isEmpty()) {
+                    followUpDate = followUpDate + "," + value;
+                } else {
+                    followUpDate = value;
+                }
+                if (followUpDateCard.getVisibility() != View.VISIBLE) {
+                    followUpDateCard.setVisibility(View.VISIBLE);
+                }
+                followUpDateTextView.setText(followUpDate);
+                break;
+            }
             default:
                 Log.i(TAG, "parseData: " + value);
                 break;
@@ -1339,9 +1355,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
         String comments_web = "";
-        if (adviceReturned != null && !adviceReturned.isEmpty()) {
+        if (additionalReturned != null && !additionalReturned.isEmpty()) {
             comments_web = para_open + Node.big_bullet +
-                    adviceReturned.replaceAll("\n", para_close + para_open + Node.big_bullet) +
+                    additionalReturned.replaceAll("\n", para_close + para_open + Node.big_bullet) +
+                    para_close;
+        }
+
+        String followUp_web = "";
+        if (followUpDate != null && !followUpDate.isEmpty()) {
+            comments_web = para_open + Node.big_bullet +
+                    followUpDate.replaceAll("\n", para_close + para_open + Node.big_bullet) +
                     para_close;
         }
 
@@ -1394,11 +1417,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 "<b><p id=\"advice_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b>" +
                                 "%s" +
                                 "<b><p id=\"comments_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Doctor's Note</p></b>" +
+                                "%s" +
+                                "<b><p id=\"follow_up_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b>" +
                                 "%s"
                         // +"<b><p id=\"doctor_name_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Doctor's Name</p></b>" +
                         //  para_open +"%s"+para_close
                         , heading, heading2, heading3, mPatientName, age, mSdw, mOccupation, address, mPatientOpenMRSID, mDate, mHeight, mWeight,
-                        mBMI, bp, mPulse, mTemp, mSPO2, pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, comments_web/*,doctorName*/);
+                        mBMI, bp, mPulse, mTemp, mSPO2, pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, comments_web, followUp_web/*,doctorName*/);
         webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
 
         // Keep a reference to WebView object until you pass the PrintDocumentAdapter
@@ -1492,7 +1517,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         File addDocDir = new File(filePathAddDoc);
         if (!addDocDir.exists()) {
             addDocDir.mkdirs();
-            Log.v(TAG, "directory ceated " + addDocDir.getAbsolutePath());
+            Log.v(TAG, "directory created " + addDocDir.getAbsolutePath());
         } else {
             File[] files = addDocDir.listFiles();
             List<File> fileList = Arrays.asList(files);
@@ -1577,6 +1602,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     if (!additionalCommentsTextView.getText().toString().trim().isEmpty())
                         body = body + getString(R.string.visit_summary_additional_comments) + ":" +
                                 additionalCommentsTextView.getText().toString() + "\n";
+                }
+                if (followUpDateCard.getVisibility() == View.VISIBLE) {
+                    if (!followUpDateTextView.getText().toString().trim().isEmpty())
+                        body = body + getString(R.string.visit_summary_follow_up_date) + ":" +
+                                followUpDateTextView.getText().toString() + "\n";
                 }
 
 
@@ -1680,6 +1710,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             testsReturned = "";
             adviceReturned = "";
             additionalReturned = "";
+            followUpDate = "";
             String[] columns = {"value", " concept_id"};
             String orderBy = "visit_id";
             String visitSelection = "patient_id = ? AND visit_id = ?";

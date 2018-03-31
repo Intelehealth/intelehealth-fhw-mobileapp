@@ -67,6 +67,7 @@ public class PrescriptionDownloadService extends IntentService {
     String adviceReturned = "";
     String doctorName = "";
     String additionalReturned = "";
+    String followUpDate = "";
 
     LocalRecordsDatabaseHelper mDbHelper;
     SQLiteDatabase db;
@@ -320,6 +321,30 @@ public class PrescriptionDownloadService extends IntentService {
                                     contentValues.put("visit_id", visitID);
                                     contentValues.put("value", additionalReturned);
                                     contentValues.put("concept_id", ConceptId.ADDITIONAL_COMMENTS);
+                                    insertDatabase(contentValues);
+                                }
+                            }
+
+                            if (index.contains("Follow up visit")) {
+                                if (!followUpDate.contains(indexText) && !followUpDate.isEmpty()) {
+                                    followUpDate = followUpDate + "\n" + indexText;
+                                } else {
+                                    followUpDate = indexText;
+                                }
+                                String[] obsArgs = {String.valueOf(ConceptId.FOLLOW_UP_VISIT), visitID};
+                                Cursor cursor = queryDatabase(columns, obsSelection, obsArgs);
+                                if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
+                                    Integer obsID = cursor.getInt(cursor.getColumnIndex("_id"));
+                                    ContentValues contentValues = new ContentValues();
+                                    contentValues.put("value", followUpDate);
+                                    updateDatabase(obsID, contentValues);
+                                    cursor.close();
+                                } else {
+                                    ContentValues contentValues = new ContentValues();
+                                    contentValues.put("patient_id", patientID);
+                                    contentValues.put("visit_id", visitID);
+                                    contentValues.put("value", followUpDate);
+                                    contentValues.put("concept_id", ConceptId.FOLLOW_UP_VISIT);
                                     insertDatabase(contentValues);
                                 }
                             }

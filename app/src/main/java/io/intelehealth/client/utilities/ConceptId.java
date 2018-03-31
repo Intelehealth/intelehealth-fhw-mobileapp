@@ -17,6 +17,7 @@ public class ConceptId {
     public static final int SPO2 = 5092;
     public static final int RHK_MEDICAL_HISTORY_BLURB = 163210;
     public static final int RHK_FAMILY_HISTORY_BLURB = 163211;
+    public static final int FOLLOW_UP_VISIT = 163345;
 
     public static final int TELEMEDICINE_DIAGNOSIS = 163219;
     public static final int JSV_MEDICATIONS = 163202;

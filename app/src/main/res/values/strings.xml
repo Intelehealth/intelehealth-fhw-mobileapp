@@ -182,6 +182,7 @@
     <string name="visit_summary_heading_id">ID</string>
     <string name="visit_summary_button_download">Download from doctor</string>
     <string name="name_button_download" translatable="false">button_download</string>
+    <string name="visit_summary_follow_up_date">Follow Up Date</string>
 
 
     //Diagnostic Tests Screen
