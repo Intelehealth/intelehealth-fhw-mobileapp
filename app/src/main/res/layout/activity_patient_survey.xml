@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="io.intelehealth.client.activities.patient_exit_survey_activity.PatientSurveyActivity">
+    tools:context="io.intelehealth.client.activities.patient_survey_activity.PatientSurveyActivity">
 
 
     <LinearLayout
@@ -38,7 +38,7 @@
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:scaleType="centerInside"
-                android:src="@drawable/scale_1" />
+                android:src="@drawable/ic_scale_1" />
 
             <ImageButton
                 android:id="@+id/button_scale_2"
@@ -48,7 +48,7 @@
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:scaleType="centerInside"
-                android:src="@drawable/scale_2" />
+                android:src="@drawable/ic_scale_2" />
 
             <ImageButton
                 android:id="@+id/button_scale_3"
@@ -58,7 +58,7 @@
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:scaleType="centerInside"
-                android:src="@drawable/scale_3" />
+                android:src="@drawable/ic_scale_3" />
 
             <ImageButton
                 android:id="@+id/button_scale_4"
@@ -68,7 +68,7 @@
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:scaleType="centerInside"
-                android:src="@drawable/scale_4" />
+                android:src="@drawable/ic_scale_4" />
 
             <ImageButton
                 android:id="@+id/button_scale_5"
@@ -78,7 +78,7 @@
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:scaleType="centerInside"
-                android:src="@drawable/scale_5" />
+                android:src="@drawable/ic_scale_5" />
         </LinearLayout>
 
         <android.support.design.widget.TextInputLayout

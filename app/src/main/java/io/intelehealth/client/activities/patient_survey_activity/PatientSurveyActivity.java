@@ -1,14 +1,13 @@
-package io.intelehealth.client.activities.patient_exit_survey_activity;
+package io.intelehealth.client.activities.patient_survey_activity;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,13 +15,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.home_activity.HomeActivity;
 import io.intelehealth.client.database.DelayedJobQueueProvider;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
-import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.services.ClientService;
-import io.intelehealth.client.services.UpdateVisitService;
 
 public class PatientSurveyActivity extends AppCompatActivity {
 
@@ -82,15 +81,22 @@ public class PatientSurveyActivity extends AppCompatActivity {
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                resetScale();
                 rating = String.valueOf(v.getTag());
+                v.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             }
         };
 
-        mScaleButton1.setOnClickListener(listener);
-        mScaleButton2.setOnClickListener(listener);
-        mScaleButton3.setOnClickListener(listener);
-        mScaleButton4.setOnClickListener(listener);
-        mScaleButton5.setOnClickListener(listener);
+        ArrayList<ImageButton> scale = new ArrayList<>();
+        scale.add(mScaleButton1);
+        scale.add(mScaleButton2);
+        scale.add(mScaleButton3);
+        scale.add(mScaleButton4);
+        scale.add(mScaleButton5);
+        for (int i = 0; i < scale.size(); i++) {
+            ImageButton button = scale.get(i);
+            button.setOnClickListener(listener);
+        }
 
         mSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,6 +113,19 @@ public class PatientSurveyActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void resetScale(){
+        ArrayList<ImageButton> scale = new ArrayList<>();
+        scale.add(mScaleButton1);
+        scale.add(mScaleButton2);
+        scale.add(mScaleButton3);
+        scale.add(mScaleButton4);
+        scale.add(mScaleButton5);
+        for (int i = 0; i < scale.size(); i++) {
+            ImageButton button = scale.get(i);
+            button.setBackgroundColor(getResources().getColor(R.color.white));
+        }
     }
 
     private void uploadSurvey() {

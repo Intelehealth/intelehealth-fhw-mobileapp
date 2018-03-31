@@ -69,7 +69,7 @@ import io.intelehealth.client.activities.additional_documents_activity.Additiona
 import io.intelehealth.client.activities.complaint_node_activity.ComplaintNodeActivity;
 import io.intelehealth.client.activities.family_history_activity.FamilyHistoryActivity;
 import io.intelehealth.client.activities.past_medical_history_activity.PastMedicalHistoryActivity;
-import io.intelehealth.client.activities.patient_exit_survey_activity.PatientSurveyActivity;
+import io.intelehealth.client.activities.patient_survey_activity.PatientSurveyActivity;
 import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity;
 import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
 import io.intelehealth.client.database.DelayedJobQueueProvider;
