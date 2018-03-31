@@ -24,8 +24,8 @@
             android:orderInCategory="125" />
 
         <item
-            android:id="@+id/updateMindmapsOption"
-            android:title="Update Mindmaps"
+            android:id="@+id/updateProtocolsOption"
+            android:title="Update Protocols"
             android:orderInCategory="150" />
 
         <item

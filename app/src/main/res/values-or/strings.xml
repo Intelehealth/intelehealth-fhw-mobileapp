@@ -33,10 +33,10 @@
     <string name="complaint_dialog_title">ଭିଯୋଗ ଗୁଡ଼ିକ</string>
     <string name="complaint_required">"ଭିଯୋଗ ଚୟନ ହେବା ଉଚିତ୍ "</string>
     <string name="device_id">"ଡ଼ିଭାଇସ୍ ଅାଇଡ଼ "</string>
-    <string name="downloading_mindmaps">ମାଇଣ୍ଡ ମ୍ଯାପ୍ ଡ଼ାଉନ ଲୋଡ଼ କରିବା</string>
+    <string name="downloading_protocols">ମାଇଣ୍ଡ ମ୍ଯାପ୍ ଡ଼ାଉନ ଲୋଡ଼ କରିବା</string>
     <string name="downloading">ଡ଼ାଉନ ଲୋଡ଼ିଙ୍ଗ</string>
     <string name="enter_license_key">"ଲାଇସେନ୍ସ ନମ୍ବର ନେବା "</string>
-    <string name="error_downloading_mindmaps">ଭୂଲ ମାଇଣ୍ଡ ମ୍ଯାପ୍ ଡ଼ାଉନ ଲୋର୍ଡ଼ କରିବା</string>
+    <string name="error_downloading_protocols">ଭୂଲ ମାଇଣ୍ଡ ମ୍ଯାପ୍ ଡ଼ାଉନ ଲୋର୍ଡ଼ କରିବା</string>
     <string name="error_field_required">ଏହି କ୍ଷେତ୍ର ଅାବଶ୍ଯକ ଅଟେ (ଏହି କ୍ଷେତ୍ରର ଅାବଶ୍ଯତା ଅଛି)</string>
     <string name="error_incorrect_password">ଏହି ପାସଓ୍ୱାର୍ଡ଼ଟି ଭୁଲ ଅଟେ</string>
     <string name="error_invalid_password">"ଏହି ପାସଓ୍ୱାର୍ଡ଼ଟି ବହୁତ ଛୋଟ ଅଟେ "</string>

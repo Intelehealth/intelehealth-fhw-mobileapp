@@ -30,11 +30,11 @@ import io.intelehealth.client.utilities.HelperMethods;
  * Github : @dbarretto
  */
 
-public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
+public class UpdateProtocolsTask extends AsyncTask<String, Void, String> {
     String FILENAME, COLLECTION_NAME, FILE_LIST;
     private static ProgressDialog progress;
 
-    private static final String TAG = UpdateMindmapsTask.class.getSimpleName();
+    private static final String TAG = UpdateProtocolsTask.class.getSimpleName();
 
     WeakReference<Activity> mWeakActivity;
     Activity activity;
@@ -44,12 +44,12 @@ public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
     public File base_dir;
     public String[] FILES;
 
-    public UpdateMindmapsTask(Activity activity) {
+    public UpdateProtocolsTask(Activity activity) {
         this.mWeakActivity = new WeakReference<>(activity);
         this.activity = activity;
     }
 
-    public UpdateMindmapsTask(Activity activity, File base_dir, boolean isLastFile) {
+    public UpdateProtocolsTask(Activity activity, File base_dir, boolean isLastFile) {
         this.mWeakActivity = new WeakReference<>(activity);
         this.activity = activity;
         this.base_dir = base_dir;
@@ -66,7 +66,7 @@ public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
         if ((mWeakActivity.get() != null && !mWeakActivity.get().isFinishing())
                 && progress != null && !progress.isShowing()) {
             progress.setTitle(activity.getString(R.string.please_wait_progress));
-            progress.setMessage(activity.getString(R.string.downloading_mindmaps));
+            progress.setMessage(activity.getString(R.string.downloading_protocols));
             progress.setCanceledOnTouchOutside(false);
             try {
                 progress.show();
@@ -119,7 +119,7 @@ public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
 
         if ((mWeakActivity.get() != null && !mWeakActivity.get().isFinishing())) {
             if (response == null) {
-                Toast.makeText(activity, activity.getString(R.string.error_downloading_mindmaps), Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, activity.getString(R.string.error_downloading_protocols), Toast.LENGTH_SHORT).show();
                 return;
             }
         }
@@ -234,7 +234,7 @@ public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
                         .replaceAll("\\(", "")
                         .replaceAll("\\)", "");
                 Log.i(TAG, "parts: " + parts[0]);
-                new UpdateMindmapsTask(activity, base_dir, true).execute(file, parts[0], null);
+                new UpdateProtocolsTask(activity, base_dir, true).execute(file, parts[0], null);
             } else {
                 parts[0] = parts[0].replaceAll("\\s+", "")
                         .replaceAll("&", "")
@@ -243,7 +243,7 @@ public class UpdateMindmapsTask extends AsyncTask<String, Void, String> {
                         .replaceAll("\\(", "")
                         .replaceAll("\\)", "");
                 Log.i(TAG, "parts: " + parts[0]);
-                new UpdateMindmapsTask(activity, base_dir, false).execute(file, parts[0], null);
+                new UpdateProtocolsTask(activity, base_dir, false).execute(file, parts[0], null);
             }
         }
     }

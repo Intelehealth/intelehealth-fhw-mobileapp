@@ -291,9 +291,9 @@
     <string name="setup_download_mindmap">Download Mind-Maps</string>
 
     <string name="please_wait_progress">Please Wait</string>
-    <string name="downloading_mindmaps">Downloading mindmaps</string>
+    <string name="downloading_protocols">Downloading protocols</string>
     <string name="logging_in">Logging in</string>
-    <string name="error_downloading_mindmaps">Error Downloading Mind Maps</string>
+    <string name="error_downloading_protocols">Error Downloading Mind Maps</string>
 
     //Sync strings
     <string name="sync_stopped">Stopped</string>

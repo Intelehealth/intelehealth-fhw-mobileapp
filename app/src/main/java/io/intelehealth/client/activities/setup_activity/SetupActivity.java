@@ -27,7 +27,6 @@ import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.webkit.URLUtil;
 import android.widget.AutoCompleteTextView;
@@ -38,7 +37,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.parse.Parse;
@@ -68,7 +66,7 @@ import io.intelehealth.client.api.retrofit.ServiceGenerator;
 import io.intelehealth.client.models.Location;
 import io.intelehealth.client.models.Results;
 import io.intelehealth.client.objects.WebResponse;
-import io.intelehealth.client.services.DownloadMindmapsTask;
+import io.intelehealth.client.services.DownloadProtocolsTask;
 import io.intelehealth.client.utilities.HelperMethods;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -658,10 +656,10 @@ public class SetupActivity extends AppCompatActivity {
                                         //DOWNLOAD MIND MAP FILE LIST
                                         //upnew getJSONFile().execute(null, "AllFiles", "TRUE");
 
-                                        // UpdateMindmapsTask updateMindmapsTask = new UpdateMindmapsTask(SetupActivity.this);
-                                        // updateMindmapsTask.execute(null, "AllFiles", "TRUE");
-                                        DownloadMindmapsTask downloadMindmapsTask = new DownloadMindmapsTask(SetupActivity.this);
-                                        downloadMindmapsTask.execute(key);
+                                        // UpdateProtocolsTask updateProtocolsTask = new UpdateProtocolsTask(SetupActivity.this);
+                                        // updateProtocolsTask.execute(null, "AllFiles", "TRUE");
+                                        DownloadProtocolsTask downloadProtocolsTask = new DownloadProtocolsTask(SetupActivity.this);
+                                        downloadProtocolsTask.execute(key);
 
                                     }
                                 }

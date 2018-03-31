@@ -36,10 +36,10 @@ import io.intelehealth.client.utilities.HelperMethods;
  * Github : @dbarretto
  */
 
-public class DownloadMindmapsTask extends AsyncTask<String, String, String> {
+public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
     private ProgressDialog mProgress;
 
-    private static final String TAG = DownloadMindmapsTask.class.getSimpleName();
+    private static final String TAG = DownloadProtocolsTask.class.getSimpleName();
 
 
     private String parse_app_id = "ih_mm_server";
@@ -47,7 +47,7 @@ public class DownloadMindmapsTask extends AsyncTask<String, String, String> {
     WeakReference<Activity> mWeakActivity;
     Activity activity;
 
-    public DownloadMindmapsTask(Activity activity) {
+    public DownloadProtocolsTask(Activity activity) {
         this.mWeakActivity = new WeakReference<>(activity);
         this.activity = activity;
     }
@@ -175,7 +175,7 @@ public class DownloadMindmapsTask extends AsyncTask<String, String, String> {
             if (engines_dir.exists()) deleteFolder(engines_dir);
             if (sharedPreferences.contains("licensekey"))
                 sharedPreferences.edit().remove("licensekey").commit();
-            Toast.makeText(IntelehealthApplication.getAppContext(), "Error downloading mindmaps", Toast.LENGTH_LONG).show();
+            Toast.makeText(IntelehealthApplication.getAppContext(), "Error downloading protocols", Toast.LENGTH_LONG).show();
         }
         if (mProgress != null && mProgress.isShowing()) {
             try {
@@ -234,7 +234,7 @@ public class DownloadMindmapsTask extends AsyncTask<String, String, String> {
         HttpURLConnection urlConnection = null;
         try {
             publishProgress("progress", "Downloading Mindmap List");
-            //Download List of Mindmaps Available
+            //Download List of Protocols Available
             String servStr = HelperMethods.MIND_MAP_SERVER_URL + "functions/downloadMindMapList";
             URL url = new URL(servStr);
             Log.i("GetMMList", servStr);
@@ -311,7 +311,7 @@ public class DownloadMindmapsTask extends AsyncTask<String, String, String> {
         HttpURLConnection urlConnection = null;
         try {
             publishProgress("progress", "Downloading Mindmap " + mindmap.name);
-            //Download List of Mindmaps Available
+            //Download List of Protocols Available
             String servStr = HelperMethods.MIND_MAP_SERVER_URL + "functions/downloadMindMap";
             URL url = new URL(servStr);
             Log.i("GetMM", servStr);
@@ -348,7 +348,7 @@ public class DownloadMindmapsTask extends AsyncTask<String, String, String> {
 
             } else {
                 if ((mWeakActivity.get() != null && !mWeakActivity.get().isFinishing())) {
-                    Toast.makeText(IntelehealthApplication.getAppContext(), activity.getString(R.string.error_downloading_mindmaps),
+                    Toast.makeText(IntelehealthApplication.getAppContext(), activity.getString(R.string.error_downloading_protocols),
                             Toast.LENGTH_LONG).show();
                 }
             }

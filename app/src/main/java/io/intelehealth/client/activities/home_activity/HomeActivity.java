@@ -33,7 +33,7 @@ import io.intelehealth.client.R;
 import io.intelehealth.client.activities.login_activity.LoginActivity;
 import io.intelehealth.client.activities.login_activity.OfflineLogin;
 import io.intelehealth.client.activities.setting_activity.SettingsActivity;
-import io.intelehealth.client.services.DownloadMindmapsTask;
+import io.intelehealth.client.services.DownloadProtocolsTask;
 
 
 /**
@@ -121,13 +121,13 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.settingsOption:
                 settings();
                 return true;
-            case R.id.updateMindmapsOption: {
+            case R.id.updateProtocolsOption: {
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 if (sharedPreferences.contains("licensekey")) {
                     String license = sharedPreferences.getString("licensekey", null);
                     if (license != null) {
-                        DownloadMindmapsTask downloadMindmapsTask = new DownloadMindmapsTask(this);
-                        downloadMindmapsTask.execute(license);
+                        DownloadProtocolsTask downloadProtocolsTask = new DownloadProtocolsTask(this);
+                        downloadProtocolsTask.execute(license);
                     } else {
                         Toast.makeText(this, "License invalid", Toast.LENGTH_SHORT).show();
                     }
@@ -146,8 +146,8 @@ public class HomeActivity extends AppCompatActivity {
                                     EditText text = (EditText) d.findViewById(R.id.licensekey);
                                     String key = text.getText().toString();
                                     if (key != null && !key.trim().isEmpty()) {
-                                        DownloadMindmapsTask downloadMindmapsTask = new DownloadMindmapsTask(HomeActivity.this);
-                                        downloadMindmapsTask.execute(key);
+                                        DownloadProtocolsTask downloadProtocolsTask = new DownloadProtocolsTask(HomeActivity.this);
+                                        downloadProtocolsTask.execute(key);
                                     }
                                 }
                             })
