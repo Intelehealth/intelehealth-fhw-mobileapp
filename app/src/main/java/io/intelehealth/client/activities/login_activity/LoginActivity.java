@@ -39,6 +39,10 @@ import com.firebase.jobdispatcher.Trigger;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,8 +54,10 @@ import io.fabric.sdk.android.Fabric;
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.home_activity.HomeActivity;
 import io.intelehealth.client.activities.setting_activity.SettingsActivity;
+import io.intelehealth.client.activities.setup_activity.SetupActivity;
 import io.intelehealth.client.objects.WebResponse;
 import io.intelehealth.client.services.sync.JobDispatchService;
+import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.utilities.NetworkConnection;
 
 /**
@@ -286,15 +292,12 @@ public class LoginActivity extends AppCompatActivity {
                 int responseCode = connection.getResponseCode();
                 loginAttempt.setResponseCode(responseCode);
 
-                Log.d(LOG_TAG, "GET URL: " + url);
-                Log.d(LOG_TAG, "Response Code from Server: " + String.valueOf(responseCode));
-
                 // Read the input stream into a String
                 InputStream inputStream = connection.getInputStream();
                 StringBuffer buffer = new StringBuffer();
                 if (inputStream == null) {
                     // Do Nothing.
-                    return null;
+                    return false;
                 }
                 reader = new BufferedReader(new InputStreamReader(inputStream));
 
@@ -323,12 +326,53 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     JsonObject jsonObject = new JsonParser().parse(loginAttempt.getResponseString()).getAsJsonObject();
                     if (jsonObject.get("authenticated").getAsBoolean()) {
+
+                        JsonObject userObject = jsonObject.get("user").getAsJsonObject();
+                        JsonObject personObject = userObject.get("person").getAsJsonObject();
+
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("sessionid", jsonObject.get("sessionId").getAsString());
+                        editor.putString("creatorid", userObject.get("uuid").getAsString());
+                        editor.putString("personid", personObject.get("uuid").getAsString());
+                        editor.putString("chwname", personObject.get("display").getAsString());
                         editor.commit();
 
-                        OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
-                        return true;
+                        String queryString = "?user=" + userObject.get("uuid").getAsString();
+                        WebResponse responseProvider;
+
+                        responseProvider = HelperMethods.getCommand(BASE_URL + "provider", queryString, LoginActivity.this, USERNAME, PASSWORD);
+
+                        if (responseProvider != null && responseProvider.getResponseCode() == 200) {
+                            String provider_uuid = "";
+
+                            JSONArray resultsArray = null;
+
+                            try {
+                                JSONObject JSONResponse = new JSONObject(responseProvider.getResponseString());
+                                resultsArray = JSONResponse.getJSONArray("results");
+
+                                if (resultsArray.length() != 0) {
+                                    for (int i = 0; i < resultsArray.length(); i++) {
+                                        JSONObject checking = resultsArray.getJSONObject(i);
+                                        provider_uuid = checking.getString("uuid");
+                                        editor.putString("providerid", provider_uuid);
+                                        editor.commit();
+                                    }
+
+                                    OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
+                                    return true;
+
+                                }
+                                return false;
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                return false;
+                            }
+
+                        }
+
+                        return false;
+
                     } else {
                         return false;
                     }

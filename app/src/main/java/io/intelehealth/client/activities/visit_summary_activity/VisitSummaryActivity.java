@@ -625,7 +625,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 intent1.putExtra("name", patientName);
                 //   intent.putStringArrayListExtra("exams", physicalExams);
                 intent1.putExtra("tag", "edit");
-                intent1.putExtra("tag", "edit");
                 startActivity(intent1);
             }
         });

@@ -406,19 +406,13 @@ public class SetupActivity extends AppCompatActivity {
 
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
-
                 connection.setRequestProperty("Authorization", "Basic " + encoded);
                 connection.setRequestMethod("GET");
                 connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
                 connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
-                Log.d(TAG, "GET URL: " + url);
-                Log.i(TAG, connection.getRequestProperties().toString());
 
                 int responseCode = connection.getResponseCode();
                 loginAttempt.setResponseCode(responseCode);
-
-                Log.d(TAG, "GET URL: " + url);
-                Log.d(TAG, "Response Code from Server: " + connection.getResponseCode());
 
                 // Read the input stream into a String
                 InputStream inputStream = connection.getInputStream();
@@ -500,6 +494,9 @@ public class SetupActivity extends AppCompatActivity {
                         }
 
                         return 201;
+
+
+
                     }
                 }
             } catch (UnknownHostException e) {
