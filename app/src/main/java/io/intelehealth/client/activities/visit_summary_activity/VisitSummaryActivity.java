@@ -983,14 +983,33 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (visitIDCursor != null) visitIDCursor.close();
         }
         if (visitUUID != null && !visitUUID.isEmpty()) {
-            Intent intent = new Intent(VisitSummaryActivity.this, PatientSurveyActivity.class);
-            intent.putExtra("patientID", patientID);
-            intent.putExtra("visitID", visitID);
-            intent.putExtra("state", state);
-            intent.putExtra("name", patientName);
-            intent.putExtra("tag", intentTag);
-            //   intent.putStringArrayListExtra("exams", physicalExams);
-            startActivity(intent);
+            if (followUpDate != null && !followUpDate.isEmpty()){
+                AlertDialog.Builder followUpAlert = new AlertDialog.Builder(this);
+                followUpAlert.setMessage("Please remind the patient of their follow up date: " + followUpDate);
+                followUpAlert.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(VisitSummaryActivity.this, PatientSurveyActivity.class);
+                        intent.putExtra("patientID", patientID);
+                        intent.putExtra("visitID", visitID);
+                        intent.putExtra("state", state);
+                        intent.putExtra("name", patientName);
+                        intent.putExtra("tag", intentTag);
+                        //   intent.putStringArrayListExtra("exams", physicalExams);
+                        startActivity(intent);
+                    }
+                });
+                followUpAlert.show();
+            } else {
+                Intent intent = new Intent(VisitSummaryActivity.this, PatientSurveyActivity.class);
+                intent.putExtra("patientID", patientID);
+                intent.putExtra("visitID", visitID);
+                intent.putExtra("state", state);
+                intent.putExtra("name", patientName);
+                intent.putExtra("tag", intentTag);
+                //   intent.putStringArrayListExtra("exams", physicalExams);
+                startActivity(intent);
+            }
         } else {
 
             Log.d(TAG, "endVisit: null");
