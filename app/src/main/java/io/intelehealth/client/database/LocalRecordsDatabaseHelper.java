@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "localRecords.db";
     public static final String CREATE_PATIENT = "CREATE TABLE IF NOT EXISTS patient(" +
             "_id integer PRIMARY KEY," +
@@ -70,12 +70,12 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             "patient_id integer," +
             "visit_id integer(10) NOT NULL," +
             "openmrs_visit_uuid TEXT," +
-            "encounter_type TEXT" +
+            "encounter_type TEXT," +
             "encounter_provider TEXT" +
             ")";
 
 
-    public static final String CREATE_USER = "CREATE TABLE IF NOT EXISTS user_provider (" +
+    public static final String CREATE_USER = "CREATE TABLE IF NOT EXISTS providers (" +
             "_id integer PRIMARY KEY," +
             "openmrs_user_uuid integer(10)," +
             "name varchar(50)" +

@@ -161,7 +161,8 @@ public class PrescriptionDownloadService extends IntentService {
                             JSONObject JSONResponse = new JSONObject(responseVisit.getResponseString());
                             responseObj = new JSONObject(obsResponse.get(i).getResponseString());
                             obsArray = responseObj.getJSONArray("obs");
-                            providersArray = JSONResponse.getJSONArray("encounterProviders");
+                            Log.d(TAG, "JSON Response: " + responseObj.toString());
+                            providersArray = responseObj.getJSONArray("encounterProviders");
 
 
                             JSONObject providerObj = providersArray.getJSONObject(0);
@@ -170,6 +171,8 @@ public class PrescriptionDownloadService extends IntentService {
                             providerName = providerSplit[0];
                             doctorName = providerName;
                             providerUUID = providerObj.getString("uuid");
+                            Log.d(TAG, "Doctor Name: " + doctorName);
+                            Log.d(TAG, "provider UUID: " + providerUUID);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -178,13 +181,15 @@ public class PrescriptionDownloadService extends IntentService {
                         String[] providerCols = {"openmrs_user_uuid"};
                         String providerSelection = "openmrs_user_uuid = ?";
                         String[] providerArgs = {providerUUID};
-                        Cursor providerCursor = db.query("user_provider", providerCols, providerSelection, providerArgs, null, null, null);
+                        Cursor providerCursor = db.query("providers", providerCols, providerSelection, providerArgs, null, null, null);
+                        Log.d("provider UUID", providerUUID);
+                        Log.d("doctor name", doctorName);
 
                         if (!(providerCursor != null && providerCursor.getCount() > 0 && providerCursor.moveToFirst())) {
                             ContentValues contentProvider = new ContentValues();
                             contentProvider.put("openmrs_user_uuid", providerUUID);
                             contentProvider.put("name", doctorName);
-                            db.insert("user_provider", null, contentProvider);
+                            db.insert("providers", null, contentProvider);
                         }
 
                         //Log.d(TAG, obsArray.toString());

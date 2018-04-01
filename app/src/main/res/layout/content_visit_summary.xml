@@ -834,7 +834,9 @@
             card_view:cardUseCompatPadding="true"
             card_view:contentPadding="@dimen/padding_card">
 
-            <RelativeLayout
+            <LinearLayout
+                android:animateLayoutChanges="true"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -872,7 +874,7 @@
                     android:text=""
                     android:textSize="18sp" />
 
-            </RelativeLayout>
+            </LinearLayout>
 
         </android.support.v7.widget.CardView>
 

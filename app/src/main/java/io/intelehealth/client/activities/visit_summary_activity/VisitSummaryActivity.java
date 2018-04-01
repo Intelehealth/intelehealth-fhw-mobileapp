@@ -1258,7 +1258,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String[] newCol = {"name"};
         selection = "openmrs_user_uuid = ?";
         String[] newArg = {providerUUID};
-        cursor = db.query("user_provider", newCol, selection, newArg, null, null, null);
+        cursor = db.query("providers", newCol, selection, newArg, null, null, null);
         if (cursor.moveToFirst()) {
             dbDoctorName = cursor.getString(cursor.getColumnIndex("name"));
         }
