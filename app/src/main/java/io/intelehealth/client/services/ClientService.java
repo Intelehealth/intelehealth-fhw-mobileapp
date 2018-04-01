@@ -982,11 +982,11 @@ public class ClientService extends IntentService {
 
                 String providers = "";
 
-                for (int i = 0; i > encounterProviders.length(); i++) {
+                for (int i = 0; i < encounterProviders.length(); i++) {
                     if (providers.trim().isEmpty()) {
                         providers = encounterProviders.getJSONObject(i).getString("display");
                     } else {
-                        providers = providers + "," + encounterProviders.getJSONObject(i).getString("display");
+                        providers = providers + ", " + encounterProviders.getJSONObject(i).getString("display");
                     }
                 }
 
@@ -1322,12 +1322,12 @@ public class ClientService extends IntentService {
     /**
      * Ends Patient visit session.
      *
-     * @param patientIDs     Unique patient Id
+     * @param patientID     Unique patient Id
      * @param visitUUID      visit UUID
      * @param current_intent this intent
      * @return boolean value representing success or failure.
      */
-    private boolean endVisit(Integer patientIDs, String visitUUID, Intent current_intent) {
+    private boolean endVisit(Integer patientID, String visitUUID, Intent current_intent) {
 
         Log.d(TAG, "endVisit: ");
 

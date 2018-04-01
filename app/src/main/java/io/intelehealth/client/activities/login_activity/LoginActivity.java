@@ -333,7 +333,7 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("sessionid", jsonObject.get("sessionId").getAsString());
                         editor.putString("creatorid", userObject.get("uuid").getAsString());
-                        editor.putString("personid", personObject.get("uuid").getAsString());
+                        editor.putString("providerid", personObject.get("uuid").getAsString());
                         editor.putString("chwname", personObject.get("display").getAsString());
                         editor.commit();
 

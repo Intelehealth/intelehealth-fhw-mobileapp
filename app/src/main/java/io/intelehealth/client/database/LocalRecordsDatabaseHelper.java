@@ -77,20 +77,8 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
 
     public static final String CREATE_USER = "CREATE TABLE IF NOT EXISTS user_provider (" +
             "_id integer PRIMARY KEY," +
-            "openmrs_provider_id integer(10)," +
-            "openmrs_user_id integer(10)," +
-            "openmrs_role varchar(50)," +
-            "first_name varchar(50) NOT NULL," +
-            "middle_name varchar(50)," +
-            "last_name varchar(50)," +
-            "username varchar(50) NOT NULL," +
-            "password varchar(128) NOT NULL," +
-            "secret_question varchar(255) NOT NULL," +
-            "secret_answer varchar(255) NOT NULL," +
-            "date_created TEXT NOT NULL," +
-            "creator TEXT NOT NULL," +
-            "date_changed TEXT NOT NULL," +
-            "changed_by integer(10) NOT NULL" +
+            "openmrs_user_uuid integer(10)," +
+            "name varchar(50)" +
             ")";
 
     public static final String CREATE_LOCATION = "CREATE TABLE location_details (" +

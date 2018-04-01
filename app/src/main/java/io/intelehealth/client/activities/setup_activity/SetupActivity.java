@@ -453,7 +453,7 @@ public class SetupActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("sessionid", responseObject.get("sessionId").getAsString());
                         editor.putString("creatorid", userObject.get("uuid").getAsString());
-                        editor.putString("personid", personObject.get("uuid").getAsString());
+                        editor.putString("providerid", personObject.get("uuid").getAsString());
                         editor.putString("chwname", personObject.get("display").getAsString());
                         editor.commit();
 

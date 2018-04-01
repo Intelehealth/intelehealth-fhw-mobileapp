@@ -838,7 +838,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <!--<TextView
+                <TextView
                     android:id="@+id/title_doctor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -852,8 +852,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/title_doctor"
                     android:paddingTop="@dimen/padding_card_title_text"
-                    android:text="Dr. T.M"
-                    android:textSize="18sp" />-->
+                    android:text=""
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/title_health_worker"

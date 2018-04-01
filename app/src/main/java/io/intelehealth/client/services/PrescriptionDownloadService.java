@@ -61,6 +61,8 @@ public class PrescriptionDownloadService extends IntentService {
     Integer patientID;
     String visitID;
     String visitUUID;
+    String providerUUID;
+
     String diagnosisReturned = "";
     String rxReturned = "";
     String testsReturned = "";
@@ -114,7 +116,6 @@ public class PrescriptionDownloadService extends IntentService {
                 try {
                     JSONObject JSONResponse = new JSONObject(responseVisit.getResponseString());
                     resultsArray = JSONResponse.getJSONArray("encounters");
-
                     String searchString = "Visit Note";
 
                     if (resultsArray.length() != 0) {
@@ -157,34 +158,33 @@ public class PrescriptionDownloadService extends IntentService {
                         //Log.d(TAG, obsResponse.get(i).getResponseString());
 
                         try {
+                            JSONObject JSONResponse = new JSONObject(responseVisit.getResponseString());
                             responseObj = new JSONObject(obsResponse.get(i).getResponseString());
                             obsArray = responseObj.getJSONArray("obs");
-                            providersArray = responseObj.getJSONArray("encounterProviders");
+                            providersArray = JSONResponse.getJSONArray("encounterProviders");
 
-                            for (int j = 0; j < providersArray.length(); j++) {
-                                String providerName = null;
 
-                                try {
-                                    JSONObject providerObj = providersArray.getJSONObject(j);
-                                    providerName = providerObj.getString("display");
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-                                String[] providerSplit = providerName.split(":");
-                                providerName = providerSplit[0];
-                                if (!doctorName.contains(providerName) && !doctorName.isEmpty()) {
-                                    doctorName = doctorName + "\n" + providerName;
-                                } else {
-                                    doctorName = providerName;
-                                }
-
-                                Log.i(TAG, "onHandleIntent: pn "+ providerName);
-
-                            }
+                            JSONObject providerObj = providersArray.getJSONObject(0);
+                            String providerName = providerObj.getString("display");
+                            String[] providerSplit = providerName.split(":");
+                            providerName = providerSplit[0];
+                            doctorName = providerName;
+                            providerUUID = providerObj.getString("uuid");
 
                         } catch (JSONException e) {
                             e.printStackTrace();
+                        }
+
+                        String[] providerCols = {"openmrs_user_uuid"};
+                        String providerSelection = "openmrs_user_uuid = ?";
+                        String[] providerArgs = {providerUUID};
+                        Cursor providerCursor = db.query("user_provider", providerCols, providerSelection, providerArgs, null, null, null);
+
+                        if (!(providerCursor != null && providerCursor.getCount() > 0 && providerCursor.moveToFirst())) {
+                            ContentValues contentProvider = new ContentValues();
+                            contentProvider.put("openmrs_user_uuid", providerUUID);
+                            contentProvider.put("name", doctorName);
+                            db.insert("user_provider", null, contentProvider);
                         }
 
                         //Log.d(TAG, obsArray.toString());
@@ -224,6 +224,7 @@ public class PrescriptionDownloadService extends IntentService {
                                     contentValues.put("patient_id", patientID);
                                     contentValues.put("visit_id", visitID);
                                     contentValues.put("value", diagnosisReturned);
+                                    contentValues.put("creator", providerUUID);
                                     contentValues.put("concept_id", ConceptId.TELEMEDICINE_DIAGNOSIS);
                                     insertDatabase(contentValues);
                                 }
@@ -248,6 +249,7 @@ public class PrescriptionDownloadService extends IntentService {
                                     contentValues.put("patient_id", patientID);
                                     contentValues.put("visit_id", visitID);
                                     contentValues.put("value", rxReturned);
+                                    contentValues.put("creator", providerUUID);
                                     contentValues.put("concept_id", ConceptId.JSV_MEDICATIONS);
                                     insertDatabase(contentValues);
                                 }
@@ -272,6 +274,7 @@ public class PrescriptionDownloadService extends IntentService {
                                     contentValues.put("patient_id", patientID);
                                     contentValues.put("visit_id", visitID);
                                     contentValues.put("value", adviceReturned);
+                                    contentValues.put("creator", providerUUID);
                                     contentValues.put("concept_id", ConceptId.MEDICAL_ADVICE);
                                     insertDatabase(contentValues);
                                 }
@@ -296,6 +299,7 @@ public class PrescriptionDownloadService extends IntentService {
                                     contentValues.put("patient_id", patientID);
                                     contentValues.put("visit_id", visitID);
                                     contentValues.put("value", testsReturned);
+                                    contentValues.put("creator", providerUUID);
                                     contentValues.put("concept_id", ConceptId.REQUESTED_TESTS);
                                     insertDatabase(contentValues);
                                 }
@@ -320,6 +324,7 @@ public class PrescriptionDownloadService extends IntentService {
                                     contentValues.put("patient_id", patientID);
                                     contentValues.put("visit_id", visitID);
                                     contentValues.put("value", additionalReturned);
+                                    contentValues.put("creator", providerUUID);
                                     contentValues.put("concept_id", ConceptId.ADDITIONAL_COMMENTS);
                                     insertDatabase(contentValues);
                                 }
@@ -344,6 +349,7 @@ public class PrescriptionDownloadService extends IntentService {
                                     contentValues.put("patient_id", patientID);
                                     contentValues.put("visit_id", visitID);
                                     contentValues.put("value", followUpDate);
+                                    contentValues.put("creator", providerUUID);
                                     contentValues.put("concept_id", ConceptId.FOLLOW_UP_VISIT);
                                     insertDatabase(contentValues);
                                 }

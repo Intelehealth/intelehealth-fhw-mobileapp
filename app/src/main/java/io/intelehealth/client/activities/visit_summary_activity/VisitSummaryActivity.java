@@ -165,6 +165,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView famHistView;
     TextView patHistView;
     TextView physFindingsView;
+    TextView mDoctorTitle;
+    TextView mDoctorName;
     TextView mCHWname;
 
     String medHistory;
@@ -317,6 +319,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         requestedTestsCard = (CardView) findViewById(R.id.cardView_tests);
         additionalCommentsCard = (CardView) findViewById(R.id.cardView_additional_comments);
         followUpDateCard = findViewById(R.id.cardView_follow_up_date);
+        mDoctorTitle = (TextView) findViewById(R.id.title_doctor);
+        mDoctorName = findViewById(R.id.doctor_details);
+        mDoctorTitle.setVisibility(View.GONE);
+        mDoctorName.setVisibility(View.GONE);
 
         diagnosisTextView = (TextView) findViewById(R.id.textView_content_diagnosis);
         prescriptionTextView = (TextView) findViewById(R.id.textView_content_rx);
@@ -1158,6 +1164,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     diagnosisCard.setVisibility(View.VISIBLE);
                 }
                 diagnosisTextView.setText(diagnosisReturned);
+                checkForDoctor();
                 break;
             }
             case ConceptId.JSV_MEDICATIONS: {
@@ -1173,6 +1180,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     prescriptionCard.setVisibility(View.VISIBLE);
                 }
                 prescriptionTextView.setText(rxReturned);
+                checkForDoctor();
                 break;
             }
             case ConceptId.MEDICAL_ADVICE: {
@@ -1185,6 +1193,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     medicalAdviceCard.setVisibility(View.VISIBLE);
                 }
                 medicalAdviceTextView.setText(adviceReturned);
+                checkForDoctor();
                 break;
             }
             case ConceptId.REQUESTED_TESTS: {
@@ -1197,6 +1206,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     requestedTestsCard.setVisibility(View.VISIBLE);
                 }
                 requestedTestsTextView.setText(testsReturned);
+                checkForDoctor();
                 break;
             }
             case ConceptId.ADDITIONAL_COMMENTS: {
@@ -1209,6 +1219,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     additionalCommentsCard.setVisibility(View.VISIBLE);
                 }
                 additionalCommentsTextView.setText(additionalReturned);
+                checkForDoctor();
                 break;
             }
             case ConceptId.FOLLOW_UP_VISIT: {
@@ -1221,12 +1232,43 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     followUpDateCard.setVisibility(View.VISIBLE);
                 }
                 followUpDateTextView.setText(followUpDate);
+                checkForDoctor();
                 break;
             }
             default:
                 Log.i(TAG, "parseData: " + value);
                 break;
 
+        }
+    }
+
+    private void checkForDoctor(){
+        String providerUUID = "";
+        String dbDoctorName = "";
+        String[] columns = {"creator"};
+        String selection = "patient_id = ? AND visit_id = ?";
+        String[] args = {String.valueOf(patientID), visitID};
+        String orderBy = "visit_id";
+        Cursor cursor = db.query("obs", columns, selection, args, null, null, orderBy);
+        if (cursor.moveToLast()) {
+            providerUUID = cursor.getString(cursor.getColumnIndex("creator"));
+        }
+        cursor.close();
+
+        String[] newCol = {"name"};
+        selection = "openmrs_user_uuid = ?";
+        String[] newArg = {providerUUID};
+        cursor = db.query("user_provider", newCol, selection, newArg, null, null, null);
+        if (cursor.moveToFirst()) {
+            dbDoctorName = cursor.getString(cursor.getColumnIndex("name"));
+        }
+        cursor.close();
+
+       doctorName = dbDoctorName;
+       mDoctorName.setText(doctorName);
+        if (mDoctorTitle.getVisibility() != View.VISIBLE) {
+            mDoctorTitle.setVisibility(View.VISIBLE);
+            mDoctorName.setVisibility(View.VISIBLE);
         }
     }
 
