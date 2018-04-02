@@ -1423,7 +1423,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         String followUp_web = "";
         if (followUpDate != null && !followUpDate.isEmpty()) {
-            comments_web = para_open + Node.big_bullet +
+            followUp_web = para_open + Node.big_bullet +
                     followUpDate.replaceAll("\n", para_close + para_open + Node.big_bullet) +
                     para_close;
         }
@@ -1483,7 +1483,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         // +"<b><p id=\"doctor_name_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Doctor's Name</p></b>" +
                         //  para_open +"%s"+para_close
                         , heading, heading2, heading3, mPatientName, age, mSdw, mOccupation, address, mPatientOpenMRSID, mDate, mHeight, mWeight,
-                        mBMI, bp, mPulse, mTemp, mSPO2, pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, comments_web, followUp_web/*,doctorName*/);
+                        mBMI, bp, mPulse, mTemp, mSPO2, pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, comments_web, followUp_web /*,doctorName*/);
         webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
 
         // Keep a reference to WebView object until you pass the PrintDocumentAdapter

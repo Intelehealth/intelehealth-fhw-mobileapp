@@ -793,7 +793,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/padding_card_title_text"
-                    android:text="@string/visit_summary_additional_comments"
+                    android:text="@string/visit_summary_follow_up_date"
                     android:textSize="@dimen/card_title_text_size" />
 
 
