@@ -985,7 +985,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (visitUUID != null && !visitUUID.isEmpty()) {
             if (followUpDate != null && !followUpDate.isEmpty()){
                 AlertDialog.Builder followUpAlert = new AlertDialog.Builder(this);
-                followUpAlert.setMessage("Please remind the patient of their follow up date: " + followUpDate);
+                followUpAlert.setMessage(R.string.visit_summary_follow_up_reminder + followUpDate);
                 followUpAlert.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -1844,7 +1844,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 downloaded=false;
 
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-                alertDialogBuilder.setMessage("Please download first before attempting to end the visit.");
+                alertDialogBuilder.setMessage(R.string.error_no_data);
                 alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

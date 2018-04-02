@@ -182,6 +182,7 @@
     <string name="visit_summary_button_download">Download from doctor</string>
     <string name="name_button_download" translatable="false">button_download</string>
     <string name="visit_summary_follow_up_date">Follow Up Date</string>
+    <string name="visit_summary_follow_up_reminder">Please remind the patient of their follow up date: </string>
 
 
     //Diagnostic Tests Screen
@@ -312,7 +313,7 @@
     <string name="visit_images">Visit Images</string>
     <string name="prescription">Prescription</string>
 
-    <string name="error_no_data">Please download data from doctor first</string>
+    <string name="error_no_data">Please download first before attempting to end the visit.</string>
     <string name="error_phone_number">Phone number can\'t be empty</string>
     <string name="action_end_visit">End Visit</string>
 
