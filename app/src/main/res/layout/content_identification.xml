@@ -165,38 +165,18 @@
 
                 <EditText
                     android:id="@+id/identification_age"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:focusable="false"
+                    android:freezesText="true"
                     android:ems="10"
                     android:hint="@string/identification_screen_prompt_age"
                     android:imeOptions="actionUnspecified"
-                    android:inputType="number"
                     android:maxLines="1"
-                    android:singleLine="true"
-
-
-                    />
+                    android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/identification_ageInMonths"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="@string/identification_screen_prompt_ageInMonths"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="number"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    />
-
-            </android.support.design.widget.TextInputLayout>
-
 
 
             <android.support.design.widget.TextInputLayout

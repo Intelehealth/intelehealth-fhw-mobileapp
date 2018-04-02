@@ -24,6 +24,8 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -31,8 +33,10 @@ import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -41,6 +45,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.camera_activity.CameraActivity;
@@ -65,7 +70,7 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mDOB;
     EditText mPhoneNum;
     EditText mAge;
-    EditText mAgeInMonths;
+    AlertDialog.Builder mAgePicker;
     EditText mAddress1;
     EditText mAddress2;
     AutoCompleteTextView mCity;
@@ -80,6 +85,12 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText stateText;
     Spinner mCountry;
     Spinner mState;
+
+    Integer mDOBYear;
+    Integer mDOBMonth;
+    Integer mDOBDay;
+    Integer mAgeYears = 0;
+    Integer mAgeMonths = 0;
 
     EditText casteText;
     EditText economicText;
@@ -133,7 +144,6 @@ public class IdentificationActivity extends AppCompatActivity {
         mDOB = (EditText) findViewById(R.id.identification_birth_date_text_view);
         mPhoneNum = (EditText) findViewById(R.id.identification_phone_number);
         mAge = (EditText) findViewById(R.id.identification_age);
-        mAgeInMonths = findViewById(R.id.identification_ageInMonths);
         mAddress1 = (EditText) findViewById(R.id.identification_address1);
         mAddress2 = (EditText) findViewById(R.id.identification_address2);
         mCity = (AutoCompleteTextView) findViewById(R.id.identification_city);
@@ -156,7 +166,6 @@ public class IdentificationActivity extends AppCompatActivity {
         mAddress2.setVisibility(View.GONE);
         mRelationship.setVisibility(View.GONE);
         mPostal.setVisibility(View.GONE);
-        mAgeInMonths.setVisibility(View.GONE);
 
         casteText = (EditText) findViewById(R.id.identification_caste);
         educationText = (EditText) findViewById(R.id.identification_education);
@@ -374,7 +383,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
             }
         });
-
+        mDOBYear = today.get(Calendar.YEAR);
+        mDOBMonth = today.get(Calendar.MONTH);
+        mDOBDay = today.get(Calendar.DAY_OF_MONTH);
         //DOB is set using an AlertDialog
         mDOBPicker = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -386,17 +397,22 @@ public class IdentificationActivity extends AppCompatActivity {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 dob.set(year, monthOfYear, dayOfMonth);
                 String dobString = simpleDateFormat.format(dob.getTime());
-
-
-                //Age should be calculated based on the date
-                int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
-                if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
-                    age--;
-                }
-                mAge.setText(String.valueOf(age));
                 mDOB.setText(dobString);
+
+                mAgeYears = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+                mAgeMonths = today.get(Calendar.MONTH) - dob.get(Calendar.MONTH);
+                if(mAgeMonths < 0){
+                    mAgeMonths = mAgeMonths + 12;
+                }
+
+                mDOBYear = year;
+                mDOBMonth = monthOfYear;
+                mDOBDay = dayOfMonth;
+
+                String ageString = String.valueOf(mAgeYears) + " years " + String.valueOf(mAgeMonths) + " months";
+                mAge.setText(ageString);
             }
-        }, today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH));
+        }, mDOBYear, mDOBMonth, mDOBDay);
 
         //DOB Picker is shown when clicked
         mDOB.setOnClickListener(new View.OnClickListener() {
@@ -407,83 +423,67 @@ public class IdentificationActivity extends AppCompatActivity {
         });
 
 
-        mAge.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!s.toString().trim().isEmpty()) {
-                    if ((getCurrentFocus() != null) &&
-                            (getCurrentFocus().getId() == mAge.getId()
-                                    || mDOB.getText().toString().trim().isEmpty())) {
-                        Calendar calendar = Calendar.getInstance();
-                        int curYear = calendar.get(Calendar.YEAR);
-                        int birthYear = curYear - Integer.valueOf(s.toString().trim());
-                        String calcDOB = String.valueOf(birthYear) + "-01-01";
-                        mDOB.setText(calcDOB);
-                    }
-                }
-            }
-        });
-
-        /*
-        User has to have option where they can enter the age.
-        Some patients do not actually know their DOB, but they remember their age.
-        If only age is provided, then the DOB is calculated as January 1, the year being current year minus their age.
-         */
-        /*mAge.setOnClickListener(new View.OnClickListener() {
+        mAge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Context context = IdentificationActivity.this;
-                final AlertDialog.Builder textInput = new AlertDialog.Builder(context);
-                textInput.setTitle(R.string.identification_screen_dialog_age);
-                final EditText dialogEditText = new EditText(context);
-                dialogEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
-
-                String prevValue = mAge.getText().toString();
-                if (!prevValue.isEmpty()) {
-                    dialogEditText.setText(prevValue);
+                mAgePicker = new AlertDialog.Builder(IdentificationActivity.this, R.style.AlertDialogStyle);
+                mAgePicker.setTitle(R.string.identification_screen_prompt_age);
+                final LayoutInflater inflater = getLayoutInflater();
+                View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
+                mAgePicker.setView(convertView);
+                final NumberPicker yearPicker = (NumberPicker) convertView.findViewById(R.id.dialog_2_numbers_quantity);
+                final NumberPicker monthPicker = (NumberPicker) convertView.findViewById(R.id.dialog_2_numbers_unit);
+                final TextView middleText = (TextView) convertView.findViewById(R.id.dialog_2_numbers_text);
+                final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
+                middleText.setText("years");
+                endText.setText("months");
+                yearPicker.setMinValue(0);
+                yearPicker.setMaxValue(100);
+                monthPicker.setMinValue(0);
+                monthPicker.setMaxValue(12);
+                if(mAgeYears > 0) {
+                    yearPicker.setValue(mAgeYears);
+                }
+                if (mAgeMonths > 0) {
+                    monthPicker.setValue(mAgeMonths);
                 }
 
-                textInput.setView(dialogEditText);
-
-                textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                mAgePicker.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String ageString = (dialogEditText.getText().toString());
+                        yearPicker.setValue(yearPicker.getValue());
+                        monthPicker.setValue(monthPicker.getValue());
+                        String ageString = String.valueOf(yearPicker.getValue()) + " years " + monthPicker.getValue() + " months";
+                        mAge.setText(ageString);
 
-                        if (ageString.isEmpty() || ageString.matches("")) {
-                            dialog.dismiss();
-                        } else {
-                            mAge.setText(ageString);
-                            Calendar calendar = Calendar.getInstance();
-                            int curYear = calendar.get(Calendar.YEAR);
-                            int birthYear = curYear - Integer.valueOf(ageString);
-                            String calcDOB = String.valueOf(birthYear) + "-01-01";
-                            mDOB.setText(calcDOB);
-                            dialog.dismiss();
-                        }
 
+                        Calendar calendar = Calendar.getInstance();
+                        int curYear = calendar.get(Calendar.YEAR);
+                        int birthYear = curYear - yearPicker.getValue();
+                        int curMonth = calendar.get(Calendar.MONTH);
+                        int birthMonth = curMonth - monthPicker.getValue();
+                        mDOBYear = birthYear;
+                        mDOBMonth = birthMonth;
+                        mDOBDay = 1;
+
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                        dob.set(mDOBYear, mDOBMonth, mDOBDay);
+                        String dobString = simpleDateFormat.format(dob.getTime());
+                        mDOB.setText(dobString);
+                        mDOBPicker.updateDate(mDOBYear, mDOBMonth, mDOBDay);
+                        dialog.dismiss();
+                    }
+                });
+                mAgePicker.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
                     }
                 });
 
-                textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                textInput.show();
+                mAgePicker.show();
             }
-        });*/
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         assert fab != null;

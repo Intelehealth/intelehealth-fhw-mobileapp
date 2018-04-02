@@ -862,6 +862,8 @@ public class Node implements Serializable {
         final NumberPicker widthPicker = (NumberPicker) convertView.findViewById(R.id.dialog_2_numbers_quantity);
         final NumberPicker lengthPicker = (NumberPicker) convertView.findViewById(R.id.dialog_2_numbers_unit);
         final TextView middleText = (TextView) convertView.findViewById(R.id.dialog_2_numbers_text);
+        final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
+        endText.setVisibility(View.GONE);
         middleText.setText("X");
 
         widthPicker.setMinValue(0);
@@ -910,6 +912,8 @@ public class Node implements Serializable {
         final NumberPicker startPicker = (NumberPicker) convertView.findViewById(R.id.dialog_2_numbers_quantity);
         final NumberPicker endPicker = (NumberPicker) convertView.findViewById(R.id.dialog_2_numbers_unit);
         final TextView middleText = (TextView) convertView.findViewById(R.id.dialog_2_numbers_text);
+        final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
+        endText.setVisibility(View.GONE);
         middleText.setText(" - ");
 
         startPicker.setMinValue(0);
@@ -955,6 +959,8 @@ public class Node implements Serializable {
         final NumberPicker quantityPicker = (NumberPicker) convertView.findViewById(R.id.dialog_2_numbers_quantity);
         final NumberPicker unitPicker = (NumberPicker) convertView.findViewById(R.id.dialog_2_numbers_unit);
         final TextView middleText = (TextView) convertView.findViewById(R.id.dialog_2_numbers_text);
+        final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
+        endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
         final String[] units = new String[]{"per Hour", "per Day", "Per Week", "per Month", "per Year"};
         final String[] doctorUnits = new String[]{"times per hour", "time per day", "times per week", "times per month", "times per year"};
@@ -1001,6 +1007,8 @@ public class Node implements Serializable {
         final NumberPicker quantityPicker = (NumberPicker) convertView.findViewById(R.id.dialog_2_numbers_quantity);
         final NumberPicker unitPicker = (NumberPicker) convertView.findViewById(R.id.dialog_2_numbers_unit);
         final TextView middleText = (TextView) convertView.findViewById(R.id.dialog_2_numbers_text);
+        final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
+        endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
         final String[] units = new String[]{"Hours", "Days", "Weeks", "Months", "Years"};
         unitPicker.setDisplayedValues(units);
@@ -1185,6 +1193,8 @@ public class Node implements Serializable {
         final NumberPicker widthPicker = (NumberPicker) convertView.findViewById(R.id.dialog_2_numbers_quantity);
         final NumberPicker lengthPicker = (NumberPicker) convertView.findViewById(R.id.dialog_2_numbers_unit);
         final TextView middleText = (TextView) convertView.findViewById(R.id.dialog_2_numbers_text);
+        final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
+        endText.setVisibility(View.GONE);
         middleText.setText("X");
 
         widthPicker.setMinValue(0);
@@ -1231,6 +1241,8 @@ public class Node implements Serializable {
         final NumberPicker startPicker = (NumberPicker) convertView.findViewById(R.id.dialog_2_numbers_quantity);
         final NumberPicker endPicker = (NumberPicker) convertView.findViewById(R.id.dialog_2_numbers_unit);
         final TextView middleText = (TextView) convertView.findViewById(R.id.dialog_2_numbers_text);
+        final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
+        endText.setVisibility(View.GONE);
         middleText.setText(" - ");
 
         startPicker.setMinValue(0);
@@ -1276,6 +1288,8 @@ public class Node implements Serializable {
         final NumberPicker quantityPicker = (NumberPicker) convertView.findViewById(R.id.dialog_2_numbers_quantity);
         final NumberPicker unitPicker = (NumberPicker) convertView.findViewById(R.id.dialog_2_numbers_unit);
         final TextView middleText = (TextView) convertView.findViewById(R.id.dialog_2_numbers_text);
+        final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
+        endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
         final String[] units = context.getResources().getStringArray(R.array.units);
         final String[] doctorUnits = context.getResources().getStringArray(R.array.doctor_units);
@@ -1322,6 +1336,8 @@ public class Node implements Serializable {
         final NumberPicker quantityPicker = (NumberPicker) convertView.findViewById(R.id.dialog_2_numbers_quantity);
         final NumberPicker unitPicker = (NumberPicker) convertView.findViewById(R.id.dialog_2_numbers_unit);
         final TextView middleText = (TextView) convertView.findViewById(R.id.dialog_2_numbers_text);
+        final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
+        endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
         final String[] units = context.getResources().getStringArray(R.array.duration_units);
         unitPicker.setDisplayedValues(units);
