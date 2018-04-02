@@ -2,8 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '26.0.3'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         applicationId "io.intelehealth.client"
@@ -35,62 +35,62 @@ android {
 
 dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    compile 'com.crashlytics.sdk.android:crashlytics:2.9.1'
-    compile "com.google.firebase:firebase-core:$rootProject.firebaseVersion"
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.1'
+    implementation "com.google.firebase:firebase-core:$rootProject.firebaseVersion"
 
-    compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
-    compile "com.android.support:design:$rootProject.supportLibraryVersion"
-    compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
-    compile "com.android.support:support-vector-drawable:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:design:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:support-vector-drawable:$rootProject.supportLibraryVersion"
 
-    compile "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
+    implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
     //Uncomment below line to enable multidex support for Kitkat
-    compile "com.android.support:multidex:$rootProject.multiDexVersion"
+    implementation "com.android.support:multidex:$rootProject.multiDexVersion"
 
-    compile "joda-time:joda-time:$rootProject.jodaTimeVersion"
+    implementation "joda-time:joda-time:$rootProject.jodaTimeVersion"
 
-    compile "com.google.firebase:firebase-messaging:$rootProject.firebaseVersion"
-    compile "com.firebase:firebase-jobdispatcher:$rootProject.jobDispatcherVersion"
+    implementation "com.google.firebase:firebase-messaging:$rootProject.firebaseVersion"
+    implementation "com.firebase:firebase-jobdispatcher:$rootProject.jobDispatcherVersion"
 
-    compile "com.github.hotchemi:permissionsdispatcher:$rootProject.permissionDispatcherVersion"
+    implementation "com.github.hotchemi:permissionsdispatcher:$rootProject.permissionDispatcherVersion"
     annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:$rootProject.permissionDispatcherVersion"
 
-    compile "com.github.google:cameraview:$rootProject.cameraviewVersion"
+    implementation "com.github.google:cameraview:$rootProject.cameraviewVersion"
 
-    compile "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
-    compile "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
 
     //Google Guava
-    compile "com.google.guava:guava:$rootProject.guavaVersion"
+    implementation "com.google.guava:guava:$rootProject.guavaVersion"
 
     //Glide library dependencies
-    compile "com.github.bumptech.glide:glide:$rootProject.glideVersion"
+    implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
     //Parse SDK
-    compile "com.parse:parse-android:$rootProject.parseAndroidVersion"
+    implementation "com.parse:parse-android:$rootProject.parseAndroidVersion"
 
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
-    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
 
     //Used for debugging local SQLite Database.
-    debugCompile "com.amitshekhar.android:debug-db:$rootProject.debugDbVersion"
-    debugCompile "com.squareup.okhttp3:logging-interceptor:$rootProject.okHttpVersion"
+    debugImplementation "com.amitshekhar.android:debug-db:$rootProject.debugDbVersion"
+    debugImplementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okHttpVersion"
 
     //Test Dependencies
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
 
     // Espresso dependencies
-    androidTestCompile('com.android.support.test.espresso:espresso-core:3.0.0', {
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    androidTestCompile 'com.android.support.test.espresso:espresso-contrib:3.0.1'
-    androidTestCompile 'com.android.support.test.espresso:espresso-intents:3.0.1'
-    androidTestCompile('com.android.support.test:runner:1.0.0', {
+    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.1'
+    androidTestImplementation('com.android.support.test:runner:1.0.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    androidTestCompile 'org.hamcrest:hamcrest-library:1.3'
-    androidTestCompile 'com.azimolabs.conditionwatcher:conditionwatcher:0.2'
+    androidTestImplementation 'org.hamcrest:hamcrest-library:1.3'
+    androidTestImplementation 'com.azimolabs.conditionwatcher:conditionwatcher:0.2'
 }
 
 apply plugin: 'com.google.gms.google-services'
