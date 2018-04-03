@@ -1291,11 +1291,20 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * This method creates a web view for printing patient's various details.
-     *
-     * @return void
-     */
+    private String stringToWeb(String input) {
+        String formatted = "";
+        if (input != null && !input.isEmpty()) {
+
+            String para_open = "<p style=\"font-size:11pt; margin: 0px; padding: 0px;\">";
+            String para_close = "</p>";
+            formatted = para_open + Node.big_bullet +
+                    input.replaceAll("\n", para_close + para_open + Node.big_bullet)
+                    + para_close;
+        }
+
+        return formatted;
+    }
+
     private void doWebViewPrint() throws ParseException {
         // Create a WebView object specifically for printing
         WebView webView = new WebView(this);
@@ -1371,7 +1380,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String para_open = "<p style=\"font-size:11pt; margin: 0px; padding: 0px;\">";
         String para_close = "</p>";
 
-        String rx_web = "";
 
         Calendar today = Calendar.getInstance();
         Calendar dob = Calendar.getInstance();
@@ -1386,47 +1394,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
             age--;
         }
 
-        if (rxReturned != null && !rxReturned.isEmpty()) {
-            rx_web = para_open + Node.big_bullet +
-                    rxReturned.replaceAll("\n", para_close + para_open + Node.big_bullet)
-                    + para_close;
-        }
+        String rx_web = stringToWeb(rxReturned);
 
-        String tests_web = "";
+        String tests_web = stringToWeb(testsReturned);
 
-        if (testsReturned != null && !testsReturned.isEmpty()) {
-            tests_web = para_open + Node.big_bullet +
-                    testsReturned.replaceAll("\n", para_close + para_open + Node.big_bullet)
-                    + para_close;
-        }
+        String advice_web = stringToWeb(adviceReturned);
 
-        String advice_web = "";
-        if (adviceReturned != null && !adviceReturned.isEmpty()) {
-            advice_web = para_open + Node.big_bullet +
-                    adviceReturned.replaceAll("\n", para_close + para_open + Node.big_bullet)
-                    + para_close;
-        }
+        String diagnosis_web = stringToWeb(diagnosisReturned);
 
-        String diagnosis_web = "";
-        if (diagnosisReturned != null && !diagnosisReturned.isEmpty()) {
-            diagnosis_web = para_open + Node.big_bullet +
-                    diagnosisReturned.replaceAll("\n", para_close + para_open + Node.big_bullet)
-                    + para_close;
-        }
+        String comments_web = stringToWeb(additionalReturned);
 
-        String comments_web = "";
-        if (additionalReturned != null && !additionalReturned.isEmpty()) {
-            comments_web = para_open + Node.big_bullet +
-                    additionalReturned.replaceAll("\n", para_close + para_open + Node.big_bullet) +
-                    para_close;
-        }
+        String followUp_web = stringToWeb(followUpDate);
 
-        String followUp_web = "";
-        if (followUpDate != null && !followUpDate.isEmpty()) {
-            followUp_web = para_open + Node.big_bullet +
-                    followUpDate.replaceAll("\n", para_close + para_open + Node.big_bullet) +
-                    para_close;
-        }
+        String doctor_web = stringToWeb(doctorName);
 
         String heading = "ଚିକିତ୍ସା ସହାୟତା କେନ୍ଦ୍ର";
         String heading2 = "Chikitsa Sahayta Kendra";
@@ -1457,7 +1437,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 "<p id=\"heading_3\" style=\"font-size:11pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                 "<hr style=\"font-size:11pt;\">" + "<br/>" +
                                 "<p id=\"patient_name\" style=\"font-size:11pt; margin: 0px; padding: 0px;\">%s</p></b>" +
-                                "<p id=\"patient_details\" style=\"font-size:11pt; margin: 0px; padding: 0px;\">Age: %s |Son/Daughter/Wife of: %s |Occupation: %s </p>" +
+                                "<p id=\"patient_details\" style=\"font-size:11pt; margin: 0px; padding: 0px;\">Age: %s | Son/Daughter/Wife of: %s | Occupation: %s </p>" +
                                 "<p id=\"address_and_contact\" style=\"font-size:11pt; margin: 0px; padding: 0px;\"><b>Address and Contact:</b> %s</p>" +
                                 "<b><p id=\"visit_details\" style=\"font-size:11pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p></b>" +
                                 "<b><p id=\"vitals_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
@@ -1479,11 +1459,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 "<b><p id=\"comments_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Doctor's Note</p></b>" +
                                 "%s" +
                                 "<b><p id=\"follow_up_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b>" +
+                                "%s" +
+                                "<b><p id=\"doctor_name_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Doctor's Name</p></b>" +
                                 "%s"
-                        // +"<b><p id=\"doctor_name_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Doctor's Name</p></b>" +
-                        //  para_open +"%s"+para_close
-                        , heading, heading2, heading3, mPatientName, age, mSdw, mOccupation, address, mPatientOpenMRSID, mDate, mHeight, mWeight,
-                        mBMI, bp, mPulse, mTemp, mSPO2, pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, comments_web, followUp_web /*,doctorName*/);
+                        ,heading, heading2, heading3, mPatientName, age, mSdw, mOccupation, address, mPatientOpenMRSID, mDate, mHeight, mWeight,
+                        mBMI, bp, mPulse, mTemp, mSPO2, pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, comments_web, followUp_web, doctor_web);
         webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
 
         // Keep a reference to WebView object until you pass the PrintDocumentAdapter
