@@ -1277,7 +1277,7 @@ public class ClientService extends IntentService {
 
         if (comments != null && !comments.isEmpty()) {
             formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.COMMENTS + quote + "," +
-                    quote + "value" + quote + ":" + quote + comments + quote + "},";
+                    quote + "value" + quote + ":" + quote + comments + quote + "}";
         }
 
         String noteString =
