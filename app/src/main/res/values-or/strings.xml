@@ -44,7 +44,7 @@
     <string name="error_location_not_fetched">ସ୍ଥାନ ପ୍ରାପ୍ତ କରିବାପାଇଁ</string>
     <string name="error_location_not_selected">"ଦୟାକରି ଡ଼୍ରପଡ଼ାଉନ ସ୍ଥାନରୁ ଏକ ମୂଲ୍ଯ ବାଛିବା "</string>
     <string name="error_network">"ତ୍ରୃଟିଯୁକ୍ତ ନେଟ୍ଓ୍ୱାର୍କ "</string>
-    <string name="error_no_data">"ଦୟାକରି ପ୍ରଥମେ ଡ଼ାକ୍ତରଙ୍କଠାରୁ ଡ଼ାଟା ଡ଼ାଉନ ଲେଡ଼୍ କର "</string>
+    <string name="error_no_data">ଦୟାକରି ପରିଦର୍ଶନ ବନ୍ଦ କରିବା ପୂର୍ବରୁ ପ୍ରଥମ ଡାଉନଲୋଡ କରନ୍ତ</string>
     <string name="error_phone_number">ଫୋନ ନମ୍ବର ଖାଲି ରହିବ ନାହିଁ</string>
     <string name="error_sms">ଏସ୍.ଏମ. ଏସ୍ ଫେଲ ହେଲେ ପଦବୀର ଚେଷ୍ଟାର କର</string>
     <string name="find_patient">ରୋଗୀକୁ ଦେଖିବା</string>
@@ -236,5 +236,11 @@
     <string name="error_offline_login">"ଇଣ୍ଟେର୍ନେଟ ବିନା ଲଗିଂ ହାଇପାରିବ ନାହିଁ  "</string>
     <string name="invalidate_offline_login">"ଇଣ୍ଟେର୍ନେଟ ବିନା ଲଗିଂ ବୈଧ୍ୟ ହେବ ନାହିଁ  "</string>
     <string name="patient_not_registered">"ରୋଗୀ ରେଜିଷ୍ଟ୍ରି ହେଇ ନାହିଁ "</string>
+    <string name="visit_summary_follow_up_reminder">ଦୟାକରି ରୋଗୀକୁ ତାହାର ଅନୁବର୍ତ୍ତୀ ତାରିଖ ବିଷୟରେ ଜଣାନ୍ତ:</string>
+    <string name="exit_survey_label">ଆପଣଙ୍କ ଅନୁଭବ କେମିତି  ହେଲା?</string>
+    <string name="exit_survey_prompt">ଆପଣଙ୍କ ଅନୁଭବ ଲେଖ</string>
+    <string name="exit_survey_skip">ଆଗକୁ ବଢ</string>
+    <string name="exit_survey_submit">ସବମିଟ କରନ୍ତ</string>
+    <string name="visit_summary_upload_reminder">ସାକ୍ଷାତକାର ବନ୍ଦ କରିବା ପୂର୍ବରୁ ଅପଲୋଡ଼ କରନ୍ତ</string>
 
 </resources>

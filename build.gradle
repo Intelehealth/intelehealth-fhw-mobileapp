@@ -44,10 +44,10 @@ ext {
     multiDexVersion = '1.0.3'
 
     // App dependencies
-    supportLibraryVersion = '27.1.0'
+    supportLibraryVersion = '27.1.1'
     jodaTimeVersion = '2.9.3'
     arcaVersion = '4.9.2'
-    firebaseVersion = '12.0.1'
+    firebaseVersion = '15.0.0'
     cameraviewVersion = '9bbe07ba44'
     permissionDispatcherVersion = '2.3.2'
     debugDbVersion = '1.0.0'
@@ -58,4 +58,6 @@ ext {
     glideVersion = '3.8.0'
     parseAndroidVersion = '1.15.7'
     guavaVersion = '22.0-android'
+    constraintLayoutVersion = '1.1.0'
+    crashlyticsVersion = '2.9.1'
 }

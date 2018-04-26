@@ -183,6 +183,7 @@
     <string name="name_button_download" translatable="false">button_download</string>
     <string name="visit_summary_follow_up_date">Follow Up Date</string>
     <string name="visit_summary_follow_up_reminder">Please remind the patient of their follow up date: </string>
+    <string name="visit_summary_upload_reminder">Please upload first before attempting to end the visit.</string>
 
 
     //Diagnostic Tests Screen

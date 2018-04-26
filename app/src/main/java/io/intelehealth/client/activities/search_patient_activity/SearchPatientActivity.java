@@ -115,7 +115,7 @@ public class SearchPatientActivity extends AppCompatActivity {
 
 
         final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table +
-                " ORDER BY last_name ASC", null);
+                " ORDER BY first_name ASC", null);
         try {
             // Setup cursor adapter and attach cursor adapter to the ListView
             mSearchAdapter = new SearchCursorAdapter(this, searchCursor, 0);

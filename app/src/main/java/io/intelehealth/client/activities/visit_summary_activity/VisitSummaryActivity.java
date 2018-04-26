@@ -985,7 +985,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (visitUUID != null && !visitUUID.isEmpty()) {
             if (followUpDate != null && !followUpDate.isEmpty()){
                 AlertDialog.Builder followUpAlert = new AlertDialog.Builder(this);
-                followUpAlert.setMessage(R.string.visit_summary_follow_up_reminder + followUpDate);
+                followUpAlert.setMessage(getString(R.string.visit_summary_follow_up_reminder) + followUpDate);
                 followUpAlert.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -1014,7 +1014,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             Log.d(TAG, "endVisit: null");
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setMessage("Please upload first before attempting to end the visit.");
+            alertDialogBuilder.setMessage(getString(R.string.visit_summary_upload_reminder));
             alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {

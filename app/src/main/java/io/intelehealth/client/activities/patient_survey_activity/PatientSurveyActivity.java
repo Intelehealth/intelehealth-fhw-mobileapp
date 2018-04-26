@@ -51,6 +51,11 @@ public class PatientSurveyActivity extends AppCompatActivity {
     String comments;
 
     @Override
+    public void onBackPressed(){
+        //do nothing
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
