@@ -9,8 +9,8 @@ android {
         applicationId "io.intelehealth.client"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 7
-        versionName "1.2.1"
+        versionCode 8
+        versionName "1.2.2"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true

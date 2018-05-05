@@ -175,7 +175,7 @@ public class SearchPatientActivity extends AppCompatActivity {
                     "%' OR last_name LIKE '" + search +
                     "%' OR openmrs_id LIKE '" + search +
                     "%' OR middle_name LIKE '" + search + "%' " +
-                    "ORDER BY last_name ASC", null);
+                    "ORDER BY first_name ASC", null);
             try {
                 // Setup cursor adapter and attach cursor adapter to the ListView
                 mSearchAdapter = new SearchCursorAdapter(this, searchCursor, 0);

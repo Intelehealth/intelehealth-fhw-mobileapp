@@ -73,7 +73,8 @@ public class TodayPatientActivity extends AppCompatActivity {
                 "SELECT visit._id, visit.patient_id, visit.start_datetime, visit.end_datetime," +
                         "visit.openmrs_visit_uuid, patient.first_name, patient.middle_name, patient.last_name, " +
                         "patient.date_of_birth,patient.openmrs_id,patient.phone_number FROM visit, patient WHERE visit.patient_id = patient._id " +
-                        "AND visit.start_datetime LIKE '" + currentDate + "T%'";
+                        "AND visit.start_datetime LIKE '" + currentDate + "T%'"  +
+                        "ORDER BY patient.first_name ASC";
         //  "SELECT * FROM visit, patient WHERE visit.patient_id = patient._id AND visit.start_datetime LIKE '" + currentDate + "T%'";
         Log.i(TAG, query);
         final Cursor cursor = db.rawQuery(query, null);
