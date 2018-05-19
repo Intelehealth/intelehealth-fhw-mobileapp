@@ -374,15 +374,15 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
         if (!name.isEmpty() && name.length() > 7) {
             switch (name.substring(0, 6)) {
                 case "physEx": {
-                    file_name = "physExam";
+                    file_name = "physExam.json";
                     break;
                 }
                 case "famHis": {
-                    file_name = "famHist";
+                    file_name = "famHist.json";
                     break;
                 }
                 case "patHis": {
-                    file_name = "patHist";
+                    file_name = "patHist.json";
                     break;
                 }
                 default:
