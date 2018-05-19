@@ -82,7 +82,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
         if (mmList != null && !mmList.isEmpty()) {
             for (Mindmap mm : mmList) {
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -370,12 +370,31 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
     }
 
     private void saveMindmap(String name, String content) {
+        String file_name = name;
+        if (!name.isEmpty() && name.length() > 7) {
+            switch (name.substring(0, 6)) {
+                case "physEx": {
+                    file_name = "physExam";
+                    break;
+                }
+                case "famHis": {
+                    file_name = "famHist";
+                    break;
+                }
+                case "patHis": {
+                    file_name = "patHist";
+                    break;
+                }
+                default:
+                    file_name = name;
+            }
+        }
         File base_dir = new File(activity.getFilesDir().getAbsolutePath(), HelperMethods.JSON_FOLDER_Update);
         if (!base_dir.exists()) base_dir.mkdirs();
         try {
-            File file = new File(base_dir.getAbsolutePath(), name);
+            File file = new File(base_dir.getAbsolutePath(), file_name);
             if (file.exists()) file.delete();
-            Log.i(TAG, "FNAM : " + name);
+            Log.i(TAG, "FNAM : " + file_name);
             FileOutputStream fileout = new FileOutputStream(file);
             OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
             outputWriter.write(content);
