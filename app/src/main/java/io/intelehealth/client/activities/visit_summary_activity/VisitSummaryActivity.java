@@ -1183,7 +1183,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     diagnosisCard.setVisibility(View.VISIBLE);
                 }
                 diagnosisTextView.setText(diagnosisReturned);
-                checkForDoctor();
+               //checkForDoctor();
                 break;
             }
             case ConceptId.JSV_MEDICATIONS: {
@@ -1199,7 +1199,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     prescriptionCard.setVisibility(View.VISIBLE);
                 }
                 prescriptionTextView.setText(rxReturned);
-                checkForDoctor();
+                //checkForDoctor();
                 break;
             }
             case ConceptId.MEDICAL_ADVICE: {
@@ -1212,7 +1212,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     medicalAdviceCard.setVisibility(View.VISIBLE);
                 }
                 medicalAdviceTextView.setText(adviceReturned);
-                checkForDoctor();
+                //checkForDoctor();
                 break;
             }
             case ConceptId.REQUESTED_TESTS: {
@@ -1225,7 +1225,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     requestedTestsCard.setVisibility(View.VISIBLE);
                 }
                 requestedTestsTextView.setText(testsReturned);
-                checkForDoctor();
+                //checkForDoctor();
                 break;
             }
             case ConceptId.ADDITIONAL_COMMENTS: {
@@ -1238,7 +1238,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     additionalCommentsCard.setVisibility(View.VISIBLE);
                 }
                 additionalCommentsTextView.setText(additionalReturned);
-                checkForDoctor();
+                //checkForDoctor();
                 break;
             }
             case ConceptId.FOLLOW_UP_VISIT: {
@@ -1251,7 +1251,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     followUpDateCard.setVisibility(View.VISIBLE);
                 }
                 followUpDateTextView.setText(followUpDate);
-                checkForDoctor();
+                //checkForDoctor();
                 break;
             }
             default:
@@ -1261,7 +1261,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
     }
 
-    private void checkForDoctor(){
+   /*private void checkForDoctor(){
         String providerUUID = "";
         String dbDoctorName = "";
         String[] columns = {"creator"};
@@ -1277,7 +1277,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String[] newCol = {"name"};
         selection = "openmrs_user_uuid = ?";
         String[] newArg = {providerUUID};
-        cursor = db.query("providers", newCol, selection, newArg, null, null, null);
+       orderBy = "openmrs_user_uuid";
+        cursor = db.query("providers", newCol, selection, newArg, null, null, orderBy);
         if (cursor.moveToFirst()) {
             dbDoctorName = cursor.getString(cursor.getColumnIndex("name"));
         }
@@ -1289,7 +1290,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             mDoctorTitle.setVisibility(View.VISIBLE);
             mDoctorName.setVisibility(View.VISIBLE);
         }
-    }
+    }*/
 
     private String stringToWeb(String input) {
         String formatted = "";
