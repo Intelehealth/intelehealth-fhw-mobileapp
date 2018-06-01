@@ -16,3 +16,4 @@ app/src/main/java/io/intelehealth/client/activities/physical_exam_activity/Physi
 .idea/modules.xml
 
 *.jpg
+.idea/misc.xml
