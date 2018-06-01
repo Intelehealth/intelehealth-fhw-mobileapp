@@ -98,14 +98,14 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             "name varchar(50)" +
             ")";
 
-    public static final String CREATE_LOCATION = "CREATE TABLE location_details (" +
+    public static final String CREATE_LOCATION = "CREATE TABLE IF NOT EXISTS location_details (" +
             "_id integer PRIMARY KEY," +
             "tablet_id integer(10) NOT NULL," +
             "location_name varchar(255) NOT NULL," +
             "openmrs_location_id integer(255) NOT NULL" +
             ")";
 
-    public static final String CREATE_DELAYED_JOBS = "CREATE TABLE " + DelayedJobQueueProvider.DELAYED_JOBS_TABLE_NAME + " (" +
+    public static final String CREATE_DELAYED_JOBS = "CREATE TABLE IF NOT EXISTS " + DelayedJobQueueProvider.DELAYED_JOBS_TABLE_NAME + " (" +
             DelayedJobQueueProvider._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
             DelayedJobQueueProvider.JOB_TYPE + " TEXT NOT NULL," +
             DelayedJobQueueProvider.JOB_PRIORITY + " INTEGER NOT NULL," +
