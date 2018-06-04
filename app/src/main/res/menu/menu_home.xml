@@ -20,7 +20,17 @@
 
         <item
             android:id="@+id/backupOption"
+            android:title="Backup"
+            android:orderInCategory="125" />
+
+        <item
+            android:id="@+id/restoreOption"
             android:title="Restore"
+            android:orderInCategory="125" />
+
+        <item
+            android:id="@+id/restoreForcedOption"
+            android:title="Force Restore"
             android:orderInCategory="125" />
 
         <item

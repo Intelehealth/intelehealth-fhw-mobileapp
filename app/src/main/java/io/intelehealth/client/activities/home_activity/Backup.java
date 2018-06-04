@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteException;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -66,12 +67,10 @@ public class Backup {
         return exists;
     }
 
-    public boolean createFileInMemory(Context context) throws IOException {
+    public boolean createFileInMemory(Context context, boolean isBackup) throws IOException {
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         e = sharedPreferences.edit();
-
-        value = sharedPreferences.getString("value", "");
 
         try {
             File myDir = new File(Environment.getExternalStorageDirectory() + File.separator + "InteleHealth_DB");
@@ -97,7 +96,7 @@ public class Backup {
                 // Toast.makeText(context, "dbfile doesnot exist", Toast.LENGTH_SHORT).show();
             }
 
-            if (value.matches("yes")) {
+            if (isBackup) {
 
                 Log.d("Copying into your file", value);
                 fis = new FileInputStream(dbfile);
@@ -105,8 +104,9 @@ public class Backup {
                 readContents(context);
                 copyFile(context, fis, fos);
                 readContents(context);
+                Toast.makeText(context, "Backup Complete!", Toast.LENGTH_SHORT).show();
                 return true;
-            } else if (value.matches("no")) {
+            } else if (!isBackup) {
 
                 Log.d("Copying into database", value);
                 fis = new FileInputStream(myfile);
@@ -114,6 +114,7 @@ public class Backup {
                 readContents(context);
                 copyFile(context, fis, fos);
                 readContents(context);
+                Toast.makeText(context, "Restore Complete!", Toast.LENGTH_SHORT).show();
                 return true;
             } else {
                 return false;

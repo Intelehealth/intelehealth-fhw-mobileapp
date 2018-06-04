@@ -26,7 +26,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.Calendar;
 
 import io.intelehealth.client.R;
@@ -52,7 +51,7 @@ public class HomeActivity extends AppCompatActivity {
     private static final String TAG = HomeActivity.class.getSimpleName();
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         //do nothing
     }
 
@@ -98,7 +97,7 @@ public class HomeActivity extends AppCompatActivity {
                 if (start < calendar.getTimeInMillis() &&
                         calendar.getTimeInMillis() < end) {
                     // Toast.makeText(HomeActivity.this,"backup started",Toast.LENGTH_SHORT).show();
-                    manageBackup();
+                    manageBackup(true,false);
                 }
                 handler.postDelayed(this, 1000 * 60);
             }
@@ -142,7 +141,6 @@ public class HomeActivity extends AppCompatActivity {
                     View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
                     dialog.setTitle(getString(R.string.enter_license_key))
                             .setView(promptsView)
-
                             .setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -168,11 +166,19 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
             case R.id.backupOption:
-                manageBackup();  // to restore app data at any time of the day
+                manageBackup(true,false);  // to backup app data at any time of the day
+                return true;
+
+            case R.id.restoreOption:
+                manageBackup(false,false); // to restore app data if db is empty
+                return true;
+
+            case R.id.restoreForcedOption:
+                manageBackup(false,true); // to restore app data forcefully
                 return true;
 
             case R.id.logoutOption:
-                manageBackup();
+                manageBackup(true,false);
                 logout();
                 return true;
             default:
@@ -241,26 +247,14 @@ public class HomeActivity extends AppCompatActivity {
         finish();
     }
 
-    public void manageBackup() {
-        Backup b = new Backup();
-        boolean exists = b.checkDatabaseForData(HomeActivity.this);
-        Log.d("data:", String.valueOf(exists));
-
-        if (exists == true) {
-            value = "yes";
-            e.putString("value", value); //copy to file
-        } else if (exists == false) {
-            value = "no";
-            e.putString("value", value);
+    public void manageBackup(boolean isBackup, boolean isForced) {
+        BackupCloud b = new BackupCloud(this);
+        if (isBackup)
+            b.startCloudBackup(null);
+        if(!isBackup) {
+            if(isForced) b.cloudRestoreForced();
+            if(!isForced) b.startCloudRestore();
         }
-        e.apply();
-
-        try {
-            b.createFileInMemory(this);
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        Toast.makeText(this, getString(R.string.backup_completed), Toast.LENGTH_SHORT).show();
     }
 
 

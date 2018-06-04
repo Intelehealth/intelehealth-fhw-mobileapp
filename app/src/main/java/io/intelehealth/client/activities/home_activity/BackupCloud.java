@@ -74,27 +74,17 @@ public class BackupCloud {
             queue_id = checkQueueforId();
         }
 
-        if (!isNetworkAvailable()) {
-            Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
-            //Failed Task
-            if (queue_id == null || queue_id.equals(-1)) {
-                addJobToQueue();
-            }
+        //get Local Backup first
+        boolean check = getBackupInstance().checkDatabaseForData(context);
+
+        if(!check){
+            Toast.makeText(context, "No data to backup!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        //get Local Backup first
-        boolean check = getBackupInstance().checkDatabaseForData(context);
-        if (check)
-            e.putString("value", "yes");
-        else
-            e.putString("value", "no");
-
-        e.apply();
-
         boolean backup_checker = false;
         try {
-            backup_checker = backup.createFileInMemory(context);
+            backup_checker = backup.createFileInMemory(context,true);
         } catch (IOException e1) {
             e1.printStackTrace();
         }
@@ -135,6 +125,11 @@ public class BackupCloud {
     }
 
     public void startCloudRestore() {
+        boolean check = getBackupInstance().checkDatabaseForData(context);
+        if(check){
+            Toast.makeText(context, "database contains data, cannot restore!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         //Check if backup exists locally
         location = sharedPreferences.getString(SettingsActivity.KEY_PREF_LOCATION_NAME, null);
         user_id = sharedPreferences.getString("creatorid", null);
@@ -144,20 +139,25 @@ public class BackupCloud {
 
         //Download Backup from cloud if not available locally
         if (!local_backup.exists()) {
+            Toast.makeText(context, "Downloading from cloud", Toast.LENGTH_SHORT).show();
             downloadFromParse(user_id, location);
         } else {
             Toast.makeText(context, R.string.local_backup_restore, Toast.LENGTH_SHORT).show();
+            try {
+                backup.createFileInMemory(context,false);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         }
-        try {
-            Toast.makeText(context, context.getString(R.string.local_backup_restore), Toast.LENGTH_SHORT).show();
-            backup.createFileInMemory(context);
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
+
     }
 
     public void cloudRestoreForced() {
         //Download Backup from cloud
+        location = sharedPreferences.getString(SettingsActivity.KEY_PREF_LOCATION_NAME, null);
+        user_id = sharedPreferences.getString("creatorid", null);
+
+        downloadFromParse(user_id, location);
     }
 
     private Backup getBackupInstance() {
@@ -257,7 +257,7 @@ public class BackupCloud {
                     if (e == null) {
                         String newText = "Database Upload Complete";
                         mBuilder.setSmallIcon(R.mipmap.ic_launcher)
-                                .setContentTitle("Image Upload")
+                                .setContentTitle("Database Upload")
                                 .setContentText(newText);
                         mNotifyManager.notify(mId, mBuilder.build());
                         removeJobFromQueue(queue_id);
@@ -268,7 +268,7 @@ public class BackupCloud {
                     } else {
                         String newText = "Database Upload Failed";
                         mBuilder.setSmallIcon(R.mipmap.ic_launcher)
-                                .setContentTitle("Image Upload")
+                                .setContentTitle("Database Upload")
                                 .setContentText(newText);
                         mNotifyManager.notify(mId, mBuilder.build());
                         //Failed Task
@@ -313,6 +313,7 @@ public class BackupCloud {
                                     FileOutputStream fileOutputStream = new FileOutputStream(myfile);
                                     fileOutputStream.write(data);
                                     fileOutputStream.close();
+                                    backup.createFileInMemory(context,false);
                                 } catch (FileNotFoundException exfnf) {
                                 } catch (IOException exio) {
                                     Toast.makeText(context, "Error writing backup file", Toast.LENGTH_SHORT).show();
@@ -324,5 +325,9 @@ public class BackupCloud {
             });
         }
 
+    }
+
+    public boolean checkDatabaseForData(){
+        return backup.checkDatabaseForData(context);
     }
 }
