@@ -66,7 +66,7 @@ public class Backup {
         return exists;
     }
 
-    public void createFileInMemory(Context context) throws IOException {
+    public boolean createFileInMemory(Context context) throws IOException {
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         e = sharedPreferences.edit();
@@ -105,8 +105,8 @@ public class Backup {
                 readContents(context);
                 copyFile(context, fis, fos);
                 readContents(context);
-            }
-            if (value.matches("no")) {
+                return true;
+            } else if (value.matches("no")) {
 
                 Log.d("Copying into database", value);
                 fis = new FileInputStream(myfile);
@@ -114,11 +114,15 @@ public class Backup {
                 readContents(context);
                 copyFile(context, fis, fos);
                 readContents(context);
+                return true;
+            } else {
+                return false;
             }
 
 
         } catch (Exception ie) {
             Log.d("Error: ", ie.toString());
+            return false;
         }
 
 

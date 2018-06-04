@@ -7,6 +7,11 @@ import android.util.Log;
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import io.intelehealth.client.activities.home_activity.BackupCloud;
+import io.intelehealth.client.application.IntelehealthApplication;
 import io.intelehealth.client.database.DelayedJobQueueProvider;
 import io.intelehealth.client.services.ClientService;
 import io.intelehealth.client.services.ImageUploadService;
@@ -106,6 +111,17 @@ public class JobDispatchService extends JobService {
                         serviceIntent.putExtra("visitID", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.VISIT_ID)));
                         serviceIntent.putExtra("name", cursor.getString(cursor.getColumnIndex(DelayedJobQueueProvider.PATIENT_NAME)));
                         break;
+                    }
+                    case "syncDB":{
+                        serviceIntent = null;
+                        SimpleDateFormat sdf = new SimpleDateFormat("HH");
+                        Integer hour = Integer.valueOf(sdf.format(new Date()));
+                        //Blocking this call by time. This should only be called from 8 at night to 6 in morning
+                        if(hour<5 || hour>=20) {
+                            BackupCloud backupCloud = new BackupCloud(IntelehealthApplication.getAppContext());
+                            backupCloud.startCloudBackup(cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider._ID)));
+
+                        }
                     }
                     default:
                         Log.e(TAG, "Does not match any Job Type");

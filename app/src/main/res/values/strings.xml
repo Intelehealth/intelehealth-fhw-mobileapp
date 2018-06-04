@@ -363,4 +363,10 @@
     <string name="exit_survey_skip">Skip</string>
     <string name="exit_survey_submit">Submit</string>
 
+    <!--Cloud Backup-->
+
+    <string name="no_network">Internet connection not available</string>
+    <string name="local_backup_failed">Internet connection not available</string>
+    <string name="local_backup_restore">Restoring from local backup</string>
+
 </resources>
