@@ -1,6 +1,8 @@
 package io.intelehealth.client.activities.home_activity;
 
+import android.app.Dialog;
 import android.app.NotificationManager;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -52,6 +54,8 @@ public class BackupCloud {
     String location;
     String user_id;
 
+    private Dialog dialog;
+
     public BackupCloud(Context context) {
         this.context = context;
         backup = getBackupInstance();
@@ -67,31 +71,42 @@ public class BackupCloud {
 
     public void startCloudBackup(@Nullable Integer queue_id) {
 
+        if (queue_id == null) {
+            dialog = new ProgressDialog(context);
+            dialog.setTitle("Backing up data");
+            dialog.setCancelable(false);
+            dialog.show();
+        }
+
         location = sharedPreferences.getString(SettingsActivity.KEY_PREF_LOCATION_NAME, null);
         user_id = sharedPreferences.getString("creatorid", null);
 
         if (queue_id == null) {
-            queue_id = checkQueueforId();
+            queue_id = getQueueId();
         }
 
         //get Local Backup first
         boolean check = getBackupInstance().checkDatabaseForData(context);
 
-        if(!check){
+        if (!check) {
             Toast.makeText(context, "No data to backup!", Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
             return;
         }
 
         boolean backup_checker = false;
         try {
-            backup_checker = backup.createFileInMemory(context,true);
+            backup_checker = backup.createFileInMemory(context, true);
+            dialog.dismiss();
         } catch (IOException e1) {
+            dialog.dismiss();
             e1.printStackTrace();
         }
 
         //Contains logic to upload to cloud
         if (!isNetworkAvailable()) {
             Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
             //Failed Task
             if (queue_id == null || queue_id.equals(-1)) {
                 addJobToQueue();
@@ -101,6 +116,7 @@ public class BackupCloud {
 
         if (!backup_checker) {
             Toast.makeText(context, context.getString(R.string.local_backup_failed), Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
             //Failed Task
             if (queue_id == null || queue_id.equals(-1)) {
                 addJobToQueue();
@@ -125,8 +141,13 @@ public class BackupCloud {
     }
 
     public void startCloudRestore() {
+        dialog = new ProgressDialog(context);
+        dialog.setTitle("Restoring data");
+        dialog.setCancelable(false);
+        dialog.show();
         boolean check = getBackupInstance().checkDatabaseForData(context);
-        if(check){
+        if (check) {
+            dialog.dismiss();
             Toast.makeText(context, "database contains data, cannot restore!", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -140,24 +161,36 @@ public class BackupCloud {
         //Download Backup from cloud if not available locally
         if (!local_backup.exists()) {
             Toast.makeText(context, "Downloading from cloud", Toast.LENGTH_SHORT).show();
-            downloadFromParse(user_id, location);
+            if (isNetworkAvailable()) downloadFromParse(user_id, location);
+            else {
+                dialog.dismiss();
+                Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
+            }
         } else {
             Toast.makeText(context, R.string.local_backup_restore, Toast.LENGTH_SHORT).show();
             try {
-                backup.createFileInMemory(context,false);
+                backup.createFileInMemory(context, false);
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
+            dialog.dismiss();
         }
 
     }
 
     public void cloudRestoreForced() {
         //Download Backup from cloud
+        dialog = new ProgressDialog(context);
+        dialog.setTitle("Restoring data (Forced)");
+        dialog.setCancelable(false);
+        dialog.show();
         location = sharedPreferences.getString(SettingsActivity.KEY_PREF_LOCATION_NAME, null);
         user_id = sharedPreferences.getString("creatorid", null);
-
-        downloadFromParse(user_id, location);
+        if (isNetworkAvailable()) downloadFromParse(user_id, location);
+        else {
+            dialog.dismiss();
+            Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private Backup getBackupInstance() {
@@ -172,12 +205,8 @@ public class BackupCloud {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    private Integer checkQueueforId() {
-        return 0;
-    }
-
     private int getQueueId() {
-        String SELECTION = DelayedJobQueueProvider.JOB_TYPE + "=";
+        String SELECTION = DelayedJobQueueProvider.JOB_TYPE + "=?";
         String[] ARGS = new String[]{"syncDB"};
         Cursor cursor = context.getContentResolver().query(DelayedJobQueueProvider.CONTENT_URI, null, SELECTION, ARGS, null);
         if (cursor != null && cursor.moveToFirst() && cursor.getCount() > 0) {
@@ -236,7 +265,6 @@ public class BackupCloud {
                             addJobToQueue();
                         }
                     }
-
                 }
             }, new ProgressCallback() {
                 @Override
@@ -261,6 +289,7 @@ public class BackupCloud {
                                 .setContentText(newText);
                         mNotifyManager.notify(mId, mBuilder.build());
                         removeJobFromQueue(queue_id);
+                        dialog.dismiss();
                         //Success
                         if (queue_id != null && !queue_id.equals(-1)) {
                             removeJobFromQueue(queue_id);
@@ -271,6 +300,7 @@ public class BackupCloud {
                                 .setContentTitle("Database Upload")
                                 .setContentText(newText);
                         mNotifyManager.notify(mId, mBuilder.build());
+                        dialog.dismiss();
                         //Failed Task
                         if (queue_id == null || queue_id.equals(-1)) {
                             addJobToQueue();
@@ -291,6 +321,7 @@ public class BackupCloud {
                 @Override
                 public void done(ParseObject object, ParseException e) {
                     if (object == null) {
+                        dialog.dismiss();
                         Toast.makeText(context, "Database backup not available", Toast.LENGTH_SHORT).show();
                     } else {
                         final ParseFile file = (ParseFile) object.get("db");
@@ -313,10 +344,12 @@ public class BackupCloud {
                                     FileOutputStream fileOutputStream = new FileOutputStream(myfile);
                                     fileOutputStream.write(data);
                                     fileOutputStream.close();
-                                    backup.createFileInMemory(context,false);
+                                    backup.createFileInMemory(context, false);
                                 } catch (FileNotFoundException exfnf) {
                                 } catch (IOException exio) {
                                     Toast.makeText(context, "Error writing backup file", Toast.LENGTH_SHORT).show();
+                                } finally {
+                                    dialog.dismiss();
                                 }
                             }
                         });
@@ -326,8 +359,5 @@ public class BackupCloud {
         }
 
     }
-
-    public boolean checkDatabaseForData(){
-        return backup.checkDatabaseForData(context);
-    }
 }
+
