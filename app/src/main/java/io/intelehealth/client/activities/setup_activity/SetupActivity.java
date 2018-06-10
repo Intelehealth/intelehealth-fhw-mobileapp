@@ -542,7 +542,7 @@ public class SetupActivity extends AppCompatActivity {
                 );
                 Log.i(TAG, "onPostExecute: Parse init");
                 Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
-
+                intent.putExtra("setup",true);
                 if (r2.isChecked()) {
                     if (sharedPref.contains("licensekey")) {
                         startActivity(intent);

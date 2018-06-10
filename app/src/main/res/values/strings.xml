@@ -371,4 +371,7 @@
 
     <string name="cloud_restore_header">Restore form cloud</string>
 
+    <string name="local_restore_alert_title">Restore backup</string>
+    <string name="local_restore_alert_message">A local backup has been found. Do you want to restore?</string>
+
 </resources>

@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
@@ -26,6 +27,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.Calendar;
 
 import io.intelehealth.client.R;
@@ -85,6 +87,40 @@ public class HomeActivity extends AppCompatActivity {
         endDate.set(Calendar.MINUTE, 15);
         endDate.set(Calendar.AM_PM, Calendar.PM);
 
+        if (getIntent().hasExtra("setup") && getIntent().
+                getBooleanExtra("setup", false) == true) {
+
+            String dbfilepath = Environment.getExternalStorageDirectory() + File.separator + "InteleHealth_DB" +
+                    File.separator + "Intelehealth.db"; // directory: Intelehealth_DB   ,  filename: Intelehealth.db
+            Log.d("newfilepath", dbfilepath);
+            final File db_file = new File(dbfilepath);
+
+            if (db_file.exists()) {
+                new AlertDialog.Builder(this)
+                        .setIcon(R.drawable.ic_file_download_black_48px)
+                        .setTitle(R.string.local_restore_alert_title)
+                        .setMessage(R.string.local_restore_alert_message)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.generic_yes,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        //Restore from local backup
+                                        manageBackup(false, false); // to restore app data if db is empty
+                                    }
+                                }
+                        )
+                        .setNegativeButton(R.string.generic_no,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        //Do Nothing!
+                                        // db_file.delete();
+                                    }
+                                }
+                        )
+                        .create().show();
+            }
+        }
+
         handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -97,7 +133,7 @@ public class HomeActivity extends AppCompatActivity {
                 if (start < calendar.getTimeInMillis() &&
                         calendar.getTimeInMillis() < end) {
                     // Toast.makeText(HomeActivity.this,"backup started",Toast.LENGTH_SHORT).show();
-                    manageBackup(true,false);
+                    manageBackup(true, false);
                 }
                 handler.postDelayed(this, 1000 * 60);
             }
@@ -166,15 +202,15 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
             case R.id.backupOption:
-                manageBackup(true,false);  // to backup app data at any time of the day
+                manageBackup(true, false);  // to backup app data at any time of the day
                 return true;
 
             case R.id.restoreOption:
-                manageBackup(false,false); // to restore app data if db is empty
+                manageBackup(false, false); // to restore app data if db is empty
                 return true;
 
             case R.id.logoutOption:
-                manageBackup(true,false);
+                manageBackup(true, false);
                 logout();
                 return true;
             default:
@@ -247,9 +283,9 @@ public class HomeActivity extends AppCompatActivity {
         BackupCloud b = new BackupCloud(this);
         if (isBackup)
             b.startCloudBackup(null);
-        if(!isBackup) {
-            if(isForced) b.cloudRestoreForced();
-            if(!isForced) b.startCloudRestore();
+        if (!isBackup) {
+            if (isForced) b.cloudRestoreForced();
+            if (!isForced) b.startCloudRestore();
         }
     }
 
