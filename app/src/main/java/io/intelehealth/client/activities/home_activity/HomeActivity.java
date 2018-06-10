@@ -173,10 +173,6 @@ public class HomeActivity extends AppCompatActivity {
                 manageBackup(false,false); // to restore app data if db is empty
                 return true;
 
-            case R.id.restoreForcedOption:
-                manageBackup(false,true); // to restore app data forcefully
-                return true;
-
             case R.id.logoutOption:
                 manageBackup(true,false);
                 logout();

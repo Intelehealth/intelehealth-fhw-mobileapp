@@ -12,4 +12,9 @@
             android:title="@string/pref_header_data_sync"
             android:icon="@drawable/ic_sync_black_24dp"/>
 
+    <header
+        android:fragment="io.intelehealth.client.activities.setting_activity.SettingsActivity$CloudRestoreFragment"
+        android:title="@string/cloud_restore_header"
+        android:icon="@drawable/ic_cloud_done_black"/>
+
 </preference-headers>

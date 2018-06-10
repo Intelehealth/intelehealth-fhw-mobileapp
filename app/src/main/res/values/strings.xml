@@ -369,4 +369,6 @@
     <string name="local_backup_failed">Internet connection not available</string>
     <string name="local_backup_restore">Restoring from local backup</string>
 
+    <string name="cloud_restore_header">Restore form cloud</string>
+
 </resources>
