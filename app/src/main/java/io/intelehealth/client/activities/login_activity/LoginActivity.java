@@ -159,11 +159,12 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-        // attempt to get device-Id for the phone
+      /*  // attempt to get device-Id for the phone
         TextView deviceIdView = (TextView) findViewById(R.id.textview_device_id);
         String deviceId = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
         deviceId = getString(R.string.device_id) + deviceId;
         deviceIdView.setText(deviceId);
+        */  //prajwal_changes
     }
 
 
