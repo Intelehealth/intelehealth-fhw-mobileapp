@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/social/ic_person_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/av/ic_play_circle_filled_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,8 +28,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_person_black_24dp" />
-                            <entry key="sourceFile" value="C:\Users\akshyata" />
+                            <entry key="outputName" value="ic_play_circle_filled_black_24dp" />
+                            <entry key="sourceFile" value="C:\Users\akshyata\Desktop\calendar_intele_24dp.svg" />
                           </map>
                         </option>
                       </PersistentState>

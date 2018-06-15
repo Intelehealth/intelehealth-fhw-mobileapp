@@ -36,7 +36,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
     //TODO: Change placeholder icon "android.R.drawable.ic_menu_my_calendar"
 
     final int[] icons = {R.drawable.ic_person_add_24dp, R.drawable.ic_search_24dp,
-            android.R.drawable.ic_menu_my_calendar, R.drawable.ic_action_folder_open
+            R.drawable.ic_calendar_intele_24dp, R.drawable.ic_play_circle_filled_black_24dp
             //,android.R.drawable.ic_menu_preferences
     };
 
