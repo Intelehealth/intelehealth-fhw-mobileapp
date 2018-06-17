@@ -1,6 +1,7 @@
 package io.intelehealth.client.activities.home_activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -21,6 +22,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
+import io.intelehealth.client.services.ImageDownloadService;
+import io.intelehealth.client.services.ImageUploadService;
 
 /**
  * Created by twinkle dhanak on 7/4/2017.
@@ -107,7 +110,6 @@ public class Backup {
                 Toast.makeText(context, "Backup Complete!", Toast.LENGTH_SHORT).show();
                 return true;
             } else if (!isBackup) {
-
                 Log.d("Copying into database", value);
                 fis = new FileInputStream(myfile);
                 fos = new FileOutputStream(dbfile);

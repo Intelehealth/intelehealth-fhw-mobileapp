@@ -257,7 +257,9 @@
         <service
             android:name=".services.PatientUpdateService"
             android:exported="false" />
-
+        <service
+            android:name=".services.ImageDownloadService"
+            android:exported="false" />
         <activity
             android:name=".activities.sync_activity.ActivitySync"
             android:configChanges="orientation|keyboardHidden"

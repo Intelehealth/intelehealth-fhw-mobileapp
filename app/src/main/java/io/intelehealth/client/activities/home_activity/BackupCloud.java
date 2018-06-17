@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
@@ -34,6 +35,7 @@ import java.io.IOException;
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.setting_activity.SettingsActivity;
 import io.intelehealth.client.database.DelayedJobQueueProvider;
+import io.intelehealth.client.services.ImageDownloadService;
 
 /**
  * Created by Dexter Barretto on 3/6/18.
@@ -169,7 +171,11 @@ public class BackupCloud {
         } else {
             Toast.makeText(context, R.string.local_backup_restore, Toast.LENGTH_SHORT).show();
             try {
-                backup.createFileInMemory(context, false);
+                boolean isSuccess = backup.createFileInMemory(context, false);
+                if (isSuccess) {
+                    Intent serviceIntent = new Intent(context, ImageDownloadService.class);
+                    context.startService(serviceIntent);
+                }
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
@@ -344,7 +350,12 @@ public class BackupCloud {
                                     FileOutputStream fileOutputStream = new FileOutputStream(myfile);
                                     fileOutputStream.write(data);
                                     fileOutputStream.close();
-                                    backup.createFileInMemory(context, false);
+                                    boolean isSuccess = backup.createFileInMemory(context, false);
+                                    if (isSuccess) {
+                                        Intent serviceIntent = new Intent(context, ImageDownloadService.class);
+                                        context.getApplicationContext().startService(serviceIntent);
+                                    }
+
                                 } catch (FileNotFoundException exfnf) {
                                 } catch (IOException exio) {
                                     Toast.makeText(context, "Error writing backup file", Toast.LENGTH_SHORT).show();
