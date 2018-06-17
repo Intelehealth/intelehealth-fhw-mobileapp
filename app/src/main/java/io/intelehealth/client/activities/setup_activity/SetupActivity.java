@@ -92,6 +92,8 @@ public class SetupActivity extends AppCompatActivity {
     private Spinner mDropdownLocation;
 
 
+    private boolean isLocationFetched = false;
+
     private RadioButton r1;
     private RadioButton r2;
     private List<Location> mLocations = new ArrayList<>();
@@ -205,16 +207,21 @@ public class SetupActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                isLocationFetched = false;
+                LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, new ArrayList<String>());
+                mDropdownLocation.setAdapter(adapter);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
-                    String BASE_URL = "http://" + mUrlField.getText().toString() + ":8080/openmrs/ws/rest/v1/";
-                    if (URLUtil.isValidUrl(BASE_URL)) getLocationFromServer(BASE_URL);
-                    else
-                        Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+                if (!mUrlField.getText().toString().trim().isEmpty() && mUrlField.getText().toString().length() > 12) {
+                    if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
+                        String BASE_URL = "http://" + mUrlField.getText().toString() + ":8080/openmrs/ws/rest/v1/";
+                        if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched)
+                            getLocationFromServer(BASE_URL);
+                        else
+                            Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
@@ -233,7 +240,6 @@ public class SetupActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });*/
-
 
 
     }
@@ -494,7 +500,6 @@ public class SetupActivity extends AppCompatActivity {
                         return 201;
 
 
-
                     }
                 }
             } catch (UnknownHostException e) {
@@ -542,7 +547,7 @@ public class SetupActivity extends AppCompatActivity {
                 );
                 Log.i(TAG, "onPostExecute: Parse init");
                 Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
-                intent.putExtra("setup",true);
+                intent.putExtra("setup", true);
                 if (r2.isChecked()) {
                     if (sharedPref.contains("licensekey")) {
                         startActivity(intent);
@@ -588,13 +593,18 @@ public class SetupActivity extends AppCompatActivity {
                         List<String> items = getLocationStringList(locationList.getResults());
                         LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, items);
                         mDropdownLocation.setAdapter(adapter);
+                        isLocationFetched = true;
+                    }else {
+                        isLocationFetched = false;
+                        Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
                     }
 
                 }
 
                 @Override
                 public void onFailure(Call<Results<Location>> call, Throwable t) {
-                    Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_LONG).show();
+                    isLocationFetched = false;
+                    Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
                 }
             });
         } catch (IllegalArgumentException e) {
