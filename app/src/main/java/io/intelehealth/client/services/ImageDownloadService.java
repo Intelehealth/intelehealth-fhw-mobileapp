@@ -60,15 +60,14 @@ public class ImageDownloadService extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
 
-        Toast.makeText(this, "Downloading Images", Toast.LENGTH_SHORT).show();
-
+        Toast.makeText(this, getString(R.string.image_downloading_service_message), Toast.LENGTH_SHORT).show();
 
         mNotifyManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         mBuilder = new NotificationCompat.Builder(this);
 
         mBuilder.setSmallIcon(R.mipmap.ic_sync)
-                .setContentTitle("Downloading")
-                .setContentText("Downloading Image Data");
+                .setContentTitle(getString(R.string.image_downloading_service_title))
+                .setContentText(getString(R.string.image_downloading_service_message));
         mNotifyManager.notify(mId, mBuilder.build());
         queryAllImagesFromDatabase(this);
         queryAllProfileImages(this);
@@ -135,7 +134,8 @@ public class ImageDownloadService extends IntentService {
                 @Override
                 public void done(ParseObject object, ParseException e) {
                     if (object == null) {
-                        Toast.makeText(context, "Image not available", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, getString(R.string.error_img_unavailable), Toast.LENGTH_SHORT).show();
+                        notifyDownload();
                     } else {
                         final ParseFile file = (ParseFile) object.get("Image");
                         file.getDataInBackground(new GetDataCallback() {
@@ -151,7 +151,7 @@ public class ImageDownloadService extends IntentService {
                                     notifyDownload();
                                 } catch (FileNotFoundException exfnf) {
                                 } catch (IOException exio) {
-                                    Toast.makeText(context, "Error downloading image", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context, getString(R.string.error_img_download_failed), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -199,7 +199,8 @@ public class ImageDownloadService extends IntentService {
             @Override
             public void done(ParseObject object, ParseException e) {
                 if (object == null) {
-                    Toast.makeText(context, "Image not available", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, getString(R.string.error_img_unavailable), Toast.LENGTH_SHORT).show();
+                    notifyDownload();
                 } else {
                     final ParseFile file = (ParseFile) object.get("Image");
                     file.getDataInBackground(new GetDataCallback() {
@@ -214,7 +215,7 @@ public class ImageDownloadService extends IntentService {
                                 notifyDownload();
                             } catch (FileNotFoundException exfnf) {
                             } catch (IOException exio) {
-                                Toast.makeText(context, "Error downloading profile picture", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, getString(R.string.error_img_download_failed), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -227,12 +228,12 @@ public class ImageDownloadService extends IntentService {
         files_downloaded++;
         if (files_to_download.equals(files_downloaded)) {
             mBuilder.setSmallIcon(R.mipmap.ic_sync)
-                    .setContentTitle("Image Data Download Complete")
-                    .setContentText("All image files have been downloaded");
+                    .setContentTitle(getString(R.string.image_downloading_service_complete_title))
+                    .setContentText(getString(R.string.image_downloading_service_complete_message));
         } else {
             mBuilder.setSmallIcon(R.mipmap.ic_sync)
-                    .setContentTitle("Downloading Image Data")
-                    .setContentText("Downloaded " + files_downloaded + "/" + files_to_download);
+                    .setContentTitle(getString(R.string.image_downloading_service_message))
+                    .setContentText(getString(R.string.image_downloading_service_process_message) + " " + files_downloaded + "/" + files_to_download);
         }
         mNotifyManager.notify(mId, mBuilder.build());
     }

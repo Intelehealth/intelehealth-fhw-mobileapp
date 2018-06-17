@@ -21,6 +21,7 @@ import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import io.intelehealth.client.R;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.services.ImageDownloadService;
 import io.intelehealth.client.services.ImageUploadService;
@@ -107,7 +108,7 @@ public class Backup {
                 readContents(context);
                 copyFile(context, fis, fos);
                 readContents(context);
-                Toast.makeText(context, "Backup Complete!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.db_backup_complete), Toast.LENGTH_SHORT).show();
                 return true;
             } else if (!isBackup) {
                 Log.d("Copying into database", value);
@@ -116,7 +117,7 @@ public class Backup {
                 readContents(context);
                 copyFile(context, fis, fos);
                 readContents(context);
-                Toast.makeText(context, "Restore Complete!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.db_restore_complete), Toast.LENGTH_SHORT).show();
                 return true;
             } else {
                 return false;

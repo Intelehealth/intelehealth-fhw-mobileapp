@@ -75,7 +75,7 @@ public class BackupCloud {
 
         if (queue_id == null) {
             dialog = new ProgressDialog(context);
-            dialog.setTitle("Backing up data");
+            dialog.setTitle(context.getString(R.string.cloud_upload_header));
             dialog.setCancelable(false);
             dialog.show();
         }
@@ -91,7 +91,7 @@ public class BackupCloud {
         boolean check = getBackupInstance().checkDatabaseForData(context);
 
         if (!check) {
-            Toast.makeText(context, "No data to backup!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.no_data), Toast.LENGTH_SHORT).show();
             dialog.dismiss();
             return;
         }
@@ -144,13 +144,13 @@ public class BackupCloud {
 
     public void startCloudRestore() {
         dialog = new ProgressDialog(context);
-        dialog.setTitle("Restoring data");
+        dialog.setTitle(context.getString(R.string.restore_data));
         dialog.setCancelable(false);
         dialog.show();
         boolean check = getBackupInstance().checkDatabaseForData(context);
         if (check) {
             dialog.dismiss();
-            Toast.makeText(context, "database contains data, cannot restore!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.error_existing_data), Toast.LENGTH_SHORT).show();
             return;
         }
         //Check if backup exists locally
@@ -162,7 +162,7 @@ public class BackupCloud {
 
         //Download Backup from cloud if not available locally
         if (!local_backup.exists()) {
-            Toast.makeText(context, "Downloading from cloud", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.cloud_download_data), Toast.LENGTH_SHORT).show();
             if (isNetworkAvailable()) downloadFromParse(user_id, location);
             else {
                 dialog.dismiss();
@@ -187,7 +187,7 @@ public class BackupCloud {
     public void cloudRestoreForced() {
         //Download Backup from cloud
         dialog = new ProgressDialog(context);
-        dialog.setTitle("Restoring data (Forced)");
+        dialog.setTitle(context.getString(R.string.force_restore_header));
         dialog.setCancelable(false);
         dialog.show();
         location = sharedPreferences.getString(SettingsActivity.KEY_PREF_LOCATION_NAME, null);
@@ -275,7 +275,7 @@ public class BackupCloud {
             }, new ProgressCallback() {
                 @Override
                 public void done(Integer percentDone) {
-                    String newText = "Database Uploading - " + percentDone + "%";
+                    String newText = context.getString(R.string.database_uploading)+" - " + percentDone + "%";
                     mBuilder.setSmallIcon(R.mipmap.ic_launcher)
                             .setContentTitle(newText)
                             .setContentText(newText);
@@ -289,10 +289,9 @@ public class BackupCloud {
                 @Override
                 public void done(com.parse.ParseException e) {
                     if (e == null) {
-                        String newText = "Database Upload Complete";
                         mBuilder.setSmallIcon(R.mipmap.ic_launcher)
-                                .setContentTitle("Database Upload")
-                                .setContentText(newText);
+                                .setContentTitle(context.getString(R.string.database_upload))
+                                .setContentText(context.getString(R.string.database_upload_complete));
                         mNotifyManager.notify(mId, mBuilder.build());
                         removeJobFromQueue(queue_id);
                         dialog.dismiss();
@@ -301,10 +300,9 @@ public class BackupCloud {
                             removeJobFromQueue(queue_id);
                         }
                     } else {
-                        String newText = "Database Upload Failed";
                         mBuilder.setSmallIcon(R.mipmap.ic_launcher)
-                                .setContentTitle("Database Upload")
-                                .setContentText(newText);
+                                .setContentTitle(context.getString(R.string.database_upload))
+                                .setContentText(context.getString(R.string.database_upload_failed));
                         mNotifyManager.notify(mId, mBuilder.build());
                         dialog.dismiss();
                         //Failed Task
@@ -328,7 +326,7 @@ public class BackupCloud {
                 public void done(ParseObject object, ParseException e) {
                     if (object == null) {
                         dialog.dismiss();
-                        Toast.makeText(context, "Database backup not available", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, context.getString(R.string.db_backup_unavailable), Toast.LENGTH_SHORT).show();
                     } else {
                         final ParseFile file = (ParseFile) object.get("db");
                         file.getDataInBackground(new GetDataCallback() {
@@ -358,7 +356,7 @@ public class BackupCloud {
 
                                 } catch (FileNotFoundException exfnf) {
                                 } catch (IOException exio) {
-                                    Toast.makeText(context, "Error writing backup file", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context, context.getString(R.string.db_file_write_error), Toast.LENGTH_SHORT).show();
                                 } finally {
                                     dialog.dismiss();
                                 }
