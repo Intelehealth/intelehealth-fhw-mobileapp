@@ -161,7 +161,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mEconomicStatus = (Spinner) findViewById(R.id.spinner_economic_status);
 
         //TODO: Change this back for other deployments
-        mMiddleName.setVisibility(View.GONE);
+      //  mMiddleName.setVisibility(View.GONE);  //prajwal commented...coz middle name was not displaying
         mAddress1.setVisibility(View.GONE);
         mAddress2.setVisibility(View.GONE);
         mRelationship.setVisibility(View.GONE);
