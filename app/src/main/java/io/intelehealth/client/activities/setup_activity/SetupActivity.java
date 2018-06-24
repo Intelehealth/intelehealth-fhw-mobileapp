@@ -274,6 +274,8 @@ public class SetupActivity extends AppCompatActivity {
      * Get user selected location.
      */
     private void attemptLogin() {
+
+
         if (mAuthTask != null) {
             return;
         }

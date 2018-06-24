@@ -319,7 +319,6 @@ public class BackupCloud {
     private void downloadFromParse(String user_id, String location) {
         if (user_id != null && location != null) {
             ParseQuery<ParseObject> query = ParseQuery.getQuery("BackupDatabase");
-            query.whereEqualTo("user_id", user_id);
             query.whereEqualTo("location", location);
             query.getFirstInBackground(new GetCallback<ParseObject>() {
                 @Override

@@ -404,4 +404,12 @@
     <string name="error_img_unavailable">Image not available</string>
     <string name="error_img_download_failed">Image Download failed</string>
 
+    <!--Parse Validation User login-->
+
+    <string name="user_logged_in">Already logged in!</string>
+    <string name="user_logged_out">Logged out from server</string>
+    <string name="user_login_check_success">Login Successful!</string>
+    <string name="user_login_error">Another user is logged into this location. Please contact admin</string>
+    <string name="user_server_unreachable">Device Offline. Cannot check server for login verification</string>
+
 </resources>

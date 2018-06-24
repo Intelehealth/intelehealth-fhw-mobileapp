@@ -27,14 +27,20 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
 import java.io.File;
 import java.util.Calendar;
+import java.util.List;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.login_activity.LoginActivity;
 import io.intelehealth.client.activities.login_activity.OfflineLogin;
 import io.intelehealth.client.activities.setting_activity.SettingsActivity;
 import io.intelehealth.client.services.DownloadProtocolsTask;
+import io.intelehealth.client.utilities.NetworkConnection;
 
 
 /**
@@ -90,6 +96,8 @@ public class HomeActivity extends AppCompatActivity {
         if (getIntent().hasExtra("setup") && getIntent().
                 getBooleanExtra("setup", false) == true) {
 
+            parseLoginValidation();
+
             String dbfilepath = Environment.getExternalStorageDirectory() + File.separator + "InteleHealth_DB" +
                     File.separator + "Intelehealth.db"; // directory: Intelehealth_DB   ,  filename: Intelehealth.db
             Log.d("newfilepath", dbfilepath);
@@ -119,6 +127,13 @@ public class HomeActivity extends AppCompatActivity {
                         )
                         .create().show();
             }
+        }
+
+        if (getIntent().hasExtra("login") && getIntent().
+                getBooleanExtra("login", false) == true) {
+
+            parseLoginValidation();
+
         }
 
         handler = new Handler();
@@ -254,6 +269,8 @@ public class HomeActivity extends AppCompatActivity {
 
         OfflineLogin.getOfflineLogin().setOfflineLoginStatus(false);
 
+        parseLogOut();
+
         AccountManager manager = AccountManager.get(HomeActivity.this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -289,5 +306,55 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    private void parseLoginValidation() {
+        if (NetworkConnection.isOnline(this)) {
+            ParseObject register_login = new ParseObject("Login");
+            register_login.put("userId", sharedPreferences.getString("creatorid", null));
+            register_login.put("location", sharedPreferences.getString(SettingsActivity.KEY_PREF_LOCATION_NAME, null));
+            try {
+                register_login.save();
+                Toast.makeText(this, getString(R.string.user_login_check_success), Toast.LENGTH_SHORT).show();
+            } catch (ParseException e1) {
+                switch (e1.getCode()) {
+                    case 208: {
+                        Toast.makeText(this, getString(R.string.user_logged_in), Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                    case 403: {
+                        Toast.makeText(this, getString(R.string.user_login_error), Toast.LENGTH_LONG).show();
+                        logout();
+                        break;
+                    }
+                    case 400: {
+                        Toast.makeText(this, e1.getMessage(), Toast.LENGTH_SHORT).show();
+                        logout();
+                        break;
+                    }
+                    default: {
+                        Toast.makeText(this, e1.getMessage(), Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                }
+            }
+        } else {
+            Toast.makeText(this, getString(R.string.user_server_unreachable), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void parseLogOut() {
+        if (NetworkConnection.isOnline(this)) {
+            ParseQuery<ParseObject> getLogin = ParseQuery.getQuery("Login");
+            getLogin.whereEqualTo("userId", sharedPreferences.getString("creatorid", null));
+            try {
+                List<ParseObject> loginList = getLogin.find();
+                if (loginList != null && !loginList.isEmpty()) {
+                    for (ParseObject login : loginList)
+                        login.delete();
+                }
+            } catch (ParseException e1) {
+                Log.e(TAG, "parseLogOut: ", e1);
+            }
+        }
+    }
 
 }
