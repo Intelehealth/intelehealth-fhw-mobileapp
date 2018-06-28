@@ -60,6 +60,8 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
+                         moveTaskToBack(true);
+
                     }
 
                 })
