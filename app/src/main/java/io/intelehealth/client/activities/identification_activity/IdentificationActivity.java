@@ -403,7 +403,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 String dobString = simpleDateFormat.format(dob.getTime());
                 mDOB.setText(dobString);
 
-                mAgeYears = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+                mAgeYears = (today.get(Calendar.YEAR) - dob.get(Calendar.YEAR) - 1);
                 mAgeMonths = today.get(Calendar.MONTH) - dob.get(Calendar.MONTH);
                 if(mAgeMonths < 0){
                     mAgeMonths = mAgeMonths + 12;
