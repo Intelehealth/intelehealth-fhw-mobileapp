@@ -131,9 +131,7 @@ public class HomeActivity extends AppCompatActivity {
 
         if (getIntent().hasExtra("login") && getIntent().
                 getBooleanExtra("login", false) == true) {
-
             parseLoginValidation();
-
         }
 
         handler = new Handler();
@@ -299,7 +297,7 @@ public class HomeActivity extends AppCompatActivity {
     public void manageBackup(boolean isBackup, boolean isForced) {
         BackupCloud b = new BackupCloud(this);
         if (isBackup)
-            b.startCloudBackup(null);
+            b.startCloudBackup(null,false);
         if (!isBackup) {
             if (isForced) b.cloudRestoreForced();
             if (!isForced) b.startCloudRestore();

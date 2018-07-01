@@ -16,6 +16,8 @@ import io.intelehealth.client.activities.setting_activity.SettingsActivity;
 import io.intelehealth.client.database.DelayedJobQueueProvider;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.utilities.HelperMethods;
+import okhttp3.Dispatcher;
+import okhttp3.OkHttpClient;
 
 public class IntelehealthApplication extends Application implements Application.ActivityLifecycleCallbacks{
 
@@ -35,7 +37,14 @@ public class IntelehealthApplication extends Application implements Application.
             Log.i(TAG, "onCreate: Parse not init");
         }
         else {
+            Dispatcher dispatcher = new Dispatcher();
+            dispatcher.setMaxRequestsPerHost(1);
+            dispatcher.setMaxRequests(4);
+            OkHttpClient.Builder builder = new OkHttpClient.Builder();
+            builder.dispatcher(dispatcher);
+
             Parse.initialize(new Parse.Configuration.Builder(this)
+                    .clientBuilder(builder)
                     .applicationId(HelperMethods.IMAGE_APP_ID)
                     .server("http://"+url+":1337/parse/")
                     .build()

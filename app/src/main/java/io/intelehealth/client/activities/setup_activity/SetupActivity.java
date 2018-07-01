@@ -37,6 +37,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.jobdispatcher.Constraint;
+import com.firebase.jobdispatcher.Driver;
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.firebase.jobdispatcher.Job;
+import com.firebase.jobdispatcher.Lifetime;
+import com.firebase.jobdispatcher.Trigger;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.parse.Parse;
@@ -67,6 +74,7 @@ import io.intelehealth.client.models.Location;
 import io.intelehealth.client.models.Results;
 import io.intelehealth.client.objects.WebResponse;
 import io.intelehealth.client.services.DownloadProtocolsTask;
+import io.intelehealth.client.services.sync.JobDispatchService;
 import io.intelehealth.client.utilities.HelperMethods;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -553,6 +561,7 @@ public class SetupActivity extends AppCompatActivity {
                 if (r2.isChecked()) {
                     if (sharedPref.contains("licensekey")) {
                         startActivity(intent);
+                        startJobDispatcherService(SetupActivity.this);
                         finish();
                     } else {
                         Toast.makeText(SetupActivity.this, "Please enter a valid license key", Toast.LENGTH_LONG).show();
@@ -596,7 +605,7 @@ public class SetupActivity extends AppCompatActivity {
                         LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, items);
                         mDropdownLocation.setAdapter(adapter);
                         isLocationFetched = true;
-                    }else {
+                    } else {
                         isLocationFetched = false;
                         Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
                     }
@@ -694,6 +703,35 @@ public class SetupActivity extends AppCompatActivity {
     private boolean keyVerified(String key) {
         //TODO: Verify License Key
         return true;
+    }
+
+    /**
+     * A method of FirebaseJobDispatcher Library.
+     * It schedules background jobs for android app.
+     *
+     * @param context Current context
+     * @return returns void
+     */
+    private void startJobDispatcherService(Context context) {
+        Driver driver = new GooglePlayDriver(context);
+        FirebaseJobDispatcher firebaseJobDispatcher = new FirebaseJobDispatcher(driver);
+
+        Job uploadCronJob = firebaseJobDispatcher.newJobBuilder()
+                .setService(JobDispatchService.class)
+                .setTag("Delayed Job Queue")
+                .setLifetime(Lifetime.FOREVER)
+                .setRecurring(true)
+                .setTrigger(Trigger.executionWindow(
+                        1770, 1830
+                ))
+
+                .setReplaceCurrent(true)
+                .setConstraints(
+                        // only run on any network
+                        Constraint.ON_ANY_NETWORK)
+                .build();
+
+        firebaseJobDispatcher.mustSchedule(uploadCronJob);
     }
 
 }

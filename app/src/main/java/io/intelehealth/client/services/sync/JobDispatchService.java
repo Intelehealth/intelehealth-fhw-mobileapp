@@ -114,14 +114,9 @@ public class JobDispatchService extends JobService {
                     }
                     case "syncDB":{
                         serviceIntent = null;
-                        SimpleDateFormat sdf = new SimpleDateFormat("HH");
-                        Integer hour = Integer.valueOf(sdf.format(new Date()));
-                        //Blocking this call by time. This should only be called from 8 at night to 6 in morning
-                        if(hour<5 || hour>=20) {
                             BackupCloud backupCloud = new BackupCloud(IntelehealthApplication.getAppContext());
-                            backupCloud.startCloudBackup(cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider._ID)));
+                            backupCloud.startCloudBackup(cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider._ID)),true);
 
-                        }
                     }
                     default:
                         Log.e(TAG, "Does not match any Job Type");

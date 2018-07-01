@@ -89,7 +89,6 @@ public class Backup {
             myfile = new File(newfilepath);
             Log.d("myfile path", myfile.getPath().toString());
             if (myfile.exists()) {
-                // Toast.makeText(context,"yes my file exists",Toast.LENGTH_SHORT).show();
             } else {
             }
             dbfile = new File(context.getDatabasePath("localRecords.db").getPath());

@@ -1,25 +1,9 @@
 package io.intelehealth.client.api.retrofit;
 
-import android.util.Log;
-import android.widget.Toast;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import io.intelehealth.client.BuildConfig;
-import io.intelehealth.client.R;
-import io.intelehealth.client.activities.setup_activity.LocationArrayAdapter;
-import io.intelehealth.client.activities.setup_activity.SetupActivity;
-import io.intelehealth.client.models.Location;
-import io.intelehealth.client.models.Results;
-
+import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -36,8 +20,6 @@ public class ServiceGenerator {
     private static Retrofit retrofit;
 
 
-
-
     private static Retrofit.Builder builder =
             new Retrofit.Builder()
                     .addConverterFactory(GsonConverterFactory.create())
@@ -51,15 +33,15 @@ public class ServiceGenerator {
         /**
          * If debug flavour {@link HttpLoggingInterceptor} is used.
          */
-        if (BuildConfig.BUILD_TYPE.equals("debug")) {
-            httpClient = new OkHttpClient.Builder()
-                    .connectTimeout(15, TimeUnit.SECONDS)
-                    .readTimeout(30, TimeUnit.SECONDS);
-        } else {
-            httpClient = new OkHttpClient.Builder()
-                    .connectTimeout(15, TimeUnit.SECONDS)
-                    .readTimeout(30, TimeUnit.SECONDS);
-        }
+
+        Dispatcher dispatcher = new Dispatcher();
+        dispatcher.setMaxRequestsPerHost(1);
+        dispatcher.setMaxRequests(4);
+
+        httpClient = new OkHttpClient.Builder()
+                .dispatcher(dispatcher)
+                .connectTimeout(15, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS);
 
     }
 

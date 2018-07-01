@@ -117,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
         Account[] accountList = manager.getAccountsByType("io.intelehealth.openmrs");
         if (accountList.length > 0) {
             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-            intent.putExtra("setup", true);
+            intent.putExtra("login", true);
             startJobDispatcherService(LoginActivity.this);
             startActivity(intent);
             finish();
@@ -127,7 +127,7 @@ public class LoginActivity extends AppCompatActivity {
         if (!NetworkConnection.isOnline(this)) {
             if (OfflineLogin.getOfflineLogin().getOfflineLoginStatus()) {
                 Intent intent = new Intent(this, HomeActivity.class);
-                intent.putExtra("setup", true);
+                intent.putExtra("login", true);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();
@@ -436,13 +436,14 @@ public class LoginActivity extends AppCompatActivity {
                 .setTrigger(Trigger.executionWindow(
                         1770, 1830
                 ))
+
                 .setReplaceCurrent(true)
                 .setConstraints(
                         // only run on any network
                         Constraint.ON_ANY_NETWORK)
                 .build();
 
-        firebaseJobDispatcher.schedule(uploadCronJob);
+        firebaseJobDispatcher.mustSchedule(uploadCronJob);
     }
 }
 

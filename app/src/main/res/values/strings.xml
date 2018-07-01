@@ -373,7 +373,7 @@
     <string name="cloud_upload_header">Uploading database to cloud</string>
     <string name="no_network">Internet connection not available</string>
     <string name="no_data">No data to backup!</string>
-    <string name="local_backup_failed">Internet connection not available</string>
+    <string name="local_backup_failed">Local backup not available</string>
     <string name="local_backup_restore">Restoring from local backup</string>
 
     <string name="cloud_restore_header">Restore form cloud</string>

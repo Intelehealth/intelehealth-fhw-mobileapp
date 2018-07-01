@@ -71,7 +71,7 @@ public class BackupCloud {
      * @param queue_id Should be provided only if it task is fired by job queue service. If called by user interaction,it must be null
      */
 
-    public void startCloudBackup(@Nullable Integer queue_id) {
+    public void startCloudBackup(@Nullable Integer queue_id, Boolean is_auto) {
 
         if (queue_id == null) {
             dialog = new ProgressDialog(context);
@@ -97,27 +97,30 @@ public class BackupCloud {
         }
 
         boolean backup_checker = false;
-        try {
-            backup_checker = backup.createFileInMemory(context, true);
-            dialog.dismiss();
-        } catch (IOException e1) {
-            dialog.dismiss();
-            e1.printStackTrace();
+        if (!is_auto) {
+            try {
+                backup_checker = backup.createFileInMemory(context, true);
+                dialog.dismiss();
+            } catch (IOException e1) {
+                dialog.dismiss();
+                e1.printStackTrace();
+            }
+
+
+            if (!backup_checker) {
+                Toast.makeText(context, context.getString(R.string.local_backup_failed), Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+                //Failed Task
+                if (queue_id == null || queue_id.equals(-1)) {
+                    addJobToQueue();
+                }
+                return;
+            }
         }
 
         //Contains logic to upload to cloud
         if (!isNetworkAvailable()) {
             Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
-            dialog.dismiss();
-            //Failed Task
-            if (queue_id == null || queue_id.equals(-1)) {
-                addJobToQueue();
-            }
-            return;
-        }
-
-        if (!backup_checker) {
-            Toast.makeText(context, context.getString(R.string.local_backup_failed), Toast.LENGTH_SHORT).show();
             dialog.dismiss();
             //Failed Task
             if (queue_id == null || queue_id.equals(-1)) {
@@ -254,7 +257,8 @@ public class BackupCloud {
         }
     }
 
-    private void uploadToParse(File database, String user_id, String location, final Integer queue_id) {
+    private void uploadToParse(File database, String user_id, String location,
+                               final Integer queue_id) {
         if (user_id != null && location != null) {
             final ParseFile db_file = new ParseFile(database);
             final ParseObject db_upload = new ParseObject("BackupDatabase");
@@ -275,7 +279,7 @@ public class BackupCloud {
             }, new ProgressCallback() {
                 @Override
                 public void done(Integer percentDone) {
-                    String newText = context.getString(R.string.database_uploading)+" - " + percentDone + "%";
+                    String newText = context.getString(R.string.database_uploading) + " - " + percentDone + "%";
                     mBuilder.setSmallIcon(R.mipmap.ic_launcher)
                             .setContentTitle(newText)
                             .setContentText(newText);
@@ -294,7 +298,7 @@ public class BackupCloud {
                                 .setContentText(context.getString(R.string.database_upload_complete));
                         mNotifyManager.notify(mId, mBuilder.build());
                         removeJobFromQueue(queue_id);
-                        dialog.dismiss();
+                       if(dialog!=null) dialog.dismiss();
                         //Success
                         if (queue_id != null && !queue_id.equals(-1)) {
                             removeJobFromQueue(queue_id);
@@ -304,7 +308,7 @@ public class BackupCloud {
                                 .setContentTitle(context.getString(R.string.database_upload))
                                 .setContentText(context.getString(R.string.database_upload_failed));
                         mNotifyManager.notify(mId, mBuilder.build());
-                        dialog.dismiss();
+                        if(dialog!=null) dialog.dismiss();
                         //Failed Task
                         if (queue_id == null || queue_id.equals(-1)) {
                             addJobToQueue();
