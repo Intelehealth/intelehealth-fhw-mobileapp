@@ -6,16 +6,21 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.util.Linkify;
 import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -65,6 +70,8 @@ import io.intelehealth.client.utilities.NetworkConnection;
  */
 public class LoginActivity extends AppCompatActivity {
 
+   TextView txt_cant_login;
+
     private final String LOG_TAG = "LoginActivity";
 
     /**
@@ -94,12 +101,57 @@ public class LoginActivity extends AppCompatActivity {
     private OfflineLogin offlineLogin = null;
 
 
+
+    public void cant_log()
+    {
+        final SpannableString span_string = new SpannableString(getApplicationContext().getText(R.string.email_link));
+        Linkify.addLinks(span_string,Linkify.EMAIL_ADDRESSES);
+
+        new AlertDialog.Builder(this)
+                .setMessage(span_string)
+                .setNegativeButton("Send Email", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //finish();
+                        Intent intent = new Intent(Intent.ACTION_SENDTO); //to get only the list of e-mail clients
+                        intent.setType("text/plain");
+                        intent.setData(Uri.parse("mailto:support@intelehealth.io"));
+                        // intent.putExtra(Intent.EXTRA_EMAIL, "support@intelehealth.io");
+                        // intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
+                        //  intent.putExtra(Intent.EXTRA_TEXT, "I'm email body.");
+
+                        startActivity(Intent.createChooser(intent, "Send Email"));
+                        //add email function here !
+                    }
+
+                })
+                .setPositiveButton("Close", null)
+                .show();
+
+        //prajwal_changes
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         offlineLogin = OfflineLogin.getOfflineLogin();
+
+
+
+        txt_cant_login = (TextView) findViewById(R.id.cant_login_id);
+        // pop_window_login = new PopupWindow(getApplicationContext());
+        txt_cant_login.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view) {
+                cant_log();
+            }
+
+        });
 
         // Persistent login information
         manager = AccountManager.get(LoginActivity.this);

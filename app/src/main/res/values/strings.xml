@@ -59,6 +59,9 @@
     <string name="device_id">Device ID:</string>
     <string name="enter_license_key">Enter License Key</string>
 
+    <string name="cant_login_user">Can\'t log in ?</string>
+    <string name="email_link">Please contact your System Administrator to reset your password or send an email to support@intelehealth.io</string>
+
     //Home Screen (after login)
     <string name="title_home_screen">Home</string>
     <string name="button_new_pt">New Patient</string>

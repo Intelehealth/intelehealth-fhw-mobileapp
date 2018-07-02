@@ -114,6 +114,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/action_sign_in" />
+
+            <TextView
+                android:id="@+id/cant_login_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingVertical="5dp"
+                android:layout_gravity="right"
+                android:text="@string/cant_login_user"
+                android:textStyle="bold" />
         </LinearLayout>
 
     </ScrollView>
