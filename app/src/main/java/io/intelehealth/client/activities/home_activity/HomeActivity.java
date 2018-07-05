@@ -39,6 +39,7 @@ import io.intelehealth.client.R;
 import io.intelehealth.client.activities.login_activity.LoginActivity;
 import io.intelehealth.client.activities.login_activity.OfflineLogin;
 import io.intelehealth.client.activities.setting_activity.SettingsActivity;
+import io.intelehealth.client.application.IntelehealthApplication;
 import io.intelehealth.client.services.DownloadProtocolsTask;
 import io.intelehealth.client.utilities.NetworkConnection;
 
@@ -309,11 +310,17 @@ public class HomeActivity extends AppCompatActivity {
             ParseObject register_login = new ParseObject("Login");
             register_login.put("userId", sharedPreferences.getString("creatorid", null));
             register_login.put("location", sharedPreferences.getString(SettingsActivity.KEY_PREF_LOCATION_NAME, null));
+            register_login.put("deviceId", IntelehealthApplication.getAndroidId());
             try {
                 register_login.save();
                 Toast.makeText(this, getString(R.string.user_login_check_success), Toast.LENGTH_SHORT).show();
             } catch (ParseException e1) {
                 switch (e1.getCode()) {
+                    case 401:{
+                        Toast.makeText(this, getString(R.string.user_logged_in_other_device), Toast.LENGTH_SHORT).show();
+                        logout();
+                        break;
+                    }
                     case 208: {
                         Toast.makeText(this, getString(R.string.user_logged_in), Toast.LENGTH_SHORT).show();
                         break;

@@ -192,7 +192,6 @@ public class ImageDownloadService extends IntentService {
     }
 
     private void downloadProfilePhotoFromParse(final Context context, String openmrs_uuid, final File img_file) throws InterruptedException {
-        Thread.sleep(500);
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Profile");
         query.whereEqualTo("PatientID", openmrs_uuid);
         query.getFirstInBackground(new GetCallback<ParseObject>() {

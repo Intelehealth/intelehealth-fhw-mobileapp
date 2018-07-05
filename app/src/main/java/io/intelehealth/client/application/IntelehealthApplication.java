@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.util.Log;
 
 
@@ -25,11 +26,16 @@ public class IntelehealthApplication extends Application implements Application.
     private Activity currentActivity;
 
     private static final String TAG = IntelehealthApplication.class.getSimpleName();
+    private static String androidId;
 
     @Override
     public void onCreate() {
         super.onCreate();
         this.mContext = getApplicationContext();
+
+        androidId = String
+                .format("%16s", Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID))
+                .replace(' ', '0');
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String url = sharedPreferences.getString(SettingsActivity.KEY_PREF_SERVER_URL, null);
@@ -100,6 +106,10 @@ public class IntelehealthApplication extends Application implements Application.
     @Override
     public void onActivityDestroyed(Activity activity) {
 
+    }
+
+    public static String getAndroidId() {
+        return androidId;
     }
 
     public Activity getCurrentActivity() {

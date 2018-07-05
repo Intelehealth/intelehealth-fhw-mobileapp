@@ -407,6 +407,7 @@
     <!--Parse Validation User login-->
 
     <string name="user_logged_in">Already logged in!</string>
+    <string name="user_logged_in_other_device">Already logged in.Please logout from other device.</string>
     <string name="user_logged_out">Logged out from server</string>
     <string name="user_login_check_success">Login Successful!</string>
     <string name="user_login_error">Another user is logged into this location. Please contact admin</string>
