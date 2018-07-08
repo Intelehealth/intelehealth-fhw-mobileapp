@@ -70,6 +70,7 @@ import io.intelehealth.client.activities.login_activity.OfflineLogin;
 import io.intelehealth.client.activities.setting_activity.SettingsActivity;
 import io.intelehealth.client.api.retrofit.RestApi;
 import io.intelehealth.client.api.retrofit.ServiceGenerator;
+import io.intelehealth.client.application.IntelehealthApplication;
 import io.intelehealth.client.models.Location;
 import io.intelehealth.client.models.Results;
 import io.intelehealth.client.objects.WebResponse;
@@ -98,6 +99,8 @@ public class SetupActivity extends AppCompatActivity {
     private Button mLoginButton;
 
     private Spinner mDropdownLocation;
+
+    private TextView mAndroidIdTextView;
 
 
     private boolean isLocationFetched = false;
@@ -155,6 +158,9 @@ public class SetupActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        mAndroidIdTextView = (TextView) findViewById(R.id.textView_Aid);
+        mAndroidIdTextView.setText("Android Id: "+ IntelehealthApplication.getAndroidId());
 
         Button mEmailSignInButton = (Button) findViewById(R.id.setup_submit_button);
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {

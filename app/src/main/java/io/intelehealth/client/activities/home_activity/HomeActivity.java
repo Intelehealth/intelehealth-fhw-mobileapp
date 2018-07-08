@@ -97,7 +97,7 @@ public class HomeActivity extends AppCompatActivity {
         if (getIntent().hasExtra("setup") && getIntent().
                 getBooleanExtra("setup", false) == true) {
 
-            parseLoginValidation();
+            //parseLoginValidation();
 
             String dbfilepath = Environment.getExternalStorageDirectory() + File.separator + "InteleHealth_DB" +
                     File.separator + "Intelehealth.db"; // directory: Intelehealth_DB   ,  filename: Intelehealth.db
@@ -130,10 +130,11 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
 
+        /*
         if (getIntent().hasExtra("login") && getIntent().
                 getBooleanExtra("login", false) == true) {
             parseLoginValidation();
-        }
+        }*/
 
         handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -305,12 +306,15 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    //Archiving 477 -Login Validation by Parse
+    /*
     private void parseLoginValidation() {
         if (NetworkConnection.isOnline(this)) {
             ParseObject register_login = new ParseObject("Login");
             register_login.put("userId", sharedPreferences.getString("creatorid", null));
             register_login.put("location", sharedPreferences.getString(SettingsActivity.KEY_PREF_LOCATION_NAME, null));
-            register_login.put("deviceId", IntelehealthApplication.getAndroidId());
+            String aid = IntelehealthApplication.getAndroidId();
+            register_login.put("deviceId",aid);
             try {
                 register_login.save();
                 Toast.makeText(this, getString(R.string.user_login_check_success), Toast.LENGTH_SHORT).show();
@@ -345,6 +349,7 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(this, getString(R.string.user_server_unreachable), Toast.LENGTH_SHORT).show();
         }
     }
+    */
 
     private void parseLogOut() {
         if (NetworkConnection.isOnline(this)) {

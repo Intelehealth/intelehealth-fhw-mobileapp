@@ -34,6 +34,7 @@ import java.io.IOException;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.setting_activity.SettingsActivity;
+import io.intelehealth.client.application.IntelehealthApplication;
 import io.intelehealth.client.database.DelayedJobQueueProvider;
 import io.intelehealth.client.services.ImageDownloadService;
 
@@ -265,6 +266,7 @@ public class BackupCloud {
             db_upload.put("db", db_file);
             db_upload.put("user_id", user_id);
             db_upload.put("location", location);
+            db_upload.put("deviceId", IntelehealthApplication.getAndroidId());
 
             db_file.saveInBackground(new SaveCallback() {
                 @Override
@@ -323,7 +325,7 @@ public class BackupCloud {
     private void downloadFromParse(String user_id, String location) {
         if (user_id != null && location != null) {
             ParseQuery<ParseObject> query = ParseQuery.getQuery("BackupDatabase");
-            query.whereEqualTo("location", location);
+            query.whereEqualTo("deviceId", IntelehealthApplication.getAndroidId());
             query.getFirstInBackground(new GetCallback<ParseObject>() {
                 @Override
                 public void done(ParseObject object, ParseException e) {
