@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Android-Mobile-Client.iml" filepath="$PROJECT_DIR$/Android-Mobile-Client.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/intelehealth-android-camera.iml" filepath="$PROJECT_DIR$/intelehealth-android-camera.iml" />
     </modules>
   </component>
 </project>

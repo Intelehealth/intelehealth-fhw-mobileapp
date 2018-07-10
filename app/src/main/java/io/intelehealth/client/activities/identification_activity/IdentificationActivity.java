@@ -37,6 +37,7 @@ import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -115,7 +116,7 @@ public class IdentificationActivity extends AppCompatActivity {
     ImageView mImageView;
     String mCurrentPhotoPath;
 
-
+   // Boolean isDateChanged = false; //prajw
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -161,7 +162,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mEconomicStatus = (Spinner) findViewById(R.id.spinner_economic_status);
 
         //TODO: Change this back for other deployments
-        mMiddleName.setVisibility(View.GONE);
+       // mMiddleName.setVisibility(View.GONE);  //prajwal commented
         mAddress1.setVisibility(View.GONE);
         mAddress2.setVisibility(View.GONE);
         mRelationship.setVisibility(View.GONE);
@@ -377,7 +378,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
                 Intent cameraIntent = new Intent(IdentificationActivity.this, CameraActivity.class);
 
-                cameraIntent.putExtra(CameraActivity.SHOW_DIALOG_MESSAGE, getString(R.string.camera_dialog_default));
+               // cameraIntent.putExtra(CameraActivity.SHOW_DIALOG_MESSAGE, getString(R.string.camera_dialog_default));
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, patientID);
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, filePath);
                 startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
@@ -392,6 +393,9 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 //Set the DOB calendar to the date selected by the user
                 dob.set(year, monthOfYear, dayOfMonth);
+                mDOB.setError(null);
+                mAge.setError(null);//praj
+
 
                 //Formatted so that it can be read the way the user sets
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -399,7 +403,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 String dobString = simpleDateFormat.format(dob.getTime());
                 mDOB.setText(dobString);
 
-                mAgeYears = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+                mAgeYears = (today.get(Calendar.YEAR) - dob.get(Calendar.YEAR) - 1);
                 mAgeMonths = today.get(Calendar.MONTH) - dob.get(Calendar.MONTH);
                 if(mAgeMonths < 0){
                     mAgeMonths = mAgeMonths + 12;
@@ -576,6 +580,7 @@ public class IdentificationActivity extends AppCompatActivity {
         if (dob.after(today)) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
             alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_dob);
+           //alertDialogBuilder.setMessage(getString(R.string.identification_dialog_date_error));
             alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -588,6 +593,28 @@ public class IdentificationActivity extends AppCompatActivity {
             alertDialog.show();
             return;
         }
+
+
+//prajwal
+     /* if (mDOBYear.toString().equals("") && mDOBMonth.toString().equals("") && mDOBDay.toString().equals("")) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
+            alertDialogBuilder.setMessage("Enter year nd month prajwal");
+            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            mDOBPicker.show();
+            alertDialog.show();
+            return;
+        }
+*/
+
+//praj
+
 
         ArrayList<EditText> values = new ArrayList<>();
         values.add(mFirstName);
@@ -602,17 +629,17 @@ public class IdentificationActivity extends AppCompatActivity {
         values.add(mRelationship);
         values.add(mOccupation);
 
-        for (int i = 0; i < values.size(); i++) {
+     /* for (int i = 0; i < values.size(); i++) {
             EditText et = values.get(i);
             if (TextUtils.isEmpty(et.getText().toString()) && et.getTag() == null) {
-                et.setError(getString(R.string.error_field_required));
+                et.setError("Prajwal here");
                 focusView = et;
                 cancel = true;
                 return;
             } else {
                 et.setError(null);
             }
-        }
+        }*/
 
         if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
@@ -627,6 +654,78 @@ public class IdentificationActivity extends AppCompatActivity {
             alertDialog.show();
             return;
         }
+
+        //prajw
+
+
+
+        // prajw
+
+
+
+
+
+        //prajwal
+        if(!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("") && !mOccupation.getText().toString().equals("")
+                && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
+                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals(""))
+        {
+            Toast.makeText(getApplicationContext(), "Patient Registered", Toast.LENGTH_SHORT).show();
+        }
+
+        else
+        {
+            if(mFirstName.getText().toString().equals(""))
+            {
+                mFirstName.setError(getString(R.string.error_field_required));
+            }
+
+            if(mLastName.getText().toString().equals(""))
+            {
+                mLastName.setError(getString(R.string.error_field_required));
+            }
+
+           if(mDOB.getText().toString().equals(""))
+            {
+                mDOB.setError(getString(R.string.error_field_required));
+            }
+
+            if(mAge.getText().toString().equals(""))
+            {
+                mAge.setError(getString(R.string.error_field_required));
+            }
+
+            if(mOccupation.getText().toString().equals(""))
+            {
+                mOccupation.setError(getString(R.string.error_field_required));
+            }
+
+           /* if(casteText.getText().toString().equals(""))
+            {
+                casteText.setError(getString(R.string.error_field_required));
+            }
+
+            if(economicText.getText().toString().equals(""))
+            {
+                economicText.setError(getString(R.string.error_field_required));
+            }
+
+            if(educationText.getText().toString().equals(""))
+            {
+                educationText.setError(getString(R.string.error_field_required));
+            }*/
+
+            if(mCity.getText().toString().equals(""))
+            {
+                mCity.setError(getString(R.string.error_field_required));
+            }
+
+
+            Toast.makeText(getApplicationContext(), "Please Enter Required Fields", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        //end prajwal
 
 
         if (mCountry.getSelectedItemPosition() == 0) {
@@ -827,8 +926,13 @@ public class IdentificationActivity extends AppCompatActivity {
             patientEntries.put("education_status", patient.getEducation_level());
             patientEntries.put("caste", patient.getCaste());
 
+
+
+
             //TODO: move identifier1 and id2 from patient table to patient_attribute table
         }
+
+
 
         @Override
         protected Boolean doInBackground(Void... params) {
@@ -1002,6 +1106,14 @@ public class IdentificationActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+       new AlertDialog.Builder(this)
+               .setMessage("Are you sure you want to go back ?")
+               .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialogInterface, int i) {
+                       finish();
+                   }
+               }).setNegativeButton("No",null).show();
 
     }
 }

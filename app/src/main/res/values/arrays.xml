@@ -1,5 +1,25 @@
 <resources>
 
+
+    <string-array name="language_names">
+        <item>Hindi</item>
+        <item>English</item>
+        <item>Bengali</item>
+        <item>Oriya</item>
+    </string-array>
+
+    <string-array name="language_values">
+        <item>hi</item>
+        <item>en</item>
+        <item>bn</item>
+        <item>or</item>
+    </string-array>
+
+
+
+
+
+
     <string-array name="pref_example_list_titles">
         <item>Always</item>
         <item>When possible</item>

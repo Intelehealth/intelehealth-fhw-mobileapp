@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -23,13 +24,17 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.EditText;
 
 import java.util.List;
+import java.util.Locale;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.app_compat_preferences_activity.AppCompatPreferenceActivity;
+import io.intelehealth.client.activities.home_activity.HomeActivity;
 import io.intelehealth.client.activities.login_activity.AdminPassword;
 
 /**
@@ -43,6 +48,9 @@ import io.intelehealth.client.activities.login_activity.AdminPassword;
  * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
  * API Guide</a> for more information on developing a Settings UI.
  */
+
+
+
 public class SettingsActivity extends AppCompatPreferenceActivity {
 
     public static final String KEY_PREF_SETUP_COMPLETE = "setup";
@@ -55,7 +63,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     public static final String KEY_PREF_LOCATION_DESCRIPTION = "locationdesc";
 
     private static boolean admin_password = false;
-
+    //Locale myLocale;
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
@@ -193,7 +201,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     protected boolean isValidFragment(String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
                 || DataSyncPreferenceFragment.class.getName().equals(fragmentName)
-                || NotificationPreferenceFragment.class.getName().equals(fragmentName);
+                || NotificationPreferenceFragment.class.getName().equals(fragmentName)
+                || LanguagePreferenceFragment.class.getName().equals(fragmentName);
     }
 
     /**
@@ -265,6 +274,95 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
     }
 
+
+    //this activity is called to select a different language for the app.
+    //prajwal
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class LanguagePreferenceFragment extends PreferenceFragment {
+
+        Preference lang_prefer;
+
+        public void setLocale(String lang) {
+            final Locale myLocale = new Locale(lang);
+            Resources res = getResources();
+            DisplayMetrics dm = res.getDisplayMetrics();
+            Configuration conf = res.getConfiguration();
+            conf.locale = myLocale;
+            res.updateConfiguration(conf, dm);
+           //Intent refresh = new Intent(this, HomeActivity.class);
+           //finish();
+           // startActivity(refresh);
+        }
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_languages);
+            setHasOptionsMenu(true);
+
+
+            bindPreferenceSummaryToValue(findPreference("hindiLang"));
+           // bindPreferenceSummaryToValue(findPreference("bengaliLang"));
+          //  bindPreferenceSummaryToValue(findPreference("OriyaLang"));
+
+            lang_prefer = findPreference("hindiLang");
+            lang_prefer.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newvalue) {
+                    try {
+                        // do whatever you want with new value
+                        String stringValue = newvalue.toString();
+
+                        if (preference instanceof ListPreference) {
+                            // For list preferences, look up the correct display value in
+                            // the preference's 'entries' list.
+                            ListPreference listPreference = (ListPreference) preference;
+                            int index = listPreference.findIndexOfValue(stringValue);
+
+                            // Set the summary to reflect the new value.
+                            preference.setSummary(
+                                    index >= 0
+                                            ? listPreference.getEntries()[index]
+                                            : null);
+                          setLocale(stringValue);
+                            //Intent refresh = new Intent(this, HomeActivity.class);
+                            return true;
+                        }}
+                    catch (Exception ex)
+                    {
+                        Log.e("Preferences", ex.getMessage());
+                    }
+
+                    // true to update the state of the Preference with the new value
+                    // in case you want to disallow the change return false
+                    return true;
+                }
+            });
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+
+            int id = item.getItemId();
+            if (id == android.R.id.home) {
+                //setLocale("or");
+                startActivity(new Intent(getActivity(), HomeActivity.class));
+                return true;
+            }
+
+            return super.onOptionsItemSelected(item);
+        }
+
+
+    }
+
+
+
+
+    //prajwal end
+
+
+
     public static void displayLoginDialog(Context context) {
 
         admin_password = false;
@@ -303,4 +401,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         textInput.show();
     }
+
+
 }

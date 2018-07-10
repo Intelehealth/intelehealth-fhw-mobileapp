@@ -12,4 +12,10 @@
             android:title="@string/pref_header_data_sync"
             android:icon="@drawable/ic_sync_black_24dp"/>
 
+    <header
+        android:fragment="io.intelehealth.client.activities.setting_activity.SettingsActivity$LanguagePreferenceFragment"
+        android:title="Languages"
+        android:icon="@drawable/ic_translate_black_24dp"/>
+
+
 </preference-headers>
