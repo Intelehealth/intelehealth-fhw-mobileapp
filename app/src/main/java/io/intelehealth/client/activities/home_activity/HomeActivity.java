@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
@@ -26,14 +27,21 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.IOException;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+import java.io.File;
 import java.util.Calendar;
+import java.util.List;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.login_activity.LoginActivity;
 import io.intelehealth.client.activities.login_activity.OfflineLogin;
 import io.intelehealth.client.activities.setting_activity.SettingsActivity;
+import io.intelehealth.client.application.IntelehealthApplication;
 import io.intelehealth.client.services.DownloadProtocolsTask;
+import io.intelehealth.client.utilities.NetworkConnection;
 
 
 /**
@@ -100,6 +108,48 @@ public class HomeActivity extends AppCompatActivity {
         endDate.set(Calendar.MINUTE, 15);
         endDate.set(Calendar.AM_PM, Calendar.PM);
 
+        if (getIntent().hasExtra("setup") && getIntent().
+                getBooleanExtra("setup", false) == true) {
+
+            //parseLoginValidation();
+
+            String dbfilepath = Environment.getExternalStorageDirectory() + File.separator + "InteleHealth_DB" +
+                    File.separator + "Intelehealth.db"; // directory: Intelehealth_DB   ,  filename: Intelehealth.db
+            Log.d("newfilepath", dbfilepath);
+            final File db_file = new File(dbfilepath);
+
+            if (db_file.exists()) {
+                new AlertDialog.Builder(this)
+                        .setIcon(R.drawable.ic_file_download_black_48px)
+                        .setTitle(R.string.local_restore_alert_title)
+                        .setMessage(R.string.local_restore_alert_message)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.generic_yes,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        //Restore from local backup
+                                        manageBackup(false, false); // to restore app data if db is empty
+                                    }
+                                }
+                        )
+                        .setNegativeButton(R.string.generic_no,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        //Do Nothing!
+                                        // db_file.delete();
+                                    }
+                                }
+                        )
+                        .create().show();
+            }
+        }
+
+        /*
+        if (getIntent().hasExtra("login") && getIntent().
+                getBooleanExtra("login", false) == true) {
+            parseLoginValidation();
+        }*/
+
         handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -112,7 +162,7 @@ public class HomeActivity extends AppCompatActivity {
                 if (start < calendar.getTimeInMillis() &&
                         calendar.getTimeInMillis() < end) {
                     // Toast.makeText(HomeActivity.this,"backup started",Toast.LENGTH_SHORT).show();
-                    manageBackup();
+                    manageBackup(true, false);
                 }
                 handler.postDelayed(this, 1000 * 60);
             }
@@ -156,7 +206,6 @@ public class HomeActivity extends AppCompatActivity {
                     View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
                     dialog.setTitle(getString(R.string.enter_license_key))
                             .setView(promptsView)
-
                             .setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -182,11 +231,15 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
             case R.id.backupOption:
-                manageBackup();  // to restore app data at any time of the day
+                manageBackup(true, false);  // to backup app data at any time of the day
+                return true;
+
+            case R.id.restoreOption:
+                manageBackup(false, false); // to restore app data if db is empty
                 return true;
 
             case R.id.logoutOption:
-                manageBackup();
+                manageBackup(true, false);
                 logout();
                 return true;
             default:
@@ -230,6 +283,8 @@ public class HomeActivity extends AppCompatActivity {
 
         OfflineLogin.getOfflineLogin().setOfflineLoginStatus(false);
 
+        parseLogOut();
+
         AccountManager manager = AccountManager.get(HomeActivity.this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -255,27 +310,75 @@ public class HomeActivity extends AppCompatActivity {
         finish();
     }
 
-    public void manageBackup() {
-        Backup b = new Backup();
-        boolean exists = b.checkDatabaseForData(HomeActivity.this);
-        Log.d("data:", String.valueOf(exists));
-
-        if (exists == true) {
-            value = "yes";
-            e.putString("value", value); //copy to file
-        } else if (exists == false) {
-            value = "no";
-            e.putString("value", value);
+    public void manageBackup(boolean isBackup, boolean isForced) {
+        BackupCloud b = new BackupCloud(this);
+        if (isBackup)
+            b.startCloudBackup(null,false);
+        if (!isBackup) {
+            if (isForced) b.cloudRestoreForced();
+            if (!isForced) b.startCloudRestore();
         }
-        e.apply();
-
-        try {
-            b.createFileInMemory(this);
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        Toast.makeText(this, getString(R.string.backup_completed), Toast.LENGTH_SHORT).show();
     }
 
+    //Archiving 477 -Login Validation by Parse
+    /*
+    private void parseLoginValidation() {
+        if (NetworkConnection.isOnline(this)) {
+            ParseObject register_login = new ParseObject("Login");
+            register_login.put("userId", sharedPreferences.getString("creatorid", null));
+            register_login.put("location", sharedPreferences.getString(SettingsActivity.KEY_PREF_LOCATION_NAME, null));
+            String aid = IntelehealthApplication.getAndroidId();
+            register_login.put("deviceId",aid);
+            try {
+                register_login.save();
+                Toast.makeText(this, getString(R.string.user_login_check_success), Toast.LENGTH_SHORT).show();
+            } catch (ParseException e1) {
+                switch (e1.getCode()) {
+                    case 401:{
+                        Toast.makeText(this, getString(R.string.user_logged_in_other_device), Toast.LENGTH_SHORT).show();
+                        logout();
+                        break;
+                    }
+                    case 208: {
+                        Toast.makeText(this, getString(R.string.user_logged_in), Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                    case 403: {
+                        Toast.makeText(this, getString(R.string.user_login_error), Toast.LENGTH_LONG).show();
+                        logout();
+                        break;
+                    }
+                    case 400: {
+                        Toast.makeText(this, e1.getMessage(), Toast.LENGTH_SHORT).show();
+                        logout();
+                        break;
+                    }
+                    default: {
+                        Toast.makeText(this, e1.getMessage(), Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                }
+            }
+        } else {
+            Toast.makeText(this, getString(R.string.user_server_unreachable), Toast.LENGTH_SHORT).show();
+        }
+    }
+    */
+
+    private void parseLogOut() {
+        if (NetworkConnection.isOnline(this)) {
+            ParseQuery<ParseObject> getLogin = ParseQuery.getQuery("Login");
+            getLogin.whereEqualTo("userId", sharedPreferences.getString("creatorid", null));
+            try {
+                List<ParseObject> loginList = getLogin.find();
+                if (loginList != null && !loginList.isEmpty()) {
+                    for (ParseObject login : loginList)
+                        login.delete();
+                }
+            } catch (ParseException e1) {
+                Log.e(TAG, "parseLogOut: ", e1);
+            }
+        }
+    }
 
 }

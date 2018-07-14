@@ -3,6 +3,7 @@ package io.intelehealth.client.activities.setting_activity;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -35,6 +36,7 @@ import java.util.Locale;
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.app_compat_preferences_activity.AppCompatPreferenceActivity;
 import io.intelehealth.client.activities.home_activity.HomeActivity;
+import io.intelehealth.client.activities.home_activity.BackupCloud;
 import io.intelehealth.client.activities.login_activity.AdminPassword;
 
 /**
@@ -203,6 +205,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 || DataSyncPreferenceFragment.class.getName().equals(fragmentName)
                 || NotificationPreferenceFragment.class.getName().equals(fragmentName)
                 || LanguagePreferenceFragment.class.getName().equals(fragmentName);
+                ||CloudRestoreFragment.class.getName().equals(fragmentName);
     }
 
     /**
@@ -272,6 +275,22 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class CloudRestoreFragment extends Fragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setHasOptionsMenu(true);
+            restoreValidation(getActivity());
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+        }
+
     }
 
 
@@ -401,6 +420,54 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         textInput.show();
     }
+    
+    
+    
 
 
+
+    public static void restoreValidation(final Context context) {
+
+        admin_password = false;
+
+        final Activity activity = (Activity) context;
+        final AlertDialog.Builder textInput = new AlertDialog.Builder(context, R.style.AlertDialogStyle);
+        textInput.setTitle(R.string.admin_password_dialog_heading);
+        textInput.setCancelable(false);
+        final EditText passwordEditText = new EditText(context);
+        passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT |
+                InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
+        textInput.setView(passwordEditText);
+
+        textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                boolean bool = AdminPassword.getAdminPassword()
+                        .login(passwordEditText.getText().toString());
+                admin_password = bool;
+            }
+        });
+
+        textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                admin_password = false;
+            }
+        });
+
+        textInput.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                if (!admin_password) activity.onBackPressed();
+                else{
+                    BackupCloud b = new BackupCloud(context);
+                    b.cloudRestoreForced();
+                    activity.onBackPressed();
+                }
+            }
+        });
+
+        textInput.show();
+    }
 }

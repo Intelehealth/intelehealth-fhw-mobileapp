@@ -18,4 +18,9 @@
         android:icon="@drawable/ic_translate_black_24dp"/>
 
 
+    <header
+        android:fragment="io.intelehealth.client.activities.setting_activity.SettingsActivity$CloudRestoreFragment"
+        android:title="@string/cloud_restore_header"
+        android:icon="@drawable/ic_cloud_done_black"/>
+
 </preference-headers>

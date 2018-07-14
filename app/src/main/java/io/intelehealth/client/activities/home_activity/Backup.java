@@ -1,6 +1,7 @@
 package io.intelehealth.client.activities.home_activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,6 +9,7 @@ import android.database.sqlite.SQLiteException;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,7 +21,10 @@ import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import io.intelehealth.client.R;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
+import io.intelehealth.client.services.ImageDownloadService;
+import io.intelehealth.client.services.ImageUploadService;
 
 /**
  * Created by twinkle dhanak on 7/4/2017.
@@ -66,12 +71,10 @@ public class Backup {
         return exists;
     }
 
-    public void createFileInMemory(Context context) throws IOException {
+    public boolean createFileInMemory(Context context, boolean isBackup) throws IOException {
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         e = sharedPreferences.edit();
-
-        value = sharedPreferences.getString("value", "");
 
         try {
             File myDir = new File(Environment.getExternalStorageDirectory() + File.separator + "InteleHealth_DB");
@@ -86,7 +89,6 @@ public class Backup {
             myfile = new File(newfilepath);
             Log.d("myfile path", myfile.getPath().toString());
             if (myfile.exists()) {
-                // Toast.makeText(context,"yes my file exists",Toast.LENGTH_SHORT).show();
             } else {
             }
             dbfile = new File(context.getDatabasePath("localRecords.db").getPath());
@@ -97,7 +99,7 @@ public class Backup {
                 // Toast.makeText(context, "dbfile doesnot exist", Toast.LENGTH_SHORT).show();
             }
 
-            if (value.matches("yes")) {
+            if (isBackup) {
 
                 Log.d("Copying into your file", value);
                 fis = new FileInputStream(dbfile);
@@ -105,20 +107,25 @@ public class Backup {
                 readContents(context);
                 copyFile(context, fis, fos);
                 readContents(context);
-            }
-            if (value.matches("no")) {
-
+                Toast.makeText(context, context.getString(R.string.db_backup_complete), Toast.LENGTH_SHORT).show();
+                return true;
+            } else if (!isBackup) {
                 Log.d("Copying into database", value);
                 fis = new FileInputStream(myfile);
                 fos = new FileOutputStream(dbfile);
                 readContents(context);
                 copyFile(context, fis, fos);
                 readContents(context);
+                Toast.makeText(context, context.getString(R.string.db_restore_complete), Toast.LENGTH_SHORT).show();
+                return true;
+            } else {
+                return false;
             }
 
 
         } catch (Exception ie) {
             Log.d("Error: ", ie.toString());
+            return false;
         }
 
 
