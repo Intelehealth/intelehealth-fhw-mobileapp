@@ -53,12 +53,12 @@ public class ServiceGenerator {
          */
         if (BuildConfig.BUILD_TYPE.equals("debug")) {
             httpClient = new OkHttpClient.Builder()
-                    .connectTimeout(15, TimeUnit.SECONDS)
-                    .readTimeout(30, TimeUnit.SECONDS);
+                    .connectTimeout(1, TimeUnit.MINUTES)
+                    .readTimeout(2, TimeUnit.MINUTES);
         } else {
             httpClient = new OkHttpClient.Builder()
-                    .connectTimeout(15, TimeUnit.SECONDS)
-                    .readTimeout(30, TimeUnit.SECONDS);
+                    .connectTimeout(1, TimeUnit.MINUTES)
+                    .readTimeout(2, TimeUnit.MINUTES);
         }
 
     }
