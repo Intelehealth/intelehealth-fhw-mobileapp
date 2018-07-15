@@ -204,8 +204,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         return PreferenceFragment.class.getName().equals(fragmentName)
                 || DataSyncPreferenceFragment.class.getName().equals(fragmentName)
                 || NotificationPreferenceFragment.class.getName().equals(fragmentName)
-                || LanguagePreferenceFragment.class.getName().equals(fragmentName);
-                ||CloudRestoreFragment.class.getName().equals(fragmentName);
+                || LanguagePreferenceFragment.class.getName().equals(fragmentName)
+                || CloudRestoreFragment.class.getName().equals(fragmentName);
     }
 
     /**
