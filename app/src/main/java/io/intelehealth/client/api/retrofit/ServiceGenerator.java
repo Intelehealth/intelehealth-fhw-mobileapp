@@ -33,6 +33,15 @@ public class ServiceGenerator {
         /**
          * If debug flavour {@link HttpLoggingInterceptor} is used.
          */
+        if (BuildConfig.BUILD_TYPE.equals("debug")) {
+            httpClient = new OkHttpClient.Builder()
+                    .connectTimeout(1, TimeUnit.MINUTES)
+                    .readTimeout(2, TimeUnit.MINUTES);
+        } else {
+            httpClient = new OkHttpClient.Builder()
+                    .connectTimeout(1, TimeUnit.MINUTES)
+                    .readTimeout(2, TimeUnit.MINUTES);
+        }
 
         Dispatcher dispatcher = new Dispatcher();
         dispatcher.setMaxRequestsPerHost(1);
