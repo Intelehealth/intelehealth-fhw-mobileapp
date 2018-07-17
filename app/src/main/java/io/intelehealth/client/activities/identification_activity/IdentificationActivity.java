@@ -394,7 +394,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 //Set the DOB calendar to the date selected by the user
                 dob.set(year, monthOfYear, dayOfMonth);
                 mDOB.setError(null);
-                mAge.setError(null);//praj
+                mAge.setError(null);
 
 
                 //Formatted so that it can be read the way the user sets
@@ -405,22 +405,24 @@ public class IdentificationActivity extends AppCompatActivity {
 
                 mAgeYears = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
                 mAgeMonths = today.get(Calendar.MONTH) - dob.get(Calendar.MONTH);
+
+
+                if (mAgeMonths < 0){
+                    mAgeMonths = mAgeMonths + 12;
+                    mAgeYears = mAgeYears - 1;
+                }
+
                 if(mAgeMonths < 0 || mAgeYears < 0 || dob.after(today)){
-                   // mAgeMonths = mAgeMonths + 12;
-                  //  mAgeYears = mAgeYears - 1;
-
-                    mAgeYears = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
-                    mAgeMonths = today.get(Calendar.MONTH) - dob.get(Calendar.MONTH);
-                    mDOB.setError("Select correct DOB");
-                    mAge.setError("Select correct Age");//prajwal
-
+                    mDOB.setError(getString(R.string.identification_screen_error_dob));
+                    mAge.setError(getString(R.string.identification_screen_error_age));
+                    return;
                 }
 
                 mDOBYear = year;
                 mDOBMonth = monthOfYear;
                 mDOBDay = dayOfMonth;
 
-                String ageString = String.valueOf(mAgeYears) + " years " + String.valueOf(mAgeMonths) + " months";
+                String ageString = String.valueOf(mAgeYears) + getString(R.string.identification_screen_text_years) + String.valueOf(mAgeMonths) + getString(R.string.identification_screen_text_months);
                 mAge.setText(ageString);
             }
         }, mDOBYear, mDOBMonth, mDOBDay);
@@ -446,8 +448,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 final NumberPicker monthPicker = (NumberPicker) convertView.findViewById(R.id.dialog_2_numbers_unit);
                 final TextView middleText = (TextView) convertView.findViewById(R.id.dialog_2_numbers_text);
                 final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
-                middleText.setText("years");
-                endText.setText("months");
+                middleText.setText(getString(R.string.identification_screen_picker_years));
+                endText.setText(getString(R.string.identification_screen_picker_months));
                 yearPicker.setMinValue(0);
                 yearPicker.setMaxValue(100);
                 monthPicker.setMinValue(0);
@@ -464,7 +466,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         yearPicker.setValue(yearPicker.getValue());
                         monthPicker.setValue(monthPicker.getValue());
-                        String ageString = String.valueOf(yearPicker.getValue()) + " years " + monthPicker.getValue() + " months";
+                        String ageString = String.valueOf(yearPicker.getValue()) + getString(R.string.identification_screen_text_years) + monthPicker.getValue() + getString(R.string.identification_screen_text_months);
                         mAge.setText(ageString);
 
 

@@ -102,6 +102,12 @@
     <string name="identification_screen_dialog_age">Please enter age in years</string>
     <string name="identification_screen_dialog_error_dob">Error: DOB is set for date after today</string>
     <string name="identification_screen_dialog_error_gender">Error: Gender is not selected</string>
+    <string name="identification_screen_error_dob">Enter a valid DOB</string>
+    <string name="identification_screen_error_age">Enter a valid age</string>
+    <string name="identification_screen_text_years"> years </string>
+    <string name="identification_screen_text_months"> months</string>
+    <string name="identification_screen_picker_years">years</string>
+    <string name="identification_screen_picker_months">months</string>
 
     //Active Patients Screen
     <string name="title_activity_active_patient" translatable="false">ActivePatientActivity</string>
