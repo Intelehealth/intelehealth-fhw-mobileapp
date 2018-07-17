@@ -50,8 +50,8 @@ public class ServiceGenerator {
 
         httpClient = new OkHttpClient.Builder()
                 .dispatcher(dispatcher)
-                .connectTimeout(15, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS);
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(2, TimeUnit.MINUTES);
 
     }
 
