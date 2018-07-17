@@ -405,9 +405,15 @@ public class IdentificationActivity extends AppCompatActivity {
 
                 mAgeYears = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
                 mAgeMonths = today.get(Calendar.MONTH) - dob.get(Calendar.MONTH);
-                if(mAgeMonths < 0){
-                    mAgeMonths = mAgeMonths + 12;
-                    mAgeYears = mAgeYears - 1;
+                if(mAgeMonths < 0 || mAgeYears < 0){
+                   // mAgeMonths = mAgeMonths + 12;
+                  //  mAgeYears = mAgeYears - 1;
+
+                    mAgeYears = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+                    mAgeMonths = today.get(Calendar.MONTH) - dob.get(Calendar.MONTH);
+                    mDOB.setError("Select correct DOB");
+                    mAge.setError("Select correct Age");//prajwal
+
                 }
 
                 mDOBYear = year;
