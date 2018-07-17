@@ -2,6 +2,7 @@ package io.intelehealth.client.api.retrofit;
 
 import java.util.concurrent.TimeUnit;
 
+import io.intelehealth.client.BuildConfig;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
