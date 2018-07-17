@@ -405,7 +405,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
                 mAgeYears = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
                 mAgeMonths = today.get(Calendar.MONTH) - dob.get(Calendar.MONTH);
-                if(mAgeMonths < 0 || mAgeYears < 0){
+                if(mAgeMonths < 0 || mAgeYears < 0 || dob.after(today)){
                    // mAgeMonths = mAgeMonths + 12;
                   //  mAgeYears = mAgeYears - 1;
 
