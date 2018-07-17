@@ -120,7 +120,7 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             ")";
     public static final String DROP = "DROP TABLE IF EXISTS";
 
-    public static final String CREATE_IMAGE_RECORDS = "CREATE TABLE image_records("+
+    public static final String CREATE_IMAGE_RECORDS = "CREATE TABLE IF NOT EXISTS image_records("+
             "_id integer PRIMARY KEY AUTOINCREMENT," +
             "patient_id integer NOT NULL," +
             "visit_id integer(10)," +
