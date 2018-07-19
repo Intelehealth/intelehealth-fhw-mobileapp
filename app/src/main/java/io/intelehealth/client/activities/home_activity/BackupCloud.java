@@ -178,7 +178,7 @@ public class BackupCloud {
                 boolean isSuccess = backup.createFileInMemory(context, false);
                 if (isSuccess) {
                     Intent serviceIntent = new Intent(context, ImageDownloadService.class);
-                    context.startService(serviceIntent);
+                   //context.startService(serviceIntent); removed on 2018.07.18 due to issues finding the right images
                 }
             } catch (IOException e1) {
                 e1.printStackTrace();
@@ -356,7 +356,7 @@ public class BackupCloud {
                                     boolean isSuccess = backup.createFileInMemory(context, false);
                                     if (isSuccess) {
                                         Intent serviceIntent = new Intent(context, ImageDownloadService.class);
-                                        context.getApplicationContext().startService(serviceIntent);
+                                        //context.getApplicationContext().startService(serviceIntent); //removed on 2018.07.18
                                     }
 
                                 } catch (FileNotFoundException exfnf) {
