@@ -675,7 +675,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
         //prajwal
-        if(!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("") && !mOccupation.getText().toString().equals("")
+        if(!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                 && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
                 !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals(""))
         {
@@ -704,10 +704,10 @@ public class IdentificationActivity extends AppCompatActivity {
                 mAge.setError(getString(R.string.error_field_required));
             }
 
-            if(mOccupation.getText().toString().equals(""))
+         /*   if(mOccupation.getText().toString().equals(""))
             {
                 mOccupation.setError(getString(R.string.error_field_required));
-            }
+            }*/
 
            /* if(casteText.getText().toString().equals(""))
             {
