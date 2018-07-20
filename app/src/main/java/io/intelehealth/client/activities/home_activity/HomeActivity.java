@@ -150,7 +150,7 @@ public class HomeActivity extends AppCompatActivity {
             parseLoginValidation();
         }*/
 
-        handler = new Handler();
+        /*handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -166,7 +166,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 handler.postDelayed(this, 1000 * 60);
             }
-        }, 1000 * 60);
+        }, 1000 * 60);*/
 
         handler = new Handler();
 
