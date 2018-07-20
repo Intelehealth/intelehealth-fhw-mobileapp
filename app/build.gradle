@@ -51,7 +51,7 @@ dependencies {
 
     implementation "joda-time:joda-time:$rootProject.jodaTimeVersion"
 
-    implementation "com.google.firebase:firebase-messaging:$rootProject.firebaseVersion"
+    implementation "com.google.firebase:firebase-messaging:17.1.0"
     implementation "com.firebase:firebase-jobdispatcher:$rootProject.jobDispatcherVersion"
 
     implementation "com.github.hotchemi:permissionsdispatcher:$rootProject.permissionDispatcherVersion"
@@ -84,8 +84,8 @@ dependencies {
     androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2'
     androidTestImplementation('com.android.support.test:runner:1.0.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
