@@ -679,7 +679,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
                 !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals(""))
         {
-            Toast.makeText(getApplicationContext(), "Patient Registered", Toast.LENGTH_SHORT).show();
+
+            Log.v(TAG, "Result");
+         //   Toast.makeText(IdentificationActivity.this, "Patient Registered", Toast.LENGTH_SHORT).show();
         }
 
         else
@@ -730,7 +732,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
 
-            Toast.makeText(getApplicationContext(), "Please Enter Required Fields", Toast.LENGTH_LONG).show();
+            Toast.makeText(IdentificationActivity.this, "Please Enter Required Fields", Toast.LENGTH_LONG).show();
             return;
         }
 
