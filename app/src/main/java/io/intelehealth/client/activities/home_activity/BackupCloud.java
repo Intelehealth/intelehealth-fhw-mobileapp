@@ -93,7 +93,8 @@ public class BackupCloud {
 
         if (!check) {
             Toast.makeText(context, context.getString(R.string.no_data), Toast.LENGTH_SHORT).show();
-            dialog.dismiss();
+            if (dialog != null){
+            dialog.dismiss();}
             return;
         }
 
@@ -101,7 +102,8 @@ public class BackupCloud {
         if (!is_auto) {
             try {
                 backup_checker = backup.createFileInMemory(context, true);
-                dialog.dismiss();
+                if (dialog != null){
+                dialog.dismiss();}
             } catch (IOException e1) {
                 dialog.dismiss();
                 e1.printStackTrace();
@@ -110,7 +112,8 @@ public class BackupCloud {
 
             if (!backup_checker) {
                 Toast.makeText(context, context.getString(R.string.local_backup_failed), Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
+                if (dialog != null){
+                dialog.dismiss();}
                 //Failed Task
                 if (queue_id == null || queue_id.equals(-1)) {
                     addJobToQueue();
@@ -118,11 +121,12 @@ public class BackupCloud {
                 return;
             }
         }
-
         //Contains logic to upload to cloud
         if (!isNetworkAvailable()) {
-            Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
-            dialog.dismiss();
+            //Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();  //meera
+            if (dialog != null) {
+                dialog.dismiss();
+            }
             //Failed Task
             if (queue_id == null || queue_id.equals(-1)) {
                 addJobToQueue();
@@ -153,8 +157,10 @@ public class BackupCloud {
         dialog.show();
         boolean check = getBackupInstance().checkDatabaseForData(context);
         if (check) {
+            if (dialog != null){
             dialog.dismiss();
-            Toast.makeText(context, context.getString(R.string.error_existing_data), Toast.LENGTH_SHORT).show();
+            }
+           // Toast.makeText(context, context.getString(R.string.error_existing_data), Toast.LENGTH_SHORT).show();  //meera
             return;
         }
         //Check if backup exists locally
@@ -166,14 +172,15 @@ public class BackupCloud {
 
         //Download Backup from cloud if not available locally
         if (!local_backup.exists()) {
-            Toast.makeText(context, context.getString(R.string.cloud_download_data), Toast.LENGTH_SHORT).show();
+           Toast.makeText(context, context.getString(R.string.cloud_download_data), Toast.LENGTH_SHORT).show();
             if (isNetworkAvailable()) downloadFromParse(user_id, location);
             else {
-                dialog.dismiss();
+                if (dialog != null){
+                dialog.dismiss();}
                 Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
             }
         } else {
-            Toast.makeText(context, R.string.local_backup_restore, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, R.string.local_backup_restore, Toast.LENGTH_SHORT).show(); //meera
             try {
                 boolean isSuccess = backup.createFileInMemory(context, false);
                 if (isSuccess) {
@@ -183,7 +190,8 @@ public class BackupCloud {
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
-            dialog.dismiss();
+            if (dialog != null){
+            dialog.dismiss();}
         }
 
     }
@@ -198,8 +206,9 @@ public class BackupCloud {
         user_id = sharedPreferences.getString("creatorid", null);
         if (isNetworkAvailable()) downloadFromParse(user_id, location);
         else {
-            dialog.dismiss();
-            Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show();
+            if (dialog != null){
+            dialog.dismiss();}
+          //  Toast.makeText(context, context.getString(R.string.no_network), Toast.LENGTH_SHORT).show(); //meera
         }
     }
 
