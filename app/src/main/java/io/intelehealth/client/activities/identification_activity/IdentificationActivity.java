@@ -681,7 +681,9 @@ public class IdentificationActivity extends AppCompatActivity {
         {
 
             Log.v(TAG, "Result");
-         //   Toast.makeText(IdentificationActivity.this, "Patient Registered", Toast.LENGTH_SHORT).show();
+            //meera
+            //Toast.makeText(IdentificationActivity.this, "Patient Registered", Toast.LENGTH_SHORT).show();
+
         }
 
         else
