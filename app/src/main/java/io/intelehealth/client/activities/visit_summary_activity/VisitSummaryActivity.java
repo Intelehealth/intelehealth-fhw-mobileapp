@@ -264,7 +264,21 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 return true;
             }
             case R.id.summary_endVisit: {
-                endVisit();
+                //meera
+                if(downloaded){
+                endVisit();}
+                else {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                    alertDialogBuilder.setMessage(R.string.error_no_data);
+                    alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                }
                 return true;
             }
             default:
@@ -385,7 +399,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
             if (visitIDCursor != null) visitIDCursor.close();
             if (visitUUID != null && !visitUUID.isEmpty()) {
-                addDownloadButton();
+              //  addDownloadButton();
 
             }
 
@@ -1764,63 +1778,56 @@ public class VisitSummaryActivity extends AppCompatActivity {
             visitCursor.close();
         } else if (check == 200) {
             Log.i(TAG, "handleMessage: 200");
-            addDownloadButton();
-
-
-
-
+            //meera
+            // addDownloadButton();
 
 //          <-----  code to end the visit only after doctor sends anything ----->
 
 
-            if(downloaded){
-                String[] columns = {"concept_id"};
-                String orderBy = "visit_id";
+            //if(downloaded){
+            String[] columns = {"concept_id"};
+            String orderBy = "visit_id";
 
+            //obscursor checks in obs table
+            Cursor obsCursor = db.query("obs", columns, null, null, null, null, orderBy);
 
-                //obscursor checks in obs table
-                Cursor obsCursor = db.query("obs",columns,null,null,null,null,orderBy);
+            //dbconceptid will store data found in concept_id
 
-                //dbconceptid will store data found in concept_id
+            if (obsCursor.moveToFirst() && obsCursor.getCount() > 1) {
                 int dbConceptID = obsCursor.getInt(obsCursor.getColumnIndex("concept_id"));
 
-
-                if(obsCursor.moveToFirst() && obsCursor.getCount()>1 ){
-
 //                    if obsCursor founds something move to next
-                    obsCursor.moveToNext();
+                while (obsCursor.moveToNext()) ;
 
-                    switch (dbConceptID) {
-                        //case values for each prescription
-                        case ConceptId.TELEMEDICINE_DIAGNOSIS:
-                            Log.i(TAG, "found diagnosis");
-                            break;
-                        case ConceptId.JSV_MEDICATIONS:
-                            Log.i(TAG, "found medications");
-                            break;
-                        case ConceptId.MEDICAL_ADVICE:
-                            Log.i(TAG, "found medical advice");
-                            break;
-                        case ConceptId.ADDITIONAL_COMMENTS:
-                            Log.i(TAG, "found additional comments");
-                            break;
-                        case ConceptId.REQUESTED_TESTS:
-                            Log.i(TAG, "found tests");
-                            break;
-                        default:
-                    }
-
-
-                    //if any obs  found then end the visit
-                    endVisit();
-
+                switch (dbConceptID) {
+                    //case values for each prescription
+                    case ConceptId.TELEMEDICINE_DIAGNOSIS:
+                        Log.i(TAG, "found diagnosis");
+                        break;
+                    case ConceptId.JSV_MEDICATIONS:
+                        Log.i(TAG, "found medications");
+                        break;
+                    case ConceptId.MEDICAL_ADVICE:
+                        Log.i(TAG, "found medical advice");
+                        break;
+                    case ConceptId.ADDITIONAL_COMMENTS:
+                        Log.i(TAG, "found additional comments");
+                        break;
+                    case ConceptId.REQUESTED_TESTS:
+                        Log.i(TAG, "found tests");
+                        break;
+                    default:
                 }
+                obsCursor.close();
+                addDownloadButton();
+                //if any obs  found then end the visit
+                //endVisit();
 
             }
 //                    <-----if obs not found restrict user to end the visit ----->
             else{
-                downloaded=false;
-
+            Log.i(TAG, "found sothing for test");
+           /* downloaded=false;
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
                 alertDialogBuilder.setMessage(R.string.error_no_data);
                 alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
@@ -1830,7 +1837,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 });
                 AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
+                alertDialog.show();*/
 
             }
 
@@ -1860,7 +1867,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             downloadButton.setText(R.string.visit_summary_button_download);
             */
 
-            Toast.makeText(this, getString(R.string.visit_summary_button_download), Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, getString(R.string.visit_summary_button_download), Toast.LENGTH_SHORT).show();
 
             downloadButton.setOnClickListener(new View.OnClickListener() {
                 @Override
