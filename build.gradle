@@ -50,7 +50,7 @@ ext {
     firebaseVersion = '16.0.1'
     cameraviewVersion = '9bbe07ba44'
     permissionDispatcherVersion = '2.3.2'
-    debugDbVersion = '1.0.0'
+    debugDbVersion = '1.0.4'
     retrofitVersion = '2.3.0'
     okHttpVersion = '3.8.0'
     jobDispatcherVersion = '0.6.0'

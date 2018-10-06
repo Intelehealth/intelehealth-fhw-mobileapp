@@ -208,6 +208,12 @@
             android:label="@string/title_activity_today_patient"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.active_patient_activity.ActivePatientActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/title_activity_active_patient"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <!-- Firebase Services -->
         <service android:name=".services.firebase_services.MyFirebaseMessagingService">
             <intent-filter>
