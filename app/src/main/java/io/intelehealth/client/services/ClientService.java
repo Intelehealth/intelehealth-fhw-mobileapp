@@ -1270,11 +1270,15 @@ public class ClientService extends IntentService {
         String quote = "\"";
         String formattedObs = "";
 
-        if (rating != null && !rating.isEmpty()) {
+        if (rating != null && !rating.isEmpty() && comments==null) {
+            formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.RATING + quote + "," +
+                    quote + "value" + quote + ":" + quote + rating + quote + "}";
+        }
+
+        if (rating != null && !rating.isEmpty() && comments!=null) {
             formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.RATING + quote + "," +
                     quote + "value" + quote + ":" + quote + rating + quote + "},";
         }
-
         if (comments != null && !comments.isEmpty()) {
             formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.COMMENTS + quote + "," +
                     quote + "value" + quote + ":" + quote + comments + quote + "}";
