@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:background="@drawable/purple_background_splashscreen"
+    android:background="@drawable/purpler_solid_background"
     tools:context="io.intelehealth.client.activities.login_activity.LoginActivity">
 
     <ScrollView
@@ -122,6 +122,7 @@
                 android:layout_marginTop="10dp"
                 android:paddingVertical="5dp"
                 android:layout_gravity="right"
+                android:textColor="@color/white"
                 android:text="@string/cant_login_user"
                 android:textStyle="bold" />
         </LinearLayout>
