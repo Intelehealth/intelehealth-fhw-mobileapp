@@ -1270,11 +1270,13 @@ public class ClientService extends IntentService {
         String quote = "\"";
         String formattedObs = "";
 
+        /*if rate is selected only and comment is null*/
         if (rating != null && !rating.isEmpty() && comments==null) {
             formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.RATING + quote + "," +
                     quote + "value" + quote + ":" + quote + rating + quote + "}";
         }
 
+        //if rate is selected and comment is not null
         if (rating != null && !rating.isEmpty() && comments!=null) {
             formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.RATING + quote + "," +
                     quote + "value" + quote + ":" + quote + rating + quote + "},";
