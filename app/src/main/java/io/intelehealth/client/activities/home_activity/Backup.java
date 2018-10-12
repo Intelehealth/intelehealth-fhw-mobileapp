@@ -96,7 +96,7 @@ public class Backup {
                 dbfile.createNewFile();
             } else {
                 dbfile.createNewFile();
-                // Toast.makeText(context, "dbfile doesnot exist", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(context, "dbfile doesnot exist", Toast.LENGTH_SHORT).show(); //meera
             }
 
             if (isBackup) {
@@ -107,7 +107,7 @@ public class Backup {
                 readContents(context);
                 copyFile(context, fis, fos);
                 readContents(context);
-                Toast.makeText(context, context.getString(R.string.db_backup_complete), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(context, context.getString(R.string.db_backup_complete), Toast.LENGTH_SHORT).show(); //meera
                 return true;
             } else if (!isBackup) {
                 Log.d("Copying into database", value);
@@ -116,7 +116,7 @@ public class Backup {
                 readContents(context);
                 copyFile(context, fis, fos);
                 readContents(context);
-                Toast.makeText(context, context.getString(R.string.db_restore_complete), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(context, context.getString(R.string.db_restore_complete), Toast.LENGTH_SHORT).show(); //meera
                 return true;
             } else {
                 return false;
@@ -176,7 +176,7 @@ public class Backup {
 
         } catch (Exception e) {
             Log.d("readerror", e.toString());
-            // Toast.makeText(context,"Not able to read the file!!",Toast.LENGTH_SHORT).show();
+            // Toast.makeText(context,"Not able to read the file!!",Toast.LENGTH_SHORT).show(); //meera
         }
         Calendar c = Calendar.getInstance();
         String time = String.valueOf(c.getTime());
