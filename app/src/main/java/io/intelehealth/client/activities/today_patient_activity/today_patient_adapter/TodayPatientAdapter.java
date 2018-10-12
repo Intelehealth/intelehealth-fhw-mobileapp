@@ -47,7 +47,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientViewHo
         String header;
         if(todayPatientModel.getOpenmrs_id()!= null) {
             header = String.format("%s %s - " + context.getString(R.string.visit_summary_heading_id) + ": %s", todayPatientModel.getFirst_name(),
-                    todayPatientModel.getLast_name(), todayPatientModel.getPatient_id());
+                    todayPatientModel.getLast_name(), todayPatientModel.getOpenmrs_id());
         }else{
             header = String.format("%s %s" , todayPatientModel.getFirst_name(),
                     todayPatientModel.getLast_name());
@@ -56,7 +56,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientViewHo
         String body = String.format(context.getString(R.string.id_number) + ": %s \n " +
                         context.getString(R.string.identification_screen_prompt_phone_number) + ": %s\n" +
                         context.getString(R.string.identification_screen_prompt_birthday)+
-                        ": %s ("+context.getString(R.string.identification_screen_prompt_age)+" %d)", todayPatientModel.getPatient_id(), todayPatientModel.getPhone_number(),
+                        ": %s ("+context.getString(R.string.identification_screen_prompt_age)+" %d)", todayPatientModel.getOpenmrs_id(), todayPatientModel.getPhone_number(),
                 todayPatientModel.getDate_of_birth(), age);
         holder.getHeadTextView().setText(header);
         holder.getBodyTextView().setText(body);
