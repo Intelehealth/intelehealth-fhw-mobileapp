@@ -228,7 +228,7 @@ public class SetupActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!mUrlField.getText().toString().trim().isEmpty() && mUrlField.getText().toString().length() > 12) {
+                if (!mUrlField.getText().toString().trim().isEmpty() && mUrlField.getText().toString().length() >= 12) {
                     if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
                         String BASE_URL = "http://" + mUrlField.getText().toString() + ":8080/openmrs/ws/rest/v1/";
                         if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched)
