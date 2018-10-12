@@ -27,7 +27,7 @@
     </style>
 
     <style name="CameraActivityStyle" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/bluesolid</item>
     </style>
 
     <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
