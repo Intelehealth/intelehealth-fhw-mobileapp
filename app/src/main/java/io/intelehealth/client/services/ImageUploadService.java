@@ -112,20 +112,28 @@ public class ImageUploadService extends IntentService {
                     final String parseID = images.getParse_id();
                     if (parseID == null || parseID.isEmpty()) {
                         File file = new File(imagePath);
-                        Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-                        int endIndex = imagePath.lastIndexOf(File.separator);
-                        String imageName = "Default.jpg";
-                        if (endIndex != -1) {
-                            imageName = imagePath.substring(endIndex + 1, imagePath.length());
-                            Log.i(LOG_TAG, imageName);
-                        }
-                        String classname = file.getParentFile().getName();
-                        classname = classname.replaceAll("\\s+", "");
-                        Log.i(LOG_TAG, classname);
-                        if (HelperMethods.isNetworkAvailable(this)) {
-                            uploadImage(classname, bitmap, imageName, intent, imagePath);
-                        } else {
-                            String newText = "Failed to Post Images.";
+                        //meera
+                        if (file.exists()) {
+                            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+                            String imageName;
+                            imageName = file.getName();
+                            
+                            if (HelperMethods.isNetworkAvailable(this)) {
+                                if (bitmap != null && patientUUID != null && !patientUUID.isEmpty()) {
+                                    String classname = file.getParentFile().getName();
+                                    classname = classname.replaceAll("\\s+", "");
+                                    Log.i(LOG_TAG, classname);
+                                    uploadImage(classname, bitmap, imageName, intent, imagePath);
+                                }
+                            }
+                            int endIndex = imagePath.lastIndexOf(File.separator);
+                            if (endIndex != -1) {
+                                imageName = imagePath.substring(endIndex + 1, imagePath.length());
+                                Log.i(LOG_TAG, imageName);
+                            }
+
+                        }else {
+                            String newText = "Image not found.";
                             mBuilder.setSmallIcon(R.mipmap.ic_launcher)
                                     .setContentTitle("Image Upload")
                                     .setContentText(newText);
@@ -167,11 +175,9 @@ public class ImageUploadService extends IntentService {
             queueSyncStop(queueId);
             removeJobFromQueue(queueId);
         }
-
     }
-
-
-    public void uploadImage(String classname, Bitmap bitmap, final String imageName, final Intent intent, final String imagePath) {
+    //meera
+   /* public void uploadImage(String classname, Bitmap bitmap, final String imageName, final Intent intent, final String imagePath) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         byte[] image = stream.toByteArray();
@@ -198,7 +204,6 @@ public class ImageUploadService extends IntentService {
                 Log.i(TAG, "done: " + percentDone);
             }
         });
-
         imgupload.saveInBackground(new SaveCallback() {
             @Override
             public void done(com.parse.ParseException e) {
@@ -219,6 +224,62 @@ public class ImageUploadService extends IntentService {
                 }
             }
         });
+    }*/
+//meera
+    public void uploadImage(String classname, Bitmap bitmap, final String imageName, final Intent intent, final String imagePath) {
+        queueSyncStart(queueId);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] image = stream.toByteArray();
+
+        final ParseFile file = new ParseFile(imageName, image);
+        final ParseObject imgupload = new ParseObject(classname);
+        imgupload.put("Image", file);
+        imgupload.put("PatientID", patientUUID);
+        imgupload.put("VisitID", visitUUID);
+
+        file.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                Log.i(TAG, "done: "+  file.getUrl());
+            }
+        }, new ProgressCallback() {
+            @Override
+            public void done(Integer percentDone) {
+                String newText = "Image Uploading.";
+                mBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                        .setContentTitle(newText)
+                        .setContentText(newText);
+                mBuilder.setProgress(100,percentDone, false);
+                mNotifyManager.notify(mId, mBuilder.build());
+                Log.i(TAG, "done: " + percentDone);
+            }
+        });
+
+        imgupload.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(com.parse.ParseException e) {
+                if (e == null) {
+                    String newText = "Person Image Posted successfully.";
+                    mBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                            .setContentTitle("Image Upload")
+                            .setContentText(newText);
+                    mNotifyManager.notify(mId, mBuilder.build());
+                    if (intent.hasExtra("queueId")) {
+                        int queueId = intent.getIntExtra("queueId", -1);
+                        removeJobFromQueue(queueId);
+                        updateImageDatabase(imagePath, imgupload.getObjectId());
+                    }
+                } else {
+                    String newText = "Failed to Post Images.";
+                    mBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                            .setContentTitle("Image Upload")
+                            .setContentText(newText);
+                    mNotifyManager.notify(mId, mBuilder.build());
+                }
+            }
+        });
+
     }
 
     private void updateImageDatabase(String imagePath, String parse_id) {
