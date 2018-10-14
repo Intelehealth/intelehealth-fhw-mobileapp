@@ -2,12 +2,12 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:drawable="@drawable/purple_background_splashscreen"/>
+        android:drawable="@color/colorPrimary"/>
 
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/ic_launcher" />
+            android:src="@drawable/intelehealth_i_icon_only" />
     </item>
 
 </layer-list>
