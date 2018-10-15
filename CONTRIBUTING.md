@@ -24,7 +24,8 @@ Pull requests are the best way to propose changes to the codebase (we use [Githu
 4. If you've changed APIs, update the documentation.
 5. Ensure the test suite passes.
 6. Make sure your code lints.
-7. Issue that pull request!
+7. Issue that pull request to the develop branch!
+8. When a new release is planned, we'll merge the develop branch into master and compile for release.
 
 ## Any contributions you make will be under the MPL 2.0 Software License
 In short, when you submit code changes, your submissions are understood to be under the same license that covers the project. Feel free to contact the maintainers if that's a concern.

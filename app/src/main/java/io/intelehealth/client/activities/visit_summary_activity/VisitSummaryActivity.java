@@ -399,7 +399,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
             if (visitIDCursor != null) visitIDCursor.close();
             if (visitUUID != null && !visitUUID.isEmpty()) {
-              //  addDownloadButton();
+            addDownloadButton();
 
             }
 
