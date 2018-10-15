@@ -35,7 +35,6 @@
         android:layout_gravity="center_vertical"
         android:padding="5dp"
         android:textStyle="bold"
-        android:text="Meera"
         android:layout_margin="10dp"/>
 
 </LinearLayout>
