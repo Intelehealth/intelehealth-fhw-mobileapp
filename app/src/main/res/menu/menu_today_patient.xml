@@ -9,7 +9,8 @@
         android:id="@+id/summary_endAllVisit"
         android:orderInCategory="100"
         app:showAsAction="never"
-        android:title="End All Visit">
+        android:title="End All Visit"
+        android:visible="false">
 
     </item>
 
