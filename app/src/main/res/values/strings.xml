@@ -110,7 +110,7 @@
     <string name="identification_screen_picker_months">months</string>
 
     //Active Patients Screen
-    <string name="title_activity_active_patient" translatable="false">ActivePatientActivity</string>
+    <string name="title_activity_active_patient">Active Patients Activity</string>
 
     //Patient History Screen
     <string name="title_activity_get_patient_history">Patient History</string>
@@ -338,6 +338,7 @@
     <string name="new_patient">New Patient</string>
     <string name="find_patient">Find Patients</string>
     <string name="today_patient">"Today's Patients"</string>
+    <string name="active_patient">"Active Patients"</string>
     <string name="video_library">Video Library</string>
 
     <string name="error_no_sd">This feature is only available to devices with SD cards.</string>

@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import io.intelehealth.client.R;
+import io.intelehealth.client.activities.active_patient_activity.ActivePatientActivity;
 import io.intelehealth.client.activities.identification_activity.IdentificationActivity;
 import io.intelehealth.client.activities.search_patient_activity.SearchPatientActivity;
 import io.intelehealth.client.activities.sync_activity.ActivitySync;
@@ -29,6 +30,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
     final String[] options = {IntelehealthApplication.getAppContext().getString(R.string.new_patient),
             IntelehealthApplication.getAppContext().getString(R.string.find_patient),
             IntelehealthApplication.getAppContext().getString(R.string.today_patient),
+            IntelehealthApplication.getAppContext().getString(R.string.active_patient),
             IntelehealthApplication.getAppContext().getString(R.string.video_library)
             // , IntelehealthApplication.getAppContext().getString(R.string.action_sync_all)
     };
@@ -36,7 +38,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
     //TODO: Change placeholder icon "android.R.drawable.ic_menu_my_calendar"
 
     final int[] icons = {R.drawable.ic_person_add_24dp, R.drawable.ic_search_24dp,
-            R.drawable.ic_calendar_intele_24dp, R.drawable.ic_play_circle_filled_black_24dp
+            R.drawable.ic_calendar_intele_24dp,R.drawable.ic_calendar_intele_24dp, R.drawable.ic_play_circle_filled_black_24dp
             //,android.R.drawable.ic_menu_preferences
     };
 
@@ -97,11 +99,21 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
                     break;
                 }
                 case 3: {
-                    Intent intent = new Intent(this.context, VideoLibraryActivity.class);
+
+                    //TODO: Change Activity after coding is done.
+
+                    // Query for today's patient
+                    // SELECT * FROM visit WHERE start_datetime LIKE "2017-05-08T%" ORDER BY start_datetime ASC
+                    Intent intent = new Intent(this.context, ActivePatientActivity.class);
                     this.context.startActivity(intent);
                     break;
                 }
                 case 4: {
+                    Intent intent = new Intent(this.context, VideoLibraryActivity.class);
+                    this.context.startActivity(intent);
+                    break;
+                }
+                case 5: {
                     Intent intent = new Intent(this.context, ActivitySync.class);
                     this.context.startActivity(intent);
                     break;
