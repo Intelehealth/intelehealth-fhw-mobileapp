@@ -133,7 +133,7 @@ public class ImageUploadService extends IntentService {
                             }
 
                         }else {
-                            String newText = "Failed to Post Images.";
+                            String newText = "Image not found";
                             mBuilder.setSmallIcon(R.mipmap.ic_launcher)
                                     .setContentTitle("Image Upload")
                                     .setContentText(newText);
