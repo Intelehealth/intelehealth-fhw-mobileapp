@@ -339,7 +339,10 @@ public class PrescriptionDownloadService extends IntentService {
                                 if (!followUpDate.contains(indexText) && !followUpDate.isEmpty()) {
                                     followUpDate = followUpDate + "\n" + indexText;
                                 } else {
-                                    followUpDate = indexText;
+                                    String[] arrOfStr=indexText.split(",",2);
+                                    String convertDate=arrOfStr[0];
+                                    String advice=arrOfStr[1];
+                                    followUpDate = HelperMethods.convertStringToDate(convertDate)+","+advice;
                                 }
                                 String[] obsArgs = {String.valueOf(ConceptId.FOLLOW_UP_VISIT), visitID};
                                 Cursor cursor = queryDatabase(columns, obsSelection, obsArgs);

@@ -1353,7 +1353,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         Calendar c = Calendar.getInstance();
         System.out.println("Current time => " + c.getTime());
 
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMMM-yyyy");
         String mDate = df.format(c.getTime());
 
         String mPatHist = patHistory.getValue();

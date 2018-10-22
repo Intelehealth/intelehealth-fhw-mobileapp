@@ -33,6 +33,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -513,6 +514,18 @@ public class ClientService extends IntentService {
                         patient.getPostalCode());
 
         Log.d(TAG, "Person String: " + personString);
+
+        String[] arrOfStr=personString.split("birthdate",2);
+        String othersting=arrOfStr[0];
+        String convertDate=arrOfStr[1];
+        String[] substring=convertDate.split(",",2);
+        String convertDate1=substring[0];
+        String othersting1=substring[1];
+        String []substring1=convertDate1.split(":",2);
+        String convert3=substring1[0];
+        String date=substring1[1];
+      personString=convertStringToDate(date)+othersting+othersting1;
+
         WebResponse responsePerson;
         responsePerson = HelperMethods.postCommand("person", personString, getApplicationContext());
         if (responsePerson != null && responsePerson.getResponseCode() != 201) {
@@ -530,6 +543,19 @@ public class ClientService extends IntentService {
             mNotifyManager.notify(mId, mBuilder.build());
             return responsePerson.getResponseString();
         }
+    }
+
+    public static String convertStringToDate(String datastring) {
+        String formattedDate = null;
+        try {
+            DateFormat originalFormat = new SimpleDateFormat("dd-MMMM-yyyy", Locale.ENGLISH);
+            DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
+            Date date = originalFormat.parse(datastring);
+            formattedDate = targetFormat.format(date);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return formattedDate;
     }
 
     /**
