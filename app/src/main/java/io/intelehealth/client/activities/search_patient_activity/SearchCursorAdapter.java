@@ -48,6 +48,8 @@ public class SearchCursorAdapter extends CursorAdapter {
             String lName = cursor.getString(cursor.getColumnIndexOrThrow("last_name"));
             String dob = cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth"));
             int age = HelperMethods.getAge(dob);
+            //for converting Date format in dd-MMMM-yyyy
+            dob=HelperMethods.SimpleDatetoLongDate(dob);
             String header, body;
             if (openmrsID == null) {
                 header = String.format("%s %s", fName, lName);

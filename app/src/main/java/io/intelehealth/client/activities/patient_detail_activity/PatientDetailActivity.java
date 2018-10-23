@@ -338,7 +338,9 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
         int age = HelperMethods.getAge(patient.getDateOfBirth());
         ageView.setText(String.valueOf(age));
-        dobView.setText(patient.getDateOfBirth());
+        //for converting Date format in dd-MMMM-yyyy
+        String dob=HelperMethods.SimpleDatetoLongDate(patient.getDateOfBirth());
+        dobView.setText(dob);
         if (patient.getAddress1() == null || patient.getAddress2().equals("")) {
             addr1View.setVisibility(View.GONE);
         } else {
@@ -509,7 +511,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         final Boolean past_visit;
 
         TextView textView = new TextView(this);
-        String visitString = String.format("Seen on %s.", datetime);
+        //for converting Date format in dd-MMMM-yyyy
+        String visitString = String.format("Seen on %s.", HelperMethods.SimpleDatetoLongDate(datetime));
         if (end_datetime == null || end_datetime.isEmpty()) {
             // visit has not yet ended
             SpannableString spannableString = new SpannableString(visitString + " Active");

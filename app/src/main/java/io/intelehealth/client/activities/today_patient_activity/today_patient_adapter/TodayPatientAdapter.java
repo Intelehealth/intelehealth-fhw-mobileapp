@@ -53,11 +53,13 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientViewHo
                     todayPatientModel.getLast_name());
         }
         int age = HelperMethods.getAge(todayPatientModel.getDate_of_birth());
+        //for converting Date format in dd-MMMM-yyyy
+        String dob=HelperMethods.SimpleDatetoLongDate(todayPatientModel.getDate_of_birth());
         String body = String.format(context.getString(R.string.id_number) + ": %s \n " +
                         context.getString(R.string.identification_screen_prompt_phone_number) + ": %s\n" +
                         context.getString(R.string.identification_screen_prompt_birthday)+
                         ": %s ("+context.getString(R.string.identification_screen_prompt_age)+" %d)", todayPatientModel.getOpenmrs_id(), todayPatientModel.getPhone_number(),
-                todayPatientModel.getDate_of_birth(), age);
+                dob, age);
         holder.getHeadTextView().setText(header);
         holder.getBodyTextView().setText(body);
         if (todayPatientModel.getEnd_datetime() == null) {

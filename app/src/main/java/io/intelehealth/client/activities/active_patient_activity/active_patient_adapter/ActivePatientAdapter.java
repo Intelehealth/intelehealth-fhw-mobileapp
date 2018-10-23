@@ -52,11 +52,14 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientView
                     activePatientModel.getLast_name());
         }
         int age = HelperMethods.getAge(activePatientModel.getDate_of_birth());
+        //for converting Date format in dd-MMMM-yyyy
+        String dob=HelperMethods.SimpleDatetoLongDate(activePatientModel.getDate_of_birth());
+
         String body = String.format(context.getString(R.string.id_number) + ": %s \n " +
                         context.getString(R.string.identification_screen_prompt_phone_number) + ": %s\n" +
                         context.getString(R.string.identification_screen_prompt_birthday) +
                         ": %s (" + context.getString(R.string.identification_screen_prompt_age) + " %d)", activePatientModel.getOpenmrs_id(), activePatientModel.getPhone_number(),
-                activePatientModel.getDate_of_birth(), age);
+                dob, age);
         holder.getHeadTextView().setText(header);
         holder.getBodyTextView().setText(body);
         if (activePatientModel.getEnd_datetime() == null) {
