@@ -40,6 +40,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -53,6 +55,7 @@ import io.intelehealth.client.activities.identification_activity.IdentificationA
 import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
 import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
+import io.intelehealth.client.node.Node;
 import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.services.ClientService;
 import io.intelehealth.client.services.PatientUpdateService;
@@ -84,7 +87,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     boolean returning = false;
     String phistory = "";
     String fhistory = "";
-
+    TextView complainView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -433,6 +436,49 @@ public class PatientDetailActivity extends AppCompatActivity {
                 famHistView.setText(getString(R.string.string_no_hist));
             }
         }
+       // Users need to know what complaints the patient came with on a visit date.
+        if (visitID != null) {
+            CardView previsitCardView = (CardView) findViewById(R.id.cardView_previous_visits);
+            previsitCardView.setVisibility(View.GONE);
+        } else {
+            String previsitSelection = "patient_id = ? AND concept_id = ?";
+            String[] previsitArgs = {dataString, String.valueOf(ConceptId.CURRENT_COMPLAINT)};
+            String[] previsitColumms = {"value", " concept_id"};
+            Cursor previsitCursor = db.query("obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);
+            previsitCursor.moveToLast();
+
+            String previsitValue;
+
+            try {
+                previsitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
+                String complaints[] = StringUtils.split(previsitValue, Node.bullet_arrow);
+                previsitValue = "";
+                String colon = ":";
+                if (complaints != null) {
+                    for (String comp : complaints) {
+                        if (!comp.trim().isEmpty()) {
+                            previsitValue = previsitValue + Node.big_bullet + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+                        }
+                    }
+                    if (!previsitValue.isEmpty()) {
+                        previsitValue = previsitValue.substring(0, previsitValue.length() - 2);
+                        previsitValue = previsitValue.replaceAll("<b>", "");
+                        previsitValue = previsitValue.replaceAll("</b>", "");
+                    }
+                }
+            } catch (Exception e) {
+                previsitValue = "";
+            } finally {
+                previsitCursor.close();
+            }
+
+            if (previsitValue != null && !previsitValue.equals("")) {
+                complainView.setText(Html.fromHtml(previsitValue));
+            } else {
+                complainView.setText(getString(R.string.string_no_hist));
+            }
+        }
+
 
         String visitSelection = "patient_id = ?";
         String[] visitArgs = {dataString};
