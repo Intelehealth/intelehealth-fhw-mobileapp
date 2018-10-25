@@ -483,12 +483,6 @@
                     android:text="@string/header_previous_visits"
                     android:textSize="@dimen/card_title_text_size" />
 
-                <TextView
-                    android:id="@+id/complain_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/card_content_text_size" />
-
 
             </LinearLayout>
         </android.support.v7.widget.CardView>

@@ -78,7 +78,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     String visitID;
     String intentTag = "";
     Patient patient = new Patient();
-
+    public static String previsitValue;
     Button editbtn;
     Button newVisit;
     LinearLayout previousVisitsList;
@@ -447,8 +447,6 @@ public class PatientDetailActivity extends AppCompatActivity {
             Cursor previsitCursor = db.query("obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);
             previsitCursor.moveToLast();
 
-            String previsitValue;
-
             try {
                 previsitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
                 String complaints[] = StringUtils.split(previsitValue, Node.bullet_arrow);
@@ -558,13 +556,31 @@ public class PatientDetailActivity extends AppCompatActivity {
         String visitString = String.format("Seen on %s.", datetime);
         if (end_datetime == null || end_datetime.isEmpty()) {
             // visit has not yet ended
-            SpannableString spannableString = new SpannableString(visitString + " Active");
-            Object greenSpan = new BackgroundColorSpan(Color.GREEN);
-            Object underlineSpan = new UnderlineSpan();
-            spannableString.setSpan(greenSpan, spannableString.length() - 6, spannableString.length(), 0);
-            spannableString.setSpan(underlineSpan, 0, spannableString.length() - 7, 0);
-            textView.setText(spannableString);
-
+            LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+            for (int i = 1; i <= 2; i++) {
+                if(i==1) {
+                    SpannableString spannableString = new SpannableString(visitString + " Active");
+                    Object greenSpan = new BackgroundColorSpan(Color.GREEN);
+                    Object underlineSpan = new UnderlineSpan();
+                    spannableString.setSpan(greenSpan, spannableString.length() - 6, spannableString.length(), 0);
+                    spannableString.setSpan(underlineSpan, 0, spannableString.length() - 7, 0);
+                    textView.setText(spannableString);
+                    layoutParams.setMargins(2, 2, 2, 2);
+                    previousVisitsList.addView(textView);
+                }
+                if(i==2) {
+                    TextView complintxt1 = new TextView(this);
+                    complintxt1.setLayoutParams(layoutParams);
+                    complintxt1.setText("test1");
+                    if (previsitValue != null && !previsitValue.equals("")) {
+                        complintxt1.setText(Html.fromHtml(previsitValue));
+                    } else {
+                        complintxt1.setText(getString(R.string.string_no_hist));
+                    }
+                    layoutParams.setMargins(2, 2, 2, 2);
+                    previousVisitsList.addView(complintxt1);
+                }
+            }
             past_visit = false;
 
             if (newVisit.isEnabled()) {
@@ -590,7 +606,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         textView.setTextSize(18);
         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams
                 (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        llp.setMargins(25, 25, 25, 25);
+        llp.setMargins(0, 0, 0, 0);
         textView.setLayoutParams(llp);
         textView.setTag(visit_id);
        /* textView.setOnTouchListener(new View.OnTouchListener() {
@@ -629,7 +645,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 startActivity(visitSummary);
             }
         });
-        previousVisitsList.addView(textView);
+       // previousVisitsList.addView(textView);
         //TODO: add on click listener to open the previous visit
     }
 
