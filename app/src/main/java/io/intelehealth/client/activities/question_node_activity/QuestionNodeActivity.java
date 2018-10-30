@@ -64,7 +64,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
     String imageName;
     File filePath;
     Boolean complaintConfirmed = false;
-    String complaintString;
+
     SharedPreferences prefs;
 
 
@@ -278,36 +278,29 @@ public class QuestionNodeActivity extends AppCompatActivity {
 //            }
 
             List<String> imagePathList = currentNode.getImagePathList();
-
             if (imagePathList != null) {
                 for (String imagePath : imagePathList) {
                     updateImageDatabase(imagePath);
                 }
             }
 
-             complaintString = currentNode.generateLanguage();
-
+          String complaintString = currentNode.generateLanguage();
             if(complaintString !=null && !complaintString.isEmpty()) {
            //     String complaintFormatted = complaintString.replace("?,", "?:");
 
                 String complaint = currentNode.getText();
             //    complaintDetails.put(complaint, complaintFormatted);
+                if(complaintString !=null && !complaintString.isEmpty()) {
 
-                //If we don't have any Complaints then there should be null value not double quotes
-                //when check card visibility in visitsummary Activity it gets double quotes but we required null value if there is no node selected
-                if (insertion.length() > 0) {
-                    insertion=insertion+complaintString;
-            } else {
-                    insertion = insertion + "";
+                    //     String complaintFormatted = complaintString.replace("?,", "?:");
+                     complaint = currentNode.getText();
+                    //    complaintDetails.put(complaint, complaintFormatted);
+
                     insertion = insertion.concat(Node.bullet_arrow+"<b>"+complaint +"</b>"+": "+Node.next_line + complaintString + " ");
-                    complaintString= insertion;
                 }
-            insertDb(complaintString);
 
             }
-            else {
-                insertDb(complaintString);
-            }
+
             ArrayList<String> selectedAssociatedComplaintsList = currentNode.getSelectedAssociations();
             if (selectedAssociatedComplaintsList != null && !selectedAssociatedComplaintsList.isEmpty()) {
                 for (String associatedComplaint : selectedAssociatedComplaintsList) {
@@ -334,7 +327,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
             } else {
                 if (intentTag != null && intentTag.equals("edit")) {
                     Log.i(LOG_TAG, "fabClick: update" +insertion);
-                    updateDatabase(complaintString);
+                    updateDatabase(insertion);
                     Intent intent = new Intent(QuestionNodeActivity.this, PhysicalExamActivity.class);
                     intent.putExtra("patientID", patientID);
                     intent.putExtra("visitID", visitID);
@@ -351,7 +344,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else {
                     Log.i(LOG_TAG, "fabClick: " + insertion);
-                    insertDb(complaintString);
+                    insertDb(insertion);
 
                     SharedPreferences sharedPreference = this.getSharedPreferences(
                             "visit_summary", Context.MODE_PRIVATE);

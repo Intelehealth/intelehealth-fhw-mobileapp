@@ -45,7 +45,6 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -78,12 +77,12 @@ import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.node.Node;
 import io.intelehealth.client.objects.Obs;
 import io.intelehealth.client.objects.Patient;
-import io.intelehealth.client.objects.PatientAttribute;
+
 import io.intelehealth.client.services.ClientService;
 import io.intelehealth.client.services.PrescriptionDownloadService;
 import io.intelehealth.client.services.UpdateVisitService;
 import io.intelehealth.client.utilities.ConceptId;
-import io.intelehealth.client.utilities.HelperMethods;
+
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -116,7 +115,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String failedMessage;
 
     Context context;
-    SQLiteDatabase localdb;
+
 
     Integer patientID;
     String visitID;
@@ -124,12 +123,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String patientName;
     String intentTag;
     String visitUUID;
-    public  static String checkedstr;
     LocalRecordsDatabaseHelper mDbHelper;
     SQLiteDatabase db;
 
     Patient patient = new Patient();
-    PatientAttribute patientAttribute=new PatientAttribute();
+
 
     Obs complaint = new Obs();
     Obs famHistory = new Obs();
@@ -151,9 +149,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String additionalReturned = "";
     String followUpDate = "";
 
-    String attribute_type;
-    String patient_id;
-    String patient_att_value;
+
     ImageButton editVitals;
     ImageButton editComplaint;
     ImageButton editPhysical;
@@ -183,7 +179,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String filePathPhyExam;
     File phyExamDir;
 
-    CheckBox emgencychbx;
     NotificationManager mNotificationManager;
     NotificationCompat.Builder mBuilder;
 
@@ -201,7 +196,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
     CardView pathistCard;
     CardView famhistCard;
     CardView physexamCard;
-    CardView emrgencyCard;
     TextView diagnosisTextView;
     TextView prescriptionTextView;
     TextView medicalAdviceTextView;
@@ -364,7 +358,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         requestedTestsTextView = (TextView) findViewById(R.id.textView_content_tests);
         additionalCommentsTextView = (TextView) findViewById(R.id.textView_content_additional_comments);
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
-        complaintCard=(CardView)findViewById(R.id.cardView_complaint);
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
 
         filePathPhyExam = baseDir + File.separator + "Patient Images" + File.separator + patientID + File.separator +
@@ -644,15 +637,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         bmiView.setText(mBMI);
         tempView.setText(temperature.getValue());
         spO2View.setText(spO2.getValue());
-        //Added a to check If we Dont have any complaint from Complaints Screen
-        //Check visibility of cards
+        //No Need to Set visibility for Complaints
         if (complaint.getValue() != null){
             complaintView.setText(Html.fromHtml(complaint.getValue()));
-            complaintCard.setVisibility(View.VISIBLE);
-        }else {
-            complaintCard.setVisibility(View.GONE);
         }
-
         if (patHistory.getValue() != null)
             patHistView.setText(Html.fromHtml(patHistory.getValue()));
 
