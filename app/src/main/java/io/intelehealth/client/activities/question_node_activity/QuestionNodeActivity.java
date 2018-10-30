@@ -17,6 +17,7 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,6 +35,7 @@ import io.intelehealth.client.activities.custom_expandable_list_adapter.CustomEx
 import io.intelehealth.client.activities.family_history_activity.FamilyHistoryActivity;
 import io.intelehealth.client.activities.past_medical_history_activity.PastMedicalHistoryActivity;
 import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity;
+import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.node.Node;
 import io.intelehealth.client.objects.Knowledge;
@@ -62,7 +64,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
     String imageName;
     File filePath;
     Boolean complaintConfirmed = false;
-
+    String complaintString;
     SharedPreferences prefs;
 
 
@@ -122,6 +124,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
             } else {
                 String fileLocation = "engines/" + complaints.get(i) + ".json";
                 currentFile = HelperMethods.encodeJSON(this, fileLocation);
+
             }
             Node currentNode = new Node(currentFile);
             complaintsNodes.add(currentNode);
@@ -282,7 +285,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 }
             }
 
-            String complaintString = currentNode.generateLanguage();
+             complaintString = currentNode.generateLanguage();
 
             if(complaintString !=null && !complaintString.isEmpty()) {
            //     String complaintFormatted = complaintString.replace("?,", "?:");
@@ -290,7 +293,20 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 String complaint = currentNode.getText();
             //    complaintDetails.put(complaint, complaintFormatted);
 
-                insertion = insertion.concat(Node.bullet_arrow+"<b>"+complaint +"</b>"+": "+Node.next_line + complaintString + " ");
+                //If we don't have any Complaints then there should be null value not double quotes
+                //when check card visibility in visitsummary Activity it gets double quotes but we required null value if there is no node selected
+                if (insertion.length() > 0) {
+                    insertion=insertion+complaintString;
+            } else {
+                    insertion = insertion + "";
+                    insertion = insertion.concat(Node.bullet_arrow+"<b>"+complaint +"</b>"+": "+Node.next_line + complaintString + " ");
+                    complaintString= insertion;
+                }
+            insertDb(complaintString);
+
+            }
+            else {
+                insertDb(complaintString);
             }
             ArrayList<String> selectedAssociatedComplaintsList = currentNode.getSelectedAssociations();
             if (selectedAssociatedComplaintsList != null && !selectedAssociatedComplaintsList.isEmpty()) {
@@ -318,7 +334,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
             } else {
                 if (intentTag != null && intentTag.equals("edit")) {
                     Log.i(LOG_TAG, "fabClick: update" +insertion);
-                    updateDatabase(insertion);
+                    updateDatabase(complaintString);
                     Intent intent = new Intent(QuestionNodeActivity.this, PhysicalExamActivity.class);
                     intent.putExtra("patientID", patientID);
                     intent.putExtra("visitID", visitID);
@@ -335,25 +351,61 @@ public class QuestionNodeActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else {
                     Log.i(LOG_TAG, "fabClick: " + insertion);
-                    insertDb(insertion);
-                    Intent intent = new Intent(QuestionNodeActivity.this, PastMedicalHistoryActivity.class);
-                    intent.putExtra("patientID", patientID);
-                    intent.putExtra("visitID", visitID);
-                    intent.putExtra("state", state);
-                    intent.putExtra("name", patientName);
-                    intent.putExtra("tag", intentTag);
+                    insertDb(complaintString);
+
                     SharedPreferences sharedPreference = this.getSharedPreferences(
                             "visit_summary", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreference.edit();
                     Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
                     editor.putStringSet("exam_" + patientID, selectedExams);
                     editor.commit();
-                    //intent.putStringArrayListExtra("exams", physicalExams);
-                    startActivity(intent);
+                    //Added a check to skip activities if PMH,FH,PE JSON is Not found or Not exist
+                    try {
+                        if (Arrays.asList(getResources().getAssets().list("")).contains("patHist.json")) {
+                            Intent intent = new Intent(QuestionNodeActivity.this, PastMedicalHistoryActivity.class);
+                            intent.putExtra("patientID", patientID);
+                            intent.putExtra("visitID", visitID);
+                            intent.putExtra("state", state);
+                            intent.putExtra("name", patientName);
+                            intent.putExtra("tag", intentTag);
+
+                            //intent.putStringArrayListExtra("exams", physicalExams);
+                            startActivity(intent);
+                        } else if (Arrays.asList(getResources().getAssets().list("")).contains("famHist.json")) {
+                            Intent intent = new Intent(QuestionNodeActivity.this, FamilyHistoryActivity.class);
+                            intent.putExtra("patientID", patientID);
+                            intent.putExtra("visitID", visitID);
+                            intent.putExtra("state", state);
+                            intent.putExtra("name", patientName);
+                            intent.putExtra("tag", intentTag);
+
+                            //intent.putStringArrayListExtra("exams", physicalExams);
+                            startActivity(intent);
+                        } else if (Arrays.asList(getResources().getAssets().list("")).contains("physExam.json")) {
+                            Intent intent = new Intent(QuestionNodeActivity.this, PhysicalExamActivity.class);
+                            intent.putExtra("patientID", patientID);
+                            intent.putExtra("visitID", visitID);
+                            intent.putExtra("state", state);
+                            intent.putExtra("name", patientName);
+                            intent.putExtra("tag", intentTag);
+
+                            //intent.putStringArrayListExtra("exams", physicalExams);
+                            startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(QuestionNodeActivity.this, VisitSummaryActivity.class);
+                            intent.putExtra("patientID", patientID);
+                            intent.putExtra("visitID", visitID);
+                            intent.putExtra("state", state);
+                            intent.putExtra("name", patientName);
+                            intent.putExtra("tag", intentTag);
+                            startActivity(intent);                        }
+                    } catch (Exception e) {
+
+                    }
+                }
                 }
             }
 
-        }
 
     }
 
