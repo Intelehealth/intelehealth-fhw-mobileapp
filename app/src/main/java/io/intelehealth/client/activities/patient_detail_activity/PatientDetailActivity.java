@@ -569,16 +569,16 @@ public class PatientDetailActivity extends AppCompatActivity {
                     previousVisitsList.addView(textView);
                 }
                 if(i==2) {
-                    TextView complintxt1 = new TextView(this);
-                    complintxt1.setLayoutParams(layoutParams);
-                    complintxt1.setText("test1");
+                    TextView complaintxt1 = new TextView(this);
+                    complaintxt1.setLayoutParams(layoutParams);
                     if (previsitValue != null && !previsitValue.equals("")) {
-                        complintxt1.setText(Html.fromHtml(previsitValue));
+                        complaintxt1.setText(Html.fromHtml(previsitValue));
                     } else {
-                        complintxt1.setText(getString(R.string.string_no_hist));
+                        Log.e("Check","No complaint");
+                        //Removed text of No history of illness
                     }
                     layoutParams.setMargins(2, 2, 2, 2);
-                    previousVisitsList.addView(complintxt1);
+                    previousVisitsList.addView(complaintxt1);
                 }
             }
             past_visit = false;
@@ -599,7 +599,8 @@ public class PatientDetailActivity extends AppCompatActivity {
             textView.setText(visitString);
             past_visit = true;
             textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-
+           //Previous Visit Date should be shown when end the visit
+            previousVisitsList.addView(textView);
 
         }
 
