@@ -126,6 +126,30 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     if (phistory != null && !phistory.isEmpty() && !phistory.equals("null")) {
                         insertDb(phistory);
                     }
+                    //Added check if FH and PEx doesn't exits
+                    try{
+                        if(Arrays.asList(getResources().getAssets().list("")).contains("famHist.json")){
+                            Intent intent = new Intent(PastMedicalHistoryActivity.this, FamilyHistoryActivity.class);
+                            intent.putExtra("patientID", patientID);
+                            intent.putExtra("visitID", visitID);
+                            intent.putExtra("state", state);
+                            intent.putExtra("name", patientName);
+                            intent.putExtra("tag", intentTag);
+                            startActivity(intent);
+                        } else if(Arrays.asList(getResources().getAssets().list("")).contains("physExam.json")){
+                            Intent intent = new Intent(PastMedicalHistoryActivity.this, PhysicalExamActivity.class);
+                            intent.putExtra("patientID", patientID);
+                            intent.putExtra("visitID", visitID);
+                            intent.putExtra("state", state);
+                            intent.putExtra("name", patientName);
+                            intent.putExtra("tag", intentTag);
+                            startActivity(intent);
+                        }else{
+                            Toast.makeText(getApplicationContext(),"No files are found...",Toast.LENGTH_LONG).show();
+                        }
+                    }catch (Exception e){
+
+                    }
                 }
             });
             alertdialog.show();
