@@ -45,6 +45,7 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -77,10 +78,12 @@ import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.node.Node;
 import io.intelehealth.client.objects.Obs;
 import io.intelehealth.client.objects.Patient;
+import io.intelehealth.client.objects.PatientAttribute;
 import io.intelehealth.client.services.ClientService;
 import io.intelehealth.client.services.PrescriptionDownloadService;
 import io.intelehealth.client.services.UpdateVisitService;
 import io.intelehealth.client.utilities.ConceptId;
+import io.intelehealth.client.utilities.HelperMethods;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -113,6 +116,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String failedMessage;
 
     Context context;
+    SQLiteDatabase localdb;
 
     Integer patientID;
     String visitID;
@@ -120,11 +124,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String patientName;
     String intentTag;
     String visitUUID;
-
+    public  static String checkedstr;
     LocalRecordsDatabaseHelper mDbHelper;
     SQLiteDatabase db;
 
     Patient patient = new Patient();
+    PatientAttribute patientAttribute=new PatientAttribute();
+
     Obs complaint = new Obs();
     Obs famHistory = new Obs();
     Obs patHistory = new Obs();
@@ -145,6 +151,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String additionalReturned = "";
     String followUpDate = "";
 
+    String attribute_type;
+    String patient_id;
+    String patient_att_value;
     ImageButton editVitals;
     ImageButton editComplaint;
     ImageButton editPhysical;
@@ -174,6 +183,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String filePathPhyExam;
     File phyExamDir;
 
+    CheckBox emgencychbx;
     NotificationManager mNotificationManager;
     NotificationCompat.Builder mBuilder;
 
@@ -181,20 +191,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
     Button downloadButton;
     ArrayList<String> physicalExams;
 
+    CardView complaintCard;
     CardView diagnosisCard;
     CardView prescriptionCard;
     CardView medicalAdviceCard;
     CardView requestedTestsCard;
     CardView additionalCommentsCard;
     CardView followUpDateCard;
-
+    CardView pathistCard;
+    CardView famhistCard;
+    CardView physexamCard;
+    CardView emrgencyCard;
     TextView diagnosisTextView;
     TextView prescriptionTextView;
     TextView medicalAdviceTextView;
     TextView requestedTestsTextView;
     TextView additionalCommentsTextView;
     TextView followUpDateTextView;
-
     Boolean isPastVisit = false;
     Boolean isReceiverRegistered = false;
 
@@ -333,10 +346,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
         requestedTestsCard = (CardView) findViewById(R.id.cardView_tests);
         additionalCommentsCard = (CardView) findViewById(R.id.cardView_additional_comments);
         followUpDateCard = findViewById(R.id.cardView_follow_up_date);
+
+
+        pathistCard=(CardView)findViewById(R.id.cardView_pathist);
+        famhistCard=(CardView)findViewById(R.id.cardView_famhist);
+        physexamCard=(CardView)findViewById(R.id.cardView_physexam);
+
         mDoctorTitle = (TextView) findViewById(R.id.title_doctor);
         mDoctorName = findViewById(R.id.doctor_details);
         mDoctorTitle.setVisibility(View.GONE);
         mDoctorName.setVisibility(View.GONE);
+
 
         diagnosisTextView = (TextView) findViewById(R.id.textView_content_diagnosis);
         prescriptionTextView = (TextView) findViewById(R.id.textView_content_rx);
@@ -344,7 +364,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         requestedTestsTextView = (TextView) findViewById(R.id.textView_content_tests);
         additionalCommentsTextView = (TextView) findViewById(R.id.textView_content_additional_comments);
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
-
+        complaintCard=(CardView)findViewById(R.id.cardView_complaint);
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
 
         filePathPhyExam = baseDir + File.separator + "Patient Images" + File.separator + patientID + File.separator +
@@ -624,14 +644,27 @@ public class VisitSummaryActivity extends AppCompatActivity {
         bmiView.setText(mBMI);
         tempView.setText(temperature.getValue());
         spO2View.setText(spO2.getValue());
-        if (complaint.getValue() != null)
+        //Added a to check If we Dont have any complaint from Complaints Screen
+        //Check visibility of cards
+        if (complaint.getValue() != null){
             complaintView.setText(Html.fromHtml(complaint.getValue()));
-        if (famHistory.getValue() != null)
-            famHistView.setText(Html.fromHtml(famHistory.getValue()));
+            complaintCard.setVisibility(View.VISIBLE);
+        }else {
+            complaintCard.setVisibility(View.GONE);
+        }
+
         if (patHistory.getValue() != null)
             patHistView.setText(Html.fromHtml(patHistory.getValue()));
-        if (phyExam.getValue() != null)
+
+        //Added a to check If we Dont have any data selection from PE
+        //Check visibility of cards
+        if (phyExam.getValue() != null){
             physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
+            physexamCard.setVisibility(View.VISIBLE);
+        }else {
+            physexamCard.setVisibility(View.GONE);
+        }
+
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor e = sharedPreferences.edit();
 
@@ -1077,6 +1110,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 patient.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
                 patient.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
                 patient.setPatientPhoto(idCursor.getString(idCursor.getColumnIndex("patient_photo")));
+
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -1092,9 +1126,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
             famHistCursor.moveToLast();
             String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
             famHistory.setValue(famHistText);
+            famHistory.setValue(famHistText);
+            //If we Dont have any data from FH
+            //Check visibility of cards
+            if (famHistText==""||famHistText==null){
+                famhistCard.setVisibility(View.GONE);
+            }else {
+                famhistCard.setVisibility(View.VISIBLE);
+            }
+
             famHistCursor.close();
         } catch (CursorIndexOutOfBoundsException e) {
             famHistory.setValue(""); // if family history does not exist
+
         }
 
         try {
@@ -1106,6 +1150,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
             medHistCursor.moveToLast();
             String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
             patHistory.setValue(medHistText);
+            //If we Dont have any data from PMH
+            //Check visibility of cards
+            if (medHistText==null){
+                pathistCard.setVisibility(View.GONE);
+            }else {
+                pathistCard.setVisibility(View.VISIBLE);
+            }
 
             if (medHistText != null && !medHistText.isEmpty()) {
 
@@ -1121,6 +1172,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             medHistCursor.close();
         } catch (CursorIndexOutOfBoundsException e) {
             patHistory.setValue(""); // if medical history does not exist
+
         }
 
         String visitSelection = "patient_id = ? AND visit_id = ?";
@@ -1353,8 +1405,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         Calendar c = Calendar.getInstance();
         System.out.println("Current time => " + c.getTime());
 
+
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         String mDate = df.format(c.getTime());
+
 
         String mPatHist = patHistory.getValue();
         if (mPatHist == null) {
@@ -1966,4 +2020,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
     }
+
+
+
 }
