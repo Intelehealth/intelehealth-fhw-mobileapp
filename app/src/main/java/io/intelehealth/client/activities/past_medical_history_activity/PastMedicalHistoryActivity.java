@@ -18,17 +18,20 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.custom_expandable_list_adapter.CustomExpandableListAdapter;
 import io.intelehealth.client.activities.family_history_activity.FamilyHistoryActivity;
+import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity;
 import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.node.Node;
@@ -77,7 +80,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
         localdb = mDbHelper.getWritableDatabase();
 
@@ -124,16 +126,30 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     if (phistory != null && !phistory.isEmpty() && !phistory.equals("null")) {
                         insertDb(phistory);
                     }
+                    //Added check if FH and PEx doesn't exits
+                    try{
+                        if(Arrays.asList(getResources().getAssets().list("")).contains("famHist.json")){
+                            Intent intent = new Intent(PastMedicalHistoryActivity.this, FamilyHistoryActivity.class);
+                            intent.putExtra("patientID", patientID);
+                            intent.putExtra("visitID", visitID);
+                            intent.putExtra("state", state);
+                            intent.putExtra("name", patientName);
+                            intent.putExtra("tag", intentTag);
+                            startActivity(intent);
+                        } else if(Arrays.asList(getResources().getAssets().list("")).contains("physExam.json")){
+                            Intent intent = new Intent(PastMedicalHistoryActivity.this, PhysicalExamActivity.class);
+                            intent.putExtra("patientID", patientID);
+                            intent.putExtra("visitID", visitID);
+                            intent.putExtra("state", state);
+                            intent.putExtra("name", patientName);
+                            intent.putExtra("tag", intentTag);
+                            startActivity(intent);
+                        }else{
+                            Toast.makeText(getApplicationContext(),"No files are found...",Toast.LENGTH_LONG).show();
+                        }
+                    }catch (Exception e){
 
-                    Intent intent = new Intent(PastMedicalHistoryActivity.this, FamilyHistoryActivity.class);
-                    intent.putExtra("patientID", patientID);
-                    intent.putExtra("visitID", visitID);
-                    intent.putExtra("state", state);
-                    intent.putExtra("name", patientName);
-                    intent.putExtra("tag", intentTag);
-                    //    intent.putStringArrayListExtra("exams", physicalExams);
-                    startActivity(intent);
-
+                    }
                 }
             });
             alertdialog.show();
@@ -188,14 +204,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                         updateDatabase(patientHistory); // update details of patient's visit, when edit button on VisitSummary is pressed
                     }
 
-                    // displaying all values in another activity
-                    Intent intent = new Intent(PastMedicalHistoryActivity.this, VisitSummaryActivity.class);
-                    intent.putExtra("patientID", patientID);
-                    intent.putExtra("visitID", visitID);
-                    intent.putExtra("state", state);
-                    intent.putExtra("name", patientName);
-                    intent.putExtra("tag", intentTag);
-                    startActivity(intent);
                 } else {
 
                     //  if(patientHistoryMap.anySubSelected()){
@@ -212,15 +220,38 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     {
                         insertDb(patientHistory);
                     }
+                    //Added a check to skip activities if FH,PE JSON is Not found or Not exist
+                    try{
+                        if(Arrays.asList(getResources().getAssets().list("")).contains("famHist.json")){
+                            Intent intent = new Intent(PastMedicalHistoryActivity.this, FamilyHistoryActivity.class);
+                            intent.putExtra("patientID", patientID);
+                            intent.putExtra("visitID", visitID);
+                            intent.putExtra("state", state);
+                            intent.putExtra("name", patientName);
+                            intent.putExtra("tag", intentTag);
+                            startActivity(intent);
+                        } else if(Arrays.asList(getResources().getAssets().list("")).contains("physExam.json")){
+                            Intent intent = new Intent(PastMedicalHistoryActivity.this, PhysicalExamActivity.class);
+                            intent.putExtra("patientID", patientID);
+                            intent.putExtra("visitID", visitID);
+                            intent.putExtra("state", state);
+                            intent.putExtra("name", patientName);
+                            intent.putExtra("tag", intentTag);
 
-                    Intent intent = new Intent(PastMedicalHistoryActivity.this, FamilyHistoryActivity.class);
-                    intent.putExtra("patientID", patientID);
-                    intent.putExtra("visitID", visitID);
-                    intent.putExtra("state", state);
-                    intent.putExtra("name", patientName);
-                    intent.putExtra("tag", intentTag);
-                    //       intent.putStringArrayListExtra("exams", physicalExams);
-                    startActivity(intent);
+                            //intent.putStringArrayListExtra("exams", physicalExams);
+                            startActivity(intent);
+                        }else{
+                            Intent intent = new Intent(PastMedicalHistoryActivity.this, VisitSummaryActivity.class);
+                            intent.putExtra("patientID", patientID);
+                            intent.putExtra("visitID", visitID);
+                            intent.putExtra("state", state);
+                            intent.putExtra("name", patientName);
+                            intent.putExtra("tag", intentTag);
+                            startActivity(intent);
+                        }
+                    }catch (Exception e){
+
+                    }
 
                 }
             }
@@ -240,6 +271,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
             }
         } else {
             patientHistoryMap = new Node(HelperMethods.encodeJSON(this, mFileName)); //Load the patient history mind map
+
         }
 
         historyListView = (ExpandableListView) findViewById(R.id.patient_history_expandable_list_view);

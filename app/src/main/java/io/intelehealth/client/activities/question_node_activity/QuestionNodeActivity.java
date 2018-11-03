@@ -17,6 +17,7 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,6 +35,7 @@ import io.intelehealth.client.activities.custom_expandable_list_adapter.CustomEx
 import io.intelehealth.client.activities.family_history_activity.FamilyHistoryActivity;
 import io.intelehealth.client.activities.past_medical_history_activity.PastMedicalHistoryActivity;
 import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity;
+import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.node.Node;
 import io.intelehealth.client.objects.Knowledge;
@@ -122,6 +124,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
             } else {
                 String fileLocation = "engines/" + complaints.get(i) + ".json";
                 currentFile = HelperMethods.encodeJSON(this, fileLocation);
+
             }
             Node currentNode = new Node(currentFile);
             complaintsNodes.add(currentNode);
@@ -275,23 +278,29 @@ public class QuestionNodeActivity extends AppCompatActivity {
 //            }
 
             List<String> imagePathList = currentNode.getImagePathList();
-
             if (imagePathList != null) {
                 for (String imagePath : imagePathList) {
                     updateImageDatabase(imagePath);
                 }
             }
 
-            String complaintString = currentNode.generateLanguage();
-
+          String complaintString = currentNode.generateLanguage();
             if(complaintString !=null && !complaintString.isEmpty()) {
            //     String complaintFormatted = complaintString.replace("?,", "?:");
 
                 String complaint = currentNode.getText();
             //    complaintDetails.put(complaint, complaintFormatted);
+                if(complaintString !=null && !complaintString.isEmpty()) {
 
-                insertion = insertion.concat(Node.bullet_arrow+"<b>"+complaint +"</b>"+": "+Node.next_line + complaintString + " ");
+                    //     String complaintFormatted = complaintString.replace("?,", "?:");
+                     complaint = currentNode.getText();
+                    //    complaintDetails.put(complaint, complaintFormatted);
+
+                    insertion = insertion.concat(Node.bullet_arrow+"<b>"+complaint +"</b>"+": "+Node.next_line + complaintString + " ");
+                }
+
             }
+
             ArrayList<String> selectedAssociatedComplaintsList = currentNode.getSelectedAssociations();
             if (selectedAssociatedComplaintsList != null && !selectedAssociatedComplaintsList.isEmpty()) {
                 for (String associatedComplaint : selectedAssociatedComplaintsList) {
@@ -336,24 +345,60 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 } else {
                     Log.i(LOG_TAG, "fabClick: " + insertion);
                     insertDb(insertion);
-                    Intent intent = new Intent(QuestionNodeActivity.this, PastMedicalHistoryActivity.class);
-                    intent.putExtra("patientID", patientID);
-                    intent.putExtra("visitID", visitID);
-                    intent.putExtra("state", state);
-                    intent.putExtra("name", patientName);
-                    intent.putExtra("tag", intentTag);
+
                     SharedPreferences sharedPreference = this.getSharedPreferences(
                             "visit_summary", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreference.edit();
                     Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
                     editor.putStringSet("exam_" + patientID, selectedExams);
                     editor.commit();
-                    //intent.putStringArrayListExtra("exams", physicalExams);
-                    startActivity(intent);
+                    //Added a check to skip activities if PMH,FH,PE JSON is Not found or Not exist
+                    try {
+                        if (Arrays.asList(getResources().getAssets().list("")).contains("patHist.json")) {
+                            Intent intent = new Intent(QuestionNodeActivity.this, PastMedicalHistoryActivity.class);
+                            intent.putExtra("patientID", patientID);
+                            intent.putExtra("visitID", visitID);
+                            intent.putExtra("state", state);
+                            intent.putExtra("name", patientName);
+                            intent.putExtra("tag", intentTag);
+
+                            //intent.putStringArrayListExtra("exams", physicalExams);
+                            startActivity(intent);
+                        } else if (Arrays.asList(getResources().getAssets().list("")).contains("famHist.json")) {
+                            Intent intent = new Intent(QuestionNodeActivity.this, FamilyHistoryActivity.class);
+                            intent.putExtra("patientID", patientID);
+                            intent.putExtra("visitID", visitID);
+                            intent.putExtra("state", state);
+                            intent.putExtra("name", patientName);
+                            intent.putExtra("tag", intentTag);
+
+                            //intent.putStringArrayListExtra("exams", physicalExams);
+                            startActivity(intent);
+                        } else if (Arrays.asList(getResources().getAssets().list("")).contains("physExam.json")) {
+                            Intent intent = new Intent(QuestionNodeActivity.this, PhysicalExamActivity.class);
+                            intent.putExtra("patientID", patientID);
+                            intent.putExtra("visitID", visitID);
+                            intent.putExtra("state", state);
+                            intent.putExtra("name", patientName);
+                            intent.putExtra("tag", intentTag);
+
+                            //intent.putStringArrayListExtra("exams", physicalExams);
+                            startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(QuestionNodeActivity.this, VisitSummaryActivity.class);
+                            intent.putExtra("patientID", patientID);
+                            intent.putExtra("visitID", visitID);
+                            intent.putExtra("state", state);
+                            intent.putExtra("name", patientName);
+                            intent.putExtra("tag", intentTag);
+                            startActivity(intent);                        }
+                    } catch (Exception e) {
+
+                    }
+                }
                 }
             }
 
-        }
 
     }
 
