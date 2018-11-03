@@ -1,11 +1,15 @@
 package io.intelehealth.client.activities.splash_activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+
+import java.util.Locale;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.login_activity.LoginActivity;
@@ -30,12 +34,24 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
+        //whenever re-open the app language can be set which we set before closing the app
+        //meera
+        SharedPreferences prefs = getSharedPreferences("CommonPrefs",
+                               Activity.MODE_PRIVATE);
+                String ln = prefs.getString("Language","");
+
+                if(!ln.equalsIgnoreCase("")){
+            Locale locale = new Locale(ln);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+       }
+
+
+
 
         /*
-
-
-
-
         if (ContextCompat.checkSelfPermission(SplashActivity.this,
                 Manifest.permission.GET_ACCOUNTS)
                 != PackageManager.PERMISSION_GRANTED) {
