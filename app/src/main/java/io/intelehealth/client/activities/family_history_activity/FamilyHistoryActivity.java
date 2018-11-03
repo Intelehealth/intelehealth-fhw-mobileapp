@@ -19,6 +19,7 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
@@ -26,10 +27,12 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.custom_expandable_list_adapter.CustomExpandableListAdapter;
+import io.intelehealth.client.activities.past_medical_history_activity.PastMedicalHistoryActivity;
 import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity;
 import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
@@ -60,7 +63,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 //    String mFileName = "DemoFamily.json";
 
     int lastExpandedPosition = -1;
-
+    String familyHistory;
     Node familyHistoryMap;
     CustomExpandableListAdapter adapter;
     ExpandableListView familyListView;
@@ -119,19 +122,23 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                     if (fhistory != null && !fhistory.isEmpty() && !fhistory.equals("null")) {
                         insertDb(fhistory);
                     }
-                    //  PastMedicalHistoryActivity pmh = new PastMedicalHistoryActivity();
-                    // pmh.insertDb(phistory);
+                    try{
+                        if(Arrays.asList(getResources().getAssets().list("")).contains("physExam.json")){
+                            Intent intent = new Intent(FamilyHistoryActivity.this, PhysicalExamActivity.class);
+                            intent.putExtra("patientID", patientID);
+                            intent.putExtra("visitID", visitID);
+                            intent.putExtra("state", state);
+                            intent.putExtra("name", patientName);
+                            intent.putExtra("tag", intentTag);
 
-                    Intent intent = new Intent(FamilyHistoryActivity.this, PhysicalExamActivity.class);
-                    intent.putExtra("patientID", patientID);
-                    intent.putExtra("visitID", visitID);
-                    intent.putExtra("state", state);
-                    intent.putExtra("name", patientName);
-                    intent.putExtra("tag", intentTag);
-                    //  intent.putStringArrayListExtra("exams", physicalExams);
+                            //intent.putStringArrayListExtra("exams", physicalExams);
+                            startActivity(intent);
+                        }else{
+                            Toast.makeText(getApplicationContext(),"No files are found...",Toast.LENGTH_LONG).show();
+                        }
+                    }catch (Exception e){
 
-                    startActivity(intent);
-
+                    }
                 }
             });
             alertdialog.show();
@@ -262,7 +269,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         It also has a weird thing with new line characters, and just the way that the language itself should be displayed.
      */
     private void onFabClick() {
-        if (familyHistoryMap.anySubSelected()) {
+        /*if (familyHistoryMap.anySubSelected()) {
             for (Node node : familyHistoryMap.getOptionsList()) {
                 if (node.isSelected()) {
                     String familyString = node.generateLanguage();
@@ -286,7 +293,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                 insertion = insertion +" "+ Node.bullet + insertionList.get(i);
             }
         }
-
+*/
         List<String> imagePathList = familyHistoryMap.getImagePathList();
 
         if (imagePathList != null) {
@@ -296,8 +303,8 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         }
 
 
-        if (intentTag != null && intentTag.equals("edit")) {
-            updateDatabase(insertion);
+        /*if (intentTag != null && intentTag.equals("edit")) {
+            updateDatabase(familyHistory);
             Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientID", patientID);
             intent.putExtra("visitID", visitID);
@@ -305,12 +312,21 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             intent.putExtra("name", patientName);
             intent.putExtra("tag", intentTag);
             startActivity(intent);
-        } else {
+        }*/
+        if (intentTag != null && intentTag.equals("edit")) {
+            if (familyHistoryMap.anySubSelected()) {
+                familyHistory = familyHistoryMap.generateLanguage();
+                updateDatabase(familyHistory); // update details of patient's visit, when edit button on VisitSummary is pressed
+            }
 
+        }
+        else {
+            familyHistory=familyHistoryMap.generateLanguage();
             if (flag == true) {
                 // only if OK clicked, collect this new info (old patient)
+                //If we don't have any familyHistory then there should be null value not double quotes
                 if (insertion.length() > 0) {
-                    fhistory = fhistory + insertion;
+                    fhistory = fhistory + familyHistory;
                 } else {
                     fhistory = fhistory + "";
                 }
@@ -323,20 +339,34 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                 // Toast.makeText(FamilyHistoryActivity.this,"new PMH: "+phistory,Toast.LENGTH_SHORT).show();
                 // Toast.makeText(FamilyHistoryActivity.this,"new FH: "+fhistory,Toast.LENGTH_SHORT).show();
             } else {
-                insertDb(insertion); // new details of family history
+                insertDb(familyHistory); // new details of family history
             }
+            //Added a check to skip activities if PE JSON is Not found
+            try{
+                if(Arrays.asList(getResources().getAssets().list("")).contains("physExam.json")){
+                    Intent intent = new Intent(FamilyHistoryActivity.this, PhysicalExamActivity.class);
+                    intent.putExtra("patientID", patientID);
+                    intent.putExtra("visitID", visitID);
+                    intent.putExtra("state", state);
+                    intent.putExtra("name", patientName);
+                    intent.putExtra("tag", intentTag);
 
-            flag = false;
-            e.putBoolean("returning", false); // done with old patient, so unset flag and returning
-            e.commit();
-            Intent intent = new Intent(FamilyHistoryActivity.this, PhysicalExamActivity.class); // earlier it was vitals
-            intent.putExtra("patientID", patientID);
-            intent.putExtra("visitID", visitID);
-            intent.putExtra("state", state);
-            intent.putExtra("name", patientName);
-            intent.putExtra("tag", intentTag);
-            //   intent.putStringArrayListExtra("exams", physicalExams);
-            startActivity(intent);
+                    //intent.putStringArrayListExtra("exams", physicalExams);
+                    startActivity(intent);
+                }
+                else {
+                    Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
+                    intent.putExtra("patientID", patientID);
+                    intent.putExtra("visitID", visitID);
+                    intent.putExtra("state", state);
+                    intent.putExtra("name", patientName);
+                    intent.putExtra("tag", intentTag);
+                    startActivity(intent);
+                }
+
+            }catch (Exception e){
+
+            }
         }
 
 
