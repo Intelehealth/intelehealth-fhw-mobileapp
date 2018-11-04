@@ -596,12 +596,23 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         } else {
             // when visit has ended
-            textView.setText(visitString);
             past_visit = true;
-            textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-           //Previous Visit Date should be shown when end the visit
-            previousVisitsList.addView(textView);
-
+            for (int i = 1; i <= 2; i++) {
+                if (i == 1) {
+                    textView.setText(visitString);
+                    textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                    previousVisitsList.addView(textView);
+                }
+                if (i == 2) {
+                    TextView complaintxt1 = new TextView(this);
+                    if (previsitValue != null && !previsitValue.equals("")) {
+                        complaintxt1.setText(Html.fromHtml(previsitValue));
+                    } else {
+                        Log.e("Check", "No complaint");
+                    }
+                    previousVisitsList.addView(complaintxt1);
+                }
+            }
         }
 
         textView.setTextSize(18);
