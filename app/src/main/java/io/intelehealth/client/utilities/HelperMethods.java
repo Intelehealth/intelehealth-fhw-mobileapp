@@ -121,7 +121,6 @@ public class HelperMethods {
         return formattedDate;
     }
 
-/*
     public static int getMonth(String s1) {
         if (s1 == null) return 0;
 
@@ -136,7 +135,6 @@ public class HelperMethods {
         Period period = new Period(birthdate1, now, PeriodType.yearMonthDay());
         return period.getMonths();
     }
-*/
     /**
      * Turns the mind map into a JSON Object that can be manipulated.
      *
