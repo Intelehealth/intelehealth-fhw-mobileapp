@@ -133,8 +133,14 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 
                             //intent.putStringArrayListExtra("exams", physicalExams);
                             startActivity(intent);
-                        }else{
-                            Toast.makeText(getApplicationContext(),"No files are found...",Toast.LENGTH_LONG).show();
+                        } else {
+                            Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
+                            intent.putExtra("patientID", patientID);
+                            intent.putExtra("visitID", visitID);
+                            intent.putExtra("state", state);
+                            intent.putExtra("name", patientName);
+                            intent.putExtra("tag", intentTag);
+                            startActivity(intent);
                         }
                     }catch (Exception e){
 
@@ -303,7 +309,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         }
 
 
-        /*if (intentTag != null && intentTag.equals("edit")) {
+        if (intentTag != null && intentTag.equals("edit")) {
             updateDatabase(familyHistory);
             Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientID", patientID);
@@ -312,7 +318,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             intent.putExtra("name", patientName);
             intent.putExtra("tag", intentTag);
             startActivity(intent);
-        }*/
+        }
         if (intentTag != null && intentTag.equals("edit")) {
             if (familyHistoryMap.anySubSelected()) {
                 familyHistory = familyHistoryMap.generateLanguage();
@@ -325,12 +331,8 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             if (flag == true) {
                 // only if OK clicked, collect this new info (old patient)
                 //If we don't have any familyHistory then there should be null value not double quotes
-                if (insertion.length() > 0) {
-                    fhistory = fhistory + familyHistory;
-                } else {
-                    fhistory = fhistory + "";
-                }
-                insertDb(fhistory);
+                fhistory = familyHistory;
+                insertDb(familyHistory);
 
                 // PastMedicalHistoryActivity pmh = new PastMedicalHistoryActivity();
                 // pmh.insertDb(phistory);

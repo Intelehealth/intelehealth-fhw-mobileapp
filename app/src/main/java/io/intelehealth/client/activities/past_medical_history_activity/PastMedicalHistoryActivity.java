@@ -145,7 +145,13 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                             intent.putExtra("tag", intentTag);
                             startActivity(intent);
                         }else{
-                            Toast.makeText(getApplicationContext(),"No files are found...",Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(PastMedicalHistoryActivity.this, VisitSummaryActivity.class);
+                            intent.putExtra("patientID", patientID);
+                            intent.putExtra("visitID", visitID);
+                            intent.putExtra("state", state);
+                            intent.putExtra("name", patientName);
+                            intent.putExtra("tag", intentTag);
+                            startActivity(intent);
                         }
                     }catch (Exception e){
 
@@ -197,6 +203,16 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     }
                 }
 
+                if (intentTag != null && intentTag.equals("edit")) {
+                    updateDatabase(patientHistory);
+                    Intent intent = new Intent(PastMedicalHistoryActivity.this, VisitSummaryActivity.class);
+                    intent.putExtra("patientID", patientID);
+                    intent.putExtra("visitID", visitID);
+                    intent.putExtra("state", state);
+                    intent.putExtra("name", patientName);
+                    intent.putExtra("tag", intentTag);
+                    startActivity(intent);
+                }
 
                 if (intentTag != null && intentTag.equals("edit")) {
                     if (patientHistoryMap.anySubSelected()) {
@@ -210,10 +226,10 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     patientHistory = patientHistoryMap.generateLanguage();
 
                     if (flag == true) { // only if OK clicked, collect this new info (old patient)
-                        phistory = phistory + patientHistory; // only PMH updated
+                        phistory = patientHistory; // only PMH updated
                         e.putBoolean("returning", true);
                         e.commit();
-                        insertDb(phistory);
+                        insertDb(patientHistory);
 
                         // however, we concat it here to patientHistory and pass it along to FH, not inserting into db
                     } else  // new patient, directly insert into database
@@ -237,8 +253,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                             intent.putExtra("state", state);
                             intent.putExtra("name", patientName);
                             intent.putExtra("tag", intentTag);
-
-                            //intent.putStringArrayListExtra("exams", physicalExams);
                             startActivity(intent);
                         }else{
                             Intent intent = new Intent(PastMedicalHistoryActivity.this, VisitSummaryActivity.class);
