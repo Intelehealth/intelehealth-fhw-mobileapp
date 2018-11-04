@@ -99,7 +99,7 @@ public class HelperMethods {
         String formattedDate = null;
         try {
             DateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
-            DateFormat targetFormat = new SimpleDateFormat("dd-MMMM-yyyy");
+            DateFormat targetFormat = new SimpleDateFormat("dd-MMM-yyyy");
             Date date = originalFormat.parse(dateString);
             formattedDate = targetFormat.format(date);
         } catch (Exception ex) {
@@ -112,7 +112,7 @@ public class HelperMethods {
         String formattedDate = null;
         try {
             DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-            DateFormat targetFormat = new SimpleDateFormat("dd-MMMM-yyyy");
+            DateFormat targetFormat = new SimpleDateFormat("dd-MMM-yyyy");
             Date date = originalFormat.parse(dateString);
             formattedDate = targetFormat.format(date);
         } catch (Exception ex) {
