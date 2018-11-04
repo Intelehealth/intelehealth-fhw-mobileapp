@@ -1108,58 +1108,59 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String orderBy = "visit_id";
 
         try {
-            String famHistSelection = "patient_id = ? AND concept_id = ?";
-            String[] famHistArgs = {dataString, String.valueOf(ConceptId.RHK_FAMILY_HISTORY_BLURB)};
-            Cursor famHistCursor = db.query("obs", columns, famHistSelection, famHistArgs, null, null, orderBy);
-            famHistCursor.moveToLast();
-            String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
-            famHistory.setValue(famHistText);
-            famHistory.setValue(famHistText);
-            //If we Dont have any data from FH
-            //Check visibility of cards
-            if (famHistText==""||famHistText==null){
-                famhistCard.setVisibility(View.GONE);
-            }else {
+            if(Arrays.asList(getResources().getAssets().list("")).contains("famHist.json")) {
+
+                String famHistSelection = "patient_id = ? AND concept_id = ?";
+                String[] famHistArgs = {dataString, String.valueOf(ConceptId.RHK_FAMILY_HISTORY_BLURB)};
+                Cursor famHistCursor = db.query("obs", columns, famHistSelection, famHistArgs, null, null, orderBy);
+                famHistCursor.moveToLast();
+                String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
+                famHistory.setValue(famHistText);
                 famhistCard.setVisibility(View.VISIBLE);
+                famHistCursor.close();
+
+            }else{
+                famhistCard.setVisibility(View.GONE);
             }
 
-            famHistCursor.close();
         } catch (CursorIndexOutOfBoundsException e) {
             famHistory.setValue(""); // if family history does not exist
+        }
+        catch (Exception e){
 
         }
 
+
         try {
-            String medHistSelection = "patient_id = ? AND concept_id = ?";
+            if(Arrays.asList(getResources().getAssets().list("")).contains("patHist.json")) {
 
-            String[] medHistArgs = {dataString, String.valueOf(ConceptId.RHK_MEDICAL_HISTORY_BLURB)};
-
-            Cursor medHistCursor = db.query("obs", columns, medHistSelection, medHistArgs, null, null, orderBy);
-            medHistCursor.moveToLast();
-            String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
-            patHistory.setValue(medHistText);
-            //If we Dont have any data from PMH
-            //Check visibility of cards
-            if (medHistText==null){
-                pathistCard.setVisibility(View.GONE);
-            }else {
+                String medHistSelection = "patient_id = ? AND concept_id = ?";
+                String[] medHistArgs = {dataString, String.valueOf(ConceptId.RHK_MEDICAL_HISTORY_BLURB)};
+                Cursor medHistCursor = db.query("obs", columns, medHistSelection, medHistArgs, null, null, orderBy);
+                medHistCursor.moveToLast();
+                String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+                patHistory.setValue(medHistText);
                 pathistCard.setVisibility(View.VISIBLE);
+                medHistCursor.close();
+                if (medHistText != null && !medHistText.isEmpty()) {
+
+                    medHistory = patHistory.getValue();
+
+
+                    medHistory = medHistory.replace("\"", "");
+                    medHistory = medHistory.replace("\n", "");
+                    do {
+                        medHistory = medHistory.replace("  ", "");
+                    } while (medHistory.contains("  "));
+                }
             }
-
-            if (medHistText != null && !medHistText.isEmpty()) {
-
-                medHistory = patHistory.getValue();
-
-
-                medHistory = medHistory.replace("\"", "");
-                medHistory = medHistory.replace("\n", "");
-                do {
-                    medHistory = medHistory.replace("  ", "");
-                } while (medHistory.contains("  "));
+            else{
+                pathistCard.setVisibility(View.GONE);
             }
-            medHistCursor.close();
         } catch (CursorIndexOutOfBoundsException e) {
-            patHistory.setValue(""); // if medical history does not exist
+            patHistory.setValue(""); // if family history does not exist
+        }
+        catch (Exception e){
 
         }
 
