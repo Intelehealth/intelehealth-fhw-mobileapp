@@ -638,6 +638,19 @@ public class Node implements Serializable {
 
     }
 
+    public static void handlePopUp(String message, final Activity context) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder.setMessage(message);
+        alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
     public static void handleQuestion(Node questionNode, final Activity context, final CustomExpandableListAdapter adapter,
                                       final String imagePath, final String imageName) {
         String type = questionNode.getInputType();
