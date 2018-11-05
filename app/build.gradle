@@ -3,7 +3,7 @@ apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         applicationId "io.intelehealth.client"
@@ -51,7 +51,7 @@ dependencies {
 
     implementation "joda-time:joda-time:$rootProject.jodaTimeVersion"
 
-    implementation "com.google.firebase:firebase-messaging:17.1.0"
+    implementation "com.google.firebase:firebase-messaging:17.3.4"
     implementation "com.firebase:firebase-jobdispatcher:$rootProject.jobDispatcherVersion"
 
     implementation "com.github.hotchemi:permissionsdispatcher:$rootProject.permissionDispatcherVersion"
