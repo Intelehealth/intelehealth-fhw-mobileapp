@@ -64,6 +64,7 @@ public class Node implements Serializable {
     private String associatedComplaint;
     private String jobAidFile;
     private String jobAidType;
+    private String pop_up;
 
     //for Associated Complaints and medical history only
     private String positiveCondition;
@@ -80,6 +81,7 @@ public class Node implements Serializable {
     private boolean selected;
     private boolean subSelected;
     private boolean hasPhysicalExams;
+    private boolean hasPopUp;
 
     private List<String> imagePathList;
 
@@ -192,6 +194,13 @@ public class Node implements Serializable {
 
             this.positiveCondition = jsonNode.optString("pos-condition");
             this.negativeCondition = jsonNode.optString("neg-condition");
+
+            this.pop_up = jsonNode.optString("pop=up");
+            if (pop_up.isEmpty()) {
+                this.hasPopUp = false;
+            } else {
+                this.hasPopUp = true;
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
