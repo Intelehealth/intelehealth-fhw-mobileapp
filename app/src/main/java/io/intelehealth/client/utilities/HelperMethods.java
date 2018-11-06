@@ -104,6 +104,21 @@ public class HelperMethods {
         }
         return formattedDate;
     }
+
+    public static int getMonth(String s1) {
+        if (s1 == null) return 0;
+
+        String[] components = s1.split("\\-");
+
+        int year = Integer.parseInt(components[0]);
+        int month = Integer.parseInt(components[1]);
+        int day = Integer.parseInt(components[2]);
+
+        LocalDate birthdate1 = new LocalDate(year, month, day);          //Birth date
+        LocalDate now = new LocalDate();                    //Today's date
+        Period period = new Period(birthdate1, now, PeriodType.yearMonthDay());
+        return period.getMonths();
+    }
     /**
      * Turns the mind map into a JSON Object that can be manipulated.
      *

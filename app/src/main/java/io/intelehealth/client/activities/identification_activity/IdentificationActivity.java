@@ -610,6 +610,12 @@ public class IdentificationActivity extends AppCompatActivity {
         });
 
 
+        int age = HelperMethods.getAge(patient1.getDateOfBirth());
+        mDOB.setText(patient1.getDateOfBirth());
+        int month=HelperMethods.getMonth(patient1.getDateOfBirth());
+        if (month!=0 && age!=0) {
+            mAge.setText(String.valueOf(age) + getString(R.string.identification_screen_text_years) + String.valueOf(month) + getString(R.string.identification_screen_text_months));
+        }
         mAge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
