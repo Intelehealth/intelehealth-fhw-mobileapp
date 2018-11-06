@@ -236,7 +236,7 @@
 
 
             <LinearLayout
-                android:id="@+id/identification_llcoutry_state"
+                android:id="@+id/identification_llcountry_state"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"

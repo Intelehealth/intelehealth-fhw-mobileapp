@@ -191,7 +191,7 @@ public class IdentificationActivity extends AppCompatActivity {
         casteLayout=(TextInputLayout)findViewById(R.id.identification_txtlcaste);
         economicLayout=(TextInputLayout)findViewById(R.id.identification_txtleconomic);
         educationLayout=(TextInputLayout)findViewById(R.id.identification_txtleducation);
-        countryStateLayout=(LinearLayout)findViewById(R.id.identification_llcoutry_state);
+        countryStateLayout=(LinearLayout)findViewById(R.id.identification_llcountry_state);
 
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -259,7 +259,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 mCity.setVisibility(View.GONE);
             }
 
-            if (obj.getBoolean("coutry_stateLauout")) {
+            if (obj.getBoolean("countryStateLayout")) {
                 countryStateLayout.setVisibility(View.VISIBLE);
             } else {
                 countryStateLayout.setVisibility(View.GONE);
@@ -290,17 +290,17 @@ public class IdentificationActivity extends AppCompatActivity {
             } else {
                 mOccupation.setVisibility(View.GONE);
             }
-            if (obj.getBoolean("castlayout")) {
+            if (obj.getBoolean("casteLayout")) {
                 casteLayout.setVisibility(View.VISIBLE);
             } else {
                 casteLayout.setVisibility(View.GONE);
             }
-            if (obj.getBoolean("educationlayout")) {
+            if (obj.getBoolean("educationLayout")) {
                 educationLayout.setVisibility(View.VISIBLE);
             } else {
                 educationLayout.setVisibility(View.GONE);
             }
-            if (obj.getBoolean("economiclayout")) {
+            if (obj.getBoolean("economicLayout")) {
                 economicLayout.setVisibility(View.VISIBLE);
             } else {
                 economicLayout.setVisibility(View.GONE);
