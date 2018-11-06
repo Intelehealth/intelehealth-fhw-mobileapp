@@ -1384,8 +1384,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mTemp = temperature.getValue();
         mSPO2 = spO2.getValue();
         String mComplaint = complaint.getValue();
-        //Use this if we have to show a fill description of complaints in the printed prescription
-        /*String complaints[] = StringUtils.split(mComplaint, Node.bullet_arrow);
+
+        //Show only the headers of the complaints in the printed prescription
+        String complaints[] = StringUtils.split(mComplaint, Node.bullet_arrow);
         mComplaint = "";
         String colon = ":";
         if (complaints != null) {
@@ -1400,7 +1401,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 mComplaint = mComplaint.replaceAll("<b>", "");
                 mComplaint = mComplaint.replaceAll("</b>", "");
             }
-        }*/
+        }
 
         if (mPatientOpenMRSID == null) {
             mPatientOpenMRSID = getString(R.string.patient_not_registered);
@@ -1468,6 +1469,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 "<b><p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p></b><br><br>" +
                                 "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
                                 "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height: %s | Weight: %s | BMI: %s | Blood Pressure: %s | Pulse: %s | Temperature: %s | SpO2: %s </p>" +
+                                "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
+                                "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p>" +
+                                "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
+                                "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p>" +
                                 "<b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Chief Complaint(s)</p></b>" +
                                 para_open + "%s" + para_close +"<br><br>"+
                                 "<b><p id=\"diagnosis_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b>" +
@@ -1483,7 +1488,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 "<b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b>" +
                                 "%s"
                         ,heading, heading2, heading3, mPatientName, age,mGender, mSdw, address, mPatientOpenMRSID, mDate, mHeight, mWeight,
-                        mBMI, bp, mPulse, mTemp, mSPO2,mComplaint, diagnosis_web, rx_web, tests_web, advice_web, comments_web, followUp_web, doctor_web);
+                        mBMI, bp, mPulse, mTemp, mSPO2,pat_hist,fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, comments_web, followUp_web, doctor_web);
         webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
 
         // Keep a reference to WebView object until you pass the PrintDocumentAdapter
