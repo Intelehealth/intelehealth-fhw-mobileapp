@@ -821,7 +821,7 @@ public class Node implements Serializable {
         numberDialog.setView(convertView);
         final NumberPicker numberPicker = (NumberPicker) convertView.findViewById(R.id.dialog_1_number_picker);
         numberPicker.setMinValue(0);
-        numberPicker.setMaxValue(100);
+        numberPicker.setMaxValue(1000);
         numberDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -966,7 +966,7 @@ public class Node implements Serializable {
         final String[] doctorUnits = new String[]{"times per hour", "time per day", "times per week", "times per month", "times per year"};
         unitPicker.setDisplayedValues(units);
         quantityPicker.setMinValue(0);
-        quantityPicker.setMaxValue(24);
+        quantityPicker.setMaxValue(100);
         unitPicker.setMinValue(0);
         unitPicker.setMaxValue(4);
         frequencyDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
@@ -1013,7 +1013,7 @@ public class Node implements Serializable {
         final String[] units = new String[]{"Hours", "Days", "Weeks", "Months", "Years"};
         unitPicker.setDisplayedValues(units);
         quantityPicker.setMinValue(0);
-        quantityPicker.setMaxValue(24);
+        quantityPicker.setMaxValue(100);
         unitPicker.setMinValue(0);
         unitPicker.setMaxValue(4);
         durationDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
@@ -1154,7 +1154,7 @@ public class Node implements Serializable {
         numberDialog.setView(convertView);
         final NumberPicker numberPicker = (NumberPicker) convertView.findViewById(R.id.dialog_1_number_picker);
         numberPicker.setMinValue(0);
-        numberPicker.setMaxValue(100);
+        numberPicker.setMaxValue(1000);
         numberDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -1295,7 +1295,7 @@ public class Node implements Serializable {
         final String[] doctorUnits = context.getResources().getStringArray(R.array.doctor_units);
         unitPicker.setDisplayedValues(units);
         quantityPicker.setMinValue(0);
-        quantityPicker.setMaxValue(24);
+        quantityPicker.setMaxValue(100);
         unitPicker.setMinValue(0);
         unitPicker.setMaxValue(4);
         frequencyDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
@@ -1342,7 +1342,7 @@ public class Node implements Serializable {
         final String[] units = context.getResources().getStringArray(R.array.duration_units);
         unitPicker.setDisplayedValues(units);
         quantityPicker.setMinValue(0);
-        quantityPicker.setMaxValue(24);
+        quantityPicker.setMaxValue(100);
         unitPicker.setMinValue(0);
         unitPicker.setMaxValue(4);
         durationDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
