@@ -400,6 +400,10 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
                     file_name = "patHist.json";
                     break;
                 }
+                case "config": {
+                    file_name = "config.json";
+                    break;
+                }
                 default:
                     file_name = name;
             }
