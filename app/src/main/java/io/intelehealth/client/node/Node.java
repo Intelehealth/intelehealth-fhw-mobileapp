@@ -38,6 +38,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -64,6 +66,7 @@ public class Node implements Serializable {
     private String associatedComplaint;
     private String jobAidFile;
     private String jobAidType;
+    private String pop_up;
 
     //for Associated Complaints and medical history only
     private String positiveCondition;
@@ -80,6 +83,8 @@ public class Node implements Serializable {
     private boolean selected;
     private boolean subSelected;
     private boolean hasPhysicalExams;
+    private boolean hasPopUp;
+    private boolean subPopUp;
 
     private List<String> imagePathList;
 
@@ -193,6 +198,13 @@ public class Node implements Serializable {
             this.positiveCondition = jsonNode.optString("pos-condition");
             this.negativeCondition = jsonNode.optString("neg-condition");
 
+            this.pop_up = jsonNode.optString("pop-up");
+            if (pop_up.isEmpty()) {
+                this.hasPopUp = false;
+            } else {
+                this.hasPopUp = true;
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -214,12 +226,14 @@ public class Node implements Serializable {
         this.inputType = source.inputType;
         this.physicalExams = source.physicalExams;
         this.complaint = source.complaint;
+        this.pop_up = source.pop_up;
         this.jobAidFile = source.jobAidFile;
         this.jobAidType = source.jobAidType;
         this.aidAvailable = source.aidAvailable;
         this.associatedComplaint = source.associatedComplaint;
         this.hasAssociations = source.hasAssociations;
         this.hasPhysicalExams = source.hasPhysicalExams;
+        this.hasPopUp = source.hasPopUp;
         this.selected = false;
         this.required = source.required;
         this.positiveCondition = source.positiveCondition;
@@ -393,6 +407,10 @@ public class Node implements Serializable {
         return jobAidType;
     }
 
+    public String getPop_up() {
+        return pop_up;
+    }
+
     public boolean isSelected() {
         return selected;
     }
@@ -424,6 +442,23 @@ public class Node implements Serializable {
             return false;
         }
     }
+
+    public boolean anySubPopUp() {
+        if (!terminal) {
+            for (int i = 0; i < optionsList.size(); i++) {
+                if (optionsList.get(i).isSelected()) {
+                    subPopUp = true;
+                    break;
+                } else {
+                    subPopUp = false;
+                }
+            }
+            return subPopUp;
+        } else {
+            return false;
+        }
+    }
+
 
     /*
         Language needs to be built recursively for each first level question of a complaint.
@@ -610,9 +645,13 @@ public class Node implements Serializable {
         subQuestion.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
                 node.setText(node.generateLanguage());
                 callingAdapter.notifyDataSetChanged();
                 dialog.dismiss();
+                if (node.anySubSelected() && node.anySubPopUp()) {
+                    node.generatePopUp(context);
+                }
             }
         });
         subQuestion.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
@@ -627,6 +666,38 @@ public class Node implements Serializable {
         subQuestion.setView(convertView);
         subQuestion.show();
 
+    }
+
+    public void generatePopUp(final Activity context) {
+
+        HashSet<String> messages = new HashSet<String>();
+        List<Node> mOptions = optionsList;
+        if (optionsList != null && !optionsList.isEmpty()) {
+            for (Node node_opt : mOptions) {
+                if (node_opt.isSelected() && node_opt.hasPopUp) {
+                    messages.add(node_opt.pop_up);
+                }
+            }
+        }
+
+        String finalMessage = "";
+        Iterator<String> i = messages.iterator();
+        while (i.hasNext()) {
+            finalMessage = i.next() + "\n";
+        }
+
+        if (!finalMessage.isEmpty()) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+            alertDialogBuilder.setMessage(finalMessage);
+            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        }
     }
 
     public static void handleQuestion(Node questionNode, final Activity context, final CustomExpandableListAdapter adapter,
