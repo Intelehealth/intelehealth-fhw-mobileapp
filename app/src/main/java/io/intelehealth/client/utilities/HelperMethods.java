@@ -37,6 +37,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 import io.intelehealth.client.R;
@@ -74,6 +79,31 @@ public class HelperMethods {
         return period.getYears();
     }
 
+    public static String SimpleDatetoLongFollowupDate(String dateString) {
+        String formattedDate = null;
+        try {
+            DateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+            DateFormat targetFormat = new SimpleDateFormat("dd-MMMM-yyyy");
+            Date date = originalFormat.parse(dateString);
+            formattedDate = targetFormat.format(date);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return formattedDate;
+    }
+
+    public static String SimpleDatetoLongDate(String dateString) {
+        String formattedDate = null;
+        try {
+            DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+            DateFormat targetFormat = new SimpleDateFormat("dd-MMM-yyyy");
+            Date date = originalFormat.parse(dateString);
+            formattedDate = targetFormat.format(date);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return formattedDate;
+    }
     /**
      * Turns the mind map into a JSON Object that can be manipulated.
      *
