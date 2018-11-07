@@ -339,14 +339,14 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         if (patient.getOpenmrs_patient_id() != null && !patient.getOpenmrs_patient_id().isEmpty()) {
             idView.setText(patient.getOpenmrs_patient_id());
-        }else{
+        } else {
             idView.setText(getString(R.string.patient_not_registered));
         }
 
         int age = HelperMethods.getAge(patient.getDateOfBirth());
         ageView.setText(String.valueOf(age));
 
-        String dob=HelperMethods.SimpleDatetoLongDate(patient.getDateOfBirth());
+        String dob = HelperMethods.SimpleDatetoLongDate(patient.getDateOfBirth());
         dobView.setText(dob);
         if (patient.getAddress1() == null || patient.getAddress2().equals("")) {
             addr1View.setVisibility(View.GONE);
@@ -494,7 +494,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     String date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("start_datetime"));
                     String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("end_datetime"));
                     Integer visit_id = visitCursor.getInt(visitCursor.getColumnIndexOrThrow("_id"));
-                   SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                     try {
 
                         Date formatted = currentDate.parse(date);
@@ -616,14 +616,14 @@ public class PatientDetailActivity extends AppCompatActivity {
                     previousVisitsList.addView(complaintxt1);
                 }
             }
-            }
+        }
 
-            textView.setTextSize(18);
-            LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams
-                    (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            llp.setMargins(0, 0, 0, 0);
-            textView.setLayoutParams(llp);
-            textView.setTag(visit_id);
+        textView.setTextSize(18);
+        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams
+                (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        llp.setMargins(0, 0, 0, 0);
+        textView.setLayoutParams(llp);
+        textView.setTag(visit_id);
 
 //        previousVisitsList.addView(textView);
        /* textView.setOnTouchListener(new View.OnTouchListener() {
@@ -662,7 +662,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 startActivity(visitSummary);
             }
         });
-        previousVisitsList.addView(textView);
+        //previousVisitsList.addView(textView);
         //TODO: add on click listener to open the previous visit
     }
 
