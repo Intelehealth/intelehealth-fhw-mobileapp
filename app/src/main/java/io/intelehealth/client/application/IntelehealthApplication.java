@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.multidex.MultiDex;
 import android.util.Log;
 
 
@@ -27,6 +28,13 @@ public class IntelehealthApplication extends Application implements Application.
 
     private static final String TAG = IntelehealthApplication.class.getSimpleName();
     private static String androidId;
+
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
 
     @Override
     public void onCreate() {
