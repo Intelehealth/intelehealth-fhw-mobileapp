@@ -54,10 +54,9 @@ ext {
     retrofitVersion = '2.3.0'
     okHttpVersion = '3.8.0'
     jobDispatcherVersion = '0.6.0'
-    constraintLayoutVersion = '1.0.2'
     glideVersion = '3.8.0'
     parseAndroidVersion = '1.15.7'
     guavaVersion = '22.0-android'
     constraintLayoutVersion = '1.1.3'
-    crashlyticsVersion = '2.9.5'
+    crashlyticsVersion = '2.9.6'
 }
