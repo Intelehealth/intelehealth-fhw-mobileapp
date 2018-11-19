@@ -90,7 +90,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     String phistory = "";
     String fhistory = "";
     Obs complaint = new Obs();
-
+     String visitValue;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -443,71 +443,85 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
         }
 
-        if (visitID != null) {
-            CardView previsitCardView = (CardView) findViewById(R.id.cardView_previous_visits);
-            previsitCardView.setVisibility(View.GONE);
-        } else {
-            String previsitSelection = "patient_id = ? AND concept_id = ?";
-            String[] previsitArgs = {dataString, String.valueOf(ConceptId.CURRENT_COMPLAINT)};
-            String[] previsitColumms = {"value", " concept_id"};
-            Cursor previsitCursor = db.query("obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);
-            previsitCursor.moveToLast();
-            try {
-                previsitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
-                String complaints[] = StringUtils.split(previsitValue, Node.bullet_arrow);
-                previsitValue = "";
-                String colon = ":";
-                if (complaints != null) {
-                    for (String comp : complaints) {
-                        if (!comp.trim().isEmpty()) {
-                            previsitValue = previsitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
-                        }
-                    }
-                    if (!previsitValue.isEmpty()) {
-                        previsitValue = previsitValue.substring(0, previsitValue.length() - 2);
-                        previsitValue = previsitValue.replaceAll("<b>", "");
-                        previsitValue = previsitValue.replaceAll("</b>", "");
-                    }
-                }
-
-            } catch (Exception e) {
-                previsitValue = "";
-            } finally {
-                previsitCursor.close();
-            }
-
-        }
-
         String visitSelection = "patient_id = ?";
         String[] visitArgs = {dataString};
         String[] visitColumns = {"_id, start_datetime", "end_datetime"};
         String visitOrderBy = "_id";
         Cursor visitCursor = db.query("visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
         previousVisitsList = (LinearLayout) findViewById(R.id.linearLayout_previous_visits);
-
         if (visitCursor.getCount() < 1) {
             neverSeen();
         } else {
 
-            if (visitCursor.moveToLast()) {
+            if (visitCursor.moveToLast() && visitCursor!=null) {
                 do {
                     String date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("start_datetime"));
                     String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("end_datetime"));
                     Integer visit_id = visitCursor.getInt(visitCursor.getColumnIndexOrThrow("_id"));
-                   SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                    try {
 
-                        Date formatted = currentDate.parse(date);
-                        String visitDate = currentDate.format(formatted);
-                        createOldVisit(visitDate, visit_id, end_date);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
+                    String previsitSelection = "visit_id = ? AND concept_id = ?";
+                    String[] previsitArgs = {String.valueOf(visit_id), String.valueOf(ConceptId.CURRENT_COMPLAINT)};
+                    String[] previsitColumms = {"value", " concept_id", "visit_id"};
+                    Cursor previsitCursor = db.query("obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);
+                   if (previsitCursor.moveToLast() &&previsitCursor!=null ) {
+
+                       String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
+                       if (visitValue != null && !visitValue.isEmpty()) {
+                           String complaints[] = StringUtils.split(visitValue, Node.bullet_arrow);
+
+                           visitValue = "";
+                           String colon = ":";
+                           if (complaints != null) {
+                               for (String comp : complaints) {
+                                   if (!comp.trim().isEmpty()) {
+                                       visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+                                   }
+                               }
+                               if (!visitValue.isEmpty()) {
+                                   visitValue = visitValue.substring(0, visitValue.length() - 2);
+                                   visitValue = visitValue.replaceAll("<b>", "");
+                                   visitValue = visitValue.replaceAll("</b>", "");
+                               }
+                               SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                               try {
+
+                                   Date formatted = currentDate.parse(date);
+                                   String visitDate = currentDate.format(formatted);
+                                   createOldVisit(visitDate, visit_id, end_date, visitValue);
+                               } catch (ParseException e) {
+                                   e.printStackTrace();
+                               }
+                           }
+                       }
+                       // Called when we select complaints but not select any sub node inside that complaint
+                       else {
+                           SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                           try {
+
+                               Date formatted = currentDate.parse(date);
+                               String visitDate = currentDate.format(formatted);
+                               createOldVisit(visitDate, visit_id, end_date, visitValue);
+                           } catch (ParseException e) {
+                               e.printStackTrace();
+                           }
+                       }
+                   }
+                   // Called when we close app on vitals screen and Didn't select any complaints
+                   else {
+                       SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                       try {
+
+                           Date formatted = currentDate.parse(date);
+                           String visitDate = currentDate.format(formatted);
+                           createOldVisit(visitDate, visit_id, end_date, visitValue);
+                       } catch (ParseException e) {
+                           e.printStackTrace();
+                       }
+                   }
                 } while (visitCursor.moveToPrevious());
             }
         }
         visitCursor.close();
-
     }
 
     /**
@@ -547,7 +561,7 @@ public class PatientDetailActivity extends AppCompatActivity {
      * @param visit_id variable of type int.
      * @return void
      */
-    private void createOldVisit(final String datetime, int visit_id, String end_datetime) throws ParseException {
+    private void createOldVisit(final String datetime, int visit_id, String end_datetime,String visitValue) throws ParseException {
         // final LayoutInflater inflater = PatientDetailActivity.this.getLayoutInflater();
         //  View convertView = inflater.inflate(R.layout.list_item_previous_visit, null);
         //  TextView textView = (TextView) convertView.findViewById(R.id.textView_visit_info);
@@ -556,13 +570,12 @@ public class PatientDetailActivity extends AppCompatActivity {
         final TextView textView = new TextView(this);
 
         final String visitString = String.format("Seen on (%s)", HelperMethods.SimpleDatetoLongDate(datetime));
-
         if (end_datetime == null || end_datetime.isEmpty()) {
             // visit has not yet ended
 
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             for (int i = 1; i <= 2; i++) {
-                if (i == 1) {
+                if (i == 1 ) {
                     SpannableString spannableString = new SpannableString(visitString + " Active");
                     Object greenSpan = new BackgroundColorSpan(Color.GREEN);
                     Object underlineSpan = new UnderlineSpan();
@@ -572,11 +585,12 @@ public class PatientDetailActivity extends AppCompatActivity {
                     layoutParams.setMargins(2, 2, 2, 2);
                     previousVisitsList.addView(textView);
                 }
+                //If patient come up with any complaints
                 if (i == 2) {
                     TextView complaintxt1 = new TextView(this);
                     complaintxt1.setLayoutParams(layoutParams);
-                    if (previsitValue != null && !previsitValue.equals("")) {
-                        complaintxt1.setText(Html.fromHtml(previsitValue));
+                    if (visitValue != null && !visitValue.equals("")) {
+                        complaintxt1.setText(Html.fromHtml(visitValue));
                     } else {
                         Log.e("Check", "No complaint");
                     }
@@ -606,24 +620,26 @@ public class PatientDetailActivity extends AppCompatActivity {
                     textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                     previousVisitsList.addView(textView);
                 }
+                //If patient has any past complaints
                 if (i == 2) {
                     TextView complaintxt1 = new TextView(this);
-                    if (previsitValue != null && !previsitValue.equals("")) {
-                        complaintxt1.setText(Html.fromHtml(previsitValue));
-                    } else {
+                    if (visitValue != null && !visitValue.equals("")) {
+                        complaintxt1.setText(Html.fromHtml(visitValue));
+                    }
+                    else {
                         Log.e("Check", "No complaint");
                     }
                     previousVisitsList.addView(complaintxt1);
                 }
             }
-            }
+        }
 
-            textView.setTextSize(18);
-            LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams
-                    (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            llp.setMargins(0, 0, 0, 0);
-            textView.setLayoutParams(llp);
-            textView.setTag(visit_id);
+        textView.setTextSize(18);
+        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams
+                (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        llp.setMargins(0, 0, 0, 0);
+        textView.setLayoutParams(llp);
+        textView.setTag(visit_id);
 
 //        previousVisitsList.addView(textView);
        /* textView.setOnTouchListener(new View.OnTouchListener() {
