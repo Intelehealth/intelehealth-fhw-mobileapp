@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
+import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 
 
@@ -20,8 +22,8 @@ import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.utilities.HelperMethods;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
-
-public class IntelehealthApplication extends Application implements Application.ActivityLifecycleCallbacks{
+//Extend Application class with MultiDexApplication for multidex support
+public class IntelehealthApplication extends MultiDexApplication implements Application.ActivityLifecycleCallbacks{
 
     private static Context mContext;
     private Activity currentActivity;
@@ -38,6 +40,8 @@ public class IntelehealthApplication extends Application implements Application.
     @Override
     public void onCreate() {
         super.onCreate();
+        //For Vector Drawables Backward Compatibility(<API 21)
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         this.mContext = getApplicationContext();
 
         androidId = String
@@ -75,6 +79,7 @@ public class IntelehealthApplication extends Application implements Application.
 
         registerActivityLifecycleCallbacks(this);
     }
+
 
     public static Context getAppContext() {
         return mContext;

@@ -39,7 +39,8 @@
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
                 android:tint="@color/scale_1"
-                android:src="@drawable/ic_scale_1" />
+                app:srcCompat="@drawable/ic_scale_1"
+                 />
 
             <ImageButton
                 android:id="@+id/button_scale_2"
@@ -50,7 +51,8 @@
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
                 android:tint="@color/scale_2"
-                android:src="@drawable/ic_scale_2" />
+                app:srcCompat="@drawable/ic_scale_2"
+                 />
 
             <ImageButton
                 android:id="@+id/button_scale_3"
@@ -61,7 +63,8 @@
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
                 android:tint="@color/scale_3"
-                android:src="@drawable/ic_scale_3" />
+                app:srcCompat="@drawable/ic_scale_3"
+                />
 
             <ImageButton
                 android:id="@+id/button_scale_4"
@@ -72,7 +75,8 @@
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
                 android:tint="@color/scale_4"
-                android:src="@drawable/ic_scale_4" />
+                app:srcCompat="@drawable/ic_scale_4"
+                />
 
             <ImageButton
                 android:id="@+id/button_scale_5"
@@ -83,7 +87,8 @@
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
                 android:tint="@color/scale_5"
-                android:src="@drawable/ic_scale_5" />
+                app:srcCompat="@drawable/ic_scale_5"
+                />
         </LinearLayout>
 
         <android.support.design.widget.TextInputLayout

@@ -365,7 +365,7 @@ public class PrescriptionDownloadService extends IntentService {
                         }
                     }
                     newText = "Prescription Download Complete";
-                    mBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                    mBuilder.setSmallIcon(R.drawable.ic_cloud_download)
                             .setContentTitle("Prescription Download")
                             .setContentText(newText);
                     mNotifyManager.notify(mId, mBuilder.build());
@@ -373,7 +373,7 @@ public class PrescriptionDownloadService extends IntentService {
 
                 } else {
                     newText = "No data to download";
-                    mBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                    mBuilder.setSmallIcon(R.drawable.ic_cloud_download)
                             .setContentTitle("Prescription Download")
                             .setContentText(newText);
                     mNotifyManager.notify(mId, mBuilder.build());
