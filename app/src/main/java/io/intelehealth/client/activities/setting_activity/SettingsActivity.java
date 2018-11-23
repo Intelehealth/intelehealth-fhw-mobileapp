@@ -153,6 +153,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(R.string.menu_option_settings);
         setupActionBar();
 
     }
@@ -264,7 +265,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         @Override
         public void onResume() {
+            Locale.getDefault();
             super.onResume();
+
         }
 
         @Override

@@ -206,6 +206,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private boolean isConnected = false;
     private Menu mymenu;
     MenuItem internetCheck = null;
+    MenuItem endVisit_click = null;
 
     private RecyclerView mAdditionalDocsRecyclerView;
     private RecyclerView.LayoutManager mAdditionalDocsLayoutManager;
@@ -227,6 +228,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         internetCheck = menu.findItem(R.id.internet_icon);
         MenuItemCompat.getActionView(internetCheck);
+
+        endVisit_click = menu.findItem(R.id.end_visit_icon);
+        endVisit_click.setIcon(R.mipmap.ic_sync);
+        MenuItemCompat.getActionView(endVisit_click);
 
         isNetworkAvailable(this);
 
@@ -287,6 +292,24 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 }
                 return true;
             }
+            case R.id.end_visit_icon: {
+                //meera
+                if(downloaded){
+                    endVisit();}
+                else {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                    alertDialogBuilder.setMessage(R.string.error_no_data);
+                    alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                }
+                return true;
+            }
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -314,9 +337,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         }
 
-
-        String titleSequence = patientName + ": " + getTitle();
-        setTitle(titleSequence);
+        setTitle(R.string.title_activity_patient_summary);
+        setTitle( patientName + ": " + getTitle());
 
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         db = mDbHelper.getWritableDatabase();

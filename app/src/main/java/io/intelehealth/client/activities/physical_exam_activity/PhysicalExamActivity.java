@@ -186,6 +186,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_physical_exam);
+        setTitle(R.string.title_activity_physical_exam);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

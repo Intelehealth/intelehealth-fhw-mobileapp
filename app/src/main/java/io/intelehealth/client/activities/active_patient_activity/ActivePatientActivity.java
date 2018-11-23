@@ -49,6 +49,7 @@ public class ActivePatientActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_today_patient);
+        setTitle(R.string.title_activity_active_patient);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mActivePatientList = (RecyclerView) findViewById(R.id.today_patient_recycler_view);
