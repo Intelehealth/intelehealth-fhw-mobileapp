@@ -77,7 +77,6 @@ import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.node.Node;
 import io.intelehealth.client.objects.Obs;
 import io.intelehealth.client.objects.Patient;
-import io.intelehealth.client.objects.PatientAttribute;
 import io.intelehealth.client.services.ClientService;
 import io.intelehealth.client.services.PrescriptionDownloadService;
 import io.intelehealth.client.services.UpdateVisitService;

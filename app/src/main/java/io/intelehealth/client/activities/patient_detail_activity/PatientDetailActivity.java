@@ -339,14 +339,14 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         if (patient.getOpenmrs_patient_id() != null && !patient.getOpenmrs_patient_id().isEmpty()) {
             idView.setText(patient.getOpenmrs_patient_id());
-        }else{
+        } else {
             idView.setText(getString(R.string.patient_not_registered));
         }
 
         int age = HelperMethods.getAge(patient.getDateOfBirth());
         ageView.setText(String.valueOf(age));
 
-        String dob=HelperMethods.SimpleDatetoLongDate(patient.getDateOfBirth());
+        String dob = HelperMethods.SimpleDatetoLongDate(patient.getDateOfBirth());
         dobView.setText(dob);
         if (patient.getAddress1() == null || patient.getAddress2().equals("")) {
             addr1View.setVisibility(View.GONE);
@@ -678,7 +678,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 startActivity(visitSummary);
             }
         });
-        previousVisitsList.addView(textView);
+        //previousVisitsList.addView(textView);
         //TODO: add on click listener to open the previous visit
     }
 
