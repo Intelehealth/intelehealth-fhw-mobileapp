@@ -507,7 +507,43 @@
                     android:layout_below="@+id/textView_additional_document_images"
                     android:padding="10dp"></android.support.v7.widget.RecyclerView>
             </RelativeLayout>
+        </android.support.v7.widget.CardView>
 
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/emrgencycard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/padding_card"
+            android:layout_marginTop="@dimen/padding_card"
+            card_view:cardCornerRadius="@dimen/card_corner_radius"
+            card_view:cardElevation="2dp"
+            card_view:cardUseCompatPadding="true"
+            card_view:contentPadding="@dimen/padding_card">
+
+            <LinearLayout
+                android:animateLayoutChanges="true"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/emg_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:text="Flag Patient"
+                    android:textSize="@dimen/card_title_text_size" />
+
+                <CheckBox android:id="@+id/checkbox_emergncy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/emg_details"
+                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:checked="false"
+                    android:text="@string/visit_summary_flag_uncheck"
+                    />
+            </LinearLayout>
 
         </android.support.v7.widget.CardView>
 
@@ -877,6 +913,7 @@
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
+
 
 
         <!--Previous Reports Card contains a list of links to image files of the previous reports-->

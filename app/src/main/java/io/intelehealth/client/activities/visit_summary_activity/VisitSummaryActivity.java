@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -45,6 +46,7 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -82,6 +84,7 @@ import io.intelehealth.client.services.PrescriptionDownloadService;
 import io.intelehealth.client.services.UpdateVisitService;
 import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.HelperMethods;
+
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -200,12 +203,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
     Boolean isReceiverRegistered = false;
 
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
+    private String encounterAdultInitial, encounterVitals,encounterFlag;
 
     private NetworkChangeReceiver receiver;
     private boolean isConnected = false;
     private Menu mymenu;
     MenuItem internetCheck = null;
-    MenuItem endVisit_click = null;
 
     private RecyclerView mAdditionalDocsRecyclerView;
     private RecyclerView.LayoutManager mAdditionalDocsLayoutManager;
@@ -218,7 +221,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String additionalDocumentDir = "Additional Documents";
     String physicalExamDocumentDir = "Physical Exam";
     SharedPreferences mSharedPreference;
+    SharedPreferences.Editor e;
 
+    CheckBox emgencychbx;
+    CardView emrgencyCard;
+    String checkedstr;
+    String sharePrefstring;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -228,13 +236,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         internetCheck = menu.findItem(R.id.internet_icon);
         MenuItemCompat.getActionView(internetCheck);
 
-        endVisit_click = menu.findItem(R.id.end_visit_icon);
-        endVisit_click.setIcon(R.mipmap.ic_sync);
-        MenuItemCompat.getActionView(endVisit_click);
-
         isNetworkAvailable(this);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
 
         mCHWname = (TextView) findViewById(R.id.chw_details);
         mCHWname.setText(sharedPreferences.getString("chwname", "----"));
@@ -277,24 +282,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 //meera
                 if(downloaded){
                 endVisit();}
-                else {
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-                    alertDialogBuilder.setMessage(R.string.error_no_data);
-                    alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
-                }
-                return true;
-            }
-            case R.id.end_visit_icon: {
-                //meera
-                if(downloaded){
-                    endVisit();}
                 else {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
                     alertDialogBuilder.setMessage(R.string.error_no_data);
@@ -365,6 +352,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mDoctorTitle.setVisibility(View.GONE);
         mDoctorName.setVisibility(View.GONE);
 
+        emgencychbx = (CheckBox) findViewById(R.id.checkbox_emergncy);
+        emrgencyCard = (CardView) findViewById(R.id.emrgencycard);
         diagnosisTextView = (TextView) findViewById(R.id.textView_content_diagnosis);
         prescriptionTextView = (TextView) findViewById(R.id.textView_content_rx);
         medicalAdviceTextView = (TextView) findViewById(R.id.textView_content_medical_advice);
@@ -427,13 +416,21 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (visitIDCursor != null) visitIDCursor.close();
             if (visitUUID != null && !visitUUID.isEmpty()) {
             addDownloadButton();
-
             }
-
         }
 
 
+
+        emgencychbx.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onCheckboxClicked(view);
+            }
+        });
+
+
         uploadButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
 
@@ -488,6 +485,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     serviceIntent.putExtra("status", cp.getInt(cp.getColumnIndex(DelayedJobQueueProvider.STATUS)));
                                     serviceIntent.putExtra("personResponse", cp.getInt(cp.getColumnIndex(DelayedJobQueueProvider.DATA_RESPONSE)));
                                     serviceIntent.putExtra("queueId", cp.getInt(cp.getColumnIndex(DelayedJobQueueProvider._ID)));
+
                                     startService(serviceIntent);
 
                                 }
@@ -541,6 +539,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         serviceIntent.putExtra("patientID", patientID);
                         serviceIntent.putExtra("visitID", visitID);
                         serviceIntent.putExtra("name", patientName);
+                        //send flag value to call encounter
+                        serviceIntent.putExtra("flag", checkedstr);
                         startService(serviceIntent);
                     } else {
                         Log.i(TAG, "onClick: new visit");
@@ -549,6 +549,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         serviceIntent.putExtra("patientID", patientID);
                         serviceIntent.putExtra("visitID", visitID);
                         serviceIntent.putExtra("name", patientName);
+                        //send flag value to call encounter
+                        serviceIntent.putExtra("flag", checkedstr);
                         startService(serviceIntent);
                     }
 
@@ -1005,6 +1007,59 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         });
 
+        //Checked into local db for flagged encounter to set checkbox value true
+            String selection = "visit_id = ?";
+            String[] args = {visitID};
+            String[] coloumns = {"_id", "openmrs_encounter_id", "encounter_type "};
+
+            try {
+                Cursor encounterCursor = db.query("encounter", coloumns, selection, args, null, null, null);
+
+                if (encounterCursor != null && encounterCursor.moveToFirst()) {
+                    do {
+
+                        String encounterType = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type"));
+                        Log.i(TAG, "Encounter: " + encounterType);
+
+                        switch (encounterType) {
+                            case "ADULTINITIAL": {
+                                encounterAdultInitial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("openmrs_encounter_id"));
+                                Log.i(TAG, "Encounter: " + encounterAdultInitial);
+                                break;
+                            }
+                            case "VITALS": {
+                                encounterVitals = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("openmrs_encounter_id"));
+                                Log.i(TAG, "Encounter: " + encounterVitals);
+                                break;
+                            }
+                            case "FLAGGED": {
+                                encounterFlag = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("openmrs_encounter_id"));
+                                Log.i(TAG, "Encounter: " + encounterFlag);
+                                if (encounterType.contains("FLAGGED")) {
+                                    emgencychbx.setChecked(true);
+                                    emgencychbx.setText(context.getResources().getString(R.string.visit_summary_flag_check));
+                                } else {
+                                    emgencychbx.setChecked(false);
+                                    emgencychbx.setText(context.getResources().getString(R.string.visit_summary_flag_uncheck));
+
+                                }
+                                break;
+                            }
+                            default: {
+
+                            }
+                        }
+                    } while (encounterCursor.moveToNext());
+
+                }
+
+                encounterCursor.close();
+
+
+            } catch (SQLException e1) {
+                Log.d(TAG, "Encounter: " + e1.getMessage());
+            }
+
 
     }
 
@@ -1111,7 +1166,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         String[] columns = {"value", " concept_id"};
         String orderBy = "visit_id";
-
         try {
             String famHistSelection = "patient_id = ? AND concept_id = ?";
             String[] famHistArgs = {dataString, String.valueOf(ConceptId.RHK_FAMILY_HISTORY_BLURB)};
@@ -1998,6 +2052,25 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
 
         }
-
     }
+    //Set flag on patient if there is any emergency
+    public void onCheckboxClicked(View view) {
+        boolean checked = ((CheckBox) view).isChecked();
+        switch (view.getId()) {
+            case R.id.checkbox_emergncy:
+                if (checked) {
+                    checkedstr = "1";
+                    emgencychbx.setText(context.getResources().getString(R.string.visit_summary_flag_check));
+
+                    break;
+                } else
+                    checkedstr = "0";
+                emgencychbx.setText(context.getResources().getString(R.string.visit_summary_flag_uncheck));
+
+                break;
+        }
+    }
+
+
+
 }

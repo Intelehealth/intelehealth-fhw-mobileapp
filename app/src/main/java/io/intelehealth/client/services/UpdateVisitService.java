@@ -5,22 +5,29 @@ import android.app.NotificationManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import io.intelehealth.client.R;
+import io.intelehealth.client.activities.setting_activity.SettingsActivity;
+import io.intelehealth.client.application.IntelehealthApplication;
 import io.intelehealth.client.database.DelayedJobQueueProvider;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Obs;
+import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.objects.WebResponse;
 import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.HelperMethods;
@@ -50,20 +57,25 @@ public class UpdateVisitService extends IntentService {
     private String patientUUID;
     private String visitUUID;
     private Integer patientID;
+    private String encounterID;
 
     NotificationManager mNotifyManager;
     public int mId = 5;
     NotificationCompat.Builder mBuilder;
-
+    public int numMessages;
     String quote = "\"";
 
     Integer queueId = null;
 
-    private String encounterAdultInitial, encounterVitals;
+    private String encounterAdultInitial, encounterVitals,encounterFlag;
 
     ArrayList<Obs> obsArrayList; //Contains Obs that are updatable
 
     private static final String TAG = UpdateVisitService.class.getSimpleName();
+
+    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(IntelehealthApplication.getAppContext());
+    String location_uuid = prefs.getString(SettingsActivity.KEY_PREF_LOCATION_UUID, null);
+    String provider_uuid = prefs.getString("providerid", null);
 
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -86,6 +98,11 @@ public class UpdateVisitService extends IntentService {
             visitId = intent.getStringExtra("visitID");
             patientID = intent.getIntExtra("patientID", -1);
         }
+        //get flagged value to call encounter
+        String flag = intent.getStringExtra("flag");
+        Log.v(TAG, "flag " + flag);
+        if (flag!=null){
+            emergencyFlagtoPatient(patientID,visitId,intent);}
 
         Log.i(TAG, "onHandleIntent: " + visitId);
 
@@ -131,6 +148,7 @@ public class UpdateVisitService extends IntentService {
                 imageUpload.putExtra("visitID", visitId);
                 startService(imageUpload);
             }
+
 
             queryEncounterTable(visitId);
             queryObsTable(visitId);
@@ -329,6 +347,11 @@ public class UpdateVisitService extends IntentService {
                         case "VITALS": {
                             encounterVitals = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("openmrs_encounter_id"));
                             Log.i(TAG, "queryEncounterTable: " + encounterVitals);
+                            break;
+                        }
+                        case "FLAGGED": {
+                            encounterFlag = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("openmrs_encounter_id"));
+                            Log.i(TAG, "queryEncounterTable: " + encounterFlag);
                             break;
                         }
                         default: {
@@ -664,4 +687,109 @@ public class UpdateVisitService extends IntentService {
         super.onDestroy();
     }
 
+    public boolean emergencyFlagtoPatient(Integer patientID, String visitID, Intent intent){
+        Patient patient = new Patient();
+        String patientSelection = "_id = ?";
+        String[] patientArgs = {String.valueOf(patientID)};
+        String[] oMRSCol = {"openmrs_uuid", "sdw", "occupation"};
+        final Cursor idCursor = db.query("patient", oMRSCol, patientSelection, patientArgs, null, null, null);
+        if (idCursor.moveToFirst()) {
+            do {
+                patient.setOpenmrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_uuid")));
+                patient.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
+                patient.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
+            } while (idCursor.moveToNext());
+        }
+        idCursor.close();
+
+        if (patient.getOpenmrsId() == null || patient.getOpenmrsId().isEmpty()) {
+
+
+            Toast.makeText(this, "Pa", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        String[] columnsToReturn = {"openmrs_visit_uuid", "start_datetime"};
+        String visitIDorderBy = "start_datetime";
+        String visitIDSelection = "_id = ?";
+        String[] visitIDArgs = {visitID};
+        final Cursor visitIDCursor = db.query("visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
+        visitIDCursor.moveToLast();
+        String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("start_datetime"));
+        String visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("openmrs_visit_uuid"));
+
+        visitIDCursor.close();
+
+
+        String noteString =
+                String.format("{" +
+                                "\"encounterDatetime\":\"%s\"," +
+                                " \"patient\":\"%s\"," +
+                                "\"encounterType\":\"" + UuidDictionary.ENCOUNTER_FLAGGED + "\"," +
+                                "\"visit\":\"%s\"," +
+                                "\"encounterProviders\":[{" +
+                                "\"encounterRole\":\"73bbb069-9781-4afc-a9d1-54b6b2270e04\"," +
+                                "\"provider\":\"%s\"" +
+                                "}]," +
+                                "\"location\":\"%s\"}",
+
+                        startDateTime,
+                        patient.getOpenmrsId(),
+                        visitUUID,
+                        provider_uuid,
+                        location_uuid
+                );
+        Log.d(TAG, "Flag Encounter String: " + noteString);
+        WebResponse responseFlag;
+        responseFlag = HelperMethods.postCommand("encounter", noteString, getApplicationContext());
+        if (responseFlag != null && responseFlag.getResponseCode() != 201) {
+            String newText = "Flag Encounter was not created. Please check your connection.";
+            mBuilder.setContentText(newText).setNumber(++numMessages);
+            mNotifyManager.notify(mId, mBuilder.build());
+            Log.d(TAG, "Flag Encounter posting was unsuccessful");
+            return false;
+        } else if (responseFlag == null) {
+            Log.d(TAG, "Flag Encounter posting was unsuccessful");
+            return false;
+        }
+        try {
+            JSONObject JSONResponse = new JSONObject(responseFlag.getResponseObject());
+            JSONArray encounterProviders = JSONResponse.getJSONArray("encounterProviders");
+            String encounterUUID = JSONResponse.getString("uuid");
+
+            String providers = "";
+
+            for (int i = 0; i < encounterProviders.length(); i++) {
+                if (providers.trim().isEmpty()) {
+                    providers = encounterProviders.getJSONObject(i).getString("display");
+                } else {
+                    providers = providers + ", " + encounterProviders.getJSONObject(i).getString("display");
+                }
+            }
+
+            ContentValues contentValuesEncounter = new ContentValues();
+            contentValuesEncounter.put("openmrs_encounter_id", encounterUUID);
+            contentValuesEncounter.put("patient_id", patientID);
+            contentValuesEncounter.put("visit_id", visitID);
+            contentValuesEncounter.put("openmrs_visit_uuid", visitUUID);
+            contentValuesEncounter.put("encounter_type", "FLAGGED");
+            if (!providers.trim().isEmpty()) {
+                contentValuesEncounter.put("encounter_provider", providers);
+            }
+            //store encounter value into local db
+            db.insert(
+                    "encounter",
+                    null,
+                    contentValuesEncounter
+            );
+
+            Log.d(TAG, "Encounter: " + contentValuesEncounter);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String newText = "Flag uploaded successfully.";
+        mBuilder.setContentText(newText).setNumber(++numMessages);
+        mNotifyManager.notify(mId, mBuilder.build());
+        return true;
+    }
 }
