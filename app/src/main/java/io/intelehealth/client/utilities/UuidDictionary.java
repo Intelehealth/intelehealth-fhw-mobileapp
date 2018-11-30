@@ -48,8 +48,6 @@ public class UuidDictionary {
     public static final String ATTRIBUTE_OCCUPATION = "ecdaadb6-14a0-4ed9-b5b7-cfed87b44b87";
     public static final String ATTRIBUTE_HEALTH_CENTER = "8d87236c-c2cc-11de-8d13-0010c6dffd0f";
 
-    //Encounter Flag
-    public static final String ENCOUNTER_FLAGGED = "ca5f5dc3-4f0b-4097-9cae-5cf2eb44a09c";
 
     //Visit Types
     public static final String VISIT_TELEMEDICINE = "a86ac96e-2e07-47a7-8e72-8216a1a75bfd";

@@ -158,11 +158,6 @@ public class ClientService extends IntentService {
                     String visitID = intent.getStringExtra("visitID");
                     Log.v(TAG, "Visit ID: " + visitID);
                     createNotification("visit", patientName);
-                    //get flagged value to fire encounter
-                    String flag = intent.getStringExtra("flag");
-                    Log.v(TAG, "flag " + flag);
-                    if (flag!=null){
-                        emergencyFlagtoPatient(patientID,visitID,intent);}
                     success = uploadVisit(patientID, visitID, intent);
                     if (success) {
                         endNotification(patientName, "visit");
@@ -196,8 +191,8 @@ public class ClientService extends IntentService {
                         queueSyncStop(queueId);
                     }
                     break;
-                }
 
+                }
                 default:
                     //something
                     break;
@@ -279,8 +274,6 @@ public class ClientService extends IntentService {
             case "survey":
                 title = "Exit Survey Upload";
                 text = "Uploading survey data";
-                break;
-
         }
 
 
@@ -1613,111 +1606,4 @@ public class ClientService extends IntentService {
         }
         return returnString;
     }
-
-    public boolean emergencyFlagtoPatient(Integer patientID, String visitID, Intent intent){
-        Patient patient = new Patient();
-        String patientSelection = "_id = ?";
-        String[] patientArgs = {String.valueOf(patientID)};
-        String[] oMRSCol = {"openmrs_uuid", "sdw", "occupation"};
-        final Cursor idCursor = db.query("patient", oMRSCol, patientSelection, patientArgs, null, null, null);
-        if (idCursor.moveToFirst()) {
-            do {
-                patient.setOpenmrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_uuid")));
-                patient.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
-                patient.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
-            } while (idCursor.moveToNext());
-        }
-        idCursor.close();
-
-        if (patient.getOpenmrsId() == null || patient.getOpenmrsId().isEmpty()) {
-
-
-            Toast.makeText(this, "Pa", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        String[] columnsToReturn = {"openmrs_visit_uuid", "start_datetime"};
-        String visitIDorderBy = "start_datetime";
-        String visitIDSelection = "_id = ?";
-        String[] visitIDArgs = {visitID};
-        final Cursor visitIDCursor = db.query("visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
-        visitIDCursor.moveToLast();
-        String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("start_datetime"));
-        String visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("openmrs_visit_uuid"));
-
-        visitIDCursor.close();
-
-
-        String noteString =
-                String.format("{" +
-                                "\"encounterDatetime\":\"%s\"," +
-                                " \"patient\":\"%s\"," +
-                                "\"encounterType\":\"" + UuidDictionary.ENCOUNTER_FLAGGED + "\"," +
-                                "\"visit\":\"%s\"," +
-                                "\"encounterProviders\":[{" +
-                                "\"encounterRole\":\"73bbb069-9781-4afc-a9d1-54b6b2270e04\"," +
-                                "\"provider\":\"%s\"" +
-                                "}]," +
-                                "\"location\":\"%s\"}",
-
-                        startDateTime,
-                        patient.getOpenmrsId(),
-                        visitUUID,
-                        provider_uuid,
-                        location_uuid
-                );
-        Log.d(TAG, "Flag Encounter String: " + noteString);
-        WebResponse responseFlag;
-        responseFlag = HelperMethods.postCommand("encounter", noteString, getApplicationContext());
-        if (responseFlag != null && responseFlag.getResponseCode() != 201) {
-            String newText = "Flag Encounter was not created. Please check your connection.";
-            mBuilder.setContentText(newText).setNumber(++numMessages);
-            mNotifyManager.notify(mId, mBuilder.build());
-            Log.d(TAG, "Flag Encounter posting was unsuccessful");
-            return false;
-        } else if (responseFlag == null) {
-            Log.d(TAG, "Flag Encounter posting was unsuccessful");
-            return false;
-        }
-
-        try {
-            JSONObject JSONResponse = new JSONObject(responseFlag.getResponseObject());
-            JSONArray encounterProviders = JSONResponse.getJSONArray("encounterProviders");
-            String encounterUUID = JSONResponse.getString("uuid");
-
-            String providers = "";
-
-            for (int i = 0; i < encounterProviders.length(); i++) {
-                if (providers.trim().isEmpty()) {
-                    providers = encounterProviders.getJSONObject(i).getString("display");
-                } else {
-                    providers = providers + ", " + encounterProviders.getJSONObject(i).getString("display");
-                }
-            }
-
-            ContentValues contentValuesEncounter = new ContentValues();
-            contentValuesEncounter.put("openmrs_encounter_id", encounterUUID);
-            contentValuesEncounter.put("patient_id", patientID);
-            contentValuesEncounter.put("visit_id", visitID);
-            contentValuesEncounter.put("openmrs_visit_uuid", visitUUID);
-            contentValuesEncounter.put("encounter_type", "FLAGGED");
-            if (!providers.trim().isEmpty()) {
-                contentValuesEncounter.put("encounter_provider", providers);
-            }
-//Stored encounter into local db
-            db.insert(
-                    "encounter",
-                    null,
-                    contentValuesEncounter
-            );
-            Log.d(TAG, "Encounter: " + contentValuesEncounter);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        String newText = "Flag uploaded successfully.";
-        mBuilder.setContentText(newText).setNumber(++numMessages);
-        mNotifyManager.notify(mId, mBuilder.build());
-        return true;
-    }
-
 }
