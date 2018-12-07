@@ -228,10 +228,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         internetCheck = menu.findItem(R.id.internet_icon);
         MenuItemCompat.getActionView(internetCheck);
 
-        endVisit_click = menu.findItem(R.id.end_visit_icon);
-        endVisit_click.setIcon(R.mipmap.ic_sync);
-        MenuItemCompat.getActionView(endVisit_click);
-
         isNetworkAvailable(this);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -277,24 +273,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 //meera
                 if(downloaded){
                 endVisit();}
-                else {
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-                    alertDialogBuilder.setMessage(R.string.error_no_data);
-                    alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
-                }
-                return true;
-            }
-            case R.id.end_visit_icon: {
-                //meera
-                if(downloaded){
-                    endVisit();}
                 else {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
                     alertDialogBuilder.setMessage(R.string.error_no_data);
