@@ -570,7 +570,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 dob.set(year, monthOfYear, dayOfMonth);
                 mDOB.setError(null);
                 mAge.setError(null);
-
+                //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
+                mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis()-1000);
 
                 //Formatted so that it can be read the way the user sets
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -610,11 +611,11 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
 
-
-        int age = HelperMethods.getAge(patient1.getDateOfBirth());
-        mDOB.setText(patient1.getDateOfBirth());
-        int month=HelperMethods.getMonth(patient1.getDateOfBirth());
-        if (month!=0 && age!=0) {
+        //if patient update then age will be set
+        if (patientID_edit != -1) {
+            int age = HelperMethods.getAge(patient1.getDateOfBirth());
+            mDOB.setText(patient1.getDateOfBirth());
+            int month=HelperMethods.getMonth(patient1.getDateOfBirth());
             mAge.setText(String.valueOf(age) + getString(R.string.identification_screen_text_years) + String.valueOf(month) + getString(R.string.identification_screen_text_months));
         }
         mAge.setOnClickListener(new View.OnClickListener() {
