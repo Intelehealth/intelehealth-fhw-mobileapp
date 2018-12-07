@@ -41,6 +41,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -91,6 +93,8 @@ public class PatientDetailActivity extends AppCompatActivity {
     String fhistory = "";
     Obs complaint = new Obs();
      String visitValue;
+    boolean hasLicense = false;
+    String mFileName="config.json";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -317,9 +321,44 @@ public class PatientDetailActivity extends AppCompatActivity {
         TableRow sdwRow = (TableRow) findViewById(R.id.tableRow_SDW);
         TextView occuView = (TextView) findViewById(R.id.textView_occupation);
         TableRow occuRow = (TableRow) findViewById(R.id.tableRow_Occupation);
+        TableRow economicRow = (TableRow) findViewById(R.id.tableRow_Economic_Status);
+        TableRow educationRow = (TableRow) findViewById(R.id.tableRow_Education_Status);
+        TableRow casteRow = (TableRow) findViewById(R.id.tableRow_Caste);
 
         TextView medHistView = (TextView) findViewById(R.id.textView_patHist);
         TextView famHistView = (TextView) findViewById(R.id.textView_famHist);
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (sharedPreferences.contains("licensekey"))
+            hasLicense = true;
+
+        //Check for license key and load the correct config file
+        try {
+            JSONObject obj = null;
+            if (hasLicense) {
+                obj = new JSONObject(HelperMethods.readFileRoot(mFileName, this)); //Load the config file
+
+            }else {
+                obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, mFileName)));
+            }
+                if (obj.getBoolean("casteRow")) {
+                    casteRow.setVisibility(View.VISIBLE);
+                } else {
+                    casteRow.setVisibility(View.GONE);
+                }
+                if (obj.getBoolean("educationRow")) {
+                    educationRow.setVisibility(View.VISIBLE);
+                } else {
+                    educationRow.setVisibility(View.GONE);
+                }
+                if (obj.getBoolean("economicRow")) {
+                    economicRow.setVisibility(View.VISIBLE);
+                } else {
+                    economicRow.setVisibility(View.GONE);
+                }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         if (patient.getMiddleName() == null) {
             patientName = patient.getLastName() + ", " + patient.getFirstName();
