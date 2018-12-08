@@ -34,8 +34,9 @@
                 android:id="@+id/edit_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edit_icon"
-                android:layout_gravity="right"/>
+                android:layout_gravity="right"
+                android:background="@drawable/edit_button_icon"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
