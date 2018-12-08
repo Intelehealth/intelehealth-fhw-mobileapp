@@ -1,10 +1,12 @@
 package io.intelehealth.client.activities.identification_activity;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -13,9 +15,11 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -33,6 +37,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.Spinner;
@@ -41,22 +46,32 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.camera_activity.CameraActivity;
 import io.intelehealth.client.activities.patient_detail_activity.PatientDetailActivity;
+
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
+import io.intelehealth.client.node.Node;
 import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.utilities.HelperMethods;
 
+import static io.intelehealth.client.utilities.HelperMethods.LOG_TAG;
 import static io.intelehealth.client.utilities.HelperMethods.REQUEST_CAMERA;
 import static io.intelehealth.client.utilities.HelperMethods.REQUEST_READ_EXTERNAL;
+
 
 /**
  * Created by Amal Afroz Alam on 3/25/16.
@@ -86,16 +101,19 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText stateText;
     Spinner mCountry;
     Spinner mState;
-
     Integer mDOBYear;
     Integer mDOBMonth;
     Integer mDOBDay;
     Integer mAgeYears = 0;
     Integer mAgeMonths = 0;
-
     EditText casteText;
     EditText economicText;
     EditText educationText;
+    TextInputLayout casteLayout;
+    TextInputLayout economicLayout;
+    TextInputLayout educationLayout;
+
+    LinearLayout countryStateLayout;
 
     Spinner mCaste;
     Spinner mEducation;
@@ -106,25 +124,32 @@ public class IdentificationActivity extends AppCompatActivity {
     Patient patient1 = new Patient();
     Integer patientID;
     Integer patientID_edit = -1;
-
+    Node information;
     Calendar today = Calendar.getInstance();
     Calendar dob = Calendar.getInstance();
 
     LocalRecordsDatabaseHelper mDbHelper;
     String visitID;
-
+    public static String state1;
+    public static String country1;
     ImageView mImageView;
     String mCurrentPhotoPath;
-
-   // Boolean isDateChanged = false; //prajw
+    SharedPreferences.Editor e;
+    boolean hasLicense = false;
+    String mFileName="config.json";
+    public static String prescription1;
+    public static String prescription2;
+    // Boolean isDateChanged = false; //prajw
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_identification);
+        setTitle(R.string.title_activity_identification);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         //Initialize the local database to store patient information
         mDbHelper = new LocalRecordsDatabaseHelper(this);
@@ -160,17 +185,148 @@ public class IdentificationActivity extends AppCompatActivity {
         mCaste = (Spinner) findViewById(R.id.spinner_caste);
         mEducation = (Spinner) findViewById(R.id.spinner_education);
         mEconomicStatus = (Spinner) findViewById(R.id.spinner_economic_status);
-
-        //TODO: Change this back for other deployments
-       // mMiddleName.setVisibility(View.GONE);  //prajwal commented
-        mAddress1.setVisibility(View.GONE);
-        mAddress2.setVisibility(View.GONE);
-        mRelationship.setVisibility(View.GONE);
-        mPostal.setVisibility(View.GONE);
-
         casteText = (EditText) findViewById(R.id.identification_caste);
         educationText = (EditText) findViewById(R.id.identification_education);
         economicText = (EditText) findViewById(R.id.identification_econiomic_status);
+
+        casteLayout=(TextInputLayout)findViewById(R.id.identification_txtlcaste);
+        economicLayout=(TextInputLayout)findViewById(R.id.identification_txtleconomic);
+        educationLayout=(TextInputLayout)findViewById(R.id.identification_txtleducation);
+        countryStateLayout=(LinearLayout)findViewById(R.id.identification_llcountry_state);
+
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (sharedPreferences.contains("licensekey"))
+            hasLicense = true;
+
+        //Check for license key and load the correct config file
+        try {
+            JSONObject obj = null;
+        if (hasLicense) {
+            obj = new JSONObject(HelperMethods.readFileRoot(mFileName, this)); //Load the config file
+
+        }else {
+            obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, mFileName)));
+
+        }
+
+        //Display the fields on the Add Patient screen as per the config file
+            if (obj.getBoolean("mFirstName")) {
+                mFirstName.setVisibility(View.VISIBLE);
+            } else {
+                mFirstName.setVisibility(View.GONE);
+            }
+
+            if (obj.getBoolean("mMiddleName")) {
+                mMiddleName.setVisibility(View.VISIBLE);
+            } else {
+                mMiddleName.setVisibility(View.GONE);
+            }
+
+            if (obj.getBoolean("mLastName")) {
+                mLastName.setVisibility(View.VISIBLE);
+            } else {
+                mLastName.setVisibility(View.GONE);
+            }
+
+            if (obj.getBoolean("mDOB")) {
+                mDOB.setVisibility(View.VISIBLE);
+            } else {
+                mDOB.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("mPhoneNum")) {
+                mPhoneNum.setVisibility(View.VISIBLE);
+            } else {
+                mPhoneNum.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("mAge")) {
+                mAge.setVisibility(View.VISIBLE);
+            } else {
+                mAge.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("mAddress1")) {
+                mAddress1.setVisibility(View.VISIBLE);
+            } else {
+                mAddress1.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("mAddress2")) {
+                mAddress2.setVisibility(View.VISIBLE);
+            } else {
+                mAddress2.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("mCity")) {
+                mCity.setVisibility(View.VISIBLE);
+            } else {
+                mCity.setVisibility(View.GONE);
+            }
+
+            if (obj.getBoolean("countryStateLayout")) {
+                countryStateLayout.setVisibility(View.VISIBLE);
+            } else {
+                countryStateLayout.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("mPostal")) {
+                mPostal.setVisibility(View.VISIBLE);
+            } else {
+                mPostal.setVisibility(View.GONE);
+            }
+
+            if (obj.getBoolean("mGenderM")) {
+                mGenderM.setVisibility(View.VISIBLE);
+            } else {
+                mGenderM.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("mGenderF")) {
+                mGenderF.setVisibility(View.VISIBLE);
+            } else {
+                mGenderF.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("mRelationship")) {
+                mRelationship.setVisibility(View.VISIBLE);
+            } else {
+                mRelationship.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("mOccupation")) {
+                mOccupation.setVisibility(View.VISIBLE);
+            } else {
+                mOccupation.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("casteLayout")) {
+                casteLayout.setVisibility(View.VISIBLE);
+            } else {
+                casteLayout.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("educationLayout")) {
+                educationLayout.setVisibility(View.VISIBLE);
+            } else {
+                educationLayout.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("economicLayout")) {
+                economicLayout.setVisibility(View.VISIBLE);
+            } else {
+                economicLayout.setVisibility(View.GONE);
+            }
+            country1 = obj.getString("mCountry");
+            prescription1=obj.getString("presciptionHeader1");
+            prescription2=obj.getString("presciptionHeader2");
+        } catch (JSONException e) {
+            e.printStackTrace();
+            }
+
+        //Added prescription Title from config file to shared preferences
+        String sharePref1 = "prescriptionTitle1";
+        String sharePref2 = "prescriptionTitle2";
+        e = sharedPreferences.edit();
+        e.putString(sharePref1,prescription1);
+        e.putString(sharePref2,prescription2);
+        e.commit();
+
+        //TODO: Change this back for other deployments
+       // mMiddleName.setVisibility(View.GONE);  //prajwal commented
+       // mAddress1.setVisibility(View.GONE);
+       // mAddress2.setVisibility(View.GONE);
+        //mRelationship.setVisibility(View.GONE);
+        //mPostal.setVisibility(View.GONE);
 
          /*
         The patient's picture will be taken here and then stored using the method below.
@@ -191,8 +347,10 @@ public class IdentificationActivity extends AppCompatActivity {
         mRelationship.setText(patient1.getSdw());
         mOccupation.setText(patient1.getOccupation());
 
+
         if (patient1.getPatientPhoto() != null && !patient1.getPatientPhoto().trim().isEmpty())
             mImageView.setImageBitmap(BitmapFactory.decodeFile(patient1.getPatientPhoto()));
+
 
         Resources res = getResources();
         ArrayAdapter<CharSequence> countryAdapter = ArrayAdapter.createFromResource(this,
@@ -262,7 +420,7 @@ public class IdentificationActivity extends AppCompatActivity {
             else
                 mCaste.setSelection(casteAdapter.getPosition(String.valueOf(patient1.getCaste())));
         } else {
-            mCountry.setSelection(countryAdapter.getPosition("India"));
+            mCountry.setSelection(countryAdapter.getPosition(country1));
         }
 
         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.state_error, android.R.layout.simple_spinner_item);
@@ -272,11 +430,16 @@ public class IdentificationActivity extends AppCompatActivity {
         mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String state = parent.getItemAtPosition(position).toString();
+               String state = parent.getItemAtPosition(position).toString();
                 if (state.matches("Odisha")) {
                     //Creating the instance of ArrayAdapter containing list of fruit names
                     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                             R.array.odisha_villages, android.R.layout.simple_spinner_item);
+                    mCity.setThreshold(1);//will start working from first character
+                    mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+                } else if (state.matches("Bukidnon")) {
+                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                            R.array.bukidnon_villages, android.R.layout.simple_spinner_item);
                     mCity.setThreshold(1);//will start working from first character
                     mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
                 } else {
@@ -294,7 +457,7 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i != 0) {
-                    String country = adapterView.getItemAtPosition(i).toString();
+                   String country= adapterView.getItemAtPosition(i).toString();
 
                     if (country.matches("India")) {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
@@ -319,7 +482,19 @@ public class IdentificationActivity extends AppCompatActivity {
 
                             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getStateProvince())));
                         }
+                    }
+                    else if (country.matches("Philippines")) {
+                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.states_philippines, android.R.layout.simple_spinner_item);
+                        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mState.setAdapter(stateAdapter);
 
+                        if (patientID_edit != -1) {
+                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getStateProvince())));
+                        }
+                        else {
+                            mState.setSelection(stateAdapter.getPosition("Bukidnon"));
+                        }
                     }
                 } else {
                     ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
@@ -395,7 +570,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 dob.set(year, monthOfYear, dayOfMonth);
                 mDOB.setError(null);
                 mAge.setError(null);
-
+                //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
+                mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis()-1000);
 
                 //Formatted so that it can be read the way the user sets
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -435,7 +611,13 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
 
-
+        //if patient update then age will be set
+        if (patientID_edit != -1) {
+            int age = HelperMethods.getAge(patient1.getDateOfBirth());
+            mDOB.setText(patient1.getDateOfBirth());
+            int month=HelperMethods.getMonth(patient1.getDateOfBirth());
+            mAge.setText(String.valueOf(age) + getString(R.string.identification_screen_text_years) + String.valueOf(month) + getString(R.string.identification_screen_text_months));
+        }
         mAge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1129,4 +1311,6 @@ public class IdentificationActivity extends AppCompatActivity {
                }).setNegativeButton("No",null).show();
 
     }
+
+
 }

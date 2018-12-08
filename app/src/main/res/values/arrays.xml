@@ -13,9 +13,6 @@
 
 
 
-
-
-
     <string-array name="pref_example_list_titles">
         <item>Always</item>
         <item>When possible</item>
@@ -34,6 +31,7 @@
         <item>Select Country</item>
         <item>India</item>
         <item>United States</item>
+        <item>Philippines</item>
     </string-array>
 
     <string-array name="education_or">
@@ -107,6 +105,35 @@
         <item>Uttar Pradesh</item>
         <item>Uttarakhand</item>
         <item>West Bengal</item>
+    </string-array>
+
+    <string-array name="states_philippines">
+    <item>Select State</item>
+    <item>Bukidnon</item>
+    </string-array>
+    <string-array name="bukidnon_villages">
+        <item>Adtuyon-Pangantucan</item>
+        <item>Bacusanon-Pangantucan</item>
+        <item>Bangahan-Pangantucan</item>
+        <item>Barandias-Pangantucan</item>
+        <item>Concepcion-Pangantucan</item>
+        <item>Gandingan-Pangantucan</item>
+        <item>Kimanait-Pangantucan</item>
+        <item>Kipadukan-Pangantucan</item>
+        <item>Langcataon-Pangantucan</item>
+        <item>Lantay-Pangantucan</item>
+        <item>Madaya-Pangantucan</item>
+        <item>Malipayon-Pangantucan</item>
+        <item>Mendis-Pangantucan</item>
+        <item>Nabaliwa-Pangantucan</item>
+        <item>New Eden-Pangantucan</item>
+        <item>Payad-Pangantucan</item>
+        <item>Pigtauranan-Pangantucan</item>
+        <item>Poblacion-Pangantucan</item>
+        <item>Portulin-Pangantucan</item>
+        <item>Poblacion-Pangantucan</item>
+        <item></item>
+
     </string-array>
 
     <string-array name="states_us">

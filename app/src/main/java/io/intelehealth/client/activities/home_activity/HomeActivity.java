@@ -3,11 +3,13 @@ package io.intelehealth.client.activities.home_activity;
 import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
+
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -39,7 +41,6 @@ import io.intelehealth.client.R;
 import io.intelehealth.client.activities.login_activity.LoginActivity;
 import io.intelehealth.client.activities.login_activity.OfflineLogin;
 import io.intelehealth.client.activities.setting_activity.SettingsActivity;
-import io.intelehealth.client.application.IntelehealthApplication;
 import io.intelehealth.client.services.DownloadProtocolsTask;
 import io.intelehealth.client.utilities.NetworkConnection;
 
@@ -82,6 +83,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        setTitle(R.string.title_activity_login);
 
         Log.i(TAG, "onCreate: " + getFilesDir().toString());
 

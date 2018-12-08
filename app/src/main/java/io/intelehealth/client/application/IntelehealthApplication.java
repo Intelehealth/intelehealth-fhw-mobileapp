@@ -31,6 +31,13 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
     private static final String TAG = IntelehealthApplication.class.getSimpleName();
     private static String androidId;
 
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
