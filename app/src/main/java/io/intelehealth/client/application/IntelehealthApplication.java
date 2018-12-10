@@ -38,11 +38,6 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
         MultiDex.install(this);
     }
 
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        MultiDex.install(this);
-    }
 
     @Override
     public void onCreate() {
