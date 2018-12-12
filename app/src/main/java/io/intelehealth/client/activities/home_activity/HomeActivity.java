@@ -4,12 +4,14 @@ import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -36,6 +38,7 @@ import com.parse.ParseQuery;
 import java.io.File;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.login_activity.LoginActivity;
@@ -83,8 +86,19 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        setTitle(R.string.title_activity_login);
 
+        SharedPreferences prefs = getSharedPreferences("CommonPrefs",
+                Activity.MODE_PRIVATE);
+        String ln = prefs.getString("Language","");
+
+        if(!ln.equalsIgnoreCase("")){
+            Locale locale = new Locale(ln);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
+        setTitle(R.string.title_activity_login);
         Log.i(TAG, "onCreate: " + getFilesDir().toString());
 
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview_home);
@@ -94,10 +108,12 @@ public class HomeActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(gridLayoutManager);
 
         recyclerView.setAdapter(new HomeAdapter());
+
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         e = sharedPreferences.edit();
         backupdate = sharedPreferences.getString("date", "");
         backuptime = sharedPreferences.getString("time", "");
+
 
         final Calendar startDate = Calendar.getInstance();
         startDate.set(Calendar.HOUR, 10);
