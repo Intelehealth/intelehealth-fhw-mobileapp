@@ -36,7 +36,7 @@
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="200dp"
                     android:layout_weight="1"
                     android:orientation="vertical"
                     android:layout_marginRight="10dp">
@@ -44,6 +44,8 @@
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
+                        <!--Can't access Vector drawables directly,that's why putted into another DrawableContainer-->
+                        <!--On the Left or Right of textview or Editext-->
 
                         <EditText
                             android:id="@+id/identification_first_name"
@@ -56,8 +58,8 @@
                             android:inputType="textCapWords"
                             android:maxLines="1"
                             android:singleLine="true"
-                            android:drawableLeft="@drawable/ic_person_black_18dp"
-                            android:drawableStart="@drawable/ic_person_black_18dp"
+                            android:drawableLeft="@drawable/person_icon"
+                            android:drawableStart="@drawable/person_icon"
                             android:drawablePadding="10dp"
                             />
 
@@ -79,8 +81,8 @@
                             android:maxLines="1"
                             android:singleLine="true"
                             android:tag="@string/tag_optional"
-                            android:drawableLeft="@drawable/ic_person_black_18dp"
-                            android:drawableStart="@drawable/ic_person_black_18dp"
+                            android:drawableLeft="@drawable/person_icon"
+                            android:drawableStart="@drawable/person_icon"
                             android:drawablePadding="10dp"
                             />
 
@@ -102,14 +104,12 @@
                             android:inputType="textCapWords"
                             android:maxLines="1"
                             android:singleLine="true"
-                            android:drawableLeft="@drawable/ic_person_black_18dp"
-                            android:drawableStart="@drawable/ic_person_black_18dp"
+                            android:drawableLeft="@drawable/person_icon"
+                            android:drawableStart="@drawable/person_icon"
                             android:drawablePadding="10dp"
                             />
 
                     </android.support.design.widget.TextInputLayout>
-
-
 
                 </LinearLayout>
                 <ImageView
@@ -118,18 +118,12 @@
                     android:layout_height="170dp"
                     android:layout_gravity="right"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_person_camera_intele" />
-
-
-
-
+                    app:srcCompat="@drawable/ic_person_camera_intele" />
             </LinearLayout>
 
-
             <Space
-                android:layout_width="20dp"
+                android:layout_width="15dp"
                 android:layout_height="20dp" />
-
 
             <RadioGroup
                 android:id="@+id/radioGrp"
@@ -146,8 +140,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableLeft="@drawable/ic_male_gender_intele_18dp"
-                    android:drawableStart="@drawable/ic_male_gender_intele_18dp"
+                    android:drawableLeft="@drawable/male_icon"
+                    android:drawableStart="@drawable/male_icon"
                     android:drawablePadding="10dp"
                     android:text="@string/identification_screen_checkbox_male"
                     android:textSize="@dimen/id_screen_text_size"
@@ -158,8 +152,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableLeft="@drawable/ic_female_intele_18dp"
-                    android:drawableStart="@drawable/ic_female_intele_18dp"
+                    android:drawableLeft="@drawable/female_icon"
+                    android:drawableStart="@drawable/female_icon"
                     android:drawablePadding="10dp"
                     android:text="@string/identification_screen_checkbox_female"
                     android:textSize="@dimen/id_screen_text_size" />
@@ -185,8 +179,8 @@
                     android:imeOptions="actionUnspecified"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:drawableLeft="@drawable/ic_event_black_24dp"
-                    android:drawableStart="@drawable/ic_event_black_24dp"
+                    android:drawableLeft="@drawable/event_icon"
+                    android:drawableStart="@drawable/event_icon"
                     android:drawablePadding="10dp"/>
 
 
@@ -209,8 +203,8 @@
                     android:imeOptions="actionUnspecified"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:drawableLeft="@drawable/ic_event_black_24dp"
-                    android:drawableStart="@drawable/ic_event_black_24dp"
+                    android:drawableLeft="@drawable/event_icon"
+                    android:drawableStart="@drawable/event_icon"
                     android:drawablePadding="10dp"/>
 
             </android.support.design.widget.TextInputLayout>
@@ -232,22 +226,20 @@
                     android:maxLines="1"
                     android:singleLine="true"
                     android:tag="@string/tag_optional"
-                    android:drawableLeft="@drawable/ic_phone_black_18dp"
-                    android:drawableStart="@drawable/ic_phone_black_18dp"
+                    android:drawableLeft="@drawable/phone_icon"
+                    android:drawableStart="@drawable/phone_icon"
                     android:drawablePadding="10dp"
                     android:maxLength="10"/>
 
             </android.support.design.widget.TextInputLayout>
 
-            <Space
-                android:layout_width="20dp"
-                android:layout_height="20dp" />
-
 
             <LinearLayout
+                android:id="@+id/identification_llcountry_state"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -280,8 +272,8 @@
                                 android:imeOptions="actionUnspecified"
                                 android:inputType="textCapWords"
                                 android:maxLines="1"
-                                android:drawableLeft="@drawable/ic_flag_black_24dp"
-                                android:drawableStart="@drawable/ic_flag_black_24dp"
+                                android:drawableLeft="@drawable/country_flag_icon"
+                                android:drawableStart="@drawable/country_flag_icon"
                                 android:drawablePadding="10dp"
                                 android:text="@string/identification_screen_prompt_country" />
 
@@ -331,8 +323,8 @@
                                 android:imeOptions="actionUnspecified"
                                 android:inputType="textCapWords"
                                 android:maxLines="1"
-                                android:drawableLeft="@drawable/ic_state_intele_new_18dp"
-                                android:drawableStart="@drawable/ic_state_intele_new_18dp"
+                                android:drawableLeft="@drawable/state_list_icon"
+                                android:drawableStart="@drawable/state_list_icon"
                                 android:drawablePadding="10dp"
                                 android:text="@string/identification_screen_prompt_state" />
 
@@ -363,152 +355,48 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="textCapWords"
                     android:maxLines="1"
-                    android:drawableLeft="@drawable/ic_home_black_18dp"
-                    android:drawableStart="@drawable/ic_home_black_18dp"
+                    android:drawableLeft="@drawable/home_icon"
+                    android:drawableStart="@drawable/home_icon"
                     android:drawablePadding="10dp"/>
 
             </android.support.design.widget.TextInputLayout>
-
-
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/identification_occupation"
+                    android:id="@+id/identification_address1"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:freezesText="true"
-                    android:hint="@string/identification_screen_prompt_occupation"
+                    android:hint="@string/identification_screen_prompt_address"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textCapWords"
-                    android:maxLines="1"
-                    android:drawableLeft="@drawable/ic_work_black_18dp"
-                    android:drawableStart="@drawable/ic_work_black_18dp"
-                    android:drawablePadding="10dp"
+                    android:maxLines="2"
+                    android:singleLine="false"
                     android:tag="@string/tag_optional" />
 
             </android.support.design.widget.TextInputLayout>
 
-
-            <Space
-                android:layout_width="20dp"
-                android:layout_height="20dp" />
-
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:weightSum="4">
-
-                    <EditText
-                        android:id="@+id/identification_caste"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:cursorVisible="false"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:freezesText="true"
-                        android:imeOptions="actionUnspecified"
-                        android:inputType="textCapWords"
-                        android:maxLines="1"
-                        android:drawableLeft="@drawable/ic_person_black_18dp"
-                        android:drawableStart="@drawable/ic_person_black_18dp"
-                        android:drawablePadding="10dp"
-                        android:text="@string/identification_screen_prompt_caste" />
-
-                    <Spinner
-                        android:id="@+id/spinner_caste"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
+                <EditText
+                    android:id="@+id/identification_address2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:freezesText="true"
+                    android:hint="@string/identification_screen_prompt_address2"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="textCapWords"
+                    android:maxLines="2"
+                    android:tag="@string/tag_optional" />
 
             </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:weightSum="4"
-                    >
-
-                    <EditText
-                        android:id="@+id/identification_econiomic_status"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:cursorVisible="false"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:freezesText="true"
-                        android:imeOptions="actionUnspecified"
-                        android:inputType="textCapWords"
-                        android:maxLines="1"
-                        android:text="@string/identification_screen_prompt_economic_status"
-                        android:drawableLeft="@drawable/ic_rupee_1_18dp"
-                        android:drawableStart="@drawable/ic_rupee_1_18dp"
-                        android:drawablePadding="10dp"/>
-
-                    <Spinner
-                        android:id="@+id/spinner_economic_status"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:weightSum="4"
-                    >
-
-                    <EditText
-                        android:id="@+id/identification_education"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:cursorVisible="false"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:freezesText="true"
-                        android:imeOptions="actionUnspecified"
-                        android:inputType="textCapWords"
-                        android:maxLines="1"
-                        android:drawableLeft="@drawable/ic_education_status_intele"
-                        android:drawableStart="@drawable/ic_education_status_intele"
-                        android:drawablePadding="10dp"
-                        android:text="@string/identification_screen_prompt_education" />
-
-                    <Spinner
-                        android:id="@+id/spinner_education"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
-
-            </android.support.design.widget.TextInputLayout>
-
-            <Space
-                android:layout_width="20dp"
-                android:layout_height="20dp" />
-
-
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -547,43 +435,144 @@
 
             </android.support.design.widget.TextInputLayout>
 
-
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/identification_address1"
+                    android:id="@+id/identification_occupation"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:freezesText="true"
-                    android:hint="@string/identification_screen_prompt_address"
+                    android:hint="@string/identification_screen_prompt_occupation"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textCapWords"
-                    android:maxLines="2"
-                    android:singleLine="false"
+                    android:maxLines="1"
+                    android:drawableLeft="@drawable/occupation_icon"
+                    android:drawableStart="@drawable/occupation_icon"
+                    android:drawablePadding="10dp"
                     android:tag="@string/tag_optional" />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="20dp" />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/identification_txtlcaste"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="4">
+
+                    <EditText
+                        android:id="@+id/identification_caste"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:freezesText="true"
+                        android:imeOptions="actionUnspecified"
+                        android:inputType="textCapWords"
+                        android:maxLines="1"
+                        android:drawableLeft="@drawable/person_icon"
+                        android:drawableStart="@drawable/person_icon"
+                        android:drawablePadding="10dp"
+                        android:text="@string/identification_screen_prompt_caste" />
+
+                    <Spinner
+                        android:id="@+id/spinner_caste"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
 
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:id="@+id/identification_txtleconomic"
+                >
 
-                <EditText
-                    android:id="@+id/identification_address2"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:freezesText="true"
-                    android:hint="@string/identification_screen_prompt_address2"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textCapWords"
-                    android:maxLines="2"
-                    android:tag="@string/tag_optional" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="4"
+                    >
+
+                    <EditText
+                        android:id="@+id/identification_econiomic_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:freezesText="true"
+                        android:imeOptions="actionUnspecified"
+                        android:inputType="textCapWords"
+                        android:maxLines="1"
+                        android:text="@string/identification_screen_prompt_economic_status"
+                        android:drawableLeft="@drawable/econiomic_status_icon"
+                        android:drawableStart="@drawable/econiomic_status_icon"
+                        android:drawablePadding="10dp"/>
+
+                    <Spinner
+                        android:id="@+id/spinner_economic_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/identification_txtleducation">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="4"
+                    >
+
+                    <EditText
+                        android:id="@+id/identification_education"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:freezesText="true"
+                        android:imeOptions="actionUnspecified"
+                        android:inputType="textCapWords"
+                        android:maxLines="1"
+                        android:drawableLeft="@drawable/education_icon"
+                        android:drawableStart="@drawable/education_icon"
+                        android:drawablePadding="10dp"
+                        android:text="@string/identification_screen_prompt_education" />
+
+                    <Spinner
+                        android:id="@+id/spinner_education"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
 
             </android.support.design.widget.TextInputLayout>
+
 
         </LinearLayout>
     </ScrollView>

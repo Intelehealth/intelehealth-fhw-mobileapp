@@ -339,8 +339,17 @@ public class PrescriptionDownloadService extends IntentService {
                                 if (!followUpDate.contains(indexText) && !followUpDate.isEmpty()) {
                                     followUpDate = followUpDate + "\n" + indexText;
                                 } else {
-                                    followUpDate = indexText;
-                                }
+                                        //If Dr provides both "followup date" and "Advice"
+                                        if (indexText.contains("Advice")) {
+                                            String[] arrOfStr = indexText.split(",", 2);
+                                            String convertDate = arrOfStr[0];
+                                            String advice = arrOfStr[1];
+                                            followUpDate = HelperMethods.SimpleDatetoLongFollowupDate(convertDate) + "," + advice;
+                                        }else {
+                                            //if Dr provides only Folloup date
+                                            followUpDate = HelperMethods.SimpleDatetoLongFollowupDate(indexText);
+                                        }
+                                    }
                                 String[] obsArgs = {String.valueOf(ConceptId.FOLLOW_UP_VISIT), visitID};
                                 Cursor cursor = queryDatabase(columns, obsSelection, obsArgs);
                                 if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
@@ -365,7 +374,7 @@ public class PrescriptionDownloadService extends IntentService {
                         }
                     }
                     newText = "Prescription Download Complete";
-                    mBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                    mBuilder.setSmallIcon(R.drawable.ic_cloud_download)
                             .setContentTitle("Prescription Download")
                             .setContentText(newText);
                     mNotifyManager.notify(mId, mBuilder.build());
@@ -373,7 +382,7 @@ public class PrescriptionDownloadService extends IntentService {
 
                 } else {
                     newText = "No data to download";
-                    mBuilder.setSmallIcon(R.mipmap.ic_launcher)
+                    mBuilder.setSmallIcon(R.drawable.ic_cloud_download)
                             .setContentTitle("Prescription Download")
                             .setContentText(newText);
                     mNotifyManager.notify(mId, mBuilder.build());

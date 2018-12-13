@@ -104,6 +104,8 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
             Log.i(TAG, "onPostExecute: " + familyHistory);
             File pastMedicalHistory = new File(activity.getFilesDir().getAbsolutePath() + "/patHist.json");
             Log.i(TAG, "onPostExecute: " + pastMedicalHistory);
+            File config = new File(activity.getFilesDir().getAbsolutePath() + "/config.json");
+            Log.i(TAG, "onPostExecute: " + config);
             File base_dir = new File(activity.getFilesDir().getAbsolutePath(), HelperMethods.JSON_FOLDER_Update);
             base_dir.renameTo(engines_dir);
             File physExam = new File(engines_dir, "physExam.json");
@@ -141,6 +143,19 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
                 }
                 patHist.delete();
             }
+
+            File configfile = new File(engines_dir, "config.json");
+            if (configfile.exists()) {
+                Log.i(TAG, "onPostExecute: configfile");
+                config.delete();
+                try {
+                    copyFile(configfile, config);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                configfile.delete();
+            }
+
 
             return licenseKey;
         }
@@ -383,6 +398,10 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
                 }
                 case "patHis": {
                     file_name = "patHist.json";
+                    break;
+                }
+                case "config": {
+                    file_name = "config.json";
                     break;
                 }
                 default:

@@ -110,7 +110,7 @@
     <string name="identification_screen_picker_months">months</string>
 
     //Active Patients Screen
-    <string name="title_activity_active_patient">Active Patients Activity</string>
+    <string name="title_activity_active_patient">Active Patients</string>
 
     //Patient History Screen
     <string name="title_activity_get_patient_history">Patient History</string>

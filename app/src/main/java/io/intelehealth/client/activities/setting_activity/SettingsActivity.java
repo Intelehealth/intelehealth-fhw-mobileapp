@@ -7,6 +7,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.media.Ringtone;
@@ -152,6 +153,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(R.string.menu_option_settings);
         setupActionBar();
 
     }
@@ -263,7 +265,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         @Override
         public void onResume() {
+            Locale.getDefault();
             super.onResume();
+
         }
 
         @Override
@@ -302,17 +306,35 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         Preference lang_prefer;
 
         public void setLocale(String lang) {
+            if (lang.equalsIgnoreCase(""))
+                return;
             final Locale myLocale = new Locale(lang);
+            Locale.setDefault(myLocale);
+            saveLocale(lang);
             Resources res = getResources();
             DisplayMetrics dm = res.getDisplayMetrics();
             Configuration conf = res.getConfiguration();
             conf.locale = myLocale;
             res.updateConfiguration(conf, dm);
-           //Intent refresh = new Intent(this, HomeActivity.class);
-           //finish();
-           // startActivity(refresh);
+            //Intent refresh = new Intent(this, HomeActivity.class);
+            //finish();
+            // startActivity(refresh);
         }
 
+
+        public void loadLocale() {
+            String langPref = "Language";
+            SharedPreferences prefs = this.getActivity().getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
+            String language = prefs.getString(langPref, "");
+            setLocale(language);
+        }
+        public void saveLocale(String lang) {
+            String langPref = "Language";
+            SharedPreferences prefs = this.getActivity().getSharedPreferences("CommonPrefs",Activity.MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString(langPref, lang);
+            editor.commit();
+        }
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -344,6 +366,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                                             ? listPreference.getEntries()[index]
                                             : null);
                           setLocale(stringValue);
+                            loadLocale();
                             //Intent refresh = new Intent(this, HomeActivity.class);
                             return true;
                         }}
@@ -375,6 +398,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+    }
 
 
 

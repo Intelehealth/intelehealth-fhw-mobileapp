@@ -79,7 +79,7 @@ public class PatientUpdateService extends IntentService {
         patientId = intent.getIntExtra("patientID",-1);
         patientName = intent.getStringExtra("name");
 
-        Toast.makeText(this, getString(R.string.generic_update), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, getString(R.string.generic_update), Toast.LENGTH_SHORT).show();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(IntelehealthApplication.getAppContext());
         location_uuid = prefs.getString(SettingsActivity.KEY_PREF_LOCATION_UUID, null);
@@ -259,7 +259,7 @@ public class PatientUpdateService extends IntentService {
             if (responsePerson != null && responsePerson.getResponseCode() != 200) {
                 String newText = "Person not updated. Please check your connection.";
                 mBuilder.setContentText(newText).setNumber(++numMessages);
-                mBuilder.setSmallIcon(R.drawable.ic_cloud_upload_v);
+                mBuilder.setSmallIcon(R.drawable.ic_cloud_upload);
                 mNotifyManager.notify(mId, mBuilder.build());
                 Log.d(TAG, "Person update was unsuccessful");
                 return null;
@@ -269,7 +269,7 @@ public class PatientUpdateService extends IntentService {
             } else {
                 String newText = "Person updated successfully.";
                 mBuilder.setContentText(newText).setNumber(++numMessages);
-                mBuilder.setSmallIcon(R.drawable.ic_cloud_upload_v);
+                mBuilder.setSmallIcon(R.drawable.ic_cloud_upload);
                 mNotifyManager.notify(mId, mBuilder.build());
 
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("Profile");

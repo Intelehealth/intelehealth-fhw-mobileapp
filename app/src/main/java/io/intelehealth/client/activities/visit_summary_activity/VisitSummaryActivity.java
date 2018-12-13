@@ -81,6 +81,7 @@ import io.intelehealth.client.services.ClientService;
 import io.intelehealth.client.services.PrescriptionDownloadService;
 import io.intelehealth.client.services.UpdateVisitService;
 import io.intelehealth.client.utilities.ConceptId;
+import io.intelehealth.client.utilities.HelperMethods;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -204,6 +205,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private boolean isConnected = false;
     private Menu mymenu;
     MenuItem internetCheck = null;
+    MenuItem endVisit_click = null;
 
     private RecyclerView mAdditionalDocsRecyclerView;
     private RecyclerView.LayoutManager mAdditionalDocsLayoutManager;
@@ -211,10 +213,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private RecyclerView mPhysicalExamsRecyclerView;
     private RecyclerView.LayoutManager mPhysicalExamsLayoutManager;
 
-
+    public static String prescriptionHeader1;
+    public static String prescriptionHeader2;
     String additionalDocumentDir = "Additional Documents";
     String physicalExamDocumentDir = "Physical Exam";
-
     SharedPreferences mSharedPreference;
 
     @Override
@@ -229,8 +231,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
         isNetworkAvailable(this);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
         mCHWname = (TextView) findViewById(R.id.chw_details);
         mCHWname.setText(sharedPreferences.getString("chwname", "----"));
+        //Added Prescription Title from config.Json dynamically through sharedPreferences
+        prescriptionHeader1 = sharedPreferences.getString("prescriptionTitle1","");
+        prescriptionHeader2 = sharedPreferences.getString("prescriptionTitle2","");
 
         if (isPastVisit) menuItem.setVisible(false);
         return super.onCreateOptionsMenu(menu);
@@ -308,9 +314,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         }
 
-
-        String titleSequence = patientName + ": " + getTitle();
-        setTitle(titleSequence);
+        setTitle(R.string.title_activity_patient_summary);
+        setTitle( patientName + ": " + getTitle());
 
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         db = mDbHelper.getWritableDatabase();
@@ -1353,8 +1358,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
         Calendar c = Calendar.getInstance();
         System.out.println("Current time => " + c.getTime());
 
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-        String mDate = df.format(c.getTime());
+        String[] columnsToReturn = {"start_datetime"};
+        String visitIDorderBy = "start_datetime";
+        String visitIDSelection = "_id = ?";
+        String[] visitIDArgs = {visitID};
+        final Cursor visitIDCursor = db.query("visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
+        visitIDCursor.moveToLast();
+        String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("start_datetime"));
+        visitIDCursor.close();
+        String mDate= HelperMethods.SimpleDatetoLongDate(startDateTime);
 
         String mPatHist = patHistory.getValue();
         if (mPatHist == null) {
@@ -1371,6 +1383,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mTemp = temperature.getValue();
         mSPO2 = spO2.getValue();
         String mComplaint = complaint.getValue();
+
+        //Show only the headers of the complaints in the printed prescription
         String complaints[] = StringUtils.split(mComplaint, Node.bullet_arrow);
         mComplaint = "";
         String colon = ":";
@@ -1420,8 +1434,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         String doctor_web = stringToWeb(doctorName);
 
-        String heading = "ଚିକିତ୍ସା ସହାୟତା କେନ୍ଦ୍ର";
-        String heading2 = "Chikitsa Sahayta Kendra";
+        String heading = prescriptionHeader1;
+        String heading2 = prescriptionHeader2;
         String heading3 = "<br/>";
 
         String bp = mBP;
@@ -1445,37 +1459,35 @@ public class VisitSummaryActivity extends AppCompatActivity {
         // Generate an HTML document on the fly:
         String htmlDocument =
                 String.format("<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
-                                "<p id=\"heading_2\" style=\"font-size:11pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
-                                "<p id=\"heading_3\" style=\"font-size:11pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
-                                "<hr style=\"font-size:11pt;\">" + "<br/>" +
-                                "<p id=\"patient_name\" style=\"font-size:11pt; margin: 0px; padding: 0px;\">%s</p></b>" +
-                                "<p id=\"patient_details\" style=\"font-size:11pt; margin: 0px; padding: 0px;\">Age: %s | Son/Daughter/Wife of: %s | Occupation: %s </p>" +
-                                "<p id=\"address_and_contact\" style=\"font-size:11pt; margin: 0px; padding: 0px;\"><b>Address and Contact:</b> %s</p>" +
-                                "<b><p id=\"visit_details\" style=\"font-size:11pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p></b>" +
-                                "<b><p id=\"vitals_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
-                                "<p id=\"vitals\" style=\"font-size:11pt;margin:0px; padding: 0px;\">Height: %s | Weight: %s | BMI: %s | Blood Pressure: %s | Pulse: %s | Temperature: %s | SpO2: %s </p>" +
+                                "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                                "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                                "<hr style=\"font-size:12pt;\">" + "<br/>" +
+                                "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" +
+                                "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s | Son/Daughter/Wife of: %s </p>" +
+                                "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\"><b>Address and Contact:</b> %s</p>" +
+                                "<b><p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p></b><br><br>" +
+                                "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
+                                "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height: %s | Weight: %s | BMI: %s | Blood Pressure: %s | Pulse: %s | Temperature: %s | SpO2: %s </p>" +
                                 "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
                                 "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p>" +
                                 "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
                                 "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p>" +
-                                "<b><p id=\"complaints_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Chief Complaint(s)</p></b>" +
-                                para_open + "%s" + para_close +
-                                "<b><p id=\"diagnosis_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b>" +
+                                "<b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Chief Complaint(s)</p></b>" +
+                                para_open + "%s" + para_close +"<br><br>"+
+                                "<b><p id=\"diagnosis_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b>" +
                                 "%s" +
-                                "<b><p id=\"rx_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Prescription</p></b>" +
+                                "<b><p id=\"rx_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication</p></b>" +
                                 "%s" +
-                                "<b><p id=\"tests_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Tests To Be Performed</p></b>" +
+                                "<b><p id=\"tests_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Tests To Be Performed</p></b>" +
                                 "%s" +
-                                "<b><p id=\"advice_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b>" +
+                                "<b><p id=\"advice_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b>" +
                                 "%s" +
-                                "<b><p id=\"comments_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Doctor's Note</p></b>" +
+                                "<b><p id=\"comments_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Doctor's Note</p></b>" +
                                 "%s" +
-                                "<b><p id=\"follow_up_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b>" +
-                                "%s" +
-                                "<b><p id=\"doctor_name_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Doctor's Name</p></b>" +
+                                "<b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b>" +
                                 "%s"
-                        ,heading, heading2, heading3, mPatientName, age, mSdw, mOccupation, address, mPatientOpenMRSID, mDate, mHeight, mWeight,
-                        mBMI, bp, mPulse, mTemp, mSPO2, pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, comments_web, followUp_web, doctor_web);
+                        ,heading, heading2, heading3, mPatientName, age,mGender, mSdw, address, mPatientOpenMRSID, mDate, mHeight, mWeight,
+                        mBMI, bp, mPulse, mTemp, mSPO2,pat_hist,fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, comments_web, followUp_web, doctor_web);
         webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
 
         // Keep a reference to WebView object until you pass the PrintDocumentAdapter

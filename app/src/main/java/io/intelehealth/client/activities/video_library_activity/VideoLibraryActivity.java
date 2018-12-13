@@ -30,6 +30,7 @@ public class VideoLibraryActivity extends AppCompatActivity implements VideoLibr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_library);
+        setTitle(R.string.title_activity_video_library);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);

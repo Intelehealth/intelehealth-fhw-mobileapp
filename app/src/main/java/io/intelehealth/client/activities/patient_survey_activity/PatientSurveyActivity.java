@@ -69,7 +69,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_survey);
-
+        setTitle(R.string.title_activity_login);
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         db = mDbHelper.getWritableDatabase();
         context = getApplicationContext();
@@ -222,6 +222,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
                     startService(serviceIntent);
                     Intent intent = new Intent(PatientSurveyActivity.this, HomeActivity.class);
                     startActivity(intent);
+                   //finish();
                     break;
                 }
                 case ClientService.STATUS_SYNC_IN_PROGRESS: {
@@ -243,6 +244,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
             editor.commit();
             Intent intent = new Intent(PatientSurveyActivity.this, HomeActivity.class);
             startActivity(intent);
+           // finish();
         }
         c.close();
     }
