@@ -398,6 +398,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+    }
 
 
 
