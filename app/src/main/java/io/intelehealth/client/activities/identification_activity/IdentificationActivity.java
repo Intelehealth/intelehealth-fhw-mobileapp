@@ -137,8 +137,7 @@ public class IdentificationActivity extends AppCompatActivity {
     SharedPreferences.Editor e;
     boolean hasLicense = false;
     String mFileName="config.json";
-    public static String prescription1;
-    public static String prescription2;
+
     // Boolean isDateChanged = false; //prajw
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -307,20 +306,12 @@ public class IdentificationActivity extends AppCompatActivity {
                 economicLayout.setVisibility(View.GONE);
             }
             country1 = obj.getString("mCountry");
-            prescription1=obj.getString("presciptionHeader1");
-            prescription2=obj.getString("presciptionHeader2");
+
         } catch (JSONException e) {
             e.printStackTrace();
             }
 
-        //Added prescription Title from config file to shared preferences
-        String sharePref1 = "prescriptionTitle1";
-        String sharePref2 = "prescriptionTitle2";
-        e = sharedPreferences.edit();
-        e.putString(sharePref1,prescription1);
-        e.putString(sharePref2,prescription2);
-        e.commit();
-
+   
         //TODO: Change this back for other deployments
        // mMiddleName.setVisibility(View.GONE);  //prajwal commented
        // mAddress1.setVisibility(View.GONE);

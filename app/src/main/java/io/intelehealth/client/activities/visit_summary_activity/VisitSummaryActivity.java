@@ -52,6 +52,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.text.ParseException;
@@ -218,6 +220,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String additionalDocumentDir = "Additional Documents";
     String physicalExamDocumentDir = "Physical Exam";
     SharedPreferences mSharedPreference;
+    boolean hasLicense = false;
+    String mFileName="config.json";
+    public static String prescription1;
+    public static String prescription2;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -314,6 +320,27 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         }
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (sharedPreferences.contains("licensekey"))
+            hasLicense = true;
+
+        //Check for license key and load the correct config file
+        try {
+            JSONObject obj = null;
+            if (hasLicense) {
+                obj = new JSONObject(HelperMethods.readFileRoot(mFileName, this)); //Load the config file
+
+            }else {
+                obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, mFileName)));
+            }
+                prescription1=obj.getString("presciptionHeader1");
+
+                prescription2=obj.getString("presciptionHeader2");
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         setTitle(R.string.title_activity_patient_summary);
         setTitle( patientName + ": " + getTitle());
 
@@ -637,7 +664,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             patHistView.setText(Html.fromHtml(patHistory.getValue()));
         if (phyExam.getValue() != null)
             physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
         SharedPreferences.Editor e = sharedPreferences.edit();
 
 
@@ -1434,8 +1461,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         String doctor_web = stringToWeb(doctorName);
 
-        String heading = prescriptionHeader1;
-        String heading2 = prescriptionHeader2;
+        String heading = prescription1;
+        String heading2 = prescription2;
         String heading3 = "<br/>";
 
         String bp = mBP;
