@@ -9,8 +9,8 @@ android {
         applicationId "io.intelehealth.client"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 15
-        versionName "1.4"
+        versionCode 16
+        versionName "1.4.1"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -55,6 +55,7 @@ dependencies {
     implementation "com.firebase:firebase-jobdispatcher:$rootProject.jobDispatcherVersion"
 
     implementation "com.github.hotchemi:permissionsdispatcher:$rootProject.permissionDispatcherVersion"
+    implementation 'com.google.firebase:firebase-crash:16.2.1'
     annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:$rootProject.permissionDispatcherVersion"
 
     implementation "com.github.google:cameraview:$rootProject.cameraviewVersion"
