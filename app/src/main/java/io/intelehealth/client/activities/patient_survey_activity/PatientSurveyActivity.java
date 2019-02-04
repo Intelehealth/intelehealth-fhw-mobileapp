@@ -7,12 +7,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -44,7 +46,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
     ImageButton mScaleButton4;
     ImageButton mScaleButton5;
     EditText mComments;
-    Button mSkip;
+    TextView mSkip;
     Button mSubmit;
 
     String rating;
@@ -80,8 +82,11 @@ public class PatientSurveyActivity extends AppCompatActivity {
         mScaleButton4 = findViewById(R.id.button_scale_4);
         mScaleButton5 = findViewById(R.id.button_scale_5);
         mComments = findViewById(R.id.editText_exit_survey);
-        mSkip = findViewById(R.id.button_survey_skip);
+        mSkip = findViewById(R.id.txt_survey_skip);
         mSubmit = findViewById(R.id.button_survey_submit);
+
+        String htmlString = "<u>Skip</u>";
+        mSkip.setText(Html.fromHtml(htmlString));
 
         View.OnClickListener listener = new View.OnClickListener() {
             @Override

@@ -126,14 +126,14 @@
                     android:text="@string/visit_summary_vitals_heading"
                     android:textSize="@dimen/card_title_text_size" />
 
-                <ImageButton
-                    android:id="@+id/imagebutton_edit_vitals"
+                <Button
+                    android:id="@+id/button_edit_vitals"
                     android:layout_width="@dimen/edit_icon_width"
                     android:layout_height="@dimen/edit_icon_height"
                     android:layout_alignParentEnd="true"
-                    android:background="@null"
                     android:padding="@dimen/padding_card_action"
-                    app:srcCompat="@drawable/edit_icon" />
+                    android:background="@drawable/edit_button_icon"
+                    />
 
                 <TableLayout
                     android:layout_width="match_parent"
@@ -307,14 +307,15 @@
                     android:text="@string/visit_summary_complaint"
                     android:textSize="@dimen/card_title_text_size" />
 
-                <ImageButton
-                    android:id="@+id/imagebutton_edit_complaint"
+                <Button
+                    android:id="@+id/button_edit_complaint"
                     android:layout_width="@dimen/edit_icon_width"
                     android:layout_height="@dimen/edit_icon_height"
-                    android:layout_alignRight="@id/textView_heading_complaint"
-                    android:background="@null"
+                    android:layout_alignParentEnd="true"
                     android:padding="@dimen/padding_card_action"
-                    app:srcCompat="@drawable/edit_icon" />
+                    android:background="@drawable/edit_button_icon"
+                    />
+
 
                 <TextView
                     android:id="@+id/textView_content_complaint"
@@ -351,14 +352,15 @@
                     android:text="@string/visit_summary_on_examination"
                     android:textSize="@dimen/card_title_text_size" />
 
-                <ImageButton
-                    android:id="@+id/imagebutton_edit_physexam"
+                <Button
+                    android:id="@+id/button_edit_physexam"
                     android:layout_width="@dimen/edit_icon_width"
                     android:layout_height="@dimen/edit_icon_height"
-                    android:layout_alignRight="@id/textView_heading_physexam"
-                    android:background="@null"
+                    android:layout_alignParentEnd="true"
                     android:padding="@dimen/padding_card_action"
-                    app:srcCompat="@drawable/edit_icon" />
+                    android:background="@drawable/edit_button_icon"
+                    />
+
 
                 <TextView
                     android:id="@+id/textView_content_physexam"
@@ -402,14 +404,15 @@
                     android:text="@string/visit_summary_medical_history"
                     android:textSize="@dimen/card_title_text_size" />
 
-                <ImageButton
-                    android:id="@+id/imagebutton_edit_pathist"
+                <Button
+                    android:id="@+id/button_edit_pathist"
                     android:layout_width="@dimen/edit_icon_width"
-                    android:layout_height="@dimen/edit_icon_height"
-                    android:layout_alignRight="@id/textView_heading_pathist"
-                    android:background="@null"
+                    android:layout_height="@dimen/edit_icon_width"
+                    android:layout_alignParentEnd="true"
                     android:padding="@dimen/padding_card_action"
-                    app:srcCompat="@drawable/edit_icon" />
+                    android:background="@drawable/edit_button_icon"
+                    />
+
 
                 <TextView
                     android:id="@+id/textView_content_pathist"
@@ -447,15 +450,15 @@
                     android:text="@string/visit_summary_family_history"
                     android:textSize="@dimen/card_title_text_size" />
 
-                <ImageButton
-                    android:id="@+id/imagebutton_edit_famhist"
-                    android:layout_width="@dimen/edit_icon_width"
-                    android:layout_height="@dimen/edit_icon_height"
-                    android:layout_alignRight="@id/textView_heading_famhist"
-                    android:background="@null"
-                    android:padding="@dimen/padding_card_action"
-                    app:srcCompat="@drawable/edit_icon" />
 
+                <Button
+                    android:id="@+id/button_edit_famhist"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:padding="@dimen/padding_card_action"
+                    android:background="@drawable/edit_button_icon"
+                    />
                 <TextView
                     android:id="@+id/textView_content_famhist"
                     android:layout_width="match_parent"
@@ -491,14 +494,14 @@
                     android:text="Additional Documents"
                     android:textSize="@dimen/card_title_text_size" />
 
-                <ImageButton
-                    android:id="@+id/imagebutton_edit_additional_document"
+                <Button
+                    android:id="@+id/button_edit_additional_document"
                     android:layout_width="@dimen/edit_icon_width"
                     android:layout_height="@dimen/edit_icon_height"
-                    android:layout_alignRight="@id/textView_additional_document_images"
-                    android:background="@null"
+                    android:layout_alignParentEnd="true"
                     android:padding="@dimen/padding_card_action"
-                    app:srcCompat="@drawable/edit_icon" />
+                    android:background="@drawable/edit_button_icon"
+                    />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recy_additional_documents"
@@ -962,7 +965,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Upload to doctor"
-            android:background="@color/gray"
+            android:background="@color/colorPrimary"
             android:textColor="@android:color/white"
             android:layout_marginBottom="5dp"
             android:paddingLeft="5dp"
@@ -976,7 +979,7 @@
             android:id="@+id/button_download"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/divider"
+            android:background="#8163C7"
             android:text="@string/visit_summary_button_download"
             android:textColor="@android:color/white"
             android:layout_marginBottom="5dp"

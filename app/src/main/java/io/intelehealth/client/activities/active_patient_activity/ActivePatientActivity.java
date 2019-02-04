@@ -166,7 +166,7 @@ public class ActivePatientActivity extends AppCompatActivity {
         }
         else{
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setMessage("Unable to end "+failedUploads +
+            alertDialogBuilder.setMessage("Unable to end"+failedUploads +
                     " visits.Please upload visit before attempting to end the visit.");
             alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                 @Override

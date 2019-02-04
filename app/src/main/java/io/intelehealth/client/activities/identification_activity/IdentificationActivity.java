@@ -25,6 +25,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -91,6 +92,7 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mAddress2;
     AutoCompleteTextView mCity;
     EditText mPostal;
+    EditText mHouseHold;
     RadioButton mGenderM;
     RadioButton mGenderF;
     String mGender;
@@ -109,6 +111,7 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText casteText;
     EditText economicText;
     EditText educationText;
+    EditText mVillageText;
     TextInputLayout casteLayout;
     TextInputLayout economicLayout;
     TextInputLayout educationLayout;
@@ -175,6 +178,7 @@ public class IdentificationActivity extends AppCompatActivity {
         stateText = (EditText) findViewById(R.id.identification_state);
         mState = (Spinner) findViewById(R.id.spinner_state);
         mPostal = (EditText) findViewById(R.id.identification_postal_code);
+        mHouseHold = (EditText) findViewById(R.id.identification_house_hold);
         countryText = (EditText) findViewById(R.id.identification_country);
         mCountry = (Spinner) findViewById(R.id.spinner_country);
         mGenderM = (RadioButton) findViewById(R.id.identification_gender_male);
@@ -187,7 +191,7 @@ public class IdentificationActivity extends AppCompatActivity {
         casteText = (EditText) findViewById(R.id.identification_caste);
         educationText = (EditText) findViewById(R.id.identification_education);
         economicText = (EditText) findViewById(R.id.identification_econiomic_status);
-
+        mVillageText = (EditText) findViewById(R.id.identification_city);
         casteLayout=(TextInputLayout)findViewById(R.id.identification_txtlcaste);
         economicLayout=(TextInputLayout)findViewById(R.id.identification_txtleconomic);
         educationLayout=(TextInputLayout)findViewById(R.id.identification_txtleducation);
@@ -204,9 +208,15 @@ public class IdentificationActivity extends AppCompatActivity {
         if (hasLicense) {
             obj = new JSONObject(HelperMethods.readFileRoot(mFileName, this)); //Load the config file
 
+            mPostal.setFilters(new InputFilter[]{new InputFilter.LengthFilter(4)});
+            mPhoneNum.setFilters(new InputFilter[]{new InputFilter.LengthFilter(11)});
+            mVillageText.setHint(getResources().getString(R.string.identification_screen_city_vso));
+            mAddress1.setHint(getResources().getString(R.string.identification_screen_address_vso));
+
         }else {
             obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, mFileName)));
-
+            mVillageText.setHint(getResources().getString(R.string.identification_screen_prompt_city));
+            mAddress1.setHint(getResources().getString(R.string.identification_screen_prompt_address));
         }
 
         //Display the fields on the Add Patient screen as per the config file
@@ -305,6 +315,11 @@ public class IdentificationActivity extends AppCompatActivity {
             } else {
                 economicLayout.setVisibility(View.GONE);
             }
+            if (obj.getBoolean("mHouseHold")) {
+                mHouseHold.setVisibility(View.VISIBLE);
+            } else {
+                mHouseHold.setVisibility(View.GONE);
+            }
             country1 = obj.getString("mCountry");
 
         } catch (JSONException e) {
@@ -337,7 +352,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mPostal.setText(patient1.getPostalCode());
         mRelationship.setText(patient1.getSdw());
         mOccupation.setText(patient1.getOccupation());
-
+        mHouseHold.setText(patient1.getAddress3());
 
         if (patient1.getPatientPhoto() != null && !patient1.getPatientPhoto().trim().isEmpty())
             mImageView.setImageBitmap(BitmapFactory.decodeFile(patient1.getPatientPhoto()));
@@ -361,12 +376,16 @@ public class IdentificationActivity extends AppCompatActivity {
         countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mEconomicStatus.setAdapter(economicStatusAdapter);
 
+
+
         String educationLanguage = "education_" + Locale.getDefault().getLanguage();
         int educations = res.getIdentifier(educationLanguage, "array", getApplicationContext().getPackageName());
-        ArrayAdapter<CharSequence> educationAdapter = ArrayAdapter.createFromResource(this,
-                educations, android.R.layout.simple_spinner_item);
-        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mEducation.setAdapter(educationAdapter);
+            ArrayAdapter<CharSequence> educationAdapter = ArrayAdapter.createFromResource(this,
+                    educations, android.R.layout.simple_spinner_item);
+            countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mEducation.setAdapter(educationAdapter);
+
+
 
         // generate patientid only if there is no intent for Identification activity
 
@@ -692,7 +711,7 @@ public class IdentificationActivity extends AppCompatActivity {
         String[] patientColumns = {"first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw", "occupation", "patient_photo",
-                "economic_status", "education_status", "caste"};
+                "economic_status", "education_status", "caste","address3"};
         Cursor idCursor = db.query("patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
@@ -714,6 +733,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patient1.setEconomic_status(idCursor.getString(idCursor.getColumnIndexOrThrow("economic_status")));
                 patient1.setEducation_level(idCursor.getString(idCursor.getColumnIndexOrThrow("education_status")));
                 patient1.setCaste(idCursor.getString(idCursor.getColumnIndexOrThrow("caste")));
+                patient1.setAddress3(idCursor.getString(idCursor.getColumnIndexOrThrow("address3")));
 
             } while (idCursor.moveToNext());
             idCursor.close();
@@ -810,7 +830,7 @@ public class IdentificationActivity extends AppCompatActivity {
         values.add(mPostal);
         values.add(mRelationship);
         values.add(mOccupation);
-
+        values.add(mHouseHold);
      /* for (int i = 0; i < values.size(); i++) {
             EditText et = values.get(i);
             if (TextUtils.isEmpty(et.getText().toString()) && et.getTag() == null) {
@@ -1002,6 +1022,13 @@ public class IdentificationActivity extends AppCompatActivity {
                     patient.setPostalCode(mPostal.getText().toString());
                     patient1.setPostalCode(mPostal.getText().toString());
                 }
+                if (TextUtils.isEmpty(mHouseHold.getText().toString())) {
+                    patient.setAddress3("");
+                    patient1.setAddress3("");
+                } else {
+                    patient.setAddress3(mHouseHold.getText().toString());
+                    patient1.setAddress3(mHouseHold.getText().toString());
+                }
                 if (TextUtils.isEmpty(mRelationship.getText().toString())) {
                     patient.setSdw("");
                     patient1.setSdw("");
@@ -1111,8 +1138,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientEntries.put("economic_status", patient.getEconomic_status());
             patientEntries.put("education_status", patient.getEducation_level());
             patientEntries.put("caste", patient.getCaste());
-
-
+            patientEntries.put("address3", patient.getAddress3());
 
 
             //TODO: move identifier1 and id2 from patient table to patient_attribute table
@@ -1189,6 +1215,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientEntries1.put("economic_status", patient1.getEconomic_status());
             patientEntries1.put("education_status", patient1.getEducation_level());
             patientEntries1.put("caste", patient1.getCaste());
+            patientEntries1.put("address3", patient1.getAddress3());
             if (mCurrentPhotoPath != null) {
                 if (patient1.getPatientPhoto() != null && !patient1.getPatientPhoto().trim().isEmpty()) {
                     File file = new File(patient1.getPatientPhoto());
@@ -1204,7 +1231,7 @@ public class IdentificationActivity extends AppCompatActivity {
             gatherEntries1();
             db1.update("patient", patientEntries1, "_id=?", new String[]{String.valueOf(patient1.getId())});
 
-            db1.close();
+                db1.close();
 
             return null;
         }

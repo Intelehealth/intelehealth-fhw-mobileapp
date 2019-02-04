@@ -148,12 +148,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String additionalReturned = "";
     String followUpDate = "";
 
-    ImageButton editVitals;
-    ImageButton editComplaint;
-    ImageButton editPhysical;
-    ImageButton editFamHist;
-    ImageButton editMedHist;
-    ImageButton editAddDocs;
+    Button editVitals;
+    Button editComplaint;
+    Button editPhysical;
+    Button editFamHist;
+    Button editMedHist;
+    Button editAddDocs;
 
     TextView nameView;
     TextView idView;
@@ -240,9 +240,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         mCHWname = (TextView) findViewById(R.id.chw_details);
         mCHWname.setText(sharedPreferences.getString("chwname", "----"));
-        //Added Prescription Title from config.Json dynamically through sharedPreferences
-        prescriptionHeader1 = sharedPreferences.getString("prescriptionTitle1","");
-        prescriptionHeader2 = sharedPreferences.getString("prescriptionTitle2","");
 
         if (isPastVisit) menuItem.setVisible(false);
         return super.onCreateOptionsMenu(menu);
@@ -398,12 +395,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        editVitals = (ImageButton) findViewById(R.id.imagebutton_edit_vitals);
-        editComplaint = (ImageButton) findViewById(R.id.imagebutton_edit_complaint);
-        editPhysical = (ImageButton) findViewById(R.id.imagebutton_edit_physexam);
-        editFamHist = (ImageButton) findViewById(R.id.imagebutton_edit_famhist);
-        editMedHist = (ImageButton) findViewById(R.id.imagebutton_edit_pathist);
-        editAddDocs = (ImageButton) findViewById(R.id.imagebutton_edit_additional_document);
+        editVitals = (Button) findViewById(R.id.button_edit_vitals);
+        editComplaint = (Button) findViewById(R.id.button_edit_complaint);
+        editPhysical = (Button) findViewById(R.id.button_edit_physexam);
+        editFamHist = (Button) findViewById(R.id.button_edit_famhist);
+        editMedHist = (Button) findViewById(R.id.button_edit_pathist);
+        editAddDocs = (Button) findViewById(R.id.button_edit_additional_document);
         uploadButton = (Button) findViewById(R.id.button_upload);
         downloadButton = (Button) findViewById(R.id.button_download);
 

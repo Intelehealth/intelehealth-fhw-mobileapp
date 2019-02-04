@@ -115,21 +115,42 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/button_survey_skip"
-                style="?android:textAppearanceSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/exit_survey_skip"
-                android:textStyle="bold" />
-            <Button
                 android:id="@+id/button_survey_submit"
-                style="?android:textAppearanceSmall"
+                android:textColor="#ffffff"
+                android:background="@drawable/button_bg_rounded_corner_survey"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:textStyle="bold"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
                 android:text="@string/exit_survey_submit"
+                 />
+
+
+            <TextView
+                android:id="@+id/txt_survey_skip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingVertical="5dp"
+                android:layout_gravity="right"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginRight="10dp"
                 android:textStyle="bold" />
+
+           <!-- <Button
+                android:id="@+id/button_survey_skip"
+                android:background="@drawable/button_bg_rounded_corner_survey"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textStyle="bold"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:text="@string/exit_survey_skip"
+               />-->
+
 
 
         </LinearLayout>

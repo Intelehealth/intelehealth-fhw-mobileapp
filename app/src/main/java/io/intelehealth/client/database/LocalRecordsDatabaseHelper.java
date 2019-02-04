@@ -13,7 +13,7 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "localRecords.db";
-    public static final String CREATE_PATIENT = "CREATE TABLE IF NOT EXISTS patient(" +
+    public static  String CREATE_PATIENT = "CREATE TABLE IF NOT EXISTS patient(" +
             "_id integer PRIMARY KEY," +
             "openmrs_uuid TEXT," +
             "openmrs_id TEXT," +
@@ -34,7 +34,8 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             "patient_photo TEXT,"+
             "economic_status TEXT,"+
             "education_status TEXT,"+
-            "caste TEXT"+
+            "caste TEXT,"+
+            "address3 TEXT" +
             ")";
     public static final String CREATE_ATTRIB = "CREATE TABLE IF NOT EXISTS patient_attribute (" +
             "_id integer PRIMARY KEY," +
@@ -159,6 +160,63 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+        if (newVersion > oldVersion) {
+            String CREATE_PATIENT1 = "CREATE TABLE IF NOT EXISTS patient(" +
+                    "_id integer PRIMARY KEY," +
+                    "openmrs_uuid TEXT," +
+                    "openmrs_id TEXT," +
+                    "first_name TEXT," +
+                    "middle_name TEXT," +
+                    "last_name TEXT," +
+                    "date_of_birth TEXT," +
+                    "phone_number TEXT," +
+                    "address1 TEXT," +
+                    "address2 TEXT," +
+                    "city_village TEXT," +
+                    "state_province TEXT," +
+                    "postal_code TEXT," +
+                    "country TEXT," +
+                    "gender TEXT," +
+                    "sdw TEXT," + //Temporary
+                    "occupation TEXT," + //Temporary
+                    "patient_photo TEXT," +
+                    "economic_status TEXT," +
+                    "education_status TEXT," +
+                    "caste TEXT" +
+                    ")";
+
+            //Temporary
+            //Temporary
+            db.execSQL(String.format("INSERT INTO %s SELECT _id integer PRIMARY KEY,openmrs_uuid TEXT,openmrs_id TEXT,first_name TEXT,middle_name TEXT,last_name TEXT,date_of_birth TEXT,phone_number TEXT,address1 TEXT,address2 TEXT,city_village TEXT,state_province TEXT,postal_code TEXT,country TEXT,gender TEXT,sdw TEXT,occupation TEXT,patient_photo TEXT,economic_status TEXT,education_status TEXT,caste TEXT, FROM %s", CREATE_PATIENT1, CREATE_PATIENT));
+            db.execSQL(String.format("DROP TABLE %s", CREATE_PATIENT));
+            CREATE_PATIENT = "CREATE TABLE IF NOT EXISTS patient(" +
+                    "_id integer PRIMARY KEY," +
+                    "openmrs_uuid TEXT," +
+                    "openmrs_id TEXT," +
+                    "first_name TEXT," +
+                    "middle_name TEXT," +
+                    "last_name TEXT," +
+                    "date_of_birth TEXT," +
+                    "phone_number TEXT," +
+                    "address1 TEXT," +
+                    "address2 TEXT," +
+                    "city_village TEXT," +
+                    "state_province TEXT," +
+                    "postal_code TEXT," +
+                    "country TEXT," +
+                    "gender TEXT," +
+                    "sdw TEXT," + //Temporary
+                    "occupation TEXT," + //Temporary
+                    "patient_photo TEXT," +
+                    "economic_status TEXT," +
+                    "education_status TEXT," +
+                    "caste TEXT" +
+                    ")";
+            db.execSQL(CREATE_PATIENT);
+            db.execSQL(String.format("INSERT INTO %s SELECT _id integer PRIMARY KEY,openmrs_uuid TEXT,openmrs_id TEXT,first_name TEXT,middle_name TEXT,last_name TEXT,date_of_birth TEXT,phone_number TEXT,address1 TEXT,address2 TEXT,city_village TEXT,state_province TEXT,postal_code TEXT,country TEXT,gender TEXT,sdw TEXT,occupation TEXT,patient_photo TEXT,economic_status TEXT,education_status TEXT,caste TEXT,null, FROM %s", CREATE_PATIENT1));
+            db.execSQL(String.format("DROP TABLE %s", CREATE_PATIENT1));
+        }
         // TODO: discuss upgrade policy
     }
 

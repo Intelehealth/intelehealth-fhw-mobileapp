@@ -26,6 +26,7 @@ public class Patient {
     private String economic_status;
     private String education_level;
     private String caste;
+    private String address3;
 
 
     public Integer getId() {
@@ -119,10 +120,17 @@ public class Patient {
     public String getPostalCode() {
         return postal_code;
     }
-
     public void setPostalCode(String postal_code) {
         this.postal_code = postal_code;
     }
+
+    public String getAddress3() {
+        return address3;
+    }
+    public void setAddress3(String address3) {
+        this.address3 = address3;
+    }
+
 
     public String getCountry() {
         return country;

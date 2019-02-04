@@ -61,6 +61,7 @@
                             android:drawableLeft="@drawable/person_icon"
                             android:drawableStart="@drawable/person_icon"
                             android:drawablePadding="10dp"
+                            android:maxLength="15"
                             />
 
                     </android.support.design.widget.TextInputLayout>
@@ -84,6 +85,7 @@
                             android:drawableLeft="@drawable/person_icon"
                             android:drawableStart="@drawable/person_icon"
                             android:drawablePadding="10dp"
+                            android:maxLength="15"
                             />
 
                     </android.support.design.widget.TextInputLayout>
@@ -107,6 +109,7 @@
                             android:drawableLeft="@drawable/person_icon"
                             android:drawableStart="@drawable/person_icon"
                             android:drawablePadding="10dp"
+                            android:maxLength="15"
                             />
 
                     </android.support.design.widget.TextInputLayout>
@@ -351,13 +354,14 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:freezesText="true"
-                    android:hint="@string/identification_screen_prompt_city"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textCapWords"
                     android:maxLines="1"
                     android:drawableLeft="@drawable/home_icon"
                     android:drawableStart="@drawable/home_icon"
-                    android:drawablePadding="10dp"/>
+                    android:drawablePadding="10dp"
+                    android:maxLength="100"
+                    />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -371,12 +375,13 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:freezesText="true"
-                    android:hint="@string/identification_screen_prompt_address"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textCapWords"
                     android:maxLines="2"
                     android:singleLine="false"
-                    android:tag="@string/tag_optional" />
+                    android:tag="@string/tag_optional"
+                    android:maxLength="100"
+                    />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -394,7 +399,9 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="textCapWords"
                     android:maxLines="2"
-                    android:tag="@string/tag_optional" />
+                    android:tag="@string/tag_optional"
+                    android:maxLength="100"
+                    />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -412,10 +419,30 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="number"
                     android:maxLines="1"
-                    android:tag="@string/tag_optional" />
+                    android:tag="@string/tag_optional"
+                    android:maxLength="6"/>
 
             </android.support.design.widget.TextInputLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/identification_house_hold"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:freezesText="true"
+                    android:hint="@string/identification_screen_prompt_household_no"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:maxLength="18"
+                    android:tag="@string/tag_optional"
+                    />
+
+            </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -431,7 +458,9 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="textCapWords"
                     android:maxLines="1"
-                    android:tag="@string/tag_optional" />
+                    android:tag="@string/tag_optional"
+                    android:maxLength="50"
+                    />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -452,7 +481,8 @@
                     android:drawableLeft="@drawable/occupation_icon"
                     android:drawableStart="@drawable/occupation_icon"
                     android:drawablePadding="10dp"
-                    android:tag="@string/tag_optional" />
+                    android:tag="@string/tag_optional"
+                    android:maxLength="30"/>
 
             </android.support.design.widget.TextInputLayout>
 

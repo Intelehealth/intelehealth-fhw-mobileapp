@@ -245,7 +245,7 @@ public class ClientService extends IntentService {
         patient.setStateProvince(patientCursor.getString(9));
         patient.setCountry(patientCursor.getString(10));
         patient.setGender(patientCursor.getString(11));
-
+        patient.setAddress3(patientCursor.getString(12));
         patientCursor.close();
 
         String json = gson.toJson(patient);
@@ -431,9 +431,9 @@ public class ClientService extends IntentService {
 
         String table = "patient";
         String[] columnsToReturn = {"first_name", "middle_name", "last_name",
-                "date_of_birth", "address1", "address2", "city_village", "state_province", "country",
+                "date_of_birth", "address1", "address2","city_village", "state_province", "country",
                 "postal_code", "phone_number", "gender", "sdw", "occupation", "patient_photo", "economic_status",
-                "education_status", "caste"};
+                "education_status", "caste","address3"};
         final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
 
         if (idCursor.moveToFirst()) {
@@ -456,6 +456,7 @@ public class ClientService extends IntentService {
                 patient.setEconomic_status(idCursor.getString(idCursor.getColumnIndexOrThrow("economic_status")));
                 patient.setEducation_level(idCursor.getString(idCursor.getColumnIndexOrThrow("education_status")));
                 patient.setCaste(idCursor.getString(idCursor.getColumnIndexOrThrow("caste")));
+                patient.setAddress3(idCursor.getString(idCursor.getColumnIndexOrThrow("address3")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -487,7 +488,8 @@ public class ClientService extends IntentService {
                                 "\"cityVillage\":\"%s\"," +
                                 "\"stateProvince\":\"%s\"," +
                                 "\"country\":\"%s\"," +
-                                "\"postalCode\":\"%s\"}]}",
+                                "\"postalCode\":\"%s\"," +
+                                "\"address3\":\"%s\"}]}",
                         patient.getGender(),
                         patient.getFirstName(),
                         patient.getMiddleName(),
@@ -510,7 +512,8 @@ public class ClientService extends IntentService {
                         patient.getCityVillage(),
                         patient.getStateProvince(),
                         patient.getCountry(),
-                        patient.getPostalCode());
+                        patient.getPostalCode(),
+                        patient.getAddress3());
 
         Log.d(TAG, "Person String: " + personString);
         WebResponse responsePerson;

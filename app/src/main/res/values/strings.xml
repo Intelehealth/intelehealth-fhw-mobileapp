@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Intelehealth</string>
+    <string name="app_name" translatable="false">Intelehealth</string>
 
     //Generic
     <string name="generic_the_flipping_word_next">Next</string>
@@ -89,12 +89,15 @@
     <string name="identification_screen_prompt_birthday">Date of Birth*</string>
     <string name="identification_screen_prompt_age">Age*</string>
     <string name="identification_screen_prompt_city">Village/Town/City *</string>
+    <string name="identification_screen_city_vso">Barangay</string>
+    <string name="identification_screen_address_vso">Purok/Village</string>
     <string name="identification_screen_prompt_state">State *</string>
     <string name="identification_screen_prompt_caste">Caste</string>
     <string name="identification_screen_prompt_economic_status">Economic Status</string>
     <string name="identification_screen_prompt_education">Education Level</string>
     <string name="identification_screen_prompt_country">Country *</string>
     <string name="identification_screen_prompt_postal_code">Postal Code</string>
+    <string name="identification_screen_prompt_household_no">House Hold Number</string>
     <string name="identification_screen_prompt_relationship">Son/Daughter/Wife of</string>
     <string name="identification_screen_prompt_occupation">Occupation</string>
     <string name="identification_screen_snack_patient_created">Patient created! Uploading to server.</string>
@@ -175,7 +178,7 @@
     <string name="visit_summary_bp">BP</string>
     <string name="visit_summary_pulse">Pulse</string>
     <string name="visit_summary_previous_reports">Previous Reports</string>
-    <string name="visit_summary_medical_history">Medical History</string>
+    <string name="visit_summary_medical_history" translatable="false">Medical History</string>
     <string name="visit_summary_family_history">Family History</string>
     <string name="visit_summary_on_examination">On Examination</string>
     <string name="visit_summary_complaint">C/O</string>
@@ -422,5 +425,6 @@
     <string name="user_login_check_success">Login Successful!</string>
     <string name="user_login_error">Another user is logged into this location. Please contact admin</string>
     <string name="user_server_unreachable">Device Offline. Cannot check server for login verification</string>
+    <string name="string_no_hist">No history of illness</string>
 
 </resources>
