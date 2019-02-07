@@ -64,9 +64,9 @@ public class VitalsActivity extends AppCompatActivity {
     String maxbpdys = "150";
     String minbpdys = "30";
     String maxpulse = "200";
-    String minpulse = "30";
-    String maxte = "120";
-    String minte = "80";
+    String minpulse = "26";
+    String maxte = "47";
+    String minte = "26";
     String maxspo2 = "100";
     String minspo2 = "1";
 

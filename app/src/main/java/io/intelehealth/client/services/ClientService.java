@@ -908,10 +908,10 @@ public class ClientService extends IntentService {
         //Temperature
         if (temperature.getValue() != null && !temperature.getValue().trim().isEmpty()) {
             Double fTemp = Double.parseDouble(temperature.getValue());
-            Double cTemp = ((fTemp - 32) * 5 / 9);
-            Log.i(TAG, "uploadEncounterVitals: " + cTemp + "//" + fTemp);
+//            Double cTemp = ((fTemp - 32) * 5 / 9);
+            Log.i(TAG, "uploadEncounterVitals: " + fTemp + "//" + fTemp);
             formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.TEMPERATURE + quote + "," +
-                    quote + "value" + quote + ":" + String.valueOf(cTemp) + "},";
+                    quote + "value" + quote + ":" + String.valueOf(fTemp) + "},";
         }
 
         //Pulse

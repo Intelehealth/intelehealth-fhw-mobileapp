@@ -209,14 +209,14 @@ public class UpdateVisitService extends IntentService {
                             if (obs.getValue() != null && !obs.getValue().trim().isEmpty()) {
                                 try {
                                     Double fTemp = Double.parseDouble(obs.getValue());
-                                    Double cTemp = ((fTemp - 32) * 5 / 9);
+//                                    Double cTemp = ((fTemp - 32) * 5 / 9);
                                     if (obs.getOpenmrsObsId() != null && !obs.getOpenmrsObsId().equals(0)) {
 
-                                        check = updateObs(UuidDictionary.TEMPERATURE, String.valueOf(cTemp),
+                                        check = updateObs(UuidDictionary.TEMPERATURE, String.valueOf(fTemp),
                                                 obs.getOpenmrsObsId(), encounterVitals);
                                         if (!check) check_all = false;
                                     } else {
-                                        check = createObs(encounterVitals, UuidDictionary.TEMPERATURE, String.valueOf(cTemp),
+                                        check = createObs(encounterVitals, UuidDictionary.TEMPERATURE, String.valueOf(fTemp),
                                                 String.valueOf(obs.getConceptId()));
                                         if (!check) check_all = false;
                                     }
