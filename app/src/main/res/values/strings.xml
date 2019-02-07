@@ -150,7 +150,7 @@
     <string name="table_bp">Vital Signs</string>
     <string name="table_bpsys">BP Sys</string>
     <string name="table_bpdia">BP Dia</string>
-    <string name="table_temp">Temperature (F)</string>
+    <string name="table_temp">Temperature (C)</string>
     <string name="table_spo2">SpO2 (%)</string>
 
     //Patient Search Screen
