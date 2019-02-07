@@ -72,7 +72,7 @@ dependencies {
     implementation "com.parse:parse-android:$rootProject.parseAndroidVersion"
 
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
-    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
 
     //Used for debugging local SQLite Database.
     debugImplementation "com.amitshekhar.android:debug-db:$rootProject.debugDbVersion"
