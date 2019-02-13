@@ -18,6 +18,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -907,12 +908,28 @@ public class ClientService extends IntentService {
 
         //Temperature
         if (temperature.getValue() != null && !temperature.getValue().trim().isEmpty()) {
-            Double fTemp = Double.parseDouble(temperature.getValue());
-            Double cTemp = ((fTemp - 32) * 5 / 9);
-            Log.i(TAG, "uploadEncounterVitals: " + cTemp + "//" + fTemp);
-            formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.TEMPERATURE + quote + "," +
-                    quote + "value" + quote + ":" + String.valueOf(cTemp) + "},";
+
+            try {
+                JSONObject obj = null;
+                obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, "vital_config.json")));
+
+                if (obj.getBoolean("celcius")) {
+                    Double fTemp = Double.parseDouble(temperature.getValue());
+                    Log.i(TAG, "uploadEncounterVitals: " + fTemp + "//" + fTemp);
+                    formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.TEMPERATURE + quote + "," +
+                            quote + "value" + quote + ":" + String.valueOf(fTemp) + "},";
+                } else if (obj.getBoolean("fahrenheit")) {
+                    Double fTemp = Double.parseDouble(temperature.getValue());
+                    Double cTemp = ((fTemp - 32) * 5 / 9);
+                    Log.i(TAG, "uploadEncounterVitals: " + cTemp + "//" + cTemp);
+                    formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.TEMPERATURE + quote + "," +
+                            quote + "value" + quote + ":" + String.valueOf(cTemp) + "},";
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
+
 
         //Pulse
         if (pulse.getValue() != null && !pulse.getValue().trim().isEmpty()) {
@@ -1073,7 +1090,8 @@ public class ClientService extends IntentService {
         //---------------------
     }
 
-    private boolean uploadEncounterNotes(String visitID, String visitUUID, Patient patient, String startDateTime,
+    private boolean uploadEncounterNotes(String visitID, String visitUUID, Patient
+            patient, String startDateTime,
                                          Obs patHistory, Obs famHistory, Obs complaint, Obs physFindings) {
 
 
@@ -1232,7 +1250,7 @@ public class ClientService extends IntentService {
         }
     }
 
-    private boolean uploadSurvey(Integer patientID, String visitID, Intent intent){
+    private boolean uploadSurvey(Integer patientID, String visitID, Intent intent) {
         Patient patient = new Patient();
         String patientSelection = "_id = ?";
         String[] patientArgs = {String.valueOf(patientID)};
@@ -1270,12 +1288,12 @@ public class ClientService extends IntentService {
         String quote = "\"";
         String formattedObs = "";
 
-        if (rating != null && !rating.isEmpty() && comments==null) {
+        if (rating != null && !rating.isEmpty() && comments == null) {
             formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.RATING + quote + "," +
                     quote + "value" + quote + ":" + quote + rating + quote + "}";
         }
 
-        if (rating != null && !rating.isEmpty() && comments!=null) {
+        if (rating != null && !rating.isEmpty() && comments != null) {
             formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.RATING + quote + "," +
                     quote + "value" + quote + ":" + quote + rating + quote + "},";
         }
@@ -1326,7 +1344,7 @@ public class ClientService extends IntentService {
     /**
      * Ends Patient visit session.
      *
-     * @param patientID     Unique patient Id
+     * @param patientID      Unique patient Id
      * @param visitUUID      visit UUID
      * @param current_intent this intent
      * @return boolean value representing success or failure.

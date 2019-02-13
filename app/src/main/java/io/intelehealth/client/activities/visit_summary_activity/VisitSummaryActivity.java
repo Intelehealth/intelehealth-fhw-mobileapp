@@ -172,6 +172,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView mDoctorName;
     TextView mCHWname;
 
+    TextView tempfaren;
+    TextView tempcel;
+
     String medHistory;
     String baseDir;
     String filePathPhyExam;
@@ -621,7 +624,28 @@ public class VisitSummaryActivity extends AppCompatActivity {
         weightView = (TextView) findViewById(R.id.textView_weight_value);
         pulseView = (TextView) findViewById(R.id.textView_pulse_value);
         bpView = (TextView) findViewById(R.id.textView_bp_value);
+
         tempView = (TextView) findViewById(R.id.textView_temp_value);
+
+//        textView_temp
+        tempfaren=(TextView) findViewById(R.id.textView_temp_faren);
+        tempcel=(TextView)findViewById(R.id.textView_temp);
+        try {
+            JSONObject obj = null;
+            obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, "vital_config.json")));
+
+            if (obj.getBoolean("celcius")) {
+                tempcel.setVisibility(View.VISIBLE);
+               tempfaren.setVisibility(View.GONE);
+
+            } else if (obj.getBoolean("fahrenheit")) {
+                tempfaren.setVisibility(View.VISIBLE);
+                tempcel.setVisibility(View.GONE);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         spO2View = (TextView) findViewById(R.id.textView_pulseox_value);
         bmiView = (TextView) findViewById(R.id.textView_bmi_value);
         complaintView = (TextView) findViewById(R.id.textView_content_complaint);
