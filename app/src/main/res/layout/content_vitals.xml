@@ -209,7 +209,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/table_temp_faren"
+                    android:id="@+id/table_temp_fare"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Temperature (F)"
@@ -218,6 +218,23 @@
                     android:singleLine="true"
                     android:inputType="numberDecimal"
                     android:tag="@string/tag_optional"  />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/table_respiratory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Respiratory Rate"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:tag="@string/tag_optional" />
 
             </android.support.design.widget.TextInputLayout>
 

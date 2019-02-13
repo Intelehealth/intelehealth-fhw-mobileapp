@@ -17,7 +17,15 @@ public class TableExam {
     private String pulse;
     private String temperature;
     private String spo2;
+    private String resp;
 
+    public String getResp() {
+        return resp;
+    }
+
+    public void setResp(String resp) {
+        this.resp = resp;
+    }
 
     public int getPatientId() {
         return patientId;
