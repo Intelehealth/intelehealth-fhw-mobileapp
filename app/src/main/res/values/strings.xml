@@ -165,7 +165,7 @@
     <string name="title_activity_family_history">Family History</string>
     <string name="title_activity_physical_exam">Physical Exam</string>
     <string name="title_activity_patient_summary">Visit Summary</string>
-    <string name="visit_summary_temperature">Temperature (F)</string>
+    <string name="visit_summary_temperature">Temperature (C)</string>
     <string name="visit_summary_pulseox">SpO2 (%)</string>
     <string name="visit_summary_hw_on_duty">CHW On Duty</string>
     <string name="visit_summary_vitals_heading">Vitals</string>
