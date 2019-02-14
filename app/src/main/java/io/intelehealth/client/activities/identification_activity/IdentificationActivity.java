@@ -66,6 +66,7 @@ import io.intelehealth.client.activities.patient_detail_activity.PatientDetailAc
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.node.Node;
 import io.intelehealth.client.objects.Patient;
+import io.intelehealth.client.utilities.EditTextUtils;
 import io.intelehealth.client.utilities.HelperMethods;
 
 import static io.intelehealth.client.utilities.HelperMethods.LOG_TAG;
@@ -136,7 +137,7 @@ public class IdentificationActivity extends AppCompatActivity {
     String mCurrentPhotoPath;
     SharedPreferences.Editor e;
     boolean hasLicense = false;
-    String mFileName="config.json";
+    String mFileName = "config.json";
 
     // Boolean isDateChanged = false; //prajw
     @Override
@@ -188,10 +189,10 @@ public class IdentificationActivity extends AppCompatActivity {
         educationText = (EditText) findViewById(R.id.identification_education);
         economicText = (EditText) findViewById(R.id.identification_econiomic_status);
 
-        casteLayout=(TextInputLayout)findViewById(R.id.identification_txtlcaste);
-        economicLayout=(TextInputLayout)findViewById(R.id.identification_txtleconomic);
-        educationLayout=(TextInputLayout)findViewById(R.id.identification_txtleducation);
-        countryStateLayout=(LinearLayout)findViewById(R.id.identification_llcountry_state);
+        casteLayout = (TextInputLayout) findViewById(R.id.identification_txtlcaste);
+        economicLayout = (TextInputLayout) findViewById(R.id.identification_txtleconomic);
+        educationLayout = (TextInputLayout) findViewById(R.id.identification_txtleducation);
+        countryStateLayout = (LinearLayout) findViewById(R.id.identification_llcountry_state);
 
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -201,15 +202,15 @@ public class IdentificationActivity extends AppCompatActivity {
         //Check for license key and load the correct config file
         try {
             JSONObject obj = null;
-        if (hasLicense) {
-            obj = new JSONObject(HelperMethods.readFileRoot(mFileName, this)); //Load the config file
+            if (hasLicense) {
+                obj = new JSONObject(HelperMethods.readFileRoot(mFileName, this)); //Load the config file
 
-        }else {
-            obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, mFileName)));
+            } else {
+                obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, mFileName)));
 
-        }
+            }
 
-        //Display the fields on the Add Patient screen as per the config file
+            //Display the fields on the Add Patient screen as per the config file
             if (obj.getBoolean("mFirstName")) {
                 mFirstName.setVisibility(View.VISIBLE);
             } else {
@@ -307,15 +308,21 @@ public class IdentificationActivity extends AppCompatActivity {
             }
             country1 = obj.getString("mCountry");
 
-        } catch (JSONException e) {
-            e.printStackTrace();
+            if (country1.equalsIgnoreCase("India")) {
+                EditTextUtils.setEditTextMaxLength(10, mPhoneNum);
+            } else if (country1.equalsIgnoreCase("Philippines")) {
+                EditTextUtils.setEditTextMaxLength(11, mPhoneNum);
             }
 
-   
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
         //TODO: Change this back for other deployments
-       // mMiddleName.setVisibility(View.GONE);  //prajwal commented
-       // mAddress1.setVisibility(View.GONE);
-       // mAddress2.setVisibility(View.GONE);
+        // mMiddleName.setVisibility(View.GONE);  //prajwal commented
+        // mAddress1.setVisibility(View.GONE);
+        // mAddress2.setVisibility(View.GONE);
         //mRelationship.setVisibility(View.GONE);
         //mPostal.setVisibility(View.GONE);
 
@@ -421,7 +428,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-               String state = parent.getItemAtPosition(position).toString();
+                String state = parent.getItemAtPosition(position).toString();
                 if (state.matches("Odisha")) {
                     //Creating the instance of ArrayAdapter containing list of fruit names
                     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
@@ -448,7 +455,7 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i != 0) {
-                   String country= adapterView.getItemAtPosition(i).toString();
+                    String country = adapterView.getItemAtPosition(i).toString();
 
                     if (country.matches("India")) {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
@@ -473,8 +480,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
                             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getStateProvince())));
                         }
-                    }
-                    else if (country.matches("Philippines")) {
+                    } else if (country.matches("Philippines")) {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                                 R.array.states_philippines, android.R.layout.simple_spinner_item);
                         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -482,8 +488,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
                         if (patientID_edit != -1) {
                             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getStateProvince())));
-                        }
-                        else {
+                        } else {
                             mState.setSelection(stateAdapter.getPosition("Bukidnon"));
                         }
                     }
@@ -544,7 +549,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
                 Intent cameraIntent = new Intent(IdentificationActivity.this, CameraActivity.class);
 
-               // cameraIntent.putExtra(CameraActivity.SHOW_DIALOG_MESSAGE, getString(R.string.camera_dialog_default));
+                // cameraIntent.putExtra(CameraActivity.SHOW_DIALOG_MESSAGE, getString(R.string.camera_dialog_default));
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, patientID);
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, filePath);
                 startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
@@ -562,7 +567,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 mDOB.setError(null);
                 mAge.setError(null);
                 //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
-                mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis()-1000);
+                mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
 
                 //Formatted so that it can be read the way the user sets
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -574,12 +579,12 @@ public class IdentificationActivity extends AppCompatActivity {
                 mAgeMonths = today.get(Calendar.MONTH) - dob.get(Calendar.MONTH);
 
 
-                if (mAgeMonths < 0){
+                if (mAgeMonths < 0) {
                     mAgeMonths = mAgeMonths + 12;
                     mAgeYears = mAgeYears - 1;
                 }
 
-                if(mAgeMonths < 0 || mAgeYears < 0 || dob.after(today)){
+                if (mAgeMonths < 0 || mAgeYears < 0 || dob.after(today)) {
                     mDOB.setError(getString(R.string.identification_screen_error_dob));
                     mAge.setError(getString(R.string.identification_screen_error_age));
                     return;
@@ -606,7 +611,7 @@ public class IdentificationActivity extends AppCompatActivity {
         if (patientID_edit != -1) {
             int age = HelperMethods.getAge(patient1.getDateOfBirth());
             mDOB.setText(patient1.getDateOfBirth());
-            int month=HelperMethods.getMonth(patient1.getDateOfBirth());
+            int month = HelperMethods.getMonth(patient1.getDateOfBirth());
             mAge.setText(String.valueOf(age) + getString(R.string.identification_screen_text_years) + String.valueOf(month) + getString(R.string.identification_screen_text_months));
         }
         mAge.setOnClickListener(new View.OnClickListener() {
@@ -627,7 +632,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 yearPicker.setMaxValue(100);
                 monthPicker.setMinValue(0);
                 monthPicker.setMaxValue(12);
-                if(mAgeYears > 0) {
+                if (mAgeYears > 0) {
                     yearPicker.setValue(mAgeYears);
                 }
                 if (mAgeMonths > 0) {
@@ -762,7 +767,7 @@ public class IdentificationActivity extends AppCompatActivity {
         if (dob.after(today)) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
             alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_dob);
-           //alertDialogBuilder.setMessage(getString(R.string.identification_dialog_date_error));
+            //alertDialogBuilder.setMessage(getString(R.string.identification_dialog_date_error));
             alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -840,44 +845,32 @@ public class IdentificationActivity extends AppCompatActivity {
         //prajw
 
 
-
         // prajw
 
 
-
-
-
         //prajwal
-        if(!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
+        if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                 && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
-                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals(""))
-        {
+                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("")) {
 
             Log.v(TAG, "Result");
             //meera
             //Toast.makeText(IdentificationActivity.this, "Patient Registered", Toast.LENGTH_SHORT).show();
 
-        }
-
-        else
-        {
-            if(mFirstName.getText().toString().equals(""))
-            {
+        } else {
+            if (mFirstName.getText().toString().equals("")) {
                 mFirstName.setError(getString(R.string.error_field_required));
             }
 
-            if(mLastName.getText().toString().equals(""))
-            {
+            if (mLastName.getText().toString().equals("")) {
                 mLastName.setError(getString(R.string.error_field_required));
             }
 
-           if(mDOB.getText().toString().equals(""))
-            {
+            if (mDOB.getText().toString().equals("")) {
                 mDOB.setError(getString(R.string.error_field_required));
             }
 
-            if(mAge.getText().toString().equals(""))
-            {
+            if (mAge.getText().toString().equals("")) {
                 mAge.setError(getString(R.string.error_field_required));
             }
 
@@ -901,8 +894,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 educationText.setError(getString(R.string.error_field_required));
             }*/
 
-            if(mCity.getText().toString().equals(""))
-            {
+            if (mCity.getText().toString().equals("")) {
                 mCity.setError(getString(R.string.error_field_required));
             }
 
@@ -1113,11 +1105,8 @@ public class IdentificationActivity extends AppCompatActivity {
             patientEntries.put("caste", patient.getCaste());
 
 
-
-
             //TODO: move identifier1 and id2 from patient table to patient_attribute table
         }
-
 
 
         @Override
@@ -1292,14 +1281,14 @@ public class IdentificationActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-       new AlertDialog.Builder(this)
-               .setMessage("Are you sure you want to go back ?")
-               .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                   @Override
-                   public void onClick(DialogInterface dialogInterface, int i) {
-                       finish();
-                   }
-               }).setNegativeButton("No",null).show();
+        new AlertDialog.Builder(this)
+                .setMessage("Are you sure you want to go back ?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                }).setNegativeButton("No", null).show();
 
     }
 
