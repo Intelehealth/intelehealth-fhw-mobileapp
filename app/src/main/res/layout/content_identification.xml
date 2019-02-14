@@ -229,7 +229,7 @@
                     android:drawableLeft="@drawable/phone_icon"
                     android:drawableStart="@drawable/phone_icon"
                     android:drawablePadding="10dp"
-                    android:maxLength="10"/>
+                    android:maxLength="11"/>
 
             </android.support.design.widget.TextInputLayout>
 
