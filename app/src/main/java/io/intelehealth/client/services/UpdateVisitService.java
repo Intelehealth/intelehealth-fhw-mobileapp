@@ -209,7 +209,7 @@ public class UpdateVisitService extends IntentService {
                             if (obs.getValue() != null && !obs.getValue().trim().isEmpty()) {
                                 try {
                                     Double fTemp = Double.parseDouble(obs.getValue());
-                                    Double cTemp = ((fTemp - 32) * 5 / 9);
+                                    Double cTemp = ((fTemp * 9 / 5) + 32);
                                     if (obs.getOpenmrsObsId() != null && !obs.getOpenmrsObsId().equals(0)) {
 
                                         check = updateObs(UuidDictionary.TEMPERATURE, String.valueOf(cTemp),
@@ -217,6 +217,28 @@ public class UpdateVisitService extends IntentService {
                                         if (!check) check_all = false;
                                     } else {
                                         check = createObs(encounterVitals, UuidDictionary.TEMPERATURE, String.valueOf(cTemp),
+                                                String.valueOf(obs.getConceptId()));
+                                        if (!check) check_all = false;
+                                    }
+                                } catch (NumberFormatException e) {
+                                    Log.e(TAG, "onHandleIntent: ", e);
+                                }
+                            }
+                            break;
+                        }
+                        //    Respiratory added by mahiti dev team
+                        case ConceptId.RESPIRATORY: {
+                            if (obs.getValue() != null && !obs.getValue().trim().isEmpty()) {
+                                try {
+                                    Double fTemp = Double.parseDouble(obs.getValue());
+//                                    Double cTemp = ((fTemp * 9 / 5) + 32);
+                                    if (obs.getOpenmrsObsId() != null && !obs.getOpenmrsObsId().equals(0)) {
+
+                                        check = updateObs(UuidDictionary.RESPIRATORY, String.valueOf(fTemp),
+                                                obs.getOpenmrsObsId(), encounterVitals);
+                                        if (!check) check_all = false;
+                                    } else {
+                                        check = createObs(encounterVitals, UuidDictionary.RESPIRATORY, String.valueOf(fTemp),
                                                 String.valueOf(obs.getConceptId()));
                                         if (!check) check_all = false;
                                     }
@@ -429,6 +451,16 @@ public class UpdateVisitService extends IntentService {
                                 }
                                 break;
                             }
+                            case ConceptId.RESPIRATORY: {
+                                if (!value.equals("0")) {
+                                    obs.setConceptId(concept_id);
+                                    obs.setValue(value);
+                                    obs.setOpenmrsObsId(obs_id);
+                                    obs.setOpenmrsEncounterId(encounter_id);
+                                    obsArrayList.add(obs);
+                                }
+                                break;
+                            }
                             case ConceptId.SPO2: {
                                 if (!value.equals("0")) {
                                     obs.setConceptId(concept_id);
@@ -512,7 +544,7 @@ public class UpdateVisitService extends IntentService {
             return false;
         } else {
             Log.d(TAG, responseObs.getResponseString());
-            Log.d(TAG, responseObs.getResponseObject().toString());
+            Log.d(TAG, responseObs.getResponseObject());
 
             if (visitId != null && concept_id != null) {
 
@@ -575,7 +607,7 @@ public class UpdateVisitService extends IntentService {
             Log.d(TAG, "Obs Update posting was successful");
 
             Log.d(TAG, responseObs.getResponseString());
-            Log.d(TAG, responseObs.getResponseObject().toString());
+            Log.d(TAG, responseObs.getResponseObject());
 
             String obsUpdateSelection = "openmrs_obs_id = ?";
 

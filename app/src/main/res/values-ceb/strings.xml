@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="table_hw">Mga Sukdanan sa Lawas</string>
+    <string name="db_backup_unavailable">Ang Database backup dili magamit.</string>
+    <string name="visit_summary_upload_reminder">Palihug i-upload una pa musulay nga tapuson ang pagbisita.</string>
+    <string name="visit_summary_pulse">Pulso</string>
+    <string name="title_activity_search_patient">Pagpangita sa Pasyente</string>
+</resources>

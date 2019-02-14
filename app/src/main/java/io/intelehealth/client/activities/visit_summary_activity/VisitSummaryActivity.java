@@ -107,7 +107,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private WebView mWebView;
     private LinearLayout mLayout;
 
-    String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2;
+    String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp;
     String identifierNumber;
 
     boolean uploaded = false;
@@ -139,6 +139,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     Obs bpDias = new Obs();
     Obs temperature = new Obs();
     Obs spO2 = new Obs();
+    Obs resp = new Obs();
 
     String diagnosisReturned = "";
     String rxReturned = "";
@@ -171,6 +172,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView mDoctorTitle;
     TextView mDoctorName;
     TextView mCHWname;
+    //    //    Respiratory added by mahiti dev team
+    TextView respiratory;
 
     String medHistory;
     String baseDir;
@@ -198,6 +201,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView additionalCommentsTextView;
     TextView followUpDateTextView;
 
+
     Boolean isPastVisit = false;
     Boolean isReceiverRegistered = false;
 
@@ -221,7 +225,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String physicalExamDocumentDir = "Physical Exam";
     SharedPreferences mSharedPreference;
     boolean hasLicense = false;
-    String mFileName="config.json";
+    String mFileName = "config.json";
     public static String prescription1;
     public static String prescription2;
 
@@ -238,11 +242,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-        mCHWname = (TextView) findViewById(R.id.chw_details);
+        mCHWname = findViewById(R.id.chw_details);
         mCHWname.setText(sharedPreferences.getString("chwname", "----"));
         //Added Prescription Title from config.Json dynamically through sharedPreferences
-        prescriptionHeader1 = sharedPreferences.getString("prescriptionTitle1","");
-        prescriptionHeader2 = sharedPreferences.getString("prescriptionTitle2","");
+        prescriptionHeader1 = sharedPreferences.getString("prescriptionTitle1", "");
+        prescriptionHeader2 = sharedPreferences.getString("prescriptionTitle2", "");
 
         if (isPastVisit) menuItem.setVisible(false);
         return super.onCreateOptionsMenu(menu);
@@ -277,9 +281,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
             case R.id.summary_endVisit: {
                 //meera
-                if(downloaded){
-                endVisit();}
-                else {
+                if (downloaded) {
+                    endVisit();
+                } else {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
                     alertDialogBuilder.setMessage(R.string.error_no_data);
                     alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
@@ -330,19 +334,43 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (hasLicense) {
                 obj = new JSONObject(HelperMethods.readFileRoot(mFileName, this)); //Load the config file
 
-            }else {
+            } else {
                 obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, mFileName)));
             }
-                prescription1=obj.getString("presciptionHeader1");
+            prescription1 = obj.getString("presciptionHeader1");
 
-                prescription2=obj.getString("presciptionHeader2");
+            prescription2 = obj.getString("presciptionHeader2");
 
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        //Read the data from assest android assests key and load the correct config file
+        try {
+            JSONObject vital_conf = null;
+//                vital_conf = new JSONObject(HelperMethods.readFileRoot("vital_config.json", this)); //Load the config file
+
+            vital_conf = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, "vital_config.json")));
+
+            String height_en = vital_conf.getString("height");
+            String weight_en = vital_conf.getString("weight");
+            String pulse_en = vital_conf.getString("pulse");
+            String bpSys_en = vital_conf.getString("bpSys");
+            String bpDia_en = vital_conf.getString("bpDia");
+            String temperature_en = vital_conf.getString("temperature");
+            String Spo2_en = vital_conf.getString("Spo2");
+            String BMI_en = vital_conf.getString("BMI");
+            String celsius_en = vital_conf.getString("celsius");
+            String fahrenheit_en = vital_conf.getString("fahrenheit");
+            String respiratory_rate_en = vital_conf.getString("respiratory_rate");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         setTitle(R.string.title_activity_patient_summary);
-        setTitle( patientName + ": " + getTitle());
+        setTitle(patientName + ": " + getTitle());
 
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         db = mDbHelper.getWritableDatabase();
@@ -350,31 +378,31 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit_summary);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        mLayout = (LinearLayout) findViewById(R.id.summary_layout);
+        mLayout = findViewById(R.id.summary_layout);
         context = getApplicationContext();
 
-        mAdditionalDocsRecyclerView = (RecyclerView) findViewById(R.id.recy_additional_documents);
-        mPhysicalExamsRecyclerView = (RecyclerView) findViewById(R.id.recy_physexam);
+        mAdditionalDocsRecyclerView = findViewById(R.id.recy_additional_documents);
+        mPhysicalExamsRecyclerView = findViewById(R.id.recy_physexam);
 
-        diagnosisCard = (CardView) findViewById(R.id.cardView_diagnosis);
-        prescriptionCard = (CardView) findViewById(R.id.cardView_rx);
-        medicalAdviceCard = (CardView) findViewById(R.id.cardView_medical_advice);
-        requestedTestsCard = (CardView) findViewById(R.id.cardView_tests);
-        additionalCommentsCard = (CardView) findViewById(R.id.cardView_additional_comments);
+        diagnosisCard = findViewById(R.id.cardView_diagnosis);
+        prescriptionCard = findViewById(R.id.cardView_rx);
+        medicalAdviceCard = findViewById(R.id.cardView_medical_advice);
+        requestedTestsCard = findViewById(R.id.cardView_tests);
+        additionalCommentsCard = findViewById(R.id.cardView_additional_comments);
         followUpDateCard = findViewById(R.id.cardView_follow_up_date);
-        mDoctorTitle = (TextView) findViewById(R.id.title_doctor);
+        mDoctorTitle = findViewById(R.id.title_doctor);
         mDoctorName = findViewById(R.id.doctor_details);
         mDoctorTitle.setVisibility(View.GONE);
         mDoctorName.setVisibility(View.GONE);
 
-        diagnosisTextView = (TextView) findViewById(R.id.textView_content_diagnosis);
-        prescriptionTextView = (TextView) findViewById(R.id.textView_content_rx);
-        medicalAdviceTextView = (TextView) findViewById(R.id.textView_content_medical_advice);
-        requestedTestsTextView = (TextView) findViewById(R.id.textView_content_tests);
-        additionalCommentsTextView = (TextView) findViewById(R.id.textView_content_additional_comments);
+        diagnosisTextView = findViewById(R.id.textView_content_diagnosis);
+        prescriptionTextView = findViewById(R.id.textView_content_rx);
+        medicalAdviceTextView = findViewById(R.id.textView_content_medical_advice);
+        requestedTestsTextView = findViewById(R.id.textView_content_tests);
+        additionalCommentsTextView = findViewById(R.id.textView_content_additional_comments);
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
 
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
@@ -398,14 +426,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        editVitals = (ImageButton) findViewById(R.id.imagebutton_edit_vitals);
-        editComplaint = (ImageButton) findViewById(R.id.imagebutton_edit_complaint);
-        editPhysical = (ImageButton) findViewById(R.id.imagebutton_edit_physexam);
-        editFamHist = (ImageButton) findViewById(R.id.imagebutton_edit_famhist);
-        editMedHist = (ImageButton) findViewById(R.id.imagebutton_edit_pathist);
-        editAddDocs = (ImageButton) findViewById(R.id.imagebutton_edit_additional_document);
-        uploadButton = (Button) findViewById(R.id.button_upload);
-        downloadButton = (Button) findViewById(R.id.button_download);
+        editVitals = findViewById(R.id.imagebutton_edit_vitals);
+        editComplaint = findViewById(R.id.imagebutton_edit_complaint);
+        editPhysical = findViewById(R.id.imagebutton_edit_physexam);
+        editFamHist = findViewById(R.id.imagebutton_edit_famhist);
+        editMedHist = findViewById(R.id.imagebutton_edit_pathist);
+        editAddDocs = findViewById(R.id.imagebutton_edit_additional_document);
+        uploadButton = findViewById(R.id.button_upload);
+        downloadButton = findViewById(R.id.button_download);
 
         downloadButton.setEnabled(false);
         downloadButton.setVisibility(View.GONE);
@@ -431,7 +459,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
             if (visitIDCursor != null) visitIDCursor.close();
             if (visitUUID != null && !visitUUID.isEmpty()) {
-            addDownloadButton();
+                addDownloadButton();
 
             }
 
@@ -508,7 +536,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     cp.close();
                 }
 
-                if(visitUUID == null || visitUUID.isEmpty()) {
+                if (visitUUID == null || visitUUID.isEmpty()) {
                     String[] columnsToReturn = {"openmrs_visit_uuid"};
                     String visitIDorderBy = "start_datetime";
                     String visitIDSelection = "_id = ?";
@@ -582,7 +610,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 serviceIntent.putExtra("queueId", c.getInt(c.getColumnIndex(DelayedJobQueueProvider._ID)));
                                 startService(serviceIntent);
                             }
-                            ;
                             break;
                         }
                         case ClientService.STATUS_SYNC_IN_PROGRESS: {
@@ -605,10 +632,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 
         queryData(String.valueOf(patientID));
-        nameView = (TextView) findViewById(R.id.textView_name_value);
+        nameView = findViewById(R.id.textView_name_value);
 
         //OpenMRS Id
-        idView = (TextView) findViewById(R.id.textView_id_value);
+        idView = findViewById(R.id.textView_id_value);
         if (patient.getOpenmrs_patient_id() != null && !patient.getOpenmrs_patient_id().isEmpty()) {
             idView.setText(patient.getOpenmrs_patient_id());
         } else {
@@ -617,17 +644,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         nameView.setText(patientName);
 
-        heightView = (TextView) findViewById(R.id.textView_height_value);
-        weightView = (TextView) findViewById(R.id.textView_weight_value);
-        pulseView = (TextView) findViewById(R.id.textView_pulse_value);
-        bpView = (TextView) findViewById(R.id.textView_bp_value);
-        tempView = (TextView) findViewById(R.id.textView_temp_value);
-        spO2View = (TextView) findViewById(R.id.textView_pulseox_value);
-        bmiView = (TextView) findViewById(R.id.textView_bmi_value);
-        complaintView = (TextView) findViewById(R.id.textView_content_complaint);
-        famHistView = (TextView) findViewById(R.id.textView_content_famhist);
-        patHistView = (TextView) findViewById(R.id.textView_content_pathist);
-        physFindingsView = (TextView) findViewById(R.id.textView_content_physexam);
+        heightView = findViewById(R.id.textView_height_value);
+        weightView = findViewById(R.id.textView_weight_value);
+        pulseView = findViewById(R.id.textView_pulse_value);
+        bpView = findViewById(R.id.textView_bp_value);
+        tempView = findViewById(R.id.textView_temp_value);
+        spO2View = findViewById(R.id.textView_pulseox_value);
+        //    //    Respiratory added by mahiti dev team
+        respiratory = findViewById(R.id.textView_respiratory_value);
+        bmiView = findViewById(R.id.textView_bmi_value);
+        complaintView = findViewById(R.id.textView_content_complaint);
+        famHistView = findViewById(R.id.textView_content_famhist);
+        patHistView = findViewById(R.id.textView_content_pathist);
+        physFindingsView = findViewById(R.id.textView_content_physexam);
 
         heightView.setText(height.getValue());
         weightView.setText(weight.getValue());
@@ -655,6 +684,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         bmiView.setText(mBMI);
         tempView.setText(temperature.getValue());
+        //    Respiratory added by mahiti dev team
+        respiratory.setText(resp.getValue());
         spO2View.setText(spO2.getValue());
         if (complaint.getValue() != null)
             complaintView.setText(Html.fromHtml(complaint.getValue()));
@@ -690,7 +721,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 famHistDialog.setView(convertView);
 
-                final TextView famHistText = (TextView) convertView.findViewById(R.id.textView_entry);
+                final TextView famHistText = convertView.findViewById(R.id.textView_entry);
                 if (famHistory.getValue() != null)
                     famHistText.setText(Html.fromHtml(famHistory.getValue()));
                 famHistText.setEnabled(false);
@@ -763,7 +794,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 complaintDialog.setView(convertView);
 
-                final TextView complaintText = (TextView) convertView.findViewById(R.id.textView_entry);
+                final TextView complaintText = convertView.findViewById(R.id.textView_entry);
                 if (complaint.getValue() != null)
                     complaintText.setText(Html.fromHtml(complaint.getValue()));
                 complaintText.setEnabled(false);
@@ -835,7 +866,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 physicalDialog.setView(convertView);
 
-                final TextView physicalText = (TextView) convertView.findViewById(R.id.textView_entry);
+                final TextView physicalText = convertView.findViewById(R.id.textView_entry);
                 if (phyExam.getValue() != null)
                     physicalText.setText(Html.fromHtml(phyExam.getValue()));
                 physicalText.setEnabled(false);
@@ -880,7 +911,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (phyExamDir.exists()) {
                             String[] children = phyExamDir.list();
-                            List<String> childList = Arrays.asList(children);
+                            String[] childList = children;
                             SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
                             for (String child : childList) {
                                 new File(phyExamDir, child).delete();
@@ -937,7 +968,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 historyDialog.setView(convertView);
 
-                final TextView historyText = (TextView) convertView.findViewById(R.id.textView_entry);
+                final TextView historyText = convertView.findViewById(R.id.textView_entry);
                 if (patHistory.getValue() != null)
                     historyText.setText(Html.fromHtml(patHistory.getValue()));
                 historyText.setEnabled(false);
@@ -1029,7 +1060,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (visitIDCursor != null) visitIDCursor.close();
         }
         if (visitUUID != null && !visitUUID.isEmpty()) {
-            if (followUpDate != null && !followUpDate.isEmpty()){
+            if (followUpDate != null && !followUpDate.isEmpty()) {
                 AlertDialog.Builder followUpAlert = new AlertDialog.Builder(this);
                 followUpAlert.setMessage(getString(R.string.visit_summary_follow_up_reminder) + followUpDate);
                 followUpAlert.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
@@ -1214,6 +1245,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 temperature.setValue(value);
                 break;
             }
+            //    Respiratory added by mahiti dev team
+            case ConceptId.RESPIRATORY: //Respiratory
+            {
+                resp.setValue(value);
+                break;
+            }
             case ConceptId.SPO2: //SpO2
             {
                 spO2.setValue(value);
@@ -1229,7 +1266,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     diagnosisCard.setVisibility(View.VISIBLE);
                 }
                 diagnosisTextView.setText(diagnosisReturned);
-               //checkForDoctor();
+                //checkForDoctor();
                 break;
             }
             case ConceptId.JSV_MEDICATIONS: {
@@ -1393,7 +1430,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         visitIDCursor.moveToLast();
         String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("start_datetime"));
         visitIDCursor.close();
-        String mDate= HelperMethods.SimpleDatetoLongDate(startDateTime);
+        String mDate = HelperMethods.SimpleDatetoLongDate(startDateTime);
 
         String mPatHist = patHistory.getValue();
         if (mPatHist == null) {
@@ -1408,6 +1445,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mBP = bpSys.getValue() + "/" + bpDias.getValue();
         mPulse = pulse.getValue();
         mTemp = temperature.getValue();
+        mresp = resp.getValue();
         mSPO2 = spO2.getValue();
         String mComplaint = complaint.getValue();
 
@@ -1500,7 +1538,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
                                 "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p>" +
                                 "<b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Chief Complaint(s)</p></b>" +
-                                para_open + "%s" + para_close +"<br><br>"+
+                                para_open + "%s" + para_close + "<br><br>" +
                                 "<b><p id=\"diagnosis_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b>" +
                                 "%s" +
                                 "<b><p id=\"rx_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication</p></b>" +
@@ -1513,8 +1551,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 "%s" +
                                 "<b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b>" +
                                 "%s"
-                        ,heading, heading2, heading3, mPatientName, age,mGender, mSdw, address, mPatientOpenMRSID, mDate, mHeight, mWeight,
-                        mBMI, bp, mPulse, mTemp, mSPO2,pat_hist,fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, comments_web, followUp_web, doctor_web);
+                        , heading, heading2, heading3, mPatientName, age, mGender, mSdw, address, mPatientOpenMRSID, mDate, mHeight, mWeight,
+                        mBMI, bp, mPulse, mTemp, mSPO2, pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, comments_web, followUp_web, doctor_web);
         webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
 
         // Keep a reference to WebView object until you pass the PrintDocumentAdapter
@@ -1552,8 +1590,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private void createNewCardView(String title, String content, int index) {
         final LayoutInflater inflater = VisitSummaryActivity.this.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.card_doctor_content, null);
-        TextView titleView = (TextView) convertView.findViewById(R.id.textview_heading);
-        TextView contentView = (TextView) convertView.findViewById(R.id.textview_content);
+        TextView titleView = convertView.findViewById(R.id.textview_heading);
+        TextView contentView = convertView.findViewById(R.id.textview_content);
         titleView.setText(title);
         contentView.setText(content);
         mLayout.addView(convertView, index);
@@ -1864,8 +1902,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             }
 //                    <-----if obs not found restrict user to end the visit ----->
-            else{
-            Log.i(TAG, "found sothing for test");
+            else {
+                Log.i(TAG, "found sothing for test");
            /* downloaded=false;
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
                 alertDialogBuilder.setMessage(R.string.error_no_data);
@@ -1906,7 +1944,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             downloadButton.setText(R.string.visit_summary_button_download);
             */
 
-           // Toast.makeText(this, getString(R.string.visit_summary_button_download), Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, getString(R.string.visit_summary_button_download), Toast.LENGTH_SHORT).show();
 
             downloadButton.setOnClickListener(new View.OnClickListener() {
                 @Override
