@@ -913,11 +913,25 @@ public class ClientService extends IntentService {
         //Temperature
         //    Respiratory added by mahiti dev team removed the formula to conver to farheit to celsius
         if (temperature.getValue() != null && !temperature.getValue().trim().isEmpty()) {
-            Double fTemp = Double.parseDouble(temperature.getValue());
-//            Double cTemp = ((fTemp - 32) * 5 / 9);
-            Log.i(TAG, "uploadEncounterVitals: " + fTemp + "//" + fTemp);
-            formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.TEMPERATURE + quote + "," +
-                    quote + "value" + quote + ":" + String.valueOf(fTemp) + "},";
+            try {
+                JSONObject obj = null;
+                obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, "vital_config.json")));
+
+                if (obj.getBoolean("celsius")) {
+                    Double fTemp = Double.parseDouble(temperature.getValue());
+                    Log.i(TAG, "uploadEncounterVitals: " + fTemp + "//" + fTemp);
+                    formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.TEMPERATURE + quote + "," +
+                            quote + "value" + quote + ":" + String.valueOf(fTemp) + "},";
+                } else if (obj.getBoolean("fahrenheit")) {
+                    Double fTemp = Double.parseDouble(temperature.getValue());
+                    Double cTemp = ((fTemp - 32) * 5 / 9);
+                    Log.i(TAG, "uploadEncounterVitals: " + cTemp + "//" + cTemp);
+                    formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.TEMPERATURE + quote + "," +
+                            quote + "value" + quote + ":" + String.valueOf(cTemp) + "},";
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 //        respiratory
         if (respiratory.getValue() != null && !respiratory.getValue().trim().isEmpty()) {
