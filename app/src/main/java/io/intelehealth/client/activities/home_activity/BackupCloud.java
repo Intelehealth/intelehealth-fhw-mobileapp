@@ -335,8 +335,6 @@ public class BackupCloud {
         if (user_id != null && location != null) {
             ParseQuery<ParseObject> query = ParseQuery.getQuery("BackupDatabase");
             query.whereEqualTo("deviceId", IntelehealthApplication.getAndroidId());
-            query.orderByDescending("updatedAt");
-            query.setLimit(1);
             query.getFirstInBackground(new GetCallback<ParseObject>() {
                 @Override
                 public void done(ParseObject object, ParseException e) {

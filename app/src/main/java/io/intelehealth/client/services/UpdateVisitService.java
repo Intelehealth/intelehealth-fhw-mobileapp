@@ -208,42 +208,51 @@ public class UpdateVisitService extends IntentService {
                         case ConceptId.TEMPERATURE: {
                             if (obs.getValue() != null && !obs.getValue().trim().isEmpty()) {
                                 try {
-                                    Double fTemp = Double.parseDouble(obs.getValue());
-                                    Double cTemp = ((fTemp * 9 / 5) + 32);
-                                    if (obs.getOpenmrsObsId() != null && !obs.getOpenmrsObsId().equals(0)) {
+                                    JSONObject obj = null;
+                                    obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, "vital_config.json")));
 
-                                        check = updateObs(UuidDictionary.TEMPERATURE, String.valueOf(cTemp),
-                                                obs.getOpenmrsObsId(), encounterVitals);
-                                        if (!check) check_all = false;
-                                    } else {
-                                        check = createObs(encounterVitals, UuidDictionary.TEMPERATURE, String.valueOf(cTemp),
-                                                String.valueOf(obs.getConceptId()));
-                                        if (!check) check_all = false;
-                                    }
-                                } catch (NumberFormatException e) {
-                                    Log.e(TAG, "onHandleIntent: ", e);
-                                }
-                            }
-                            break;
-                        }
-                        //    Respiratory added by mahiti dev team
-                        case ConceptId.RESPIRATORY: {
-                            if (obs.getValue() != null && !obs.getValue().trim().isEmpty()) {
-                                try {
-                                    Double fTemp = Double.parseDouble(obs.getValue());
-//                                    Double cTemp = ((fTemp * 9 / 5) + 32);
-                                    if (obs.getOpenmrsObsId() != null && !obs.getOpenmrsObsId().equals(0)) {
+                                    if (obj.getBoolean("celcius")) {
+                                        try {
+                                            Double fTemp = Double.parseDouble(obs.getValue());
+//                                            Double cTemp = ((fTemp - 32) * 5 / 9);
 
-                                        check = updateObs(UuidDictionary.RESPIRATORY, String.valueOf(fTemp),
-                                                obs.getOpenmrsObsId(), encounterVitals);
-                                        if (!check) check_all = false;
-                                    } else {
-                                        check = createObs(encounterVitals, UuidDictionary.RESPIRATORY, String.valueOf(fTemp),
-                                                String.valueOf(obs.getConceptId()));
-                                        if (!check) check_all = false;
+                                            if (obs.getOpenmrsObsId() != null && !obs.getOpenmrsObsId().equals(0)) {
+
+                                                check = updateObs(UuidDictionary.TEMPERATURE, String.valueOf(fTemp),
+                                                        obs.getOpenmrsObsId(), encounterVitals);
+                                                if (!check) check_all = false;
+                                            } else {
+                                                check = createObs(encounterVitals, UuidDictionary.TEMPERATURE, String.valueOf(fTemp),
+                                                        String.valueOf(obs.getConceptId()));
+                                                if (!check) check_all = false;
+                                            }
+                                        } catch (NumberFormatException e) {
+                                            Log.e(TAG, "onHandleIntent: ", e);
+                                        }
+
+                                    } else if (obj.getBoolean("fahrenheit")) {
+                                        try {
+                                            Double fTemp = Double.parseDouble(obs.getValue());
+                                            Double cTemp = ((fTemp - 32) * 5 / 9);
+
+                                            if (obs.getOpenmrsObsId() != null && !obs.getOpenmrsObsId().equals(0)) {
+
+                                                check = updateObs(UuidDictionary.TEMPERATURE, String.valueOf(cTemp),
+                                                        obs.getOpenmrsObsId(), encounterVitals);
+                                                if (!check) check_all = false;
+                                            } else {
+                                                check = createObs(encounterVitals, UuidDictionary.TEMPERATURE, String.valueOf(cTemp),
+                                                        String.valueOf(obs.getConceptId()));
+                                                if (!check) check_all = false;
+                                            }
+                                        } catch (NumberFormatException e) {
+                                            Log.e(TAG, "onHandleIntent: ", e);
+                                        }
                                     }
-                                } catch (NumberFormatException e) {
-                                    Log.e(TAG, "onHandleIntent: ", e);
+
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
                             }
                             break;
@@ -451,16 +460,6 @@ public class UpdateVisitService extends IntentService {
                                 }
                                 break;
                             }
-                            case ConceptId.RESPIRATORY: {
-                                if (!value.equals("0")) {
-                                    obs.setConceptId(concept_id);
-                                    obs.setValue(value);
-                                    obs.setOpenmrsObsId(obs_id);
-                                    obs.setOpenmrsEncounterId(encounter_id);
-                                    obsArrayList.add(obs);
-                                }
-                                break;
-                            }
                             case ConceptId.SPO2: {
                                 if (!value.equals("0")) {
                                     obs.setConceptId(concept_id);
@@ -509,9 +508,7 @@ public class UpdateVisitService extends IntentService {
                 } while (obsCursor.moveToNext());
             }
             obsCursor.close();
-        } catch (SQLException e)
-
-        {
+        } catch (SQLException e) {
             Log.d(TAG, "queryObsTable: " + e.getMessage());
         }
 
@@ -544,7 +541,7 @@ public class UpdateVisitService extends IntentService {
             return false;
         } else {
             Log.d(TAG, responseObs.getResponseString());
-            Log.d(TAG, responseObs.getResponseObject());
+            Log.d(TAG, responseObs.getResponseObject().toString());
 
             if (visitId != null && concept_id != null) {
 
@@ -607,7 +604,7 @@ public class UpdateVisitService extends IntentService {
             Log.d(TAG, "Obs Update posting was successful");
 
             Log.d(TAG, responseObs.getResponseString());
-            Log.d(TAG, responseObs.getResponseObject());
+            Log.d(TAG, responseObs.getResponseObject().toString());
 
             String obsUpdateSelection = "openmrs_obs_id = ?";
 

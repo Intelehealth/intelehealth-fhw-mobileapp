@@ -1,6 +1,7 @@
 package io.intelehealth.client.activities.vitals_activity;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -9,29 +10,38 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.complaint_node_activity.ComplaintNodeActivity;
+import io.intelehealth.client.activities.family_history_activity.FamilyHistoryActivity;
+import io.intelehealth.client.activities.past_medical_history_activity.PastMedicalHistoryActivity;
 import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
+import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.TableExam;
 import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.HelperMethods;
+import io.intelehealth.client.utilities.UuidDictionary;
 
 /**
  * Records the patient vitals in the {@link TableExam} container.
@@ -39,7 +49,7 @@ import io.intelehealth.client.utilities.HelperMethods;
 public class VitalsActivity extends AppCompatActivity {
 
 
-    EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp;
+    EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mSpo2, mBMI;
     Long obsID;
     final String TAG = VitalsActivity.class.getSimpleName();
     int flag_height = 0, flag_weight = 0;
@@ -51,8 +61,6 @@ public class VitalsActivity extends AppCompatActivity {
     String intentTag;
     String heightvalue;
     String weightvalue;
-    //    Respiratory added by mahiti dev team
-    String respiratory;
 
     String maxh = "272";
     String maxw = "150";
@@ -61,13 +69,15 @@ public class VitalsActivity extends AppCompatActivity {
     String maxbpdys = "150";
     String minbpdys = "30";
     String maxpulse = "200";
-    String minpulse = "30";
-    String maxte = "48";
+    String minpulse = "26";
+    String maxte = "47";
     String minte = "26";
+
+    String mintemf = "80";
+    String maxtemf = "120";
+
     String maxspo2 = "100";
     String minspo2 = "1";
-    String maxresp = "80";
-    String minresp = "10";
 
 
     ArrayList<String> physicalExams;
@@ -77,7 +87,6 @@ public class VitalsActivity extends AppCompatActivity {
 
     TableExam results = new TableExam();
 
-    String mFileName = "vital_config.json";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,96 +117,48 @@ public class VitalsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_vitals);
         setTitle(R.string.title_activity_vitals);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
 
         setTitle(patientName + ": " + getTitle());
 
-        mHeight = findViewById(R.id.table_height);
-        mWeight = findViewById(R.id.table_weight);
-        mPulse = findViewById(R.id.table_pulse);
-        mBpSys = findViewById(R.id.table_bpsys);
-        mBpDia = findViewById(R.id.table_bpdia);
-        mTemperature = findViewById(R.id.table_temp);
-        mSpo2 = findViewById(R.id.table_spo2);
+        mHeight = (EditText) findViewById(R.id.table_height);
+        mWeight = (EditText) findViewById(R.id.table_weight);
+        mPulse = (EditText) findViewById(R.id.table_pulse);
+        mBpSys = (EditText) findViewById(R.id.table_bpsys);
+        mBpDia = (EditText) findViewById(R.id.table_bpdia);
+        mTemperature = (EditText) findViewById(R.id.table_temp);
 
-        mBMI = findViewById(R.id.table_bmi);
-//    Respiratory added by mahiti dev team
 
-        mtempfaren = findViewById(R.id.table_temp_fare);
-        mResp = findViewById(R.id.table_respiratory);
+        mSpo2 = (EditText) findViewById(R.id.table_spo2);
+
+        mBMI = (EditText) findViewById(R.id.table_bmi);
+
 
         mBMI.setEnabled(false);
 
-        //Check for license key and load the correct config file
+        if (intentTag != null && intentTag.equals("edit")) {
+            loadPrevious();
+        }
+
         try {
+            JSONObject obj = null;
+            obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, "vital_config.json")));
 
-            JSONObject obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, "vital_config.json"))); //Load the config file
-            //Display the fields on the Add Patient screen as per the config file
-            if (obj.getBoolean("height")) {
-                mHeight.setVisibility(View.VISIBLE);
-            } else {
-                mHeight.setVisibility(View.GONE);
-            }
-            if (obj.getBoolean("weight")) {
-                mWeight.setVisibility(View.VISIBLE);
-            } else {
-                mWeight.setVisibility(View.GONE);
-            }
-            if (obj.getBoolean("pulse")) {
-                mPulse.setVisibility(View.VISIBLE);
-            } else {
-                mPulse.setVisibility(View.GONE);
-            }
-            if (obj.getBoolean("bpSys")) {
-                mBpSys.setVisibility(View.VISIBLE);
-            } else {
-                mBpSys.setVisibility(View.GONE);
-            }
-            if (obj.getBoolean("bpDia")) {
-                mBpDia.setVisibility(View.VISIBLE);
-            } else {
-                mBpDia.setVisibility(View.GONE);
-            }
-            if (obj.getBoolean("temperature")) {
-                if (obj.getBoolean("celsius")) {
-                    mTemperature.setVisibility(View.VISIBLE);
-                } else {
-                    mTemperature.setVisibility(View.GONE);
-                }
-                if (obj.getBoolean("fahrenheit")) {
-                    mtempfaren.setVisibility(View.VISIBLE);
-                } else {
-                    mtempfaren.setVisibility(View.GONE);
-                }
-            } else {
-                mTemperature.setVisibility(View.GONE);
-            }
-            if (obj.getBoolean("Spo2")) {
-                mSpo2.setVisibility(View.VISIBLE);
-            } else {
-                mSpo2.setVisibility(View.GONE);
-            }
-            if (obj.getBoolean("BMI")) {
-                mBMI.setVisibility(View.VISIBLE);
-            } else {
-                mBMI.setVisibility(View.GONE);
-            }
+            if (obj.getBoolean("celcius")) {
 
-            if (obj.getBoolean("respiratory_rate")) {
-                mResp.setVisibility(View.VISIBLE);
-            } else {
-                mResp.setVisibility(View.GONE);
+                mTemperature = (EditText) findViewById(R.id.table_temp);
+                findViewById(R.id.table_temp_faren).setVisibility(View.GONE);
+
+            } else if (obj.getBoolean("fahrenheit")) {
+
+                mTemperature = (EditText) findViewById(R.id.table_temp_faren);
+                findViewById(R.id.table_temp).setVisibility(View.GONE);
             }
         } catch (JSONException e) {
             e.printStackTrace();
-        }
-
-
-        if (intentTag != null && intentTag.equals("edit")) {
-            loadPrevious();
         }
 
         mHeight.addTextChangedListener(new TextWatcher() {
@@ -303,13 +264,35 @@ public class VitalsActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().length() > 0) {
-                    if (Double.valueOf(s.toString()) > Double.valueOf(maxte) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(minte)) {
-                        mTemperature.setError(getString(R.string.temp_error, minte, maxte));
-                    } else {
-                        mTemperature.setError(null);
+
+                try {
+                    JSONObject obj = null;
+                    obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(VitalsActivity.this, "vital_config.json")));
+
+                    if (obj.getBoolean("celcius")) {
+                        if (s.toString().trim().length() > 0) {
+                            if (Double.valueOf(s.toString()) > Double.valueOf(maxte) ||
+                                    Double.valueOf(s.toString()) < Double.valueOf(minte)) {
+                                mTemperature.setError(getString(R.string.temp_error, minte, maxte));
+                            } else {
+                                mTemperature.setError(null);
+                            }
+
+                        }
+                    } else if (obj.getBoolean("fahrenheit")) {
+                        if (s.toString().trim().length() > 0) {
+                            if (Double.valueOf(s.toString()) > Double.valueOf(maxtemf) ||
+                                    Double.valueOf(s.toString()) < Double.valueOf(mintemf)) {
+                                mTemperature.setError(getString(R.string.temp_error, mintemf, maxtemf));
+                            } else {
+                                mTemperature.setError(null);
+                            }
+                        }
+
                     }
+                } catch (
+                        JSONException e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -319,104 +302,85 @@ public class VitalsActivity extends AppCompatActivity {
             }
         });
 
-        mResp.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        mPulse.addTextChangedListener(new
 
-            }
+                                              TextWatcher() {
+                                                  @Override
+                                                  public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().length() > 0) {
-                    if (Double.valueOf(s.toString()) > Double.valueOf(maxresp) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(minresp)) {
-                        mResp.setError(getString(R.string.temp_error, minresp, maxresp));
-                    } else {
-                        mResp.setError(null);
-                    }
-                }
-            }
+                                                  }
 
-            @Override
-            public void afterTextChanged(Editable s) {
+                                                  @Override
+                                                  public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                                      if (s.toString().trim().length() > 0) {
+                                                          if (Double.valueOf(s.toString()) > Double.valueOf(maxpulse) ||
+                                                                  Double.valueOf(s.toString()) < Double.valueOf(minpulse)) {
+                                                              mPulse.setError(getString(R.string.pulse_error, minpulse, maxpulse));
+                                                          } else {
+                                                              mPulse.setError(null);
+                                                          }
+                                                      }
+                                                  }
 
-            }
-        });
+                                                  @Override
+                                                  public void afterTextChanged(Editable s) {
 
+                                                  }
+                                              });
 
-        mPulse.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        mBpSys.addTextChangedListener(new
 
-            }
+                                              TextWatcher() {
+                                                  @Override
+                                                  public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().length() > 0) {
-                    if (Double.valueOf(s.toString()) > Double.valueOf(maxpulse) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(minpulse)) {
-                        mPulse.setError(getString(R.string.pulse_error, minpulse, maxpulse));
-                    } else {
-                        mPulse.setError(null);
-                    }
-                }
-            }
+                                                  }
 
-            @Override
-            public void afterTextChanged(Editable s) {
+                                                  @Override
+                                                  public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                                      if (s.toString().trim().length() > 0) {
+                                                          if (Double.valueOf(s.toString()) > Double.valueOf(maxbpsys) ||
+                                                                  Double.valueOf(s.toString()) < Double.valueOf(minbpsys)) {
+                                                              mBpSys.setError(getString(R.string.bpsys_error, minbpsys, maxbpsys));
+                                                          } else {
+                                                              mBpSys.setError(null);
+                                                          }
+                                                      }
+                                                  }
 
-            }
-        });
+                                                  @Override
+                                                  public void afterTextChanged(Editable s) {
 
-        mBpSys.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                                                  }
+                                              });
 
-            }
+        mBpDia.addTextChangedListener(new
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().length() > 0) {
-                    if (Double.valueOf(s.toString()) > Double.valueOf(maxbpsys) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(minbpsys)) {
-                        mBpSys.setError(getString(R.string.bpsys_error, minbpsys, maxbpsys));
-                    } else {
-                        mBpSys.setError(null);
-                    }
-                }
-            }
+                                              TextWatcher() {
+                                                  @Override
+                                                  public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            @Override
-            public void afterTextChanged(Editable s) {
+                                                  }
 
-            }
-        });
+                                                  @Override
+                                                  public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                                      if (s.toString().trim().length() > 0) {
+                                                          if (Double.valueOf(s.toString()) > Double.valueOf(maxbpdys) ||
+                                                                  Double.valueOf(s.toString()) < Double.valueOf(minbpdys)) {
+                                                              mBpDia.setError(getString(R.string.bpdia_error, minbpdys, maxbpdys));
+                                                          } else {
+                                                              mBpDia.setError(null);
+                                                          }
+                                                      }
+                                                  }
 
-        mBpDia.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                                                  @Override
+                                                  public void afterTextChanged(Editable s) {
 
-            }
+                                                  }
+                                              });
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().length() > 0) {
-                    if (Double.valueOf(s.toString()) > Double.valueOf(maxbpdys) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(minbpdys)) {
-                        mBpDia.setError(getString(R.string.bpdia_error, minbpdys, maxbpdys));
-                    } else {
-                        mBpDia.setError(null);
-                    }
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -481,10 +445,6 @@ public class VitalsActivity extends AppCompatActivity {
             case ConceptId.TEMPERATURE: //Temperature
                 mTemperature.setText(value);
                 break;
-            //    Respiratory added by mahiti dev team
-            case ConceptId.RESPIRATORY: //Respiratory
-                mResp.setText(value);
-                break;
             case ConceptId.SPO2: //SpO2
                 mSpo2.setText(value);
                 break;
@@ -506,7 +466,6 @@ public class VitalsActivity extends AppCompatActivity {
         values.add(mBpSys);
         values.add(mBpDia);
         values.add(mTemperature);
-        values.add(mResp);
         values.add(mSpo2);
 
         // Check to see if values were inputted.
@@ -602,15 +561,37 @@ public class VitalsActivity extends AppCompatActivity {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
-                    if ((Double.parseDouble(abc1) > Double.parseDouble(maxte)) ||
-                            (Double.parseDouble(abc1) < Double.parseDouble(minte))) {
-                        et.setError(getString(R.string.temp_error, minte, maxte));
-                        focusView = et;
-                        cancel = true;
-                        break;
-                    } else {
-                        cancel = false;
+
+                    try {
+                        JSONObject obj = null;
+                        obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, "vital_config.json")));
+
+                        if (obj.getBoolean("celcius")) {
+                            if ((Double.parseDouble(abc1) > Double.parseDouble(maxte)) ||
+                                    (Double.parseDouble(abc1) < Double.parseDouble(minte))) {
+                                et.setError(getString(R.string.temp_error, minte, maxte));
+                                focusView = et;
+                                cancel = true;
+                                break;
+                            } else {
+                                cancel = false;
+                            }
+                        } else if (obj.getBoolean("fahrenheit")) {
+                            if ((Double.parseDouble(abc1) > Double.parseDouble(maxtemf)) ||
+                                    (Double.parseDouble(abc1) < Double.parseDouble(mintemf))) {
+                                et.setError(getString(R.string.temp_error, mintemf, maxtemf));
+                                focusView = et;
+                                cancel = true;
+                                break;
+                            } else {
+                                cancel = false;
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
+
+
 //       }
                 } else {
                     cancel = false;
@@ -659,9 +640,6 @@ public class VitalsActivity extends AppCompatActivity {
                 if (mTemperature.getText() != null) {
                     results.setTemperature((mTemperature.getText().toString()));
                 }
-                if (mResp.getText() != null) {
-                    results.setResp((mResp.getText().toString()));
-                }
                 if (mSpo2.getText() != null) {
                     results.setSpo2((mSpo2.getText().toString()));
                 }
@@ -681,8 +659,6 @@ public class VitalsActivity extends AppCompatActivity {
             updateDatabase(results.getBpsys(), ConceptId.SYSTOLIC_BP);
             updateDatabase(results.getBpdia(), ConceptId.DIASTOLIC_BP);
             updateDatabase(results.getTemperature(), ConceptId.TEMPERATURE);
-            //    Respiratory added by mahiti dev team
-            updateDatabase(results.getResp(), ConceptId.RESPIRATORY);
             updateDatabase(results.getSpo2(), ConceptId.SPO2);
             Intent intent = new Intent(VitalsActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientID", patientID);
@@ -699,8 +675,6 @@ public class VitalsActivity extends AppCompatActivity {
             insertDb(results.getBpsys(), ConceptId.SYSTOLIC_BP);
             insertDb(results.getBpdia(), ConceptId.DIASTOLIC_BP);
             insertDb(results.getTemperature(), ConceptId.TEMPERATURE);
-            //    Respiratory added by mahiti dev team
-            insertDb(results.getResp(), ConceptId.RESPIRATORY);
             insertDb(results.getSpo2(), ConceptId.SPO2);
             Intent intent = new Intent(VitalsActivity.this, ComplaintNodeActivity.class);
 

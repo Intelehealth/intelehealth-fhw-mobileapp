@@ -14,8 +14,6 @@ public class ConceptId {
     public static final int SYSTOLIC_BP = 5085;
     public static final int DIASTOLIC_BP = 5086;
     public static final int TEMPERATURE = 5088;
-    //    Respiratory added as per a concept id
-    public static final int RESPIRATORY = 5242;
     public static final int SPO2 = 5092;
     public static final int RHK_MEDICAL_HISTORY_BLURB = 163210;
     public static final int RHK_FAMILY_HISTORY_BLURB = 163211;

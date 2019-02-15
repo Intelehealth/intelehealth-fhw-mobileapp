@@ -16,8 +16,6 @@ public class UuidDictionary {
     public static final String SYSTOLIC_BP = "5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     public static final String DIASTOLIC_BP = "5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     public static final String TEMPERATURE = "5088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-    //    Respiratory added by mahiti dev team
-    public static final String RESPIRATORY = "5242AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     public static final String SPO2 = "5092AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     public static final String RHK_MEDICAL_HISTORY_BLURB = "62bff84b-795a-45ad-aae1-80e7f5163a82";
     public static final String RHK_FAMILY_HISTORY_BLURB = "d63ae965-47fb-40e8-8f08-1f46a8a60b2b";
