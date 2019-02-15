@@ -363,6 +363,7 @@
     <string name="pulse_error">"Pulse should be in between %1$s and %2$s"</string>
     <string name="bpsys_error">"Systolic pressure should be in between %1$s and %2$s"</string>
     <string name="bpdia_error">"Diastolic pressure should be in between %1$s and %2$s"</string>
+    <string name="resp_error">"Respiratory rate should be in between %1$s and %2$s"</string>
     <string name="temp_error">"Temperature should be in between %1$s and %2$s"</string>
 
     <string name="not_provided">Not Provided</string>

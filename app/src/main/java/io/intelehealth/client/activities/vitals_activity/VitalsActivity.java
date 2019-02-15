@@ -165,7 +165,7 @@ public class VitalsActivity extends AppCompatActivity {
                 mBpDia.setVisibility(View.GONE);
             }
             if (obj.getBoolean("temperature")) {
-                if (obj.getBoolean("celcius")) {
+                if (obj.getBoolean("celsius")) {
 
                     mTemperature = (EditText) findViewById(R.id.table_temp);
                     findViewById(R.id.table_temp_faren).setVisibility(View.GONE);
@@ -310,7 +310,7 @@ public class VitalsActivity extends AppCompatActivity {
                     JSONObject obj = null;
                     obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(VitalsActivity.this, "vital_config.json")));
 
-                    if (obj.getBoolean("celcius")) {
+                    if (obj.getBoolean("celsius")) {
                         if (s.toString().trim().length() > 0) {
                             if (Double.valueOf(s.toString()) > Double.valueOf(maxte) ||
                                     Double.valueOf(s.toString()) < Double.valueOf(minte)) {
@@ -630,7 +630,7 @@ public class VitalsActivity extends AppCompatActivity {
                         JSONObject obj = null;
                         obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, "vital_config.json")));
 
-                        if (obj.getBoolean("celcius")) {
+                        if (obj.getBoolean("celsius")) {
                             if ((Double.parseDouble(abc1) > Double.parseDouble(maxte)) ||
                                     (Double.parseDouble(abc1) < Double.parseDouble(minte))) {
                                 et.setError(getString(R.string.temp_error, minte, maxte));
@@ -660,7 +660,24 @@ public class VitalsActivity extends AppCompatActivity {
                 } else {
                     cancel = false;
                 }
-            } else {
+            } else if (i == 6) {
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(maxresp)) ||
+                            (Double.parseDouble(abc1) < Double.parseDouble(minresp))) {
+                        et.setError(getString(R.string.resp_error, minresp, maxresp));
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+//       }
+                } else {
+                    cancel = false;
+                }
+            }else {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
