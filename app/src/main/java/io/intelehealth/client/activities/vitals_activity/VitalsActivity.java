@@ -64,6 +64,10 @@ public class VitalsActivity extends AppCompatActivity {
     String minpulse = "30";
     String maxte = "48";
     String minte = "26";
+
+    String mintemf = "80";
+    String maxtemf = "120";
+
     String maxspo2 = "100";
     String minspo2 = "1";
     String maxresp = "80";
@@ -126,7 +130,6 @@ public class VitalsActivity extends AppCompatActivity {
         mBMI = findViewById(R.id.table_bmi);
 //    Respiratory added by mahiti dev team
 
-        mtempfaren = findViewById(R.id.table_temp_fare);
         mResp = findViewById(R.id.table_respiratory);
 
         mBMI.setEnabled(false);
@@ -162,15 +165,15 @@ public class VitalsActivity extends AppCompatActivity {
                 mBpDia.setVisibility(View.GONE);
             }
             if (obj.getBoolean("temperature")) {
-                if (obj.getBoolean("celsius")) {
-                    mTemperature.setVisibility(View.VISIBLE);
-                } else {
-                    mTemperature.setVisibility(View.GONE);
-                }
-                if (obj.getBoolean("fahrenheit")) {
-                    mtempfaren.setVisibility(View.VISIBLE);
-                } else {
-                    mtempfaren.setVisibility(View.GONE);
+                if (obj.getBoolean("celcius")) {
+
+                    mTemperature = (EditText) findViewById(R.id.table_temp);
+                    findViewById(R.id.table_temp_faren).setVisibility(View.GONE);
+
+                } else if (obj.getBoolean("fahrenheit")) {
+
+                    mTemperature = (EditText) findViewById(R.id.table_temp_faren);
+                    findViewById(R.id.table_temp).setVisibility(View.GONE);
                 }
             } else {
                 mTemperature.setVisibility(View.GONE);
@@ -303,13 +306,34 @@ public class VitalsActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().length() > 0) {
-                    if (Double.valueOf(s.toString()) > Double.valueOf(maxte) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(minte)) {
-                        mTemperature.setError(getString(R.string.temp_error, minte, maxte));
-                    } else {
-                        mTemperature.setError(null);
+                try {
+                    JSONObject obj = null;
+                    obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(VitalsActivity.this, "vital_config.json")));
+
+                    if (obj.getBoolean("celcius")) {
+                        if (s.toString().trim().length() > 0) {
+                            if (Double.valueOf(s.toString()) > Double.valueOf(maxte) ||
+                                    Double.valueOf(s.toString()) < Double.valueOf(minte)) {
+                                mTemperature.setError(getString(R.string.temp_error, minte, maxte));
+                            } else {
+                                mTemperature.setError(null);
+                            }
+
+                        }
+                    } else if (obj.getBoolean("fahrenheit")) {
+                        if (s.toString().trim().length() > 0) {
+                            if (Double.valueOf(s.toString()) > Double.valueOf(maxtemf) ||
+                                    Double.valueOf(s.toString()) < Double.valueOf(mintemf)) {
+                                mTemperature.setError(getString(R.string.temp_error, mintemf, maxtemf));
+                            } else {
+                                mTemperature.setError(null);
+                            }
+                        }
+
                     }
+                } catch (
+                        JSONException e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -602,15 +626,36 @@ public class VitalsActivity extends AppCompatActivity {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
-                    if ((Double.parseDouble(abc1) > Double.parseDouble(maxte)) ||
-                            (Double.parseDouble(abc1) < Double.parseDouble(minte))) {
-                        et.setError(getString(R.string.temp_error, minte, maxte));
-                        focusView = et;
-                        cancel = true;
-                        break;
-                    } else {
-                        cancel = false;
+                    try {
+                        JSONObject obj = null;
+                        obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, "vital_config.json")));
+
+                        if (obj.getBoolean("celcius")) {
+                            if ((Double.parseDouble(abc1) > Double.parseDouble(maxte)) ||
+                                    (Double.parseDouble(abc1) < Double.parseDouble(minte))) {
+                                et.setError(getString(R.string.temp_error, minte, maxte));
+                                focusView = et;
+                                cancel = true;
+                                break;
+                            } else {
+                                cancel = false;
+                            }
+                        } else if (obj.getBoolean("fahrenheit")) {
+                            if ((Double.parseDouble(abc1) > Double.parseDouble(maxtemf)) ||
+                                    (Double.parseDouble(abc1) < Double.parseDouble(mintemf))) {
+                                et.setError(getString(R.string.temp_error, mintemf, maxtemf));
+                                focusView = et;
+                                cancel = true;
+                                break;
+                            } else {
+                                cancel = false;
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
+
+
 //       }
                 } else {
                     cancel = false;

@@ -209,7 +209,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/table_temp_fare"
+                    android:id="@+id/table_temp_faren"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Temperature (F)"
