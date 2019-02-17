@@ -347,28 +347,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        //Read the data from assest android assests key and load the correct config file
-        try {
-            JSONObject vital_conf = null;
-//                vital_conf = new JSONObject(HelperMethods.readFileRoot("vital_config.json", this)); //Load the config file
 
-            vital_conf = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, "vital_config.json")));
-
-            String height_en = vital_conf.getString("height");
-            String weight_en = vital_conf.getString("weight");
-            String pulse_en = vital_conf.getString("pulse");
-            String bpSys_en = vital_conf.getString("bpSys");
-            String bpDia_en = vital_conf.getString("bpDia");
-            String temperature_en = vital_conf.getString("temperature");
-            String Spo2_en = vital_conf.getString("Spo2");
-            String BMI_en = vital_conf.getString("BMI");
-            String celsius_en = vital_conf.getString("celsius");
-            String fahrenheit_en = vital_conf.getString("fahrenheit");
-            String respiratory_rate_en = vital_conf.getString("respiratory_rate");
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
         setTitle(R.string.title_activity_patient_summary);
         setTitle(patientName + ": " + getTitle());
@@ -656,13 +635,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
         tempcel=(TextView)findViewById(R.id.textView_temp);
         try {
             JSONObject obj = null;
-            obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, "vital_config.json")));
+            obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, mFileName)));
 
-            if (obj.getBoolean("celsius")) {
+            if (obj.getBoolean("mCelsius")) {
                 tempcel.setVisibility(View.VISIBLE);
                 tempfaren.setVisibility(View.GONE);
 
-            } else if (obj.getBoolean("fahrenheit")) {
+            } else if (obj.getBoolean("mFahrenheit")) {
                 tempfaren.setVisibility(View.VISIBLE);
                 tempcel.setVisibility(View.GONE);
             }

@@ -81,7 +81,7 @@ public class VitalsActivity extends AppCompatActivity {
 
     TableExam results = new TableExam();
 
-    String mFileName = "vital_config.json";
+    String mFileName = "config.json";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,40 +137,40 @@ public class VitalsActivity extends AppCompatActivity {
         //Check for license key and load the correct config file
         try {
 
-            JSONObject obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, "vital_config.json"))); //Load the config file
+            JSONObject obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, mFileName))); //Load the config file
             //Display the fields on the Add Patient screen as per the config file
-            if (obj.getBoolean("height")) {
+            if (obj.getBoolean("mHeight")) {
                 mHeight.setVisibility(View.VISIBLE);
             } else {
                 mHeight.setVisibility(View.GONE);
             }
-            if (obj.getBoolean("weight")) {
+            if (obj.getBoolean("mWeight")) {
                 mWeight.setVisibility(View.VISIBLE);
             } else {
                 mWeight.setVisibility(View.GONE);
             }
-            if (obj.getBoolean("pulse")) {
+            if (obj.getBoolean("mPulse")) {
                 mPulse.setVisibility(View.VISIBLE);
             } else {
                 mPulse.setVisibility(View.GONE);
             }
-            if (obj.getBoolean("bpSys")) {
+            if (obj.getBoolean("mBpSys")) {
                 mBpSys.setVisibility(View.VISIBLE);
             } else {
                 mBpSys.setVisibility(View.GONE);
             }
-            if (obj.getBoolean("bpDia")) {
+            if (obj.getBoolean("mBpDia")) {
                 mBpDia.setVisibility(View.VISIBLE);
             } else {
                 mBpDia.setVisibility(View.GONE);
             }
-            if (obj.getBoolean("temperature")) {
-                if (obj.getBoolean("celsius")) {
+            if (obj.getBoolean("mTemperature")) {
+                if (obj.getBoolean("mCelsius")) {
 
                     mTemperature = (EditText) findViewById(R.id.table_temp);
                     findViewById(R.id.table_temp_faren).setVisibility(View.GONE);
 
-                } else if (obj.getBoolean("fahrenheit")) {
+                } else if (obj.getBoolean("mFahrenheit")) {
 
                     mTemperature = (EditText) findViewById(R.id.table_temp_faren);
                     findViewById(R.id.table_temp).setVisibility(View.GONE);
@@ -178,18 +178,18 @@ public class VitalsActivity extends AppCompatActivity {
             } else {
                 mTemperature.setVisibility(View.GONE);
             }
-            if (obj.getBoolean("Spo2")) {
+            if (obj.getBoolean("mSpo2")) {
                 mSpo2.setVisibility(View.VISIBLE);
             } else {
                 mSpo2.setVisibility(View.GONE);
             }
-            if (obj.getBoolean("BMI")) {
+            if (obj.getBoolean("mBMI")) {
                 mBMI.setVisibility(View.VISIBLE);
             } else {
                 mBMI.setVisibility(View.GONE);
             }
 
-            if (obj.getBoolean("respiratory_rate")) {
+            if (obj.getBoolean("mResp")) {
                 mResp.setVisibility(View.VISIBLE);
             } else {
                 mResp.setVisibility(View.GONE);
@@ -308,9 +308,9 @@ public class VitalsActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 try {
                     JSONObject obj = null;
-                    obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(VitalsActivity.this, "vital_config.json")));
+                    obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(VitalsActivity.this, mFileName)));
 
-                    if (obj.getBoolean("celsius")) {
+                    if (obj.getBoolean("mCelsius")) {
                         if (s.toString().trim().length() > 0) {
                             if (Double.valueOf(s.toString()) > Double.valueOf(maxte) ||
                                     Double.valueOf(s.toString()) < Double.valueOf(minte)) {
@@ -320,7 +320,7 @@ public class VitalsActivity extends AppCompatActivity {
                             }
 
                         }
-                    } else if (obj.getBoolean("fahrenheit")) {
+                    } else if (obj.getBoolean("mFahrenheit")) {
                         if (s.toString().trim().length() > 0) {
                             if (Double.valueOf(s.toString()) > Double.valueOf(maxtemf) ||
                                     Double.valueOf(s.toString()) < Double.valueOf(mintemf)) {
@@ -628,9 +628,9 @@ public class VitalsActivity extends AppCompatActivity {
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
                     try {
                         JSONObject obj = null;
-                        obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, "vital_config.json")));
+                        obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, mFileName)));
 
-                        if (obj.getBoolean("celsius")) {
+                        if (obj.getBoolean("mCelsius")) {
                             if ((Double.parseDouble(abc1) > Double.parseDouble(maxte)) ||
                                     (Double.parseDouble(abc1) < Double.parseDouble(minte))) {
                                 et.setError(getString(R.string.temp_error, minte, maxte));
@@ -640,7 +640,7 @@ public class VitalsActivity extends AppCompatActivity {
                             } else {
                                 cancel = false;
                             }
-                        } else if (obj.getBoolean("fahrenheit")) {
+                        } else if (obj.getBoolean("mFahrenheit")) {
                             if ((Double.parseDouble(abc1) > Double.parseDouble(maxtemf)) ||
                                     (Double.parseDouble(abc1) < Double.parseDouble(mintemf))) {
                                 et.setError(getString(R.string.temp_error, mintemf, maxtemf));

@@ -915,14 +915,14 @@ public class ClientService extends IntentService {
         if (temperature.getValue() != null && !temperature.getValue().trim().isEmpty()) {
             try {
                 JSONObject obj = null;
-                obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, "vital_config.json")));
+                obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, "config.json")));
 
-                if (obj.getBoolean("celsius")) {
+                if (obj.getBoolean("mCelsius")) {
                     Double fTemp = Double.parseDouble(temperature.getValue());
                     Log.i(TAG, "uploadEncounterVitals: " + fTemp + "//" + fTemp);
                     formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.TEMPERATURE + quote + "," +
                             quote + "value" + quote + ":" + String.valueOf(fTemp) + "},";
-                } else if (obj.getBoolean("fahrenheit")) {
+                } else if (obj.getBoolean("mFahrenheit")) {
                     Double fTemp = Double.parseDouble(temperature.getValue());
                     Double cTemp = ((fTemp - 32) * 5 / 9);
                     Log.i(TAG, "uploadEncounterVitals: " + cTemp + "//" + cTemp);
