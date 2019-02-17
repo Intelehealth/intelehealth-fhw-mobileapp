@@ -83,6 +83,9 @@ public class VitalsActivity extends AppCompatActivity {
 
     String mFileName = "config.json";
 
+    boolean hasLicense = false;
+    SharedPreferences.Editor e;
+    SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -134,10 +137,18 @@ public class VitalsActivity extends AppCompatActivity {
 
         mBMI.setEnabled(false);
 
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (sharedPreferences.contains("licensekey"))
+            hasLicense = true;
         //Check for license key and load the correct config file
         try {
+            JSONObject obj = null;
+            if (hasLicense) {
+                obj = new JSONObject(HelperMethods.readFileRoot(mFileName, this)); //Load the config file
 
-            JSONObject obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, mFileName))); //Load the config file
+            }else {
+                obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, mFileName)));
+            }//Load the config file
             //Display the fields on the Add Patient screen as per the config file
             if (obj.getBoolean("mHeight")) {
                 mHeight.setVisibility(View.VISIBLE);
