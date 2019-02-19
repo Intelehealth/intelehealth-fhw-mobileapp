@@ -115,6 +115,10 @@ public class ClientService extends IntentService {
     public ClientService() {
         super(TAG);
     }
+    String mFileName="config.json";
+    boolean hasLicense = false;
+    SharedPreferences.Editor e;
+    SharedPreferences sharedPreferences;
 
 
     @Override
@@ -125,6 +129,12 @@ public class ClientService extends IntentService {
         Boolean success = false;
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         db = mDbHelper.getWritableDatabase();
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (sharedPreferences.contains("licensekey"))
+            hasLicense = true;
+        //Check for license key and load the correct config file
+
 
         if (NetworkConnection.isOnline(this)) {
             String serviceCall = intent.getStringExtra("serviceCall");
@@ -915,8 +925,11 @@ public class ClientService extends IntentService {
         if (temperature.getValue() != null && !temperature.getValue().trim().isEmpty()) {
             try {
                 JSONObject obj = null;
-                obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, "config.json")));
-
+                if (hasLicense) {
+                    obj = new JSONObject(HelperMethods.readFileRoot(mFileName, this)); //Load the config file
+                }else {
+                    obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, mFileName)));
+                }
                 if (obj.getBoolean("mCelsius")) {
                     Double fTemp = Double.parseDouble(temperature.getValue());
                     Log.i(TAG, "uploadEncounterVitals: " + fTemp + "//" + fTemp);

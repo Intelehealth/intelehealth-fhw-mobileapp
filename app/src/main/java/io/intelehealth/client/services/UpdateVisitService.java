@@ -5,10 +5,12 @@ import android.app.NotificationManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -64,6 +66,9 @@ public class UpdateVisitService extends IntentService {
     ArrayList<Obs> obsArrayList; //Contains Obs that are updatable
 
     private static final String TAG = UpdateVisitService.class.getSimpleName();
+    boolean hasLicense = false;
+    SharedPreferences.Editor e;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -137,7 +142,10 @@ public class UpdateVisitService extends IntentService {
 
             boolean check = true;
             boolean check_all = true;
-
+            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            if (sharedPreferences.contains("licensekey"))
+                hasLicense = true;
+            //Check for license key and load the correct config file
             if (obsArrayList != null && !obsArrayList.isEmpty()) {
                 for (Obs obs : obsArrayList) {
 
@@ -209,8 +217,12 @@ public class UpdateVisitService extends IntentService {
                             if (obs.getValue() != null && !obs.getValue().trim().isEmpty()) {
                                 try {
                                     JSONObject obj = null;
-                                    obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, "config.json")));
-
+                                    String mFileName="config.json";
+                                    if (hasLicense) {
+                                        obj = new JSONObject(HelperMethods.readFileRoot(mFileName, this)); //Load the config file
+                                    }else {
+                                        obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, mFileName)));
+                                    }
                                     if (obj.getBoolean("mCelsius")) {
                                         try {
                                             Double fTemp = Double.parseDouble(obs.getValue());

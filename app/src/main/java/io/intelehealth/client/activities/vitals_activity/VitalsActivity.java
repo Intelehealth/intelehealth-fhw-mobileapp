@@ -145,7 +145,6 @@ public class VitalsActivity extends AppCompatActivity {
             JSONObject obj = null;
             if (hasLicense) {
                 obj = new JSONObject(HelperMethods.readFileRoot(mFileName, this)); //Load the config file
-
             }else {
                 obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, mFileName)));
             }//Load the config file
@@ -319,7 +318,10 @@ public class VitalsActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 try {
                     JSONObject obj = null;
-                    obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(VitalsActivity.this, mFileName)));
+                    if (hasLicense)
+                        obj = new JSONObject(HelperMethods.readFileRoot(mFileName, VitalsActivity.this)); //Load the config file
+                    else
+                        obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(VitalsActivity.this, mFileName)));
 
                     if (obj.getBoolean("mCelsius")) {
                         if (s.toString().trim().length() > 0) {
@@ -639,7 +641,10 @@ public class VitalsActivity extends AppCompatActivity {
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
                     try {
                         JSONObject obj = null;
-                        obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, mFileName)));
+                        if (hasLicense)
+                            obj = new JSONObject(HelperMethods.readFileRoot(mFileName, this)); //Load the config file
+                        else
+                            obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, mFileName)));
 
                         if (obj.getBoolean("mCelsius")) {
                             if ((Double.parseDouble(abc1) > Double.parseDouble(maxte)) ||
