@@ -319,20 +319,13 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
 
-        //TODO: Change this back for other deployments
-        // mMiddleName.setVisibility(View.GONE);  //prajwal commented
-        // mAddress1.setVisibility(View.GONE);
-        // mAddress2.setVisibility(View.GONE);
-        //mRelationship.setVisibility(View.GONE);
-        //mPostal.setVisibility(View.GONE);
-
          /*
         The patient's picture will be taken here and then stored using the method below.
         This picture will then be displayed right after, allowing the user to verify the picture was well taken.
         */
         mImageView = (ImageView) findViewById(R.id.imageview_id_picture);
 
-        //setting the fields when user clikcs edit details
+        //setting the fields when user clicks edit details
         mFirstName.setText(patient1.getFirstName());
         mMiddleName.setText(patient1.getMiddleName());
         mLastName.setText(patient1.getLastName());
