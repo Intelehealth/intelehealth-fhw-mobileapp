@@ -148,7 +148,7 @@ public class VitalsActivity extends AppCompatActivity {
             }else {
                 obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, mFileName)));
             }//Load the config file
-            //Display the fields on the Add Patient screen as per the config file
+            //Display the fields on the Vitals screen as per the config file
             if (obj.getBoolean("mHeight")) {
                 mHeight.setVisibility(View.VISIBLE);
             } else {
