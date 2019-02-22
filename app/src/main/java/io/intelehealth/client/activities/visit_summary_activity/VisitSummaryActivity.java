@@ -348,7 +348,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
 
-
         setTitle(R.string.title_activity_patient_summary);
         setTitle(patientName + ": " + getTitle());
 
@@ -631,12 +630,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
         tempView = findViewById(R.id.textView_temp_value);
 
 //        textView_temp
-        tempfaren=(TextView) findViewById(R.id.textView_temp_faren);
-        tempcel=(TextView)findViewById(R.id.textView_temp);
+        tempfaren = (TextView) findViewById(R.id.textView_temp_faren);
+        tempcel = (TextView) findViewById(R.id.textView_temp);
         try {
             JSONObject obj = null;
-            obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, mFileName)));
-
+            if (hasLicense) {
+                obj = new JSONObject(HelperMethods.readFileRoot(mFileName, this)); //Load the config file
+            } else {
+                obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, mFileName)));
+            }
             if (obj.getBoolean("mCelsius")) {
                 tempcel.setVisibility(View.VISIBLE);
                 tempfaren.setVisibility(View.GONE);
@@ -1443,7 +1445,39 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mWeight = weight.getValue();
         mBP = bpSys.getValue() + "/" + bpDias.getValue();
         mPulse = pulse.getValue();
-        mTemp = temperature.getValue();
+        try {
+            JSONObject obj = null;
+            if (hasLicense) {
+                obj = new JSONObject(HelperMethods.readFileRoot(mFileName, this)); //Load the config file
+            } else {
+                obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, mFileName)));
+            }//Load the config file
+
+            if (obj.getBoolean("mTemperature")) {
+                if (obj.getBoolean("mCelsius")) {
+
+                    mTemp = "Temperature(C): " + temperature.getValue();
+
+                } else if (obj.getBoolean("mFahrenheit")) {
+
+                    mTemp = "Temperature(F): " + temperature.getValue();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//        if (temperature.getValue() != null) {
+//            if (Integer.parseInt(temperature.getValue()) > 80) {
+//                mTemp = "Temperature(F): " + temperature.getValue();
+//            } else {
+//                mTemp = "Temperature(C): " + temperature.getValue();
+//            }
+//        }else{
+//            mTemp="";
+//        }
+
+//        mTemp = temperature.getValue();
+
         mresp = resp.getValue();
         mSPO2 = spO2.getValue();
         String mComplaint = complaint.getValue();
@@ -1531,7 +1565,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\"><b>Address and Contact:</b> %s</p>" +
                                 "<b><p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p></b><br><br>" +
                                 "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
-                                "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height: %s | Weight: %s | BMI: %s | Blood Pressure: %s | Pulse: %s | Temperature: %s | SpO2: %s </p>" +
+                                "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(Cm): %s | Weight(Kg): %s | BMI: %s | Blood Pressure: %s | Pulse: %s | %s | Respiratory Rate: %s | SpO2: %s </p>" +
                                 "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
                                 "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p>" +
                                 "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
@@ -1551,7 +1585,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 "<b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b>" +
                                 "%s"
                         , heading, heading2, heading3, mPatientName, age, mGender, mSdw, address, mPatientOpenMRSID, mDate, mHeight, mWeight,
-                        mBMI, bp, mPulse, mTemp, mSPO2, pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, comments_web, followUp_web, doctor_web);
+                        mBMI, bp, mPulse, mTemp, mresp, mSPO2, pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, comments_web, followUp_web, doctor_web);
         webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
 
         // Keep a reference to WebView object until you pass the PrintDocumentAdapter
