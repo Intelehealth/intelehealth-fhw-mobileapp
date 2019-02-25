@@ -5,10 +5,12 @@ import android.app.NotificationManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -64,6 +66,9 @@ public class UpdateVisitService extends IntentService {
     ArrayList<Obs> obsArrayList; //Contains Obs that are updatable
 
     private static final String TAG = UpdateVisitService.class.getSimpleName();
+    boolean hasLicense = false;
+    SharedPreferences.Editor e;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -137,7 +142,10 @@ public class UpdateVisitService extends IntentService {
 
             boolean check = true;
             boolean check_all = true;
-
+            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            if (sharedPreferences.contains("licensekey"))
+                hasLicense = true;
+            //Check for license key and load the correct config file
             if (obsArrayList != null && !obsArrayList.isEmpty()) {
                 for (Obs obs : obsArrayList) {
 
@@ -208,15 +216,72 @@ public class UpdateVisitService extends IntentService {
                         case ConceptId.TEMPERATURE: {
                             if (obs.getValue() != null && !obs.getValue().trim().isEmpty()) {
                                 try {
+                                    JSONObject obj = null;
+                                    String mFileName="config.json";
+                                    if (hasLicense) {
+                                        obj = new JSONObject(HelperMethods.readFileRoot(mFileName, this)); //Load the config file
+                                    }else {
+                                        obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, mFileName)));
+                                    }
+                                    if (obj.getBoolean("mCelsius")) {
+                                        try {
+                                            Double fTemp = Double.parseDouble(obs.getValue());
+//                                            Double cTemp = ((fTemp - 32) * 5 / 9);
+
+                                            if (obs.getOpenmrsObsId() != null && !obs.getOpenmrsObsId().equals(0)) {
+
+                                                check = updateObs(UuidDictionary.TEMPERATURE, String.valueOf(fTemp),
+                                                        obs.getOpenmrsObsId(), encounterVitals);
+                                                if (!check) check_all = false;
+                                            } else {
+                                                check = createObs(encounterVitals, UuidDictionary.TEMPERATURE, String.valueOf(fTemp),
+                                                        String.valueOf(obs.getConceptId()));
+                                                if (!check) check_all = false;
+                                            }
+                                        } catch (NumberFormatException e) {
+                                            Log.e(TAG, "onHandleIntent: ", e);
+                                        }
+
+                                    } else if (obj.getBoolean("mFahrenheit")) {
+                                        try {
+                                            Double fTemp = Double.parseDouble(obs.getValue());
+                                            Double cTemp = ((fTemp - 32) * 5 / 9);
+
+                                            if (obs.getOpenmrsObsId() != null && !obs.getOpenmrsObsId().equals(0)) {
+
+                                                check = updateObs(UuidDictionary.TEMPERATURE, String.valueOf(cTemp),
+                                                        obs.getOpenmrsObsId(), encounterVitals);
+                                                if (!check) check_all = false;
+                                            } else {
+                                                check = createObs(encounterVitals, UuidDictionary.TEMPERATURE, String.valueOf(cTemp),
+                                                        String.valueOf(obs.getConceptId()));
+                                                if (!check) check_all = false;
+                                            }
+                                        } catch (NumberFormatException e) {
+                                            Log.e(TAG, "onHandleIntent: ", e);
+                                        }
+                                    }
+
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            break;
+                        }
+                        //    Respiratory added by mahiti dev team
+                        case ConceptId.RESPIRATORY: {
+                            if (obs.getValue() != null && !obs.getValue().trim().isEmpty()) {
+                                try {
                                     Double fTemp = Double.parseDouble(obs.getValue());
-                                    Double cTemp = ((fTemp - 32) * 5 / 9);
+//                                    Double cTemp = ((fTemp * 9 / 5) + 32);
                                     if (obs.getOpenmrsObsId() != null && !obs.getOpenmrsObsId().equals(0)) {
 
-                                        check = updateObs(UuidDictionary.TEMPERATURE, String.valueOf(cTemp),
+                                        check = updateObs(UuidDictionary.RESPIRATORY, String.valueOf(fTemp),
                                                 obs.getOpenmrsObsId(), encounterVitals);
                                         if (!check) check_all = false;
                                     } else {
-                                        check = createObs(encounterVitals, UuidDictionary.TEMPERATURE, String.valueOf(cTemp),
+                                        check = createObs(encounterVitals, UuidDictionary.RESPIRATORY, String.valueOf(fTemp),
                                                 String.valueOf(obs.getConceptId()));
                                         if (!check) check_all = false;
                                     }
@@ -429,6 +494,16 @@ public class UpdateVisitService extends IntentService {
                                 }
                                 break;
                             }
+                            case ConceptId.RESPIRATORY: {
+                                if (!value.equals("0")) {
+                                    obs.setConceptId(concept_id);
+                                    obs.setValue(value);
+                                    obs.setOpenmrsObsId(obs_id);
+                                    obs.setOpenmrsEncounterId(encounter_id);
+                                    obsArrayList.add(obs);
+                                }
+                                break;
+                            }
                             case ConceptId.SPO2: {
                                 if (!value.equals("0")) {
                                     obs.setConceptId(concept_id);
@@ -512,7 +587,7 @@ public class UpdateVisitService extends IntentService {
             return false;
         } else {
             Log.d(TAG, responseObs.getResponseString());
-            Log.d(TAG, responseObs.getResponseObject().toString());
+            Log.d(TAG, responseObs.getResponseObject());
 
             if (visitId != null && concept_id != null) {
 
@@ -575,7 +650,7 @@ public class UpdateVisitService extends IntentService {
             Log.d(TAG, "Obs Update posting was successful");
 
             Log.d(TAG, responseObs.getResponseString());
-            Log.d(TAG, responseObs.getResponseObject().toString());
+            Log.d(TAG, responseObs.getResponseObject());
 
             String obsUpdateSelection = "openmrs_obs_id = ?";
 

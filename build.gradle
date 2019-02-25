@@ -47,7 +47,7 @@ ext {
     supportLibraryVersion = '27.1.1'
     jodaTimeVersion = '2.9.3'
     arcaVersion = '4.9.2'
-    firebaseVersion = '16.0.5'
+    firebaseVersion = '16.0.7'
     cameraviewVersion = '9bbe07ba44'
     permissionDispatcherVersion = '2.3.2'
     debugDbVersion = '1.0.4'
@@ -58,5 +58,5 @@ ext {
     parseAndroidVersion = '1.15.7'
     guavaVersion = '22.0-android'
     constraintLayoutVersion = '1.1.3'
-    crashlyticsVersion = '2.9.6'
+    crashlyticsVersion = '2.9.9'
 }

@@ -251,6 +251,13 @@
                             android:layout_weight="1"
                             android:text="@string/visit_summary_temperature"
                             android:textSize="@dimen/card_content_text_size" />
+                        <TextView
+                            android:id="@+id/textView_temp_faren"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Temperature (F)"
+                            android:textSize="@dimen/card_content_text_size" />
 
                         <TextView
                             android:id="@+id/textView_temp_value"
@@ -272,6 +279,24 @@
 
                         <TextView
                             android:id="@+id/textView_pulseox_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="@dimen/card_content_text_size" />
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/textView_respiratory"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Respiratory Rate"
+                            android:textSize="@dimen/card_content_text_size" />
+
+                        <TextView
+                            android:id="@+id/textView_respiratory_value"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"

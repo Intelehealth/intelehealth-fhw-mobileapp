@@ -4,11 +4,13 @@
     <string-array name="language_names">
         <item>English</item>
         <item>Odiya</item>
+        <item>Cebuano</item>
     </string-array>
 
     <string-array name="language_values">
         <item>en</item>
         <item>or</item>
+        <item>cb</item>
     </string-array>
 
 
@@ -51,6 +53,14 @@
         <item>Higher Secondary</item>
         <item>Graduation &amp; Higher</item>
     </string-array>
+    <string-array name="education_ceb">
+        <item>Select Education</item>
+        <item>Illiterate</item>
+        <item>Primary</item>
+        <item>Secondary</item>
+        <item>Higher Secondary</item>
+        <item>Graduation &amp; Higher</item>
+    </string-array>
 
     <string-array name="caste">
         <item>Select Caste</item>
@@ -70,6 +80,12 @@
 
     <string-array name="economic_or">
         <item>ଚୟନ</item>
+        <item>APL</item>
+        <item>BPL</item>
+    </string-array>
+
+    <string-array name="economic_ceb">
+        <item>Select Economic Status</item>
         <item>APL</item>
         <item>BPL</item>
     </string-array>
@@ -108,8 +124,8 @@
     </string-array>
 
     <string-array name="states_philippines">
-    <item>Select State</item>
-    <item>Bukidnon</item>
+        <item>Select State</item>
+        <item>Bukidnon</item>
     </string-array>
     <string-array name="bukidnon_villages">
         <item>Adtuyon-Pangantucan</item>

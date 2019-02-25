@@ -115,6 +115,10 @@ public class ClientService extends IntentService {
     public ClientService() {
         super(TAG);
     }
+    String mFileName="config.json";
+    boolean hasLicense = false;
+    SharedPreferences.Editor e;
+    SharedPreferences sharedPreferences;
 
 
     @Override
@@ -125,6 +129,12 @@ public class ClientService extends IntentService {
         Boolean success = false;
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         db = mDbHelper.getWritableDatabase();
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (sharedPreferences.contains("licensekey"))
+            hasLicense = true;
+        //Check for license key and load the correct config file
+
 
         if (NetworkConnection.isOnline(this)) {
             String serviceCall = intent.getStringExtra("serviceCall");
@@ -413,8 +423,7 @@ public class ClientService extends IntentService {
             removeJobFromQueue(queueId);
         }
 
-        if (uploadDone != null) return true;
-        else return false;
+        return uploadDone != null;
     }
 
     /**
@@ -613,6 +622,7 @@ public class ClientService extends IntentService {
         Obs bpSys = new Obs();
         Obs bpDias = new Obs();
         Obs temperature = new Obs();
+        Obs respiratory = new Obs();
         Obs spO2 = new Obs();
 
         String[] columns = {"value", " concept_id"};
@@ -681,6 +691,10 @@ public class ClientService extends IntentService {
                         break;
                     case ConceptId.TEMPERATURE: //Temperature
                         temperature.setValue(dbValue);
+                        break;
+                    //    Respiratory added by mahiti dev team
+                    case ConceptId.RESPIRATORY: //Respiratory
+                        respiratory.setValue(dbValue);
                         break;
                     case ConceptId.SPO2: //SpO2
                         spO2.setValue(dbValue);
@@ -756,7 +770,7 @@ public class ClientService extends IntentService {
                     statusCode = STATUS_ENCOUNTER_NOT_CREATED;
                     if (statusCode == STATUS_ENCOUNTER_NOT_CREATED) {
                         boolean encounter_vitals = uploadEncounterVitals(visitID, visitUUID, patient, startDateTime,
-                                temperature, weight, height, pulse, bpSys, bpDias, spO2);
+                                temperature, respiratory, weight, height, pulse, bpSys, bpDias, spO2);
 
                         if (encounter_vitals) {
                             statusCode = STATUS_ENCOUNTER_NOTE_NOT_CREATED;
@@ -800,7 +814,7 @@ public class ClientService extends IntentService {
                 current_intent.putExtra("visitResponse", visitUUID);
                 statusCode = STATUS_ENCOUNTER_NOT_CREATED;
                 boolean encounter_vitals = uploadEncounterVitals(visitID, visitUUID, patient, startDateTime,
-                        temperature, weight, height, pulse, bpSys, bpDias, spO2);
+                        temperature, respiratory, weight, height, pulse, bpSys, bpDias, spO2);
                 if (encounter_vitals) statusCode = STATUS_ENCOUNTER_NOTE_NOT_CREATED;
                 boolean encounter_notes = uploadEncounterNotes(visitID, visitUUID, patient, startDateTime,
                         patHistory, famHistory, complaint, physFindings);
@@ -884,8 +898,9 @@ public class ClientService extends IntentService {
      * @param spO2
      * @return boolean value representing success or failure.
      */
+    //    Respiratory added by mahiti dev team
     private boolean uploadEncounterVitals(String visitID, String visitUUID, Patient patient, String startDateTime,
-                                          Obs temperature, Obs weight, Obs height,
+                                          Obs temperature, Obs respiratory, Obs weight, Obs height,
                                           Obs pulse, Obs bpSys, Obs bpDias, Obs spO2) {
         //---------------------;
 
@@ -906,14 +921,39 @@ public class ClientService extends IntentService {
         }
 
         //Temperature
+        //    Respiratory added by mahiti dev team removed the formula to conver to farheit to celsius
         if (temperature.getValue() != null && !temperature.getValue().trim().isEmpty()) {
-            Double fTemp = Double.parseDouble(temperature.getValue());
-            Double cTemp = ((fTemp - 32) * 5 / 9);
-            Log.i(TAG, "uploadEncounterVitals: " + cTemp + "//" + fTemp);
-            formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.TEMPERATURE + quote + "," +
-                    quote + "value" + quote + ":" + String.valueOf(cTemp) + "},";
+            try {
+                JSONObject obj = null;
+                if (hasLicense) {
+                    obj = new JSONObject(HelperMethods.readFileRoot(mFileName, this)); //Load the config file
+                }else {
+                    obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, mFileName)));
+                }
+                if (obj.getBoolean("mCelsius")) {
+                    Double fTemp = Double.parseDouble(temperature.getValue());
+                    Log.i(TAG, "uploadEncounterVitals: " + fTemp + "//" + fTemp);
+                    formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.TEMPERATURE + quote + "," +
+                            quote + "value" + quote + ":" + String.valueOf(fTemp) + "},";
+                } else if (obj.getBoolean("mFahrenheit")) {
+                    Double fTemp = Double.parseDouble(temperature.getValue());
+                    Double cTemp = ((fTemp - 32) * 5 / 9);
+                    Log.i(TAG, "uploadEncounterVitals: " + cTemp + "//" + cTemp);
+                    formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.TEMPERATURE + quote + "," +
+                            quote + "value" + quote + ":" + String.valueOf(cTemp) + "},";
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
-
+//        respiratory
+        if (respiratory.getValue() != null && !respiratory.getValue().trim().isEmpty()) {
+            Double fTemp = Double.parseDouble(respiratory.getValue());
+//            Double cTemp = ((fTemp - 32) * 5 / 9);
+            Log.i(TAG, "uploadEncounterVitals: " + fTemp + "//" + fTemp);
+            formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.RESPIRATORY + quote + "," +
+                    quote + "value" + quote + ":" + String.valueOf(fTemp) + "},";
+        }
         //Pulse
         if (pulse.getValue() != null && !pulse.getValue().trim().isEmpty()) {
             formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.PULSE + quote + "," +
@@ -1041,6 +1081,10 @@ public class ClientService extends IntentService {
                             }
                             case "TEMPERATURE (C)": {
                                 concept_id = String.valueOf(ConceptId.TEMPERATURE);
+                                break;
+                            }
+                            case "RESPIRATORY": {
+                                concept_id = String.valueOf(ConceptId.RESPIRATORY);
                                 break;
                             }
                             case "Pulse": {
