@@ -1,6 +1,7 @@
 package io.intelehealth.client.activities.home_activity;
 
 import android.app.Dialog;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
@@ -56,7 +57,8 @@ public class BackupCloud {
     public int mId = 4;
     String location;
     String user_id;
-
+    String channelId = "channel-01";
+    String channelName = "Channel Name";
     private Dialog dialog;
 
     public BackupCloud(Context context) {
@@ -65,7 +67,14 @@ public class BackupCloud {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         e = sharedPreferences.edit();
         mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        mBuilder = new NotificationCompat.Builder(context);
+        //mahiti added
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel(
+                    channelId, channelName, importance);
+            mNotifyManager.createNotificationChannel(mChannel);
+        }
+        mBuilder = new NotificationCompat.Builder(context,channelId);
     }
 
     /**
