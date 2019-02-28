@@ -53,7 +53,7 @@
         <item>Higher Secondary</item>
         <item>Graduation &amp; Higher</item>
     </string-array>
-    <string-array name="education_ceb">
+    <string-array name="education_cb">
         <item>Select Education</item>
         <item>Illiterate</item>
         <item>Primary</item>
@@ -84,7 +84,7 @@
         <item>BPL</item>
     </string-array>
 
-    <string-array name="economic_ceb">
+    <string-array name="economic_cb">
         <item>Select Economic Status</item>
         <item>APL</item>
         <item>BPL</item>
