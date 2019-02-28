@@ -61,7 +61,7 @@ public class UpdateVisitService extends IntentService {
 
     Integer queueId = null;
 
-    private String encounterAdultInitial, encounterVitals;
+    private String encounterAdultInitial, encounterVitals,encounterFlagged;
 
     ArrayList<Obs> obsArrayList; //Contains Obs that are updatable
 
@@ -394,6 +394,11 @@ public class UpdateVisitService extends IntentService {
                         case "VITALS": {
                             encounterVitals = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("openmrs_encounter_id"));
                             Log.i(TAG, "queryEncounterTable: " + encounterVitals);
+                            break;
+                        }
+                        case "FLAGGED": {
+                            encounterFlagged = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("openmrs_encounter_id"));
+                            Log.i(TAG, "queryEncounterTable: " + encounterFlagged);
                             break;
                         }
                         default: {

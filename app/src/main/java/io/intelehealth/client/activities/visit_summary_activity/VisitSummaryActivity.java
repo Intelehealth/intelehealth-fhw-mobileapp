@@ -45,6 +45,8 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -84,6 +86,7 @@ import io.intelehealth.client.services.PrescriptionDownloadService;
 import io.intelehealth.client.services.UpdateVisitService;
 import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.HelperMethods;
+import io.intelehealth.client.utilities.SessionManager;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -201,7 +204,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView requestedTestsTextView;
     TextView additionalCommentsTextView;
     TextView followUpDateTextView;
-
+//mahiti added
+    CheckBox flag;
 
     Boolean isPastVisit = false;
     Boolean isReceiverRegistered = false;
@@ -229,6 +233,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String mFileName = "config.json";
     public static String prescription1;
     public static String prescription2;
+    SessionManager sessionManager;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -305,12 +310,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+sessionManager=new SessionManager(getApplicationContext());
         final Intent intent = this.getIntent(); // The intent was passed to the activity
-
         if (intent != null) {
             patientID = intent.getIntExtra("patientID", -1);
             visitID = intent.getStringExtra("visitID");
+sessionManager.setVisitId(visitID);
             mSharedPreference = this.getSharedPreferences(
                     "visit_summary", Context.MODE_PRIVATE);
             patientName = intent.getStringExtra("name");
@@ -383,6 +388,24 @@ public class VisitSummaryActivity extends AppCompatActivity {
         requestedTestsTextView = findViewById(R.id.textView_content_tests);
         additionalCommentsTextView = findViewById(R.id.textView_content_additional_comments);
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
+
+//        mahitit added
+        flag=findViewById(R.id.flaggedcheckbox);
+        flag.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                Log.d(TAG, "onCheckedChanged: ischecked"+isChecked);
+                if(isChecked){
+                    Intent serviceIntent;
+                    serviceIntent = new Intent(getApplicationContext(), ClientService.class);
+                    serviceIntent.putExtra("serviceCall", "flagged");
+                    startService(serviceIntent);
+
+                }
+
+            }
+        }
+        );
 
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
 
