@@ -51,7 +51,6 @@ import io.intelehealth.client.objects.WebResponse;
 import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.utilities.NetworkConnection;
-import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UuidDictionary;
 
 /**
@@ -103,7 +102,7 @@ public class ClientService extends IntentService {
     String location_uuid = prefs.getString(SettingsActivity.KEY_PREF_LOCATION_UUID, null);
     String provider_uuid = prefs.getString("providerid", null);
     String location_desc = prefs.getString(SettingsActivity.KEY_PREF_LOCATION_DESCRIPTION, null);
-SessionManager sessionManager;
+
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
      *
@@ -124,7 +123,6 @@ SessionManager sessionManager;
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        sessionManager=new SessionManager(getApplicationContext());
         mNotifyManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mBuilder = new NotificationCompat.Builder(this);
@@ -141,11 +139,9 @@ SessionManager sessionManager;
         if (NetworkConnection.isOnline(this)) {
             String serviceCall = intent.getStringExtra("serviceCall");
 
-            if(!serviceCall.equalsIgnoreCase("flagged")){
             if (!intent.hasExtra("queueId")) {
                 int id = addJobToQueue(intent);
                 intent.putExtra("queueId", id);
-            }
             }
 
             Log.d(TAG, "Queue id: " + intent.getIntExtra("queueId", -1));
@@ -207,20 +203,19 @@ SessionManager sessionManager;
                     break;
 
                 }
-                case "flagged": {
-//                    queueSyncStart(queueId);
-                    Log.v(TAG, "Exit flagged uploading");
-                    createNotification("emergency", "");
+                case "emergency": {
+                    queueSyncStart(queueId);
                     String visitID = intent.getStringExtra("visitID");
-                    visitID=sessionManager.getVisitId();
-                    success = uploadFlag( patientID,visitID, intent);
-                    if (success) endNotification("", "emergency");
-                    else {
-                        errorNotification("", "emergency");
-//                        queueSyncStop(queueId);
+                    Log.v(TAG, "Visit ID: " + visitID);
+                    createNotification("emergency", patientName);
+                    success = uploadEmergency(patientID, visitID, intent);
+                    if (success) {
+                        endNotification(patientName, "emergency");
+                    } else {
+                        errorNotification(patientName, "emergency");
+                        queueSyncStop(queueId);
                     }
                     break;
-
                 }
                 default:
                     //something
@@ -305,9 +300,10 @@ SessionManager sessionManager;
                 text = "Uploading survey data";
                 break;
             case "emergency":
-                title = "emergency Upload";
-                text = "Uploading emergency flag";
+                title = "Emergency Data Upload";
+                text = String.format("Uploading %s's Emergency data", patientName);
                 break;
+
         }
 
 
@@ -861,7 +857,8 @@ SessionManager sessionManager;
 
     }
 
-    private boolean uploadFlag(Integer pat,String visitID,Intent current_intent){
+    private boolean uploadEmergency(Integer patientID, String visitID, Intent current_intent) {
+
 
         Patient patient = new Patient();
         Obs complaint = new Obs();
@@ -878,7 +875,87 @@ SessionManager sessionManager;
         Obs respiratory = new Obs();
         Obs spO2 = new Obs();
 
-        boolean uploadStatus=false;
+        String[] columns = {"value", " concept_id"};
+        String orderBy = "visit_id";
+
+        try {
+            String famHistSelection = "patient_id = ? AND concept_id = ?";
+            String[] famHistArgs = {String.valueOf(patientID), String.valueOf(ConceptId.RHK_FAMILY_HISTORY_BLURB)};
+            Cursor famHistCursor = db.query("obs", columns, famHistSelection, famHistArgs, null, null, orderBy);
+            famHistCursor.moveToLast();
+            String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
+            famHistory.setValue(famHistText);
+            famHistCursor.close();
+        } catch (CursorIndexOutOfBoundsException e) {
+            famHistory.setValue(""); // if family history does not exist
+        }
+
+        try {
+            String medHistSelection = "patient_id = ? AND concept_id = ?";
+            String[] medHistArgs = {String.valueOf(patientID), String.valueOf(ConceptId.RHK_MEDICAL_HISTORY_BLURB)};
+            Cursor medHistCursor = db.query("obs", columns, medHistSelection, medHistArgs, null, null, orderBy);
+            medHistCursor.moveToLast();
+            String medHistText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+            patHistory.setValue(medHistText);
+            if (medHistText != null && !medHistText.isEmpty()) {
+                medHistory = patHistory.getValue();
+                medHistory = medHistory.replace("\"", "");
+                medHistory = medHistory.replace("\n", "");
+                do {
+                    medHistory = medHistory.replace("  ", "");
+                } while (medHistory.contains("  "));
+            }
+            medHistCursor.close();
+        } catch (CursorIndexOutOfBoundsException e) {
+            patHistory.setValue(""); // if medical history does not exist
+        }
+
+        String visitSelection = "patient_id = ? AND visit_id = ?";
+        String[] visitArgs = {String.valueOf(patientID), visitID};
+        Cursor visitCursor = db.query("obs", columns, visitSelection, visitArgs, null, null, orderBy);
+        if (visitCursor.moveToFirst()) {
+            do {
+                int dbConceptID = visitCursor.getInt(visitCursor.getColumnIndex("concept_id"));
+                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                switch (dbConceptID) {
+                    case ConceptId.CURRENT_COMPLAINT: //Current Complaint
+                        complaint.setValue(dbValue);
+                        break;
+                    case ConceptId.PHYSICAL_EXAMINATION: //Physical Examination
+                        physFindings.setValue(dbValue);
+                        break;
+                    case ConceptId.HEIGHT: //Height
+                        height.setValue(dbValue);
+                        break;
+                    case ConceptId.WEIGHT: //Weight
+                        weight.setValue(dbValue);
+                        break;
+                    case ConceptId.PULSE: //Pulse
+                        pulse.setValue(dbValue);
+                        break;
+                    case ConceptId.SYSTOLIC_BP: //Systolic BP
+                        bpSys.setValue(dbValue);
+                        break;
+                    case ConceptId.DIASTOLIC_BP: //Diastolic BP
+                        bpDias.setValue(dbValue);
+                        break;
+                    case ConceptId.TEMPERATURE: //Temperature
+                        temperature.setValue(dbValue);
+                        break;
+                    //    Respiratory added by mahiti dev team
+                    case ConceptId.RESPIRATORY: //Respiratory
+                        respiratory.setValue(dbValue);
+                        break;
+                    case ConceptId.SPO2: //SpO2
+                        spO2.setValue(dbValue);
+                        break;
+                    default:
+                        break;
+                }
+            } while (visitCursor.moveToNext());
+        }
+        visitCursor.close();
+
         String[] columnsToReturn = {"start_datetime"};
         String visitIDorderBy = "start_datetime";
         String visitIDSelection = "_id = ?";
@@ -887,15 +964,120 @@ SessionManager sessionManager;
         visitIDCursor.moveToLast();
         String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("start_datetime"));
         visitIDCursor.close();
-String visitUUID = current_intent.getStringExtra("visitResponse");
 
-                boolean encounter_flag = uploadEncounterFlag(visitID, visitUUID, patient, startDateTime);
-                if (encounter_flag) uploadStatus = true;
+        boolean uploadStatus = false;
+
+
+        String patientSelection = "_id = ?";
+        String[] patientArgs = {String.valueOf(patientID)};
+        String[] oMRSCol = {"openmrs_uuid", "sdw", "occupation"};
+        final Cursor idCursor = db.query("patient", oMRSCol, patientSelection, patientArgs, null, null, null);
+        if (idCursor.moveToFirst()) {
+            do {
+                patient.setOpenmrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_uuid")));
+                patient.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
+                patient.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
+            } while (idCursor.moveToNext());
+        }
+        idCursor.close();
+
+        if (patient.getOpenmrsId() == null || patient.getOpenmrsId().isEmpty()) {
+
+
+            Toast.makeText(this, "Pa", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        Integer statusCode = STATUS_VISIT_NOT_CREATED;
+        if (current_intent.hasExtra("status")) {
+            statusCode = current_intent.getIntExtra("status", -1);
+            if (statusCode > 0) {
+                String visitUUID;
+
+                if (statusCode == STATUS_VISIT_NOT_CREATED) {
+                    visitUUID = uploadVisitData(patient, startDateTime, visitID);
+                    ContentValues contentValuesVisit = new ContentValues();
+                    contentValuesVisit.put("openmrs_visit_uuid", visitUUID);
+                    String visitUpdateSelection = "start_datetime = ?";
+                    String[] visitUpdateArgs = {startDateTime};
+
+                    db.update(
+                            "visit",
+                            contentValuesVisit,
+                            visitUpdateSelection,
+                            visitUpdateArgs
+                    );
+
+
+                } else {
+                    visitUUID = current_intent.getStringExtra("visitResponse");
+                }
+
+
+                if (visitUUID != null) {
+                    current_intent.putExtra("visitResponse", visitUUID);
+                    current_intent.putExtra("status", statusCode);
+                    statusCode = STATUS_ENCOUNTER_NOT_CREATED;
+                    if (statusCode == STATUS_ENCOUNTER_NOT_CREATED) {
+
+                        boolean encounter_notes = uploadEncounterEmergency(visitID, visitUUID, patient, startDateTime,
+                                patHistory, famHistory, complaint, physFindings);
+                        if (encounter_notes ) uploadStatus = true;
+                    } else if (statusCode == STATUS_ENCOUNTER_NOTE_NOT_CREATED) {
+                        boolean encounter_notes = uploadEncounterEmergency(visitID, visitUUID, patient, startDateTime,
+                                patHistory, famHistory, complaint, physFindings);
+                        uploadStatus = encounter_notes;
+                    }
+                }
+
+                current_intent.putExtra("status", statusCode);
+
+            } else if (patient.getOpenmrsId() == null || (patient.getOpenmrsId() != null && patient.getOpenmrsId().isEmpty())) {
+                current_intent.putExtra("status", statusCode);
+            }
+        } else {
+            String visitUUID;
+            visitUUID = uploadVisitData(patient, startDateTime, visitID);
+
+            ContentValues contentValuesVisit = new ContentValues();
+            contentValuesVisit.put("openmrs_visit_uuid", visitUUID);
+            String visitUpdateSelection = "start_datetime = ?";
+            String[] visitUpdateArgs = {startDateTime};
+
+            db.update(
+                    "visit",
+                    contentValuesVisit,
+                    visitUpdateSelection,
+                    visitUpdateArgs
+            );
+
+
+            if (visitUUID != null) {
+                current_intent.putExtra("visitResponse", visitUUID);
+                statusCode = STATUS_ENCOUNTER_NOT_CREATED;
+                boolean encounter_vitals = uploadEncounterVitals(visitID, visitUUID, patient, startDateTime,
+                        temperature, respiratory, weight, height, pulse, bpSys, bpDias, spO2);
+                if (encounter_vitals) statusCode = STATUS_ENCOUNTER_NOTE_NOT_CREATED;
+                boolean encounter_notes = uploadEncounterEmergency(visitID, visitUUID, patient, startDateTime,
+                        patHistory, famHistory, complaint, physFindings);
+                if (encounter_notes && encounter_vitals) uploadStatus = true;
+            }
+
+            current_intent.putExtra("status", statusCode);
+        }
+        if (!uploadStatus) retryAfterDelay(current_intent);
+        else if (current_intent.hasExtra("queueId")) {
+            int queueId = current_intent.getIntExtra("queueId", -1);
+            removeJobFromQueue(queueId);
+        }
+
+        if (uploadStatus) {
+            sendResultMessage();
+        }
 
         return uploadStatus;
 
-}
-
+    }
     /**
      * Uploads visit details to the OpenMRS server.
      *
@@ -1333,32 +1515,54 @@ String visitUUID = current_intent.getStringExtra("visitResponse");
             return true;
         }
     }
-//mahitit added
-    private boolean uploadEncounterFlag(String visitID, String visitUUID, Patient patient, String startDateTime) {
+
+    private boolean uploadEncounterEmergency(String visitID, String visitUUID, Patient patient, String startDateTime,
+                                         Obs patHistory, Obs famHistory, Obs complaint, Obs physFindings) {
 
 
         String quote = "\"";
+
         String formattedObs = "";
+
+        //MedicalHistory
+        if (patHistory.getValue() != null && !patHistory.getValue().trim().isEmpty()) {
+            formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.RHK_MEDICAL_HISTORY_BLURB + quote + "," +
+                    quote + "value" + quote + ":" + quote + patHistory.getValue() + quote + "},";
+        }
+        //FamilyHistory
+        if (famHistory.getValue() != null && !famHistory.getValue().trim().isEmpty()) {
+            formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.RHK_FAMILY_HISTORY_BLURB + quote + "," +
+                    quote + "value" + quote + ":" + quote + famHistory.getValue() + quote + "},";
+        }
+        //CurrentComplaint
+        if (complaint.getValue() != null && !complaint.getValue().trim().isEmpty()) {
+            formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.CURRENT_COMPLAINT + quote + "," +
+                    quote + "value" + quote + ":" + quote + complaint.getValue() + quote + "},";
+        }
+        //PhysicalExam
+        if (physFindings.getValue() != null && !physFindings.getValue().trim().isEmpty()) {
+            formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.PHYSICAL_EXAMINATION + quote + "," +
+                    quote + "value" + quote + ":" + quote + physFindings.getValue() + quote + "},";
+        }
+        if (!formattedObs.isEmpty()) {
+            if (formattedObs.length() > 0 && formattedObs.charAt(formattedObs.length() - 1) == ',') {
+                formattedObs = formattedObs.substring(0, formattedObs.length() - 1);
+            }
+        }
+
         if (formattedObs.contains("%")) {
             formattedObs = formattedObs.replaceAll("%", "");
         }
 
 
         String noteString =
-//                patient uuid
-//        encounterType: flagged uuid
-//        encounterProviders:[{
-//            provider: uuid,
-//                    encounterRole: nurse uuid
-//        }],
-//        visit: visitId,
-//                encounterDatetime:
-//    };
                 String.format("{" +
                                 "\"encounterDatetime\":\"%s\"," +
-                                "\"patient\":\"%s\"," +
+                                " \"patient\":\"%s\"," +
                                 "\"encounterType\":\"" + UuidDictionary.FLAGGED + "\"," +
-                                " \"visit\":\"%s\"," +
+                                "\"visit\":\"%s\"," +
+                                "\"obs\":[" + formattedObs
+                                + "]," +
                                 "\"encounterProviders\":[{" +
                                 "\"encounterRole\":\"73bbb069-9781-4afc-a9d1-54b6b2270e04\"," +
                                 "\"provider\":\"%s\"" +
@@ -1371,20 +1575,20 @@ String visitUUID = current_intent.getStringExtra("visitResponse");
                         provider_uuid,
                         location_uuid
                 );
-        Log.d(TAG, "Flag Encounter String: " + noteString);
+        Log.d(TAG, "Notes Encounter String: " + noteString);
         WebResponse responseNotes;
-        responseNotes = HelperMethods.postCommand("encounter/"+patient.getOpenmrsId(), noteString, getApplicationContext());
+        responseNotes = HelperMethods.postCommand("encounter", noteString, getApplicationContext());
         if (responseNotes != null && responseNotes.getResponseCode() != 201) {
-            String newText = "Flag Encounter was not created. Please check your connection.";
+            String newText = "Notes Encounter was not created. Please check your connection.";
             mBuilder.setContentText(newText).setNumber(++numMessages);
             mNotifyManager.notify(mId, mBuilder.build());
-            Log.d(TAG, "Flag Encounter posting was unsuccessful");
+            Log.d(TAG, "Notes Encounter posting was unsuccessful");
             return false;
         } else if (responseNotes == null) {
-            Log.d(TAG, "Flag Encounter posting was unsuccessful");
+            Log.d(TAG, "Notes Encounter posting was unsuccessful");
             return false;
         } else {
-            Log.i(TAG, "uploadEncounterFlag: " + responseNotes.getResponseString());
+            Log.i(TAG, "uploadEncounterNotes: " + responseNotes.getResponseString());
             try {
                 JSONObject JSONResponse = new JSONObject(responseNotes.getResponseObject());
                 JSONArray resultsArray = JSONResponse.getJSONArray("obs");
@@ -1406,7 +1610,7 @@ String visitUUID = current_intent.getStringExtra("visitResponse");
                 contentValuesEncounter.put("patient_id", patientID);
                 contentValuesEncounter.put("visit_id", visitID);
                 contentValuesEncounter.put("openmrs_visit_uuid", visitUUID);
-                contentValuesEncounter.put("encounter_type", "FLAGGED");
+                contentValuesEncounter.put("encounter_type", "EMERGENCY");
                 if (!providers.trim().isEmpty()) {
                     contentValuesEncounter.put("encounter_provider", providers);
                 }
@@ -1429,6 +1633,34 @@ String visitUUID = current_intent.getStringExtra("visitResponse");
                         ContentValues contentValuesObs = new ContentValues();
                         contentValuesObs.put("openmrs_encounter_id", encounterUUID);
                         contentValuesObs.put("openmrs_obs_id", obsUUID);
+                        switch (check) {
+                            case "PHYSICAL EXAMINATION": {
+                                concept_id = String.valueOf(ConceptId.PHYSICAL_EXAMINATION);
+                                break;
+                            }
+                            case "FAMILY HISTORY": {
+                                concept_id = String.valueOf(ConceptId.RHK_FAMILY_HISTORY_BLURB);
+                                break;
+                            }
+                            case "CURRENT COMPLAINT": {
+                                concept_id = String.valueOf(ConceptId.CURRENT_COMPLAINT);
+                                break;
+                            }
+                            case "MEDICAL HISTORY": {
+                                concept_id = String.valueOf(ConceptId.RHK_MEDICAL_HISTORY_BLURB);
+                                break;
+                            }
+                        }
+
+                        String[] obsUpdateArgs = {visitID, concept_id};
+                        if (visitID != null && concept_id != null) {
+                            db.update(
+                                    "obs",
+                                    contentValuesObs,
+                                    obsUpdateSelection,
+                                    obsUpdateArgs
+                            );
+                        }
                     }
                 }
 
@@ -1436,7 +1668,7 @@ String visitUUID = current_intent.getStringExtra("visitResponse");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            String newText = "flag created successfully.";
+            String newText = "Notes created successfully.";
             mBuilder.setContentText(newText).setNumber(++numMessages);
             mNotifyManager.notify(mId, mBuilder.build());
             return true;

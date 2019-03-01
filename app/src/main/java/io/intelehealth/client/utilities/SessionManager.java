@@ -9,6 +9,7 @@ public class SessionManager {
     // Shared preferences file name
     private static final String PREF_NAME = "Intelehealth";
     private static final String VISIT_ID="visitID";
+    private static final String EMERGENCY="checked";
     // Shared Preferences
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
@@ -31,5 +32,14 @@ public class SessionManager {
         editor.putString(VISIT_ID, token);
         editor.commit();
     }
+    public Boolean isChecked () {
+        return pref.getBoolean(EMERGENCY, false);
+    }
+
+    public void setChecked(Boolean checked) {
+        editor.putBoolean(EMERGENCY, checked);
+        editor.commit();
+    }
+
 
 }
