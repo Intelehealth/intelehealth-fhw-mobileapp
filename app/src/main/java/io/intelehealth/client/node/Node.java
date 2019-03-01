@@ -304,14 +304,10 @@ public class Node implements Serializable {
     }
 
     public String findDisplay() {
-        String locale;
-        if(Locale.getDefault().getLanguage().equalsIgnoreCase("cb")){
-            locale="cb";
-        }else {
-            locale = Locale.getDefault().getISO3Language();
-        }
+        String locale = Locale.getDefault().getLanguage();
+
         switch (locale) {
-            case "eng": {
+            case "en": {
                 //Log.i(TAG, "findDisplay: eng");
                 if (display != null && display.isEmpty()) {
                     //Log.i(TAG, "findDisplay: eng txt");
@@ -321,7 +317,7 @@ public class Node implements Serializable {
                     return display;
                 }
             }
-            case "ori": {
+            case "or": {
                 //Log.i(TAG, "findDisplay: ori");
                 if (display_oriya != null && !display_oriya.isEmpty()) {
                     //Log.i(TAG, "findDisplay: ori dis");
