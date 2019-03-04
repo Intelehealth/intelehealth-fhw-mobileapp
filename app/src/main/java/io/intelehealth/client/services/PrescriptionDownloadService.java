@@ -1,6 +1,7 @@
 package io.intelehealth.client.services;
 
 import android.app.IntentService;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.ContentValues;
 import android.content.Context;
@@ -73,12 +74,20 @@ public class PrescriptionDownloadService extends IntentService {
 
     LocalRecordsDatabaseHelper mDbHelper;
     SQLiteDatabase db;
-
+    String channelId = "channel-01";
+    String channelName = "Channel Name";
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
 
         mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mBuilder = new NotificationCompat.Builder(this);
+        //mahiti added
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel(
+                    channelId, channelName, importance);
+            mNotifyManager.createNotificationChannel(mChannel);
+        }
+        mBuilder = new NotificationCompat.Builder(this,channelId);
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         db = mDbHelper.getWritableDatabase();
 

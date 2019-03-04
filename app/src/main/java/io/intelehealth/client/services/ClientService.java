@@ -120,11 +120,14 @@ public class ClientService extends IntentService {
     SharedPreferences.Editor e;
     SharedPreferences sharedPreferences;
 
+    String channelId = "channel-01";
+    String channelName = "Channel Name";
 
     @Override
     protected void onHandleIntent(Intent intent) {
         mNotifyManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
         mBuilder = new NotificationCompat.Builder(this);
         Boolean success = false;
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());

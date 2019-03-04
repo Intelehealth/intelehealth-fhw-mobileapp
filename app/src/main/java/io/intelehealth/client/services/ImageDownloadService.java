@@ -6,6 +6,7 @@ package io.intelehealth.client.services;
  */
 
 import android.app.IntentService;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
@@ -56,14 +57,23 @@ public class ImageDownloadService extends IntentService {
     public ImageDownloadService() {
         super(TAG);
     }
-
+    String channelId = "channel-01";
+    String channelName = "Channel Name";
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
 
         Toast.makeText(this, getString(R.string.image_downloading_service_message), Toast.LENGTH_SHORT).show();
 
         mNotifyManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-        mBuilder = new NotificationCompat.Builder(this);
+
+        //mahiti added
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel(
+                    channelId, channelName, importance);
+            mNotifyManager.createNotificationChannel(mChannel);
+        }
+        mBuilder = new NotificationCompat.Builder(this,channelId);
 
         mBuilder.setSmallIcon(R.mipmap.ic_sync)
                 .setContentTitle(getString(R.string.image_downloading_service_title))
