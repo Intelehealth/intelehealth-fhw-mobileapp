@@ -391,10 +391,27 @@ sessionManager=new SessionManager(getApplicationContext());
 
 //        mahitit added
         flag=findViewById(R.id.flaggedcheckbox);
+        String query = "Select emergency FROM patient WHERE openmrs_id = '" + patient.getOpenmrs_patient_id() + "'";
+//                Cursor cursor;
+        Cursor cursor=db.rawQuery(query,null);
+        if(cursor.getCount()==1){
+            flag.setChecked(true);
+        }
         flag.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                ContentValues contentValues=new ContentValues();
+                contentValues.put("emergency","true");
+                String[] tableColumns = new String[] {
+                        "emergency"
+                };
+                String whereClause = "openmrs_id = ?";
+                String[] whereArgs = new String[] {
+                        patient.getOpenmrs_patient_id()
+                };
             if(isChecked){
+
+                db.update("patient",contentValues,whereClause,whereArgs);
                 sessionManager.setChecked(isChecked);
                 }
             }
