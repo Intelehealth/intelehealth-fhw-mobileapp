@@ -79,6 +79,7 @@ import io.intelehealth.client.objects.WebResponse;
 import io.intelehealth.client.services.DownloadProtocolsTask;
 import io.intelehealth.client.services.sync.JobDispatchService;
 import io.intelehealth.client.utilities.HelperMethods;
+import io.intelehealth.client.utilities.SessionManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -118,7 +119,7 @@ public class SetupActivity extends AppCompatActivity {
 
     AlertDialog.Builder dialog;
     String key = null;
-
+    SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +127,7 @@ public class SetupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setup);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+    sessionManager=new SessionManager(getApplicationContext());
         mDropdownLocation = (Spinner) findViewById(R.id.spinner_location);
 
         // Persistent login information
@@ -428,6 +429,7 @@ public class SetupActivity extends AppCompatActivity {
 
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
+                sessionManager.setEncoded(encoded);
                 connection.setRequestProperty("Authorization", "Basic " + encoded);
                 connection.setRequestMethod("GET");
                 connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
@@ -548,6 +550,7 @@ public class SetupActivity extends AppCompatActivity {
 
                 editor.putString(SettingsActivity.KEY_PREF_SERVER_URL_REST, BASE_URL);
                 editor.putString(SettingsActivity.KEY_PREF_SERVER_URL_BASE, "http://" + CLEAN_URL + ":8080/openmrs");
+                sessionManager.setBaseUrl("http://" + CLEAN_URL + ":8080/openmrs");
                 editor.putString(SettingsActivity.KEY_PREF_SERVER_URL, CLEAN_URL);
                 Log.d(TAG, BASE_URL);
                 editor.apply();

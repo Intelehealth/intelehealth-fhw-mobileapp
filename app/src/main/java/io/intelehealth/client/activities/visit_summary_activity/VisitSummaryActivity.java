@@ -76,6 +76,7 @@ import io.intelehealth.client.activities.past_medical_history_activity.PastMedic
 import io.intelehealth.client.activities.patient_survey_activity.PatientSurveyActivity;
 import io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity;
 import io.intelehealth.client.activities.vitals_activity.VitalsActivity;
+import io.intelehealth.client.dao.VisitSummaryDAO;
 import io.intelehealth.client.database.DelayedJobQueueProvider;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.node.Node;
@@ -204,7 +205,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView requestedTestsTextView;
     TextView additionalCommentsTextView;
     TextView followUpDateTextView;
-//mahiti added
+    //added checkbox flag .m
     CheckBox flag;
 
     Boolean isPastVisit = false;
@@ -330,6 +331,8 @@ sessionManager=new SessionManager(getApplicationContext());
             }
         }
 
+
+
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (sharedPreferences.contains("licensekey"))
             hasLicense = true;
@@ -358,7 +361,8 @@ sessionManager=new SessionManager(getApplicationContext());
 
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         db = mDbHelper.getWritableDatabase();
-
+        //this to alter the table for emergency column in visit table
+        mDbHelper.updateColumn();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit_summary);
@@ -390,31 +394,32 @@ sessionManager=new SessionManager(getApplicationContext());
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
 
 //        mahitit added
-        flag=findViewById(R.id.flaggedcheckbox);
-        String query = "Select emergency FROM patient WHERE openmrs_id = '" + patient.getOpenmrs_patient_id() + "'";
+        flag= findViewById(R.id.flaggedcheckbox);
+        String query = "Select ifnull(emergency,'') as emergency FROM visit WHERE _id = " + visitID + "";
 //                Cursor cursor;
         Cursor cursor=db.rawQuery(query,null);
-        if(cursor.getCount()==1){
-            flag.setChecked(true);
+        if(cursor!=null) {
+            while(cursor.moveToNext()) {
+                String emergency = cursor.getString(cursor.getColumnIndex("emergency"));
+                if (emergency.equalsIgnoreCase("true")){
+                    flag.setChecked(true);
+                }
+            }
+            cursor.close();
+        }
+        VisitSummaryDAO visitSummarydao = new VisitSummaryDAO();
+        visitUUID= visitSummarydao.getVisitUUID(visitID,db);
+        if(!visitUUID.isEmpty()){
+            flag.setEnabled(false);
         }
         flag.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                ContentValues contentValues=new ContentValues();
-                contentValues.put("emergency","true");
-                String[] tableColumns = new String[] {
-                        "emergency"
-                };
-                String whereClause = "openmrs_id = ?";
-                String[] whereArgs = new String[] {
-                        patient.getOpenmrs_patient_id()
-                };
-            if(isChecked){
-
-                db.update("patient",contentValues,whereClause,whereArgs);
-                sessionManager.setChecked(isChecked);
-                }
-            }
+                Log.d(TAG, "Emergency flag val: "+String.valueOf(isChecked));
+                String emergency_checked = String.valueOf(isChecked);
+                String updateQuery="UPDATE visit SET emergency ='"+emergency_checked+"' WHERE _id = "+ visitID +"";
+                db.execSQL(updateQuery);
+        }
         });
 
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
@@ -588,15 +593,7 @@ sessionManager=new SessionManager(getApplicationContext());
                         serviceIntent.putExtra("name", patientName);
                         startService(serviceIntent);
 
-                        if(sessionManager.isChecked()){
-                            Log.i(TAG, "onClick: new update Emergency");
-                            serviceIntent = new Intent(VisitSummaryActivity.this, UpdateVisitService.class);
-                            serviceIntent.putExtra("serviceCall", "emergency");
-                            serviceIntent.putExtra("patientID", patientID);
-                            serviceIntent.putExtra("visitID", visitID);
-                            serviceIntent.putExtra("name", patientName);
-                            startService(serviceIntent);
-                        }
+
                     } else {
                         Log.i(TAG, "onClick: new visit");
                         serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
@@ -606,15 +603,7 @@ sessionManager=new SessionManager(getApplicationContext());
                         serviceIntent.putExtra("name", patientName);
                         startService(serviceIntent);
 
-                        if(sessionManager.isChecked()){
-                            Log.i(TAG, "onClick: new update Emergency");
-                            serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
-                            serviceIntent.putExtra("serviceCall", "emergency");
-                            serviceIntent.putExtra("patientID", patientID);
-                            serviceIntent.putExtra("visitID", visitID);
-                            serviceIntent.putExtra("name", patientName);
-                            startService(serviceIntent);
-                        }
+
                     }
 
                 } else if (c != null && c.moveToFirst()) {
@@ -633,18 +622,6 @@ sessionManager=new SessionManager(getApplicationContext());
                                 serviceIntent.putExtra("queueId", c.getInt(c.getColumnIndex(DelayedJobQueueProvider._ID)));
                                 startService(serviceIntent);
 
-                                if(sessionManager.isChecked()) {
-                                    Log.i(TAG, "onClick: old visit delayed emergency");
-                                    if (c.getString(c.getColumnIndex(DelayedJobQueueProvider.JOB_TYPE)).equals("visit")) {
-                                        serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
-                                        serviceIntent.putExtra("serviceCall", "emergency");
-                                        serviceIntent.putExtra("patientID", patientID);
-                                        serviceIntent.putExtra("visitID", visitID);
-                                        serviceIntent.putExtra("name", patientName);
-                                        serviceIntent.putExtra("queueId", c.getInt(c.getColumnIndex(DelayedJobQueueProvider._ID)));
-                                        startService(serviceIntent);
-                                    }
-                                }
 
 
                             } else if (c.getString(c.getColumnIndex(DelayedJobQueueProvider.JOB_TYPE)).equals("obsUpdate")) {
@@ -657,18 +634,7 @@ sessionManager=new SessionManager(getApplicationContext());
                                 serviceIntent.putExtra("queueId", c.getInt(c.getColumnIndex(DelayedJobQueueProvider._ID)));
                                 startService(serviceIntent);
 
-                                    if(sessionManager.isChecked()) {
-                                        Log.i(TAG, "onClick: old visit delayed emergency");
-                                        if (c.getString(c.getColumnIndex(DelayedJobQueueProvider.JOB_TYPE)).equals("visit")) {
-                                            serviceIntent = new Intent(VisitSummaryActivity.this, UpdateVisitService.class);
-                                            serviceIntent.putExtra("serviceCall", "emergency");
-                                            serviceIntent.putExtra("patientID", patientID);
-                                            serviceIntent.putExtra("visitID", visitID);
-                                            serviceIntent.putExtra("name", patientName);
-                                            serviceIntent.putExtra("queueId", c.getInt(c.getColumnIndex(DelayedJobQueueProvider._ID)));
-                                            startService(serviceIntent);
-                                        }
-                                    }
+
                             }
                             break;
                         }

@@ -2,6 +2,9 @@ package io.intelehealth.client.utilities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Base64;
+
+import java.io.UnsupportedEncodingException;
 
 public class SessionManager {
     // LogCat tag
@@ -9,7 +12,8 @@ public class SessionManager {
     // Shared preferences file name
     private static final String PREF_NAME = "Intelehealth";
     private static final String VISIT_ID="visitID";
-    private static final String EMERGENCY="checked";
+    private static final String BASE_URL="base_url";
+    private static final String ENCODED="encoded";
     // Shared Preferences
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
@@ -32,14 +36,22 @@ public class SessionManager {
         editor.putString(VISIT_ID, token);
         editor.commit();
     }
-    public Boolean isChecked () {
-        return pref.getBoolean(EMERGENCY, false);
+
+    public String getBaseUrl() {
+        return pref.getString(BASE_URL, null);
     }
 
-    public void setChecked(Boolean checked) {
-        editor.putBoolean(EMERGENCY, checked);
+    public void setBaseUrl(String baseUrl) {
+        editor.putString(BASE_URL, baseUrl);
         editor.commit();
     }
+    public String getEncoded() {
+        return pref.getString(ENCODED, null);
+    }
 
+    public void setEncoded(String encoded) {
+        editor.putString(ENCODED, encoded);
+        editor.commit();
+    }
 
 }
