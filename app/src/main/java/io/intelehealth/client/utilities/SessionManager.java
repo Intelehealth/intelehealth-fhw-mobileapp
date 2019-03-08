@@ -37,21 +37,5 @@ public class SessionManager {
         editor.commit();
     }
 
-    public String getBaseUrl() {
-        return pref.getString(BASE_URL, null);
-    }
-
-    public void setBaseUrl(String baseUrl) {
-        editor.putString(BASE_URL, baseUrl);
-        editor.commit();
-    }
-    public String getEncoded() {
-        return pref.getString(ENCODED, null);
-    }
-
-    public void setEncoded(String encoded) {
-        editor.putString(ENCODED, encoded);
-        editor.commit();
-    }
 
 }

@@ -341,7 +341,6 @@ sessionManager=new SessionManager(getApplicationContext());
 
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
-                sessionManager.setEncoded(encoded);
                 connection.setRequestProperty("Authorization", "Basic " + encoded);
                 connection.setRequestMethod("GET");
                 connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
