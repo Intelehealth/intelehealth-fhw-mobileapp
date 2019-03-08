@@ -126,7 +126,6 @@ public class ClientService extends IntentService {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mBuilder = new NotificationCompat.Builder(this);
         Boolean success = false;
-
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         db = mDbHelper.getWritableDatabase();
 
@@ -990,7 +989,7 @@ public class ClientService extends IntentService {
                 String.format("{" +
                                 "\"encounterDatetime\":\"%s\"," +
                                 "\"patient\":\"%s\"," +
-                                "\"encounterType\":\"" + UuidDictionary.ENCOUNTER_VITALS+ "\"," +
+                                "\"encounterType\":\"" + UuidDictionary.ENCOUNTER_VITALS + "\"," +
                                 " \"visit\":\"%s\"," +
                                 "\"obs\":[" + formattedObs +
                                 "]," +
