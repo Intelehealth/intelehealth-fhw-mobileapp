@@ -64,6 +64,7 @@ import io.intelehealth.client.objects.WebResponse;
 import io.intelehealth.client.services.sync.JobDispatchService;
 import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.utilities.NetworkConnection;
+import io.intelehealth.client.utilities.SessionManager;
 
 /**
  * A login screen that offers login via username/password.
@@ -100,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private OfflineLogin offlineLogin = null;
 
-
+SessionManager sessionManager;
 
     public void cant_log()
     {
@@ -142,7 +143,7 @@ public class LoginActivity extends AppCompatActivity {
         offlineLogin = OfflineLogin.getOfflineLogin();
 
 
-
+sessionManager=new SessionManager(getApplicationContext());
         txt_cant_login = (TextView) findViewById(R.id.cant_login_id);
         // pop_window_login = new PopupWindow(getApplicationContext());
         txt_cant_login.setOnClickListener(new View.OnClickListener()
@@ -340,6 +341,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
+                sessionManager.setEncoded(encoded);
                 connection.setRequestProperty("Authorization", "Basic " + encoded);
                 connection.setRequestMethod("GET");
                 connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
