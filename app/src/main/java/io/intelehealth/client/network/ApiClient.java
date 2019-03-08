@@ -21,7 +21,7 @@ static SessionManager sessionManager;
         if (retrofit == null) {
 //convert the static to dynamic code
             retrofit = new Retrofit.Builder()
-                    .baseUrl(sessionManager.getBaseUrl()+"/")
+                    .baseUrl(sessionManager.getBaseUrl())
                     .client(client.build())
                     .addConverterFactory(GsonConverterFactory.create())
 //                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())

@@ -462,6 +462,7 @@ public class HelperMethods {
 
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
             String BASE_URL = sharedPref.getString(SettingsActivity.KEY_PREF_SERVER_URL_REST, "");
+            sessionManager.setBaseUrl(BASE_URL);
             final String session_id = sharedPref.getString("sessionid", null);
 
 

@@ -27,11 +27,10 @@ public class visitSummaryHelper {
     public VisitModel isOpenmrsVisitExists(String patientuuid, final String visittimestamp) {
 
         sessionManger=new SessionManager(IntelehealthApplication.getAppContext());
-
         VisitModel visitmodel = new VisitModel();
         apiInterface = ApiClient.getApiClient().create(RestApi.class);
 
-        Call<PatientUUIDResponsemodel> patientUUIDResponsemodelCall = apiInterface.GETPATIENT(patientuuid, sessionManger.getEncoded());
+        Call<PatientUUIDResponsemodel> patientUUIDResponsemodelCall = apiInterface.GETPATIENT(patientuuid, "Basic "+sessionManger.getEncoded());
         try {
 
              PatientUUIDResponsemodel patientUUIDResponsemodel = patientUUIDResponsemodelCall.execute().body();

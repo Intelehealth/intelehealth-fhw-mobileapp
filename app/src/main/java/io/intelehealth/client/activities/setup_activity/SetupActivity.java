@@ -550,7 +550,7 @@ public class SetupActivity extends AppCompatActivity {
 
                 editor.putString(SettingsActivity.KEY_PREF_SERVER_URL_REST, BASE_URL);
                 editor.putString(SettingsActivity.KEY_PREF_SERVER_URL_BASE, "http://" + CLEAN_URL + ":8080/openmrs");
-                sessionManager.setBaseUrl("http://" + CLEAN_URL + ":8080/openmrs");
+                sessionManager.setBaseUrl(BASE_URL);
                 editor.putString(SettingsActivity.KEY_PREF_SERVER_URL, CLEAN_URL);
                 Log.d(TAG, BASE_URL);
                 editor.apply();

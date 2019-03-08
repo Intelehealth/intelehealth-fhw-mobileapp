@@ -31,7 +31,7 @@ public interface RestApi {
     @GET("location?tag=Login%20Location")
     Call<Results<Location>> getLocations(@Query("v") String representation);
 
-    @GET("ws/rest/v1/visit")
+    @GET("visit")
     Call<PatientUUIDResponsemodel>   GETPATIENT(@Query("patient") String patientUUID, @Header("Authorization") String authHeader);
 
 
