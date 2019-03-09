@@ -45,13 +45,16 @@ import io.intelehealth.client.application.IntelehealthApplication;
 import io.intelehealth.client.database.DelayedJobQueueProvider;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.models.Identifier;
+import io.intelehealth.client.network.visitModel.VisitModel;
 import io.intelehealth.client.objects.Obs;
 import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.objects.WebResponse;
 import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.utilities.NetworkConnection;
+import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UuidDictionary;
+import io.intelehealth.client.utilities.visitSummaryHelper;
 
 /**
  * Sends Identification data to OpenMRS and receives the OpenMRS ID of the newly-created patient
