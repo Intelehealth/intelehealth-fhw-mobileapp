@@ -862,21 +862,31 @@ public class ClientService extends IntentService {
         Log.d(TAG, "entering the visit");
         //checking the patient visit to avoid multiple visits
         visitSummaryHelper vistSummaryHelper=new visitSummaryHelper();
-        if (dev_mode==true) {
-            visitmodel = vistSummaryHelper.isOpenmrsVisitExists("015ed97c-46c2-4837-a88e-517011e77cca", "2019-03-07T11:24:25.648+0530");
+        if (NetworkConnection.isOnline(this)) {
+            if (dev_mode == true) {
+                visitmodel = vistSummaryHelper.isOpenmrsVisitExists("015ed97c-46c2-4837-a88e-517011e77cca", "2019-03-07T11:24:25.648+0530");
+            } else {
+                visitmodel = vistSummaryHelper.isOpenmrsVisitExists(patient.getOpenmrsId(), startDateTime);
+            }
+
+            //TODO: Location UUID needs to be found before doing these
+            if (dev_mode == false) {
+                visitString =
+                        String.format("{\"startDatetime\":\"%s\"," +
+                                        "\"visitType\":\"" + UuidDictionary.VISIT_TELEMEDICINE + "\"," +
+                                        "\"patient\":\"%s\"," +
+                                        "\"location\":\"%s\"}",
+                                startDateTime, patient.getOpenmrsId(), location_uuid);
+            } else {
+                visitString = String.format("{\"startDatetime\":\"2019-03-07T11:24:25.648+0530\",\"visitType\":\"a86ac96e-2e07-47a7-8e72-8216a1a75bfd\",\"patient\":\"015ed97c-46c2-4837-a88e-517011e77cca\",\"location\":\"b56d5d16-bf89-4ac0-918d-e830fbfba290\"}");
+            }
         }else{
-            visitmodel = vistSummaryHelper.isOpenmrsVisitExists(patient.getOpenmrsId(), startDateTime);
-        }
-        //TODO: Location UUID needs to be found before doing these
-        if (dev_mode==false) {
             visitString =
                     String.format("{\"startDatetime\":\"%s\"," +
                                     "\"visitType\":\"" + UuidDictionary.VISIT_TELEMEDICINE + "\"," +
                                     "\"patient\":\"%s\"," +
                                     "\"location\":\"%s\"}",
                             startDateTime, patient.getOpenmrsId(), location_uuid);
-        }else{
-            visitString = String.format("{\"startDatetime\":\"2019-03-07T11:24:25.648+0530\",\"visitType\":\"a86ac96e-2e07-47a7-8e72-8216a1a75bfd\",\"patient\":\"015ed97c-46c2-4837-a88e-517011e77cca\",\"location\":\"b56d5d16-bf89-4ac0-918d-e830fbfba290\"}");
         }
         WebResponse responseVisit=null;
         if (visitmodel.isVisitExists()==false) {
@@ -1187,11 +1197,30 @@ public class ClientService extends IntentService {
         }
 
 
+        String encounterType=UuidDictionary.ENCOUNTER_ADULTINITIAL;
+        String encounter="ADULTINITIAL";
+        String query = "Select ifnull(emergency,'') as emergency FROM visit WHERE _id = " + visitID + "";
+//                Cursor cursor;
+        Cursor cursor=db.rawQuery(query,null);
+        if(cursor!=null) {
+            while(cursor.moveToNext()) {
+                String emergency = cursor.getString(cursor.getColumnIndex("emergency"));
+                if (emergency.equalsIgnoreCase("true")){
+                  encounterType=UuidDictionary.EMERGENCY;
+                  encounter="EMERGENCY";
+                }else{
+                    encounterType=UuidDictionary.ENCOUNTER_ADULTINITIAL;
+                    encounter="ADULTINITIAL";
+                }
+            }
+            cursor.close();
+        }
+
         String noteString =
                 String.format("{" +
                                 "\"encounterDatetime\":\"%s\"," +
                                 " \"patient\":\"%s\"," +
-                                "\"encounterType\":\"" + UuidDictionary.ENCOUNTER_ADULTINITIAL + "\"," +
+                                "\"encounterType\":\"" + encounterType + "\"," +
                                 "\"visit\":\"%s\"," +
                                 "\"obs\":[" + formattedObs
                                 + "]," +
@@ -1242,7 +1271,7 @@ public class ClientService extends IntentService {
                 contentValuesEncounter.put("patient_id", patientID);
                 contentValuesEncounter.put("visit_id", visitID);
                 contentValuesEncounter.put("openmrs_visit_uuid", visitUUID);
-                contentValuesEncounter.put("encounter_type", "ADULTINITIAL");
+                contentValuesEncounter.put("encounter_type", encounter);
                 if (!providers.trim().isEmpty()) {
                     contentValuesEncounter.put("encounter_provider", providers);
                 }

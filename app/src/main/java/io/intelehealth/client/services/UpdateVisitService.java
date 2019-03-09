@@ -401,11 +401,17 @@ public class UpdateVisitService extends IntentService {
                             Log.i(TAG, "queryEncounterTable: " + encounterAdultInitial);
                             break;
                         }
+                        case "EMERGECY": {
+                            encounterAdultInitial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("openmrs_encounter_id"));
+                            Log.i(TAG, "Emergency queryEncounterTable: " + encounterAdultInitial);
+                            break;
+                        }
                         case "VITALS": {
                             encounterVitals = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("openmrs_encounter_id"));
                             Log.i(TAG, "queryEncounterTable: " + encounterVitals);
                             break;
                         }
+
                         default: {
 
                         }
