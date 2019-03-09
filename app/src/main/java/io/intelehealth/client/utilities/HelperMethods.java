@@ -291,6 +291,7 @@ public class HelperMethods {
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
+            sessionManager.setEncoded(encoded);
             connection.setRequestProperty("Authorization", "Basic " + encoded);
             if (session_id != null) {
                 connection.setRequestProperty("Cookie", "jsessionid=" + session_id);
@@ -367,6 +368,7 @@ public class HelperMethods {
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
+            sessionManager.setEncoded(encoded);
             connection.setRequestProperty("Authorization", "Basic " + encoded);
             if (session_id != null) {
                 connection.setRequestProperty("Cookie", "jsessionid=" + session_id);
@@ -460,6 +462,7 @@ public class HelperMethods {
 
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
             String BASE_URL = sharedPref.getString(SettingsActivity.KEY_PREF_SERVER_URL_REST, "");
+            sessionManager.setBaseUrl(BASE_URL);
             final String session_id = sharedPref.getString("sessionid", null);
 
 
@@ -474,6 +477,7 @@ public class HelperMethods {
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
+            sessionManager.setEncoded(encoded);
             connection.setRequestProperty("Authorization", "Basic " + encoded);
             Log.d(LOG_TAG, USERNAME + "-" + PASSWORD);
             connection.setRequestMethod("POST");

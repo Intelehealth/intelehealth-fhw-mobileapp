@@ -22,7 +22,7 @@ public class UuidDictionary {
     public static final String RHK_FAMILY_HISTORY_BLURB = "d63ae965-47fb-40e8-8f08-1f46a8a60b2b";
     public static final String FOLLOW_UP_VISIT = "e8caffd6-5d22-41c4-8d6a-bc31a44d0c86";
 
-//mahitit added
+//m added
     public static final String FLAGGED="ca5f5dc3-4f0b-4097-9cae-5cf2eb44a09c";
 
     public static final String TELEMEDICINE_DIAGNOSIS = "537bb20d-d09d-4f88-930b-cc45c7d662df";

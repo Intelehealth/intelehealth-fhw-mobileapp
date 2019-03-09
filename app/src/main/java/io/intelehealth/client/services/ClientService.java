@@ -120,12 +120,17 @@ public class ClientService extends IntentService {
     SharedPreferences.Editor e;
     SharedPreferences sharedPreferences;
 
+    String channelId = "channel-01";
+    String channelName = "Channel Name";
+    SessionManager sessionManager;
     @Override
     protected void onHandleIntent(Intent intent) {
         mNotifyManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mBuilder = new NotificationCompat.Builder(this);
         Boolean success = false;
+
+        sessionManager=new SessionManager(getApplicationContext());
         mDbHelper = new LocalRecordsDatabaseHelper(this.getApplicationContext());
         db = mDbHelper.getWritableDatabase();
 
@@ -847,40 +852,62 @@ public class ClientService extends IntentService {
      * @return responseVisit
      */
     private String uploadVisitData(Patient patient, String startDateTime, String visitID) {
+        boolean dev_mode = false;//Used to simulate existing visit
+        String visitString="";
 
-
-        //TODO: Location UUID needs to be found before doing these
-        String visitString =
-                String.format("{\"startDatetime\":\"%s\"," +
-                                "\"visitType\":\"" + UuidDictionary.VISIT_TELEMEDICINE + "\"," +
-                                "\"patient\":\"%s\"," +
-                                "\"location\":\"%s\"}",
-                        startDateTime, patient.getOpenmrsId(), location_uuid);
-        Log.d(TAG, "Visit String: " + visitString);
-        WebResponse responseVisit;
-        responseVisit = HelperMethods.postCommand("visit", visitString, getApplicationContext());
-        Log.d(TAG, String.valueOf(responseVisit.getResponseCode()));
-        if (responseVisit != null && responseVisit.getResponseCode() != 201) {
-            String newText = "Visit was not created. Please check your connection.";
-            mBuilder.setContentText(newText).setNumber(++numMessages);
-            mNotifyManager.notify(mId, mBuilder.build());
-            Log.d(TAG, "Visit posting was unsuccessful");
-        } else {
-            String newText = "Visit created successfully.";
-            mBuilder.setContentText(newText).setNumber(++numMessages);
-            mNotifyManager.notify(mId, mBuilder.build());
-            Log.d(TAG, responseVisit.getResponseString());
+        VisitModel visitmodel=new VisitModel();
+        Log.d(TAG, "entering the visit");
+        //checking the patient visit to avoid multiple visits
+        visitSummaryHelper vistSummaryHelper=new visitSummaryHelper();
+        if (dev_mode==true) {
+            visitmodel = vistSummaryHelper.isOpenmrsVisitExists("015ed97c-46c2-4837-a88e-517011e77cca", "2019-03-07T11:24:25.648+0530");
+        }else{
+            visitmodel = vistSummaryHelper.isOpenmrsVisitExists(patient.getOpenmrsId(), startDateTime);
         }
+        //TODO: Location UUID needs to be found before doing these
+        if (dev_mode==false) {
+            visitString =
+                    String.format("{\"startDatetime\":\"%s\"," +
+                                    "\"visitType\":\"" + UuidDictionary.VISIT_TELEMEDICINE + "\"," +
+                                    "\"patient\":\"%s\"," +
+                                    "\"location\":\"%s\"}",
+                            startDateTime, patient.getOpenmrsId(), location_uuid);
+        }else{
+            visitString = String.format("{\"startDatetime\":\"2019-03-07T11:24:25.648+0530\",\"visitType\":\"a86ac96e-2e07-47a7-8e72-8216a1a75bfd\",\"patient\":\"015ed97c-46c2-4837-a88e-517011e77cca\",\"location\":\"b56d5d16-bf89-4ac0-918d-e830fbfba290\"}");
+        }
+        WebResponse responseVisit=null;
+        if (visitmodel.isVisitExists()==false) {
+            Log.d(TAG, "Visit String: " + visitString);
 
+            responseVisit = HelperMethods.postCommand("visit", visitString, getApplicationContext());
+            Log.d(TAG, String.valueOf(responseVisit.getResponseCode()));
+            if (responseVisit != null && responseVisit.getResponseCode() != 201) {
+                String newText = "Visit was not created. Please check your connection.";
+                mBuilder.setContentText(newText).setNumber(++numMessages);
+                mNotifyManager.notify(mId, mBuilder.build());
+                Log.d(TAG, "Visit posting was unsuccessful");
+            } else {
+                String newText = "Visit created successfully.";
+                mBuilder.setContentText(newText).setNumber(++numMessages);
+                mNotifyManager.notify(mId, mBuilder.build());
+                Log.d(TAG, responseVisit.getResponseString());
+            }
+        }
+        String visituuid="";
         Intent imageUpload = new Intent(this, ImageUploadService.class);
         imageUpload.putExtra("patientID", patientID);
         imageUpload.putExtra("name", patientName);
         imageUpload.putExtra("patientUUID", patient.getOpenmrsId());
-        imageUpload.putExtra("visitUUID", responseVisit.getResponseString());
+        if (visitmodel.isVisitExists()==false)
+        visituuid=responseVisit.getResponseString();
+        else
+            visituuid = visitmodel.getVisituuid();
+        Log.d(TAG, "visituuid "+visituuid);
+        imageUpload.putExtra("visitUUID", visituuid);
         imageUpload.putExtra("visitID", visitID);
         startService(imageUpload);
 
-        return responseVisit.getResponseString();
+        return visituuid;
 
     }
 
@@ -989,7 +1016,7 @@ public class ClientService extends IntentService {
                 String.format("{" +
                                 "\"encounterDatetime\":\"%s\"," +
                                 "\"patient\":\"%s\"," +
-                                "\"encounterType\":\"" + UuidDictionary.ENCOUNTER_VITALS + "\"," +
+                                "\"encounterType\":\"" + UuidDictionary.ENCOUNTER_VITALS+ "\"," +
                                 " \"visit\":\"%s\"," +
                                 "\"obs\":[" + formattedObs +
                                 "]," +
@@ -1156,27 +1183,12 @@ public class ClientService extends IntentService {
             formattedObs = formattedObs.replaceAll("%", "");
         }
 
-        String encounterType ="";
 
-        String query = "Select ifnull(emergency,'') as emergency FROM visit WHERE _id = '" + visitID + "'";
-//                Cursor cursor;
-        Cursor cursor=db.rawQuery(query,null);
-        if(cursor!=null) {
-            while(cursor.moveToNext()) {
-                String emergency = cursor.getString(cursor.getColumnIndex("emergency"));
-                if (emergency.equalsIgnoreCase("true")){
-                    encounterType = UuidDictionary.FLAGGED;
-                }else{
-                    encounterType = UuidDictionary.ENCOUNTER_ADULTINITIAL;
-                }
-            }
-            cursor.close();
-        }
         String noteString =
                 String.format("{" +
                                 "\"encounterDatetime\":\"%s\"," +
                                 " \"patient\":\"%s\"," +
-                                "\"encounterType\":\"" + encounterType + "\"," +
+                                "\"encounterType\":\"" + UuidDictionary.ENCOUNTER_ADULTINITIAL + "\"," +
                                 "\"visit\":\"%s\"," +
                                 "\"obs\":[" + formattedObs
                                 + "]," +
