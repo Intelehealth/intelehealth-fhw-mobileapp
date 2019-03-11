@@ -790,9 +790,35 @@ public class ClientService extends IntentService {
                                 patHistory, famHistory, complaint, physFindings);
 
                         if (encounter_notes && encounter_vitals) uploadStatus = true;
+
+                        String query = "Select ifnull(emergency,'') as emergency FROM visit WHERE _id = " + visitID + "";
+                        Cursor cursor=db.rawQuery(query,null);
+                        if(cursor!=null) {
+                            while(cursor.moveToNext()) {
+                                String emergency = cursor.getString(cursor.getColumnIndex("emergency"));
+                                if (emergency.equalsIgnoreCase("true")) {
+                                    boolean Emergency = uploadEncounterEmergency(visitID, visitUUID, patient, startDateTime,
+                                            patHistory, famHistory, complaint, physFindings);
+                                }
+                            }
+                            cursor.close();
+                        }
+
                     } else if (statusCode == STATUS_ENCOUNTER_NOTE_NOT_CREATED) {
                         boolean encounter_notes = uploadEncounterNotes(visitID, visitUUID, patient, startDateTime,
                                 patHistory, famHistory, complaint, physFindings);
+                        String query = "Select ifnull(emergency,'') as emergency FROM visit WHERE _id = " + visitID + "";
+                        Cursor cursor=db.rawQuery(query,null);
+                        if(cursor!=null) {
+                            while(cursor.moveToNext()) {
+                                String emergency = cursor.getString(cursor.getColumnIndex("emergency"));
+                                if (emergency.equalsIgnoreCase("true")) {
+                                    boolean Emergency = uploadEncounterEmergency(visitID, visitUUID, patient, startDateTime,
+                                            patHistory, famHistory, complaint, physFindings);
+                                }
+                            }
+                            cursor.close();
+                        }
                         uploadStatus = encounter_notes;
                     }
                 }
@@ -827,7 +853,22 @@ public class ClientService extends IntentService {
                 if (encounter_vitals) statusCode = STATUS_ENCOUNTER_NOTE_NOT_CREATED;
                 boolean encounter_notes = uploadEncounterNotes(visitID, visitUUID, patient, startDateTime,
                         patHistory, famHistory, complaint, physFindings);
+
+                String query = "Select ifnull(emergency,'') as emergency FROM visit WHERE _id = " + visitID + "";
+                Cursor cursor=db.rawQuery(query,null);
+                if(cursor!=null) {
+                    while(cursor.moveToNext()) {
+                        String emergency = cursor.getString(cursor.getColumnIndex("emergency"));
+                        if (emergency.equalsIgnoreCase("true")) {
+                            boolean Emergency = uploadEncounterEmergency(visitID, visitUUID, patient, startDateTime,
+                                    patHistory, famHistory, complaint, physFindings);
+                        }
+                    }
+                    cursor.close();
+                }
+
                 if (encounter_notes && encounter_vitals) uploadStatus = true;
+
             }
 
             current_intent.putExtra("status", statusCode);
@@ -1158,6 +1199,7 @@ public class ClientService extends IntentService {
         //---------------------
     }
 
+
     private boolean uploadEncounterNotes(String visitID, String visitUUID, Patient patient, String startDateTime,
                                          Obs patHistory, Obs famHistory, Obs complaint, Obs physFindings) {
 
@@ -1197,30 +1239,11 @@ public class ClientService extends IntentService {
         }
 
 
-        String encounterType=UuidDictionary.ENCOUNTER_ADULTINITIAL;
-        String encounter="ADULTINITIAL";
-        String query = "Select ifnull(emergency,'') as emergency FROM visit WHERE _id = " + visitID + "";
-//                Cursor cursor;
-        Cursor cursor=db.rawQuery(query,null);
-        if(cursor!=null) {
-            while(cursor.moveToNext()) {
-                String emergency = cursor.getString(cursor.getColumnIndex("emergency"));
-                if (emergency.equalsIgnoreCase("true")){
-                  encounterType=UuidDictionary.EMERGENCY;
-                  encounter="EMERGENCY";
-                }else{
-                    encounterType=UuidDictionary.ENCOUNTER_ADULTINITIAL;
-                    encounter="ADULTINITIAL";
-                }
-            }
-            cursor.close();
-        }
-
         String noteString =
                 String.format("{" +
                                 "\"encounterDatetime\":\"%s\"," +
                                 " \"patient\":\"%s\"," +
-                                "\"encounterType\":\"" + encounterType + "\"," +
+                                "\"encounterType\":\"" + UuidDictionary.ENCOUNTER_ADULTINITIAL + "\"," +
                                 "\"visit\":\"%s\"," +
                                 "\"obs\":[" + formattedObs
                                 + "]," +
@@ -1271,7 +1294,181 @@ public class ClientService extends IntentService {
                 contentValuesEncounter.put("patient_id", patientID);
                 contentValuesEncounter.put("visit_id", visitID);
                 contentValuesEncounter.put("openmrs_visit_uuid", visitUUID);
-                contentValuesEncounter.put("encounter_type", encounter);
+                contentValuesEncounter.put("encounter_type", "ADULTINITIAL");
+                if (!providers.trim().isEmpty()) {
+                    contentValuesEncounter.put("encounter_provider", providers);
+                }
+
+                db.insert(
+                        "encounter",
+                        null,
+                        contentValuesEncounter
+                );
+
+                if (resultsArray.length() != 0) {
+                    for (int i = 0; i < resultsArray.length(); i++) {
+                        JSONObject checking = resultsArray.getJSONObject(i);
+                        String display = checking.getString("display");
+                        String obsUUID = checking.getString("uuid");
+                        String check = display.substring(0, display.indexOf(":"));
+
+                        String obsUpdateSelection = "visit_id = ? AND concept_id = ?";
+                        String concept_id = null;
+                        ContentValues contentValuesObs = new ContentValues();
+                        contentValuesObs.put("openmrs_encounter_id", encounterUUID);
+                        contentValuesObs.put("openmrs_obs_id", obsUUID);
+                        switch (check) {
+                            case "PHYSICAL EXAMINATION": {
+                                concept_id = String.valueOf(ConceptId.PHYSICAL_EXAMINATION);
+                                break;
+                            }
+                            case "FAMILY HISTORY": {
+                                concept_id = String.valueOf(ConceptId.RHK_FAMILY_HISTORY_BLURB);
+                                break;
+                            }
+                            case "CURRENT COMPLAINT": {
+                                concept_id = String.valueOf(ConceptId.CURRENT_COMPLAINT);
+                                break;
+                            }
+                            case "MEDICAL HISTORY": {
+                                concept_id = String.valueOf(ConceptId.RHK_MEDICAL_HISTORY_BLURB);
+                                break;
+                            }
+                        }
+
+                        String[] obsUpdateArgs = {visitID, concept_id};
+                        if (visitID != null && concept_id != null) {
+                            db.update(
+                                    "obs",
+                                    contentValuesObs,
+                                    obsUpdateSelection,
+                                    obsUpdateArgs
+                            );
+                        }
+                    }
+                }
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            String newText = "Notes created successfully.";
+            mBuilder.setContentText(newText).setNumber(++numMessages);
+            mNotifyManager.notify(mId, mBuilder.build());
+            return true;
+        }
+    }
+    private boolean uploadEncounterEmergency(String visitID, String visitUUID, Patient patient, String startDateTime,
+                                             Obs patHistory, Obs famHistory, Obs complaint, Obs physFindings) {
+
+
+        String quote = "\"";
+
+        String formattedObs = "";
+
+        //MedicalHistory
+        if (patHistory.getValue() != null && !patHistory.getValue().trim().isEmpty()) {
+            formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.RHK_MEDICAL_HISTORY_BLURB + quote + "," +
+                    quote + "value" + quote + ":" + quote + patHistory.getValue() + quote + "},";
+        }
+        //FamilyHistory
+        if (famHistory.getValue() != null && !famHistory.getValue().trim().isEmpty()) {
+            formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.RHK_FAMILY_HISTORY_BLURB + quote + "," +
+                    quote + "value" + quote + ":" + quote + famHistory.getValue() + quote + "},";
+        }
+        //CurrentComplaint
+        if (complaint.getValue() != null && !complaint.getValue().trim().isEmpty()) {
+            formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.CURRENT_COMPLAINT + quote + "," +
+                    quote + "value" + quote + ":" + quote + complaint.getValue() + quote + "},";
+        }
+        //PhysicalExam
+        if (physFindings.getValue() != null && !physFindings.getValue().trim().isEmpty()) {
+            formattedObs = formattedObs + "{" + quote + "concept" + quote + ":" + quote + UuidDictionary.PHYSICAL_EXAMINATION + quote + "," +
+                    quote + "value" + quote + ":" + quote + physFindings.getValue() + quote + "},";
+        }
+        if (!formattedObs.isEmpty()) {
+            if (formattedObs.length() > 0 && formattedObs.charAt(formattedObs.length() - 1) == ',') {
+                formattedObs = formattedObs.substring(0, formattedObs.length() - 1);
+            }
+        }
+
+        if (formattedObs.contains("%")) {
+            formattedObs = formattedObs.replaceAll("%", "");
+        }
+
+
+        String encounterType=UuidDictionary.ENCOUNTER_ADULTINITIAL;
+        String query = "Select ifnull(emergency,'') as emergency FROM visit WHERE _id = " + visitID + "";
+//                Cursor cursor;
+        Cursor cursor=db.rawQuery(query,null);
+        if(cursor!=null) {
+            while(cursor.moveToNext()) {
+                String emergency = cursor.getString(cursor.getColumnIndex("emergency"));
+                if (emergency.equalsIgnoreCase("true")){
+                    encounterType=UuidDictionary.EMERGENCY;
+                }else{
+                    encounterType=UuidDictionary.ENCOUNTER_ADULTINITIAL;
+                }
+            }
+            cursor.close();
+        }
+
+        String noteString =
+                String.format("{" +
+                                "\"encounterDatetime\":\"%s\"," +
+                                " \"patient\":\"%s\"," +
+                                "\"encounterType\":\"" + UuidDictionary.EMERGENCY + "\"," +
+                                "\"visit\":\"%s\"," +
+                                "\"obs\":[" + formattedObs
+                                + "]," +
+                                "\"encounterProviders\":[{" +
+                                "\"encounterRole\":\"73bbb069-9781-4afc-a9d1-54b6b2270e04\"," +
+                                "\"provider\":\"%s\"" +
+                                "}]," +
+                                "\"location\":\"%s\"}",
+
+                        startDateTime,
+                        patient.getOpenmrsId(),
+                        visitUUID,
+                        provider_uuid,
+                        location_uuid
+                );
+        Log.d(TAG, "Notes Encounter String: " + noteString);
+        WebResponse responseNotes;
+        responseNotes = HelperMethods.postCommand("encounter", noteString, getApplicationContext());
+        if (responseNotes != null && responseNotes.getResponseCode() != 201) {
+            String newText = "Notes Encounter was not created. Please check your connection.";
+            mBuilder.setContentText(newText).setNumber(++numMessages);
+            mNotifyManager.notify(mId, mBuilder.build());
+            Log.d(TAG, "Notes Encounter posting was unsuccessful");
+            return false;
+        } else if (responseNotes == null) {
+            Log.d(TAG, "Notes Encounter posting was unsuccessful");
+            return false;
+        } else {
+            Log.i(TAG, "uploadEncounterNotes: " + responseNotes.getResponseString());
+            try {
+                JSONObject JSONResponse = new JSONObject(responseNotes.getResponseObject());
+                JSONArray resultsArray = JSONResponse.getJSONArray("obs");
+                JSONArray encounterProviders = JSONResponse.getJSONArray("encounterProviders");
+                String encounterUUID = JSONResponse.getString("uuid");
+
+                String providers = "";
+
+                for (int i = 0; i > encounterProviders.length(); i++) {
+                    if (providers.trim().isEmpty()) {
+                        providers = encounterProviders.getJSONObject(i).getString("display");
+                    } else {
+                        providers = providers + "," + encounterProviders.getJSONObject(i).getString("display");
+                    }
+                }
+
+                ContentValues contentValuesEncounter = new ContentValues();
+                contentValuesEncounter.put("openmrs_encounter_id", encounterUUID);
+                contentValuesEncounter.put("patient_id", patientID);
+                contentValuesEncounter.put("visit_id", visitID);
+                contentValuesEncounter.put("openmrs_visit_uuid", visitUUID);
+                contentValuesEncounter.put("encounter_type", "EMERGENCY");
                 if (!providers.trim().isEmpty()) {
                     contentValuesEncounter.put("encounter_provider", providers);
                 }

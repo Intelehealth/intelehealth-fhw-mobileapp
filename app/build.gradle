@@ -9,7 +9,7 @@ android {
         applicationId "io.intelehealth.client"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 18
+        versionCode 21
         versionName "1.5.2"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
