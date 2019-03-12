@@ -1,6 +1,10 @@
 package io.intelehealth.client.api.retrofit;
 
 
+import android.arch.persistence.room.Delete;
+
+import com.google.gson.JsonNull;
+
 import io.intelehealth.client.models.Identifier;
 import io.intelehealth.client.models.Results;
 import io.intelehealth.client.models.Location;
@@ -10,6 +14,7 @@ import io.intelehealth.client.network.visitModels.VisitResponsemodel;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -37,5 +42,8 @@ public interface RestApi {
 
     @GET
     Call<VisitResponsemodel> VISIT_RESPONSEMODEL_CALL(@Url String url, @Header("Authorization") String authHeader);
+
+    @DELETE("encounter/{uuid}?purge=true")
+    Call<Void> DELETE_ENCOUNTER(@Path("uuid") String uuid,@Header("Authorization") String authHeader);
 
 }

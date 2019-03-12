@@ -407,11 +407,11 @@ sessionManager=new SessionManager(getApplicationContext());
             }
             cursor.close();
         }
-        VisitSummaryDAO visitSummarydao = new VisitSummaryDAO();
-        visitUUID= visitSummarydao.getVisitUUID(visitID,db);
-        if(!visitUUID.isEmpty()){
-            flag.setEnabled(false);
-        }
+//        VisitSummaryDAO visitSummarydao = new VisitSummaryDAO();
+//        visitUUID= visitSummarydao.getVisitUUID(visitID,db);
+//        if(!visitUUID.isEmpty()){
+//            flag.setEnabled(false);
+//        }
         flag.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
@@ -565,6 +565,10 @@ sessionManager=new SessionManager(getApplicationContext());
                     if (visitIDCursor != null) visitIDCursor.close();
                 }
 
+                VisitSummaryDAO visitSummaryDAO=new VisitSummaryDAO();
+                if(!flag.isChecked()) {
+                    visitSummaryDAO.removeEncounterEmergency(visitID, visitUUID, db);
+                }
                 Snackbar.make(view, "Uploading to doctor.", Snackbar.LENGTH_LONG).show();
 
 

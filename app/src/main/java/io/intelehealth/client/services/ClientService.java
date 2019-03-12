@@ -29,6 +29,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -41,10 +42,12 @@ import java.util.Locale;
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.setting_activity.SettingsActivity;
 import io.intelehealth.client.activities.visit_summary_activity.VisitSummaryActivity;
+import io.intelehealth.client.api.retrofit.RestApi;
 import io.intelehealth.client.application.IntelehealthApplication;
 import io.intelehealth.client.database.DelayedJobQueueProvider;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.models.Identifier;
+import io.intelehealth.client.network.ApiClient;
 import io.intelehealth.client.network.visitModel.VisitModel;
 import io.intelehealth.client.objects.Obs;
 import io.intelehealth.client.objects.Patient;
@@ -1358,6 +1361,9 @@ public class ClientService extends IntentService {
             return true;
         }
     }
+
+
+
     private boolean uploadEncounterEmergency(String visitID, String visitUUID, Patient patient, String startDateTime,
                                              Obs patHistory, Obs famHistory, Obs complaint, Obs physFindings) {
 
@@ -1397,30 +1403,13 @@ public class ClientService extends IntentService {
         }
 
 
-        String encounterType=UuidDictionary.ENCOUNTER_ADULTINITIAL;
-        String query = "Select ifnull(emergency,'') as emergency FROM visit WHERE _id = " + visitID + "";
-//                Cursor cursor;
-        Cursor cursor=db.rawQuery(query,null);
-        if(cursor!=null) {
-            while(cursor.moveToNext()) {
-                String emergency = cursor.getString(cursor.getColumnIndex("emergency"));
-                if (emergency.equalsIgnoreCase("true")){
-                    encounterType=UuidDictionary.EMERGENCY;
-                }else{
-                    encounterType=UuidDictionary.ENCOUNTER_ADULTINITIAL;
-                }
-            }
-            cursor.close();
-        }
-
         String noteString =
                 String.format("{" +
                                 "\"encounterDatetime\":\"%s\"," +
                                 " \"patient\":\"%s\"," +
                                 "\"encounterType\":\"" + UuidDictionary.EMERGENCY + "\"," +
                                 "\"visit\":\"%s\"," +
-                                "\"obs\":[" + formattedObs
-                                + "]," +
+                                "\"obs\":[]," +
                                 "\"encounterProviders\":[{" +
                                 "\"encounterRole\":\"73bbb069-9781-4afc-a9d1-54b6b2270e04\"," +
                                 "\"provider\":\"%s\"" +
