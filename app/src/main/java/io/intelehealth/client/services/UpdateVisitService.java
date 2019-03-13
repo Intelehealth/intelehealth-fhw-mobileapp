@@ -15,17 +15,23 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import io.intelehealth.client.R;
+import io.intelehealth.client.activities.setting_activity.SettingsActivity;
+import io.intelehealth.client.application.IntelehealthApplication;
+import io.intelehealth.client.dao.VisitSummaryDAO;
 import io.intelehealth.client.database.DelayedJobQueueProvider;
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.Obs;
+import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.objects.WebResponse;
 import io.intelehealth.client.utilities.ConceptId;
+import io.intelehealth.client.utilities.EmergencyEncounter;
 import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.utilities.UuidDictionary;
 
@@ -52,7 +58,7 @@ public class UpdateVisitService extends IntentService {
     private String visitStartDateTime;
     private String patientUUID;
     private String visitUUID;
-    private Integer patientID;
+        private Integer patientID;
 
     NotificationManager mNotifyManager;
     public int mId = 5;
@@ -72,6 +78,13 @@ public class UpdateVisitService extends IntentService {
     SharedPreferences sharedPreferences;
     String channelId = "channel-01";
     String channelName = "Channel Name";
+
+    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(IntelehealthApplication.getAppContext());
+    String location_uuid = prefs.getString(SettingsActivity.KEY_PREF_LOCATION_UUID, null);
+    String provider_uuid = prefs.getString("providerid", null);
+    VisitSummaryDAO visitSummaryDAO =new VisitSummaryDAO();
+    EmergencyEncounter emergencyEncounter = new EmergencyEncounter();
+
     @Override
     protected void onHandleIntent(Intent intent) {
 
@@ -629,6 +642,20 @@ public class UpdateVisitService extends IntentService {
                     e.printStackTrace();
                     return false;
                 }
+                String query = "Select ifnull(emergency,'') as emergency FROM visit WHERE _id = " + visitId + "";
+                Cursor cursor=db.rawQuery(query,null);
+                if(cursor!=null) {
+                    while(cursor.moveToNext()) {
+                        String emergency = cursor.getString(cursor.getColumnIndex("emergency"));
+                        if (emergency.equalsIgnoreCase("true")) {
+
+                            if(visitSummaryDAO.getEmergencyUUID(visitId,db).isEmpty()) {
+                                emergencyEncounter.uploadEncounterEmergency(visitId, visitUUID, visitStartDateTime, patientID, db, getApplicationContext());
+                            }
+                            }
+                    }
+                    cursor.close();
+                }
                 return true;
             }
             return false;
@@ -687,8 +714,25 @@ public class UpdateVisitService extends IntentService {
                 e.printStackTrace();
             }
 
+            String query = "Select ifnull(emergency,'') as emergency FROM visit WHERE _id = " + visitId + "";
+            Cursor cursor=db.rawQuery(query,null);
+            if(cursor!=null) {
+                while(cursor.moveToNext()) {
+                    String emergency = cursor.getString(cursor.getColumnIndex("emergency"));
+                    if (emergency.equalsIgnoreCase("true")) {
+
+                        if(visitSummaryDAO.getEmergencyUUID(visitId,db).isEmpty()) {
+                            emergencyEncounter.uploadEncounterEmergency(visitId, visitUUID, visitStartDateTime, patientID, db, getApplicationContext());
+                        }
+                    }
+                }
+                cursor.close();
+            }
+
+
             return true;
         }
+
 
     }
 

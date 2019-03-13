@@ -3,6 +3,7 @@ package io.intelehealth.client.network;
 
 import io.intelehealth.client.application.IntelehealthApplication;
 import io.intelehealth.client.utilities.SessionManager;
+import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -23,6 +24,7 @@ static SessionManager sessionManager;
             retrofit = new Retrofit.Builder()
                     .baseUrl(sessionManager.getBaseUrl())
                     .client(client.build())
+                    //AndroidSchedulers.mainThread()
                     .addConverterFactory(GsonConverterFactory.create())
 //                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .build();

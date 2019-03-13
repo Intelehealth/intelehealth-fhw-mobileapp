@@ -39,62 +39,20 @@ public class VisitSummaryDAO {
 
         return visitUUID;
     }
-    public boolean removeEncounterEmergency(final String visitID, final String visitUUID, final SQLiteDatabase db){
-        RestApi apiInterface;
-        sessionManger=new SessionManager(IntelehealthApplication.getAppContext());
-        final boolean[] success = {false};
-        apiInterface = ApiClient.getApiClient().create(RestApi.class);
-//        apiInterface.DELETE_ENCOUNTER("").execute();
-        if (visitID != null && visitUUID != null) {
-            String selectQuery = "SELECT openmrs_encounter_id FROM encounter WHERE (visit_id='" + visitID + "' and openmrs_visit_uuid='" + visitUUID + "') and encounter_type='EMERGENCY'";
-            Cursor cursor = db.rawQuery(selectQuery, null);
-            if (cursor != null) {
-                if (cursor.moveToFirst()) {
-                    while (!cursor.isAfterLast()) {
-                        String name = cursor.getString(cursor.getColumnIndex("openmrs_encounter_id"));
-                        Call<Void> patientUUIDResponsemodelCall = apiInterface.DELETE_ENCOUNTER(name,"Basic "+sessionManger.getEncoded());
-patientUUIDResponsemodelCall.enqueue(new Callback<Void>() {
-    @Override
-    public void onResponse(Call<Void> call, Response<Void> response) {
-        if(response.code()==204){
-            String delteQuery = "DELETE FROM encounter WHERE visit_id='" + visitID + "' and openmrs_visit_uuid='" + visitUUID + "' and encounter_type='EMERGENCY'";
-                                success[0] =true;
-                                db.execSQL(delteQuery);
+    public String getEmergencyUUID(String visitID, SQLiteDatabase db) {
+        String visitUUID = "";
+        String emergencyQuery="select openmrs_visit_uuid from encounter where visit_id='"+ visitID +"' and encounter_type='EMERGENCY'";
+        final Cursor visitIDCursor = db.rawQuery(emergencyQuery,null);
+        if(visitIDCursor !=null && visitIDCursor.moveToFirst() && visitIDCursor.getCount()>0)
+        {
+            visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("openmrs_visit_uuid"));
         }
+        if(visitIDCursor!=null)
+            visitIDCursor.close();
+        if (visitUUID==null)
+            visitUUID="";
+
+        return visitUUID;
     }
 
-    @Override
-    public void onFailure(Call<Void> call, Throwable t) {
-        Log.d("onfailure", "onFailure: "+t.getMessage());
-    }
-});
-//                        try {
-//                            patientUUIDResponsemodelCall.execute().body();
-//                            if(patientUUIDResponsemodelCall.isExecuted()){
-//                                    String delteQuery = "DELETE FROM encounter WHERE visit_id='" + visitID + "' and openmrs_visit_uuid='" + visitUUID + "' and encounter_type='EMERGENCY'";
-//                                success=true;
-//                                db.execSQL(delteQuery);
-//}
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                        try {
-//                            if (patientUUIDResponsemodelCall.execute().isSuccessful()) {
-//                                String delteQuery = "DELETE FROM encounter WHERE visit_id='" + visitID + "' and openmrs_visit_uuid='" + visitUUID + "' and encounter_type='EMERGENCY'";
-//                                success=true;
-//    //                            db.execSQL(delteQuery);
-//                            }
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-                        cursor.moveToNext();
-                    }
-                }
-
-            }
-            cursor.close();
-        }
-        return success[0];
-    }
 }

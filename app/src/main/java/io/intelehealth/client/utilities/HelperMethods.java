@@ -13,6 +13,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -434,7 +435,9 @@ public class HelperMethods {
         WebResponse webResponse = new WebResponse();
 
         //TODO: grab the URL and the UN and PW from the sharedprefs, and the account
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
+        StrictMode.setThreadPolicy(policy);
         try {
 
             String USERNAME = null;
