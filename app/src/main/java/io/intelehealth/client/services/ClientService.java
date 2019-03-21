@@ -4,6 +4,7 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.AlarmManager;
 import android.app.IntentService;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ContentValues;
@@ -134,7 +135,16 @@ public class ClientService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         mNotifyManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mBuilder = new NotificationCompat.Builder(this);
+        //mahiti added
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel(
+                    channelId, channelName, importance);
+            mNotifyManager.createNotificationChannel(mChannel);
+        }
+
+        mBuilder = new NotificationCompat.Builder(this,channelId);
+
         Boolean success = false;
 
         sessionManager=new SessionManager(getApplicationContext());
@@ -782,6 +792,7 @@ public class ClientService extends IntentService {
                     current_intent.putExtra("status", statusCode);
                     statusCode = STATUS_ENCOUNTER_NOT_CREATED;
                     if (statusCode == STATUS_ENCOUNTER_NOT_CREATED) {
+//                        #634
                         boolean encounter_vitals = uploadEncounterVitals(visitID, visitUUID, patient, startDateTime,
                                 temperature, respiratory, weight, height, pulse, bpSys, bpDias, spO2);
 
@@ -940,7 +951,10 @@ public class ClientService extends IntentService {
             Log.d(TAG, "Visit String: " + visitString);
 
             responseVisit = HelperMethods.postCommand("visit", visitString, getApplicationContext());
-            Log.d(TAG, String.valueOf(responseVisit.getResponseCode()));
+//            #639
+            if (responseVisit != null) {
+                Log.d(TAG, String.valueOf(responseVisit.getResponseCode()));
+            }
             if (responseVisit != null && responseVisit.getResponseCode() != 201) {
                 String newText = "Visit was not created. Please check your connection.";
                 mBuilder.setContentText(newText).setNumber(++numMessages);

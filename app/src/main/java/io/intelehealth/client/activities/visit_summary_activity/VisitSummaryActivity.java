@@ -700,6 +700,7 @@ sessionManager=new SessionManager(getApplicationContext());
         tempcel = (TextView) findViewById(R.id.textView_temp);
         try {
             JSONObject obj = null;
+//            #630
             if (hasLicense) {
                 obj = new JSONObject(HelperMethods.readFileRoot(mFileName, this)); //Load the config file
             } else {

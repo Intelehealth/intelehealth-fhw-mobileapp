@@ -151,7 +151,7 @@ public class EmergencyEncounter {
         apiInterface = ApiClient.getApiClient().create(RestApi.class);
 //        apiInterface.DELETE_ENCOUNTER("").execute();
         if (visitID != null && visitUUID != null) {
-            String selectQuery = "SELECT openmrs_encounter_id FROM encounter WHERE (visit_id='" + visitID + "' and openmrs_visit_uuid='" + visitUUID + "') and encounter_type='EMERGENCY'";
+                String selectQuery = "SELECT openmrs_encounter_id FROM encounter WHERE (visit_id='" + visitID + "' and openmrs_visit_uuid='" + visitUUID + "') and encounter_type='EMERGENCY'";
             Cursor cursor = db.rawQuery(selectQuery, null);
             if (cursor != null) {
                 if (cursor.moveToFirst()) {

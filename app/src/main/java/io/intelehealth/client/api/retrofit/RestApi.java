@@ -1,7 +1,7 @@
 package io.intelehealth.client.api.retrofit;
 
 
-import android.arch.persistence.room.Delete;
+
 
 import com.google.gson.JsonNull;
 

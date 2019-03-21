@@ -16,6 +16,8 @@ import android.text.TextUtils;
 
 import java.util.HashMap;
 
+import io.intelehealth.client.utilities.Logger;
+
 /**
  * Content provider for performing CRUD operations on delayed_jobs table.
  * <p>
@@ -189,10 +191,15 @@ public class DelayedJobQueueProvider extends ContentProvider {
                 break;
 
             case DELAYED_JOB_ID:
-                count = db.update(DELAYED_JOBS_TABLE_NAME, values,
-                        _ID + " = " + uri.getPathSegments().get(1) +
-                                (!TextUtils.isEmpty(selection) ? " AND (" + selection +
-                                        ')' : ""), selectionArgs);
+//                #629
+                try {
+                    count = db.update(DELAYED_JOBS_TABLE_NAME, values,
+                            _ID + " = " + uri.getPathSegments().get(1) +
+                                    (!TextUtils.isEmpty(selection) ? " AND (" + selection +
+                                            ')' : ""), selectionArgs);
+                }catch (Exception e){
+                    Logger.logE("Delay","errorcrashing",e);
+                }
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);

@@ -32,6 +32,7 @@ import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
 import io.intelehealth.client.objects.TableExam;
 import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.HelperMethods;
+import io.intelehealth.client.utilities.Logger;
 
 /**
  * Records the patient vitals in the {@link TableExam} container.
@@ -143,6 +144,7 @@ public class VitalsActivity extends AppCompatActivity {
         //Check for license key and load the correct config file
         try {
             JSONObject obj = null;
+//            #633 #632
             if (hasLicense) {
                 obj = new JSONObject(HelperMethods.readFileRoot(mFileName, this)); //Load the config file
             }else {
@@ -492,8 +494,13 @@ public class VitalsActivity extends AppCompatActivity {
             do {
                 int dbConceptID = visitCursor.getInt(visitCursor.getColumnIndex("concept_id"));
                 String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                parseData(dbConceptID, dbValue);
-            } while (visitCursor.moveToNext());
+//                issue #641
+                try {
+                    parseData(dbConceptID, dbValue);
+                }catch(Exception e){
+                    Logger.logE("VitalActivity","#641",e);
+                }
+                } while (visitCursor.moveToNext());
         }
         visitCursor.close();
     }

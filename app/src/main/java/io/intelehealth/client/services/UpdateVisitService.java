@@ -610,7 +610,10 @@ public class UpdateVisitService extends IntentService {
 
         WebResponse responseObs;
         responseObs = HelperMethods.postCommand("obs", obsCreateString, this);
-        Log.d(TAG, String.valueOf(responseObs.getResponseCode()));
+//        added to avoid crash based on #649 issue
+        if (responseObs != null) {
+            Log.d(TAG, String.valueOf(responseObs.getResponseCode()));
+        }
         if (responseObs == null || responseObs.getResponseCode() != 201) {
             Log.d(TAG, "Obs posting was unsuccessful");
             return false;

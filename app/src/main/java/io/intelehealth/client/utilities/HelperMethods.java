@@ -140,7 +140,7 @@ public class HelperMethods {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+//      #628
         try {
             encoded = new JSONObject(raw_json);
         } catch (JSONException e) {
