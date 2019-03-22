@@ -26,7 +26,15 @@ public class Patient {
     private String economic_status;
     private String education_level;
     private String caste;
+    private String emergency;
 
+    public String getEmergency() {
+        return emergency;
+    }
+
+    public void setEmergency(String emergency) {
+        this.emergency = emergency;
+    }
 
     public Integer getId() {
         return id;

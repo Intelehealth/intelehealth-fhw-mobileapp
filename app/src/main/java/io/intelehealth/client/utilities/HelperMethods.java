@@ -13,6 +13,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -46,6 +47,7 @@ import java.util.UUID;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.setting_activity.SettingsActivity;
+import io.intelehealth.client.application.IntelehealthApplication;
 import io.intelehealth.client.objects.WebResponse;
 
 /**
@@ -62,7 +64,6 @@ public class HelperMethods {
     public static final String JSON_FOLDER = "Engines";
     public static final String JSON_FOLDER_Update = "Engines_Update";
     public static File base_dir;
-
     public static int getAge(String s) {
         if (s == null) return 0;
 
@@ -139,7 +140,7 @@ public class HelperMethods {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+//      #628
         try {
             encoded = new JSONObject(raw_json);
         } catch (JSONException e) {
@@ -250,7 +251,7 @@ public class HelperMethods {
         AccountManager manager;
         BufferedReader reader;
         String JSONString;
-
+        SessionManager sessionManager=new SessionManager(IntelehealthApplication.getAppContext());
         WebResponse webResponse = new WebResponse();
 
         try {
@@ -291,6 +292,7 @@ public class HelperMethods {
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
+            sessionManager.setEncoded(encoded);
             connection.setRequestProperty("Authorization", "Basic " + encoded);
             if (session_id != null) {
                 connection.setRequestProperty("Cookie", "jsessionid=" + session_id);
@@ -345,7 +347,7 @@ public class HelperMethods {
 
         BufferedReader reader;
         String JSONString;
-
+        SessionManager sessionManager=new SessionManager(IntelehealthApplication.getAppContext());
         WebResponse webResponse = new WebResponse();
 
         try {
@@ -367,6 +369,7 @@ public class HelperMethods {
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
+            sessionManager.setEncoded(encoded);
             connection.setRequestProperty("Authorization", "Basic " + encoded);
             if (session_id != null) {
                 connection.setRequestProperty("Cookie", "jsessionid=" + session_id);
@@ -428,10 +431,13 @@ public class HelperMethods {
         BufferedReader reader;
         String JSONString;
         AccountManager manager;
+        SessionManager sessionManager=new SessionManager(IntelehealthApplication.getAppContext());
         WebResponse webResponse = new WebResponse();
 
         //TODO: grab the URL and the UN and PW from the sharedprefs, and the account
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
+        StrictMode.setThreadPolicy(policy);
         try {
 
             String USERNAME = null;
@@ -459,6 +465,7 @@ public class HelperMethods {
 
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
             String BASE_URL = sharedPref.getString(SettingsActivity.KEY_PREF_SERVER_URL_REST, "");
+            sessionManager.setBaseUrl(BASE_URL);
             final String session_id = sharedPref.getString("sessionid", null);
 
 
@@ -473,7 +480,7 @@ public class HelperMethods {
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             String encoded = Base64.encodeToString((USERNAME + ":" + PASSWORD).getBytes("UTF-8"), Base64.NO_WRAP);
-
+            sessionManager.setEncoded(encoded);
             connection.setRequestProperty("Authorization", "Basic " + encoded);
             Log.d(LOG_TAG, USERNAME + "-" + PASSWORD);
             connection.setRequestMethod("POST");
@@ -529,6 +536,8 @@ public class HelperMethods {
 
 
         } catch (IOException e) {
+            e.printStackTrace();
+        }catch(Exception e){
             e.printStackTrace();
         }
         return webResponse;
