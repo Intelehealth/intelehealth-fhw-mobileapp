@@ -58,6 +58,7 @@ public class Node implements Serializable {
     private String text;
     private String display;
     private String display_oriya;
+    private String display_cebuno;
     private String language;
     private String choiceType;
     private String inputType;
@@ -151,7 +152,13 @@ public class Node implements Serializable {
             if (this.display_oriya.isEmpty()) {
                 this.display_oriya = this.display;
             }
-
+            this.display_cebuno = jsonNode.optString("display-cb");
+            if (this.display_cebuno.isEmpty()) {
+                this.display_cebuno = jsonNode.optString("display-cb");
+            }
+            if (this.display_cebuno.isEmpty()) {
+                this.display_cebuno = this.display;
+            }
             this.language = jsonNode.optString("language");
             if (this.language.isEmpty()) {
                 this.language = this.text;
@@ -220,6 +227,7 @@ public class Node implements Serializable {
         this.text = source.text;
         this.display = source.display;
         this.display_oriya = source.display_oriya;
+        this.display_cebuno=source.display_cebuno;
         this.optionsList = source.optionsList;
         this.terminal = source.terminal;
         this.language = source.language;
@@ -296,10 +304,10 @@ public class Node implements Serializable {
     }
 
     public String findDisplay() {
-        String locale = Locale.getDefault().getISO3Language();
+        String locale = Locale.getDefault().getLanguage();
 
         switch (locale) {
-            case "eng": {
+            case "en": {
                 //Log.i(TAG, "findDisplay: eng");
                 if (display != null && display.isEmpty()) {
                     //Log.i(TAG, "findDisplay: eng txt");
@@ -309,7 +317,7 @@ public class Node implements Serializable {
                     return display;
                 }
             }
-            case "ori": {
+            case "or": {
                 //Log.i(TAG, "findDisplay: ori");
                 if (display_oriya != null && !display_oriya.isEmpty()) {
                     //Log.i(TAG, "findDisplay: ori dis");
@@ -323,8 +331,22 @@ public class Node implements Serializable {
                         return display;
                     }
                 }
+            
+            }case "cb": {
+                //Log.i(TAG, "findDisplay: cb");
+                if (display_cebuno != null && !display_cebuno.isEmpty()) {
+                    //Log.i(TAG, "findDisplay: cb ");
+                    return display_cebuno;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
             }
-
             default: {
                 {
                     if (display != null && display.isEmpty()) {
