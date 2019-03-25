@@ -19,6 +19,8 @@ public class ApiClient {
 //        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 //        client.addInterceptor(loggingInterceptor);
         if (sessionManager.getBaseUrl() != null) {
+//           Issue #682.
+//           retrofit2.Utils.checkNotNull
             if (retrofit == null) {
 //convert the static to dynamic code
                 retrofit = new Retrofit.Builder()
