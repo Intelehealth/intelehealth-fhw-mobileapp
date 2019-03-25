@@ -304,6 +304,7 @@ public class Node implements Serializable {
     }
 
     public String findDisplay() {
+//        Issue #657 Raised on development time for language issue
         String locale = Locale.getDefault().getLanguage();
 
         switch (locale) {
