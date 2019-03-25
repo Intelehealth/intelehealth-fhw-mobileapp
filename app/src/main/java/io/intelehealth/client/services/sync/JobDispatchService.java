@@ -125,8 +125,10 @@ public class JobDispatchService extends JobService {
                 if (serviceIntent != null) {
                     serviceIntent.putExtra("queueId", cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider._ID)));
                     Log.i(TAG, "onStartJob: Starting service " + cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider._ID)));
+//                    Issue #681
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                     {
+//                        added get applicationContext()
                         getApplicationContext().startForegroundService(serviceIntent);
                     } else {
                         getApplicationContext().startService(serviceIntent);
