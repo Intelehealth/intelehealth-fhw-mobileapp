@@ -144,7 +144,6 @@ public class VitalsActivity extends AppCompatActivity {
         //Check for license key and load the correct config file
         try {
             JSONObject obj = null;
-//            #633 #632
             if (hasLicense) {
                 obj = new JSONObject(HelperMethods.readFileRoot(mFileName, this)); //Load the config file
             }else {

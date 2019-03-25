@@ -792,7 +792,6 @@ public class ClientService extends IntentService {
                     current_intent.putExtra("status", statusCode);
                     statusCode = STATUS_ENCOUNTER_NOT_CREATED;
                     if (statusCode == STATUS_ENCOUNTER_NOT_CREATED) {
-//                        #634
                         boolean encounter_vitals = uploadEncounterVitals(visitID, visitUUID, patient, startDateTime,
                                 temperature, respiratory, weight, height, pulse, bpSys, bpDias, spO2);
 

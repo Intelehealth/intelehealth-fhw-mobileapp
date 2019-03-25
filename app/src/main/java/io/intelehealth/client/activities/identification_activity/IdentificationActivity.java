@@ -204,6 +204,7 @@ public class IdentificationActivity extends AppCompatActivity {
             hasLicense = true;
 
         //Check for license key and load the correct config file
+        //Issue #683
         try {
             JSONObject obj = null;
             if (hasLicense) {
