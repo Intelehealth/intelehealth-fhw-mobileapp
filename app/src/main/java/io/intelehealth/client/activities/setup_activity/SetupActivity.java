@@ -467,6 +467,7 @@ public class SetupActivity extends AppCompatActivity {
                 if (loginAttempt != null && loginAttempt.getResponseCode() != 200) {
                     Log.d(TAG, "Login request was unsuccessful");
                     return loginAttempt.getResponseCode();
+//                    Issue #686
                 } else if (loginAttempt == null) {
                     return 201;
                 } else {
