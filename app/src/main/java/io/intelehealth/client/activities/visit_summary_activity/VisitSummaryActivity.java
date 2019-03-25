@@ -1512,6 +1512,7 @@ sessionManager=new SessionManager(getApplicationContext());
         mWeight = weight.getValue();
         mBP = bpSys.getValue() + "/" + bpDias.getValue();
         mPulse = pulse.getValue();
+//        Issue #679 
         try {
             JSONObject obj = null;
             if (hasLicense) {
