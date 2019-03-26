@@ -145,6 +145,7 @@ public class VitalsActivity extends AppCompatActivity {
         try {
             JSONObject obj = null;
 //            #633 #632
+//            Issue #632 added try catch exception handling
             if (hasLicense) {
                 obj = new JSONObject(HelperMethods.readFileRoot(mFileName, this)); //Load the config file
             }else {
