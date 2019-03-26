@@ -952,6 +952,7 @@ public class ClientService extends IntentService {
 
             responseVisit = HelperMethods.postCommand("visit", visitString, getApplicationContext());
 //            #639
+//            issue #639 added checking the response visit not equal null
             if (responseVisit != null) {
                 Log.d(TAG, String.valueOf(responseVisit.getResponseCode()));
             }
