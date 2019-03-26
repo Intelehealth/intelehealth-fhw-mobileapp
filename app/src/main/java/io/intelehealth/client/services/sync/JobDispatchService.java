@@ -126,11 +126,14 @@ public class JobDispatchService extends JobService {
                     serviceIntent.putExtra("queueId", cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider._ID)));
                     Log.i(TAG, "onStartJob: Starting service " + cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider._ID)));
 //                    Issue #681
+//                    before it was crashing because we are not passing context  we added the getapplicationcontext to fix this error
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                     {
 //                        added get applicationContext()
+//                        startForegroundService(serviceIntent)
                         getApplicationContext().startForegroundService(serviceIntent);
                     } else {
+//                        startService(serviceIntent)
                         getApplicationContext().startService(serviceIntent);
                     }
                 }
