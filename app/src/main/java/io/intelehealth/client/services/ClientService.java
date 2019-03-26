@@ -590,7 +590,7 @@ public class ClientService extends IntentService {
             Log.d(TAG, "Patient String: " + patientString);
             WebResponse responsePatient;
             responsePatient = HelperMethods.postCommand("patient", patientString, getApplicationContext());
-//            Issue #684
+//            Issue #684 here checking the responsePatient is null or not
             if (responsePatient != null) {
                 Log.d(TAG, "uploadPatientData: " + responsePatient.getResponseString());
             }
