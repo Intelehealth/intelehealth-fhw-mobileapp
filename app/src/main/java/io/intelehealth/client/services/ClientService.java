@@ -1116,6 +1116,7 @@ public class ClientService extends IntentService {
             return false;
         } else {
             Log.i(TAG, "uploadEncounterVitals: " + responseVitals);
+//            Issue #634 added try catch exception handling
             try {
                 JSONObject JSONResponse = new JSONObject(responseVitals.getResponseObject());
                 JSONArray resultsArray = JSONResponse.getJSONArray("obs");
