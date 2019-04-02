@@ -590,7 +590,10 @@ public class ClientService extends IntentService {
             Log.d(TAG, "Patient String: " + patientString);
             WebResponse responsePatient;
             responsePatient = HelperMethods.postCommand("patient", patientString, getApplicationContext());
-            Log.d(TAG, "uploadPatientData: " + responsePatient.getResponseString());
+//            Issue #684 here checking the responsePatient is null or not
+            if (responsePatient != null) {
+                Log.d(TAG, "uploadPatientData: " + responsePatient.getResponseString());
+            }
             if (responsePatient == null || responsePatient.getResponseCode() != 201) {
                 String newText = "Patient was not created. Please check your connection.";
                 mBuilder.setContentText(newText).setNumber(++numMessages);
