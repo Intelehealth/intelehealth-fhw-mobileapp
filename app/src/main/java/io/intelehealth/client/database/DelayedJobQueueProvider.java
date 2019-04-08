@@ -191,15 +191,10 @@ public class DelayedJobQueueProvider extends ContentProvider {
                 break;
 
             case DELAYED_JOB_ID:
-//                #629
-                try {
                     count = db.update(DELAYED_JOBS_TABLE_NAME, values,
                             _ID + " = " + uri.getPathSegments().get(1) +
                                     (!TextUtils.isEmpty(selection) ? " AND (" + selection +
                                             ')' : ""), selectionArgs);
-                }catch (Exception e){
-                    Logger.logE("Delay","errorcrashing",e);
-                }
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);
