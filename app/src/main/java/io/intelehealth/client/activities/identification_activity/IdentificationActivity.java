@@ -41,6 +41,7 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,6 +69,7 @@ import io.intelehealth.client.node.Node;
 import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.utilities.EditTextUtils;
 import io.intelehealth.client.utilities.HelperMethods;
+import io.intelehealth.client.utilities.Logger;
 
 import static io.intelehealth.client.utilities.HelperMethods.LOG_TAG;
 import static io.intelehealth.client.utilities.HelperMethods.REQUEST_CAMERA;
@@ -138,6 +140,8 @@ public class IdentificationActivity extends AppCompatActivity {
     SharedPreferences.Editor e;
     boolean hasLicense = false;
     String mFileName = "config.json";
+    private ArrayAdapter<CharSequence> educationAdapter;
+    private ArrayAdapter<CharSequence> economicStatusAdapter;
 
     // Boolean isDateChanged = false; //prajw
     @Override
@@ -353,21 +357,30 @@ public class IdentificationActivity extends AppCompatActivity {
                 R.array.caste, android.R.layout.simple_spinner_item);
         countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCaste.setAdapter(casteAdapter);
-
-        String economicLanguage = "economic_" + Locale.getDefault().getLanguage();
-        int economics = res.getIdentifier(economicLanguage, "array", getApplicationContext().getPackageName());
-        ArrayAdapter<CharSequence> economicStatusAdapter = ArrayAdapter.createFromResource(this,
+try {
+    String economicLanguage = "economic_" + Locale.getDefault().getLanguage();
+    int economics = res.getIdentifier(economicLanguage, "array", getApplicationContext().getPackageName());
+    if(economics!=0) {
+        economicStatusAdapter = ArrayAdapter.createFromResource(this,
                 economics, android.R.layout.simple_spinner_item);
-        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mEconomicStatus.setAdapter(economicStatusAdapter);
+    }
+    countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    mEconomicStatus.setAdapter(economicStatusAdapter);
+}catch(Exception e){
+    Logger.logE("Identification","#648",e);
+}
+try {
+    String educationLanguage = "education_" + Locale.getDefault().getLanguage();
+    int educations = res.getIdentifier(educationLanguage, "array", getApplicationContext().getPackageName());
+   if(educations!=0) {
+       educationAdapter = ArrayAdapter.createFromResource(this,
+               educations, android.R.layout.simple_spinner_item);
 
-        String educationLanguage = "education_" + Locale.getDefault().getLanguage();
-        int educations = res.getIdentifier(educationLanguage, "array", getApplicationContext().getPackageName());
-        ArrayAdapter<CharSequence> educationAdapter = ArrayAdapter.createFromResource(this,
-                educations, android.R.layout.simple_spinner_item);
-        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mEducation.setAdapter(educationAdapter);
-
+   }countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    mEducation.setAdapter(educationAdapter);
+}catch(Exception e){
+    Logger.logE("Identification","#648",e);
+}
         // generate patientid only if there is no intent for Identification activity
 
         if (patientID_edit == -1) {

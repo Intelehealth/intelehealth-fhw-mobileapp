@@ -2,6 +2,7 @@ package io.intelehealth.client.services.sync;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.util.Log;
 
 import com.firebase.jobdispatcher.JobParameters;
@@ -124,7 +125,12 @@ public class JobDispatchService extends JobService {
                 if (serviceIntent != null) {
                     serviceIntent.putExtra("queueId", cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider._ID)));
                     Log.i(TAG, "onStartJob: Starting service " + cursor.getInt(cursor.getColumnIndex(DelayedJobQueueProvider._ID)));
-                    startService(serviceIntent);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                    {
+                        getApplicationContext().startForegroundService(serviceIntent);
+                    } else {
+                        getApplicationContext().startService(serviceIntent);
+                    }
                 }
             } while (cursor.moveToNext());
 

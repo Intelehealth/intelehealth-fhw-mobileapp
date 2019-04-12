@@ -116,6 +116,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         newVisit = (Button) findViewById(R.id.button_new_visit);
 
         patient.setId(patientID);
+//        issue number #647
         setDisplay(String.valueOf(patientID));
         editbtn = (Button) findViewById(R.id.edit_button);
         editbtn.setOnClickListener(new View.OnClickListener() {

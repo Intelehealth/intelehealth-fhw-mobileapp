@@ -1,14 +1,17 @@
 package io.intelehealth.client.database;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
  * Class to manage input/output with the database.
  */
 
-public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
+public class
+LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 4;
@@ -51,7 +54,8 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             "visit_type_id integer(10)," +
             "visit_location_id integer(10) NOT NULL," +
             "visit_creator TEXT NOT NULL," +
-            "openmrs_visit_uuid TEXT" +
+            "openmrs_visit_uuid TEXT," +
+            "emergency TEXT"+
             ")";
     public static final String CREATE_OBS = "CREATE TABLE IF NOT EXISTS obs (" +
             "_id integer PRIMARY KEY," +
@@ -162,5 +166,14 @@ public class LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
         // TODO: discuss upgrade policy
     }
 
-
+    public  void updateColumn(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "Select emergency FROM visit";
+        try {
+            Cursor cursor = db.rawQuery(query, null);
+        }
+        catch(SQLiteException ex){
+            db.execSQL("ALTER TABLE visit ADD COLUMN emergency TEXT");
+        }
+    }
 }
