@@ -1,0 +1,3747 @@
+{
+  "id": "476q4jppos6tg7t3qug97udg17",
+  "text": "Physical Exam",
+  "options": [
+    {
+      "id": "7hrmfqn0krat7sjobfh9rjr5i0",
+      "text": "General exams",
+      "language": "General Exams:",
+      "display-or": "ସାଧାରଣ ପରୀକ୍ଷା",
+      "options": [
+        {
+          "id": "0blae61v5pgt9hcv3fni2ad6nd",
+          "text": "Eyes: Jaundice",
+          "display-or": "ଅାଖି: ହଳଦିଅା",
+          "options": [
+            {
+              "id": "5saf8na9hgasnsda8khh7jgqdm",
+              "text": "Is there jaundice?",
+              "job-aid-type": "image",
+              "job-aid-file": "jaundiceexample",
+              "language": "%",
+              "display-or": "କାମଳ ଅଛକି?",
+              "options": [
+                {
+                  "id": "0tniotfjt5upifs5ndt3grbstg",
+                  "text": "Yes",
+                  "language": "jaundice seen",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "3gnt6celojtod43p771dq8ivr0",
+                  "text": "No",
+                  "language": "no jaundice seen",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_1214278407",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_415887386",
+          "text": "Eyes: Pallor",
+          "display-or": "ଅାଖି: ଧଳା",
+          "options": [
+            {
+              "id": "3lntlnfs0va65rqdo136utmfmf",
+              "text": "Is there pallor?",
+              "job-aid-type": "video",
+              "job-aid-file": "conjunctivaexample",
+              "language": "%",
+              "display-or": "ରକ୍ତ ହୀନତା ଅଛି କି?",
+              "options": [
+                {
+                  "id": "7o55cbfvcet2dtkj43ssip5je9",
+                  "text": "Pale",
+                  "language": "pale pallor",
+                  "display-or": "ଅଛି"
+                },
+                {
+                  "id": "2pt0hg68o89t624k0b2ngp16a2",
+                  "text": "Normal",
+                  "language": "normal pallor",
+                  "display-or": "ନାହିଁ"
+                },
+                {
+                  "id": "ID_1954219899",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "0gfk4826emivm01aoeltg2lrfb",
+          "text": "Arm",
+          "display-or": "ବାହୁ",
+          "options": [
+            {
+              "id": "6qtsmnaurf40drgsbpf55dbbef",
+              "text": "Pinch skin		",
+              "display-or": "ଚମଡ଼ା ପଶିଯିବା",
+              "options": [
+                {
+                  "id": "2ba1sf5pis2bk3lbe6hqjvm13c",
+                  "text": "Normal",
+                  "language": "pinch test normal",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "0u9urrb01daa0g0u9hi5bc2dr5",
+                  "text": "Slow",
+                  "language": "appears slow on pinch test",
+                  "display-or": "ନାଁ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "4skk1vd3pgmhh4v0qmt1vff91m",
+          "text": "Nail abnormality",
+          "display-or": "ହାତ",
+          "options": [
+            {
+              "id": "5s4jcisk6ipicrd2k55uvef0gg",
+              "text": "Is there any nail abnormality?",
+              "job-aid-type": "image",
+              "job-aid-file": "abnormalnails",
+              "language": "%",
+              "display-or": "ନଖ ଫୁଲିଛି କି?",
+              "options": [
+                {
+                  "id": "31mlk01davo6blu1as82mim2u3",
+                  "text": "Nails are normal",
+                  "language": "nails normal",
+                  "display-or": "ଫୁଲା ଅଛି"
+                },
+                {
+                  "id": "3fp5hubboifaqe6hn9bsck3rq3",
+                  "text": "Clubbing",
+                  "language": "clubbing",
+                  "display-or": "ନଖ ଚତ୍ମୁଚି ଭଳି ପଶି ଯାଇଛି"
+                },
+                {
+                  "id": "6iq8nsiocdpje2eslgao0g5c4s",
+                  "text": "Spoon Nails",
+                  "language": "spoon nails",
+                  "display-or": "ରଙ୍ଗ ପରିବର୍ତ୍ତନ ହେଉଛ"
+                },
+                {
+                  "id": "6luvtcj14erouol995jtnm4rf7",
+                  "text": "Discolored",
+                  "language": "discolored nails",
+                  "display-or": "ଠିକ୍ ଅଛି"
+                },
+                {
+                  "id": "ID_428480652",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_888899761",
+          "text": "Nail anemia",
+          "display-or": "ନଖ ର ଆନେମିଆ",
+          "options": [
+            {
+              "id": "ID_1109515145",
+              "text": "Are the nails pale?",
+              "language": "%",
+              "display-or": "ନଖ ରେ ଫିକା ରଂଗ",
+              "options": [
+                {
+                  "id": "ID_1933772393",
+                  "text": "Nails are pale",
+                  "display-or": "ଫିକା ରଂଗ"
+                },
+                {
+                  "id": "ID_377766203",
+                  "text": "Nails are not pale",
+                  "display-or": "ଫିକା ରଂଗ ନାହିଁ"
+                },
+                {
+                  "id": "ID_646885323",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "0lhp3ulsufnavi3f7o0bdg66s3",
+          "text": "Ankle",
+          "display-or": "ଗୋଇଠି",
+          "options": [
+            {
+              "id": "3ufr8egutqs65irlr8u2gi8iid",
+              "text": "Is there ankle oedema?",
+              "job-aid-type": "image",
+              "job-aid-file": "ankleedemaexample",
+              "language": "%",
+              "display-or": "ଗୋଇଠି ଫୁଲିଛି କି?",
+              "options": [
+                {
+                  "id": "7266ke3fpvk3kv2bplvf7cqcl2",
+                  "text": "In left",
+                  "language": "pedal oedema in left foot",
+                  "display-or": "ବାମ"
+                },
+                {
+                  "id": "ID_287551897",
+                  "text": "In right",
+                  "language": "pedal oedema in right foot",
+                  "display-or": "ଡାହାଣ"
+                },
+                {
+                  "id": "ID_1390923199",
+                  "text": "Both",
+                  "language": "pedal oedema in both feet",
+                  "display-or": "ଉଭୟ ପଟ"
+                },
+                {
+                  "id": "7s72difltncg15eq8uk51djqv6",
+                  "text": "No oedema",
+                  "language": "no pedal oedema",
+                  "display-or": "ନାହିଁ"
+                },
+                {
+                  "id": "ID_1292783417",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "6ckop7kklhdihk474m4f0t58vc",
+      "text": "Head",
+      "language": "Head:",
+      "display-or": "ମୁଣ୍ଡ",
+      "options": [
+        {
+          "id": "2oumf1tm37dejb5619lr2gb0c2",
+          "text": "Injury",
+          "display-or": "ଅଘାତ",
+          "language": "%",
+          "options": [
+            {
+              "id": "365fe3npmo15fs1idpt9qq4v4i",
+              "text": "Inspect the head from all sides and look for injuries.",
+              "language": "%",
+              "display-or": "ଆଘାତ ପାଇଁ ପୁରା ମୁଂଡ କୁ ଦେଖ",
+              "options": [
+                {
+                  "id": "46ggknqga16skrkurisdrkmlga",
+                  "text": "No injury",
+                  "display-or": "ଅାଘାତ ନାହିଁ"
+                },
+                {
+                  "id": "2mtljhbu43q7fn4nj8rn6c1f00",
+                  "text": "Injury at side of head",
+                  "display-or": "ଅାଘାତ କଙ୍ଗ଼ରେ"
+                },
+                {
+                  "id": "3uukeqlno2pg63i0ftshkllst5",
+                  "text": " Injury in the middle of head",
+                  "display-or": "ଅାଘାତ ମଝିରେ"
+                },
+                {
+                  "id": "ID_1624337048",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "0rr3s1emht4njnse07f3o7rsde",
+          "text": "Swelling",
+          "display-or": "ଫୁଲିବା",
+          "language": "%",
+          "options": [
+            {
+              "id": "5ge0k8tpp7b8dukmd0pm88mu8f",
+              "text": "Are there any swellings?",
+              "language": "%",
+              "display-or": "ଫୁଲା ଅଛିକି?",
+              "options": [
+                {
+                  "id": "3p1cueosmgjfeab59c38smq1rs",
+                  "text": "No swelling",
+                  "display-or": "ଫୁଲା ନାହିଁ"
+                },
+                {
+                  "id": "7l32ahbdi2fkbb8od9l1u0coju",
+                  "text": "Swelling at side of head",
+                  "display-or": "ଫୁଲା କଙ୍ଗ଼ରେ"
+                },
+                {
+                  "id": "4dqpsgo07bkjp5ks5hgbqpvp6g",
+                  "text": "Swelling at middle of head",
+                  "display-or": "ଫୁଲା ମଝିରେ"
+                },
+                {
+                  "id": "ID_1097524513",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "3q5em0r7dg0frq12aobko11338",
+      "text": "Ear",
+      "language": "Ear:",
+      "display-or": "କାନ",
+      "options": [
+        {
+          "id": "2fbasmki3ofs2bri4sk2vlenb6",
+          "text": "Bleeding",
+          "display-or": "ରକ୍ତବୋହିବା",
+          "language": "%",
+          "options": [
+            {
+              "id": "096lo55ndv4h6fe645nt299mt5",
+              "text": "Is there any bleeding from ear?",
+              "language": "%",
+              "display-or": "ରକ୍ତ ବୋହୁଛିକି?",
+              "options": [
+                {
+                  "id": "2i5v2oc3gdosvo5m9n227p4bo5",
+                  "text": "Yes",
+                  "language": "bleeding seen from ear",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "74gfff8rpeuss6218bb4lma3dr",
+                  "text": "No",
+                  "language": "no bleeding seen from the ear",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_1278760897",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "1pmas2h9k9hq3q5qqdmlk1nmh5",
+          "text": "Discharge",
+          "display-or": "କାନରୁ ପାଣି ବାହାରିବା",
+          "language": "%",
+          "options": [
+            {
+              "id": "3ib4lpsg2rub7iorp5qlcm4086",
+              "text": "Is there any discharge from the ear?",
+              "language": "%",
+              "display-or": "କାନରୁ ପାଣି ବାହାରୁଚି କି?",
+              "options": [
+                {
+                  "id": "4turgn4sskcj3hvlvb78gu8il9",
+                  "text": "Yes",
+                  "language": "discharge seen from ear",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "60581gqn41acafejd4ai1491l0",
+                  "text": "No",
+                  "language": "no discharge seen from the ear",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_1447435625",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_865794463",
+          "text": "Redness",
+          "display-or": "ନାଲିପଡିବା",
+          "language": "%",
+          "options": [
+            {
+              "id": "ID_1329408645",
+              "text": "Is there any redness in the ear?",
+              "display-or": "କାନ ନାଲି ପଡିଛି କି ?",
+              "language": "%",
+              "options": [
+                {
+                  "id": "ID_1109132835",
+                  "text": "Yes",
+                  "language": "Redness seen in ear",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "ID_1349928351",
+                  "text": "No",
+                  "language": "No redness seen in ear",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_260586471",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_1401870323",
+          "text": "Swelling",
+          "display-or": "ଫୁଲିବା",
+          "language": "%",
+          "options": [
+            {
+              "id": "ID_1965239296",
+              "text": "Are there any swellings in the ear?",
+              "display-or": "ଫୁଲିଛି କି ? ଯଦି ହଁ ଫୋଟ  ନିଅ",
+              "language": "%",
+              "options": [
+                {
+                  "id": "ID_1130685792",
+                  "text": "Yes",
+                  "language": "no discharge seen from the ear",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "ID_1436663527",
+                  "text": "No",
+                  "language": "Swelling not seen",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_1602694544",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2qqfs0jt4knpcaubtav7p59i84",
+      "text": "Eyes",
+      "language": "Eyes:",
+      "display-or": "ଅାଖି",
+      "options": [
+        {
+          "id": "5kpauqr2clsrjg20htagccpf1r",
+          "text": "Pupillary movement",
+          "display-or": "କଳା ଡ଼ୋଳାକୁ",
+          "language": "%",
+          "options": [
+            {
+              "id": "1a51vkv5a5mgu91ae0kk19kbil",
+              "text": "Shine a torch and look for pupillary movements",
+              "language": "%",
+              "display-or": "ଟର୍ଚ୍ଚରେ କଳା ଡ଼ୋଳାକୁ ପରୀକ୍ଷା କର",
+              "options": [
+                {
+                  "id": "2cl2p4oqmas4jqc4cl9oj1ce43",
+                  "text": "Moving",
+                  "language": "pupils moving",
+                  "display-or": "ଖୋଲା ବନ୍ଦ ହେଉଛିି"
+                },
+                {
+                  "id": "4lp77jenv79emvs3g9q62d5hir",
+                  "text": "Not moving",
+                  "language": "pupils not moving",
+                  "display-or": "ହେଉନାହିଁ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_1971891989",
+          "text": "Redness",
+          "display-or": "ନାଲିପଡିବା",
+          "language": "%",
+          "options": [
+            {
+              "id": "ID_674365352",
+              "text": "Is there any redness in the eye(s)?",
+              "language": "%",
+              "display-or": "ଆଖିରେ ଲାଲ ପଡିଛି କି ?",
+              "options": [
+                {
+                  "id": "ID_1992202071",
+                  "text": "Yes",
+                  "language": "redness seen",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "ID_270777114",
+                  "text": "No",
+                  "language": "no redness seen",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_769598133",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_15402514",
+          "text": "Discharge",
+          "display-or": "ବାହାରିବା /ଝରିବା",
+          "language": "%",
+          "options": [
+            {
+              "id": "ID_566968371",
+              "text": "Is there any discharge from the eye?",
+              "language": "%",
+              "display-or": "ଆଖୀ ରୁ କିଛି ଝଡ଼ୁଛି କି ? ଯଦି ହଁ ଫୋଟ ନିଅ",
+              "options": [
+                {
+                  "id": "ID_540815308",
+                  "text": "Yes",
+                  "language": "discharge seen",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "ID_1481304305",
+                  "text": "No",
+                  "language": "no discharge",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_1815382231",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_1143132576",
+          "text": "Swelling",
+          "display-or": "ଫୁଲିବା",
+          "language": "%",
+          "options": [
+            {
+              "id": "ID_1250004705",
+              "text": "Is there any swelling of eyelid?",
+              "language": "%",
+              "display-or": "ଆଖି ପତାରେ ଫୁଲ ଅଛି ଲି?",
+              "options": [
+                {
+                  "id": "ID_122639287",
+                  "text": "Yes",
+                  "language": "Swelling seen",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "ID_1444285590",
+                  "text": "No",
+                  "language": "No swelling seen",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_1039325175",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2dj3h6ujd39inj4t3odadnci0g",
+      "text": "Face",
+      "language": "Face:",
+      "display-or": "ମୁହଁ",
+      "options": [
+        {
+          "id": "4kdr5q7hfltqa7jbrup14hdmir",
+          "text": "Swollen Face",
+          "display-or": "ମୁହଁ ଫୁଲିଛି କି?",
+          "language": "%",
+          "options": [
+            {
+              "id": "28h85njs3ksiv480ik83hukua6",
+              "text": "Does the face appear swollen/puffy?",
+              "language": "%",
+              "display-or": "ମୁହଁଫୁଲା",
+              "options": [
+                {
+                  "id": "5fm4bpqfvupes9b5bu12fljiun",
+                  "text": "Normal",
+                  "language": "face appears normal",
+                  "display-or": "ଫୁଲିଛି"
+                },
+                {
+                  "id": "4smb46om7l01kp76rk9qa5uu00",
+                  "text": "Swollen",
+                  "language": "face appears swollen",
+                  "display-or": "ଫୁଲିନି"
+                },
+                {
+                  "id": "ID_387823315",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "6uitbkmgtq2oc68rhcui460g5r",
+      "text": "Mouth",
+      "language": "Mouth:",
+      "display-or": "ପାଟି",
+      "options": [
+        {
+          "id": "6d8fdfle3o8h0pbqie1uvrmi2i",
+          "text": "Tongue Dryness",
+          "language": "%",
+          "display-or": "ଜିଭ ଶୁଖିଲା",
+          "options": [
+            {
+              "id": "5j44qfvarua6569agutns5s590",
+              "text": "Is the tongue dry?",
+              "language": "%",
+              "display-or": "ଜିଭ ଶୁଖିଛି କି?",
+              "options": [
+                {
+                  "id": "06o03fpl9bs58km60o3r5k12nk",
+                  "text": "Yes",
+                  "language": "tongue is dry",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "09rc564f4ctqqr5q0gtr2l0hvk",
+                  "text": "No",
+                  "language": "tongue is not dry",
+                  "display-or": "ନାଁ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "1s49fteqimutf8uj0eftnvntgk",
+          "text": "Discolouration of teeth",
+          "language": "%",
+          "display-or": "ଦାନ୍ତର ରଙ୍ଗ ପରିବର୍ତ୍ତନ",
+          "options": [
+            {
+              "id": "22oq936aiq3ijdibnlu0a2otu0",
+              "text": "Open mouth, shine a torch to affected part and look for black spots on teeth/discoloured teeth",
+              "language": "%",
+              "display-or": "ଦାନ୍ତରେ ରଙ୍ଗ ପରିର୍ବ୍ତନ ହୋଇଛି କି?",
+              "options": [
+                {
+                  "id": "5tdoq169l36c0fdqngu5rdlt3p",
+                  "text": "Teeth normal",
+                  "language": "teeth are normal",
+                  "display-or": "ଦାନ୍ତ ଠିକ୍ ଅଛି"
+                },
+                {
+                  "id": "47g8kpjfrdiijbt3jj7abue6mp",
+                  "text": "Teeth have black spots",
+                  "language": "black spots on teeth",
+                  "display-or": "ଦାନ୍ତ କଳା ପଡ଼ିଛି"
+                },
+                {
+                  "id": "0vp1kncq7je5esav1oqe3smuto",
+                  "text": "Teeth discoloured",
+                  "language": "discoloured teeth",
+                  "display-or": "ଦାନ୍ତ ରଙ୍ଗ ପରିବର୍ତ୍ତନ ହେଉଛି"
+                },
+                {
+                  "id": "ID_1578504135",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "5l5v4nm5g9f1fchkd163hmg7ql",
+          "text": "Swelling of Gums",
+          "language": "%",
+          "display-or": "ମାଢି ଫୁଲିବା",
+          "options": [
+            {
+              "id": "1afo09f1e5ijjoum5sb3utlter",
+              "text": "Look for swelling on gums",
+              "language": "%",
+              "display-or": "ମାଢି ଫୁଲିଛି କି?",
+              "options": [
+                {
+                  "id": "2l29uq49a8qk33g9ns8bfujo3u",
+                  "text": "Yes",
+                  "language": "gums swollen",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "5dthi1ct8mq1snkua7oln8kb15",
+                  "text": "No",
+                  "language": "gums are not swollen",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_1573386216",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_1772055565",
+          "text": "Gum bleeding",
+          "language": "%",
+          "display-or": "ମାଢ଼ିରୁ ରକ୍ତ",
+          "options": [
+            {
+              "id": "ID_1525908874",
+              "text": "Is there bleeding from gums?",
+              "language": "%",
+              "display-or": "ମାଢ଼ିରୁ ରକ୍ତ ବାହାରୁଛି କି ?",
+              "options": [
+                {
+                  "id": "ID_1297637014",
+                  "text": "Yes",
+                  "language": "bleeding seen from gums",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "ID_366660133",
+                  "text": "No",
+                  "language": "no bleeding seen from gums",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_1320828522",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "58cou8gf81umet06njv4oc1n6c",
+          "text": "Back of throat (redness, swelling)",
+          "language": "%",
+          "display-or": "ଗଳାରେ ନାଲି ପଡ଼ିବା",
+          "options": [
+            {
+              "id": "6an5fe6s4b9n8c2fkmbmrc9l0o",
+              "text": "Ask patient to open mouth and stick tongue out. Shine a torch to examine the back of throat and look for swelling/redness",
+              "language": "%",
+              "display-or": "ଗଳା କୁ ଟର୍ଚ୍ଚରେ ପରୀକ୍ଷା କର (ଦେଖ ନାଲି ପଡ଼ିଛି ବା ଫୁଲିଛି)",
+              "options": [
+                {
+                  "id": "2ha0ob31n8csdscu6g8ren1tll",
+                  "text": "Normal",
+                  "language": "back of throat normal",
+                  "display-or": "ଠିକ୍ ଅଛି"
+                },
+                {
+                  "id": "7j2f56orqds0jguel4tcb2hk6p",
+                  "text": "Redness",
+                  "language": "redness in back of throat",
+                  "display-or": "ନାଲି ପଡ଼ିଛି"
+                },
+                {
+                  "id": "1tllmv1vhq187gn8isto9nv6qo",
+                  "text": "Swelling",
+                  "language": "swelling in back of throat",
+                  "display-or": "ଫୁଲିଛି"
+                },
+                {
+                  "id": "ID_1881322286",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_829831396",
+          "text": "Oral thrush",
+          "language": "%",
+          "display-or": "ପାଟିରେ ଧଳା ଚିହ୍ନ",
+          "options": [
+            {
+              "id": "ID_1860492995",
+              "text": "Are there white coating/patches on the tongue, mouth, inner cheeks or the back of the throat?",
+              "language": "%",
+              "display-or": "ଧଳା ଚିହ୍ନ -ଜିଭରେ ,ପାଟିରେ ,ଗାଲଭିତରେ ,ଗଳାରେ",
+              "options": [
+                {
+                  "id": "ID_1480041052",
+                  "text": "Yes",
+                  "language": "white patches seen in the mouth",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "ID_65009506",
+                  "text": "No",
+                  "language": "no white patches seen in the mouth",
+                  "display-or": "ନା"
+                },
+                {
+                  "id": "ID_1854090323",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "686dv52dr7uagp5s74qs85fpo0",
+      "text": "Neck",
+      "language": "Neck:",
+      "display-or": "ବେକ",
+      "options": [
+        {
+          "id": "4o6f7q0eskkg9kq0v0r0a6h9fh",
+          "text": "Thyroid swelling",
+          "display-or": "ଥାଇରଏଡ଼୍ ଫୁଲିବା",
+          "options": [
+            {
+              "id": "6sd6af4f1qgucbe17bq482fo2t",
+              "text": "Is there visible swelling in the front of the neck?",
+              "job-aid-type": "image",
+              "job-aid-file": "thyroidswelling",
+              "display-or": "ବେକରେ ସାମ୍ନା ପଟୁ କିଛି ଫୁଲିଛି କି?",
+              "language": "%",
+              "options": [
+                {
+                  "id": "0og1s6ekirbe84jutgjr54ctdt",
+                  "text": "Yes",
+                  "language": "swelling in front of neck",
+                  "display-or": "ହଁ",
+                  "options": [
+                    {
+                      "id": "ID_336426537",
+                      "text": "Ask the patient to swallow with neck straight. Does the swelling move?",
+                      "language": "%",
+                      "display-or": "ଗଲା ଉପରକୁ ଉଠାଇ ଗିଳିବା ପାଇଁ କୋହ. ଫୁଲା ଗତି କରୁଛି କି?",
+                      "options": [
+                        {
+                          "id": "ID_1317721761",
+                          "text": "Moves",
+                          "language": "Swelling moves with swallowing",
+                          "display-or": "ଗତି କରୁଛି"
+                        },
+                        {
+                          "id": "ID_1229096889",
+                          "text": "Does not move",
+                          "language": "Swelling does not move with swallowing",
+                          "display-or": "ଗତି କରୁ ନାହିଁ"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "58sqse0lbig862ucj8b2fho5l1",
+                  "text": "No",
+                  "language": "no swelling in front of neck",
+                  "display-or": "ନାଁ"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "136efe9j0u2qed5vmqflgih15k",
+      "text": "Breast",
+      "language": "Breast:",
+      "display-or": "ସ୍ତନ",
+      "options": [
+        {
+          "id": "ID_1049121031",
+          "text": "Examination instructions",
+          "language": "%",
+          "display-or": "ପରୀକ୍ଷା",
+          "options": [
+            {
+              "id": "ID_244722854",
+              "text": "The following examination is only to be performed by a FEMALE health worker and only if the patient is comfortable.",
+              "language": "%",
+              "display-or": "ମହିଳା କର୍ମୀଙ୍କ ଦ୍ୱାରା ପରୀକ୍ଷା"
+            }
+          ]
+        },
+        {
+          "id": "5u0bj8eju18p6rkq37kjhrjtkl",
+          "text": "Lumps",
+          "display-or": "ସ୍ତନ ପରୀକ୍ଷା",
+          "language": "%",
+          "options": [
+            {
+              "id": "00te1cpnds5pivja14k0u168r2",
+              "text": "Perform breast exam to look for lumps",
+              "language": "%",
+              "display-or": "ସ୍ତନରେ କିଛି ଫୁଲିଛି କି?",
+              "options": [
+                {
+                  "id": "59qdj23qcl1rhv0blnj7blth4e",
+                  "text": "Possible lumps detected in breast exam",
+                  "display-or": "ଫୁଲା ଅଛି"
+                },
+                {
+                  "id": "ID_1757348571",
+                  "text": "No lumps detected in breast exam",
+                  "display-or": "ନାହିଁଁ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2pkvamf5g9p9b37elcll8bb75e",
+          "text": "Scars",
+          "display-or": "ଘା, ଚିହ୍ନ",
+          "language": "%",
+          "options": [
+            {
+              "id": "3cbr9frtkdep6m0kj3v2ed85ot",
+              "text": "Any scar on the breast?",
+              "language": "%",
+              "display-or": "ସ୍ତନରେ କିଛି ଘା ଚିହ୍ନ ଅଛି କି?",
+              "options": [
+                {
+                  "id": "2cmrhupbq2u0idjjl53386lbi9",
+                  "text": "Yes",
+                  "language": "scarring seen",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "27n2ugg2ji5p7jbb1sr3i6iqcb",
+                  "text": "No",
+                  "language": "no scarring seen",
+                  "display-or": "ନାଁ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "5rbakfs6u9q4vdqkc3eq1gvrr2",
+          "text": "Ulcer",
+          "display-or": "ଘା",
+          "language": "%",
+          "options": [
+            {
+              "id": "6kgena4h22ag7inhj44fj70hdk",
+              "text": "Any ulcer on the breast?",
+              "language": "%",
+              "display-or": "ସ୍ତନରେ ଘା ହେଉଛି କି?",
+              "options": [
+                {
+                  "id": "70s23tdhr8qcrudm1mv9uqevjk",
+                  "text": "Yes",
+                  "language": "ulcer seen",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "56rds41aluohab9440cdgj4ir7",
+                  "text": "No",
+                  "language": "no ulcer seen",
+                  "display-or": "ନାଁ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "3munln03g404amqheuqnrvpj9v",
+          "text": "Skin colour",
+          "display-or": "ଚର୍ମର ରଙ୍ଗ",
+          "language": "%",
+          "options": [
+            {
+              "id": "3p9un6lapk9nu0ggq5833pef5l",
+              "text": "Is the colour of the entire skin normal?",
+              "language": "%",
+              "display-or": "ଚମଡ଼ାର ରଂଗ ସାଧାରଣ ଅଛି କି?",
+              "options": [
+                {
+                  "id": "1i5uleucmsbla5hqe8c1b1kcjq",
+                  "text": "Normal",
+                  "language": "skin colour appears normal",
+                  "display-or": "ହେଉଛି"
+                },
+                {
+                  "id": "0a39jvob5jl0nm4cgdqouimsrp",
+                  "text": "Discoloured",
+                  "language": "skin appears discoloured",
+                  "display-or": "ହେଉନି"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "3vun4a13c8hufvmiocqvkp86s9",
+          "text": "Nipple",
+          "display-or": "ନିପୁଲ୍",
+          "language": "%",
+          "options": [
+            {
+              "id": "51nu6ldj5r0d24qm5ejehp7nlc",
+              "text": "Is the nipple normal?",
+              "language": "%",
+              "display-or": "ନିପୁଲ ସାଧାରଣ ଅଛି କି?",
+              "options": [
+                {
+                  "id": "119qm4q8gsrgo5708d903gbl2f",
+                  "text": "Normal",
+                  "language": "nipple is normal",
+                  "display-or": "ସାଧାରଣ"
+                },
+                {
+                  "id": "2liv77l49rc9eak1o6pjvekidl",
+                  "text": "Cracked",
+                  "language": "nipple is cracked",
+                  "display-or": "ନିପୁଲ ଫାଟିଛି"
+                },
+                {
+                  "id": "27g0v4om5vepgqgtt4q2n30v73",
+                  "text": "Inverted",
+                  "language": "nipple is inverted",
+                  "display-or": "ଭିତରକୁ ପଶି ଯାଇଛି"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_1300484864",
+          "text": "Discharge",
+          "display-or": "ଝରିବା",
+          "options": [
+            {
+              "id": "ID_995366833",
+              "text": "Is there any discharge?",
+              "language": "%",
+              "display-or": "କିଛି ଝରୁଛି କି ?",
+              "options": [
+                {
+                  "id": "ID_1252412077",
+                  "text": "No discharge",
+                  "display-or": "ଶ୍ରାବ ନାହଁ"
+                },
+                {
+                  "id": "ID_969059384",
+                  "text": "Pus",
+                  "display-or": "ପୁଜ"
+                },
+                {
+                  "id": "ID_495334060",
+                  "text": "Blood",
+                  "display-or": "ରକ୍ତ"
+                },
+                {
+                  "id": "ID_1646767141",
+                  "text": "Mixed blood and pus",
+                  "display-or": "ମିଶା"
+                },
+                {
+                  "id": "ID_1846089709",
+                  "text": "Thin discharge",
+                  "display-or": "ପାଣି"
+                },
+                {
+                  "id": "ID_1718786231",
+                  "text": "Dry",
+                  "display-or": "ଶୁଖିଲା"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2t2vdn6piv6ohlmdi7bvbf5rk5",
+      "text": "Abdomen",
+      "language": "Abdomen:",
+      "display-or": "ପେଟ",
+      "options": [
+        {
+          "id": "1s1a0gi6oo6fqeqq35nu3vfv6p",
+          "text": "Scars",
+          "display-or": "ଘା, ଚିହ୍ନ",
+          "language": "%",
+          "options": [
+            {
+              "id": "0m63c82jb2ouqchb71cjc19c96",
+              "text": "Are there visible scars?",
+              "language": "%",
+              "display-or": "ଘା ଚିହ୍ନ ଦେଖାଯାଉଛି କି?",
+              "options": [
+                {
+                  "id": "51jlqttpefo5bvt47itt4gle4h",
+                  "text": "Yes",
+                  "language": "scarring seen",
+                  "display-or": "ହଁ",
+                  "options": [
+                    {
+                      "id": "1li24o0i5q99c9lrvlc5oelegk",
+                      "text": "Where is it?",
+                      "job-aid-type": "image",
+                      "job-aid-file": "abdominalregions9",
+                      "language": "location of the scar -",
+                      "display-or": "କେଉଁଠି ହେଉଛି",
+                      "options": [
+                        {
+                          "id": "5nph6mlpkgt8okr829nk64utg6",
+                          "text": "Upper(R)",
+                          "language": "Upper(R)",
+                          "display-or": "ଡାହାଣ ଉପରକୁ"
+                        },
+                        {
+                          "id": "5e2rlrnskocg50nmqv93di0vqo",
+                          "text": "Middle(L)",
+                          "language": "Middle(L)",
+                          "display-or": "ବାମ ମଝି"
+                        },
+                        {
+                          "id": "6dleo64ml0na3p5sbgi675jt5l",
+                          "text": "Middle(C)",
+                          "language": "Middle(C)",
+                          "display-or": "ନାଭି ଚାରିକଡ଼େ"
+                        },
+                        {
+                          "id": "03e7qiiv4m2i5l78v10il5lqnc",
+                          "text": "Middle(R)",
+                          "language": "Middle(R)",
+                          "display-or": "ଡ଼ାହାଣ ମଝି"
+                        },
+                        {
+                          "id": "32ragocnprafru5c6pb0sqr0a4",
+                          "text": "Lower(L)",
+                          "language": "Lower(L)",
+                          "display-or": "ବାମ ତଳ"
+                        },
+                        {
+                          "id": "7e6feg5tspmoqem0lfreksutd6",
+                          "text": "Lower(C)",
+                          "language": "Lower(C)",
+                          "display-or": "ନାଭି ତଳକୁ"
+                        },
+                        {
+                          "id": "5n4c3c79j2vdamdj37hbq7qc5v",
+                          "text": "Lower(R)",
+                          "language": "Lower(R)",
+                          "display-or": "ଡାହାଣ ତଳ"
+                        },
+                        {
+                          "id": "ID_990408086",
+                          "text": "Upper (C) - Epigastric",
+                          "display-or": "ନାଭି ଉପରକୁ",
+                          "language": "Upper(C)"
+                        },
+                        {
+                          "id": "ID_207392971",
+                          "text": "Upper (L) - Left Hypochondrium",
+                          "display-or": "ବାମ ଉପରକୁ",
+                          "language": "Upper (L)"
+                        },
+                        {
+                          "id": "19n7k3i1naihf0i700ss0tg1j9",
+                          "text": "All Over",
+                          "language": "All Over",
+                          "display-or": "ଚାରିଅାଡ଼େ"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "2479hlr44iinotc9ib0qulp6tg",
+                  "text": "No",
+                  "language": "no scarring",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_3192771",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2vkfpsqlkinig2gdr6i2fnmasl",
+          "text": "Distension",
+          "display-or": "ଫୁଲେଇବା",
+          "language": "%",
+          "options": [
+            {
+              "id": "1mi79jc0g9egsuuti7ftf7bjs1",
+              "text": "Is there abdominal bloating?",
+              "language": "%",
+              "display-or": "ପେଟ ଫମ୍ପେଇଛି କି?",
+              "options": [
+                {
+                  "id": "0cstdbsl4iu6mroj46l3jsmpa2",
+                  "text": "Yes",
+                  "language": "distension seen",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "13evgg6ga91gderevdpl7p0jb3",
+                  "text": "No",
+                  "language": "no distension",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_698130164",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "6vo75prj7lpj69v0rah9ptprj5",
+          "text": "Tenderness",
+          "display-or": "ଦରଜ ହେବା",
+          "language": "%",
+          "options": [
+            {
+              "id": "3fa3uu2tg8s5iebcnuqsegn77t",
+              "text": "Is there abdominal tenderness?",
+              "job-aid-type": "image",
+              "job-aid-file": "abdominalregions9",
+              "language": "%",
+              "display-or": "ପେଟଳୁ ଚିପିକି ଦେଖ",
+              "options": [
+                {
+                  "id": "ID_1047975607",
+                  "text": "Yes",
+                  "language": "tenderness seen",
+                  "display-or": "ହଁ",
+                  "options": [
+                    {
+                      "id": "ID_766474265",
+                      "text": "Select the location where there is tenderness",
+                      "language": "location",
+                      "display-or": "କେଉଁ ଜାଗାରେ",
+                      "options": [
+                        {
+                          "id": "3tlg21c2326gbu1rm4qk53fpit",
+                          "text": "Upper(L)",
+                          "language": "Upper(L)",
+                          "display-or": "ବାମ ଉପରକୁ"
+                        },
+                        {
+                          "id": "3an1q5ef0qcrsvipj34tk11291",
+                          "text": "Upper(C)",
+                          "language": "Upper(C)",
+                          "display-or": "ନାଭି ଉପରକୁ"
+                        },
+                        {
+                          "id": "2vr8qoh5uj8i7r6e5ukuinufr8",
+                          "text": "Upper(R)",
+                          "language": "Upper(R)",
+                          "display-or": "ଡାହାଣ ଉପରକୁ"
+                        },
+                        {
+                          "id": "0lnop7ueoaiua22vlik3e45nfe",
+                          "text": "Middle(L)",
+                          "language": "Middle(L)",
+                          "display-or": "ବାମ ମଝି"
+                        },
+                        {
+                          "id": "58b89krpqba3tluclbsqv6nun4",
+                          "text": "Middle(C)",
+                          "language": "Middle(C)",
+                          "display-or": "ନାଭି ଚାରିକଡ଼େ"
+                        },
+                        {
+                          "id": "5e7cptqtqdgpoc5snvues5lk79",
+                          "text": "Middle(R)",
+                          "language": "Middle(R)",
+                          "display-or": "ଡ଼ାହାଣ ମଝି"
+                        },
+                        {
+                          "id": "4aou5edcakccp507v28hasgi5u",
+                          "text": "Lower(L)",
+                          "language": "Lower(L)",
+                          "display-or": "ବାମ ତଳ"
+                        },
+                        {
+                          "id": "022ur9sfnq5q2743gnu7g81ae5",
+                          "text": "Lower(C)",
+                          "language": "Lower(C)",
+                          "display-or": "ନାଭି ତଳକୁ"
+                        },
+                        {
+                          "id": "0f6bcg1tc7ibbughrlh56rdje7",
+                          "text": "Lower(R)",
+                          "language": "Lower(R)",
+                          "display-or": "ଡାହାଣ ତଳ"
+                        },
+                        {
+                          "id": "7kon53anrnpqsfpug5qhc0p21b",
+                          "text": "All Over",
+                          "language": "All Over",
+                          "display-or": "ଚାରିଅାଡ଼େ"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "221ndbofeiel4kuld16pj90rq0",
+                  "text": "No tenderness",
+                  "language": "no tenderness",
+                  "display-or": "ନାଁ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "6qqkebtga4qqa32to7pcgv5fvl",
+          "text": "Lumps",
+          "display-or": "ଫୁଲା",
+          "options": [
+            {
+              "id": "3v5o8q9h4lkbo5fqqac685jj6d",
+              "text": "Are there lumps?",
+              "language": "%",
+              "display-or": "ପେଟରେ କିଛି ଫୁଲା ଦେଖାଯାଉଛି",
+              "options": [
+                {
+                  "id": "1giutjar0lk0cf2kshdr5jgeoa",
+                  "text": "Yes",
+                  "language": "lumps seen",
+                  "display-or": "ହଁ",
+                  "options": [
+                    {
+                      "id": "4r5l9qt33bn19so3bs3c4uiith",
+                      "text": "Where is it?",
+                      "job-aid-type": "image",
+                      "job-aid-file": "abdominalregions9",
+                      "language": "location",
+                      "display-or": "କେଉଁଠି ହେଉଛି",
+                      "options": [
+                        {
+                          "id": "24cg8m2o428u0fjekqcs0lnth8",
+                          "text": "Upper(C)",
+                          "language": "Upper(C)",
+                          "display-or": "ନାଭି ଉପରକୁ"
+                        },
+                        {
+                          "id": "4f58923orn503u76vbsr91h8r4",
+                          "text": "Upper(R)",
+                          "language": "Upper(R)",
+                          "display-or": "ଡାହାଣ ଉପରକୁ"
+                        },
+                        {
+                          "id": "58ur1g23ab7c38cq2c2a65m885",
+                          "text": "Middle(L)",
+                          "language": "Middle(L)",
+                          "display-or": "ବାମ ମଝି"
+                        },
+                        {
+                          "id": "2osvevb8k2kkc5a51sggg8ukmj",
+                          "text": "Middle(C)",
+                          "language": "Middle(C)",
+                          "display-or": "ନାଭି ଚାରିକଡ଼େ"
+                        },
+                        {
+                          "id": "0pptnpanb7l67facgo4fa613qa",
+                          "text": "Middle(R)",
+                          "language": "Middle(R)",
+                          "display-or": "ଡ଼ାହାଣ ମଝି"
+                        },
+                        {
+                          "id": "7a6l9madq3r3jj8009j0ilkf1n",
+                          "text": "Lower(L)",
+                          "language": "Lower(L)",
+                          "display-or": "ବାମ ତଳ"
+                        },
+                        {
+                          "id": "314j563q6gi88jisshinkcaknv",
+                          "text": "Lower(C)",
+                          "language": "Lower(C)",
+                          "display-or": "ନାଭି ତଳକୁ"
+                        },
+                        {
+                          "id": "061jbl7bcvkauvrk1geuok7c2u",
+                          "text": "Lower(R)",
+                          "language": "Lower(R)",
+                          "display-or": "ଡାହାଣ ତଳ"
+                        },
+                        {
+                          "id": "6tc2t1aj3f3t8fisb6t1sqqga1",
+                          "text": "All Over",
+                          "language": "All Over",
+                          "display-or": "ଚାରିଅାଡ଼େ"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "527hras4h7oie28sm42d1gs4nf",
+                      "text": "How many?",
+                      "language": "%",
+                      "display-or": "କେତେଟା ଅଛି",
+                      "options": [
+                        {
+                          "id": "7vg06ntaaksg4h0al3lhet48ce",
+                          "text": "Enter number of lumps",
+                          "input-type": "number",
+                          "language": "No. of lumps",
+                          "display-or": "ସଂଖ୍ଯା"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "7n2ig7ajg32k1innt1b61c6fv8",
+                      "text": "What is its shape?",
+                      "language": "%",
+                      "display-or": "କେମିତି ଦେଖାଯାଉଛି",
+                      "options": [
+                        {
+                          "id": "4hl0jv0g5sk7uo7p0b02boe73p",
+                          "text": "Round",
+                          "language": "round in shape",
+                          "display-or": "ଗୋଲାକାର"
+                        },
+                        {
+                          "id": "5bg1db5hethbbfs5k51k2vrdgs",
+                          "text": "Irregular",
+                          "language": "irregular in shape",
+                          "display-or": "ଅନିୟମିତ"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "0cggktq1vrlvbal7o6gvt43tdf",
+                      "text": "How is the surface?",
+                      "language": "%",
+                      "display-or": "ଉପର କେମିତି ଲାଗୁଛି",
+                      "options": [
+                        {
+                          "id": "2vjtjpeqncg47qsqqrssn8mtg5",
+                          "text": "Smooth",
+                          "language": "smooth surface",
+                          "display-or": "ସମାନ"
+                        },
+                        {
+                          "id": "57g2vcu0cninftqki0fkh2huma",
+                          "text": "Irregular",
+                          "language": "irregular surface",
+                          "display-or": "ଅଙ୍କାବଙ୍କା"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "1ujal0nlol5pb9f37cen62d91n",
+                      "text": "How does it feel?",
+                      "language": "%",
+                      "display-or": "ହାତକୁ କେମିତି",
+                      "options": [
+                        {
+                          "id": "344f4n28so8mk6v77943tc2o0f",
+                          "text": "Hard",
+                          "language": "feels hard",
+                          "display-or": "ଟାଣ"
+                        },
+                        {
+                          "id": "3c7e65ukge3gt63pcavoqnr2vt",
+                          "text": "Soft",
+                          "language": "feels soft",
+                          "display-or": "ନରମ"
+                        },
+                        {
+                          "id": "4ugdg490r6odffk2cd8bdgph48",
+                          "text": "Medium",
+                          "language": "feels medium",
+                          "display-or": "ମଝି ମଝିଅା"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "19d2d6vrbs9558bv5ub1i9uf1o",
+                      "text": "Painful or not?",
+                      "language": "%",
+                      "display-or": "ଦରଜ ହେଉଛି କି ନା?",
+                      "options": [
+                        {
+                          "id": "1mjkj9nn7a678ju1oeffiehba3",
+                          "text": "Yes",
+                          "language": "tender",
+                          "display-or": "ହଁ"
+                        },
+                        {
+                          "id": "31204sdffp724anvvo67cgdanu",
+                          "text": "No",
+                          "language": "not tender",
+                          "display-or": "ନାଁ"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "1nnme423cok1h5rdhfnkh7hlke",
+                      "text": "Any change in colour of skin?",
+                      "language": "%",
+                      "display-or": "ଉପର ଚମଡ଼ାର ରଙ୍ଗ ପରିବର୍ତ୍ତନ ଦେଖା ଯାଉଛି କି?",
+                      "options": [
+                        {
+                          "id": "0j882oc11948g1ulqdhmtvgai6",
+                          "text": "Yes",
+                          "language": "discolouration of skin",
+                          "display-or": "ହଁ"
+                        },
+                        {
+                          "id": "0oeemol3epsjche6h7i4i9dsa8",
+                          "text": "No",
+                          "language": "no skin discolouration",
+                          "display-or": "ନାଁ"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "3qnfa95mrm3ufktmqr4ktv32f0",
+                      "text": "Any swelling above or below the lump?",
+                      "language": "%",
+                      "display-or": "ଉପରେ କିମ୍ବା ତଳେ କିଛି ଫୁଳା ଅଛି କି?",
+                      "options": [
+                        {
+                          "id": "393ghhvtvu48j1s94ah6m9623j",
+                          "text": "Swelling Above",
+                          "language": "swelling above lump",
+                          "display-or": "ଉପରେ"
+                        },
+                        {
+                          "id": "607hl7jb8vogfo7e8kvi7aplsm",
+                          "text": "Swelling Below",
+                          "language": "swelling below lump",
+                          "display-or": "ତଳେ"
+                        },
+                        {
+                          "id": "3edclgk96hu48kr26l2a544398",
+                          "text": "No Swelling",
+                          "language": "no swelling",
+                          "display-or": "ନାହିଁଁ"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "5saimdim8ao0gg5v00h3gnq1k6",
+                      "text": "Is it moving related to adjacent tissues?",
+                      "language": "%",
+                      "display-or": "ଫୁଲା ଟା ଏପଟ ହେଉଛି ନା ସ୍ଥିର ହେଉଛି",
+                      "options": [
+                        {
+                          "id": "3cog1pco9kl43mmh6cmg69h9qe",
+                          "text": "Lump mobile",
+                          "language": "lump mobile",
+                          "display-or": "ଫୁଲା ଗତି କରୁ ଛି"
+                        },
+                        {
+                          "id": "5f07fmnfhm94a2ukqrsm6gglah",
+                          "text": "Lump fixed",
+                          "language": "lump fixed",
+                          "display-or": "ଫୁଲା ସ୍ଥିର ଅଛି"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "6j0jn1rbniamo13jehauhd3ctn",
+                      "text": "Put a hand on the swelling and ask the patient to cough. Can you see and feel if there is a change in size?",
+                      "language": "%",
+                      "display-or": "ହାଥରେ ଫୁଲା କୁ ଛୁକି କରି ରୋଗୀ କୁ କଷିବା ପାଇଁ କୋହ. ଫୁଲା ର ଆକାର ରେ କିଛି ପରିବର୍ତନ ଅନୁଭବ କରୁ ଛ କି?",
+                      "options": [
+                        {
+                          "id": "5van4tdr4qnkmfqeb4lkse7t47",
+                          "text": "Does not change",
+                          "language": "size of lump does not change with coughing",
+                          "display-or": "ପରିବର୍ତନ ନାହିଁ"
+                        },
+                        {
+                          "id": "4ardlukeoecfq3vh1fqr8smu0n",
+                          "text": "Increases with coughing",
+                          "language": "size of lump increases with coughing",
+                          "display-or": "କଷିଲା ବେଳ ବଡୁଛି"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "1obk7oaaf549nbkbntbo6u02s9",
+                      "text": "Now ask the patient to lie down. Is the swelling going down/reduces in size?",
+                      "language": "%",
+                      "display-or": "ରୋଗୀ କୁ ଶୁଆଇ ଦିଅ. ଫୁଲା ର ଆକାର ରେ କିଛି ପରିବର୍ତନ ଅନୁଭବ କରୁ ଛ କି?",
+                      "options": [
+                        {
+                          "id": "3llsvgi66eo0vpm56udb9ca05i",
+                          "text": "does not change",
+                          "language": "size of lump does not reduce with lying down",
+                          "display-or": "ପରିବର୍ତନ ନାହିଁ"
+                        },
+                        {
+                          "id": "5j0molvlt1v1qmg59a13b4q2j7",
+                          "text": "reduce with lying down",
+                          "language": "size of lump reduces with lying down",
+                          "display-or": "କାମୁଛି"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "4dm6afeg11b56vsl5e5q77d5mg",
+                  "text": "No",
+                  "language": "no lumps",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_337376517",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "3pd5np20m5l29ffljkk9fganrb",
+      "text": "Hands",
+      "language": "Hands Power test:",
+      "display-or": "ହାତ",
+      "options": [
+        {
+          "id": "7e6d81sn7amlih0a1b6ieikabv",
+          "text": "Nails cyanosis",
+          "display-or": "ନଖ ନୀଳ",
+          "options": [
+            {
+              "id": "0opiknc208aavnjirjdvnlf3t5",
+              "text": "Does the nail beds appear bluish?",
+              "language": "%",
+              "display-or": "ନଖ ନୀଳ ପଡ଼ିଛି ? ଯଦି ଅଛି ଫଟ ନିଅ",
+              "options": [
+                {
+                  "id": "19fv146mt55pbqrdsii0pdbggg",
+                  "text": "Normal",
+                  "language": "nails normal",
+                  "display-or": "ନୀଳ ପଡ଼ିଛି"
+                },
+                {
+                  "id": "1462enod5ftjc98u3303rfmc3p",
+                  "text": "Bluish",
+                  "language": "nails bluish",
+                  "display-or": "ନୀଳ ରଂଗ"
+                },
+                {
+                  "id": "ID_558488511",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "5knvilm6k3ib0v2iaa3jfdfpcd",
+          "text": "Power 1",
+          "display-or": "ତାକତ୍ 1",
+          "language": "Gripping two fingers tightly",
+          "options": [
+            {
+              "id": "78pgivnbga1brc9g1dhdf2t5ro",
+              "text": "Ask the patient to hold your two fingers tightly; one side at a time and examine strength of grip",
+              "language": "%",
+              "display-or": "ନିଜର ଅାଙ୍ଗୁଠିକୁ ରୋଗୀର ହାତ ମୁଠାରେ ଦେଇ ଜୋରରେ ଟାଣି ଦେଖ",
+              "options": [
+                {
+                  "id": "70gntrpgdvodhvjk2o6qm0n9og",
+                  "text": "Grip equal on both sides",
+                  "language": "grip equal on both sides",
+                  "display-or": "ଦୁଇପଟ ସମାନ"
+                },
+                {
+                  "id": "5f2v78f2dcqlkef27pdrd52lhg",
+                  "text": "Grip weak on left side",
+                  "language": "grip weak on left side",
+                  "display-or": "ବାମପଟ ଦୁର୍ବଳ"
+                },
+                {
+                  "id": "1mttk3kafnmv33su45bdrq9chg",
+                  "text": "Grip weak on right side",
+                  "language": "grip weak on right side",
+                  "display-or": "ଡ଼ାହାଣ ପଟେ ଦୁର୍ବଳ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_330495095",
+          "text": "Power 2",
+          "display-or": "ତାକତ୍ 2",
+          "language": "Holding a paper tightly between thumb and curled fingers",
+          "options": [
+            {
+              "id": "ID_949719690",
+              "text": "Ask the patient to hold a paper tight between thumb and curled fingers. Is the patient able to hold the paper?",
+              "display-or": "ଦୁଇ ଆଙ୍ଗୁଠି କୁ ଟାଇଟ ରେ ପେପର ଧରିବା ପାଇଁ ପଚାର. ପେପର କା ଉଠାଇ ପାରୁ ଛି କି",
+              "language": "%",
+              "options": [
+                {
+                  "id": "ID_1538068182",
+                  "text": "Grip equal on both sides",
+                  "language": "grip equal on both sides",
+                  "display-or": "ଦୁଇପଟ ସମାନ"
+                },
+                {
+                  "id": "ID_1238338500",
+                  "text": "Grip weak on left side",
+                  "language": "grip weak on left side",
+                  "display-or": "ବାମପଟ ଦୁର୍ବଳ"
+                },
+                {
+                  "id": "ID_1624892803",
+                  "text": "Grip weak on right side",
+                  "language": "grip weak on right side",
+                  "display-or": "ଡ଼ାହାଣ ପଟେ ଦୁର୍ବଳ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_1617808715",
+          "text": "Power 3",
+          "display-or": "ତାକତ୍ 3",
+          "language": "Ability to spread 4 fingers apart when they are held together",
+          "options": [
+            {
+              "id": "ID_1745755999",
+              "text": "Hold the patient's 4 fingers and ask him/her to spread them. Is the patient able to spread them?",
+              "display-or": "ଚାରି ଆଙ୍ଗୁଠି କୁ ଟାଇଟ ରେ ଧରି ତାକୁ ବିସ୍ତାର କରିବା ପାଇଁ ପଚାର. ଯଦି ସ୍ସେ ବିସ୍ତାର କରି ପାରୁ ଛି କି?",
+              "language": "%",
+              "options": [
+                {
+                  "id": "ID_1921328165",
+                  "text": "Strength equal on both sides",
+                  "language": "grip equal on both sides",
+                  "display-or": "ଦୁଇପଟ ସମାନ"
+                },
+                {
+                  "id": "ID_260856531",
+                  "text": "Strength weak on left side",
+                  "language": "grip weak on left side",
+                  "display-or": "ବାମପଟ ଦୁର୍ବଳ"
+                },
+                {
+                  "id": "ID_642837135",
+                  "text": "Strength weak on right side",
+                  "language": "grip weak on right side",
+                  "display-or": "ଡ଼ାହାଣ ପଟେ ଦୁର୍ବଳ"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2h25kbabblri8uukidmf29gcfc",
+      "text": "Leg",
+      "language": "Leg:",
+      "display-or": "ଗୋଡ଼",
+      "options": [
+        {
+          "id": "65067vtfn058cbt8hnu6pmh6fb",
+          "text": "Movement",
+          "display-or": "ହଲଚଲ୍",
+          "language": "SLR leg function test",
+          "options": [
+            {
+              "id": "3un4m5pcnn97p8mckim5il3qpe",
+              "text": "(SLR) Patient lies supine. Have them raise one leg at a time (straight at the knee) and look for pain at any point",
+              "language": "%",
+              "display-or": "ରୋଗୀକୁ ଉପର ମୁହାଁ ଶୁଅାଇ ଆଣ୍ଠୁ ସିଧା କରି ଗୋଡ଼ ଉଠାଇବାକୁ କୁହ",
+              "options": [
+                {
+                  "id": "3lem6cmmm9054so6j11b6qg4m7",
+                  "text": "SLR normal",
+                  "language": "SLR normal",
+                  "display-or": "SLR ଠିକ ଅଛି"
+                },
+                {
+                  "id": "3nhnpmgv3t9r51o1trrteqoauv",
+                  "text": "pain halfway on left side",
+                  "language": "pain halfway on left side",
+                  "display-or": "ଉପର କୁ ଅଧା ଉଠାଇଲେ ବାମ ଗୋଡ ରୁ ଦରଜ"
+                },
+                {
+                  "id": "7pcua6o29rks3mcbhvft2stted",
+                  "text": "pain halfway on right side",
+                  "language": "pain halfway on right side",
+                  "display-or": "ଉପର କୁ ଅଧା ଉଠାଇଲେ ଡାହାଣ ଗୋଡ ରୁ ଦରଜ"
+                },
+                {
+                  "id": "63ceb4ocdfd55o7jimgcmnvejo",
+                  "text": "pain halfway on both side",
+                  "language": "pain halfway on both side",
+                  "display-or": "ଉପର କୁ ଅଧା ଉଠାଇଲେ ଉଭୟ ଗୋଡ ରୁ ଦରଜ"
+                },
+                {
+                  "id": "31u9knlrh2i6i18osnbdgef5e9",
+                  "text": "pain at the beginning on left side",
+                  "language": "pain at the beginning on left side",
+                  "display-or": "ବାମ ଗୋଡ ଉଠେଇବା ମାତ୍ରେ ଦରଜ"
+                },
+                {
+                  "id": "7jf9306h47h94mrtm05an9cqna",
+                  "text": "pain at the beginning on right side",
+                  "language": "pain at the beginning on right side",
+                  "display-or": "ଡାହାଣ ଗୋଡ ଉଠେଇବା ମାତ୍ରେ ଦରଜ"
+                },
+                {
+                  "id": "212ohnhik1gq8d23cs7a9st1ek",
+                  "text": "pain at the beginning on both side",
+                  "language": "pain at the beginning on both side",
+                  "display-or": "ଉଭୟ ଗୋଡ ଉଠେଇବା ମାତ୍ରେ ଦରଜ"
+                },
+                {
+                  "id": "0if1r44q1t85he192dpmcckeqc",
+                  "text": "pain near complete point on left side",
+                  "language": "pain near complete point on left side",
+                  "display-or": "ବାମ ଗୋଡ ସିଧା ଉଠିବା ମାତ୍ରେ ଦରଜ"
+                },
+                {
+                  "id": "5tj7tq4o83e3ukrr1aabsqklc2",
+                  "text": "pain near complete point on right side",
+                  "language": "pain near complete point on right side",
+                  "display-or": "ଡାହାଣ ଗୋଡ ସିଧା ଉଠିବା ମାତ୍ରେ ଦରଜ"
+                },
+                {
+                  "id": "00v9urb4v0g32t7frttq3ub816",
+                  "text": "pain near complete point on left both sides",
+                  "language": "pain near complete point on left both sides",
+                  "display-or": "ଉଭୟ ଗୋଡ ସିଧା ଉଠିବା ମାତ୍ରେ ଦରଜ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2vj27i02o06g49o6lrgevvnbmg",
+          "text": "Strength",
+          "display-or": "ତାକତ୍",
+          "options": [
+            {
+              "id": "2plsq2r8tbuuh82a8tlmj0hipl",
+              "text": "Ask patient to raise one leg at a time against your hand",
+              "language": "%",
+              "display-or": "ଗୋଡ଼ ଉପରେ ପ୍ରେସର୍ ଦେଇ ଗୋଡ଼ ଉଠାଇବାକୁ କୁହଁ",
+              "options": [
+                {
+                  "id": "0ggq4g3veqb0fmi1q65j7m12i1",
+                  "text": "Both legs equal",
+                  "language": "both legs have equal strength",
+                  "display-or": "ଦୁଇପଟ ସମାନ"
+                },
+                {
+                  "id": "7gfs3rj0jrg4vb6toj75u9rbcs",
+                  "text": "Right leg weak",
+                  "language": "weakness in Rt leg side",
+                  "display-or": "ବାମପଟ ଦୁର୍ବଳ"
+                },
+                {
+                  "id": "06uq9bpr5fvpqbopems3sp3ojd",
+                  "text": "Left leg weak",
+                  "language": "weakness in Lt leg side",
+                  "display-or": "ଡ଼ାହାଣ ପଟେ ଦୁର୍ବଳ"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "4t5irnpds12ae3dtqls039q91m",
+      "text": "Back",
+      "language": "Back:",
+      "display-or": "ପିଠି",
+      "options": [
+        {
+          "id": "5o7bitv8bit3bih36n2u5jhbqo",
+          "text": "Swelling",
+          "display-or": "ଫୁଲା",
+          "language": "%",
+          "options": [
+            {
+              "id": "2spae93dsou9800p22plm30mms",
+              "text": "Is there any swelling?",
+              "language": "%",
+              "display-or": "ପିଠିରେ କିଛି ଫୁଲିଛି କି?",
+              "options": [
+                {
+                  "id": "7teqb3u97mgvvp223pba22qlre",
+                  "text": "Yes",
+                  "language": "swelling seen",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "0835k7lrrmrvdou1b0ra9v5d75",
+                  "text": "No",
+                  "language": "no swelling seen",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_1031740959",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "1oclpd2g1ir8boipefejto1tos",
+          "text": "Redness",
+          "display-or": "ନାଲି ପଡ଼ିବା",
+          "language": "%",
+          "options": [
+            {
+              "id": "7bi6ere3gb37b6mau3485lcj4i",
+              "text": "Is there any redness on the skin?",
+              "language": "%",
+              "display-or": "କିଛି ନାଲି ପଡ଼ିଛିକି?",
+              "options": [
+                {
+                  "id": "14d7lj25s1r4ss420u0mvk7idp",
+                  "text": "Yes",
+                  "language": "redness seen",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "3b2v2j6trqn0473j674tn0070a",
+                  "text": "No",
+                  "language": "no redness seen",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_615116267",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "7i1v4uc60th626f4qm60nd9p4j",
+          "text": "Deformity",
+          "display-or": "ଅଙ୍କା ବଙ୍କା",
+          "language": "%",
+          "options": [
+            {
+              "id": "2s5k8bl1f5usse06ngpufo41im",
+              "text": "Is the spine deformed?",
+              "language": "%",
+              "display-or": "କିଛି ଅଙ୍କାବଙ୍କା ଜଚ୍ଚାପଡ଼ୁଛି ?",
+              "options": [
+                {
+                  "id": "3rodnkiabsbp1givc4n0tucjcb",
+                  "text": "Yes",
+                  "language": "spine appears deformed",
+                  "input-type": "camera",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "4ccsi3a0v2spul2r4gbke9cbps",
+                  "text": "No",
+                  "language": "no visible spinal deformity",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_800416816",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "7dg7b81tn9rjsk21k5ujvb0rit",
+          "text": "Tenderness",
+          "display-or": "ଦରଜ ହେବା",
+          "language": "%",
+          "options": [
+            {
+              "id": "2ion6tdgfsahqk1jiga40eq92c",
+              "text": "Feel the back at midline and along the sides of midline and look for tenderness",
+              "language": "%",
+              "display-or": "ପିଠିରେ ଚିପିଲେ ଦରଜ ଜଚ୍ଚାପଡ଼ୁଛି",
+              "options": [
+                {
+                  "id": "64s1qn0ouep97u2gurbn34eocl",
+                  "text": "Yes",
+                  "language": "tenderness observed",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "6952m0cbt6send8qhid17svbq7",
+                  "text": "No",
+                  "language": "no back tenderness",
+                  "display-or": "ନାଁ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_73016408",
+          "text": "Movement",
+          "display-or": "ଗତି କଲେ",
+          "language": "%",
+          "options": [
+            {
+              "id": "ID_566200292",
+              "text": "Can the patient bend forward from his waist?",
+              "language": "%",
+              "display-or": "ରୋଗୀ ତାର ଅଂଟା କୁ ବାଙ୍କା କରି ପାରିବ କି",
+              "options": [
+                {
+                  "id": "ID_360140513",
+                  "text": "Yes",
+                  "language": "Patient can bend forward properly from the waist",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "ID_1367247304",
+                  "text": "No",
+                  "language": "Patient cannot bend forward properly from the waist",
+                  "display-or": "ନାଁ"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ID_119118100",
+      "text": "Joint",
+      "language": "Joint:",
+      "display-or": "ଗଣ୍ଠି",
+      "options": [
+        {
+          "id": "4o2igq05u9989rp4lvlsatj2cp",
+          "text": "Examination instructions",
+          "language": "%",
+          "display-or": "ପରୀକ୍ଷା",
+          "options": [
+            {
+              "id": "15fqgqi5n6m8q6kencbks5ocgi",
+              "text": "For the following joint examinations; please always compare with other side",
+              "language": "%",
+              "display-or": "ଗଣ୍ଠି ଯଦି ଫୁଲିଛି ? ଯଦି ଅଛି ଫଟ ନିଅ (ଅାରପଟ ଗଣ୍ଠି ସହ ତୁଳନା କରି ଦେଖ)"
+            }
+          ]
+        },
+        {
+          "id": "4llikp278a8ojdd7tedjf7ucj4",
+          "text": "Swelling",
+          "language": "%",
+          "display-or": "ଗଣ୍ଠି ଫୁଲା",
+          "options": [
+            {
+              "id": "78er12e1u2keqfouj43ha838p0",
+              "text": "Is the joint swollen?",
+              "language": "%",
+              "display-or": "ଗଣ୍ଠି ଫୁଲିଛି କି?",
+              "options": [
+                {
+                  "id": "4unn3ia170uqjk0rpgv06vafjc",
+                  "text": "Yes",
+                  "language": "joint is swollen",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "13j1m203lv1l6nq20dbbgiubeu",
+                  "text": "No",
+                  "language": "joint is not swollen",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_875541771",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "72e4qbkllccgpnso2d1l0a211k",
+          "text": "Redness",
+          "language": "%",
+          "display-or": "ଗଣ୍ଠି ନାଲିପଡ଼ିବା",
+          "options": [
+            {
+              "id": "4cqi6go4pht94kflcif8aq1ssa",
+              "text": "Is there any redness on the skin over the joint?",
+              "language": "%",
+              "display-or": "ଗଣ୍ଠି ଉପରେ ନାଲି ପଡ଼ିଛି?",
+              "options": [
+                {
+                  "id": "7hue873fuuf5hq62t01pn88dfr",
+                  "text": "Yes",
+                  "language": "redness observed around joint",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "4c1qo42psti5nt2ehskod5i791",
+                  "text": "No",
+                  "language": "no redness around joint",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_1845537441",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "7j4hr4dsf7t3te9hpam91p8r36",
+          "text": "Deformity",
+          "language": "%",
+          "display-or": "ଗଣ୍ଠି ଅଙ୍କାବଙ୍କା",
+          "options": [
+            {
+              "id": "6tjhkp7eme15m62clh18ig00id",
+              "text": "Does the joint appear deformed?",
+              "language": "%",
+              "display-or": "ଗଣ୍ଠି ଅଙ୍କାବଙ୍କା ହେଉଛିକି?",
+              "options": [
+                {
+                  "id": "1b7hu0rerlq4jq1ph7552nkvod",
+                  "text": "Yes",
+                  "language": "deformity around joint",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "0o29b1v4bs20d9n4l4g2n5ffd6",
+                  "text": "No",
+                  "language": "no deformity around joint",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_132172140",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "32s41m6u1rqq5g1872ol22ct3i",
+          "text": "Tenderness",
+          "language": "%",
+          "display-or": "ଗଣ୍ଠି ଦରଜ",
+          "options": [
+            {
+              "id": "3fthifbu0va74st1hf7uhof7lk",
+              "text": "Feel the joint on all sides and look for tenderness",
+              "language": "%",
+              "display-or": "ଗଣ୍ଠି କୁ ଚିପିଲେ ଦରଜ ଜଚ୍ଚାପଡ଼ୁଛି",
+              "options": [
+                {
+                  "id": "7frcokaaec3b45o3c0pog2nkrv",
+                  "text": "Yes",
+                  "language": "tenderness seen",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "0vcqd99cmo9f57cbu8u20j2ee8",
+                  "text": "No",
+                  "language": "non-tender",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_880026668",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "7vkb9bulgdnmhc7pktl8dg45p0",
+          "text": "Movement Pain",
+          "language": "%",
+          "display-or": "ହଲଚଲ ରେ ଗଣ୍ଠି କଷ୍ଟ",
+          "options": [
+            {
+              "id": "5dinhlria692hqhmee61588t5v",
+              "text": "Move the joint through its normal range and are there pain at any point?",
+              "language": "%",
+              "display-or": "ଗଣ୍ଠି କ ହଲଚଲ୍ କଲେ କଷ୍ଟ ହେଉଛି କି?",
+              "options": [
+                {
+                  "id": "3gdb15d522q6sdfdbtlnbr97gu",
+                  "text": "Yes",
+                  "language": "pain during movement",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "22cg7t8tqrtnu8kn9o1oi9i67i",
+                  "text": "No",
+                  "language": "no pain during movement",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_1515587880",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "1bh00k3631s2i8sigv2e0eakvt",
+          "text": "Movement range",
+          "language": "%",
+          "display-or": "ଗଣ୍ଠିକେତେଦୂର ଗତିଶୀଳ",
+          "options": [
+            {
+              "id": "1i3lu7rrv9b0uho2o96v964tm6",
+              "text": "Is full range of movement present?",
+              "language": "%",
+              "display-or": "ଗଣ୍ଠି ହଲେଇଲେ କେତେବାଟ ହଲୁଛି",
+              "options": [
+                {
+                  "id": "6nubtkl0t9i8cua837uu1f6nuk",
+                  "text": "Yes",
+                  "language": "full range of movement is seen",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "5gkkmjag787qnjoq8s0mp8csrv",
+                  "text": "No",
+                  "language": "range of movement is restricted",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_1859080464",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "6o3orbls1q04f07cv7nf8sfcps",
+      "text": "Any Location",
+      "language": "Any location:",
+      "display-or": "ଅନ୍ୟାନ୍ୟ ଜାଗା",
+      "options": [
+        {
+          "id": "34vqigq1rri15t22qoe2btkume",
+          "text": "Skin Rash",
+          "language": "Skin Rash:",
+          "display-or": "ଚମର୍ର୍ର ଚିହ୍ନ",
+          "options": [
+            {
+              "id": "2bla4uvbpp2fv6ojnfenjodqul",
+              "text": "Is there any rash?",
+              "language": "%",
+              "display-or": "ଚର୍ମରେ କିଛି ଚିହ୍ନ ଅଛି କି?",
+              "options": [
+                {
+                  "id": "589u54qk7l2u9hed63drg8akgk",
+                  "text": "Yes",
+                  "language": "rash seen",
+                  "display-or": "ହଁ",
+                  "options": [
+                    {
+                      "id": "4pap5bnnkpfphml5lffvghpi1c",
+                      "text": "How many rashes are there?",
+                      "language": "%",
+                      "display-or": "କେତେ ସଂଖ୍ଯା",
+                      "options": [
+                        {
+                          "id": "0lv2li905er00qodi01rs6oigu",
+                          "text": "Enter number",
+                          "input-type": "number",
+                          "language": "No. of rashes",
+                          "display-or": "ସଂଖ୍ୟା ଲେଖ"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "7q5r86eu50k1d369k63i6plh4t",
+                      "text": "How is the surface of the rash?",
+                      "language": "%",
+                      "display-or": "ଉପର କେମିତି ଅଛି",
+                      "options": [
+                        {
+                          "id": "2ts8gtpb4h158fce5g78o59mm1",
+                          "text": "Smooth",
+                          "language": "surface is smooth",
+                          "display-or": "ସମାନ"
+                        },
+                        {
+                          "id": "2iarl1gqhk08f3qpulihr1l4j5",
+                          "text": "Rough",
+                          "language": "surface is irregular",
+                          "display-or": "ଅଙ୍କାବଙ୍କା"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "1lpin3jjkc2u0tuqom8spshbqd",
+                      "text": "What is the colour of the rash?",
+                      "language": "%",
+                      "display-or": "ରଙ୍ଗ କେମିତି",
+                      "options": [
+                        {
+                          "id": "4ctvh2ga00p2qm33koijd1f18u",
+                          "text": "Describe",
+                          "input-type": "text",
+                          "language": "Colour of the rash",
+                          "display-or": "ବର୍ଣନା କର"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "ID_907152865",
+                      "text": "Is the rash on the palms and soles?",
+                      "language": "%",
+                      "display-or": "ପାଦ ଓ ପାପୁଲି",
+                      "options": [
+                        {
+                          "id": "ID_1524644195",
+                          "text": "Yes",
+                          "language": "rash present on palms and soles",
+                          "display-or": "ହଁ"
+                        },
+                        {
+                          "id": "ID_1041474623",
+                          "text": "No",
+                          "language": "rash not present on palms and soles",
+                          "display-or": "ନାଁ"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "ID_1174246731",
+                      "text": "Is there dry, dead skin that appears to be falling off?",
+                      "language": "%",
+                      "display-or": "ଚିହ୍ନ",
+                      "options": [
+                        {
+                          "id": "ID_599631097",
+                          "text": "Yes",
+                          "language": "skin appears to be dead, dry or peeling off (eschar seen)",
+                          "display-or": "ହଁ"
+                        },
+                        {
+                          "id": "ID_128832798",
+                          "text": "No",
+                          "language": "no eschar",
+                          "display-or": "ନାଁ"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "55d0k2iookm3bedg3vjkptmhco",
+                  "text": "No",
+                  "language": "no rash",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_1918521940",
+                  "text": "Put a ruler next to the rash and take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଚିହ୍ନ ଉପରେ ରୁଲୱେର ପକାଅ ତାର ଫୋଟୋ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_111711492",
+          "text": "Skin Bruise",
+          "language": "Skin Bruise:",
+          "display-or": "ଚର୍ମ ରେ ନୀଳ ଘା ଚିହ୍ନ",
+          "options": [
+            {
+              "id": "ID_1536234608",
+              "text": "Are there bruises? If yes, take a picture",
+              "language": "%",
+              "display-or": "ସେହି ଜାଗା ରେ ଘା ଚିହ୍ନ ଅଛି କି? ତାର ଫଟ ନିଅ",
+              "options": [
+                {
+                  "id": "ID_1163933268",
+                  "text": "Yes",
+                  "language": "bruises seen",
+                  "display-or": "ହଁ",
+                  "options": [
+                    {
+                      "id": "ID_255586404",
+                      "text": "How many?",
+                      "language": "%",
+                      "display-or": "କେତେ ଥର",
+                      "options": [
+                        {
+                          "id": "ID_1158378356",
+                          "text": "Enter number of bruises",
+                          "input-type": "number",
+                          "language": "No. of bruises",
+                          "display-or": "କେତେ ଥର"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "ID_1336289065",
+                  "text": "No",
+                  "language": "no bruises seen",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_983168251",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_1749120040",
+          "text": "Injury Discolouration",
+          "language": "Injury discolouration:",
+          "display-or": "ଅାଘାତର ରଙ୍ଗ",
+          "options": [
+            {
+              "id": "27dbrb51lp0aa5a74bgupicelh",
+              "text": "Is there any discoloured area?",
+              "language": "%",
+              "display-or": "ରଙ୍ଗ ପରିବର୍ତ୍ତନ ହେଉଛି କି ?",
+              "options": [
+                {
+                  "id": "6r3lmbl4ua2bc4ik5lthrlt398",
+                  "text": "Yes",
+                  "language": "discolouration seen",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "0hnmvcshh7c39gn40uv2ahvaaq",
+                  "text": "No",
+                  "language": "no discolouration seen",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_860168656",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "5ppf2cn408f2psn455srhlh77j",
+          "text": "Injury Cut",
+          "language": "Injury cut:",
+          "display-or": "ଆଘାତ ରେ କ୍ଷତ",
+          "options": [
+            {
+              "id": "7jr2vgc8f4agke58mdj3uo85p1",
+              "text": "Is there any cut?",
+              "language": "%",
+              "display-or": "କ୍ଷତ ଚିହ୍ନ ଅଛି କି?",
+              "options": [
+                {
+                  "id": "69je855af2lbv9dh46a5ek9hid",
+                  "text": "Yes",
+                  "language": "skin cut seen",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "1si0aalh00f7pi7trm5i71pjms",
+                  "text": "No",
+                  "language": "no skin cut",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_1623868209",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "39pfoj2pvmjl37j941bl78gm87",
+          "text": "Injury Abrasion",
+          "language": "Injury abrasion:",
+          "display-or": "ମଳିଚମ ଛାଡ଼ିବା",
+          "options": [
+            {
+              "id": "1d3gb6ub23obtvhf1gkp7lukhv",
+              "text": "Is there any abrasion?",
+              "language": "%",
+              "display-or": "ମଳି ଚର୍ମ ଛାଡ଼ିଛି କି?",
+              "options": [
+                {
+                  "id": "27evgnahjmv73l5q867jb1vmi5",
+                  "text": "Yes",
+                  "language": "abrasion seen",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "2nb52of6a4u3hpp6k4no5jqgph",
+                  "text": "No",
+                  "language": "no abrasion",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_1829148837",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "0li81lki3l7qgdob8n28djl6d1",
+          "text": "Ulcer",
+          "language": "Ulcer:",
+          "display-or": "ଘା",
+          "options": [
+            {
+              "id": "0fv1oqmiciu8rrk03jvc0vf1s1",
+              "text": "Is there an ulcer?",
+              "language": "%",
+              "display-or": "ଘା ହେଇଛିକି ?",
+              "options": [
+                {
+                  "id": "02pvjpospai94ppnvucipe41ig",
+                  "text": "Yes",
+                  "language": "ulcer seen",
+                  "display-or": "ହଁ",
+                  "options": [
+                    {
+                      "id": "53c44bred47fth5l5mka20nrhg",
+                      "text": "Put a ruler next to the ulcer and estimate its size",
+                      "language": "%",
+                      "display-or": "ସ୍କେଲ ରେ ଘା ର ମାପ ନିଅ",
+                      "options": [
+                        {
+                          "id": "2v1m35qrajbajt80rtgrrt280l",
+                          "text": "Enter size in cm x cm",
+                          "input-type": "area",
+                          "language": "size of ulcer",
+                          "display-or": "ସାଇଜ଼ ଲେଖ (cm ରେ)"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "02ph9ohp70g24tnl435ai208pg",
+                      "text": "Is there any discharge?",
+                      "language": "Discharge",
+                      "display-or": "କିଛି ବାହରୁଚି କି ?",
+                      "options": [
+                        {
+                          "id": "ID_412588416",
+                          "text": "No discharge",
+                          "display-or": "ବାହାରୁ ନାହିଁ"
+                        },
+                        {
+                          "id": "22c8uusl7qkiuk8ljlga5pfm8v",
+                          "text": "Pus",
+                          "display-or": "ପୁଜ"
+                        },
+                        {
+                          "id": "5s9ke64t9oifo0uk0fk32ko9vi",
+                          "text": "blood",
+                          "display-or": "ରକ୍ତ"
+                        },
+                        {
+                          "id": "5p38tbvokndkamgmnt54lqrk0a",
+                          "text": "mixed blood and pus",
+                          "display-or": "ମିଶା"
+                        },
+                        {
+                          "id": "20duhp97dl8tf00ogrt7ns8f5v",
+                          "text": "thin discharge",
+                          "display-or": "ପାଣି"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "73ucsmcmf6k499285r1sqbt362",
+                      "text": "What is the colour of the surface?",
+                      "language": "Colour of the surface is",
+                      "display-or": "ରଙ୍ଗ ପରିବର୍ତ୍ତନ ହେଉଛି କି ?",
+                      "options": [
+                        {
+                          "id": "6jtmkaeaencqjpbrs3adl5o6ql",
+                          "text": "Clean",
+                          "display-or": "ସଫା"
+                        },
+                        {
+                          "id": "05bodpk8i80k9numdlm6qnl7cd",
+                          "text": "Dirty",
+                          "display-or": "ମେଇଲା"
+                        },
+                        {
+                          "id": "1sccnq9qeloi6ifuati0vh253k",
+                          "text": "Pink",
+                          "display-or": "ଗୋଲାପୀ"
+                        },
+                        {
+                          "id": "3qjvivl83sg5h6pt8bgvnlht7h",
+                          "text": "Black",
+                          "display-or": "କଲା"
+                        },
+                        {
+                          "id": "434uaf0v8qgp14jqeckdsgv6qd",
+                          "text": "Green",
+                          "display-or": "ସବୁଜ"
+                        },
+                        {
+                          "id": "3at4cf3j8kjfbotfirbc34sg2m",
+                          "text": "Mixed",
+                          "display-or": "ମିଶାମୂଶୀ"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "3ka259e4gg3ta4hoqrdjkoapvf",
+                      "text": "What is the edge like?",
+                      "language": "Edge of the ulcer is",
+                      "display-or": "କଡ଼ କିପରି ଦେଖାଯାଉଛି?",
+                      "options": [
+                        {
+                          "id": "38d2pm4eu9tcfd5vq4oc9qdvvb",
+                          "text": "flat with ulcer surface",
+                          "display-or": "ଘା ସହ ସମାନ"
+                        },
+                        {
+                          "id": "7fs6ejakafvelafld9dacaginu",
+                          "text": "raised from ulcer",
+                          "display-or": "ଘା ଠାରୁ ଉଠିକି ଅଛି"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "59nb92ovmpta94vja2iinh6svg",
+                  "text": "No",
+                  "language": "no ulcer",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_189445601",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "5mcqteh5srhqk4gt7g9ajf14n2",
+          "text": "Boils",
+          "language": "Boils:",
+          "display-or": "ବଥ",
+          "options": [
+            {
+              "id": "5mvingjmvaltgiutbp7rkm15a1",
+              "text": "Are there boils?",
+              "language": "%",
+              "display-or": "ବଥ ହେଉଛି କି?",
+              "options": [
+                {
+                  "id": "5lqnh30vm6fj52g1811i90ffgo",
+                  "text": "Yes",
+                  "language": "boils seen",
+                  "display-or": "ହଁ",
+                  "options": [
+                    {
+                      "id": "ID_81500472",
+                      "text": "Put a ruler next to the ulcer and estimate its size",
+                      "language": "%",
+                      "display-or": "ସ୍କେଲ ରେ ଘା ର ମାପ ନିଅ",
+                      "options": [
+                        {
+                          "id": "ID_791818605",
+                          "text": "Enter size in cm x cm",
+                          "input-type": "area",
+                          "language": "size of ulcer",
+                          "display-or": "ସାଇଜ଼ ଲେଖ (cm ରେ)"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "42355536t2q70svss969f2j08k",
+                      "text": "Is there any discharge?",
+                      "language": "%",
+                      "display-or": "କିଛି ବାହାରୁଛି କି?",
+                      "options": [
+                        {
+                          "id": "ID_1069893571",
+                          "text": "No discharge",
+                          "display-or": "ବାହାରୁ ନାହିଁ"
+                        },
+                        {
+                          "id": "ID_1807366232",
+                          "text": "Pus",
+                          "display-or": "ପୁଜ"
+                        },
+                        {
+                          "id": "ID_840730493",
+                          "text": "blood",
+                          "display-or": "ରକ୍ତ"
+                        },
+                        {
+                          "id": "ID_1466984919",
+                          "text": "mixed blood and pus",
+                          "display-or": "ମିଶା"
+                        },
+                        {
+                          "id": "ID_1433039925",
+                          "text": "thin discharge",
+                          "display-or": "ପାଣି"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "1ic1278mhtt40hsm7cevbj7v8f",
+                      "text": "What is the colour of skin over the boil?",
+                      "language": "%",
+                      "display-or": "ବଥ ଉପର ରଙ୍ଗ",
+                      "options": [
+                        {
+                          "id": "0h4dektbegfs2effept78ist2g",
+                          "text": "Red",
+                          "language": "Skin over the boil looks red",
+                          "display-or": "ନାଲି"
+                        },
+                        {
+                          "id": "5aceeph8rjeddkmcf94bvg0709",
+                          "text": "Normal",
+                          "language": "Skin over the boil looks normal",
+                          "display-or": "ଠିକ୍ ଅଛି"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "58e8cdlhlqpl0uh5j2e40gvt9s",
+                      "text": "What is the edge like?",
+                      "language": "edge is",
+                      "display-or": "କଡ଼ କିପରି ଦେଖାଯାଉଛି",
+                      "options": [
+                        {
+                          "id": "5sqih9mnkjbp5s1q7u0aapb41l",
+                          "text": "flat with boil surface",
+                          "display-or": "ବଥ ସହ ସମାନ"
+                        },
+                        {
+                          "id": "16keptqbnb2fplft0v6a6s4gq8",
+                          "text": "raised from boil",
+                          "display-or": "ବଥ ଉପରେ"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "5ghsl8ilvbkk9v7qcbeq98tnqd",
+                  "text": "No",
+                  "language": "no boils",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_656972133",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_1656343876",
+          "text": "Burn",
+          "language": "Burns:",
+          "display-or": "ପୋଡା",
+          "options": [
+            {
+              "id": "ID_719160856",
+              "text": "Is there a burn? If yes, take a picture",
+              "language": "%",
+              "display-or": "ସେହି ଜାଗା ରେ ପୋଡା ଚିହ୍ନ ଅଛି କି? ତାର ଫଟ ନିଅ",
+              "options": [
+                {
+                  "id": "ID_1675617420",
+                  "text": "Yes",
+                  "language": "burn seen",
+                  "display-or": "ହଁ",
+                  "options": [
+                    {
+                      "id": "ID_320536498",
+                      "text": "Take a picture",
+                      "input-type": "camera",
+                      "language": "[picture taken]",
+                      "display-or": "ଫଟ ନିଅ"
+                    },
+                    {
+                      "id": "ID_147415043",
+                      "text": "Are there blisters?",
+                      "language": "%",
+                      "display-or": "ଛଲୀ ଅଛି କି?",
+                      "options": [
+                        {
+                          "id": "ID_1069331692",
+                          "text": "Yes",
+                          "language": "blisters present",
+                          "display-or": "ହଁ"
+                        },
+                        {
+                          "id": "ID_555975713",
+                          "text": "No",
+                          "language": "no blisters present",
+                          "display-or": "ନା"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "ID_401443840",
+                      "text": "What is the colour of the skin over the burn?",
+                      "language": "%",
+                      "display-or": "ପୁଡା ଜାଗା ରେ ଉପର ରଙ୍ଗ କେମିତି ଅଛି",
+                      "options": [
+                        {
+                          "id": "ID_409059360",
+                          "text": "Red",
+                          "language": "skin over the burn is red",
+                          "display-or": "ଲାଲ"
+                        },
+                        {
+                          "id": "ID_1007685774",
+                          "text": "White",
+                          "language": "skin over the burn is white",
+                          "display-or": "ଧଳା"
+                        },
+                        {
+                          "id": "ID_1929663883",
+                          "text": "Black",
+                          "language": "skin over the burn is black",
+                          "display-or": "କଲା"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "ID_36521679",
+                      "text": "Does blanching of the skin occur when it is lightly pressed?",
+                      "language": "%",
+                      "display-or": "ଟିକେ ଦବେଇଲା ପରେ ଧଳା ରଙ୍ଗ ହୋଇଛି କି?",
+                      "options": [
+                        {
+                          "id": "ID_1025144299",
+                          "text": "Yes",
+                          "language": "blanching of skin occurs when it is lightly pressed",
+                          "display-or": "ହଁ"
+                        },
+                        {
+                          "id": "ID_453851935",
+                          "text": "No",
+                          "language": "no blanching of the skin occurs when it is lightly pressed",
+                          "display-or": "ନା"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "ID_874737723",
+                      "text": "Is there dry, dead skin that appears to be falling off over the burn sites?",
+                      "language": "%",
+                      "display-or": "ପୋଡା ଜାଗା ରେ ଶୁଖିଲା କିମ୍ବା ମୃତ ଚମଡା ଅଛି କି?",
+                      "options": [
+                        {
+                          "id": "ID_1512204949",
+                          "text": "Yes",
+                          "language": "eschar present over the burn sites",
+                          "display-or": "ହଁ"
+                        },
+                        {
+                          "id": "ID_1920887878",
+                          "text": "No",
+                          "language": "no eschar present over the burn sites",
+                          "display-or": "ନା"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "ID_1624426837",
+                      "text": "Where is the burn?",
+                      "language": "location of burn",
+                      "display-or": "ପୋଡା କେଉଁ ଠାରେ ଅଛି?",
+                      "options": [
+                        {
+                          "id": "ID_1112431131",
+                          "text": "Head",
+                          "display-or": "ମୁଣ୍ଡ"
+                        },
+                        {
+                          "id": "ID_638950915",
+                          "text": "Neck",
+                          "display-or": "ବେକ"
+                        },
+                        {
+                          "id": "ID_1095936223",
+                          "text": "Chest",
+                          "display-or": "ଛାତି"
+                        },
+                        {
+                          "id": "ID_93371746",
+                          "text": "Abdomen",
+                          "display-or": "ପେଟ"
+                        },
+                        {
+                          "id": "ID_555053547",
+                          "text": "Back (upper)",
+                          "display-or": "ଉପର ପଛରେ"
+                        },
+                        {
+                          "id": "ID_726155829",
+                          "text": "Back (lower)",
+                          "display-or": "ତଳ ପଛରେ"
+                        },
+                        {
+                          "id": "ID_1737522795",
+                          "text": "Leg (Right)",
+                          "display-or": "ଡାହାଣ ଗୋଡ"
+                        },
+                        {
+                          "id": "ID_577618069",
+                          "text": "Leg (Left)",
+                          "display-or": "ବାମ ଗୋଡ"
+                        },
+                        {
+                          "id": "ID_1133152393",
+                          "text": "Arm (Right)",
+                          "display-or": "ଡାହାଣ କାନ୍ଧ"
+                        },
+                        {
+                          "id": "ID_1016834319",
+                          "text": "Arm (Left)",
+                          "display-or": "ବାମ କାନ୍ଧ"
+                        },
+                        {
+                          "id": "ID_633927685",
+                          "text": "Genitalia",
+                          "display-or": "ଗୁପ୍ତାଙ୍ଗ ଜାଗା ରେ"
+                        },
+                        {
+                          "id": "ID_322832963",
+                          "text": "Other [Describe]",
+                          "input-type": "number",
+                          "language": "%",
+                          "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "ID_273636690",
+                      "text": "Put a ruler next to the ulcer and estimate its size",
+                      "language": "%",
+                      "display-or": "ସ୍କେଲ ରେ ଘା ର ମାପ ନିଅ",
+                      "options": [
+                        {
+                          "id": "ID_1674767883",
+                          "text": "Enter size in cm x cm",
+                          "input-type": "area",
+                          "language": "size of ulcer",
+                          "display-or": "ସାଇଜ଼ ଲେଖ (cm ରେ)"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "ID_1201952505",
+                  "text": "No",
+                  "language": "no burn",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_147726711",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_1745964304",
+          "text": "Lumps",
+          "language": "Lumps:",
+          "display-or": "ଫୁଲା",
+          "options": [
+            {
+              "id": "ID_1847908741",
+              "text": "Are there lumps?",
+              "language": "%",
+              "display-or": "ଫୁଲା ଅଛକି ?",
+              "options": [
+                {
+                  "id": "ID_1157293613",
+                  "text": "Yes",
+                  "language": "lumps seen",
+                  "display-or": "ହଁ",
+                  "options": [
+                    {
+                      "id": "ID_1058142720",
+                      "text": "Where is it?",
+                      "job-aid-type": "image",
+                      "job-aid-file": "abdominalregions9",
+                      "language": "Location",
+                      "display-or": "କେଉଁ ଜାଗା ରେ",
+                      "options": [
+                        {
+                          "id": "ID_1935801557",
+                          "text": "Upper (R) - Right Hypochondrium",
+                          "display-or": "ଡାହାଣ ଉପରକୁ"
+                        },
+                        {
+                          "id": "ID_845387253",
+                          "text": "Upper (C) - Epigastric",
+                          "display-or": "ନାଭି ଉପରକୁ"
+                        },
+                        {
+                          "id": "ID_1036073432",
+                          "text": "Upper (L) - Left Hypochondrium",
+                          "display-or": "ବାମ ଉପରକୁ"
+                        },
+                        {
+                          "id": "ID_568631554",
+                          "text": "Middle (R) - Right Lumbar",
+                          "display-or": "ଡ଼ାହାଣ ମଝି"
+                        },
+                        {
+                          "id": "ID_962169419",
+                          "text": "Middle (C) - Umbilical",
+                          "display-or": "ନାଭି ଚାରିକଡ଼େ"
+                        },
+                        {
+                          "id": "ID_1324037145",
+                          "text": "Middle (L) - Left Lumbar",
+                          "display-or": "ବାମ ମଝି"
+                        },
+                        {
+                          "id": "ID_1239783765",
+                          "text": "Lower (R) - Right Illiac Fossa",
+                          "display-or": "ଡ଼ାହାଣ ତଳ"
+                        },
+                        {
+                          "id": "ID_644410306",
+                          "text": "Lower (C) - Hypogastric/Suprapubic",
+                          "display-or": "ନାଭି ତଳକୁ"
+                        },
+                        {
+                          "id": "ID_562710446",
+                          "text": "Lower (R) - Left Illiac Fossa",
+                          "display-or": "ବାମ ତଳ"
+                        },
+                        {
+                          "id": "ID_917293565",
+                          "text": "All over",
+                          "display-or": "ଚାରିଅାଡ଼େ"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "ID_923360490",
+                      "text": "How many?",
+                      "language": "%",
+                      "display-or": "କେତେଟା ଫୁଲା",
+                      "options": [
+                        {
+                          "id": "ID_1885607537",
+                          "text": "Enter number of lumps",
+                          "input-type": "number",
+                          "language": "No. of lumps",
+                          "display-or": "କେତେ ଥର"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "ID_1674874012",
+                      "text": "What is its shape?",
+                      "language": "%",
+                      "display-or": "କେମିତି ଦେଖାଯାଉଛି",
+                      "options": [
+                        {
+                          "id": "ID_66314640",
+                          "text": "Round",
+                          "language": "round in shape",
+                          "display-or": "ଗୋଲାକାର"
+                        },
+                        {
+                          "id": "ID_577096038",
+                          "text": "Irregular",
+                          "language": "irregular in shape",
+                          "display-or": "ଅନିୟମିତ"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "ID_1016461605",
+                      "text": "How is the surface?",
+                      "language": "%",
+                      "display-or": "ଉପର କେମିତି ଲାଗୁଛି",
+                      "options": [
+                        {
+                          "id": "ID_1834678900",
+                          "text": "Smooth",
+                          "language": "smooth surface",
+                          "display-or": "ସମାନ"
+                        },
+                        {
+                          "id": "ID_50938361",
+                          "text": "Irregular",
+                          "language": "irregular surface",
+                          "display-or": "ଅଙ୍କାବଙ୍କା"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "ID_755823613",
+                      "text": "How does it feel?",
+                      "language": "%",
+                      "display-or": "ହାତକୁ କେମିତି ଜଚ୍ଚାଯାଉଛି",
+                      "options": [
+                        {
+                          "id": "ID_205997455",
+                          "text": "Hard",
+                          "language": "feels hard",
+                          "display-or": "ଟାଣ"
+                        },
+                        {
+                          "id": "ID_1622508753",
+                          "text": "Soft",
+                          "language": "feels soft",
+                          "display-or": "ନରମ"
+                        },
+                        {
+                          "id": "ID_1659191837",
+                          "text": "Medium",
+                          "language": "feels medium",
+                          "display-or": "ମଝି ମଝିଅା"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "ID_861684184",
+                      "text": "Is it painful?",
+                      "language": "%",
+                      "display-or": "କାଟୁଛିନ ନା ନାହିଁ",
+                      "options": [
+                        {
+                          "id": "ID_1917441256",
+                          "text": "Yes",
+                          "language": "tender",
+                          "display-or": "ହଁ"
+                        },
+                        {
+                          "id": "ID_96959175",
+                          "text": "No",
+                          "language": "not tender",
+                          "display-or": "ନାଁ"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "ID_736481497",
+                      "text": "Any change in colour of skin?",
+                      "language": "%",
+                      "display-or": "ଚର୍ମର ରଙ୍ଗ ପରିବର୍ତ୍ତନ ହେଉଛି ନା ନାହି:",
+                      "options": [
+                        {
+                          "id": "ID_1366940185",
+                          "text": "Yes",
+                          "language": "skin discolouration observed",
+                          "display-or": "ହଁ"
+                        },
+                        {
+                          "id": "ID_1606240793",
+                          "text": "No",
+                          "language": "no skin discolouration",
+                          "display-or": "ନାଁ"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "ID_766757379",
+                      "text": "Any swelling above or below the lump?",
+                      "language": "%",
+                      "display-or": "ଉପରେ ବା ତଳେ କିଛି ଫୁଲୁଛି",
+                      "options": [
+                        {
+                          "id": "ID_79821874",
+                          "text": "Swelling Above",
+                          "language": "swelling observed above lump",
+                          "display-or": "ଫୁଲା ଉପରେ"
+                        },
+                        {
+                          "id": "ID_427308946",
+                          "text": "Swelling Below",
+                          "language": "swelling observed below lump",
+                          "display-or": "ଫୁଲା ତଳ ରେ"
+                        },
+                        {
+                          "id": "ID_263821258",
+                          "text": "No Swelling",
+                          "language": "no swelling",
+                          "display-or": "ଫୁଲା ନାହିଁ"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "ID_1676132010",
+                      "text": "Is it moving related to adjacent tissues?",
+                      "language": "%",
+                      "display-or": "ଏପଟ ସେପଟ ହେଉଛି ନା ସ୍ଥିର ଅଛି",
+                      "options": [
+                        {
+                          "id": "ID_446798586",
+                          "text": "Lump mobile",
+                          "language": "lump mobile",
+                          "display-or": "ଏପଟ ସେପଟ"
+                        },
+                        {
+                          "id": "ID_1539892741",
+                          "text": "Lump fixed",
+                          "language": "lump fixed",
+                          "display-or": "ସ୍ଥିର"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "ID_519704332",
+                  "text": "No",
+                  "language": "no lumps",
+                  "display-or": "ନାଁ"
+                },
+                {
+                  "id": "ID_240247673",
+                  "text": "Take a picture",
+                  "input-type": "camera",
+                  "language": "[picture taken]",
+                  "display-or": "ଫଟ ନିଅ"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "443s6tckt68auclocrhgmu3oak",
+      "text": "Chest",
+      "language": "Chest:",
+      "display-or": "ଛାତି"
+    },
+    {
+      "id": "ID_1731331523",
+      "text": "Physical Growth",
+      "language": "Physical Growth:",
+      "display-or": "ଶାରୀରିକ ବୃଦ୍ଧି",
+      "options": [
+        {
+          "id": "ID_398242924",
+          "text": "MUAC",
+          "display-or": "ବାହୁର ପରିଧି",
+          "options": [
+            {
+              "id": "ID_713016910",
+              "text": "Measure the Mid-Upper Arm Circumference using MUAC tape in all children 6 months or older",
+              "language": "%",
+              "display-or": "ବାହୁର ପରିଧି ମାପ ଛଅମାସରୁ ଉର୍ଧ ପିଲାଙ୍କର",
+              "options": [
+                {
+                  "id": "ID_1527581775",
+                  "text": "Reading 1 (cms)",
+                  "input-type": "number",
+                  "display-or": "ସେମି"
+                },
+                {
+                  "id": "ID_7253791",
+                  "text": "Reading 2 (cms)",
+                  "input-type": "number",
+                  "display-or": "ସେମି"
+                },
+                {
+                  "id": "ID_126974836",
+                  "text": "Reading 3 (cms)",
+                  "input-type": "number",
+                  "display-or": "ସେମି"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_234959031",
+          "text": "Head circumference",
+          "display-or": "ମୁଣ୍ଡ ପରିଧି",
+          "options": [
+            {
+              "id": "ID_955216765",
+              "text": "Check head circumference for children under 2 years old",
+              "language": "%",
+              "display-or": "ଦୁଇ ବର୍ଷ ରୁ ଉର୍ଧ ପିଲାଙ୍କର ମୁଣ୍ଡର ପରିଧି ମାପ",
+              "options": [
+                {
+                  "id": "ID_1826595527",
+                  "text": "Reading 1 (cms)",
+                  "input-type": "number",
+                  "display-or": "ସେମି"
+                },
+                {
+                  "id": "ID_1918803237",
+                  "text": "Reading 2 (cms)",
+                  "input-type": "number",
+                  "display-or": "ସେମି"
+                },
+                {
+                  "id": "ID_903827329",
+                  "text": "Reading 3 (cms)",
+                  "input-type": "number",
+                  "display-or": "ସେମି"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ID_1012406340",
+      "text": "Sick Child",
+      "language": "General (Child):",
+      "display-or": "ଅଶ୍ୱସ୍ଥ ପିଲା",
+      "options": [
+        {
+          "id": "ID_1737676309",
+          "text": "Lethargy",
+          "display-or": "ମନ୍ଦ",
+          "language": "%",
+          "options": [
+            {
+              "id": "ID_985717210",
+              "text": "Does the child appear to have sleepiness or deep unresponsiveness and inactivity?",
+              "language": "%",
+              "display-or": "ପିଲା ସୋଇପଡୁଛି ଡାକିଲେ ସୁନୁନୀ ବା ମନ୍ଦ ହୋଇ ପଡି ରହୁଛି",
+              "options": [
+                {
+                  "id": "ID_540044916",
+                  "text": "Yes",
+                  "language": "child appears lethargic",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "ID_285880772",
+                  "text": "No",
+                  "language": "child appears normal",
+                  "display-or": "ନାଁ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_1645083795",
+          "text": "Stridor",
+          "language": "%",
+          "display-or": "ଘର ଗର ଶବ୍ଦ",
+          "options": [
+            {
+              "id": "ID_1096191699",
+              "text": "Does the child make high-pitched or wheezing sound while breathing?",
+              "language": "%",
+              "display-or": "ଛୁ ନିଶ୍ଵାସ ନେବା ସମୟରେ କିଛି ଶବ୍ଦ ଆସୁଛି କି?",
+              "options": [
+                {
+                  "id": "ID_688750682",
+                  "text": "Yes",
+                  "language": "The child makes wheezing sounds while breathing",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "ID_1194369032",
+                  "text": "No",
+                  "language": "The child does not make wheezing sounds while breathing",
+                  "display-or": "ନାଁ"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ID_1605849907",
+      "text": "Umbilicus",
+      "language": "Umbilicus (Child):",
+      "display-or": "ନାଭି",
+      "options": [
+        {
+          "id": "ID_734775590",
+          "text": "Redness",
+          "display-or": "ନାଲି ପଡିବ",
+          "language": "%",
+          "options": [
+            {
+              "id": "ID_1388720177",
+              "text": "Is there any redness on the umbilicus?",
+              "language": "%",
+              "display-or": "ନାଭି ନାଲି ପଡିଛି କି",
+              "options": [
+                {
+                  "id": "ID_367925807",
+                  "text": "Yes",
+                  "language": "umbilicus appears red",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "ID_31326722",
+                  "text": "No",
+                  "language": "umbilicus appears normal",
+                  "display-or": "ନାଁ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_728234620",
+          "text": "Discharge",
+          "display-or": "ଝରିବା / ବାହାରିବା",
+          "options": [
+            {
+              "id": "ID_1410387018",
+              "text": "Is there any discharge?",
+              "language": "%",
+              "display-or": "ନାଭିରୁ କିଛି ଝରୁଛି କି",
+              "options": [
+                {
+                  "id": "ID_1771691820",
+                  "text": "Yes",
+                  "display-or": "ହଁ",
+                  "language": "discharge seen"
+                },
+                {
+                  "id": "ID_1679510920",
+                  "text": "No",
+                  "display-or": "ନାଁ",
+                  "language": "no discharge seen"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_1533497046",
+          "text": "Shape",
+          "language": "%",
+          "display-or": "ଆକାର",
+          "options": [
+            {
+              "id": "ID_762347474",
+              "text": "Is the umbilicus flat or everted?",
+              "language": "umbilicus is",
+              "display-or": "ସମାନ ଅଛି ନ ଓଲଟି ଯାଇଛି",
+              "options": [
+                {
+                  "id": "ID_1872064387",
+                  "text": "Flat",
+                  "language": "umbilicus appears flat",
+                  "display-or": "ସମାନ"
+                },
+                {
+                  "id": "ID_1066170750",
+                  "text": "Everted",
+                  "language": "umbilicus appears everted",
+                  "display-or": "ଓଲଟି ବା"
+                },
+                {
+                  "id": "ID_732598035",
+                  "text": "Normal",
+                  "display-or": "ଠିକ",
+                  "language": "umbilicus appears normal in shape"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ID_1482587319",
+      "text": "Arm",
+      "language": "Arm:",
+      "display-or": "ବାହୁ",
+      "options": [
+        {
+          "id": "ID_1169860179",
+          "text": "Blood Glucose (FBS)",
+          "display-or": "ବ୍ଲଡ଼ ଗ୍ଲୁକୋଜ (ଖାଲି ପେଟ ର)",
+          "options": [
+            {
+              "id": "ID_1617400576",
+              "text": "Measure the patient's blood sugar on an empty stomach (not taken meals for at least 8 hours)",
+              "language": "%",
+              "display-or": "ଖାଲି ପେଟ ରେ ରୋଗୀ ର ବ୍ଲଡ଼ ଶୁଂଗର ମାପ. (୮ ଘଣ୍ଟା ରୁ ଅଧିକ ଖାଦ୍ୟ ନ ଖାଇଥିବା)",
+              "options": [
+                {
+                  "id": "ID_1112722162",
+                  "text": "Enter value (mmol/L)",
+                  "input-type": "number",
+                  "language": "%",
+                  "display-or": "(ପରିମାଣ ଲେଖ)"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_533783615",
+          "text": "Blood Glucose (PP)",
+          "display-or": "ବ୍ଲଡ଼ ଗ୍ଲୁକୋଜ (ଖାଇବା ପରେ)",
+          "options": [
+            {
+              "id": "ID_540721051",
+              "text": "Measure the patient's blood sugar after meals",
+              "language": "%",
+              "display-or": "ଖାଇବା ପରେ ରୋଗୀ ର ବ୍ଲଡ଼ ଶୁଂଗର ମାପ",
+              "options": [
+                {
+                  "id": "ID_1960849292",
+                  "text": "Enter value (mmol/L)",
+                  "input-type": "number",
+                  "language": "%",
+                  "display-or": "(ପରିମାଣ ଲେଖ)"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_469211442",
+          "text": "Hemoglobin",
+          "display-or": "ହିମାଗ୍ଲୋବିନ",
+          "options": [
+            {
+              "id": "ID_1396265479",
+              "text": "Use a digital hemoglobinometer to measure blood hemoglobin",
+              "language": "%",
+              "display-or": "ହେମୋଗ୍ଲୋବିନ ମିଟର",
+              "options": [
+                {
+                  "id": "ID_354200525",
+                  "text": "Enter value",
+                  "input-type": "number",
+                  "language": "%",
+                  "display-or": "(ପରିମାଣ ଲେଖ)"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_272228552",
+          "text": "Lying BP",
+          "display-or": "ସୋଇ କରି BP ମାପ",
+          "options": [
+            {
+              "id": "ID_1160349142",
+              "text": "Take the patient's BP lying down",
+              "language": "%",
+              "display-or": "ସୋଇ କରି ରୋଗୀ ର BP ମାପ",
+              "options": [
+                {
+                  "id": "ID_1262593440",
+                  "text": "Enter systolic BP",
+                  "input-type": "text",
+                  "language": "Systolic:",
+                  "display-or": "Systolic BP ଲେଖ"
+                },
+                {
+                  "id": "ID_1151021967",
+                  "text": "Enter diastolic BP",
+                  "input-type": "text",
+                  "language": "Diastolic:",
+                  "display-or": "diastolic BP ଲେଖ"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

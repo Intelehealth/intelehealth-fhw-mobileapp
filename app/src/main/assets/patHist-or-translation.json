@@ -1,0 +1,819 @@
+{
+  "id": "3bdlnqpm78un86npauhh5oobq5",
+  "text": "Patient History",
+  "options": [
+    {
+      "id": "ID_1421528652",
+      "text": "Pregnancy status",
+      "display-or": "ଗର୍ଭ",
+      "options": [
+        {
+          "id": "ID_686727285",
+          "text": "Patient is unmarried",
+          "display-or": "ଅବିବାହିତ"
+        },
+        {
+          "id": "ID_1767078340",
+          "text": "Yes",
+          "language": "Pregnant",
+          "display-or": "ହଁ",
+          "options": [
+            {
+              "id": "ID_505838034",
+              "text": "Last menstruation period",
+              "input-type": "date",
+              "display-or": "ଶେଷ ମାସିକିଅା କେବେ"
+            }
+          ]
+        },
+        {
+          "id": "ID_629184183",
+          "text": "No",
+          "language": "Not pregnant",
+          "display-or": "ନାହିଁ"
+        },
+        {
+          "id": "ID_1296076911",
+          "text": "Don't know",
+          "language": "Pregnancy status not known",
+          "display-or": "ଜଣା ନାହିଁ"
+        }
+      ]
+    },
+    {
+      "id": "ID_1216797604",
+      "text": "Allergies",
+      "display": "Do you have any allergies?",
+      "display-or": "କେଉଁ ଆଲର୍ଜି ଅଛି କ?",
+      "options": [
+        {
+          "id": "ID_1182630066",
+          "text": "Yes [Describe]",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ହଁ କେଉଁପରି"
+        },
+        {
+          "id": "ID_1336561607",
+          "text": "No known allergies",
+          "display-or": "ନାଁ"
+        }
+      ]
+    },
+    {
+      "id": "ID_488941477",
+      "text": "Alcohol use",
+      "display-or": "ମଦ",
+      "options": [
+        {
+          "id": "ID_858796823",
+          "text": "Yes",
+          "display-or": "ହଁ",
+          "options": [
+            {
+              "id": "ID_1464551289",
+              "text": "[Enter since when]",
+              "input-type": "duration",
+              "display-or": "କେବେ ଠାରୁ",
+              "language": "Since:"
+            },
+            {
+              "id": "ID_541643837",
+              "text": "Frequency",
+              "input-type": "text",
+              "display": "How often do you take alcohol?",
+              "display-or": "କେତେ ଥର ନିଅ"
+            },
+            {
+              "id": "ID_449910899",
+              "text": "Number of drinks consumed in one go",
+              "display-or": "ଥର କରେ କେତେ ନିଅ?",
+              "options": [
+                {
+                  "id": "ID_353665659",
+                  "text": "1-2"
+                },
+                {
+                  "id": "ID_1083178746",
+                  "text": "3-4"
+                },
+                {
+                  "id": "ID_339759237",
+                  "text": "5-6"
+                },
+                {
+                  "id": "ID_1073159208",
+                  "text": ">=7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_1066408122",
+          "text": "No/Denied",
+          "display-or": "ନ/ ମନ କରିବ"
+        }
+      ]
+    },
+    {
+      "id": "ID_1479282969",
+      "text": "Smoking history",
+      "display-or": "ଧୂଅାଁ ଧୂମ୍ରପାନ",
+      "options": [
+        {
+          "id": "ID_318732760",
+          "text": "Never-smoker",
+          "language": "Patient denied/has no h/o smoking",
+          "display-or": "କେବେ ନୁହେଁ"
+        },
+        {
+          "id": "ID_1599020946",
+          "text": "Current-smoker",
+          "language": "Patient is a smoker",
+          "display-or": "ଏବେ ଧୁମ୍ରପାନ କରୁ ଛ",
+          "options": [
+            {
+              "id": "ID_815751980",
+              "text": "[Enter since when]",
+              "input-type": "duration",
+              "language": "Since:",
+              "display-or": "କେବେଠାରୁ"
+            },
+            {
+              "id": "ID_1655069807",
+              "text": "How many cigarettes per day do you smoke?",
+              "input-type": "number",
+              "language": "No. of cigarettes smoked/day:",
+              "display-or": "ଦିନକୁ କେତେଟା"
+            }
+          ]
+        },
+        {
+          "id": "ID_803362413",
+          "text": "Ex-smoker",
+          "language": "Patient was a smoker",
+          "display-or": "ଆଗରୁ ଧୁମ୍ରପାନ କରୁଥିଲା",
+          "options": [
+            {
+              "id": "ID_22359699",
+              "text": "How many cigarettes per day did you smoke?",
+              "input-type": "number",
+              "language": "No. of cigarettes smoked/day:",
+              "display-or": "ଦିନକୁ କେତେଟା"
+            },
+            {
+              "id": "ID_370617072",
+              "text": "From",
+              "input-type": "date",
+              "display-or": "କେବେଠାରୁ"
+            },
+            {
+              "id": "ID_1148758817",
+              "text": "To",
+              "input-type": "date",
+              "display-or": "କେଉଁ ପର୍ଯ୍ଯନ୍ତ"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ID_1294148047",
+      "text": "Drug history",
+      "display": "Have you recently taken any kind of medicine (including ayurvedic/homeopathic/unani/herbal)?",
+      "display-or": "ତମେ ଆଗର କେବେ ଔଷଦ ନାଇଛ କି?",
+      "options": [
+        {
+          "id": "ID_1388678356",
+          "text": "No",
+          "language": "No recent medication",
+          "display-or": "ନାଁ"
+        },
+        {
+          "id": "ID_465969786",
+          "text": "Yes",
+          "language": "%",
+          "display-or": "ହଁ",
+          "options": [
+            {
+              "id": "ID_1905877530",
+              "text": "Medication name 1",
+              "input-type": "text",
+              "display-or": "ଔଷଧ ନାମ 1",
+              "options": [
+                {
+                  "id": "ID_1689701069",
+                  "text": "From",
+                  "input-type": "date",
+                  "display-or": "କେବେଠାରୁ"
+                },
+                {
+                  "id": "ID_1008011661",
+                  "text": "To",
+                  "input-type": "date",
+                  "display-or": "କେଉଁ ପର୍ଯ୍ଯନ୍ତ"
+                }
+              ]
+            },
+            {
+              "id": "ID_519893607",
+              "text": "Medication name 2",
+              "input-type": "text",
+              "display-or": "ଔଷଧ ନାମ 2",
+              "options": [
+                {
+                  "id": "ID_1617161985",
+                  "text": "From",
+                  "input-type": "date",
+                  "display-or": "କେବେଠାରୁ"
+                },
+                {
+                  "id": "ID_64950422",
+                  "text": "To",
+                  "input-type": "date",
+                  "display-or": "କେଉଁ ପର୍ଯ୍ଯନ୍ତ"
+                }
+              ]
+            },
+            {
+              "id": "ID_1502080913",
+              "text": "Medication name 3",
+              "input-type": "text",
+              "display-or": "ଔଷଧ ନାମ 3",
+              "options": [
+                {
+                  "id": "ID_738451674",
+                  "text": "From",
+                  "input-type": "date",
+                  "display-or": "କେବେଠାରୁ"
+                },
+                {
+                  "id": "ID_113852535",
+                  "text": "To",
+                  "input-type": "date",
+                  "display-or": "କେଉଁ ପର୍ଯ୍ଯନ୍ତ"
+                }
+              ]
+            },
+            {
+              "id": "ID_1501586422",
+              "text": "Medication name 4",
+              "input-type": "text",
+              "display-or": "ଔଷଧ ନାମ 4",
+              "options": [
+                {
+                  "id": "ID_1287862648",
+                  "text": "From",
+                  "input-type": "date",
+                  "display-or": "କେବେଠାରୁ"
+                },
+                {
+                  "id": "ID_1590292190",
+                  "text": "To",
+                  "input-type": "date",
+                  "display-or": "କେଉଁ ପର୍ଯ୍ଯନ୍ତ"
+                }
+              ]
+            },
+            {
+              "id": "ID_255486354",
+              "text": "Medication name 5",
+              "input-type": "text",
+              "display-or": "ଔଷଧ ନାମ 5",
+              "options": [
+                {
+                  "id": "ID_1955040003",
+                  "text": "From",
+                  "input-type": "date",
+                  "display-or": "କେବେଠାରୁ"
+                },
+                {
+                  "id": "ID_1832509360",
+                  "text": "To",
+                  "input-type": "date",
+                  "display-or": "କେଉଁ ପର୍ଯ୍ଯନ୍ତ"
+                }
+              ]
+            },
+            {
+              "id": "ID_1705452987",
+              "text": "Medication Adherence",
+              "display": "How often do you have trouble taking medicines the way you have been told to take them?",
+              "display-or": "ଔଷଦ ନେବା ସମୟ ରେ ଅସୁବିଧା ସେମାନଂକୁ ପଚାରିଥିଲେ କି?",
+              "options": [
+                {
+                  "id": "ID_621583351",
+                  "text": "I always take them as prescribed",
+                  "language": "Patient always takes medicine as prescribed",
+                  "display-or": "ମୁ ସବୁ ବେଳେ ସେମାଙ୍କର ଚିଠା ନିଏ"
+                },
+                {
+                  "id": "ID_1330901869",
+                  "text": "Sometimes I take them as prescribed",
+                  "language": "Patient sometimes takes medicines as prescribed",
+                  "display-or": "ବେଳେ ବେଳେ ସେମାଙ୍କର ଚିଠା ନିଏ"
+                },
+                {
+                  "id": "ID_1896221092",
+                  "text": "I seldom take them as prescribed",
+                  "language": "Patient seldom takes medicine as prescribed",
+                  "display-or": "କିଛି ସମୟରେ ନିଏ"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "553uunvdc4uq9oe860n2mtbd62",
+      "text": "High Blood Pressure",
+      "display-or": "ଉଚ୍ଚ ରକ୍ତଚାପ",
+      "options": [
+        {
+          "id": "4gnb2kln9nvarkf1hn54iih13b",
+          "text": "Diagnosed on ",
+          "input-type": "date",
+          "display-or": "କେତେ ଜଣାପଡ଼ିଲା"
+        },
+        {
+          "id": "ID_413173969",
+          "text": "Current medication",
+          "display-or": "କଣ ଔଷଧ ଖାଉଛନ୍ତି",
+          "options": [
+            {
+              "id": "ID_188140409",
+              "text": "[Describe]",
+              "input-type": "text",
+              "language": "%",
+              "display-or": "ହଁ କେଉଁପରି"
+            },
+            {
+              "id": "ID_559800345",
+              "text": "Not taking any medication",
+              "display-or": "ନାଁ"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2t624p0ss7caug21hd4efumj4n",
+      "text": "Heart Problems",
+      "display-or": "ହାର୍ଟ ପ୍ରୋବ୍ଲେମ",
+      "options": [
+        {
+          "id": "ID_1743003464",
+          "text": "Problem description",
+          "input-type": "text",
+          "language": "%",
+          "display": "What was the problem?",
+          "display-or": "ଅସୁବିଧା କଣ ହେଉଥିଲା"
+        },
+        {
+          "id": "0fq5omh0fjmcot6v89tmmujs45",
+          "text": "Occured/Diagnosed on",
+          "input-type": "date",
+          "display-or": "କେତେ ଜଣାପଡ଼ିଲା"
+        },
+        {
+          "id": "5f1pjn5mukmjrsvfnkp24nlq0q",
+          "text": "Treatment",
+          "display": "How was it treated?",
+          "display-or": "କେମିତି ଚିକିସତ୍ା କରାହେଇଥିଲା",
+          "options": [
+            {
+              "id": "1rsrtassckdufd1v66g679huai",
+              "text": "Surgery",
+              "display-or": "ଅପରେସନ"
+            },
+            {
+              "id": "3ih5vrd5crs57nrsfnsl9arcot",
+              "text": "Angioplasty",
+              "display-or": "ଅାଞ୍ଜିଓପ୍ଳାଷ୍ଟି"
+            },
+            {
+              "id": "6g0frvbl14quckj6e0i2hcc7e1",
+              "text": "Medication",
+              "display-or": "ଔଷଧ"
+            },
+            {
+              "id": "ID_938378473",
+              "text": "Other [Describe]",
+              "input-type": "text",
+              "language": "%",
+              "display-or": "ଅାଉ କିପରି"
+            }
+          ]
+        },
+        {
+          "id": "ID_615919605",
+          "text": "Current medication",
+          "display-or": "ଏବେ କ’ଣ ଔଷଧ ଖାଉଛନ୍ତି",
+          "options": [
+            {
+              "id": "ID_1320661699",
+              "text": "[Describe]",
+              "input-type": "text",
+              "language": "%",
+              "display-or": "କେଉଁପରି"
+            },
+            {
+              "id": "ID_531462972",
+              "text": "Not taking any medication",
+              "display-or": "ନାଁ"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "52dkambh5lhqmlg9bkghn1gicb",
+      "text": "Stroke",
+      "display-or": "ପରଲିସିସ attack",
+      "options": [
+        {
+          "id": "ID_545498382",
+          "text": "Occured on",
+          "input-type": "date",
+          "display-or": "କେବେ ହୋଇଥିଲା"
+        },
+        {
+          "id": "ID_1222999660",
+          "text": "Treatment",
+          "display": "How was it treated?",
+          "display-or": "କେମିତି ଚିକିସତ୍ା କରାହେଇଥିଲା",
+          "options": [
+            {
+              "id": "ID_1622266745",
+              "text": "Surgery",
+              "display-or": "ଅପରେସନ"
+            },
+            {
+              "id": "ID_1348167551",
+              "text": "Medication",
+              "display-or": "ଔଷଧ"
+            },
+            {
+              "id": "ID_1424803469",
+              "text": "Other [Describe]",
+              "input-type": "text",
+              "language": "%",
+              "display-or": "ଅନ୍ୟାନ୍ୟ"
+            }
+          ]
+        },
+        {
+          "id": "ID_1162336019",
+          "text": "Current medication",
+          "display-or": "ଏବେ କ’ଣ ଔଷଧ ଖାଉଛନ୍ତି",
+          "options": [
+            {
+              "id": "ID_1104534286",
+              "text": "[Describe]",
+              "input-type": "text",
+              "language": "%",
+              "display-or": "କେଉଁପରି"
+            },
+            {
+              "id": "ID_187354967",
+              "text": "Not taking any medication",
+              "display-or": "ନାଁ"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "62id4878o7nteih18eiup3j92c",
+      "text": "Diabetes",
+      "display-or": "ମଧୁମେହ",
+      "options": [
+        {
+          "id": "52bvud72kt13igfoauucsubnuv",
+          "text": "Since",
+          "display": "When were you diagnosed?",
+          "display-or": "କେବେଠାରୁ",
+          "input-type": "date"
+        },
+        {
+          "id": "ID_1870024323",
+          "text": "Current medication",
+          "display-or": "ଏବେ କ’ଣ ଔଷଧ ଖାଉଛନ୍ତି",
+          "options": [
+            {
+              "id": "ID_274560179",
+              "text": "[Describe]",
+              "input-type": "text",
+              "language": "%",
+              "display-or": "କେଉଁପରି"
+            },
+            {
+              "id": "ID_1247339075",
+              "text": "Not taking any medication",
+              "display-or": "ନାଁ"
+            }
+          ]
+        },
+        {
+          "id": "25b4es720c3ehote8hv9824tck",
+          "text": "Last measured Blood Sugar and HbA1C",
+          "display-or": "ଶେଷ ପରୀକ୍ଷାର ସୁଗାର ଓ ଐଭଇ1ଉ କେତେ ଥିଲା",
+          "options": [
+            {
+              "id": "ID_1804659027",
+              "text": "Not known",
+              "display-or": "ନୋଟ କଁଅବଂ"
+            },
+            {
+              "id": "ID_701392638",
+              "text": "[Enter if known]",
+              "input-type": "text",
+              "display-or": "ନାଁ"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "6f3rb25rb5q5jvgffdv2jvr8rv",
+      "text": "Asthma",
+      "display-or": "ନିଶ୍ବାଶ ନେବା ରେ କଷ୍ଟ",
+      "options": [
+        {
+          "id": "ID_479323452",
+          "text": "Since",
+          "display": "When were you diagnosed?",
+          "input-type": "date",
+          "display-or": "କେବେ ଜଣା ପଡ଼ିଥିଲା"
+        },
+        {
+          "id": "ID_1533422168",
+          "text": "Current medication",
+          "display-or": "ଏବେ କ’ଣ ଔଷଧ ଖାଉଛନ୍ତି",
+          "options": [
+            {
+              "id": "ID_71438631",
+              "text": "[Describe]",
+              "input-type": "text",
+              "language": "%",
+              "display-or": "କେଉଁପରି"
+            },
+            {
+              "id": "ID_1961136611",
+              "text": "Not taking any medication",
+              "display-or": "ନାଁ"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "38l21icefr40paikr5t8n4s46r",
+      "text": "Tuberculosis",
+      "display-or": "ଯକ୍ଷ୍ମା",
+      "options": [
+        {
+          "id": "ID_856359070",
+          "text": "Since",
+          "display": "When were you diagnosed?",
+          "input-type": "date",
+          "display-or": "କେବେ ଜଣାପଡ଼ିଲା"
+        },
+        {
+          "id": "6q6oio9kdl9qm1ng0pnaa4t32g",
+          "text": "Treatment",
+          "display": "Did you take treatment?",
+          "display-or": "କେମିତି ଚିକିସତ୍ା କରାହେଇଥିଲା",
+          "options": [
+            {
+              "id": "ID_473168257",
+              "text": "Took treatment",
+              "language": "%",
+              "display-or": "ହଁ",
+              "options": [
+                {
+                  "id": "1grbt54tt3su55qqfdbnmhr1vu",
+                  "text": "[Describe]",
+                  "input-type": "text",
+                  "language": "%",
+                  "display-or": "କେଉଁପରି"
+                },
+                {
+                  "id": "ID_1011048331",
+                  "text": "How long did you take the treatment?",
+                  "input-type": "duration",
+                  "language": "Treatment duration",
+                  "display-or": "କେତେ ସମୟ ନେଇଥିଲା"
+                }
+              ]
+            },
+            {
+              "id": "ID_1673676697",
+              "text": "Did not take treatment",
+              "display-or": "ନାଁ"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "50rcn4m78a1baik3sm5b4solsf",
+      "text": "Cancer/Tumour",
+      "display-or": "କର୍କଟ ବା କ୍ଯାନସର",
+      "options": [
+        {
+          "id": "ID_1789247298",
+          "text": "Cancer/Tumour type",
+          "display": "Describe the disease",
+          "input-type": "text",
+          "display-or": "ବର୍ଣ୍ଣନା"
+        },
+        {
+          "id": "ID_131276372",
+          "text": "Since",
+          "display": "When were you diagnosed?",
+          "input-type": "date",
+          "display-or": "କେବେ ଜଣାପଡ଼ିଲା"
+        },
+        {
+          "id": "ID_1460526165",
+          "text": "Current medication",
+          "display-or": "ଏବେ କଣ ଓ ଔଷଧ ଖାଉଛନ୍ତି",
+          "options": [
+            {
+              "id": "ID_1815440872",
+              "text": "[Describe]",
+              "input-type": "text",
+              "language": "%",
+              "display-or": "କେଉଁପରି"
+            },
+            {
+              "id": "ID_1363444390",
+              "text": "Not taking any medication",
+              "display-or": "ନାଁ"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ID_795133263",
+      "text": "HIV/AIDS",
+      "display-or": "ଏଡ୍ସ",
+      "options": [
+        {
+          "id": "ID_138631831",
+          "text": "Since",
+          "display": "When were you diagnosed?",
+          "input-type": "date",
+          "display-or": "କେତେ ଜଣାପଡ଼ିଲା"
+        },
+        {
+          "id": "ID_1680905163",
+          "text": "Current medication",
+          "display-or": "ଏବେ କଣ ଓ ଔଷଧ ଖାଉଛନ୍ତି",
+          "options": [
+            {
+              "id": "ID_1324404695",
+              "text": "[Describe]",
+              "input-type": "text",
+              "language": "%",
+              "display-or": "କେଉଁପରି"
+            },
+            {
+              "id": "ID_1584603543",
+              "text": "Not taking any medication",
+              "display-or": "ନାଁ"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "5b04qcal4vufiuiughhpt03qi2",
+      "text": "Operation",
+      "display-or": "ଅପରେସନ",
+      "options": [
+        {
+          "id": "6n6qdfi3hnt49qrrscul658kfl",
+          "text": "Location/Type",
+          "display": "What was the operation?",
+          "display-or": "କୋଉଠି ହୋଇଥିଲା",
+          "options": [
+            {
+              "id": "0gfqoo018929uap939vu824kub",
+              "text": "Head (Eyes/Ears/Nose/Mouth)",
+              "display-or": "ମୁଣ୍ଡ (ଅାଖି, କାନ, ନାକ, ମୁହଁ)"
+            },
+            {
+              "id": "03nejfqipjq4c23mnt1qbldubo",
+              "text": "Neck",
+              "display-or": "ବେକ"
+            },
+            {
+              "id": "1nfbsi9tkga3kdbv76g5g30lsa",
+              "text": "Chest (Heart/Lung/Breast)",
+              "display-or": "ଛାତି (ହାର୍ଟ, ଫୁସ୍ଫୁସ୍, ସ୍ରନ)"
+            },
+            {
+              "id": "6kn2b76huhl9u3bu43prloda3t",
+              "text": "Abdomen (Stomach/Liver/Bile/Kidney/Colon)",
+              "display-or": "ପେଟ (ପାକସ୍ଥଳୀ, ଯକୃତ ବୃକକ୍, ଅଗ୍ନାଶୟ, କ୍ଷୁଦ୍ରାନ୍ତ ଓ ବୃହଦାନ୍ତ"
+            },
+            {
+              "id": "3ponp65pt9bq34bdeq8gfgs25m",
+              "text": "Back/Spine",
+              "display-or": "ପିଠି ଓ ମେରୁଦଣ୍ଡ, ପ୍ଳିସା"
+            },
+            {
+              "id": "2crafqisr99g2t85728nmpda9s",
+              "text": "Hip",
+              "display-or": "ଅଣଟା"
+            },
+            {
+              "id": "2hojliuelejcmv1m1ki2qardfl",
+              "text": "Arms (Elbows/Wrist)",
+              "display-or": "ହାତ, ବାହୁ"
+            },
+            {
+              "id": "7v5fg9qha5ftfpocc5p3j3llin",
+              "text": "Legs (Knees/Feet)",
+              "display-or": "ଗୋଡ଼, ପାଦ, ଜଘଂ"
+            },
+            {
+              "id": "0gaej2j5rll5ts1o3f8nm0iml4",
+              "text": "Prostate",
+              "display-or": "ପ୍ରୋଷ୍ଟେଟ୍"
+            },
+            {
+              "id": "4obc47pd9rkcp60ae9hh3lljvr",
+              "text": "C-Section",
+              "display-or": "ପିଲାଜନ୍ମ ଅପରେସନ"
+            },
+            {
+              "id": "2pdjbliq1pbkvh1vjcffrtsku6",
+              "text": "Hysterectomy",
+              "display-or": "ଜରାୟୁ"
+            },
+            {
+              "id": "ID_843281245",
+              "text": "Other [Describe]",
+              "input-type": "text",
+              "display-or": "ଅାଉ କିପରି"
+            }
+          ]
+        },
+        {
+          "id": "ID_904676221",
+          "text": "Occured on",
+          "display": "When did it occur?",
+          "input-type": "date",
+          "display-or": "କେବେ ହୋଇଥିଲା"
+        }
+      ]
+    },
+    {
+      "id": "533u2k4n4971j34dcvljkv53up",
+      "text": "Accident",
+      "display-or": "ଦୁର୍ଘଟଣା",
+      "options": [
+        {
+          "id": "ID_948346954",
+          "text": "Occured on",
+          "display": "When did it occur?",
+          "input-type": "date",
+          "display-or": "କେବେ ହୋଇଥିଲା"
+        }
+      ]
+    },
+    {
+      "id": "ID_1217722719",
+      "text": "Hospitalization",
+      "display-or": "hospital ରେ ଭର୍ତି ହୋଇଥିଲା",
+      "options": [
+        {
+          "id": "ID_601054142",
+          "text": "Occured on",
+          "display": "When did it occur?",
+          "input-type": "date",
+          "display-or": "କେବେ ହୋଇଥିଲା"
+        },
+        {
+          "id": "ID_1902903650",
+          "text": "Reason",
+          "input-type": "text",
+          "display-or": "କାରଣ"
+        },
+        {
+          "id": "ID_1440129311",
+          "text": "Duration",
+          "display": "How long were you hospitalized?",
+          "input-type": "duration",
+          "display-or": "କେତେ ସମୟ ଭର୍ତି ହୋଇଥିଲା"
+        }
+      ]
+    }
+  ]
+}

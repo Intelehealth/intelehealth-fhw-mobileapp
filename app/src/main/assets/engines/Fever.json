@@ -1,0 +1,667 @@
+{
+  "id": "ID_303783560",
+  "text": "Fever",
+  "perform-physical-exam": "Mouth:Back of throat (redness, swelling);Any Location:Skin Rash;Any Location:Ulcer;Abdomen:Tenderness;",
+  "display-or": "ଜ୍ୱର",
+  "options": [
+    {
+      "id": "ID_313791833",
+      "text": "Duration",
+      "display": "Since when have you had this symptom?",
+      "display-or": "କେବେଠାରୁ",
+      "options": [
+        {
+          "id": "ID_826155781",
+          "text": "[Enter since when]",
+          "input-type": "duration",
+          "language": "since",
+          "display-or": "କେବେଠାରୁ"
+        }
+      ]
+    },
+    {
+      "id": "ID_570262661",
+      "text": "Nature of fever",
+      "display-or": "ପ୍ରକାର",
+      "options": [
+        {
+          "id": "ID_1434989288",
+          "text": "All day/ Constant",
+          "display-or": "ପୂରା ଦିନ"
+        },
+        {
+          "id": "ID_2420513",
+          "text": "Irregular (comes & goes)",
+          "display-or": "ଅସମୟରେ ଅାସେ ଓ ଯାଏ"
+        },
+        {
+          "id": "ID_1877805872",
+          "text": "Alternate days",
+          "display-or": "ଦିନେ ଛଡ଼ା ଦିନେ"
+        },
+        {
+          "id": "ID_1188913049",
+          "text": "Every few hours",
+          "display-or": "କିଛି ଘଣ୍ଟାରେ ଥରେ"
+        },
+        {
+          "id": "ID_881523069",
+          "text": "Every few days",
+          "display-or": "କିଛି ଦିନରେ ଥରେ"
+        },
+        {
+          "id": "ID_99907657",
+          "text": "Other [describe]",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)"
+        }
+      ]
+    },
+    {
+      "id": "ID_1515765694",
+      "text": "Timing",
+      "display": "In a day, when do you feel fever the most?",
+      "display-or": "ଦିନରେ କେତେବେଳେ",
+      "options": [
+        {
+          "id": "ID_1012801036",
+          "text": "All day",
+          "display-or": "ପୂରା ଦିନ"
+        },
+        {
+          "id": "ID_1350825896",
+          "text": "Morning",
+          "display-or": "ସକାଳେ"
+        },
+        {
+          "id": "ID_757091275",
+          "text": "Evening",
+          "display-or": "ସନ୍ଧ୍ଯାରେ"
+        },
+        {
+          "id": "ID_1340390501",
+          "text": "Night",
+          "display-or": "ରାତିରେ"
+        },
+        {
+          "id": "ID_1906994892",
+          "text": "Other [describe]",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)"
+        }
+      ]
+    },
+    {
+      "id": "ID_1234321810",
+      "text": "Severity",
+      "display-or": "ମାତ୍ରା",
+      "options": [
+        {
+          "id": "ID_107199083",
+          "text": "Low",
+          "display-or": "କମ"
+        },
+        {
+          "id": "ID_1269790101",
+          "text": "Moderate",
+          "display-or": "ମଧ୍ୟମ"
+        },
+        {
+          "id": "ID_1406542099",
+          "text": "High",
+          "display-or": "ବହୁତ"
+        },
+        {
+          "id": "ID_489074591",
+          "text": "Combined high and low",
+          "display-or": "ବହୁତ, କମ"
+        },
+        {
+          "id": "ID_739994206",
+          "text": "Did you recently measure fever using thermometer?",
+          "language": "%",
+          "display-or": "ଏବେ ମାପିଥିଲେ",
+          "options": [
+            {
+              "id": "ID_961113183",
+              "text": "Yes",
+              "language": "Patient recently measured fever using a thermometer",
+              "display-or": "ହଁ",
+              "options": [
+                {
+                  "id": "ID_1919807442",
+                  "text": "When",
+                  "input-type": "date",
+                  "language": "measured on",
+                  "display-or": "କେବେ"
+                },
+                {
+                  "id": "ID_751092164",
+                  "text": "Body Temperature (F)",
+                  "input-type": "number",
+                  "display-or": "ଶରୀର ତାପମାତ୍ରା କେତେ ହୋଇ ଛି"
+                }
+              ]
+            },
+            {
+              "id": "ID_617241106",
+              "text": "No",
+              "language": "Patient did not measure their temperature recently",
+              "display-or": "ନାଁ"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ID_1422717482",
+      "text": "Associated symptoms",
+      "display": "Do you have the following symptom(s)?",
+      "pos-condition": "c.",
+      "neg-condition": "s.",
+      "display-or": "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?",
+      "options": [
+        {
+          "id": "ID_558962385",
+          "text": "Chills",
+          "display-or": "ଥଣ୍ଡାରେ ଥରିବା"
+        },
+        {
+          "id": "ID_157243198",
+          "text": "Cough",
+          "display-or": "କାଶ",
+          "options": [
+            {
+              "id": "ID_1699941000",
+              "text": "Dry",
+              "display-or": "ଶୁଖିଲା"
+            },
+            {
+              "id": "ID_66542167",
+              "text": "Productive (With sputum)",
+              "display-or": "କଫି",
+              "options": [
+                {
+                  "id": "ID_40884973",
+                  "text": "Color of sputum",
+                  "display-or": "କଫ ର ରଙ୍ଗ",
+                  "options": [
+                    {
+                      "id": "ID_134663424",
+                      "text": "Yellow",
+                      "display-or": "ହଳଦିଅା"
+                    },
+                    {
+                      "id": "ID_504991450",
+                      "text": "Bloody",
+                      "display-or": "ଲାଲ"
+                    },
+                    {
+                      "id": "ID_1999465218",
+                      "text": "Green",
+                      "display-or": "ସବୁଜ"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_1645426383",
+          "text": "Pain",
+          "display-or": "ଯନ୍ତ୍ରଣା"
+        },
+        {
+          "id": "ID_936898754",
+          "text": "General Weakness",
+          "display-or": "ଦୁର୍ବଳତା"
+        },
+        {
+          "id": "ID_235017393",
+          "text": "Loss of Weight ",
+          "display-or": "ଓଜନ ହ୍ରାସ",
+          "options": [
+            {
+              "id": "ID_174062405",
+              "text": "[Enter amount of weight lost (kgs)]",
+              "input-type": "number",
+              "language": "kgs lost",
+              "display-or": "ଓଜନ ହ୍ରାସ ର ପରିମାଣ"
+            }
+          ]
+        },
+        {
+          "id": "ID_1431006973",
+          "text": "Night sweats",
+          "display-or": "ରାତିରେ ଝାଳ"
+        },
+        {
+          "id": "ID_222702672",
+          "text": "Chest pain/discomfort",
+          "display-or": "ଛାତି ଯନ୍ତ୍ରଣା"
+        },
+        {
+          "id": "ID_1310566684",
+          "text": "Headache",
+          "perform-physical-exam": "Head:Injury;Neck:Neck stiffness (Part 1);Neck:Neck stiffness (Part 2);"
+        },
+        {
+          "id": "ID_851509891",
+          "text": "Neck stiffness",
+          "perform-physical-exam": "Head:Injury;Neck:Neck stiffness (Part 1);Neck:Neck stiffness (Part 2);",
+          "display-or": "ବେକ ଟାଣ"
+        },
+        {
+          "id": "ID_757040944",
+          "text": "Diarrhea",
+          "display-or": "ପତଳା ଝାଡ଼ା"
+        },
+        {
+          "id": "ID_39019143",
+          "text": "Nausea/vomiting",
+          "display-or": "ବାନ୍ତି ଲାଗିବ/ବାନ୍ତି ହେବା"
+        },
+        {
+          "id": "ID_147125013",
+          "text": "Abdominal pain",
+          "display-or": "ପେଟ ଯନ୍ତ୍ରଣା",
+          "options": [
+            {
+              "id": "ID_844839702",
+              "text": "Site",
+              "display": "Which part of the abdomen do you feel pain?",
+              "display-or": "କେଉଁ ଯାଗା",
+              "options": [
+                {
+                  "id": "ID_1728260319",
+                  "text": "Right upper",
+                  "display-or": "ଡ଼ାହାଣ ଉପର"
+                },
+                {
+                  "id": "ID_295800872",
+                  "text": "Left upper",
+                  "display-or": "ବାମ ଉପର"
+                },
+                {
+                  "id": "ID_1219391815",
+                  "text": "Right lower",
+                  "display-or": "ଡ଼ାହାଣ ତଳ"
+                },
+                {
+                  "id": "ID_1674884611",
+                  "text": "Left lower",
+                  "display-or": "ବାମ ତଳ"
+                },
+                {
+                  "id": "ID_1427243412",
+                  "text": "Periumbilical (Around umbilicus)",
+                  "display-or": "ନାଭି ଚାରିକଡ଼"
+                },
+                {
+                  "id": "ID_483200570",
+                  "text": "Suprapubic (Lower abdomen)",
+                  "display-or": "ତଳ ପେଟ"
+                },
+                {
+                  "id": "ID_1383184737",
+                  "text": "Whole abdomen",
+                  "display-or": "ପୂରା ପେଟପୂରା ପେଟ"
+                }
+              ]
+            },
+            {
+              "id": "ID_1331948149",
+              "text": "Character",
+              "display": "Describe the pain",
+              "display-or": "ଯନ୍ତ୍ରଣା ର ପ୍ରକାର",
+              "options": [
+                {
+                  "id": "ID_1143128376",
+                  "text": "Cramping",
+                  "display-or": "ଐଁଠନ"
+                },
+                {
+                  "id": "ID_520806906",
+                  "text": "Dull",
+                  "display-or": "ଟିକେଟିକେ"
+                },
+                {
+                  "id": "ID_1430702255",
+                  "text": "Aching",
+                  "display-or": "ଧିରେ ଧିରେ"
+                },
+                {
+                  "id": "ID_1114635679",
+                  "text": "Other (Describe)",
+                  "input-type": "text",
+                  "language": "%",
+                  "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_1111135541",
+          "text": "Jaundice",
+          "display": "Yellow eyes/skin",
+          "display-or": "ହଳଦିଅା ଅାଖି ବା ଚର୍ମ",
+          "options": [
+            {
+              "id": "ID_202931153",
+              "text": "Since when",
+              "input-type": "date",
+              "language": "since",
+              "display-or": "କେବେଠାରୁ"
+            }
+          ]
+        },
+        {
+          "id": "ID_1891556441",
+          "text": "Urinary symptoms",
+          "display-or": "ପରିସ୍ରା ଲକ୍ଷଣ",
+          "options": [
+            {
+              "id": "ID_1162467925",
+              "text": "Burning sensation during urination",
+              "display-or": "ପରିଶ୍ରା ର ପୋଡ଼ା ଜାଲା"
+            },
+            {
+              "id": "ID_330292438",
+              "text": "Change in frequency [describe]",
+              "input-type": "text",
+              "language": "change in frequency of urination",
+              "display-or": "ପରିଶ୍ରା ର ଆଭୂତି ର ପରିବର୍ତନ"
+            },
+            {
+              "id": "ID_1019342392",
+              "text": "Any color change in urine?",
+              "language": "%",
+              "display-or": "ଋଙ୍ଗ ପରିବର୍ତ୍ତନ",
+              "options": [
+                {
+                  "id": "ID_1916988026",
+                  "text": "Yes [describe]",
+                  "input-type": "text",
+                  "language": "colour change seen in urine,",
+                  "display-or": "ହଁ  କେଉଁ ପ୍ରକାର"
+                },
+                {
+                  "id": "ID_1746821438",
+                  "text": "No",
+                  "language": "no colour change in urine",
+                  "display-or": "ନାଁ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_1359276592",
+          "text": "Skin rash",
+          "display-or": "ଚର୍ମ ଚିହ୍ନ"
+        },
+        {
+          "id": "ID_1295072716",
+          "text": "Photosensitivity",
+          "display-or": "ଆଲୁଅ ରେ ୱାଲେର୍ଜ୍ୟ"
+        },
+        {
+          "id": "ID_1013072886",
+          "text": "Ear discomfort",
+          "display-or": "କାନ ଯନ୍ତ୍ରଣା"
+        },
+        {
+          "id": "ID_1473421586",
+          "text": "Joint pain",
+          "perform-physical-exam": "Joint:Swelling;Joint:Redness;Joint:Deformity;Joint:Tenderness;Joint:Movement Pain;",
+          "display-or": "ଗଣ୍ଠି ଯନ୍ତ୍ରଣା",
+          "options": [
+            {
+              "id": "ID_269284247",
+              "text": "Involving multiple joints",
+              "language": "%",
+              "display": "Does it involve single or multiple joints?",
+              "display-or": "ଗୋଟିଏ ଗଣ୍ଠି ରେ କିମ୍ବା ବହୁତ ଗଣ୍ଠି",
+              "options": [
+                {
+                  "id": "ID_121143788",
+                  "text": "Multiple joints",
+                  "language": "Involving multiple joints",
+                  "display-or": "ବହୁତ"
+                },
+                {
+                  "id": "ID_311234053",
+                  "text": "Single joint",
+                  "language": "Involving single joint",
+                  "display-or": "ଗୋଟେ"
+                }
+              ]
+            },
+            {
+              "id": "ID_1649793525",
+              "text": "Migratory",
+              "language": "%",
+              "display": "Does the pain move to other parts of the body?",
+              "display-or": "ଯନ୍ତ୍ରଣା ଅନ୍ଯଯାଗାକୁ ଯାଉଛି",
+              "options": [
+                {
+                  "id": "ID_151756404",
+                  "text": "No",
+                  "language": "pain is not migratory in nature",
+                  "display-or": "ନାହିଁ"
+                },
+                {
+                  "id": "ID_88957406",
+                  "text": "Yes",
+                  "language": "pain is migratory in nature",
+                  "display-or": "ହଁ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_1350555004",
+          "text": "Other ",
+          "input-type": "Text",
+          "language": "%",
+          "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)"
+        }
+      ]
+    },
+    {
+      "id": "ID_1006867618",
+      "text": "H/o specific illness",
+      "display": "Have you ever been diagnosed with any of the following specific diseases?",
+      "pos-condition": "h/o",
+      "neg-condition": "no h/o",
+      "display-or": "ତମକୁ କେବେ ଆଗରୁ ନିମ୍ନ ଲିଖିତ ବିଶିଷ୍ଟ ରୋଗ ଚିହ୍ନଟ ହୋଇଥିଲା କି?",
+      "options": [
+        {
+          "id": "ID_313022533",
+          "text": "Chronic liver disease",
+          "display-or": "ପୁରୁଣା ଯକୃତ ରୋଗ"
+        },
+        {
+          "id": "ID_1288475275",
+          "text": "Chronic renal disease",
+          "display-or": "ପୁରୁଣା ବୃକକ ରୋଗ"
+        },
+        {
+          "id": "ID_786460262",
+          "text": "HIV/AIDS",
+          "display-or": "ଏଡ୍ସ",
+          "options": [
+            {
+              "id": "ID_179615514",
+              "text": "Since when",
+              "input-type": "duration",
+              "language": "since",
+              "display-or": "କେବେଠାରୁ"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ID_679451870",
+      "text": "Recent h/o specific events",
+      "display": "Have you experienced the following situation within the previous months before fever started?",
+      "pos-condition": "h/o",
+      "neg-condition": "no h/o",
+      "display-or": "ଜ୍ଵର ଆରମ୍ଭ ହେବାର ମାସେ ପୂର୍ବରୁ ଏପରି ଅବସ୍ଥା ହୋଇଥିଲା କି?",
+      "options": [
+        {
+          "id": "ID_720863845",
+          "text": "Recent contact with persons having fever",
+          "display": "Any recent contact with any persons with fever?",
+          "display-or": "ଅନ୍ଯ ଜ୍ୱର ବ୍ଯକ୍ତିସହ ସଂସ୍ପର୍ଷ",
+          "options": [
+            {
+              "id": "ID_139847654",
+              "text": "Yes",
+              "display-or": "ହଁ",
+              "options": [
+                {
+                  "id": "ID_1897055931",
+                  "text": "when",
+                  "input-type": "date",
+                  "language": "on",
+                  "display-or": "କେବେ"
+                }
+              ]
+            },
+            {
+              "id": "ID_781457946",
+              "text": "No",
+              "display-or": "ନାଁ"
+            }
+          ]
+        },
+        {
+          "id": "ID_382852578",
+          "text": "Recent travel",
+          "display": "Did you/your family travel recently?",
+          "language": "%",
+          "display-or": "ଏଇ ଭିତରେ ୟାତ୍ରା କରିଥିଲା କି ?",
+          "options": [
+            {
+              "id": "ID_1670552427",
+              "text": "Yes",
+              "language": "Patient has recent h/o travel",
+              "display-or": "ନାଁ",
+              "options": [
+                {
+                  "id": "ID_1089527845",
+                  "text": "When",
+                  "input-type": "date",
+                  "display": "on",
+                  "display-or": "କେବେ"
+                },
+                {
+                  "id": "ID_289225269",
+                  "text": "Where",
+                  "input-type": "text",
+                  "language": "to",
+                  "display-or": "କେଉଁ ଯାଗା"
+                }
+              ]
+            },
+            {
+              "id": "ID_1914522243",
+              "text": "No",
+              "language": "No recent h/o travel",
+              "display-or": "ହଁ"
+            }
+          ]
+        },
+        {
+          "id": "ID_1746357268",
+          "text": "Recent hospitalization",
+          "display": "Have you recently been hospitalized?",
+          "language": "%",
+          "display-or": "ହସ୍ପିଟାଲହସ୍ପିଟାଲରେ ଭର୍ତ୍ତିରେ ଭର୍ତ୍ତି",
+          "options": [
+            {
+              "id": "ID_843774285",
+              "text": "Yes",
+              "language": "Patient has recently been hospitalized",
+              "display-or": "ନାଁ",
+              "options": [
+                {
+                  "id": "ID_1143673149",
+                  "text": "when",
+                  "input-type": "date",
+                  "language": "on",
+                  "display-or": "କେବେ"
+                }
+              ]
+            },
+            {
+              "id": "ID_144523400",
+              "text": "No",
+              "language": "No recent h/o hospitalization",
+              "display-or": "ହଁ"
+            }
+          ]
+        },
+        {
+          "id": "ID_905772600",
+          "text": "Needles use (for drug)",
+          "display": "Have you recently used any needles (eg: for drugs)?",
+          "display-or": "ଏଇ ଭୀତରୀ ଛଞ୍ଚିରେ ବ୍ୟବହାର କରିଥିଲା କି? (ଉଦାହରଣ: ଇଞ୍ଜେକ୍ସନ, ଚିତା, ମାଦକ ଦ୍ରବ୍ୟ)",
+          "options": [
+            {
+              "id": "ID_937068930",
+              "text": "Yes",
+              "display-or": "ନାଁ"
+            },
+            {
+              "id": "ID_858421266",
+              "text": "No",
+              "display-or": "ହଁ"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ID_1979920311",
+      "text": "Prior treatment sought",
+      "display": "Have you taken any treatment (including self-medication or home remedies) or seen any health provider for this problem before coming here today?",
+      "display-or": "ତମେ ଆଗରୁ କୌଣସି  ପ୍ରାକାର ଔଷଦ ନଇଥିଲ କି? (ନିଜେ ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଘରୋଇ ଉପଚାର)",
+      "options": [
+        {
+          "id": "ID_830833900",
+          "text": "Yes [Describe]",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ହାଁ (ବର୍ଣନା କର)"
+        },
+        {
+          "id": "ID_1226925547",
+          "text": "None",
+          "display-or": "କିଛି ନାହିଁ"
+        }
+      ]
+    },
+    {
+      "id": "ID_1436146669",
+      "text": "Additional information",
+      "display-or": "ଅତିରିକ୍ତ ସୂଚନା",
+      "options": [
+        {
+          "id": "ID_451991982",
+          "text": "[Enter additional information]",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ଅତିରିକ୍ତ ସୂଚନା ପ୍ରଦାନ କରିବା"
+        }
+      ]
+    }
+  ]
+}

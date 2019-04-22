@@ -1,0 +1,189 @@
+{
+  "id": "ID_1609227579",
+  "text": "Diarrhea",
+  "perform-physical-exam": "Arm:Lying BP;Mouth:Tongue Dryness;Abdomen:Tenderness;Abdomen:Lumps;",
+  "display-or": "ପତଳା ଝାଡ଼ା",
+  "options": [
+    {
+      "id": "ID_313791833",
+      "text": "Duration",
+      "display": "Since when have you had this symptom?",
+      "display-or": "କେବେଠାରୁ",
+      "options": [
+        {
+          "id": "ID_1786426130",
+          "text": "[Enter since when]",
+          "input-type": "duration",
+          "language": "since",
+          "display-or": "କେବେ ଠାରୁ ଲେଖ"
+        }
+      ]
+    },
+    {
+      "id": "ID_1442984979",
+      "text": "Type of stool",
+      "display-or": "ପ୍ରକାର",
+      "options": [
+        {
+          "id": "ID_198180342",
+          "text": "Watery",
+          "display-or": "ପାଣିଅା"
+        },
+        {
+          "id": "ID_55890314",
+          "text": "Mucous",
+          "display-or": "ଲାଳୁଅା"
+        },
+        {
+          "id": "ID_1403055651",
+          "text": "Formed/lumpy feces",
+          "display-or": "ଝାଡ଼ା ଠିକ୍"
+        }
+      ]
+    },
+    {
+      "id": "ID_452844637",
+      "text": "Associated symptoms",
+      "display": "Do you have the following symptom(s)?",
+      "display-or": "ଅନ୍ଯ ଲକ୍ଷଣ",
+      "pos-condition": "c.",
+      "neg-condition": "s.",
+      "options": [
+        {
+          "id": "ID_581139002",
+          "text": "Vomiting",
+          "display-or": "ବାନ୍ତି"
+        },
+        {
+          "id": "ID_152322033",
+          "text": "Fever",
+          "display-or": "ଜ୍ୱର"
+        },
+        {
+          "id": "ID_1707274166",
+          "text": "Abdominal Pain",
+          "display-or": "ପେଟ ଯନ୍ତ୍ରଣା",
+          "options": [
+            {
+              "id": "ID_1622248186",
+              "text": "Is the abdominal pain associated with specific food?",
+              "display-or": "କୋଣସି ଖାଦ୍ୟ ଦ୍ବାରା",
+              "language": "%",
+              "options": [
+                {
+                  "id": "ID_986881512",
+                  "text": "Yes",
+                  "language": "Associated withi specific foods",
+                  "display-or": "ହଁ"
+                },
+                {
+                  "id": "ID_601116444",
+                  "text": "No",
+                  "language": "Not associated with specific foods",
+                  "display-or": "ନା"
+                }
+              ]
+            },
+            {
+              "id": "ID_1353996130",
+              "text": "Is the abdominal pain associated with bowel movements?",
+              "language": "%",
+              "display-or": "ଝାଡା ହେବା ଦ୍ଵାରା",
+              "options": [
+                {
+                  "id": "ID_1897293133",
+                  "text": "No association with bowel movements",
+                  "display-or": "ନାହିଁ"
+                },
+                {
+                  "id": "ID_370262093",
+                  "text": "Pain occurs before bowel movement",
+                  "display-or": "ଝାଡ଼ା ପୂର୍ବରୁ"
+                },
+                {
+                  "id": "ID_158297779",
+                  "text": "Pain occurs after bowel movement",
+                  "display-or": "ଝାଡ଼ା ପରେ"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_926225316",
+          "text": "Bloating",
+          "display-or": "ପେଟ ଫାମ୍ପେଇବା"
+        },
+        {
+          "id": "ID_329499595",
+          "text": "Hematochezia",
+          "display": "Blood in stool",
+          "display-or": "ଝାଡ଼ାରେ ରକ୍ତ"
+        }
+      ]
+    },
+    {
+      "id": "ID_530974936",
+      "text": "Have you experienced any indigestion of unusual food/liquid within the previous months before diarrhea started?",
+      "display-or": "ପତଳା ଝାଡା ଆରମ୍ଭ ପୂର୍ଵରୁ ଖାଦ୍ୟ ହଜମ ହୋଇ ନଥିଲା କି?",
+      "language": "%",
+      "options": [
+        {
+          "id": "ID_640010371",
+          "text": "Yes",
+          "language": "Patient has experienced indigestion within the previous months before diarrhea started",
+          "display-or": "ହାଁ",
+          "options": [
+            {
+              "id": "ID_1219994553",
+              "text": "when",
+              "input-type": "date",
+              "language": "Occured on",
+              "display-or": "କେବେ"
+            }
+          ]
+        },
+        {
+          "id": "ID_146905266",
+          "text": "No",
+          "language": "No experience of indigestion within the previous months before diarrhea started",
+          "display-or": "ନାହିଁ"
+        }
+      ]
+    },
+    {
+      "id": "ID_811421813",
+      "text": "Prior treatment sought",
+      "display": "Have you taken any treatment (including self-medication or home remedies) or seen any health provider for this problem before coming here today?",
+      "display-or": "ତମେ ଆଗରୁ କୌଣସି  ପ୍ରାକାର ଔଷଦ ନଇଥିଲ କି? (ନିଜେ ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଘରୋଇ ଉପଚାର)",
+      "options": [
+        {
+          "id": "ID_412480003",
+          "text": "Yes [Describe]",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ହାଁ (ବର୍ଣନା କର)"
+        },
+        {
+          "id": "ID_264450220",
+          "text": "None",
+          "display-or": "କିଛି ନାହିଁ"
+        }
+      ]
+    },
+    {
+      "id": "ID_1103446377",
+      "text": "Additional information",
+      "display-or": "ଅତିରିକ୍ତ ସୂଚନା",
+      "options": [
+        {
+          "id": "ID_58175367",
+          "text": "[Enter additional information]",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ଅତିରିକ୍ତ ସୂଚନା ପ୍ରଦାନ କରିବା"
+        }
+      ]
+    }
+  ]
+}

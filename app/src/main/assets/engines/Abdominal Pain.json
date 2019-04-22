@@ -1,0 +1,624 @@
+{
+  "id": "ID_1000991358",
+  "text": "Abdominal Pain",
+  "perform-physical-exam": "Abdomen:Scars;Abdomen:Distension;Abdomen:Tenderness;Abdomen:Lumps;Physical Growth:Sexual Maturation;",
+  "display-or": "ପେଟଯନ୍ତ୍ରଣା",
+  "options": [
+    {
+      "id": "ID_210551359",
+      "text": "Site",
+      "display": "Which part of the abdomen do you feel pain?",
+      "display-or": "କୋଉଯାଗାରେ",
+      "options": [
+        {
+          "id": "ID_1935801557",
+          "text": "Upper (R) - Right Hypochondrium",
+          "display-or": "ଡାହାଣ ଉପରକୁ"
+        },
+        {
+          "id": "ID_845387253",
+          "text": "Upper (C) - Epigastric",
+          "display-or": "ନାଭି ଉପରକୁ"
+        },
+        {
+          "id": "ID_1036073432",
+          "text": "Upper (L) - Left Hypochondrium",
+          "display-or": "ବାମ ଉପରକୁ"
+        },
+        {
+          "id": "ID_568631554",
+          "text": "Middle (R) - Right Lumbar",
+          "display-or": "ଡ଼ାହାଣ ମଝି"
+        },
+        {
+          "id": "ID_962169419",
+          "text": "Middle (C) - Umbilical",
+          "display-or": "ନାଭି ଚାରିକଡ଼େ"
+        },
+        {
+          "id": "ID_1324037145",
+          "text": "Middle (L) - Left Lumbar",
+          "display-or": "ବାମ ମଝି"
+        },
+        {
+          "id": "ID_1239783765",
+          "text": "Lower (R) - Right Illiac Fossa",
+          "display-or": "ଡ଼ାହାଣ ତଳ"
+        },
+        {
+          "id": "ID_644410306",
+          "text": "Lower (C) - Hypogastric/Suprapubic",
+          "display-or": "ନାଭି ତଳକୁ"
+        },
+        {
+          "id": "ID_562710446",
+          "text": "Lower (R) - Left Illiac Fossa",
+          "display-or": "ବାମ ତଳ"
+        },
+        {
+          "id": "ID_917293565",
+          "text": "All over",
+          "display-or": "ଚାରିଅାଡ଼େ"
+        }
+      ]
+    },
+    {
+      "id": "ID_334440965",
+      "text": "Radiation",
+      "display": "Does the pain move to other parts of the body?",
+      "display-or": "ଯନ୍ତ୍ରଣା ଅନ୍ୟ ଜାଗା  ଯାଉଛି",
+      "language": "%",
+      "options": [
+        {
+          "id": "ID_1457415162",
+          "text": "Does not move",
+          "language": "Pain does not radiate",
+          "display-or": "ନାହିଁ, ଯଦିହିଁ"
+        },
+        {
+          "id": "ID_1228815375",
+          "text": "Pain radiates to",
+          "display-or": "ଦରଜ ଗତି କରୁଛି?",
+          "options": [
+            {
+              "id": "ID_758995804",
+              "text": "Upper (R) - Right Hypochondrium",
+              "display-or": "ଡାହାଣ ଉପରକୁ"
+            },
+            {
+              "id": "ID_1252297295",
+              "text": "Upper (C) - Epigastric",
+              "display-or": "ନାଭି ଉପରକୁ"
+            },
+            {
+              "id": "ID_498017375",
+              "text": "Upper (L) - Left Hypochondrium",
+              "display-or": "ବାମ ଉପରକୁ"
+            },
+            {
+              "id": "ID_137477881",
+              "text": "Middle (R) - Right Lumbar",
+              "display-or": "ଡ଼ାହାଣ ମଝି"
+            },
+            {
+              "id": "ID_150225290",
+              "text": "Middle (C) - Umbilical",
+              "display-or": "ନାଭି ଚାରିକଡ଼େ"
+            },
+            {
+              "id": "ID_1960997639",
+              "text": "Middle (L) - Left Lumbar",
+              "display-or": "ବାମ ମଝି"
+            },
+            {
+              "id": "ID_477522154",
+              "text": "Lower (R) - Right Illiac Fossa",
+              "display-or": "ଡ଼ାହାଣ ତଳ"
+            },
+            {
+              "id": "ID_1692350292",
+              "text": "Lower (C) - Hypogastric/Suprapubic",
+              "display-or": "ସମ ନାଭି ତଳକୁ"
+            },
+            {
+              "id": "ID_1565049622",
+              "text": "Lower (R) - Left Illiac Fossa",
+              "display-or": "ବାମ ତଳ"
+            },
+            {
+              "id": "ID_622263949",
+              "text": "Right shoulder",
+              "display-or": "ଡ଼ାହାଣ କାନ୍ଧ"
+            },
+            {
+              "id": "ID_128266450",
+              "text": "Right scapula",
+              "display-or": "ଡ଼ାହାଣ ଖୁଅା"
+            },
+            {
+              "id": "ID_346840033",
+              "text": "Groin",
+              "display-or": "ଜଘଂ ସନ୍ଧି"
+            },
+            {
+              "id": "ID_580405108",
+              "text": "Sacral region",
+              "display-or": "ପିଚାା"
+            },
+            {
+              "id": "ID_957000739",
+              "text": "Flanks",
+              "display-or": "ପେଟ ପୋଡା"
+            },
+            {
+              "id": "ID_1183788319",
+              "text": "Chest",
+              "display-or": "ଛାତି"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ID_313791833",
+      "text": "Duration",
+      "display": "Since when have you had this symptom?",
+      "display-or": "କେବେଠାରୁ",
+      "language": "%",
+      "options": [
+        {
+          "id": "ID_826155781",
+          "text": "[Enter since when]",
+          "input-type": "duration",
+          "language": "since",
+          "display-or": "କେବେ ଠାରୁ ଲେଖ"
+        }
+      ]
+    },
+    {
+      "id": "ID_374306869",
+      "text": "Onset",
+      "display": "How did the pain start?",
+      "display-or": "କେମିତି ଅାରମ୍ଭ ହେଲା",
+      "options": [
+        {
+          "id": "ID_1052994247",
+          "text": "Gradual",
+          "display-or": "ଅାସ୍ତେ ଅାସ୍ତେ"
+        },
+        {
+          "id": "ID_467135839",
+          "text": "Rapidly increasing",
+          "display-or": "ସାଙ୍ଗେ ସାଙ୍ଗେ"
+        },
+        {
+          "id": "ID_1466867687",
+          "text": "Sudden",
+          "display-or": "ହଠାତ୍"
+        },
+        {
+          "id": "ID_1906994892",
+          "text": "Other [describe]",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)"
+        }
+      ]
+    },
+    {
+      "id": "ID_1026022834",
+      "text": "Timing",
+      "display": "What time of the day do you feel the pain?",
+      "display-or": "ଦିନ ର କେଉଁ ସମୟ ରେ ଦରଜ ହୋଉ ଛି?",
+      "options": [
+        {
+          "id": "ID_1291573791",
+          "text": "Morning",
+          "display-or": "ସକାଳ"
+        },
+        {
+          "id": "ID_1360001530",
+          "text": "Night",
+          "display-or": "ରାତି"
+        },
+        {
+          "id": "ID_1637651626",
+          "text": "Not linked to any particular time of day",
+          "display-or": "ସମୟ ସହ ସମ୍ପର୍କ ନାହିଁ"
+        },
+        {
+          "id": "ID_247362287",
+          "text": "Other [Describe]",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)"
+        }
+      ]
+    },
+    {
+      "id": "ID_1719879342",
+      "text": "Character of the pain",
+      "display-or": "କେଉଁ ପ୍ରକାର",
+      "options": [
+        {
+          "id": "ID_1639883399",
+          "text": "Constant",
+          "display-or": "ସବୁ ସମୟରେ"
+        },
+        {
+          "id": "ID_839389482",
+          "text": "Colicky / Intermittent (comes & goes)",
+          "display-or": "ବେଳେ ବେଳେ"
+        },
+        {
+          "id": "ID_640171637",
+          "text": "Gnawing/chewing",
+          "display-or": "ଚିପିଲା ପରି"
+        },
+        {
+          "id": "ID_492112592",
+          "text": "Cramping",
+          "display-or": "କାମୁଡ଼ିଲା ପରି"
+        },
+        {
+          "id": "ID_1454167791",
+          "text": "Dull, aching",
+          "display-or": "ଅାସ୍ତେ ଅାସ୍ତେ"
+        },
+        {
+          "id": "ID_460419502",
+          "text": "Other [describe]",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)"
+        }
+      ]
+    },
+    {
+      "id": "ID_88181483",
+      "text": "Severity",
+      "display": "How severe is the pain?",
+      "display-or": "କେତେ ଯୋରରେ",
+      "options": [
+        {
+          "id": "ID_277668181",
+          "text": "Mild, 1-3",
+          "display-or": "1-3 ଅଳ୍ପ"
+        },
+        {
+          "id": "ID_279688978",
+          "text": "Moderate, 4-6",
+          "display-or": "4-6 ମଧ୍ୟମ"
+        },
+        {
+          "id": "ID_1018371251",
+          "text": "Severe, 7-9",
+          "display-or": "7-9 ବହୁତ"
+        },
+        {
+          "id": "ID_1999276601",
+          "text": "Very Severe, 10",
+          "display-or": "10 ବହୁତ ଯୋରରେ"
+        }
+      ]
+    },
+    {
+      "id": "ID_294177528",
+      "text": "Associated symptoms",
+      "display": "Do you have the following symptom(s)?",
+      "display-or": "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?",
+      "pos-condition": "c.",
+      "neg-condition": "s.",
+      "options": [
+        {
+          "id": "ID_1516120181",
+          "text": "Nausea",
+          "display-or": "ବାନ୍ତି ଲାଗିବା"
+        },
+        {
+          "id": "ID_1126058800",
+          "text": "Vomiting",
+          "display-or": "ବାନ୍ତି ହେବା"
+        },
+        {
+          "id": "ID_1985768122",
+          "text": "Anorexia",
+          "display-or": "ଭୋକ ନ ଲାଗିବା"
+        },
+        {
+          "id": "ID_1147187284",
+          "text": "Diarrhoea",
+          "display-or": "ଝାଡ଼ା ହେବା"
+        },
+        {
+          "id": "ID_966543680",
+          "text": "Constipation",
+          "display-or": "କୋଷ୍ଠ କାଠିନ୍ଯ"
+        },
+        {
+          "id": "ID_74520590",
+          "text": "Fever",
+          "display-or": "ଜ୍ୱର"
+        },
+        {
+          "id": "ID_442321642",
+          "text": "Abdominal distention / Bloating",
+          "display-or": "ପେଟ ଫମ୍ପାଇବା ବା ଫୁଲେଇବା"
+        },
+        {
+          "id": "ID_1113713472",
+          "text": "Belching / Burping",
+          "display-or": "ପେଟ ମୋଡ଼ି ହବା"
+        },
+        {
+          "id": "ID_1105381776",
+          "text": "Flatulence",
+          "display-or": "ବାୟୁ"
+        },
+        {
+          "id": "ID_1045478269",
+          "text": "Change in appetite",
+          "language": "%",
+          "display-or": "ଭୁକରେ ପରିବର୍ତନ",
+          "options": [
+            {
+              "id": "ID_99335376",
+              "text": "Increased",
+              "language": "Increase in appetite",
+              "display-or": "ବଢ଼ିଛି"
+            },
+            {
+              "id": "ID_1103933462",
+              "text": "Decreased",
+              "language": "Decrease in appetite",
+              "display-or": "କମିଛି"
+            }
+          ]
+        },
+        {
+          "id": "ID_1091296053",
+          "text": "Color change in stool [describe]",
+          "input-type": "text",
+          "display-or": "ଝାଡା ର ରଂଗ ପରିବର୍ତନ (ବର୍ଣନା କର)"
+        },
+        {
+          "id": "ID_1597444506",
+          "text": "Blood in stool",
+          "display-or": "ଝାଡ଼ାରେ ରକ୍ତ"
+        },
+        {
+          "id": "ID_330292438",
+          "text": "Change in frequency of urinating [describe]",
+          "input-type": "text",
+          "display-or": "ମୂତ୍ର ରେ ଆବୃତି ରେ ପରିବର୍ତନ (ବର୍ଣନା କର)"
+        },
+        {
+          "id": "ID_1019342392",
+          "text": "Color change in urine [describe]",
+          "input-type": "text",
+          "display-or": "ଋଙ୍ଗ ପରିବର୍ତନ (ବର୍ଣନା କର)"
+        },
+        {
+          "id": "ID_324285652",
+          "text": "Hiccups",
+          "display-or": "ହକୁଡ଼ି"
+        },
+        {
+          "id": "ID_576443230",
+          "text": "Restlessness",
+          "display-or": "ଅଣନିଶ୍ୱାସ"
+        },
+        {
+          "id": "ID_491498670",
+          "text": "Injury",
+          "display-or": "ଖଣ୍ଡିଅା ହୋଇଛି"
+        },
+        {
+          "id": "ID_6543523",
+          "text": "Others [describe]",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)"
+        }
+      ]
+    },
+    {
+      "id": "ID_1343783907",
+      "text": "Exacerbating Factors",
+      "display": "Does the pain get worse with the following situations?",
+      "display-or": "ନିଁନ୍ମ ଲିଖିତ ଅବସ୍ଥା ରେ ଯନ୍ତ୍ରଣା କମି ଯାଏ କି?",
+      "options": [
+        {
+          "id": "ID_529298614",
+          "text": "Hunger",
+          "display-or": "ଭୋକ ସହିତ"
+        },
+        {
+          "id": "ID_884486009",
+          "text": "Food",
+          "display-or": "ଖାଇବା ବେଳେ"
+        },
+        {
+          "id": "ID_1552008107",
+          "text": "Urination",
+          "display-or": "ପରିସ୍ରା ବେଳେ"
+        },
+        {
+          "id": "ID_1112583071",
+          "text": "Pressure",
+          "display-or": "ଚାପି ଦେଲେ"
+        },
+        {
+          "id": "ID_953323975",
+          "text": "Movement",
+          "display-or": "ଗତି କଲେ"
+        },
+        {
+          "id": "ID_267946733",
+          "text": "Coughing",
+          "display-or": "କାସ ହେଲେ"
+        },
+        {
+          "id": "ID_1947537413",
+          "text": "Straining",
+          "display-or": "କୁନ୍ଥେଇଲେ"
+        },
+        {
+          "id": "ID_767780670",
+          "text": "Other [describe]",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)"
+        },
+        {
+          "id": "ID_1794978958",
+          "text": "None",
+          "display-or": "କିଛି ନକଲେ/ ମନା"
+        },
+        {
+          "id": "ID_1955648297",
+          "text": "Don't know/Unsure",
+          "language": "Patient did not know/was unsure",
+          "display-or": "ଜାଣୁ ନଥିଲା/ ନିଶ୍ଚିତ ନଥିଲା"
+        }
+      ]
+    },
+    {
+      "id": "ID_971905494",
+      "text": "Relieving Factors",
+      "display": "Does the pain get better with the following situations?",
+      "display-or": "ନିଁନ୍ମ ଲିଖିତ ଅବସ୍ଥା ରେ ଯନ୍ତ୍ରଣା ଠିକ ହୁଏ କି?",
+      "options": [
+        {
+          "id": "ID_1266170702",
+          "text": "Medications [describe]",
+          "input-type": "text",
+          "language": "medications such as",
+          "display-or": "ଔଷଧ ଦ୍ୱାରା (କେଉଁ ଔଷଧ)"
+        },
+        {
+          "id": "ID_1774996180",
+          "text": "Food",
+          "display-or": "ଖାଦ୍ୟ ଦ୍ୱାରା"
+        },
+        {
+          "id": "ID_266980448",
+          "text": "Leaning forward",
+          "display-or": "ଅାଗକୁୁ ଲଇଁଲେ"
+        },
+        {
+          "id": "ID_33512499",
+          "text": "Squatting",
+          "display-or": "ତୁଙ୍କା ହୋଇ ବସିଲେ"
+        },
+        {
+          "id": "ID_1168881523",
+          "text": "Vomiting",
+          "display-or": "ବାନ୍ତି କଲେ"
+        },
+        {
+          "id": "ID_79912314",
+          "text": "Passing of stool",
+          "display-or": "ଝାଡ଼ା ଗଲେ"
+        },
+        {
+          "id": "ID_443778764",
+          "text": "Other [describe]",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)"
+        },
+        {
+          "id": "ID_1303352427",
+          "text": "None",
+          "display-or": "କିଛି ନକଲେ/ ମନା"
+        },
+        {
+          "id": "ID_1427868891",
+          "text": "Don't know/Unsure",
+          "language": "Patient did not know/was unsure",
+          "display-or": "ଜାଣୁ ନଥିଲା/ ନିଶ୍ଚିତ ନଥିଲା"
+        }
+      ]
+    },
+    {
+      "id": "ID_1004615569",
+      "text": "Menstrual history",
+      "display-or": "ମାସିକିଅା ବିବରଣୀ",
+      "options": [
+        {
+          "id": "ID_1558745378",
+          "text": "Has not started menstruation",
+          "display-or": "ଅାରମ୍ଭ ହେଇନି"
+        },
+        {
+          "id": "ID_518238742",
+          "text": "Is menstruating",
+          "display-or": "ମାସିକିଆ ହୋଉ ଛି",
+          "options": [
+            {
+              "id": "ID_850736876",
+              "text": "Age at onset ",
+              "input-type": "number",
+              "display-or": "କେତେ ବୟସରେ"
+            },
+            {
+              "id": "ID_1665118762",
+              "text": "Last menstruation period",
+              "input-type": "date",
+              "display-or": "ଶେଷଥର କେବେ ହୋଇଥିଲା",
+              "language": "LMP"
+            }
+          ]
+        },
+        {
+          "id": "ID_1420686231",
+          "text": "Menopause",
+          "display-or": "ମାସିକିଅା ବନ୍ଦ",
+          "options": [
+            {
+              "id": "ID_745440603",
+              "text": "Age at menopause ",
+              "input-type": "number",
+              "display-or": "କେବେ ହେଲା"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ID_573035068",
+      "text": "Prior treatment sought",
+      "display": "Have you taken any treatment (including self-medication or home remedies) or seen any health provider for this problem before coming here today?",
+      "display-or": "ତମେ ଆଗରୁ କୌଣସି  ପ୍ରାକାର ଔଷଦ ନଇଥିଲ କି? (ନିଜେ ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଘରୋଇ ଉପଚାର)",
+      "options": [
+        {
+          "id": "ID_1763201920",
+          "text": "Yes [Describe]",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ହାଁ (ବର୍ଣନା କର)"
+        },
+        {
+          "id": "ID_1226925547",
+          "text": "None",
+          "display-or": "କିଛି ନାହିଁ"
+        }
+      ]
+    },
+    {
+      "id": "ID_1065741634",
+      "text": "Additional information",
+      "display-or": "ଅତିରିକ୍ତ ସୂଚନା",
+      "options": [
+        {
+          "id": "ID_1894895710",
+          "text": "[Enter additional information]",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ଅତିରିକ୍ତ ସୂଚନା ପ୍ରଦାନ କରିବା"
+        }
+      ]
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-package io.intelehealth.client.utils;
+package io.intelehealth.client.utilities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,6 +10,8 @@ public class SessionManager {
     private static final String BASE_URL = "base_url";
     private static final String ENCODED = "encoded";
     private static final String PULL_EXECUTED_TIME = "pullexecutedtime";
+    public static final String KEY_PREF_SETUP_COMPLETE = "setup";
+    private static final String APP_LANGUAGE = "Language";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -59,6 +61,24 @@ public class SessionManager {
 
     public void setPullExcutedTime(String pullExcutedTime) {
         editor.putString(PULL_EXECUTED_TIME, pullExcutedTime);
+        editor.commit();
+    }
+
+    public String getAppLanguage() {
+        return pref.getString(APP_LANGUAGE, "");
+    }
+
+    public void setAppLanguage(String pullExcutedTime) {
+        editor.putString(APP_LANGUAGE, pullExcutedTime);
+        editor.commit();
+    }
+
+    public boolean isSetupComplete() {
+        return pref.getBoolean(KEY_PREF_SETUP_COMPLETE, false);
+    }
+
+    public void setSetupComplete(Boolean setupComplete) {
+        editor.putBoolean(KEY_PREF_SETUP_COMPLETE, setupComplete);
         editor.commit();
     }
 
