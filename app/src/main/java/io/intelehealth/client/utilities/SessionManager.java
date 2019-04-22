@@ -12,6 +12,12 @@ public class SessionManager {
     private static final String PULL_EXECUTED_TIME = "pullexecutedtime";
     public static final String KEY_PREF_SETUP_COMPLETE = "setup";
     private static final String APP_LANGUAGE = "Language";
+    private static final String SESSION_ID = "sessionid";
+    private static final String CREATOR_ID = "creatorid";
+    private static final String PROVIDER_ID = "providerid";
+    private static final String CHWNAME = "chwname";
+
+
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -82,4 +88,39 @@ public class SessionManager {
         editor.commit();
     }
 
+    public String getSessionID() {
+        return pref.getString(SESSION_ID, "");
+    }
+
+    public void setSessionID(String sessionID) {
+        editor.putString(SESSION_ID, sessionID);
+        editor.commit();
+    }
+
+    public String getProviderID() {
+        return pref.getString(PROVIDER_ID, "");
+    }
+
+    public void setProviderID(String providerID) {
+        editor.putString(PROVIDER_ID, providerID);
+        editor.commit();
+    }
+
+    public String getCreatorID() {
+        return pref.getString(CREATOR_ID, "");
+    }
+
+    public void setCreatorID(String creatorID) {
+        editor.putString(CREATOR_ID, creatorID);
+        editor.commit();
+    }
+
+    public String getChwname() {
+        return pref.getString(CHWNAME, "");
+    }
+
+    public void setChwname(String chwname) {
+        editor.putString(CHWNAME, chwname);
+        editor.commit();
+    }
 }

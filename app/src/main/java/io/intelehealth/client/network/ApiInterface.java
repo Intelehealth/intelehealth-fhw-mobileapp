@@ -3,10 +3,12 @@ package io.intelehealth.client.network;
 import android.location.Location;
 
 import io.intelehealth.client.dto.ResponseDTO;
+import io.intelehealth.client.models.loginModel.LoginModel;
 import retrofit2.Call;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
@@ -30,4 +32,12 @@ public interface ApiInterface {
     //EMR-Middleware/webapi/pull/pulldata/
     @GET
     Call<ResponseDTO> RESPONSE_DTO_CALL(@Url String url);
+
+    @Headers({"USER-AGENT : Mozilla/5.0",
+            "ACCEPT-LANGUAGE : en-US,en;0.5"})
+    @GET("")
+    Call<LoginModel> LOGIN_MODEL_OBSERVABLE(@Header("Authorization") String authHeader);
+
+
+
 }
