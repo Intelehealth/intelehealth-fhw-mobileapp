@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.intelehealth.client.application.AppConstants;
+import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.dto.PatientAttributeTypeMasterDTO;
 import io.intelehealth.client.dto.PatientAttributesDTO;
 import io.intelehealth.client.dto.PatientDTO;

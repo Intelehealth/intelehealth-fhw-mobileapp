@@ -1,15 +1,16 @@
 package io.intelehealth.client.views.activites;
 
 import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
-import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -18,26 +19,17 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.webkit.URLUtil;
+import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.Gson;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,23 +38,29 @@ import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.app.IntelehealthApplication;
 import io.intelehealth.client.databinding.ActivitySetupBinding;
 import io.intelehealth.client.databinding.ContentSetupBinding;
+import io.intelehealth.client.models.Location;
+import io.intelehealth.client.models.Results;
 import io.intelehealth.client.models.loginModel.LoginModel;
+import io.intelehealth.client.models.loginProviderModel.LoginProviderModel;
+import io.intelehealth.client.network.ApiClient;
+import io.intelehealth.client.services.DownloadProtocolsTask;
+import io.intelehealth.client.utilities.AdminPassword;
 import io.intelehealth.client.utilities.Base64Methods;
 import io.intelehealth.client.utilities.DialogUtils;
 import io.intelehealth.client.utilities.Logger;
+import io.intelehealth.client.utilities.OfflineLogin;
+import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UrlModifiers;
 import io.intelehealth.client.viewModels.SetupViewModel;
 import io.intelehealth.client.views.adapters.LocationArrayAdapter;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
-import static io.intelehealth.client.app.AppConstants.sessionManager;
 
 public class SetupActivity extends AppCompatActivity {
 
     private static final String TAG = SetupActivity.class.getSimpleName();
-    MyClickHandlers handlers = new MyClickHandlers(this);
     SetupViewModel setupViewModel;
     ActivitySetupBinding activitySetupBinding;
     ContentSetupBinding binding;
@@ -71,6 +69,13 @@ public class SetupActivity extends AppCompatActivity {
     private List<Location> mLocations = new ArrayList<>();
 
 
+    protected AccountManager manager;
+    UrlModifiers urlModifiers = new UrlModifiers();
+    Base64Methods base64Methods = new Base64Methods();
+    String encoded = null;
+    AlertDialog.Builder dialog;
+    String key = null;
+    SessionManager sessionManager = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,22 +84,12 @@ public class SetupActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.content_setup);
         setupViewModel = ViewModelProviders.of(this).get(SetupViewModel.class);
         /*set handlers with data binding*/
-        activitySetupBinding.setHandlers(handlers);
         activitySetupBinding.setViewmodel(setupViewModel);
         activitySetupBinding.setLifecycleOwner(this);
-
+        sessionManager = new SessionManager(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
-
-//        sessionManager=new SessionManager(getApplicationContext());
-//        mDropdownLocation = (Spinner) findViewById(R.id.spinner_location);
-
-        // Persistent login information
-//        manager = AccountManager.get(SetupActivity.this);
-
-        // Set up the login form.
-//        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        // populateAutoComplete(); TODO: create our own autocomplete code
 
         binding.setupSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +102,7 @@ public class SetupActivity extends AppCompatActivity {
         binding.adminPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == R.id.login || actionId == EditorInfo.IME_NULL) {
+                if (actionId == EditorInfo.IME_NULL) {
                     attemptLogin();
                     return true;
                 }
@@ -141,7 +136,7 @@ public class SetupActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!binding.editTextURL.getText().toString().trim().isEmpty() && binding.editTextURL.getText().toString().length() >= 12) {
+                if (!binding.editTextURL.getText().toString().trim().isEmpty() && binding.editTextURL.getText().toString().length() >= 13) {
                     if (Patterns.WEB_URL.matcher(binding.editTextURL.getText().toString()).matches()) {
                         String BASE_URL = "http://" + binding.editTextURL.getText().toString() + ":8080/openmrs/ws/rest/v1/";
                         if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched)
@@ -205,9 +200,10 @@ public class SetupActivity extends AppCompatActivity {
 
         }
         Location location = null;
+
         if (binding.spinnerLocation.getSelectedItemPosition() <= 0) {
             cancel = true;
-            Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_selected), Toast.LENGTH_LONG);
+            Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_selected), Toast.LENGTH_LONG).show();
         } else {
             location = mLocations.get(binding.spinnerLocation.getSelectedItemPosition() - 1);
         }
@@ -238,6 +234,122 @@ public class SetupActivity extends AppCompatActivity {
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
         return password.length() > 4;
+    }
+
+    /**
+     * Parse locations fetched through api and provide the appropriate dropdown.
+     *
+     * @param url string of url.
+     */
+    private void getLocationFromServer(String url) {
+        ApiClient.changeApiBaseUrl(url);
+        Observable<Results<Location>> resultsObservable = AppConstants.apiInterface.LOCATION_OBSERVABLE(null);
+        resultsObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(result -> result)
+                .subscribe(this::handleLocationFromServerResult,
+                        this::handleLocationFromServerError);
+
+    }
+
+    private void handleLocationFromServerError(Throwable throwable) {
+        isLocationFetched = false;
+        Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
+
+    }
+
+    private void handleLocationFromServerResult(Results<Location> locationResults) {
+        if (locationResults.getResults() != null) {
+            Results<Location> locationList = locationResults;
+            mLocations = locationList.getResults();
+            List<String> items = getLocationStringList(locationList.getResults());
+            LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, items);
+            binding.spinnerLocation.setAdapter(adapter);
+            isLocationFetched = true;
+        } else {
+            isLocationFetched = false;
+            Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * Returns list of locations.
+     *
+     * @param locationList a list of type {@link Location}.
+     * @return list of type string.
+     * @see Location
+     */
+    private List<String> getLocationStringList(List<Location> locationList) {
+        List<String> list = new ArrayList<String>();
+        list.add(getString(R.string.login_location_select));
+        for (int i = 0; i < locationList.size(); i++) {
+            list.add(locationList.get(i).getDisplay());
+        }
+        return list;
+    }
+
+    public void onRadioClick(View v) {
+
+        boolean checked = ((RadioButton) v).isChecked();
+        switch (v.getId()) {
+            case R.id.demoMindmap:
+                if (checked) {
+                    binding.demoMindmap.setChecked(false);
+                }
+                break;
+
+            case R.id.downloadMindmap:
+                if (checked) {
+                    binding.downloadMindmap.setChecked(false);
+
+                    dialog = new AlertDialog.Builder(this);
+                    LayoutInflater li = LayoutInflater.from(this);
+                    View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
+                    dialog.setTitle(getString(R.string.enter_license_key))
+                            .setView(promptsView)
+
+                            .setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Dialog d = (Dialog) dialog;
+
+                                    EditText text = d.findViewById(R.id.licensekey);
+                                    key = text.getText().toString();
+                                    //Toast.makeText(SetupActivity.this, "" + key, Toast.LENGTH_SHORT).show();
+                                    if (keyVerified(key)) {
+                                        // create a shared pref to store the key
+
+                                        // SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("pref",MODE_PRIVATE);
+
+                                        //DOWNLOAD MIND MAP FILE LIST
+                                        //upnew getJSONFile().execute(null, "AllFiles", "TRUE");
+
+                                        // UpdateProtocolsTask updateProtocolsTask = new UpdateProtocolsTask(SetupActivity.this);
+                                        // updateProtocolsTask.execute(null, "AllFiles", "TRUE");
+                                        DownloadProtocolsTask downloadProtocolsTask = new DownloadProtocolsTask(SetupActivity.this);
+                                        downloadProtocolsTask.execute(key);
+
+                                    }
+                                }
+                            })
+
+                            .setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    dialog.create().show();
+
+
+                }
+                break;
+        }
+    }
+
+    private boolean keyVerified(String key) {
+        //TODO: Verify License Key
+        return true;
     }
 
     /**
@@ -276,143 +388,17 @@ public class SetupActivity extends AppCompatActivity {
 
         @Override
         protected Integer doInBackground(Void... params) {
-            BufferedReader reader;
-            String JSONString;
 
-            WebResponse loginAttempt = new WebResponse();
-
-            try {
-//                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-                Log.d(TAG, "UN: " + USERNAME);
-                Log.d(TAG, "PW: " + PASSWORD);
-
-
-//
-//                BASE_URL = "http://" + CLEAN_URL + ":8080/openmrs/ws/rest/v1/";
-//                String urlString = BASE_URL + urlModifier;
-                UrlModifiers urlModifiers = new UrlModifiers();
-                String urlString = urlModifiers.loginUrl(BASE_URL, CLEAN_URL);
-
-                URL url = new URL(urlString);
-
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                Base64Methods base64Methods = new Base64Methods();
-                String encoded = base64Methods.encoded(USERNAME, PASSWORD);
-
-                sessionManager.setEncoded(encoded);
-
-                Call<LoginModel> call = AppConstants.apiInterface.LOGIN_MODEL_OBSERVABLE(encoded);
-                call.enqueue(new Callback<LoginModel>() {
-                    @Override
-                    public void onResponse(Call<LoginModel> call, Response<LoginModel> response) {
-                        int responsCode = response.code();
-                        Logger.logD(TAG, "success" + response.toString());
-                        sessionManager.setChwname(response.body().getUser().getDisplay());
-                        sessionManager.setCreatorID(response.body().getUser().getUuid());
-                        sessionManager.setSessionID(response.body().getSessionId());
-                        sessionManager.setProviderID(response.body().getUser().getPerson().getUuid());
-                    }
-
-                    @Override
-                    public void onFailure(Call<LoginModel> call, Throwable t) {
-                        Logger.logD(TAG, "Login Failure" + t.getMessage());
-
-                    }
-                });
-//                connection.setRequestProperty("Authorization", "Basic " + encoded);
-//                connection.setRequestMethod("GET");
-//                connection.setRequestProperty("USER-AGENT", "Mozilla/5.0");
-//                connection.setRequestProperty("ACCEPT-LANGUAGE", "en-US,en;0.5");
-
-                int responseCode = connection.getResponseCode();
-                loginAttempt.setResponseCode(responseCode);
-
-                // Read the input stream into a String
-                InputStream inputStream = connection.getInputStream();
-                StringBuffer buffer = new StringBuffer();
-                if (inputStream == null) {
-                    // Do Nothing.
-                    return 201;
-                }
-                reader = new BufferedReader(new InputStreamReader(inputStream));
-
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
-                    // But it does make debugging a *lot* easier if you print out the completed
-                    // buffer for debugging.
-                    buffer.append(line + "\n");
-                }
-
-                if (buffer.length() == 0) {
-                    // Stream was empty.  No point in parsing.
-                    return 201;
-                }
-
-                JSONString = buffer.toString();
-
-                Log.d(TAG, "JSON Response: " + JSONString);
-                loginAttempt.setResponseString(JSONString);
-                if (loginAttempt != null && loginAttempt.getResponseCode() != 200) {
-                    Log.d(TAG, "Login request was unsuccessful");
-                    return loginAttempt.getResponseCode();
-                } else if (loginAttempt == null) {
-                    return 201;
-                } else {
-                    JsonObject responseObject = new JsonParser().parse(loginAttempt.getResponseString()).getAsJsonObject();
-                    if (responseObject.get("authenticated").getAsBoolean()) {
-
-                        JsonObject userObject = responseObject.get("user").getAsJsonObject();
-                        JsonObject personObject = userObject.get("person").getAsJsonObject();
-
-
-                        String queryString = "?user=" + userObject.get("uuid").getAsString();
-                        WebResponse responseProvider;
-
-                        responseProvider = HelperMethods.getCommand(BASE_URL + "provider", queryString, SetupActivity.this, USERNAME, PASSWORD);
-
-                        if (responseProvider != null && responseProvider.getResponseCode() == 200) {
-                            String provider_uuid = "";
-
-                            JSONArray resultsArray = null;
-
-                            try {
-                                JSONObject JSONResponse = new JSONObject(responseProvider.getResponseString());
-                                resultsArray = JSONResponse.getJSONArray("results");
-
-                                Log.i(TAG, "doInBackground: " + JSONResponse.toString());
-
-                                if (resultsArray.length() != 0) {
-                                    for (int i = 0; i < resultsArray.length(); i++) {
-                                        JSONObject checking = resultsArray.getJSONObject(i);
-                                        Log.i(TAG, "doInBackground: " + checking.getString("uuid"));
-                                        provider_uuid = checking.getString("uuid");
-                                        editor.putString("providerid", provider_uuid);
-                                        editor.commit();
-                                    }
-                                    return 1;
-                                }
-                                return 201;
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                return 201;
-                            }
-
-                        }
-
-                        return 201;
-
-
-                    }
-                }
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-                return 201;
-            } catch (IOException e) {
-                e.printStackTrace();
-                return 201;
-            }
+            String urlString = urlModifiers.loginUrl(CLEAN_URL);
+            encoded = base64Methods.encoded(USERNAME, PASSWORD);
+            sessionManager.setEncoded(encoded);
+            Observable<LoginModel> loginModelObservable = AppConstants.apiInterface.LOGIN_MODEL_OBSERVABLE(urlString, encoded);
+            loginModelObservable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .map(result -> result)
+                    .subscribe(
+                            this::handleResults,
+                            this::handleError);
             return 201;
         }
 
@@ -425,38 +411,30 @@ public class SetupActivity extends AppCompatActivity {
                 final Account account = new Account(USERNAME, "io.intelehealth.openmrs");
                 manager.addAccountExplicitly(account, PASSWORD, null);
 
-                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                SharedPreferences.Editor editor = sharedPref.edit();
-
-                editor.putString(SettingsActivity.KEY_PREF_LOCATION_NAME, LOCATION.getDisplay());
-                editor.putString(SettingsActivity.KEY_PREF_LOCATION_UUID, LOCATION.getUuid());
-                editor.putString(SettingsActivity.KEY_PREF_LOCATION_DESCRIPTION, LOCATION.getDescription());
-
-                editor.putString(SettingsActivity.KEY_PREF_SERVER_URL_REST, BASE_URL);
-                editor.putString(SettingsActivity.KEY_PREF_SERVER_URL_BASE, "http://" + CLEAN_URL + ":8080/openmrs");
+                sessionManager.setLocationName(LOCATION.getDisplay());
+                sessionManager.setLocationUuid(LOCATION.getUuid());
+                sessionManager.setLocationDescription(LOCATION.getDescription());
+                sessionManager.setServerUrl(CLEAN_URL);
+                sessionManager.setServerUrlRest(BASE_URL);
+                sessionManager.setServerUrlBase("http://" + CLEAN_URL + ":8080/openmrs");
                 sessionManager.setBaseUrl(BASE_URL);
-                editor.putString(SettingsActivity.KEY_PREF_SERVER_URL, CLEAN_URL);
-                Log.d(TAG, BASE_URL);
-                editor.apply();
-
-                editor.putBoolean(SettingsActivity.KEY_PREF_SETUP_COMPLETE, true);
-                editor.apply();
+                sessionManager.setSetupComplete(true);
 
                 OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
                 AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
 
-                Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
-                        .applicationId(HelperMethods.IMAGE_APP_ID)
-                        .server("http://" + CLEAN_URL + ":1337/parse/")
-                        .build()
-                );
+//                Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
+//                        .applicationId(AppConstants.IMAGE_APP_ID)
+//                        .server("http://" + CLEAN_URL + ":1337/parse/")
+//                        .build()
+//                );
                 Log.i(TAG, "onPostExecute: Parse init");
                 Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
                 intent.putExtra("setup", true);
-                if (r2.isChecked()) {
-                    if (sharedPref.contains("licensekey")) {
+                if (binding.downloadMindmap.isChecked()) {
+                    if (sessionManager.getLicenseKey().contains("licensekey")) {
                         startActivity(intent);
-                        startJobDispatcherService(SetupActivity.this);
+//                        startJobDispatcherService(SetupActivity.this);
                         finish();
                     } else {
                         Toast.makeText(SetupActivity.this, "Please enter a valid license key", Toast.LENGTH_LONG).show();
@@ -468,21 +446,57 @@ public class SetupActivity extends AppCompatActivity {
 
 
             } else if (success == 201) {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+                binding.password.setError(getString(R.string.error_incorrect_password));
+                binding.password.requestFocus();
             } else if (success == 3) {
-                mUrlField.setError(getString(R.string.url_invalid));
-                mUrlField.requestFocus();
+                binding.editTextURL.setError(getString(R.string.url_invalid));
+                binding.editTextURL.requestFocus();
             }
 
             progress.dismiss();
         }
-    }
 
-    private class MyClickHandlers extends SetupActivity {
-
-        public MyClickHandlers(SetupActivity setupActivity) {
+        private void handleError(Throwable throwable) {
+            Logger.logD(TAG, "Login Failure" + throwable.getMessage());
         }
 
+        private void handleResults(LoginModel loginModel) {
+            int responsCode = loginModel.hashCode();
+            Boolean authencated = loginModel.getAuthenticated();
+            Gson gson = new Gson();
+            Logger.logD(TAG, "success" + gson.toJson(loginModel));
+            sessionManager.setChwname(loginModel.getUser().getDisplay());
+            sessionManager.setCreatorID(loginModel.getUser().getUuid());
+            sessionManager.setSessionID(loginModel.getSessionId());
+            sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
+            UrlModifiers urlModifiers = new UrlModifiers();
+            String url = urlModifiers.loginUrlProvider(CLEAN_URL, loginModel.getUser().getUuid());
+            if (authencated) {
+                Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, encoded);
+                loginProviderModelObservable.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .map(result -> result)
+                        .subscribe(this::handleloginProvidersResult,
+                                this::handleLoginProvidersError);
+            }
+        }
+
+        private void handleLoginProvidersError(Throwable throwable) {
+            Logger.logD(TAG, "handle provider error" + throwable.getMessage());
+        }
+
+
+        private void handleloginProvidersResult(LoginProviderModel loginProviderModel) {
+
+            if (loginProviderModel.getResults().size() != 0) {
+                for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
+                    Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
+                    sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
+                }
+            }
+
+
+        }
     }
+
 }

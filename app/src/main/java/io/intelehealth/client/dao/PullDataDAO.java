@@ -6,7 +6,9 @@ import android.os.AsyncTask;
 
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.dto.ResponseDTO;
+import io.intelehealth.client.exception.DAOException;
 import io.intelehealth.client.utilities.Logger;
+import io.intelehealth.client.utilities.SessionManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -14,10 +16,10 @@ import retrofit2.Response;
 
 public class PullDataDAO {
 
-
+    SessionManager sessionManager = null;
     public boolean pullData(final Context context) {
-
-        String url = "http://142.93.221.37:8080/EMR-Middleware/webapi/pull/pulldata/1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a/" + AppConstants.sessionManager.getPullExcutedTime();
+        sessionManager = new SessionManager(context);
+        String url = "http://142.93.221.37:8080/EMR-Middleware/webapi/pull/pulldata/1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a/" + sessionManager.getPullExcutedTime();
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(url);
 
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
@@ -28,7 +30,7 @@ public class PullDataDAO {
                     pullDataExecutedTime(response.body(), context);
                 }
                 if (response.body() != null && response.body().getData() != null) {
-                    AppConstants.sessionManager.setPullExcutedTime(response.body().getData().getPullexecutedtime());
+                    sessionManager.setPullExcutedTime(response.body().getData().getPullexecutedtime());
                 }
             }
 

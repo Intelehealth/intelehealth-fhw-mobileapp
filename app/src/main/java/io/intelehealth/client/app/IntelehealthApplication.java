@@ -10,7 +10,6 @@ import android.provider.Settings;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.support.v7.app.AppCompatDelegate;
-import android.util.Log;
 
 //Extend Application class with MultiDexApplication for multidex support
 public class IntelehealthApplication extends MultiDexApplication implements Application.ActivityLifecycleCallbacks {
@@ -72,7 +71,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 //                    .server("http://"+url+":1337/parse/")
 //                    .build()
 //            );
-        Log.i(TAG, "onCreate: Parse init");
+//        Log.i(TAG, "onCreate: Parse init");
     }
 
     @Override

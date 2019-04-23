@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -12,9 +11,6 @@
             name="Viewmodel"
             type="io.intelehealth.client.viewModels.SetupViewModel" />
 
-        <variable
-            name="Handlers"
-            type="io.intelehealth.client.views.activites.SetupActivity" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -36,9 +32,7 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <include
-            layout="@layout/content_setup"
-            bind:handlers="@{handlers}" />
+        <include layout="@layout/content_setup" />
 
 
     </android.support.design.widget.CoordinatorLayout>

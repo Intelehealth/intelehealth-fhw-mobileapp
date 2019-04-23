@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="offline_login_shared_preference_key" translatable="false">PREF_OFFLINE_LOGIN</string>
+    <string name="offline_login_username_key" translatable="false">PREF_KEY_OFFLINE_USER</string>
+    <string name="offline_login_password_key" translatable="false">PREF_KEY_OFFLINE_PASS</string>
+    <string name="offline_login_salt_key" translatable="false">PREF_KEY_OFFLINE_SALT</string>
+    <string name="offline_login_status" translatable="false">PREF_KEY_OFFLINE_STATUS</string>
+
+    <string name="admin_login_shared_preference_key" translatable="false">PREF_ADMIN_LOGIN</string>
+    <string name="admin_login_password_key" translatable="false">PREF_KEY_ADMIN_PASS</string>
+    <string name="admin_login_salt_key" translatable="false">PREF_KEY_ADMIN_SALT</string>
+</resources>

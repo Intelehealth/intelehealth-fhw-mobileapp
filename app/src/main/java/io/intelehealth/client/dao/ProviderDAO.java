@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.List;
 
-import io.intelehealth.client.application.AppConstants;
+import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.dto.ProviderDTO;
 import io.intelehealth.client.exception.DAOException;
 import io.intelehealth.client.utilities.Logger;

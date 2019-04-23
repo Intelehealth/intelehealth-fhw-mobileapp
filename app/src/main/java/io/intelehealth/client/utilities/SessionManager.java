@@ -16,8 +16,13 @@ public class SessionManager {
     private static final String CREATOR_ID = "creatorid";
     private static final String PROVIDER_ID = "providerid";
     private static final String CHWNAME = "chwname";
-
-
+    public static final String KEY_PREF_SERVER_URL_REST = "serverurl";
+    public static final String KEY_PREF_SERVER_URL = "url";
+    public static final String KEY_PREF_SERVER_URL_BASE = "serverurlbase";
+    public static final String KEY_PREF_LOCATION_UUID = "locationuuid";
+    public static final String KEY_PREF_LOCATION_NAME = "locationname";
+    public static final String KEY_PREF_LOCATION_DESCRIPTION = "locationdesc";
+    private static final String LICENSE_KEY = "licensekey";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -35,7 +40,7 @@ public class SessionManager {
 
 
     public String getVisitId() {
-        return pref.getString(VISIT_ID, null);
+        return pref.getString(VISIT_ID, "");
     }
 
     public void setVisitId(String token) {
@@ -44,7 +49,7 @@ public class SessionManager {
     }
 
     public String getBaseUrl() {
-        return pref.getString(BASE_URL, null);
+        return pref.getString(BASE_URL, "http://openmrs.intelehealth.io");
     }
 
     public void setBaseUrl(String baseUrl) {
@@ -53,7 +58,7 @@ public class SessionManager {
     }
 
     public String getEncoded() {
-        return pref.getString(ENCODED, null);
+        return pref.getString(ENCODED, "");
     }
 
     public void setEncoded(String encoded) {
@@ -121,6 +126,74 @@ public class SessionManager {
 
     public void setChwname(String chwname) {
         editor.putString(CHWNAME, chwname);
+        editor.commit();
+    }
+
+    public String getLocationName() {
+        return pref.getString(KEY_PREF_LOCATION_NAME, "");
+    }
+
+    public void setLocationName(String locationName) {
+        editor.putString(KEY_PREF_LOCATION_NAME, locationName);
+        editor.commit();
+    }
+
+    public String getLocationUuid() {
+        return pref.getString(KEY_PREF_LOCATION_UUID, "");
+    }
+
+    public void setLocationUuid(String locationUuid) {
+        editor.putString(KEY_PREF_LOCATION_UUID, locationUuid);
+        editor.commit();
+    }
+
+    public String getLocationDescription() {
+        return pref.getString(KEY_PREF_LOCATION_DESCRIPTION, "");
+    }
+
+    public void setLocationDescription(String locationDescription) {
+        editor.putString(KEY_PREF_LOCATION_DESCRIPTION, locationDescription);
+        editor.commit();
+    }
+
+    public String getServerUrl() {
+        return pref.getString(KEY_PREF_SERVER_URL, "");
+    }
+
+    public void setServerUrl(String serverUrl) {
+        editor.putString(KEY_PREF_SERVER_URL, serverUrl);
+        editor.commit();
+    }
+
+    public String getServerUrlRest() {
+        return pref.getString(KEY_PREF_SERVER_URL_REST, "");
+    }
+
+    public void setServerUrlRest(String serverUrlRest) {
+        editor.putString(KEY_PREF_SERVER_URL_REST, serverUrlRest);
+        editor.commit();
+    }
+
+    public String getServerUrlBase() {
+        return pref.getString(KEY_PREF_SERVER_URL_BASE, "");
+    }
+
+    public void setServerUrlBase(String serverUrlBase) {
+        editor.putString(KEY_PREF_SERVER_URL_BASE, serverUrlBase);
+        editor.commit();
+    }
+
+    public String getLicenseKey() {
+        return pref.getString(LICENSE_KEY, "");
+    }
+
+    public void setLicenseKey(String licenseKey) {
+        editor.putString(LICENSE_KEY, licenseKey);
+        editor.commit();
+    }
+
+    public void deleteLicensekey() {
+        editor.remove(LICENSE_KEY);
         editor.commit();
     }
 }

@@ -17,20 +17,22 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import io.intelehealth.client.R;
-import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.databinding.ActivitySplashActivityBinding;
 import io.intelehealth.client.utilities.Logger;
+import io.intelehealth.client.utilities.SessionManager;
 
 
 public class SplashActivity extends AppCompatActivity {
-
+    SessionManager sessionManager = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_splash_activity);
         ActivitySplashActivityBinding activitySplashActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_splash_activity);
-        String appLanguage = AppConstants.sessionManager.getAppLanguage();
+        sessionManager = new SessionManager(SplashActivity.this);
+
+        String appLanguage = sessionManager.getAppLanguage();
 
         if (!appLanguage.equalsIgnoreCase("")) {
             Locale locale = new Locale(appLanguage);
@@ -39,7 +41,7 @@ public class SplashActivity extends AppCompatActivity {
             config.locale = locale;
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
-
+        checkPerm();
     }
 
     private void checkPerm() {
@@ -47,7 +49,7 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void onPermissionGranted() {
-//                Toast.makeText(Splash_activity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SplashActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
                 Timer t = new Timer();
                 t.schedule(new splash(), 3000);
             }
@@ -63,18 +65,13 @@ public class SplashActivity extends AppCompatActivity {
                 .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
                 .setPermissions(Manifest.permission.INTERNET,
                         Manifest.permission.ACCESS_NETWORK_STATE,
-                        Manifest.permission.CAMERA,
-                        Manifest.permission.READ_CONTACTS,
-                        Manifest.permission.ACCOUNT_MANAGER,
-                        Manifest.permission.READ_PHONE_STATE,
-                        Manifest.permission.FOREGROUND_SERVICE,
                         Manifest.permission.READ_EXTERNAL_STORAGE,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .check();
     }
 
     private void nextActivity() {
-        boolean setup = AppConstants.sessionManager.isSetupComplete();
+        boolean setup = sessionManager.isSetupComplete();
 
         String LOG_TAG = "SplashActivity";
         Logger.logD(LOG_TAG, String.valueOf(setup));

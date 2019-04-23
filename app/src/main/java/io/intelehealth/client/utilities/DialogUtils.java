@@ -18,4 +18,10 @@ public class DialogUtils {
                 });
         alertDialog.show();
     }
+
+    public void showLicenseDownloadProtocals() {
+
+    }
+
+
 }
