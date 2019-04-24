@@ -23,6 +23,8 @@ public class SessionManager {
     public static final String KEY_PREF_LOCATION_NAME = "locationname";
     public static final String KEY_PREF_LOCATION_DESCRIPTION = "locationdesc";
     private static final String LICENSE_KEY = "licensekey";
+    private static final String DATE = "date";
+    private static final String TIME = "time";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -196,4 +198,23 @@ public class SessionManager {
         editor.remove(LICENSE_KEY);
         editor.commit();
     }
+
+    public String getDate() {
+        return pref.getString(DATE, "");
+    }
+
+    public void setDate(String date) {
+        editor.putString(DATE, date);
+        editor.commit();
+    }
+
+    public String getTime() {
+        return pref.getString(TIME, "");
+    }
+
+    public void setTime(String time) {
+        editor.putString(TIME, time);
+        editor.commit();
+    }
+
 }

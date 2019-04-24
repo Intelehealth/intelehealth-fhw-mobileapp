@@ -49,7 +49,7 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void onPermissionGranted() {
-                Toast.makeText(SplashActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(SplashActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
                 Timer t = new Timer();
                 t.schedule(new splash(), 3000);
             }

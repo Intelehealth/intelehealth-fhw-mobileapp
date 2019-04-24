@@ -1,7 +1,11 @@
 package io.intelehealth.client.app;
 
 
+import android.os.Environment;
+
 import com.snatik.storage.Storage;
+
+import java.io.File;
 
 import io.intelehealth.client.database.InteleHealthDatabaseHelper;
 import io.intelehealth.client.network.ApiClient;
@@ -15,6 +19,7 @@ public class AppConstants {
     public static final String JSON_FOLDER_Update = "Engines_Update";
     public static final String MIND_MAP_SERVER_URL = "http://165.227.97.214:1337/parse/";
     public static final String IMAGE_APP_ID = "app2";
+    public static final String dbfilepath = Environment.getExternalStorageDirectory() + File.separator + "InteleHealth_DB" + File.separator + "Intelehealth.db"; // directory: Intelehealth_DB   ,  filename: Intelehealth.db
 
 
     //functions constants

@@ -1,31 +1,288 @@
 package io.intelehealth.client.views.activites;
 
+import android.Manifest;
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.databinding.DataBindingUtil;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.TextUtils;
+import android.text.util.Linkify;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 
 import io.intelehealth.client.R;
+import io.intelehealth.client.databinding.ActivityLoginBinding;
+import io.intelehealth.client.databinding.ContentLoginBinding;
+import io.intelehealth.client.utilities.Logger;
+import io.intelehealth.client.utilities.NetworkConnection;
+import io.intelehealth.client.utilities.OfflineLogin;
+import io.intelehealth.client.utilities.SessionManager;
 
 public class LoginActivity extends AppCompatActivity {
+
+    /**
+     * A dummy authentication store containing known user names and passwords.
+     */
+    // TODO: remove after connecting to a real authentication system.
+    private static final String[] DUMMY_CREDENTIALS = new String[]{
+            "username:password", "admin:nimda"
+    };
+    private final String TAG = LoginActivity.class.getSimpleName();
+    protected AccountManager manager;
+    ProgressDialog progress;
+    ActivityLoginBinding activityLoginBinding;
+    ContentLoginBinding contentLoginBinding;
+    SessionManager sessionManager = null;
+    /**
+     * Keep track of the login task to ensure we can cancel it if requested.
+     */
+    private UserLoginTask mAuthTask = null;
+    private OfflineLogin offlineLogin = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+//        setContentView(R.layout.activity_login);
+        activityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
+        contentLoginBinding = DataBindingUtil.setContentView(this, R.layout.content_login);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle(R.string.title_activity_login);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        offlineLogin = OfflineLogin.getOfflineLogin();
+
+        contentLoginBinding.cantLoginId.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View v) {
+
             }
         });
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+
+        Account[] accountList = manager.getAccountsByType("io.intelehealth.openmrs");
+        if (accountList.length > 0) {
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            intent.putExtra("login", true);
+//            startJobDispatcherService(LoginActivity.this);
+            startActivity(intent);
+            finish();
+        }
+
+        //Enforces Offline Login Check only if network not present
+        if (!NetworkConnection.isOnline(this)) {
+            if (OfflineLogin.getOfflineLogin().getOfflineLoginStatus()) {
+                Intent intent = new Intent(this, HomeActivity.class);
+                intent.putExtra("login", true);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            }
+        }
+
+        contentLoginBinding.password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == R.id.login || actionId == EditorInfo.IME_NULL) {
+                    attemptLogin();
+                    return true;
+                }
+                return false;
+            }
+        });
+        contentLoginBinding.emailSignInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Logger.logD(TAG, "button pressed");
+                attemptLogin();
+            }
+        });
+
+    }
+
+    /**
+     * Returns void.
+     * This method checks if valid username and password are given as input.
+     *
+     * @return void
+     */
+    private void attemptLogin() {
+
+        if (mAuthTask != null) {
+            return;
+        }
+
+        // Reset errors.
+        contentLoginBinding.email.setError(null);
+        contentLoginBinding.password.setError(null);
+
+        // Store values at the time of the login attempt.
+        String email = contentLoginBinding.email.getText().toString();
+        String password = contentLoginBinding.password.getText().toString();
+
+        boolean cancel = false;
+        View focusView = null;
+
+        // Check for a valid password, if the user entered one.
+        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+            contentLoginBinding.password.setError(getString(R.string.error_invalid_password));
+            focusView = contentLoginBinding.password;
+            cancel = true;
+        }
+
+        // Check for a valid email address.
+        if (TextUtils.isEmpty(email)) {
+            contentLoginBinding.email.setError(getString(R.string.error_field_required));
+            focusView = contentLoginBinding.email;
+            cancel = true;
+        }
+        if (cancel) {
+            // There was an error; don't attempt login and focus the first
+            // form field with an error.
+            focusView.requestFocus();
+        } else if (NetworkConnection.isOnline(this)) {
+            // Show a progress spinner, and kick off a background task to
+            // perform the user login attempt.
+//            showProgress(true);
+            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask.execute((Void) null);
+            Log.d(TAG, "attempting login");
+        } else {
+            offlineLogin.login(email, password);
+        }
+
+    }
+
+    /**
+     * @param password Password
+     * @return boolean
+     */
+    private boolean isPasswordValid(String password) {
+        //TODO: Replace this with your own logic
+        return password.length() > 4;
+    }
+
+    private void showProgress(final boolean show) {
+        if (progress == null) {
+            progress = new ProgressDialog(LoginActivity.this);
+            progress.setTitle(getString(R.string.please_wait_progress));
+            progress.setMessage(getString(R.string.logging_in));
+        }
+        if (show) progress.show();
+        else progress.dismiss();
+    }
+
+    public void cant_log() {
+        final SpannableString span_string = new SpannableString(getApplicationContext().getText(R.string.email_link));
+        Linkify.addLinks(span_string, Linkify.EMAIL_ADDRESSES);
+
+        new AlertDialog.Builder(this)
+                .setMessage(span_string)
+                .setNegativeButton("Send Email", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //finish();
+                        Intent intent = new Intent(Intent.ACTION_SENDTO); //to get only the list of e-mail clients
+                        intent.setType("text/plain");
+                        intent.setData(Uri.parse("mailto:support@intelehealth.io"));
+                        // intent.putExtra(Intent.EXTRA_EMAIL, "support@intelehealth.io");
+                        // intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
+                        //  intent.putExtra(Intent.EXTRA_TEXT, "I'm email body.");
+
+                        startActivity(Intent.createChooser(intent, "Send Email"));
+                        //add email function here !
+                    }
+
+                })
+                .setPositiveButton("Close", null)
+                .show();
+
+        //prajwal_changes
+    }
+
+    /**
+     * class UserLoginTask will authenticate user using email and password.
+     * Depending on server's response, user may or may not have successful login.
+     * This class also uses SharedPreferences to store session ID
+     */
+    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+
+        private final String mEmail;
+        private final String mPassword;
+
+        UserLoginTask(String email, String password) {
+            mEmail = email;
+            mPassword = password;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showProgress(true);
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+
+//                Log.d(TAG, "UN: " + USERNAME);
+//                Log.d(TAG, "PW: " + PASSWORD);
+
+
+            return false;
+
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            mAuthTask = null;
+            showProgress(false);
+
+
+            if (success) {
+                final Account account = new Account(mEmail, "io.intelehealth.openmrs");
+                manager.addAccountExplicitly(account, mPassword, null);
+                offlineLogin.invalidateLoginCredentials();
+                offlineLogin.setUpOfflineLogin(mEmail, mPassword);
+                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                intent.putExtra("login", true);
+//                startJobDispatcherService(LoginActivity.this);
+                startActivity(intent);
+                finish();
+            } else {
+                contentLoginBinding.password.setError(getString(R.string.error_incorrect_password));
+                contentLoginBinding.password.requestFocus();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            mAuthTask = null;
+            showProgress(false);
+        }
     }
 
 }

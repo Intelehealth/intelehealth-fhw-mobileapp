@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:id="@+id/main_menu_group">
+
+        <!--<item-->
+        <!--android:id="@+id/syncOption"-->
+        <!--android:title="@string/menu_option_sync"-->
+        <!--android:orderInCategory="50" />-->
+
+        <item
+            android:id="@+id/settingsOption"
+            android:orderInCategory="100"
+            android:title="@string/menu_option_settings" />
+
+        <!--<item-->
+        <!--android:id="@+id/endOfDayOption"-->
+        <!--android:title="@string/menu_option_end_of_day"-->
+        <!--android:orderInCategory="100" />-->
+
+        <item
+            android:id="@+id/backupOption"
+            android:orderInCategory="125"
+            android:title="Backup" />
+
+        <item
+            android:id="@+id/restoreOption"
+            android:orderInCategory="125"
+            android:title="Restore" />
+
+        <item
+            android:id="@+id/updateProtocolsOption"
+            android:orderInCategory="150"
+            android:title="Update Protocols" />
+
+        <item
+            android:id="@+id/logoutOption"
+            android:orderInCategory="175"
+            android:title="@string/menu_option_logout" />
+
+    </group>
+</menu>

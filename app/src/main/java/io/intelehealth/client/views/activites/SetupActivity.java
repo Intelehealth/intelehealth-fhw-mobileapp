@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -54,7 +55,10 @@ import io.intelehealth.client.utilities.UrlModifiers;
 import io.intelehealth.client.viewModels.SetupViewModel;
 import io.intelehealth.client.views.adapters.LocationArrayAdapter;
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -82,13 +86,15 @@ public class SetupActivity extends AppCompatActivity {
 //        setContentView(R.layout.activity_setup);
         activitySetupBinding = DataBindingUtil.setContentView(this, R.layout.activity_setup);
         binding = DataBindingUtil.setContentView(this, R.layout.content_setup);
+        getSupportActionBar();
         setupViewModel = ViewModelProviders.of(this).get(SetupViewModel.class);
         /*set handlers with data binding*/
         activitySetupBinding.setViewmodel(setupViewModel);
         activitySetupBinding.setLifecycleOwner(this);
         sessionManager = new SessionManager(this);
+        // Persistent login information
+        manager = AccountManager.get(SetupActivity.this);
         Toolbar toolbar = findViewById(R.id.toolbar);
-
         setSupportActionBar(toolbar);
 
         binding.setupSubmitButton.setOnClickListener(new View.OnClickListener() {
@@ -151,6 +157,12 @@ public class SetupActivity extends AppCompatActivity {
 
     }
 
+    private void setupActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        if (null != actionBar) {
+            actionBar.setDisplayHomeAsUpEnabled(false);
+        }
+    }
     /**
      * Check username and password validations.
      * Get user selected location.
@@ -390,16 +402,81 @@ public class SetupActivity extends AppCompatActivity {
         protected Integer doInBackground(Void... params) {
 
             String urlString = urlModifiers.loginUrl(CLEAN_URL);
+            Logger.logD(TAG, "usernaem and password" + USERNAME + PASSWORD);
             encoded = base64Methods.encoded(USERNAME, PASSWORD);
             sessionManager.setEncoded(encoded);
-            Observable<LoginModel> loginModelObservable = AppConstants.apiInterface.LOGIN_MODEL_OBSERVABLE(urlString, encoded);
-            loginModelObservable.subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .map(result -> result)
-                    .subscribe(
-                            this::handleResults,
-                            this::handleError);
-            return 201;
+            Observable<LoginModel> loginModelObservable = AppConstants.apiInterface.LOGIN_MODEL_OBSERVABLE(urlString, "Basic " + encoded);
+            loginModelObservable.subscribe(new Observer<LoginModel>() {
+                @Override
+                public void onSubscribe(Disposable d) {
+
+                }
+
+                @Override
+                public void onNext(LoginModel loginModel) {
+                    int responsCode = loginModel.hashCode();
+                    Boolean authencated = loginModel.getAuthenticated();
+                    Gson gson = new Gson();
+                    Logger.logD(TAG, "success" + gson.toJson(loginModel));
+                    sessionManager.setChwname(loginModel.getUser().getDisplay());
+                    sessionManager.setCreatorID(loginModel.getUser().getUuid());
+                    sessionManager.setSessionID(loginModel.getSessionId());
+                    sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
+                    UrlModifiers urlModifiers = new UrlModifiers();
+                    String url = urlModifiers.loginUrlProvider(CLEAN_URL, loginModel.getUser().getUuid());
+                    if (authencated) {
+                        Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);
+                        loginProviderModelObservable
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new DisposableObserver<LoginProviderModel>() {
+                                    @Override
+                                    public void onNext(LoginProviderModel loginProviderModel) {
+                                        if (loginProviderModel.getResults().size() != 0) {
+                                            for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
+                                                Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
+                                                sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        Logger.logD(TAG, "handle provider error" + e.getMessage());
+                                    }
+
+                                    @Override
+                                    public void onComplete() {
+
+                                    }
+                                });
+//                        loginProviderModelObservable.subscribeOn(Schedulers.io())
+//                                .observeOn(AndroidSchedulers.mainThread())
+//                                .map(result -> result)
+//                                .subscribe(this::handleloginProvidersResult,
+//                                        this::handleLoginProvidersError);
+                    }
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    Logger.logD(TAG, "Login Failure" + e.getMessage());
+                }
+
+                @Override
+                public void onComplete() {
+                    Logger.logD(TAG, "completed");
+                }
+            });
+
+
+//            loginModelObservable.subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .map(result -> result)
+//                    .subscribe(
+//                            this::handleResults,
+//                            this::handleError);
+            return 200;
         }
 
         @Override
@@ -407,7 +484,7 @@ public class SetupActivity extends AppCompatActivity {
             mAuthTask = null;
 //            showProgress(false);
 
-            if (success == 1) {
+            if (success == 200) {
                 final Account account = new Account(USERNAME, "io.intelehealth.openmrs");
                 manager.addAccountExplicitly(account, PASSWORD, null);
 
@@ -454,48 +531,6 @@ public class SetupActivity extends AppCompatActivity {
             }
 
             progress.dismiss();
-        }
-
-        private void handleError(Throwable throwable) {
-            Logger.logD(TAG, "Login Failure" + throwable.getMessage());
-        }
-
-        private void handleResults(LoginModel loginModel) {
-            int responsCode = loginModel.hashCode();
-            Boolean authencated = loginModel.getAuthenticated();
-            Gson gson = new Gson();
-            Logger.logD(TAG, "success" + gson.toJson(loginModel));
-            sessionManager.setChwname(loginModel.getUser().getDisplay());
-            sessionManager.setCreatorID(loginModel.getUser().getUuid());
-            sessionManager.setSessionID(loginModel.getSessionId());
-            sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
-            UrlModifiers urlModifiers = new UrlModifiers();
-            String url = urlModifiers.loginUrlProvider(CLEAN_URL, loginModel.getUser().getUuid());
-            if (authencated) {
-                Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, encoded);
-                loginProviderModelObservable.subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .map(result -> result)
-                        .subscribe(this::handleloginProvidersResult,
-                                this::handleLoginProvidersError);
-            }
-        }
-
-        private void handleLoginProvidersError(Throwable throwable) {
-            Logger.logD(TAG, "handle provider error" + throwable.getMessage());
-        }
-
-
-        private void handleloginProvidersResult(LoginProviderModel loginProviderModel) {
-
-            if (loginProviderModel.getResults().size() != 0) {
-                for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
-                    Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
-                    sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
-                }
-            }
-
-
         }
     }
 
