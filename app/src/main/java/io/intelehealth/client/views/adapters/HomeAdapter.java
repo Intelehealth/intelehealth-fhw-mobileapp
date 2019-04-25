@@ -11,13 +11,24 @@ import android.view.ViewGroup;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.IntelehealthApplication;
+import io.intelehealth.client.dao.PullDataDAO;
 import io.intelehealth.client.databinding.CardviewHomeBinding;
-import io.intelehealth.client.views.activites.LoginActivity;
+import io.intelehealth.client.views.activites.ActivePatientActivity;
+import io.intelehealth.client.views.activites.ActivitySync;
+import io.intelehealth.client.views.activites.IdentificationActivity;
+import io.intelehealth.client.views.activites.SearchPatientActivity;
+import io.intelehealth.client.views.activites.TodayPatientActivity;
 
 /**
  * Created by tusharjois on 9/20/16.
  */
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder> {
+    Context context;
+
+    public HomeAdapter(Context context) {
+        this.context = context;
+
+    }
 
     final static String TAG = HomeAdapter.class.getSimpleName();
     final String[] options = {IntelehealthApplication.getAppContext().getString(R.string.new_patient),
@@ -42,9 +53,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
             layoutInflater = LayoutInflater.from(parent.getContext());
         }
         CardviewHomeBinding cardviewHomeBinding = DataBindingUtil.inflate(layoutInflater, R.layout.cardview_home, parent, false);
-//        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_home, parent, false);
-//        return new IconViewHolder(v, parent.getContext());
-        return new IconViewHolder(cardviewHomeBinding, parent.getContext());
+        return new IconViewHolder(cardviewHomeBinding);
     }
 
     @Override
@@ -52,6 +61,57 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
         holder.cardviewHomeBinding.optionName.setText(options[position]);
         holder.cardviewHomeBinding.optionName.setId(position);
         holder.cardviewHomeBinding.optionIcon.setImageResource(icons[position]);
+        holder.cardviewHomeBinding.cardviewHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (holder.cardviewHomeBinding.optionName.getId()) {
+                    case 0: {
+                        Intent intent = new Intent(context, IdentificationActivity.class);
+                        context.startActivity(intent);
+                        break;
+                    }
+                    case 1: {
+                        Intent intent = new Intent(context, SearchPatientActivity.class);
+                        context.startActivity(intent);
+                        break;
+                    }
+                    case 2: {
+
+                        //TODO: Change Activity after coding is done.
+
+                        // Query for today's patient
+                        // SELECT * FROM visit WHERE start_datetime LIKE "2017-05-08T%" ORDER BY start_datetime ASC
+                        Intent intent = new Intent(context, TodayPatientActivity.class);
+                        context.startActivity(intent);
+                        break;
+                    }
+                    case 3: {
+
+                        //TODO: Change Activity after coding is done.
+
+                        // Query for today's patient
+                        // SELECT * FROM visit WHERE start_datetime LIKE "2017-05-08T%" ORDER BY start_datetime ASC
+                        Intent intent = new Intent(context, ActivePatientActivity.class);
+                        context.startActivity(intent);
+                        break;
+                    }
+                    case 4: {
+                        PullDataDAO pullDataDAO = new PullDataDAO();
+                        pullDataDAO.pullData(context);
+//                        Intent intent = new Intent(context, VideoLibraryActivity.class);
+//                        context.startActivity(intent);
+                        break;
+                    }
+                    case 5: {
+                        Intent intent = new Intent(context, ActivitySync.class);
+                        context.startActivity(intent);
+                        break;
+                    }
+                    default:
+                        Log.i(TAG, "Matching class not found");
+                }
+            }
+        });
 //        holder.optionName.setText(options[position]);
 //        holder.optionName.setId(position);
 //        holder.icon.setImageResource(icons[position]);
@@ -62,7 +122,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
         return this.options.length;
     }
 
-    public static class IconViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class IconViewHolder extends RecyclerView.ViewHolder {
         //        CardView cardView;
 //        TextView optionName;
 //        ImageView icon;
@@ -70,64 +130,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
 
         CardviewHomeBinding cardviewHomeBinding;
 
-        IconViewHolder(CardviewHomeBinding cardviewHomeBinding1, Context activityContext) {
+        IconViewHolder(CardviewHomeBinding cardviewHomeBinding1) {
             super(cardviewHomeBinding1.getRoot());
             this.cardviewHomeBinding = cardviewHomeBinding1;
-//            itemView.setOnClickListener(this);
-//            this.cardView = (CardView) itemView.findViewById(R.id.cardview_home);
-//            this.optionName = (TextView) itemView.findViewById(R.id.option_name);
-//            this.icon = (ImageView) itemView.findViewById(R.id.option_icon);
-            this.context = activityContext;
-        }
-
-        @Override
-        public void onClick(View v) {
-            switch (this.cardviewHomeBinding.optionName.getId()) {
-                case 0: {
-                    Intent intent = new Intent(this.context, LoginActivity.class);
-                    this.context.startActivity(intent);
-                    break;
-                }
-                case 1: {
-                    Intent intent = new Intent(this.context, LoginActivity.class);
-                    this.context.startActivity(intent);
-                    break;
-                }
-                case 2: {
-
-                    //TODO: Change Activity after coding is done.
-
-                    // Query for today's patient
-                    // SELECT * FROM visit WHERE start_datetime LIKE "2017-05-08T%" ORDER BY start_datetime ASC
-                    Intent intent = new Intent(this.context, LoginActivity.class);
-                    this.context.startActivity(intent);
-                    break;
-                }
-                case 3: {
-
-                    //TODO: Change Activity after coding is done.
-
-                    // Query for today's patient
-                    // SELECT * FROM visit WHERE start_datetime LIKE "2017-05-08T%" ORDER BY start_datetime ASC
-                    Intent intent = new Intent(this.context, LoginActivity.class);
-                    this.context.startActivity(intent);
-                    break;
-                }
-                case 4: {
-                    Intent intent = new Intent(this.context, LoginActivity.class);
-                    this.context.startActivity(intent);
-                    break;
-                }
-                case 5: {
-                    Intent intent = new Intent(this.context, LoginActivity.class);
-                    this.context.startActivity(intent);
-                    break;
-                }
-                default:
-                    Log.i(TAG, "Matching class not found");
-            }
 
         }
+
 
     }
 

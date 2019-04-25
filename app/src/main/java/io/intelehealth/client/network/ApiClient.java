@@ -10,15 +10,18 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
     //    SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-    static String apiBaseUrl = "http://openmrs.intelehealth.io";
+    private static String apiBaseUrl = "http://openmrs.intelehealth.io";
 
     private static OkHttpClient.Builder client = new OkHttpClient.Builder();
     private static Retrofit retrofit = null;
+    private static Retrofit.Builder builder =
+            new Retrofit.Builder()
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .baseUrl(apiBaseUrl)
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
 
     public static Retrofit getApiClient() {
-        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        client.addInterceptor(loggingInterceptor);
+
         if (retrofit == null) {
 
             retrofit = new Retrofit.Builder()
@@ -33,6 +36,20 @@ public class ApiClient {
 
     public static void changeApiBaseUrl(String newApiBaseUrl) {
         apiBaseUrl = newApiBaseUrl;
+        builder = new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .baseUrl(apiBaseUrl);
+    }
+
+    public static <S> S createService(Class<S> serviceClass) {
+
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        client.addInterceptor(loggingInterceptor);
+
+        Retrofit retrofit = builder.client(client.build()).build();
+        return retrofit.create(serviceClass);
     }
 
 }

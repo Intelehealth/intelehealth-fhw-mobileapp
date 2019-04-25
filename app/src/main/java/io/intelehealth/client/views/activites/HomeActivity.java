@@ -32,10 +32,8 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import io.intelehealth.client.R;
-import io.intelehealth.client.SettingsActivity;
 import io.intelehealth.client.backup.BackupCloud;
 import io.intelehealth.client.databinding.ActivityHomeBinding;
-import io.intelehealth.client.databinding.ContentHomeBinding;
 import io.intelehealth.client.services.DownloadProtocolsTask;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.OfflineLogin;
@@ -53,14 +51,12 @@ public class HomeActivity extends AppCompatActivity {
     private static final String TAG = HomeActivity.class.getSimpleName();
     SessionManager sessionManager = null;
     ActivityHomeBinding activityHomeBinding;
-    ContentHomeBinding contentHomeBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_home);
         activityHomeBinding = DataBindingUtil.setContentView(this, R.layout.activity_home);
-        contentHomeBinding = DataBindingUtil.setContentView(this, R.layout.content_home);
         sessionManager = new SessionManager(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -74,10 +70,10 @@ public class HomeActivity extends AppCompatActivity {
         }
         setTitle(R.string.title_activity_login);
         Logger.logD(TAG, "onCreate: " + getFilesDir().toString());
-        contentHomeBinding.recyclerviewHome.setHasFixedSize(true);
+        activityHomeBinding.recyclerviewHome.setHasFixedSize(true);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(HomeActivity.this, 1);
-        contentHomeBinding.recyclerviewHome.setLayoutManager(gridLayoutManager);
-        contentHomeBinding.recyclerviewHome.setAdapter(new HomeAdapter());
+        activityHomeBinding.recyclerviewHome.setLayoutManager(gridLayoutManager);
+        activityHomeBinding.recyclerviewHome.setAdapter(new HomeAdapter(HomeActivity.this));
 
         String date = sessionManager.getDate();
         String time = sessionManager.getTime();

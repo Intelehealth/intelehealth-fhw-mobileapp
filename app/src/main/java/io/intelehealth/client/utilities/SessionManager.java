@@ -2,6 +2,7 @@ package io.intelehealth.client.utilities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 public class SessionManager {
     // Shared preferences file name
@@ -215,6 +216,13 @@ public class SessionManager {
     public void setTime(String time) {
         editor.putString(TIME, time);
         editor.commit();
+    }
+
+    public boolean valueContains(String value) {
+        boolean hasvalue = false;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(_context);
+        hasvalue = sharedPreferences.contains(value);
+        return hasvalue;
     }
 
 }

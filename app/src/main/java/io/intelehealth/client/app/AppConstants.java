@@ -25,7 +25,7 @@ public class AppConstants {
     //functions constants
     public static Storage storage = new Storage(IntelehealthApplication.getAppContext());
     public static InteleHealthDatabaseHelper inteleHealthDatabaseHelper = new InteleHealthDatabaseHelper(IntelehealthApplication.getAppContext());
-    public static ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+    public static ApiInterface apiInterface = ApiClient.createService(ApiInterface.class);
     public static SqliteDbCloseHelper sqliteDbCloseHelper = new SqliteDbCloseHelper();
     public static DateAndTimeUtils dateAndTimeUtils = new DateAndTimeUtils();
 

@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -38,12 +37,12 @@ import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.app.IntelehealthApplication;
 import io.intelehealth.client.databinding.ActivitySetupBinding;
-import io.intelehealth.client.databinding.ContentSetupBinding;
 import io.intelehealth.client.models.Location;
 import io.intelehealth.client.models.Results;
 import io.intelehealth.client.models.loginModel.LoginModel;
 import io.intelehealth.client.models.loginProviderModel.LoginProviderModel;
 import io.intelehealth.client.network.ApiClient;
+import io.intelehealth.client.network.ApiInterface;
 import io.intelehealth.client.services.DownloadProtocolsTask;
 import io.intelehealth.client.utilities.AdminPassword;
 import io.intelehealth.client.utilities.Base64Methods;
@@ -67,7 +66,6 @@ public class SetupActivity extends AppCompatActivity {
     private static final String TAG = SetupActivity.class.getSimpleName();
     SetupViewModel setupViewModel;
     ActivitySetupBinding activitySetupBinding;
-    ContentSetupBinding binding;
     private boolean isLocationFetched;
     private TestSetup mAuthTask = null;
     private List<Location> mLocations = new ArrayList<>();
@@ -85,7 +83,6 @@ public class SetupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_setup);
         activitySetupBinding = DataBindingUtil.setContentView(this, R.layout.activity_setup);
-        binding = DataBindingUtil.setContentView(this, R.layout.content_setup);
         getSupportActionBar();
         setupViewModel = ViewModelProviders.of(this).get(SetupViewModel.class);
         /*set handlers with data binding*/
@@ -97,7 +94,7 @@ public class SetupActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        binding.setupSubmitButton.setOnClickListener(new View.OnClickListener() {
+        activitySetupBinding.setupSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 attemptLogin();
@@ -105,7 +102,7 @@ public class SetupActivity extends AppCompatActivity {
         });
 
 
-        binding.adminPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        activitySetupBinding.adminPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_NULL) {
@@ -116,9 +113,9 @@ public class SetupActivity extends AppCompatActivity {
             }
         });
 
-        binding.textViewAid.setText("Android Id: " + IntelehealthApplication.getAndroidId());
+        activitySetupBinding.textViewAid.setText("Android Id: " + IntelehealthApplication.getAndroidId());
 
-        binding.setupSubmitButton.setOnClickListener(new View.OnClickListener() {
+        activitySetupBinding.setupSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 attemptLogin();
@@ -127,7 +124,7 @@ public class SetupActivity extends AppCompatActivity {
         DialogUtils dialogUtils = new DialogUtils();
         dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet), getString(R.string.generic_ok));
 
-        binding.editTextURL.addTextChangedListener(new TextWatcher() {
+        activitySetupBinding.editTextURL.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -137,14 +134,16 @@ public class SetupActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 isLocationFetched = false;
                 LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, new ArrayList<String>());
-                binding.spinnerLocation.setAdapter(adapter);
+                activitySetupBinding.spinnerLocation.setAdapter(adapter);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!binding.editTextURL.getText().toString().trim().isEmpty() && binding.editTextURL.getText().toString().length() >= 13) {
-                    if (Patterns.WEB_URL.matcher(binding.editTextURL.getText().toString()).matches()) {
-                        String BASE_URL = "http://" + binding.editTextURL.getText().toString() + ":8080/openmrs/ws/rest/v1/";
+                Logger.logD(TAG, "ontextchanged" + s);
+                Logger.logD(TAG, "on ui" + activitySetupBinding.editTextURL.getText().toString());
+                if (!activitySetupBinding.editTextURL.getText().toString().trim().isEmpty() && activitySetupBinding.editTextURL.getText().toString().length() >= 13) {
+                    if (Patterns.WEB_URL.matcher(activitySetupBinding.editTextURL.getText().toString()).matches()) {
+                        String BASE_URL = "http://" + activitySetupBinding.editTextURL.getText().toString() + ":8080/openmrs/ws/rest/v1/";
                         if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched)
                             getLocationFromServer(BASE_URL);
                         else
@@ -155,13 +154,7 @@ public class SetupActivity extends AppCompatActivity {
         });
 
 
-    }
 
-    private void setupActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (null != actionBar) {
-            actionBar.setDisplayHomeAsUpEnabled(false);
-        }
     }
     /**
      * Check username and password validations.
@@ -176,48 +169,48 @@ public class SetupActivity extends AppCompatActivity {
 
 
         // Reset errors.
-        binding.email.setError(null);
-        binding.password.setError(null);
-        binding.adminPassword.setError(null);
+        activitySetupBinding.email.setError(null);
+        activitySetupBinding.password.setError(null);
+        activitySetupBinding.adminPassword.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = binding.email.getText().toString();
-        String password = binding.password.getText().toString();
-        String admin_password = binding.adminPassword.getText().toString();
+        String email = activitySetupBinding.email.getText().toString();
+        String password = activitySetupBinding.password.getText().toString();
+        String admin_password = activitySetupBinding.adminPassword.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            binding.password.setError(getString(R.string.error_invalid_password));
-            focusView = binding.password;
+            activitySetupBinding.password.setError(getString(R.string.error_invalid_password));
+            focusView = activitySetupBinding.password;
             cancel = true;
         }
 
         if (!TextUtils.isEmpty(admin_password) && !isPasswordValid(admin_password)) {
-            binding.adminPassword.setError(getString(R.string.error_invalid_password));
-            focusView = binding.adminPassword;
+            activitySetupBinding.adminPassword.setError(getString(R.string.error_invalid_password));
+            focusView = activitySetupBinding.adminPassword;
             cancel = true;
         }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
-            binding.email.setError(getString(R.string.error_field_required));
-            focusView = binding.email;
+            activitySetupBinding.email.setError(getString(R.string.error_field_required));
+            focusView = activitySetupBinding.email;
             cancel = true;
         } else if (!isEmailValid(email)) {
-            binding.email.setError(getString(R.string.error_invalid_email));
-            focusView = binding.email;
+            activitySetupBinding.email.setError(getString(R.string.error_invalid_email));
+            focusView = activitySetupBinding.email;
 
         }
         Location location = null;
 
-        if (binding.spinnerLocation.getSelectedItemPosition() <= 0) {
+        if (activitySetupBinding.spinnerLocation.getSelectedItemPosition() <= 0) {
             cancel = true;
             Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_selected), Toast.LENGTH_LONG).show();
         } else {
-            location = mLocations.get(binding.spinnerLocation.getSelectedItemPosition() - 1);
+            location = mLocations.get(activitySetupBinding.spinnerLocation.getSelectedItemPosition() - 1);
         }
 
         if (cancel) {
@@ -230,7 +223,7 @@ public class SetupActivity extends AppCompatActivity {
             // perform the user login attempt.
             if (location != null) {
                 Log.i(TAG, location.getDisplay());
-                String urlString = binding.editTextURL.getText().toString();
+                String urlString = activitySetupBinding.editTextURL.getText().toString();
                 mAuthTask = new TestSetup(urlString, email, password, admin_password, location);
                 mAuthTask.execute();
                 Log.d(TAG, "attempting setup");
@@ -255,34 +248,43 @@ public class SetupActivity extends AppCompatActivity {
      */
     private void getLocationFromServer(String url) {
         ApiClient.changeApiBaseUrl(url);
-        Observable<Results<Location>> resultsObservable = AppConstants.apiInterface.LOCATION_OBSERVABLE(null);
-        resultsObservable.subscribeOn(Schedulers.io())
+        ApiInterface apiService =
+                ApiClient.createService(ApiInterface.class);
+        Observable<Results<Location>> resultsObservable = apiService.LOCATION_OBSERVABLE(null);
+        resultsObservable
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .map(result -> result)
-                .subscribe(this::handleLocationFromServerResult,
-                        this::handleLocationFromServerError);
+                .subscribe(new DisposableObserver<Results<Location>>() {
+                    @Override
+                    public void onNext(Results<Location> locationResults) {
+                        if (locationResults.getResults() != null) {
+                            Results<Location> locationList = locationResults;
+                            mLocations = locationList.getResults();
+                            List<String> items = getLocationStringList(locationList.getResults());
+                            LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, items);
+                            activitySetupBinding.spinnerLocation.setAdapter(adapter);
+                            isLocationFetched = true;
+                        } else {
+                            isLocationFetched = false;
+                            Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        isLocationFetched = false;
+                        Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
 
     }
 
-    private void handleLocationFromServerError(Throwable throwable) {
-        isLocationFetched = false;
-        Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
-
-    }
-
-    private void handleLocationFromServerResult(Results<Location> locationResults) {
-        if (locationResults.getResults() != null) {
-            Results<Location> locationList = locationResults;
-            mLocations = locationList.getResults();
-            List<String> items = getLocationStringList(locationList.getResults());
-            LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, items);
-            binding.spinnerLocation.setAdapter(adapter);
-            isLocationFetched = true;
-        } else {
-            isLocationFetched = false;
-            Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
-        }
-    }
 
     /**
      * Returns list of locations.
@@ -306,13 +308,13 @@ public class SetupActivity extends AppCompatActivity {
         switch (v.getId()) {
             case R.id.demoMindmap:
                 if (checked) {
-                    binding.demoMindmap.setChecked(false);
+                    activitySetupBinding.demoMindmap.setChecked(false);
                 }
                 break;
 
             case R.id.downloadMindmap:
                 if (checked) {
-                    binding.downloadMindmap.setChecked(false);
+                    activitySetupBinding.downloadMindmap.setChecked(false);
 
                     dialog = new AlertDialog.Builder(this);
                     LayoutInflater li = LayoutInflater.from(this);
@@ -450,11 +452,6 @@ public class SetupActivity extends AppCompatActivity {
 
                                     }
                                 });
-//                        loginProviderModelObservable.subscribeOn(Schedulers.io())
-//                                .observeOn(AndroidSchedulers.mainThread())
-//                                .map(result -> result)
-//                                .subscribe(this::handleloginProvidersResult,
-//                                        this::handleLoginProvidersError);
                     }
                 }
 
@@ -470,12 +467,6 @@ public class SetupActivity extends AppCompatActivity {
             });
 
 
-//            loginModelObservable.subscribeOn(Schedulers.io())
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .map(result -> result)
-//                    .subscribe(
-//                            this::handleResults,
-//                            this::handleError);
             return 200;
         }
 
@@ -508,7 +499,7 @@ public class SetupActivity extends AppCompatActivity {
                 Log.i(TAG, "onPostExecute: Parse init");
                 Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
                 intent.putExtra("setup", true);
-                if (binding.downloadMindmap.isChecked()) {
+                if (activitySetupBinding.downloadMindmap.isChecked()) {
                     if (sessionManager.getLicenseKey().contains("licensekey")) {
                         startActivity(intent);
 //                        startJobDispatcherService(SetupActivity.this);
@@ -523,11 +514,11 @@ public class SetupActivity extends AppCompatActivity {
 
 
             } else if (success == 201) {
-                binding.password.setError(getString(R.string.error_incorrect_password));
-                binding.password.requestFocus();
+                activitySetupBinding.password.setError(getString(R.string.error_incorrect_password));
+                activitySetupBinding.password.requestFocus();
             } else if (success == 3) {
-                binding.editTextURL.setError(getString(R.string.url_invalid));
-                binding.editTextURL.requestFocus();
+                activitySetupBinding.editTextURL.setError(getString(R.string.url_invalid));
+                activitySetupBinding.editTextURL.requestFocus();
             }
 
             progress.dismiss();

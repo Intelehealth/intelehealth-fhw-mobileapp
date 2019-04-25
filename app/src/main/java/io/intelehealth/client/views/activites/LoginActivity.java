@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.util.Linkify;
@@ -24,20 +23,31 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import io.intelehealth.client.R;
+import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.databinding.ActivityLoginBinding;
-import io.intelehealth.client.databinding.ContentLoginBinding;
+import io.intelehealth.client.models.loginModel.LoginModel;
+import io.intelehealth.client.models.loginProviderModel.LoginProviderModel;
+import io.intelehealth.client.utilities.Base64Methods;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.NetworkConnection;
 import io.intelehealth.client.utilities.OfflineLogin;
 import io.intelehealth.client.utilities.SessionManager;
+import io.intelehealth.client.utilities.UrlModifiers;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 
 public class LoginActivity extends AppCompatActivity {
 
     /**
      * A dummy authentication store containing known user names and passwords.
      */
-    // TODO: remove after connecting to a real authentication system.
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "username:password", "admin:nimda"
     };
@@ -45,7 +55,6 @@ public class LoginActivity extends AppCompatActivity {
     protected AccountManager manager;
     ProgressDialog progress;
     ActivityLoginBinding activityLoginBinding;
-    ContentLoginBinding contentLoginBinding;
     SessionManager sessionManager = null;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -53,25 +62,28 @@ public class LoginActivity extends AppCompatActivity {
     private UserLoginTask mAuthTask = null;
     private OfflineLogin offlineLogin = null;
 
+    UrlModifiers urlModifiers = new UrlModifiers();
+    Base64Methods base64Methods = new Base64Methods();
+    String encoded = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_login);
         activityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
-        contentLoginBinding = DataBindingUtil.setContentView(this, R.layout.content_login);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(activityLoginBinding.toolbar);
         setTitle(R.string.title_activity_login);
 
         offlineLogin = OfflineLogin.getOfflineLogin();
 
-        contentLoginBinding.cantLoginId.setOnClickListener(new View.OnClickListener() {
+        activityLoginBinding.cantLoginId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                cant_log();
             }
         });
+        manager = AccountManager.get(LoginActivity.this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -103,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
 
-        contentLoginBinding.password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        activityLoginBinding.password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == R.id.login || actionId == EditorInfo.IME_NULL) {
@@ -113,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
                 return false;
             }
         });
-        contentLoginBinding.emailSignInButton.setOnClickListener(new View.OnClickListener() {
+        activityLoginBinding.emailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Logger.logD(TAG, "button pressed");
@@ -136,27 +148,27 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         // Reset errors.
-        contentLoginBinding.email.setError(null);
-        contentLoginBinding.password.setError(null);
+        activityLoginBinding.email.setError(null);
+        activityLoginBinding.password.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = contentLoginBinding.email.getText().toString();
-        String password = contentLoginBinding.password.getText().toString();
+        String email = activityLoginBinding.email.getText().toString();
+        String password = activityLoginBinding.password.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            contentLoginBinding.password.setError(getString(R.string.error_invalid_password));
-            focusView = contentLoginBinding.password;
+            activityLoginBinding.password.setError(getString(R.string.error_invalid_password));
+            focusView = activityLoginBinding.password;
             cancel = true;
         }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
-            contentLoginBinding.email.setError(getString(R.string.error_field_required));
-            focusView = contentLoginBinding.email;
+            activityLoginBinding.email.setError(getString(R.string.error_field_required));
+            focusView = activityLoginBinding.email;
             cancel = true;
         }
         if (cancel) {
@@ -250,9 +262,71 @@ public class LoginActivity extends AppCompatActivity {
 
 //                Log.d(TAG, "UN: " + USERNAME);
 //                Log.d(TAG, "PW: " + PASSWORD);
+            String urlString = urlModifiers.loginUrl(sessionManager.getServerUrlRest());
+            Logger.logD(TAG, "usernaem and password" + mEmail + mPassword);
+            encoded = base64Methods.encoded(mEmail, mPassword);
+            sessionManager.setEncoded(encoded);
+            Observable<LoginModel> loginModelObservable = AppConstants.apiInterface.LOGIN_MODEL_OBSERVABLE(urlString, "Basic " + encoded);
+            loginModelObservable.subscribe(new Observer<LoginModel>() {
+                @Override
+                public void onSubscribe(Disposable d) {
+
+                }
+
+                @Override
+                public void onNext(LoginModel loginModel) {
+                    int responsCode = loginModel.hashCode();
+                    Boolean authencated = loginModel.getAuthenticated();
+                    Gson gson = new Gson();
+                    Logger.logD(TAG, "success" + gson.toJson(loginModel));
+                    sessionManager.setChwname(loginModel.getUser().getDisplay());
+                    sessionManager.setCreatorID(loginModel.getUser().getUuid());
+                    sessionManager.setSessionID(loginModel.getSessionId());
+                    sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
+                    UrlModifiers urlModifiers = new UrlModifiers();
+                    String url = urlModifiers.loginUrlProvider(sessionManager.getServerUrlRest(), loginModel.getUser().getUuid());
+                    if (authencated) {
+                        Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);
+                        loginProviderModelObservable
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new DisposableObserver<LoginProviderModel>() {
+                                    @Override
+                                    public void onNext(LoginProviderModel loginProviderModel) {
+                                        if (loginProviderModel.getResults().size() != 0) {
+                                            for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
+                                                Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
+                                                sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        Logger.logD(TAG, "handle provider error" + e.getMessage());
+                                    }
+
+                                    @Override
+                                    public void onComplete() {
+
+                                    }
+                                });
+                    }
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    Logger.logD(TAG, "Login Failure" + e.getMessage());
+                }
+
+                @Override
+                public void onComplete() {
+                    Logger.logD(TAG, "completed");
+                }
+            });
 
 
-            return false;
+            return true;
 
         }
 
@@ -273,8 +347,8 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             } else {
-                contentLoginBinding.password.setError(getString(R.string.error_incorrect_password));
-                contentLoginBinding.password.requestFocus();
+                activityLoginBinding.password.setError(getString(R.string.error_incorrect_password));
+                activityLoginBinding.password.requestFocus();
             }
         }
 

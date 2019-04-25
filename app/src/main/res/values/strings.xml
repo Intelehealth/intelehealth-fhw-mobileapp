@@ -426,6 +426,7 @@
 
     <string name="title_activity_splash_acticity">SplashActicity</string>
     <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_sync">ActivitySync</string>
 
 
 </resources>
