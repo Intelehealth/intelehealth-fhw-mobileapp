@@ -92,7 +92,16 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "modified_date TEXT," +
             "synced TEXT" +
             ")";
-
+    public static final String CREATE_OBS_TEMP = "CREATE TABLE IF NOT EXISTS temp_obs (" +
+            "uuid TEXT," +
+            "encounteruuid TEXT," +
+            "conceptuuid integer(10)," +
+            "value TEXT," +
+            "creator TEXT," +
+            "voided TEXT," +
+            "modified_date TEXT," +
+            "synced TEXT" +
+            ")";
     /*"openmrs_obsuuid": "5e3e7c8d-e3c3-4a1d-a391-d3d04e45df0e",
                 "openmrs_encounteruuid": "99835c05-8c5c-4d17-b96d-095fb12ebc53",
                 "conceptid": 5090,
@@ -151,6 +160,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_PATIENT_ATTRIBUTE_MASTER_MAIN);
         db.execSQL(CREATE_LOCATION);
         db.execSQL(CREATE_PROVIDER);
+        db.execSQL(CREATE_OBS_TEMP);
     }
 
     @Override

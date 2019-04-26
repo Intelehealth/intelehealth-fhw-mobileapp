@@ -26,6 +26,9 @@ public class SessionManager {
     private static final String LICENSE_KEY = "licensekey";
     private static final String DATE = "date";
     private static final String TIME = "time";
+    private static final String FIRST_TIME_SYNC_EXECUTE = "FIRST_TIME_SYNC_EXECUTE";
+    private static final String LICENSE = "license";
+
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -223,6 +226,15 @@ public class SessionManager {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(_context);
         hasvalue = sharedPreferences.contains(value);
         return hasvalue;
+    }
+
+    public boolean isFirstTimeSyncExcuted() {
+        return pref.getBoolean(FIRST_TIME_SYNC_EXECUTE, true);
+    }
+
+    public void setFirstTimeSyncExecute(Boolean firstTimeSyncExecute1) {
+        editor.putBoolean(FIRST_TIME_SYNC_EXECUTE, firstTimeSyncExecute1);
+        editor.commit();
     }
 
 }

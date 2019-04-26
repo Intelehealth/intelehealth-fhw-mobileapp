@@ -11,6 +11,10 @@
             name="identificationViewModel"
             type="io.intelehealth.client.viewModels.IdentificationViewModel" />
 
+        <variable
+            name="config"
+            type="io.intelehealth.client.utilities.ConfigUtils" />
+
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -94,7 +98,8 @@
                                     android:imeOptions="actionUnspecified"
                                     android:inputType="textCapWords"
                                     android:maxLines="1"
-                                    android:singleLine="true" />
+                                    android:singleLine="true"
+                                    android:visibility="@{config.mFirstName() ? View.GONE: View.VISIBLE}" />
 
                             </android.support.design.widget.TextInputLayout>
 
@@ -116,7 +121,8 @@
                                     android:inputType="textCapWords"
                                     android:maxLines="1"
                                     android:singleLine="true"
-                                    android:tag="@string/tag_optional" />
+                                    android:tag="@string/tag_optional"
+                                    android:visibility="@{config.mMiddleName() ? View.GONE: View.VISIBLE}" />
 
                             </android.support.design.widget.TextInputLayout>
 
@@ -138,7 +144,8 @@
                                     android:imeOptions="actionUnspecified"
                                     android:inputType="textCapWords"
                                     android:maxLines="1"
-                                    android:singleLine="true" />
+                                    android:singleLine="true"
+                                    android:visibility="@{config.mLastName() ? View.GONE: View.VISIBLE}" />
 
                             </android.support.design.widget.TextInputLayout>
 
@@ -176,7 +183,8 @@
                             android:drawableLeft="@drawable/male_icon"
                             android:drawablePadding="10dp"
                             android:text="@string/identification_screen_checkbox_male"
-                            android:textSize="@dimen/id_screen_text_size" />
+                            android:textSize="@dimen/id_screen_text_size"
+                            android:visibility="@{config.mGenderM() ? View.GONE: View.VISIBLE}" />
 
                         <RadioButton
                             android:id="@+id/identification_gender_female"
@@ -187,7 +195,8 @@
                             android:drawableLeft="@drawable/female_icon"
                             android:drawablePadding="10dp"
                             android:text="@string/identification_screen_checkbox_female"
-                            android:textSize="@dimen/id_screen_text_size" />
+                            android:textSize="@dimen/id_screen_text_size"
+                            android:visibility="@{config.mGenderF() ? View.GONE: View.VISIBLE}" />
 
                     </RadioGroup>
 
@@ -212,7 +221,8 @@
                             android:hint="@string/identification_screen_prompt_birthday"
                             android:imeOptions="actionUnspecified"
                             android:maxLines="1"
-                            android:singleLine="true" />
+                            android:singleLine="true"
+                            android:visibility="@{config.mDOB() ? View.GONE: View.VISIBLE}" />
 
 
                     </android.support.design.widget.TextInputLayout>
@@ -236,7 +246,8 @@
                             android:hint="@string/identification_screen_prompt_age"
                             android:imeOptions="actionUnspecified"
                             android:maxLines="1"
-                            android:singleLine="true" />
+                            android:singleLine="true"
+                            android:visibility="@{config.mAge() ? View.GONE: View.VISIBLE}" />
 
                     </android.support.design.widget.TextInputLayout>
 
@@ -260,7 +271,8 @@
                             android:maxLength="10"
                             android:maxLines="1"
                             android:singleLine="true"
-                            android:tag="@string/tag_optional" />
+                            android:tag="@string/tag_optional"
+                            android:visibility="@{config.mPhoneNum() ? View.GONE: View.VISIBLE}" />
 
                     </android.support.design.widget.TextInputLayout>
 
@@ -269,7 +281,8 @@
                         android:id="@+id/identification_llcountry_state"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="@{config.countryStateLayout() ? View.GONE: View.VISIBLE}">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -305,6 +318,7 @@
                                         android:imeOptions="actionUnspecified"
                                         android:inputType="textCapWords"
                                         android:maxLines="1"
+
                                         android:text="@string/identification_screen_prompt_country" />
 
                                     <Spinner
@@ -386,7 +400,8 @@
                             android:hint="@string/identification_screen_prompt_city"
                             android:imeOptions="actionUnspecified"
                             android:inputType="textCapWords"
-                            android:maxLines="1" />
+                            android:maxLines="1"
+                            android:visibility="@{config.mCity() ? View.GONE: View.VISIBLE}" />
 
                     </android.support.design.widget.TextInputLayout>
 
@@ -405,7 +420,8 @@
                             android:inputType="textCapWords"
                             android:maxLines="2"
                             android:singleLine="false"
-                            android:tag="@string/tag_optional" />
+                            android:tag="@string/tag_optional"
+                            android:visibility="@{config.mAddress1() ? View.GONE: View.VISIBLE}" />
 
                     </android.support.design.widget.TextInputLayout>
 
@@ -423,7 +439,8 @@
                             android:imeOptions="actionUnspecified"
                             android:inputType="textCapWords"
                             android:maxLines="2"
-                            android:tag="@string/tag_optional" />
+                            android:tag="@string/tag_optional"
+                            android:visibility="@{config.mAddress1() ? View.GONE: View.VISIBLE}" />
 
                     </android.support.design.widget.TextInputLayout>
 
@@ -441,7 +458,9 @@
                             android:imeOptions="actionUnspecified"
                             android:inputType="number"
                             android:maxLines="1"
-                            android:tag="@string/tag_optional" />
+                            android:tag="@string/tag_optional"
+
+                            android:visibility="@{config.mPostal() ? View.GONE: View.VISIBLE}" />
 
                     </android.support.design.widget.TextInputLayout>
 
@@ -460,7 +479,9 @@
                             android:imeOptions="actionUnspecified"
                             android:inputType="textCapWords"
                             android:maxLines="1"
-                            android:tag="@string/tag_optional" />
+                            android:tag="@string/tag_optional"
+
+                            android:visibility="@{config.mRelationship() ? View.GONE: View.VISIBLE}" />
 
                     </android.support.design.widget.TextInputLayout>
 
@@ -479,9 +500,11 @@
                             android:freezesText="true"
                             android:hint="@string/identification_screen_prompt_occupation"
                             android:imeOptions="actionUnspecified"
+
                             android:inputType="textCapWords"
                             android:maxLines="1"
-                            android:tag="@string/tag_optional" />
+                            android:tag="@string/tag_optional"
+                            android:visibility="@{config.mOccupation() ? View.GONE: View.VISIBLE}" />
 
                     </android.support.design.widget.TextInputLayout>
 
@@ -512,11 +535,13 @@
                                 android:drawablePadding="10dp"
                                 android:focusable="false"
                                 android:focusableInTouchMode="false"
+
                                 android:freezesText="true"
                                 android:imeOptions="actionUnspecified"
                                 android:inputType="textCapWords"
                                 android:maxLines="1"
-                                android:text="@string/identification_screen_prompt_caste" />
+                                android:text="@string/identification_screen_prompt_caste"
+                                android:visibility="@{config.casteLayout() ? View.GONE: View.VISIBLE}" />
 
                             <Spinner
                                 android:id="@+id/spinner_caste"
@@ -550,9 +575,11 @@
                                 android:focusableInTouchMode="false"
                                 android:freezesText="true"
                                 android:imeOptions="actionUnspecified"
+
                                 android:inputType="textCapWords"
                                 android:maxLines="1"
-                                android:text="@string/identification_screen_prompt_economic_status" />
+                                android:text="@string/identification_screen_prompt_economic_status"
+                                android:visibility="@{config.economicLayout() ? View.GONE: View.VISIBLE}" />
 
                             <Spinner
                                 android:id="@+id/spinner_economic_status"
@@ -585,9 +612,11 @@
                                 android:focusableInTouchMode="false"
                                 android:freezesText="true"
                                 android:imeOptions="actionUnspecified"
+
                                 android:inputType="textCapWords"
                                 android:maxLines="1"
-                                android:text="@string/identification_screen_prompt_education" />
+                                android:text="@string/identification_screen_prompt_education"
+                                android:visibility="@{config.educationLayout() ? View.GONE: View.VISIBLE}" />
 
                             <Spinner
                                 android:id="@+id/spinner_education"
@@ -611,6 +640,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            app:srcCompat="@android:drawable/ic_dialog_email" />
+            app:srcCompat="@drawable/ic_done_24dp" />
     </android.support.design.widget.CoordinatorLayout>
 </layout>

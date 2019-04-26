@@ -10,7 +10,6 @@ import java.util.List;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.dto.LocationDTO;
 import io.intelehealth.client.exception.DAOException;
-import io.intelehealth.client.utilities.Logger;
 
 public class LocationDAO {
 
@@ -26,24 +25,15 @@ public class LocationDAO {
         AppConstants.inteleHealthDatabaseHelper.onCreate(db);
         ContentValues values = new ContentValues();
         try {
-            for (int i = 0; i < locationDTOS.size(); i++) {
-                Cursor cursor = db.rawQuery("SELECT * FROM tbl_location where locationuuid = ?", new String[]{locationDTOS.get(i).getLocationuuid()});
+            for (LocationDTO location : locationDTOS) {
+                Cursor cursor = db.rawQuery("SELECT * FROM tbl_location where locationuuid = ?", new String[]{location.getLocationuuid()});
                 if (cursor.getCount() != 0) {
                     while (cursor.moveToNext()) {
-                        Logger.logD("update", "update has to happen");
-                        if (updateLocation(locationDTOS)) {
-                            Logger.logD("updated", "update has to happen");
-                        } else {
-                            Logger.logD("failed", "failed to updated");
-                        }
+                        updateLocation(location);
                     }
                 } else {
-                    Logger.logD("insert", "insert has to happen");
-                    if (createLocation(locationDTOS)) {
-                        Logger.logD("insert", "inserted");
-                    } else {
-                        Logger.logD("insert", "failed to inserted");
-                    }
+//                    Logger.logD("insert", "insert has to happen");
+                    createLocation(location);
                 }
                 AppConstants.sqliteDbCloseHelper.cursorClose(cursor);
             }
@@ -57,23 +47,23 @@ public class LocationDAO {
         return isInserted;
     }
 
-    private boolean createLocation(List<LocationDTO> locationDTOS) throws DAOException {
+    private boolean createLocation(LocationDTO location) throws DAOException {
         boolean isCreated = true;
         ContentValues values = new ContentValues();
         db.beginTransaction();
         try {
-            for (LocationDTO l : locationDTOS) {
+//            for (LocationDTO l : locationDTOS) {
 //                Logger.logD("insert", "insert has to happen");
-                values.put("name", l.getName());
-                values.put("locationuuid", l.getLocationuuid());
-                values.put("retired", l.getRetired());
+            values.put("name", location.getName());
+            values.put("locationuuid", location.getLocationuuid());
+            values.put("retired", location.getRetired());
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
                 values.put("synced", "TRUE");
 //                Logger.logD("pulldata", "datadumper" + values);
                 createdRecordsCount = db.insertWithOnConflict("tbl_location", null, values, SQLiteDatabase.CONFLICT_REPLACE);
-            }
+//            }
             db.setTransactionSuccessful();
-            Logger.logD("created records", "created records count" + createdRecordsCount);
+//            Logger.logD("created records", "created records count" + createdRecordsCount);
         } catch (SQLException e) {
             isCreated = false;
             throw new DAOException(e.getMessage(), e);
@@ -84,23 +74,23 @@ public class LocationDAO {
         return isCreated;
     }
 
-    private boolean updateLocation(List<LocationDTO> locationDTOS) throws DAOException {
+    private boolean updateLocation(LocationDTO location) throws DAOException {
         boolean isUpdated = true;
         ContentValues values = new ContentValues();
         String selection = "locationuuid = ?";
         db.beginTransaction();
         try {
-            for (LocationDTO l : locationDTOS) {
+//            for (LocationDTO l : locationDTOS) {
 //                Logger.logD("insert", "insert has to happen");
-                values.put("name", l.getName());
-                values.put("retired", l.getRetired());
+            values.put("name", location.getName());
+            values.put("retired", location.getRetired());
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
                 values.put("synced", "TRUE");
 //                Logger.logD("pulldata", "datadumper" + values);
-                updatecount = db.updateWithOnConflict("tbl_location", values, selection, new String[]{l.getLocationuuid()}, SQLiteDatabase.CONFLICT_REPLACE);
-            }
+            updatecount = db.updateWithOnConflict("tbl_location", values, selection, new String[]{location.getLocationuuid()}, SQLiteDatabase.CONFLICT_REPLACE);
+//            }
             db.setTransactionSuccessful();
-            Logger.logD("updated", "updatedrecords count" + updatecount);
+//            Logger.logD("updated", "updatedrecords count" + updatecount);
         } catch (SQLException e) {
             isUpdated = false;
             throw new DAOException(e.getMessage(), e);

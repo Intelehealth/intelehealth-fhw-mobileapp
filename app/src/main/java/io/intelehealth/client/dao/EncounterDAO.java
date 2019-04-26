@@ -10,7 +10,6 @@ import java.util.List;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.dto.EncounterDTO;
 import io.intelehealth.client.exception.DAOException;
-import io.intelehealth.client.utilities.Logger;
 
 public class EncounterDAO {
 
@@ -22,24 +21,16 @@ public class EncounterDAO {
         boolean isInserted = true;
         db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         try {
-            for (int i = 0; i < encounterDTOS.size(); i++) {
-                Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_encounter where uuid = ?", new String[]{encounterDTOS.get(i).getUuid()});
+            for (EncounterDTO encounter : encounterDTOS) {
+                Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_encounter where uuid = ?", new String[]{encounter.getUuid()});
                 if (cursor.getCount() != 0) {
                     while (cursor.moveToNext()) {
-                        Logger.logD("update", "update has to happen");
-                        if (updateEncounters(encounterDTOS)) {
-                            Logger.logD("updated", "update has to happen");
-                        } else {
-                            Logger.logD("failed", "failed to updated");
-                        }
+//                        Logger.logD("update", "update has to happen");
+                        updateEncounters(encounter);
                     }
                 } else {
-                    Logger.logD("insert", "insert has to happen");
-                    if (createEncounters(encounterDTOS)) {
-                        Logger.logD("inserted", "sucessfully inserted");
-                    } else {
-                        Logger.logD("failed", "failed to inserted");
-                    }
+//                    Logger.logD("insert", "insert has to happen");
+                    createEncounters(encounter);
                 }
                 AppConstants.sqliteDbCloseHelper.cursorClose(cursor);
             }
@@ -50,13 +41,13 @@ public class EncounterDAO {
         return isInserted;
     }
 
-    private boolean createEncounters(List<EncounterDTO> encounterDTOS) throws DAOException {
+    private boolean createEncounters(EncounterDTO encounter) throws DAOException {
         boolean isCreated = false;
         db.beginTransaction();
         ContentValues values = new ContentValues();
         try {
 
-            for (EncounterDTO encounter : encounterDTOS) {
+//            for (EncounterDTO encounter : encounterDTOS) {
 //                Logger.logD("insert", "insert has to happen");
                 values.put("uuid", encounter.getUuid());
                 values.put("visituuid", encounter.getVisituuid());
@@ -66,9 +57,9 @@ public class EncounterDAO {
                 values.put("voided", encounter.getVoided());
 //                Logger.logD("pulldata", "datadumper" + values);
                 createdRecordsCount = db.insertWithOnConflict("tbl_encounter", null, values, SQLiteDatabase.CONFLICT_REPLACE);
-            }
+//            }
             db.setTransactionSuccessful();
-            Logger.logD("created records", "created records count" + createdRecordsCount);
+//            Logger.logD("created records", "created records count" + createdRecordsCount);
         } catch (SQLException e) {
             isCreated = false;
             throw new DAOException(e.getMessage(), e);
@@ -78,14 +69,14 @@ public class EncounterDAO {
         return isCreated;
     }
 
-    private boolean updateEncounters(List<EncounterDTO> encounterDTOS) throws DAOException {
+    private boolean updateEncounters(EncounterDTO encounter) throws DAOException {
         boolean isCreated = false;
         db.beginTransaction();
 
         ContentValues values = new ContentValues();
         String selection = "uuid = ?";
         try {
-            for (EncounterDTO encounter : encounterDTOS) {
+//            for (EncounterDTO encounter : encounterDTOS) {
 //                Logger.logD("update", "update has to happen");
                 values.put("visituuid", encounter.getVisituuid());
                 values.put("encounter_type_uuid", encounter.getEncounterTypeUuid());
@@ -94,9 +85,9 @@ public class EncounterDAO {
                 values.put("voided", encounter.getVoided());
 //                Logger.logD("pulldata", "datadumper" + values);
                 updatecount = db.updateWithOnConflict("tbl_encounter", values, selection, new String[]{encounter.getUuid()}, SQLiteDatabase.CONFLICT_REPLACE);
-            }
+//            }
             db.setTransactionSuccessful();
-            Logger.logD("updated", "updatedrecords count" + updatecount);
+//            Logger.logD("updated", "updatedrecords count" + updatecount);
         } catch (SQLException e) {
             isCreated = false;
             throw new DAOException(e.getMessage(), e);

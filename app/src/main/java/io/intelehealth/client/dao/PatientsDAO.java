@@ -29,24 +29,16 @@ public class PatientsDAO {
         AppConstants.inteleHealthDatabaseHelper.onCreate(db);
         ContentValues values = new ContentValues();
         try {
-            for (int i = 0; i < patientDTO.size(); i++) {
-                Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_patient where uuid = ?", new String[]{patientDTO.get(i).getUuid()});
+            for (PatientDTO patient : patientDTO) {
+                Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_patient where uuid = ?", new String[]{patient.getUuid()});
                 if (cursor.getCount() != 0) {
                     while (cursor.moveToNext()) {
-                        Logger.logD("update", "update has to happen");
-                        if (updatePatients(patientDTO)) {
-                            Logger.logD("update", "updated");
-                        } else {
-                            Logger.logD("update", "failed to updated");
-                        }
+//                        Logger.logD("update", "update has to happen");
+                        updatePatients(patient);
                     }
                 } else {
-                    Logger.logD("insert", "insert has to happen");
-                    if (createPatients(patientDTO)) {
-                        Logger.logD("insert", "inserted");
-                    } else {
-                        Logger.logD("insert", "failed to inserted");
-                    }
+//                    Logger.logD("insert", "insert has to happen");
+                    createPatients(patient);
 
                 }
                 AppConstants.sqliteDbCloseHelper.cursorClose(cursor);
@@ -61,14 +53,14 @@ public class PatientsDAO {
         return isInserted;
     }
 
-    public boolean createPatients(List<PatientDTO> patientDTO) throws DAOException {
+    public boolean createPatients(PatientDTO patient) throws DAOException {
         boolean isCreated = true;
 
 //        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         db.beginTransaction();
         try {
-            for (PatientDTO patient : patientDTO) {
+//            for (PatientDTO patient : patientDTO) {
 //                Logger.logD("create", "create has to happen");
                 values.put("uuid", patient.getUuid());
                 values.put("openmrs_id", patient.getOpenmrsId());
@@ -84,9 +76,9 @@ public class PatientsDAO {
                 values.put("synced", patient.getSyncd());
 //                Logger.logD("pulldata", "datadumper" + values);
                 createdRecordsCount = db.insertWithOnConflict("tbl_patient", null, values, SQLiteDatabase.CONFLICT_REPLACE);
-            }
+//            }
             db.setTransactionSuccessful();
-            Logger.logD("created records", "created records count" + createdRecordsCount);
+//            Logger.logD("created records", "created records count" + createdRecordsCount);
         } catch (SQLException e) {
             isCreated = false;
             throw new DAOException(e.getMessage(), e);
@@ -176,7 +168,7 @@ public class PatientsDAO {
 
     }
 
-    public boolean updatePatients(List<PatientDTO> patientDTO) throws DAOException {
+    public boolean updatePatients(PatientDTO patient) throws DAOException {
         boolean isCreated = true;
 //        (SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase())
         db.beginTransaction();
@@ -184,7 +176,7 @@ public class PatientsDAO {
         String selection = "uuid = ?";
         try {
 
-            for (PatientDTO patient : patientDTO) {
+//            for (PatientDTO patient : patientDTO) {
 //                Logger.logD("update", "update has to happen");
                 values.put("openmrs_id", patient.getOpenmrsId());
                 values.put("first_name", patient.getFirstname());
@@ -199,9 +191,9 @@ public class PatientsDAO {
                 values.put("synced", patient.getSyncd());
 //                Logger.logD("pulldata", "datadumper" + values);
                 updatecount = db.updateWithOnConflict("tbl_patient", values, selection, new String[]{patient.getUuid()}, SQLiteDatabase.CONFLICT_REPLACE);
-            }
+//            }
             db.setTransactionSuccessful();
-            Logger.logD("updated", "updatedrecords count" + updatecount);
+//            Logger.logD("updated", "updatedrecords count" + updatecount);
         } catch (SQLException e) {
             isCreated = false;
             throw new DAOException(e.getMessage(), e);

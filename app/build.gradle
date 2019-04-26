@@ -73,7 +73,16 @@ dependencies {
     implementation 'com.google.guava:guava:27.1-jre'
     //Storage librabry
     implementation 'com.snatik:storage:2.1.0'
-//    dexter permission
-//    implementation 'com.karumi:dexter:5.0.0'
+    //    dexter permission
+    //    implementation 'com.karumi:dexter:5.0.0'
+    //Room database
+    annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
+    implementation "android.arch.persistence.room:runtime:1.1.1"
+    annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
+    implementation "android.arch.persistence.room:rxjava2:1.1.1"
+    //Parse SDK
+    implementation 'com.parse:parse-android:1.15.7'
+    //date and time
+    implementation 'joda-time:joda-time:2.9.3'
 
 }

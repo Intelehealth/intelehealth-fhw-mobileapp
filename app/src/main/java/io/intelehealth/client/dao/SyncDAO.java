@@ -2,6 +2,7 @@ package io.intelehealth.client.dao;
 
 import java.util.List;
 
+import io.intelehealth.client.app.IntelehealthApplication;
 import io.intelehealth.client.dto.EncounterDTO;
 import io.intelehealth.client.dto.LocationDTO;
 import io.intelehealth.client.dto.ObsDTO;
@@ -13,62 +14,41 @@ import io.intelehealth.client.dto.ResponseDTO;
 import io.intelehealth.client.dto.VisitDTO;
 import io.intelehealth.client.exception.DAOException;
 import io.intelehealth.client.utilities.Logger;
+import io.intelehealth.client.utilities.SessionManager;
 
 public class SyncDAO {
     public static String TAG = "SyncDAO";
-
+    SessionManager sessionManager = null;
     public boolean SyncData(ResponseDTO responseDTO) throws DAOException {
         boolean isSynced = true;
-
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
 
         try {
-            if (insertPatients(responseDTO.getData().getPatientDTO())) {
-                Logger.logD(TAG, "Patients SYNC" + responseDTO.getData().getPatientDTO());
-            } else {
-                Logger.logD(TAG, "FAiled Synced");
-            }
-            if (insertPatientAttributes(responseDTO.getData().getPatientAttributesDTO())) {
-                Logger.logD(TAG, "Patients Attributes SYNC" + responseDTO.getData().getPatientDTO());
-            } else {
-                Logger.logD(TAG, "FAiled Synced");
-            }
-            if (insertPatientAttributesMaster(responseDTO.getData().getPatientAttributeTypeMasterDTO())) {
-                Logger.logD(TAG, "Patients Attributes Master SYNC" + responseDTO.getData().getPatientDTO());
-            } else {
-                Logger.logD(TAG, "FAiled Synced");
-            }
+            Logger.logD(TAG, "pull sync started");
+            insertPatients(responseDTO.getData().getPatientDTO());
 
-            if (insertVisits(responseDTO.getData().getVisitDTO())) {
-                Logger.logD(TAG, "Visits SYNC" + responseDTO.getData().getVisitDTO());
-            } else {
-                Logger.logD(TAG, "Visits sync FAiled");
-            }
+            insertPatientAttributes(responseDTO.getData().getPatientAttributesDTO());
 
-            if (insertEncounters(responseDTO.getData().getEncounterDTO())) {
-                Logger.logD(TAG, "Encounter SYNC" + responseDTO.getData().getEncounterDTO());
-            } else {
-                Logger.logD(TAG, "Encounter sync FAiled");
-            }
+            insertPatientAttributesMaster(responseDTO.getData().getPatientAttributeTypeMasterDTO());
 
-            if (insertObs(responseDTO.getData().getObsDTO())) {
-                Logger.logD(TAG, "Obs SYNC" + responseDTO.getData().getObsDTO());
-            } else {
-                Logger.logD(TAG, "Obs sync FAiled");
-            }
 
-            if (insertLocations(responseDTO.getData().getLocationDTO())) {
-                Logger.logD(TAG, "Location SYNC" + responseDTO.getData().getLocationDTO());
-            } else {
-                Logger.logD(TAG, "Location sync FAiled");
-            }
+            insertVisits(responseDTO.getData().getVisitDTO());
 
-            if (insertProviders(responseDTO.getData().getProviderlist())) {
-                Logger.logD(TAG, "Provider SYNC" + responseDTO.getData().getProviderlist());
-            } else {
-                Logger.logD(TAG, "Provider sync FAiled");
-            }
 
+            insertEncounters(responseDTO.getData().getEncounterDTO());
+
+            insertObs(responseDTO.getData().getObsDTO());
+
+
+            insertLocations(responseDTO.getData().getLocationDTO());
+
+
+            insertProviders(responseDTO.getData().getProviderlist());
+
+            Logger.logD(TAG, "Pull sync ended");
+            sessionManager.setFirstTimeSyncExecute(false);
         } catch (Exception e) {
+            Logger.logE(TAG, "Exception", e);
             throw new DAOException(e.getMessage(), e);
         }
 
@@ -81,13 +61,10 @@ public class SyncDAO {
 
         PatientsDAO patientsDAO = new PatientsDAO();
         try {
-            if (patientsDAO.insertPatients(patientList)) {
-                Logger.logD(TAG, "Inserted patients" + patientList);
-            } else {
-                Logger.logD(TAG, "Error in Inserting" + patientList);
-            }
+            patientsDAO.insertPatients(patientList);
 
         } catch (Exception e) {
+            Logger.logE(TAG, "Patients Exception", e);
             throw new DAOException(e.getMessage(), e);
         }
 
@@ -101,13 +78,10 @@ public class SyncDAO {
 
         VisitsDAO visitsDAO = new VisitsDAO();
         try {
-            if (visitsDAO.insertVisitTemp(visitList)) {
-                Logger.logD(TAG, "Inserted patients" + visitList);
-            } else {
-                Logger.logD(TAG, "Error in Inserting" + visitList);
-            }
+            visitsDAO.insertVisitTemp(visitList);
 
         } catch (Exception e) {
+            Logger.logE(TAG, "Visit Exception", e);
             throw new DAOException(e.getMessage(), e);
         }
 
@@ -121,13 +95,11 @@ public class SyncDAO {
 
         EncounterDAO encounterDAO = new EncounterDAO();
         try {
-            if (encounterDAO.insertEncounter(encounterList)) {
-                Logger.logD(TAG, "Inserted patients" + encounterList);
-            } else {
-                Logger.logD(TAG, "Error in Inserting" + encounterList);
-            }
+            encounterDAO.insertEncounter(encounterList);
+
 
         } catch (Exception e) {
+            Logger.logE(TAG, "Encounter Exception", e);
             throw new DAOException(e.getMessage(), e);
         }
 
@@ -141,13 +113,11 @@ public class SyncDAO {
 
         ObsDAO obsDAO = new ObsDAO();
         try {
-            if (obsDAO.insertObsTemp(obsList)) {
-                Logger.logD(TAG, "Inserted obs" + obsList);
-            } else {
-                Logger.logD(TAG, "Error in Inserting" + obsList);
-            }
+            obsDAO.insertObsTemp(obsList);
+
 
         } catch (Exception e) {
+            Logger.logE(TAG, "Obs Exception", e);
             throw new DAOException(e.getMessage(), e);
         }
 
@@ -161,13 +131,11 @@ public class SyncDAO {
 
         LocationDAO locationDAO = new LocationDAO();
         try {
-            if (locationDAO.insertLocations(locationList)) {
-                Logger.logD(TAG, "Inserted patients attributes" + locationList);
-            } else {
-                Logger.logD(TAG, "Error in Inserting" + locationList);
-            }
+            locationDAO.insertLocations(locationList);
+
 
         } catch (Exception e) {
+            Logger.logE(TAG, "location Exception", e);
             throw new DAOException(e.getMessage(), e);
         }
 
@@ -180,13 +148,10 @@ public class SyncDAO {
 
         ProviderDAO providerDAO = new ProviderDAO();
         try {
-            if (providerDAO.insertProviders(providerList)) {
-                Logger.logD(TAG, "Inserted patients attributes" + providerList);
-            } else {
-                Logger.logD(TAG, "Error in Inserting" + providerList);
-            }
+            providerDAO.insertProviders(providerList);
 
         } catch (Exception e) {
+            Logger.logE(TAG, "provider Exception", e);
             throw new DAOException(e.getMessage(), e);
         }
 
@@ -199,13 +164,11 @@ public class SyncDAO {
 
         PatientsDAO patientsDAO = new PatientsDAO();
         try {
-            if (patientsDAO.patientAttributes(patientAttributesDTOList)) {
-                Logger.logD(TAG, "Inserted patients attributes" + patientAttributesDTOList);
-            } else {
-                Logger.logD(TAG, "Error in Inserting" + patientAttributesDTOList);
-            }
+            patientsDAO.patientAttributes(patientAttributesDTOList);
+
 
         } catch (Exception e) {
+            Logger.logE(TAG, "patient attribute Exception", e);
             throw new DAOException(e.getMessage(), e);
         }
 
@@ -218,13 +181,11 @@ public class SyncDAO {
 
         PatientsDAO patientsDAO = new PatientsDAO();
         try {
-            if (patientsDAO.patinetAttributeMaster(patientAttributeTypeMasterDTOList)) {
-                Logger.logD(TAG, "Inserted patients attributes" + patientAttributeTypeMasterDTOList);
-            } else {
-                Logger.logD(TAG, "Error in Inserting" + patientAttributeTypeMasterDTOList);
-            }
+            patientsDAO.patinetAttributeMaster(patientAttributeTypeMasterDTOList);
+
 
         } catch (Exception e) {
+            Logger.logE(TAG, "master Exception", e);
             throw new DAOException(e.getMessage(), e);
         }
 

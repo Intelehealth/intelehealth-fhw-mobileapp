@@ -10,7 +10,6 @@ import java.util.List;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.dto.ProviderDTO;
 import io.intelehealth.client.exception.DAOException;
-import io.intelehealth.client.utilities.Logger;
 
 public class ProviderDAO {
 
@@ -25,20 +24,15 @@ public class ProviderDAO {
         AppConstants.inteleHealthDatabaseHelper.onCreate(db);
         ContentValues values = new ContentValues();
         try {
-            for (int i = 0; i < providerDTOS.size(); i++) {
-                Cursor cursor = db.rawQuery("SELECT * FROM tbl_provider where uuid = ?", new String[]{providerDTOS.get(i).getUuid()});
+            for (ProviderDTO provider : providerDTOS) {
+                Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_provider where uuid = ?", new String[]{provider.getUuid()});
                 if (cursor.getCount() != 0) {
                     while (cursor.moveToNext()) {
-                        Logger.logD("update", "update has to happen");
-                        if (updateProviders(providerDTOS)) {
-                            Logger.logD("update", "updated");
-                        } else {
-                            Logger.logD("update", "failed to updated");
-                        }
+                        updateProviders(provider);
                     }
                 } else {
-                    Logger.logD("insert", "insert has to happen");
-                    createProviders(providerDTOS);
+//                    Logger.logD("insert", "insert has to happen");
+                    createProviders(provider);
                 }
                 AppConstants.sqliteDbCloseHelper.cursorClose(cursor);
             }
@@ -52,14 +46,14 @@ public class ProviderDAO {
         return isInserted;
     }
 
-    private boolean createProviders(List<ProviderDTO> providerDTOS) throws DAOException {
+    private boolean createProviders(ProviderDTO provider) throws DAOException {
         boolean isCreated = true;
 
         ContentValues values = new ContentValues();
 
         db.beginTransaction();
         try {
-            for (ProviderDTO provider : providerDTOS) {
+//            for (ProviderDTO provider : providerDTOS) {
 //                Logger.logD("insert", "insert has to happen");
                 values.put("uuid", provider.getUuid());
                 values.put("identifier", provider.getIdentifier());
@@ -70,9 +64,9 @@ public class ProviderDAO {
                 values.put("synced", "TRUE");
 //                Logger.logD("pulldata", "datadumper" + values);
                 createdRecordsCount = db.insertWithOnConflict("tbl_provider", null, values, SQLiteDatabase.CONFLICT_REPLACE);
-            }
+//            }
             db.setTransactionSuccessful();
-            Logger.logD("created records", "created records count" + createdRecordsCount);
+//            Logger.logD("created records", "created records count" + createdRecordsCount);
         } catch (SQLException e) {
             isCreated = false;
             throw new DAOException(e.getMessage(), e);
@@ -82,7 +76,7 @@ public class ProviderDAO {
         return isCreated;
     }
 
-    private boolean updateProviders(List<ProviderDTO> providerDTOS) throws DAOException {
+    private boolean updateProviders(ProviderDTO provider) throws DAOException {
         boolean isUpdated = true;
 
         ContentValues values = new ContentValues();
@@ -90,7 +84,7 @@ public class ProviderDAO {
         String selection = "uuid = ?";
         db.beginTransaction();
         try {
-            for (ProviderDTO provider : providerDTOS) {
+//            for (ProviderDTO provider : providerDTOS) {
 //                Logger.logD("insert", "insert has to happen");
                 values.put("identifier", provider.getIdentifier());
                 values.put("given_name", provider.getGivenName());
@@ -100,9 +94,9 @@ public class ProviderDAO {
                 values.put("synced", "TRUE");
 //                Logger.logD("pulldata", "datadumper" + values);
                 updatecount = db.updateWithOnConflict("tbl_provider", values, selection, new String[]{provider.getUuid()}, SQLiteDatabase.CONFLICT_REPLACE);
-            }
+//            }
             db.setTransactionSuccessful();
-            Logger.logD("updated", "updatedrecords count" + updatecount);
+//            Logger.logD("updated", "updatedrecords count" + updatecount);
         } catch (SQLException e) {
             isUpdated = false;
             throw new DAOException(e.getMessage(), e);

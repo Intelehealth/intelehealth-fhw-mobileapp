@@ -21,17 +21,19 @@ public class PullDataDAO {
         sessionManager = new SessionManager(context);
         String url = "http://142.93.221.37:8080/EMR-Middleware/webapi/pull/pulldata/1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a/" + sessionManager.getPullExcutedTime();
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(url);
-
+        Logger.logD("Start pull request", "Started");
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
             @Override
             public void onResponse(Call<ResponseDTO> call, Response<ResponseDTO> response) {
 
                 if (response.isSuccessful()) {
+
                     pullDataExecutedTime(response.body(), context);
                 }
                 if (response.body() != null && response.body().getData() != null) {
                     sessionManager.setPullExcutedTime(response.body().getData().getPullexecutedtime());
                 }
+                Logger.logD("End Pull request", "Ended");
             }
 
             @Override

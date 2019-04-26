@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.parse.Parse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -491,11 +492,11 @@ public class SetupActivity extends AppCompatActivity {
                 OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
                 AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
 
-//                Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
-//                        .applicationId(AppConstants.IMAGE_APP_ID)
-//                        .server("http://" + CLEAN_URL + ":1337/parse/")
-//                        .build()
-//                );
+                Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
+                        .applicationId(AppConstants.IMAGE_APP_ID)
+                        .server("http://" + CLEAN_URL + ":4040/parse/")
+                        .build()
+                );
                 Log.i(TAG, "onPostExecute: Parse init");
                 Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
                 intent.putExtra("setup", true);
