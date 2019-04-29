@@ -53,17 +53,17 @@ public class VisitsDAO {
         try {
 //            for (VisitDTO visit : visitDTOS) {
 //                Logger.logD("insert", "insert has to happen");
-                values.put("uuid", visit.getUuid());
-                values.put("patientuuid", visit.getPatientuuid());
-                values.put("locationuuid", visit.getLocationuuid());
-                values.put("visit_type_uuid", visit.getVisitTypeUuid());
-                values.put("creator", visit.getCreator());
-                values.put("startdate", visit.getStartdate());
-                values.put("enddate", visit.getEnddate());
-                values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-                values.put("synced", visit.getSyncd());
+            values.put("uuid", visit.getUuid());
+            values.put("patientuuid", visit.getPatientuuid());
+            values.put("locationuuid", visit.getLocationuuid());
+            values.put("visit_type_uuid", visit.getVisitTypeUuid());
+            values.put("creator", visit.getCreator());
+            values.put("startdate", visit.getStartdate());
+            values.put("enddate", visit.getEnddate());
+            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("synced", visit.getSyncd());
 //                Logger.logD("pulldata", "datadumper" + values);
-                createdRecordsCount = db.insertWithOnConflict("tbl_visit", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            createdRecordsCount = db.insertWithOnConflict("tbl_visit", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 //            }
             db.setTransactionSuccessful();
 //            Logger.logD("created records", "created records count" + createdRecordsCount);
@@ -87,16 +87,16 @@ public class VisitsDAO {
 
 //            for (VisitDTO visit : visitDTOS) {
 //                Logger.logD("update", "update has to happen");
-                values.put("patientuuid", visit.getPatientuuid());
-                values.put("locationuuid", visit.getLocationuuid());
-                values.put("visit_type_uuid", visit.getVisitTypeUuid());
-                values.put("creator", visit.getCreator());
-                values.put("startdate", visit.getStartdate());
-                values.put("enddate", visit.getEnddate());
-                values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-                values.put("synced", visit.getSyncd());
+            values.put("patientuuid", visit.getPatientuuid());
+            values.put("locationuuid", visit.getLocationuuid());
+            values.put("visit_type_uuid", visit.getVisitTypeUuid());
+            values.put("creator", visit.getCreator());
+            values.put("startdate", visit.getStartdate());
+            values.put("enddate", visit.getEnddate());
+            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("synced", visit.getSyncd());
 //                Logger.logD("pulldata", "datadumper" + values);
-                updatecount = db.updateWithOnConflict("tbl_visit", values, selection, new String[]{visit.getUuid()}, SQLiteDatabase.CONFLICT_REPLACE);
+            updatecount = db.updateWithOnConflict("tbl_visit", values, selection, new String[]{visit.getUuid()}, SQLiteDatabase.CONFLICT_REPLACE);
 //            }
             db.setTransactionSuccessful();
 //            Logger.logD("updated", "updatedrecords count" + updatecount);
@@ -108,52 +108,5 @@ public class VisitsDAO {
         }
         return isUpdated;
     }
-
-   /* private boolean mergeVisits(List<VisitDTO> visitsList) throws DAOException {
-        boolean isMerged = true;
-        try (SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase()) {
-            String selectQuery = "SELECT * from tbl_patient";
-            Cursor cursor = db.rawQuery(selectQuery, null);
-            if (cursor != null) {
-                for (int i = 0; i < cursor.getColumnCount(); i++) {
-                    if (cursor.moveToFirst()) {
-                        while (!cursor.isAfterLast()) {
-
-                            cursor.moveToNext();
-                        }
-                    }
-                }
-            }
-            if (cursor != null) {
-                cursor.close();
-            }
-        } catch (SQLException e) {
-            throw new DAOException(e.getMessage(), e);
-        }
-        return isMerged;
-    }
-*/
-//    private boolean updateVisits() throws DAOException {
-//        boolean isupdated = true;
-//
-//        try (SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase()) {
-//            String selectQuery = "update tbl_visit set patient_uuid=(SELECT tbl_patient.uuid from tbl_patient where tbl_patient.openmrs_uuid=tbl_visit.openmrs_patientuuid)";
-//            Cursor cursor = db.rawQuery(selectQuery, null);
-//            if (cursor != null) {
-//                if (cursor.moveToFirst()) {
-//                    while (!cursor.isAfterLast()) {
-//
-//                        cursor.moveToNext();
-//                    }
-//                }
-//            }
-//            if (cursor != null) {
-//                cursor.close();
-//            }
-//        } catch (SQLException e) {
-//            throw new DAOException(e.getMessage(), e);
-//        }
-//        return isupdated;
-//    }
 
 }

@@ -185,7 +185,7 @@ public class PatientsDAO {
 
 
         try {
-            AppConstants.inteleHealthRoomDatabase.inteleHealthDao().insertPatients(patient);
+            AppConstants.inteleHealthRoomDatabase.inteleHealthDao().updatePatinets(patient);
 
 /*
 //            for (PatientDTO patient : patientDTO) {
@@ -226,9 +226,9 @@ public class PatientsDAO {
             for (PatientAttributesDTO patientAttributesDTO : patientAttributesDTOS) {
                 PatientAttributesDTO patientAttributesDTO1 = AppConstants.inteleHealthRoomDatabase.inteleHealthDao().findPatientAttributesUUid(patientAttributesDTO.getUuid());
                 if (patientAttributesDTO1.getUuid() != null) {
-            
+                    AppConstants.inteleHealthRoomDatabase.inteleHealthDao().updatePatinetAttributes(patientAttributesDTO);
                 } else {
-
+                    AppConstants.inteleHealthRoomDatabase.inteleHealthDao().insertPatientAttributes(patientAttributesDTO);
                 }
             }
         } catch (SQLException e) {
@@ -263,33 +263,6 @@ public class PatientsDAO {
         return isInserted;
     }
 
-    private boolean mergePatients() throws DAOException {
-        boolean ismerged = true;
-        SQLiteDatabase db = null;
-        try {
-            db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-
-//            String insertQuery = "insert into tbl_patient(openmrs_uuid,openmrs_id,first_name,middle_name,last_name) select openmrs_uuid,openmrs_id,first_name,middle_name,last_name from patient_temp where openmrs_uuid not in (select openmrs_uuid from tbl_patient)";
-//            db.execSQL(insertQuery);
-//
-//
-//            String updateQuery = "update tbl_patient SET (tbl_patient.openmrs_id,tbl_patient.first_name,middle_name,last_name,date_of_birth,phone_number,address1,address2,city_village,state_province,postal_code,country,gender,sdw,occupation) = (select pt.openmrs_id,pt.first_name,pt.middle_name,pt.last_name,pt.date_of_birth,pt.phone_number,pt.address1,pt.address2,pt.city_village,pt.state_province,pt.postal_code,pt.country,pt.gender,pt.sdw,pt.occupation from patient_temp  pt where tbl_patient.openmrs_uuid=pt.openmrs_uuid)";
-//            //String updateQuery = "update tbl_patient set first_name = pt.first_name  from patient_temp pt,tbl_patient  where tbl_patient.openmrs_uuid=patient_temp.openmrs_uuid";
-//            db.execSQL(updateQuery);
-
-            /*sql query
-            insert into tbl_patient(openmrs_uuid,openmrs_id,first_name,middle_name,last_name) select openmrs_uuid,openmrs_id,first_name,middle_name,last_name from patient_temp where openmrs_uuid not in (select openmrs_uuid from tbl_patient);
-            * */
-
-        } catch (SQLException e) {
-            ismerged = false;
-            throw new DAOException(e.getMessage(), e);
-        } finally {
-            AppConstants.sqliteDbCloseHelper.dbClose(db);
-        }
-
-        return ismerged;
-    }
 
     public String getUuidForAttribute(String attr) {
         String attributeUuid = "";

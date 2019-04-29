@@ -70,7 +70,7 @@ public interface InteleHealthDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updatePatinetAttributes(PatientAttributesDTO patientAttributesDTO);
 
-    @Query("SELECT uuid FROM tbl_patientattributes where uuid is :uuid")
+    @Query("SELECT * FROM tbl_patientattributes where uuid is :uuid")
     PatientAttributesDTO findPatientAttributesUUid(String uuid);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -90,6 +90,9 @@ public interface InteleHealthDao {
 
     @Query("SELECT locationuuid FROM tbl_location where locationuuid is :uuid")
     LocationDTO findLocationUUid(String uuid);
+
+//    @Query("SELECT * FROM tbl_visits, tbl_patients WHERE tbl_visits.patientuuid = tbl_patients.uuid  AND tbl_visits.enddate IS NULL OR tbl_visits.enddate = '' ORDER BY tbl_visits.startdate ASC")
+//    ActivePatientModel findActivePatinets();
 
 
 }

@@ -8,6 +8,8 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import io.intelehealth.client.app.AppConstants;
+
 
 @Entity(tableName = "tbl_patients")
 public class PatientDTO {
@@ -70,6 +72,17 @@ public class PatientDTO {
     @SerializedName("syncd")
     @Expose
     private Boolean syncd;
+    @SerializedName("modified_date")
+    @Expose
+    private String modified_date;
+
+    public String getModified_date() {
+        return modified_date;
+    }
+
+    public void setModified_date(String modified_date) {
+        this.modified_date = AppConstants.dateAndTimeUtils.currentDateTime();
+    }
 
     public String getUuid() {
         return uuid;

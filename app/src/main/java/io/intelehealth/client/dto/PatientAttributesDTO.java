@@ -32,7 +32,7 @@ public class PatientAttributesDTO {
     }
 
     public void setSycd(boolean sycd) {
-        this.sycd = sycd;
+        this.sycd = true;
     }
 
     public String getUuid() {
