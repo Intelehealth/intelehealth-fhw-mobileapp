@@ -1,7 +1,6 @@
 package io.intelehealth.client.dao;
 
 import android.content.ContentValues;
-import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -26,12 +25,12 @@ public class VisitsDAO {
 
             for (VisitDTO visit : visitDTOS) {
                 VisitDTO visitDTO = AppConstants.inteleHealthRoomDatabase.inteleHealthDao().findVisitsUuid(visit.getUuid());
-                if (visitDTO.getUuid() != null) {
+                if (visitDTO != null) {
                     AppConstants.inteleHealthRoomDatabase.inteleHealthDao().updateVisits(visit);
                 } else {
                     AppConstants.inteleHealthRoomDatabase.inteleHealthDao().insertVisits(visit);
                 }
-                Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_visit where uuid = ?", new String[]{visit.getUuid()});
+//                Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_visit where uuid = ?", new String[]{visit.getUuid()});
                 /*if (cursor.getCount() != 0) {
                     while (cursor.moveToNext()) {
                         updateVisits(visit);

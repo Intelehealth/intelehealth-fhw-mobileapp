@@ -25,7 +25,7 @@ public interface InteleHealthDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updatePatinets(PatientDTO patientDTO);
 
-    @Query("SELECT * FROM tbl_patients where uuid is :uuid")
+    @Query("SELECT uuid FROM tbl_patients where uuid is :uuid")
     PatientDTO findPatientsUuid(String uuid);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -34,7 +34,7 @@ public interface InteleHealthDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateVisits(VisitDTO visit);
 
-    @Query("SELECT * FROM tbl_visits where uuid is :uuid")
+    @Query("SELECT uuid FROM tbl_visits where uuid is :uuid")
     VisitDTO findVisitsUuid(String uuid);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -43,7 +43,7 @@ public interface InteleHealthDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateObs(ObsDTO obsDTO);
 
-    @Query("SELECT * FROM tbl_obs where uuid is :uuid")
+    @Query("SELECT uuid FROM tbl_obs where uuid is :uuid")
     ObsDTO findObsUuid(String uuid);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -52,7 +52,7 @@ public interface InteleHealthDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateEncounters(EncounterDTO encounterDTO);
 
-    @Query("SELECT * FROM tbl_encounter where uuid is :uuid")
+    @Query("SELECT uuid FROM tbl_encounter where uuid is :uuid")
     EncounterDTO findEncounterUuid(String uuid);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -61,7 +61,7 @@ public interface InteleHealthDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateProviders(ProviderDTO providerDTO);
 
-    @Query("SELECT * FROM tbl_provider where uuid is :uuid")
+    @Query("SELECT uuid FROM tbl_provider where uuid is :uuid")
     ProviderDTO findProvidersUuid(String uuid);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -70,7 +70,7 @@ public interface InteleHealthDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updatePatinetAttributes(PatientAttributesDTO patientAttributesDTO);
 
-    @Query("SELECT * FROM tbl_patientattributes where uuid is :uuid")
+    @Query("SELECT uuid FROM tbl_patientattributes where uuid is :uuid")
     PatientAttributesDTO findPatientAttributesUUid(String uuid);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -79,7 +79,7 @@ public interface InteleHealthDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updatePatinetAttributesMaster(PatientAttributeTypeMasterDTO patientAttributeTypeMasterDTO);
 
-    @Query("SELECT * FROM tbl_patientattributesmaster where uuid is :uuid")
+    @Query("SELECT uuid FROM tbl_patientattributesmaster where uuid is :uuid")
     PatientAttributeTypeMasterDTO findpatientAttributesMasterUUid(String uuid);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -88,7 +88,7 @@ public interface InteleHealthDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateLocatinon(LocationDTO locationDTO);
 
-    @Query("SELECT * FROM tbl_location where locationuuid is :uuid")
+    @Query("SELECT locationuuid FROM tbl_location where locationuuid is :uuid")
     LocationDTO findLocationUUid(String uuid);
 
 //    @Query("SELECT * FROM tbl_visits, tbl_patients WHERE tbl_visits.patientuuid = tbl_patients.uuid  AND tbl_visits.enddate IS NULL OR tbl_visits.enddate = '' ORDER BY tbl_visits.startdate ASC")

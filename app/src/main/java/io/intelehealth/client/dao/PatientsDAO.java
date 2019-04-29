@@ -31,7 +31,7 @@ public class PatientsDAO {
         try {
             for (PatientDTO patient : patientDTO) {
                 PatientDTO patientDTO1 = AppConstants.inteleHealthRoomDatabase.inteleHealthDao().findPatientsUuid(patient.getUuid());
-                if (patientDTO1.getUuid() != null) {
+                if (patientDTO1 != null) {
                     updatePatients(patient);
                 } else
                     createPatients(patient);
@@ -225,7 +225,7 @@ public class PatientsDAO {
         try {
             for (PatientAttributesDTO patientAttributesDTO : patientAttributesDTOS) {
                 PatientAttributesDTO patientAttributesDTO1 = AppConstants.inteleHealthRoomDatabase.inteleHealthDao().findPatientAttributesUUid(patientAttributesDTO.getUuid());
-                if (patientAttributesDTO1.getUuid() != null) {
+                if (patientAttributesDTO1 != null) {
                     AppConstants.inteleHealthRoomDatabase.inteleHealthDao().updatePatinetAttributes(patientAttributesDTO);
                 } else {
                     AppConstants.inteleHealthRoomDatabase.inteleHealthDao().insertPatientAttributes(patientAttributesDTO);
@@ -249,7 +249,7 @@ public class PatientsDAO {
         try {
             for (PatientAttributeTypeMasterDTO patientAttributeTypeMasterDTO : patientAttributeTypeMasterDTOS) {
                 PatientAttributeTypeMasterDTO PatientAttributeTypeMasterDTO1 = AppConstants.inteleHealthRoomDatabase.inteleHealthDao().findpatientAttributesMasterUUid(patientAttributeTypeMasterDTO.getUuid());
-                if (PatientAttributeTypeMasterDTO1.getUuid() != null) {
+                if (PatientAttributeTypeMasterDTO1 != null) {
                     AppConstants.inteleHealthRoomDatabase.inteleHealthDao().updatePatinetAttributesMaster(patientAttributeTypeMasterDTO);
                 } else
                     AppConstants.inteleHealthRoomDatabase.inteleHealthDao().insertpatientAttributesMaster(patientAttributeTypeMasterDTO);

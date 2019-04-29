@@ -32,7 +32,7 @@ public class ObsDAO {
                 if (sessionManager.isFirstTimeSyncExcuted() && obs.getVoided() == 1)
                     continue;//performance reason
                 ObsDTO obsDTO = AppConstants.inteleHealthRoomDatabase.inteleHealthDao().findObsUuid(obs.getUuid());
-                if (obsDTO.getUuid() != null) {
+                if (obsDTO != null) {
                     AppConstants.inteleHealthRoomDatabase.inteleHealthDao().updateObs(obs);
                 } else {
                     AppConstants.inteleHealthRoomDatabase.inteleHealthDao().insertObs(obs);
@@ -54,7 +54,7 @@ public class ObsDAO {
             isInserted = false;
             throw new DAOException(e.getMessage(), e);
         } finally {
-            db.endTransaction();
+//            db.endTransaction();
         }
 
         return isInserted;

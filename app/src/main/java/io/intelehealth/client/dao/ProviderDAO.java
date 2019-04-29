@@ -25,7 +25,7 @@ public class ProviderDAO {
         try {
             for (ProviderDTO provider : providerDTOS) {
                 ProviderDTO providerDTO = AppConstants.inteleHealthRoomDatabase.inteleHealthDao().findProvidersUuid(provider.getUuid());
-                if (providerDTO.getUuid() != null) {
+                if (providerDTO != null) {
                     AppConstants.inteleHealthRoomDatabase.inteleHealthDao().updateProviders(provider);
                 } else {
                     AppConstants.inteleHealthRoomDatabase.inteleHealthDao().insertProviders(provider);

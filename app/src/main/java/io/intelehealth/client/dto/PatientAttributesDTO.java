@@ -25,15 +25,6 @@ public class PatientAttributesDTO {
     @Expose
     private String patientuuid;
 
-    private boolean sycd = true;
-
-    public boolean isSycd() {
-        return sycd;
-    }
-
-    public void setSycd(boolean sycd) {
-        this.sycd = true;
-    }
 
     public String getUuid() {
         return uuid;

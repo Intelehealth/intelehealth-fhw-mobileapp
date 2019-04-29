@@ -22,7 +22,7 @@ public class EncounterDAO {
         try {
             for (EncounterDTO encounter : encounterDTOS) {
                 EncounterDTO encounterDTO = AppConstants.inteleHealthRoomDatabase.inteleHealthDao().findEncounterUuid(encounter.getUuid());
-                if (encounterDTO.getUuid() != null) {
+                if (encounterDTO != null) {
                     AppConstants.inteleHealthRoomDatabase.inteleHealthDao().updateEncounters(encounter);
                 } else {
                     AppConstants.inteleHealthRoomDatabase.inteleHealthDao().insertEncounters(encounter);

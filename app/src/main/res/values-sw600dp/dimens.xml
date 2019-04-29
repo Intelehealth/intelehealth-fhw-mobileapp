@@ -1,0 +1,5 @@
+<resources>
+
+    <dimen name="physical_exam_img_max_height">200dp</dimen>
+
+</resources>
