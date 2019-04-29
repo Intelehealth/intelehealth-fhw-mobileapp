@@ -31,7 +31,7 @@ public class PullDataDAO {
                     pullDataExecutedTime(response.body(), context);
                 }
                 if (response.body() != null && response.body().getData() != null) {
-//                    sessionManager.setPullExcutedTime(response.body().getData().getPullexecutedtime());
+                    sessionManager.setPullExcutedTime(response.body().getData().getPullexecutedtime());
                 }
                 Logger.logD("End Pull request", "Ended");
             }

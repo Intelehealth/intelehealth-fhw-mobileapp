@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.support.v7.app.AppCompatDelegate;
+
+import io.intelehealth.client.database.InteleHealthDatabaseHelper;
 
 //Extend Application class with MultiDexApplication for multidex support
 public class IntelehealthApplication extends MultiDexApplication implements Application.ActivityLifecycleCallbacks {
@@ -73,9 +76,9 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 //            );
 //        Log.i(TAG, "onCreate: Parse init");
 
-//        InteleHealthDatabaseHelper mDbHelper = new InteleHealthDatabaseHelper(this);
-//        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
-//        mDbHelper.onCreate(localdb);
+        InteleHealthDatabaseHelper mDbHelper = new InteleHealthDatabaseHelper(this);
+        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+        mDbHelper.onCreate(localdb);
 
 
     }

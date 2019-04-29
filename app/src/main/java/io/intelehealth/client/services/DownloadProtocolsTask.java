@@ -222,7 +222,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
         } else {
             File engines_dir = new File(activity.getFilesDir().getAbsolutePath(), AppConstants.JSON_FOLDER);
             if (engines_dir.exists()) deleteFolder(engines_dir);
-            if (sessionManager.valueContains("licensekey"))
+            if (sessionManager.getLicenseKey().contains("licensekey"))
                 sessionManager.deleteLicensekey();
             Toast.makeText(IntelehealthApplication.getAppContext(), "Error downloading protocols", Toast.LENGTH_LONG).show();
         }

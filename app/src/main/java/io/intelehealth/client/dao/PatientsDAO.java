@@ -25,36 +25,29 @@ public class PatientsDAO {
     public boolean insertPatients(List<PatientDTO> patientDTO) throws DAOException {
 
         boolean isInserted = true;
-//        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-//        AppConstants.inteleHealthDatabaseHelper.onCreate(db);
-//        ContentValues values = new ContentValues();
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        AppConstants.inteleHealthDatabaseHelper.onCreate(db);
+        ContentValues values = new ContentValues();
         try {
             for (PatientDTO patient : patientDTO) {
-                PatientDTO patientDTO1 = AppConstants.inteleHealthRoomDatabase.inteleHealthDao().findPatientsUuid(patient.getUuid());
-                if (patientDTO1 != null) {
-                    updatePatients(patient);
-                } else
+                Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_patient where uuid = ?", new String[]{patient.getUuid()});
+                if (cursor.getCount() != 0) {
+                    while (cursor.moveToNext()) {
+//                        Logger.logD("update", "update has to happen");
+                        updatePatients(patient);
+                    }
+                } else {
+//                    Logger.logD("insert", "insert has to happen");
                     createPatients(patient);
 
-
-//                Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_patient where uuid = ?", new String[]{patient.getUuid()});
-//                if (cursor.getCount() != 0) {
-//                    while (cursor.moveToNext()) {
-//                        Logger.logD("update", "update has to happen");
-//                        updatePatients(patient);
-//                    }
-//                } else {
-//                    Logger.logD("insert", "insert has to happen");
-//                    createPatients(patient);
-
-//                }
-//                AppConstants.sqliteDbCloseHelper.cursorClose(cursor);
+                }
+                AppConstants.sqliteDbCloseHelper.cursorClose(cursor);
             }
         } catch (SQLException e) {
             isInserted = false;
             throw new DAOException(e.getMessage(), e);
         } finally {
-//            AppConstants.sqliteDbCloseHelper.dbClose(db);
+            AppConstants.sqliteDbCloseHelper.dbClose(db);
         }
 
         return isInserted;
@@ -64,34 +57,33 @@ public class PatientsDAO {
         boolean isCreated = true;
 
 //        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-//        ContentValues values = new ContentValues();
-//        db.beginTransaction();
+        ContentValues values = new ContentValues();
+        db.beginTransaction();
         try {
-            AppConstants.inteleHealthRoomDatabase.inteleHealthDao().insertPatients(patient);
 //            for (PatientDTO patient : patientDTO) {
 //                Logger.logD("create", "create has to happen");
-//                values.put("uuid", patient.getUuid());
-//                values.put("openmrs_id", patient.getOpenmrsId());
-//                values.put("first_name", patient.getFirstname());
-//                values.put("middle_name", patient.getMiddlename());
-//                values.put("last_name", patient.getLastname());
-//                values.put("address1", patient.getAddress1());
-//                values.put("country", patient.getCountry());
-//                values.put("date_of_birth", patient.getDateofbirth());
-//                values.put("gender", patient.getGender());
-//                values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-//                values.put("dead", patient.getDead());
-//                values.put("synced", patient.getSyncd());
+            values.put("uuid", patient.getUuid());
+            values.put("openmrs_id", patient.getOpenmrsId());
+            values.put("first_name", patient.getFirstname());
+            values.put("middle_name", patient.getMiddlename());
+            values.put("last_name", patient.getLastname());
+            values.put("address1", patient.getAddress1());
+            values.put("country", patient.getCountry());
+            values.put("date_of_birth", patient.getDateofbirth());
+            values.put("gender", patient.getGender());
+            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("dead", patient.getDead());
+            values.put("synced", patient.getSyncd());
 //                Logger.logD("pulldata", "datadumper" + values);
-//                createdRecordsCount = db.insertWithOnConflict("tbl_patient", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            createdRecordsCount = db.insertWithOnConflict("tbl_patient", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 //            }
-//            db.setTransactionSuccessful();
+            db.setTransactionSuccessful();
 //            Logger.logD("created records", "created records count" + createdRecordsCount);
         } catch (SQLException e) {
             isCreated = false;
             throw new DAOException(e.getMessage(), e);
         } finally {
-//            db.endTransaction();
+            db.endTransaction();
 //            AppConstants.sqliteDbCloseHelper.dbClose(db);
         }
 
@@ -158,7 +150,7 @@ public class PatientsDAO {
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("dead", patientDTO.getDead());
             values.put("synced", patientDTO.getSyncd());
-//            patientAttributesList = patientDTO.getPatientAttributesDTOList();
+            patientAttributesList = patientDTO.getPatientAttributesDTOList();
             patientAttributes(patientAttributesList);
 //                Logger.logD("pulldata", "datadumper" + values);
             createdRecordsCount = db.insertWithOnConflict("tbl_patient", null, values, SQLiteDatabase.CONFLICT_REPLACE);
@@ -179,15 +171,11 @@ public class PatientsDAO {
     public boolean updatePatients(PatientDTO patient) throws DAOException {
         boolean isCreated = true;
 //        (SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase())
-//        db.beginTransaction();
-//        ContentValues values = new ContentValues();
-//        String selection = "uuid = ?";
-
-
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+        String selection = "uuid = ?";
         try {
-            AppConstants.inteleHealthRoomDatabase.inteleHealthDao().updatePatinets(patient);
 
-/*
 //            for (PatientDTO patient : patientDTO) {
 //                Logger.logD("update", "update has to happen");
                 values.put("openmrs_id", patient.getOpenmrsId());
@@ -204,13 +192,13 @@ public class PatientsDAO {
 //                Logger.logD("pulldata", "datadumper" + values);
                 updatecount = db.updateWithOnConflict("tbl_patient", values, selection, new String[]{patient.getUuid()}, SQLiteDatabase.CONFLICT_REPLACE);
 //            }
-            db.setTransactionSuccessful();*/
+            db.setTransactionSuccessful();
 //            Logger.logD("updated", "updatedrecords count" + updatecount);
         } catch (SQLException e) {
             isCreated = false;
             throw new DAOException(e.getMessage(), e);
         } finally {
-//            db.endTransaction();
+            db.endTransaction();
 //            AppConstants.sqliteDbCloseHelper.dbClose(db);
         }
 
@@ -222,19 +210,23 @@ public class PatientsDAO {
     public boolean patientAttributes(List<PatientAttributesDTO> patientAttributesDTOS) throws DAOException {
         boolean isInserted = true;
 
-        try {
-            for (PatientAttributesDTO patientAttributesDTO : patientAttributesDTOS) {
-                PatientAttributesDTO patientAttributesDTO1 = AppConstants.inteleHealthRoomDatabase.inteleHealthDao().findPatientAttributesUUid(patientAttributesDTO.getUuid());
-                if (patientAttributesDTO1 != null) {
-                    AppConstants.inteleHealthRoomDatabase.inteleHealthDao().updatePatinetAttributes(patientAttributesDTO);
-                } else {
-                    AppConstants.inteleHealthRoomDatabase.inteleHealthDao().insertPatientAttributes(patientAttributesDTO);
-                }
+        try (SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase()) {
+            ContentValues values = new ContentValues();
+            for (int i = 0; i < patientAttributesDTOS.size(); i++) {
+                values.put("uuid", patientAttributesDTOS.get(i).getUuid());
+                values.put("person_attribute_type_uuid", patientAttributesDTOS.get(i).getPersonAttributeTypeUuid());
+                values.put("patientuuid", patientAttributesDTOS.get(i).getPatientuuid());
+                values.put("value", patientAttributesDTOS.get(i).getValue());
+                values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+                values.put("sync", "TRUE");
+//                Logger.logD("pulldata", "datadumper" + values);
+                db.insertWithOnConflict("tbl_patient_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             }
         } catch (SQLException e) {
             isInserted = false;
             throw new DAOException(e.getMessage(), e);
         } finally {
+            AppConstants.sqliteDbCloseHelper.dbClose(db);
         }
 
 
@@ -246,23 +238,53 @@ public class PatientsDAO {
     public boolean patinetAttributeMaster(List<PatientAttributeTypeMasterDTO> patientAttributeTypeMasterDTOS) throws DAOException {
         boolean isInserted = true;
 
-        try {
-            for (PatientAttributeTypeMasterDTO patientAttributeTypeMasterDTO : patientAttributeTypeMasterDTOS) {
-                PatientAttributeTypeMasterDTO PatientAttributeTypeMasterDTO1 = AppConstants.inteleHealthRoomDatabase.inteleHealthDao().findpatientAttributesMasterUUid(patientAttributeTypeMasterDTO.getUuid());
-                if (PatientAttributeTypeMasterDTO1 != null) {
-                    AppConstants.inteleHealthRoomDatabase.inteleHealthDao().updatePatinetAttributesMaster(patientAttributeTypeMasterDTO);
-                } else
-                    AppConstants.inteleHealthRoomDatabase.inteleHealthDao().insertpatientAttributesMaster(patientAttributeTypeMasterDTO);
+        try (SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase()) {
+            ContentValues values = new ContentValues();
+            for (int i = 0; i < patientAttributeTypeMasterDTOS.size(); i++) {
+                values.put("uuid", patientAttributeTypeMasterDTOS.get(i).getUuid());
+                values.put("name", patientAttributeTypeMasterDTOS.get(i).getName());
+                values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+                values.put("sync", "TRUE");
+//                Logger.logD("pulldata", "datadumper" + values);
+                db.insertWithOnConflict("tbl_patient_attribute_master", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             }
         } catch (SQLException e) {
             isInserted = false;
             throw new DAOException(e.getMessage(), e);
         } finally {
+            AppConstants.sqliteDbCloseHelper.dbClose(db);
         }
 
         return isInserted;
     }
 
+    private boolean mergePatients() throws DAOException {
+        boolean ismerged = true;
+        SQLiteDatabase db = null;
+        try {
+            db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+
+//            String insertQuery = "insert into tbl_patient(openmrs_uuid,openmrs_id,first_name,middle_name,last_name) select openmrs_uuid,openmrs_id,first_name,middle_name,last_name from patient_temp where openmrs_uuid not in (select openmrs_uuid from tbl_patient)";
+//            db.execSQL(insertQuery);
+//
+//
+//            String updateQuery = "update tbl_patient SET (tbl_patient.openmrs_id,tbl_patient.first_name,middle_name,last_name,date_of_birth,phone_number,address1,address2,city_village,state_province,postal_code,country,gender,sdw,occupation) = (select pt.openmrs_id,pt.first_name,pt.middle_name,pt.last_name,pt.date_of_birth,pt.phone_number,pt.address1,pt.address2,pt.city_village,pt.state_province,pt.postal_code,pt.country,pt.gender,pt.sdw,pt.occupation from patient_temp  pt where tbl_patient.openmrs_uuid=pt.openmrs_uuid)";
+//            //String updateQuery = "update tbl_patient set first_name = pt.first_name  from patient_temp pt,tbl_patient  where tbl_patient.openmrs_uuid=patient_temp.openmrs_uuid";
+//            db.execSQL(updateQuery);
+
+            /*sql query
+            insert into tbl_patient(openmrs_uuid,openmrs_id,first_name,middle_name,last_name) select openmrs_uuid,openmrs_id,first_name,middle_name,last_name from patient_temp where openmrs_uuid not in (select openmrs_uuid from tbl_patient);
+            * */
+
+        } catch (SQLException e) {
+            ismerged = false;
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            AppConstants.sqliteDbCloseHelper.dbClose(db);
+        }
+
+        return ismerged;
+    }
 
     public String getUuidForAttribute(String attr) {
         String attributeUuid = "";
