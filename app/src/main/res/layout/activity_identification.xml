@@ -12,6 +12,10 @@
             type="io.intelehealth.client.viewModels.IdentificationViewModel" />
 
         <variable
+            name="patient"
+            type="io.intelehealth.client.dto.PatientDTO" />
+
+        <variable
             name="config"
             type="io.intelehealth.client.utilities.ConfigUtils" />
 
@@ -95,6 +99,7 @@
                                     android:ems="10"
                                     android:freezesText="true"
                                     android:hint="@string/identification_screen_prompt_first_name"
+                                    android:text="@{identificationViewModel.patientFirstName}"
                                     android:imeOptions="actionUnspecified"
                                     android:inputType="textCapWords"
                                     android:maxLines="1"
@@ -640,6 +645,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
+            android:onClick="@{(v)->identificationViewModel.insertPatient(patient)}"
             app:srcCompat="@drawable/ic_done_24dp" />
     </android.support.design.widget.CoordinatorLayout>
 </layout>

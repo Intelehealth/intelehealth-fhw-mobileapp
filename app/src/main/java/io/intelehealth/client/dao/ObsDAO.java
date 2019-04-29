@@ -1,6 +1,7 @@
 package io.intelehealth.client.dao;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -24,37 +25,31 @@ public class ObsDAO {
     public boolean insertObsTemp(List<ObsDTO> obsDTOS) throws DAOException {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         boolean isInserted = true;
-//        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         try {
-//            db.beginTransaction();
+            db.beginTransaction();
             Logger.logD("insert", " insert obs");
             for (ObsDTO obs : obsDTOS) {
                 if (sessionManager.isFirstTimeSyncExcuted() && obs.getVoided() == 1)
                     continue;//performance reason
-                ObsDTO obsDTO = AppConstants.inteleHealthRoomDatabase.inteleHealthDao().findObsUuid(obs.getUuid());
-                if (obsDTO != null) {
-                    AppConstants.inteleHealthRoomDatabase.inteleHealthDao().updateObs(obs);
+                Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_obs where uuid=  ?", new String[]{obs.getUuid()});
+                if (cursor.getCount() != 0) {
+                    while (cursor.moveToNext()) {
+//                        Logger.logD("update", "update has to happen");
+                        updateObs(obs);
+                    }
                 } else {
-                    AppConstants.inteleHealthRoomDatabase.inteleHealthDao().insertObs(obs);
+                    createObs(obs);
                 }
-//                Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_obs where uuid=  ?", new String[]{obs.getUuid()});
-//                if (cursor.getCount() != 0) {
-//                    while (cursor.moveToNext()) {
-////                        Logger.logD("update", "update has to happen");
-//                        updateObs(obs);
-//                    }
-//                } else {
-//                    createObs(obs);
-//                }
-//                AppConstants.sqliteDbCloseHelper.cursorClose(cursor);
+                AppConstants.sqliteDbCloseHelper.cursorClose(cursor);
             }
-//            db.setTransactionSuccessful();
+            db.setTransactionSuccessful();
             Logger.logD("insert obs finished", " insert obs finished");
         } catch (SQLException e) {
             isInserted = false;
             throw new DAOException(e.getMessage(), e);
         } finally {
-//            db.endTransaction();
+            db.endTransaction();
         }
 
         return isInserted;

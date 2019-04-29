@@ -1,6 +1,7 @@
 package io.intelehealth.client.dao;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -18,16 +19,9 @@ public class EncounterDAO {
 
     public boolean insertEncounter(List<EncounterDTO> encounterDTOS) throws DAOException {
         boolean isInserted = true;
-//        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         try {
             for (EncounterDTO encounter : encounterDTOS) {
-                EncounterDTO encounterDTO = AppConstants.inteleHealthRoomDatabase.inteleHealthDao().findEncounterUuid(encounter.getUuid());
-                if (encounterDTO != null) {
-                    AppConstants.inteleHealthRoomDatabase.inteleHealthDao().updateEncounters(encounter);
-                } else {
-                    AppConstants.inteleHealthRoomDatabase.inteleHealthDao().insertEncounters(encounter);
-                }
-             /*
                 Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_encounter where uuid = ?", new String[]{encounter.getUuid()});
                 if (cursor.getCount() != 0) {
                     while (cursor.moveToNext()) {
@@ -39,8 +33,8 @@ public class EncounterDAO {
                     createEncounters(encounter);
                 }
                 AppConstants.sqliteDbCloseHelper.cursorClose(cursor);
-            }*/
             }
+
         } catch (SQLException e) {
             isInserted = false;
             throw new DAOException(e.getMessage(), e);

@@ -86,44 +86,6 @@ public class PatientsDAO {
             db.endTransaction();
 //            AppConstants.sqliteDbCloseHelper.dbClose(db);
         }
-
-       /* SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        String sql = "INSERT INTO  tbl_patient  VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?)";
-        SQLiteStatement statement = db.compileStatement(sql);
-        db.beginTransaction();
-        try {
-            for (PatientDTO c : patientDTO) {
-                statement.clearBindings();
-                statement.bindString(1, c.getOpenmrsUuid());
-                statement.bindString(2, c.getOpenmrsUuid());
-                statement.bindString(3, c.getOpenmrsId());
-                statement.bindString(4, c.getFirstname());
-                statement.bindString(5, c.getMiddlename());
-                statement.bindString(6, c.getLastname());
-                statement.bindString(7, c.getAddress1());
-                statement.bindString(8, c.getCountry());
-                statement.bindString(9, c.getDateofbirth());
-                statement.bindString(10, c.getGender());
-                statement.bindString(11, AppConstants.dateAndTimeUtils.currentDateTime());
-                statement.bindString(12, "TRUE");
-                statement.bindString(13, "TRUE");
-                statement.bindString(14, "TRUE");
-                statement.bindString(15, "TRUE");
-                statement.bindString(16, "TRUE");
-                statement.bindString(17, "TRUE");
-                statement.bindString(18, "TRUE");
-                statement.bindString(19, "TRUE");
-//                    statement.b(1, c.());
-//                    statement.bindLong(2, c.getCityName());
-                statement.execute();
-            }
-            db.setTransactionSuccessful();
-        } catch (SQLException e){
-
-        }finally {
-            db.endTransaction();
-        }*/
-
         return isCreated;
 
     }
@@ -256,34 +218,6 @@ public class PatientsDAO {
         }
 
         return isInserted;
-    }
-
-    private boolean mergePatients() throws DAOException {
-        boolean ismerged = true;
-        SQLiteDatabase db = null;
-        try {
-            db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-
-//            String insertQuery = "insert into tbl_patient(openmrs_uuid,openmrs_id,first_name,middle_name,last_name) select openmrs_uuid,openmrs_id,first_name,middle_name,last_name from patient_temp where openmrs_uuid not in (select openmrs_uuid from tbl_patient)";
-//            db.execSQL(insertQuery);
-//
-//
-//            String updateQuery = "update tbl_patient SET (tbl_patient.openmrs_id,tbl_patient.first_name,middle_name,last_name,date_of_birth,phone_number,address1,address2,city_village,state_province,postal_code,country,gender,sdw,occupation) = (select pt.openmrs_id,pt.first_name,pt.middle_name,pt.last_name,pt.date_of_birth,pt.phone_number,pt.address1,pt.address2,pt.city_village,pt.state_province,pt.postal_code,pt.country,pt.gender,pt.sdw,pt.occupation from patient_temp  pt where tbl_patient.openmrs_uuid=pt.openmrs_uuid)";
-//            //String updateQuery = "update tbl_patient set first_name = pt.first_name  from patient_temp pt,tbl_patient  where tbl_patient.openmrs_uuid=patient_temp.openmrs_uuid";
-//            db.execSQL(updateQuery);
-
-            /*sql query
-            insert into tbl_patient(openmrs_uuid,openmrs_id,first_name,middle_name,last_name) select openmrs_uuid,openmrs_id,first_name,middle_name,last_name from patient_temp where openmrs_uuid not in (select openmrs_uuid from tbl_patient);
-            * */
-
-        } catch (SQLException e) {
-            ismerged = false;
-            throw new DAOException(e.getMessage(), e);
-        } finally {
-            AppConstants.sqliteDbCloseHelper.dbClose(db);
-        }
-
-        return ismerged;
     }
 
     public String getUuidForAttribute(String attr) {

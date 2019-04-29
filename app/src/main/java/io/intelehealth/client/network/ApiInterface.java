@@ -6,6 +6,7 @@ import io.intelehealth.client.models.Location;
 import io.intelehealth.client.models.Results;
 import io.intelehealth.client.models.loginModel.LoginModel;
 import io.intelehealth.client.models.loginProviderModel.LoginProviderModel;
+import io.intelehealth.client.models.pushRequestApiCall.PushRequestApiCall;
 import io.intelehealth.client.models.pushResponseApiCall.PushResponseApiCall;
 import io.reactivex.Observable;
 import retrofit2.Call;
@@ -44,6 +45,6 @@ public interface ApiInterface {
     Observable<LoginProviderModel> LOGIN_PROVIDER_MODEL_OBSERVABLE(@Url String url, @Header("Authorization") String authHeader);
 
     @POST
-    Observable<PushResponseApiCall> PUSH_RESPONSE_API_CALL_OBSERVABLE();
+    Observable<PushResponseApiCall> PUSH_RESPONSE_API_CALL_OBSERVABLE(@Url String url, PushRequestApiCall pushRequestApiCall);
 
 }

@@ -5,10 +5,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.Nullable;
 
+import io.intelehealth.client.app.AppConstants;
+
 public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 4;
-    public static final String DATABASE_NAME = "localRecords.db";
+    public static final int DATABASE_VERSION = AppConstants.DATABASE_VERSION;
+    public static final String DATABASE_NAME = AppConstants.DATABASE_NAME;
     /*
     * "openmrs_uuid": "8ab7f041-0b02-4ac0-a8f4-aa35f90ae3a1",
                     "openmrs_id": "10213-7",

@@ -1,6 +1,7 @@
 package io.intelehealth.client.dao;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -20,18 +21,12 @@ public class LocationDAO {
     public boolean insertLocations(List<LocationDTO> locationDTOS) throws DAOException {
 
         boolean isInserted = true;
-       /* db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         AppConstants.inteleHealthDatabaseHelper.onCreate(db);
-        ContentValues values = new ContentValues();*/
+        ContentValues values = new ContentValues();
         try {
             for (LocationDTO location : locationDTOS) {
-                LocationDTO locationDTO = AppConstants.inteleHealthRoomDatabase.inteleHealthDao().findLocationUUid(location.getLocationuuid());
-                if (locationDTO.getLocationuuid() != null) {
-                    AppConstants.inteleHealthRoomDatabase.inteleHealthDao().updateLocatinon(location);
-                } else {
-                    AppConstants.inteleHealthRoomDatabase.inteleHealthDao().insertLocations(location);
-                }
-            /*    Cursor cursor = db.rawQuery("SELECT * FROM tbl_location where locationuuid = ?", new String[]{location.getLocationuuid()});
+                Cursor cursor = db.rawQuery("SELECT locationuuid FROM tbl_location where locationuuid = ?", new String[]{location.getLocationuuid()});
                 if (cursor.getCount() != 0) {
                     while (cursor.moveToNext()) {
                         updateLocation(location);
@@ -40,7 +35,7 @@ public class LocationDAO {
 //                    Logger.logD("insert", "insert has to happen");
                     createLocation(location);
                 }
-                AppConstants.sqliteDbCloseHelper.cursorClose(cursor);*/
+                AppConstants.sqliteDbCloseHelper.cursorClose(cursor);
             }
         } catch (SQLException e) {
             isInserted = false;
