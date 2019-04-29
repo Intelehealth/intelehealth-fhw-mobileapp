@@ -8,6 +8,7 @@ import com.snatik.storage.Storage;
 import java.io.File;
 
 import io.intelehealth.client.database.InteleHealthDatabaseHelper;
+import io.intelehealth.client.database.InteleHealthRoomDatabase;
 import io.intelehealth.client.network.ApiClient;
 import io.intelehealth.client.network.ApiInterface;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
@@ -15,6 +16,8 @@ import io.intelehealth.client.utilities.SqliteDbCloseHelper;
 
 public class AppConstants {
     //Constants
+    public static final String DATABASE_NAME = "localrecords.db";
+    public static final int DATABASE_VERSION = 1;
     public static final String JSON_FOLDER = "Engines";
     public static final String JSON_FOLDER_Update = "Engines_Update";
     public static final String MIND_MAP_SERVER_URL = "http://165.227.97.214:1337/parse/";
@@ -28,5 +31,6 @@ public class AppConstants {
     public static ApiInterface apiInterface = ApiClient.createService(ApiInterface.class);
     public static SqliteDbCloseHelper sqliteDbCloseHelper = new SqliteDbCloseHelper();
     public static DateAndTimeUtils dateAndTimeUtils = new DateAndTimeUtils();
+    public static InteleHealthRoomDatabase inteleHealthRoomDatabase = InteleHealthRoomDatabase.getDatabase(IntelehealthApplication.getAppContext());
 
 }

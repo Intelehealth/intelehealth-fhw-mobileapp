@@ -1,9 +1,16 @@
 package io.intelehealth.client.dto;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+@Entity(tableName = "tbl_provider")
 public class ProviderDTO {
+    @PrimaryKey
+    @NonNull
     @SerializedName("uuid")
     @Expose
     private String uuid;

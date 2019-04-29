@@ -1,13 +1,18 @@
 
 package io.intelehealth.client.dto;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
 
+@Entity(tableName = "tbl_patients")
 public class PatientDTO {
-
+    @PrimaryKey
+    @NonNull
     @SerializedName("uuid")
     @Expose
     private String uuid;
@@ -58,7 +63,7 @@ public class PatientDTO {
     private String gender;
 
 
-    private ArrayList<PatientAttributesDTO> patientAttributesDTOList;
+    //    private ArrayList<PatientAttributesDTO> patientAttributesDTOList;
     @SerializedName("dead")
     @Expose
     private Integer dead;
@@ -210,11 +215,11 @@ public class PatientDTO {
         this.economic = economic;
     }
 
-    public ArrayList<PatientAttributesDTO> getPatientAttributesDTOList() {
-        return patientAttributesDTOList;
-    }
-
-    public void setPatientAttributesDTOList(ArrayList<PatientAttributesDTO> patientAttributesDTOList) {
-        this.patientAttributesDTOList = patientAttributesDTOList;
-    }
+//    public ArrayList<PatientAttributesDTO> getPatientAttributesDTOList() {
+//        return patientAttributesDTOList;
+//    }
+//
+//    public void setPatientAttributesDTOList(ArrayList<PatientAttributesDTO> patientAttributesDTOList) {
+//        this.patientAttributesDTOList = patientAttributesDTOList;
+//    }
 }
