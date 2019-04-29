@@ -20,13 +20,19 @@ public class VisitsDAO {
 
     public boolean insertVisitTemp(List<VisitDTO> visitDTOS) throws DAOException {
         boolean isInserted = true;
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        AppConstants.inteleHealthDatabaseHelper.onCreate(db);
+       /* db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        AppConstants.inteleHealthDatabaseHelper.onCreate(db);*/
         try {
 
             for (VisitDTO visit : visitDTOS) {
+                VisitDTO visitDTO = AppConstants.inteleHealthRoomDatabase.inteleHealthDao().findVisitsUuid(visit.getUuid());
+                if (visitDTO.getUuid() != null) {
+                    AppConstants.inteleHealthRoomDatabase.inteleHealthDao().updateVisits(visit);
+                } else {
+                    AppConstants.inteleHealthRoomDatabase.inteleHealthDao().insertVisits(visit);
+                }
                 Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_visit where uuid = ?", new String[]{visit.getUuid()});
-                if (cursor.getCount() != 0) {
+                /*if (cursor.getCount() != 0) {
                     while (cursor.moveToNext()) {
                         updateVisits(visit);
                     }
@@ -34,7 +40,7 @@ public class VisitsDAO {
 //                    Logger.logD("insert", "insert has to happen");
                     createVisits(visit);
                 }
-                AppConstants.sqliteDbCloseHelper.cursorClose(cursor);
+                AppConstants.sqliteDbCloseHelper.cursorClose(cursor);*/
             }
         } catch (SQLException e) {
             isInserted = false;

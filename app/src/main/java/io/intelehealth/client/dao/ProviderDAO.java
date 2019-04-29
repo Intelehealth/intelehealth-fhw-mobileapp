@@ -1,7 +1,6 @@
 package io.intelehealth.client.dao;
 
 import android.content.ContentValues;
-import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -20,12 +19,18 @@ public class ProviderDAO {
     public boolean insertProviders(List<ProviderDTO> providerDTOS) throws DAOException {
 
         boolean isInserted = true;
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        /*db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         AppConstants.inteleHealthDatabaseHelper.onCreate(db);
-        ContentValues values = new ContentValues();
+        ContentValues values = new ContentValues();*/
         try {
             for (ProviderDTO provider : providerDTOS) {
-                Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_provider where uuid = ?", new String[]{provider.getUuid()});
+                ProviderDTO providerDTO = AppConstants.inteleHealthRoomDatabase.inteleHealthDao().findProvidersUuid(provider.getUuid());
+                if (providerDTO.getUuid() != null) {
+                    AppConstants.inteleHealthRoomDatabase.inteleHealthDao().updateProviders(provider);
+                } else {
+                    AppConstants.inteleHealthRoomDatabase.inteleHealthDao().insertProviders(provider);
+                }
+              /*  Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_provider where uuid = ?", new String[]{provider.getUuid()});
                 if (cursor.getCount() != 0) {
                     while (cursor.moveToNext()) {
                         updateProviders(provider);
@@ -34,7 +39,7 @@ public class ProviderDAO {
 //                    Logger.logD("insert", "insert has to happen");
                     createProviders(provider);
                 }
-                AppConstants.sqliteDbCloseHelper.cursorClose(cursor);
+                AppConstants.sqliteDbCloseHelper.cursorClose(cursor);*/
             }
         } catch (SQLException e) {
             isInserted = false;
