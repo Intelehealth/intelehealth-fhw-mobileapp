@@ -1,7 +1,6 @@
 package io.intelehealth.client.views.activites;
 
 import android.app.DatePickerDialog;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,7 +8,6 @@ import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -92,12 +90,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        identificationViewModel.getPatient().observe(this, new Observer<Patient>() {
-            @Override
-            public void onChanged(@Nullable Patient patient) {
-                identificationViewModel.onPatientCreateClicked();
-            }
-        });
+
 //Initialize the local database to store patient information
         mDbHelper = new InteleHealthDatabaseHelper(this);
 

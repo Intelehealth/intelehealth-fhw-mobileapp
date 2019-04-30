@@ -1,7 +1,6 @@
 package io.intelehealth.client.dao;
 
 import android.content.ContentValues;
-import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -22,23 +21,28 @@ public class VisitsDAO {
         boolean isInserted = true;
         db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         AppConstants.inteleHealthDatabaseHelper.onCreate(db);
+        db.beginTransaction();
         try {
 
             for (VisitDTO visit : visitDTOS) {
-                Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_visit where uuid = ?", new String[]{visit.getUuid()});
-                if (cursor.getCount() != 0) {
-                    while (cursor.moveToNext()) {
-                        updateVisits(visit);
-                    }
-                } else {
+//                Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_visit where uuid = ?", new String[]{visit.getUuid()});
+//                if (cursor.getCount() != 0) {
+//                    while (cursor.moveToNext()) {
+//                        updateVisits(visit);
+//                    }
+//                } else {
 //                    Logger.logD("insert", "insert has to happen");
                     createVisits(visit);
-                }
-                AppConstants.sqliteDbCloseHelper.cursorClose(cursor);
+//                }
+//                AppConstants.sqliteDbCloseHelper.cursorClose(cursor);
             }
+            db.setTransactionSuccessful();
         } catch (SQLException e) {
             isInserted = false;
             throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+            db.close();
         }
 
         return isInserted;
@@ -49,7 +53,7 @@ public class VisitsDAO {
 //        (SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase())
 //        AppConstants.inteleHealthDatabaseHelper.onCreate(db);
         ContentValues values = new ContentValues();
-        db.beginTransaction();
+//        db.beginTransaction();
         try {
 //            for (VisitDTO visit : visitDTOS) {
 //                Logger.logD("insert", "insert has to happen");
@@ -65,13 +69,13 @@ public class VisitsDAO {
 //                Logger.logD("pulldata", "datadumper" + values);
             createdRecordsCount = db.insertWithOnConflict("tbl_visit", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 //            }
-            db.setTransactionSuccessful();
+//            db.setTransactionSuccessful();
 //            Logger.logD("created records", "created records count" + createdRecordsCount);
         } catch (SQLException e) {
             isCreated = false;
             throw new DAOException(e.getMessage(), e);
         } finally {
-            db.endTransaction();
+//            db.endTransaction();
         }
         return isCreated;
     }

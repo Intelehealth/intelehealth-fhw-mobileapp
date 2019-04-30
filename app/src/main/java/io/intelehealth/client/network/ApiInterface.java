@@ -10,9 +10,11 @@ import io.intelehealth.client.models.pushRequestApiCall.PushRequestApiCall;
 import io.intelehealth.client.models.pushResponseApiCall.PushResponseApiCall;
 import io.reactivex.Observable;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -36,7 +38,7 @@ public interface ApiInterface {
 
     //EMR-Middleware/webapi/pull/pulldata/
     @GET
-    Call<ResponseDTO> RESPONSE_DTO_CALL(@Url String url);
+    Call<ResponseDTO> RESPONSE_DTO_CALL(@Url String url, @Header("Authorization") String authHeader);
 
     @GET
     Observable<LoginModel> LOGIN_MODEL_OBSERVABLE(@Url String url, @Header("Authorization") String authHeader);
@@ -44,7 +46,8 @@ public interface ApiInterface {
     @GET
     Observable<LoginProviderModel> LOGIN_PROVIDER_MODEL_OBSERVABLE(@Url String url, @Header("Authorization") String authHeader);
 
+    @Headers({"Accept: application/json"})
     @POST
-    Observable<PushResponseApiCall> PUSH_RESPONSE_API_CALL_OBSERVABLE(@Url String url, PushRequestApiCall pushRequestApiCall);
+    Observable<PushResponseApiCall> PUSH_RESPONSE_API_CALL_OBSERVABLE(@Url String url, @Header("Authorization") String authHeader, @Body PushRequestApiCall pushRequestApiCall);
 
 }

@@ -1,31 +1,41 @@
 package io.intelehealth.client.views.activites;
 
+import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import io.intelehealth.client.R;
+import io.intelehealth.client.databinding.ActivityPatientDetailBinding;
+import io.intelehealth.client.utilities.Logger;
 
 public class PatientDetailActivity extends AppCompatActivity {
-
+    private static final String TAG = PatientDetailActivity.class.getSimpleName();
+    ActivityPatientDetailBinding binding;
+    String patientName;
+    String visitUuid;
+    String patientUuid;
+    String intentTag = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_patient_detail);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_patient_detail);
+
+        setSupportActionBar(binding.toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        Intent intent = this.getIntent(); // The intent was passed to the activity
+        if (intent != null) {
+            patientUuid = intent.getStringExtra("patientUuid");
+            patientName = intent.getStringExtra("name");
+
+            intentTag = intent.getStringExtra("tag");
+            Logger.logD(TAG, "Patient ID: " + patientUuid);
+            Logger.logD(TAG, "Patient Name: " + patientName);
+            Logger.logD(TAG, "Intent Tag: " + intentTag);
+        }
+
+
     }
 
 }

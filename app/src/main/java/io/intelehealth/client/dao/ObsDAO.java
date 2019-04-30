@@ -1,7 +1,6 @@
 package io.intelehealth.client.dao;
 
 import android.content.ContentValues;
-import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -32,16 +31,16 @@ public class ObsDAO {
             for (ObsDTO obs : obsDTOS) {
                 if (sessionManager.isFirstTimeSyncExcuted() && obs.getVoided() == 1)
                     continue;//performance reason
-                Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_obs where uuid=  ?", new String[]{obs.getUuid()});
+                /*Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_obs where uuid=  ?", new String[]{obs.getUuid()});
                 if (cursor.getCount() != 0) {
                     while (cursor.moveToNext()) {
 //                        Logger.logD("update", "update has to happen");
                         updateObs(obs);
                     }
-                } else {
+                } else {*/
                     createObs(obs);
-                }
-                AppConstants.sqliteDbCloseHelper.cursorClose(cursor);
+                //}
+                //AppConstants.sqliteDbCloseHelper.cursorClose(cursor);
             }
             db.setTransactionSuccessful();
             Logger.logD("insert obs finished", " insert obs finished");
@@ -50,6 +49,7 @@ public class ObsDAO {
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
+            db.close();
         }
 
         return isInserted;
@@ -65,7 +65,7 @@ public class ObsDAO {
 //           for (ObsDTO obs : obsDTOS) {
 //                Logger.logD("insert", "insert has to happen");
 
-            db.beginTransaction();
+            //     db.beginTransaction();
 
             values.put("uuid", obsDTOS.getUuid());
             values.put("encounteruuid", obsDTOS.getEncounteruuid());
@@ -79,13 +79,13 @@ public class ObsDAO {
 //                Logger.logD("pulldata", "datadumper" + values);
             createdRecordsCount = db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 //            }
-            db.setTransactionSuccessful();
+            //db.setTransactionSuccessful();
 //            Logger.logD("created records", "created records count" + createdRecordsCount);
         } catch (SQLException e) {
             isCreated = false;
             throw new DAOException(e.getMessage(), e);
         } finally {
-            db.endTransaction();
+            //db.endTransaction();
         }
 
         return isCreated;

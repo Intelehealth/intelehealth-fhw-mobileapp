@@ -1,7 +1,6 @@
 package io.intelehealth.client.dao;
 
 import android.content.ContentValues;
-import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -20,31 +19,37 @@ public class EncounterDAO {
     public boolean insertEncounter(List<EncounterDTO> encounterDTOS) throws DAOException {
         boolean isInserted = true;
         db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
         try {
             for (EncounterDTO encounter : encounterDTOS) {
-                Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_encounter where uuid = ?", new String[]{encounter.getUuid()});
-                if (cursor.getCount() != 0) {
-                    while (cursor.moveToNext()) {
-//                        Logger.logD("update", "update has to happen");
-                        updateEncounters(encounter);
-                    }
-                } else {
+//                Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_encounter where uuid = ?", new String[]{encounter.getUuid()});
+//                if (cursor.getCount() != 0) {
+//                    while (cursor.moveToNext()) {
+////                        Logger.logD("update", "update has to happen");
+//                        updateEncounters(encounter);
+//                    }
+//                } else {
 //                    Logger.logD("insert", "insert has to happen");
                     createEncounters(encounter);
-                }
-                AppConstants.sqliteDbCloseHelper.cursorClose(cursor);
+
+//                }
+//                AppConstants.sqliteDbCloseHelper.cursorClose(cursor);
             }
+            db.setTransactionSuccessful();
 
         } catch (SQLException e) {
             isInserted = false;
             throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+            db.close();
         }
         return isInserted;
     }
 
     private boolean createEncounters(EncounterDTO encounter) throws DAOException {
         boolean isCreated = false;
-        db.beginTransaction();
+
         ContentValues values = new ContentValues();
         try {
 
@@ -59,13 +64,13 @@ public class EncounterDAO {
 //                Logger.logD("pulldata", "datadumper" + values);
                 createdRecordsCount = db.insertWithOnConflict("tbl_encounter", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 //            }
-            db.setTransactionSuccessful();
+//            db.setTransactionSuccessful();
 //            Logger.logD("created records", "created records count" + createdRecordsCount);
         } catch (SQLException e) {
             isCreated = false;
             throw new DAOException(e.getMessage(), e);
         } finally {
-            db.endTransaction();
+//            db.endTransaction();
         }
         return isCreated;
     }

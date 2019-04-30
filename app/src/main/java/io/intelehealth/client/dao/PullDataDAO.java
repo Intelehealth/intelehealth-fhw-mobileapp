@@ -19,8 +19,10 @@ public class PullDataDAO {
     private SessionManager sessionManager = null;
     public boolean pullData(final Context context) {
         sessionManager = new SessionManager(context);
-        String url = "http://142.93.221.37:8080/EMR-Middleware/webapi/pull/pulldata/1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a/" + sessionManager.getPullExcutedTime();
-        Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(url);
+        String encoded = sessionManager.getEncoded();
+//        1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a
+        String url = "http://142.93.221.37:8080/EMR-Middleware/webapi/pull/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
+        Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(url, "Basic " + encoded);
         Logger.logD("Start pull request", "Started");
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
             @Override
@@ -31,7 +33,7 @@ public class PullDataDAO {
                     pullDataExecutedTime(response.body(), context);
                 }
                 if (response.body() != null && response.body().getData() != null) {
-                    sessionManager.setPullExcutedTime(response.body().getData().getPullexecutedtime());
+//                    sessionManager.setPullExcutedTime(response.body().getData().getPullexecutedtime());
                 }
                 Logger.logD("End Pull request", "Ended");
             }

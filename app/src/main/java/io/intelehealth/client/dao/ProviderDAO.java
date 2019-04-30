@@ -1,7 +1,6 @@
 package io.intelehealth.client.dao;
 
 import android.content.ContentValues;
-import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -23,23 +22,26 @@ public class ProviderDAO {
         db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         AppConstants.inteleHealthDatabaseHelper.onCreate(db);
         ContentValues values = new ContentValues();
+        db.beginTransaction();
         try {
             for (ProviderDTO provider : providerDTOS) {
-                Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_provider where uuid = ?", new String[]{provider.getUuid()});
-                if (cursor.getCount() != 0) {
-                    while (cursor.moveToNext()) {
-                        updateProviders(provider);
-                    }
-                } else {
+//                Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_provider where uuid = ?", new String[]{provider.getUuid()});
+//                if (cursor.getCount() != 0) {
+//                    while (cursor.moveToNext()) {
+//                        updateProviders(provider);
+//                    }
+//                } else {
 //                    Logger.logD("insert", "insert has to happen");
                     createProviders(provider);
-                }
-                AppConstants.sqliteDbCloseHelper.cursorClose(cursor);
+//                }
+//                AppConstants.sqliteDbCloseHelper.cursorClose(cursor);
             }
+            db.setTransactionSuccessful();
         } catch (SQLException e) {
             isInserted = false;
             throw new DAOException(e.getMessage(), e);
         } finally {
+            db.endTransaction();
             AppConstants.sqliteDbCloseHelper.dbClose(db);
         }
 
@@ -51,7 +53,7 @@ public class ProviderDAO {
 
         ContentValues values = new ContentValues();
 
-        db.beginTransaction();
+//        db.beginTransaction();
         try {
 //            for (ProviderDTO provider : providerDTOS) {
 //                Logger.logD("insert", "insert has to happen");
@@ -65,13 +67,13 @@ public class ProviderDAO {
 //                Logger.logD("pulldata", "datadumper" + values);
                 createdRecordsCount = db.insertWithOnConflict("tbl_provider", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 //            }
-            db.setTransactionSuccessful();
+//            db.setTransactionSuccessful();
 //            Logger.logD("created records", "created records count" + createdRecordsCount);
         } catch (SQLException e) {
             isCreated = false;
             throw new DAOException(e.getMessage(), e);
         } finally {
-            db.endTransaction();
+//            db.endTransaction();
         }
         return isCreated;
     }

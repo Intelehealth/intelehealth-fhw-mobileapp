@@ -26,7 +26,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
     *
     * */
     public static final String CREATE_PATIENT_MAIN = "CREATE TABLE IF NOT EXISTS tbl_patient(" +
-            "uuid TEXT," +
+            "uuid TEXT PRIMARY KEY," +
             "openmrs_id TEXT," +
             "first_name TEXT," +
             "middle_name TEXT," +
@@ -56,7 +56,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
                 "openmrs_patientuuid": "8ab7f041-0b02-4ac0-a8f4-aa35f90ae3a1"
     * */
     public static final String CREATE_ATTRIB_MAIN = "CREATE TABLE IF NOT EXISTS tbl_patient_attribute (" +
-            "uuid TEXT," +
+            "uuid TEXT PRIMARY KEY," +
             "value varchar(255)," +
             "person_attribute_type_uuid TEXT ," +
             "patientuuid TEXT," +
@@ -64,7 +64,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "sync TEXT" +
             ")";
     public static final String CREATE_VISIT_MAIN = "CREATE TABLE IF NOT EXISTS tbl_visit (" +
-            "uuid TEXT," +
+            "uuid TEXT PRIMARY KEY," +
             "patientuuid TEXT," +
             "startdate TEXT," +
             "enddate TEXT," +
@@ -85,17 +85,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
               "locationuuid": "1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a",
               "creator": 4*/
     public static final String CREATE_OBS_MAIN = "CREATE TABLE IF NOT EXISTS tbl_obs (" +
-            "uuid TEXT," +
-            "encounteruuid TEXT," +
-            "conceptuuid integer(10)," +
-            "value TEXT," +
-            "creator TEXT," +
-            "voided TEXT," +
-            "modified_date TEXT," +
-            "synced TEXT" +
-            ")";
-    public static final String CREATE_OBS_TEMP = "CREATE TABLE IF NOT EXISTS temp_obs (" +
-            "uuid TEXT," +
+            "uuid TEXT PRIMARY KEY," +
             "encounteruuid TEXT," +
             "conceptuuid integer(10)," +
             "value TEXT," +
@@ -111,7 +101,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
                 "creator": 4
     * */
     public static final String CREATE_ENCOUNTER_MAIN = "CREATE TABLE IF NOT EXISTS tbl_encounter (" +
-            "uuid TEXT," +
+            "uuid TEXT PRIMARY KEY," +
             "visituuid TEXT," +
             "encounter_type_uuid TEXT," +
             "modified_date TEXT," +
@@ -123,7 +113,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
                     "encounter_type": "6"
     * */
     public static final String CREATE_PATIENT_ATTRIBUTE_MASTER_MAIN = "CREATE TABLE IF NOT EXISTS tbl_patient_attribute_master (" +
-            "uuid TEXT," +
+            "uuid TEXT PRIMARY KEY," +
             "name TEXT," +
             "modified_date TEXT," +
             "sync TEXT" +
@@ -133,13 +123,13 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
     * */
     public static final String CREATE_LOCATION = "CREATE TABLE IF NOT EXISTS tbl_location (" +
             "name TEXT," +
-            "locationuuid TEXT," +
+            "locationuuid TEXT PRIMARY KEY," +
             "retired integer(10)," +
             "modified_date TEXT," +
             "synced TEXT" +
             ")";
     public static final String CREATE_PROVIDER = "CREATE TABLE IF NOT EXISTS tbl_provider (" +
-            "uuid TEXT," +
+            "uuid TEXT PRIMARY KEY," +
             "identifier TEXT," +
             "given_name TEXT," +
             "family_name TEXT," +
@@ -147,6 +137,14 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "modified_date TEXT," +
             "synced TEXT" +
             ")";
+
+    public static final String CREATE_SYNC = "CREATE TABLE IF NOT EXISTS tbl_sync (" +
+            "locationuuid TEXT PRIMARY KEY," +
+            "last_pull_execution_time TEXT," +
+            "synced TEXT," +
+            "devices_sync TEXT" +
+            ")";
+
 
     public InteleHealthDatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -162,7 +160,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_PATIENT_ATTRIBUTE_MASTER_MAIN);
         db.execSQL(CREATE_LOCATION);
         db.execSQL(CREATE_PROVIDER);
-        db.execSQL(CREATE_OBS_TEMP);
+        db.execSQL(CREATE_SYNC);
     }
 
     @Override
