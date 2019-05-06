@@ -9,6 +9,7 @@ import io.intelehealth.client.models.loginProviderModel.LoginProviderModel;
 import io.intelehealth.client.models.pushRequestApiCall.PushRequestApiCall;
 import io.intelehealth.client.models.pushResponseApiCall.PushResponseApiCall;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -48,6 +49,6 @@ public interface ApiInterface {
 
     @Headers({"Accept: application/json"})
     @POST
-    Observable<PushResponseApiCall> PUSH_RESPONSE_API_CALL_OBSERVABLE(@Url String url, @Header("Authorization") String authHeader, @Body PushRequestApiCall pushRequestApiCall);
+    Single<PushResponseApiCall> PUSH_RESPONSE_API_CALL_OBSERVABLE(@Url String url, @Header("Authorization") String authHeader, @Body PushRequestApiCall pushRequestApiCall);
 
 }

@@ -95,4 +95,24 @@ public class DateAndTimeUtils {
         return period.getMonths();
     }
 
+    public static String formatDateFromOnetoAnother(String date, String sourceFormat, String anotherFormat) {
+
+        String result = "";
+        SimpleDateFormat sdf;
+        SimpleDateFormat sdf1;
+
+        try {
+            sdf = new SimpleDateFormat(sourceFormat);
+            sdf1 = new SimpleDateFormat(anotherFormat);
+            result = sdf1.format(sdf.parse(date));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        } finally {
+            sdf = null;
+            sdf1 = null;
+        }
+        return result;
+    }
+
 }

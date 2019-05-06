@@ -24,6 +24,23 @@ public class AppConstants {
     public static final String IMAGE_APP_ID = "app2";
     public static final String dbfilepath = Environment.getExternalStorageDirectory() + File.separator + "InteleHealth_DB" + File.separator + "Intelehealth.db"; // directory: Intelehealth_DB   ,  filename: Intelehealth.db
 
+    //App vitals constants
+    public static final String MAXIMUM_HEIGHT = "272";
+    public static final String MAXIMUM_WEIGHT = "150";
+    public static final String MAXIMUM_BP_SYS = "300";
+    public static final String MINIMUM_BP_SYS = "50";
+    public static final String MAXIMUM_BP_DSYS = "150";
+    public static final String MINIMUM_BP_DSYS = "30";
+    public static final String MAXIMUM_PULSE = "200";
+    public static final String MINIMUM_PULSE = "30";
+    public static final String MAXIMUM_TEMPERATURE_CELSIUS = "43";
+    public static final String MINIMIM_TEMPERATURE_CELSIUS = "25";
+    public static final String MINIMIM_TEMPERATURE_FARHENIT = "80";
+    public static final String MAXIMUM_TEMPERATURE_FARHENIT = "120";
+    public static final String MAXIMUM_SPO2 = "100";
+    public static final String MINIMUM_SPO2 = "1";
+    public static final String MAXIMUM_RESPIRATORY = "80";
+    public static final String MINIMUM_RESPIRATORY = "10";
 
     //functions constants
     public static Storage storage = new Storage(IntelehealthApplication.getAppContext());

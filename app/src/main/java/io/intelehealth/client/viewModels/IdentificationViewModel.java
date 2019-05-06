@@ -6,9 +6,11 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Intent;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.RadioButton;
 
 import com.google.gson.Gson;
 
@@ -16,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.dao.PatientsDAO;
 import io.intelehealth.client.dto.PatientAttributesDTO;
@@ -30,14 +31,15 @@ import io.intelehealth.client.models.pushRequestApiCall.Patient;
 import io.intelehealth.client.models.pushRequestApiCall.Person;
 import io.intelehealth.client.models.pushRequestApiCall.PushRequestApiCall;
 import io.intelehealth.client.models.pushResponseApiCall.PushResponseApiCall;
+import io.intelehealth.client.utilities.DateAndTimeUtils;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.NetworkConnection;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.StringUtils;
 import io.intelehealth.client.views.activites.PatientDetailActivity;
-import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.observers.DisposableObserver;
+import io.reactivex.observers.DisposableSingleObserver;
 
 public class IdentificationViewModel extends AndroidViewModel {
     private static final String TAG = IdentificationViewModel.class.getSimpleName();
@@ -61,6 +63,8 @@ public class IdentificationViewModel extends AndroidViewModel {
     public MutableLiveData<String> educationlevel = new MediatorLiveData<>();
     public MutableLiveData<PatientDTO> userMutableLiveData = new MediatorLiveData<>();
     PatientsDAO patientsDAO = new PatientsDAO();
+    String uuid = "";
+    PatientDTO patientdto = new PatientDTO();
 
     public IdentificationViewModel(@NonNull Application application) {
         super(application);
@@ -78,9 +82,9 @@ public class IdentificationViewModel extends AndroidViewModel {
     public void onPatientCreateClicked() {
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
-        ArrayList<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<PatientAttributesDTO>();
-        String uuid = UUID.randomUUID().toString();
-        PatientDTO patientdto = new PatientDTO();
+        List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
+        uuid = UUID.randomUUID().toString();
+
         patientdto.setUuid(uuid);
         Gson gson = new Gson();
 
@@ -88,19 +92,56 @@ public class IdentificationViewModel extends AndroidViewModel {
         patientdto.setMiddlename(StringUtils.getValue(middlename.getValue()));
         patientdto.setLastname(StringUtils.getValue(lastname.getValue()));
         patientdto.setPhonenumber(StringUtils.getValue(phonenumber.getValue()));
-        patientdto.setDateofbirth(StringUtils.getValue(dateofbirth.getValue()));
+        patientdto.setDateofbirth(StringUtils.getValue(DateAndTimeUtils.formatDateFromOnetoAnother(dateofbirth.getValue(), "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd")));
         patientdto.setAddress1(StringUtils.getValue(address.getValue()));
         patientdto.setAddress2(StringUtils.getValue(address2.getValue()));
         patientdto.setCityvillage(StringUtils.getValue(village.getValue()));
         patientdto.setPostalcode(StringUtils.getValue(postalcode.getValue()));
+        patientdto.setCountry(StringUtils.getValue(country.getValue()));
 //                patientdto.setEconomic(StringUtils.getValue(m));
         patientdto.setStateprovince(StringUtils.getValue(state.getValue()));
+        patientAttributesDTO = new PatientAttributesDTO();
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
-        patientAttributesDTO.setValue(StringUtils.getValue("OBC"));
-//                patientAttributesDTO.setSycd(false);
+        patientAttributesDTO.setValue(StringUtils.getValue(caste.getValue()));
         patientAttributesDTOList.add(patientAttributesDTO);
+
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
+        patientAttributesDTO.setValue(StringUtils.getValue(phonenumber.getValue()));
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Son/wife/daughter"));
+        patientAttributesDTO.setValue(StringUtils.getValue(sondaughter.getValue()));
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+        patientAttributesDTO.setValue(StringUtils.getValue(occupation.getValue()));
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
+        patientAttributesDTO.setValue(StringUtils.getValue(economicstatus.getValue()));
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
+        patientAttributesDTO.setValue(StringUtils.getValue(educationlevel.getValue()));
+        patientAttributesDTOList.add(patientAttributesDTO);
+        Logger.logD(TAG, "PatientAttribute list" + patientAttributesDTOList.size());
         patientdto.setPatientAttributesDTOList(patientAttributesDTOList);
         patientdto.setSyncd(false);
         Logger.logD("patient json : ", "Json : " + gson.toJson(patientdto, PatientDTO.class));
@@ -113,12 +154,14 @@ public class IdentificationViewModel extends AndroidViewModel {
 //        insertPatient(patient);
         try {
             Logger.logD(TAG, "insertpatinet ");
-            Boolean b = patientsDAO.insertPatientToDB(patientdto);
+            Boolean b = patientsDAO.insertPatientToDB(patientdto, uuid);
             if (b) {
                 Logger.logD(TAG, "inserted");
                 Intent i = new Intent(getApplication(), PatientDetailActivity.class);
                 i.putExtra("patientUuid", uuid);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.putExtra("patientName", patientdto.getFirstname() + " " + patientdto.getLastname());
+                i.putExtra("tag", "newPatient");
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 getApplication().startActivity(i);
             }
             if (NetworkConnection.isOnline(getApplication())) {
@@ -130,57 +173,71 @@ public class IdentificationViewModel extends AndroidViewModel {
 
     }
 
-    public Adapter countryAdapter() {
-        ArrayAdapter<CharSequence> countryAdapter = ArrayAdapter.createFromResource(getApplication(),
-                R.array.countries, android.R.layout.simple_spinner_item);
-        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        binding.spinnerCountry.setAdapter(countryAdapter);
-        return countryAdapter;
+    public void onCountrySelectItem(AdapterView<?> parent, View view, int pos, long id) {
+        Logger.logD(TAG, "onitem selected" + parent.getSelectedItem());
+        country.setValue(parent.getSelectedItem().toString());
+        //pos                                 get selected item position
+        //view.getText()                      get lable of selected item
+        //parent.getAdapter().getItem(pos)    get item by pos
+        //parent.getAdapter().getCount()      get item count
+        //parent.getCount()                   get item count
+        //parent.getSelectedItem()            get selected item
+        //and other...
     }
 
-    public Adapter casteAdapter() {
-        ArrayAdapter<CharSequence> casteAdapter = ArrayAdapter.createFromResource(getApplication(),
-                R.array.caste, android.R.layout.simple_spinner_item);
-        casteAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        binding.spinnerCaste.setAdapter(casteAdapter);
-        return casteAdapter;
+    public void onStateSelectItem(AdapterView<?> parent, View view, int pos, long id) {
+        Logger.logD(TAG, "onitem selected" + parent.getSelectedItem());
+        state.setValue(parent.getSelectedItem().toString());
+        //pos                                 get selected item position
+        //view.getText()                      get lable of selected item
+        //parent.getAdapter().getItem(pos)    get item by pos
+        //parent.getAdapter().getCount()      get item count
+        //parent.getCount()                   get item count
+        //parent.getSelectedItem()            get selected item
+        //and other...
     }
 
+    public void onCasteSelectItem(AdapterView<?> parent, View view, int pos, long id) {
+        Logger.logD(TAG, "onitem selected" + parent.getSelectedItem());
+        caste.setValue(parent.getSelectedItem().toString());
+        //pos                                 get selected item position
+        //view.getText()                      get lable of selected item
+        //parent.getAdapter().getItem(pos)    get item by pos
+        //parent.getAdapter().getCount()      get item count
+        //parent.getCount()                   get item count
+        //parent.getSelectedItem()            get selected item
+        //and other...
+    }
 
-//    public Single<PatientDTO> insertPatient(PatientDTO patient) {
-//
-//        Logger.logD(TAG, "firstname" + userMutableLiveData.getValue());
-//        return new Single<PatientDTO>() {
-//            @Override
-//            protected void subscribeActual(SingleObserver<? super PatientDTO> observer) {
-//                try (SQLiteDatabase db4 = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase()) {
-//                    ContentValues patientEntries = new ContentValues();
-//                    patientEntries.put("uuid", AppConstants.NEW_UUID);
-//                    patientEntries.put("first_name", patient.getFirstname());
-//                    patientEntries.put("middle_name", patient.getMiddlename());
-//                    patientEntries.put("last_name", patient.getLastname());
-//                    patientEntries.put("date_of_birth", patient.getDateofbirth());
-//                    patientEntries.put("phone_number", patient.getPhonenumber());
-//                    patientEntries.put("address1", patient.getAddress1());
-//                    patientEntries.put("address2", patient.getAddress2());
-//                    patientEntries.put("city_village", patient.getCityvillage());
-//                    patientEntries.put("state_province", patient.getStateprovince());
-//                    patientEntries.put("postal_code", patient.getPostalcode());
-//                    patientEntries.put("country", patient.getCountry());
-//                    patientEntries.put("gender", patient.getGender());
-//                    long a = db4.insert(
-//                            "tbl_patient",
-//                            null,
-//                            patientEntries
-//                    );
-//                    Logger.logD(TAG, "insertion " + a);
-//                } catch (SQLiteException sqle) {
-//                    Logger.logE(TAG, "sql exception", sqle);
-//                }
-//
-//            }
-//        };
-//    }
+    public void onEconomicSelectItem(AdapterView<?> parent, View view, int pos, long id) {
+        Logger.logD(TAG, "onitem selected" + parent.getSelectedItem());
+        economicstatus.setValue(parent.getSelectedItem().toString());
+        //pos                                 get selected item position
+        //view.getText()                      get lable of selected item
+        //parent.getAdapter().getItem(pos)    get item by pos
+        //parent.getAdapter().getCount()      get item count
+        //parent.getCount()                   get item count
+        //parent.getSelectedItem()            get selected item
+        //and other...
+    }
+
+    public void onEducationSelectItem(AdapterView<?> parent, View view, int pos, long id) {
+        Logger.logD(TAG, "onitem selected" + parent.getSelectedItem());
+        educationlevel.setValue(parent.getSelectedItem().toString());
+        //pos                                 get selected item position
+        //view.getText()                      get lable of selected item
+        //parent.getAdapter().getItem(pos)    get item by pos
+        //parent.getAdapter().getCount()      get item count
+        //parent.getCount()                   get item count
+        //parent.getSelectedItem()            get selected item
+        //and other...
+    }
+
+    public void onSplitTypeChanged(RadioButton radioGroup, int id) {
+        // ...
+        Logger.logD(TAG, "description" + radioGroup + id);
+
+    }
 
     public void patientApiCall() {
         PushRequestApiCall pushRequestApiCall = new PushRequestApiCall();
@@ -188,39 +245,50 @@ public class IdentificationViewModel extends AndroidViewModel {
         List<Person> personList = new ArrayList<>();
 
         Person person = new Person();
-        person.setBirthdate("");
-        person.setGender("");
-        person.setUuid("");
+        person.setBirthdate(patientdto.getDateofbirth());
+        person.setGender(gender.getValue());
+        person.setUuid(uuid);
+        personList.add(person);
 
         List<Name> nameList = new ArrayList<>();
         Name name = new Name();
-        name.setFamilyName("");
-        name.setGivenName("");
-        name.setMiddleName("");
+        name.setFamilyName(patientdto.getLastname());
+        name.setGivenName(patientdto.getFirstname());
+        name.setMiddleName(patientdto.getMiddlename());
         nameList.add(name);
 
         List<Address> addressList = new ArrayList<>();
         Address address = new Address();
-        address.setAddress1("");
-        address.setAddress2("");
-        address.setCityVillage("");
-        address.setCountry("");
-        address.setPostalCode("");
-        address.setStateProvince("");
+        address.setAddress1(patientdto.getAddress1());
+        address.setAddress2(patientdto.getAddress2());
+        address.setCityVillage(patientdto.getCityvillage());
+        address.setCountry(patientdto.getCountry());
+        address.setPostalCode(patientdto.getPostalcode());
+        address.setStateProvince(patientdto.getStateprovince());
         addressList.add(address);
 
-        List<Attribute> attributeList = new ArrayList<>();
         Attribute attribute = new Attribute();
-        attribute.setAttributeType("");
-        attribute.setValue("");
-        attributeList.add(attribute);
+        List<Attribute> attributeList = new ArrayList<>();
+        try {
+            attributeList = patientsDAO.getPatientAttributes(uuid);
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        if (addressList != null && addressList.size() != 0) {
+            for (int i = 0; i < addressList.size(); i++) {
+                attribute.setAttributeType(attributeList.get(i).getAttributeType());
+                attribute.setValue(attributeList.get(i).getValue());
+                attributeList.add(attribute);
+            }
+        }
+
 
         person.setNames(nameList);
         person.setAddresses(addressList);
         person.setAttributes(attributeList);
         Patient patient = new Patient();
 
-        patient.setPerson("8ee4484b-8718-45c8-8e41-8b9d3ce28e4f");
+        patient.setPerson(uuid);
 
         List<Identifier> identifierList = new ArrayList<>();
         Identifier identifier = new Identifier();
@@ -231,33 +299,38 @@ public class IdentificationViewModel extends AndroidViewModel {
 
         patient.setIdentifiers(identifierList);
 
+        patientList.add(patient);
 
         pushRequestApiCall.setPatients(patientList);
         pushRequestApiCall.setPersons(personList);
 
         String encoded = session.getEncoded();
 
-        String url = "http://142.93.221.37:8080/EMR-Middleware/webapi/push/pushdata";
-        Observable<PushResponseApiCall> pushResponseApiCallObservable = AppConstants.apiInterface.PUSH_RESPONSE_API_CALL_OBSERVABLE(url, "Basic " + encoded, pushRequestApiCall);
+        String url = "http://" + session.getServerUrl() + ":8080/EMR-Middleware/webapi/push/pushdata";
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        Single<PushResponseApiCall> pushResponseApiCallObservable = AppConstants.apiInterface.PUSH_RESPONSE_API_CALL_OBSERVABLE(url, "Basic " + encoded, pushRequestApiCall);
         pushResponseApiCallObservable.observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableObserver<PushResponseApiCall>() {
+                .subscribe(new DisposableSingleObserver<PushResponseApiCall>() {
                     @Override
-                    public void onNext(PushResponseApiCall pushResponseApiCall) {
+                    public void onSuccess(PushResponseApiCall pushResponseApiCall) {
+                        Logger.logD(TAG, "sucess" + pushResponseApiCall);
+                        for (int i = 0; i < pushResponseApiCall.getData().getPatientlist().size(); i++) {
+                            try {
+                                patientsDAO.updateOpemmrsId(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId(), pushResponseApiCall.getData().getPatientlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
+                            } catch (DAOException e) {
+                                e.printStackTrace();
+                            }
+                        }
 
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
+                        Logger.logD(TAG, "Onerror " + e.getMessage());
                     }
                 });
     }
-
 
 }
 

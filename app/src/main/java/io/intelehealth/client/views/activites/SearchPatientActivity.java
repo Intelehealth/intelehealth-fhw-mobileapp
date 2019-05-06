@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.intelehealth.client.R;
+import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.InteleHealthDatabaseHelper;
 import io.intelehealth.client.databinding.ActivitySearchPatientBinding;
 import io.intelehealth.client.dto.PatientDTO;
@@ -124,7 +125,7 @@ public class SearchPatientActivity extends AppCompatActivity {
                 SearchRecentSuggestions suggestions = new SearchRecentSuggestions(SearchPatientActivity.this,
                         SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
                 suggestions.clearHistory();
-//                doQuery(newText);
+                doQuery(newText);
                 return true;
             }
         });
@@ -150,7 +151,7 @@ public class SearchPatientActivity extends AppCompatActivity {
 
     public List<PatientDTO> getAllPatientsFromDB() {
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         String table = "tbl_patient";
         final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table +
                 " ORDER BY first_name ASC", null);
@@ -168,7 +169,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         }
 
 
-        Log.d("student data", modelList.toString());
+        //  Log.d("student data", modelList.toString());
 
 
         return modelList;
@@ -178,7 +179,7 @@ public class SearchPatientActivity extends AppCompatActivity {
     public List<PatientDTO> getQueryPatients(String query) {
         String search = query.trim();
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         String table = "tbl_patient";
         final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table +
                 " WHERE first_name LIKE " + "'" + search +
@@ -202,7 +203,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         }
 
 
-        Log.d("patients data", modelList.toString());
+        //   Log.d("patients data", modelList.toString());
 
 
         return modelList;

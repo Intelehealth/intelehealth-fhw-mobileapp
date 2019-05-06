@@ -18,15 +18,15 @@
         <!--android:title="@string/menu_option_end_of_day"-->
         <!--android:orderInCategory="100" />-->
 
-        <item
-            android:id="@+id/backupOption"
-            android:orderInCategory="125"
-            android:title="Backup" />
+        <!--<item-->
+        <!--android:id="@+id/backupOption"-->
+        <!--android:orderInCategory="125"-->
+        <!--android:title="Backup" />-->
 
-        <item
-            android:id="@+id/restoreOption"
-            android:orderInCategory="125"
-            android:title="Restore" />
+        <!--<item-->
+        <!--android:id="@+id/restoreOption"-->
+        <!--android:orderInCategory="125"-->
+        <!--android:title="Restore" />-->
 
         <item
             android:id="@+id/updateProtocolsOption"

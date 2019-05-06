@@ -15,6 +15,7 @@
 
 package io.intelehealth.client.models;
 
+
 import com.google.gson.annotations.Expose;
 
 /**

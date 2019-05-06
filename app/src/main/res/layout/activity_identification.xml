@@ -512,7 +512,7 @@
                             android:ems="10"
                             android:freezesText="true"
                             android:hint="@string/identification_screen_prompt_occupation"
-                            android:text="@{identificationViewModel.occupation}"
+                            android:text="@={identificationViewModel.occupation}"
                             android:imeOptions="actionUnspecified"
 
                             android:inputType="textCapWords"
@@ -559,6 +559,7 @@
 
                             <Spinner
                                 android:id="@+id/spinner_caste"
+                                android:onItemSelected="@{(parent,view,pos,id)->identificationViewModel.onCasteSelectItem(parent,view,pos,id)}"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />
                         </LinearLayout>
@@ -597,6 +598,7 @@
 
                             <Spinner
                                 android:id="@+id/spinner_economic_status"
+                                android:onItemSelected="@{(parent,view,pos,id)->identificationViewModel.onEconomicSelectItem(parent,view,pos,id)}"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />
                         </LinearLayout>
@@ -634,6 +636,7 @@
 
                             <Spinner
                                 android:id="@+id/spinner_education"
+                                android:onItemSelected="@{(parent,view,pos,id)->identificationViewModel.onEducationSelectItem(parent,view,pos,id)}"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />
                         </LinearLayout>

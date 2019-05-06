@@ -57,7 +57,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
     * */
     public static final String CREATE_ATTRIB_MAIN = "CREATE TABLE IF NOT EXISTS tbl_patient_attribute (" +
             "uuid TEXT PRIMARY KEY," +
-            "value varchar(255)," +
+            "value TEXT," +
             "person_attribute_type_uuid TEXT ," +
             "patientuuid TEXT," +
             "modified_date TEXT," +

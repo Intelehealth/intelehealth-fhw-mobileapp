@@ -11,13 +11,13 @@ import android.view.ViewGroup;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.IntelehealthApplication;
-import io.intelehealth.client.dao.PullDataDAO;
 import io.intelehealth.client.databinding.CardviewHomeBinding;
 import io.intelehealth.client.views.activites.ActivePatientActivity;
 import io.intelehealth.client.views.activites.ActivitySync;
 import io.intelehealth.client.views.activites.IdentificationActivity;
 import io.intelehealth.client.views.activites.SearchPatientActivity;
 import io.intelehealth.client.views.activites.TodayPatientActivity;
+import io.intelehealth.client.views.activites.VideoLibraryActivity;
 
 /**
  * Created by tusharjois on 9/20/16.
@@ -96,10 +96,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
                         break;
                     }
                     case 4: {
-                        PullDataDAO pullDataDAO = new PullDataDAO();
-                        pullDataDAO.pullData(context);
-//                        Intent intent = new Intent(context, VideoLibraryActivity.class);
-//                        context.startActivity(intent);
+//                        PullDataDAO pullDataDAO = new PullDataDAO();
+//                        pullDataDAO.pullData(context);
+                        Intent intent = new Intent(context, VideoLibraryActivity.class);
+                        context.startActivity(intent);
                         break;
                     }
                     case 5: {

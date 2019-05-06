@@ -35,9 +35,13 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
+            android:name=".views.activites.VitalsActivity"
+            android:label="@string/title_activity_vitals"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".views.activites.PatientDetailActivity"
             android:label="@string/title_activity_patient_detail"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.activites.CameraActivity"
             android:label="@string/title_activity_camera"
@@ -112,6 +116,11 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
+
+        <provider
+            android:name=".views.providers.SearchSuggestionProvider"
+            android:authorities="io.intelehealth.client.activities.search_patient_activity.SearchSuggestionProvider"
+            android:exported="false" />
 
         <activity android:name=".views.activites.MainActivity" />
     </application>

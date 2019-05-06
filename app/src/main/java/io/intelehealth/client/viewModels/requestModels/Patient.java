@@ -1,8 +1,6 @@
 package io.intelehealth.client.viewModels.requestModels;
 
-import java.io.Serializable;
-
-public class Patient implements Serializable {
+public class Patient {
     private String uuid;
     private String openmrs_id;
     private String first_name;

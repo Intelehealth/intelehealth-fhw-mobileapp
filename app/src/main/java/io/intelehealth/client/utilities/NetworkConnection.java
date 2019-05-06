@@ -4,11 +4,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-/**
- * Created by Dexter Barretto on 5/24/17.
- * Github : @dbarretto
- */
-
 public class NetworkConnection {
 
     public static final String TYPE_WIFI = "WIFI";

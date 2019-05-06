@@ -5,6 +5,11 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <variable
+            name="patientdetailViemodel"
+            type="io.intelehealth.client.viewModels.PatientDetailViewModel" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -506,6 +511,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:onClick="@={}"
                     android:text="@string/button_new_visit" />
 
                 <android.support.v7.widget.CardView

@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_login);
         activityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
-
+        sessionManager = new SessionManager(this);
         setSupportActionBar(activityLoginBinding.toolbar);
         setTitle(R.string.title_activity_login);
 
@@ -244,6 +244,7 @@ public class LoginActivity extends AppCompatActivity {
 
         private final String mEmail;
         private final String mPassword;
+        boolean success = false;
 
         UserLoginTask(String email, String password) {
             mEmail = email;
@@ -297,6 +298,7 @@ public class LoginActivity extends AppCompatActivity {
                                             for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
                                                 Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
                                                 sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
+                                                success = true;
                                             }
                                         }
                                     }
@@ -304,6 +306,7 @@ public class LoginActivity extends AppCompatActivity {
                                     @Override
                                     public void onError(Throwable e) {
                                         Logger.logD(TAG, "handle provider error" + e.getMessage());
+                                        success = false;
                                     }
 
                                     @Override
@@ -317,6 +320,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onError(Throwable e) {
                     Logger.logD(TAG, "Login Failure" + e.getMessage());
+                    success = false;
                 }
 
                 @Override
@@ -326,7 +330,7 @@ public class LoginActivity extends AppCompatActivity {
             });
 
 
-            return true;
+            return success;
 
         }
 

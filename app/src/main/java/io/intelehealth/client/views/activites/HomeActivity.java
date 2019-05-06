@@ -27,15 +27,22 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
 import java.io.File;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.backup.BackupCloud;
+import io.intelehealth.client.dao.PullDataDAO;
 import io.intelehealth.client.databinding.ActivityHomeBinding;
 import io.intelehealth.client.services.DownloadProtocolsTask;
 import io.intelehealth.client.utilities.Logger;
+import io.intelehealth.client.utilities.NetworkConnection;
 import io.intelehealth.client.utilities.OfflineLogin;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.views.adapters.HomeAdapter;
@@ -92,32 +99,34 @@ public class HomeActivity extends AppCompatActivity {
             Log.d("newfilepath", dbfilepath);
             final File db_file = new File(dbfilepath);
 
-            if (db_file.exists()) {
-                new AlertDialog.Builder(this)
-                        .setIcon(R.drawable.ic_file_download_black_48px)
-                        .setTitle(R.string.local_restore_alert_title)
-                        .setMessage(R.string.local_restore_alert_message)
-                        .setCancelable(false)
-                        .setPositiveButton(R.string.generic_yes,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int whichButton) {
-                                        //Restore from local backup
-                                        manageBackup(false, false); // to restore app data if db is empty
-                                    }
-                                }
-                        )
-                        .setNegativeButton(R.string.generic_no,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int whichButton) {
-                                        //Do Nothing!
-                                        // db_file.delete();
-                                    }
-                                }
-                        )
-                        .create().show();
-            }
+//            if (db_file.exists()) {
+//                new AlertDialog.Builder(this)
+//                        .setIcon(R.drawable.ic_file_download_black_48px)
+//                        .setTitle(R.string.local_restore_alert_title)
+//                        .setMessage(R.string.local_restore_alert_message)
+//                        .setCancelable(false)
+//                        .setPositiveButton(R.string.generic_yes,
+//                                new DialogInterface.OnClickListener() {
+//                                    public void onClick(DialogInterface dialog, int whichButton) {
+//                                        //Restore from local backup
+//                                        manageBackup(false, false); // to restore app data if db is empty
+//                                    }
+//                                }
+//                        )
+//                        .setNegativeButton(R.string.generic_no,
+//                                new DialogInterface.OnClickListener() {
+//                                    public void onClick(DialogInterface dialog, int whichButton) {
+//                                        //Do Nothing!
+//                                        // db_file.delete();
+//                                    }
+//                                }
+//                        )
+//                        .create().show();
+//            }
         }
 
+        PullDataDAO pullDataDAO = new PullDataDAO();
+        pullDataDAO.pullData(this);
 
     }
 
@@ -178,13 +187,13 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 return true;
             }
-            case R.id.backupOption:
-                manageBackup(true, false);  // to backup app data at any time of the day
-                return true;
-
-            case R.id.restoreOption:
-                manageBackup(false, false); // to restore app data if db is empty
-                return true;
+//            case R.id.backupOption:
+//                manageBackup(true, false);  // to backup app data at any time of the day
+//                return true;
+//
+//            case R.id.restoreOption:
+//                manageBackup(false, false); // to restore app data if db is empty
+//                return true;
 
             case R.id.logoutOption:
                 manageBackup(true, false);
@@ -214,7 +223,7 @@ public class HomeActivity extends AppCompatActivity {
 
         OfflineLogin.getOfflineLogin().setOfflineLoginStatus(false);
 
-//        parseLogOut();
+        parseLogOut();
 
         AccountManager manager = AccountManager.get(HomeActivity.this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
@@ -251,21 +260,21 @@ public class HomeActivity extends AppCompatActivity {
 //        }
     }
 
-    //    private void parseLogOut() {
-//        if (NetworkConnection.isOnline(this)) {
-//            ParseQuery<ParseObject> getLogin = ParseQuery.getQuery("Login");
-//            getLogin.whereEqualTo("userId", sharedPreferences.getString("creatorid", null));
-//            try {
-//                List<ParseObject> loginList = getLogin.find();
-//                if (loginList != null && !loginList.isEmpty()) {
-//                    for (ParseObject login : loginList)
-//                        login.delete();
-//                }
-//            } catch (ParseException e1) {
-//                Log.e(TAG, "parseLogOut: ", e1);
-//            }
-//        }
-//    }
+    private void parseLogOut() {
+        if (NetworkConnection.isOnline(this)) {
+            ParseQuery<ParseObject> getLogin = ParseQuery.getQuery("Login");
+            getLogin.whereEqualTo("userId", sessionManager.getCreatorID());
+            try {
+                List<ParseObject> loginList = getLogin.find();
+                if (loginList != null && !loginList.isEmpty()) {
+                    for (ParseObject login : loginList)
+                        login.delete();
+                }
+            } catch (ParseException e1) {
+                Log.e(TAG, "parseLogOut: ", e1);
+            }
+        }
+    }
     @Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)

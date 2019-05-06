@@ -8,8 +8,6 @@ import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -17,9 +15,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,7 +60,7 @@ public class IdentificationActivity extends AppCompatActivity {
     Patient patient_new1;
     private String patientUuid = "";
     private String mGender;
-    private int patientID_edit = -1;
+    Integer patientID_edit = -1;
     private int mDOBYear;
     private int mDOBMonth;
     private int mDOBDay;
@@ -69,6 +69,9 @@ public class IdentificationActivity extends AppCompatActivity {
     private int mAgeMonths = 0;
     private AlertDialog.Builder mAgePicker;
     private String country1;
+    Spinner mCountry;
+    Spinner mState;
+    AutoCompleteTextView mCity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,13 +86,16 @@ public class IdentificationActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         sessionManager = new SessionManager(this);
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        mState = findViewById(R.id.spinner_state);
+        mCountry = findViewById(R.id.spinner_country);
+        mCity = findViewById(R.id.identification_city);
+//        binding.fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
 //Initialize the local database to store patient information
         mDbHelper = new InteleHealthDatabaseHelper(this);
@@ -119,7 +125,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             //Display the fields on the Add Patient screen as per the config file
 
-            String country1;
+
             country1 = obj.getString("mCountry");
 
             if (country1.equalsIgnoreCase("India")) {
@@ -223,9 +229,9 @@ public class IdentificationActivity extends AppCompatActivity {
 
         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.state_error, android.R.layout.simple_spinner_item);
         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerState.setAdapter(stateAdapter);
+        mState.setAdapter(stateAdapter);
 
-        binding.spinnerState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String state = parent.getItemAtPosition(position).toString();
@@ -233,15 +239,15 @@ public class IdentificationActivity extends AppCompatActivity {
                     //Creating the instance of ArrayAdapter containing list of fruit names
                     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                             R.array.odisha_villages, android.R.layout.simple_spinner_item);
-                    binding.identificationCity.setThreshold(1);//will start working from first character
-                    binding.identificationCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+                    mCity.setThreshold(1);//will start working from first character
+                    mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
                 } else if (state.matches("Bukidnon")) {
                     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                             R.array.bukidnon_villages, android.R.layout.simple_spinner_item);
-                    binding.identificationCity.setThreshold(1);//will start working from first character
-                    binding.identificationCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+                    mCity.setThreshold(1);//will start working from first character
+                    mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
                 } else {
-                    binding.identificationCity.setAdapter(null);
+                    mCity.setAdapter(null);
                 }
             }
 
@@ -251,7 +257,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
 
-        binding.spinnerCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i != 0) {
@@ -261,45 +267,45 @@ public class IdentificationActivity extends AppCompatActivity {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                                 R.array.states_india, android.R.layout.simple_spinner_item);
                         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        binding.spinnerState.setAdapter(stateAdapter);
+                        mState.setAdapter(stateAdapter);
                         // setting state according database when user clicks edit details
 
                         if (patientID_edit != -1) {
-                            binding.spinnerState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
                         } else {
-                            binding.spinnerState.setSelection(stateAdapter.getPosition("Odisha"));
+                            mState.setSelection(stateAdapter.getPosition("Odisha"));
                         }
 
                     } else if (country.matches("United States")) {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                                 R.array.states_us, android.R.layout.simple_spinner_item);
                         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        binding.spinnerState.setAdapter(stateAdapter);
+                        mState.setAdapter(stateAdapter);
 
                         if (patientID_edit != -1) {
 
-                            binding.spinnerState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
                         }
                     } else if (country.matches("Philippines")) {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                                 R.array.states_philippines, android.R.layout.simple_spinner_item);
                         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        binding.spinnerState.setAdapter(stateAdapter);
+                        mState.setAdapter(stateAdapter);
 
                         if (patientID_edit != -1) {
-                            binding.spinnerState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
                         } else {
-                            binding.spinnerState.setSelection(stateAdapter.getPosition("Bukidnon"));
+                            mState.setSelection(stateAdapter.getPosition("Bukidnon"));
                         }
                     }
                 } else {
                     ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                             R.array.state_error, android.R.layout.simple_spinner_item);
                     stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    binding.spinnerState.setAdapter(stateAdapter);
+                    mState.setAdapter(stateAdapter);
                 }
-
-
+                identificationViewModel.state.setValue(mState.getSelectedItem().toString());
+                identificationViewModel.country.setValue(mCountry.getSelectedItem().toString());
             }
 
             @Override
@@ -462,17 +468,6 @@ public class IdentificationActivity extends AppCompatActivity {
                 mAgePicker.show();
             }
         });
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        assert fab != null;
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                createNewPatient();
-            }
-        });
-
-
     }
 
     public void onRadioButtonClicked(View view) {
@@ -482,11 +477,13 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (checked)
                     mGender = "M";
                 Log.v(TAG, "gender:" + mGender);
+                identificationViewModel.gender.setValue(mGender);
                 break;
             case R.id.identification_gender_female:
                 if (checked)
                     mGender = "F";
                 Log.v(TAG, "gender:" + mGender);
+                identificationViewModel.gender.setValue(mGender);
                 break;
         }
     }

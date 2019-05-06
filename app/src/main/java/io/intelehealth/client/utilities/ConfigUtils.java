@@ -251,4 +251,139 @@ public class ConfigUtils {
         }
         return view;
     }
+
+    public boolean height() {
+        boolean view = false;
+
+        JSONObject object = jsonreader();
+        try {
+            view = object.getBoolean("mHeight");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return view;
+    }
+
+    public boolean weight() {
+        boolean view = false;
+
+        JSONObject object = jsonreader();
+        try {
+            view = object.getBoolean("mWeight");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return view;
+    }
+
+    public boolean pulse() {
+        boolean view = false;
+
+        JSONObject object = jsonreader();
+        try {
+            view = object.getBoolean("mPulse");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return view;
+    }
+
+    public boolean bpSys() {
+        boolean view = false;
+
+        JSONObject object = jsonreader();
+        try {
+            view = object.getBoolean("mBpSys");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return view;
+    }
+
+    public boolean bpDia() {
+        boolean view = false;
+
+        JSONObject object = jsonreader();
+        try {
+            view = object.getBoolean("mBpDia");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return view;
+    }
+
+    public boolean spo2() {
+        boolean view = false;
+
+        JSONObject object = jsonreader();
+        try {
+            view = object.getBoolean("mSpo2");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return view;
+    }
+
+    public boolean bmi() {
+        boolean view = false;
+
+        JSONObject object = jsonreader();
+        try {
+            view = object.getBoolean("mBMI");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return view;
+    }
+
+    public boolean resp() {
+        boolean view = false;
+
+        JSONObject object = jsonreader();
+        try {
+            view = object.getBoolean("mResp");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return view;
+    }
+
+    public boolean temperature() {
+        boolean view = false;
+
+        JSONObject object = jsonreader();
+        try {
+            view = object.getBoolean("mTemperature");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return view;
+    }
+
+    public boolean celsius() {
+        boolean view = false;
+
+        JSONObject object = jsonreader();
+        try {
+            view = object.getBoolean("mCelsius");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return view;
+    }
+
+    public boolean fahrenheit() {
+        boolean view = false;
+
+        JSONObject object = jsonreader();
+        try {
+            view = object.getBoolean("mFahrenheit");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return view;
+    }
+
+
+
 }

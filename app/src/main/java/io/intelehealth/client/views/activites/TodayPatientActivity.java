@@ -52,7 +52,7 @@ public class TodayPatientActivity extends AppCompatActivity {
     private void doQuery() {
         List<TodayPatientModel> todayPatientList = new ArrayList<>();
         Date cDate = new Date();
-        String currentDate = new SimpleDateFormat("MMM dd, yyyy").format(cDate);
+        String currentDate = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a").format(cDate);
         String query =
                 "SELECT tbl_visit.uuid, tbl_visit.patientuuid, tbl_visit.startdate, tbl_visit.enddate," +
                         "tbl_visit.uuid, tbl_patient.first_name, tbl_patient.middle_name, tbl_patient.last_name, " +

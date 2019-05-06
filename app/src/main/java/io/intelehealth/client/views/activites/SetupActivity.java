@@ -79,6 +79,7 @@ public class SetupActivity extends AppCompatActivity {
     AlertDialog.Builder dialog;
     String key = null;
     SessionManager sessionManager = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -155,8 +156,8 @@ public class SetupActivity extends AppCompatActivity {
         });
 
 
-
     }
+
     /**
      * Check username and password validations.
      * Get user selected location.
@@ -249,8 +250,7 @@ public class SetupActivity extends AppCompatActivity {
      */
     private void getLocationFromServer(String url) {
         ApiClient.changeApiBaseUrl(url);
-        ApiInterface apiService =
-                ApiClient.createService(ApiInterface.class);
+        ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         Observable<Results<Location>> resultsObservable = apiService.LOCATION_OBSERVABLE(null);
         resultsObservable
                 .subscribeOn(Schedulers.io())
@@ -381,7 +381,7 @@ public class SetupActivity extends AppCompatActivity {
         ProgressDialog progress;
         private String BASE_URL;
         private Location LOCATION;
-
+        int responsecode;
 
         TestSetup(String url, String username, String password, String adminPassword, Location location) {
             CLEAN_URL = url;
@@ -403,7 +403,6 @@ public class SetupActivity extends AppCompatActivity {
 
         @Override
         protected Integer doInBackground(Void... params) {
-
             String urlString = urlModifiers.loginUrl(CLEAN_URL);
             Logger.logD(TAG, "usernaem and password" + USERNAME + PASSWORD);
             encoded = base64Methods.encoded(USERNAME, PASSWORD);
@@ -417,7 +416,6 @@ public class SetupActivity extends AppCompatActivity {
 
                 @Override
                 public void onNext(LoginModel loginModel) {
-                    int responsCode = loginModel.hashCode();
                     Boolean authencated = loginModel.getAuthenticated();
                     Gson gson = new Gson();
                     Logger.logD(TAG, "success" + gson.toJson(loginModel));
@@ -439,13 +437,16 @@ public class SetupActivity extends AppCompatActivity {
                                             for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
                                                 Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
                                                 sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
+                                                responsecode = 200;
                                             }
                                         }
+
                                     }
 
                                     @Override
                                     public void onError(Throwable e) {
                                         Logger.logD(TAG, "handle provider error" + e.getMessage());
+                                        responsecode = 201;
                                     }
 
                                     @Override
@@ -459,6 +460,7 @@ public class SetupActivity extends AppCompatActivity {
                 @Override
                 public void onError(Throwable e) {
                     Logger.logD(TAG, "Login Failure" + e.getMessage());
+                    responsecode = 201;
                 }
 
                 @Override
@@ -501,7 +503,7 @@ public class SetupActivity extends AppCompatActivity {
                 Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
                 intent.putExtra("setup", true);
                 if (activitySetupBinding.downloadMindmap.isChecked()) {
-                    if (sessionManager.getLicenseKey().contains("licensekey")) {
+                    if (sessionManager.valueContains("licensekey")) {
                         startActivity(intent);
 //                        startJobDispatcherService(SetupActivity.this);
                         finish();

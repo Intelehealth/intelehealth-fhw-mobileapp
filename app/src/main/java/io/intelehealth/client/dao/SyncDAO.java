@@ -1,7 +1,12 @@
 package io.intelehealth.client.dao;
 
+import android.content.ContentValues;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
+
 import java.util.List;
 
+import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.app.IntelehealthApplication;
 import io.intelehealth.client.dto.EncounterDTO;
 import io.intelehealth.client.dto.LocationDTO;
@@ -19,6 +24,8 @@ import io.intelehealth.client.utilities.SessionManager;
 public class SyncDAO {
     public static String TAG = "SyncDAO";
     SessionManager sessionManager = null;
+    private SQLiteDatabase db = null;
+
     public boolean SyncData(ResponseDTO responseDTO) throws DAOException {
         boolean isSynced = true;
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
@@ -45,6 +52,8 @@ public class SyncDAO {
 
             insertProviders(responseDTO.getData().getProviderlist());
 
+            insertAfterPull();
+
             Logger.logD(TAG, "Pull sync ended");
             sessionManager.setFirstTimeSyncExecute(false);
         } catch (Exception e) {
@@ -53,6 +62,22 @@ public class SyncDAO {
         }
 
         return isSynced;
+
+    }
+
+    private boolean insertAfterPull() throws DAOException {
+        boolean isInserted = true;
+
+        BackgroundSyncDAO backgroundSyncDAO = new BackgroundSyncDAO();
+        try {
+            backgroundSyncDAO.insertAfterPull();
+
+        } catch (Exception e) {
+            Logger.logE(TAG, "Patients Exception", e);
+            throw new DAOException(e.getMessage(), e);
+        }
+
+        return isInserted;
 
     }
 
@@ -192,5 +217,31 @@ public class SyncDAO {
         return isInserted;
 
     }
+
+    public boolean updateAfterPull() throws DAOException {
+        boolean isUpdated = true;
+
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        db.beginTransaction();
+        try {
+            values.put("locationuuid", "");
+            values.put("last_pull_execution_time", "");
+            values.put("synced", "");
+            values.put("devices_sync", "");
+
+            db.update("tbl_sync", values, "locationuuid=", null);
+            db.setTransactionSuccessful();
+        } catch (SQLException sql) {
+            throw new DAOException(sql.getMessage());
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
+
+        return isUpdated;
+    }
+
+
 
 }
