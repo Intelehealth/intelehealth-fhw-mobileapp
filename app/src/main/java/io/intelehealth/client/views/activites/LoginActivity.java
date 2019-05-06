@@ -9,8 +9,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserLoginTask mAuthTask = null;
+//    private UserLoginTask mAuthTask = null;
     private OfflineLogin offlineLogin = null;
 
     UrlModifiers urlModifiers = new UrlModifiers();
@@ -143,9 +143,9 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void attemptLogin() {
 
-        if (mAuthTask != null) {
-            return;
-        }
+//        if (mAuthTask != null) {
+//            return;
+//        }
 
         // Reset errors.
         activityLoginBinding.email.setError(null);
@@ -179,8 +179,8 @@ public class LoginActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
 //            showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            UserLoginTask(email, password);
+//            mAuthTask.execute((Void) null);
             Log.d(TAG, "attempting login");
         } else {
             offlineLogin.login(email, password);
@@ -240,33 +240,36 @@ public class LoginActivity extends AppCompatActivity {
      * Depending on server's response, user may or may not have successful login.
      * This class also uses SharedPreferences to store session ID
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public void UserLoginTask(String mEmail, String mPassword) {
 
-        private final String mEmail;
-        private final String mPassword;
-        boolean success = false;
+//        private final String mEmail;
+//        private final String mPassword;
+//        boolean success = false;
 
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
+//        UserLoginTask(String email, String password) {
+//            mEmail = email;
+//            mPassword = password;
+//        }
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            showProgress(true);
-        }
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//            showProgress(true);
+//        }
 
-        @Override
-        protected Boolean doInBackground(Void... params) {
+//        @Override
+//        protected Boolean doInBackground(Void... params) {
 
 
 //                Log.d(TAG, "UN: " + USERNAME);
 //                Log.d(TAG, "PW: " + PASSWORD);
-            String urlString = urlModifiers.loginUrl(sessionManager.getServerUrlRest());
+        String urlString = urlModifiers.loginUrl(sessionManager.getServerUrl());
             Logger.logD(TAG, "usernaem and password" + mEmail + mPassword);
             encoded = base64Methods.encoded(mEmail, mPassword);
             sessionManager.setEncoded(encoded);
+        showProgress(true);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
             Observable<LoginModel> loginModelObservable = AppConstants.apiInterface.LOGIN_MODEL_OBSERVABLE(urlString, "Basic " + encoded);
             loginModelObservable.subscribe(new Observer<LoginModel>() {
                 @Override
@@ -285,7 +288,7 @@ public class LoginActivity extends AppCompatActivity {
                     sessionManager.setSessionID(loginModel.getSessionId());
                     sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
                     UrlModifiers urlModifiers = new UrlModifiers();
-                    String url = urlModifiers.loginUrlProvider(sessionManager.getServerUrlRest(), loginModel.getUser().getUuid());
+                    String url = urlModifiers.loginUrlProvider(sessionManager.getServerUrl(), loginModel.getUser().getUuid());
                     if (authencated) {
                         Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);
                         loginProviderModelObservable
@@ -298,7 +301,17 @@ public class LoginActivity extends AppCompatActivity {
                                             for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
                                                 Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
                                                 sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
-                                                success = true;
+//                                                success = true;
+                                                final Account account = new Account(mEmail, "io.intelehealth.openmrs");
+                                                manager.addAccountExplicitly(account, mPassword, null);
+                                                offlineLogin.invalidateLoginCredentials();
+                                                offlineLogin.setUpOfflineLogin(mEmail, mPassword);
+                                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                                intent.putExtra("login", true);
+//                startJobDispatcherService(LoginActivity.this);
+                                                startActivity(intent);
+                                                finish();
+                                                showProgress(false);
                                             }
                                         }
                                     }
@@ -306,7 +319,8 @@ public class LoginActivity extends AppCompatActivity {
                                     @Override
                                     public void onError(Throwable e) {
                                         Logger.logD(TAG, "handle provider error" + e.getMessage());
-                                        success = false;
+//                                        success = false;
+                                        showProgress(false);
                                     }
 
                                     @Override
@@ -320,7 +334,10 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onError(Throwable e) {
                     Logger.logD(TAG, "Login Failure" + e.getMessage());
-                    success = false;
+//                    success = false;
+                    showProgress(false);
+                    activityLoginBinding.password.setError(getString(R.string.error_incorrect_password));
+                    activityLoginBinding.password.requestFocus();
                 }
 
                 @Override
@@ -330,37 +347,27 @@ public class LoginActivity extends AppCompatActivity {
             });
 
 
-            return success;
+//            return true;
+//
+//        }
 
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
+//        @Override
+//        protected void onPostExecute(final Boolean success) {
+//            mAuthTask = null;
 
 
-            if (success) {
-                final Account account = new Account(mEmail, "io.intelehealth.openmrs");
-                manager.addAccountExplicitly(account, mPassword, null);
-                offlineLogin.invalidateLoginCredentials();
-                offlineLogin.setUpOfflineLogin(mEmail, mPassword);
-                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                intent.putExtra("login", true);
-//                startJobDispatcherService(LoginActivity.this);
-                startActivity(intent);
-                finish();
-            } else {
-                activityLoginBinding.password.setError(getString(R.string.error_incorrect_password));
-                activityLoginBinding.password.requestFocus();
-            }
-        }
+//            if (success) {
 
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
+//            } else {
+//
+//            }
+//        }
+
+//        @Override
+//        protected void onCancelled() {
+//            mAuthTask = null;
+//            showProgress(false);
+//        }
     }
 
 }

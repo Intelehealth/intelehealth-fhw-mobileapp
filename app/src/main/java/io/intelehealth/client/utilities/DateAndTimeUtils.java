@@ -24,7 +24,7 @@ public class DateAndTimeUtils {
     public static int getAge(String s) {
         if (s == null) return 0;
         Date date = null;
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
             date = sdf.parse(s);
         } catch (ParseException e) {

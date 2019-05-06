@@ -66,13 +66,14 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         String patientSelection = "uuid = ?";
         String[] patientArgs = {dataString};
-        String[] patientColumns = {"openmrs_id", "first_name", "middle_name", "last_name",
+        String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw",
                 "patient_photo"};
         final Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
+                patient_new.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
                 patient_new.setOpenmrs_id(idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_id")));
                 patient_new.setFirst_name(idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")));
                 patient_new.setMiddle_name(idCursor.getString(idCursor.getColumnIndexOrThrow("middle_name")));
@@ -105,6 +106,9 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                 if (name.equalsIgnoreCase("caste")) {
                     patient_new.setCaste(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Telephone Number")) {
+                    patient_new.setPhone_number(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("Education Level")) {
                     patient_new.setEducation_level(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
@@ -146,10 +150,10 @@ public class PatientDetailActivity extends AppCompatActivity {
             binding.textViewID.setText(getString(R.string.patient_not_registered));
         }
 
-        int age = DateAndTimeUtils.getAge(DateAndTimeUtils.formatDateFromOnetoAnother(patient_new.getDate_of_birth(), "yyyy-MM-dd", "MMM dd, yyyy hh:mm:ss a"));
+        int age = DateAndTimeUtils.getAge(patient_new.getDate_of_birth());
         binding.textViewAge.setText(String.valueOf(age));
 
-        String dob = DateAndTimeUtils.SimpleDatetoLongDate(DateAndTimeUtils.formatDateFromOnetoAnother(patient_new.getDate_of_birth(), "yyyy-MM-dd", "MMM dd, yyyy hh:mm:ss a"));
+        String dob = patient_new.getDate_of_birth();
         binding.textViewDOB.setText(dob);
         if (patient_new.getAddress1() == null || patient_new.getAddress1().equals("")) {
             binding.textViewAddress1.setVisibility(View.GONE);

@@ -14,6 +14,7 @@ import io.intelehealth.client.dto.PatientAttributesDTO;
 import io.intelehealth.client.dto.PatientDTO;
 import io.intelehealth.client.exception.DAOException;
 import io.intelehealth.client.models.pushRequestApiCall.Attribute;
+import io.intelehealth.client.utilities.DateAndTimeUtils;
 import io.intelehealth.client.utilities.Logger;
 
 public class PatientsDAO {
@@ -58,8 +59,11 @@ public class PatientsDAO {
             values.put("last_name", patient.getLastname());
             values.put("address1", patient.getAddress1());
             values.put("country", patient.getCountry());
-            values.put("date_of_birth", patient.getDateofbirth());
+            values.put("date_of_birth", DateAndTimeUtils.formatDateFromOnetoAnother(patient.getDateofbirth(), "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd"));
             values.put("gender", patient.getGender());
+            values.put("postal_code", patient.getPostalcode());
+            values.put("state_province", patient.getStateprovince());
+            values.put("city_village", patient.getCityvillage());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("dead", patient.getDead());
             values.put("synced", patient.getSyncd());
@@ -98,14 +102,13 @@ public class PatientsDAO {
             values.put("state_province", patientDTO.getStateprovince());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("dead", patientDTO.getDead());
-            values.put("synced", patientDTO.getSyncd());
+            values.put("synced", "0");
             patientAttributesList = patientDTO.getPatientAttributesDTOList();
             insertPatientAttributes(patientAttributesList);
             Logger.logD("pulldata", "datadumper" + values);
-            createdRecordsCount1 = db.insertWithOnConflict("tbl_patient", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            createdRecordsCount1 = db.insert("tbl_patient", null, values);
             db.setTransactionSuccessful();
             Logger.logD("created records", "created records count" + createdRecordsCount1);
-            isCreated = createdRecordsCount1 != 0;
         } catch (SQLException e) {
             isCreated = false;
             throw new DAOException(e.getMessage(), e);
@@ -281,6 +284,35 @@ public class PatientsDAO {
         }
 
         return isUpdated;
+    }
+
+    public List<PatientDTO> unsyncedPatients() {
+        List<PatientDTO> patientDTOList = new ArrayList<>();
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_patient where synced = ?", new String[]{"0"});
+        PatientDTO patientDTO = new PatientDTO();
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                patientDTO = new PatientDTO();
+                patientDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                patientDTO.setOpenmrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_id")));
+                patientDTO.setFirstname(idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")));
+                patientDTO.setLastname(idCursor.getString(idCursor.getColumnIndexOrThrow("last_name")));
+                patientDTO.setMiddlename(idCursor.getString(idCursor.getColumnIndexOrThrow("middle_name")));
+                patientDTO.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                patientDTO.setDateofbirth(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
+                patientDTO.setPhonenumber(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
+                patientDTO.setCountry(idCursor.getString(idCursor.getColumnIndexOrThrow("country")));
+                patientDTO.setStateprovince(idCursor.getString(idCursor.getColumnIndexOrThrow("state_province")));
+                patientDTO.setCityvillage(idCursor.getString(idCursor.getColumnIndexOrThrow("city_village")));
+                patientDTO.setAddress1(idCursor.getString(idCursor.getColumnIndexOrThrow("address1")));
+                patientDTO.setAddress2(idCursor.getString(idCursor.getColumnIndexOrThrow("address2")));
+                patientDTO.setPostalcode(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
+                patientDTOList.add(patientDTO);
+            }
+        }
+
+        return patientDTOList;
     }
 
 }

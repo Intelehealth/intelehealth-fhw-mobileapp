@@ -17,6 +17,8 @@ import retrofit2.Response;
 public class PullDataDAO {
 
     private SessionManager sessionManager = null;
+
+
     public boolean pullData(final Context context) {
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();

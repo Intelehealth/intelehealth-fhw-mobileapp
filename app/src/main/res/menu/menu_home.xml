@@ -27,7 +27,10 @@
         <!--android:id="@+id/restoreOption"-->
         <!--android:orderInCategory="125"-->
         <!--android:title="Restore" />-->
-
+        <item
+            android:id="@+id/sync"
+            android:orderInCategory="150"
+            android:title="Sync" />
         <item
             android:id="@+id/updateProtocolsOption"
             android:orderInCategory="150"

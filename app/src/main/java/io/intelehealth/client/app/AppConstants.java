@@ -34,8 +34,8 @@ public class AppConstants {
     public static final String MAXIMUM_PULSE = "200";
     public static final String MINIMUM_PULSE = "30";
     public static final String MAXIMUM_TEMPERATURE_CELSIUS = "43";
-    public static final String MINIMIM_TEMPERATURE_CELSIUS = "25";
-    public static final String MINIMIM_TEMPERATURE_FARHENIT = "80";
+    public static final String MINIMUM_TEMPERATURE_CELSIUS = "25";
+    public static final String MINIMUM_TEMPERATURE_FARHENIT = "80";
     public static final String MAXIMUM_TEMPERATURE_FARHENIT = "120";
     public static final String MAXIMUM_SPO2 = "100";
     public static final String MINIMUM_SPO2 = "1";

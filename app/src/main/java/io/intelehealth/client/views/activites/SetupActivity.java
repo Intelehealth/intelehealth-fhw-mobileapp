@@ -9,8 +9,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -68,9 +68,9 @@ public class SetupActivity extends AppCompatActivity {
     SetupViewModel setupViewModel;
     ActivitySetupBinding activitySetupBinding;
     private boolean isLocationFetched;
-    private TestSetup mAuthTask = null;
+    String BASE_URL = "";
+    //    private TestSetup mAuthTask = null;
     private List<Location> mLocations = new ArrayList<>();
-
 
     protected AccountManager manager;
     UrlModifiers urlModifiers = new UrlModifiers();
@@ -145,7 +145,7 @@ public class SetupActivity extends AppCompatActivity {
                 Logger.logD(TAG, "on ui" + activitySetupBinding.editTextURL.getText().toString());
                 if (!activitySetupBinding.editTextURL.getText().toString().trim().isEmpty() && activitySetupBinding.editTextURL.getText().toString().length() >= 13) {
                     if (Patterns.WEB_URL.matcher(activitySetupBinding.editTextURL.getText().toString()).matches()) {
-                        String BASE_URL = "http://" + activitySetupBinding.editTextURL.getText().toString() + ":8080/openmrs/ws/rest/v1/";
+                        BASE_URL = "http://" + activitySetupBinding.editTextURL.getText().toString() + ":8080/openmrs/ws/rest/v1/";
                         if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched)
                             getLocationFromServer(BASE_URL);
                         else
@@ -165,9 +165,9 @@ public class SetupActivity extends AppCompatActivity {
     private void attemptLogin() {
 
 
-        if (mAuthTask != null) {
-            return;
-        }
+//        if (mAuthTask != null) {
+//            return;
+//        }
 
 
         // Reset errors.
@@ -226,8 +226,7 @@ public class SetupActivity extends AppCompatActivity {
             if (location != null) {
                 Log.i(TAG, location.getDisplay());
                 String urlString = activitySetupBinding.editTextURL.getText().toString();
-                mAuthTask = new TestSetup(urlString, email, password, admin_password, location);
-                mAuthTask.execute();
+                TestSetup(urlString, email, password, admin_password, location);
                 Log.d(TAG, "attempting setup");
             }
         }
@@ -372,160 +371,168 @@ public class SetupActivity extends AppCompatActivity {
      * If successful cretes a new {@link Account}
      * If unsuccessful details are saved in SharedPreferences.
      */
-    private class TestSetup extends AsyncTask<Void, Void, Integer> {
+    public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD, Location location) {
 
-        private final String USERNAME;
-        private final String PASSWORD;
-        private final String CLEAN_URL;
-        private final String ADMIN_PASSWORD;
+//         String USERNAME;
+//         String PASSWORD;
+//         String CLEAN_URL;
+//         String ADMIN_PASSWORD;
         ProgressDialog progress;
-        private String BASE_URL;
-        private Location LOCATION;
-        int responsecode;
 
-        TestSetup(String url, String username, String password, String adminPassword, Location location) {
-            CLEAN_URL = url;
-            USERNAME = username;
-            PASSWORD = password;
-            LOCATION = location;
-            ADMIN_PASSWORD = adminPassword;
-        }
+//         Location LOCATION;
+//        int responsecode;
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progress = new ProgressDialog(SetupActivity.this);
-            progress.setTitle(getString(R.string.please_wait_progress));
-            progress.setMessage(getString(R.string.logging_in));
-            progress.show();
-        }
+//        TestSetup(String url, String username, String password, String adminPassword, Location location) {
+//            CLEAN_URL = url;
+//            USERNAME = username;
+//            PASSWORD = password;
+//            LOCATION = location;
+//            ADMIN_PASSWORD = adminPassword;
+//        }
+
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+
+//        }
 
 
-        @Override
-        protected Integer doInBackground(Void... params) {
-            String urlString = urlModifiers.loginUrl(CLEAN_URL);
-            Logger.logD(TAG, "usernaem and password" + USERNAME + PASSWORD);
-            encoded = base64Methods.encoded(USERNAME, PASSWORD);
-            sessionManager.setEncoded(encoded);
-            Observable<LoginModel> loginModelObservable = AppConstants.apiInterface.LOGIN_MODEL_OBSERVABLE(urlString, "Basic " + encoded);
-            loginModelObservable.subscribe(new Observer<LoginModel>() {
-                @Override
-                public void onSubscribe(Disposable d) {
+//        @Override
+//        protected Integer doInBackground(Void... params) {
+        String urlString = urlModifiers.loginUrl(CLEAN_URL);
+        Logger.logD(TAG, "usernaem and password" + USERNAME + PASSWORD);
+        encoded = base64Methods.encoded(USERNAME, PASSWORD);
+        sessionManager.setEncoded(encoded);
 
-                }
+        progress = new ProgressDialog(SetupActivity.this);
+        progress.setTitle(getString(R.string.please_wait_progress));
+        progress.setMessage(getString(R.string.logging_in));
+        progress.show();
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        Observable<LoginModel> loginModelObservable = AppConstants.apiInterface.LOGIN_MODEL_OBSERVABLE(urlString, "Basic " + encoded);
+        loginModelObservable.subscribe(new Observer<LoginModel>() {
+            @Override
+            public void onSubscribe(Disposable d) {
 
-                @Override
-                public void onNext(LoginModel loginModel) {
-                    Boolean authencated = loginModel.getAuthenticated();
-                    Gson gson = new Gson();
-                    Logger.logD(TAG, "success" + gson.toJson(loginModel));
-                    sessionManager.setChwname(loginModel.getUser().getDisplay());
-                    sessionManager.setCreatorID(loginModel.getUser().getUuid());
-                    sessionManager.setSessionID(loginModel.getSessionId());
-                    sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
-                    UrlModifiers urlModifiers = new UrlModifiers();
-                    String url = urlModifiers.loginUrlProvider(CLEAN_URL, loginModel.getUser().getUuid());
-                    if (authencated) {
-                        Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);
-                        loginProviderModelObservable
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new DisposableObserver<LoginProviderModel>() {
-                                    @Override
-                                    public void onNext(LoginProviderModel loginProviderModel) {
-                                        if (loginProviderModel.getResults().size() != 0) {
-                                            for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
-                                                Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
-                                                sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
-                                                responsecode = 200;
-                                            }
-                                        }
-
-                                    }
-
-                                    @Override
-                                    public void onError(Throwable e) {
-                                        Logger.logD(TAG, "handle provider error" + e.getMessage());
-                                        responsecode = 201;
-                                    }
-
-                                    @Override
-                                    public void onComplete() {
-
-                                    }
-                                });
-                    }
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    Logger.logD(TAG, "Login Failure" + e.getMessage());
-                    responsecode = 201;
-                }
-
-                @Override
-                public void onComplete() {
-                    Logger.logD(TAG, "completed");
-                }
-            });
-
-
-            return 200;
-        }
-
-        @Override
-        protected void onPostExecute(Integer success) {
-            mAuthTask = null;
-//            showProgress(false);
-
-            if (success == 200) {
-                final Account account = new Account(USERNAME, "io.intelehealth.openmrs");
-                manager.addAccountExplicitly(account, PASSWORD, null);
-
-                sessionManager.setLocationName(LOCATION.getDisplay());
-                sessionManager.setLocationUuid(LOCATION.getUuid());
-                sessionManager.setLocationDescription(LOCATION.getDescription());
-                sessionManager.setServerUrl(CLEAN_URL);
-                sessionManager.setServerUrlRest(BASE_URL);
-                sessionManager.setServerUrlBase("http://" + CLEAN_URL + ":8080/openmrs");
-                sessionManager.setBaseUrl(BASE_URL);
-                sessionManager.setSetupComplete(true);
-
-                OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
-                AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
-
-                Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
-                        .applicationId(AppConstants.IMAGE_APP_ID)
-                        .server("http://" + CLEAN_URL + ":4040/parse/")
-                        .build()
-                );
-                Log.i(TAG, "onPostExecute: Parse init");
-                Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
-                intent.putExtra("setup", true);
-                if (activitySetupBinding.downloadMindmap.isChecked()) {
-                    if (sessionManager.valueContains("licensekey")) {
-                        startActivity(intent);
-//                        startJobDispatcherService(SetupActivity.this);
-                        finish();
-                    } else {
-                        Toast.makeText(SetupActivity.this, "Please enter a valid license key", Toast.LENGTH_LONG).show();
-                    }
-                } else {
-                    startActivity(intent);
-                    finish();
-                }
-
-
-            } else if (success == 201) {
-                activitySetupBinding.password.setError(getString(R.string.error_incorrect_password));
-                activitySetupBinding.password.requestFocus();
-            } else if (success == 3) {
-                activitySetupBinding.editTextURL.setError(getString(R.string.url_invalid));
-                activitySetupBinding.editTextURL.requestFocus();
             }
 
-            progress.dismiss();
-        }
+            @Override
+            public void onNext(LoginModel loginModel) {
+                Boolean authencated = loginModel.getAuthenticated();
+                Gson gson = new Gson();
+                Logger.logD(TAG, "success" + gson.toJson(loginModel));
+                sessionManager.setChwname(loginModel.getUser().getDisplay());
+                sessionManager.setCreatorID(loginModel.getUser().getUuid());
+                sessionManager.setSessionID(loginModel.getSessionId());
+                sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
+                UrlModifiers urlModifiers = new UrlModifiers();
+                String url = urlModifiers.loginUrlProvider(CLEAN_URL, loginModel.getUser().getUuid());
+                if (authencated) {
+                    Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);
+                    loginProviderModelObservable
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new DisposableObserver<LoginProviderModel>() {
+                                @Override
+                                public void onNext(LoginProviderModel loginProviderModel) {
+                                    if (loginProviderModel.getResults().size() != 0) {
+                                        for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
+                                            Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
+                                            sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
+//                                                responsecode = 200;
+                                            final Account account = new Account(USERNAME, "io.intelehealth.openmrs");
+                                            manager.addAccountExplicitly(account, PASSWORD, null);
+
+                                            sessionManager.setLocationName(location.getDisplay());
+                                            sessionManager.setLocationUuid(location.getUuid());
+                                            sessionManager.setLocationDescription(location.getDescription());
+                                            sessionManager.setServerUrl(CLEAN_URL);
+                                            sessionManager.setServerUrlRest(BASE_URL);
+                                            sessionManager.setServerUrlBase("http://" + CLEAN_URL + ":8080/openmrs");
+                                            sessionManager.setBaseUrl(BASE_URL);
+                                            sessionManager.setSetupComplete(true);
+
+                                            OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
+                                            AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
+
+                                            Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
+                                                    .applicationId(AppConstants.IMAGE_APP_ID)
+                                                    .server("http://" + CLEAN_URL + ":4040/parse/")
+                                                    .build()
+                                            );
+                                            Log.i(TAG, "onPostExecute: Parse init");
+                                            Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
+                                            intent.putExtra("setup", true);
+                                            if (activitySetupBinding.downloadMindmap.isChecked()) {
+                                                if (sessionManager.valueContains("licensekey")) {
+                                                    startActivity(intent);
+//                        startJobDispatcherService(SetupActivity.this);
+                                                    finish();
+                                                } else {
+                                                    Toast.makeText(SetupActivity.this, "Please enter a valid license key", Toast.LENGTH_LONG).show();
+                                                }
+                                            } else {
+                                                startActivity(intent);
+                                                finish();
+                                            }
+                                            progress.dismiss();
+
+//                                        } else if (success == 201) {
+//                                            activitySetupBinding.password.setError(getString(R.string.error_incorrect_password));
+//                                            activitySetupBinding.password.requestFocus();
+//                                        } else if (success == 3) {
+//                                            activitySetupBinding.editTextURL.setError(getString(R.string.url_invalid));
+//                                            activitySetupBinding.editTextURL.requestFocus();
+//                                        }
+                                        }
+                                    }
+
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    Logger.logD(TAG, "handle provider error" + e.getMessage());
+                                    progress.dismiss();
+                                }
+
+                                @Override
+                                public void onComplete() {
+
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Logger.logD(TAG, "Login Failure" + e.getMessage());
+                progress.dismiss();
+                activitySetupBinding.password.setError(getString(R.string.error_incorrect_password));
+                activitySetupBinding.password.requestFocus();
+//            responsecode = 201;
+            }
+
+            @Override
+            public void onComplete() {
+                Logger.logD(TAG, "completed");
+            }
+        });
+
+
+//            return 200;
     }
+
+//        @Override
+//        protected void onPostExecute(Integer success) {
+//            mAuthTask = null;
+//            showProgress(false);
+
+//            if (success == 200) {
+
+
+//            progress.dismiss();
+//        }
+//    }
 
 }

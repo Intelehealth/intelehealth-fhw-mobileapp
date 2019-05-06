@@ -4,7 +4,7 @@ package io.intelehealth.client.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class PatientDTO {
 
@@ -58,7 +58,7 @@ public class PatientDTO {
     private String gender;
 
 
-    private ArrayList<PatientAttributesDTO> patientAttributesDTOList;
+    private List<PatientAttributesDTO> patientAttributesDTOList;
     @SerializedName("dead")
     @Expose
     private Integer dead;
@@ -210,11 +210,12 @@ public class PatientDTO {
         this.economic = economic;
     }
 
-    public ArrayList<PatientAttributesDTO> getPatientAttributesDTOList() {
+    public List<PatientAttributesDTO> getPatientAttributesDTOList() {
         return patientAttributesDTOList;
     }
 
-    public void setPatientAttributesDTOList(ArrayList<PatientAttributesDTO> patientAttributesDTOList) {
+
+    public void setPatientAttributesDTOList(List<PatientAttributesDTO> patientAttributesDTOList) {
         this.patientAttributesDTOList = patientAttributesDTOList;
     }
 }

@@ -85,7 +85,9 @@
 
                             <android.support.design.widget.TextInputLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                app:error="@{identificationViewModel.firstnameerror}"
+                                app:errorEnabled="true">
                                 <!--Can't access Vector drawables directly,that's why putted into another DrawableContainer-->
                                 <!--On the Left or Right of textview or Editext-->
 
@@ -99,11 +101,11 @@
                                     android:ems="10"
                                     android:freezesText="true"
                                     android:hint="@string/identification_screen_prompt_first_name"
-                                    android:text="@={identificationViewModel.firstname}"
                                     android:imeOptions="actionUnspecified"
                                     android:inputType="textCapWords"
                                     android:maxLines="1"
                                     android:singleLine="true"
+                                    android:text="@={identificationViewModel.firstname}"
                                     android:visibility="@{config.mFirstName() ? View.GONE: View.VISIBLE}" />
 
                             </android.support.design.widget.TextInputLayout>
@@ -122,19 +124,21 @@
                                     android:ems="10"
                                     android:freezesText="true"
                                     android:hint="@string/identification_screen_prompt_middle_name"
-                                    android:text="@={identificationViewModel.middlename}"
                                     android:imeOptions="actionUnspecified"
                                     android:inputType="textCapWords"
                                     android:maxLines="1"
                                     android:singleLine="true"
                                     android:tag="@string/tag_optional"
+                                    android:text="@={identificationViewModel.middlename}"
                                     android:visibility="@{config.mMiddleName() ? View.GONE: View.VISIBLE}" />
 
                             </android.support.design.widget.TextInputLayout>
 
                             <android.support.design.widget.TextInputLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                app:error="@{identificationViewModel.lastnameerror}"
+                                app:errorEnabled="true">
 
                                 <EditText
                                     android:id="@+id/identification_last_name"
@@ -147,11 +151,11 @@
                                     android:ems="10"
                                     android:freezesText="true"
                                     android:hint="@string/identification_screen_prompt_last_name"
-                                    android:text="@={identificationViewModel.lastname}"
                                     android:imeOptions="actionUnspecified"
                                     android:inputType="textCapWords"
                                     android:maxLines="1"
                                     android:singleLine="true"
+                                    android:text="@={identificationViewModel.lastname}"
                                     android:visibility="@{config.mLastName() ? View.GONE: View.VISIBLE}" />
 
                             </android.support.design.widget.TextInputLayout>
@@ -177,9 +181,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:paddingLeft="8dp"
-                        android:paddingRight="8dp"
-
-                        >
+                        android:paddingRight="8dp">
 
                         <RadioButton
                             android:id="@+id/identification_gender_male"
@@ -213,7 +215,9 @@
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:error="@{identificationViewModel.dateofbirtherror}"
+                        app:errorEnabled="true">
 
                         <EditText
                             android:id="@+id/identification_birth_date_text_view"
@@ -223,13 +227,13 @@
                             android:drawableLeft="@drawable/event_icon"
                             android:drawablePadding="10dp"
                             android:ems="10"
-                            android:text="@={identificationViewModel.dateofbirth}"
                             android:focusable="false"
                             android:freezesText="true"
                             android:hint="@string/identification_screen_prompt_birthday"
                             android:imeOptions="actionUnspecified"
                             android:maxLines="1"
                             android:singleLine="true"
+                            android:text="@={identificationViewModel.dateofbirth}"
                             android:visibility="@{config.mDOB() ? View.GONE: View.VISIBLE}" />
 
 
@@ -273,7 +277,6 @@
                             android:drawablePadding="10dp"
                             android:ems="10"
                             android:freezesText="true"
-                            android:text="@={identificationViewModel.phonenumber}"
                             android:hint="@string/identification_screen_prompt_phone_number"
                             android:imeOptions="actionUnspecified"
                             android:inputType="phone"
@@ -281,6 +284,7 @@
                             android:maxLines="1"
                             android:singleLine="true"
                             android:tag="@string/tag_optional"
+                            android:text="@={identificationViewModel.phonenumber}"
                             android:visibility="@{config.mPhoneNum() ? View.GONE: View.VISIBLE}" />
 
                     </android.support.design.widget.TextInputLayout>
@@ -395,7 +399,9 @@
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp">
+                        android:layout_marginTop="10dp"
+                        app:error="@{identificationViewModel.villageerror}"
+                        app:errorEnabled="true">
 
                         <AutoCompleteTextView
                             android:id="@+id/identification_city"
@@ -405,11 +411,11 @@
                             android:drawableLeft="@drawable/home_icon"
                             android:drawablePadding="10dp"
                             android:freezesText="true"
-                            android:text="@={identificationViewModel.village}"
                             android:hint="@string/identification_screen_prompt_city"
                             android:imeOptions="actionUnspecified"
                             android:inputType="textCapWords"
                             android:maxLines="1"
+                            android:text="@={identificationViewModel.village}"
                             android:visibility="@{config.mCity() ? View.GONE: View.VISIBLE}" />
 
                     </android.support.design.widget.TextInputLayout>
@@ -425,12 +431,12 @@
                             android:ems="10"
                             android:freezesText="true"
                             android:hint="@string/identification_screen_prompt_address"
-                            android:text="@={identificationViewModel.address}"
                             android:imeOptions="actionUnspecified"
                             android:inputType="textCapWords"
                             android:maxLines="2"
                             android:singleLine="false"
                             android:tag="@string/tag_optional"
+                            android:text="@={identificationViewModel.address}"
                             android:visibility="@{config.mAddress1() ? View.GONE: View.VISIBLE}" />
 
                     </android.support.design.widget.TextInputLayout>
@@ -446,11 +452,11 @@
                             android:ems="10"
                             android:freezesText="true"
                             android:hint="@string/identification_screen_prompt_address2"
-                            android:text="@={identificationViewModel.address2}"
                             android:imeOptions="actionUnspecified"
                             android:inputType="textCapWords"
                             android:maxLines="2"
                             android:tag="@string/tag_optional"
+                            android:text="@={identificationViewModel.address2}"
                             android:visibility="@{config.mAddress1() ? View.GONE: View.VISIBLE}" />
 
                     </android.support.design.widget.TextInputLayout>
@@ -466,11 +472,11 @@
                             android:ems="10"
                             android:freezesText="true"
                             android:hint="@string/identification_screen_prompt_postal_code"
-                            android:text="@={identificationViewModel.postalcode}"
                             android:imeOptions="actionUnspecified"
                             android:inputType="number"
                             android:maxLines="1"
                             android:tag="@string/tag_optional"
+                            android:text="@={identificationViewModel.postalcode}"
 
                             android:visibility="@{config.mPostal() ? View.GONE: View.VISIBLE}" />
 
@@ -488,11 +494,11 @@
                             android:ems="10"
                             android:freezesText="true"
                             android:hint="@string/identification_screen_prompt_relationship"
-                            android:text="@={identificationViewModel.sondaughter}"
                             android:imeOptions="actionUnspecified"
                             android:inputType="textCapWords"
                             android:maxLines="1"
                             android:tag="@string/tag_optional"
+                            android:text="@={identificationViewModel.sondaughter}"
 
                             android:visibility="@{config.mRelationship() ? View.GONE: View.VISIBLE}" />
 
@@ -512,12 +518,12 @@
                             android:ems="10"
                             android:freezesText="true"
                             android:hint="@string/identification_screen_prompt_occupation"
-                            android:text="@={identificationViewModel.occupation}"
                             android:imeOptions="actionUnspecified"
-
                             android:inputType="textCapWords"
+
                             android:maxLines="1"
                             android:tag="@string/tag_optional"
+                            android:text="@={identificationViewModel.occupation}"
                             android:visibility="@{config.mOccupation() ? View.GONE: View.VISIBLE}" />
 
                     </android.support.design.widget.TextInputLayout>
@@ -559,9 +565,9 @@
 
                             <Spinner
                                 android:id="@+id/spinner_caste"
-                                android:onItemSelected="@{(parent,view,pos,id)->identificationViewModel.onCasteSelectItem(parent,view,pos,id)}"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:onItemSelected="@{(parent,view,pos,id)->identificationViewModel.onCasteSelectItem(parent,view,pos,id)}" />
                         </LinearLayout>
 
                     </android.support.design.widget.TextInputLayout>
@@ -598,9 +604,9 @@
 
                             <Spinner
                                 android:id="@+id/spinner_economic_status"
-                                android:onItemSelected="@{(parent,view,pos,id)->identificationViewModel.onEconomicSelectItem(parent,view,pos,id)}"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:onItemSelected="@{(parent,view,pos,id)->identificationViewModel.onEconomicSelectItem(parent,view,pos,id)}" />
                         </LinearLayout>
                     </android.support.design.widget.TextInputLayout>
 
@@ -636,9 +642,9 @@
 
                             <Spinner
                                 android:id="@+id/spinner_education"
-                                android:onItemSelected="@{(parent,view,pos,id)->identificationViewModel.onEducationSelectItem(parent,view,pos,id)}"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:onItemSelected="@{(parent,view,pos,id)->identificationViewModel.onEducationSelectItem(parent,view,pos,id)}" />
                         </LinearLayout>
 
 

@@ -24,7 +24,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -87,5 +87,7 @@ dependencies {
     implementation 'com.parse:parse-android:1.15.7'
     //date and time
     implementation 'joda-time:joda-time:2.9.3'
+
+
 
 }
