@@ -128,6 +128,7 @@ public class HomeActivity extends AppCompatActivity {
 //        if (sessionManager.isFirstTimeSyncExcuted()) {
         PullDataDAO pullDataDAO = new PullDataDAO();
         pullDataDAO.pullData(this);
+        pullDataDAO.pushDataApi();
 //            sessionManager.setFirstTimeSyncExecute(false);
 //        }
 
@@ -191,10 +192,9 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
             case R.id.sync:
-//                PullDataDAO pullDataDAO = new PullDataDAO();
-//                pullDataDAO.pullData(this);
-                IdentificationViewModel identificationViewModel = new IdentificationViewModel(getApplication());
-                identificationViewModel.frameJson();
+                PullDataDAO pullDataDAO = new PullDataDAO();
+                pullDataDAO.pullData(this);
+
                 return true;
 //            case R.id.backupOption:
 //                manageBackup(true, false);  // to backup app data at any time of the day

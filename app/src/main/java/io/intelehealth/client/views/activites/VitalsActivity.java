@@ -1,13 +1,18 @@
 package io.intelehealth.client.views.activites;
 
 import android.content.Intent;
+import android.databinding.Bindable;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+
+import java.text.DecimalFormat;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.databinding.ActivityVitalsBinding;
@@ -23,12 +28,9 @@ public class VitalsActivity extends AppCompatActivity {
     private String patientUuid;
     private String visitUuid;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_vitals);
-//        Toolbar toolbar = findViewById(R.id.toolbar);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_vitals);
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);

@@ -4,11 +4,21 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.google.gson.Gson;
+
 import io.intelehealth.client.app.AppConstants;
+import io.intelehealth.client.app.IntelehealthApplication;
 import io.intelehealth.client.dto.ResponseDTO;
 import io.intelehealth.client.exception.DAOException;
+import io.intelehealth.client.models.pushRequestApiCall.PushRequestApiCall;
+import io.intelehealth.client.models.pushResponseApiCall.PushResponseApiCall;
 import io.intelehealth.client.utilities.Logger;
+import io.intelehealth.client.utilities.PatientsFrameJson;
 import io.intelehealth.client.utilities.SessionManager;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -18,6 +28,7 @@ public class PullDataDAO {
 
     private SessionManager sessionManager = null;
 
+    public static String TAG = PullDataDAO.class.getSimpleName();
 
     public boolean pullData(final Context context) {
         sessionManager = new SessionManager(context);
@@ -82,6 +93,44 @@ public class PullDataDAO {
         dataInserted dataInserted = new dataInserted();
         dataInserted.execute();
 
+    }
+
+    public boolean pushDataApi() {
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        PatientsDAO patientsDAO = new PatientsDAO();
+        PushRequestApiCall pushRequestApiCall;
+        PatientsFrameJson patientsFrameJson = new PatientsFrameJson();
+        pushRequestApiCall = patientsFrameJson.frameJson();
+        final boolean[] isSucess = {true};
+        String encoded = sessionManager.getEncoded();
+        Gson gson = new Gson();
+        Logger.logD(TAG, "push request model" + gson.toJson(pushRequestApiCall));
+        String url = "http://" + sessionManager.getServerUrl() + ":8080/EMR-Middleware/webapi/push/pushdata";
+        Single<PushResponseApiCall> pushResponseApiCallObservable = AppConstants.apiInterface.PUSH_RESPONSE_API_CALL_OBSERVABLE(url, "Basic " + encoded, pushRequestApiCall);
+        pushResponseApiCallObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSingleObserver<PushResponseApiCall>() {
+                    @Override
+                    public void onSuccess(PushResponseApiCall pushResponseApiCall) {
+                        Logger.logD(TAG, "sucess" + pushResponseApiCall);
+                        for (int i = 0; i < pushResponseApiCall.getData().getPatientlist().size(); i++) {
+                            try {
+                                patientsDAO.updateOpemmrsId(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId(), pushResponseApiCall.getData().getPatientlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
+                            } catch (DAOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        isSucess[0] = true;
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Logger.logD(TAG, "Onerror " + e.getMessage());
+                        isSucess[0] = false;
+                    }
+                });
+        return isSucess[0];
     }
 }
 

@@ -18,6 +18,7 @@ import java.util.UUID;
 
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.dao.PatientsDAO;
+import io.intelehealth.client.dao.PullDataDAO;
 import io.intelehealth.client.dto.PatientAttributesDTO;
 import io.intelehealth.client.dto.PatientDTO;
 import io.intelehealth.client.exception.DAOException;
@@ -187,6 +188,9 @@ public class IdentificationViewModel extends AndroidViewModel {
             if (NetworkConnection.isOnline(getApplication())) {
 //                patientApiCall();
 //                frameJson();
+                PullDataDAO pullDataDAO=new PullDataDAO();
+                pullDataDAO.pushDataApi();
+                pullDataDAO.pullData(getApplication());
             }
             if (b) {
                 Logger.logD(TAG, "inserted");
@@ -238,43 +242,6 @@ public class IdentificationViewModel extends AndroidViewModel {
         //parent.getSelectedItem()            get selected item
         //and other...
     }
-
-    public boolean patientApiCall() {
-        PushRequestApiCall pushRequestApiCall;
-        PatientsFrameJson patientsFrameJson = new PatientsFrameJson();
-        pushRequestApiCall = patientsFrameJson.frameJson();
-        final boolean[] isSucess = {true};
-        String encoded = session.getEncoded();
-        Gson gson = new Gson();
-        Logger.logD(TAG, "push request model" + gson.toJson(pushRequestApiCall));
-        String url = "http://" + session.getServerUrl() + ":8080/EMR-Middleware/webapi/push/pushdata";
-        Single<PushResponseApiCall> pushResponseApiCallObservable = AppConstants.apiInterface.PUSH_RESPONSE_API_CALL_OBSERVABLE(url, "Basic " + encoded, pushRequestApiCall);
-        pushResponseApiCallObservable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<PushResponseApiCall>() {
-                    @Override
-                    public void onSuccess(PushResponseApiCall pushResponseApiCall) {
-                        Logger.logD(TAG, "sucess" + pushResponseApiCall);
-                        for (int i = 0; i < pushResponseApiCall.getData().getPatientlist().size(); i++) {
-                            try {
-                                patientsDAO.updateOpemmrsId(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId(), pushResponseApiCall.getData().getPatientlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
-                            } catch (DAOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        isSucess[0] = true;
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Logger.logD(TAG, "Onerror " + e.getMessage());
-                        isSucess[0] = false;
-                    }
-                });
-        return isSucess[0];
-    }
-
 
 }
 

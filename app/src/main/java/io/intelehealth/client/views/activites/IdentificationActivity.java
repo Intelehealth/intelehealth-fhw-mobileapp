@@ -85,6 +85,13 @@ public class IdentificationActivity extends AppCompatActivity {
         setTitle(R.string.title_activity_identification);
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         sessionManager = new SessionManager(this);
         mState = findViewById(R.id.spinner_state);
         mCountry = findViewById(R.id.spinner_country);
