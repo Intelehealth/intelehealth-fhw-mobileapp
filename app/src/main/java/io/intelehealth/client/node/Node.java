@@ -44,9 +44,9 @@ import java.util.List;
 import java.util.Locale;
 
 import io.intelehealth.client.R;
-import io.intelehealth.client.activities.camera_activity.CameraActivity;
-import io.intelehealth.client.activities.complaint_node_activity.CustomArrayAdapter;
-import io.intelehealth.client.activities.custom_expandable_list_adapter.CustomExpandableListAdapter;
+import io.intelehealth.client.views.activites.CameraActivity;
+import io.intelehealth.client.views.adapters.CustomArrayAdapter;
+import io.intelehealth.client.views.adapters.CustomExpandableListAdapter;
 
 /**
  * Created by Amal Afroz Alam on 21, April, 2016.

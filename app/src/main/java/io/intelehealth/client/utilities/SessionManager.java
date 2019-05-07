@@ -28,7 +28,7 @@ public class SessionManager {
     private static final String TIME = "time";
     private static final String FIRST_TIME_SYNC_EXECUTE = "FIRST_TIME_SYNC_EXECUTE";
     private static final String LICENSE = "license";
-
+    private static final String RETURNING = "returning";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -234,6 +234,14 @@ public class SessionManager {
 
     public void setFirstTimeSyncExecute(Boolean firstTimeSyncExecute1) {
         editor.putBoolean(FIRST_TIME_SYNC_EXECUTE, firstTimeSyncExecute1);
+        editor.commit();
+    }
+    public boolean isReturning() {
+        return pref.getBoolean(RETURNING, false);
+    }
+
+    public void setReturning(Boolean returning) {
+        editor.putBoolean(RETURNING, returning);
         editor.commit();
     }
 

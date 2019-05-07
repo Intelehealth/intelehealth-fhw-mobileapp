@@ -21,6 +21,7 @@ import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.dao.PatientsDAO;
 import io.intelehealth.client.databinding.ActivityPatientDetailBinding;
 import io.intelehealth.client.exception.DAOException;
+import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
