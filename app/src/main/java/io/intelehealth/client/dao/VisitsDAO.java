@@ -32,7 +32,7 @@ public class VisitsDAO {
 //                    }
 //                } else {
 //                    Logger.logD("insert", "insert has to happen");
-                    createVisits(visit);
+                createVisits(visit);
 //                }
 //                AppConstants.sqliteDbCloseHelper.cursorClose(cursor);
             }
@@ -82,7 +82,7 @@ public class VisitsDAO {
 
     private boolean updateVisits(VisitDTO visit) throws DAOException {
         boolean isUpdated = true;
-//        (SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase()
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         String selection = "uuid = ?";
         db.beginTransaction();

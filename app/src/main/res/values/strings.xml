@@ -427,6 +427,9 @@
     <string name="title_activity_splash_acticity">SplashActicity</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_activity_sync">ActivitySync</string>
+    <string name="title_activity_visit_summary">VisitSummaryActivity</string>
+    <string name="title_activity_past_medical_history">PastMedicalHistoryActivity</string>
+    <string name="title_activity_patient_survey">PatientSurveyActivity</string>
 
 
 </resources>

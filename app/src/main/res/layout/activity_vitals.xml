@@ -17,6 +17,7 @@
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/cl_table"
         tools:context=".views.activites.VitalsActivity">
 
         <android.support.design.widget.AppBarLayout
@@ -76,7 +77,6 @@
                             android:id="@+id/table_height"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:addTextChangedListener="@{vitalviewmodel.watcher}"
                             android:hint="@string/table_height"
                             android:imeOptions="actionUnspecified"
                             android:inputType="numberDecimal"

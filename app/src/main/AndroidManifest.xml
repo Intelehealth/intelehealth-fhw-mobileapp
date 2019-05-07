@@ -35,9 +35,41 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
+            android:name=".views.activites.AdditionalDocumentsActivity"
+            android:label="@string/title_activity_additional_documents"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".views.activites.PatientSurveyActivity"
+            android:label="@string/title_activity_patient_survey"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".views.activites.PhysicalExamActivity"
+            android:label="@string/title_activity_physical_exam"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".views.activites.FamilyHistoryActivity"
+            android:label="@string/title_activity_family_history"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".views.activites.PastMedicalHistoryActivity"
+            android:label="@string/title_activity_past_medical_history"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".views.activites.QuestionNodeActivity"
+            android:label="@string/title_activity_question_node"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".views.activites.ComplaintNodeActivity"
+            android:label="@string/title_activity_complaint_node"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".views.activites.VisitSummaryActivity"
+            android:label="@string/title_activity_visit_summary"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".views.activites.VitalsActivity"
             android:label="@string/title_activity_vitals"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.activites.PatientDetailActivity"
             android:label="@string/title_activity_patient_detail"

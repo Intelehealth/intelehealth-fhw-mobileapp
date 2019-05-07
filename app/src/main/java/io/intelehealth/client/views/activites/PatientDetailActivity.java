@@ -1,13 +1,20 @@
 package io.intelehealth.client.views.activites;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
@@ -55,11 +62,104 @@ public class PatientDetailActivity extends AppCompatActivity {
             Logger.logD(TAG, "Patient Name: " + patientName);
             Logger.logD(TAG, "Intent Tag: " + intentTag);
         }
+        binding.editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent2 = new Intent(PatientDetailActivity.this, IdentificationActivity.class);
+                intent2.putExtra("patientUuid", patientUuid);
+                startActivity(intent2);
 
+            }
+        });
         setDisplay(patientUuid);
 
+        binding.buttonNewVisit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // before starting, we determine if it is new visit for a returning patient
+                // extract both FH and PMH
 
+                LocalRecordsDatabaseHelper mDatabaseHelper = new LocalRecordsDatabaseHelper(PatientDetailActivity.this);
+                SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
+                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                String CREATOR_ID = sharedPreferences.getString("creatorid", null);
+                e = sharedPreferences.edit();
+                returning = false;
+                e.putBoolean("returning", returning); // change in Sp
+                e.commit();
+
+                String[] cols = {"value"};
+                Cursor cursor = sqLiteDatabase.query("obs", cols, "patient_id=? and concept_id=?",// querying for PMH
+                        new String[]{String.valueOf(patient.getId()), String.valueOf(ConceptId.RHK_MEDICAL_HISTORY_BLURB)},
+                        null, null, null);
+
+                if (cursor.moveToFirst()) {
+                    // rows present
+                    do {
+                        // so that null data is not appended
+                        phistory = phistory + cursor.getString(0);
+
+                    }
+                    while (cursor.moveToNext());
+                    returning = true;
+                    e.putBoolean("returning", true);
+                    e.commit();
+                }
+                cursor.close();
+
+                Cursor cursor1 = sqLiteDatabase.query("obs", cols, "patient_id=? and concept_id=?",// querying for FH
+                        new String[]{String.valueOf(patient.getId()), String.valueOf(ConceptId.RHK_FAMILY_HISTORY_BLURB)},
+                        null, null, null);
+                if (cursor1.moveToFirst()) {
+                    // rows present
+                    do {
+                        fhistory = fhistory + cursor1.getString(0);
+                    }
+                    while (cursor1.moveToNext());
+                    returning = true;
+                    e.putBoolean("returning", true);
+                    e.commit();
+                }
+                cursor1.close();
+
+                // Will display data for patient as it is present in database
+                // Toast.makeText(PatientDetailActivity.this,"PMH: "+phistory,Toast.LENGTH_SHORT).sƒhow();
+                // Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
+
+                Intent intent2 = new Intent(PatientDetailActivity.this, VitalsActivity.class);
+                String fullName = patient.getFirstName() + " " + patient.getLastName();
+                intent2.putExtra("patientID", patientID);
+
+                SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+                Date todayDate = new Date();
+                String thisDate = currentDate.format(todayDate);
+
+                ContentValues visitData = new ContentValues();
+                visitData.put("patient_id", patient.getId());
+                Log.i(LOG_TAG, "onClick: " + thisDate);
+                visitData.put("start_datetime", thisDate);
+                visitData.put("visit_type_id", 0);
+                visitData.put("visit_location_id", 0);
+                visitData.put("visit_creator", CREATOR_ID);
+
+                LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(PatientDetailActivity.this);
+                SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+                Long visitLong = localdb.insert(
+                        "visit",
+                        null,
+                        visitData
+                );
+
+                visitID = String.valueOf(visitLong);
+                localdb.close();
+                intent2.putExtra("visitID", visitID);
+                intent2.putExtra("name", fullName);
+                intent2.putExtra("tag", "new");
+                startActivity(intent2);
+            }
+        });
     }
+
 
     public void setDisplay(String dataString) {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
