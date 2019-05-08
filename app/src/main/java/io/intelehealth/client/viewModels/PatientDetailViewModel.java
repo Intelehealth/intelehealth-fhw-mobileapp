@@ -14,10 +14,4 @@ public class PatientDetailViewModel extends AndroidViewModel {
         super(application);
     }
 
-    public void newVisit() {
-
-        Intent i = new Intent(getApplication(), VitalsActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        getApplication().startActivity(i);
-    }
 }

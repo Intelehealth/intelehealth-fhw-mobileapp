@@ -5,7 +5,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.app.IntelehealthApplication;
@@ -13,6 +15,7 @@ import io.intelehealth.client.dto.ObsDTO;
 import io.intelehealth.client.exception.DAOException;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
+import io.intelehealth.client.utilities.UuidGenerator;
 
 public class ObsDAO {
 
@@ -125,22 +128,25 @@ public class ObsDAO {
 //
 //    }
 
-    public boolean insertObs(ObsDTO obsDTO) {
+    public boolean insertObs(List<ObsDTO> obsDTO) {
         boolean isUpdated = true;
         long insertedCount = 0;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         ContentValues values = new ContentValues();
 
         try {
-            values.put("uuid", AppConstants.NEW_UUID);
-            values.put("encounteruuid", obsDTO.getEncounteruuid());
-            values.put("creator", obsDTO.getCreator());
-            values.put("conceptuuid", obsDTO.getConceptuuid());
-            values.put("value", obsDTO.getValue());
-            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-            values.put("voided", "");
-            values.put("synced", "FALSE");
-            insertedCount = db.insert("tbl_obs", null, values);
+            for (ObsDTO ob : obsDTO) {
+                values.put("uuid", UUID.randomUUID().toString());
+                values.put("encounteruuid", ob.getEncounteruuid());
+                values.put("creator", ob.getCreator());
+                values.put("conceptuuid", ob.getConceptuuid());
+                values.put("value", ob.getValue());
+                values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+                values.put("voided", "");
+                values.put("synced", "FALSE");
+                insertedCount = db.insert("tbl_obs", null, values);
+            }
             db.setTransactionSuccessful();
             Logger.logD("updated", "updatedrecords count" + insertedCount);
         } catch (SQLException e) {
@@ -159,6 +165,7 @@ public class ObsDAO {
         db.beginTransaction();
         int updatedCount = 0;
         ContentValues values = new ContentValues();
+        List<ObsDTO> obsDTOS = new ArrayList<>();
         String selection = "uuid = ?";
         try {
 
@@ -172,8 +179,9 @@ public class ObsDAO {
 
             updatedCount = db.update("tbl_obs", values, selection, new String[]{obsDTO.getUuid()});
             //If no value is not found, then update fails so insert instead.
+            obsDTOS.add(obsDTO);
             if (updatedCount == 0) {
-                insertObs(obsDTO);
+                insertObs(obsDTOS);
             }
             db.setTransactionSuccessful();
         } catch (SQLiteException e) {

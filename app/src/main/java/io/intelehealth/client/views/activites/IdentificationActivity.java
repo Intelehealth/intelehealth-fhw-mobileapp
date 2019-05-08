@@ -38,7 +38,6 @@ import io.intelehealth.client.dao.PatientsDAO;
 import io.intelehealth.client.database.InteleHealthDatabaseHelper;
 import io.intelehealth.client.databinding.ActivityIdentificationBinding;
 import io.intelehealth.client.exception.DAOException;
-import io.intelehealth.client.utilities.ConfigUtils;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
 import io.intelehealth.client.utilities.EditTextUtils;
 import io.intelehealth.client.utilities.FileUtils;
@@ -46,7 +45,7 @@ import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UuidGenerator;
 import io.intelehealth.client.viewModels.IdentificationViewModel;
-import io.intelehealth.client.viewModels.requestModels.Patient;
+import io.intelehealth.client.objects.Patient;
 
 public class IdentificationActivity extends AppCompatActivity {
     private static final String TAG = IdentificationActivity.class.getSimpleName();
@@ -60,11 +59,10 @@ public class IdentificationActivity extends AppCompatActivity {
     UuidGenerator uuidGenerator = new UuidGenerator();
     Calendar today = Calendar.getInstance();
     Calendar dob = Calendar.getInstance();
-    Patient patient1;
-    Patient patient_new1;
+    Patient patient1 = new Patient();
     private String patientUuid = "";
     private String mGender;
-    String patientID_edit ;
+    String patientID_edit;
     private int mDOBYear;
     private int mDOBMonth;
     private int mDOBDay;
@@ -76,7 +74,7 @@ public class IdentificationActivity extends AppCompatActivity {
     Spinner mCountry;
     Spinner mState;
     AutoCompleteTextView mCity;
-    PatientsDAO patientsDAO =new PatientsDAO();
+    PatientsDAO patientsDAO = new PatientsDAO();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,15 +179,15 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
 
-
-        if (patientID_edit.isEmpty()) {
+        if (null == patientID_edit || patientID_edit.isEmpty()) {
             generateUuid();
 
         }
 
         // setting radio button automatically according to the databse when user clicks edit details
-        if (!patientID_edit.isEmpty()) {
-            if (patient_new1.getGender().equals("M")) {
+        if (patientID_edit != null) {
+
+            if (patient1.getGender().equals("M")) {
                 binding.identificationGenderMale.setChecked(true);
                 if (binding.identificationGenderFemale.isChecked())
                     binding.identificationGenderFemale.setChecked(false);
@@ -200,27 +198,28 @@ public class IdentificationActivity extends AppCompatActivity {
                     binding.identificationGenderMale.setChecked(false);
                 Log.v(TAG, "yes");
             }
+
         }
         if (binding.identificationGenderMale.isChecked()) {
             mGender = "M";
         } else {
             mGender = "F";
         }
-        if (!patientID_edit.isEmpty()) {
+        if (patientID_edit != null) {
             // setting country according database
-            binding.spinnerCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient_new1.getCountry())));
-            if (patient_new1.getEducation_level().equals(getString(R.string.not_provided)))
+            binding.spinnerCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
+            if (patient1.getEducation_level().equals(getString(R.string.not_provided)))
                 binding.spinnerEducation.setSelection(0);
             else
-                binding.spinnerEducation.setSelection(educationAdapter.getPosition(patient_new1.getEducation_level()));
-            if (patient_new1.getEconomic_status().equals(getString(R.string.not_provided)))
+                binding.spinnerEducation.setSelection(educationAdapter.getPosition(patient1.getEducation_level()));
+            if (patient1.getEconomic_status().equals(getString(R.string.not_provided)))
                 binding.spinnerEconomicStatus.setSelection(0);
             else
-                binding.spinnerEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient_new1.getEconomic_status()));
-            if (patient_new1.getCaste().equals(getString(R.string.not_provided)))
+                binding.spinnerEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
+            if (patient1.getCaste().equals(getString(R.string.not_provided)))
                 binding.spinnerCaste.setSelection(0);
             else
-                binding.spinnerCaste.setSelection(casteAdapter.getPosition(patient_new1.getCaste()));
+                binding.spinnerCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));
         } else {
             binding.spinnerCountry.setSelection(countryAdapter.getPosition(country1));
         }
@@ -268,7 +267,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         mState.setAdapter(stateAdapter);
                         // setting state according database when user clicks edit details
 
-                        if (!patientID_edit.isEmpty()) {
+                        if (patientID_edit != null) {
                             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
                         } else {
                             mState.setSelection(stateAdapter.getPosition("Odisha"));
@@ -280,7 +279,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mState.setAdapter(stateAdapter);
 
-                        if (!patientID_edit.isEmpty()) {
+                        if (patientID_edit != null) {
 
                             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
                         }
@@ -290,7 +289,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mState.setAdapter(stateAdapter);
 
-                        if (!patientID_edit.isEmpty()) {
+                        if (patientID_edit != null) {
                             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
                         } else {
                             mState.setSelection(stateAdapter.getPosition("Bukidnon"));
@@ -361,7 +360,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
 
                 //Formatted so that it can be read the way the user sets
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a", Locale.getDefault());
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-mm-yyyy", Locale.getDefault());
                 dob.set(year, monthOfYear, dayOfMonth);
                 String dobString = simpleDateFormat.format(dob.getTime());
                 binding.identificationBirthDateTextView.setText(dobString);
@@ -399,10 +398,10 @@ public class IdentificationActivity extends AppCompatActivity {
         });
 
         //if patient update then age will be set
-        if (!patientID_edit.isEmpty()) {
-            int age = DateAndTimeUtils.getAge(patient_new1.getDate_of_birth());
-            binding.identificationBirthDateTextView.setText(patient_new1.getDate_of_birth());
-            int month = DateAndTimeUtils.getMonth(patient_new1.getDate_of_birth());
+        if (patientID_edit != null) {
+            int age = DateAndTimeUtils.getAge(patient1.getDate_of_birth());
+            binding.identificationBirthDateTextView.setText(patient1.getDate_of_birth());
+            int month = DateAndTimeUtils.getMonth(patient1.getDate_of_birth());
             binding.identificationAge.setText(age + getString(R.string.identification_screen_text_years) + month + getString(R.string.identification_screen_text_months));
         }
         binding.identificationAge.setOnClickListener(new View.OnClickListener() {
@@ -466,6 +465,16 @@ public class IdentificationActivity extends AppCompatActivity {
                 mAgePicker.show();
             }
         });
+        binding.fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (patientID_edit != null) {
+                    identificationViewModel.onPatientUpdateClicked(patient1);
+                } else {
+                    identificationViewModel.onPatientCreateClicked();
+                }
+            }
+        });
     }
 
     public void onRadioButtonClicked(View view) {
@@ -498,13 +507,14 @@ public class IdentificationActivity extends AppCompatActivity {
 
         String patientSelection = "uuid=?";
         String[] patientArgs = {str};
-        String[] patientColumns = {"first_name", "middle_name", "last_name",
+        String[] patientColumns = {"uuid","first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw", "occupation", "patient_photo",
                 "economic_status", "education_status", "caste"};
-        Cursor idCursor = db.query("patient", patientColumns, patientSelection, patientArgs, null, null, null);
+        Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
+                patient1.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
                 patient1.setFirst_name(idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")));
                 patient1.setMiddle_name(idCursor.getString(idCursor.getColumnIndexOrThrow("middle_name")));
                 patient1.setLast_name(idCursor.getString(idCursor.getColumnIndexOrThrow("last_name")));
@@ -562,6 +572,17 @@ public class IdentificationActivity extends AppCompatActivity {
             } while (idCursor1.moveToNext());
         }
         idCursor1.close();
+        identificationViewModel.firstname.setValue(patient1.getFirst_name());
+        identificationViewModel.middlename.setValue(patient1.getMiddle_name());
+        identificationViewModel.lastname.setValue(patient1.getLast_name());
+        identificationViewModel.dateofbirth.setValue(patient1.getDate_of_birth());
+        identificationViewModel.phonenumber.setValue(patient1.getPhone_number());
+        identificationViewModel.village.setValue(patient1.getCity_village());
+        identificationViewModel.address.setValue(patient1.getAddress1());
+        identificationViewModel.address2.setValue(patient1.getAddress2());
+        identificationViewModel.postalcode.setValue(patient1.getPostal_code());
+        identificationViewModel.sondaughter.setValue(patient1.getSdw());
+        identificationViewModel.occupation.setValue(patient1.getOccupation());
 
     }
 

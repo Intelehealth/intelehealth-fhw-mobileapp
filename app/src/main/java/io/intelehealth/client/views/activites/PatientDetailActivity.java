@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -18,15 +17,19 @@ import java.util.Locale;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
+import io.intelehealth.client.dao.EncounterDAO;
 import io.intelehealth.client.dao.PatientsDAO;
+import io.intelehealth.client.database.InteleHealthDatabaseHelper;
 import io.intelehealth.client.databinding.ActivityPatientDetailBinding;
+import io.intelehealth.client.dto.EncounterDTO;
 import io.intelehealth.client.exception.DAOException;
 import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
+import io.intelehealth.client.utilities.UuidDictionary;
 import io.intelehealth.client.viewModels.PatientDetailViewModel;
-import io.intelehealth.client.viewModels.requestModels.Patient;
+import io.intelehealth.client.objects.Patient;
 
 public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
@@ -37,9 +40,15 @@ public class PatientDetailActivity extends AppCompatActivity {
     String intentTag = "";
     SessionManager sessionManager = null;
     Patient patient_new = new Patient();
+
+    EncounterDTO encounterDTO = new EncounterDTO();
     PatientsDAO patientsDAO = new PatientsDAO();
     PatientDetailViewModel patientDetailViewModel;
     private boolean hasLicense;
+    private boolean returning;
+
+    String phistory = "";
+    String fhistory = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,19 +88,22 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // before starting, we determine if it is new visit for a returning patient
                 // extract both FH and PMH
-
-                LocalRecordsDatabaseHelper mDatabaseHelper = new LocalRecordsDatabaseHelper(PatientDetailActivity.this);
+                String uuid = AppConstants.NEW_UUID;
+                EncounterDAO encounterDAO = new EncounterDAO();
+                encounterDTO = new EncounterDTO();
+                encounterDTO.setUuid(AppConstants.NEW_UUID);
+                encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS"));
+                encounterDTO.setVisituuid(uuid);
+                InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity.this);
                 SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
-                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                String CREATOR_ID = sharedPreferences.getString("creatorid", null);
-                e = sharedPreferences.edit();
+
+                String CREATOR_ID = sessionManager.getCreatorID();
                 returning = false;
-                e.putBoolean("returning", returning); // change in Sp
-                e.commit();
+                sessionManager.setReturning(returning);
 
                 String[] cols = {"value"};
-                Cursor cursor = sqLiteDatabase.query("obs", cols, "patient_id=? and concept_id=?",// querying for PMH
-                        new String[]{String.valueOf(patient.getId()), String.valueOf(ConceptId.RHK_MEDICAL_HISTORY_BLURB)},
+                Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for PMH
+                        new String[]{encounterDTO.getUuid(), UuidDictionary.RHK_MEDICAL_HISTORY_BLURB},
                         null, null, null);
 
                 if (cursor.moveToFirst()) {
@@ -103,13 +115,12 @@ public class PatientDetailActivity extends AppCompatActivity {
                     }
                     while (cursor.moveToNext());
                     returning = true;
-                    e.putBoolean("returning", true);
-                    e.commit();
+                    sessionManager.setReturning(returning);
                 }
                 cursor.close();
 
-                Cursor cursor1 = sqLiteDatabase.query("obs", cols, "patient_id=? and concept_id=?",// querying for FH
-                        new String[]{String.valueOf(patient.getId()), String.valueOf(ConceptId.RHK_FAMILY_HISTORY_BLURB)},
+                Cursor cursor1 = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for FH
+                        new String[]{encounterDTO.getUuid(), UuidDictionary.RHK_MEDICAL_HISTORY_BLURB},
                         null, null, null);
                 if (cursor1.moveToFirst()) {
                     // rows present
@@ -118,8 +129,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     }
                     while (cursor1.moveToNext());
                     returning = true;
-                    e.putBoolean("returning", true);
-                    e.commit();
+                    sessionManager.setReturning(returning);
                 }
                 cursor1.close();
 
@@ -128,32 +138,36 @@ public class PatientDetailActivity extends AppCompatActivity {
                 // Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
 
                 Intent intent2 = new Intent(PatientDetailActivity.this, VitalsActivity.class);
-                String fullName = patient.getFirstName() + " " + patient.getLastName();
-                intent2.putExtra("patientID", patientID);
+                String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
+                intent2.putExtra("patientUuid", patientUuid);
 
                 SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
                 Date todayDate = new Date();
                 String thisDate = currentDate.format(todayDate);
 
                 ContentValues visitData = new ContentValues();
-                visitData.put("patient_id", patient.getId());
-                Log.i(LOG_TAG, "onClick: " + thisDate);
-                visitData.put("start_datetime", thisDate);
-                visitData.put("visit_type_id", 0);
-                visitData.put("visit_location_id", 0);
-                visitData.put("visit_creator", CREATOR_ID);
+                visitData.put("uuid", uuid);
+                visitData.put("patientUuid", patient_new.getUuid());
+                Log.i(TAG, "onClick: " + thisDate);
+                visitData.put("startdate", thisDate);
+                visitData.put("visit_type_uuid", "");
+                visitData.put("locationuuid", sessionManager.getLocationUuid());
+                visitData.put("creator", CREATOR_ID);
 
-                LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(PatientDetailActivity.this);
+                InteleHealthDatabaseHelper mDbHelper = new InteleHealthDatabaseHelper(PatientDetailActivity.this);
                 SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
                 Long visitLong = localdb.insert(
-                        "visit",
+                        "tbl_visit",
                         null,
                         visitData
                 );
 
-                visitID = String.valueOf(visitLong);
+                // visitUuid = String.valueOf(visitLong);
                 localdb.close();
-                intent2.putExtra("visitID", visitID);
+                intent2.putExtra("patientUuid", patientUuid);
+                intent2.putExtra("visitUuid", uuid);
+                intent2.putExtra("encounterUuidVitals", encounterDTO.getUuid());
+                intent2.putExtra("encounterUuidAdultIntial", "");
                 intent2.putExtra("name", fullName);
                 intent2.putExtra("tag", "new");
                 startActivity(intent2);

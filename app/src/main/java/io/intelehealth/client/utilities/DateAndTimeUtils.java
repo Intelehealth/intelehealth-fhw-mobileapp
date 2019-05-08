@@ -24,7 +24,7 @@ public class DateAndTimeUtils {
     public static int getAge(String s) {
         if (s == null) return 0;
         Date date = null;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-yyyy");
         try {
             date = sdf.parse(s);
         } catch (ParseException e) {
@@ -57,8 +57,8 @@ public class DateAndTimeUtils {
     public static String SimpleDatetoLongFollowupDate(String dateString) {
         String formattedDate = null;
         try {
-            DateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
-            DateFormat targetFormat = new SimpleDateFormat("dd-MMMM-yyyy");
+            DateFormat originalFormat = new SimpleDateFormat("dd-mm-yyyy", Locale.ENGLISH);
+            DateFormat targetFormat = new SimpleDateFormat("dd-mm-yyyy");
             Date date = originalFormat.parse(dateString);
             formattedDate = targetFormat.format(date);
         } catch (Exception ex) {
@@ -71,7 +71,7 @@ public class DateAndTimeUtils {
         String formattedDate = null;
         try {
             DateFormat originalFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a", Locale.ENGLISH);
-            DateFormat targetFormat = new SimpleDateFormat("dd-MMM-yyyy");
+            DateFormat targetFormat = new SimpleDateFormat("dd-mm-yyyy");
             Date date = originalFormat.parse(dateString);
             formattedDate = targetFormat.format(date);
         } catch (Exception ex) {
@@ -85,11 +85,11 @@ public class DateAndTimeUtils {
 
         String[] components = s1.split("\\-");
 
-        int year = Integer.parseInt(components[0]);
+        int year = Integer.parseInt(components[2]);
         int month = Integer.parseInt(components[1]);
-        int day = Integer.parseInt(components[2]);
+        int day = Integer.parseInt(components[0]);
 
-        LocalDate birthdate1 = new LocalDate(year, month, day);          //Birth date
+        LocalDate birthdate1 = new LocalDate(year, month+1, day);          //Birth date
         LocalDate now = new LocalDate();                    //Today's date
         Period period = new Period(birthdate1, now, PeriodType.yearMonthDay());
         return period.getMonths();

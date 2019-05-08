@@ -126,9 +126,9 @@ public class HomeActivity extends AppCompatActivity {
 //            }
         }
 //        if (sessionManager.isFirstTimeSyncExcuted()) {
-        PullDataDAO pullDataDAO = new PullDataDAO();
-        pullDataDAO.pullData(this);
-        pullDataDAO.pushDataApi();
+//        PullDataDAO pullDataDAO = new PullDataDAO();
+//        pullDataDAO.pullData(this);
+//        pullDataDAO.pushDataApi();
 //            sessionManager.setFirstTimeSyncExecute(false);
 //        }
 

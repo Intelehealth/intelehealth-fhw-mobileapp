@@ -1,4 +1,4 @@
-package io.intelehealth.client.viewModels.requestModels;
+package io.intelehealth.client.objects;
 
 public class Patient {
     private String uuid;

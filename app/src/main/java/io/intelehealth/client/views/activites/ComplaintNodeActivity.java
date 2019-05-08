@@ -38,8 +38,8 @@ import io.intelehealth.client.views.adapters.CustomArrayAdapter;
 public class ComplaintNodeActivity extends AppCompatActivity {
     final String TAG = "Complaint Node Activity";
 
-    Integer patientID;
-    String visitID;
+    String patientUuid;
+    String visitUuid;
     String state;
     String patientName;
     String intentTag;
@@ -52,21 +52,44 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     //String mFileName = "DemoBrain.json";
 
     CustomArrayAdapter listAdapter;
+    String encounterVitals;
+    String encounterAdultIntials;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Intent intent = this.getIntent(); // The intent was passed to the activity
+        if (intent != null) {
+            patientUuid = intent.getStringExtra("patientUuid");
+            visitUuid = intent.getStringExtra("visitUuid");
+            encounterVitals = intent.getStringExtra("encounterUuidVitals");
+            encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
+            state = intent.getStringExtra("state");
+            patientName = intent.getStringExtra("name");
+            intentTag = intent.getStringExtra("tag");
+//            Log.v(TAG, "Patient ID: " + patientID);
+//            Log.v(TAG, "Visit ID: " + visitID);
+//            Log.v(TAG, "Patient Name: " + patientName);
+//            Log.v(TAG, "Intent Tag: " + intentTag);
+        }
+
+        setTitle(patientName + ": " + getTitle());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complaint_node);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 confirmComplaints();
             }
         });
+
+
         ListView complaintList = (ListView) findViewById(R.id.complaint_list_view);
         if (complaintList != null) {
             complaintList.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
@@ -74,6 +97,8 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         }
 
         complaints = new ArrayList<>();
+
+
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         boolean hasLicense = false;
         if (sharedPreferences.contains("licensekey")) hasLicense = true;
@@ -124,6 +149,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         });
 
     }
+
     /**
      * Method to confirm all the complaints that were selected, and ensure that the conversation with the patient is thorough.
      */
@@ -165,9 +191,10 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         Intent intent = new Intent(ComplaintNodeActivity.this, QuestionNodeActivity.class);
-                        intent.putExtra("patientID", patientID);
-                        intent.putExtra("visitID", visitID);
-
+                        intent.putExtra("patientUuid", patientUuid);
+                        intent.putExtra("visitUuid", visitUuid);
+                        intent.putExtra("encounterUuidVitals", encounterVitals);
+                        intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
                         intent.putExtra("state", state);
                         intent.putExtra("name", patientName);
                         if (intentTag != null) {
@@ -222,7 +249,6 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
         return true;
     }
-
 
 
 }

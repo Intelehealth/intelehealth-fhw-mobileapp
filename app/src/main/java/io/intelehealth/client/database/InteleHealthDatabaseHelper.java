@@ -6,11 +6,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.Nullable;
 
 import io.intelehealth.client.app.AppConstants;
+import io.intelehealth.client.app.IntelehealthApplication;
+import io.intelehealth.client.utilities.SessionManager;
 
 public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = AppConstants.DATABASE_VERSION;
     public static final String DATABASE_NAME = AppConstants.DATABASE_NAME;
+    SessionManager sessionManager=null;
     /*
     * "openmrs_uuid": "8ab7f041-0b02-4ac0-a8f4-aa35f90ae3a1",
                     "openmrs_id": "10213-7",
@@ -85,9 +88,9 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
               "locationuuid": "1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a",
               "creator": 4*/
     public static final String CREATE_OBS_MAIN = "CREATE TABLE IF NOT EXISTS tbl_obs (" +
-            "uuid TEXT PRIMARY KEY," +
+            "uuid TEXT PRIMARY KEY ," +
             "encounteruuid TEXT," +
-            "conceptuuid integer(10)," +
+            "conceptuuid TEXT," +
             "value TEXT," +
             "creator TEXT," +
             "voided TEXT," +
@@ -146,12 +149,53 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             ")";
 
     public static final String CREATE_UUID_DICTIONARY = "CREATE TABLE IF NOT EXISTS tbl_uuid_dictionary (" +
-            "uuid TEXT PRIMARY KEY," +
+            "uuid TEXT ," +
             "name TEXT" +
             ")";
     
     public InteleHealthDatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    public void uuidInsert(SQLiteDatabase db){
+        sessionManager=new SessionManager(IntelehealthApplication.getAppContext());
+        if(sessionManager.isFirstTimeSyncExcuted()) {
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('3edb0e09-9135-481e-b8f0-07a26fa9a5ce','CURRENTCOMPLAINT')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('e1761e85-9b50-48ae-8c4d-e6b7eeeba084','PHYSICAL_EXAMINATION')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','HEIGHT')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','WEIGHT')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','PULSE')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','SYSTOLIC_BP')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','DIASTOLIC_BP')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('5088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','TEMPERATURE')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('5242AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','RESPIRATORY')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('5092AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','SPO2')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('62bff84b-795a-45ad-aae1-80e7f5163a82','RHK_MEDICAL_HISTORY_BLURB')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('e8caffd6-5d22-41c4-8d6a-bc31a44d0c86','FOLLOW_UP_VISIT')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('ca5f5dc3-4f0b-4097-9cae-5cf2eb44a09c','EMERGENCY')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('537bb20d-d09d-4f88-930b-cc45c7d662df','TELEMEDICINE_DIAGNOSIS')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('c38c0c50-2fd2-4ae3-b7ba-7dd25adca4ca','JSV_MEDICATIONS')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('0308000d-77a2-46e0-a6fa-a8c1dcbc3141','MEDICAL_ADVICE ')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('23601d71-50e6-483f-968d-aeef3031346d','REQUESTED_TESTS ')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','ADDITIONAL_COMMENTS')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('35c3afdd-bb96-4b61-afb9-22a5fc2d088e','SON_WIFE_DAUGHTER')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('5fe2ef6f-bbf7-45df-a6ea-a284aee82ddc','OCCUPATION')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('8d5b27bc-c2cc-11de-8d13-0010c6dffd0f','ENCOUNTER_ADULTINITIAL')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('67a71486-1a54-468f-ac3e-7091a9a79584','ENCOUNTER_VITALS')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('d7151f82-c1f3-4152-a605-2f9ea7414a79','ENCOUNTER_VISIT_NOTE')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('629a9d0b-48eb-405e-953d-a5964c88dc30','ENCOUNTER_PATIENT_EXIT_SURVEY')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('05a29f94-c0ed-11e2-94be-8c13b969e334','IDENTIFIER_OPENMRS_ID')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('14d4f066-15f5-102d-96e4-000c29c2a5d7','ATTRIBUTE_PHONE_NUMBER')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('5a889d96-0c84-4a04-88dc-59a6e37db2d3','ATTRIBUTE_CASTE')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('1c718819-345c-4368-aad6-d69b4c267db7','ATTRIBUTE_EDUCATION_LEVEL')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('f4af0ef3-579c-448a-8157-750283409122','ATTRIBUTE_ECONOMIC_STATUS')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('1b2f34f7-2bf8-4ef7-9736-f5b858afc160','ATTRIBUTE_SON_WIFE_DAUGHTER ')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('ecdaadb6-14a0-4ed9-b5b7-cfed87b44b87','ATTRIBUTE_OCCUPATION')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('8d87236c-c2cc-11de-8d13-0010c6dffd0f','ATTRIBUTE_HEALTH_CENTER')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('a86ac96e-2e07-47a7-8e72-8216a1a75bfd','VISIT_TELEMEDICINE')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('78284507-fb71-4354-9b34-046ab205e18f','RATING')");
+            db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('36d207d6-bee7-4b3e-9196-7d053c6eddce','COMMENTS')");
+        }
     }
 
     @Override
@@ -166,41 +210,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_PROVIDER);
         db.execSQL(CREATE_SYNC);
         db.execSQL(CREATE_UUID_DICTIONARY);
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('3edb0e09-9135-481e-b8f0-07a26fa9a5ce','CURRENTCOMPLAINT')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('e1761e85-9b50-48ae-8c4d-e6b7eeeba084','PHYSICAL_EXAMINATION')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','HEIGHT')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','WEIGHT')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','PULSE')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','SYSTOLIC_BP')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','DIASTOLIC_BP')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('5088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','TEMPERATURE')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('5242AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','RESPIRATORY')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('5092AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','SPO2')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('62bff84b-795a-45ad-aae1-80e7f5163a82','RHK_MEDICAL_HISTORY_BLURB')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('e8caffd6-5d22-41c4-8d6a-bc31a44d0c86','FOLLOW_UP_VISIT')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('ca5f5dc3-4f0b-4097-9cae-5cf2eb44a09c','EMERGENCY')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('537bb20d-d09d-4f88-930b-cc45c7d662df','TELEMEDICINE_DIAGNOSIS')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('c38c0c50-2fd2-4ae3-b7ba-7dd25adca4ca','JSV_MEDICATIONS')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('0308000d-77a2-46e0-a6fa-a8c1dcbc3141','MEDICAL_ADVICE ')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('23601d71-50e6-483f-968d-aeef3031346d','REQUESTED_TESTS ')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','ADDITIONAL_COMMENTS')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('35c3afdd-bb96-4b61-afb9-22a5fc2d088e','SON_WIFE_DAUGHTER')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('5fe2ef6f-bbf7-45df-a6ea-a284aee82ddc','OCCUPATION')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('8d5b27bc-c2cc-11de-8d13-0010c6dffd0f','ENCOUNTER_ADULTINITIAL')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('67a71486-1a54-468f-ac3e-7091a9a79584','ENCOUNTER_VITALS')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('d7151f82-c1f3-4152-a605-2f9ea7414a79','ENCOUNTER_VISIT_NOTE')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('629a9d0b-48eb-405e-953d-a5964c88dc30','ENCOUNTER_PATIENT_EXIT_SURVEY')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('05a29f94-c0ed-11e2-94be-8c13b969e334','IDENTIFIER_OPENMRS_ID')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('14d4f066-15f5-102d-96e4-000c29c2a5d7','ATTRIBUTE_PHONE_NUMBER')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('5a889d96-0c84-4a04-88dc-59a6e37db2d3','ATTRIBUTE_CASTE')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('1c718819-345c-4368-aad6-d69b4c267db7','ATTRIBUTE_EDUCATION_LEVEL')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('f4af0ef3-579c-448a-8157-750283409122','ATTRIBUTE_ECONOMIC_STATUS')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('1b2f34f7-2bf8-4ef7-9736-f5b858afc160','ATTRIBUTE_SON_WIFE_DAUGHTER ')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('ecdaadb6-14a0-4ed9-b5b7-cfed87b44b87','ATTRIBUTE_OCCUPATION')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('8d87236c-c2cc-11de-8d13-0010c6dffd0f','ATTRIBUTE_HEALTH_CENTER')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('a86ac96e-2e07-47a7-8e72-8216a1a75bfd','VISIT_TELEMEDICINE')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('78284507-fb71-4354-9b34-046ab205e18f','RATING')");
-        db.execSQL("INSERT INTO CREATE_UUID_DICTIONARY (uuid,name) VALUES('36d207d6-bee7-4b3e-9196-7d053c6eddce','COMMENTS')");
+        uuidInsert(db);
 
     }
 
