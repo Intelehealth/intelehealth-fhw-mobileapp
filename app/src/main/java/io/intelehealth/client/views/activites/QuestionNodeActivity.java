@@ -68,6 +68,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
     int lastExpandedPosition = -1;
     String insertion = "";
     private SharedPreferences prefs;
+    private String encounterUuid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +77,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
             state = intent.getStringExtra("state");
+            encounterUuid=intent.getStringExtra("encounterUuidVitals");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             complaints = intent.getStringArrayListExtra("complaints");
@@ -350,9 +352,9 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        final String CREATOR_ID = prefs.getString("creatorid", null);
+         String CREATOR_ID = prefs.getString("creatorid", null);
 
-        final int CONCEPT_ID = ConceptId.CURRENT_COMPLAINT; //OpenMRS complaint concept ID
+         String CONCEPT_ID = UuidDictionary.CURRENT_COMPLAINT; //OpenMRS complaint concept ID
 
         ContentValues complaintEntries = new ContentValues();
 
@@ -379,12 +381,12 @@ public class QuestionNodeActivity extends AppCompatActivity {
         Log.i(TAG, "updateDatabase: "+ patientUuid+" "+visitUuid+" "+ConceptId.CURRENT_COMPLAINT);
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
 
-        int conceptID = ConceptId.CURRENT_COMPLAINT;
+        String conceptID = UuidDictionary.CURRENT_COMPLAINT;
         ContentValues contentValues = new ContentValues();
         contentValues.put("value", string);
 
-        String selection = "encounterg = ? AND visit_id = ? AND concept_id = ?";
-        String[] args = {String.valueOf(patientUuid), visitID, String.valueOf(conceptID)};
+        String selection = "encounteruuid = ?  AND conceptuuid = ?";
+        String[] args = {encounterUuid, String.valueOf(conceptID)};
 
         int i = localdb.update(
                 "tbl_obs",
