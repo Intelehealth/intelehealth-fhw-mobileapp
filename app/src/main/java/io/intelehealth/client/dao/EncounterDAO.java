@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.List;
 
 import io.intelehealth.client.app.AppConstants;
-import io.intelehealth.client.database.InteleHealthDatabaseHelper;
 import io.intelehealth.client.dto.EncounterDTO;
 import io.intelehealth.client.exception.DAOException;
 
@@ -88,7 +87,7 @@ public class EncounterDAO {
         return isCreated;
     }
 
-    private boolean createEncountersToDB(EncounterDTO encounter) throws DAOException {
+    public boolean createEncountersToDB(EncounterDTO encounter) throws DAOException {
         boolean isCreated = false;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();

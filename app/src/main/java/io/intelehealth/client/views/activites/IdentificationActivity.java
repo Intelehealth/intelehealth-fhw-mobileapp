@@ -38,6 +38,7 @@ import io.intelehealth.client.dao.PatientsDAO;
 import io.intelehealth.client.database.InteleHealthDatabaseHelper;
 import io.intelehealth.client.databinding.ActivityIdentificationBinding;
 import io.intelehealth.client.exception.DAOException;
+import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
 import io.intelehealth.client.utilities.EditTextUtils;
 import io.intelehealth.client.utilities.FileUtils;
@@ -45,7 +46,6 @@ import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UuidGenerator;
 import io.intelehealth.client.viewModels.IdentificationViewModel;
-import io.intelehealth.client.objects.Patient;
 
 public class IdentificationActivity extends AppCompatActivity {
     private static final String TAG = IdentificationActivity.class.getSimpleName();

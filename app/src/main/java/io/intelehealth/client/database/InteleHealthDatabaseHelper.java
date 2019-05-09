@@ -72,7 +72,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "startdate TEXT," +
             "enddate TEXT," +
             "visit_type_uuid TEXT," +
-            "locationuuid TEXT(10) ," +
+            "locationuuid TEXT ," +
             "creator TEXT ," +
             "emergency TEXT," +
             "modified_date TEXT," +

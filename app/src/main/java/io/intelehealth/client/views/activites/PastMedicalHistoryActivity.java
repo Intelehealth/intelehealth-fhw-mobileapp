@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -25,6 +24,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
@@ -72,7 +72,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
     SharedPreferences.Editor e;
 
     SessionManager sessionManager = null;
-    String encounteruuid;
+    private String encounterVitals;
+    private String encounterAdultIntials;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +102,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     String[] columns = {"value", " conceptuuid"};
                     try {
                         String medHistSelection = "encounteruuid = ? AND conceptuuid = ?";
-                        String[] medHistArgs = {encounteruuid, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
+                        String[] medHistArgs = {encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
                         Cursor medHistCursor = localdb.query("tbl_obs", columns, medHistSelection, medHistArgs, null, null, null);
                         medHistCursor.moveToLast();
                         phistory = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
@@ -119,6 +120,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     Intent intent = new Intent(PastMedicalHistoryActivity.this, FamilyHistoryActivity.class);
                     intent.putExtra("patientUuid", patientUuid);
                     intent.putExtra("visitUuid", visitUuid);
+                    intent.putExtra("encounterUuidVitals", encounterVitals);
+                    intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
@@ -135,6 +138,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
+            encounterVitals = intent.getStringExtra("encounterUuidVitals");
+            encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
@@ -182,6 +187,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     Intent intent = new Intent(PastMedicalHistoryActivity.this, VisitSummaryActivity.class);
                     intent.putExtra("patientUuid", patientUuid);
                     intent.putExtra("visitUuid", visitUuid);
+                    intent.putExtra("encounterUuidVitals", encounterVitals);
+                    intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
@@ -206,6 +213,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     Intent intent = new Intent(PastMedicalHistoryActivity.this, FamilyHistoryActivity.class);
                     intent.putExtra("patientUuid", patientUuid);
                     intent.putExtra("visitUuid", visitUuid);
+                    intent.putExtra("encounterUuidVitals", encounterVitals);
+                    intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
@@ -297,12 +306,13 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
         //TODO: Get the right creator_ID
 
 
-        final int CONCEPT_ID = ConceptId.RHK_MEDICAL_HISTORY_BLURB; // RHK MEDICAL HISTORY BLURB
+        String CONCEPT_ID = UuidDictionary.RHK_MEDICAL_HISTORY_BLURB; // RHK MEDICAL HISTORY BLURB
         //Eventually will be stored in a separate table
 
         ContentValues complaintEntries = new ContentValues();
 
-
+        complaintEntries.put("uuid", UUID.randomUUID().toString());
+        complaintEntries.put("encounteruuid", encounterAdultIntials);
         complaintEntries.put("value", value);
         complaintEntries.put("conceptuuid", CONCEPT_ID);
         complaintEntries.put("creator", CREATOR_ID);
@@ -335,7 +345,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
         contentValues.put("value", string);
 
         String selection = "encounteruuid = ? AND conceptuuid = ?";
-        String[] args = {encounteruuid, String.valueOf(conceptID)};
+        String[] args = {encounterAdultIntials, String.valueOf(conceptID)};
 
         localdb.update(
                 "tbl_obs",

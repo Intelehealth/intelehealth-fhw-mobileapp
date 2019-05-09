@@ -77,6 +77,7 @@ public class PatientsFrameJson {
 
             patient.setIdentifiers(identifierList);
             patientList.add(patient);
+
         }
         pushRequestApiCall.setPatients(patientList);
         pushRequestApiCall.setPersons(personList);

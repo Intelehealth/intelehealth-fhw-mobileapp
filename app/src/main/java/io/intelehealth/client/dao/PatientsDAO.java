@@ -14,9 +14,9 @@ import io.intelehealth.client.dto.PatientAttributesDTO;
 import io.intelehealth.client.dto.PatientDTO;
 import io.intelehealth.client.exception.DAOException;
 import io.intelehealth.client.models.pushRequestApiCall.Attribute;
+import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
 import io.intelehealth.client.utilities.Logger;
-import io.intelehealth.client.objects.Patient;
 
 public class PatientsDAO {
 

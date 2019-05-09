@@ -2,20 +2,13 @@ package io.intelehealth.client.views.activites;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -126,115 +119,10 @@ public class PatientSurveyActivity extends AppCompatActivity {
     }
     private void uploadSurvey() {
 
-        comments = mComments.getText().toString();
-        if (rating != null) {
-            String[] DELAYED_JOBS_PROJECTION = new String[]{DelayedJobQueueProvider._ID, DelayedJobQueueProvider.SYNC_STATUS};
-            String SELECTION = DelayedJobQueueProvider.JOB_TYPE + "=? AND " +
-                    DelayedJobQueueProvider.PATIENT_ID + "=? AND " +
-                    DelayedJobQueueProvider.VISIT_ID + "=?";
-            String[] ARGS = new String[]{"survey", String.valueOf(patientID), visitID};
 
-            Cursor c = getContentResolver().query(DelayedJobQueueProvider.CONTENT_URI,
-                    DELAYED_JOBS_PROJECTION, SELECTION, ARGS, null);
-
-            if (c != null && c.moveToFirst() && c.getCount() > 0) {
-                int sync_status = c.getInt(c.getColumnIndexOrThrow(DelayedJobQueueProvider.SYNC_STATUS));
-                switch (sync_status) {
-                    case ClientService.STATUS_SYNC_STOPPED: {
-                        Intent serviceIntent = new Intent(PatientSurveyActivity.this, ClientService.class);
-                        serviceIntent.putExtra("serviceCall", "survey");
-                        serviceIntent.putExtra("patientID", patientID);
-                        serviceIntent.putExtra("visitID", visitID);
-                        serviceIntent.putExtra("name", patientName);
-                        serviceIntent.putExtra("rating", rating);
-                        if (comments != null && !comments.isEmpty()) {
-                            serviceIntent.putExtra("comments", comments);
-                        }
-                        startService(serviceIntent);
-                        break;
-                    }
-                    case ClientService.STATUS_SYNC_IN_PROGRESS: {
-                        Toast.makeText(context, getString(R.string.sync_in_progress), Toast.LENGTH_SHORT).show();
-                        break;
-                    }
-                    default:
-                }
-            } else {
-                Intent serviceIntent = new Intent(PatientSurveyActivity.this, ClientService.class);
-                serviceIntent.putExtra("serviceCall", "survey");
-                serviceIntent.putExtra("patientID", patientID);
-                serviceIntent.putExtra("visitID", visitID);
-                serviceIntent.putExtra("rating", rating);
-                if (comments != null && !comments.isEmpty()) {
-                    serviceIntent.putExtra("comments", comments);
-                }
-                serviceIntent.putExtra("name", patientName);
-                startService(serviceIntent);
-            }
-            c.close();
-        }
     }
     private void endVisit() {
-        if (visitUUID == null || visitUUID.isEmpty()) {
-            String[] columnsToReturn = {"openmrs_visit_uuid"};
-            String visitIDorderBy = "start_datetime";
-            String visitIDSelection = "_id = ?";
-            String[] visitIDArgs = {visitID};
-            final Cursor visitIDCursor = db.query("visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
-            if (visitIDCursor != null && visitIDCursor.moveToFirst() && visitIDCursor.getCount() > 0) {
-                visitIDCursor.moveToFirst();
-                visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("openmrs_visit_uuid"));
-            }
-            if (visitIDCursor != null) visitIDCursor.close();
-        }
 
-        Log.d(TAG, "endVisit: uuid ok");
-        String[] DELAYED_JOBS_PROJECTION = new String[]{DelayedJobQueueProvider._ID, DelayedJobQueueProvider.SYNC_STATUS};
-        String SELECTION = DelayedJobQueueProvider.JOB_TYPE + "=? AND " +
-                DelayedJobQueueProvider.PATIENT_ID + "=? AND " +
-                DelayedJobQueueProvider.VISIT_ID + "=?";
-        String[] ARGS = new String[]{"endVisit", String.valueOf(patientID), visitID};
-
-        Cursor c = getContentResolver().query(DelayedJobQueueProvider.CONTENT_URI,
-                DELAYED_JOBS_PROJECTION, SELECTION, ARGS, null);
-
-        if (c != null && c.moveToFirst() && c.getCount() > 0) {
-            int sync_status = c.getInt(c.getColumnIndexOrThrow(DelayedJobQueueProvider.SYNC_STATUS));
-            switch (sync_status) {
-                case ClientService.STATUS_SYNC_STOPPED: {
-                    Intent serviceIntent = new Intent(PatientSurveyActivity.this, ClientService.class);
-                    serviceIntent.putExtra("serviceCall", "endVisit");
-                    serviceIntent.putExtra("patientID", patientID);
-                    serviceIntent.putExtra("visitUUID", visitUUID);
-                    serviceIntent.putExtra("name", patientName);
-                    startService(serviceIntent);
-                    Intent intent = new Intent(PatientSurveyActivity.this, HomeActivity.class);
-                    startActivity(intent);
-                    //finish();
-                    break;
-                }
-                case ClientService.STATUS_SYNC_IN_PROGRESS: {
-                    Toast.makeText(context, getString(R.string.sync_in_progress), Toast.LENGTH_SHORT).show();
-                    break;
-                }
-                default:
-            }
-        } else {
-            Log.d(TAG, "endVisit: delayed job first");
-            Intent serviceIntent = new Intent(PatientSurveyActivity.this, ClientService.class);
-            serviceIntent.putExtra("serviceCall", "endVisit");
-            serviceIntent.putExtra("patientID", patientID);
-            serviceIntent.putExtra("visitUUID", visitUUID);
-            serviceIntent.putExtra("name", patientName);
-            startService(serviceIntent);
-            SharedPreferences.Editor editor = context.getSharedPreferences(patientID + "_" + visitID, MODE_PRIVATE).edit();
-            editor.remove("exam_" + patientID + "_" + visitID);
-            editor.commit();
-            Intent intent = new Intent(PatientSurveyActivity.this, HomeActivity.class);
-            startActivity(intent);
-            // finish();
-        }
-        c.close();
     }
 
 

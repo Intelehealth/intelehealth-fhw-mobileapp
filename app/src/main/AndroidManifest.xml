@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SEND_SMS"/>
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- <uses-permission android:name="android.permission.SEND_SMS" /> -->
@@ -37,7 +38,7 @@
         <activity
             android:name=".views.activites.AdditionalDocumentsActivity"
             android:label="@string/title_activity_additional_documents"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.activites.PatientSurveyActivity"
             android:label="@string/title_activity_patient_survey"
@@ -65,7 +66,13 @@
         <activity
             android:name=".views.activites.VisitSummaryActivity"
             android:label="@string/title_activity_visit_summary"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:parentActivityName=".views.activites.HomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".views.activites.HomeActivity" />
+        </activity>
         <activity
             android:name=".views.activites.VitalsActivity"
             android:label="@string/title_activity_vitals"
@@ -97,7 +104,18 @@
         <activity
             android:name=".views.activites.SearchPatientActivity"
             android:label="@string/title_activity_search_patient"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="io.intelehealth.client.views.activites.HomeActivity" />
+        </activity>
         <activity
             android:name=".views.activites.IdentificationActivity"
             android:label="@string/title_activity_identification"
@@ -119,7 +137,11 @@
         <activity
             android:name=".views.activites.HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" >
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".views.activites.HomeActivity" />
+        </activity>
         <activity
             android:name=".views.activites.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

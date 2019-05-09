@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -29,11 +28,11 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.node.Node;
-import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.FileUtils;
 import io.intelehealth.client.utilities.UuidDictionary;
 import io.intelehealth.client.views.adapters.CustomExpandableListAdapter;
@@ -50,7 +49,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
     File filePath;
     Boolean complaintConfirmed = false;
 
-//    Knowledge mKnowledge; //Knowledge engine
+    //    Knowledge mKnowledge; //Knowledge engine
     ExpandableListView questionListView;
     String mFileName = "knowledge.json"; //knowledge engine file
     //    String mFileName = "DemoBrain.json";
@@ -68,7 +67,8 @@ public class QuestionNodeActivity extends AppCompatActivity {
     int lastExpandedPosition = -1;
     String insertion = "";
     private SharedPreferences prefs;
-    private String encounterUuid;
+    private String encounterVitals;
+    private String encounterAdultIntials;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +77,8 @@ public class QuestionNodeActivity extends AppCompatActivity {
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
             state = intent.getStringExtra("state");
-            encounterUuid=intent.getStringExtra("encounterUuidVitals");
+            encounterVitals = intent.getStringExtra("encounterUuidVitals");
+            encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             complaints = intent.getStringArrayListExtra("complaints");
@@ -137,8 +138,8 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
                 imageName = patientUuid + "_" + visitUuid + "_" + image_Prefix;
                 String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-                filePath = new File(baseDir+ File.separator+"Patient Images"+File.separator+
-                        patientUuid+File.separator+visitUuid+File.separator+imageDir);
+                filePath = new File(baseDir + File.separator + "Patient Images" + File.separator +
+                        patientUuid + File.separator + visitUuid + File.separator + imageDir);
 
                 if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && !currentNode.getOption(groupPosition).anySubSelected()) {
                     Node question = currentNode.getOption(groupPosition).getOption(childPosition);
@@ -148,7 +149,6 @@ public class QuestionNodeActivity extends AppCompatActivity {
                     } else {
                         currentNode.getOption(groupPosition).setUnselected();
                     }
-
 
 
                     if (!question.getInputType().isEmpty() && question.isSelected()) {
@@ -164,7 +164,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
 
                     if (!question.isTerminal() && question.isSelected()) {
-                        Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter,filePath.toString(),imageName);
+                        Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter, filePath.toString(), imageName);
                         //If the node is not terminal, that means there are more questions to be asked for this branch.
                     }
                 } else if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && currentNode.getOption(groupPosition).anySubSelected()) {
@@ -201,7 +201,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
                     }
 
                     if (!question.isTerminal() && question.isSelected()) {
-                        Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter,filePath.toString(),imageName);
+                        Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter, filePath.toString(), imageName);
                         //If the node is not terminal, that means there are more questions to be asked for this branch.
                     }
                 }
@@ -226,6 +226,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
         });
 
     }
+
     /**
      * Summarizes the information of the current complaint node.
      * Then has that put into the database, and then checks to see if there are more complaint nodes.
@@ -266,13 +267,13 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
             String complaintString = currentNode.generateLanguage();
 
-            if(complaintString !=null && !complaintString.isEmpty()) {
+            if (complaintString != null && !complaintString.isEmpty()) {
                 //     String complaintFormatted = complaintString.replace("?,", "?:");
 
                 String complaint = currentNode.getText();
                 //    complaintDetails.put(complaint, complaintFormatted);
 
-                insertion = insertion.concat(Node.bullet_arrow+"<b>"+complaint +"</b>"+": "+Node.next_line + complaintString + " ");
+                insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
             }
             ArrayList<String> selectedAssociatedComplaintsList = currentNode.getSelectedAssociations();
             if (selectedAssociatedComplaintsList != null && !selectedAssociatedComplaintsList.isEmpty()) {
@@ -288,10 +289,12 @@ public class QuestionNodeActivity extends AppCompatActivity {
             }
 
             ArrayList<String> childNodeSelectedPhysicalExams = currentNode.getPhysicalExamList();
-            if(!childNodeSelectedPhysicalExams.isEmpty()) physicalExams.addAll(childNodeSelectedPhysicalExams); //For Selected child nodes
+            if (!childNodeSelectedPhysicalExams.isEmpty())
+                physicalExams.addAll(childNodeSelectedPhysicalExams); //For Selected child nodes
 
             ArrayList<String> rootNodePhysicalExams = parseExams(currentNode);
-            if(!rootNodePhysicalExams.isEmpty())physicalExams.addAll(rootNodePhysicalExams); //For Root Node
+            if (!rootNodePhysicalExams.isEmpty())
+                physicalExams.addAll(rootNodePhysicalExams); //For Root Node
 
             if (complaintNumber < complaints.size() - 1) {
                 complaintNumber++;
@@ -299,11 +302,13 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 complaintConfirmed = false;
             } else {
                 if (intentTag != null && intentTag.equals("edit")) {
-                    Log.i(TAG, "fabClick: update" +insertion);
+                    Log.i(TAG, "fabClick: update" + insertion);
                     updateDatabase(insertion);
                     Intent intent = new Intent(QuestionNodeActivity.this, PhysicalExamActivity.class);
                     intent.putExtra("patientUuid", patientUuid);
                     intent.putExtra("visitUuid", visitUuid);
+                    intent.putExtra("encounterUuidVitals", encounterVitals);
+                    intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
@@ -321,6 +326,8 @@ public class QuestionNodeActivity extends AppCompatActivity {
                     Intent intent = new Intent(QuestionNodeActivity.this, PastMedicalHistoryActivity.class);
                     intent.putExtra("patientUuid", patientUuid);
                     intent.putExtra("visitUuid", visitUuid);
+                    intent.putExtra("encounterUuidVitals", encounterVitals);
+                    intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
@@ -338,6 +345,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
         }
 
     }
+
     /**
      * Insert into DB could be made into a Helper Method, but isn't because there are specific concept IDs used each time.
      * Although this could also be made into a function, for now it has now been.
@@ -347,17 +355,18 @@ public class QuestionNodeActivity extends AppCompatActivity {
      */
     private long insertDb(String value) {
 
-        Log.i(TAG, "insertDb: "+ patientUuid+" "+visitUuid+" "+ UuidDictionary.CURRENT_COMPLAINT);
+        Log.i(TAG, "insertDb: " + patientUuid + " " + visitUuid + " " + UuidDictionary.CURRENT_COMPLAINT);
 
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-         String CREATOR_ID = prefs.getString("creatorid", null);
+        String CREATOR_ID = prefs.getString("creatorid", null);
 
-         String CONCEPT_ID = UuidDictionary.CURRENT_COMPLAINT; //OpenMRS complaint concept ID
+        String CONCEPT_ID = UuidDictionary.CURRENT_COMPLAINT; //OpenMRS complaint concept ID
 
         ContentValues complaintEntries = new ContentValues();
-
+        complaintEntries.put("uuid", UUID.randomUUID().toString());
+        complaintEntries.put("encounteruuid", encounterAdultIntials);
         complaintEntries.put("creator", CREATOR_ID);
         complaintEntries.put("value", value);
         complaintEntries.put("conceptuuid", CONCEPT_ID);
@@ -378,7 +387,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
     }
 
     private void updateDatabase(String string) {
-        Log.i(TAG, "updateDatabase: "+ patientUuid+" "+visitUuid+" "+ConceptId.CURRENT_COMPLAINT);
+        Log.i(TAG, "updateDatabase: " + patientUuid + " " + visitUuid + " " + UuidDictionary.CURRENT_COMPLAINT);
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
 
         String conceptID = UuidDictionary.CURRENT_COMPLAINT;
@@ -386,7 +395,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
         contentValues.put("value", string);
 
         String selection = "encounteruuid = ?  AND conceptuuid = ?";
-        String[] args = {encounterUuid, String.valueOf(conceptID)};
+        String[] args = {encounterVitals, String.valueOf(conceptID)};
 
         int i = localdb.update(
                 "tbl_obs",
@@ -395,7 +404,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 args
         );
 
-        if(i==0){
+        if (i == 0) {
             insertDb(string);
         }
 
@@ -444,7 +453,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
     private ArrayList<String> parseExams(Node node) {
         ArrayList<String> examList = new ArrayList<>();
         String rawExams = node.getPhysicalExams();
-        if(rawExams!=null) {
+        if (rawExams != null) {
             String[] splitExams = rawExams.split(";");
             examList.addAll(Arrays.asList(splitExams));
             return examList;
@@ -459,7 +468,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
                 currentNode.setImagePath(mCurrentPhotoPath);
-                currentNode.displayImage(this,filePath.getAbsolutePath(),imageName);
+                currentNode.displayImage(this, filePath.getAbsolutePath(), imageName);
             }
         }
     }

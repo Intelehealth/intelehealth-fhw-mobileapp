@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -31,6 +30,9 @@ import java.util.List;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
+import io.intelehealth.client.dao.EncounterDAO;
+import io.intelehealth.client.dto.EncounterDTO;
+import io.intelehealth.client.exception.DAOException;
 import io.intelehealth.client.node.Node;
 import io.intelehealth.client.utilities.FileUtils;
 import io.intelehealth.client.views.adapters.CustomArrayAdapter;
@@ -54,6 +56,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     CustomArrayAdapter listAdapter;
     String encounterVitals;
     String encounterAdultIntials;
+    EncounterDTO encounterDTO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +74,18 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 //            Log.v(TAG, "Visit ID: " + visitID);
 //            Log.v(TAG, "Patient Name: " + patientName);
 //            Log.v(TAG, "Intent Tag: " + intentTag);
+        }
+        encounterAdultIntials=AppConstants.NEW_UUID;
+        EncounterDAO encounterDAO = new EncounterDAO();
+        encounterDTO = new EncounterDTO();
+        encounterDTO.setUuid(encounterAdultIntials);
+        encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL"));
+        encounterDTO.setVisituuid(visitUuid);
+
+        try {
+            encounterDAO.createEncountersToDB(encounterDTO);
+        } catch (DAOException e) {
+            e.printStackTrace();
         }
 
         setTitle(patientName + ": " + getTitle());

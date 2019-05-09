@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -26,19 +25,22 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import io.intelehealth.client.R;
+import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.node.Node;
 import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.FileUtils;
 import io.intelehealth.client.utilities.SessionManager;
+import io.intelehealth.client.utilities.UuidDictionary;
 import io.intelehealth.client.views.adapters.CustomExpandableListAdapter;
 
 public class FamilyHistoryActivity extends AppCompatActivity {
     private static final String TAG = FamilyHistoryActivity.class.getSimpleName();
 
-    Integer patientID;
-    String visitID;
+    String patientUuid;
+    String visitUuid;
     String state;
     String patientName;
     String intentTag;
@@ -64,12 +66,13 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     SharedPreferences.Editor e;
     SQLiteDatabase localdb;
     SessionManager sessionManager;
-
+    String encounterVitals;
+    String encounterAdultIntials;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(this);
-
+        localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         boolean past = sessionManager.isReturning();
         if (past) {
             AlertDialog.Builder alertdialog = new AlertDialog.Builder(FamilyHistoryActivity.this);
@@ -88,13 +91,12 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                     // skip
                     flag = false;
 
-                    String[] columns = {"value", " concept_id"};
-                    String orderBy = "visit_id";
+                    String[] columns = {"value", " conceptuuid"};
 
                     try {
-                        String famHistSelection = "patient_id = ? AND concept_id = ?";
-                        String[] famHistArgs = {String.valueOf(patientID), String.valueOf(ConceptId.RHK_FAMILY_HISTORY_BLURB)};
-                        Cursor famHistCursor = localdb.query("obs", columns, famHistSelection, famHistArgs, null, null, orderBy);
+                        String famHistSelection = "encounteruuid = ? AND conceptuuid = ?";
+                        String[] famHistArgs = {encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB};
+                        Cursor famHistCursor = localdb.query("tbl_obs", columns, famHistSelection, famHistArgs, null, null, null);
                         famHistCursor.moveToLast();
                         fhistory = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
                         famHistCursor.close();
@@ -109,8 +111,10 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                     // pmh.insertDb(phistory);
 
                     Intent intent = new Intent(FamilyHistoryActivity.this, PhysicalExamActivity.class);
-                    intent.putExtra("patientID", patientID);
-                    intent.putExtra("visitID", visitID);
+                    intent.putExtra("patientUuid", patientUuid);
+                    intent.putExtra("visitUuid", visitUuid);
+                    intent.putExtra("encounterUuidVitals", encounterVitals);
+                    intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
@@ -124,9 +128,11 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         }
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
-            patientID = intent.getIntExtra("patientID", -1);
-            visitID = intent.getStringExtra("visitID");
+            patientUuid = intent.getStringExtra("patientUuid");
+            visitUuid = intent.getStringExtra("visitUuid");
             state = intent.getStringExtra("state");
+            encounterVitals = intent.getStringExtra("encounterUuidVitals");
+            encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             //       physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
@@ -194,10 +200,10 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                     }
                 }
 
-                String imageName = patientID + "_" + visitID + "_" + image_Prefix;
+                String imageName = patientUuid + "_" + visitUuid + "_" + image_Prefix;
                 String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
                 File filePath = new File(baseDir + File.separator + "Patient Images" + File.separator +
-                        patientID + File.separator + visitID + File.separator + imageDir);
+                        patientUuid + File.separator + visitUuid + File.separator + imageDir);
 
                 if (!familyHistoryMap.getOption(groupPosition).getOption(childPosition).isTerminal() &&
                         familyHistoryMap.getOption(groupPosition).getOption(childPosition).isSelected()) {
@@ -247,8 +253,10 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         if (intentTag != null && intentTag.equals("edit")) {
             updateDatabase(insertion);
             Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
-            intent.putExtra("patientID", patientID);
-            intent.putExtra("visitID", visitID);
+            intent.putExtra("patientUuid", patientUuid);
+            intent.putExtra("visitUuid", visitUuid);
+            intent.putExtra("encounterUuidVitals", encounterVitals);
+            intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
             intent.putExtra("tag", intentTag);
@@ -275,11 +283,12 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             }
 
             flag = false;
-            e.putBoolean("returning", false); // done with old patient, so unset flag and returning
-            e.commit();
+            sessionManager.setReturning(false);
             Intent intent = new Intent(FamilyHistoryActivity.this, PhysicalExamActivity.class); // earlier it was vitals
-            intent.putExtra("patientID", patientID);
-            intent.putExtra("visitID", visitID);
+            intent.putExtra("patientUuid", patientUuid);
+            intent.putExtra("visitUuid", visitUuid);
+            intent.putExtra("encounterUuidVitals", encounterVitals);
+            intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
             intent.putExtra("tag", intentTag);
@@ -297,25 +306,27 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 
         final String CREATOR_ID = prefs.getString("creatorid", null);// TODO: Connect the proper CREATOR_ID
 
-        final int CONCEPT_ID = ConceptId.RHK_FAMILY_HISTORY_BLURB; // RHK FAMILY HISTORY BLURB
+        final String CONCEPT_ID = UuidDictionary.RHK_FAMILY_HISTORY_BLURB; // RHK FAMILY HISTORY BLURB
 
         ContentValues complaintEntries = new ContentValues();
 
-        complaintEntries.put("patient_id", patientID);
-        complaintEntries.put("visit_id", visitID);
+//        complaintEntries.put("patient_id", patientID);
+//        complaintEntries.put("visit_id", visitID);
+        complaintEntries.put("uuid", UUID.randomUUID().toString());
+        complaintEntries.put("encounteruuid", encounterAdultIntials);
         complaintEntries.put("value", value);
-        complaintEntries.put("concept_id", CONCEPT_ID);
+        complaintEntries.put("conceptuuid", CONCEPT_ID);
         complaintEntries.put("creator", CREATOR_ID);
 
 
-        return localdb.insert("obs", null, complaintEntries);
+        return localdb.insert("tbl_obs", null, complaintEntries);
     }
 
     private void updateImageDatabase(String imagePath) {
 
         localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path,image_type,delete_status) values("
-                + "'" + patientID + "'" + ","
-                + visitID + ","
+                + "'" + patientUuid + "'" + ","
+                + visitUuid + ","
                 + "'" + imagePath + "','" + image_Prefix + "'," +
                 0 +
                 ")");
@@ -323,15 +334,15 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 
     private void updateDatabase(String string) {
 
-        int conceptID = ConceptId.RHK_FAMILY_HISTORY_BLURB;
+        String conceptID = UuidDictionary.RHK_FAMILY_HISTORY_BLURB;
         ContentValues contentValues = new ContentValues();
         contentValues.put("value", string);
 
-        String selection = "patient_id = ? AND visit_id = ? AND concept_id = ?";
-        String[] args = {String.valueOf(patientID), visitID, String.valueOf(conceptID)};
+        String selection = "encounteruuid AND conceptuuid = ?";
+        String[] args = {encounterAdultIntials, String.valueOf(conceptID)};
 
         localdb.update(
-                "obs",
+                "tbl_obs",
                 contentValues,
                 selection,
                 args

@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -23,14 +22,11 @@ import java.util.List;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
-import io.intelehealth.client.app.IntelehealthApplication;
 import io.intelehealth.client.dao.ObsDAO;
 import io.intelehealth.client.databinding.ActivityVitalsBinding;
 import io.intelehealth.client.dto.ObsDTO;
 import io.intelehealth.client.objects.VitalsObject;
-import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.ConfigUtils;
-import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UuidDictionary;
 
@@ -43,13 +39,16 @@ public class VitalsActivity extends AppCompatActivity {
     private String state;
     private String patientUuid;
     private String visitUuid;
-    private String encounterUuid;
+    private String encounterVitals;
+
     int flag_height = 0, flag_weight = 0;
     String heightvalue;
     String weightvalue;
     ConfigUtils configUtils=new ConfigUtils(VitalsActivity.this);
 
     VitalsObject results=new VitalsObject();
+    private String encounterAdultIntials="";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +64,8 @@ public class VitalsActivity extends AppCompatActivity {
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
-            encounterUuid=intent.getStringExtra("encounterUuidVitals");
+            encounterVitals=intent.getStringExtra("encounterUuidVitals");
+            encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
@@ -339,7 +339,7 @@ public class VitalsActivity extends AppCompatActivity {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         String[] columns = {"value", " conceptuuid"};
         String visitSelection = "encounteruuid = ? ";
-        String[] visitArgs = {encounterUuid};
+        String[] visitArgs = {encounterVitals};
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
         if (visitCursor.moveToFirst()) {
             do {
@@ -595,7 +595,7 @@ public class VitalsActivity extends AppCompatActivity {
         if (intentTag != null && intentTag.equals("edit")) {
             obsDTO=new ObsDTO();
             obsDTO.setConceptuuid(String.valueOf(UuidDictionary.HEIGHT));
-            obsDTO.setEncounteruuid(encounterUuid);
+            obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getHeight());
             obsDTO.setUuid(AppConstants.NEW_UUID);
@@ -604,7 +604,7 @@ public class VitalsActivity extends AppCompatActivity {
 
             obsDTO=new ObsDTO();
             obsDTO.setConceptuuid(String.valueOf(UuidDictionary.WEIGHT));
-            obsDTO.setEncounteruuid(encounterUuid);
+            obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getWeight());
             obsDTO.setUuid(AppConstants.NEW_UUID);
@@ -613,7 +613,7 @@ public class VitalsActivity extends AppCompatActivity {
 
             obsDTO=new ObsDTO();
             obsDTO.setConceptuuid(String.valueOf(UuidDictionary.PULSE));
-            obsDTO.setEncounteruuid(encounterUuid);
+            obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getPulse());
             obsDTO.setUuid(AppConstants.NEW_UUID);
@@ -622,7 +622,7 @@ public class VitalsActivity extends AppCompatActivity {
 
             obsDTO=new ObsDTO();
             obsDTO.setConceptuuid(String.valueOf(UuidDictionary.SYSTOLIC_BP));
-            obsDTO.setEncounteruuid(encounterUuid);
+            obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getBpsys());
             obsDTO.setUuid(AppConstants.NEW_UUID);
@@ -631,7 +631,7 @@ public class VitalsActivity extends AppCompatActivity {
 
             obsDTO=new ObsDTO();
             obsDTO.setConceptuuid(String.valueOf(UuidDictionary.DIASTOLIC_BP));
-            obsDTO.setEncounteruuid(encounterUuid);
+            obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getBpdia());
             obsDTO.setUuid(AppConstants.NEW_UUID);
@@ -640,7 +640,7 @@ public class VitalsActivity extends AppCompatActivity {
 
             obsDTO=new ObsDTO();
             obsDTO.setConceptuuid(String.valueOf(UuidDictionary.TEMPERATURE));
-            obsDTO.setEncounteruuid(encounterUuid);
+            obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getTemperature());
             obsDTO.setUuid(AppConstants.NEW_UUID);
@@ -649,7 +649,7 @@ public class VitalsActivity extends AppCompatActivity {
 
             obsDTO=new ObsDTO();
             obsDTO.setConceptuuid(String.valueOf(UuidDictionary.RESPIRATORY));
-            obsDTO.setEncounteruuid(encounterUuid);
+            obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getTemperature());
             obsDTO.setUuid(AppConstants.NEW_UUID);
@@ -658,7 +658,7 @@ public class VitalsActivity extends AppCompatActivity {
 
             obsDTO=new ObsDTO();
             obsDTO.setConceptuuid(String.valueOf(UuidDictionary.SPO2));
-            obsDTO.setEncounteruuid(encounterUuid);
+            obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getSpo2());
             obsDTO.setUuid(AppConstants.NEW_UUID);
@@ -668,7 +668,8 @@ public class VitalsActivity extends AppCompatActivity {
             Intent intent = new Intent(VitalsActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientUuid", patientUuid);
             intent.putExtra("visitUuid", visitUuid);
-            intent.putExtra("encounterUuidVitals",encounterUuid);
+            intent.putExtra("encounterUuidVitals", encounterVitals);
+            intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
             intent.putExtra("tag", intentTag);
@@ -677,7 +678,7 @@ public class VitalsActivity extends AppCompatActivity {
             List<ObsDTO> obsDTOS=new ArrayList<>();
             obsDTO=new ObsDTO();
             obsDTO.setConceptuuid(String.valueOf(UuidDictionary.HEIGHT));
-            obsDTO.setEncounteruuid(encounterUuid);
+            obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getHeight());
             obsDTO.setUuid(AppConstants.NEW_UUID);
@@ -686,7 +687,7 @@ public class VitalsActivity extends AppCompatActivity {
 
             obsDTO=new ObsDTO();
             obsDTO.setConceptuuid(String.valueOf(UuidDictionary.WEIGHT));
-            obsDTO.setEncounteruuid(encounterUuid);
+            obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getWeight());
 
@@ -694,7 +695,7 @@ public class VitalsActivity extends AppCompatActivity {
 
             obsDTO=new ObsDTO();
             obsDTO.setConceptuuid(String.valueOf(UuidDictionary.PULSE));
-            obsDTO.setEncounteruuid(encounterUuid);
+            obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getPulse());
 
@@ -702,7 +703,7 @@ public class VitalsActivity extends AppCompatActivity {
 
             obsDTO=new ObsDTO();
             obsDTO.setConceptuuid(String.valueOf(UuidDictionary.SYSTOLIC_BP));
-            obsDTO.setEncounteruuid(encounterUuid);
+            obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getBpsys());
 
@@ -710,7 +711,7 @@ public class VitalsActivity extends AppCompatActivity {
 
             obsDTO=new ObsDTO();
             obsDTO.setConceptuuid(String.valueOf(UuidDictionary.DIASTOLIC_BP));
-            obsDTO.setEncounteruuid(encounterUuid);
+            obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getBpdia());
 
@@ -718,7 +719,7 @@ public class VitalsActivity extends AppCompatActivity {
 
             obsDTO=new ObsDTO();
             obsDTO.setConceptuuid(String.valueOf(UuidDictionary.TEMPERATURE));
-            obsDTO.setEncounteruuid(encounterUuid);
+            obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getTemperature());
 
@@ -726,7 +727,7 @@ public class VitalsActivity extends AppCompatActivity {
 
             obsDTO=new ObsDTO();
             obsDTO.setConceptuuid(String.valueOf(UuidDictionary.RESPIRATORY));
-            obsDTO.setEncounteruuid(encounterUuid);
+            obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getResp());
 
@@ -734,7 +735,7 @@ public class VitalsActivity extends AppCompatActivity {
 
             obsDTO=new ObsDTO();
             obsDTO.setConceptuuid(String.valueOf(UuidDictionary.SPO2));
-            obsDTO.setEncounteruuid(encounterUuid);
+            obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getSpo2());
 
@@ -743,7 +744,8 @@ public class VitalsActivity extends AppCompatActivity {
 
             intent.putExtra("patientUuid", patientUuid);
             intent.putExtra("visitUuid", visitUuid);
-            intent.putExtra("encounterUuidVitals",encounterUuid);
+            intent.putExtra("encounterUuidVitals", encounterVitals);
+            intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
             intent.putExtra("tag", intentTag);

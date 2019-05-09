@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -40,6 +39,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
@@ -47,6 +47,7 @@ import io.intelehealth.client.node.Node;
 import io.intelehealth.client.node.PhysicalExam;
 import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.FileUtils;
+import io.intelehealth.client.utilities.UuidDictionary;
 import io.intelehealth.client.views.adapters.CustomExpandableListAdapter;
 
 public class PhysicalExamActivity extends AppCompatActivity {
@@ -81,7 +82,8 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
     String physicalString;
     Boolean complaintConfirmed = false;
-
+    String encounterVitals;
+    String encounterAdultIntials;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
@@ -109,6 +111,8 @@ public class PhysicalExamActivity extends AppCompatActivity {
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
+            encounterVitals = intent.getStringExtra("encounterUuidVitals");
+            encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
@@ -218,6 +222,8 @@ public class PhysicalExamActivity extends AppCompatActivity {
                         Intent intent = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
                         intent.putExtra("patientUuid", patientUuid);
                         intent.putExtra("visitUuid", visitUuid);
+                        intent.putExtra("encounterUuidVitals", encounterVitals);
+                        intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
                         intent.putExtra("state", state);
                         intent.putExtra("name", patientName);
                         intent.putExtra("tag", intentTag);
@@ -231,6 +237,8 @@ public class PhysicalExamActivity extends AppCompatActivity {
                         Intent intent1 = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class); // earlier visitsummary
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
+                        intent1.putExtra("encounterUuidVitals", encounterVitals);
+                        intent1.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
                         intent1.putExtra("state", state);
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("tag", intentTag);
@@ -277,12 +285,12 @@ public class PhysicalExamActivity extends AppCompatActivity {
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int sectionNumber, PhysicalExam exams, String patientUuid, String visitID) {
+        public static PlaceholderFragment newInstance(int sectionNumber, PhysicalExam exams, String patientUuid, String visitUuid) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            args.putString("PATIENT_ID", patientUuid);
-            args.putString("VISIT_ID", visitID);
+            args.putString("patientUuid", patientUuid);
+            args.putString("visitUuid", visitUuid);
             exam_list = exams;
             fragment.setArguments(args);
             return fragment;
@@ -300,8 +308,8 @@ public class PhysicalExamActivity extends AppCompatActivity {
             //VideoView videoView = (VideoView) rootView.findViewById(R.id.physical_exam_video_view);
 
             int viewNumber = getArguments().getInt(ARG_SECTION_NUMBER);
-            final Integer patientID = getArguments().getInt("PATIENT_ID");
-            final String visitID = getArguments().getString("VISIT_ID");
+            final String patientUuid1 = getArguments().getString("patientUuid");
+            final String visitUuid1 = getArguments().getString("visitUuid");
             final Node viewNode = exam_list.getExamNode(viewNumber - 1);
             final String parent_name = exam_list.getExamParentNodeName(viewNumber - 1);
             String nodeText = parent_name + " : " + viewNode.findDisplay();
@@ -434,17 +442,19 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
         final String CREATOR_ID = prefs.getString("creatorid", null);
 
-        final int CONCEPT_ID = ConceptId.PHYSICAL_EXAMINATION; // RHK ON EXAM
+        final String CONCEPT_ID = UuidDictionary.PHYSICAL_EXAMINATION; // RHK ON EXAM
 
         ContentValues complaintEntries = new ContentValues();
 
-        complaintEntries.put("patient_id", patientUuid);
-        complaintEntries.put("visit_id", visitUuid);
+//        complaintEntries.put("patient_id", patientUuid);
+//        complaintEntries.put("visit_id", visitUuid);
+        complaintEntries.put("uuid", UUID.randomUUID().toString());
+        complaintEntries.put("encounteruuid",encounterAdultIntials);
         complaintEntries.put("creator", CREATOR_ID);
         complaintEntries.put("value", value);
-        complaintEntries.put("concept_id", CONCEPT_ID);
+        complaintEntries.put("conceptuuid", CONCEPT_ID);
 
-        return localdb.insert("obs", null, complaintEntries);
+        return localdb.insert("tbl_obs", null, complaintEntries);
     }
 
     public void questionsMissing() {
@@ -462,15 +472,15 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
     private void updateDatabase(String string) {
 
-        int conceptID = ConceptId.PHYSICAL_EXAMINATION;
+        String conceptID = UuidDictionary.PHYSICAL_EXAMINATION;
         ContentValues contentValues = new ContentValues();
         contentValues.put("value", string);
 
-        String selection = "patient_id = ? AND visit_id = ? AND concept_id = ?";
-        String[] args = {String.valueOf(patientUuid), visitUuid, String.valueOf(conceptID)};
+        String selection = "encounteruuid = ? AND conceptuuid = ?";
+        String[] args = {encounterAdultIntials, String.valueOf(conceptID)};
 
         int i = localdb.update(
-                "obs",
+                "tbl_obs",
                 contentValues,
                 selection,
                 args

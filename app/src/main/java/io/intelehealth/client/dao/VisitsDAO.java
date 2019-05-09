@@ -1,14 +1,17 @@
 package io.intelehealth.client.dao;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.dto.VisitDTO;
 import io.intelehealth.client.exception.DAOException;
+import io.intelehealth.client.utilities.DateAndTimeUtils;
 
 public class VisitsDAO {
 
@@ -62,7 +65,7 @@ public class VisitsDAO {
             values.put("locationuuid", visit.getLocationuuid());
             values.put("visit_type_uuid", visit.getVisitTypeUuid());
             values.put("creator", visit.getCreator());
-            values.put("startdate", visit.getStartdate());
+            values.put("startdate", DateAndTimeUtils.formatDateFromOnetoAnother(visit.getStartdate(),"MMM dd, yyyy hh:mm:ss a", "dd-mm-yyyy"));
             values.put("enddate", visit.getEnddate());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("synced", visit.getSyncd());
@@ -111,6 +114,29 @@ public class VisitsDAO {
             db.endTransaction();
         }
         return isUpdated;
+    }
+
+    public List<VisitDTO> unsyncedVisits() {
+        List<VisitDTO> visitDTOList = new ArrayList<>();
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit where synced = ?", new String[]{"0"});
+        VisitDTO visitDTO = new VisitDTO();
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                visitDTO = new VisitDTO();
+                visitDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                visitDTO.setPatientuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_id")));
+                visitDTO.setLocationuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")));
+                visitDTO.setStartdate(idCursor.getString(idCursor.getColumnIndexOrThrow("last_name")));
+                visitDTO.setEnddate(idCursor.getString(idCursor.getColumnIndexOrThrow("middle_name")));
+                visitDTO.setCreator(idCursor.getInt(idCursor.getColumnIndexOrThrow("gender")));
+                visitDTO.setVisitTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
+//                visitDTO.setSyncd(idCursor.get(idCursor.getColumnIndexOrThrow("phone_number")));
+                visitDTOList.add(visitDTO);
+            }
+        }
+
+        return visitDTOList;
     }
 
 }

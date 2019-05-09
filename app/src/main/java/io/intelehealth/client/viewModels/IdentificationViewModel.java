@@ -21,12 +21,12 @@ import io.intelehealth.client.dao.PullDataDAO;
 import io.intelehealth.client.dto.PatientAttributesDTO;
 import io.intelehealth.client.dto.PatientDTO;
 import io.intelehealth.client.exception.DAOException;
+import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.NetworkConnection;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.StringUtils;
-import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.views.activites.PatientDetailActivity;
 
 public class IdentificationViewModel extends AndroidViewModel {

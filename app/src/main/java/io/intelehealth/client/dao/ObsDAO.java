@@ -15,7 +15,6 @@ import io.intelehealth.client.dto.ObsDTO;
 import io.intelehealth.client.exception.DAOException;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
-import io.intelehealth.client.utilities.UuidGenerator;
 
 public class ObsDAO {
 

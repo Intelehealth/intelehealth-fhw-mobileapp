@@ -45,7 +45,6 @@ import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.NetworkConnection;
 import io.intelehealth.client.utilities.OfflineLogin;
 import io.intelehealth.client.utilities.SessionManager;
-import io.intelehealth.client.viewModels.IdentificationViewModel;
 import io.intelehealth.client.views.adapters.HomeAdapter;
 
 import static io.intelehealth.client.app.AppConstants.dbfilepath;
@@ -126,8 +125,8 @@ public class HomeActivity extends AppCompatActivity {
 //            }
         }
 //        if (sessionManager.isFirstTimeSyncExcuted()) {
-//        PullDataDAO pullDataDAO = new PullDataDAO();
-//        pullDataDAO.pullData(this);
+        PullDataDAO pullDataDAO = new PullDataDAO();
+        pullDataDAO.pullData(this);
 //        pullDataDAO.pushDataApi();
 //            sessionManager.setFirstTimeSyncExecute(false);
 //        }

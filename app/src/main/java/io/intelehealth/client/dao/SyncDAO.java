@@ -1,22 +1,9 @@
 package io.intelehealth.client.dao;
 
-import android.content.ContentValues;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.util.List;
-
-import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.app.IntelehealthApplication;
-import io.intelehealth.client.dto.EncounterDTO;
-import io.intelehealth.client.dto.LocationDTO;
-import io.intelehealth.client.dto.ObsDTO;
-import io.intelehealth.client.dto.PatientAttributeTypeMasterDTO;
-import io.intelehealth.client.dto.PatientAttributesDTO;
-import io.intelehealth.client.dto.PatientDTO;
-import io.intelehealth.client.dto.ProviderDTO;
 import io.intelehealth.client.dto.ResponseDTO;
-import io.intelehealth.client.dto.VisitDTO;
 import io.intelehealth.client.exception.DAOException;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
@@ -48,6 +35,7 @@ public class SyncDAO {
             providerDAO.insertProviders(responseDTO.getData().getProviderlist());
 
             insertAfterPull();
+
             Logger.logD(TAG, "Pull sync ended");
             sessionManager.setFirstTimeSyncExecute(false);
         } catch (Exception e) {
