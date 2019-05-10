@@ -52,12 +52,12 @@ public class TodayPatientActivity extends AppCompatActivity {
     private void doQuery() {
         List<TodayPatientModel> todayPatientList = new ArrayList<>();
         Date cDate = new Date();
-        String currentDate = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a").format(cDate);
+        String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
         String query =
                 "SELECT tbl_visit.uuid, tbl_visit.patientuuid, tbl_visit.startdate, tbl_visit.enddate," +
                         "tbl_visit.uuid, tbl_patient.first_name, tbl_patient.middle_name, tbl_patient.last_name, " +
                         "tbl_patient.date_of_birth,tbl_patient.openmrs_id,tbl_patient.phone_number FROM tbl_visit, tbl_patient WHERE tbl_visit.patientuuid = tbl_patient.uuid " +
-                        "AND tbl_visit.startdate LIKE '" + currentDate + "%'" +
+                        "AND tbl_visit.startdate LIKE '" + currentDate + "T%'" +
                         "ORDER BY tbl_patient.first_name ASC";
         //  "SELECT * FROM visit, patient WHERE visit.patient_id = patient._id AND visit.start_datetime LIKE '" + currentDate + "T%'";
         Logger.logD(TAG, query);

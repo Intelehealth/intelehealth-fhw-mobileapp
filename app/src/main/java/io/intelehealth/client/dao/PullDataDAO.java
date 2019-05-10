@@ -98,6 +98,8 @@ public class PullDataDAO {
     public boolean pushDataApi() {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         PatientsDAO patientsDAO = new PatientsDAO();
+        VisitsDAO visitsDAO = new VisitsDAO();
+        EncounterDAO encounterDAO=new EncounterDAO();
         PushRequestApiCall pushRequestApiCall;
         PatientsFrameJson patientsFrameJson = new PatientsFrameJson();
         pushRequestApiCall = patientsFrameJson.frameJson();
@@ -116,6 +118,22 @@ public class PullDataDAO {
                         for (int i = 0; i < pushResponseApiCall.getData().getPatientlist().size(); i++) {
                             try {
                                 patientsDAO.updateOpemmrsId(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId(), pushResponseApiCall.getData().getPatientlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
+                            } catch (DAOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        for (int i = 0; i < pushResponseApiCall.getData().getVisitlist().size(); i++) {
+                            try {
+                                visitsDAO.updateVisitSync(pushResponseApiCall.getData().getVisitlist().get(i).getUuid(), pushResponseApiCall.getData().getVisitlist().get(i).getSyncd().toString());
+                            } catch (DAOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        for(int i=0;i<pushResponseApiCall.getData().getEncounterlist().size();i++){
+                            try {
+                                encounterDAO.updateEncounterSync(pushResponseApiCall.getData().getEncounterlist().get(i).getSyncd().toString(),pushResponseApiCall.getData().getEncounterlist().get(i).getUuid());
                             } catch (DAOException e) {
                                 e.printStackTrace();
                             }

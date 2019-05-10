@@ -12,6 +12,7 @@ import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.dto.VisitDTO;
 import io.intelehealth.client.exception.DAOException;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
+import io.intelehealth.client.utilities.Logger;
 
 public class VisitsDAO {
 
@@ -65,7 +66,7 @@ public class VisitsDAO {
             values.put("locationuuid", visit.getLocationuuid());
             values.put("visit_type_uuid", visit.getVisitTypeUuid());
             values.put("creator", visit.getCreator());
-            values.put("startdate", DateAndTimeUtils.formatDateFromOnetoAnother(visit.getStartdate(),"MMM dd, yyyy hh:mm:ss a", "dd-mm-yyyy"));
+            values.put("startdate", DateAndTimeUtils.formatDateFromOnetoAnother(visit.getStartdate(),"MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
             values.put("enddate", visit.getEnddate());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("synced", visit.getSyncd());
@@ -125,18 +126,45 @@ public class VisitsDAO {
             while (idCursor.moveToNext()) {
                 visitDTO = new VisitDTO();
                 visitDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
-                visitDTO.setPatientuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_id")));
-                visitDTO.setLocationuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")));
-                visitDTO.setStartdate(idCursor.getString(idCursor.getColumnIndexOrThrow("last_name")));
-                visitDTO.setEnddate(idCursor.getString(idCursor.getColumnIndexOrThrow("middle_name")));
-                visitDTO.setCreator(idCursor.getInt(idCursor.getColumnIndexOrThrow("gender")));
-                visitDTO.setVisitTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
-//                visitDTO.setSyncd(idCursor.get(idCursor.getColumnIndexOrThrow("phone_number")));
+                visitDTO.setPatientuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("patientuuid")));
+                visitDTO.setLocationuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("locationuuid")));
+                visitDTO.setStartdate(idCursor.getString(idCursor.getColumnIndexOrThrow("startdate")));
+                visitDTO.setEnddate(idCursor.getString(idCursor.getColumnIndexOrThrow("enddate")));
+                visitDTO.setCreator(idCursor.getInt(idCursor.getColumnIndexOrThrow("creator")));
+                visitDTO.setVisitTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_type_uuid")));
                 visitDTOList.add(visitDTO);
             }
         }
+        idCursor.close();
+        db.close();
 
         return visitDTOList;
+    }
+
+    public boolean updateVisitSync( String synced, String uuid) throws DAOException {
+        boolean isUpdated = true;
+        Logger.logD("visitdao", "updatesynv visit " + uuid +  synced);
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+        String whereclause = "uuid=?";
+        String[] whereargs = {uuid};
+        try {
+            values.put("synced", synced);
+            values.put("uuid", uuid);
+            int i = db.update("tbl_visit", values, whereclause, whereargs);
+            Logger.logD("visit", "updated" + i);
+            db.setTransactionSuccessful();
+        } catch (SQLException sql) {
+            Logger.logD("visit", "updated" + sql.getMessage());
+            throw new DAOException(sql.getMessage());
+        } finally {
+            db.endTransaction();
+            db.close();
+
+        }
+
+        return isUpdated;
     }
 
 }

@@ -60,7 +60,7 @@ public class PatientsDAO {
             values.put("last_name", patient.getLastname());
             values.put("address1", patient.getAddress1());
             values.put("country", patient.getCountry());
-            values.put("date_of_birth", DateAndTimeUtils.formatDateFromOnetoAnother(patient.getDateofbirth(), "MMM dd, yyyy hh:mm:ss a", "dd-mm-yyyy"));
+            values.put("date_of_birth", DateAndTimeUtils.formatDateFromOnetoAnother(patient.getDateofbirth(), "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd"));
             values.put("gender", patient.getGender());
             values.put("postal_code", patient.getPostalcode());
             values.put("state_province", patient.getStateprovince());
@@ -103,7 +103,7 @@ public class PatientsDAO {
             values.put("state_province", patientDTO.getStateprovince());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("dead", patientDTO.getDead());
-            values.put("synced", "0");
+            values.put("synced", false);
             patientAttributesList = patientDTO.getPatientAttributesDTOList();
             insertPatientAttributes(patientAttributesList);
             Logger.logD("pulldata", "datadumper" + values);
@@ -146,8 +146,8 @@ public class PatientsDAO {
             values.put("city_village", patientDTO.getCity_village());
             values.put("state_province", patientDTO.getState_province());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-            values.put("dead", "0");
-            values.put("synced", "0");
+            values.put("dead", false);
+            values.put("synced", false);
 
             insertPatientAttributes(patientAttributesDTOS);
             Logger.logD("pulldata", "datadumper" + values);
@@ -251,7 +251,7 @@ public class PatientsDAO {
                 values.put("patientuuid", patientAttributesDTOS.get(i).getPatientuuid());
                 values.put("value", patientAttributesDTOS.get(i).getValue());
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-                values.put("sync", "False");
+                values.put("sync", false);
 //                Logger.logD("pulldata", "datadumper" + values);
                 db.insertWithOnConflict("tbl_patient_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             }
@@ -356,6 +356,8 @@ public class PatientsDAO {
                 patientDTOList.add(patientDTO);
             }
         }
+        idCursor.close();
+        db.close();
 
         return patientDTOList;
     }

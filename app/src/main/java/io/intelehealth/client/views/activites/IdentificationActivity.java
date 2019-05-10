@@ -360,7 +360,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
 
                 //Formatted so that it can be read the way the user sets
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-mm-yyyy", Locale.getDefault());
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 dob.set(year, monthOfYear, dayOfMonth);
                 String dobString = simpleDateFormat.format(dob.getTime());
                 binding.identificationBirthDateTextView.setText(dobString);
@@ -447,7 +447,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         mDOBMonth = birthMonth;
                         mDOBDay = 1;
 
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a", Locale.getDefault());
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                         dob.set(mDOBYear, mDOBMonth, mDOBDay);
                         String dobString = simpleDateFormat.format(dob.getTime());
                         binding.identificationBirthDateTextView.setText(dobString);

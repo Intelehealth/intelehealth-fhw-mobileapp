@@ -75,13 +75,13 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 //            Log.v(TAG, "Patient Name: " + patientName);
 //            Log.v(TAG, "Intent Tag: " + intentTag);
         }
-        encounterAdultIntials=AppConstants.NEW_UUID;
+        encounterAdultIntials = AppConstants.NEW_UUID;
         EncounterDAO encounterDAO = new EncounterDAO();
         encounterDTO = new EncounterDTO();
         encounterDTO.setUuid(encounterAdultIntials);
         encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL"));
         encounterDTO.setVisituuid(visitUuid);
-
+        encounterDTO.setSyncd(false);
         try {
             encounterDAO.createEncountersToDB(encounterDTO);
         } catch (DAOException e) {

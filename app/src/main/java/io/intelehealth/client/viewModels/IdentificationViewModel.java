@@ -86,7 +86,7 @@ public class IdentificationViewModel extends AndroidViewModel {
         patientdto.setLastname(StringUtils.getValue(lastname.getValue()));
         patientdto.setPhonenumber(StringUtils.getValue(phonenumber.getValue()));
         patientdto.setGender(StringUtils.getValue(gender.getValue()));
-        patientdto.setDateofbirth(StringUtils.getValue(DateAndTimeUtils.formatDateFromOnetoAnother(dateofbirth.getValue(), "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd")));
+        patientdto.setDateofbirth(StringUtils.getValue(dateofbirth.getValue()));
         patientdto.setAddress1(StringUtils.getValue(address.getValue()));
         patientdto.setAddress2(StringUtils.getValue(address2.getValue()));
         patientdto.setCityvillage(StringUtils.getValue(village.getValue()));
@@ -212,7 +212,7 @@ public class IdentificationViewModel extends AndroidViewModel {
         patientdto.setLast_name(StringUtils.getValue(patientdto.getLast_name()));
         patientdto.setPhone_number(StringUtils.getValue(patientdto.getPhone_number()));
         patientdto.setGender(StringUtils.getValue(patientdto.getGender()));
-        patientdto.setDate_of_birth(StringUtils.getValue(DateAndTimeUtils.formatDateFromOnetoAnother(patientdto.getDate_of_birth(), "yyyy-MM-dd", "dd-mm-yyyy")));
+        patientdto.setDate_of_birth(StringUtils.getValue(patientdto.getDate_of_birth()));
         patientdto.setAddress1(StringUtils.getValue(patientdto.getAddress1()));
         patientdto.setAddress2(StringUtils.getValue(patientdto.getAddress2()));
         patientdto.setCity_village(StringUtils.getValue(patientdto.getCity_village()));

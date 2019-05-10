@@ -5,11 +5,13 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.dto.EncounterDTO;
 import io.intelehealth.client.exception.DAOException;
+import io.intelehealth.client.utilities.Logger;
 
 public class EncounterDAO {
 
@@ -123,6 +125,52 @@ public class EncounterDAO {
         }
 
         return encounterTypeUuid;
+    }
+
+    public List<EncounterDTO> unsyncedEncounters() {
+        List<EncounterDTO> encounterDTOList = new ArrayList<>();
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where synced = ?", new String[]{"0"});
+        EncounterDTO encounterDTO = new EncounterDTO();
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                encounterDTO = new EncounterDTO();
+                encounterDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                encounterDTO.setVisituuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visituuid")));
+                encounterDTO.setEncounterTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_type_uuid")));
+                encounterDTOList.add(encounterDTO);
+            }
+        }
+        idCursor.close();
+        db.close();
+
+        return encounterDTOList;
+    }
+
+    public boolean updateEncounterSync(String synced, String uuid) throws DAOException {
+        boolean isUpdated = true;
+        Logger.logD("visitdao", "updatesynv visit " + uuid + synced);
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+        String whereclause = "uuid=?";
+        String[] whereargs = {uuid};
+        try {
+            values.put("synced", synced);
+            values.put("uuid", uuid);
+            int i = db.update("tbl_encounter", values, whereclause, whereargs);
+            Logger.logD("visit", "updated" + i);
+            db.setTransactionSuccessful();
+        } catch (SQLException sql) {
+            Logger.logD("visit", "updated" + sql.getMessage());
+            throw new DAOException(sql.getMessage());
+        } finally {
+            db.endTransaction();
+            db.close();
+
+        }
+
+        return isUpdated;
     }
 
 

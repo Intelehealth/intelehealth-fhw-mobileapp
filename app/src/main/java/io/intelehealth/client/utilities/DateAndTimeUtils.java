@@ -23,42 +23,25 @@ public class DateAndTimeUtils {
 
     public static int getAge(String s) {
         if (s == null) return 0;
-        Date date = null;
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-mm-yyyy");
-        try {
-            date = sdf.parse(s);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
 
-        if (date == null) return 0;
+        String[] components = s.split("\\-");
 
-        Calendar dob = Calendar.getInstance();
-        Calendar today = Calendar.getInstance();
+        int year = Integer.parseInt(components[0]);
+        int month = Integer.parseInt(components[1]);
+        int day = Integer.parseInt(components[2]);
 
-        dob.setTime(date);
+        LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
+        LocalDate now = new LocalDate();                    //Today's date
+        Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
 
-        int year = dob.get(Calendar.YEAR);
-        int month = dob.get(Calendar.MONTH);
-        int day = dob.get(Calendar.DAY_OF_MONTH);
-
-        dob.set(year, month + 1, day);
-
-        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
-
-        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
-            age--;
-        }
-
-
-        return age;
+        return period.getYears();
     }
 
     public static String SimpleDatetoLongFollowupDate(String dateString) {
         String formattedDate = null;
         try {
-            DateFormat originalFormat = new SimpleDateFormat("dd-mm-yyyy", Locale.ENGLISH);
-            DateFormat targetFormat = new SimpleDateFormat("dd-mm-yyyy");
+            DateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+            DateFormat targetFormat = new SimpleDateFormat("dd-MMMM-yyyy");
             Date date = originalFormat.parse(dateString);
             formattedDate = targetFormat.format(date);
         } catch (Exception ex) {
@@ -70,8 +53,8 @@ public class DateAndTimeUtils {
     public static String SimpleDatetoLongDate(String dateString) {
         String formattedDate = null;
         try {
-            DateFormat originalFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a", Locale.ENGLISH);
-            DateFormat targetFormat = new SimpleDateFormat("dd-mm-yyyy");
+            DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+            DateFormat targetFormat = new SimpleDateFormat("dd-MMM-yyyy");
             Date date = originalFormat.parse(dateString);
             formattedDate = targetFormat.format(date);
         } catch (Exception ex) {

@@ -51,7 +51,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
     ActivityPatientDetailBinding binding;
     String patientName;
-    String visitUuid="";
+    String visitUuid="" ;
     String patientUuid;
     String intentTag = "";
     SessionManager sessionManager = null;
@@ -67,9 +67,10 @@ public class PatientDetailActivity extends AppCompatActivity {
     String fhistory = "";
     LinearLayout previousVisitsList;
     String visitValue;
-    private String encounterVitals="";
-    private String encounterAdultIntials = "";
-    SQLiteDatabase db=null;
+    private String encounterVitals="" ;
+    private String encounterAdultIntials="" ;
+    SQLiteDatabase db = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,6 +115,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 encounterDTO.setUuid(UUID.randomUUID().toString());
                 encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS"));
                 encounterDTO.setVisituuid(uuid);
+                encounterDTO.setSyncd(false);
                 try {
                     encounterDAO.createEncountersToDB(encounterDTO);
                 } catch (DAOException e) {
@@ -176,8 +178,10 @@ public class PatientDetailActivity extends AppCompatActivity {
                 visitData.put("patientUuid", patient_new.getUuid());
                 Log.i(TAG, "onClick: " + thisDate);
                 visitData.put("startdate", thisDate);
-                visitData.put("visit_type_uuid", "");
+                visitData.put("visit_type_uuid", UuidDictionary.VISIT_TELEMEDICINE);
                 visitData.put("locationuuid", sessionManager.getLocationUuid());
+                visitData.put("synced",false);
+                visitData.put("modified_date",thisDate);
                 visitData.put("creator", CREATOR_ID);
 
                 InteleHealthDatabaseHelper mDbHelper = new InteleHealthDatabaseHelper(PatientDetailActivity.this);
@@ -203,7 +207,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
 
     public void setDisplay(String dataString) {
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
 
         String patientSelection = "uuid = ?";
         String[] patientArgs = {dataString};
@@ -211,7 +215,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw",
                 "patient_photo"};
-        final Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
+        Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
                 patient_new.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
@@ -235,7 +239,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         String patientSelection1 = "patientuuid = ?";
         String[] patientArgs1 = {dataString};
         String[] patientColumns1 = {"value", "person_attribute_type_uuid"};
-        final Cursor idCursor1 = db.query("tbl_patient_attribute", patientColumns1, patientSelection1, patientArgs1, null, null, null);
+         Cursor idCursor1 = db.query("tbl_patient_attribute", patientColumns1, patientSelection1, patientArgs1, null, null, null);
         String name = "";
         if (idCursor1.moveToFirst()) {
             do {
@@ -342,7 +346,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             binding.textViewOccupation.setVisibility(View.GONE);
         }
 
-        if (visitUuid != null) {
+        if (visitUuid != null&& !visitUuid.isEmpty()) {
             CardView histCardView = (CardView) findViewById(R.id.cardView_history);
             histCardView.setVisibility(View.GONE);
         } else {
@@ -351,15 +355,17 @@ public class PatientDetailActivity extends AppCompatActivity {
 
             String visitIDSelection = "patientuuid = ?";
             String[] visitIDArgs = {patientUuid};
-            final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, null);
+            Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, null);
             if (visitIDCursor != null && visitIDCursor.moveToFirst()) {
                 visitUuid = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
             }
             visitIDCursor.close();
+
+
             EncounterDAO encounterDAO = new EncounterDAO();
             String encounterIDSelection = "visituuid = ?";
             String[] encounterIDArgs = {visitUuid};
-            final Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+            Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
             if (encounterCursor != null && encounterCursor.moveToFirst()) {
                 do {
                     if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
@@ -372,6 +378,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
             }
             encounterCursor.close();
+
             String medHistSelection = "encounteruuid = ? AND conceptuuid = ?";
             String[] medHistArgs = {encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
             String[] medHistColumms = {"value", " conceptuuid"};

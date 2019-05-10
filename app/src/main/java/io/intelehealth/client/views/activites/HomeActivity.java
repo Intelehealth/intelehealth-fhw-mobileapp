@@ -193,6 +193,7 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.sync:
                 PullDataDAO pullDataDAO = new PullDataDAO();
                 pullDataDAO.pullData(this);
+                pullDataDAO.pushDataApi();
 
                 return true;
 //            case R.id.backupOption:

@@ -1410,7 +1410,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         try {
             String famHistSelection = "encounteruuid = ? AND conceptuuid = ?";
-            String[] famHistArgs = {dataString, String.valueOf(UuidDictionary.RHK_FAMILY_HISTORY_BLURB)};
+            String[] famHistArgs = {encounterAdultIntials, String.valueOf(UuidDictionary.RHK_FAMILY_HISTORY_BLURB)};
             Cursor famHistCursor = db.query("tbl_obs", columns, famHistSelection, famHistArgs, null, null, null);
             famHistCursor.moveToLast();
             String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
@@ -1423,7 +1423,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         try {
             String medHistSelection = "encounteruuid = ? AND conceptuuid = ?";
 
-            String[] medHistArgs = {dataString, String.valueOf(UuidDictionary.RHK_MEDICAL_HISTORY_BLURB)};
+            String[] medHistArgs = {encounterAdultIntials, String.valueOf(UuidDictionary.RHK_MEDICAL_HISTORY_BLURB)};
 
             Cursor medHistCursor = db.query("tbl_obs", columns, medHistSelection, medHistArgs, null, null, null);
             medHistCursor.moveToLast();
