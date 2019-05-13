@@ -214,8 +214,34 @@ public class HomeActivity extends AppCompatActivity {
         handler.removeCallbacks(runnable);
     }
     public void startHandler() {
-        handler.postDelayed(runnable, 1*60*1000); //for 5 minutes
+        handler.postDelayed(runnable, 30*60*1000); //for 5 minutes
     }
+
+   /* @Override
+    protected void onPause() {
+
+        stopHandler();
+        Log.d("onPause", "onPauseActivity change");
+        super.onPause();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startHandler();
+
+        Log.d("onResume", "onResume_restartActivity");
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopHandler();
+        Log.d("onDestroy", "onDestroyActivity change");
+
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
