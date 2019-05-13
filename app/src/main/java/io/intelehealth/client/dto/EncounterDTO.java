@@ -14,6 +14,9 @@ public class EncounterDTO {
     @SerializedName("encounter_type_uuid")
     @Expose
     private String encounterTypeUuid;
+    @SerializedName("encounter_time")
+    @Expose
+    private String encounterTime;
     @SerializedName("syncd")
     @Expose
     private Boolean syncd;
@@ -61,4 +64,11 @@ public class EncounterDTO {
         this.voided = voided;
     }
 
+    public String getEncounterTime() {
+        return encounterTime;
+    }
+
+    public void setEncounterTime(String encounterTime) {
+        this.encounterTime = encounterTime;
+    }
 }

@@ -106,6 +106,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
     public static final String CREATE_ENCOUNTER_MAIN = "CREATE TABLE IF NOT EXISTS tbl_encounter (" +
             "uuid TEXT PRIMARY KEY," +
             "visituuid TEXT," +
+            "encounter_time TEXT,"+
             "encounter_type_uuid TEXT," +
             "modified_date TEXT," +
             "synced TEXT," +

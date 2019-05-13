@@ -109,11 +109,17 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // before starting, we determine if it is new visit for a returning patient
                 // extract both FH and PMH
+                SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+                Date todayDate = new Date();
+                String thisDate = currentDate.format(todayDate);
+
+
                 String uuid = AppConstants.NEW_UUID;
                 EncounterDAO encounterDAO = new EncounterDAO();
                 encounterDTO = new EncounterDTO();
                 encounterDTO.setUuid(UUID.randomUUID().toString());
                 encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS"));
+                encounterDTO.setEncounterTime(thisDate);
                 encounterDTO.setVisituuid(uuid);
                 encounterDTO.setSyncd(false);
                 try {
@@ -169,9 +175,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
                 intent2.putExtra("patientUuid", patientUuid);
 
-                SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
-                Date todayDate = new Date();
-                String thisDate = currentDate.format(todayDate);
+
 
                 ContentValues visitData = new ContentValues();
                 visitData.put("uuid", uuid);

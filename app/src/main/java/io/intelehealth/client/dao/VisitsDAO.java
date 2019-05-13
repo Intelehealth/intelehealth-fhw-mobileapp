@@ -141,7 +141,7 @@ public class VisitsDAO {
         return visitDTOList;
     }
 
-    public boolean updateVisitSync( String synced, String uuid) throws DAOException {
+    public boolean updateVisitSync( String uuid,String synced) throws DAOException {
         boolean isUpdated = true;
         Logger.logD("visitdao", "updatesynv visit " + uuid +  synced);
         db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
@@ -165,6 +165,19 @@ public class VisitsDAO {
         }
 
         return isUpdated;
+    }
+
+    public String patientUuidByViistUuid(String visituuid){
+        String patientUuidByViistUuid = "";
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT patientuuid FROM tbl_visit where uuid = ? ", new String[]{visituuid});
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                patientUuidByViistUuid = cursor.getString(cursor.getColumnIndexOrThrow("patientuuid"));
+            }
+        }
+
+        return patientUuidByViistUuid;
     }
 
 }

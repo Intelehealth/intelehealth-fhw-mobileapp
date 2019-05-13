@@ -250,7 +250,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.summary_home: {
-                NavUtils.navigateUpFromSameTask(this);
+//                NavUtils.navigateUpFromSameTask(this);
+                Intent i=new Intent(this,HomeActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
                 return true;
             }
             case R.id.summary_print: {
@@ -1848,7 +1851,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String[] columns = {"value", " conceptuuid"};
             String visitSelection = "encounteruuid = ? ";
             String[] visitArgs = {encounterUuid};
-            Cursor visitCursor = db.query("obs", columns, visitSelection, visitArgs, null, null, null);
+            Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
             if (visitCursor.moveToFirst()) {
                 do {
                     String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));

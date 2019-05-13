@@ -4,6 +4,10 @@ import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +18,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -58,6 +63,11 @@ public class HomeActivity extends AppCompatActivity {
     private static final String TAG = HomeActivity.class.getSimpleName();
     SessionManager sessionManager = null;
     ActivityHomeBinding activityHomeBinding;
+    String channelId = "channel-01";
+    String channelName = "Channel Name";
+    public int mId = 1;
+    NotificationManager mNotifyManager;
+    NotificationCompat.Builder mBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -194,6 +204,7 @@ public class HomeActivity extends AppCompatActivity {
                 PullDataDAO pullDataDAO = new PullDataDAO();
                 pullDataDAO.pullData(this);
                 pullDataDAO.pushDataApi();
+                showNotification("Syncing", "Pull sync is completed");
 
                 return true;
 //            case R.id.backupOption:
@@ -300,6 +311,31 @@ public class HomeActivity extends AppCompatActivity {
                 })
                 .setNegativeButton("No", null)
                 .show();
+    }
+
+    public void showNotification(String title, String text) {
+        mNotifyManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        //mahiti added
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel(
+                    channelId, channelName, importance);
+            mNotifyManager.createNotificationChannel(mChannel);
+        }
+
+        mBuilder = new NotificationCompat.Builder(this, channelId);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+                new Intent(this, HomeActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+
+        mBuilder.setContentIntent(contentIntent);
+        mBuilder.setContentTitle(title)
+                .setContentText(text)
+                .setSmallIcon(R.drawable.ic_cloud_upload);
+        // Sets an activity indicator for an operation of indeterminate length
+        mBuilder.setProgress(100, 10, false);
+        // Issues the notification
+        mNotifyManager.notify(mId, mBuilder.build());
     }
 
 }

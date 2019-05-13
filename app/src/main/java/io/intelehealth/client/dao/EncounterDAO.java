@@ -98,6 +98,7 @@ public class EncounterDAO {
 
             values.put("uuid", encounter.getUuid());
             values.put("visituuid", encounter.getVisituuid());
+            values.put("encounter_time",encounter.getEncounterTime());
             values.put("encounter_type_uuid", encounter.getEncounterTypeUuid());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("synced", encounter.getSyncd());
@@ -138,6 +139,7 @@ public class EncounterDAO {
                 encounterDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
                 encounterDTO.setVisituuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visituuid")));
                 encounterDTO.setEncounterTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_type_uuid")));
+                encounterDTO.setEncounterTime(idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_time")));
                 encounterDTOList.add(encounterDTO);
             }
         }
@@ -149,7 +151,7 @@ public class EncounterDAO {
 
     public boolean updateEncounterSync(String synced, String uuid) throws DAOException {
         boolean isUpdated = true;
-        Logger.logD("visitdao", "updatesynv visit " + uuid + synced);
+        Logger.logD("encounterdao", "updatesynv visit " + uuid + synced);
         db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         ContentValues values = new ContentValues();

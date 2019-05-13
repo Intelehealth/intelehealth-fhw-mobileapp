@@ -68,9 +68,9 @@ public class DateAndTimeUtils {
 
         String[] components = s1.split("\\-");
 
-        int year = Integer.parseInt(components[2]);
+        int year = Integer.parseInt(components[0]);
         int month = Integer.parseInt(components[1]);
-        int day = Integer.parseInt(components[0]);
+        int day = Integer.parseInt(components[2]);
 
         LocalDate birthdate1 = new LocalDate(year, month+1, day);          //Birth date
         LocalDate now = new LocalDate();                    //Today's date

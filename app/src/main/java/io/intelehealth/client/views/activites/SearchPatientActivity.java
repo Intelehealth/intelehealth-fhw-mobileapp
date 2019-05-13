@@ -86,7 +86,7 @@ public class SearchPatientActivity extends AppCompatActivity {
             recycler = new SearchPatientAdapter(getAllPatientsFromDB(), SearchPatientActivity.this);
 
 
-            Log.i("db data", "" + getAllPatientsFromDB());
+//            Log.i("db data", "" + getAllPatientsFromDB());
             RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
             binding.recycle.setLayoutManager(reLayoutManager);
             binding.recycle.setItemAnimator(new DefaultItemAnimator());

@@ -97,8 +97,9 @@ public class PatientsFrameJson {
 
             patient.setIdentifiers(identifierList);
             patientList.add(patient);
-        }
 
+
+        }
         for (VisitDTO visitDTO : visitDTOList) {
             Visit visit = new Visit();
             visit.setLocation(visitDTO.getLocationuuid());
@@ -109,15 +110,15 @@ public class PatientsFrameJson {
             visitList.add(visit);
         }
 
-
         for (EncounterDTO encounterDTO : encounterDTOList) {
             Encounter encounter = new Encounter();
 
             encounter = new Encounter();
             encounter.setUuid(encounterDTO.getUuid());
-            encounter.setEncounterDatetime("2019-02-06T12:44:34.662+0530");//visit start time
+            encounter.setEncounterDatetime(encounterDTO.getEncounterTime());//visit start time
             encounter.setEncounterType(encounterDTO.getEncounterTypeUuid());//right know it is static
-
+            encounter.setPatient(visitsDAO.patientUuidByViistUuid(encounterDTO.getVisituuid()));
+            encounter.setVisit(encounterDTO.getVisituuid());
             List<EncounterProvider> encounterProviderList = new ArrayList<>();
             EncounterProvider encounterProvider = new EncounterProvider();
             encounterProvider.setEncounterRole("73bbb069-9781-4afc-a9d1-54b6b2270e04");
@@ -127,19 +128,24 @@ public class PatientsFrameJson {
 
             List<Ob> obsList = new ArrayList<>();
             List<ObsDTO> obsDTOList = obsDAO.obsDTOList(encounterDTO.getUuid());
-            Ob ob=new Ob();
+            Ob ob = new Ob();
             for (ObsDTO obs : obsDTOList) {
-                ob =new Ob();
-                ob.setUuid(obs.getUuid());
-                ob.setConcept(obs.getConceptuuid());
-                ob.setValue(obs.getValue());
-                obsList.add(ob);
+                if (obs != null) {
+                    if(!obs.getValue().isEmpty()) {
+                        ob = new Ob();
+                        ob.setUuid(obs.getUuid());
+                        ob.setConcept(obs.getConceptuuid());
+                        ob.setValue(obs.getValue());
+                        obsList.add(ob);
+                    }
+                }
             }
             encounter.setObs(obsList);
             encounter.setLocation(session.getLocationUuid());
 
             encounterList.add(encounter);
         }
+
 
         pushRequestApiCall.setPatients(patientList);
         pushRequestApiCall.setPersons(personList);
