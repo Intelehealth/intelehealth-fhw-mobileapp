@@ -68,6 +68,8 @@ import java.util.Set;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
+import io.intelehealth.client.dao.EncounterDAO;
+import io.intelehealth.client.dao.PullDataDAO;
 import io.intelehealth.client.dto.ObsDTO;
 import io.intelehealth.client.node.Node;
 import io.intelehealth.client.objects.Patient;
@@ -212,7 +214,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     public static String prescription1;
     public static String prescription2;
     SessionManager sessionManager;
-     String encounterUuid;
+    String encounterUuid;
     String encounterVitals;
     String encounterAdultIntials;
 
@@ -226,7 +228,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         MenuItemCompat.getActionView(internetCheck);
 
         isNetworkAvailable(this);
-        sessionManager=new SessionManager(this);
+        sessionManager = new SessionManager(this);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         mCHWname = findViewById(R.id.chw_details);
@@ -251,8 +253,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.summary_home: {
 //                NavUtils.navigateUpFromSameTask(this);
-                Intent i=new Intent(this,HomeActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                Intent i = new Intent(this, HomeActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
                 return true;
             }
@@ -534,86 +536,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 Snackbar.make(view, "Uploading to doctor.", Snackbar.LENGTH_LONG).show();
 
 
-                //Checking for patient job
+                PullDataDAO pullDataDAO = new PullDataDAO();
+                pullDataDAO.pushDataApi();
+                AppConstants.notificationUtils.showNotifications("Upload to doctor", "Details is uploaded", VisitSummaryActivity.this);
 
-//                String[] DELAYED_JOBS_PROJECTION = new String[]{DelayedJobQueueProvider._ID, DelayedJobQueueProvider.JOB_TYPE, DelayedJobQueueProvider.SYNC_STATUS};
-//                String SELECTION = DelayedJobQueueProvider.JOB_TYPE + " IN (\"visit\",\"pr Download\") AND " +
-//                        DelayedJobQueueProvider.VISIT_ID + "= ?";
-//                String[] ARGS = new String[]{visitID};
-//
-//                Cursor c = getContentResolver().query(DelayedJobQueueProvider.CONTENT_URI,
-//                        DELAYED_JOBS_PROJECTION, SELECTION, ARGS, null);
-
-
-//                Log.i(TAG, "onClick: " + c.getCount());
-//
-//                if (c == null || c.getCount() == 0) {
-//
-//                    Intent serviceIntent;
-//                    if (visitUUID != null && !visitUUID.isEmpty()) {
-//                        Log.i(TAG, "onClick: new update");
-//                        serviceIntent = new Intent(VisitSummaryActivity.this, UpdateVisitService.class);
-//                        serviceIntent.putExtra("serviceCall", "obsUpdate");
-//                        serviceIntent.putExtra("patientID", patientID);
-//                        serviceIntent.putExtra("visitID", visitID);
-//                        serviceIntent.putExtra("name", patientName);
-//                        startService(serviceIntent);
-//
-//
-//                    } else {
-//                        Log.i(TAG, "onClick: new visit");
-//                        serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
-//                        serviceIntent.putExtra("serviceCall", "visit");
-//                        serviceIntent.putExtra("patientID", patientID);
-//                        serviceIntent.putExtra("visitID", visitID);
-//                        serviceIntent.putExtra("name", patientName);
-//                        startService(serviceIntent);
-//
-//
-//                    }
-
-//                } else if (c != null && c.moveToFirst()) {
-//                    Log.d(TAG, "onClick: Not In Null");
-//                    int sync_status = c.getInt(c.getColumnIndexOrThrow(DelayedJobQueueProvider.SYNC_STATUS));
-//                    switch (sync_status) {
-//                        case ClientService.STATUS_SYNC_STOPPED: {
-//                            Intent serviceIntent;
-//                            Log.i(TAG, "onClick: old visit delayed");
-//                            if (c.getString(c.getColumnIndex(DelayedJobQueueProvider.JOB_TYPE)).equals("visit")) {
-//                                serviceIntent = new Intent(VisitSummaryActivity.this, ClientService.class);
-//                                serviceIntent.putExtra("serviceCall", "visit");
-//                                serviceIntent.putExtra("patientID", patientID);
-//                                serviceIntent.putExtra("visitID", visitID);
-//                                serviceIntent.putExtra("name", patientName);
-//                                serviceIntent.putExtra("queueId", c.getInt(c.getColumnIndex(DelayedJobQueueProvider._ID)));
-//                                startService(serviceIntent);
-//
-//
-//
-//                            } else if (c.getString(c.getColumnIndex(DelayedJobQueueProvider.JOB_TYPE)).equals("obsUpdate")) {
-//                                Log.i(TAG, "onClick: old obs delayed");
-//                                serviceIntent = new Intent(VisitSummaryActivity.this, UpdateVisitService.class);
-//                                serviceIntent.putExtra("serviceCall", "obsUpdate");
-//                                serviceIntent.putExtra("patientID", patientID);
-//                                serviceIntent.putExtra("visitID", visitID);
-//                                serviceIntent.putExtra("name", patientName);
-//                                serviceIntent.putExtra("queueId", c.getInt(c.getColumnIndex(DelayedJobQueueProvider._ID)));
-//                                startService(serviceIntent);
-//
-//
-//                            }
-//                            break;
-//                        }
-//                        case ClientService.STATUS_SYNC_IN_PROGRESS: {
-//                            Toast.makeText(context, getString(R.string.sync_in_progress), Toast.LENGTH_SHORT).show();
-//                            break;
-//                        }
-//                        default:
-//                    }
-//                }
-//
-//                c.close();
-//
             }
 
         });
@@ -1067,7 +993,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 startActivity(addDocs);
             }
         });
+
+        downloadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PullDataDAO pullDataDAO = new PullDataDAO();
+                pullDataDAO.pullData(VisitSummaryActivity.this);
+                downloadPrescription();
+                //mLayout.addView(downloadButton, mLayout.getChildCount());
+            }
+        });
     }
+
     private String stringToWeb(String input) {
         String formatted = "";
         if (input != null && !input.isEmpty()) {
@@ -1472,6 +1409,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } while (encountercursor.moveToNext());
         }
         encountercursor.close();
+//    setup the downloaded prescription
+        downloadPrescription();
     }
 
     /**
@@ -1649,7 +1588,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         contentValues.put("value", string);
 
         String selection = "encounteruuid = ? AND conceptuuid = ?";
-        String[] args = {encounterUuid ,String.valueOf(conceptID)};
+        String[] args = {encounterUuid, String.valueOf(conceptID)};
 
         localdb.update(
                 "tbl_obs",
@@ -1816,6 +1755,37 @@ public class VisitSummaryActivity extends AppCompatActivity {
         textInput.show();
     }
 
+    public void downloadPrescription() {
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        downloaded = true;
+        String visitnote = "";
+        EncounterDAO encounterDAO = new EncounterDAO();
+        String encounterIDSelection = "visituuid = ?";
+        String[] encounterIDArgs = {visitUuid};
+        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+        if (encounterCursor != null && encounterCursor.moveToFirst()) {
+            do {
+                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                }
+            } while (encounterCursor.moveToNext());
+
+        }
+        encounterCursor.close();
+        String[] columns = {"value", " conceptuuid"};
+        String visitSelection = "encounteruuid = ? ";
+        String[] visitArgs = {visitnote};
+        Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+        if (visitCursor.moveToFirst()) {
+            do {
+                String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                parseData(dbConceptID, dbValue);
+            } while (visitCursor.moveToNext());
+        }
+        visitCursor.close();
+        AppConstants.notificationUtils.showNotifications("download from doctor", "prescription Downloaded", VisitSummaryActivity.this);
+    }
 
     @Override
     protected void onStart() {
@@ -1953,13 +1923,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             // Toast.makeText(this, getString(R.string.visit_summary_button_download), Toast.LENGTH_SHORT).show();
 
-            downloadButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
 
-                    //mLayout.addView(downloadButton, mLayout.getChildCount());
-                }
-            });
         }
 
     }

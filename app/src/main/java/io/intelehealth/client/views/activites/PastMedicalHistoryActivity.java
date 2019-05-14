@@ -32,6 +32,7 @@ import io.intelehealth.client.node.Node;
 import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.FileUtils;
 import io.intelehealth.client.utilities.SessionManager;
+import io.intelehealth.client.utilities.StringUtils;
 import io.intelehealth.client.utilities.UuidDictionary;
 import io.intelehealth.client.views.adapters.CustomExpandableListAdapter;
 
@@ -313,7 +314,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
         complaintEntries.put("uuid", UUID.randomUUID().toString());
         complaintEntries.put("encounteruuid", encounterAdultIntials);
-        complaintEntries.put("value", value);
+        complaintEntries.put("value", StringUtils.getValue(value));
         complaintEntries.put("conceptuuid", CONCEPT_ID);
         complaintEntries.put("creator", CREATOR_ID);
 

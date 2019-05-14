@@ -12,6 +12,9 @@ public class Visit {
     @SerializedName("startDatetime")
     @Expose
     private String startDatetime;
+    @SerializedName("stopDatetime")
+    @Expose
+    private String stopDatetime;
     @SerializedName("visitType")
     @Expose
     private String visitType;
@@ -62,4 +65,11 @@ public class Visit {
         this.location = location;
     }
 
+    public String getStopDatetime() {
+        return stopDatetime;
+    }
+
+    public void setStopDatetime(String stopDatetime) {
+        this.stopDatetime = stopDatetime;
+    }
 }

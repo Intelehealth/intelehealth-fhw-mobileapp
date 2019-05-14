@@ -42,12 +42,14 @@ import java.util.List;
 import java.util.Locale;
 
 import io.intelehealth.client.R;
+import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.backup.BackupCloud;
 import io.intelehealth.client.dao.PullDataDAO;
 import io.intelehealth.client.databinding.ActivityHomeBinding;
 import io.intelehealth.client.services.DownloadProtocolsTask;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.NetworkConnection;
+import io.intelehealth.client.utilities.NotificationUtils;
 import io.intelehealth.client.utilities.OfflineLogin;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.views.adapters.HomeAdapter;
@@ -63,11 +65,7 @@ public class HomeActivity extends AppCompatActivity {
     private static final String TAG = HomeActivity.class.getSimpleName();
     SessionManager sessionManager = null;
     ActivityHomeBinding activityHomeBinding;
-    String channelId = "channel-01";
-    String channelName = "Channel Name";
-    public int mId = 1;
-    NotificationManager mNotifyManager;
-    NotificationCompat.Builder mBuilder;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +135,7 @@ public class HomeActivity extends AppCompatActivity {
 //        if (sessionManager.isFirstTimeSyncExcuted()) {
         PullDataDAO pullDataDAO = new PullDataDAO();
         pullDataDAO.pullData(this);
+        AppConstants.notificationUtils.showNotifications("Sync","Sync Compledted",this);
 //        pullDataDAO.pushDataApi();
 //            sessionManager.setFirstTimeSyncExecute(false);
 //        }
@@ -204,8 +203,7 @@ public class HomeActivity extends AppCompatActivity {
                 PullDataDAO pullDataDAO = new PullDataDAO();
                 pullDataDAO.pullData(this);
                 pullDataDAO.pushDataApi();
-                showNotification("Syncing", "Pull sync is completed");
-
+                AppConstants.notificationUtils.showNotifications("Sync","Sync Completed",this);
                 return true;
 //            case R.id.backupOption:
 //                manageBackup(true, false);  // to backup app data at any time of the day
@@ -313,29 +311,5 @@ public class HomeActivity extends AppCompatActivity {
                 .show();
     }
 
-    public void showNotification(String title, String text) {
-        mNotifyManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        //mahiti added
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel mChannel = new NotificationChannel(
-                    channelId, channelName, importance);
-            mNotifyManager.createNotificationChannel(mChannel);
-        }
-
-        mBuilder = new NotificationCompat.Builder(this, channelId);
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, HomeActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
-
-        mBuilder.setContentIntent(contentIntent);
-        mBuilder.setContentTitle(title)
-                .setContentText(text)
-                .setSmallIcon(R.drawable.ic_cloud_upload);
-        // Sets an activity indicator for an operation of indeterminate length
-        mBuilder.setProgress(100, 10, false);
-        // Issues the notification
-        mNotifyManager.notify(mId, mBuilder.build());
-    }
 
 }

@@ -196,7 +196,38 @@ public class ObsDAO {
         return true;
     }
 
-        public List<ObsDTO> obsDTOList(String encounteruuid) {
+    public boolean insertObsToDb(List<ObsDTO> obsDTO) {
+        boolean isUpdated = true;
+        long insertedCount = 0;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+
+        try {
+            for (ObsDTO ob : obsDTO) {
+                values.put("uuid", UUID.randomUUID().toString());
+                values.put("encounteruuid", ob.getEncounteruuid());
+                values.put("creator", ob.getCreator());
+                values.put("conceptuuid", ob.getConceptuuid());
+                values.put("value", ob.getValue());
+                values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+                values.put("voided", "");
+                values.put("synced", "FALSE");
+                insertedCount = db.insert("tbl_obs", null, values);
+            }
+            db.setTransactionSuccessful();
+            Logger.logD("updated", "updatedrecords count" + insertedCount);
+        } catch (SQLException e) {
+            isUpdated = false;
+        } finally {
+            db.endTransaction();
+        }
+
+        return isUpdated;
+
+    }
+
+    public List<ObsDTO> obsDTOList(String encounteruuid) {
         List<ObsDTO> obsDTOList = new ArrayList<>();
         db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ?", new String[]{encounteruuid});

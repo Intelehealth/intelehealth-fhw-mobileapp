@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.dao.PatientsDAO;
 import io.intelehealth.client.dao.PullDataDAO;
 import io.intelehealth.client.dto.PatientAttributesDTO;
@@ -181,8 +182,9 @@ public class IdentificationViewModel extends AndroidViewModel {
             if (NetworkConnection.isOnline(getApplication())) {
 //                patientApiCall();
 //                frameJson();
-                PullDataDAO pullDataDAO=new PullDataDAO();
+                PullDataDAO pullDataDAO = new PullDataDAO();
                 pullDataDAO.pushDataApi();
+                AppConstants.notificationUtils.showNotifications("Patient pushed", "Patient" + patientdto.getFirstname() + "" + patientdto.getLastname(), getApplication());
             }
             if (b) {
                 Logger.logD(TAG, "inserted");
@@ -198,6 +200,7 @@ public class IdentificationViewModel extends AndroidViewModel {
         }
 
     }
+
     public void onPatientUpdateClicked(Patient patientdto) {
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
@@ -290,11 +293,12 @@ public class IdentificationViewModel extends AndroidViewModel {
             villageerror.setValue("");
         try {
             Logger.logD(TAG, "update ");
-            boolean b = patientsDAO.updatePatientToDB(patientdto, uuid,patientAttributesDTOList);
+            boolean b = patientsDAO.updatePatientToDB(patientdto, uuid, patientAttributesDTOList);
 
             if (NetworkConnection.isOnline(getApplication())) {
-                PullDataDAO pullDataDAO=new PullDataDAO();
+                PullDataDAO pullDataDAO = new PullDataDAO();
                 pullDataDAO.pushDataApi();
+                AppConstants.notificationUtils.showNotifications("Patient updated", "Patient" + firstname.getValue() + "" + lastname.getValue(), getApplication());
             }
             if (b) {
                 Logger.logD(TAG, "updated");

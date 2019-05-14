@@ -13,8 +13,10 @@ import io.intelehealth.client.exception.DAOException;
 import io.intelehealth.client.models.pushRequestApiCall.PushRequestApiCall;
 import io.intelehealth.client.models.pushResponseApiCall.PushResponseApiCall;
 import io.intelehealth.client.utilities.Logger;
+import io.intelehealth.client.utilities.NotificationUtils;
 import io.intelehealth.client.utilities.PatientsFrameJson;
 import io.intelehealth.client.utilities.SessionManager;
+import io.intelehealth.client.views.activites.HomeActivity;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -75,6 +77,7 @@ public class PullDataDAO {
                 }
                 return null;
             }
+
 
             @Override
             protected void onPreExecute() {

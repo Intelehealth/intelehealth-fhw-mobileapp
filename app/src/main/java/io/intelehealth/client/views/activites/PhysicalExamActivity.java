@@ -47,6 +47,7 @@ import io.intelehealth.client.node.Node;
 import io.intelehealth.client.node.PhysicalExam;
 import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.FileUtils;
+import io.intelehealth.client.utilities.StringUtils;
 import io.intelehealth.client.utilities.UuidDictionary;
 import io.intelehealth.client.views.adapters.CustomExpandableListAdapter;
 
@@ -438,6 +439,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
     private long insertDb(String value) {
         Log.i(TAG, "insertDb: ");
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         final String CREATOR_ID = prefs.getString("creatorid", null);
@@ -451,7 +453,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
         complaintEntries.put("uuid", UUID.randomUUID().toString());
         complaintEntries.put("encounteruuid",encounterAdultIntials);
         complaintEntries.put("creator", CREATOR_ID);
-        complaintEntries.put("value", value);
+        complaintEntries.put("value", StringUtils.getValue(value));
         complaintEntries.put("conceptuuid", CONCEPT_ID);
 
         return localdb.insert("tbl_obs", null, complaintEntries);

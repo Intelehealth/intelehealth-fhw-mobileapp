@@ -2,6 +2,7 @@ package io.intelehealth.client.views.activites;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,10 +11,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
+import io.intelehealth.client.dao.EncounterDAO;
+import io.intelehealth.client.dao.ObsDAO;
+import io.intelehealth.client.dao.PullDataDAO;
+import io.intelehealth.client.dao.VisitsDAO;
+import io.intelehealth.client.dto.EncounterDTO;
+import io.intelehealth.client.dto.ObsDTO;
+import io.intelehealth.client.exception.DAOException;
+import io.intelehealth.client.utilities.UuidDictionary;
 
 public class PatientSurveyActivity extends AppCompatActivity {
     private static final String TAG = PatientSurveyActivity.class.getSimpleName();
@@ -22,7 +36,6 @@ public class PatientSurveyActivity extends AppCompatActivity {
     String state;
     String patientName;
     String intentTag;
-    String visitUUID;
 
     Context context;
     SQLiteDatabase db;
@@ -38,10 +51,13 @@ public class PatientSurveyActivity extends AppCompatActivity {
 
     String rating;
     String comments;
+    String thisDate = "";
+
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         //do nothing
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent intent = this.getIntent(); // The intent was passed to the activity
@@ -52,6 +68,10 @@ public class PatientSurveyActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
         }
+
+        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+        Date todayDate = new Date();
+        thisDate = currentDate.format(todayDate);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_survey);
         setTitle(R.string.title_activity_login);
@@ -93,18 +113,19 @@ public class PatientSurveyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 uploadSurvey();
-                endVisit();
+                endVisit(thisDate);
             }
         });
 
         mSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                endVisit();
+                endVisit(thisDate);
             }
         });
     }
-    private void resetScale(){
+
+    private void resetScale() {
         ArrayList<ImageButton> scale = new ArrayList<>();
         scale.add(mScaleButton1);
         scale.add(mScaleButton2);
@@ -117,14 +138,73 @@ public class PatientSurveyActivity extends AppCompatActivity {
         }
         rating = "";
     }
+
     private void uploadSurvey() {
+//        ENCOUNTER_PATIENT_EXIT_SURVEY
+        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+        Date todayDate = new Date();
+        String thisDate = currentDate.format(todayDate);
+
+        EncounterDTO encounterDTO = new EncounterDTO();
+        String uuid = UUID.randomUUID().toString();
+        EncounterDAO encounterDAO = new EncounterDAO();
+        encounterDTO = new EncounterDTO();
+        encounterDTO.setUuid(uuid);
+        encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_PATIENT_EXIT_SURVEY"));
+        encounterDTO.setEncounterTime(thisDate);
+        encounterDTO.setVisituuid(visitUuid);
+        encounterDTO.setSyncd(false);
+        try {
+            encounterDAO.createEncountersToDB(encounterDTO);
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+
+        ObsDAO obsDAO = new ObsDAO();
+        ObsDTO obsDTO = new ObsDTO();
+        List<ObsDTO> obsDTOList = new ArrayList<>();
+        obsDTO = new ObsDTO();
+        obsDTO.setUuid(UUID.randomUUID().toString());
+        obsDTO.setEncounteruuid(uuid);
+        obsDTO.setValue(rating);
+        obsDTO.setConceptuuid(UuidDictionary.RATING);
+        obsDTOList.add(obsDTO);
+        obsDTO = new ObsDTO();
+        obsDTO.setUuid(UUID.randomUUID().toString());
+        obsDTO.setEncounteruuid(uuid);
+        obsDTO.setValue(mComments.getText().toString());
+        obsDTO.setConceptuuid(UuidDictionary.COMMENTS);
+        obsDTOList.add(obsDTO);
+        obsDAO.insertObsToDb(obsDTOList);
+
+        endVisit(thisDate);
+
+        PullDataDAO pullDataDAO = new PullDataDAO();
+        pullDataDAO.pushDataApi();
+        AppConstants.notificationUtils.showNotifications("Upload survey", "Survey uploaded", PatientSurveyActivity.this);
 
 
     }
-    private void endVisit() {
 
+    private void endVisit(String endate) {
+        VisitsDAO visitsDAO = new VisitsDAO();
+        try {
+            visitsDAO.updateVisitEnddate(visitUuid, endate);
+        } catch (DAOException e) {
+            e.printStackTrace();
+
+        }
+        PullDataDAO pullDataDAO = new PullDataDAO();
+        pullDataDAO.pushDataApi();
+
+        AppConstants.notificationUtils.showNotifications("End visit", "Visit ended", PatientSurveyActivity.this);
+        SharedPreferences.Editor editor = context.getSharedPreferences(patientUuid + "_" + visitUuid, MODE_PRIVATE).edit();
+        editor.remove("exam_" + patientUuid + "_" + visitUuid);
+        editor.commit();
+        Intent i = new Intent(this, HomeActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
     }
-
 
 
 }

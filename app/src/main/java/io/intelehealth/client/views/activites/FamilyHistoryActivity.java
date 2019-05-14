@@ -314,7 +314,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 //        complaintEntries.put("visit_id", visitID);
         complaintEntries.put("uuid", UUID.randomUUID().toString());
         complaintEntries.put("encounteruuid", encounterAdultIntials);
-        complaintEntries.put("value", value);
+        complaintEntries.put("value", io.intelehealth.client.utilities.StringUtils.getValue(value));
         complaintEntries.put("conceptuuid", CONCEPT_ID);
         complaintEntries.put("creator", CREATOR_ID);
 

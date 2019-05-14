@@ -11,6 +11,7 @@ import io.intelehealth.client.database.InteleHealthDatabaseHelper;
 import io.intelehealth.client.network.ApiClient;
 import io.intelehealth.client.network.ApiInterface;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
+import io.intelehealth.client.utilities.NotificationUtils;
 import io.intelehealth.client.utilities.SqliteDbCloseHelper;
 import io.intelehealth.client.utilities.UuidGenerator;
 
@@ -49,5 +50,6 @@ public class AppConstants {
     public static SqliteDbCloseHelper sqliteDbCloseHelper = new SqliteDbCloseHelper();
     public static DateAndTimeUtils dateAndTimeUtils = new DateAndTimeUtils();
     public static String NEW_UUID = new UuidGenerator().UuidGenerator();
+    public static NotificationUtils notificationUtils=new NotificationUtils();
 
 }

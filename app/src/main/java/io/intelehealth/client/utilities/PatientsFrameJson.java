@@ -107,6 +107,7 @@ public class PatientsFrameJson {
             visit.setStartDatetime(visitDTO.getStartdate());
             visit.setUuid(visitDTO.getUuid());
             visit.setVisitType(visitDTO.getVisitTypeUuid());
+            visit.setStopDatetime(visitDTO.getEnddate());
             visitList.add(visit);
         }
 
@@ -131,7 +132,7 @@ public class PatientsFrameJson {
             Ob ob = new Ob();
             for (ObsDTO obs : obsDTOList) {
                 if (obs != null) {
-                    if(!obs.getValue().isEmpty()) {
+                    if (!obs.getValue().isEmpty()) {
                         ob = new Ob();
                         ob.setUuid(obs.getUuid());
                         ob.setConcept(obs.getConceptuuid());

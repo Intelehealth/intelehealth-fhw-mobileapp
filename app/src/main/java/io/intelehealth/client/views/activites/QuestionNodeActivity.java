@@ -34,6 +34,7 @@ import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.node.Node;
 import io.intelehealth.client.utilities.FileUtils;
+import io.intelehealth.client.utilities.StringUtils;
 import io.intelehealth.client.utilities.UuidDictionary;
 import io.intelehealth.client.views.adapters.CustomExpandableListAdapter;
 
@@ -368,7 +369,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
         complaintEntries.put("uuid", UUID.randomUUID().toString());
         complaintEntries.put("encounteruuid", encounterAdultIntials);
         complaintEntries.put("creator", CREATOR_ID);
-        complaintEntries.put("value", value);
+        complaintEntries.put("value", StringUtils.getValue(value));
         complaintEntries.put("conceptuuid", CONCEPT_ID);
 
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();

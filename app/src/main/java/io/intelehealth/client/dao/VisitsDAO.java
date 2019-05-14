@@ -167,6 +167,34 @@ public class VisitsDAO {
         return isUpdated;
     }
 
+
+    public boolean updateVisitEnddate( String uuid,String enddate) throws DAOException {
+        boolean isUpdated = true;
+        Logger.logD("visitdao", "updatesynv visit " + uuid +  enddate);
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+        String whereclause = "uuid=?";
+        String[] whereargs = {uuid};
+        try {
+            values.put("enddate", enddate);
+            values.put("synced","0");
+            values.put("uuid", uuid);
+            int i = db.update("tbl_visit", values, whereclause, whereargs);
+            Logger.logD("visit", "updated" + i);
+            db.setTransactionSuccessful();
+        } catch (SQLException sql) {
+            Logger.logD("visit", "updated" + sql.getMessage());
+            throw new DAOException(sql.getMessage());
+        } finally {
+            db.endTransaction();
+            db.close();
+
+        }
+
+        return isUpdated;
+    }
+
     public String patientUuidByViistUuid(String visituuid){
         String patientUuidByViistUuid = "";
         db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
