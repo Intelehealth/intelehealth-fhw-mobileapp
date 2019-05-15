@@ -61,7 +61,7 @@ public class ActivePatientActivity extends AppCompatActivity {
                         "OR tbl_visit.enddate = '' " +
                         "ORDER BY tbl_visit.startdate ASC";
         //  "SELECT * FROM visit, patient WHERE visit.patient_id = patient._id AND visit.start_datetime LIKE '" + currentDate + "T%'";
-        Logger.logD(TAG, query);
+//        Logger.logD(TAG, query);
         final Cursor cursor = db.rawQuery(query, null);
 
         if (cursor != null) {

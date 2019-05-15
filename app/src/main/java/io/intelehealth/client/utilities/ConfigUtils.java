@@ -378,6 +378,7 @@ public class ConfigUtils {
         JSONObject object = jsonreader();
         try {
             view = object.getBoolean("mFahrenheit");
+            Logger.logD(TAG, String.valueOf(view));
         } catch (JSONException e) {
             e.printStackTrace();
         }

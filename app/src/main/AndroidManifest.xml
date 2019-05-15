@@ -196,8 +196,8 @@
 
         <provider
             android:name=".views.providers.SearchSuggestionProvider"
-            android:authorities="io.intelehealth.client.activities.search_patient_activity.SearchSuggestionProvider"
-            android:exported="false" />
+            android:authorities="io.intelehealth.client.views.providers.SearchSuggestionProvider"
+            android:exported="true" />
 
         <activity android:name=".views.activites.MainActivity" />
     </application>

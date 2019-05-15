@@ -1,8 +1,6 @@
 package io.intelehealth.client.network;
 
 
-import org.json.JSONObject;
-
 import io.intelehealth.client.dto.ResponseDTO;
 import io.intelehealth.client.models.Location;
 import io.intelehealth.client.models.Results;
@@ -10,7 +8,6 @@ import io.intelehealth.client.models.loginModel.LoginModel;
 import io.intelehealth.client.models.loginProviderModel.LoginProviderModel;
 import io.intelehealth.client.models.pushRequestApiCall.PushRequestApiCall;
 import io.intelehealth.client.models.pushResponseApiCall.PushResponseApiCall;
-import io.intelehealth.client.models.uploadSurvey.Survey;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import retrofit2.Call;
@@ -54,7 +51,5 @@ public interface ApiInterface {
     @POST
     Single<PushResponseApiCall> PUSH_RESPONSE_API_CALL_OBSERVABLE(@Url String url, @Header("Authorization") String authHeader, @Body PushRequestApiCall pushRequestApiCall);
 
-    @POST
-    Single<JSONObject> UPLOADSURVEY(@Url String url,@Header("Authorization") String authHeader,@Body Survey survey );
 
 }

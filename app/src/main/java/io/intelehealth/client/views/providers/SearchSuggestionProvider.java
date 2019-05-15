@@ -9,7 +9,7 @@ import android.content.SearchRecentSuggestionsProvider;
  */
 
 public class SearchSuggestionProvider extends SearchRecentSuggestionsProvider {
-    public final static String AUTHORITY = "io.intelehealth.client.activities.search_patient_activity.SearchSuggestionProvider";
+    public final static String AUTHORITY = "io.intelehealth.client.views.providers.SearchSuggestionProvider";
     public final static int MODE = DATABASE_MODE_QUERIES;
 
     public SearchSuggestionProvider() {

@@ -22,7 +22,6 @@ import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.NavUtils;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.MenuItemCompat;
@@ -73,8 +72,8 @@ import io.intelehealth.client.dao.PullDataDAO;
 import io.intelehealth.client.dto.ObsDTO;
 import io.intelehealth.client.node.Node;
 import io.intelehealth.client.objects.Patient;
-import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
+import io.intelehealth.client.utilities.EmergencyEncounter;
 import io.intelehealth.client.utilities.FileUtils;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UuidDictionary;
@@ -83,15 +82,10 @@ import io.intelehealth.client.views.adapters.HorizontalAdapter;
 public class VisitSummaryActivity extends AppCompatActivity {
 
     private static final String TAG = VisitSummaryActivity.class.getSimpleName();
-
-    //Change when used with a different organization.
-    //This is a demo server.
-
     private WebView mWebView;
     private LinearLayout mLayout;
 
     String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp;
-    String identifierNumber;
 
     boolean uploaded = false;
     boolean downloaded = false;
@@ -379,6 +373,22 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 visitUuid + File.separator + physicalExamDocumentDir;
 
         phyExamDir = new File(filePathPhyExam);
+
+        flag = findViewById(R.id.flaggedcheckbox);
+        String query = "Select ifnull(emergency,'') as emergency FROM tbl_visit WHERE uuid = '" + visitUuid + "'";
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                String emergency = cursor.getString(cursor.getColumnIndex("emergency"));
+                if (emergency.equalsIgnoreCase("true")) {
+                    flag.setChecked(true);
+                }
+            }
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+
         if (!phyExamDir.exists()) {
             phyExamDir.mkdirs();
             Log.v(TAG, "directory ceated " + phyExamDir.getAbsolutePath());
@@ -434,17 +444,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if(flag.isChecked()) {
-//                    Log.d(TAG, "Emergency flag val: " + String.valueOf(flag.isChecked()));
-//                    String emergency_checked = String.valueOf(flag.isChecked());
-//                    String updateQuery = "UPDATE visit SET emergency ='" + emergency_checked + "' WHERE _id = " + visitID + "";
-//                    db.execSQL(updateQuery);
-//                }else{
-//                    Log.d(TAG, "Emergency flag val: " + String.valueOf(flag.isChecked()));
-//                    String emergency_checked = String.valueOf(flag.isChecked());
-//                    String updateQuery = "UPDATE visit SET emergency ='" + emergency_checked + "' WHERE _id = " + visitID + "";
-//                    db.execSQL(updateQuery);
-//                }
+                EmergencyEncounter emergencyEncounter = new EmergencyEncounter();
+                if (flag.isChecked()) {
+                    Log.d(TAG, "Emergency flag val: " + flag.isChecked());
+                    String emergency_checked = String.valueOf(flag.isChecked());
+                    String updateQuery = "UPDATE tbl_visit SET emergency ='" + emergency_checked + "' WHERE uuid = '" + visitUuid + "'";
+                    db.execSQL(updateQuery);
+                    emergencyEncounter.uploadEncounterEmergency(visitUuid);
+                } else {
+                    Log.d(TAG, "Emergency flag val: " + flag.isChecked());
+                    String emergency_checked = String.valueOf(flag.isChecked());
+                    String updateQuery = "UPDATE tb_visit SET emergency ='" + emergency_checked + "' WHERE uuid = '" + visitUuid + "''";
+                    db.execSQL(updateQuery);
+                }
                 if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
                     String patientSelection = "uuid = ?";
                     String[] patientArgs = {String.valueOf(patient.getUuid())};
@@ -463,52 +475,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 }
 
                 if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
-
-//                    String[] DELAYED_JOBS_PROJECTION_PAT = new String[]{DelayedJobQueueProvider._ID, DelayedJobQueueProvider.PATIENT_ID,
-//                            DelayedJobQueueProvider.JOB_TYPE, DelayedJobQueueProvider.PATIENT_NAME,
-//                            DelayedJobQueueProvider.STATUS, DelayedJobQueueProvider.DATA_RESPONSE, DelayedJobQueueProvider.SYNC_STATUS};
-//                    String SELECTION_PAT = DelayedJobQueueProvider.JOB_TYPE + "= \"patient\" AND " +
-//                            DelayedJobQueueProvider.PATIENT_ID + "= ?";
-//                    String[] ARGS_PAT = new String[]{String.valueOf(patientID)};
-//
-//                    Cursor cp = getContentResolver().query(DelayedJobQueueProvider.CONTENT_URI,
-//                            DELAYED_JOBS_PROJECTION_PAT, SELECTION_PAT, ARGS_PAT, null);
-
-
-//                    Log.i(TAG, "onClick: " + cp.getCount());
-//
-//                    if (cp != null && cp.moveToFirst()) {
-//                        Log.d(TAG, "onClick: Not In Null");
-//
-//                        int sync_status = cp.getInt(cp.getColumnIndexOrThrow(DelayedJobQueueProvider.SYNC_STATUS));
-//                        switch (sync_status) {
-//                            case ClientService.STATUS_SYNC_STOPPED: {
-//
-//                                Intent serviceIntent;
-//                                Log.i(TAG, "onClick: create patient delayed");
-//                                if (cp.getString(cp.getColumnIndex(DelayedJobQueueProvider.JOB_TYPE)).equals("patient")) {
-//
-//                                    Snackbar.make(view, "Uploading Patient.", Snackbar.LENGTH_LONG).show();
-//                                    serviceIntent = new Intent(getApplicationContext(), ClientService.class);
-//                                    serviceIntent.putExtra("serviceCall", "patient");
-//                                    serviceIntent.putExtra("patientID", cp.getInt(cp.getColumnIndex(DelayedJobQueueProvider.PATIENT_ID)));
-//                                    serviceIntent.putExtra("name", cp.getString(cp.getColumnIndex(DelayedJobQueueProvider.PATIENT_NAME)));
-//                                    serviceIntent.putExtra("status", cp.getInt(cp.getColumnIndex(DelayedJobQueueProvider.STATUS)));
-//                                    serviceIntent.putExtra("personResponse", cp.getInt(cp.getColumnIndex(DelayedJobQueueProvider.DATA_RESPONSE)));
-//                                    serviceIntent.putExtra("queueId", cp.getInt(cp.getColumnIndex(DelayedJobQueueProvider._ID)));
-//                                    startService(serviceIntent);
-//
-//                                }
-//                                break;
-//                            }
-//                            case ClientService.STATUS_SYNC_IN_PROGRESS: {
-//                                break;
-//                            }
-//                        }
-
-//                    }
-
-//                    cp.close();
                 }
 
                 if (visitUUID == null || visitUUID.isEmpty()) {
@@ -521,18 +487,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     if (visitIDCursor != null)
                         visitIDCursor.close();
                 }
+                db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
                 String[] columnsToReturn = {"startdate"};
                 String visitIDorderBy = "startdate";
                 String visitIDSelection = "uuid = ?";
                 String[] visitIDArgs = {visitUuid};
-                final Cursor visitIDCursor = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
-                visitIDCursor.moveToLast();
-                String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
-                visitIDCursor.close();
-//                EmergencyEncounter emergencyEncounter=new EmergencyEncounter();
-//                if(!flag.isChecked()) {
-//                    emergencyEncounter.removeEncounterEmergency(visitID, visitUUID, db);
-//                }
+                Cursor visitIDCursor1 = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
+                visitIDCursor1.moveToLast();
+                String startDateTime = visitIDCursor1.getString(visitIDCursor1.getColumnIndexOrThrow("startdate"));
+                visitIDCursor1.close();
+
+                if (!flag.isChecked()) {
+                    //
+                }
                 Snackbar.make(view, "Uploading to doctor.", Snackbar.LENGTH_LONG).show();
 
 
@@ -569,8 +536,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         tempView = findViewById(R.id.textView_temp_value);
 
 //        textView_temp
-        tempfaren = (TextView) findViewById(R.id.textView_temp_faren);
-        tempcel = (TextView) findViewById(R.id.textView_temp);
+        tempfaren = findViewById(R.id.textView_temp_faren);
+        tempcel = findViewById(R.id.textView_temp);
         try {
             JSONObject obj = null;
 //            #630
@@ -591,7 +558,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         spO2View = findViewById(R.id.textView_pulseox_value);
-        //    //    Respiratory added by mahiti dev team
         respiratory = findViewById(R.id.textView_respiratory_value);
         bmiView = findViewById(R.id.textView_bmi_value);
         complaintView = findViewById(R.id.textView_content_complaint);
@@ -1112,7 +1078,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String mComplaint = complaint.getValue();
 
         //Show only the headers of the complaints in the printed prescription
-        String complaints[] = StringUtils.split(mComplaint, Node.bullet_arrow);
+        String[] complaints = StringUtils.split(mComplaint, Node.bullet_arrow);
         mComplaint = "";
         String colon = ":";
         if (complaints != null) {
@@ -1350,7 +1316,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         try {
             String famHistSelection = "encounteruuid = ? AND conceptuuid = ?";
-            String[] famHistArgs = {encounterAdultIntials, String.valueOf(UuidDictionary.RHK_FAMILY_HISTORY_BLURB)};
+            String[] famHistArgs = {encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB};
             Cursor famHistCursor = db.query("tbl_obs", columns, famHistSelection, famHistArgs, null, null, null);
             famHistCursor.moveToLast();
             String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
@@ -1363,7 +1329,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         try {
             String medHistSelection = "encounteruuid = ? AND conceptuuid = ?";
 
-            String[] medHistArgs = {encounterAdultIntials, String.valueOf(UuidDictionary.RHK_MEDICAL_HISTORY_BLURB)};
+            String[] medHistArgs = {encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
 
             Cursor medHistCursor = db.query("tbl_obs", columns, medHistSelection, medHistArgs, null, null, null);
             medHistCursor.moveToLast();

@@ -49,8 +49,9 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
                 String patientStatus = "returning";
                 Intent intent = new Intent(context, PatientDetailActivity.class);
                 intent.putExtra("patientUuid", patinet.getUuid());
+                intent.putExtra("patientName", patinet.getFirstname() + "" + patinet.getLastname());
                 intent.putExtra("status", patientStatus);
-                intent.putExtra("tag", "");
+                intent.putExtra("tag", "search");
                 context.startActivity(intent);
             }
         });

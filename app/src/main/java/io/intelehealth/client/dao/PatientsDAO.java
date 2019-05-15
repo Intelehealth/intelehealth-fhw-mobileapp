@@ -29,7 +29,6 @@ public class PatientsDAO {
 
         boolean isInserted = true;
         db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        AppConstants.inteleHealthDatabaseHelper.onCreate(db);
         ContentValues values = new ContentValues();
         db.beginTransaction();
         try {
