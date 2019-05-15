@@ -214,6 +214,7 @@ public class HomeActivity extends AppCompatActivity {
         handler.removeCallbacks(runnable);
     }
     public void startHandler() {
+
         handler.postDelayed(runnable, 30*60*1000); //for 5 minutes
     }
 
