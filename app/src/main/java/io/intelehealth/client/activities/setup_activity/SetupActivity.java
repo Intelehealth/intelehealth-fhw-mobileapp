@@ -236,7 +236,7 @@ public class SetupActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
 
                 mHandler.removeCallbacksAndMessages(null);
-                mHandler.postDelayed(userStoppedTyping, 1000); // 1 second
+                mHandler.postDelayed(userStoppedTyping, 1500); // 1.5 second
 
 
             }
@@ -245,7 +245,7 @@ public class SetupActivity extends AppCompatActivity {
 
                 @Override
                 public void run() {
-                    // user didn't typed for 2 seconds, do whatever you want
+                    // user didn't typed for 1.5 seconds, do whatever you want
                     if (!mUrlField.getText().toString().trim().isEmpty() && mUrlField.getText().toString().length() >= 12 ) {
                         if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
                             String BASE_URL = "http://" + mUrlField.getText().toString() + ":8080/openmrs/ws/rest/v1/";
