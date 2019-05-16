@@ -215,7 +215,7 @@ public class HomeActivity extends AppCompatActivity {
     }
     public void startHandler() {
 
-        handler.postDelayed(runnable, 30*60*1000); //for 5 minutes
+        handler.postDelayed(runnable, 30*60*1000); //for 30 minutes
     }
 
    /* @Override
