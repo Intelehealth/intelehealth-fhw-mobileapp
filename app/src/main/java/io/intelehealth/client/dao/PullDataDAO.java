@@ -1,8 +1,6 @@
 package io.intelehealth.client.dao;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.os.AsyncTask;
 
 import com.google.gson.Gson;
 
@@ -13,10 +11,8 @@ import io.intelehealth.client.exception.DAOException;
 import io.intelehealth.client.models.pushRequestApiCall.PushRequestApiCall;
 import io.intelehealth.client.models.pushResponseApiCall.PushResponseApiCall;
 import io.intelehealth.client.utilities.Logger;
-import io.intelehealth.client.utilities.NotificationUtils;
 import io.intelehealth.client.utilities.PatientsFrameJson;
 import io.intelehealth.client.utilities.SessionManager;
-import io.intelehealth.client.views.activites.HomeActivity;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -45,10 +41,18 @@ public class PullDataDAO {
 
                 if (response.isSuccessful()) {
 
-                    pullDataExecutedTime(response.body(), context);
+//                    pullDataExecutedTime(response.body(), context);
+                    SyncDAO syncDAO = new SyncDAO();
+                    try {
+                        syncDAO.SyncData(response.body());
+                    } catch (DAOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
                 if (response.body() != null && response.body().getData() != null) {
-                    sessionManager.setPullExcutedTime(response.body().getData().getPullexecutedtime());
+                    sessionManager.setPulled(response.body().getData().getPullexecutedtime());
+//                    sessionManager.setPullExcutedTime(response.body().getData().getPullexecutedtime());
                 }
                 Logger.logD("End Pull request", "Ended");
             }
@@ -62,47 +66,49 @@ public class PullDataDAO {
         return true;
     }
 
-    public void pullDataExecutedTime(final ResponseDTO responseDTO, final Context context) {
-        class dataInserted extends AsyncTask<Void, Void, Void> {
-            private ProgressDialog dialog = new ProgressDialog(context);
-
-            @Override
-            protected Void doInBackground(Void... voids) {
-                SyncDAO syncDAO = new SyncDAO();
-                try {
-                    syncDAO.SyncData(responseDTO);
-                } catch (DAOException e) {
-                    Logger.logE("Dao exception", "exception", e);
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-
-            @Override
-            protected void onPreExecute() {
-                this.dialog.setMessage("Please wait");
-                this.dialog.setCancelable(false);
-                this.dialog.show();
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                if (dialog.isShowing()) {
-                    dialog.dismiss();
-                }
-            }
-        }
-        dataInserted dataInserted = new dataInserted();
-        dataInserted.execute();
-
-    }
+//    public void pullDataExecutedTime(final ResponseDTO responseDTO, final Context context) {
+//        class dataInserted extends AsyncTask<Void, Void, Void> {
+////            private ProgressDialog dialog = new ProgressDialog(context);
+//
+//            @Override
+//            protected Void doInBackground(Void... voids) {
+//                SyncDAO syncDAO = new SyncDAO();
+//                try {
+//                    syncDAO.SyncData(responseDTO);
+//                } catch (DAOException e) {
+//                    Logger.logE("Dao exception", "exception", e);
+//                    e.printStackTrace();
+//                }
+//                return null;
+//            }
+//
+//
+//            @Override
+//            protected void onPreExecute() {
+////                this.dialog.setMessage("Please wait");
+////                this.dialog.setCancelable(false);
+////                this.dialog.show();
+//            }
+//
+//            @Override
+//            protected void onPostExecute(Void aVoid) {
+////                if (dialog.isShowing()) {
+////                    dialog.dismiss();
+////                }
+//            }
+//        }
+//        dataInserted dataInserted = new dataInserted();
+//        dataInserted.execute();
+//
+//    }
 
     public boolean pushDataApi() {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         PatientsDAO patientsDAO = new PatientsDAO();
         VisitsDAO visitsDAO = new VisitsDAO();
         EncounterDAO encounterDAO=new EncounterDAO();
+
+
         PushRequestApiCall pushRequestApiCall;
         PatientsFrameJson patientsFrameJson = new PatientsFrameJson();
         pushRequestApiCall = patientsFrameJson.frameJson();
@@ -117,7 +123,7 @@ public class PullDataDAO {
                 .subscribe(new DisposableSingleObserver<PushResponseApiCall>() {
                     @Override
                     public void onSuccess(PushResponseApiCall pushResponseApiCall) {
-                        Logger.logD(TAG, "sucess" + pushResponseApiCall);
+                        Logger.logD(TAG, "success" + pushResponseApiCall);
                         for (int i = 0; i < pushResponseApiCall.getData().getPatientlist().size(); i++) {
                             try {
                                 patientsDAO.updateOpemmrsId(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId(), pushResponseApiCall.getData().getPatientlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getPatientlist().get(i).getUuid());

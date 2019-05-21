@@ -1,11 +1,17 @@
 package io.intelehealth.client.app;
 
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
+
+import androidx.work.Constraints;
+import androidx.work.NetworkType;
+import androidx.work.PeriodicWorkRequest;
 
 import com.snatik.storage.Storage;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 import io.intelehealth.client.database.InteleHealthDatabaseHelper;
 import io.intelehealth.client.network.ApiClient;
@@ -14,6 +20,7 @@ import io.intelehealth.client.utilities.DateAndTimeUtils;
 import io.intelehealth.client.utilities.NotificationUtils;
 import io.intelehealth.client.utilities.SqliteDbCloseHelper;
 import io.intelehealth.client.utilities.UuidGenerator;
+import io.intelehealth.client.workManager.SyncWorkManager;
 
 public class AppConstants {
     //Constants
@@ -46,15 +53,29 @@ public class AppConstants {
     //functions constants
     public static Storage storage = new Storage(IntelehealthApplication.getAppContext());
     public static InteleHealthDatabaseHelper inteleHealthDatabaseHelper = new InteleHealthDatabaseHelper(IntelehealthApplication.getAppContext());
+    public static final String UNIQUE_WORK_NAME = "intelehealth_workmanager";
     public static ApiInterface apiInterface = ApiClient.createService(ApiInterface.class);
     public static SqliteDbCloseHelper sqliteDbCloseHelper = new SqliteDbCloseHelper();
     public static DateAndTimeUtils dateAndTimeUtils = new DateAndTimeUtils();
     public static String NEW_UUID = new UuidGenerator().UuidGenerator();
-    public static NotificationUtils notificationUtils=new NotificationUtils();
+    public static SQLiteDatabase sqLiteDatabase = inteleHealthDatabaseHelper.getWritableDatabase();
 
 
     //    Sync Timings
 
     public static int SYNC = 1000 * 60 * 3;
     public static int MAXIMUM_DELAY = 1000 * 60 * 3;
+    public static NotificationUtils notificationUtils = new NotificationUtils();
+    public static int REPEAT_INTERVAL = 15;
+    public static Constraints MY_CONSTRAINTS = new Constraints.Builder()
+            .setRequiresCharging(false)
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .setRequiresBatteryNotLow(true)
+            .setRequiresStorageNotLow(true)
+            .build();
+
+    public static PeriodicWorkRequest PERIODIC_WORK_REQUEST =
+            new PeriodicWorkRequest.Builder(SyncWorkManager.class, REPEAT_INTERVAL, TimeUnit.MINUTES)
+                    .setConstraints(MY_CONSTRAINTS)
+                    .build();
 }

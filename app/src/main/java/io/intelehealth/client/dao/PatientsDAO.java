@@ -21,19 +21,19 @@ import io.intelehealth.client.utilities.Logger;
 public class PatientsDAO {
 
 
-    private SQLiteDatabase db = null;
     private int updatecount = 0;
     private long createdRecordsCount = 0;
+//    SQLiteDatabase db = null;
 
     public boolean insertPatients(List<PatientDTO> patientDTO) throws DAOException {
 
         boolean isInserted = true;
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         db.beginTransaction();
         try {
             for (PatientDTO patient : patientDTO) {
-                createPatients(patient);
+                createPatients(patient, db);
             }
             db.setTransactionSuccessful();
         } catch (SQLException e) {
@@ -47,9 +47,8 @@ public class PatientsDAO {
         return isInserted;
     }
 
-    public boolean createPatients(PatientDTO patient) throws DAOException {
+    public boolean createPatients(PatientDTO patient, SQLiteDatabase db) throws DAOException {
         boolean isCreated = true;
-
         ContentValues values = new ContentValues();
         try {
             values.put("uuid", patient.getUuid());
@@ -119,12 +118,13 @@ public class PatientsDAO {
         return isCreated;
 
     }
-    public boolean updatePatientToDB(Patient patientDTO, String uuid,List<PatientAttributesDTO> patientAttributesDTOS) throws DAOException {
+
+    public boolean updatePatientToDB(Patient patientDTO, String uuid, List<PatientAttributesDTO> patientAttributesDTOS) throws DAOException {
         boolean isCreated = true;
         long createdRecordsCount1 = 0;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        String whereclause="Uuid=?";
+        String whereclause = "Uuid=?";
         db.beginTransaction();
         List<PatientAttributesDTO> patientAttributesList = new ArrayList<PatientAttributesDTO>();
         try {
@@ -150,7 +150,7 @@ public class PatientsDAO {
 
             insertPatientAttributes(patientAttributesDTOS);
             Logger.logD("pulldata", "datadumper" + values);
-            createdRecordsCount1 = db.update("tbl_patient", values, whereclause,new String[]{uuid});
+            createdRecordsCount1 = db.update("tbl_patient", values, whereclause, new String[]{uuid});
             db.setTransactionSuccessful();
             Logger.logD("created records", "created records count" + createdRecordsCount1);
         } catch (SQLException e) {
@@ -166,8 +166,9 @@ public class PatientsDAO {
 
     public boolean patientAttributes(List<PatientAttributesDTO> patientAttributesDTOS) throws DAOException {
         boolean isInserted = true;
-
-        try (SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase()) {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
             ContentValues values = new ContentValues();
             for (int i = 0; i < patientAttributesDTOS.size(); i++) {
                 values.put("uuid", patientAttributesDTOS.get(i).getUuid());
@@ -179,10 +180,12 @@ public class PatientsDAO {
 //                Logger.logD("pulldata", "datadumper" + values);
                 db.insertWithOnConflict("tbl_patient_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             }
+            db.setTransactionSuccessful();
         } catch (SQLException e) {
             isInserted = false;
             throw new DAOException(e.getMessage(), e);
         } finally {
+            db.endTransaction();
             AppConstants.sqliteDbCloseHelper.dbClose(db);
         }
         return isInserted;
@@ -190,7 +193,7 @@ public class PatientsDAO {
 
     public List<Attribute> getPatientAttributes(String patientuuid) throws DAOException {
         List<Attribute> patientAttributesList = new ArrayList<>();
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         try {
             String query = "SELECT * from tbl_patient_attribute WHERE patientuuid= '" + patientuuid + "'";
@@ -217,7 +220,7 @@ public class PatientsDAO {
     }
 
     public String getAttributesName(String attributeuuid) throws DAOException {
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         String name = "";
         try {
@@ -242,6 +245,7 @@ public class PatientsDAO {
 
     public boolean insertPatientAttributes(List<PatientAttributesDTO> patientAttributesDTOS) throws DAOException {
         boolean isInserted = true;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         try {
             for (int i = 0; i < patientAttributesDTOS.size(); i++) {
@@ -258,7 +262,8 @@ public class PatientsDAO {
             isInserted = false;
             throw new DAOException(e.getMessage(), e);
         } finally {
-//                AppConstants.sqliteDbCloseHelper.dbClose(db);
+            db.endTransaction();
+            AppConstants.sqliteDbCloseHelper.dbClose(db);
         }
 
 
@@ -269,8 +274,9 @@ public class PatientsDAO {
 
     public boolean patinetAttributeMaster(List<PatientAttributeTypeMasterDTO> patientAttributeTypeMasterDTOS) throws DAOException {
         boolean isInserted = true;
-
-        try (SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase()) {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
             ContentValues values = new ContentValues();
             for (int i = 0; i < patientAttributeTypeMasterDTOS.size(); i++) {
                 values.put("uuid", patientAttributeTypeMasterDTOS.get(i).getUuid());
@@ -280,10 +286,12 @@ public class PatientsDAO {
 //                Logger.logD("pulldata", "datadumper" + values);
                 db.insertWithOnConflict("tbl_patient_attribute_master", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             }
+            db.setTransactionSuccessful();
         } catch (SQLException e) {
             isInserted = false;
             throw new DAOException(e.getMessage(), e);
         } finally {
+            db.endTransaction();
             AppConstants.sqliteDbCloseHelper.dbClose(db);
         }
 
@@ -292,13 +300,14 @@ public class PatientsDAO {
 
     public String getUuidForAttribute(String attr) {
         String attributeUuid = "";
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_patient_attribute_master where name = ? COLLATE NOCASE", new String[]{attr});
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
                 attributeUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
             }
         }
+        cursor.close();
 
         return attributeUuid;
     }
@@ -306,7 +315,7 @@ public class PatientsDAO {
     public boolean updateOpemmrsId(String openmrsId, String synced, String uuid) throws DAOException {
         boolean isUpdated = true;
         Logger.logD("patinetdao", "updateopenmrs " + uuid + openmrsId + synced);
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         ContentValues values = new ContentValues();
         String whereclause = "uuid=?";
@@ -332,7 +341,8 @@ public class PatientsDAO {
 
     public List<PatientDTO> unsyncedPatients() {
         List<PatientDTO> patientDTOList = new ArrayList<>();
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_patient where synced = ?", new String[]{"0"});
         PatientDTO patientDTO = new PatientDTO();
         if (idCursor.getCount() != 0) {
@@ -356,8 +366,9 @@ public class PatientsDAO {
             }
         }
         idCursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
         db.close();
-
         return patientDTOList;
     }
 

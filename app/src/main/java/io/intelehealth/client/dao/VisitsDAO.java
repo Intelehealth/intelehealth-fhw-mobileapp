@@ -17,14 +17,12 @@ import io.intelehealth.client.utilities.Logger;
 public class VisitsDAO {
 
 
-    private SQLiteDatabase db = null;
     private long createdRecordsCount = 0;
     private int updatecount = 0;
 
     public boolean insertVisitTemp(List<VisitDTO> visitDTOS) throws DAOException {
         boolean isInserted = true;
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        AppConstants.inteleHealthDatabaseHelper.onCreate(db);
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         try {
 
@@ -36,7 +34,7 @@ public class VisitsDAO {
 //                    }
 //                } else {
 //                    Logger.logD("insert", "insert has to happen");
-                createVisits(visit);
+                createVisits(visit, db);
 //                }
 //                AppConstants.sqliteDbCloseHelper.cursorClose(cursor);
             }
@@ -52,7 +50,7 @@ public class VisitsDAO {
         return isInserted;
     }
 
-    private boolean createVisits(VisitDTO visit) throws DAOException {
+    private boolean createVisits(VisitDTO visit, SQLiteDatabase db) throws DAOException {
         boolean isCreated = true;
 //        (SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase())
 //        AppConstants.inteleHealthDatabaseHelper.onCreate(db);
@@ -66,7 +64,7 @@ public class VisitsDAO {
             values.put("locationuuid", visit.getLocationuuid());
             values.put("visit_type_uuid", visit.getVisitTypeUuid());
             values.put("creator", visit.getCreator());
-            values.put("startdate", DateAndTimeUtils.formatDateFromOnetoAnother(visit.getStartdate(),"MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
+            values.put("startdate", DateAndTimeUtils.formatDateFromOnetoAnother(visit.getStartdate(), "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
             values.put("enddate", visit.getEnddate());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("synced", visit.getSyncd());
@@ -84,42 +82,43 @@ public class VisitsDAO {
         return isCreated;
     }
 
-    private boolean updateVisits(VisitDTO visit) throws DAOException {
-        boolean isUpdated = true;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        String selection = "uuid = ?";
-        db.beginTransaction();
-        try {
-//            AppConstants.inteleHealthDatabaseHelper.onCreate(db);
-
-//            for (VisitDTO visit : visitDTOS) {
-//                Logger.logD("update", "update has to happen");
-            values.put("patientuuid", visit.getPatientuuid());
-            values.put("locationuuid", visit.getLocationuuid());
-            values.put("visit_type_uuid", visit.getVisitTypeUuid());
-            values.put("creator", visit.getCreator());
-            values.put("startdate", visit.getStartdate());
-            values.put("enddate", visit.getEnddate());
-            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-            values.put("synced", visit.getSyncd());
-//                Logger.logD("pulldata", "datadumper" + values);
-            updatecount = db.updateWithOnConflict("tbl_visit", values, selection, new String[]{visit.getUuid()}, SQLiteDatabase.CONFLICT_REPLACE);
-//            }
-            db.setTransactionSuccessful();
-//            Logger.logD("updated", "updatedrecords count" + updatecount);
-        } catch (SQLException e) {
-            isUpdated = false;
-            throw new DAOException(e.getMessage(), e);
-        } finally {
-            db.endTransaction();
-        }
-        return isUpdated;
-    }
+//    private boolean updateVisits(VisitDTO visit) throws DAOException {
+//        boolean isUpdated = true;
+//        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+//        ContentValues values = new ContentValues();
+//        String selection = "uuid = ?";
+//        db.beginTransaction();
+//        try {
+////            AppConstants.inteleHealthDatabaseHelper.onCreate(db);
+//
+////            for (VisitDTO visit : visitDTOS) {
+////                Logger.logD("update", "update has to happen");
+//            values.put("patientuuid", visit.getPatientuuid());
+//            values.put("locationuuid", visit.getLocationuuid());
+//            values.put("visit_type_uuid", visit.getVisitTypeUuid());
+//            values.put("creator", visit.getCreator());
+//            values.put("startdate", visit.getStartdate());
+//            values.put("enddate", visit.getEnddate());
+//            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+//            values.put("synced", visit.getSyncd());
+////                Logger.logD("pulldata", "datadumper" + values);
+//            updatecount = db.updateWithOnConflict("tbl_visit", values, selection, new String[]{visit.getUuid()}, SQLiteDatabase.CONFLICT_REPLACE);
+////            }
+//            db.setTransactionSuccessful();
+////            Logger.logD("updated", "updatedrecords count" + updatecount);
+//        } catch (SQLException e) {
+//            isUpdated = false;
+//            throw new DAOException(e.getMessage(), e);
+//        } finally {
+//            db.endTransaction();
+//        }
+//        return isUpdated;
+//    }
 
     public List<VisitDTO> unsyncedVisits() {
         List<VisitDTO> visitDTOList = new ArrayList<>();
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit where synced = ?", new String[]{"0"});
         VisitDTO visitDTO = new VisitDTO();
         if (idCursor.getCount() != 0) {
@@ -136,15 +135,16 @@ public class VisitsDAO {
             }
         }
         idCursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
         db.close();
-
         return visitDTOList;
     }
 
-    public boolean updateVisitSync( String uuid,String synced) throws DAOException {
+    public boolean updateVisitSync(String uuid, String synced) throws DAOException {
         boolean isUpdated = true;
-        Logger.logD("visitdao", "updatesynv visit " + uuid +  synced);
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        Logger.logD("visitdao", "updatesynv visit " + uuid + synced);
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         ContentValues values = new ContentValues();
         String whereclause = "uuid=?";
@@ -168,17 +168,17 @@ public class VisitsDAO {
     }
 
 
-    public boolean updateVisitEnddate( String uuid,String enddate) throws DAOException {
+    public boolean updateVisitEnddate(String uuid, String enddate) throws DAOException {
         boolean isUpdated = true;
-        Logger.logD("visitdao", "updatesynv visit " + uuid +  enddate);
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        Logger.logD("visitdao", "updatesynv visit " + uuid + enddate);
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         ContentValues values = new ContentValues();
         String whereclause = "uuid=?";
         String[] whereargs = {uuid};
         try {
             values.put("enddate", enddate);
-            values.put("synced","0");
+            values.put("synced", "0");
             values.put("uuid", uuid);
             int i = db.update("tbl_visit", values, whereclause, whereargs);
             Logger.logD("visit", "updated" + i);
@@ -195,15 +195,20 @@ public class VisitsDAO {
         return isUpdated;
     }
 
-    public String patientUuidByViistUuid(String visituuid){
+    public String patientUuidByViistUuid(String visituuid) {
         String patientUuidByViistUuid = "";
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        db.beginTransaction();
         Cursor cursor = db.rawQuery("SELECT patientuuid FROM tbl_visit where uuid = ? ", new String[]{visituuid});
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
                 patientUuidByViistUuid = cursor.getString(cursor.getColumnIndexOrThrow("patientuuid"));
             }
         }
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
 
         return patientUuidByViistUuid;
     }

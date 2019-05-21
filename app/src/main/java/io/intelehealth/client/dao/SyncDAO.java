@@ -37,6 +37,7 @@ public class SyncDAO {
             insertAfterPull();
 
             Logger.logD(TAG, "Pull sync ended");
+            sessionManager.setPullExcutedTime(sessionManager.isPulled());
             sessionManager.setFirstTimeSyncExecute(false);
         } catch (Exception e) {
             Logger.logE(TAG, "Exception", e);

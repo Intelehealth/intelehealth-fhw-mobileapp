@@ -27,6 +27,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.WorkManager;
+
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -48,6 +51,7 @@ import io.intelehealth.client.utilities.OfflineLogin;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.views.adapters.HomeAdapter;
 
+import static io.intelehealth.client.app.AppConstants.UNIQUE_WORK_NAME;
 import static io.intelehealth.client.app.AppConstants.dbfilepath;
 
 /**
@@ -127,12 +131,14 @@ public class HomeActivity extends AppCompatActivity {
 //            }
         }
 //        if (sessionManager.isFirstTimeSyncExcuted()) {
-        PullDataDAO pullDataDAO = new PullDataDAO();
-        pullDataDAO.pullData(this);
-        AppConstants.notificationUtils.showNotifications("Sync","Sync Compledted",this);
+
+//        AppConstants.notificationUtils.showNotifications("Sync","Sync Compledted",this);
 //        pullDataDAO.pushDataApi();
 //            sessionManager.setFirstTimeSyncExecute(false);
 //        }
+
+        WorkManager.getInstance().enqueueUniquePeriodicWork(UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+
     }
 
 

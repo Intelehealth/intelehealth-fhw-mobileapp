@@ -15,13 +15,13 @@ public class LocationDAO {
 
     long createdRecordsCount = 0;
     int updatecount = 0;
-    private SQLiteDatabase db = null;
+//    private SQLiteDatabase db = null;
 
     public boolean insertLocations(List<LocationDTO> locationDTOS) throws DAOException {
 
         boolean isInserted = true;
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        AppConstants.inteleHealthDatabaseHelper.onCreate(db);
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+//        AppConstants.inteleHealthDatabaseHelper.onCreate(db);
         ContentValues values = new ContentValues();
         db.beginTransaction();
         try {
@@ -33,7 +33,7 @@ public class LocationDAO {
 //                    }
 //                } else {
 //                    Logger.logD("insert", "insert has to happen");
-                    createLocation(location);
+                createLocation(location, db);
 //                }
 //                AppConstants.sqliteDbCloseHelper.cursorClose(cursor);
             }
@@ -49,7 +49,7 @@ public class LocationDAO {
         return isInserted;
     }
 
-    private boolean createLocation(LocationDTO location) throws DAOException {
+    private boolean createLocation(LocationDTO location, SQLiteDatabase db) throws DAOException {
         boolean isCreated = true;
         ContentValues values = new ContentValues();
 //        db.beginTransaction();
@@ -76,31 +76,31 @@ public class LocationDAO {
         return isCreated;
     }
 
-    private boolean updateLocation(LocationDTO location) throws DAOException {
-        boolean isUpdated = true;
-        ContentValues values = new ContentValues();
-        String selection = "locationuuid = ?";
-        db.beginTransaction();
-        try {
-//            for (LocationDTO l : locationDTOS) {
-//                Logger.logD("insert", "insert has to happen");
-            values.put("name", location.getName());
-            values.put("retired", location.getRetired());
-                values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-                values.put("synced", "TRUE");
-//                Logger.logD("pulldata", "datadumper" + values);
-            updatecount = db.updateWithOnConflict("tbl_location", values, selection, new String[]{location.getLocationuuid()}, SQLiteDatabase.CONFLICT_REPLACE);
-//            }
-            db.setTransactionSuccessful();
-//            Logger.logD("updated", "updatedrecords count" + updatecount);
-        } catch (SQLException e) {
-            isUpdated = false;
-            throw new DAOException(e.getMessage(), e);
-        } finally {
-            db.endTransaction();
-//            AppConstants.sqliteDbCloseHelper.dbClose(db);
-        }
-        return isUpdated;
-    }
+//    private boolean updateLocation(LocationDTO location) throws DAOException {
+//        boolean isUpdated = true;
+//        ContentValues values = new ContentValues();
+//        String selection = "locationuuid = ?";
+//        db.beginTransaction();
+//        try {
+////            for (LocationDTO l : locationDTOS) {
+////                Logger.logD("insert", "insert has to happen");
+//            values.put("name", location.getName());
+//            values.put("retired", location.getRetired());
+//                values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+//                values.put("synced", "TRUE");
+////                Logger.logD("pulldata", "datadumper" + values);
+//            updatecount = db.updateWithOnConflict("tbl_location", values, selection, new String[]{location.getLocationuuid()}, SQLiteDatabase.CONFLICT_REPLACE);
+////            }
+//            db.setTransactionSuccessful();
+////            Logger.logD("updated", "updatedrecords count" + updatecount);
+//        } catch (SQLException e) {
+//            isUpdated = false;
+//            throw new DAOException(e.getMessage(), e);
+//        } finally {
+//            db.endTransaction();
+////            AppConstants.sqliteDbCloseHelper.dbClose(db);
+//        }
+//        return isUpdated;
+//    }
 
 }

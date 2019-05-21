@@ -14,12 +14,12 @@ public class ProviderDAO {
 
     long createdRecordsCount = 0;
     int updatecount = 0;
-    private SQLiteDatabase db = null;
+//    private SQLiteDatabase db = null;
 
     public boolean insertProviders(List<ProviderDTO> providerDTOS) throws DAOException {
 
         boolean isInserted = true;
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         AppConstants.inteleHealthDatabaseHelper.onCreate(db);
         ContentValues values = new ContentValues();
         db.beginTransaction();
@@ -32,7 +32,7 @@ public class ProviderDAO {
 //                    }
 //                } else {
 //                    Logger.logD("insert", "insert has to happen");
-                    createProviders(provider);
+                createProviders(provider, db);
 //                }
 //                AppConstants.sqliteDbCloseHelper.cursorClose(cursor);
             }
@@ -48,7 +48,7 @@ public class ProviderDAO {
         return isInserted;
     }
 
-    private boolean createProviders(ProviderDTO provider) throws DAOException {
+    private boolean createProviders(ProviderDTO provider, SQLiteDatabase db) throws DAOException {
         boolean isCreated = true;
 
         ContentValues values = new ContentValues();
@@ -78,34 +78,33 @@ public class ProviderDAO {
         return isCreated;
     }
 
-    private boolean updateProviders(ProviderDTO provider) throws DAOException {
-        boolean isUpdated = true;
-
-        ContentValues values = new ContentValues();
-
-        String selection = "uuid = ?";
-        db.beginTransaction();
-        try {
-//            for (ProviderDTO provider : providerDTOS) {
-//                Logger.logD("insert", "insert has to happen");
-                values.put("identifier", provider.getIdentifier());
-                values.put("given_name", provider.getGivenName());
-                values.put("family_name", provider.getFamilyName());
-                values.put("voided", provider.getVoided());
-                values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-                values.put("synced", "TRUE");
-//                Logger.logD("pulldata", "datadumper" + values);
-                updatecount = db.updateWithOnConflict("tbl_provider", values, selection, new String[]{provider.getUuid()}, SQLiteDatabase.CONFLICT_REPLACE);
-//            }
-            db.setTransactionSuccessful();
-//            Logger.logD("updated", "updatedrecords count" + updatecount);
-        } catch (SQLException e) {
-            isUpdated = false;
-            throw new DAOException(e.getMessage(), e);
-        } finally {
-            db.endTransaction();
-        }
-        return isUpdated;
-    }
+//    private boolean updateProviders(ProviderDTO provider) throws DAOException {
+//        boolean isUpdated = true;
+//
+//        ContentValues values = new ContentValues();
+//        String selection = "uuid = ?";
+//        db.beginTransaction();
+//        try {
+////            for (ProviderDTO provider : providerDTOS) {
+////                Logger.logD("insert", "insert has to happen");
+//                values.put("identifier", provider.getIdentifier());
+//                values.put("given_name", provider.getGivenName());
+//                values.put("family_name", provider.getFamilyName());
+//                values.put("voided", provider.getVoided());
+//                values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+//                values.put("synced", "TRUE");
+////                Logger.logD("pulldata", "datadumper" + values);
+//                updatecount = db.updateWithOnConflict("tbl_provider", values, selection, new String[]{provider.getUuid()}, SQLiteDatabase.CONFLICT_REPLACE);
+////            }
+//            db.setTransactionSuccessful();
+////            Logger.logD("updated", "updatedrecords count" + updatecount);
+//        } catch (SQLException e) {
+//            isUpdated = false;
+//            throw new DAOException(e.getMessage(), e);
+//        } finally {
+//            db.endTransaction();
+//        }
+//        return isUpdated;
+//    }
 
 }

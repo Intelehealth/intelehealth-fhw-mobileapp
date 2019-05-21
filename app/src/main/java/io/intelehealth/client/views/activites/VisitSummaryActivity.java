@@ -1738,6 +1738,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         }
         encounterCursor.close();
+        db.close();
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         String[] columns = {"value", " conceptuuid"};
         String visitSelection = "encounteruuid = ? ";
         String[] visitArgs = {visitnote};
@@ -1750,6 +1752,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } while (visitCursor.moveToNext());
         }
         visitCursor.close();
+        db.close();
         AppConstants.notificationUtils.showNotifications("download from doctor", "prescription Downloaded", VisitSummaryActivity.this);
     }
 

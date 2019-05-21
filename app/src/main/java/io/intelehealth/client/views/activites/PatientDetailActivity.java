@@ -40,7 +40,6 @@ import io.intelehealth.client.dto.EncounterDTO;
 import io.intelehealth.client.exception.DAOException;
 import io.intelehealth.client.node.Node;
 import io.intelehealth.client.objects.Patient;
-import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
@@ -351,7 +350,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         if (visitUuid != null&& !visitUuid.isEmpty()) {
-            CardView histCardView = (CardView) findViewById(R.id.cardView_history);
+            CardView histCardView = findViewById(R.id.cardView_history);
             histCardView.setVisibility(View.GONE);
         } else {
 
@@ -364,8 +363,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                 visitUuid = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
             }
             visitIDCursor.close();
+            db.close();
 
-
+            db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
             EncounterDAO encounterDAO = new EncounterDAO();
             String encounterIDSelection = "visituuid = ?";
             String[] encounterIDArgs = {visitUuid};
@@ -382,12 +382,14 @@ public class PatientDetailActivity extends AppCompatActivity {
 
             }
             encounterCursor.close();
-
+            db.close();
+            db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
             String medHistSelection = "encounteruuid = ? AND conceptuuid = ?";
             String[] medHistArgs = {encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
             String[] medHistColumms = {"value", " conceptuuid"};
             Cursor medHistCursor = db.query("tbl_obs", medHistColumms, medHistSelection, medHistArgs, null, null, null);
             medHistCursor.moveToLast();
+
 
             String medHistValue;
 
@@ -397,6 +399,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 medHistValue = "";
             } finally {
                 medHistCursor.close();
+                db.close();
             }
 
             if (medHistValue != null && !medHistValue.equals("")) {
@@ -405,7 +408,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 binding.textViewPatHist.setText(getString(R.string.string_no_hist));
             }
 
-
+            db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
             String famHistSelection = "encounteruuid = ? AND conceptuuid = ?";
             String[] famHistArgs = {encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB};
             String[] famHistColumns = {"value", " conceptuuid"};
@@ -419,6 +422,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 famHistValue = "";
             } finally {
                 famHistCursor.close();
+                db.close();
             }
 
             if (famHistValue != null && !famHistValue.equals("")) {
@@ -427,14 +431,14 @@ public class PatientDetailActivity extends AppCompatActivity {
                 binding.textViewFamHist.setText(getString(R.string.string_no_hist));
             }
         }
-
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         String visitSelection = "patientuuid = ?";
         String[] visitArgs = {dataString};
         String[] visitColumns = {"uuid, startdate", "enddate"};
         String visitOrderBy = "uuid";
         Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
 
-        previousVisitsList = (LinearLayout) findViewById(R.id.linearLayout_previous_visits);
+        previousVisitsList = findViewById(R.id.linearLayout_previous_visits);
         if (visitCursor.getCount() < 1) {
             neverSeen();
         } else {
@@ -453,7 +457,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                         String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
                         if (visitValue != null && !visitValue.isEmpty()) {
-                            String complaints[] = StringUtils.split(visitValue, Node.bullet_arrow);
+                            String[] complaints = StringUtils.split(visitValue, Node.bullet_arrow);
 
                             visitValue = "";
                             String colon = ":";
@@ -508,6 +512,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
         }
         visitCursor.close();
+        db.close();
 
     }
 
@@ -650,7 +655,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     private void neverSeen() {
         final LayoutInflater inflater = PatientDetailActivity.this.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.list_item_previous_visit, null);
-        TextView textView = (TextView) convertView.findViewById(R.id.textView_visit_info);
+        TextView textView = convertView.findViewById(R.id.textView_visit_info);
         String visitString = "No prior visits.";
         textView.setText(visitString);
         previousVisitsList.addView(convertView);

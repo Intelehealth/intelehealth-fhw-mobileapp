@@ -10,6 +10,8 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import io.intelehealth.client.R;
+import io.intelehealth.client.dao.PullDataDAO;
+import io.intelehealth.client.utilities.Logger;
 
 public class SyncWorkManager extends Worker {
 
@@ -24,6 +26,20 @@ public class SyncWorkManager extends Worker {
     @Override
     public Result doWork() {
         Context applicationContext = getApplicationContext();
+        Logger.logD(TAG, "result job");
+        PullDataDAO pullDataDAO = new PullDataDAO();
+        boolean pull = pullDataDAO.pullData(applicationContext);
+        if (pull)
+            sendNotification("Sync", "Synced Data");
+        else
+            sendNotification("Sync", "failed to Sync");
+
+        boolean push = pullDataDAO.pushDataApi();
+
+        if (push)
+            sendNotification("Sync", "Synced Data");
+        else
+            sendNotification("Sync", "failed to Sync");
 
         return Result.success();
     }
