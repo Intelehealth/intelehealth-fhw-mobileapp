@@ -90,5 +90,12 @@ dependencies {
 
     implementation 'org.apache.commons:commons-lang3:3.6'
 
+    // (Java only)
+    implementation 'android.arch.work:work-runtime:1.0.1'
+    // optional - RxJava2 support
+    implementation 'android.arch.work:work-rxjava2:1.0.1'
+    // optional - Test helpers
+    androidTestImplementation 'android.arch.work:work-testing:1.0.1'
+
 
 }

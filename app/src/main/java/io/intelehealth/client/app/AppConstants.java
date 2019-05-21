@@ -52,4 +52,9 @@ public class AppConstants {
     public static String NEW_UUID = new UuidGenerator().UuidGenerator();
     public static NotificationUtils notificationUtils=new NotificationUtils();
 
+
+    //    Sync Timings
+
+    public static int SYNC = 1000 * 60 * 3;
+    public static int MAXIMUM_DELAY = 1000 * 60 * 3;
 }

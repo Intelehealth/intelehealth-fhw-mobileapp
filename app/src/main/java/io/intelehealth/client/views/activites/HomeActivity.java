@@ -4,10 +4,6 @@ import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Dialog;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,7 +14,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -49,7 +44,6 @@ import io.intelehealth.client.databinding.ActivityHomeBinding;
 import io.intelehealth.client.services.DownloadProtocolsTask;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.NetworkConnection;
-import io.intelehealth.client.utilities.NotificationUtils;
 import io.intelehealth.client.utilities.OfflineLogin;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.views.adapters.HomeAdapter;
@@ -139,8 +133,8 @@ public class HomeActivity extends AppCompatActivity {
 //        pullDataDAO.pushDataApi();
 //            sessionManager.setFirstTimeSyncExecute(false);
 //        }
-
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
