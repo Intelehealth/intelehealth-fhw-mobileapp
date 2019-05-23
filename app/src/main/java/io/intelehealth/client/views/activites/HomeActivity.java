@@ -137,7 +137,12 @@ public class HomeActivity extends AppCompatActivity {
 //            sessionManager.setFirstTimeSyncExecute(false);
 //        }
 
+//        if(BuildConfig.VERSION_CODE<=APP_VERSION_CODE){
+//            SmoothUpgrade smoothUpgrade=new SmoothUpgrade(HomeActivity.this);
+//            boolean smoothupgrade=smoothUpgrade.checkingDatabase();
+//            if(smoothupgrade)
         WorkManager.getInstance().enqueueUniquePeriodicWork(UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+//        }
 
     }
 
@@ -270,12 +275,12 @@ public class HomeActivity extends AppCompatActivity {
 
     public void manageBackup(boolean isBackup, boolean isForced) {
         BackupCloud b = new BackupCloud(this);
-//        if (isBackup)
-//            b.startCloudBackup(null,false);
-//        if (!isBackup) {
-//            if (isForced) b.cloudRestoreForced();
-//            if (!isForced) b.startCloudRestore();
-//        }
+        if (isBackup)
+            b.startCloudBackup(null, false);
+        if (!isBackup) {
+            if (isForced) b.cloudRestoreForced();
+            if (!isForced) b.startCloudRestore();
+        }
     }
 
     private void parseLogOut() {

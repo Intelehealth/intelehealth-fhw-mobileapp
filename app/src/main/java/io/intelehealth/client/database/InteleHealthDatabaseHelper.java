@@ -13,7 +13,21 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = AppConstants.DATABASE_VERSION;
     public static final String DATABASE_NAME = AppConstants.DATABASE_NAME;
-    SessionManager sessionManager=null;
+    /*"openmrs_obsuuid": "5e3e7c8d-e3c3-4a1d-a391-d3d04e45df0e",
+                "openmrs_encounteruuid": "99835c05-8c5c-4d17-b96d-095fb12ebc53",
+                "conceptid": 5090,
+                "value": "54",
+                "creator": 4
+    * */
+    public static final String CREATE_ENCOUNTER_MAIN = "CREATE TABLE IF NOT EXISTS tbl_encounter (" +
+            "uuid TEXT PRIMARY KEY," +
+            "visituuid TEXT," +
+            "encounter_time TEXT," +
+            "encounter_type_uuid TEXT," +
+            "modified_date TEXT," +
+            "synced TEXT," +
+            "voided TEXT" +
+            ")";
     /*
     * "openmrs_uuid": "8ab7f041-0b02-4ac0-a8f4-aa35f90ae3a1",
                     "openmrs_id": "10213-7",
@@ -97,21 +111,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "modified_date TEXT," +
             "synced TEXT" +
             ")";
-    /*"openmrs_obsuuid": "5e3e7c8d-e3c3-4a1d-a391-d3d04e45df0e",
-                "openmrs_encounteruuid": "99835c05-8c5c-4d17-b96d-095fb12ebc53",
-                "conceptid": 5090,
-                "value": "54",
-                "creator": 4
-    * */
-    public static final String CREATE_ENCOUNTER_MAIN = "CREATE TABLE IF NOT EXISTS tbl_encounter (" +
-            "uuid TEXT PRIMARY KEY," +
-            "visituuid TEXT," +
-            "encounter_time TEXT,"+
-            "encounter_type_uuid TEXT," +
-            "modified_date TEXT," +
-            "synced TEXT," +
-            "voided TEXT" +
-            ")";
+    SessionManager sessionManager = null;
     /*"openmrs_encounteruuid": "99835c05-8c5c-4d17-b96d-095fb12ebc53",
                     "openmrs_visituuid": "8f80610c-2a8f-487e-8ee9-0c2c7ced4d89",
                     "encounter_type": "6"
@@ -153,14 +153,14 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "uuid TEXT ," +
             "name TEXT" +
             ")";
-    
+
     public InteleHealthDatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public void uuidInsert(SQLiteDatabase db){
-        sessionManager=new SessionManager(IntelehealthApplication.getAppContext());
-        if(sessionManager.isFirstTimeSyncExcuted()) {
+    public void uuidInsert(SQLiteDatabase db) {
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if (sessionManager.isFirstTimeSyncExcuted()) {
             db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('3edb0e09-9135-481e-b8f0-07a26fa9a5ce','CURRENTCOMPLAINT')");
             db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('e1761e85-9b50-48ae-8c4d-e6b7eeeba084','PHYSICAL_EXAMINATION')");
             db.execSQL("INSERT INTO tbl_uuid_dictionary (uuid,name) VALUES('5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','HEIGHT')");
@@ -217,8 +217,26 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        switch (oldVersion) {
+            case 1:
+                //upgrade logic from version 1 to 2
+            case 2:
+                //upgrade logic from version 2 to 3
+            case 3:
+                //upgrade logic from version 3 to 4
+            case 4:
+                //upgrade logic from version 4
+                alterTables(db);
+                break;
+            default:
+                throw new IllegalStateException(
+                        "onUpgrade() with unknown oldVersion " + oldVersion);
+        }
 
+    }
 
+    public void alterTables(SQLiteDatabase db) {
+        db.execSQL("Drop table  IF Exists patients");
     }
 
 }

@@ -32,10 +32,11 @@ public class AppConstants {
     public static final String IMAGE_APP_ID = "app2";
     public static final String dbfilepath = Environment.getExternalStorageDirectory() + File.separator + "InteleHealth_DB" + File.separator + "Intelehealth.db"; // directory: Intelehealth_DB   ,  filename: Intelehealth.db
     public static final String MAXIMUM_BP_SYS = "150";
+    public static String CONFIG_FILE_NAME = "config.json";
     //App vitals constants
     public static final String MAXIMUM_HEIGHT = "272";
     public static final String MAXIMUM_WEIGHT = "150";
-    public static String CONFIG_FILE_NAME = "config.json";
+    public static int APP_VERSION_CODE = 24;
     public static final String MINIMUM_BP_SYS = "50";
     public static final String MAXIMUM_BP_DSYS = "150";
     public static final String MINIMUM_BP_DSYS = "30";

@@ -397,6 +397,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
 
+
         //if patient update then age will be set
         if (patientID_edit != null) {
             int age = DateAndTimeUtils.getAge(patient1.getDate_of_birth());
@@ -465,10 +466,24 @@ public class IdentificationActivity extends AppCompatActivity {
                 mAgePicker.show();
             }
         });
+//        if (!binding.identificationGenderFemale.isChecked() && !binding.identificationGenderFemale.isChecked()) {
+//            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
+//            alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
+//            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    dialog.dismiss();
+//                }
+//            });
+//            AlertDialog alertDialog = alertDialogBuilder.create();
+//            alertDialog.show();
+//            return;
+//        }
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (patientID_edit != null) {
+
                     identificationViewModel.onPatientUpdateClicked(patient1);
                 } else {
                     identificationViewModel.onPatientCreateClicked();

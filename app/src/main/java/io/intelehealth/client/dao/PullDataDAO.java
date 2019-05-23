@@ -54,9 +54,9 @@ public class PullDataDAO {
                         e.printStackTrace();
                     }
                     if (sync)
-                        AppConstants.notificationUtils.DonwloadDone("Sync", "Successfully synced", IntelehealthApplication.getAppContext());
+                        AppConstants.notificationUtils.DownloadDone("Sync", "Successfully synced", IntelehealthApplication.getAppContext());
                     else
-                        AppConstants.notificationUtils.DonwloadDone("Sync", "failed synced,You can try again", IntelehealthApplication.getAppContext());
+                        AppConstants.notificationUtils.DownloadDone("Sync", "failed synced,You can try again", IntelehealthApplication.getAppContext());
 
                 }
 

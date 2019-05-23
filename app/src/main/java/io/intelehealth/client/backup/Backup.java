@@ -17,6 +17,7 @@ import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.InteleHealthDatabaseHelper;
 import io.intelehealth.client.utilities.SessionManager;
 
@@ -40,14 +41,14 @@ public class Backup {
         boolean exists = false;
         try {
 
-            dbpath = String.valueOf(context.getDatabasePath("localRecords.db").getPath());
+            dbpath = String.valueOf(context.getDatabasePath(AppConstants.DATABASE_NAME).getPath());
 
             Log.d("dbpath", dbpath);
             // checkDB = SQLiteDatabase.openDatabase(dbpath, null, SQLiteDatabase.OPEN_READONLY);
             // check user_provider table, if empty, db empty
             InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(context);
             SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
-            String query = "SELECT * FROM patient"; // patient is the first table to get populated
+            String query = "SELECT * FROM tbl_patient"; // patient is the first table to get populated
             Cursor cursor = sqLiteDatabase.rawQuery(query, null);
             // data already exists on db
 // restore of db is required
@@ -73,15 +74,15 @@ public class Backup {
                 myDir.mkdir();
             }
             //file created inside internal memory, outside app package, doesnt delete if app is uninstalled
-            newfilepath = Environment.getExternalStorageDirectory() + File.separator + "InteleHealth_DB" +
-                    File.separator + "Intelehealth.db"; // directory: Intelehealth_DB   ,  filename: Intelehealth.db
-            Log.d("newfilepath", newfilepath);
-            myfile = new File(newfilepath);
+//            newfilepath = Environment.getExternalStorageDirectory() + File.separator + "InteleHealth_DB" +
+//                    File.separator + "Intelehealth.db"; // directory: Intelehealth_DB   ,  filename: Intelehealth.db
+            Log.d("newfilepath", AppConstants.dbfilepath);
+            myfile = new File(AppConstants.dbfilepath);
             Log.d("myfile path", myfile.getPath());
             if (myfile.exists()) {
             } else {
             }
-            dbfile = new File(context.getDatabasePath("localRecords.db").getPath());
+            dbfile = new File(context.getDatabasePath(AppConstants.DATABASE_NAME).getPath());
             if (dbfile.exists()) {
                 dbfile.createNewFile();
             } else {

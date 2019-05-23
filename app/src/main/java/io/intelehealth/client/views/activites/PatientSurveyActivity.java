@@ -178,7 +178,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         obsDAO.insertObsToDb(obsDTOList);
 
 
-        AppConstants.notificationUtils.DonwloadDone("Upload survey", "Survey uploaded", PatientSurveyActivity.this);
+        AppConstants.notificationUtils.DownloadDone("Upload survey", "Survey uploaded", PatientSurveyActivity.this);
 
 
     }
@@ -194,7 +194,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         PullDataDAO pullDataDAO = new PullDataDAO();
         pullDataDAO.pushDataApi();
 
-        AppConstants.notificationUtils.DonwloadDone("End visit", "Visit ended", PatientSurveyActivity.this);
+        AppConstants.notificationUtils.DownloadDone("End visit", "Visit ended", PatientSurveyActivity.this);
         SharedPreferences.Editor editor = context.getSharedPreferences(patientUuid + "_" + visitUuid, MODE_PRIVATE).edit();
         editor.remove("exam_" + patientUuid + "_" + visitUuid);
         editor.commit();

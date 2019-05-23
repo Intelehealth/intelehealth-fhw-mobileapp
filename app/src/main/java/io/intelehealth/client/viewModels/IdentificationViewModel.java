@@ -164,11 +164,6 @@ public class IdentificationViewModel extends AndroidViewModel {
             return;
         } else
             dateofbirtherror.setValue("");
-        if (gender.getValue() == null) {
-            gendererror.setValue("gender is missing");
-            return;
-        } else
-            gendererror.setValue("");
         if (village.getValue() == null) {
             villageerror.setValue("village is missing");
             return;
@@ -185,9 +180,9 @@ public class IdentificationViewModel extends AndroidViewModel {
                 PullDataDAO pullDataDAO = new PullDataDAO();
                 boolean push = pullDataDAO.pushDataApi();
                 if (push)
-                    AppConstants.notificationUtils.DonwloadDone("Patient", "Submitted" + patientdto.getFirstname() + "" + patientdto.getLastname(), getApplication());
+                    AppConstants.notificationUtils.DownloadDone("Patient", "Submitted" + patientdto.getFirstname() + "" + patientdto.getLastname(), getApplication());
                 else
-                    AppConstants.notificationUtils.DonwloadDone("Patient", "failed to submit" + patientdto.getFirstname() + "" + patientdto.getLastname(), getApplication());
+                    AppConstants.notificationUtils.DownloadDone("Patient", "failed to submit" + patientdto.getFirstname() + "" + patientdto.getLastname(), getApplication());
             }
             if (b) {
                 Logger.logD(TAG, "inserted");
@@ -294,6 +289,7 @@ public class IdentificationViewModel extends AndroidViewModel {
             return;
         } else
             villageerror.setValue("");
+
         try {
             Logger.logD(TAG, "update ");
             boolean b = patientsDAO.updatePatientToDB(patientdto, uuid, patientAttributesDTOList);

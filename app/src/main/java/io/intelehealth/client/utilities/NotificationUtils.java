@@ -40,7 +40,7 @@ public class NotificationUtils {
 
     }
 
-    public void showNotificationProgress(String title, String text, Context context, Integer[] progress) {
+    public void showNotificationProgress(String title, String text, Context context, Integer progress) {
         this.context = context;
         NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         //mahiti added
@@ -57,12 +57,12 @@ public class NotificationUtils {
         mBuilder.setContentTitle(title)
                 .setContentText(text)
                 .setSmallIcon(R.drawable.ic_cloud_upload);
-        mBuilder.setProgress(100, progress[0], false);
+        mBuilder.setProgress(100, progress, false);
         mNotifyManager.notify(mId, mBuilder.build());
 
     }
 
-    public void DonwloadDone(String title, String text, Context context) {
+    public void DownloadDone(String title, String text, Context context) {
         this.context = context;
         NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 

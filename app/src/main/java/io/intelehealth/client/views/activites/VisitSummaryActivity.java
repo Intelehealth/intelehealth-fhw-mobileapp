@@ -457,7 +457,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
                     Log.d(TAG, "Emergency flag val: " + flag.isChecked());
                     String emergency_checked = String.valueOf(flag.isChecked());
-                    String updateQuery = "UPDATE tb_visit SET emergency ='" + emergency_checked + "' WHERE uuid = '" + visitUuid + "'";
+                    String updateQuery = "UPDATE tbl_visit SET emergency ='" + emergency_checked + "' WHERE uuid = '" + visitUuid + "'";
                     db.execSQL(updateQuery);
                     db.close();
                 }
@@ -511,9 +511,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 PullDataDAO pullDataDAO = new PullDataDAO();
                 boolean pull = pullDataDAO.pushDataApi();
                 if (pull)
-                    AppConstants.notificationUtils.DonwloadDone("Upload to doctor", "uploaded", VisitSummaryActivity.this);
+                    AppConstants.notificationUtils.DownloadDone("Upload to doctor", "uploaded", VisitSummaryActivity.this);
                 else
-                    AppConstants.notificationUtils.DonwloadDone("Upload to doctor", "failed to Uploaded", VisitSummaryActivity.this);
+                    AppConstants.notificationUtils.DownloadDone("Upload to doctor", "failed to Uploaded", VisitSummaryActivity.this);
 
             }
 
@@ -974,10 +974,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 PullDataDAO pullDataDAO = new PullDataDAO();
                 boolean pull = pullDataDAO.pullData(VisitSummaryActivity.this);
                 if (pull)
-                    AppConstants.notificationUtils.DonwloadDone("download from doctor", "prescription Downloaded", VisitSummaryActivity.this);
+                    AppConstants.notificationUtils.DownloadDone("download from doctor", "prescription Downloaded", VisitSummaryActivity.this);
                 else
-                    AppConstants.notificationUtils.DonwloadDone("download from doctor", "no prescription Downloaded", VisitSummaryActivity.this);
-                downloadPrescription();
+                    AppConstants.notificationUtils.DownloadDone("download from doctor", "no prescription Downloaded", VisitSummaryActivity.this);
+                if (!downloaded)
+                    downloadPrescription();
+                else
+                    return;
+
                 //mLayout.addView(downloadButton, mLayout.getChildCount());
             }
         });
@@ -1735,7 +1739,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     public void downloadPrescription() {
         db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        downloaded = true;
         String visitnote = "";
         EncounterDAO encounterDAO = new EncounterDAO();
         String encounterIDSelection = "visituuid = ?";
@@ -1765,6 +1768,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         visitCursor.close();
         db.close();
+        downloaded = true;
+
 
     }
 

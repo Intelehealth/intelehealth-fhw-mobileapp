@@ -11,18 +11,18 @@ public class SessionManager {
     private static final String BASE_URL = "base_url";
     private static final String ENCODED = "encoded";
     private static final String PULL_EXECUTED_TIME = "pullexecutedtime";
-    public static final String KEY_PREF_SETUP_COMPLETE = "setup";
+    private static final String KEY_PREF_SETUP_COMPLETE = "setup";
     private static final String APP_LANGUAGE = "Language";
     private static final String SESSION_ID = "sessionid";
     private static final String CREATOR_ID = "creatorid";
     private static final String PROVIDER_ID = "providerid";
     private static final String CHWNAME = "chwname";
-    public static final String KEY_PREF_SERVER_URL_REST = "serverurl";
-    public static final String KEY_PREF_SERVER_URL = "url";
-    public static final String KEY_PREF_SERVER_URL_BASE = "serverurlbase";
-    public static final String KEY_PREF_LOCATION_UUID = "locationuuid";
-    public static final String KEY_PREF_LOCATION_NAME = "locationname";
-    public static final String KEY_PREF_LOCATION_DESCRIPTION = "locationdesc";
+    private static final String KEY_PREF_SERVER_URL_REST = "serverurl";
+    private static final String KEY_PREF_SERVER_URL = "url";
+    private static final String KEY_PREF_SERVER_URL_BASE = "serverurlbase";
+    private static final String KEY_PREF_LOCATION_UUID = "locationuuid";
+    private static final String KEY_PREF_LOCATION_NAME = "locationname";
+    private static final String KEY_PREF_LOCATION_DESCRIPTION = "locationdesc";
     private static final String LICENSE_KEY = "licensekey";
     private static final String DATE = "date";
     private static final String TIME = "time";
@@ -30,6 +30,7 @@ public class SessionManager {
     private static final String LICENSE = "license";
     private static final String RETURNING = "returning";
     private static final String PULLED = "pulled";
+    private static final String NEW_DATABASE = "newDatabase";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -253,6 +254,22 @@ public class SessionManager {
     public void setPulled(String pulled) {
         editor.putString(PULLED, pulled);
         editor.commit();
+    }
+
+    public String getNewDatabase() {
+        return pref.getString(NEW_DATABASE, "");
+    }  //getting the sync value  and time and saving in the sharedpref
+
+    public void setNewDatabase(String newDatabase) {
+        editor.putString(NEW_DATABASE, newDatabase);
+        editor.commit();
+    }
+
+    public boolean newDatabaseContains(String value) {
+        boolean hasvalue = false;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(_context);
+        hasvalue = sharedPreferences.contains(value);
+        return hasvalue;
     }
 
 }

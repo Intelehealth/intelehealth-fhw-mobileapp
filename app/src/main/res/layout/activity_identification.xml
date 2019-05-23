@@ -192,8 +192,7 @@
                             android:drawableLeft="@drawable/male_icon"
                             android:drawablePadding="10dp"
                             android:text="@string/identification_screen_checkbox_male"
-                            android:textSize="@dimen/id_screen_text_size"
-                            android:visibility="@{config.mGenderM() ? View.GONE: View.VISIBLE}" />
+                            android:textSize="@dimen/id_screen_text_size" />
 
                         <RadioButton
                             android:id="@+id/identification_gender_female"
@@ -204,8 +203,7 @@
                             android:drawableLeft="@drawable/female_icon"
                             android:drawablePadding="10dp"
                             android:text="@string/identification_screen_checkbox_female"
-                            android:textSize="@dimen/id_screen_text_size"
-                            android:visibility="@{config.mGenderF() ? View.GONE: View.VISIBLE}" />
+                            android:textSize="@dimen/id_screen_text_size" />
 
                     </RadioGroup>
 
