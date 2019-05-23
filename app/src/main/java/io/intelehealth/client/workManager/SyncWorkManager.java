@@ -28,19 +28,19 @@ public class SyncWorkManager extends Worker {
         Context applicationContext = getApplicationContext();
         Logger.logD(TAG, "result job");
         PullDataDAO pullDataDAO = new PullDataDAO();
-        boolean pull = pullDataDAO.pullData(applicationContext);
-        if (pull)
-            sendNotification("Sync", "Synced Data");
-        else
-            sendNotification("Sync", "failed to Sync");
+        pullDataDAO.pullData(applicationContext);
+//        if (pull)
+//            sendNotification("Sync", "Synced Data");
+//        else
+//            sendNotification("Sync", "failed to Sync");
 
-        boolean push = pullDataDAO.pushDataApi();
+        pullDataDAO.pushDataApi();
 
-        if (push)
-            sendNotification("Sync", "Synced Data");
-        else
-            sendNotification("Sync", "failed to Sync");
-
+//        if (push)
+//            sendNotification("Sync", "Synced Data");
+//        else
+//            sendNotification("Sync", "failed to Sync");
+//
         return Result.success();
     }
 

@@ -15,6 +15,7 @@ public class EmergencyEncounter {
         SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
         Date todayDate = new Date();
         String thisDate = currentDate.format(todayDate);
+
         EncounterDAO encounterDAO = new EncounterDAO();
         EncounterDTO encounterDTO = new EncounterDTO();
         encounterDTO.setEncounterTime(thisDate);

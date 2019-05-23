@@ -113,7 +113,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 String thisDate = currentDate.format(todayDate);
 
 
-                String uuid = AppConstants.NEW_UUID;
+                String uuid = UUID.randomUUID().toString();
                 EncounterDAO encounterDAO = new EncounterDAO();
                 encounterDTO = new EncounterDTO();
                 encounterDTO.setUuid(UUID.randomUUID().toString());

@@ -23,7 +23,6 @@ import io.intelehealth.client.dto.PatientAttributesDTO;
 import io.intelehealth.client.dto.PatientDTO;
 import io.intelehealth.client.exception.DAOException;
 import io.intelehealth.client.objects.Patient;
-import io.intelehealth.client.utilities.DateAndTimeUtils;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.NetworkConnection;
 import io.intelehealth.client.utilities.SessionManager;
@@ -182,9 +181,13 @@ public class IdentificationViewModel extends AndroidViewModel {
             if (NetworkConnection.isOnline(getApplication())) {
 //                patientApiCall();
 //                frameJson();
-                PullDataDAO pullDataDAO = new PullDataDAO();
-                pullDataDAO.pushDataApi();
                 AppConstants.notificationUtils.showNotifications("Patient pushed", "Patient" + patientdto.getFirstname() + "" + patientdto.getLastname(), getApplication());
+                PullDataDAO pullDataDAO = new PullDataDAO();
+                boolean push = pullDataDAO.pushDataApi();
+                if (push)
+                    AppConstants.notificationUtils.DonwloadDone("Patient", "Submitted" + patientdto.getFirstname() + "" + patientdto.getLastname(), getApplication());
+                else
+                    AppConstants.notificationUtils.DonwloadDone("Patient", "failed to submit" + patientdto.getFirstname() + "" + patientdto.getLastname(), getApplication());
             }
             if (b) {
                 Logger.logD(TAG, "inserted");

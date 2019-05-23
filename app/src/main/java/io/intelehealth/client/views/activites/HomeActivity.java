@@ -205,13 +205,13 @@ public class HomeActivity extends AppCompatActivity {
                 pullDataDAO.pushDataApi();
                 AppConstants.notificationUtils.showNotifications("Sync","Sync Completed",this);
                 return true;
-//            case R.id.backupOption:
-//                manageBackup(true, false);  // to backup app data at any time of the day
-//                return true;
-//
-//            case R.id.restoreOption:
-//                manageBackup(false, false); // to restore app data if db is empty
-//                return true;
+            case R.id.backupOption:
+                manageBackup(true, false);  // to backup app data at any time of the day
+                return true;
+
+            case R.id.restoreOption:
+                manageBackup(false, false); // to restore app data if db is empty
+                return true;
 
             case R.id.logoutOption:
                 manageBackup(true, false);

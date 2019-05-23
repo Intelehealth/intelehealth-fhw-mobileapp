@@ -38,22 +38,28 @@ public class PullDataDAO {
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
             @Override
             public void onResponse(Call<ResponseDTO> call, Response<ResponseDTO> response) {
-
-                if (response.isSuccessful()) {
-
-//                    pullDataExecutedTime(response.body(), context);
-                    SyncDAO syncDAO = new SyncDAO();
-                    try {
-                        syncDAO.SyncData(response.body());
-                    } catch (DAOException e) {
-                        e.printStackTrace();
-                    }
-
-                }
+                AppConstants.notificationUtils.showNotifications("Sync", "Syncing", IntelehealthApplication.getAppContext());
                 if (response.body() != null && response.body().getData() != null) {
                     sessionManager.setPulled(response.body().getData().getPullexecutedtime());
 //                    sessionManager.setPullExcutedTime(response.body().getData().getPullexecutedtime());
                 }
+                if (response.isSuccessful()) {
+
+//                    pullDataExecutedTime(response.body(), context);
+                    SyncDAO syncDAO = new SyncDAO();
+                    boolean sync = false;
+                    try {
+                        sync = syncDAO.SyncData(response.body());
+                    } catch (DAOException e) {
+                        e.printStackTrace();
+                    }
+                    if (sync)
+                        AppConstants.notificationUtils.DonwloadDone("Sync", "Successfully synced", IntelehealthApplication.getAppContext());
+                    else
+                        AppConstants.notificationUtils.DonwloadDone("Sync", "failed synced,You can try again", IntelehealthApplication.getAppContext());
+
+                }
+
                 Logger.logD("End Pull request", "Ended");
             }
 
@@ -106,7 +112,7 @@ public class PullDataDAO {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         PatientsDAO patientsDAO = new PatientsDAO();
         VisitsDAO visitsDAO = new VisitsDAO();
-        EncounterDAO encounterDAO=new EncounterDAO();
+        EncounterDAO encounterDAO = new EncounterDAO();
 
 
         PushRequestApiCall pushRequestApiCall;
@@ -140,9 +146,9 @@ public class PullDataDAO {
                             }
                         }
 
-                        for(int i=0;i<pushResponseApiCall.getData().getEncounterlist().size();i++){
+                        for (int i = 0; i < pushResponseApiCall.getData().getEncounterlist().size(); i++) {
                             try {
-                                encounterDAO.updateEncounterSync(pushResponseApiCall.getData().getEncounterlist().get(i).getSyncd().toString(),pushResponseApiCall.getData().getEncounterlist().get(i).getUuid());
+                                encounterDAO.updateEncounterSync(pushResponseApiCall.getData().getEncounterlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getEncounterlist().get(i).getUuid());
                             } catch (DAOException e) {
                                 e.printStackTrace();
                             }

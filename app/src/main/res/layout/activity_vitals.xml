@@ -243,7 +243,6 @@
                             android:imeOptions="actionUnspecified"
                             android:inputType="numberDecimal"
                             android:maxLines="1"
-                            android:visibility="@{config.celsius() ? View.GONE: View.VISIBLE}"
                             android:singleLine="true"
                             android:tag="@string/tag_optional" />
 
@@ -258,7 +257,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Temperature (F)"
-                            android:visibility="@{config.fahrenheit() ? View.GONE: View.VISIBLE}"
                             android:imeOptions="actionUnspecified"
                             android:inputType="numberDecimal"
                             android:maxLines="1"

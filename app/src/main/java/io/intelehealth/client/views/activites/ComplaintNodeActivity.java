@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
@@ -81,7 +82,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
         Date todayDate = new Date();
         String thisDate = currentDate.format(todayDate);
-        encounterAdultIntials = AppConstants.NEW_UUID;
+        encounterAdultIntials = UUID.randomUUID().toString();
         EncounterDAO encounterDAO = new EncounterDAO();
         encounterDTO = new EncounterDTO();
         encounterDTO.setUuid(encounterAdultIntials);
@@ -98,11 +99,11 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         setTitle(patientName + ": " + getTitle());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complaint_node);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,7 +113,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         });
 
 
-        ListView complaintList = (ListView) findViewById(R.id.complaint_list_view);
+        ListView complaintList = findViewById(R.id.complaint_list_view);
         if (complaintList != null) {
             complaintList.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
             complaintList.setClickable(true);
@@ -127,7 +128,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         JSONObject currentFile = null;
         if (hasLicense) {
             File base_dir = new File(getFilesDir().getAbsolutePath() + File.separator + AppConstants.JSON_FOLDER);
-            File files[] = base_dir.listFiles();
+            File[] files = base_dir.listFiles();
             for (File file : files) {
                 try {
                     currentFile = new JSONObject(FileUtils.readFile(file.getName(), this));
@@ -203,9 +204,9 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
                 alertDialogBuilder.setTitle(R.string.complaint_dialog_title);
                 final LayoutInflater inflater = getLayoutInflater();
-                View convertView = (View) inflater.inflate(R.layout.list_dialog_complaint, null);
+                View convertView = inflater.inflate(R.layout.list_dialog_complaint, null);
                 alertDialogBuilder.setView(convertView);
-                ListView listView = (ListView) convertView.findViewById(R.id.complaint_dialog_list_view);
+                ListView listView = convertView.findViewById(R.id.complaint_dialog_list_view);
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, displaySelection);
                 listView.setAdapter(arrayAdapter);
                 alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {

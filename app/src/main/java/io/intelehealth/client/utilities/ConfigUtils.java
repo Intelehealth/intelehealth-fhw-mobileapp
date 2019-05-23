@@ -8,11 +8,12 @@ import org.json.JSONObject;
 
 import io.intelehealth.client.app.IntelehealthApplication;
 
+import static io.intelehealth.client.app.AppConstants.CONFIG_FILE_NAME;
+
 public class ConfigUtils {
     public static String TAG = ConfigUtils.class.getSimpleName();
     SessionManager sessionManager = null;
     Context context;
-    private String mFileName = "config.json";
 
     public ConfigUtils(Context context) {
         this.context = context;
@@ -23,10 +24,10 @@ public class ConfigUtils {
         JSONObject obj = null;
         try {
             if (sessionManager.valueContains("licensekey")) {
-                obj = new JSONObject(FileUtils.readFileRoot(mFileName, context)); //Load the config file
+                obj = new JSONObject(FileUtils.readFileRoot(CONFIG_FILE_NAME, context)); //Load the config file
 
             } else {
-                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(context, mFileName)));
+                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(context, CONFIG_FILE_NAME)));
 
             }
         } catch (JSONException e) {

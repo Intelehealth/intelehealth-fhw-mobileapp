@@ -20,7 +20,7 @@ public class ProviderDAO {
 
         boolean isInserted = true;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        AppConstants.inteleHealthDatabaseHelper.onCreate(db);
+//        AppConstants.inteleHealthDatabaseHelper.onCreate(db);
         ContentValues values = new ContentValues();
         db.beginTransaction();
         try {

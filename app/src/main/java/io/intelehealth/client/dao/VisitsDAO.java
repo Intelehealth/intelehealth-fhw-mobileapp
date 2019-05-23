@@ -119,7 +119,7 @@ public class VisitsDAO {
         List<VisitDTO> visitDTOList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit where synced = ?", new String[]{"0"});
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit where synced = ? OR synced=? COLLATE NOCASE", new String[]{"0", "false"});
         VisitDTO visitDTO = new VisitDTO();
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
@@ -179,7 +179,6 @@ public class VisitsDAO {
         try {
             values.put("enddate", enddate);
             values.put("synced", "0");
-            values.put("uuid", uuid);
             int i = db.update("tbl_visit", values, whereclause, whereargs);
             Logger.logD("visit", "updated" + i);
             db.setTransactionSuccessful();

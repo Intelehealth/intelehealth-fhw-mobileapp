@@ -31,11 +31,11 @@ public class AppConstants {
     public static final String MIND_MAP_SERVER_URL = "http://165.227.97.214:1337/parse/";
     public static final String IMAGE_APP_ID = "app2";
     public static final String dbfilepath = Environment.getExternalStorageDirectory() + File.separator + "InteleHealth_DB" + File.separator + "Intelehealth.db"; // directory: Intelehealth_DB   ,  filename: Intelehealth.db
-
+    public static final String MAXIMUM_BP_SYS = "150";
     //App vitals constants
     public static final String MAXIMUM_HEIGHT = "272";
     public static final String MAXIMUM_WEIGHT = "150";
-    public static final String MAXIMUM_BP_SYS = "300";
+    public static String CONFIG_FILE_NAME = "config.json";
     public static final String MINIMUM_BP_SYS = "50";
     public static final String MAXIMUM_BP_DSYS = "150";
     public static final String MINIMUM_BP_DSYS = "30";
@@ -59,13 +59,13 @@ public class AppConstants {
     public static DateAndTimeUtils dateAndTimeUtils = new DateAndTimeUtils();
     public static String NEW_UUID = new UuidGenerator().UuidGenerator();
     public static SQLiteDatabase sqLiteDatabase = inteleHealthDatabaseHelper.getWritableDatabase();
-
+    public static NotificationUtils notificationUtils = new NotificationUtils();
 
     //    Sync Timings
 
     public static int SYNC = 1000 * 60 * 3;
     public static int MAXIMUM_DELAY = 1000 * 60 * 3;
-    public static NotificationUtils notificationUtils = new NotificationUtils();
+
     public static int REPEAT_INTERVAL = 15;
     public static Constraints MY_CONSTRAINTS = new Constraints.Builder()
             .setRequiresCharging(false)

@@ -16,19 +16,26 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
+import io.intelehealth.client.dao.EncounterDAO;
 import io.intelehealth.client.dao.ObsDAO;
 import io.intelehealth.client.databinding.ActivityVitalsBinding;
 import io.intelehealth.client.dto.ObsDTO;
+import io.intelehealth.client.exception.DAOException;
 import io.intelehealth.client.objects.VitalsObject;
 import io.intelehealth.client.utilities.ConfigUtils;
+import io.intelehealth.client.utilities.FileUtils;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UuidDictionary;
+
+import static io.intelehealth.client.app.AppConstants.CONFIG_FILE_NAME;
 
 public class VitalsActivity extends AppCompatActivity {
     private static final String TAG = VitalsActivity.class.getSimpleName();
@@ -80,6 +87,24 @@ public class VitalsActivity extends AppCompatActivity {
 
         if (intentTag != null && intentTag.equals("edit")) {
             loadPrevious();
+        }
+        try {
+            JSONObject obj = null;
+            if (sessionManager.valueContains("licensekey")) {
+                obj = new JSONObject(FileUtils.readFileRoot(CONFIG_FILE_NAME, VitalsActivity.this)); //Load the config file
+            } else {
+                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(VitalsActivity.this, CONFIG_FILE_NAME)));
+            }
+            if (obj.getBoolean("mCelsius")) {
+                binding.tableTemp.setVisibility(View.VISIBLE);
+                binding.tableTempFaren.setVisibility(View.GONE);
+
+            } else if (obj.getBoolean("mFahrenheit")) {
+                binding.tableTempFaren.setVisibility(View.VISIBLE);
+                binding.tableTemp.setVisibility(View.GONE);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
         binding.tableHeight.addTextChangedListener(new TextWatcher() {
@@ -594,7 +619,7 @@ public class VitalsActivity extends AppCompatActivity {
         ObsDTO obsDTO=new ObsDTO();
         if (intentTag != null && intentTag.equals("edit")) {
             obsDTO=new ObsDTO();
-            obsDTO.setConceptuuid(String.valueOf(UuidDictionary.HEIGHT));
+            obsDTO.setConceptuuid(UuidDictionary.HEIGHT);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getHeight());
@@ -603,7 +628,7 @@ public class VitalsActivity extends AppCompatActivity {
             obsDAO.updateObs(obsDTO);
 
             obsDTO=new ObsDTO();
-            obsDTO.setConceptuuid(String.valueOf(UuidDictionary.WEIGHT));
+            obsDTO.setConceptuuid(UuidDictionary.WEIGHT);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getWeight());
@@ -612,7 +637,7 @@ public class VitalsActivity extends AppCompatActivity {
             obsDAO.updateObs(obsDTO);
 
             obsDTO=new ObsDTO();
-            obsDTO.setConceptuuid(String.valueOf(UuidDictionary.PULSE));
+            obsDTO.setConceptuuid(UuidDictionary.PULSE);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getPulse());
@@ -621,7 +646,7 @@ public class VitalsActivity extends AppCompatActivity {
             obsDAO.updateObs(obsDTO);
 
             obsDTO=new ObsDTO();
-            obsDTO.setConceptuuid(String.valueOf(UuidDictionary.SYSTOLIC_BP));
+            obsDTO.setConceptuuid(UuidDictionary.SYSTOLIC_BP);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getBpsys());
@@ -630,7 +655,7 @@ public class VitalsActivity extends AppCompatActivity {
             obsDAO.updateObs(obsDTO);
 
             obsDTO=new ObsDTO();
-            obsDTO.setConceptuuid(String.valueOf(UuidDictionary.DIASTOLIC_BP));
+            obsDTO.setConceptuuid(UuidDictionary.DIASTOLIC_BP);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getBpdia());
@@ -639,7 +664,7 @@ public class VitalsActivity extends AppCompatActivity {
             obsDAO.updateObs(obsDTO);
 
             obsDTO=new ObsDTO();
-            obsDTO.setConceptuuid(String.valueOf(UuidDictionary.TEMPERATURE));
+            obsDTO.setConceptuuid(UuidDictionary.TEMPERATURE);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getTemperature());
@@ -648,7 +673,7 @@ public class VitalsActivity extends AppCompatActivity {
             obsDAO.updateObs(obsDTO);
 
             obsDTO=new ObsDTO();
-            obsDTO.setConceptuuid(String.valueOf(UuidDictionary.RESPIRATORY));
+            obsDTO.setConceptuuid(UuidDictionary.RESPIRATORY);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getTemperature());
@@ -657,13 +682,20 @@ public class VitalsActivity extends AppCompatActivity {
             obsDAO.updateObs(obsDTO);
 
             obsDTO=new ObsDTO();
-            obsDTO.setConceptuuid(String.valueOf(UuidDictionary.SPO2));
+            obsDTO.setConceptuuid(UuidDictionary.SPO2);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getSpo2());
             obsDTO.setUuid(AppConstants.NEW_UUID);
 
             obsDAO.updateObs(obsDTO);
+            //making flag to false in the encounter table so it will sync again
+            EncounterDAO encounterDAO = new EncounterDAO();
+            try {
+                encounterDAO.updateEncounterSync("0", encounterVitals);
+            } catch (DAOException e) {
+                e.printStackTrace();
+            }
 
             Intent intent = new Intent(VitalsActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientUuid", patientUuid);
@@ -675,71 +707,71 @@ public class VitalsActivity extends AppCompatActivity {
             intent.putExtra("tag", intentTag);
             startActivity(intent);
         } else {
-            List<ObsDTO> obsDTOS=new ArrayList<>();
+
             obsDTO=new ObsDTO();
-            obsDTO.setConceptuuid(String.valueOf(UuidDictionary.HEIGHT));
+            obsDTO.setConceptuuid(UuidDictionary.HEIGHT);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getHeight());
             obsDTO.setUuid(AppConstants.NEW_UUID);
 
-            obsDTOS.add(obsDTO);
+            obsDAO.insertObs(obsDTO);
 
             obsDTO=new ObsDTO();
-            obsDTO.setConceptuuid(String.valueOf(UuidDictionary.WEIGHT));
+            obsDTO.setConceptuuid(UuidDictionary.WEIGHT);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getWeight());
 
-            obsDTOS.add(obsDTO);
+            obsDAO.insertObs(obsDTO);
 
             obsDTO=new ObsDTO();
-            obsDTO.setConceptuuid(String.valueOf(UuidDictionary.PULSE));
+            obsDTO.setConceptuuid(UuidDictionary.PULSE);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getPulse());
 
-            obsDTOS.add(obsDTO);
+            obsDAO.insertObs(obsDTO);
 
             obsDTO=new ObsDTO();
-            obsDTO.setConceptuuid(String.valueOf(UuidDictionary.SYSTOLIC_BP));
+            obsDTO.setConceptuuid(UuidDictionary.SYSTOLIC_BP);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getBpsys());
 
-            obsDTOS.add(obsDTO);
+            obsDAO.insertObs(obsDTO);
 
             obsDTO=new ObsDTO();
-            obsDTO.setConceptuuid(String.valueOf(UuidDictionary.DIASTOLIC_BP));
+            obsDTO.setConceptuuid(UuidDictionary.DIASTOLIC_BP);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getBpdia());
 
-            obsDTOS.add(obsDTO);
+            obsDAO.insertObs(obsDTO);
 
             obsDTO=new ObsDTO();
-            obsDTO.setConceptuuid(String.valueOf(UuidDictionary.TEMPERATURE));
+            obsDTO.setConceptuuid(UuidDictionary.TEMPERATURE);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getTemperature());
 
-            obsDTOS.add(obsDTO);
+            obsDAO.insertObs(obsDTO);
 
             obsDTO=new ObsDTO();
-            obsDTO.setConceptuuid(String.valueOf(UuidDictionary.RESPIRATORY));
+            obsDTO.setConceptuuid(UuidDictionary.RESPIRATORY);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getResp());
 
-            obsDTOS.add(obsDTO);
+            obsDAO.insertObs(obsDTO);
 
             obsDTO=new ObsDTO();
-            obsDTO.setConceptuuid(String.valueOf(UuidDictionary.SPO2));
+            obsDTO.setConceptuuid(UuidDictionary.SPO2);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(1);
             obsDTO.setValue(results.getSpo2());
 
-            obsDAO.insertObs(obsDTOS);
+            obsDAO.insertObs(obsDTO);
             Intent intent = new Intent(VitalsActivity.this, ComplaintNodeActivity.class);
 
             intent.putExtra("patientUuid", patientUuid);

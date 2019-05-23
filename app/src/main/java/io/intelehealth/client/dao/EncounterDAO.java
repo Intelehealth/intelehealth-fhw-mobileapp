@@ -61,33 +61,6 @@ public class EncounterDAO {
         return isCreated;
     }
 
-//    private boolean updateEncounters(EncounterDTO encounter) throws DAOException {
-//        boolean isCreated = false;
-//        db.beginTransaction();
-//
-//        ContentValues values = new ContentValues();
-//        String selection = "uuid = ?";
-//        try {
-////            for (EncounterDTO encounter : encounterDTOS) {
-////                Logger.logD("update", "update has to happen");
-//            values.put("visituuid", encounter.getVisituuid());
-//            values.put("encounter_type_uuid", encounter.getEncounterTypeUuid());
-//            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-//            values.put("synced", encounter.getSyncd());
-//            values.put("voided", encounter.getVoided());
-////                Logger.logD("pulldata", "datadumper" + values);
-//            updatecount = db.updateWithOnConflict("tbl_encounter", values, selection, new String[]{encounter.getUuid()}, SQLiteDatabase.CONFLICT_REPLACE);
-////            }
-//            db.setTransactionSuccessful();
-////            Logger.logD("updated", "updatedrecords count" + updatecount);
-//        } catch (SQLException e) {
-//            isCreated = false;
-//            throw new DAOException(e.getMessage(), e);
-//        } finally {
-//            db.endTransaction();
-//        }
-//        return isCreated;
-//    }
 
     public boolean createEncountersToDB(EncounterDTO encounter) throws DAOException {
         boolean isCreated = false;
@@ -133,7 +106,7 @@ public class EncounterDAO {
         List<EncounterDTO> encounterDTOList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where synced = ?", new String[]{"0"});
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where synced = ? OR synced=? COLLATE NOCASE", new String[]{"0", "false"});
         EncounterDTO encounterDTO = new EncounterDTO();
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
@@ -155,7 +128,7 @@ public class EncounterDAO {
 
     public boolean updateEncounterSync(String synced, String uuid) throws DAOException {
         boolean isUpdated = true;
-        Logger.logD("encounterdao", "updatesynv visit " + uuid + synced);
+        Logger.logD("encounterdao", "updatesynv encounter " + uuid + synced);
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         ContentValues values = new ContentValues();

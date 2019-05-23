@@ -29,8 +29,9 @@ import java.util.UUID;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
+import io.intelehealth.client.dao.EncounterDAO;
+import io.intelehealth.client.exception.DAOException;
 import io.intelehealth.client.node.Node;
-import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.FileUtils;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UuidDictionary;
@@ -145,13 +146,13 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_family_history);
         setTitle(R.string.title_activity_family_history);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         setTitle(patientName + ": " + getTitle());
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,7 +177,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         }
 
         // familyHistoryMap = new Node(HelperMethods.encodeJSON(this, mFileName)); //Load the family history mind map
-        familyListView = (ExpandableListView) findViewById(R.id.family_history_expandable_list_view);
+        familyListView = findViewById(R.id.family_history_expandable_list_view);
         adapter = new CustomExpandableListAdapter(this, familyHistoryMap, this.getClass().getSimpleName());
         familyListView.setAdapter(adapter);
 
@@ -252,6 +253,14 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 
         if (intentTag != null && intentTag.equals("edit")) {
             updateDatabase(insertion);
+
+            //making flag to false in the encounter table so it will sync again
+            EncounterDAO encounterDAO = new EncounterDAO();
+            try {
+                encounterDAO.updateEncounterSync("0", encounterAdultIntials);
+            } catch (DAOException e) {
+                e.printStackTrace();
+            }
             Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientUuid", patientUuid);
             intent.putExtra("visitUuid", visitUuid);
@@ -339,7 +348,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         contentValues.put("value", string);
 
         String selection = "encounteruuid AND conceptuuid = ?";
-        String[] args = {encounterAdultIntials, String.valueOf(conceptID)};
+        String[] args = {encounterAdultIntials, conceptID};
 
         localdb.update(
                 "tbl_obs",

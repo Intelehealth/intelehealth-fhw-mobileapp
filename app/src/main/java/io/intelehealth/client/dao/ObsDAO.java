@@ -128,7 +128,7 @@ public class ObsDAO {
 //
 //    }
 
-    public boolean insertObs(List<ObsDTO> obsDTO) {
+    public boolean insertObs(ObsDTO obsDTO) {
         boolean isUpdated = true;
         long insertedCount = 0;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
@@ -136,17 +136,16 @@ public class ObsDAO {
         ContentValues values = new ContentValues();
 
         try {
-            for (ObsDTO ob : obsDTO) {
                 values.put("uuid", UUID.randomUUID().toString());
-                values.put("encounteruuid", ob.getEncounteruuid());
-                values.put("creator", ob.getCreator());
-                values.put("conceptuuid", ob.getConceptuuid());
-                values.put("value", ob.getValue());
+            values.put("encounteruuid", obsDTO.getEncounteruuid());
+            values.put("creator", obsDTO.getCreator());
+            values.put("conceptuuid", obsDTO.getConceptuuid());
+            values.put("value", obsDTO.getValue());
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
                 values.put("voided", "");
                 values.put("synced", "FALSE");
                 insertedCount = db.insert("tbl_obs", null, values);
-            }
+
             db.setTransactionSuccessful();
             Logger.logD("updated", "updatedrecords count" + insertedCount);
         } catch (SQLException e) {
@@ -165,7 +164,6 @@ public class ObsDAO {
         db.beginTransaction();
         int updatedCount = 0;
         ContentValues values = new ContentValues();
-        List<ObsDTO> obsDTOS = new ArrayList<>();
         String selection = "uuid = ?";
         try {
 
@@ -179,9 +177,8 @@ public class ObsDAO {
 
             updatedCount = db.update("tbl_obs", values, selection, new String[]{obsDTO.getUuid()});
             //If no value is not found, then update fails so insert instead.
-            obsDTOS.add(obsDTO);
             if (updatedCount == 0) {
-                insertObs(obsDTOS);
+                insertObs(obsDTO);
             }
             db.setTransactionSuccessful();
         } catch (SQLiteException e) {

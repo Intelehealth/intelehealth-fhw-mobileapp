@@ -444,23 +444,27 @@ public class VisitSummaryActivity extends AppCompatActivity {
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
                 EmergencyEncounter emergencyEncounter = new EmergencyEncounter();
                 if (flag.isChecked()) {
                     Log.d(TAG, "Emergency flag val: " + flag.isChecked());
                     String emergency_checked = String.valueOf(flag.isChecked());
                     String updateQuery = "UPDATE tbl_visit SET emergency ='" + emergency_checked + "' WHERE uuid = '" + visitUuid + "'";
                     db.execSQL(updateQuery);
+                    db.close();
                     emergencyEncounter.uploadEncounterEmergency(visitUuid);
                 } else {
+                    db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
                     Log.d(TAG, "Emergency flag val: " + flag.isChecked());
                     String emergency_checked = String.valueOf(flag.isChecked());
-                    String updateQuery = "UPDATE tb_visit SET emergency ='" + emergency_checked + "' WHERE uuid = '" + visitUuid + "''";
+                    String updateQuery = "UPDATE tb_visit SET emergency ='" + emergency_checked + "' WHERE uuid = '" + visitUuid + "'";
                     db.execSQL(updateQuery);
+                    db.close();
                 }
                 if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
                     String patientSelection = "uuid = ?";
                     String[] patientArgs = {String.valueOf(patient.getUuid())};
-
+                    db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
                     String table = "tbl_patient";
                     String[] columnsToReturn = {"openmrs_id"};
                     final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
@@ -487,6 +491,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     if (visitIDCursor != null)
                         visitIDCursor.close();
                 }
+                db.close();
                 db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
                 String[] columnsToReturn = {"startdate"};
                 String visitIDorderBy = "startdate";
@@ -502,10 +507,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 }
                 Snackbar.make(view, "Uploading to doctor.", Snackbar.LENGTH_LONG).show();
 
-
-                PullDataDAO pullDataDAO = new PullDataDAO();
-                pullDataDAO.pushDataApi();
                 AppConstants.notificationUtils.showNotifications("Upload to doctor", "Details is uploaded", VisitSummaryActivity.this);
+                PullDataDAO pullDataDAO = new PullDataDAO();
+                boolean pull = pullDataDAO.pushDataApi();
+                if (pull)
+                    AppConstants.notificationUtils.DonwloadDone("Upload to doctor", "uploaded", VisitSummaryActivity.this);
+                else
+                    AppConstants.notificationUtils.DonwloadDone("Upload to doctor", "failed to Uploaded", VisitSummaryActivity.this);
 
             }
 
@@ -964,7 +972,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 PullDataDAO pullDataDAO = new PullDataDAO();
-                pullDataDAO.pullData(VisitSummaryActivity.this);
+                boolean pull = pullDataDAO.pullData(VisitSummaryActivity.this);
+                if (pull)
+                    AppConstants.notificationUtils.DonwloadDone("download from doctor", "prescription Downloaded", VisitSummaryActivity.this);
+                else
+                    AppConstants.notificationUtils.DonwloadDone("download from doctor", "no prescription Downloaded", VisitSummaryActivity.this);
                 downloadPrescription();
                 //mLayout.addView(downloadButton, mLayout.getChildCount());
             }
@@ -1753,7 +1765,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         visitCursor.close();
         db.close();
-        AppConstants.notificationUtils.showNotifications("download from doctor", "prescription Downloaded", VisitSummaryActivity.this);
+
     }
 
     @Override
