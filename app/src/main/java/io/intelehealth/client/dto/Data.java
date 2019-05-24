@@ -40,8 +40,13 @@ public class Data {
     private List<Object> providerAttributeTypeList = null;
     @SerializedName("providerAttributeList")
     @Expose
-
     private List<Object> providerAttributeList = null;
+    @SerializedName("visitAttributeTypeList")
+    @Expose
+    private List<VisitAttributeTypeDTO> visitAttributeTypeList = null;
+    @SerializedName("visitAttributeList")
+    @Expose
+    private List<VisitAttributeDTO> visitAttributeList = null;
 
     public List<PatientDTO> getPatientDTO() {
         return patientDTO;
@@ -129,5 +134,21 @@ public class Data {
 
     public void setProviderAttributeList(List<Object> providerAttributeList) {
         this.providerAttributeList = providerAttributeList;
+    }
+
+    public List<VisitAttributeTypeDTO> getVisitAttributeTypeList() {
+        return visitAttributeTypeList;
+    }
+
+    public void setVisitAttributeTypeList(List<VisitAttributeTypeDTO> visitAttributeTypeList) {
+        this.visitAttributeTypeList = visitAttributeTypeList;
+    }
+
+    public List<VisitAttributeDTO> getVisitAttributeList() {
+        return visitAttributeList;
+    }
+
+    public void setVisitAttributeList(List<VisitAttributeDTO> visitAttributeList) {
+        this.visitAttributeList = visitAttributeList;
     }
 }

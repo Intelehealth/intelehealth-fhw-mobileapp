@@ -122,6 +122,23 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "modified_date TEXT," +
             "sync TEXT" +
             ")";
+
+    public static final String CREATE_VISIT_ATTRIBUTE_MASTER_MAIN = "CREATE TABLE IF NOT EXISTS tbl_visit_attribute_master (" +
+            "uuid TEXT PRIMARY KEY," +
+            "name TEXT," +
+            "retired TEXT," +
+            "modified_date TEXT," +
+            "sync TEXT" +
+            ")";
+
+    public static final String CREATE_VISIT_ATTRIB = "CREATE TABLE IF NOT EXISTS tbl_visit_attribute (" +
+            "uuid TEXT PRIMARY KEY," +
+            "value TEXT," +
+            "visit_attribute_type_uuid TEXT ," +
+            "visituuid TEXT," +
+            "modified_date TEXT," +
+            "sync TEXT" +
+            ")";
     /*  "openmrs_uuid": "8d871386-c2cc-11de-8d13-0010c6dffd0f",
                 "name": "Race"
     * */
@@ -206,6 +223,8 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_ENCOUNTER_MAIN);
         db.execSQL(CREATE_OBS_MAIN);
         db.execSQL(CREATE_VISIT_MAIN);
+        db.execSQL(CREATE_VISIT_ATTRIBUTE_MASTER_MAIN);
+        db.execSQL(CREATE_VISIT_ATTRIB);
         db.execSQL(CREATE_PATIENT_ATTRIBUTE_MASTER_MAIN);
         db.execSQL(CREATE_LOCATION);
         db.execSQL(CREATE_PROVIDER);

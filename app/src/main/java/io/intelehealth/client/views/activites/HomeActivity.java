@@ -4,6 +4,7 @@ import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +13,7 @@ import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -63,7 +65,9 @@ public class HomeActivity extends AppCompatActivity {
     private static final String TAG = HomeActivity.class.getSimpleName();
     SessionManager sessionManager = null;
     ActivityHomeBinding activityHomeBinding;
-
+    ProgressDialog TempDialog;
+    CountDownTimer CDT;
+    int i = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +146,23 @@ public class HomeActivity extends AppCompatActivity {
 //            boolean smoothupgrade=smoothUpgrade.checkingDatabase();
 //            if(smoothupgrade)
         WorkManager.getInstance().enqueueUniquePeriodicWork(UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+        TempDialog = new ProgressDialog(HomeActivity.this);
+        TempDialog.setMessage("Please wait...");
+        TempDialog.setCancelable(false);
+        TempDialog.setProgress(i);
+        TempDialog.show();
+
+        CDT = new CountDownTimer(5000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                TempDialog.setMessage("Please wait.." + i + " sec");
+                i--;
+            }
+
+            public void onFinish() {
+                TempDialog.dismiss();
+                //Your Code ...
+            }
+        }.start();
 //        }
 
     }

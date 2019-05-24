@@ -460,6 +460,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     String updateQuery = "UPDATE tbl_visit SET emergency ='" + emergency_checked + "' WHERE uuid = '" + visitUuid + "'";
                     db.execSQL(updateQuery);
                     db.close();
+                    db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+                    emergencyEncounter.removeEncounterEmergency(visitUuid, db);
+                    db.close();
                 }
                 if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
                     String patientSelection = "uuid = ?";

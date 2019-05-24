@@ -1,7 +1,6 @@
 package io.intelehealth.client.views.activites;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -34,9 +33,11 @@ import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.dao.EncounterDAO;
 import io.intelehealth.client.dao.PatientsDAO;
+import io.intelehealth.client.dao.VisitsDAO;
 import io.intelehealth.client.database.InteleHealthDatabaseHelper;
 import io.intelehealth.client.databinding.ActivityPatientDetailBinding;
 import io.intelehealth.client.dto.EncounterDTO;
+import io.intelehealth.client.dto.VisitDTO;
 import io.intelehealth.client.exception.DAOException;
 import io.intelehealth.client.node.Node;
 import io.intelehealth.client.objects.Patient;
@@ -50,7 +51,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
     ActivityPatientDetailBinding binding;
     String patientName;
-    String visitUuid="" ;
+    String visitUuid = "";
     String patientUuid;
     String intentTag = "";
     SessionManager sessionManager = null;
@@ -66,8 +67,8 @@ public class PatientDetailActivity extends AppCompatActivity {
     String fhistory = "";
     LinearLayout previousVisitsList;
     String visitValue;
-    private String encounterVitals="" ;
-    private String encounterAdultIntials="" ;
+    private String encounterVitals = "";
+    private String encounterAdultIntials = "";
     SQLiteDatabase db = null;
 
     @Override
@@ -175,28 +176,44 @@ public class PatientDetailActivity extends AppCompatActivity {
                 intent2.putExtra("patientUuid", patientUuid);
 
 
+//                ContentValues visitData = new ContentValues();
+//                visitData.put("uuid", uuid);
+//                visitData.put("patientUuid", patient_new.getUuid());
+//                Log.i(TAG, "onClick: " + thisDate);
+//                visitData.put("startdate", thisDate);
+//                visitData.put("visit_type_uuid", UuidDictionary.VISIT_TELEMEDICINE);
+//                visitData.put("locationuuid", sessionManager.getLocationUuid());
+//                visitData.put("synced", false);
+//                visitData.put("modified_date", thisDate);
+//                visitData.put("creator", CREATOR_ID);
+//
+//                InteleHealthDatabaseHelper mDbHelper = new InteleHealthDatabaseHelper(PatientDetailActivity.this);
+//                SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
+//                Long visitLong = localdb.insert(
+//                        "tbl_visit",
+//                        null,
+//                        visitData
+//                );
+                VisitDTO visitDTO = new VisitDTO();
 
-                ContentValues visitData = new ContentValues();
-                visitData.put("uuid", uuid);
-                visitData.put("patientUuid", patient_new.getUuid());
-                Log.i(TAG, "onClick: " + thisDate);
-                visitData.put("startdate", thisDate);
-                visitData.put("visit_type_uuid", UuidDictionary.VISIT_TELEMEDICINE);
-                visitData.put("locationuuid", sessionManager.getLocationUuid());
-                visitData.put("synced",false);
-                visitData.put("modified_date",thisDate);
-                visitData.put("creator", CREATOR_ID);
+                visitDTO.setUuid(uuid);
+                visitDTO.setPatientuuid(patient_new.getUuid());
+                visitDTO.setStartdate(thisDate);
+                visitDTO.setVisitTypeUuid(UuidDictionary.VISIT_TELEMEDICINE);
+                visitDTO.setLocationuuid(sessionManager.getLocationUuid());
+                visitDTO.setSyncd(false);
+                visitDTO.setCreator(4);//static
 
-                InteleHealthDatabaseHelper mDbHelper = new InteleHealthDatabaseHelper(PatientDetailActivity.this);
-                SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
-                Long visitLong = localdb.insert(
-                        "tbl_visit",
-                        null,
-                        visitData
-                );
+                VisitsDAO visitsDAO = new VisitsDAO();
+
+                try {
+                    visitsDAO.insertPatientToDB(visitDTO);
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
 
                 // visitUuid = String.valueOf(visitLong);
-                localdb.close();
+//                localdb.close();
                 intent2.putExtra("patientUuid", patientUuid);
                 intent2.putExtra("visitUuid", uuid);
                 intent2.putExtra("encounterUuidVitals", encounterDTO.getUuid());
@@ -242,7 +259,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         String patientSelection1 = "patientuuid = ?";
         String[] patientArgs1 = {dataString};
         String[] patientColumns1 = {"value", "person_attribute_type_uuid"};
-         Cursor idCursor1 = db.query("tbl_patient_attribute", patientColumns1, patientSelection1, patientArgs1, null, null, null);
+        Cursor idCursor1 = db.query("tbl_patient_attribute", patientColumns1, patientSelection1, patientArgs1, null, null, null);
         String name = "";
         if (idCursor1.moveToFirst()) {
             do {
@@ -349,7 +366,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             binding.textViewOccupation.setVisibility(View.GONE);
         }
 
-        if (visitUuid != null&& !visitUuid.isEmpty()) {
+        if (visitUuid != null && !visitUuid.isEmpty()) {
             CardView histCardView = findViewById(R.id.cardView_history);
             histCardView.setVisibility(View.GONE);
         } else {

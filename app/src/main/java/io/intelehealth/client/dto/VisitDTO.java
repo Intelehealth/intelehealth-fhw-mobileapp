@@ -4,6 +4,8 @@ package io.intelehealth.client.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class VisitDTO {
 
     @SerializedName("patientuuid")
@@ -30,6 +32,8 @@ public class VisitDTO {
     @SerializedName("syncd")
     @Expose
     private Boolean syncd;
+
+    private List<VisitAttributeDTO> visitAttributeDTOS;
 
     public String getPatientuuid() {
         return patientuuid;
@@ -95,4 +99,11 @@ public class VisitDTO {
         this.syncd = syncd;
     }
 
+    public List<VisitAttributeDTO> getVisitAttributeDTOS() {
+        return visitAttributeDTOS;
+    }
+
+    public void setVisitAttributeDTOS(List<VisitAttributeDTO> visitAttributeDTOS) {
+        this.visitAttributeDTOS = visitAttributeDTOS;
+    }
 }

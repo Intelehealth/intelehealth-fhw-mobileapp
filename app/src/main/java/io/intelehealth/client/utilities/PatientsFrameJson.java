@@ -108,7 +108,18 @@ public class PatientsFrameJson {
             visit.setUuid(visitDTO.getUuid());
             visit.setVisitType(visitDTO.getVisitTypeUuid());
             visit.setStopDatetime(visitDTO.getEnddate());
+
+            List<Attribute> attributeList = new ArrayList<>();
+            attributeList.clear();
+            try {
+                attributeList = visitsDAO.getVisitAttributes(visitDTO.getUuid());
+            } catch (DAOException e) {
+                e.printStackTrace();
+            }
+
+            visit.setAttributes(attributeList);
             visitList.add(visit);
+
         }
 
         for (EncounterDTO encounterDTO : encounterDTOList) {
@@ -152,6 +163,10 @@ public class PatientsFrameJson {
         pushRequestApiCall.setPersons(personList);
         pushRequestApiCall.setVisits(visitList);
         pushRequestApiCall.setEncounters(encounterList);
+
+//        EmergencyEncounter emergencyEncounter=new EmergencyEncounter();
+//        emergencyEncounter.checkEmergency();
+
         return pushRequestApiCall;
     }
 }

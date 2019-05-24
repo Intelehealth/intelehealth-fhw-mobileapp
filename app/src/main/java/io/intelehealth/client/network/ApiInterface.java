@@ -17,7 +17,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 
@@ -34,8 +33,8 @@ public interface ApiInterface {
 //    @GET
 //    Call<VisitResponsemodel> VISIT_RESPONSEMODEL_CALL(@Url String url, @Header("Authorization") String authHeader);
 
-    @DELETE("encounter/{uuid}?purge=true")
-    Call<Void> DELETE_ENCOUNTER(@Path("uuid") String uuid, @Header("Authorization") String authHeader);
+    @DELETE
+    Call<Void> DELETE_ENCOUNTER(@Url String url, @Header("Authorization") String authHeader);
 
     //EMR-Middleware/webapi/pull/pulldata/
     @GET
