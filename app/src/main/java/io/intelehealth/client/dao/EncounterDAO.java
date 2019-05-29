@@ -74,7 +74,7 @@ public class EncounterDAO {
             values.put("encounter_time",encounter.getEncounterTime());
             values.put("encounter_type_uuid", encounter.getEncounterTypeUuid());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-            values.put("synced", encounter.getSyncd());
+            values.put("synced", "false");
             values.put("voided", encounter.getVoided());
             createdRecordsCount = db.insertWithOnConflict("tbl_encounter", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             db.setTransactionSuccessful();
@@ -97,6 +97,7 @@ public class EncounterDAO {
                 encounterTypeUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
             }
         }
+        cursor.close();
         db.close();
 
         return encounterTypeUuid;

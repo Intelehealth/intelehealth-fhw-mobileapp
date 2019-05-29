@@ -25,6 +25,7 @@ import io.intelehealth.client.database.InteleHealthDatabaseHelper;
 import io.intelehealth.client.databinding.ActivityTodayPatientBinding;
 import io.intelehealth.client.objects.TodayPatientModel;
 import io.intelehealth.client.utilities.Logger;
+import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.views.adapters.TodayPatientAdapter;
 
 public class TodayPatientActivity extends AppCompatActivity {
@@ -32,20 +33,32 @@ public class TodayPatientActivity extends AppCompatActivity {
     ActivityTodayPatientBinding binding;
     InteleHealthDatabaseHelper mDbHelper;
     private SQLiteDatabase db;
+    SessionManager sessionManager = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_today_patient);
         setSupportActionBar(binding.toolbar);
+        sessionManager = new SessionManager(this);
         mDbHelper = new InteleHealthDatabaseHelper(this);
         db = mDbHelper.getWritableDatabase();
-        doQuery();
+        if (sessionManager.isSyncFinished()) {
+            doQuery();
+        }
 
     }
 
+
     /**
-     * This method retrieves visit details about patient for a particular date.
+     * This method retrieves visit details about patient for a particular
+     * <p>
+     * <p>
+     * <p>
+     * <p>
+     * <p>
+     * <p>
+     * date.
      *
      * @return void
      */

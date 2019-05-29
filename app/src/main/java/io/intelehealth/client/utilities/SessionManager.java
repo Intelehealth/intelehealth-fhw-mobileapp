@@ -31,6 +31,9 @@ public class SessionManager {
     private static final String RETURNING = "returning";
     private static final String PULLED = "pulled";
     private static final String NEW_DATABASE = "newDatabase";
+    private static final String FIRST_TIME_LAUNCHED = "firsttimelaunched";
+    private static final String SYNC_FINISHED = "syncfinished";
+
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -271,5 +274,25 @@ public class SessionManager {
         hasvalue = sharedPreferences.contains(value);
         return hasvalue;
     }
+
+    public boolean isFirstTimeLaunched() {
+        return pref.getBoolean(FIRST_TIME_LAUNCHED, true);
+    }
+
+    public void setFirstTimeLaunched(Boolean firstTimeLaunched) {
+        editor.putBoolean(FIRST_TIME_LAUNCHED, firstTimeLaunched);
+        editor.commit();
+    }
+
+
+    public boolean isSyncFinished() {
+        return pref.getBoolean(SYNC_FINISHED, false);
+    }
+
+    public void setSyncFinished(Boolean syncFinished) {
+        editor.putBoolean(SYNC_FINISHED, syncFinished);
+        editor.commit();
+    }
+
 
 }

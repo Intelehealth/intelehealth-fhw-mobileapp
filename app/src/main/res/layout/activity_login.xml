@@ -75,6 +75,7 @@
                                 android:layout_height="45dp"
                                 android:layout_marginLeft="-20dp"
                                 android:layout_marginRight="-20dp"
+                                android:contentDescription="TODO"
                                 app:srcCompat="@drawable/avatar" />
 
                             <android.support.design.widget.TextInputLayout
@@ -112,6 +113,7 @@
                                 android:layout_height="45dp"
                                 android:layout_marginLeft="-20dp"
                                 android:layout_marginRight="-20dp"
+                                android:contentDescription="TODO"
                                 app:srcCompat="@drawable/block" />
 
                             <android.support.design.widget.TextInputLayout

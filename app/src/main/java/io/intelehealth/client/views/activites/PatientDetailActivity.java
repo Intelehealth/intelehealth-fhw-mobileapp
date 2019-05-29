@@ -308,7 +308,6 @@ public class PatientDetailActivity extends AppCompatActivity {
 //                    .centerCrop()
 //                    .into(photoView);
 //        }
-
         if (patient_new.getOpenmrs_id() != null && !patient_new.getOpenmrs_id().isEmpty()) {
             binding.textViewID.setText(patient_new.getOpenmrs_id());
         } else {

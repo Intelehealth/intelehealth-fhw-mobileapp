@@ -154,7 +154,7 @@ public class PullDataDAO {
                             }
                         }
                         isSucess[0] = true;
-
+                        sessionManager.setSyncFinished(true);
                     }
 
                     @Override

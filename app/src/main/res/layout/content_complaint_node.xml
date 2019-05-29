@@ -15,6 +15,7 @@
     <ListView
         android:id="@+id/complaint_list_view"
         android:layout_width="match_parent"
+        android:focusable="true"
         android:layout_height="match_parent"
         android:clickable="true">
 

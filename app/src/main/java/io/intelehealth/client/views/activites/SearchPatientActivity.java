@@ -16,6 +16,7 @@ import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -28,6 +29,7 @@ import io.intelehealth.client.database.InteleHealthDatabaseHelper;
 import io.intelehealth.client.databinding.ActivitySearchPatientBinding;
 import io.intelehealth.client.dto.PatientDTO;
 import io.intelehealth.client.utilities.Logger;
+import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.views.adapters.SearchPatientAdapter;
 import io.intelehealth.client.views.providers.SearchSuggestionProvider;
 
@@ -37,6 +39,7 @@ public class SearchPatientActivity extends AppCompatActivity {
     InteleHealthDatabaseHelper mDbHelper;
     String query;
     private SearchPatientAdapter recycler;
+    SessionManager sessionManager = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         // Get the intent, verify the action and get the query
+        sessionManager = new SessionManager(this);
         mDbHelper = new InteleHealthDatabaseHelper(this);
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
@@ -53,12 +57,22 @@ public class SearchPatientActivity extends AppCompatActivity {
             SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
                     SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
             suggestions.saveRecentQuery(query, null);
-            doQuery(query);
+            if (sessionManager.isSyncFinished()) {
+                binding.textviewmessage.setVisibility(View.GONE);
+                binding.recycle.setVisibility(View.VISIBLE);
+                doQuery(query);
+            }
+
         } else {
             SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
                     SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
             suggestions.saveRecentQuery(query, null);
-            firstQuery();
+            if (sessionManager.isSyncFinished()) {
+                binding.textviewmessage.setVisibility(View.GONE);
+                binding.recycle.setVisibility(View.VISIBLE);
+                firstQuery();
+            }
+
         }
 
 

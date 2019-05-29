@@ -41,10 +41,12 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import io.intelehealth.client.BuildConfig;
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.backup.BackupCloud;
 import io.intelehealth.client.dao.PullDataDAO;
+import io.intelehealth.client.dataMigration.SmoothUpgrade;
 import io.intelehealth.client.databinding.ActivityHomeBinding;
 import io.intelehealth.client.services.DownloadProtocolsTask;
 import io.intelehealth.client.utilities.Logger;
@@ -53,6 +55,7 @@ import io.intelehealth.client.utilities.OfflineLogin;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.views.adapters.HomeAdapter;
 
+import static io.intelehealth.client.app.AppConstants.APP_VERSION_CODE;
 import static io.intelehealth.client.app.AppConstants.UNIQUE_WORK_NAME;
 import static io.intelehealth.client.app.AppConstants.dbfilepath;
 
@@ -141,29 +144,43 @@ public class HomeActivity extends AppCompatActivity {
 //            sessionManager.setFirstTimeSyncExecute(false);
 //        }
 
-//        if(BuildConfig.VERSION_CODE<=APP_VERSION_CODE){
-//            SmoothUpgrade smoothUpgrade=new SmoothUpgrade(HomeActivity.this);
-//            boolean smoothupgrade=smoothUpgrade.checkingDatabase();
-//            if(smoothupgrade)
-        WorkManager.getInstance().enqueueUniquePeriodicWork(UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
-        TempDialog = new ProgressDialog(HomeActivity.this);
-        TempDialog.setMessage("Please wait...");
-        TempDialog.setCancelable(false);
-        TempDialog.setProgress(i);
-        TempDialog.show();
-
-        CDT = new CountDownTimer(5000, 1000) {
-            public void onTick(long millisUntilFinished) {
-                TempDialog.setMessage("Please wait.." + i + " sec");
-                i--;
-            }
-
-            public void onFinish() {
+        if (BuildConfig.VERSION_CODE <= APP_VERSION_CODE && sessionManager.isFirstTimeLaunched()) {
+            TempDialog = new ProgressDialog(HomeActivity.this);
+            TempDialog.setMessage("Data migrating...");
+            TempDialog.setCancelable(false);
+            TempDialog.setProgress(i);
+            TempDialog.show();
+            SmoothUpgrade smoothUpgrade = new SmoothUpgrade(HomeActivity.this);
+            boolean smoothupgrade = smoothUpgrade.checkingDatabase();
+            if (smoothupgrade) {
                 TempDialog.dismiss();
-                //Your Code ...
             }
-        }.start();
-//        }
+
+
+            WorkManager.getInstance().enqueueUniquePeriodicWork(UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+            if (sessionManager.isFirstTimeLaunched()) {
+                TempDialog = new ProgressDialog(HomeActivity.this);
+                TempDialog.setMessage("Please wait...");
+                TempDialog.setCancelable(false);
+                TempDialog.setProgress(i);
+
+                TempDialog.show();
+
+                CDT = new CountDownTimer(5000, 1000) {
+                    public void onTick(long millisUntilFinished) {
+                        TempDialog.setMessage("Please wait.." + i + " sec");
+                        i--;
+                    }
+
+                    public void onFinish() {
+                        TempDialog.dismiss();
+                        //Your Code ...
+                        sessionManager.setFirstTimeLaunched(false);
+                    }
+                }.start();
+
+            }
+        }
 
     }
 
@@ -229,7 +246,7 @@ public class HomeActivity extends AppCompatActivity {
                 PullDataDAO pullDataDAO = new PullDataDAO();
                 pullDataDAO.pullData(this);
                 pullDataDAO.pushDataApi();
-                AppConstants.notificationUtils.showNotifications("Sync","Sync Completed",this);
+                AppConstants.notificationUtils.showNotifications("Sync", "Sync Completed", this);
                 return true;
             case R.id.backupOption:
                 manageBackup(true, false);  // to backup app data at any time of the day

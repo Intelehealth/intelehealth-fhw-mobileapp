@@ -5,14 +5,19 @@ android {
     defaultConfig {
         applicationId "io.intelehealth.client"
         minSdkVersion 19
-        targetSdkVersion 28
+        targetSdkVersion 22
         versionCode 24
         versionName "version 2.0 beta 1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-
+        lintOptions {
+            checkReleaseBuilds false
+            // Or, if you prefer, you can continue to check for errors in release builds,
+            // but continue the build even when errors are found:
+            abortOnError false
+        }
 
     }
     dataBinding {
@@ -24,7 +29,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -34,7 +39,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:2.0.0-alpha5'
+    implementation 'com.android.support.constraint:constraint-layout:2.0.0-beta1'
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.android.support:support-v4:28.0.0'
     testImplementation 'junit:junit:4.13-beta-2'

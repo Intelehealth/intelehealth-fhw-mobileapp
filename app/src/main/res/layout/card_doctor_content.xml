@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/padding_visit_summary_screen"
     android:paddingRight="@dimen/padding_visit_summary_screen">
 
-    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <android.support.v7.widget.CardView 
         android:id="@+id/cardview_summary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

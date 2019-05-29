@@ -5,7 +5,6 @@ package io.intelehealth.client.utilities;
  */
 
 public class ConceptId {
-
     public static final int CURRENT_COMPLAINT = 163212;
     public static final int PHYSICAL_EXAMINATION = 163213;
     public static final int HEIGHT = 5090;

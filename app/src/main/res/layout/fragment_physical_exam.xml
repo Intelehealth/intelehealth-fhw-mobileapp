@@ -24,6 +24,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_height="@dimen/physical_exam_img_max_height"
         android:paddingTop="10dp"
+        android:contentDescription="TODO"
         android:paddingBottom="10dp"
         />
 
@@ -33,6 +34,7 @@
         android:layout_weight="1"
         android:layout_height="0dp"
         android:clickable="true"
+        android:focusable="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     </ExpandableListView>

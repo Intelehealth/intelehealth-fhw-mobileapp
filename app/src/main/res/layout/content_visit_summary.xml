@@ -12,9 +12,9 @@
 
     <!--Split the screen into two columns of cards-->
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout 
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+
         android:id="@+id/summary_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -132,6 +132,7 @@
                     android:layout_height="@dimen/edit_icon_height"
                     android:layout_alignParentEnd="true"
                     android:background="@null"
+                    android:contentDescription="TODO"
                     android:padding="@dimen/padding_card_action"
                     app:srcCompat="@drawable/edit_icon" />
 
@@ -338,6 +339,7 @@
                     android:layout_height="@dimen/edit_icon_height"
                     android:layout_alignRight="@id/textView_heading_complaint"
                     android:background="@null"
+                    android:contentDescription="TODO"
                     android:padding="@dimen/padding_card_action"
                     app:srcCompat="@drawable/edit_icon" />
 
@@ -382,6 +384,7 @@
                     android:layout_height="@dimen/edit_icon_height"
                     android:layout_alignRight="@id/textView_heading_physexam"
                     android:background="@null"
+                    android:contentDescription="TODO"
                     android:padding="@dimen/padding_card_action"
                     app:srcCompat="@drawable/edit_icon" />
 
@@ -433,6 +436,7 @@
                     android:layout_height="@dimen/edit_icon_height"
                     android:layout_alignRight="@id/textView_heading_pathist"
                     android:background="@null"
+                    android:contentDescription="TODO"
                     android:padding="@dimen/padding_card_action"
                     app:srcCompat="@drawable/edit_icon" />
 
@@ -478,6 +482,7 @@
                     android:layout_height="@dimen/edit_icon_height"
                     android:layout_alignRight="@id/textView_heading_famhist"
                     android:background="@null"
+                    android:contentDescription="TODO"
                     android:padding="@dimen/padding_card_action"
                     app:srcCompat="@drawable/edit_icon" />
 
@@ -522,6 +527,7 @@
                     android:layout_height="@dimen/edit_icon_height"
                     android:layout_alignRight="@id/textView_additional_document_images"
                     android:background="@null"
+                    android:contentDescription="TODO"
                     android:padding="@dimen/padding_card_action"
                     app:srcCompat="@drawable/edit_icon" />
 

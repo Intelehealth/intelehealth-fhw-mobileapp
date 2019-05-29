@@ -128,7 +128,7 @@ public class ObsDAO {
 //
 //    }
 
-    public boolean insertObs(ObsDTO obsDTO) {
+    public boolean insertObs(ObsDTO obsDTO) throws DAOException {
         boolean isUpdated = true;
         long insertedCount = 0;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
@@ -136,20 +136,21 @@ public class ObsDAO {
         ContentValues values = new ContentValues();
 
         try {
-                values.put("uuid", UUID.randomUUID().toString());
+            values.put("uuid", UUID.randomUUID().toString());
             values.put("encounteruuid", obsDTO.getEncounteruuid());
             values.put("creator", obsDTO.getCreator());
             values.put("conceptuuid", obsDTO.getConceptuuid());
             values.put("value", obsDTO.getValue());
-                values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-                values.put("voided", "");
-                values.put("synced", "FALSE");
-                insertedCount = db.insert("tbl_obs", null, values);
+            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("voided", "");
+            values.put("synced", "FALSE");
+            insertedCount = db.insert("tbl_obs", null, values);
 
             db.setTransactionSuccessful();
             Logger.logD("updated", "updatedrecords count" + insertedCount);
         } catch (SQLException e) {
             isUpdated = false;
+            throw new DAOException(e);
         } finally {
             db.endTransaction();
         }
@@ -178,7 +179,11 @@ public class ObsDAO {
             updatedCount = db.update("tbl_obs", values, selection, new String[]{obsDTO.getUuid()});
             //If no value is not found, then update fails so insert instead.
             if (updatedCount == 0) {
-                insertObs(obsDTO);
+                try {
+                    insertObs(obsDTO);
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
             }
             db.setTransactionSuccessful();
         } catch (SQLiteException e) {

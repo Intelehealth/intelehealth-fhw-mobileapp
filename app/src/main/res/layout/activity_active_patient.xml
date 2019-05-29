@@ -28,19 +28,27 @@
 
         <!--<include layout="@layout/content_active_patient" />-->
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
+        <RelativeLayout 
+            
+            
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:context=".activities.today_patient_activity.TodayPatientActivity"
             tools:showIn="@layout/activity_today_patient">
 
+            <TextView
+                android:id="@+id/textviewmessage"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Please wwait till sync is completed"
+                android:visibility="visible" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/today_patient_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:visibility="gone" />
         </RelativeLayout>
 
 

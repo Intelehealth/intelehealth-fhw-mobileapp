@@ -257,7 +257,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             //making flag to false in the encounter table so it will sync again
             EncounterDAO encounterDAO = new EncounterDAO();
             try {
-                encounterDAO.updateEncounterSync("0", encounterAdultIntials);
+                encounterDAO.updateEncounterSync("false", encounterAdultIntials);
             } catch (DAOException e) {
                 e.printStackTrace();
             }

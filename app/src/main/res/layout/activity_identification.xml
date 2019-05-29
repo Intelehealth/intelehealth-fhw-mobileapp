@@ -42,9 +42,9 @@
 
         <!--<include layout="@layout/content_identification" />-->
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
+        <RelativeLayout 
+            
+            
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -167,6 +167,7 @@
                             android:layout_width="170dp"
                             android:layout_height="170dp"
                             android:layout_gravity="right"
+                            android:contentDescription="TODO"
                             android:scaleType="centerCrop"
                             app:srcCompat="@drawable/ic_person_camera_intele" />
                     </LinearLayout>
@@ -229,6 +230,7 @@
                             android:freezesText="true"
                             android:hint="@string/identification_screen_prompt_birthday"
                             android:imeOptions="actionUnspecified"
+                            android:inputType=""
                             android:maxLines="1"
                             android:singleLine="true"
                             android:text="@={identificationViewModel.dateofbirth}"
@@ -255,6 +257,7 @@
                             android:freezesText="true"
                             android:hint="@string/identification_screen_prompt_age"
                             android:imeOptions="actionUnspecified"
+                            android:inputType=""
                             android:maxLines="1"
                             android:singleLine="true"
                             android:visibility="@{config.mAge() ? View.GONE: View.VISIBLE}" />
@@ -292,6 +295,7 @@
                         android:id="@+id/identification_llcountry_state"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:baselineAligned="false"
                         android:orientation="horizontal"
                         android:visibility="@{config.countryStateLayout() ? View.GONE: View.VISIBLE}">
 

@@ -104,7 +104,8 @@ public class PatientsDAO {
             values.put("dead", patientDTO.getDead());
             values.put("synced", false);
             patientAttributesList = patientDTO.getPatientAttributesDTOList();
-            insertPatientAttributes(patientAttributesList, db);
+            if (patientAttributesList != null)
+                insertPatientAttributes(patientAttributesList, db);
             Logger.logD("pulldata", "datadumper" + values);
             createdRecordsCount1 = db.insert("tbl_patient", null, values);
             db.setTransactionSuccessful();

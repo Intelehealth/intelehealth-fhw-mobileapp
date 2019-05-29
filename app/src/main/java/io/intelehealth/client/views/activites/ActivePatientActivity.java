@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import io.intelehealth.client.database.InteleHealthDatabaseHelper;
 import io.intelehealth.client.databinding.ActivityActivePatientBinding;
 import io.intelehealth.client.objects.ActivePatientModel;
 import io.intelehealth.client.utilities.Logger;
+import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.views.adapters.ActivePatientAdapter;
 
 public class ActivePatientActivity extends AppCompatActivity {
@@ -31,6 +33,7 @@ public class ActivePatientActivity extends AppCompatActivity {
     ActivityActivePatientBinding binding;
     InteleHealthDatabaseHelper mDbHelper;
     private SQLiteDatabase db;
+    SessionManager sessionManager = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +41,14 @@ public class ActivePatientActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_active_patient);
 //        setContentView(R.layout.activity_active_patient);
         setSupportActionBar(binding.toolbar);
+        sessionManager = new SessionManager(this);
         mDbHelper = new InteleHealthDatabaseHelper(this);
-
         db = mDbHelper.getWritableDatabase();
-        doQuery();
+        if (sessionManager.isSyncFinished()) {
+            binding.textviewmessage.setVisibility(View.GONE);
+            binding.todayPatientRecyclerView.setVisibility(View.VISIBLE);
+            doQuery();
+        }
     }
 
     /**
@@ -166,6 +173,7 @@ public class ActivePatientActivity extends AppCompatActivity {
         return visitUUID != null;
 
     }
+
 }
 
 

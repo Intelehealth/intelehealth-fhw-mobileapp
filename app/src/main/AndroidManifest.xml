@@ -196,6 +196,7 @@
         </service>
         <service
             android:name=".services.RunAfterBootService"
+            android:permission=""
             android:enabled="true"
             android:exported="true" />
 

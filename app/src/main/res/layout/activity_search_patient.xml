@@ -27,9 +27,9 @@
         </android.support.design.widget.AppBarLayout>
 
         <!--<include layout="@layout/content_search_patient" />-->
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
+        <RelativeLayout 
+            
+            
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -40,10 +40,18 @@
             tools:context=".activities.search_patient_activity.SearchPatientActivity"
             tools:showIn="@layout/activity_search_patient">
 
+            <TextView
+                android:id="@+id/textviewmessage"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Please wwait till sync is completed"
+                android:visibility="visible" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycle"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+                android:layout_height="match_parent"
+                android:visibility="gone" />
         </RelativeLayout>
 
 
