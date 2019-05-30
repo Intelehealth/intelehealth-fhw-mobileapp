@@ -25,6 +25,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -75,6 +77,7 @@ public class IdentificationActivity extends AppCompatActivity {
     Spinner mState;
     AutoCompleteTextView mCity;
     PatientsDAO patientsDAO = new PatientsDAO();
+    private String mCurrentPhotoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -326,12 +329,6 @@ public class IdentificationActivity extends AppCompatActivity {
         binding.imageviewIdPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //String[] results = HelperMethods.startImageCapture(IdentificationActivity.this,
-                //        IdentificationActivity.this);
-                //if (results != null) {
-                //    mPhoto = results[0];
-                //    mCurrentPhotoPath = results[1];
-                //}
                 File filePath = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator +
                         "Patient_Images" + File.separator + patientUuid);
                 if (!filePath.exists()) {
@@ -632,5 +629,23 @@ public class IdentificationActivity extends AppCompatActivity {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.v(TAG, "Result Received");
+        if (requestCode == CameraActivity.TAKE_IMAGE) {
+            Log.v(TAG, "Request Code " + CameraActivity.TAKE_IMAGE);
+            if (resultCode == RESULT_OK) {
+                Log.i(TAG, "Result OK");
+                mCurrentPhotoPath = data.getStringExtra("RESULT");
+                Log.v("IdentificationActivity", mCurrentPhotoPath);
+                Glide.with(this)
+                        .load(new File(mCurrentPhotoPath))
+                        .thumbnail(0.25f)
+                        .into(binding.imageviewIdPicture);
+            }
+        }
+    }
+
 
 }

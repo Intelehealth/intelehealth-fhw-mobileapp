@@ -170,6 +170,14 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "uuid TEXT ," +
             "name TEXT" +
             ")";
+    public static final String CREATE_IMAGE_RECORDS = "CREATE TABLE IF NOT EXISTS image_records(" +
+            "uuid TEXT PRIMARY KEY," +
+            "patientuuid TEXT," +
+            "visituuid TEXT," +
+            "image_path TEXT ," +
+            "image_type TEXT " +
+            ")";
+
 
     public InteleHealthDatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -221,6 +229,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_PATIENT_MAIN);
         db.execSQL(CREATE_ATTRIB_MAIN);
         db.execSQL(CREATE_ENCOUNTER_MAIN);
+        db.execSQL(CREATE_IMAGE_RECORDS);
         db.execSQL(CREATE_OBS_MAIN);
         db.execSQL(CREATE_VISIT_MAIN);
         db.execSQL(CREATE_VISIT_ATTRIBUTE_MASTER_MAIN);

@@ -18,8 +18,11 @@ import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -46,6 +49,12 @@ import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UuidDictionary;
 import io.intelehealth.client.viewModels.PatientDetailViewModel;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 
 public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
@@ -70,7 +79,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     private String encounterVitals = "";
     private String encounterAdultIntials = "";
     SQLiteDatabase db = null;
-
+    ImageView profileimage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +102,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             Logger.logD(TAG, "Patient Name: " + patientName);
             Logger.logD(TAG, "Intent Tag: " + intentTag);
         }
+        profileimage = findViewById(R.id.imageView_patient);
         binding.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -299,7 +309,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             patientName = patient_new.getLast_name() + ", " + patient_new.getFirst_name() + " " + patient_new.getMiddle_name();
         }
         setTitle(patientName);
-
+        profilePicDownloaded();
 //        if (patient.getPatientPhoto() != null && patient.getPatientPhoto() != "") {
 //            File image = new File(patient.getPatientPhoto());
 //            Glide.with(this)
@@ -683,6 +693,41 @@ public class PatientDetailActivity extends AppCompatActivity {
         Intent i = new Intent(this, HomeActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
+    }
+
+    public void profilePicDownloaded() {
+        String url = "http://demo.intelehealth.io/openmrs/ws/rest/v1/personimage/" + patientUuid;
+        Logger.logD(TAG, "profileimage url" + url);
+        Glide.with(this)
+                .load(url)
+                .thumbnail(0.3f)
+                .centerCrop()
+                .into(profileimage);
+        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
+        profilePicDownload.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ResponseBody>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(ResponseBody file) {
+                        Logger.logD(TAG, file.toString());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Logger.logD(TAG, e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Logger.logD(TAG, "complete");
+                    }
+                });
+
     }
 
 }
