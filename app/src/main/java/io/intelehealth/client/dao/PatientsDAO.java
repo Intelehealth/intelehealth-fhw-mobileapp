@@ -374,4 +374,30 @@ public class PatientsDAO {
         return patientDTOList;
     }
 
+
+    public boolean updatePatientPhoto(String patientuuid, String profilePhotoPath) throws DAOException {
+        boolean isUpdated = true;
+        Logger.logD("patinetdao", "patientphoto " + patientuuid + profilePhotoPath);
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+        String whereclause = "uuid=?";
+        String[] whereargs = {patientuuid};
+        try {
+            values.put("patient_photo", profilePhotoPath);
+            values.put("uuid", patientuuid);
+            int i = db.update("tbl_patient", values, whereclause, whereargs);
+            Logger.logD("patient", "description" + i);
+            db.setTransactionSuccessful();
+        } catch (SQLException sql) {
+            Logger.logD("patient", "patient" + sql.getMessage());
+            isUpdated = false;
+            throw new DAOException(sql.getMessage());
+        } finally {
+            db.endTransaction();
+            db.close();
+
+        }
+        return isUpdated;
+    }
 }

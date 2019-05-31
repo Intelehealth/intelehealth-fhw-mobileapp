@@ -5,8 +5,8 @@ android {
     defaultConfig {
         applicationId "io.intelehealth.client"
         minSdkVersion 19
-        targetSdkVersion 22
-        versionCode 24
+        targetSdkVersion 28
+        versionCode 25
         versionName "version 2.0 beta 1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
@@ -18,7 +18,6 @@ android {
             // but continue the build even when errors are found:
             abortOnError false
         }
-
     }
     dataBinding {
         enabled = true
@@ -29,7 +28,10 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            lintOptions {
+                disable 'MissingTranslation'
+            }
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -43,6 +45,8 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.android.support:support-v4:28.0.0'
     testImplementation 'junit:junit:4.13-beta-2'
+
+
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     //    mvvm

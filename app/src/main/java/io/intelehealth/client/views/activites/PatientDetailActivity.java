@@ -45,16 +45,19 @@ import io.intelehealth.client.exception.DAOException;
 import io.intelehealth.client.node.Node;
 import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
+import io.intelehealth.client.utilities.DownloadFilesUtils;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
+import io.intelehealth.client.utilities.UrlModifiers;
 import io.intelehealth.client.utilities.UuidDictionary;
 import io.intelehealth.client.viewModels.PatientDetailViewModel;
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
+
+import static io.intelehealth.client.app.AppConstants.IMAGE_PATH;
 
 public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
@@ -80,6 +83,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     private String encounterAdultIntials = "";
     SQLiteDatabase db = null;
     ImageView profileimage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -262,6 +266,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 patient_new.setCountry(idCursor.getString(idCursor.getColumnIndexOrThrow("country")));
                 patient_new.setPhone_number(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
                 patient_new.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                patient_new.setPatient_photo(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -309,15 +314,15 @@ public class PatientDetailActivity extends AppCompatActivity {
             patientName = patient_new.getLast_name() + ", " + patient_new.getFirst_name() + " " + patient_new.getMiddle_name();
         }
         setTitle(patientName);
-        profilePicDownloaded();
-//        if (patient.getPatientPhoto() != null && patient.getPatientPhoto() != "") {
-//            File image = new File(patient.getPatientPhoto());
-//            Glide.with(this)
-//                    .load(image)
-//                    .thumbnail(0.3f)
-//                    .centerCrop()
-//                    .into(photoView);
-//        }
+        if (patient_new.getPatient_photo() == null || patient_new.getPatient_photo().equalsIgnoreCase("")) {
+            profilePicDownloaded();
+        }
+        Glide.with(PatientDetailActivity.this)
+                .load(patient_new.getPatient_photo())
+                .thumbnail(0.3f)
+                .centerCrop()
+                .into(profileimage);
+
         if (patient_new.getOpenmrs_id() != null && !patient_new.getOpenmrs_id().isEmpty()) {
             binding.textViewID.setText(patient_new.getOpenmrs_id());
         } else {
@@ -696,24 +701,18 @@ public class PatientDetailActivity extends AppCompatActivity {
     }
 
     public void profilePicDownloaded() {
-        String url = "http://demo.intelehealth.io/openmrs/ws/rest/v1/personimage/" + patientUuid;
+//        String url = "http://demo.intelehealth.io/openmrs/ws/rest/v1/personimage/" + patientUuid;
+        UrlModifiers urlModifiers = new UrlModifiers();
+        String url = urlModifiers.patientProfileImageUrl(patientUuid);
         Logger.logD(TAG, "profileimage url" + url);
-        Glide.with(this)
-                .load(url)
-                .thumbnail(0.3f)
-                .centerCrop()
-                .into(profileimage);
         Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
         profilePicDownload.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<ResponseBody>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
+                .subscribe(new DisposableObserver<ResponseBody>() {
                     @Override
                     public void onNext(ResponseBody file) {
+                        DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
+                        downloadFilesUtils.saveToDisk(file, patientUuid);
                         Logger.logD(TAG, file.toString());
                     }
 
@@ -725,9 +724,47 @@ public class PatientDetailActivity extends AppCompatActivity {
                     @Override
                     public void onComplete() {
                         Logger.logD(TAG, "complete");
+                        PatientsDAO patientsDAO = new PatientsDAO();
+                        boolean updated = false;
+                        try {
+                            updated = patientsDAO.updatePatientPhoto(patientUuid, IMAGE_PATH + patientUuid + ".jpg");
+                        } catch (DAOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
+//                .subscribe(new Observer<ResponseBody>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(ResponseBody file) {
+//                        DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
+//                        downloadFilesUtils.saveToDisk(file, patientUuid);
+//                        Logger.logD(TAG, file.toString());
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        Logger.logD(TAG, e.getMessage());
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//                        Logger.logD(TAG, "complete");
+//                        PatientsDAO patientsDAO = new PatientsDAO();
+//                        boolean updated = false;
+//                        try {
+//                            updated = patientsDAO.updatePatientPhoto(patientUuid, IMAGE_PATH + patientUuid + ".jpg");
+//                        } catch (DAOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                });
 
     }
+
 
 }
