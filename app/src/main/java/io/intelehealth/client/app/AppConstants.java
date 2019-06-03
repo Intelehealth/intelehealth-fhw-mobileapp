@@ -39,7 +39,7 @@ public class AppConstants {
     public static final String MAXIMUM_BP_SYS = "150";
     public static final String MAXIMUM_HEIGHT = "272";
     public static final String MAXIMUM_WEIGHT = "150";
-    public static int APP_VERSION_CODE = 24;
+    public static int APP_VERSION_CODE = 25;
     public static final String MINIMUM_BP_SYS = "50";
     public static final String MAXIMUM_BP_DSYS = "150";
     public static final String MINIMUM_BP_DSYS = "30";

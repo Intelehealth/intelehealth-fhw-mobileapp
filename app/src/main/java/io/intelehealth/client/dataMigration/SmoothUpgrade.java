@@ -65,7 +65,7 @@ public class SmoothUpgrade {
 
     public Boolean checkingDatabase() {
 
-        copyDatabase();
+//        copyDatabase();
 
         if (dbexist) {
             System.out.println("Database exists");

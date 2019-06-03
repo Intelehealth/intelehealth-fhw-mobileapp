@@ -1,6 +1,7 @@
 package io.intelehealth.client.views.activites;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
@@ -16,15 +17,20 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import io.intelehealth.client.BuildConfig;
 import io.intelehealth.client.R;
+import io.intelehealth.client.dataMigration.SmoothUpgrade;
 import io.intelehealth.client.databinding.ActivitySplashActivityBinding;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
 
+import static io.intelehealth.client.app.AppConstants.APP_VERSION_CODE;
+
 
 public class SplashActivity extends AppCompatActivity {
     SessionManager sessionManager = null;
-
+    ProgressDialog TempDialog;
+    int i = 5;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +57,12 @@ public class SplashActivity extends AppCompatActivity {
             public void onPermissionGranted() {
 //                Toast.makeText(SplashActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
                 Timer t = new Timer();
-                t.schedule(new splash(), 3000);
+                TempDialog = new ProgressDialog(SplashActivity.this);
+                TempDialog.setMessage("Data migrating...");
+                TempDialog.setCancelable(false);
+                TempDialog.setProgress(i);
+                TempDialog.show();
+                t.schedule(new splash(), 2000);
             }
 
             @Override
@@ -92,9 +103,20 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     class splash extends TimerTask {
+
         @Override
         public void run() {
-            nextActivity();
+            if (BuildConfig.VERSION_CODE <= APP_VERSION_CODE && sessionManager.isFirstTimeLaunched()) {
+                SmoothUpgrade smoothUpgrade = new SmoothUpgrade(SplashActivity.this);
+                boolean smoothupgrade = smoothUpgrade.checkingDatabase();
+                if (smoothupgrade) {
+                    TempDialog.dismiss();
+                    nextActivity();
+                } else {
+                    TempDialog.dismiss();
+                }
+            }
+
         }
     }
 }
