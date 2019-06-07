@@ -29,6 +29,8 @@ import java.util.List;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
+import io.intelehealth.client.dao.ImagesDAO;
+import io.intelehealth.client.exception.DAOException;
 import io.intelehealth.client.objects.DocumentObject;
 
 /**
@@ -44,7 +46,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
     private List<DocumentObject> documentList = new ArrayList<>();
     private Context context;
     private String filePath;
-
+    ImagesDAO imagesDAO = new ImagesDAO();
     private static final String TAG = AdditionalDocumentAdapter.class.getSimpleName();
 
     public AdditionalDocumentAdapter(Context context, List<DocumentObject> documentList, String filePath) {
@@ -96,7 +98,12 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
                 notifyItemRangeChanged(position, documentList.size());
                 String imageName = holder.getDocumentNameTextView().getText().toString();
                 String dir = filePath + File.separator + imageName;
-                deleteImageFromDatabase(dir);
+                try {
+                    imagesDAO.deleteImageFromDatabase(dir);
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+                //deleteImageFromDatabase(dir);
             }
         });
     }
@@ -146,8 +153,8 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface d) {
-                ImageView imageView = (ImageView) dialog.findViewById(R.id.confirmationImageView);
-                final ProgressBar progressBar = (ProgressBar) dialog.findViewById(R.id.progressBar);
+                ImageView imageView = dialog.findViewById(R.id.confirmationImageView);
+                final ProgressBar progressBar = dialog.findViewById(R.id.progressBar);
                 Glide.with(context)
                         .load(file)
                         .skipMemoryCache(true)

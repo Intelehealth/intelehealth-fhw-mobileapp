@@ -29,4 +29,12 @@ public class UrlModifiers {
         return BASE_URL + provider;
     }
 
+    public String obsImageUrl(String obsUuid) {
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        String provider = "obs/" + obsUuid + "/value";
+
+        String BASE_URL = "http://" + sessionManager.getServerUrl() + ":8080/openmrs/ws/rest/v1/";
+        return BASE_URL + provider;
+    }
+
 }

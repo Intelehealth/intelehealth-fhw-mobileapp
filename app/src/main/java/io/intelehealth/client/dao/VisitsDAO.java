@@ -324,4 +324,29 @@ public class VisitsDAO {
         return visitAttribute;
     }
 
+    public List<String> getEmergencyVisitUuids() throws DAOException {
+        List<String> emergencyVisits = new ArrayList<>();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            String query = "SELECT uuid from tbl_visit WHERE emergency= 'false' COLLATE NOCASE";
+            Cursor cursor = db.rawQuery(query, null, null);
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    emergencyVisits.add(cursor.getString(cursor.getColumnIndex("uuid")));
+                    cursor.moveToNext();
+                }
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            throw new DAOException(e.getMessage());
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
+
+        return emergencyVisits;
+    }
+
 }

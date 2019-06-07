@@ -170,7 +170,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "uuid TEXT  PRIMARY KEY," +
             "name TEXT" +
             ")";
-    public static final String CREATE_IMAGE_RECORDS = "CREATE TABLE IF NOT EXISTS image_records(" +
+    public static final String CREATE_IMAGE_RECORDS = "CREATE TABLE IF NOT EXISTS tbl_image_records(" +
             "uuid TEXT PRIMARY KEY," +
             "patientuuid TEXT," +
             "visituuid TEXT," +

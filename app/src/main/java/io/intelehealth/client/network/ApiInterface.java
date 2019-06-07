@@ -8,7 +8,6 @@ import io.intelehealth.client.models.loginModel.LoginModel;
 import io.intelehealth.client.models.loginProviderModel.LoginProviderModel;
 import io.intelehealth.client.models.pushRequestApiCall.PushRequestApiCall;
 import io.intelehealth.client.models.pushResponseApiCall.PushResponseApiCall;
-import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import okhttp3.ResponseBody;
@@ -53,10 +52,10 @@ public interface ApiInterface {
     Single<PushResponseApiCall> PUSH_RESPONSE_API_CALL_OBSERVABLE(@Url String url, @Header("Authorization") String authHeader, @Body PushRequestApiCall pushRequestApiCall);
 
     @GET
-    Flowable OBS_IMAGE_DOWNLOAD(@Url String url);
+    Observable<ResponseBody> PERSON_PROFILE_PIC_DOWNLOAD(@Url String url, @Header("Authorization") String authHeader);
 
     @GET
-    Observable<ResponseBody> PERSON_PROFILE_PIC_DOWNLOAD(@Url String url, @Header("Authorization") String authHeader);
+    Observable<ResponseBody> OBS_IMAGE_DOWNLOAD(@Url String url, @Header("Authorization") String authHeader);
 
 
 }

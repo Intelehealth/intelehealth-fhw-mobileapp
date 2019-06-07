@@ -61,5 +61,48 @@ public class DownloadFilesUtils {
             return;
         }
     }
+
+    public void saveObsToDisk(ResponseBody body, String filename) {
+        try {
+
+            File destinationFile = new File(IMAGE_PATH, filename + ".jpg");
+
+            InputStream inputStream = null;
+            OutputStream outputStream = null;
+
+            try {
+                inputStream = body.byteStream();
+                outputStream = new FileOutputStream(destinationFile);
+                byte[] data = new byte[4096];
+                int count;
+                int progress = 0;
+                long fileSize = body.contentLength();
+                Log.d(TAG, "File Size=" + fileSize);
+                while ((count = inputStream.read(data)) != -1) {
+                    outputStream.write(data, 0, count);
+                    progress += count;
+                    Pair<Integer, Long> pairs = new Pair<>(progress, fileSize);
+                    Log.d(TAG, "Progress: " + progress + "/" + fileSize + " >>>> " + (float) progress / fileSize);
+                }
+                outputStream.flush();
+                Log.d(TAG, destinationFile.getParent());
+                Pair<Integer, Long> pairs = new Pair<>(100, 100L);
+                return;
+            } catch (IOException e) {
+                e.printStackTrace();
+                Pair<Integer, Long> pairs = new Pair<>(-1, Long.valueOf(-1));
+                Log.d(TAG, "Failed to save the file!");
+                return;
+            } finally {
+                if (inputStream != null) inputStream.close();
+                if (outputStream != null) outputStream.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.d(TAG, "Failed to save the file!");
+            return;
+        }
+    }
+
 }
 

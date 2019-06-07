@@ -250,5 +250,19 @@ public class ObsDAO {
         return obsDTOList;
     }
 
+    public List<String> getImageStrings(String conceptuuid, String encounterUuidAdultIntials) {
+        List<String> rawStrings = new ArrayList<>();
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_obs where conceptuuid = ? AND encounteruuid = ? ", new String[]{conceptuuid, encounterUuidAdultIntials});
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                rawStrings.add(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+            }
+        }
+        idCursor.close();
+        db.close();
+
+        return rawStrings;
+    }
 
 }

@@ -1,7 +1,6 @@
 package io.intelehealth.client.views.activites;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
@@ -16,11 +15,11 @@ import android.view.View;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import io.intelehealth.client.R;
-import io.intelehealth.client.app.AppConstants;
+import io.intelehealth.client.dao.ImagesDAO;
+import io.intelehealth.client.exception.DAOException;
 import io.intelehealth.client.objects.DocumentObject;
 import io.intelehealth.client.views.adapters.AdditionalDocumentAdapter;
 
@@ -41,10 +40,10 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_additional_documents);
-        Toolbar topToolBar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar topToolBar = findViewById(R.id.toolbar);
         setSupportActionBar(topToolBar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +64,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             File dir = new File(filePath);
             if (!dir.exists())
                 dir.mkdirs();
-            List<File> fileList = Arrays.asList(dir.listFiles());
+            File[] fileList = dir.listFiles();
             rowListItem = new ArrayList<>();
 
             for (File file : fileList)
@@ -73,7 +72,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
 
             RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
-            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.document_RecyclerView);
+            RecyclerView recyclerView = findViewById(R.id.document_RecyclerView);
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(linearLayoutManager);
 
@@ -112,13 +111,30 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
 
 
     private void updateImageDatabase(String imagePath) {
-        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path,image_type,delete_status) values("
-                + "'" + patientUuid + "'" + ","
-                + visitUuid + ","
-                + "'" + imagePath + "','" + "AD" + "'," +
-                0 +
-                ")");
+        ImagesDAO imagesDAO = new ImagesDAO();
+        try {
+            imagesDAO.insertImageDatabase(patientUuid, visitUuid, imagePath, imgPrefix);
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+//
+//        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+//        ContentValues contentValues=new ContentValues();
+//        try {
+//            contentValues.put("uuid", UUID.randomUUID().toString());
+//            contentValues.put("patinetuuid", patientUuid);
+//            contentValues.put("visituuid", visitUuid);
+//            contentValues.put("image_path", imagePath);
+//            contentValues.put("image_type", "AD");
+//            localdb.insertWithOnConflict("tbl_image_records", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+////        localdb.execSQL("INSERT INTO image_records (uuid,patientUuid,visituuid,image_path,image_type) values("
+////                + "'" + UUID.randomUUID().toString() + "'" + ","
+////                + "'" + patientUuid + "'" + ","
+////                + visitUuid + ","
+////                + "'" + imagePath + "','"
+////                + "AD" +
+////                ")");
+//        }
     }
 
     @Override

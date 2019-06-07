@@ -213,6 +213,9 @@
             android:exported="false" />
 
         <activity android:name=".views.activites.MainActivity" />
+
+        <service android:name=".services.DownloadService" />
+
     </application>
 
 </manifest>

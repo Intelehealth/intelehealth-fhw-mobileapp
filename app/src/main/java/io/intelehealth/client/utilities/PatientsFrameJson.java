@@ -1,8 +1,11 @@
 package io.intelehealth.client.utilities;
 
+import android.database.sqlite.SQLiteDatabase;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.app.IntelehealthApplication;
 import io.intelehealth.client.dao.EncounterDAO;
 import io.intelehealth.client.dao.ObsDAO;
@@ -31,9 +34,11 @@ public class PatientsFrameJson {
     VisitsDAO visitsDAO = new VisitsDAO();
     EncounterDAO encounterDAO = new EncounterDAO();
     ObsDAO obsDAO = new ObsDAO();
+    EmergencyEncounter emergencyEncounter = new EmergencyEncounter();
+    SQLiteDatabase db = null;
 
     public PushRequestApiCall frameJson() {
-
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         session = new SessionManager(IntelehealthApplication.getAppContext());
 
         PushRequestApiCall pushRequestApiCall = new PushRequestApiCall();
@@ -108,7 +113,15 @@ public class PatientsFrameJson {
             visit.setUuid(visitDTO.getUuid());
             visit.setVisitType(visitDTO.getVisitTypeUuid());
             visit.setStopDatetime(visitDTO.getEnddate());
-
+            List<String> emergencyVisitUuids = new ArrayList<>();
+            try {
+                emergencyVisitUuids = visitsDAO.getEmergencyVisitUuids();
+            } catch (DAOException e) {
+                e.printStackTrace();
+            }
+            if (emergencyVisitUuids.size() != 0) {
+                emergencyEncounter.removeEncounterEmergency(visitDTO.getUuid(), db);
+            }
             List<Attribute> attributeList = new ArrayList<>();
             attributeList.clear();
             try {
@@ -142,7 +155,7 @@ public class PatientsFrameJson {
             List<ObsDTO> obsDTOList = obsDAO.obsDTOList(encounterDTO.getUuid());
             Ob ob = new Ob();
             for (ObsDTO obs : obsDTOList) {
-                if (obs != null) {
+                if (obs != null && obs.getValue() != null) {
                     if (!obs.getValue().isEmpty()) {
                         ob = new Ob();
                         ob.setUuid(obs.getUuid());

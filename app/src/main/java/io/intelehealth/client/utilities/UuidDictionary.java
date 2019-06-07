@@ -21,9 +21,8 @@ public class UuidDictionary {
     public static final String RHK_MEDICAL_HISTORY_BLURB = "62bff84b-795a-45ad-aae1-80e7f5163a82";
     public static final String RHK_FAMILY_HISTORY_BLURB = "d63ae965-47fb-40e8-8f08-1f46a8a60b2b";
     public static final String FOLLOW_UP_VISIT = "e8caffd6-5d22-41c4-8d6a-bc31a44d0c86";
-
-//m added
-    public static final String EMERGENCY ="ca5f5dc3-4f0b-4097-9cae-5cf2eb44a09c";
+    //m added
+    public static final String EMERGENCY = "ca5f5dc3-4f0b-4097-9cae-5cf2eb44a09c";
 
     public static final String TELEMEDICINE_DIAGNOSIS = "537bb20d-d09d-4f88-930b-cc45c7d662df";
     public static final String JSV_MEDICATIONS = "c38c0c50-2fd2-4ae3-b7ba-7dd25adca4ca";
@@ -31,9 +30,10 @@ public class UuidDictionary {
     public static final String REQUESTED_TESTS = "23601d71-50e6-483f-968d-aeef3031346d";
     public static final String ADDITIONAL_COMMENTS = "162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
+    public static final String COMPLEX_IMAGE = "";
+
     public static final String SON_WIFE_DAUGHTER = "35c3afdd-bb96-4b61-afb9-22a5fc2d088e";
     public static final String OCCUPATION = "5fe2ef6f-bbf7-45df-a6ea-a284aee82ddc";
-
     //Encounter Types
     public static final String ENCOUNTER_ADULTINITIAL = "8d5b27bc-c2cc-11de-8d13-0010c6dffd0f";
     public static final String ENCOUNTER_VITALS = "67a71486-1a54-468f-ac3e-7091a9a79584";

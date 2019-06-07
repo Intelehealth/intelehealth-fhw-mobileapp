@@ -31,6 +31,7 @@ public class SplashActivity extends AppCompatActivity {
     SessionManager sessionManager = null;
     ProgressDialog TempDialog;
     int i = 5;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,9 +115,11 @@ public class SplashActivity extends AppCompatActivity {
                     nextActivity();
                 } else {
                     TempDialog.dismiss();
+                    nextActivity();
                 }
+            } else {
+                nextActivity();
             }
-
         }
     }
 }

@@ -47,6 +47,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,13 +69,18 @@ import java.util.Set;
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.dao.EncounterDAO;
+import io.intelehealth.client.dao.ImagesDAO;
 import io.intelehealth.client.dao.PullDataDAO;
 import io.intelehealth.client.dto.ObsDTO;
+import io.intelehealth.client.exception.DAOException;
+import io.intelehealth.client.models.download.Download;
 import io.intelehealth.client.node.Node;
 import io.intelehealth.client.objects.Patient;
+import io.intelehealth.client.services.DownloadService;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
 import io.intelehealth.client.utilities.EmergencyEncounter;
 import io.intelehealth.client.utilities.FileUtils;
+import io.intelehealth.client.utilities.NetworkConnection;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UuidDictionary;
 import io.intelehealth.client.views.adapters.HorizontalAdapter;
@@ -212,6 +218,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String encounterVitals;
     String encounterAdultIntials;
 
+    ProgressBar mProgressBar;
+    TextView mProgressText;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -287,6 +296,26 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
     }
 
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            if (intent.getAction().equals(AppConstants.MESSAGE_PROGRESS)) {
+
+                Download download = intent.getParcelableExtra("download");
+//                mProgressBar.setProgress(download.getProgress());
+                if (download.getProgress() == 100) {
+
+//                    mProgressText.setText("File Download Complete");
+
+                } else {
+
+//                    mProgressText.setText(String.format("Downloaded (%d/%d) MB",download.getCurrentFileSize(),download.getTotalFileSize()));
+
+                }
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -461,7 +490,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     db.execSQL(updateQuery);
                     db.close();
                     db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-                    emergencyEncounter.removeEncounterEmergency(visitUuid, db);
+                    if (NetworkConnection.isOnline(getApplication())) {
+                        emergencyEncounter.removeEncounterEmergency(visitUuid, db);
+                    }
                     db.close();
                 }
                 if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
@@ -840,21 +871,27 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             for (String child : childList) {
                                 new File(phyExamDir, child).delete();
 
-                                String[] coloumns = {"_id", "parse_id"};
-                                String[] selectionArgs = {phyExamDir.getAbsolutePath() + File.separator + child};
-                                Cursor cursor = localdb.query("image_records", coloumns, "image_path = ?", selectionArgs, null, null, null);
-                                if (cursor != null && cursor.moveToFirst()) {
-                                    String parse_id = cursor.getString(cursor.getColumnIndexOrThrow("parse_id"));
-                                    if (parse_id != null && !parse_id.isEmpty()) {
-                                        ContentValues contentValues = new ContentValues();
-                                        contentValues.put("delete_status", 1);
-                                        String[] whereArgs = {parse_id};
-                                        localdb.update("image_records", contentValues, "parse_id = ?", whereArgs);
-                                    } else {
-                                        localdb.execSQL("DELETE FROM image_records WHERE image_path=" +
-                                                "'" + phyExamDir.getAbsolutePath() + File.separator + child + "'");
-                                    }
+//                                String[] coloumns = {"uuid","image_path"};
+//                                String[] selectionArgs = {phyExamDir.getAbsolutePath() + File.separator + child};
+                                ImagesDAO imagesDAO = new ImagesDAO();
+                                try {
+                                    imagesDAO.deleteImageFromDatabase(phyExamDir.getAbsolutePath() + File.separator + child);
+                                } catch (DAOException e1) {
+                                    e1.printStackTrace();
                                 }
+//                                Cursor cursor = localdb.query("tbl_image_records", coloumns, "image_path = ?", selectionArgs, null, null, null);
+//                                if (cursor != null && cursor.moveToFirst()) {
+//                                    String parse_id = cursor.getString(cursor.getColumnIndexOrThrow("image_path"));
+//                                    if (parse_id != null && !parse_id.isEmpty()) {
+//                                        ContentValues contentValues = new ContentValues();
+//                                        contentValues.put("delete_status", 1);
+//                                        String[] whereArgs = {parse_id};
+//                                        localdb.update("image_records", contentValues, "parse_id = ?", whereArgs);
+//                                    } else {
+//                                        localdb.execSQL("DELETE FROM image_records WHERE image_path=" +
+//                                                "'" + phyExamDir.getAbsolutePath() + File.separator + child + "'");
+//                                    }
+//                                }
                             }
                             phyExamDir.delete();
                             localdb.close();
@@ -988,8 +1025,31 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 //mLayout.addView(downloadButton, mLayout.getChildCount());
             }
         });
+
+        registerReceiver();
+        startDownload();
     }
 
+    private void startDownload() {
+
+        Intent intent = new Intent(this, DownloadService.class);
+        intent.putExtra("patientUuid", patientUuid);
+        intent.putExtra("visitUuid", visitUuid);
+        intent.putExtra("encounterUuidVitals", encounterVitals);
+        intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+
+        startService(intent);
+
+    }
+
+    private void registerReceiver() {
+
+        LocalBroadcastManager bManager = LocalBroadcastManager.getInstance(this);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(AppConstants.MESSAGE_PROGRESS);
+        bManager.registerReceiver(broadcastReceiver, intentFilter);
+
+    }
     private String stringToWeb(String input) {
         String formatted = "";
         if (input != null && !input.isEmpty()) {

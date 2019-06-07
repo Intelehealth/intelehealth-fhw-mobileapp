@@ -47,6 +47,7 @@ import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
 import io.intelehealth.client.utilities.DownloadFilesUtils;
 import io.intelehealth.client.utilities.Logger;
+import io.intelehealth.client.utilities.NetworkConnection;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UrlModifiers;
 import io.intelehealth.client.utilities.UuidDictionary;
@@ -315,7 +316,9 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
         setTitle(patientName);
         if (patient_new.getPatient_photo() == null || patient_new.getPatient_photo().equalsIgnoreCase("")) {
-            profilePicDownloaded();
+            if (NetworkConnection.isOnline(getApplication())) {
+                profilePicDownloaded();
+            }
         }
         Glide.with(PatientDetailActivity.this)
                 .load(patient_new.getPatient_photo())
@@ -733,37 +736,6 @@ public class PatientDetailActivity extends AppCompatActivity {
                         }
                     }
                 });
-//                .subscribe(new Observer<ResponseBody>() {
-//                    @Override
-//                    public void onSubscribe(Disposable d) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(ResponseBody file) {
-//                        DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
-//                        downloadFilesUtils.saveToDisk(file, patientUuid);
-//                        Logger.logD(TAG, file.toString());
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        Logger.logD(TAG, e.getMessage());
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//                        Logger.logD(TAG, "complete");
-//                        PatientsDAO patientsDAO = new PatientsDAO();
-//                        boolean updated = false;
-//                        try {
-//                            updated = patientsDAO.updatePatientPhoto(patientUuid, IMAGE_PATH + patientUuid + ".jpg");
-//                        } catch (DAOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                });
-
     }
 
 

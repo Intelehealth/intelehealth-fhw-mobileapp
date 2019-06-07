@@ -33,7 +33,8 @@ public class AppConstants {
     public static final String dbfilepath = Environment.getExternalStorageDirectory() + File.separator + "InteleHealth_DB" + File.separator + "Intelehealth.db"; // directory: Intelehealth_DB   ,  filename: Intelehealth.db
     public static String CONFIG_FILE_NAME = "config.json";
     public static final String IMAGE_PATH = IntelehealthApplication.getAppContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator;
-
+    public static final String PATIENT_IMAGE_PATH = IntelehealthApplication.getAppContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator + "Patient_Images/";
+    public static final String MESSAGE_PROGRESS = "message_progress";
 
     //App vitals constants
     public static final String MAXIMUM_BP_SYS = "150";

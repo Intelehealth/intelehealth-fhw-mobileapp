@@ -42,7 +42,7 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
         final PatientDTO patinet = patients.get(position);
         holder.searchitemBinding.listItemBody.setText(patinet.getFirstname() + " " + patinet.getLastname());
         holder.searchitemBinding.listItemHead.setText(patinet.getOpenmrsId());
-        holder.searchitemBinding.listItemBody.setOnClickListener(new View.OnClickListener() {
+        holder.searchitemBinding.searchlinear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("search adapter", "patientuuid" + patinet.getUuid());

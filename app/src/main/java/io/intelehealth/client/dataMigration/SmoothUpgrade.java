@@ -5,11 +5,16 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.os.Environment;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +22,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import io.intelehealth.client.BuildConfig;
-import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.backup.Backup;
 import io.intelehealth.client.dao.EncounterDAO;
 import io.intelehealth.client.dao.ObsDAO;
@@ -35,6 +39,7 @@ import io.intelehealth.client.utilities.StringUtils;
 import io.intelehealth.client.utilities.UuidDictionary;
 
 import static io.intelehealth.client.app.AppConstants.APP_VERSION_CODE;
+import static io.intelehealth.client.app.AppConstants.dbfilepath;
 
 public class SmoothUpgrade {
     public SQLiteDatabase myDataBase;
@@ -43,7 +48,7 @@ public class SmoothUpgrade {
     Backup backup = new Backup();
     boolean dbexist = checkdatabase();
     String TAG = SmoothUpgrade.class.getSimpleName();
-
+    public String DATABASE_NAME = "YOUR DATABASE NAME HERE";
     public SmoothUpgrade(Context context) {
         this.context = context;
         sessionManager = new SessionManager(context);
@@ -63,11 +68,42 @@ public class SmoothUpgrade {
 
     }
 
+
+    public void exportDB() {
+        try {
+            File sd = Environment.getExternalStorageDirectory();
+            File data = Environment.getDataDirectory();
+
+            if (sd.canWrite()) {
+                Log.d("TAG", "DatabaseHandler: can write in sd");
+                //Replace with YOUR_PACKAGE_NAME and YOUR_DB_NAME
+                //String currentDBPath = "filepath here"+DATABASE_NAME;
+                //Replace with YOUR_FOLDER_PATH and TARGET_DB_NAME in the SD card
+                //String copieDBPath = DATABASE_NAME;
+                File currentDB = new File(data + "/data/io.intelehealth.client/databases/", "localRecords.db");
+                File copieDB = new File(dbfilepath);
+                if (currentDB.exists()) {
+                    Log.d("TAG", "DatabaseHandler: DB exist");
+                    @SuppressWarnings("resource")
+                    FileChannel src = new FileInputStream(currentDB).getChannel();
+                    @SuppressWarnings("resource")
+                    FileChannel dst = new FileOutputStream(copieDB).getChannel();
+                    dst.transferFrom(src, 0, src.size());
+                    src.close();
+                    dst.close();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public Boolean checkingDatabase() {
 
-//        copyDatabase();
+        exportDB();
 
-        if (dbexist) {
+        if (checkdatabase()) {
             System.out.println("Database exists");
             opendatabase();
             insertOfflineOldData();
@@ -119,7 +155,11 @@ public class SmoothUpgrade {
                     }
                     encounterDTO = getVisitId(id, visitDTO.getUuid(), visitDTO.getStartdate());
 
-                    obsDTO = getEncounterId(id, encounterDTO.getUuid());
+                    String encounteruuid = UUID.randomUUID().toString();
+
+                    obsDTO = getEncounterId(id, encounteruuid);
+
+                    encounterDTO = insertMissingEncounter(encounteruuid, obsDTO.getConceptuuid(), visitDTO.getUuid(), visitDTO.getStartdate());
 
 
                     patientDTO.setUuid(uuid);
@@ -294,21 +334,6 @@ public class SmoothUpgrade {
         return ObsDTO;
     }
 
-    private boolean InsertOfflineVisitData() {
-
-
-        return true;
-    }
-
-    private boolean insertOfflineEncounteData() {
-
-        return true;
-    }
-
-    private boolean InsertOfflineObsData() {
-
-        return true;
-    }
 
     private String convertConcepttoUuid(String conceptid) {
         String key = "";
@@ -341,6 +366,55 @@ public class SmoothUpgrade {
         return conceptUuid(key);
     }
 
+    public EncounterDTO insertMissingEncounter(String uuid, String encounterType, String visituuid, String time) {
+
+        EncounterDTO encounterDTO = new EncounterDTO();
+        EncounterDAO encounterDAO = new EncounterDAO();
+        try {
+
+            encounterDTO.setUuid(uuid);
+            encounterDTO.setVisituuid(visituuid);
+            encounterDTO.setEncounterTypeUuid(getEncounterTypebasedonConcept(encounterType));
+            encounterDTO.setEncounterTime(time);
+            encounterDTO.setSyncd(false);
+
+            try {
+                encounterDAO.createEncountersToDB(encounterDTO);
+            } catch (DAOException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return encounterDTO;
+    }
+
+    private String getEncounterTypebasedonConcept(String encountertype) {
+
+        String encounter = "";
+        ArrayList<String> arr = new ArrayList<String>();
+        arr.add("5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        arr.add("5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        arr.add("5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        arr.add("5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        arr.add("5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        arr.add("5088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        arr.add("5242AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        arr.add("5092AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+
+
+        ArrayList<String> arr1 = new ArrayList<String>();
+
+
+        if (arr.contains(encountertype)) {
+            encounter = "67a71486-1a54-468f-ac3e-7091a9a79584";
+        } else {
+            encounter = "8d5b27bc-c2cc-11de-8d13-0010c6dffd0f";
+        }
+
+        return encounter;
+    }
+
     private String conceptUuid(String key) {
         EncounterDAO encounterDAO = new EncounterDAO();
 
@@ -351,7 +425,7 @@ public class SmoothUpgrade {
 
         boolean checkdb = false;
         try {
-            File dbfile = new File(AppConstants.dbfilepath);
+            File dbfile = new File(dbfilepath);
             checkdb = dbfile.exists();
         } catch (SQLiteException e) {
             System.out.println("Database doesn't exist");
@@ -362,7 +436,7 @@ public class SmoothUpgrade {
 
     public void opendatabase() throws SQLException {
         //Open the database
-        String mypath = AppConstants.dbfilepath;
+        String mypath = dbfilepath;
         myDataBase = SQLiteDatabase.openDatabase(mypath, null, SQLiteDatabase.OPEN_READWRITE);
     }
 }

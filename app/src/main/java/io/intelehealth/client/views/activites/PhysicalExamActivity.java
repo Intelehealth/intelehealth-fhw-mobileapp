@@ -43,9 +43,10 @@ import java.util.UUID;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
+import io.intelehealth.client.dao.ImagesDAO;
+import io.intelehealth.client.exception.DAOException;
 import io.intelehealth.client.node.Node;
 import io.intelehealth.client.node.PhysicalExam;
-import io.intelehealth.client.utilities.ConceptId;
 import io.intelehealth.client.utilities.FileUtils;
 import io.intelehealth.client.utilities.StringUtils;
 import io.intelehealth.client.utilities.UuidDictionary;
@@ -75,7 +76,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
     static File filePath;
 
 
-
     String mFileName = "physExam.json";
 
 
@@ -85,6 +85,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
     Boolean complaintConfirmed = false;
     String encounterVitals;
     String encounterAdultIntials;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
@@ -126,7 +127,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                     "visit_summary", Context.MODE_PRIVATE);
             Set<String> selectedExams = mSharedPreference.getStringSet("exam_" + patientUuid, null);
             selectedExamsList.clear();
-            if(selectedExams!=null) selectedExamsList.addAll(selectedExams);
+            if (selectedExams != null) selectedExamsList.addAll(selectedExams);
             filePath = new File(baseDir + File.separator + "Patient Images" + File.separator +
                     patientUuid + File.separator + visitUuid + File.separator + imageDir);
         }
@@ -166,7 +167,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
         setContentView(R.layout.activity_physical_exam);
         setTitle(R.string.title_activity_physical_exam);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -178,27 +179,27 @@ public class PhysicalExamActivity extends AppCompatActivity {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), physicalExamMap);
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = findViewById(R.id.container);
         if (mViewPager != null) {
             mViewPager.setAdapter(mSectionsPagerAdapter);
         }
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setSelectedTabIndicatorHeight(15);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             tabLayout.setSelectedTabIndicatorColor(getColor(R.color.amber));
-            tabLayout.setTabTextColors(getColor(R.color.white),getColor(R.color.amber));
-        }else{
+            tabLayout.setTabTextColors(getColor(R.color.white), getColor(R.color.amber));
+        } else {
             tabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.amber));
-            tabLayout.setTabTextColors(getResources().getColor(R.color.white),getResources().getColor(R.color.amber));
+            tabLayout.setTabTextColors(getResources().getColor(R.color.white), getResources().getColor(R.color.amber));
         }
         if (tabLayout != null) {
             tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
             tabLayout.setupWithViewPager(mViewPager);
         }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -264,6 +265,128 @@ public class PhysicalExamActivity extends AppCompatActivity {
         });
 
     }
+
+    private long insertDb(String value) {
+        Log.i(TAG, "insertDb: ");
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        final String CREATOR_ID = prefs.getString("creatorid", null);
+
+        final String CONCEPT_ID = UuidDictionary.PHYSICAL_EXAMINATION; // RHK ON EXAM
+
+        ContentValues complaintEntries = new ContentValues();
+
+//        complaintEntries.put("patient_id", patientUuid);
+//        complaintEntries.put("visit_id", visitUuid);
+        complaintEntries.put("uuid", UUID.randomUUID().toString());
+        complaintEntries.put("encounteruuid", encounterAdultIntials);
+        complaintEntries.put("creator", CREATOR_ID);
+        complaintEntries.put("value", StringUtils.getValue(value));
+        complaintEntries.put("conceptuuid", CONCEPT_ID);
+
+        return localdb.insert("tbl_obs", null, complaintEntries);
+    }
+
+    /**
+     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+     * one of the sections/tabs/pages.
+     */
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        private PhysicalExam exams;
+
+        public SectionsPagerAdapter(FragmentManager fm, PhysicalExam inputNode) {
+            super(fm);
+            this.exams = inputNode;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            // getItem is called to instantiate the fragment for the given page.
+            // Return a PlaceholderFragment (defined as a static inner class below).
+            return PlaceholderFragment.newInstance(position + 1, exams, patientUuid, visitUuid);
+        }
+
+        @Override
+        public int getCount() {
+            return exams.getTotalNumberOfExams();
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            //return exams.getTitle(position);
+            return String.valueOf(position + 1);
+        }
+    }
+
+    private void updateDatabase(String string) {
+
+        String conceptID = UuidDictionary.PHYSICAL_EXAMINATION;
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("value", string);
+        localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        String selection = "encounteruuid = ? AND conceptuuid = ?";
+        String[] args = {encounterAdultIntials, conceptID};
+
+        int i = localdb.update(
+                "tbl_obs",
+                contentValues,
+                selection,
+                args
+        );
+        Log.i(TAG, "updateDatabase: " + i);
+        if (i == 0) {
+            insertDb(string);
+        }
+        localdb.close();
+    }
+
+    public void questionsMissing() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage(R.string.question_answer_all_phy_exam);
+        alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    private void updateImageDatabase(String imagePath) {
+        ImagesDAO imagesDAO = new ImagesDAO();
+
+        try {
+            imagesDAO.insertImageDatabase(patientUuid, visitUuid, imagePath, image_Prefix);
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+
+//        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path,image_type,delete_status) values("
+//                + "'" + patientUuid + "'" + ","
+//                + visitUuid + ","
+//                + "'" + imagePath + "','" + image_Prefix + "'," +
+//                0 +
+//                ")");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Node.TAKE_IMAGE_FOR_NODE) {
+            if (resultCode == RESULT_OK) {
+                String mCurrentPhotoPath = data.getStringExtra("RESULT");
+                physicalExamMap.setImagePath(mCurrentPhotoPath);
+                Log.i(TAG, mCurrentPhotoPath);
+                physicalExamMap.displayImage(this, filePath.getAbsolutePath(), imageName);
+
+            }
+
+        }
+    }
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -302,9 +425,9 @@ public class PhysicalExamActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_physical_exam, container, false);
 
-            final ImageView imageView = (ImageView) rootView.findViewById(R.id.physical_exam_image_view);
-            TextView textView = (TextView) rootView.findViewById(R.id.physical_exam_text_view);
-            ExpandableListView expandableListView = (ExpandableListView) rootView.findViewById(R.id.physical_exam_expandable_list_view);
+            final ImageView imageView = rootView.findViewById(R.id.physical_exam_image_view);
+            TextView textView = rootView.findViewById(R.id.physical_exam_text_view);
+            ExpandableListView expandableListView = rootView.findViewById(R.id.physical_exam_expandable_list_view);
             //ListView listView = (ListView) rootView.findViewById(R.id.physical_exam_list_view);
             //VideoView videoView = (VideoView) rootView.findViewById(R.id.physical_exam_video_view);
 
@@ -363,7 +486,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
 
 
-
                     if (question.getInputType() != null && question.isSelected()) {
 
                         if (question.getInputType().equals("camera")) {
@@ -401,123 +523,8 @@ public class PhysicalExamActivity extends AppCompatActivity {
         }
 
 
-
-
     }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        private PhysicalExam exams;
-
-        public SectionsPagerAdapter(FragmentManager fm, PhysicalExam inputNode) {
-            super(fm);
-            this.exams = inputNode;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1, exams, patientUuid, visitUuid);
-        }
-
-        @Override
-        public int getCount() {
-            return exams.getTotalNumberOfExams();
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            //return exams.getTitle(position);
-            return String.valueOf(position + 1);
-        }
-    }
-
-    private long insertDb(String value) {
-        Log.i(TAG, "insertDb: ");
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        final String CREATOR_ID = prefs.getString("creatorid", null);
-
-        final String CONCEPT_ID = UuidDictionary.PHYSICAL_EXAMINATION; // RHK ON EXAM
-
-        ContentValues complaintEntries = new ContentValues();
-
-//        complaintEntries.put("patient_id", patientUuid);
-//        complaintEntries.put("visit_id", visitUuid);
-        complaintEntries.put("uuid", UUID.randomUUID().toString());
-        complaintEntries.put("encounteruuid",encounterAdultIntials);
-        complaintEntries.put("creator", CREATOR_ID);
-        complaintEntries.put("value", StringUtils.getValue(value));
-        complaintEntries.put("conceptuuid", CONCEPT_ID);
-
-        return localdb.insert("tbl_obs", null, complaintEntries);
-    }
-
-    public void questionsMissing() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setMessage(R.string.question_answer_all_phy_exam);
-        alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-    }
-
-    private void updateDatabase(String string) {
-
-        String conceptID = UuidDictionary.PHYSICAL_EXAMINATION;
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("value", string);
-
-        String selection = "encounteruuid = ? AND conceptuuid = ?";
-        String[] args = {encounterAdultIntials, String.valueOf(conceptID)};
-
-        int i = localdb.update(
-                "tbl_obs",
-                contentValues,
-                selection,
-                args
-        );
-        Log.i(TAG, "updateDatabase: " + i);
-        if(i==0){
-            insertDb(string);
-        }
-
-    }
-
-    private void updateImageDatabase(String imagePath) {
-        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path,image_type,delete_status) values("
-                + "'" + patientUuid + "'" + ","
-                + visitUuid + ","
-                + "'" + imagePath + "','" + image_Prefix + "'," +
-                0 +
-                ")");
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Node.TAKE_IMAGE_FOR_NODE) {
-            if (resultCode == RESULT_OK) {
-                String mCurrentPhotoPath = data.getStringExtra("RESULT");
-                physicalExamMap.setImagePath(mCurrentPhotoPath);
-                Log.i(TAG, mCurrentPhotoPath);
-                physicalExamMap.displayImage(this,filePath.getAbsolutePath(),imageName);
-
-            }
-
-        }
-    }
     @Override
     protected void onStop() {
         super.onStop();

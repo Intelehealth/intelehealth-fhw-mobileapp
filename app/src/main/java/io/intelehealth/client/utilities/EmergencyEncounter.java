@@ -72,7 +72,6 @@ public class EmergencyEncounter {
 
         boolean success = false;
 
-//        apiInterface.DELETE_ENCOUNTER("").execute();
         SessionManager session = new SessionManager(IntelehealthApplication.getAppContext());
         if (visitUuid != null) {
             String selectQuery = "SELECT uuid FROM tbl_encounter WHERE visituuid='" + visitUuid + "'  and encounter_type_uuid='ca5f5dc3-4f0b-4097-9cae-5cf2eb44a09c'";
