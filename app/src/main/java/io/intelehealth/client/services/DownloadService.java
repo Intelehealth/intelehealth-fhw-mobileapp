@@ -37,6 +37,7 @@ public class DownloadService extends IntentService {
     private String encounterVitals;
     private String encounterAdultIntials;
     private int totalFileSize;
+    private String imgPrefix = "AD";
 
     public DownloadService() {
         super("Download Service");
@@ -80,7 +81,7 @@ public class DownloadService extends IntentService {
                         @Override
                         public void onNext(ResponseBody responseBody) {
                             try {
-                                downloadFile(responseBody, finalI);
+                                downloadFile(responseBody, patientUuid + "_" + visitUuid + "_" + imgPrefix);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -100,13 +101,13 @@ public class DownloadService extends IntentService {
 
     }
 
-    private void downloadFile(ResponseBody body, int i) throws IOException {
+    private void downloadFile(ResponseBody body, String mImageName) throws IOException {
 
         int count;
         byte[] data = new byte[1024 * 4];
         long fileSize = body.contentLength();
         InputStream bis = new BufferedInputStream(body.byteStream(), 1024 * 8);
-        File outputFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "file" + i + ".jpg");
+        File outputFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), mImageName + "_" + System.currentTimeMillis() + ".jpg");
         OutputStream output = new FileOutputStream(outputFile);
         long total = 0;
         long startTime = System.currentTimeMillis();
