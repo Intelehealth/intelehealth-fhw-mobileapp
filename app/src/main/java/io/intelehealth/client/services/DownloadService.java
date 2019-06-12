@@ -16,11 +16,14 @@ import java.util.List;
 
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.app.IntelehealthApplication;
+import io.intelehealth.client.dao.ImagesDAO;
 import io.intelehealth.client.dao.ObsDAO;
+import io.intelehealth.client.exception.DAOException;
 import io.intelehealth.client.models.download.Download;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UrlModifiers;
+import io.intelehealth.client.utilities.UuidDictionary;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
@@ -38,6 +41,8 @@ public class DownloadService extends IntentService {
     private String encounterAdultIntials;
     private int totalFileSize;
     private String imgPrefix = "AD";
+    final private String imageDir = "Additional Documents";
+    public String baseDir = "";
 
     public DownloadService() {
         super("Download Service");
@@ -62,6 +67,8 @@ public class DownloadService extends IntentService {
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
         }
         AppConstants.notificationUtils.showNotificationProgress("Download", "Downloading File", IntelehealthApplication.getAppContext(), 0);
+        baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + File.separator + "Patient Images" + File.separator + patientUuid + File.separator +
+                visitUuid + File.separator + imageDir + File.separator;
         initDownload();
 
     }
@@ -70,7 +77,7 @@ public class DownloadService extends IntentService {
 
         String url = "";
         List<String> imageObsList = new ArrayList<>();
-        imageObsList = obsDAO.getImageStrings("07a816ce-ffc0-49b9-ad92-a1bf9bf5e2ba", encounterAdultIntials);
+        imageObsList = obsDAO.getImageStrings(UuidDictionary.COMPLEX_IMAGE, encounterAdultIntials);
         for (int i = 0; i < imageObsList.size(); i++) {
             url = urlModifiers.obsImageUrl(imageObsList.get(i));
             Observable<ResponseBody> downloadobs = AppConstants.apiInterface.OBS_IMAGE_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
@@ -81,7 +88,7 @@ public class DownloadService extends IntentService {
                         @Override
                         public void onNext(ResponseBody responseBody) {
                             try {
-                                downloadFile(responseBody, patientUuid + "_" + visitUuid + "_" + imgPrefix);
+                                downloadFile(responseBody, baseDir + patientUuid + "_" + visitUuid + "_" + imgPrefix);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -95,6 +102,7 @@ public class DownloadService extends IntentService {
                         @Override
                         public void onComplete() {
                             Logger.logD(TAG, "oncomplete");
+
                         }
                     });
         }
@@ -102,12 +110,12 @@ public class DownloadService extends IntentService {
     }
 
     private void downloadFile(ResponseBody body, String mImageName) throws IOException {
-
+        String imagepath = mImageName + "_" + System.currentTimeMillis() + ".jpg";
         int count;
         byte[] data = new byte[1024 * 4];
         long fileSize = body.contentLength();
         InputStream bis = new BufferedInputStream(body.byteStream(), 1024 * 8);
-        File outputFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), mImageName + "_" + System.currentTimeMillis() + ".jpg");
+        File outputFile = new File(imagepath);
         OutputStream output = new FileOutputStream(outputFile);
         long total = 0;
         long startTime = System.currentTimeMillis();
@@ -139,6 +147,13 @@ public class DownloadService extends IntentService {
         output.flush();
         output.close();
         bis.close();
+
+        ImagesDAO imagesDAO = new ImagesDAO();
+        try {
+            imagesDAO.insertImageDatabase(patientUuid, visitUuid, imagepath, "AD");
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
 
     }
 

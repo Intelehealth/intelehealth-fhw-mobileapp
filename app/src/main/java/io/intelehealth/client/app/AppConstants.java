@@ -36,6 +36,7 @@ public class AppConstants {
     public static final String PATIENT_IMAGE_PATH = IntelehealthApplication.getAppContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator + "Patient_Images/";
     public static final String MESSAGE_PROGRESS = "message_progress";
 
+
     //App vitals constants
     public static final String MAXIMUM_BP_SYS = "150";
     public static final String MAXIMUM_HEIGHT = "272";

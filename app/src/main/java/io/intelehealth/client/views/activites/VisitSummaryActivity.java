@@ -305,8 +305,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 Download download = intent.getParcelableExtra("download");
 //                mProgressBar.setProgress(download.getProgress());
                 if (download.getProgress() == 100) {
+                    additionalCommentsCard.refreshDrawableState();
 
 //                    mProgressText.setText("File Download Complete");
+
 
                 } else {
 

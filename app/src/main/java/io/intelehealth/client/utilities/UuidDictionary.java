@@ -30,7 +30,7 @@ public class UuidDictionary {
     public static final String REQUESTED_TESTS = "23601d71-50e6-483f-968d-aeef3031346d";
     public static final String ADDITIONAL_COMMENTS = "162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
-    public static final String COMPLEX_IMAGE = "";
+    public static final String COMPLEX_IMAGE = "07a816ce-ffc0-49b9-ad92-a1bf9bf5e2ba";
 
     public static final String SON_WIFE_DAUGHTER = "35c3afdd-bb96-4b61-afb9-22a5fc2d088e";
     public static final String OCCUPATION = "5fe2ef6f-bbf7-45df-a6ea-a284aee82ddc";
