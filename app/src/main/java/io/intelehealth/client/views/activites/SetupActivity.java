@@ -5,10 +5,8 @@ import android.accounts.AccountManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
@@ -23,27 +21,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.webkit.URLUtil;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.parse.Parse;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.app.IntelehealthApplication;
-import io.intelehealth.client.databinding.ActivitySetupBinding;
 import io.intelehealth.client.models.Location;
 import io.intelehealth.client.models.Results;
 import io.intelehealth.client.models.loginModel.LoginModel;
 import io.intelehealth.client.models.loginProviderModel.LoginProviderModel;
-import io.intelehealth.client.network.ApiClient;
-import io.intelehealth.client.network.ApiInterface;
+import io.intelehealth.client.networkApiCalls.ApiClient;
+import io.intelehealth.client.networkApiCalls.ApiInterface;
 import io.intelehealth.client.services.DownloadProtocolsTask;
 import io.intelehealth.client.utilities.AdminPassword;
 import io.intelehealth.client.utilities.Base64Methods;
@@ -52,7 +53,6 @@ import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.OfflineLogin;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UrlModifiers;
-import io.intelehealth.client.viewModels.SetupViewModel;
 import io.intelehealth.client.views.adapters.LocationArrayAdapter;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -65,12 +65,9 @@ import io.reactivex.schedulers.Schedulers;
 public class SetupActivity extends AppCompatActivity {
 
     private static final String TAG = SetupActivity.class.getSimpleName();
-    SetupViewModel setupViewModel;
-    ActivitySetupBinding activitySetupBinding;
     private boolean isLocationFetched;
     String BASE_URL = "";
-    //    private TestSetup mAuthTask = null;
-    private List<Location> mLocations = new ArrayList<>();
+    private static final int PERMISSION_ALL = 1;
 
     protected AccountManager manager;
     UrlModifiers urlModifiers = new UrlModifiers();
@@ -79,35 +76,58 @@ public class SetupActivity extends AppCompatActivity {
     AlertDialog.Builder dialog;
     String key = null;
     SessionManager sessionManager = null;
+    public File base_dir;
+    public String[] FILES;
+    //        private TestSetup mAuthTask = null;
+    private List<Location> mLocations = new ArrayList<>();
+    private AutoCompleteTextView mEmailView;
+    private EditText mPasswordView;
+    private EditText mAdminPasswordView;
+    private EditText mUrlField;
+    private Button mLoginButton;
+    private Spinner mDropdownLocation;
+    private TextView mAndroidIdTextView;
+    private RadioButton r1;
+    private RadioButton r2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_setup);
-        activitySetupBinding = DataBindingUtil.setContentView(this, R.layout.activity_setup);
+        setContentView(R.layout.activity_setup);
         getSupportActionBar();
-        setupViewModel = ViewModelProviders.of(this).get(SetupViewModel.class);
-        /*set handlers with data binding*/
-        activitySetupBinding.setViewmodel(setupViewModel);
-        activitySetupBinding.setLifecycleOwner(this);
         sessionManager = new SessionManager(this);
         // Persistent login information
         manager = AccountManager.get(SetupActivity.this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        activitySetupBinding.setupSubmitButton.setOnClickListener(new View.OnClickListener() {
+        // Set up the login form.
+        mEmailView = findViewById(R.id.email);
+        // populateAutoComplete(); TODO: create our own autocomplete code
+
+        mLoginButton = findViewById(R.id.setup_submit_button);
+        mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 attemptLogin();
             }
         });
 
+        r1 = findViewById(R.id.demoMindmap);
+        r2 = findViewById(R.id.downloadMindmap);
 
-        activitySetupBinding.adminPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mPasswordView = findViewById(R.id.password);
+
+        mAdminPasswordView = findViewById(R.id.admin_password);
+
+        Button submitButton = findViewById(R.id.setup_submit_button);
+
+        mUrlField = findViewById(R.id.editText_URL);
+        mDropdownLocation = findViewById(R.id.spinner_location);
+        mAdminPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_NULL) {
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == R.id.login || id == EditorInfo.IME_NULL) {
                     attemptLogin();
                     return true;
                 }
@@ -115,18 +135,22 @@ public class SetupActivity extends AppCompatActivity {
             }
         });
 
-        activitySetupBinding.textViewAid.setText("Android Id: " + IntelehealthApplication.getAndroidId());
+        mAndroidIdTextView = findViewById(R.id.textView_Aid);
+        mAndroidIdTextView.setText("Android Id: " + IntelehealthApplication.getAndroidId());
 
-        activitySetupBinding.setupSubmitButton.setOnClickListener(new View.OnClickListener() {
+        submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 attemptLogin();
+                //progressBar.setVisibility(View.VISIBLE);
+                //progressBar.setProgress(0);
+
             }
         });
         DialogUtils dialogUtils = new DialogUtils();
         dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet), getString(R.string.generic_ok));
 
-        activitySetupBinding.editTextURL.addTextChangedListener(new TextWatcher() {
+        mUrlField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -136,16 +160,14 @@ public class SetupActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 isLocationFetched = false;
                 LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, new ArrayList<String>());
-                activitySetupBinding.spinnerLocation.setAdapter(adapter);
+                mDropdownLocation.setAdapter(adapter);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                Logger.logD(TAG, "ontextchanged" + s);
-                Logger.logD(TAG, "on ui" + activitySetupBinding.editTextURL.getText().toString());
-                if (!activitySetupBinding.editTextURL.getText().toString().trim().isEmpty() && activitySetupBinding.editTextURL.getText().toString().length() >= 13) {
-                    if (Patterns.WEB_URL.matcher(activitySetupBinding.editTextURL.getText().toString()).matches()) {
-                        BASE_URL = "http://" + activitySetupBinding.editTextURL.getText().toString() + ":8080/openmrs/ws/rest/v1/";
+                if (!mUrlField.getText().toString().trim().isEmpty() && mUrlField.getText().toString().length() >= 12) {
+                    if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
+                        String BASE_URL = "http://" + mUrlField.getText().toString() + ":8080/openmrs/ws/rest/v1/";
                         if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched)
                             getLocationFromServer(BASE_URL);
                         else
@@ -153,7 +175,9 @@ public class SetupActivity extends AppCompatActivity {
                     }
                 }
             }
+
         });
+
 
 
     }
@@ -164,55 +188,55 @@ public class SetupActivity extends AppCompatActivity {
      */
     private void attemptLogin() {
 
-
 //        if (mAuthTask != null) {
 //            return;
 //        }
 
 
         // Reset errors.
-        activitySetupBinding.email.setError(null);
-        activitySetupBinding.password.setError(null);
-        activitySetupBinding.adminPassword.setError(null);
+        mEmailView.setError(null);
+        mPasswordView.setError(null);
+        mAdminPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = activitySetupBinding.email.getText().toString();
-        String password = activitySetupBinding.password.getText().toString();
-        String admin_password = activitySetupBinding.adminPassword.getText().toString();
+        String email = mEmailView.getText().toString();
+        String password = mPasswordView.getText().toString();
+        String admin_password = mAdminPasswordView.getText().toString();
+
 
         boolean cancel = false;
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            activitySetupBinding.password.setError(getString(R.string.error_invalid_password));
-            focusView = activitySetupBinding.password;
+            mPasswordView.setError(getString(R.string.error_invalid_password));
+            focusView = mPasswordView;
             cancel = true;
         }
 
         if (!TextUtils.isEmpty(admin_password) && !isPasswordValid(admin_password)) {
-            activitySetupBinding.adminPassword.setError(getString(R.string.error_invalid_password));
-            focusView = activitySetupBinding.adminPassword;
+            mAdminPasswordView.setError(getString(R.string.error_invalid_password));
+            focusView = mAdminPasswordView;
             cancel = true;
         }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
-            activitySetupBinding.email.setError(getString(R.string.error_field_required));
-            focusView = activitySetupBinding.email;
+            mEmailView.setError(getString(R.string.error_field_required));
+            focusView = mEmailView;
             cancel = true;
         } else if (!isEmailValid(email)) {
-            activitySetupBinding.email.setError(getString(R.string.error_invalid_email));
-            focusView = activitySetupBinding.email;
+            mEmailView.setError(getString(R.string.error_invalid_email));
+            focusView = mEmailView;
 
         }
         Location location = null;
 
-        if (activitySetupBinding.spinnerLocation.getSelectedItemPosition() <= 0) {
+        if (mDropdownLocation.getSelectedItemPosition() <= 0) {
             cancel = true;
-            Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_selected), Toast.LENGTH_LONG).show();
+            Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_selected), Toast.LENGTH_LONG);
         } else {
-            location = mLocations.get(activitySetupBinding.spinnerLocation.getSelectedItemPosition() - 1);
+            location = mLocations.get(mDropdownLocation.getSelectedItemPosition() - 1);
         }
 
         if (cancel) {
@@ -225,7 +249,7 @@ public class SetupActivity extends AppCompatActivity {
             // perform the user login attempt.
             if (location != null) {
                 Log.i(TAG, location.getDisplay());
-                String urlString = activitySetupBinding.editTextURL.getText().toString();
+                String urlString = mUrlField.getText().toString();
                 TestSetup(urlString, email, password, admin_password, location);
                 Log.d(TAG, "attempting setup");
             }
@@ -250,38 +274,44 @@ public class SetupActivity extends AppCompatActivity {
     private void getLocationFromServer(String url) {
         ApiClient.changeApiBaseUrl(url);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
-        Observable<Results<Location>> resultsObservable = apiService.LOCATION_OBSERVABLE(null);
-        resultsObservable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableObserver<Results<Location>>() {
-                    @Override
-                    public void onNext(Results<Location> locationResults) {
-                        if (locationResults.getResults() != null) {
-                            Results<Location> locationList = locationResults;
-                            mLocations = locationList.getResults();
-                            List<String> items = getLocationStringList(locationList.getResults());
-                            LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, items);
-                            activitySetupBinding.spinnerLocation.setAdapter(adapter);
-                            isLocationFetched = true;
-                        } else {
+        try {
+            Observable<Results<Location>> resultsObservable = apiService.LOCATION_OBSERVABLE(null);
+            resultsObservable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DisposableObserver<Results<Location>>() {
+                        @Override
+                        public void onNext(Results<Location> locationResults) {
+                            if (locationResults.getResults() != null) {
+                                Results<Location> locationList = locationResults;
+                                mLocations = locationList.getResults();
+                                List<String> items = getLocationStringList(locationList.getResults());
+                                LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, items);
+                                mDropdownLocation.setAdapter(adapter);
+                                isLocationFetched = true;
+                            } else {
+                                isLocationFetched = false;
+                                Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
                             isLocationFetched = false;
                             Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
+
                         }
-                    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        isLocationFetched = false;
-                        Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
+                        @Override
+                        public void onComplete() {
 
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+                        }
+                    });
+        } catch (IllegalArgumentException e) {
+            Log.e(TAG, "changeApiBaseUrl: " + e.getMessage());
+            Log.e(TAG, "changeApiBaseUrl: " + e.getStackTrace());
+            mUrlField.setError(getString(R.string.url_invalid));
+        }
 
     }
 
@@ -308,14 +338,13 @@ public class SetupActivity extends AppCompatActivity {
         switch (v.getId()) {
             case R.id.demoMindmap:
                 if (checked) {
-                    activitySetupBinding.demoMindmap.setChecked(false);
+                    r2.setChecked(false);
                 }
                 break;
 
             case R.id.downloadMindmap:
                 if (checked) {
-                    activitySetupBinding.downloadMindmap.setChecked(false);
-
+                    r1.setChecked(false);
                     dialog = new AlertDialog.Builder(this);
                     LayoutInflater li = LayoutInflater.from(this);
                     View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
@@ -464,7 +493,7 @@ public class SetupActivity extends AppCompatActivity {
                                             Log.i(TAG, "onPostExecute: Parse init");
                                             Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
                                             intent.putExtra("setup", true);
-                                            if (activitySetupBinding.downloadMindmap.isChecked()) {
+                                            if (r2.isChecked()) {
                                                 if (sessionManager.valueContains("licensekey")) {
                                                     startActivity(intent);
 //                        startJobDispatcherService(SetupActivity.this);
@@ -508,9 +537,8 @@ public class SetupActivity extends AppCompatActivity {
             public void onError(Throwable e) {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 progress.dismiss();
-                activitySetupBinding.password.setError(getString(R.string.error_incorrect_password));
-                activitySetupBinding.password.requestFocus();
-//            responsecode = 201;
+                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                mPasswordView.requestFocus();
             }
 
             @Override
@@ -520,19 +548,7 @@ public class SetupActivity extends AppCompatActivity {
         });
 
 
-//            return 200;
     }
 
-//        @Override
-//        protected void onPostExecute(Integer success) {
-//            mAuthTask = null;
-//            showProgress(false);
-
-//            if (success == 200) {
-
-
-//            progress.dismiss();
-//        }
-//    }
 
 }

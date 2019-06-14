@@ -34,8 +34,8 @@ import java.util.List;
 import java.util.Locale;
 
 import io.intelehealth.client.R;
-import io.intelehealth.client.backup.BackupCloud;
 import io.intelehealth.client.utilities.AdminPassword;
+import io.intelehealth.client.utilities.backup.BackupCloud;
 
 public class SettingsActivity extends AppCompatPreferenceActivity {
     private static boolean admin_password = false;

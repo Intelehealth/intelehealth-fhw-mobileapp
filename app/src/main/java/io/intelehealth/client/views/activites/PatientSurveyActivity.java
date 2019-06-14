@@ -20,14 +20,14 @@ import java.util.UUID;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
-import io.intelehealth.client.dao.EncounterDAO;
-import io.intelehealth.client.dao.ObsDAO;
-import io.intelehealth.client.dao.PullDataDAO;
-import io.intelehealth.client.dao.VisitsDAO;
-import io.intelehealth.client.dto.EncounterDTO;
-import io.intelehealth.client.dto.ObsDTO;
-import io.intelehealth.client.exception.DAOException;
+import io.intelehealth.client.database.dao.EncounterDAO;
+import io.intelehealth.client.database.dao.ObsDAO;
+import io.intelehealth.client.database.dao.PullDataDAO;
+import io.intelehealth.client.database.dao.VisitsDAO;
+import io.intelehealth.client.models.EncounterDTO;
+import io.intelehealth.client.models.ObsDTO;
 import io.intelehealth.client.utilities.UuidDictionary;
+import io.intelehealth.client.utilities.exception.DAOException;
 
 public class PatientSurveyActivity extends AppCompatActivity {
     private static final String TAG = PatientSurveyActivity.class.getSimpleName();

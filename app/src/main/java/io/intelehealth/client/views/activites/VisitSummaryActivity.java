@@ -68,14 +68,13 @@ import java.util.Set;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
-import io.intelehealth.client.dao.EncounterDAO;
-import io.intelehealth.client.dao.ImagesDAO;
-import io.intelehealth.client.dao.PullDataDAO;
-import io.intelehealth.client.dto.ObsDTO;
-import io.intelehealth.client.exception.DAOException;
+import io.intelehealth.client.database.dao.EncounterDAO;
+import io.intelehealth.client.database.dao.ImagesDAO;
+import io.intelehealth.client.database.dao.PullDataDAO;
+import io.intelehealth.client.models.ObsDTO;
+import io.intelehealth.client.models.Patient;
 import io.intelehealth.client.models.download.Download;
 import io.intelehealth.client.node.Node;
-import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.services.DownloadService;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
 import io.intelehealth.client.utilities.EmergencyEncounter;
@@ -83,6 +82,7 @@ import io.intelehealth.client.utilities.FileUtils;
 import io.intelehealth.client.utilities.NetworkConnection;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UuidDictionary;
+import io.intelehealth.client.utilities.exception.DAOException;
 import io.intelehealth.client.views.adapters.HorizontalAdapter;
 
 public class VisitSummaryActivity extends AppCompatActivity {

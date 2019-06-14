@@ -182,7 +182,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service
-            android:name=".security.OpenMRSAccountAuthenticatorService"
+            android:name=".utilities.OpenMRSAccountAuthenticatorService"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />

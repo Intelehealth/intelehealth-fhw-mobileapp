@@ -14,8 +14,8 @@ import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import io.intelehealth.client.database.InteleHealthDatabaseHelper;
-import io.intelehealth.client.network.ApiClient;
-import io.intelehealth.client.network.ApiInterface;
+import io.intelehealth.client.networkApiCalls.ApiClient;
+import io.intelehealth.client.networkApiCalls.ApiInterface;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
 import io.intelehealth.client.utilities.NotificationUtils;
 import io.intelehealth.client.utilities.SqliteDbCloseHelper;

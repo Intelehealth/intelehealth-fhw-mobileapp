@@ -10,7 +10,6 @@ import java.security.NoSuchAlgorithmException;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.IntelehealthApplication;
-import io.intelehealth.client.security.StringEncryption;
 
 /**
  * Created by Dexter Barretto on 8/5/17.

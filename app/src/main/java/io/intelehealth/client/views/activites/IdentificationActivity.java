@@ -1,17 +1,18 @@
 package io.intelehealth.client.views.activites;
 
 import android.app.DatePickerDialog;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.Spinner;
@@ -26,33 +30,39 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 import io.intelehealth.client.R;
-import io.intelehealth.client.dao.PatientsDAO;
+import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.InteleHealthDatabaseHelper;
-import io.intelehealth.client.databinding.ActivityIdentificationBinding;
-import io.intelehealth.client.exception.DAOException;
-import io.intelehealth.client.objects.Patient;
+import io.intelehealth.client.database.dao.PatientsDAO;
+import io.intelehealth.client.database.dao.PullDataDAO;
+import io.intelehealth.client.models.Patient;
+import io.intelehealth.client.models.PatientAttributesDTO;
+import io.intelehealth.client.models.PatientDTO;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
 import io.intelehealth.client.utilities.EditTextUtils;
 import io.intelehealth.client.utilities.FileUtils;
 import io.intelehealth.client.utilities.Logger;
+import io.intelehealth.client.utilities.NetworkConnection;
 import io.intelehealth.client.utilities.SessionManager;
+import io.intelehealth.client.utilities.StringUtils;
 import io.intelehealth.client.utilities.UuidGenerator;
-import io.intelehealth.client.viewModels.IdentificationViewModel;
+import io.intelehealth.client.utilities.exception.DAOException;
 
 public class IdentificationActivity extends AppCompatActivity {
     private static final String TAG = IdentificationActivity.class.getSimpleName();
-    ActivityIdentificationBinding binding;
-    IdentificationViewModel identificationViewModel;
     SessionManager sessionManager = null;
     InteleHealthDatabaseHelper mDbHelper = null;
     private boolean hasLicense = false;
@@ -71,39 +81,88 @@ public class IdentificationActivity extends AppCompatActivity {
     private DatePickerDialog mDOBPicker;
     private int mAgeYears = 0;
     private int mAgeMonths = 0;
-    private AlertDialog.Builder mAgePicker;
     private String country1;
+    PatientsDAO patientsDAO = new PatientsDAO();
+    EditText mFirstName;
+    EditText mMiddleName;
+    EditText mLastName;
+    EditText mDOB;
+    EditText mPhoneNum;
+    EditText mAge;
+    AlertDialog.Builder mAgePicker;
+    EditText mAddress1;
+    EditText mAddress2;
+    AutoCompleteTextView mCity;
+    EditText mPostal;
+    RadioButton mGenderM;
+    RadioButton mGenderF;
+    EditText mRelationship;
+    EditText mOccupation;
+    EditText countryText;
+    EditText stateText;
+    EditText casteText;
     Spinner mCountry;
     Spinner mState;
-    AutoCompleteTextView mCity;
-    PatientsDAO patientsDAO = new PatientsDAO();
+    EditText economicText;
+    EditText educationText;
+    TextInputLayout casteLayout;
+    TextInputLayout economicLayout;
+    TextInputLayout educationLayout;
+    LinearLayout countryStateLayout;
+    Spinner mCaste;
+    Spinner mEducation;
+    Spinner mEconomicStatus;
+    ImageView mImageView;
+    String uuid = "";
+    PatientDTO patientdto = new PatientDTO();
     private String mCurrentPhotoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_identification);
-        identificationViewModel = ViewModelProviders.of(this).get(IdentificationViewModel.class);
-        binding.setIdentificationViewModel(identificationViewModel);
-        binding.setLifecycleOwner(this);
-
+        setContentView(R.layout.activity_identification);
         setTitle(R.string.title_activity_identification);
-        setSupportActionBar(binding.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
         sessionManager = new SessionManager(this);
-        mState = findViewById(R.id.spinner_state);
-        mCountry = findViewById(R.id.spinner_country);
+        mFirstName = findViewById(R.id.identification_first_name);
+        mMiddleName = findViewById(R.id.identification_middle_name);
+        mLastName = findViewById(R.id.identification_last_name);
+        mDOB = findViewById(R.id.identification_birth_date_text_view);
+        mPhoneNum = findViewById(R.id.identification_phone_number);
+        mAge = findViewById(R.id.identification_age);
+        mAddress1 = findViewById(R.id.identification_address1);
+        mAddress2 = findViewById(R.id.identification_address2);
         mCity = findViewById(R.id.identification_city);
+        stateText = findViewById(R.id.identification_state);
+        mState = findViewById(R.id.spinner_state);
+        mPostal = findViewById(R.id.identification_postal_code);
+        countryText = findViewById(R.id.identification_country);
+        mCountry = findViewById(R.id.spinner_country);
+        mGenderM = findViewById(R.id.identification_gender_male);
+        mGenderF = findViewById(R.id.identification_gender_female);
+        mRelationship = findViewById(R.id.identification_relationship);
+        mOccupation = findViewById(R.id.identification_occupation);
+        mCaste = findViewById(R.id.spinner_caste);
+        mEducation = findViewById(R.id.spinner_education);
+        mEconomicStatus = findViewById(R.id.spinner_economic_status);
+        casteText = findViewById(R.id.identification_caste);
+        educationText = findViewById(R.id.identification_education);
+        economicText = findViewById(R.id.identification_econiomic_status);
 
-
+        casteLayout = findViewById(R.id.identification_txtlcaste);
+        economicLayout = findViewById(R.id.identification_txtleconomic);
+        educationLayout = findViewById(R.id.identification_txtleducation);
+        countryStateLayout = findViewById(R.id.identification_llcountry_state);
+        mImageView = findViewById(R.id.imageview_id_picture);
 //Initialize the local database to store patient information
         mDbHelper = new InteleHealthDatabaseHelper(this);
 
@@ -118,22 +177,119 @@ public class IdentificationActivity extends AppCompatActivity {
         }
         if (sessionManager.valueContains("licensekey"))
             hasLicense = true;
+        //Check for license key and load the correct config file
         try {
             JSONObject obj = null;
-            String mFileName = "config.json";
             if (hasLicense) {
-                obj = new JSONObject(FileUtils.readFileRoot(mFileName, this)); //Load the config file
+                obj = new JSONObject(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this)); //Load the config file
 
             } else {
-                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, mFileName)));
+                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
 
+            }
+
+            //Display the fields on the Add Patient screen as per the config file
+            if (obj.getBoolean("mFirstName")) {
+                mFirstName.setVisibility(View.VISIBLE);
+            } else {
+                mFirstName.setVisibility(View.GONE);
+            }
+
+            if (obj.getBoolean("mMiddleName")) {
+                mMiddleName.setVisibility(View.VISIBLE);
+            } else {
+                mMiddleName.setVisibility(View.GONE);
+            }
+
+            if (obj.getBoolean("mLastName")) {
+                mLastName.setVisibility(View.VISIBLE);
+            } else {
+                mLastName.setVisibility(View.GONE);
+            }
+
+            if (obj.getBoolean("mDOB")) {
+                mDOB.setVisibility(View.VISIBLE);
+            } else {
+                mDOB.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("mPhoneNum")) {
+                mPhoneNum.setVisibility(View.VISIBLE);
+            } else {
+                mPhoneNum.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("mAge")) {
+                mAge.setVisibility(View.VISIBLE);
+            } else {
+                mAge.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("mAddress1")) {
+                mAddress1.setVisibility(View.VISIBLE);
+            } else {
+                mAddress1.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("mAddress2")) {
+                mAddress2.setVisibility(View.VISIBLE);
+            } else {
+                mAddress2.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("mCity")) {
+                mCity.setVisibility(View.VISIBLE);
+            } else {
+                mCity.setVisibility(View.GONE);
+            }
+
+            if (obj.getBoolean("countryStateLayout")) {
+                countryStateLayout.setVisibility(View.VISIBLE);
+            } else {
+                countryStateLayout.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("mPostal")) {
+                mPostal.setVisibility(View.VISIBLE);
+            } else {
+                mPostal.setVisibility(View.GONE);
+            }
+
+            if (obj.getBoolean("mGenderM")) {
+                mGenderM.setVisibility(View.VISIBLE);
+            } else {
+                mGenderM.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("mGenderF")) {
+                mGenderF.setVisibility(View.VISIBLE);
+            } else {
+                mGenderF.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("mRelationship")) {
+                mRelationship.setVisibility(View.VISIBLE);
+            } else {
+                mRelationship.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("mOccupation")) {
+                mOccupation.setVisibility(View.VISIBLE);
+            } else {
+                mOccupation.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("casteLayout")) {
+                casteLayout.setVisibility(View.VISIBLE);
+            } else {
+                casteLayout.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("educationLayout")) {
+                educationLayout.setVisibility(View.VISIBLE);
+            } else {
+                educationLayout.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("economicLayout")) {
+                economicLayout.setVisibility(View.VISIBLE);
+            } else {
+                economicLayout.setVisibility(View.GONE);
             }
             country1 = obj.getString("mCountry");
 
             if (country1.equalsIgnoreCase("India")) {
-                EditTextUtils.setEditTextMaxLength(10, binding.identificationPhoneNumber);
+                EditTextUtils.setEditTextMaxLength(10, mPhoneNum);
             } else if (country1.equalsIgnoreCase("Philippines")) {
-                EditTextUtils.setEditTextMaxLength(11, binding.identificationPhoneNumber);
+                EditTextUtils.setEditTextMaxLength(11, mPhoneNum);
             }
 
         } catch (JSONException e) {
@@ -143,16 +299,30 @@ public class IdentificationActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "JsonException" + e, Toast.LENGTH_LONG).show();
             showAlertDialogButtonClicked(e.toString());
         }
+
+        //setting the fields when user clicks edit details
+        mFirstName.setText(patient1.getFirst_name());
+        mMiddleName.setText(patient1.getMiddle_name());
+        mLastName.setText(patient1.getLast_name());
+        mDOB.setText(patient1.getDate_of_birth());
+        mPhoneNum.setText(patient1.getPhone_number());
+        mAddress1.setText(patient1.getAddress1());
+        mAddress2.setText(patient1.getAddress2());
+        mCity.setText(patient1.getCity_village());
+        mPostal.setText(patient1.getPostal_code());
+        mRelationship.setText(patient1.getSdw());
+        mOccupation.setText(patient1.getOccupation());
+
         Resources res = getResources();
         ArrayAdapter<CharSequence> countryAdapter = ArrayAdapter.createFromResource(this,
                 R.array.countries, android.R.layout.simple_spinner_item);
         countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerCountry.setAdapter(countryAdapter);
+        mCountry.setAdapter(countryAdapter);
 
         ArrayAdapter<CharSequence> casteAdapter = ArrayAdapter.createFromResource(this,
                 R.array.caste, android.R.layout.simple_spinner_item);
         countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerCaste.setAdapter(casteAdapter);
+        mCaste.setAdapter(casteAdapter);
         try {
             String economicLanguage = "economic_" + Locale.getDefault().getLanguage();
             int economics = res.getIdentifier(economicLanguage, "array", getApplicationContext().getPackageName());
@@ -161,7 +331,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         economics, android.R.layout.simple_spinner_item);
             }
             countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            binding.spinnerEconomicStatus.setAdapter(economicStatusAdapter);
+            mEconomicStatus.setAdapter(economicStatusAdapter);
         } catch (Exception e) {
             Toast.makeText(this, "Economic values are missing", Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
@@ -175,7 +345,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
             countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            binding.spinnerEducation.setAdapter(educationAdapter);
+            mEducation.setAdapter(educationAdapter);
         } catch (Exception e) {
             Toast.makeText(this, "Education values are missing", Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
@@ -191,40 +361,40 @@ public class IdentificationActivity extends AppCompatActivity {
         if (patientID_edit != null) {
 
             if (patient1.getGender().equals("M")) {
-                binding.identificationGenderMale.setChecked(true);
-                if (binding.identificationGenderFemale.isChecked())
-                    binding.identificationGenderFemale.setChecked(false);
+                mGenderM.setChecked(true);
+                if (mGenderF.isChecked())
+                    mGenderF.setChecked(false);
                 Log.v(TAG, "yes");
             } else {
-                binding.identificationGenderFemale.setChecked(true);
-                if (binding.identificationGenderMale.isChecked())
-                    binding.identificationGenderMale.setChecked(false);
+                mGenderF.setChecked(true);
+                if (mGenderM.isChecked())
+                    mGenderM.setChecked(false);
                 Log.v(TAG, "yes");
             }
 
         }
-        if (binding.identificationGenderMale.isChecked()) {
+        if (mGenderM.isChecked()) {
             mGender = "M";
         } else {
             mGender = "F";
         }
         if (patientID_edit != null) {
             // setting country according database
-            binding.spinnerCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
+            mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
             if (patient1.getEducation_level().equals(getString(R.string.not_provided)))
-                binding.spinnerEducation.setSelection(0);
+                mEducation.setSelection(0);
             else
-                binding.spinnerEducation.setSelection(educationAdapter.getPosition(patient1.getEducation_level()));
+                mEducation.setSelection(educationAdapter.getPosition(patient1.getEducation_level()));
             if (patient1.getEconomic_status().equals(getString(R.string.not_provided)))
-                binding.spinnerEconomicStatus.setSelection(0);
+                mEconomicStatus.setSelection(0);
             else
-                binding.spinnerEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
+                mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
             if (patient1.getCaste().equals(getString(R.string.not_provided)))
-                binding.spinnerCaste.setSelection(0);
+                mCaste.setSelection(0);
             else
-                binding.spinnerCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));
+                mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));
         } else {
-            binding.spinnerCountry.setSelection(countryAdapter.getPosition(country1));
+            mCountry.setSelection(countryAdapter.getPosition(country1));
         }
 
         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.state_error, android.R.layout.simple_spinner_item);
@@ -304,8 +474,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     mState.setAdapter(stateAdapter);
                 }
-                identificationViewModel.state.setValue(mState.getSelectedItem().toString());
-                identificationViewModel.country.setValue(mCountry.getSelectedItem().toString());
+
             }
 
             @Override
@@ -313,20 +482,20 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
         });
-        binding.identificationGenderFemale.setOnClickListener(new View.OnClickListener() {
+        mGenderF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onRadioButtonClicked(v);
             }
         });
 
-        binding.identificationGenderMale.setOnClickListener(new View.OnClickListener() {
+        mGenderM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onRadioButtonClicked(v);
             }
         });
-        binding.imageviewIdPicture.setOnClickListener(new View.OnClickListener() {
+        mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 File filePath = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator +
@@ -351,8 +520,8 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 //Set the DOB calendar to the date selected by the user
                 dob.set(year, monthOfYear, dayOfMonth);
-                binding.identificationBirthDateTextView.setError(null);
-                binding.identificationAge.setError(null);
+                mDOB.setError(null);
+                mAge.setError(null);
                 //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
                 mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
 
@@ -360,7 +529,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 dob.set(year, monthOfYear, dayOfMonth);
                 String dobString = simpleDateFormat.format(dob.getTime());
-                binding.identificationBirthDateTextView.setText(dobString);
+                mDOB.setText(dobString);
 
                 mAgeYears = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
                 mAgeMonths = today.get(Calendar.MONTH) - dob.get(Calendar.MONTH);
@@ -372,8 +541,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
 
                 if (mAgeMonths < 0 || mAgeYears < 0 || dob.after(today)) {
-                    binding.identificationBirthDateTextView.setError(getString(R.string.identification_screen_error_dob));
-                    binding.identificationAge.setError(getString(R.string.identification_screen_error_age));
+                    mDOB.setError(getString(R.string.identification_screen_error_dob));
+                    mAge.setError(getString(R.string.identification_screen_error_age));
                     return;
                 }
 
@@ -382,12 +551,12 @@ public class IdentificationActivity extends AppCompatActivity {
                 mDOBDay = dayOfMonth;
 
                 String ageString = mAgeYears + getString(R.string.identification_screen_text_years) + mAgeMonths + getString(R.string.identification_screen_text_months);
-                binding.identificationAge.setText(ageString);
+                mAge.setText(ageString);
             }
         }, mDOBYear, mDOBMonth, mDOBDay);
 
         //DOB Picker is shown when clicked
-        binding.identificationBirthDateTextView.setOnClickListener(new View.OnClickListener() {
+        mDOB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mDOBPicker.show();
@@ -398,11 +567,11 @@ public class IdentificationActivity extends AppCompatActivity {
         //if patient update then age will be set
         if (patientID_edit != null) {
             int age = DateAndTimeUtils.getAge(patient1.getDate_of_birth());
-            binding.identificationBirthDateTextView.setText(patient1.getDate_of_birth());
+            mDOB.setText(patient1.getDate_of_birth());
             int month = DateAndTimeUtils.getMonth(patient1.getDate_of_birth());
-            binding.identificationAge.setText(age + getString(R.string.identification_screen_text_years) + month + getString(R.string.identification_screen_text_months));
+            mAge.setText(age + getString(R.string.identification_screen_text_years) + month + getString(R.string.identification_screen_text_months));
         }
-        binding.identificationAge.setOnClickListener(new View.OnClickListener() {
+        mAge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mAgePicker = new AlertDialog.Builder(IdentificationActivity.this, R.style.AlertDialogStyle);
@@ -433,7 +602,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         yearPicker.setValue(yearPicker.getValue());
                         monthPicker.setValue(monthPicker.getValue());
                         String ageString = yearPicker.getValue() + getString(R.string.identification_screen_text_years) + monthPicker.getValue() + getString(R.string.identification_screen_text_months);
-                        binding.identificationAge.setText(ageString);
+                        mAge.setText(ageString);
 
 
                         Calendar calendar = Calendar.getInstance();
@@ -448,7 +617,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                         dob.set(mDOBYear, mDOBMonth, mDOBDay);
                         String dobString = simpleDateFormat.format(dob.getTime());
-                        binding.identificationBirthDateTextView.setText(dobString);
+                        mDOB.setText(dobString);
                         mDOBPicker.updateDate(mDOBYear, mDOBMonth, mDOBDay);
                         dialog.dismiss();
                     }
@@ -463,27 +632,14 @@ public class IdentificationActivity extends AppCompatActivity {
                 mAgePicker.show();
             }
         });
-//        if (!binding.identificationGenderFemale.isChecked() && !binding.identificationGenderFemale.isChecked()) {
-//            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
-//            alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
-//            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//                    dialog.dismiss();
-//                }
-//            });
-//            AlertDialog alertDialog = alertDialogBuilder.create();
-//            alertDialog.show();
-//            return;
-//        }
-        binding.fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (patientID_edit != null) {
-
-                    identificationViewModel.onPatientUpdateClicked(patient1);
+                    onPatientUpdateClicked(patient1);
                 } else {
-                    identificationViewModel.onPatientCreateClicked();
+                    onPatientCreateClicked();
                 }
             }
         });
@@ -496,13 +652,11 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (checked)
                     mGender = "M";
                 Log.v(TAG, "gender:" + mGender);
-                identificationViewModel.gender.setValue(mGender);
                 break;
             case R.id.identification_gender_female:
                 if (checked)
                     mGender = "F";
                 Log.v(TAG, "gender:" + mGender);
-                identificationViewModel.gender.setValue(mGender);
                 break;
         }
     }
@@ -519,7 +673,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         String patientSelection = "uuid=?";
         String[] patientArgs = {str};
-        String[] patientColumns = {"uuid","first_name", "middle_name", "last_name",
+        String[] patientColumns = {"uuid", "first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw", "occupation", "patient_photo",
                 "economic_status", "education_status", "caste"};
@@ -584,17 +738,6 @@ public class IdentificationActivity extends AppCompatActivity {
             } while (idCursor1.moveToNext());
         }
         idCursor1.close();
-        identificationViewModel.firstname.setValue(patient1.getFirst_name());
-        identificationViewModel.middlename.setValue(patient1.getMiddle_name());
-        identificationViewModel.lastname.setValue(patient1.getLast_name());
-        identificationViewModel.dateofbirth.setValue(patient1.getDate_of_birth());
-        identificationViewModel.phonenumber.setValue(patient1.getPhone_number());
-        identificationViewModel.village.setValue(patient1.getCity_village());
-        identificationViewModel.address.setValue(patient1.getAddress1());
-        identificationViewModel.address2.setValue(patient1.getAddress2());
-        identificationViewModel.postalcode.setValue(patient1.getPostal_code());
-        identificationViewModel.sondaughter.setValue(patient1.getSdw());
-        identificationViewModel.occupation.setValue(patient1.getOccupation());
 
     }
 
@@ -642,9 +785,199 @@ public class IdentificationActivity extends AppCompatActivity {
                 Glide.with(this)
                         .load(new File(mCurrentPhotoPath))
                         .thumbnail(0.25f)
-                        .into(binding.imageviewIdPicture);
+                        .into(mImageView);
             }
         }
+    }
+
+    public void onPatientCreateClicked() {
+        PatientsDAO patientsDAO = new PatientsDAO();
+        PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
+        List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
+        uuid = UUID.randomUUID().toString();
+
+        patientdto.setUuid(uuid);
+        Gson gson = new Gson();
+
+        patientdto.setFirstname(StringUtils.getValue(mFirstName.getText().toString()));
+        patientdto.setMiddlename(StringUtils.getValue(mMiddleName.getText().toString()));
+        patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
+        patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
+        patientdto.setGender(StringUtils.getValue(mGender));
+        patientdto.setDateofbirth(StringUtils.getValue(mDOB.getText().toString()));
+        patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
+        patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
+        patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));
+        patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
+        patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
+//                patientdto.setEconomic(StringUtils.getValue(m));
+        patientdto.setStateprovince(StringUtils.getValue(mState.getSelectedItem().toString()));
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
+        patientAttributesDTO.setValue(StringUtils.getValue(casteText.getText().toString()));
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
+        patientAttributesDTO.setValue(StringUtils.getValue(mPhoneNum.getText().toString()));
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Son/wife/daughter"));
+        patientAttributesDTO.setValue(StringUtils.getValue(mRelationship.getText().toString()));
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+        patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
+        patientAttributesDTO.setValue(StringUtils.getValue(mEconomicStatus.getSelectedItem().toString()));
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
+        patientAttributesDTO.setValue(StringUtils.getValue(mEducation.getSelectedItem().toString()));
+        patientAttributesDTOList.add(patientAttributesDTO);
+        Logger.logD(TAG, "PatientAttribute list" + patientAttributesDTOList.size());
+        patientdto.setPatientAttributesDTOList(patientAttributesDTOList);
+        patientdto.setSyncd(false);
+        Logger.logD("patient json : ", "Json : " + gson.toJson(patientdto, PatientDTO.class));
+
+        try {
+            Logger.logD(TAG, "insertpatinet ");
+            boolean b = patientsDAO.insertPatientToDB(patientdto, uuid);
+
+            if (NetworkConnection.isOnline(getApplication())) {
+//                patientApiCall();
+//                frameJson();
+                AppConstants.notificationUtils.showNotifications("Patient pushed", "Patient" + patientdto.getFirstname() + "" + patientdto.getLastname(), getApplication());
+                PullDataDAO pullDataDAO = new PullDataDAO();
+                boolean push = pullDataDAO.pushDataApi();
+                if (push)
+                    AppConstants.notificationUtils.DownloadDone("Patient", "Submitted" + patientdto.getFirstname() + "" + patientdto.getLastname(), getApplication());
+                else
+                    AppConstants.notificationUtils.DownloadDone("Patient", "failed to submit" + patientdto.getFirstname() + "" + patientdto.getLastname(), getApplication());
+            }
+            if (b) {
+                Logger.logD(TAG, "inserted");
+                Intent i = new Intent(getApplication(), PatientDetailActivity.class);
+                i.putExtra("patientUuid", uuid);
+                i.putExtra("patientName", patientdto.getFirstname() + " " + patientdto.getLastname());
+                i.putExtra("tag", "newPatient");
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                getApplication().startActivity(i);
+            }
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void onPatientUpdateClicked(Patient patientdto) {
+        PatientsDAO patientsDAO = new PatientsDAO();
+        PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
+        List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
+        uuid = patientdto.getUuid();
+
+        patientdto.setUuid(uuid);
+        Gson gson = new Gson();
+
+        patientdto.setFirst_name(StringUtils.getValue(patientdto.getFirst_name()));
+        patientdto.setMiddle_name(StringUtils.getValue(patientdto.getMiddle_name()));
+        patientdto.setLast_name(StringUtils.getValue(patientdto.getLast_name()));
+        patientdto.setPhone_number(StringUtils.getValue(patientdto.getPhone_number()));
+        patientdto.setGender(StringUtils.getValue(patientdto.getGender()));
+        patientdto.setDate_of_birth(StringUtils.getValue(patientdto.getDate_of_birth()));
+        patientdto.setAddress1(StringUtils.getValue(patientdto.getAddress1()));
+        patientdto.setAddress2(StringUtils.getValue(patientdto.getAddress2()));
+        patientdto.setCity_village(StringUtils.getValue(patientdto.getCity_village()));
+        patientdto.setPostal_code(StringUtils.getValue(patientdto.getPostal_code()));
+        patientdto.setCountry(StringUtils.getValue(patientdto.getCountry()));
+//                patientdto.setEconomic(StringUtils.getValue(m));
+        patientdto.setState_province(StringUtils.getValue(patientdto.getState_province()));
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
+        patientAttributesDTO.setValue(StringUtils.getValue(mCaste.getSelectedItem().toString()));
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
+        patientAttributesDTO.setValue(StringUtils.getValue(mPhoneNum.getText().toString()));
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Son/wife/daughter"));
+        patientAttributesDTO.setValue(StringUtils.getValue(mRelationship.getText().toString()));
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+        patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
+        patientAttributesDTO.setValue(StringUtils.getValue(mEconomicStatus.getSelectedItem().toString()));
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
+        patientAttributesDTO.setValue(StringUtils.getValue(mEducation.getSelectedItem().toString()));
+        patientAttributesDTOList.add(patientAttributesDTO);
+        Logger.logD(TAG, "PatientAttribute list" + patientAttributesDTOList.size());
+        //patientdto.setPatientAttributesDTOList(patientAttributesDTOList);
+
+        Logger.logD("patient json onPatientUpdateClicked : ", "Json : " + gson.toJson(patientdto, Patient.class));
+
+        try {
+            Logger.logD(TAG, "update ");
+            boolean b = patientsDAO.updatePatientToDB(patientdto, uuid, patientAttributesDTOList);
+
+            if (NetworkConnection.isOnline(getApplication())) {
+                PullDataDAO pullDataDAO = new PullDataDAO();
+                pullDataDAO.pushDataApi();
+                AppConstants.notificationUtils.showNotifications("Patient updated", "Patient" + patientdto.getFirst_name() + "" + patientdto.getLast_name(), getApplication());
+            }
+            if (b) {
+                Logger.logD(TAG, "updated");
+                Intent i = new Intent(getApplication(), PatientDetailActivity.class);
+                i.putExtra("patientUuid", uuid);
+                i.putExtra("patientName", patientdto.getFirst_name() + " " + patientdto.getLast_name());
+                i.putExtra("tag", "newPatient");
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                getApplication().startActivity(i);
+            }
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 

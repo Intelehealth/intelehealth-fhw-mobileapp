@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 import android.support.v7.app.AppCompatActivity;
@@ -13,12 +12,14 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,40 +27,44 @@ import java.util.List;
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.InteleHealthDatabaseHelper;
-import io.intelehealth.client.databinding.ActivitySearchPatientBinding;
-import io.intelehealth.client.dto.PatientDTO;
+import io.intelehealth.client.models.PatientDTO;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.views.adapters.SearchPatientAdapter;
 import io.intelehealth.client.views.providers.SearchSuggestionProvider;
 
 public class SearchPatientActivity extends AppCompatActivity {
-    ActivitySearchPatientBinding binding;
     SearchView searchView;
     InteleHealthDatabaseHelper mDbHelper;
     String query;
     private SearchPatientAdapter recycler;
+    RecyclerView recyclerView;
     SessionManager sessionManager = null;
+    TextView msg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_search_patient);
-        setSupportActionBar(binding.toolbar);
+        setContentView(R.layout.activity_search_patient);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         // Get the intent, verify the action and get the query
         sessionManager = new SessionManager(this);
         mDbHelper = new InteleHealthDatabaseHelper(this);
+        msg = findViewById(R.id.textviewmessage);
+        recyclerView = findViewById(R.id.recycle);
         Intent intent = getIntent();
+
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             query = intent.getStringExtra(SearchManager.QUERY);
             SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
                     SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
             suggestions.saveRecentQuery(query, null);
             if (sessionManager.isSyncFinished()) {
-                binding.textviewmessage.setVisibility(View.GONE);
-                binding.recycle.setVisibility(View.VISIBLE);
+                msg.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
                 doQuery(query);
             }
 
@@ -68,8 +73,8 @@ public class SearchPatientActivity extends AppCompatActivity {
                     SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
             suggestions.saveRecentQuery(query, null);
             if (sessionManager.isSyncFinished()) {
-                binding.textviewmessage.setVisibility(View.GONE);
-                binding.recycle.setVisibility(View.VISIBLE);
+                msg.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
                 firstQuery();
             }
 
@@ -84,9 +89,9 @@ public class SearchPatientActivity extends AppCompatActivity {
 
 //            Log.i("db data", "" + getQueryPatients(query));
             RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
-            binding.recycle.setLayoutManager(reLayoutManager);
-            binding.recycle.setItemAnimator(new DefaultItemAnimator());
-            binding.recycle.setAdapter(recycler);
+            recyclerView.setLayoutManager(reLayoutManager);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(recycler);
 
         } catch (Exception e) {
             Logger.logE("doquery", "doquery", e);
@@ -102,9 +107,9 @@ public class SearchPatientActivity extends AppCompatActivity {
 
 //            Log.i("db data", "" + getAllPatientsFromDB());
             RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
-            binding.recycle.setLayoutManager(reLayoutManager);
-            binding.recycle.setItemAnimator(new DefaultItemAnimator());
-            binding.recycle.setAdapter(recycler);
+            recyclerView.setLayoutManager(reLayoutManager);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(recycler);
 
         } catch (Exception e) {
             Logger.logE("firstquery", "exception", e);

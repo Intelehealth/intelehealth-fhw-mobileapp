@@ -7,7 +7,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -21,13 +20,15 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
-import io.intelehealth.client.databinding.ActivityLoginBinding;
 import io.intelehealth.client.models.loginModel.LoginModel;
 import io.intelehealth.client.models.loginProviderModel.LoginProviderModel;
 import io.intelehealth.client.utilities.Base64Methods;
@@ -44,7 +45,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
 public class LoginActivity extends AppCompatActivity {
-
+    TextView txt_cant_login;
     /**
      * A dummy authentication store containing known user names and passwords.
      */
@@ -54,7 +55,6 @@ public class LoginActivity extends AppCompatActivity {
     private final String TAG = LoginActivity.class.getSimpleName();
     protected AccountManager manager;
     ProgressDialog progress;
-    ActivityLoginBinding activityLoginBinding;
     SessionManager sessionManager = null;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -65,19 +65,19 @@ public class LoginActivity extends AppCompatActivity {
     UrlModifiers urlModifiers = new UrlModifiers();
     Base64Methods base64Methods = new Base64Methods();
     String encoded = null;
-
+    // UI references.
+    private AutoCompleteTextView mUsernameView;
+    private EditText mPasswordView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_login);
-        activityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
+        setContentView(R.layout.activity_login);
         sessionManager = new SessionManager(this);
-        setSupportActionBar(activityLoginBinding.toolbar);
         setTitle(R.string.title_activity_login);
 
         offlineLogin = OfflineLogin.getOfflineLogin();
-
-        activityLoginBinding.cantLoginId.setOnClickListener(new View.OnClickListener() {
+        txt_cant_login = findViewById(R.id.cant_login_id);
+        txt_cant_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 cant_log();
@@ -114,18 +114,22 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
             }
         }
-
-        activityLoginBinding.password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        // Set up the login form.
+        mUsernameView = findViewById(R.id.email);
+        // populateAutoComplete(); TODO: create our own autocomplete code
+        mPasswordView = findViewById(R.id.password);
+        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == R.id.login || actionId == EditorInfo.IME_NULL) {
+            public boolean onEditorAction(TextView v, int id, KeyEvent event) {
+                if (id == R.id.login || id == EditorInfo.IME_NULL) {
                     attemptLogin();
                     return true;
                 }
                 return false;
             }
         });
-        activityLoginBinding.emailSignInButton.setOnClickListener(new View.OnClickListener() {
+        Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
+        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Logger.logD(TAG, "button pressed");
@@ -148,27 +152,28 @@ public class LoginActivity extends AppCompatActivity {
 //        }
 
         // Reset errors.
-        activityLoginBinding.email.setError(null);
-        activityLoginBinding.password.setError(null);
+        mUsernameView.setError(null);
+        mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = activityLoginBinding.email.getText().toString();
-        String password = activityLoginBinding.password.getText().toString();
+        String email = mUsernameView.getText().toString();
+        String password = mPasswordView.getText().toString();
+
 
         boolean cancel = false;
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            activityLoginBinding.password.setError(getString(R.string.error_invalid_password));
-            focusView = activityLoginBinding.password;
+            mPasswordView.setError(getString(R.string.error_invalid_password));
+            focusView = mPasswordView;
             cancel = true;
         }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
-            activityLoginBinding.email.setError(getString(R.string.error_field_required));
-            focusView = activityLoginBinding.email;
+            mUsernameView.setError(getString(R.string.error_field_required));
+            focusView = mUsernameView;
             cancel = true;
         }
         if (cancel) {
@@ -336,8 +341,8 @@ public class LoginActivity extends AppCompatActivity {
                     Logger.logD(TAG, "Login Failure" + e.getMessage());
 //                    success = false;
                     showProgress(false);
-                    activityLoginBinding.password.setError(getString(R.string.error_incorrect_password));
-                    activityLoginBinding.password.requestFocus();
+                    mPasswordView.setError(getString(R.string.error_incorrect_password));
+                    mPasswordView.requestFocus();
                 }
 
                 @Override

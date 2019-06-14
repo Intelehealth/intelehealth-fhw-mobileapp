@@ -1,24 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <data>
-
-        <import type="android.view.View" />
-<variable
-    name="config"
-    type="io.intelehealth.client.utilities.ConfigUtils" />
-        <variable
-            name="vitalviewmodel"
-            type="io.intelehealth.client.viewModels.VitalsViewModel" />
-    </data>
-
-    <android.support.design.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/cl_table"
-        tools:context=".views.activites.VitalsActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_table"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.activites.VitalsActivity">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -81,7 +69,6 @@
                             android:imeOptions="actionUnspecified"
                             android:inputType="numberDecimal"
                             android:maxLines="1"
-                            android:visibility="@{config.height() ? View.GONE: View.VISIBLE}"
                             android:singleLine="true"
                             android:tag="@string/tag_optional" />
 
@@ -99,7 +86,6 @@
                             android:imeOptions="actionUnspecified"
                             android:inputType="numberDecimal"
                             android:maxLines="1"
-                            android:visibility="@{config.weight() ? View.GONE: View.VISIBLE}"
                             android:singleLine="true"
                             android:tag="@string/tag_optional" />
 
@@ -119,7 +105,6 @@
                             android:inputType="none"
                             android:longClickable="false"
                             android:maxLines="1"
-                            android:visibility="@{config.bmi() ? View.GONE: View.VISIBLE}"
                             android:singleLine="true"
                             android:tag="@string/tag_optional" />
 
@@ -160,7 +145,6 @@
                                     android:imeOptions="actionUnspecified"
                                     android:inputType="numberDecimal"
                                     android:maxLines="1"
-                                    android:visibility="@{config.bpSys() ? View.GONE: View.VISIBLE}"
                                     android:singleLine="true"
                                     android:tag="@string/tag_optional" />
 
@@ -184,7 +168,6 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:hint="@string/table_bpdia"
-                                    android:visibility="@{config.bpDia() ? View.GONE: View.VISIBLE}"
                                     android:imeOptions="actionUnspecified"
                                     android:inputType="numberDecimal"
                                     android:maxLines="1"
@@ -207,7 +190,6 @@
                             android:imeOptions="actionUnspecified"
                             android:inputType="numberDecimal"
                             android:maxLines="1"
-                            android:visibility="@{config.spo2() ? View.GONE: View.VISIBLE}"
                             android:singleLine="true"
                             android:tag="@string/tag_optional" />
 
@@ -225,7 +207,6 @@
                             android:imeOptions="actionUnspecified"
                             android:inputType="numberDecimal"
                             android:maxLines="1"
-                            android:visibility="@{config.pulse() ? View.GONE: View.VISIBLE}"
                             android:singleLine="true"
                             android:tag="@string/tag_optional" />
 
@@ -277,7 +258,6 @@
                             android:imeOptions="actionUnspecified"
                             android:inputType="numberDecimal"
                             android:maxLines="1"
-                            android:visibility="@{config.resp() ? View.GONE: View.VISIBLE}"
                             android:singleLine="true"
                             android:tag="@string/tag_optional" />
 
@@ -299,4 +279,3 @@
             app:srcCompat="@drawable/ic_done_24dp" />
 
     </android.support.design.widget.CoordinatorLayout>
-</layout>

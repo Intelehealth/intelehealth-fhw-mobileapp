@@ -1,16 +1,15 @@
 package io.intelehealth.client.views.activites;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
@@ -18,8 +17,10 @@ import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -34,16 +35,14 @@ import java.util.UUID;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
-import io.intelehealth.client.dao.EncounterDAO;
-import io.intelehealth.client.dao.PatientsDAO;
-import io.intelehealth.client.dao.VisitsDAO;
 import io.intelehealth.client.database.InteleHealthDatabaseHelper;
-import io.intelehealth.client.databinding.ActivityPatientDetailBinding;
-import io.intelehealth.client.dto.EncounterDTO;
-import io.intelehealth.client.dto.VisitDTO;
-import io.intelehealth.client.exception.DAOException;
+import io.intelehealth.client.database.dao.EncounterDAO;
+import io.intelehealth.client.database.dao.PatientsDAO;
+import io.intelehealth.client.database.dao.VisitsDAO;
+import io.intelehealth.client.models.EncounterDTO;
+import io.intelehealth.client.models.Patient;
+import io.intelehealth.client.models.VisitDTO;
 import io.intelehealth.client.node.Node;
-import io.intelehealth.client.objects.Patient;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
 import io.intelehealth.client.utilities.DownloadFilesUtils;
 import io.intelehealth.client.utilities.Logger;
@@ -51,7 +50,7 @@ import io.intelehealth.client.utilities.NetworkConnection;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UrlModifiers;
 import io.intelehealth.client.utilities.UuidDictionary;
-import io.intelehealth.client.viewModels.PatientDetailViewModel;
+import io.intelehealth.client.utilities.exception.DAOException;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
@@ -62,7 +61,6 @@ import static io.intelehealth.client.app.AppConstants.IMAGE_PATH;
 
 public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
-    ActivityPatientDetailBinding binding;
     String patientName;
     String visitUuid = "";
     String patientUuid;
@@ -72,7 +70,6 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     EncounterDTO encounterDTO = new EncounterDTO();
     PatientsDAO patientsDAO = new PatientsDAO();
-    PatientDetailViewModel patientDetailViewModel;
     private boolean hasLicense;
     private boolean returning;
 
@@ -83,20 +80,17 @@ public class PatientDetailActivity extends AppCompatActivity {
     private String encounterVitals = "";
     private String encounterAdultIntials = "";
     SQLiteDatabase db = null;
-    ImageView profileimage;
-
+    Button editbtn;
+    Button newVisit;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_patient_detail);
-        patientDetailViewModel = ViewModelProviders.of(this).get(PatientDetailViewModel.class);
-        binding.setPatientdetailViemodel(patientDetailViewModel);
-        binding.setLifecycleOwner(this);
-
-        setSupportActionBar(binding.toolbar);
+        setContentView(R.layout.activity_patient_detail);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         sessionManager = new SessionManager(this);
+        newVisit = findViewById(R.id.button_new_visit);
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
@@ -107,8 +101,8 @@ public class PatientDetailActivity extends AppCompatActivity {
             Logger.logD(TAG, "Patient Name: " + patientName);
             Logger.logD(TAG, "Intent Tag: " + intentTag);
         }
-        profileimage = findViewById(R.id.imageView_patient);
-        binding.editButton.setOnClickListener(new View.OnClickListener() {
+        editbtn = findViewById(R.id.edit_button);
+        editbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent2 = new Intent(PatientDetailActivity.this, IdentificationActivity.class);
@@ -119,7 +113,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         });
         setDisplay(patientUuid);
 
-        binding.buttonNewVisit.setOnClickListener(new View.OnClickListener() {
+        newVisit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // before starting, we determine if it is new visit for a returning patient
@@ -190,25 +184,6 @@ public class PatientDetailActivity extends AppCompatActivity {
                 String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
                 intent2.putExtra("patientUuid", patientUuid);
 
-
-//                ContentValues visitData = new ContentValues();
-//                visitData.put("uuid", uuid);
-//                visitData.put("patientUuid", patient_new.getUuid());
-//                Log.i(TAG, "onClick: " + thisDate);
-//                visitData.put("startdate", thisDate);
-//                visitData.put("visit_type_uuid", UuidDictionary.VISIT_TELEMEDICINE);
-//                visitData.put("locationuuid", sessionManager.getLocationUuid());
-//                visitData.put("synced", false);
-//                visitData.put("modified_date", thisDate);
-//                visitData.put("creator", CREATOR_ID);
-//
-//                InteleHealthDatabaseHelper mDbHelper = new InteleHealthDatabaseHelper(PatientDetailActivity.this);
-//                SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
-//                Long visitLong = localdb.insert(
-//                        "tbl_visit",
-//                        null,
-//                        visitData
-//                );
                 VisitDTO visitDTO = new VisitDTO();
 
                 visitDTO.setUuid(uuid);
@@ -308,6 +283,30 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
         idCursor1.close();
 
+        ImageView photoView = findViewById(R.id.imageView_patient);
+
+        TextView idView = findViewById(R.id.textView_ID);
+        TextView dobView = findViewById(R.id.textView_DOB);
+        TextView ageView = findViewById(R.id.textView_age);
+        TextView addr1View = findViewById(R.id.textView_address_1);
+        TableRow addr2Row = findViewById(R.id.tableRow_addr2);
+        TextView addr2View = findViewById(R.id.textView_address2);
+        TextView addrFinalView = findViewById(R.id.textView_address_final);
+        TextView casteView = findViewById(R.id.textView_caste);
+        TextView economic_statusView = findViewById(R.id.textView_economic_status);
+        TextView education_statusView = findViewById(R.id.textView_education_status);
+        TextView phoneView = findViewById(R.id.textView_phone);
+        TextView sdwView = findViewById(R.id.textView_SDW);
+        TableRow sdwRow = findViewById(R.id.tableRow_SDW);
+        TextView occuView = findViewById(R.id.textView_occupation);
+        TableRow occuRow = findViewById(R.id.tableRow_Occupation);
+        TableRow economicRow = findViewById(R.id.tableRow_Economic_Status);
+        TableRow educationRow = findViewById(R.id.tableRow_Education_Status);
+        TableRow casteRow = findViewById(R.id.tableRow_Caste);
+
+        TextView medHistView = findViewById(R.id.textView_patHist);
+        TextView famHistView = findViewById(R.id.textView_famHist);
+
 //changing patient to patient_new object
         if (patient_new.getMiddle_name() == null) {
             patientName = patient_new.getLast_name() + ", " + patient_new.getFirst_name();
@@ -324,28 +323,28 @@ public class PatientDetailActivity extends AppCompatActivity {
                 .load(patient_new.getPatient_photo())
                 .thumbnail(0.3f)
                 .centerCrop()
-                .into(profileimage);
+                .into(photoView);
 
         if (patient_new.getOpenmrs_id() != null && !patient_new.getOpenmrs_id().isEmpty()) {
-            binding.textViewID.setText(patient_new.getOpenmrs_id());
+            idView.setText(patient_new.getOpenmrs_id());
         } else {
-            binding.textViewID.setText(getString(R.string.patient_not_registered));
+            idView.setText(getString(R.string.patient_not_registered));
         }
 
         int age = DateAndTimeUtils.getAge(patient_new.getDate_of_birth());
-        binding.textViewAge.setText(String.valueOf(age));
+        ageView.setText(String.valueOf(age));
 
         String dob = patient_new.getDate_of_birth();
-        binding.textViewDOB.setText(dob);
+        dobView.setText(dob);
         if (patient_new.getAddress1() == null || patient_new.getAddress1().equals("")) {
-            binding.textViewAddress1.setVisibility(View.GONE);
+            addr1View.setVisibility(View.GONE);
         } else {
-            binding.textViewAddress1.setText(patient_new.getAddress1());
+            addr1View.setText(patient_new.getAddress1());
         }
         if (patient_new.getAddress2() == null || patient_new.getAddress2().equals("")) {
-            binding.textViewAddress2.setVisibility(View.GONE);
+            addr2Row.setVisibility(View.GONE);
         } else {
-            binding.textViewAddress2.setText(patient_new.getAddress2());
+            addr2View.setText(patient_new.getAddress2());
         }
         String city_village;
         if (patient_new.getCity_village() != null) {
@@ -365,22 +364,22 @@ public class PatientDetailActivity extends AppCompatActivity {
                 String.format("%s, %s, %s %s",
                         city_village, patient_new.getState_province(),
                         postal_code, patient_new.getCountry());
-        binding.textViewAddressFinal.setText(addrFinalLine);
-        binding.textViewPhone.setText(patient_new.getPhone_number());
-        binding.textViewEducationStatus.setText(patient_new.getEducation_level());
-        binding.textViewEconomicStatus.setText(patient_new.getEconomic_status());
-        binding.textViewCaste.setText(patient_new.getCaste());
+        addrFinalView.setText(addrFinalLine);
+        phoneView.setText(patient_new.getPhone_number());
+        education_statusView.setText(patient_new.getEducation_level());
+        economic_statusView.setText(patient_new.getEconomic_status());
+        casteView.setText(patient_new.getCaste());
 //
         if (patient_new.getSdw() != null && !patient_new.getSdw().equals("")) {
-            binding.textViewSDW.setText(patient_new.getSdw());
+            sdwView.setText(patient_new.getSdw());
         } else {
-            binding.textViewSDW.setVisibility(View.GONE);
+            sdwRow.setVisibility(View.GONE);
         }
 //
         if (patient_new.getOccupation() != null && !patient_new.getOccupation().equals("")) {
-            binding.textViewOccupation.setText(patient_new.getOccupation());
+            occuView.setText(patient_new.getOccupation());
         } else {
-            binding.textViewOccupation.setVisibility(View.GONE);
+            occuRow.setVisibility(View.GONE);
         }
 
         if (visitUuid != null && !visitUuid.isEmpty()) {
@@ -437,9 +436,9 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
 
             if (medHistValue != null && !medHistValue.equals("")) {
-                binding.textViewPatHist.setText(Html.fromHtml(medHistValue));
+                medHistView.setText(Html.fromHtml(medHistValue));
             } else {
-                binding.textViewPatHist.setText(getString(R.string.string_no_hist));
+                medHistView.setText(getString(R.string.string_no_hist));
             }
 
             db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
@@ -460,9 +459,9 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
 
             if (famHistValue != null && !famHistValue.equals("")) {
-                binding.textViewFamHist.setText(Html.fromHtml(famHistValue));
+                famHistView.setText(Html.fromHtml(famHistValue));
             } else {
-                binding.textViewFamHist.setText(getString(R.string.string_no_hist));
+                famHistView.setText(getString(R.string.string_no_hist));
             }
         }
         db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
@@ -596,17 +595,17 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
             past_visit = false;
 
-            if (binding.buttonNewVisit.isEnabled()) {
-                binding.buttonNewVisit.setEnabled(false);
+            if (newVisit.isEnabled()) {
+                newVisit.setEnabled(false);
             }
-            if (binding.buttonNewVisit.isClickable()) {
-                binding.buttonNewVisit.setClickable(false);
+            if (newVisit.isClickable()) {
+                newVisit.setClickable(false);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                    binding.buttonNewVisit.setBackgroundColor
+                    newVisit.setBackgroundColor
                             (getColor(R.color.divider));
                 else
-                    binding.buttonNewVisit.setBackgroundColor(getResources().getColor(R.color.divider));
+                    newVisit.setBackgroundColor(getResources().getColor(R.color.divider));
             }
 
         } else {

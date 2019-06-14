@@ -18,9 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.intelehealth.client.R;
-import io.intelehealth.client.dao.ImagesDAO;
-import io.intelehealth.client.exception.DAOException;
-import io.intelehealth.client.objects.DocumentObject;
+import io.intelehealth.client.database.dao.ImagesDAO;
+import io.intelehealth.client.models.DocumentObject;
+import io.intelehealth.client.utilities.exception.DAOException;
 import io.intelehealth.client.views.adapters.AdditionalDocumentAdapter;
 
 public class AdditionalDocumentsActivity extends AppCompatActivity {

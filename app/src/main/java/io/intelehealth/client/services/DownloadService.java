@@ -16,14 +16,14 @@ import java.util.List;
 
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.app.IntelehealthApplication;
-import io.intelehealth.client.dao.ImagesDAO;
-import io.intelehealth.client.dao.ObsDAO;
-import io.intelehealth.client.exception.DAOException;
+import io.intelehealth.client.database.dao.ImagesDAO;
+import io.intelehealth.client.database.dao.ObsDAO;
 import io.intelehealth.client.models.download.Download;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UrlModifiers;
 import io.intelehealth.client.utilities.UuidDictionary;
+import io.intelehealth.client.utilities.exception.DAOException;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;

@@ -7,15 +7,14 @@ import java.util.List;
 
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.app.IntelehealthApplication;
-import io.intelehealth.client.dao.EncounterDAO;
-import io.intelehealth.client.dao.ObsDAO;
-import io.intelehealth.client.dao.PatientsDAO;
-import io.intelehealth.client.dao.VisitsDAO;
-import io.intelehealth.client.dto.EncounterDTO;
-import io.intelehealth.client.dto.ObsDTO;
-import io.intelehealth.client.dto.PatientDTO;
-import io.intelehealth.client.dto.VisitDTO;
-import io.intelehealth.client.exception.DAOException;
+import io.intelehealth.client.database.dao.EncounterDAO;
+import io.intelehealth.client.database.dao.ObsDAO;
+import io.intelehealth.client.database.dao.PatientsDAO;
+import io.intelehealth.client.database.dao.VisitsDAO;
+import io.intelehealth.client.models.EncounterDTO;
+import io.intelehealth.client.models.ObsDTO;
+import io.intelehealth.client.models.PatientDTO;
+import io.intelehealth.client.models.VisitDTO;
 import io.intelehealth.client.models.pushRequestApiCall.Address;
 import io.intelehealth.client.models.pushRequestApiCall.Attribute;
 import io.intelehealth.client.models.pushRequestApiCall.Encounter;
@@ -27,6 +26,7 @@ import io.intelehealth.client.models.pushRequestApiCall.Patient;
 import io.intelehealth.client.models.pushRequestApiCall.Person;
 import io.intelehealth.client.models.pushRequestApiCall.PushRequestApiCall;
 import io.intelehealth.client.models.pushRequestApiCall.Visit;
+import io.intelehealth.client.utilities.exception.DAOException;
 
 public class PatientsFrameJson {
     PatientsDAO patientsDAO = new PatientsDAO();
@@ -122,15 +122,15 @@ public class PatientsFrameJson {
             if (emergencyVisitUuids.size() != 0) {
                 emergencyEncounter.removeEncounterEmergency(visitDTO.getUuid(), db);
             }
-            List<Attribute> attributeList = new ArrayList<>();
-            attributeList.clear();
-            try {
-                attributeList = visitsDAO.getVisitAttributes(visitDTO.getUuid());
-            } catch (DAOException e) {
-                e.printStackTrace();
-            }
+//            List<Attribute> attributeList = new ArrayList<>();
+//            attributeList.clear();
+//            try {
+//                attributeList = visitsDAO.getVisitAttributes(visitDTO.getUuid());
+//            } catch (DAOException e) {
+//                e.printStackTrace();
+//            }
 
-            visit.setAttributes(attributeList);
+//            visit.setAttributes(attributeList);
             visitList.add(visit);
 
         }

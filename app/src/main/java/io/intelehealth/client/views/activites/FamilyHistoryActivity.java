@@ -29,12 +29,12 @@ import java.util.UUID;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
-import io.intelehealth.client.dao.EncounterDAO;
-import io.intelehealth.client.exception.DAOException;
+import io.intelehealth.client.database.dao.EncounterDAO;
 import io.intelehealth.client.node.Node;
 import io.intelehealth.client.utilities.FileUtils;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UuidDictionary;
+import io.intelehealth.client.utilities.exception.DAOException;
 import io.intelehealth.client.views.adapters.CustomExpandableListAdapter;
 
 public class FamilyHistoryActivity extends AppCompatActivity {

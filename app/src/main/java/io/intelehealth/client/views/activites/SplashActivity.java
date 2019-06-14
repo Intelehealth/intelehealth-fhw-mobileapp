@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
@@ -20,7 +19,6 @@ import java.util.TimerTask;
 import io.intelehealth.client.BuildConfig;
 import io.intelehealth.client.R;
 import io.intelehealth.client.dataMigration.SmoothUpgrade;
-import io.intelehealth.client.databinding.ActivitySplashActivityBinding;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
 
@@ -35,8 +33,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_splash_activity);
-        ActivitySplashActivityBinding activitySplashActivityBinding = DataBindingUtil.setContentView(this, R.layout.activity_splash_activity);
+        setContentView(R.layout.activity_splash_activity);
         sessionManager = new SessionManager(SplashActivity.this);
 
         String appLanguage = sessionManager.getAppLanguage();

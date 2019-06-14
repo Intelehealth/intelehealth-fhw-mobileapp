@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -19,6 +18,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,14 +43,13 @@ import java.util.Locale;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
-import io.intelehealth.client.backup.BackupCloud;
-import io.intelehealth.client.dao.PullDataDAO;
-import io.intelehealth.client.databinding.ActivityHomeBinding;
+import io.intelehealth.client.database.dao.PullDataDAO;
 import io.intelehealth.client.services.DownloadProtocolsTask;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.NetworkConnection;
 import io.intelehealth.client.utilities.OfflineLogin;
 import io.intelehealth.client.utilities.SessionManager;
+import io.intelehealth.client.utilities.backup.BackupCloud;
 import io.intelehealth.client.views.adapters.HomeAdapter;
 
 import static io.intelehealth.client.app.AppConstants.UNIQUE_WORK_NAME;
@@ -64,7 +63,6 @@ public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
     SessionManager sessionManager = null;
-    ActivityHomeBinding activityHomeBinding;
     ProgressDialog TempDialog;
     CountDownTimer CDT;
     int i = 5;
@@ -72,8 +70,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_home);
-        activityHomeBinding = DataBindingUtil.setContentView(this, R.layout.activity_home);
+        setContentView(R.layout.activity_home);
         sessionManager = new SessionManager(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -87,10 +84,13 @@ public class HomeActivity extends AppCompatActivity {
         }
         setTitle(R.string.title_activity_login);
         Logger.logD(TAG, "onCreate: " + getFilesDir().toString());
-        activityHomeBinding.recyclerviewHome.setHasFixedSize(true);
+        final RecyclerView recyclerView = findViewById(R.id.recyclerview_home);
+        recyclerView.setHasFixedSize(true);
+
         GridLayoutManager gridLayoutManager = new GridLayoutManager(HomeActivity.this, 1);
-        activityHomeBinding.recyclerviewHome.setLayoutManager(gridLayoutManager);
-        activityHomeBinding.recyclerviewHome.setAdapter(new HomeAdapter(HomeActivity.this));
+        recyclerView.setLayoutManager(gridLayoutManager);
+
+        recyclerView.setAdapter(new HomeAdapter());
 
         String date = sessionManager.getDate();
         String time = sessionManager.getTime();
@@ -109,30 +109,30 @@ public class HomeActivity extends AppCompatActivity {
             Log.d("newfilepath", dbfilepath);
             final File db_file = new File(dbfilepath);
 
-//            if (db_file.exists()) {
-//                new AlertDialog.Builder(this)
-//                        .setIcon(R.drawable.ic_file_download_black_48px)
-//                        .setTitle(R.string.local_restore_alert_title)
-//                        .setMessage(R.string.local_restore_alert_message)
-//                        .setCancelable(false)
-//                        .setPositiveButton(R.string.generic_yes,
-//                                new DialogInterface.OnClickListener() {
-//                                    public void onClick(DialogInterface dialog, int whichButton) {
-//                                        //Restore from local backup
-//                                        manageBackup(false, false); // to restore app data if db is empty
-//                                    }
-//                                }
-//                        )
-//                        .setNegativeButton(R.string.generic_no,
-//                                new DialogInterface.OnClickListener() {
-//                                    public void onClick(DialogInterface dialog, int whichButton) {
-//                                        //Do Nothing!
-//                                        // db_file.delete();
-//                                    }
-//                                }
-//                        )
-//                        .create().show();
-//            }
+            if (db_file.exists()) {
+                new AlertDialog.Builder(this)
+                        .setIcon(R.drawable.ic_file_download_black_48px)
+                        .setTitle(R.string.local_restore_alert_title)
+                        .setMessage(R.string.local_restore_alert_message)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.generic_yes,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        //Restore from local backup
+                                        manageBackup(false, false); // to restore app data if db is empty
+                                    }
+                                }
+                        )
+                        .setNegativeButton(R.string.generic_no,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        //Do Nothing!
+                                        // db_file.delete();
+                                    }
+                                }
+                        )
+                        .create().show();
+            }
         }
 //        if (sessionManager.isFirstTimeSyncExcuted()) {
 

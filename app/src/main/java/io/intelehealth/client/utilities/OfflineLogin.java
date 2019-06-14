@@ -12,7 +12,6 @@ import java.security.NoSuchAlgorithmException;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.IntelehealthApplication;
-import io.intelehealth.client.security.StringEncryption;
 import io.intelehealth.client.views.activites.HomeActivity;
 
 

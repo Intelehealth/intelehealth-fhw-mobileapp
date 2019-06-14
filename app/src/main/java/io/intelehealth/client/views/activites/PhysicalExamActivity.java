@@ -43,13 +43,13 @@ import java.util.UUID;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
-import io.intelehealth.client.dao.ImagesDAO;
-import io.intelehealth.client.exception.DAOException;
+import io.intelehealth.client.database.dao.ImagesDAO;
 import io.intelehealth.client.node.Node;
 import io.intelehealth.client.node.PhysicalExam;
 import io.intelehealth.client.utilities.FileUtils;
 import io.intelehealth.client.utilities.StringUtils;
 import io.intelehealth.client.utilities.UuidDictionary;
+import io.intelehealth.client.utilities.exception.DAOException;
 import io.intelehealth.client.views.adapters.CustomExpandableListAdapter;
 
 public class PhysicalExamActivity extends AppCompatActivity {

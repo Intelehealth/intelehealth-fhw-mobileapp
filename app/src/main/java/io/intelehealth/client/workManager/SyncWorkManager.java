@@ -10,7 +10,7 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import io.intelehealth.client.R;
-import io.intelehealth.client.dao.PullDataDAO;
+import io.intelehealth.client.database.dao.PullDataDAO;
 import io.intelehealth.client.utilities.Logger;
 
 public class SyncWorkManager extends Worker {

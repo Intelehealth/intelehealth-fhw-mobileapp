@@ -4,8 +4,6 @@ package io.intelehealth.client.models.pushRequestApiCall;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 public class Visit {
 
     @SerializedName("uuid")
@@ -26,9 +24,9 @@ public class Visit {
     @SerializedName("location")
     @Expose
     private String location;
-    @SerializedName("attributes")
-    @Expose
-    private List<Attribute> attributes = null;
+//    @SerializedName("attributes")
+//    @Expose
+//    private List<Attribute> attributes = null;
 
     public String getUuid() {
         return uuid;
@@ -78,11 +76,11 @@ public class Visit {
         this.stopDatetime = stopDatetime;
     }
 
-    public List<Attribute> getAttributes() {
-        return attributes;
-    }
+//    public List<Attribute> getAttributes() {
+//        return attributes;
+//    }
 
-    public void setAttributes(List<Attribute> attributes) {
-        this.attributes = attributes;
-    }
+//    public void setAttributes(List<Attribute> attributes) {
+//        this.attributes = attributes;
+//    }
 }

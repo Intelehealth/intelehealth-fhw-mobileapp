@@ -4,12 +4,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,24 +23,25 @@ import java.util.List;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.database.InteleHealthDatabaseHelper;
-import io.intelehealth.client.databinding.ActivityTodayPatientBinding;
-import io.intelehealth.client.objects.TodayPatientModel;
+import io.intelehealth.client.models.TodayPatientModel;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.views.adapters.TodayPatientAdapter;
 
 public class TodayPatientActivity extends AppCompatActivity {
     private static final String TAG = TodayPatientActivity.class.getSimpleName();
-    ActivityTodayPatientBinding binding;
     InteleHealthDatabaseHelper mDbHelper;
     private SQLiteDatabase db;
     SessionManager sessionManager = null;
-
+    RecyclerView mTodayPatientList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_today_patient);
-        setSupportActionBar(binding.toolbar);
+        setContentView(R.layout.activity_today_patient);
+//        binding = DataBindingUtil.setContentView(this, R.layout.activity_today_patient);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        mTodayPatientList = findViewById(R.id.today_patient_recycler_view);
         sessionManager = new SessionManager(this);
         mDbHelper = new InteleHealthDatabaseHelper(this);
         db = mDbHelper.getWritableDatabase();
@@ -102,11 +104,11 @@ public class TodayPatientActivity extends AppCompatActivity {
 
             TodayPatientAdapter mTodayPatientAdapter = new TodayPatientAdapter(todayPatientList, TodayPatientActivity.this);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(TodayPatientActivity.this);
-            binding.todayPatientRecyclerView.setLayoutManager(linearLayoutManager);
-            binding.todayPatientRecyclerView.addItemDecoration(new
+            mTodayPatientList.setLayoutManager(linearLayoutManager);
+            mTodayPatientList.addItemDecoration(new
                     DividerItemDecoration(this,
                     DividerItemDecoration.VERTICAL));
-            binding.todayPatientRecyclerView.setAdapter(mTodayPatientAdapter);
+            mTodayPatientList.setAdapter(mTodayPatientAdapter);
         }
 
     }
@@ -152,7 +154,9 @@ public class TodayPatientActivity extends AppCompatActivity {
                 } while (cursor.moveToNext());
             }
         }
-        cursor.close();
+        if (cursor != null) {
+            cursor.close();
+        }
 
         if (failedUploads == 0) {
             Intent intent = new Intent(this, HomeActivity.class);

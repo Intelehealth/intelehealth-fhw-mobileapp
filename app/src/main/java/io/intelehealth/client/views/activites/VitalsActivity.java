@@ -3,10 +3,11 @@ package io.intelehealth.client.views.activites;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,22 +26,18 @@ import java.util.ArrayList;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
-import io.intelehealth.client.dao.EncounterDAO;
-import io.intelehealth.client.dao.ObsDAO;
-import io.intelehealth.client.databinding.ActivityVitalsBinding;
-import io.intelehealth.client.dto.ObsDTO;
-import io.intelehealth.client.exception.DAOException;
-import io.intelehealth.client.objects.VitalsObject;
+import io.intelehealth.client.database.dao.EncounterDAO;
+import io.intelehealth.client.database.dao.ObsDAO;
+import io.intelehealth.client.models.ObsDTO;
+import io.intelehealth.client.models.VitalsObject;
 import io.intelehealth.client.utilities.ConfigUtils;
 import io.intelehealth.client.utilities.FileUtils;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UuidDictionary;
-
-import static io.intelehealth.client.app.AppConstants.CONFIG_FILE_NAME;
+import io.intelehealth.client.utilities.exception.DAOException;
 
 public class VitalsActivity extends AppCompatActivity {
     private static final String TAG = VitalsActivity.class.getSimpleName();
-    ActivityVitalsBinding binding;
     SessionManager sessionManager;
     private String patientName = "";
     private String intentTag;
@@ -55,17 +53,9 @@ public class VitalsActivity extends AppCompatActivity {
 
     VitalsObject results=new VitalsObject();
     private String encounterAdultIntials="";
-
+    EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_vitals);
-        setSupportActionBar(binding.toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-
-        sessionManager = new SessionManager(this);
-
-
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -81,33 +71,112 @@ public class VitalsActivity extends AppCompatActivity {
             Log.v(TAG, "Patient Name: " + patientName);
             Log.v(TAG, "Intent Tag: " + intentTag);
         }
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_vitals);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+        sessionManager = new SessionManager(this);
+
+
+
+
 //        Setting the title
         setTitle(R.string.title_activity_vitals);
         setTitle(patientName + ": " + getTitle());
 
+        mHeight = findViewById(R.id.table_height);
+        mWeight = findViewById(R.id.table_weight);
+        mPulse = findViewById(R.id.table_pulse);
+        mBpSys = findViewById(R.id.table_bpsys);
+        mBpDia = findViewById(R.id.table_bpdia);
+        mTemperature = findViewById(R.id.table_temp);
+        mSpo2 = findViewById(R.id.table_spo2);
+
+        mBMI = findViewById(R.id.table_bmi);
+//    Respiratory added by mahiti dev team
+
+        mResp = findViewById(R.id.table_respiratory);
+
+        mBMI.setEnabled(false);
+
+
+        //Check for license key and load the correct config file
+        try {
+            JSONObject obj = null;
+//            #633 #632
+            if (sessionManager.valueContains("licensekey")) {
+                obj = new JSONObject(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this)); //Load the config file
+            } else {
+                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
+            }//Load the config file
+            //Display the fields on the Vitals screen as per the config file
+            if (obj.getBoolean("mHeight")) {
+                mHeight.setVisibility(View.VISIBLE);
+            } else {
+                mHeight.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("mWeight")) {
+                mWeight.setVisibility(View.VISIBLE);
+            } else {
+                mWeight.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("mPulse")) {
+                mPulse.setVisibility(View.VISIBLE);
+            } else {
+                mPulse.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("mBpSys")) {
+                mBpSys.setVisibility(View.VISIBLE);
+            } else {
+                mBpSys.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("mBpDia")) {
+                mBpDia.setVisibility(View.VISIBLE);
+            } else {
+                mBpDia.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("mTemperature")) {
+                if (obj.getBoolean("mCelsius")) {
+
+                    mTemperature = findViewById(R.id.table_temp);
+                    findViewById(R.id.table_temp_faren).setVisibility(View.GONE);
+
+                } else if (obj.getBoolean("mFahrenheit")) {
+
+                    mTemperature = findViewById(R.id.table_temp_faren);
+                    findViewById(R.id.table_temp).setVisibility(View.GONE);
+                }
+            } else {
+                mTemperature.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("mSpo2")) {
+                mSpo2.setVisibility(View.VISIBLE);
+            } else {
+                mSpo2.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("mBMI")) {
+                mBMI.setVisibility(View.VISIBLE);
+            } else {
+                mBMI.setVisibility(View.GONE);
+            }
+
+            if (obj.getBoolean("mResp")) {
+                mResp.setVisibility(View.VISIBLE);
+            } else {
+                mResp.setVisibility(View.GONE);
+            }
+        } catch (JSONException e) {
+            Toast.makeText(this, "config file error", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
         if (intentTag != null && intentTag.equals("edit")) {
             loadPrevious();
         }
-        try {
-            JSONObject obj = null;
-            if (sessionManager.valueContains("licensekey")) {
-                obj = new JSONObject(FileUtils.readFileRoot(CONFIG_FILE_NAME, VitalsActivity.this)); //Load the config file
-            } else {
-                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(VitalsActivity.this, CONFIG_FILE_NAME)));
-            }
-            if (obj.getBoolean("mCelsius")) {
-                binding.tableTemp.setVisibility(View.VISIBLE);
-                binding.tableTempFaren.setVisibility(View.GONE);
 
-            } else if (obj.getBoolean("mFahrenheit")) {
-                binding.tableTempFaren.setVisibility(View.VISIBLE);
-                binding.tableTemp.setVisibility(View.GONE);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        binding.tableHeight.addTextChangedListener(new TextWatcher() {
+        mHeight.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -115,18 +184,18 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() > 0) {
-                    binding.tableBmi.getText().clear();
+                    mBMI.getText().clear();
                     flag_height = 1;
-                    heightvalue = binding.tableHeight.getText().toString();
+                    heightvalue = mHeight.getText().toString();
                     if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_HEIGHT)) {
-                        binding.tableHeight.setError(getString(R.string.height_error, AppConstants.MAXIMUM_HEIGHT));
+                        mHeight.setError(getString(R.string.height_error, AppConstants.MAXIMUM_HEIGHT));
                     } else {
-                        binding.tableHeight.setError(null);
+                        mHeight.setError(null);
                     }
 
                 } else {
                     flag_height = 0;
-                    binding.tableBmi.getText().clear();
+                    mBMI.getText().clear();
                 }
             }
 
@@ -136,7 +205,7 @@ public class VitalsActivity extends AppCompatActivity {
             }
         });
 
-        binding.tableWeight.addTextChangedListener(new TextWatcher() {
+        mWeight.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -144,17 +213,17 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() > 0) {
-                    binding.tableBmi.getText().clear();
+                    mBMI.getText().clear();
                     flag_weight = 1;
-                    weightvalue = binding.tableWeight.getText().toString();
+                    weightvalue = mWeight.getText().toString();
                     if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_WEIGHT)) {
-                        binding.tableWeight.setError(getString(R.string.weight_error, AppConstants.MAXIMUM_WEIGHT));
+                        mWeight.setError(getString(R.string.weight_error, AppConstants.MAXIMUM_WEIGHT));
                     } else {
-                        binding.tableWeight.setError(null);
+                        mWeight.setError(null);
                     }
                 } else {
                     flag_weight = 0;
-                    binding.tableBmi.getText().clear();
+                    mBMI.getText().clear();
                 }
 
             }
@@ -167,7 +236,7 @@ public class VitalsActivity extends AppCompatActivity {
         });
 
 
-        binding.tableSpo2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mSpo2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.table_spo2 || id == EditorInfo.IME_NULL) {
@@ -178,7 +247,7 @@ public class VitalsActivity extends AppCompatActivity {
             }
         });
 
-        binding.tableSpo2.addTextChangedListener(new TextWatcher() {
+        mSpo2.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -189,9 +258,9 @@ public class VitalsActivity extends AppCompatActivity {
                 if (s.toString().trim().length() > 0) {
                     if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_SPO2) ||
                             Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_SPO2)) {
-                        binding.tableSpo2.setError(getString(R.string.spo2_error, AppConstants.MINIMUM_SPO2, AppConstants.MAXIMUM_SPO2));
+                        mSpo2.setError(getString(R.string.spo2_error, AppConstants.MINIMUM_SPO2, AppConstants.MAXIMUM_SPO2));
                     } else {
-                        binding.tableSpo2.setError(null);
+                        mSpo2.setError(null);
                     }
                 }
             }
@@ -202,7 +271,7 @@ public class VitalsActivity extends AppCompatActivity {
             }
         });
 
-        binding.tableTemp.addTextChangedListener(new TextWatcher() {
+        mTemperature.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -215,9 +284,9 @@ public class VitalsActivity extends AppCompatActivity {
                         if (s.toString().trim().length() > 0) {
                             if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS) ||
                                     Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_TEMPERATURE_CELSIUS)) {
-                                binding.tableTemp.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
+                                mTemperature.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
                             } else {
-                                binding.tableTemp.setError(null);
+                                mTemperature.setError(null);
                             }
 
                         }
@@ -225,9 +294,9 @@ public class VitalsActivity extends AppCompatActivity {
                         if (s.toString().trim().length() > 0) {
                             if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_TEMPERATURE_FARHENIT) ||
                                     Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_TEMPERATURE_FARHENIT)) {
-                                binding.tableTemp.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_FARHENIT, AppConstants.MAXIMUM_TEMPERATURE_FARHENIT));
+                                mTemperature.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_FARHENIT, AppConstants.MAXIMUM_TEMPERATURE_FARHENIT));
                             } else {
-                                binding.tableTemp.setError(null);
+                                mTemperature.setError(null);
                             }
                         }
 
@@ -241,7 +310,7 @@ public class VitalsActivity extends AppCompatActivity {
             }
         });
 
-        binding.tableRespiratory.addTextChangedListener(new TextWatcher() {
+        mResp.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -252,9 +321,9 @@ public class VitalsActivity extends AppCompatActivity {
                 if (s.toString().trim().length() > 0) {
                     if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_RESPIRATORY) ||
                             Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_RESPIRATORY)) {
-                        binding.tableRespiratory.setError(getString(R.string.temp_error, AppConstants.MINIMUM_RESPIRATORY, AppConstants.MAXIMUM_RESPIRATORY));
+                        mResp.setError(getString(R.string.temp_error, AppConstants.MINIMUM_RESPIRATORY, AppConstants.MAXIMUM_RESPIRATORY));
                     } else {
-                        binding.tableRespiratory.setError(null);
+                        mResp.setError(null);
                     }
                 }
             }
@@ -266,7 +335,7 @@ public class VitalsActivity extends AppCompatActivity {
         });
 
 
-        binding.tablePulse.addTextChangedListener(new TextWatcher() {
+        mPulse.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -277,9 +346,9 @@ public class VitalsActivity extends AppCompatActivity {
                 if (s.toString().trim().length() > 0) {
                     if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_PULSE) ||
                             Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_PULSE)) {
-                        binding.tablePulse.setError(getString(R.string.pulse_error, AppConstants.MINIMUM_PULSE, AppConstants.MAXIMUM_PULSE));
+                        mPulse.setError(getString(R.string.pulse_error, AppConstants.MINIMUM_PULSE, AppConstants.MAXIMUM_PULSE));
                     } else {
-                        binding.tablePulse.setError(null);
+                        mPulse.setError(null);
                     }
                 }
             }
@@ -290,7 +359,7 @@ public class VitalsActivity extends AppCompatActivity {
             }
         });
 
-        binding.tableBpsys.addTextChangedListener(new TextWatcher() {
+        mBpSys.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -301,9 +370,9 @@ public class VitalsActivity extends AppCompatActivity {
                 if (s.toString().trim().length() > 0) {
                     if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_BP_SYS) ||
                             Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_BP_SYS)) {
-                        binding.tableBpsys.setError(getString(R.string.bpsys_error, AppConstants.MINIMUM_BP_SYS, AppConstants.MAXIMUM_BP_SYS));
+                        mBpSys.setError(getString(R.string.bpsys_error, AppConstants.MINIMUM_BP_SYS, AppConstants.MAXIMUM_BP_SYS));
                     } else {
-                        binding.tableBpsys.setError(null);
+                        mBpSys.setError(null);
                     }
                 }
             }
@@ -314,7 +383,7 @@ public class VitalsActivity extends AppCompatActivity {
             }
         });
 
-        binding.tableBpdia.addTextChangedListener(new TextWatcher() {
+        mBpDia.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -325,9 +394,9 @@ public class VitalsActivity extends AppCompatActivity {
                 if (s.toString().trim().length() > 0) {
                     if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_BP_DSYS) ||
                             Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_BP_DSYS)) {
-                        binding.tableBpdia.setError(getString(R.string.bpdia_error, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS));
+                        mBpDia.setError(getString(R.string.bpdia_error, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS));
                     } else {
-                        binding.tableBpdia.setError(null);
+                        mBpDia.setError(null);
                     }
                 }
             }
@@ -338,7 +407,9 @@ public class VitalsActivity extends AppCompatActivity {
             }
         });
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab = findViewById(R.id.fab);
+        assert fab != null;
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 validateTable();
@@ -347,16 +418,16 @@ public class VitalsActivity extends AppCompatActivity {
     }
     public void calculateBMI() {
         if (flag_height == 1 && flag_weight == 1) {
-            binding.tableBmi.getText().clear();
+            mBMI.getText().clear();
             double numerator = Double.parseDouble(weightvalue) * 10000;
             double denominator = (Double.parseDouble(heightvalue)) * (Double.parseDouble(heightvalue));
             double bmi_value = numerator / denominator;
             DecimalFormat df = new DecimalFormat("0.00");
-            binding.tableBmi.setText(df.format(bmi_value));
+            mBMI.setText(df.format(bmi_value));
             //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
         } else if (flag_height == 0 || flag_weight == 0) {
             // do nothing
-            binding.tableBmi.getText().clear();
+            mBMI.getText().clear();
         }
     }
     public void loadPrevious() {
@@ -379,29 +450,29 @@ public class VitalsActivity extends AppCompatActivity {
     private void parseData(String concept_id, String value) {
         switch (concept_id) {
             case UuidDictionary.HEIGHT: //Height
-                binding.tableHeight.setText(value);
+                mHeight.setText(value);
                 break;
             case UuidDictionary.WEIGHT: //Weight
-                binding.tableWeight.setText(value);
+                mWeight.setText(value);
                 break;
             case UuidDictionary.PULSE: //Pulse
-                binding.tablePulse.setText(value);
+                mPulse.setText(value);
                 break;
             case UuidDictionary.SYSTOLIC_BP: //Systolic BP
-                binding.tableBpsys.setText(value);
+                mBpSys.setText(value);
                 break;
             case UuidDictionary.DIASTOLIC_BP: //Diastolic BP
-                binding.tableBpdia.setText(value);
+                mBpDia.setText(value);
                 break;
             case UuidDictionary.TEMPERATURE: //Temperature
-                binding.tableTemp.setText(value);
+                mTemperature.setText(value);
                 break;
             //    Respiratory added by mahiti dev team
             case UuidDictionary.RESPIRATORY: //Respiratory
-                binding.tableRespiratory.setText(value);
+                mResp.setText(value);
                 break;
             case UuidDictionary.SPO2: //SpO2
-                binding.tableSpo2.setText(value);
+                mSpo2.setText(value);
                 break;
             default:
                 break;
@@ -414,14 +485,14 @@ public class VitalsActivity extends AppCompatActivity {
 
         // Store values at the time of the fab is clicked.
         ArrayList<EditText> values = new ArrayList<EditText>();
-        values.add(binding.tableHeight);
-        values.add(binding.tableWeight);
-        values.add(binding.tablePulse);
-        values.add(binding.tableBpsys);
-        values.add(binding.tableBpdia);
-        values.add(binding.tableTemp);
-        values.add(binding.tableRespiratory);
-        values.add(binding.tableSpo2);
+        values.add(mHeight);
+        values.add(mWeight);
+        values.add(mPulse);
+        values.add(mBpSys);
+        values.add(mBpDia);
+        values.add(mTemperature);
+        values.add(mResp);
+        values.add(mSpo2);
 
         // Check to see if values were inputted.
         for (int i = 0; i < values.size(); i++) {
@@ -583,29 +654,29 @@ public class VitalsActivity extends AppCompatActivity {
             return;
         } else {
             try {
-                if (binding.tableHeight.getText() != null) {
-                    results.setHeight((binding.tableHeight.getText().toString()));
+                if (mHeight.getText() != null) {
+                    results.setHeight((mHeight.getText().toString()));
                 }
-                if (binding.tableWeight.getText() != null) {
-                    results.setWeight((binding.tableWeight.getText().toString()));
+                if (mWeight.getText() != null) {
+                    results.setWeight((mWeight.getText().toString()));
                 }
-                if (binding.tablePulse.getText() != null) {
-                    results.setPulse((binding.tablePulse.getText().toString()));
+                if (mPulse.getText() != null) {
+                    results.setPulse((mPulse.getText().toString()));
                 }
-                if (binding.tableBpdia.getText() != null) {
-                    results.setBpdia((binding.tableBpdia.getText().toString()));
+                if (mBpDia.getText() != null) {
+                    results.setBpdia((mBpDia.getText().toString()));
                 }
-                if (binding.tableBpsys.getText() != null) {
-                    results.setBpsys((binding.tableBpsys.getText().toString()));
+                if (mBpSys.getText() != null) {
+                    results.setBpsys((mBpSys.getText().toString()));
                 }
-                if (binding.tableTemp.getText() != null) {
-                    results.setTemperature((binding.tableTemp.getText().toString()));
+                if (mTemperature.getText() != null) {
+                    results.setTemperature((mTemperature.getText().toString()));
                 }
-                if (binding.tableRespiratory.getText() != null) {
-                    results.setResp((binding.tableRespiratory.getText().toString()));
+                if (mResp.getText() != null) {
+                    results.setResp((mResp.getText().toString()));
                 }
-                if (binding.tableSpo2.getText() != null) {
-                    results.setSpo2((binding.tableSpo2.getText().toString()));
+                if (mSpo2.getText() != null) {
+                    results.setSpo2((mSpo2.getText().toString()));
                 }
 
 

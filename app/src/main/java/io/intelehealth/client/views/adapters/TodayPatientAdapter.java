@@ -2,7 +2,6 @@ package io.intelehealth.client.views.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,8 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import io.intelehealth.client.R;
-import io.intelehealth.client.databinding.ListItemTodayPatientBinding;
-import io.intelehealth.client.objects.TodayPatientModel;
+import io.intelehealth.client.models.TodayPatientModel;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
 import io.intelehealth.client.views.activites.PatientDetailActivity;
 
@@ -134,9 +132,9 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
 
         public TodayPatientViewHolder(View itemView) {
             super(itemView);
-            headTextView = (TextView) itemView.findViewById(R.id.list_item_head_text_view);
-            bodyTextView = (TextView) itemView.findViewById(R.id.list_item_body_text_view);
-            indicatorTextView = (TextView) itemView.findViewById(R.id.list_item_indicator_text_view);
+            headTextView = itemView.findViewById(R.id.list_item_head_text_view);
+            bodyTextView = itemView.findViewById(R.id.list_item_body_text_view);
+            indicatorTextView = itemView.findViewById(R.id.list_item_indicator_text_view);
             rootView = itemView;
         }
 

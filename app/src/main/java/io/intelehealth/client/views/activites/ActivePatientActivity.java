@@ -4,16 +4,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,31 +24,36 @@ import java.util.List;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.database.InteleHealthDatabaseHelper;
-import io.intelehealth.client.databinding.ActivityActivePatientBinding;
-import io.intelehealth.client.objects.ActivePatientModel;
+import io.intelehealth.client.models.ActivePatientModel;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.views.adapters.ActivePatientAdapter;
 
 public class ActivePatientActivity extends AppCompatActivity {
     private static final String TAG = ActivePatientActivity.class.getSimpleName();
-    ActivityActivePatientBinding binding;
     InteleHealthDatabaseHelper mDbHelper;
     private SQLiteDatabase db;
     SessionManager sessionManager = null;
-
+    Toolbar mToolbar;
+    RecyclerView mActivePatientList;
+    TextView textView;
+    RecyclerView recyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_active_patient);
-//        setContentView(R.layout.activity_active_patient);
-        setSupportActionBar(binding.toolbar);
+//        binding = DataBindingUtil.setContentView(this, R.layout.activity_active_patient);
+        setContentView(R.layout.activity_active_patient);
+        mToolbar = findViewById(R.id.toolbar);
+        mActivePatientList = findViewById(R.id.today_patient_recycler_view);
+        setSupportActionBar(mToolbar);
+        textView = findViewById(R.id.textviewmessage);
+        recyclerView = findViewById(R.id.today_patient_recycler_view);
         sessionManager = new SessionManager(this);
         mDbHelper = new InteleHealthDatabaseHelper(this);
         db = mDbHelper.getWritableDatabase();
         if (sessionManager.isSyncFinished()) {
-            binding.textviewmessage.setVisibility(View.GONE);
-            binding.todayPatientRecyclerView.setVisibility(View.VISIBLE);
+            textView.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
             doQuery();
         }
     }
@@ -97,11 +104,11 @@ public class ActivePatientActivity extends AppCompatActivity {
 
             ActivePatientAdapter mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ActivePatientActivity.this);
-            binding.todayPatientRecyclerView.setLayoutManager(linearLayoutManager);
-            binding.todayPatientRecyclerView.addItemDecoration(new
+            recyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.addItemDecoration(new
                     DividerItemDecoration(this,
                     DividerItemDecoration.VERTICAL));
-            binding.todayPatientRecyclerView.setAdapter(mActivePatientAdapter);
+            recyclerView.setAdapter(mActivePatientAdapter);
         }
 
     }

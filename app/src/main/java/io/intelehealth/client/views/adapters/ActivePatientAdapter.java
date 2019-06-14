@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import io.intelehealth.client.R;
-import io.intelehealth.client.objects.ActivePatientModel;
+import io.intelehealth.client.models.ActivePatientModel;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
 import io.intelehealth.client.views.activites.PatientDetailActivity;
 
