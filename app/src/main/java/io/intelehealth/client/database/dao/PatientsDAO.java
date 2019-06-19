@@ -20,7 +20,6 @@ import io.intelehealth.client.utilities.exception.DAOException;
 
 public class PatientsDAO {
 
-
     private int updatecount = 0;
     private long createdRecordsCount = 0;
 //    SQLiteDatabase db = null;
@@ -400,4 +399,5 @@ public class PatientsDAO {
         }
         return isUpdated;
     }
+
 }
