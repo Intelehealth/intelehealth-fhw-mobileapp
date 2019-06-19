@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.activites.LoginActivity">
+    tools:context=".activities.loginActivity.LoginActivity">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:context=".views.activites.LoginActivity"
+            tools:context=".activities.loginActivity.LoginActivity"
             tools:showIn="@layout/activity_login">
 
             <RelativeLayout

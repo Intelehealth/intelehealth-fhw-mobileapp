@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
 import io.intelehealth.client.R;
-import io.intelehealth.client.views.activites.HomeActivity;
+import io.intelehealth.client.activities.homeActivity.HomeActivity;
 
 public class NotificationUtils {
 

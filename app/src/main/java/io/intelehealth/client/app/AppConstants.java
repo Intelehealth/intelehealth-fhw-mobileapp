@@ -16,11 +16,11 @@ import java.util.concurrent.TimeUnit;
 import io.intelehealth.client.database.InteleHealthDatabaseHelper;
 import io.intelehealth.client.networkApiCalls.ApiClient;
 import io.intelehealth.client.networkApiCalls.ApiInterface;
+import io.intelehealth.client.syncModule.SyncWorkManager;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
 import io.intelehealth.client.utilities.NotificationUtils;
 import io.intelehealth.client.utilities.SqliteDbCloseHelper;
 import io.intelehealth.client.utilities.UuidGenerator;
-import io.intelehealth.client.workManager.SyncWorkManager;
 
 public class AppConstants {
     //Constants
