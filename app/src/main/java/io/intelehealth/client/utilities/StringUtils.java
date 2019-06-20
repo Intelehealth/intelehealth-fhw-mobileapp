@@ -14,6 +14,11 @@
 
 package io.intelehealth.client.utilities;
 
+import android.widget.Spinner;
+
+import io.intelehealth.client.R;
+import io.intelehealth.client.app.IntelehealthApplication;
+
 public final class StringUtils {
     private static final String NULL_AS_STRING = "null";
     private static final String SPACE_CHAR = " ";
@@ -110,5 +115,15 @@ public final class StringUtils {
             val = value;
         return val;
 
+    }
+
+    public static String getProvided(Spinner spinner) {
+        String val = "";
+        if (spinner.getSelectedItemPosition() == 0)
+            val = IntelehealthApplication.getAppContext().getString(R.string.not_provided);
+        else
+            val = spinner.getSelectedItem().toString();
+
+        return val;
     }
 }

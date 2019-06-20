@@ -70,7 +70,7 @@ public class VisitsDAO {
             values.put("startdate", DateAndTimeUtils.formatDateFromOnetoAnother(visit.getStartdate(), "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
             values.put("enddate", visit.getEnddate());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-            values.put("synced", visit.getSyncd());
+            values.put("sync", visit.getSyncd());
 //                Logger.logD("pulldata", "datadumper" + values);
             createdRecordsCount = db.insertWithOnConflict("tbl_visit", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 //            }
@@ -153,7 +153,7 @@ public class VisitsDAO {
             values.put("startdate", visit.getStartdate());
             values.put("enddate", visit.getEnddate());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-            values.put("synced", false);
+            values.put("sync", false);
 
             visitAttributeDTOS = visit.getVisitAttributeDTOS();
             if (visitAttributeDTOS != null) {
@@ -203,7 +203,7 @@ public class VisitsDAO {
         List<VisitDTO> visitDTOList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit where synced = ? OR synced=? COLLATE NOCASE", new String[]{"0", "false"});
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit where sync = ? OR sync=? COLLATE NOCASE", new String[]{"0", "false"});
         VisitDTO visitDTO = new VisitDTO();
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
@@ -234,7 +234,7 @@ public class VisitsDAO {
         String whereclause = "uuid=?";
         String[] whereargs = {uuid};
         try {
-            values.put("synced", synced);
+            values.put("sync", synced);
             values.put("uuid", uuid);
             int i = db.update("tbl_visit", values, whereclause, whereargs);
             Logger.logD("visit", "updated" + i);
@@ -262,7 +262,7 @@ public class VisitsDAO {
         String[] whereargs = {uuid};
         try {
             values.put("enddate", enddate);
-            values.put("synced", "0");
+            values.put("sync", "0");
             int i = db.update("tbl_visit", values, whereclause, whereargs);
             Logger.logD("visit", "updated" + i);
             db.setTransactionSuccessful();

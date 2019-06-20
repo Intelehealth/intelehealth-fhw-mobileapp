@@ -22,7 +22,7 @@ public class BackgroundSyncDAO {
         try {
             values.put("locationuuid", sessionManager.getLocationUuid());
             values.put("last_pull_execution_time", sessionManager.getPullExcutedTime());
-            values.put("synced", "false");
+            values.put("sync", "false");
             values.put("devices_sync", "true");
 
             db.insertWithOnConflict("tbl_sync", null, values, SQLiteDatabase.CONFLICT_REPLACE);

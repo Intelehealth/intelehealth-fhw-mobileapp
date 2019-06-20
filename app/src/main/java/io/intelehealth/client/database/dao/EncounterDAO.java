@@ -49,7 +49,7 @@ public class EncounterDAO {
             values.put("visituuid", encounter.getVisituuid());
             values.put("encounter_type_uuid", encounter.getEncounterTypeUuid());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-            values.put("synced", encounter.getSyncd());
+            values.put("sync", encounter.getSyncd());
             values.put("voided", encounter.getVoided());
             createdRecordsCount = db.insertWithOnConflict("tbl_encounter", null, values, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (SQLException e) {
@@ -74,7 +74,7 @@ public class EncounterDAO {
             values.put("encounter_time",encounter.getEncounterTime());
             values.put("encounter_type_uuid", encounter.getEncounterTypeUuid());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-            values.put("synced", "false");
+            values.put("sync", "false");
             values.put("voided", encounter.getVoided());
             createdRecordsCount = db.insertWithOnConflict("tbl_encounter", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             db.setTransactionSuccessful();
@@ -107,7 +107,7 @@ public class EncounterDAO {
         List<EncounterDTO> encounterDTOList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where synced = ? OR synced=? COLLATE NOCASE", new String[]{"0", "false"});
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where sync = ? OR sync=? COLLATE NOCASE", new String[]{"0", "false"});
         EncounterDTO encounterDTO = new EncounterDTO();
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
@@ -136,7 +136,7 @@ public class EncounterDAO {
         String whereclause = "uuid=?";
         String[] whereargs = {uuid};
         try {
-            values.put("synced", synced);
+            values.put("sync", synced);
             values.put("uuid", uuid);
             int i = db.update("tbl_encounter", values, whereclause, whereargs);
             Logger.logD("visit", "updated" + i);

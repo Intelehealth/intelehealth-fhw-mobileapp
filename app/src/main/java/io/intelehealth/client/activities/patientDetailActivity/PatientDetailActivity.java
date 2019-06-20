@@ -1,6 +1,9 @@
 package io.intelehealth.client.activities.patientDetailActivity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -86,6 +89,9 @@ public class PatientDetailActivity extends AppCompatActivity {
     SQLiteDatabase db = null;
     Button editbtn;
     Button newVisit;
+    IntentFilter filter;
+    Myreceiver reMyreceive;
+    ImageView photoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +101,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         sessionManager = new SessionManager(this);
+        reMyreceive = new Myreceiver();
+        filter = new IntentFilter("OpenmrsID");
         newVisit = findViewById(R.id.button_new_visit);
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -220,6 +228,17 @@ public class PatientDetailActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStart() {
+        registerReceiver(reMyreceive, filter);
+        super.onStart();
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(reMyreceive);
+        super.onDestroy();
+    }
 
     public void setDisplay(String dataString) {
         db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
@@ -288,7 +307,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
         idCursor1.close();
 
-        ImageView photoView = findViewById(R.id.imageView_patient);
+        photoView = findViewById(R.id.imageView_patient);
 
         TextView idView = findViewById(R.id.textView_ID);
         TextView dobView = findViewById(R.id.textView_DOB);
@@ -554,6 +573,48 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     }
 
+    public void profilePicDownloaded() {
+//        String url = "http://demo.intelehealth.io/openmrs/ws/rest/v1/personimage/" + patientUuid;
+        UrlModifiers urlModifiers = new UrlModifiers();
+        String url = urlModifiers.patientProfileImageUrl(patientUuid);
+        Logger.logD(TAG, "profileimage url" + url);
+        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
+        profilePicDownload.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableObserver<ResponseBody>() {
+                    @Override
+                    public void onNext(ResponseBody file) {
+                        DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
+                        downloadFilesUtils.saveToDisk(file, patientUuid);
+                        Logger.logD(TAG, file.toString());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Logger.logD(TAG, e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Logger.logD(TAG, "complete" + patient_new.getPatient_photo());
+                        PatientsDAO patientsDAO = new PatientsDAO();
+                        boolean updated = false;
+                        try {
+                            updated = patientsDAO.updatePatientPhoto(patientUuid, IMAGE_PATH + patientUuid + ".jpg");
+                        } catch (DAOException e) {
+                            e.printStackTrace();
+                        }
+                        if (updated) {
+                            Glide.with(PatientDetailActivity.this)
+                                    .load(IMAGE_PATH + patientUuid + ".jpg")
+                                    .thumbnail(0.3f)
+                                    .centerCrop()
+                                    .into(photoView);
+                        }
+                    }
+                });
+    }
+
     /**
      * This method retrieves details about patient's old visits.
      *
@@ -707,40 +768,10 @@ public class PatientDetailActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void profilePicDownloaded() {
-//        String url = "http://demo.intelehealth.io/openmrs/ws/rest/v1/personimage/" + patientUuid;
-        UrlModifiers urlModifiers = new UrlModifiers();
-        String url = urlModifiers.patientProfileImageUrl(patientUuid);
-        Logger.logD(TAG, "profileimage url" + url);
-        Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
-        profilePicDownload.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableObserver<ResponseBody>() {
-                    @Override
-                    public void onNext(ResponseBody file) {
-                        DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
-                        downloadFilesUtils.saveToDisk(file, patientUuid);
-                        Logger.logD(TAG, file.toString());
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Logger.logD(TAG, e.getMessage());
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Logger.logD(TAG, "complete");
-                        PatientsDAO patientsDAO = new PatientsDAO();
-                        boolean updated = false;
-                        try {
-                            updated = patientsDAO.updatePatientPhoto(patientUuid, IMAGE_PATH + patientUuid + ".jpg");
-                        } catch (DAOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+    public class Myreceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            setDisplay(patientUuid);
+        }
     }
-
-
 }

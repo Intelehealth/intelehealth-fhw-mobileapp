@@ -25,7 +25,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "encounter_time TEXT," +
             "encounter_type_uuid TEXT," +
             "modified_date TEXT," +
-            "synced TEXT," +
+            "sync TEXT," +
             "voided TEXT" +
             ")";
     /*
@@ -65,7 +65,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "caste TEXT," +
             "dead Text," +
             "modified_date TEXT," +
-            "synced TEXT" +
+            "sync TEXT" +
             ")";
     /* "openmrs_uuid": "834054d5-db4d-481c-8f2b-17da25aa93a2",
                 "value": "123456789",
@@ -90,7 +90,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "creator TEXT ," +
             "emergency TEXT," +
             "modified_date TEXT," +
-            "synced TEXT" +
+            "sync TEXT" +
             ")";
 
     /*
@@ -109,7 +109,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "creator TEXT," +
             "voided TEXT," +
             "modified_date TEXT," +
-            "synced TEXT" +
+            "sync TEXT" +
             ")";
     SessionManager sessionManager = null;
     /*"openmrs_encounteruuid": "99835c05-8c5c-4d17-b96d-095fb12ebc53",
@@ -127,8 +127,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "uuid TEXT PRIMARY KEY," +
             "name TEXT," +
             "retired TEXT," +
-            "modified_date TEXT," +
-            "sync TEXT" +
+            "modified_date TEXT" +
             ")";
 
     public static final String CREATE_VISIT_ATTRIB = "CREATE TABLE IF NOT EXISTS tbl_visit_attribute (" +
@@ -147,7 +146,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "locationuuid TEXT PRIMARY KEY," +
             "retired integer(10)," +
             "modified_date TEXT," +
-            "synced TEXT" +
+            "sync TEXT" +
             ")";
     public static final String CREATE_PROVIDER = "CREATE TABLE IF NOT EXISTS tbl_provider (" +
             "uuid TEXT PRIMARY KEY," +
@@ -156,13 +155,13 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "family_name TEXT," +
             "voided integer(10)," +
             "modified_date TEXT," +
-            "synced TEXT" +
+            "sync TEXT" +
             ")";
 
     public static final String CREATE_SYNC = "CREATE TABLE IF NOT EXISTS tbl_sync (" +
             "locationuuid TEXT PRIMARY KEY," +
             "last_pull_execution_time TEXT," +
-            "synced TEXT," +
+            "sync TEXT," +
             "devices_sync TEXT" +
             ")";
 

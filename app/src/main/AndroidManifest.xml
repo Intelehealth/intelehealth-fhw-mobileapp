@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- <uses-permission android:name="android.permission.SEND_SMS" /> -->
@@ -37,46 +37,46 @@
         <activity
             android:name=".activities.additionalDocumentsActivity.AdditionalDocumentsActivity"
             android:label="@string/title_activity_additional_documents"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.patientSurveyActivity.PatientSurveyActivity"
             android:label="@string/title_activity_patient_survey"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.physcialExamActivity.PhysicalExamActivity"
             android:label="@string/title_activity_physical_exam"
             android:parentActivityName=".activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.familyHistoryActivity.FamilyHistoryActivity"
             android:label="@string/title_activity_family_history"
             android:parentActivityName=".activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
             android:label="@string/title_activity_past_medical_history"
             android:parentActivityName=".activities.questionNodeActivity.QuestionNodeActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.questionNodeActivity.QuestionNodeActivity"
             android:label="@string/title_activity_question_node"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.complaintNodeActivity.ComplaintNodeActivity"
             android:label="@string/title_activity_complaint_node"
             android:parentActivityName=".activities.identificationActivity.IdentificationActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.visitSummaryActivity.VisitSummaryActivity"
-            android:label="@string/title_activity_visit_summary"
             android:configChanges="orientation|keyboardHidden"
+            android:label="@string/title_activity_visit_summary"
             android:parentActivityName=".activities.homeActivity.HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -87,43 +87,43 @@
         <activity
             android:name=".activities.vitalActivity.VitalsActivity"
             android:label="@string/title_activity_vitals"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.patientDetailActivity.PatientDetailActivity"
             android:label="@string/title_activity_patient_detail"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.cameraActivity.CameraActivity"
             android:label="@string/title_activity_camera"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.activitySync.ActivitySync"
             android:label="@string/title_activity_sync"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.videoLibraryActivity.VideoLibraryActivity"
             android:label="@string/title_activity_video_library"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.activePatientsActivity.ActivePatientActivity"
             android:label="@string/title_activity_active_patient"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.todayPatientActivity.TodayPatientActivity"
             android:label="@string/title_activity_today_patient"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.searchPatientActivity.SearchPatientActivity"
             android:label="@string/title_activity_search_patient"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -138,8 +138,8 @@
         <activity
             android:name=".activities.identificationActivity.IdentificationActivity"
             android:label="@string/title_activity_identification"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.settingsActivity.SettingsActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -153,16 +153,16 @@
         <activity
             android:name=".activities.loginActivity.LoginActivity"
             android:label="@string/title_activity_login"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.homeActivity.HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait">
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value=".activities.homeActivity.HomeActivity" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.homeActivity.HomeActivity" />
         </activity>
         <activity
             android:name=".activities.splashActivity.SplashActivity"
@@ -194,9 +194,9 @@
         </service>
         <service
             android:name=".services.RunAfterBootService"
-            android:permission=""
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true"
+            android:permission="" />
 
         <receiver
             android:name=".syncModule.BootCompleteReceiver"
@@ -212,10 +212,9 @@
             android:authorities="io.intelehealth.client.activities.searchPatientActivity.SearchSuggestionProvider"
             android:exported="false" />
 
-        <activity android:name=".activities.activites.MainActivity" />
 
         <service android:name=".services.DownloadService" />
-
+        <service android:name=".database.MyIntentService" />
     </application>
 
 </manifest>

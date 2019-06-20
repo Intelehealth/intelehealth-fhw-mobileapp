@@ -550,13 +550,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 }
                 Snackbar.make(view, "Uploading to doctor.", Snackbar.LENGTH_LONG).show();
 
-                AppConstants.notificationUtils.showNotifications("Upload to doctor", "Details is uploaded", VisitSummaryActivity.this);
+                AppConstants.notificationUtils.showNotifications("Visit Data Upload", "Uploading visit data", VisitSummaryActivity.this);
                 PullDataDAO pullDataDAO = new PullDataDAO();
                 boolean pull = pullDataDAO.pushDataApi();
                 if (pull)
-                    AppConstants.notificationUtils.DownloadDone("Upload to doctor", "uploaded", VisitSummaryActivity.this);
+                    AppConstants.notificationUtils.DownloadDone("Visit Data Upload", "Uploaded visit data", VisitSummaryActivity.this);
                 else
-                    AppConstants.notificationUtils.DownloadDone("Upload to doctor", "failed to Uploaded", VisitSummaryActivity.this);
+                    AppConstants.notificationUtils.DownloadDone("Visit Data Upload", "failed to Uploaded", VisitSummaryActivity.this);
 
             }
 

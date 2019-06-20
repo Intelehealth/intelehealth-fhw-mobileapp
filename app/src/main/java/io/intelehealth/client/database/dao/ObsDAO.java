@@ -79,7 +79,7 @@ public class ObsDAO {
             values.put("value", obsDTOS.getValue());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("voided", obsDTOS.getVoided());
-            values.put("synced", "TRUE");
+            values.put("sync", "TRUE");
 //               createdRecordsCount = db.insert("temp_obs", null, values);
 //                Logger.logD("pulldata", "datadumper" + values);
             createdRecordsCount = db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
@@ -143,7 +143,7 @@ public class ObsDAO {
             values.put("value", obsDTO.getValue());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("voided", "");
-            values.put("synced", "FALSE");
+            values.put("sync", "FALSE");
             insertedCount = db.insert("tbl_obs", null, values);
 
             db.setTransactionSuccessful();
@@ -174,7 +174,7 @@ public class ObsDAO {
             values.put("value", obsDTO.getValue());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("voided", "");
-            values.put("synced", "FALSE");
+            values.put("sync", "FALSE");
 
             updatedCount = db.update("tbl_obs", values, selection, new String[]{obsDTO.getUuid()});
             //If no value is not found, then update fails so insert instead.
@@ -214,7 +214,7 @@ public class ObsDAO {
                 values.put("value", ob.getValue());
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
                 values.put("voided", "");
-                values.put("synced", "FALSE");
+                values.put("sync", "FALSE");
                 insertedCount = db.insert("tbl_obs", null, values);
             }
             db.setTransactionSuccessful();

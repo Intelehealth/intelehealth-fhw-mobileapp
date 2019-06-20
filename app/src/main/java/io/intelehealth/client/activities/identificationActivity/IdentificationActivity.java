@@ -802,64 +802,168 @@ public class IdentificationActivity extends AppCompatActivity {
         patientdto.setUuid(uuid);
         Gson gson = new Gson();
 
-        patientdto.setFirstname(StringUtils.getValue(mFirstName.getText().toString()));
-        patientdto.setMiddlename(StringUtils.getValue(mMiddleName.getText().toString()));
-        patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
-        patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
-        patientdto.setGender(StringUtils.getValue(mGender));
-        patientdto.setDateofbirth(StringUtils.getValue(mDOB.getText().toString()));
-        patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
-        patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
-        patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));
-        patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
-        patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
+        boolean cancel = false;
+        View focusView = null;
+
+
+        if (dob.after(today)) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
+            alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_dob);
+            //alertDialogBuilder.setMessage(getString(R.string.identification_dialog_date_error));
+            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            mDOBPicker.show();
+            alertDialog.show();
+            return;
+        }
+
+        ArrayList<EditText> values = new ArrayList<>();
+        values.add(mFirstName);
+        values.add(mMiddleName);
+        values.add(mLastName);
+        values.add(mDOB);
+        values.add(mPhoneNum);
+        values.add(mAddress1);
+        values.add(mAddress2);
+        values.add(mCity);
+        values.add(mPostal);
+        values.add(mRelationship);
+        values.add(mOccupation);
+
+        if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
+            alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
+            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+            return;
+        }
+
+        if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
+                && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
+                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("")) {
+
+            Log.v(TAG, "Result");
+
+        } else {
+            if (mFirstName.getText().toString().equals("")) {
+                mFirstName.setError(getString(R.string.error_field_required));
+            }
+
+            if (mLastName.getText().toString().equals("")) {
+                mLastName.setError(getString(R.string.error_field_required));
+            }
+
+            if (mDOB.getText().toString().equals("")) {
+                mDOB.setError(getString(R.string.error_field_required));
+            }
+
+            if (mAge.getText().toString().equals("")) {
+                mAge.setError(getString(R.string.error_field_required));
+            }
+
+            if (mCity.getText().toString().equals("")) {
+                mCity.setError(getString(R.string.error_field_required));
+            }
+
+
+            Toast.makeText(IdentificationActivity.this, "Please Enter Required Fields", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (mCountry.getSelectedItemPosition() == 0) {
+            countryText.setError(getString(R.string.error_field_required));
+            focusView = countryText;
+            cancel = true;
+            return;
+        } else {
+            countryText.setError(null);
+        }
+
+
+        if (mState.getSelectedItemPosition() == 0) {
+            stateText.setError(getString(R.string.error_field_required));
+            focusView = stateText;
+            cancel = true;
+            return;
+        } else {
+            stateText.setError(null);
+        }
+        if (cancel) {
+            focusView.requestFocus();
+        } else {
+
+            patientdto.setFirstname(StringUtils.getValue(mFirstName.getText().toString()));
+            patientdto.setMiddlename(StringUtils.getValue(mMiddleName.getText().toString()));
+            patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
+            patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
+            patientdto.setGender(StringUtils.getValue(mGender));
+            patientdto.setDateofbirth(StringUtils.getValue(mDOB.getText().toString()));
+            patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
+            patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
+            patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));
+            patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
+            patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
 //                patientdto.setEconomic(StringUtils.getValue(m));
-        patientdto.setStateprovince(StringUtils.getValue(mState.getSelectedItem().toString()));
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
-        patientAttributesDTO.setValue(StringUtils.getValue(casteText.getText().toString()));
-        patientAttributesDTOList.add(patientAttributesDTO);
+            patientdto.setStateprovince(StringUtils.getValue(mState.getSelectedItem().toString()));
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
+            patientAttributesDTOList.add(patientAttributesDTO);
 
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
-        patientAttributesDTO.setValue(StringUtils.getValue(mPhoneNum.getText().toString()));
-        patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mPhoneNum.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
 
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Son/wife/daughter"));
-        patientAttributesDTO.setValue(StringUtils.getValue(mRelationship.getText().toString()));
-        patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Son/wife/daughter"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mRelationship.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
 
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-        patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
-        patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
 
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
-        patientAttributesDTO.setValue(StringUtils.getValue(mEconomicStatus.getSelectedItem().toString()));
-        patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(mEconomicStatus));
+            patientAttributesDTOList.add(patientAttributesDTO);
 
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
-        patientAttributesDTO.setValue(StringUtils.getValue(mEducation.getSelectedItem().toString()));
-        patientAttributesDTOList.add(patientAttributesDTO);
-        Logger.logD(TAG, "PatientAttribute list" + patientAttributesDTOList.size());
-        patientdto.setPatientAttributesDTOList(patientAttributesDTOList);
-        patientdto.setSyncd(false);
-        Logger.logD("patient json : ", "Json : " + gson.toJson(patientdto, PatientDTO.class));
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(mEducation));
+            patientAttributesDTOList.add(patientAttributesDTO);
+            Logger.logD(TAG, "PatientAttribute list" + patientAttributesDTOList.size());
+            patientdto.setPatientAttributesDTOList(patientAttributesDTOList);
+            patientdto.setSyncd(false);
+            Logger.logD("patient json : ", "Json : " + gson.toJson(patientdto, PatientDTO.class));
+
+        }
 
         try {
             Logger.logD(TAG, "insertpatinet ");
@@ -868,13 +972,13 @@ public class IdentificationActivity extends AppCompatActivity {
             if (NetworkConnection.isOnline(getApplication())) {
 //                patientApiCall();
 //                frameJson();
-                AppConstants.notificationUtils.showNotifications("Patient Data Upload", "Uploading %s's data" + patientdto.getFirstname() + "" + patientdto.getLastname(), getApplication());
+                AppConstants.notificationUtils.showNotifications("Patient Data Upload", "Uploading " + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s data", getApplication());
                 PullDataDAO pullDataDAO = new PullDataDAO();
                 boolean push = pullDataDAO.pushDataApi();
                 if (push)
-                    AppConstants.notificationUtils.DownloadDone("Patient Data Upload", "%s's data upload complete." + patientdto.getFirstname() + "" + patientdto.getLastname(), getApplication());
+                    AppConstants.notificationUtils.DownloadDone("Patient Data Upload", "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s data upload complete.", getApplication());
                 else
-                    AppConstants.notificationUtils.DownloadDone("Patient Data Upload", "%s's data not uploaded." + patientdto.getFirstname() + "" + patientdto.getLastname(), getApplication());
+                    AppConstants.notificationUtils.DownloadDone("Patient Data Upload", "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s data not uploaded.", getApplication());
             }
             if (b) {
                 Logger.logD(TAG, "inserted");
@@ -884,6 +988,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 i.putExtra("tag", "newPatient");
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 getApplication().startActivity(i);
+            } else {
+                Toast.makeText(IdentificationActivity.this, "Error of adding the data", Toast.LENGTH_SHORT).show();
             }
         } catch (DAOException e) {
             e.printStackTrace();
@@ -966,7 +1072,7 @@ public class IdentificationActivity extends AppCompatActivity {
             if (NetworkConnection.isOnline(getApplication())) {
                 PullDataDAO pullDataDAO = new PullDataDAO();
                 pullDataDAO.pushDataApi();
-                AppConstants.notificationUtils.showNotifications("Patient Data Upload", "%s's data upload complete." + patientdto.getFirst_name() + "" + patientdto.getLast_name(), getApplication());
+                AppConstants.notificationUtils.showNotifications("Patient Data Upload", "" + patientdto.getFirst_name() + "" + patientdto.getLast_name() + "'s data upload complete.", getApplication());
             }
             if (b) {
                 Logger.logD(TAG, "updated");

@@ -63,7 +63,7 @@ public class ProviderDAO {
                 values.put("family_name", provider.getFamilyName());
                 values.put("voided", provider.getVoided());
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-                values.put("synced", "TRUE");
+            values.put("sync", "TRUE");
 //                Logger.logD("pulldata", "datadumper" + values);
                 createdRecordsCount = db.insertWithOnConflict("tbl_provider", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 //            }

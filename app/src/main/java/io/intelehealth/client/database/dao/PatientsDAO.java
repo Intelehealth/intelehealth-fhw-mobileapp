@@ -1,6 +1,7 @@
 package io.intelehealth.client.database.dao;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.intelehealth.client.app.AppConstants;
+import io.intelehealth.client.app.IntelehealthApplication;
+import io.intelehealth.client.database.MyIntentService;
 import io.intelehealth.client.models.Patient;
 import io.intelehealth.client.models.PatientAttributeTypeMasterDTO;
 import io.intelehealth.client.models.PatientAttributesDTO;
@@ -64,7 +67,7 @@ public class PatientsDAO {
             values.put("city_village", patient.getCityvillage());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("dead", patient.getDead());
-            values.put("synced", patient.getSyncd());
+            values.put("sync", patient.getSyncd());
             createdRecordsCount = db.insertWithOnConflict("tbl_patient", null, values, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (SQLException e) {
             isCreated = false;
@@ -101,7 +104,7 @@ public class PatientsDAO {
             values.put("state_province", patientDTO.getStateprovince());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("dead", patientDTO.getDead());
-            values.put("synced", false);
+            values.put("sync", false);
             patientAttributesList = patientDTO.getPatientAttributesDTOList();
             if (patientAttributesList != null)
                 insertPatientAttributes(patientAttributesList, db);
@@ -147,7 +150,7 @@ public class PatientsDAO {
             values.put("state_province", patientDTO.getState_province());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("dead", false);
-            values.put("synced", false);
+            values.put("sync", false);
 
             insertPatientAttributes(patientAttributesDTOS, db);
             Logger.logD("pulldata", "datadumper" + values);
@@ -323,7 +326,7 @@ public class PatientsDAO {
         String[] whereargs = {uuid};
         try {
             values.put("openmrs_id", openmrsId);
-            values.put("synced", synced);
+            values.put("sync", synced);
             values.put("uuid", uuid);
             int i = db.update("tbl_patient", values, whereclause, whereargs);
             Logger.logD("patient", "description" + i);
@@ -336,7 +339,8 @@ public class PatientsDAO {
             db.close();
 
         }
-
+        Intent intent = new Intent(IntelehealthApplication.getAppContext(), MyIntentService.class);
+        IntelehealthApplication.getAppContext().startService(intent);
         return isUpdated;
     }
 
@@ -344,7 +348,7 @@ public class PatientsDAO {
         List<PatientDTO> patientDTOList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_patient where synced = ? OR synced=? COLLATE NOCASE", new String[]{"0", "false"});
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_patient where sync = ? OR sync=? COLLATE NOCASE", new String[]{"0", "false"});
         PatientDTO patientDTO = new PatientDTO();
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {

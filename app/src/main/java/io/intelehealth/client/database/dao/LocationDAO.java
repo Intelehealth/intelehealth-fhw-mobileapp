@@ -60,7 +60,7 @@ public class LocationDAO {
             values.put("locationuuid", location.getLocationuuid());
             values.put("retired", location.getRetired());
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-                values.put("synced", "TRUE");
+            values.put("sync", "TRUE");
 //                Logger.logD("pulldata", "datadumper" + values);
                 createdRecordsCount = db.insertWithOnConflict("tbl_location", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 //            }
