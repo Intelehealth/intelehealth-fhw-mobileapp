@@ -29,8 +29,8 @@ public class SyncDAO {
             patientsDAO.patientAttributes(responseDTO.getData().getPatientAttributesDTO());
             patientsDAO.patinetAttributeMaster(responseDTO.getData().getPatientAttributeTypeMasterDTO());
             visitsDAO.insertVisit(responseDTO.getData().getVisitDTO());
-            visitsDAO.insertVisitAttrib(responseDTO.getData().getVisitAttributeList());
-            visitsDAO.insertVisitAttribType(responseDTO.getData().getVisitAttributeTypeList());
+//            visitsDAO.insertVisitAttrib(responseDTO.getData().getVisitAttributeList());
+//            visitsDAO.insertVisitAttribType(responseDTO.getData().getVisitAttributeTypeList());
             encounterDAO.insertEncounter(responseDTO.getData().getEncounterDTO());
             obsDAO.insertObsTemp(responseDTO.getData().getObsDTO());
             locationDAO.insertLocations(responseDTO.getData().getLocationDTO());

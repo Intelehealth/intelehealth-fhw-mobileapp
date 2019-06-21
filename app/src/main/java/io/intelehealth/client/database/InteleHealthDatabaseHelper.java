@@ -286,7 +286,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void alterTables(SQLiteDatabase db) {
-        db.execSQL("Drop table  IF Exists patients");
+//        db.execSQL("Drop table  IF Exists patients");
     }
 
 }
