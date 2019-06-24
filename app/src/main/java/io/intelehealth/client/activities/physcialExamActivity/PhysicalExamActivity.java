@@ -270,7 +270,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
         Log.i(TAG, "insertDb: ");
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
+        localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         final String CREATOR_ID = prefs.getString("creatorid", null);
 
         final String CONCEPT_ID = UuidDictionary.PHYSICAL_EXAMINATION; // RHK ON EXAM
@@ -359,7 +359,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
         ImagesDAO imagesDAO = new ImagesDAO();
 
         try {
-            imagesDAO.insertImageDatabase(patientUuid, visitUuid, imagePath, image_Prefix);
+            imagesDAO.insertObsImageDatabase(patientUuid, visitUuid, encounterAdultIntials, imagePath, image_Prefix);
         } catch (DAOException e) {
             e.printStackTrace();
         }

@@ -28,6 +28,8 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
 
     private String patientUuid;
     private String visitUuid;
+    private String encounterVitals;
+    private String encounterAdultIntials;
     private List<DocumentObject> rowListItem;
     private AdditionalDocumentAdapter recyclerViewAdapter;
 
@@ -57,6 +59,8 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
+            encounterVitals = intent.getStringExtra("encounterUuidVitals");
+            encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
 
             filePath = baseDir + File.separator + "Patient Images" + File.separator + patientUuid + File.separator +
                     visitUuid + File.separator + imageDir;
@@ -113,7 +117,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
     private void updateImageDatabase(String imagePath) {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
-            imagesDAO.insertImageDatabase(patientUuid, visitUuid, imagePath, imgPrefix);
+            imagesDAO.insertObsImageDatabase(patientUuid, visitUuid, encounterAdultIntials, imagePath, imgPrefix);
         } catch (DAOException e) {
             e.printStackTrace();
         }

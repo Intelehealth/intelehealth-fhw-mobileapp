@@ -45,6 +45,7 @@ import io.intelehealth.client.R;
 import io.intelehealth.client.activities.loginActivity.LoginActivity;
 import io.intelehealth.client.activities.settingsActivity.SettingsActivity;
 import io.intelehealth.client.app.AppConstants;
+import io.intelehealth.client.database.dao.ImagesPushDAO;
 import io.intelehealth.client.database.dao.PullDataDAO;
 import io.intelehealth.client.services.DownloadProtocolsTask;
 import io.intelehealth.client.utilities.Logger;
@@ -230,9 +231,16 @@ public class HomeActivity extends AppCompatActivity {
             }
             case R.id.sync:
                 PullDataDAO pullDataDAO = new PullDataDAO();
+                ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
                 pullDataDAO.pullData(this);
                 pullDataDAO.pushDataApi();
                 AppConstants.notificationUtils.showNotifications("Sync", "Sync Completed", this);
+                boolean i = imagesPushDAO.patientProfileImagesPush();
+                boolean o = imagesPushDAO.obsImagesPush();
+                if (i && o)
+                    AppConstants.notificationUtils.showNotifications("ImageUpload", "ImageUpload Completed", this);
+                else
+                    AppConstants.notificationUtils.showNotifications("ImageUpload", "ImageUpload failed", this);
                 return true;
             case R.id.backupOption:
                 manageBackup(true, false);  // to backup app data at any time of the day

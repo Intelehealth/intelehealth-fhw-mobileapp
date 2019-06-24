@@ -32,7 +32,7 @@ import io.intelehealth.client.activities.homeActivity.HomeActivity;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.models.loginModel.LoginModel;
 import io.intelehealth.client.models.loginProviderModel.LoginProviderModel;
-import io.intelehealth.client.utilities.Base64Methods;
+import io.intelehealth.client.utilities.Base64Utils;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.NetworkConnection;
 import io.intelehealth.client.utilities.OfflineLogin;
@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
     private OfflineLogin offlineLogin = null;
 
     UrlModifiers urlModifiers = new UrlModifiers();
-    Base64Methods base64Methods = new Base64Methods();
+    Base64Utils base64Utils = new Base64Utils();
     String encoded = null;
     // UI references.
     private AutoCompleteTextView mUsernameView;
@@ -271,7 +271,7 @@ public class LoginActivity extends AppCompatActivity {
 //                Log.d(TAG, "PW: " + PASSWORD);
         String urlString = urlModifiers.loginUrl(sessionManager.getServerUrl());
             Logger.logD(TAG, "usernaem and password" + mEmail + mPassword);
-            encoded = base64Methods.encoded(mEmail, mPassword);
+        encoded = base64Utils.encoded(mEmail, mPassword);
             sessionManager.setEncoded(encoded);
         showProgress(true);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();

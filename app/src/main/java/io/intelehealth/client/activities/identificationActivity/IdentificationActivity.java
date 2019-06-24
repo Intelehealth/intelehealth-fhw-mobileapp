@@ -49,6 +49,7 @@ import io.intelehealth.client.activities.patientDetailActivity.PatientDetailActi
 import io.intelehealth.client.activities.setupActivity.SetupActivity;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.InteleHealthDatabaseHelper;
+import io.intelehealth.client.database.dao.ImagesDAO;
 import io.intelehealth.client.database.dao.PatientsDAO;
 import io.intelehealth.client.database.dao.PullDataDAO;
 import io.intelehealth.client.models.Patient;
@@ -118,6 +119,7 @@ public class IdentificationActivity extends AppCompatActivity {
     ImageView mImageView;
     String uuid = "";
     PatientDTO patientdto = new PatientDTO();
+    ImagesDAO imagesDAO = new ImagesDAO();
     private String mCurrentPhotoPath;
 
     @Override
@@ -785,6 +787,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 Log.i(TAG, "Result OK");
                 mCurrentPhotoPath = data.getStringExtra("RESULT");
                 Log.v("IdentificationActivity", mCurrentPhotoPath);
+
                 Glide.with(this)
                         .load(new File(mCurrentPhotoPath))
                         .thumbnail(0.25f)
@@ -915,6 +918,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));
             patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
             patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
+            patientdto.setPatientPhoto(mCurrentPhotoPath);
 //                patientdto.setEconomic(StringUtils.getValue(m));
             patientdto.setStateprovince(StringUtils.getValue(mState.getSelectedItem().toString()));
             patientAttributesDTO = new PatientAttributesDTO();
@@ -968,6 +972,7 @@ public class IdentificationActivity extends AppCompatActivity {
         try {
             Logger.logD(TAG, "insertpatinet ");
             boolean b = patientsDAO.insertPatientToDB(patientdto, uuid);
+            boolean c = imagesDAO.insertPatientProfileImages(mCurrentPhotoPath, uuid);
 
             if (NetworkConnection.isOnline(getApplication())) {
 //                patientApiCall();
@@ -1017,6 +1022,7 @@ public class IdentificationActivity extends AppCompatActivity {
         patientdto.setCity_village(StringUtils.getValue(patientdto.getCity_village()));
         patientdto.setPostal_code(StringUtils.getValue(patientdto.getPostal_code()));
         patientdto.setCountry(StringUtils.getValue(patientdto.getCountry()));
+        patientdto.setPatient_photo(mCurrentPhotoPath);
 //                patientdto.setEconomic(StringUtils.getValue(m));
         patientdto.setState_province(StringUtils.getValue(patientdto.getState_province()));
         patientAttributesDTO = new PatientAttributesDTO();

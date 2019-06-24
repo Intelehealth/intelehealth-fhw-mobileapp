@@ -67,6 +67,10 @@ public class AppConstants {
     public static SQLiteDatabase sqLiteDatabase = inteleHealthDatabaseHelper.getWritableDatabase();
     public static NotificationUtils notificationUtils = new NotificationUtils();
 
+
+    //  Image Conversion Ratio
+    public static int IMAGE_JPG_QUALITY = 70;
+
     //    Sync Timings
 
     public static int SYNC = 1000 * 60 * 3;

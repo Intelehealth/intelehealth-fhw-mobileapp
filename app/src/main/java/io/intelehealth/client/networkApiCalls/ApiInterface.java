@@ -13,7 +13,7 @@ import io.intelehealth.client.models.pushRequestApiCall.PushRequestApiCall;
 import io.intelehealth.client.models.pushResponseApiCall.PushResponseApiCall;
 import io.reactivex.Observable;
 import io.reactivex.Single;
-import okhttp3.RequestBody;
+import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -68,18 +68,19 @@ public interface ApiInterface {
                                                          @Header("Authorization") String authHeader);
 
     @POST
-    Observable<ResponseBody> PERSON_PROFILE_PIC_UPLOAD(@Url String url,
-                                                       @Header("Authorization") String authHeader,
-                                                       @Body PatientProfile patientProfile);
+    Single<ResponseBody> PERSON_PROFILE_PIC_UPLOAD(@Url String url,
+                                                   @Header("Authorization") String authHeader,
+                                                   @Body PatientProfile patientProfile);
 
     @GET
     Observable<ResponseBody> OBS_IMAGE_DOWNLOAD(@Url String url,
                                                 @Header("Authorization") String authHeader);
 
+    @Headers({"Accept: application/json"})
     @POST
     @Multipart
     Observable<ObsJsonResponse> OBS_JSON_RESPONSE_OBSERVABLE(@Url String url,
                                                              @Header("Authorization") String authHeader,
-                                                             @Part("file") RequestBody file,
+                                                             @Part MultipartBody.Part image,
                                                              @Part("json") ObsJsonRequest obsJsonRequest);
 }

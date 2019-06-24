@@ -48,7 +48,7 @@ import io.intelehealth.client.networkApiCalls.ApiClient;
 import io.intelehealth.client.networkApiCalls.ApiInterface;
 import io.intelehealth.client.services.DownloadProtocolsTask;
 import io.intelehealth.client.utilities.AdminPassword;
-import io.intelehealth.client.utilities.Base64Methods;
+import io.intelehealth.client.utilities.Base64Utils;
 import io.intelehealth.client.utilities.DialogUtils;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.OfflineLogin;
@@ -71,7 +71,7 @@ public class SetupActivity extends AppCompatActivity {
 
     protected AccountManager manager;
     UrlModifiers urlModifiers = new UrlModifiers();
-    Base64Methods base64Methods = new Base64Methods();
+    Base64Utils base64Utils = new Base64Utils();
     String encoded = null;
     AlertDialog.Builder dialog;
     String key = null;
@@ -430,7 +430,7 @@ public class SetupActivity extends AppCompatActivity {
 //        protected Integer doInBackground(Void... params) {
         String urlString = urlModifiers.loginUrl(CLEAN_URL);
         Logger.logD(TAG, "usernaem and password" + USERNAME + PASSWORD);
-        encoded = base64Methods.encoded(USERNAME, PASSWORD);
+        encoded = base64Utils.encoded(USERNAME, PASSWORD);
         sessionManager.setEncoded(encoded);
 
         progress = new ProgressDialog(SetupActivity.this);

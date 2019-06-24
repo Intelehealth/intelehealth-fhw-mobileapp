@@ -103,6 +103,7 @@ public class PatientsDAO {
             values.put("city_village", patientDTO.getCityvillage());
             values.put("state_province", patientDTO.getStateprovince());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("patient_photo", patientDTO.getPatientPhoto());
             values.put("dead", patientDTO.getDead());
             values.put("sync", false);
             patientAttributesList = patientDTO.getPatientAttributesDTOList();
@@ -149,6 +150,7 @@ public class PatientsDAO {
             values.put("city_village", patientDTO.getCity_village());
             values.put("state_province", patientDTO.getState_province());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("patient_photo", patientDTO.getPatient_photo());
             values.put("dead", false);
             values.put("sync", false);
 

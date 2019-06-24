@@ -150,7 +150,7 @@ public class DownloadService extends IntentService {
 
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
-            imagesDAO.insertImageDatabase(patientUuid, visitUuid, imagepath, "AD");
+            imagesDAO.insertObsImageDatabase(patientUuid, visitUuid, encounterAdultIntials, imagepath, "AD");
         } catch (DAOException e) {
             e.printStackTrace();
         }

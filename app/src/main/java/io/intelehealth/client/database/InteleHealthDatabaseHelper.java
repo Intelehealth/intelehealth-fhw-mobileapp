@@ -173,8 +173,12 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "uuid TEXT PRIMARY KEY," +
             "patientuuid TEXT," +
             "visituuid TEXT," +
+            "encounteruuid TEXT," +
             "image_path TEXT," +
-            "image_type TEXT " +
+            "image_string TEXT," +
+            "obs_time_date TEXT," +
+            "image_type TEXT," +
+            "sync TEXT" +
             ")";
 
 

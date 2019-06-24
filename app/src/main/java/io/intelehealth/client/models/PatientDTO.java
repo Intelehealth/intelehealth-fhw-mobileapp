@@ -58,6 +58,8 @@ public class PatientDTO {
     private String gender;
 
 
+    private String patientPhoto;
+
     private List<PatientAttributesDTO> patientAttributesDTOList;
     @SerializedName("dead")
     @Expose
@@ -217,5 +219,13 @@ public class PatientDTO {
 
     public void setPatientAttributesDTOList(List<PatientAttributesDTO> patientAttributesDTOList) {
         this.patientAttributesDTOList = patientAttributesDTOList;
+    }
+
+    public String getPatientPhoto() {
+        return patientPhoto;
+    }
+
+    public void setPatientPhoto(String patientPhoto) {
+        this.patientPhoto = patientPhoto;
     }
 }
