@@ -1,5 +1,6 @@
 package io.intelehealth.client.database.dao;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -30,16 +31,16 @@ public class ImagesPushDAO {
     String TAG = ImagesPushDAO.class.getSimpleName();
     SessionManager sessionManager = null;
 
-    public PatientProfile PatientProfileFrameJson(String uuid) {
-
-
-        PatientProfile patientProfile = new PatientProfile();
-        patientProfile.setBase64EncodedImage("");
-        patientProfile.setPerson("");
-
-
-        return patientProfile;
-    }
+//    public PatientProfile PatientProfileFrameJson(String uuid) {
+//
+//
+//        PatientProfile patientProfile = new PatientProfile();
+//        patientProfile.setBase64EncodedImage("");
+//        patientProfile.setPerson("");
+//
+//
+//        return patientProfile;
+//    }
 
 
     public boolean patientProfileImagesPush() {
@@ -53,7 +54,7 @@ public class ImagesPushDAO {
         try {
             patientProfiles = imagesDAO.getPatientProfileUnsyncedImages();
         } catch (DAOException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
         int i = 0;
         for (PatientProfile p : patientProfiles) {
@@ -68,7 +69,7 @@ public class ImagesPushDAO {
                             try {
                                 imagesDAO.updateUnsyncedPatientProfile(p.getPerson(), "PP");
                             } catch (DAOException e) {
-                                e.printStackTrace();
+                                Crashlytics.logException(e);
                             }
                             AppConstants.notificationUtils.showNotificationProgress("Patient Profile", "Uploading Patient Profile", IntelehealthApplication.getAppContext(), finalI);
                         }
@@ -96,7 +97,7 @@ public class ImagesPushDAO {
         try {
             obsImageJsons = imagesDAO.getObsUnsyncedImages();
         } catch (DAOException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
         int i = 0;
         for (ObsJsonRequest p : obsImageJsons) {
@@ -105,7 +106,7 @@ public class ImagesPushDAO {
             try {
                 file = new File(imagesDAO.getobsImagePath(p.getUuid()));
             } catch (DAOException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
             }
             RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
             // MultipartBody.Part is used to send also the actual file name
@@ -121,7 +122,7 @@ public class ImagesPushDAO {
 //                            try {
 //                                imagesDAO.updateUnsyncedPatientProfile(p.getPerson(), "PP");
 //                            } catch (DAOException e) {
-//                                e.printStackTrace();
+//                                  Crashlytics.logException(e);
 //                            }
 //                            AppConstants.notificationUtils.showNotificationProgress("Patient Profile", "Uploading Patient Profile", IntelehealthApplication.getAppContext(), finalI);
 //                        }
@@ -145,7 +146,7 @@ public class ImagesPushDAO {
                             try {
                                 imagesDAO.updateUnsyncedObsImages(p.getUuid());
                             } catch (DAOException e) {
-                                e.printStackTrace();
+                                Crashlytics.logException(e);
                             }
                         }
                     });

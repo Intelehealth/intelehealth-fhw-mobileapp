@@ -1,13 +1,13 @@
 package io.intelehealth.client.utilities;
 
+import com.crashlytics.android.Crashlytics;
+
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -89,7 +89,7 @@ public class DateAndTimeUtils {
             sdf1 = new SimpleDateFormat(anotherFormat);
             result = sdf1.format(sdf.parse(date));
         } catch (Exception e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
             return "";
         } finally {
             sdf = null;

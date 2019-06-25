@@ -396,6 +396,17 @@
                     android:padding="@dimen/padding_card_action"
                     app:srcCompat="@drawable/edit_icon" />
 
+                <ImageButton
+                    android:id="@+id/imagebutton_download_physexam"
+                    android:layout_width="@dimen/edit_icon_width"
+                    android:layout_height="@dimen/edit_icon_height"
+                    android:layout_alignLeft="@id/imagebutton_edit_physexam"
+                    android:layout_marginLeft="-29dp"
+                    android:background="@null"
+                    android:contentDescription="TODO"
+                    android:padding="@dimen/padding_card_action"
+                    app:srcCompat="@drawable/download" />
+
                 <TextView
                     android:id="@+id/textView_content_physexam"
                     android:layout_width="match_parent"
@@ -538,6 +549,17 @@
                     android:contentDescription="TODO"
                     android:padding="@dimen/padding_card_action"
                     app:srcCompat="@drawable/edit_icon" />
+
+                <ImageButton
+                    android:id="@+id/imagebutton_download_additional_document"
+                    android:layout_width="@dimen/edit_icon_width"
+                    android:layout_height="@dimen/edit_icon_height"
+                    android:layout_alignLeft="@id/imagebutton_edit_additional_document"
+                    android:layout_marginLeft="-29dp"
+                    android:background="@null"
+                    android:contentDescription="TODO"
+                    android:padding="@dimen/padding_card_action"
+                    app:srcCompat="@drawable/download" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recy_additional_documents"

@@ -51,6 +51,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
+
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -228,6 +230,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ProgressBar mProgressBar;
     TextView mProgressText;
 
+    ImageButton additionalDocumentsDownlaod;
+    ImageButton onExaminationDownload;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -272,7 +277,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 try {
                     doWebViewPrint();
                 } catch (ParseException e) {
-                    e.printStackTrace();
+                    Crashlytics.logException(e);
                 }
                 return true;
             }
@@ -308,19 +313,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
 
             if (intent.getAction().equals(AppConstants.MESSAGE_PROGRESS)) {
-
                 Download download = intent.getParcelableExtra("download");
-//                mProgressBar.setProgress(download.getProgress());
                 if (download.getProgress() == 100) {
-                    additionalCommentsCard.refreshDrawableState();
-
-//                    mProgressText.setText("File Download Complete");
-
-
                 } else {
-
-//                    mProgressText.setText(String.format("Downloaded (%d/%d) MB",download.getCurrentFileSize(),download.getTotalFileSize()));
-
                 }
             }
         }
@@ -367,7 +362,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 
         } catch (JSONException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
 
         setTitle(R.string.title_activity_patient_summary);
@@ -450,6 +445,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editAddDocs = findViewById(R.id.imagebutton_edit_additional_document);
         uploadButton = findViewById(R.id.button_upload);
         downloadButton = findViewById(R.id.button_download);
+
+        additionalDocumentsDownlaod = findViewById(R.id.imagebutton_download_additional_document);
+        onExaminationDownload = findViewById(R.id.imagebutton_download_physexam);
+
 
         downloadButton.setEnabled(false);
         downloadButton.setVisibility(View.GONE);
@@ -606,7 +605,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 tempcel.setVisibility(View.GONE);
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
         spO2View = findViewById(R.id.textView_pulseox_value);
         respiratory = findViewById(R.id.textView_respiratory_value);
@@ -1034,19 +1033,29 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 //mLayout.addView(downloadButton, mLayout.getChildCount());
             }
         });
-
+        additionalDocumentsDownlaod.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startDownload(UuidDictionary.COMPLEX_IMAGE_AD);
+            }
+        });
+        onExaminationDownload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startDownload(UuidDictionary.COMPLEX_IMAGE_PE);
+            }
+        });
         registerReceiver();
-        startDownload();
     }
 
-    private void startDownload() {
+    private void startDownload(String imageType) {
 
         Intent intent = new Intent(this, DownloadService.class);
         intent.putExtra("patientUuid", patientUuid);
         intent.putExtra("visitUuid", visitUuid);
         intent.putExtra("encounterUuidVitals", encounterVitals);
         intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
-
+        intent.putExtra("ImageType", imageType);
         startService(intent);
 
     }
@@ -1059,6 +1068,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         bManager.registerReceiver(broadcastReceiver, intentFilter);
 
     }
+
     private String stringToWeb(String input) {
         String formatted = "";
         if (input != null && !input.isEmpty()) {
@@ -1147,7 +1157,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
 //        if (temperature.getValue() != null) {
 //            if (Integer.parseInt(temperature.getValue()) > 80) {

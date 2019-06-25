@@ -6,6 +6,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -182,7 +184,7 @@ public class ObsDAO {
                 try {
                     insertObs(obsDTO);
                 } catch (DAOException e) {
-                    e.printStackTrace();
+                    Crashlytics.logException(e);
                 }
             }
             db.setTransactionSuccessful();

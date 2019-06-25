@@ -2,6 +2,7 @@ package io.intelehealth.client.database.dao;
 
 import android.content.Context;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 
 import io.intelehealth.client.app.AppConstants;
@@ -51,7 +52,7 @@ public class PullDataDAO {
                     try {
                         sync = syncDAO.SyncData(response.body());
                     } catch (DAOException e) {
-                        e.printStackTrace();
+                        Crashlytics.logException(e);
                     }
                     if (sync)
                         AppConstants.notificationUtils.DownloadDone("Sync", "Successfully synced", IntelehealthApplication.getAppContext());
@@ -83,7 +84,7 @@ public class PullDataDAO {
 //                    syncDAO.SyncData(responseDTO);
 //                } catch (DAOException e) {
 //                    Logger.logE("Dao exception", "exception", e);
-//                    e.printStackTrace();
+//                      Crashlytics.logException(e);
 //                }
 //                return null;
 //            }
@@ -134,7 +135,7 @@ public class PullDataDAO {
                             try {
                                 patientsDAO.updateOpemmrsId(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId(), pushResponseApiCall.getData().getPatientlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
                             } catch (DAOException e) {
-                                e.printStackTrace();
+                                Crashlytics.logException(e);
                             }
                         }
 
@@ -142,7 +143,7 @@ public class PullDataDAO {
                             try {
                                 visitsDAO.updateVisitSync(pushResponseApiCall.getData().getVisitlist().get(i).getUuid(), pushResponseApiCall.getData().getVisitlist().get(i).getSyncd().toString());
                             } catch (DAOException e) {
-                                e.printStackTrace();
+                                Crashlytics.logException(e);
                             }
                         }
 
@@ -150,7 +151,7 @@ public class PullDataDAO {
                             try {
                                 encounterDAO.updateEncounterSync(pushResponseApiCall.getData().getEncounterlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getEncounterlist().get(i).getUuid());
                             } catch (DAOException e) {
-                                e.printStackTrace();
+                                Crashlytics.logException(e);
                             }
                         }
                         isSucess[0] = true;

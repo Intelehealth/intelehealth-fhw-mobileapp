@@ -20,6 +20,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.crashlytics.android.Crashlytics;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -93,7 +95,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         try {
             encounterDAO.createEncountersToDB(encounterDTO);
         } catch (DAOException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
 
         setTitle(patientName + ": " + getTitle());
@@ -133,7 +135,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 try {
                     currentFile = new JSONObject(FileUtils.readFile(file.getName(), this));
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Crashlytics.logException(e);
                 }
                 Log.i(TAG, currentFile.toString());
                 Node currentNode = new Node(currentFile);
@@ -144,7 +146,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             try {
                 fileNames = getApplicationContext().getAssets().list("engines");
             } catch (IOException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
             }
             for (String name : fileNames) {
                 String fileLocation = "engines/" + name;

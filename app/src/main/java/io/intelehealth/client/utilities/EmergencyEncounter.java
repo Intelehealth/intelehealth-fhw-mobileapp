@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.StrictMode;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -38,7 +40,7 @@ public class EmergencyEncounter {
         try {
             encounterDAO.createEncountersToDB(encounterDTO);
         } catch (DAOException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
         return true;
     }
@@ -72,7 +74,7 @@ public class EmergencyEncounter {
 
                             }
                         } catch (IOException e) {
-                            e.printStackTrace();
+                            Crashlytics.logException(e);
                         }
                         cursor.moveToNext();
                     }

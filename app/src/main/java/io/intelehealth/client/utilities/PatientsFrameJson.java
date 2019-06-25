@@ -2,6 +2,8 @@ package io.intelehealth.client.utilities;
 
 import android.database.sqlite.SQLiteDatabase;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,7 +84,7 @@ public class PatientsFrameJson {
             try {
                 attributeList = patientsDAO.getPatientAttributes(patientDTOList.get(i).getUuid());
             } catch (DAOException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
             }
 
 
@@ -117,7 +119,7 @@ public class PatientsFrameJson {
             try {
                 emergencyVisitUuids = visitsDAO.getEmergencyVisitUuids();
             } catch (DAOException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
             }
             if (emergencyVisitUuids.size() != 0) {
                 emergencyEncounter.removeEncounterEmergency(visitDTO.getUuid(), db);
@@ -127,7 +129,7 @@ public class PatientsFrameJson {
 //            try {
 //                attributeList = visitsDAO.getVisitAttributes(visitDTO.getUuid());
 //            } catch (DAOException e) {
-//                e.printStackTrace();
+//                  Crashlytics.logException(e);
 //            }
 
 //            visit.setAttributes(attributeList);

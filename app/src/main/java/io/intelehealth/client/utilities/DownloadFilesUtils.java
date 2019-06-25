@@ -3,6 +3,8 @@ package io.intelehealth.client.utilities;
 import android.util.Log;
 import android.util.Pair;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -47,7 +49,7 @@ public class DownloadFilesUtils {
                 Pair<Integer, Long> pairs = new Pair<>(100, 100L);
                 return;
             } catch (IOException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
                 Pair<Integer, Long> pairs = new Pair<>(-1, Long.valueOf(-1));
                 Log.d(TAG, "Failed to save the file!");
                 return;
@@ -56,7 +58,7 @@ public class DownloadFilesUtils {
                 if (outputStream != null) outputStream.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
             Log.d(TAG, "Failed to save the file!");
             return;
         }
@@ -89,7 +91,7 @@ public class DownloadFilesUtils {
                 Pair<Integer, Long> pairs = new Pair<>(100, 100L);
                 return;
             } catch (IOException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
                 Pair<Integer, Long> pairs = new Pair<>(-1, Long.valueOf(-1));
                 Log.d(TAG, "Failed to save the file!");
                 return;
@@ -98,7 +100,7 @@ public class DownloadFilesUtils {
                 if (outputStream != null) outputStream.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
             Log.d(TAG, "Failed to save the file!");
             return;
         }

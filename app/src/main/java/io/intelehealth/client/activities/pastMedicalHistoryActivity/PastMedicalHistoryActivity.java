@@ -18,6 +18,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 
+import com.crashlytics.android.Crashlytics;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -237,7 +239,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                 currentFile = new JSONObject(FileUtils.readFileRoot(mFileName, this));
                 patientHistoryMap = new Node(currentFile); //Load the patient history mind map
             } catch (JSONException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
             }
         } else {
             patientHistoryMap = new Node(FileUtils.encodeJSON(this, mFileName)); //Load the patient history mind map

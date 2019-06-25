@@ -22,6 +22,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.crashlytics.android.Crashlytics;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -101,7 +102,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
                 try {
                     imagesDAO.deleteImageFromDatabase(dir);
                 } catch (DAOException e) {
-                    e.printStackTrace();
+                    Crashlytics.logException(e);
                 }
                 //deleteImageFromDatabase(dir);
             }

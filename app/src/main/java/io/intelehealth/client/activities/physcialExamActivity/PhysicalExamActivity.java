@@ -29,6 +29,8 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -155,7 +157,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                     currentFile = new JSONObject(FileUtils.readFileRoot(mFileName, this));
                     physicalExamMap = new PhysicalExam(currentFile, selectedExamsList);
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Crashlytics.logException(e);
                 }
             } else {
                 physicalExamMap = new PhysicalExam(FileUtils.encodeJSON(this, mFileName), selectedExamsList);
@@ -361,7 +363,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
         try {
             imagesDAO.insertObsImageDatabase(patientUuid, visitUuid, encounterAdultIntials, imagePath, image_Prefix);
         } catch (DAOException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
 
 //        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path,image_type,delete_status) values("

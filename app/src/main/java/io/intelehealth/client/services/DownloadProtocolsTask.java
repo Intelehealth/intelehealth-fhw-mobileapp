@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -121,7 +123,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
                 try {
                     Thread.sleep(5000);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Crashlytics.logException(e);
                 }
                 String content = downloadMindMap(licenseKey, mm);
                 mm.setContent(content);
@@ -152,7 +154,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
                 try {
                     copyFile(physExam, physicalExam);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Crashlytics.logException(e);
                 }
                 physExam.delete();
             }
@@ -164,7 +166,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
                 try {
                     copyFile(famHist, familyHistory);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Crashlytics.logException(e);
                 }
                 famHist.delete();
             }
@@ -176,7 +178,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
                 try {
                     copyFile(patHist, pastMedicalHistory);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Crashlytics.logException(e);
                 }
                 patHist.delete();
             }
@@ -188,7 +190,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
                 try {
                     copyFile(configfile, config);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Crashlytics.logException(e);
                 }
                 configfile.delete();
             }

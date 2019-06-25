@@ -27,6 +27,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.crashlytics.android.Crashlytics;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -44,6 +45,7 @@ import io.intelehealth.client.activities.vitalActivity.VitalsActivity;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.InteleHealthDatabaseHelper;
 import io.intelehealth.client.database.dao.EncounterDAO;
+import io.intelehealth.client.database.dao.ImagesDAO;
 import io.intelehealth.client.database.dao.PatientsDAO;
 import io.intelehealth.client.database.dao.VisitsDAO;
 import io.intelehealth.client.knowledgeEngine.Node;
@@ -72,6 +74,8 @@ public class PatientDetailActivity extends AppCompatActivity {
     String visitUuid = "";
     String patientUuid;
     String intentTag = "";
+    String profileImage = "";
+    String profileImage1 = "";
     SessionManager sessionManager = null;
     Patient patient_new = new Patient();
 
@@ -92,6 +96,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     IntentFilter filter;
     Myreceiver reMyreceive;
     ImageView photoView;
+    ImagesDAO imagesDAO = new ImagesDAO();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,7 +152,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 try {
                     encounterDAO.createEncountersToDB(encounterDTO);
                 } catch (DAOException e) {
-                    e.printStackTrace();
+                    Crashlytics.logException(e);
                 }
 
                 InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity.this);
@@ -212,7 +217,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 try {
                     visitsDAO.insertPatientToDB(visitDTO);
                 } catch (DAOException e) {
-                    e.printStackTrace();
+                    Crashlytics.logException(e);
                 }
 
                 // visitUuid = String.valueOf(visitLong);
@@ -281,7 +286,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 try {
                     name = patientsDAO.getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
                 } catch (DAOException e) {
-                    e.printStackTrace();
+                    Crashlytics.logException(e);
                 }
 
                 if (name.equalsIgnoreCase("caste")) {
@@ -301,6 +306,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                 }
                 if (name.equalsIgnoreCase("Son/wife/daughter")) {
                     patient_new.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("ProfileImageTimestamp")) {
+                    profileImage1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                 }
 
             } while (idCursor1.moveToNext());
@@ -338,7 +346,12 @@ public class PatientDetailActivity extends AppCompatActivity {
             patientName = patient_new.getLast_name() + ", " + patient_new.getFirst_name() + " " + patient_new.getMiddle_name();
         }
         setTitle(patientName);
-        if (patient_new.getPatient_photo() == null || patient_new.getPatient_photo().equalsIgnoreCase("")) {
+        try {
+            profileImage = imagesDAO.getPatientProfileChangeTime(patientUuid);
+        } catch (DAOException e) {
+            Crashlytics.logException(e);
+        }
+        if (patient_new.getPatient_photo() == null || patient_new.getPatient_photo().equalsIgnoreCase("") || profileImage.equalsIgnoreCase(profileImage1)) {
             if (NetworkConnection.isOnline(getApplication())) {
                 profilePicDownloaded();
             }
@@ -536,7 +549,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                                     String visitDate = currentDate.format(formatted);
                                     createOldVisit(visitDate, visit_id, end_date, visitValue);
                                 } catch (ParseException e) {
-                                    e.printStackTrace();
+                                    Crashlytics.logException(e);
                                 }
                             }
                         }
@@ -549,7 +562,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                                 String visitDate = currentDate.format(formatted);
                                 createOldVisit(visitDate, visit_id, end_date, visitValue);
                             } catch (ParseException e) {
-                                e.printStackTrace();
+                                Crashlytics.logException(e);
                             }
                         }
                     }
@@ -562,7 +575,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                             String visitDate = currentDate.format(formatted);
                             createOldVisit(visitDate, visit_id, end_date, visitValue);
                         } catch (ParseException e) {
-                            e.printStackTrace();
+                            Crashlytics.logException(e);
                         }
                     }
                 } while (visitCursor.moveToPrevious());
@@ -602,7 +615,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                         try {
                             updated = patientsDAO.updatePatientPhoto(patientUuid, IMAGE_PATH + patientUuid + ".jpg");
                         } catch (DAOException e) {
-                            e.printStackTrace();
+                            Crashlytics.logException(e);
                         }
                         if (updated) {
                             Glide.with(PatientDetailActivity.this)
@@ -611,6 +624,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                                     .centerCrop()
                                     .into(photoView);
                         }
+
                     }
                 });
     }

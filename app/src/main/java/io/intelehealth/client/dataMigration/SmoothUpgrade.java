@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteException;
 import android.os.Environment;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -61,7 +62,7 @@ public class SmoothUpgrade {
             try {
                 backup.createFileInMemory(context, true);
             } catch (IOException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
 
             }
         }
@@ -94,7 +95,7 @@ public class SmoothUpgrade {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
 
     }
@@ -150,7 +151,7 @@ public class SmoothUpgrade {
                         try {
                             visitsDAO.insertPatientToDB(visitDTO);
                         } catch (DAOException e) {
-                            e.printStackTrace();
+                            Crashlytics.logException(e);
                         }
                     }
                     encounterDTO = getVisitId(id, visitDTO.getUuid(), visitDTO.getStartdate());
@@ -220,7 +221,7 @@ public class SmoothUpgrade {
                     try {
                         patientsDAO.insertPatientToDB(patientDTO, uuid);
                     } catch (DAOException e) {
-                        e.printStackTrace();
+                        Crashlytics.logException(e);
                     }
 
                     cursor.moveToNext();
@@ -234,7 +235,7 @@ public class SmoothUpgrade {
             }
             myDataBase.setTransactionSuccessful();
         } catch (SQLiteException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
     }
 
@@ -263,7 +264,7 @@ public class SmoothUpgrade {
 
         } catch (
                 SQLiteException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
         return visitDTO;
     }
@@ -285,7 +286,7 @@ public class SmoothUpgrade {
                     try {
                         encounterDAO.createEncountersToDB(encounterDTO);
                     } catch (DAOException e) {
-                        e.printStackTrace();
+                        Crashlytics.logException(e);
                     }
                     cursor.moveToNext();
                 }
@@ -296,7 +297,7 @@ public class SmoothUpgrade {
 
         } catch (
                 SQLiteException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
         return encounterDTO;
     }
@@ -318,7 +319,7 @@ public class SmoothUpgrade {
                     try {
                         obsDAO.insertObs(ObsDTO);
                     } catch (DAOException e) {
-                        e.printStackTrace();
+                        Crashlytics.logException(e);
                     }
                     cursor.moveToNext();
                 }
@@ -329,7 +330,7 @@ public class SmoothUpgrade {
 
         } catch (
                 SQLiteException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
         return ObsDTO;
     }
@@ -381,10 +382,10 @@ public class SmoothUpgrade {
             try {
                 encounterDAO.createEncountersToDB(encounterDTO);
             } catch (DAOException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
         return encounterDTO;
     }

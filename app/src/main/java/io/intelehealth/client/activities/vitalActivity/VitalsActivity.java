@@ -18,6 +18,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -172,7 +174,7 @@ public class VitalsActivity extends AppCompatActivity {
             }
         } catch (JSONException e) {
             Toast.makeText(this, "config file error", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
         if (intentTag != null && intentTag.equals("edit")) {
             loadPrevious();
@@ -767,7 +769,7 @@ public class VitalsActivity extends AppCompatActivity {
             try {
                 encounterDAO.updateEncounterSync("false", encounterVitals);
             } catch (DAOException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
             }
 
             Intent intent = new Intent(VitalsActivity.this, VisitSummaryActivity.class);
@@ -791,7 +793,7 @@ public class VitalsActivity extends AppCompatActivity {
             try {
                 obsDAO.insertObs(obsDTO);
             } catch (DAOException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
             }
 
             obsDTO=new ObsDTO();
@@ -803,7 +805,7 @@ public class VitalsActivity extends AppCompatActivity {
             try {
                 obsDAO.insertObs(obsDTO);
             } catch (DAOException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
             }
 
             obsDTO=new ObsDTO();
@@ -815,7 +817,7 @@ public class VitalsActivity extends AppCompatActivity {
             try {
                 obsDAO.insertObs(obsDTO);
             } catch (DAOException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
             }
 
             obsDTO=new ObsDTO();
@@ -827,7 +829,7 @@ public class VitalsActivity extends AppCompatActivity {
             try {
                 obsDAO.insertObs(obsDTO);
             } catch (DAOException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
             }
 
             obsDTO=new ObsDTO();
@@ -839,7 +841,7 @@ public class VitalsActivity extends AppCompatActivity {
             try {
                 obsDAO.insertObs(obsDTO);
             } catch (DAOException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
             }
 
             obsDTO=new ObsDTO();
@@ -851,7 +853,7 @@ public class VitalsActivity extends AppCompatActivity {
             try {
                 obsDAO.insertObs(obsDTO);
             } catch (DAOException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
             }
 
             obsDTO=new ObsDTO();
@@ -863,7 +865,7 @@ public class VitalsActivity extends AppCompatActivity {
             try {
                 obsDAO.insertObs(obsDTO);
             } catch (DAOException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
             }
 
             obsDTO=new ObsDTO();
@@ -875,7 +877,7 @@ public class VitalsActivity extends AppCompatActivity {
             try {
                 obsDAO.insertObs(obsDTO);
             } catch (DAOException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
             }
             Intent intent = new Intent(VitalsActivity.this, ComplaintNodeActivity.class);
 

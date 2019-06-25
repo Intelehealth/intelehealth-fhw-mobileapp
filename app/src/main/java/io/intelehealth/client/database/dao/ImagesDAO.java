@@ -30,7 +30,6 @@ public class ImagesDAO {
             contentValues.put("visituuid", visitUuid);
             contentValues.put("encounteruuid", encounteruuid);
             contentValues.put("image_path", imagePath);
-            contentValues.put("image_string", "");
             contentValues.put("obs_time_date", AppConstants.dateAndTimeUtils.currentDateTime());
             contentValues.put("image_type", imageprefix);
             contentValues.put("sync", "false");
@@ -72,8 +71,6 @@ public class ImagesDAO {
 
     public boolean insertPatientProfileImages(String imagepath, String patientUuid) throws DAOException {
         boolean isInserted = false;
-        Base64Utils base64Utils = new Base64Utils();
-        String base64String = base64Utils.getBase64FromFileWithConversion(imagepath);
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         localdb.beginTransaction();
         ContentValues contentValues = new ContentValues();
@@ -82,7 +79,6 @@ public class ImagesDAO {
             contentValues.put("patientuuid", patientUuid);
             contentValues.put("visituuid", "");
             contentValues.put("image_path", imagepath);
-            contentValues.put("image_string", base64String);
             contentValues.put("image_type", "PP");
             contentValues.put("obs_time_date", AppConstants.dateAndTimeUtils.currentDateTime());
             contentValues.put("sync", "false");
@@ -102,6 +98,7 @@ public class ImagesDAO {
     public List<PatientProfile> getPatientProfileUnsyncedImages() throws DAOException {
         List<PatientProfile> patientProfiles = new ArrayList<>();
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        Base64Utils base64Utils = new Base64Utils();
         localdb.beginTransaction();
         try {
             Cursor idCursor = localdb.rawQuery("SELECT * FROM tbl_image_records where sync = ? OR sync=? AND image_type = ? COLLATE NOCASE", new String[]{"0", "false", "PP"});
@@ -109,7 +106,7 @@ public class ImagesDAO {
                 while (idCursor.moveToNext()) {
                     PatientProfile patientProfile = new PatientProfile();
                     patientProfile.setPerson(idCursor.getString(idCursor.getColumnIndexOrThrow("patientuuid")));
-                    patientProfile.setBase64EncodedImage(idCursor.getString(idCursor.getColumnIndexOrThrow("image_string")));
+                    patientProfile.setBase64EncodedImage(base64Utils.getBase64FromFileWithConversion(idCursor.getString(idCursor.getColumnIndexOrThrow("image_path"))));
                     patientProfiles.add(patientProfile);
                 }
             }
@@ -134,7 +131,7 @@ public class ImagesDAO {
                 while (idCursor.moveToNext()) {
                     ObsJsonRequest obsJsonRequest = new ObsJsonRequest();
                     obsJsonRequest.setPerson(idCursor.getString(idCursor.getColumnIndexOrThrow("patientuuid")));
-                    obsJsonRequest.setConcept(UuidDictionary.COMPLEX_IMAGE);
+                    obsJsonRequest.setConcept(UuidDictionary.COMPLEX_IMAGE_AD);
                     obsJsonRequest.setEncounter(idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")));
                     obsJsonRequest.setObsDatetime(idCursor.getString(idCursor.getColumnIndexOrThrow("obs_time_date")));
                     obsJsonRequest.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
@@ -173,6 +170,28 @@ public class ImagesDAO {
         }
 
         return imagePath;
+    }
+
+    public String getPatientProfileChangeTime(String patientUuid) throws DAOException {
+        String datetime = "";
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        localdb.beginTransaction();
+        try {
+            Cursor idCursor = localdb.rawQuery("SELECT * FROM tbl_image_records where patientuuid=? AND image_type = ? COLLATE NOCASE", new String[]{patientUuid, "PP"});
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+                    datetime = idCursor.getString(idCursor.getColumnIndexOrThrow("obs_time_date"));
+                }
+            }
+            idCursor.close();
+        } catch (SQLiteException e) {
+            throw new DAOException(e);
+        } finally {
+            localdb.endTransaction();
+            localdb.close();
+        }
+
+        return datetime;
     }
 
 

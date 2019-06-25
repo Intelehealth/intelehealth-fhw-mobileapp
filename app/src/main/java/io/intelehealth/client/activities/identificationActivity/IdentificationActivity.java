@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
@@ -30,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -298,7 +300,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
         } catch (JSONException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
 //            Issue #627
 //            added the catch exception to check the config and throwing back to setup activity
             Toast.makeText(getApplicationContext(), "JsonException" + e, Toast.LENGTH_LONG).show();
@@ -317,6 +319,9 @@ public class IdentificationActivity extends AppCompatActivity {
         mPostal.setText(patient1.getPostal_code());
         mRelationship.setText(patient1.getSdw());
         mOccupation.setText(patient1.getOccupation());
+
+        if (patient1.getPatient_photo() != null && !patient1.getPatient_photo().trim().isEmpty())
+            mImageView.setImageBitmap(BitmapFactory.decodeFile(patient1.getPatient_photo()));
 
         Resources res = getResources();
         ArrayAdapter<CharSequence> countryAdapter = ArrayAdapter.createFromResource(this,
@@ -718,7 +723,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 try {
                     name = patientsDAO.getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
                 } catch (DAOException e) {
-                    e.printStackTrace();
+                    Crashlytics.logException(e);
                 }
 
                 if (name.equalsIgnoreCase("caste")) {
@@ -961,6 +966,13 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
             patientAttributesDTO.setValue(StringUtils.getProvided(mEducation));
+
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ProfileImageTimestamp"));
+            patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
+
             patientAttributesDTOList.add(patientAttributesDTO);
             Logger.logD(TAG, "PatientAttribute list" + patientAttributesDTOList.size());
             patientdto.setPatientAttributesDTOList(patientAttributesDTOList);
@@ -997,7 +1009,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 Toast.makeText(IdentificationActivity.this, "Error of adding the data", Toast.LENGTH_SHORT).show();
             }
         } catch (DAOException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
 
     }
@@ -1065,6 +1077,13 @@ public class IdentificationActivity extends AppCompatActivity {
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
         patientAttributesDTO.setValue(StringUtils.getValue(mEducation.getSelectedItem().toString()));
+
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ProfileImageTimestamp"));
+        patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
+
         patientAttributesDTOList.add(patientAttributesDTO);
         Logger.logD(TAG, "PatientAttribute list" + patientAttributesDTOList.size());
         //patientdto.setPatientAttributesDTOList(patientAttributesDTOList);
@@ -1073,14 +1092,14 @@ public class IdentificationActivity extends AppCompatActivity {
 
         try {
             Logger.logD(TAG, "update ");
-            boolean b = patientsDAO.updatePatientToDB(patientdto, uuid, patientAttributesDTOList);
+            boolean patientUpdated = patientsDAO.updatePatientToDB(patientdto, uuid, patientAttributesDTOList);
 
             if (NetworkConnection.isOnline(getApplication())) {
                 PullDataDAO pullDataDAO = new PullDataDAO();
                 pullDataDAO.pushDataApi();
                 AppConstants.notificationUtils.showNotifications("Patient Data Upload", "" + patientdto.getFirst_name() + "" + patientdto.getLast_name() + "'s data upload complete.", getApplication());
             }
-            if (b) {
+            if (patientUpdated) {
                 Logger.logD(TAG, "updated");
                 Intent i = new Intent(getApplication(), PatientDetailActivity.class);
                 i.putExtra("patientUuid", uuid);
@@ -1090,7 +1109,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 getApplication().startActivity(i);
             }
         } catch (DAOException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
 
     }

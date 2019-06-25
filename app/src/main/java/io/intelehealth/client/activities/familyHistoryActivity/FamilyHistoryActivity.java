@@ -18,6 +18,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 
+import com.crashlytics.android.Crashlytics;
+
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -172,7 +174,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                 currentFile = new JSONObject(FileUtils.readFileRoot(mFileName, this));
                 familyHistoryMap = new Node(currentFile); //Load the family history mind map
             } catch (JSONException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
             }
         } else {
             familyHistoryMap = new Node(FileUtils.encodeJSON(this, mFileName)); //Load the family history mind map
@@ -261,7 +263,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             try {
                 encounterDAO.updateEncounterSync("false", encounterAdultIntials);
             } catch (DAOException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
             }
             Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientUuid", patientUuid);

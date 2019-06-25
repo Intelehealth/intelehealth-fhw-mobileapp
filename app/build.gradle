@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'io.fabric'
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -106,5 +106,11 @@ dependencies {
     implementation 'com.github.hotchemi:permissionsdispatcher:2.3.2'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.2'
 
+    implementation "com.crashlytics.sdk.android:crashlytics:2.9.9"
+    implementation "com.google.firebase:firebase-core:16.0.7"
+    implementation "com.google.firebase:firebase-messaging:17.3.4"
+    implementation 'com.google.firebase:firebase-crash:16.2.1'
+
 
 }
+apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin

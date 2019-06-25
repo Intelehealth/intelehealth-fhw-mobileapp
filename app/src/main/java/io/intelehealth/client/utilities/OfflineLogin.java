@@ -7,6 +7,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
@@ -59,9 +61,9 @@ public class OfflineLogin {
         try {
             hash = StringEncryption.convertToSHA256(random_salt + password);
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
         SharedPreferences.Editor editor = mSharedPreference.edit();
 
@@ -107,9 +109,9 @@ public class OfflineLogin {
                     try {
                         hash = StringEncryption.convertToSHA256(stored_salt + password);
                     } catch (NoSuchAlgorithmException e) {
-                        e.printStackTrace();
+                        Crashlytics.logException(e);
                     } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
+                        Crashlytics.logException(e);
                     }
                     Log.i(TAG, "Hashed Password : " + hash);
                     if (hash != null && stored_password.equals(hash) && stored_username.equals(username)) {

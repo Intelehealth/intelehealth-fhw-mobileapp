@@ -13,6 +13,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -119,7 +121,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
         try {
             imagesDAO.insertObsImageDatabase(patientUuid, visitUuid, encounterAdultIntials, imagePath, imgPrefix);
         } catch (DAOException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
 //
 //        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();

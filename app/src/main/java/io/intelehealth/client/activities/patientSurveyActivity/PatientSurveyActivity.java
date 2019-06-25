@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -158,7 +160,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         try {
             encounterDAO.createEncountersToDB(encounterDTO);
         } catch (DAOException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
 
         ObsDAO obsDAO = new ObsDAO();
@@ -189,7 +191,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         try {
             visitsDAO.updateVisitEnddate(visitUuid, endate);
         } catch (DAOException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
 
         }
         PullDataDAO pullDataDAO = new PullDataDAO();

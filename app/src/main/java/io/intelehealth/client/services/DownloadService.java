@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Environment;
 import android.support.v4.content.LocalBroadcastManager;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -43,7 +45,7 @@ public class DownloadService extends IntentService {
     private String imgPrefix = "AD";
     final private String imageDir = "Additional Documents";
     public String baseDir = "";
-
+    public String ImageType = "";
     public DownloadService() {
         super("Download Service");
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
@@ -65,32 +67,40 @@ public class DownloadService extends IntentService {
             visitUuid = intent.getStringExtra("visitUuid");
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
+            ImageType = intent.getStringExtra("ImageType");
         }
         AppConstants.notificationUtils.showNotificationProgress("Download", "Downloading File", IntelehealthApplication.getAppContext(), 0);
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + File.separator + "Patient Images" + File.separator + patientUuid + File.separator +
                 visitUuid + File.separator + imageDir + File.separator;
-        initDownload();
+        initDownload(ImageType);
 
     }
 
-    private void initDownload() {
+    private void initDownload(String ImageType) {
 
         String url = "";
         List<String> imageObsList = new ArrayList<>();
-        imageObsList = obsDAO.getImageStrings(UuidDictionary.COMPLEX_IMAGE, encounterAdultIntials);
+        imageObsList = obsDAO.getImageStrings(ImageType, encounterAdultIntials);
+        String imageType = "";
+        if (ImageType.equalsIgnoreCase(UuidDictionary.COMPLEX_IMAGE_AD))
+            imageType = "AD";
+        else
+            imageType = "PE";
         for (int i = 0; i < imageObsList.size(); i++) {
             url = urlModifiers.obsImageUrl(imageObsList.get(i));
             Observable<ResponseBody> downloadobs = AppConstants.apiInterface.OBS_IMAGE_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
             int finalI = i;
+            String finalImageType = imageType;
             downloadobs.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new DisposableObserver<ResponseBody>() {
                         @Override
                         public void onNext(ResponseBody responseBody) {
+
                             try {
-                                downloadFile(responseBody, baseDir + patientUuid + "_" + visitUuid + "_" + imgPrefix);
+                                downloadFile(responseBody, baseDir + patientUuid + "_" + visitUuid + "_" + imgPrefix, finalImageType);
                             } catch (IOException e) {
-                                e.printStackTrace();
+                                Crashlytics.logException(e);
                             }
                         }
 
@@ -109,7 +119,7 @@ public class DownloadService extends IntentService {
 
     }
 
-    private void downloadFile(ResponseBody body, String mImageName) throws IOException {
+    private void downloadFile(ResponseBody body, String mImageName, String imageType) throws IOException {
         String imagepath = mImageName + "_" + System.currentTimeMillis() + ".jpg";
         int count;
         byte[] data = new byte[1024 * 4];
@@ -150,9 +160,9 @@ public class DownloadService extends IntentService {
 
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
-            imagesDAO.insertObsImageDatabase(patientUuid, visitUuid, encounterAdultIntials, imagepath, "AD");
+            imagesDAO.insertObsImageDatabase(patientUuid, visitUuid, encounterAdultIntials, imagepath, imageType);
         } catch (DAOException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
 
     }

@@ -18,6 +18,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
 
+import com.crashlytics.android.Crashlytics;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -106,7 +108,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 try {
                     currentFile = new JSONObject(FileUtils.readFile(complaints.get(i) + ".json", this));
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Crashlytics.logException(e);
                 }
             } else {
                 String fileLocation = "engines/" + complaints.get(i) + ".json";
