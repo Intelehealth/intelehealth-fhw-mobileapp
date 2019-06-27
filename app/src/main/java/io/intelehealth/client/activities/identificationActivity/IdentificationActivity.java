@@ -123,6 +123,9 @@ public class IdentificationActivity extends AppCompatActivity {
     ImagesDAO imagesDAO = new ImagesDAO();
     private String mCurrentPhotoPath;
 
+    Intent i_privacy;
+    String privacy_value;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,6 +134,12 @@ public class IdentificationActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //Bundle bund = new Bundle();
+        //String privacy_value = bund.getString("privacy");
+
+        i_privacy = getIntent();
+        privacy_value = i_privacy.getStringExtra("privacy"); //privacy_accept value retrieved from previous act.
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -994,6 +1003,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 i.putExtra("patientUuid", uuid);
                 i.putExtra("patientName", patientdto.getFirstname() + " " + patientdto.getLastname());
                 i.putExtra("tag", "newPatient");
+                i.putExtra("privacy", privacy_value);
+                Log.d(TAG, "Value intended: "+privacy_value);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 getApplication().startActivity(i);
             } else {

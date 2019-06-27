@@ -23,6 +23,10 @@ public class EncounterDTO {
     @SerializedName("voided")
     @Expose
     private Integer voided;
+    @SerializedName("privacynotice_value")
+    @Expose
+    private String privacynotice_value;
+
 
     public String getUuid() {
         return uuid;
@@ -71,4 +75,17 @@ public class EncounterDTO {
     public void setEncounterTime(String encounterTime) {
         this.encounterTime = encounterTime;
     }
+
+
+    public String getPrivacynotice_value() {
+        return privacynotice_value;
+    }
+
+    public void setPrivacynotice_value(String privacynotice_value) {
+        this.privacynotice_value = privacynotice_value;
+    }
+
+
+
+
 }

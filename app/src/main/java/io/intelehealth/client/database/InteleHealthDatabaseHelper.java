@@ -26,7 +26,8 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "encounter_type_uuid TEXT," +
             "modified_date TEXT," +
             "sync TEXT," +
-            "voided TEXT" +
+            "voided TEXT," +
+            "privacynotice_value TEXT" +
             ")";
     /*
     * "openmrs_uuid": "8ab7f041-0b02-4ac0-a8f4-aa35f90ae3a1",
@@ -245,8 +246,6 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('f4af0ef3-579c-448a-8157-750283409122','Economic Status')");
 
 
-
-
         }
     }
 
@@ -279,7 +278,9 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             case 3:
                 //upgrade logic from version 3 to 4
             case 4:
-                //upgrade logic from version 4
+                //upgrade logic from version 4 to 5
+            case 5:
+                //upgrade logic from version
                 alterTables(db);
                 break;
             default:

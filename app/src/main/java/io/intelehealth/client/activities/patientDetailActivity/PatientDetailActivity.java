@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -72,6 +73,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     String visitUuid = "";
     String patientUuid;
     String intentTag = "";
+    String privacy_value_selected;
     SessionManager sessionManager = null;
     Patient patient_new = new Patient();
 
@@ -108,11 +110,13 @@ public class PatientDetailActivity extends AppCompatActivity {
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
             patientName = intent.getStringExtra("patientName");
+            privacy_value_selected = intent.getStringExtra("privacy"); //intent value from IdentificationActivity.
 
             intentTag = intent.getStringExtra("tag");
             Logger.logD(TAG, "Patient ID: " + patientUuid);
             Logger.logD(TAG, "Patient Name: " + patientName);
             Logger.logD(TAG, "Intent Tag: " + intentTag);
+            Logger.logD(TAG, "Privacy Value: " + privacy_value_selected);
         }
         editbtn = findViewById(R.id.edit_button);
         editbtn.setOnClickListener(new View.OnClickListener() {
@@ -144,8 +148,10 @@ public class PatientDetailActivity extends AppCompatActivity {
                 encounterDTO.setEncounterTime(thisDate);
                 encounterDTO.setVisituuid(uuid);
                 encounterDTO.setSyncd(false);
+                encounterDTO.setPrivacynotice_value(privacy_value_selected);//privacy value added.
                 try {
                     encounterDAO.createEncountersToDB(encounterDTO);
+                    //Toast.makeText(getApplicationContext(),"Patient has "+encounterDTO.getPrivacynotice_value(),Toast//.LENGTH_LONG).show();
                 } catch (DAOException e) {
                     e.printStackTrace();
                 }

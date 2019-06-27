@@ -36,6 +36,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
                 if(radiobtn.getText().equals("Accept"))
                 {
                     Intent intent = new Intent(getApplicationContext(), IdentificationActivity.class);
+                    intent.putExtra("privacy",radiobtn.getText()); //privacy value send to identificationActivity
                     startActivity(intent);
                 }
                 else
