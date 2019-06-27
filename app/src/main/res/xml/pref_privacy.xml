@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:key="privacy_notice_check"
+        android:title="Privacy Notice"
+        android:defaultValue="false"
+        android:summaryOff="Disabled"
+        android:summaryOn="Enabled"/>
+
+</PreferenceScreen>

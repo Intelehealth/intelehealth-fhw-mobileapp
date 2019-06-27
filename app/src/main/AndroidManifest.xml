@@ -34,6 +34,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <activity android:name=".activities.PrivacyNotice_Activity"
+            android:label="Privacy Notice"></activity>
         <activity
             android:name=".activities.additionalDocumentsActivity.AdditionalDocumentsActivity"
             android:label="@string/title_activity_additional_documents"
@@ -155,6 +158,8 @@
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
+
         <activity
             android:name=".activities.homeActivity.HomeActivity"
             android:label="@string/title_activity_home"
@@ -211,7 +216,6 @@
             android:name=".activities.searchPatientActivity.SearchSuggestionProvider"
             android:authorities="io.intelehealth.client.activities.searchPatientActivity.SearchSuggestionProvider"
             android:exported="false" />
-
 
         <service android:name=".services.DownloadService" />
         <service android:name=".database.MyIntentService" />

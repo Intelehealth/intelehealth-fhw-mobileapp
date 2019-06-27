@@ -23,4 +23,9 @@
         android:icon="@drawable/ic_cloud_done_black"
         android:title="@string/cloud_restore_header" />
 
+    <header
+        android:fragment="io.intelehealth.client.activities.settingsActivity.SettingsActivity$PrivacyPreferenceFragment"
+        android:title="Privacy Notice"
+        android:icon="@drawable/ic_privacy_black_24dp"/>
+
 </preference-headers>

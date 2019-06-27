@@ -20,6 +20,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
+import android.preference.SwitchPreference;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -266,7 +267,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 || DataSyncPreferenceFragment.class.getName().equals(fragmentName)
                 || NotificationPreferenceFragment.class.getName().equals(fragmentName)
                 || LanguagePreferenceFragment.class.getName().equals(fragmentName)
-                || CloudRestoreFragment.class.getName().equals(fragmentName);
+                || CloudRestoreFragment.class.getName().equals(fragmentName)
+                || PrivacyPreferenceFragment.class.getName().equals(fragmentName);
     }
 
     @Override
@@ -303,6 +305,48 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             return super.onOptionsItemSelected(item);
         }
     }
+
+
+    /**
+     * This activity is called to set up the privacy note for the app
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class PrivacyPreferenceFragment extends PreferenceFragment
+    {
+        public SwitchPreference switchPreference;
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            switchPreference = (SwitchPreference) findPreference("privacy_notice_check");
+            //SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(switchPreference.getContext());
+            // boolean test = preferences.getBoolean("test", false);
+        }
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_privacy);
+            setHasOptionsMenu(true);
+
+            //switchPreference = (SwitchPreference) findPreference("privacy_notice_check");
+
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+
+            int id = item.getItemId();
+            if (id == android.R.id.home) {
+                //setLocale("or");
+                startActivity(new Intent(getActivity(), HomeActivity.class));
+                return true;
+            }
+
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
 
     /**
      * This fragment shows data and sync preferences only. It is used when the

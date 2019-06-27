@@ -2,6 +2,8 @@ package io.intelehealth.client.activities.homeActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import io.intelehealth.client.R;
+import io.intelehealth.client.activities.PrivacyNotice_Activity;
 import io.intelehealth.client.activities.activePatientsActivity.ActivePatientActivity;
 import io.intelehealth.client.activities.activitySync.ActivitySync;
 import io.intelehealth.client.activities.identificationActivity.IdentificationActivity;
@@ -78,9 +81,24 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
         public void onClick(View v) {
             switch (this.optionName.getId()) {
                 case 0: {
-                    Intent intent = new Intent(this.context, IdentificationActivity.class);
-                    this.context.startActivity(intent);
-                    break;
+
+                    SharedPreferences sharedPreferences = PreferenceManager
+                            .getDefaultSharedPreferences(this.context);
+                    boolean isChecked = sharedPreferences.getBoolean("privacy_notice_check", false);
+                    //Toast.makeText(getActivity(), "isChecked : " + isChecked, Toast.LENGTH_LONG).show();
+
+                    if(isChecked)
+                    {
+                        Intent intent = new Intent(this.context, PrivacyNotice_Activity.class);
+                        this.context.startActivity(intent);
+                        break;
+                    }
+                    else
+                    {
+                        Intent intent = new Intent(this.context, IdentificationActivity.class);
+                        this.context.startActivity(intent);
+                        break;
+                    }
                 }
                 case 1: {
                     Intent intent = new Intent(this.context, SearchPatientActivity.class);

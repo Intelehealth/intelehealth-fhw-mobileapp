@@ -45,6 +45,7 @@ import java.util.UUID;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.cameraActivity.CameraActivity;
+import io.intelehealth.client.activities.homeActivity.HomeActivity;
 import io.intelehealth.client.activities.patientDetailActivity.PatientDetailActivity;
 import io.intelehealth.client.activities.setupActivity.SetupActivity;
 import io.intelehealth.client.app.AppConstants;
@@ -753,8 +754,10 @@ public class IdentificationActivity extends AppCompatActivity {
                 .setMessage("Are you sure you want to go back ?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
+                    public void onClick(DialogInterface dialogInterface, int i)
+                    {
+                        Intent i_back = new Intent(getApplicationContext(), HomeActivity.class);
+                        startActivity(i_back);
                     }
                 }).setNegativeButton("No", null).show();
 

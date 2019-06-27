@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.PrivacyNotice_Activity">
+
+
+    <RelativeLayout
+        android:id="@+id/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_alignParentBottom="true">
+
+        <RadioGroup
+            android:id="@+id/radio_privacy_grp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_centerHorizontal="true">
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Accept"
+                android:layout_marginLeft="50dp"/>
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Reject"/>
+
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/txt_privacy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Next"
+            android:textColor="@color/white"
+            android:background="@color/colorPrimary"
+            android:textStyle="bold"
+            android:layout_below="@+id/radio_privacy_grp"
+            android:layout_alignParentRight="true"
+            android:layout_marginVertical="15dp"
+            android:textAlignment="center"
+            android:layout_marginHorizontal="10dp"
+            android:padding="15dp"/>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/buttons"
+        android:layout_marginBottom="10dp">
+        <!--Scrollable content here-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:text="Privacy notice and consent form for patients
+Personal Information
+We collect the following personal information from you when the Barangay Health Workers or Midwives meet you at the Barangay Health Centre or on home visits:\n
+●	Full name\n
+●	Gender\n
+●	Date of birth\n
+●	Home address\n
+●	Email address\n
+●	Contact numbers\n
+●	Health information – height, weight, blood type, blood pressure, medical history, allergy information, and other diagnostic information as required\n
+Use
+Your medical records and other personal data will be processed in compliance with the Data Privacy Act of 2012, and its Implementing Rules and Regulations. Your information is used for diagnosing and treating you. Your contact information may be used to send you reminders, prescription information, and other related communication.
+In addition, your personal information will be anonymized for use in research, disease monitoring, and analysis to help us improve our products and services. Anonymization removes your identifying information and protects your privacy.\n
+We may disclose your personal information:
+●	as required by law, such as to comply with a subpoena, or similar legal process;\n
+●	when we believe in good faith that disclosure is necessary to protect our rights, protect your safety or the safety of others, investigate fraud, or respond to a government request;\n
+●	with our trusted services providers who work on our behalf, do not have an independent use of the information we disclose to them, and have agreed to adhere to our privacy policy.\n
+●	if Intelehealth, Inc. is involved in a merger, acquisition, or sale of all or a portion of its assets, you will be notified via email and/or a prominent notice on our website of any change in ownership or uses of this information, as well as any choices you may have regarding this information.\n
+Protection Measures
+We provide physical, electronic, and procedural safeguards to protect information we process and maintain.
+Only authorized personnel have access to your personal information. If a transfer of information is required, the exchange of which will be facilitated through email or hard copy. Digital files will be encrypted and/or password-protected before such transfers.
+Personal data records will be stored in a secure database for the period of our contract to provide these services, after which any physical records shall be disposed of through shredding, while digital files shall be anonymized.
+Access and Correction
+You have the right to ask for a copy of any personal information we hold about you, as well as to ask for it to be corrected if you think it is wrong.
+If you’d like us to delete your personal data that you have provided to us, please contact us at support@intelehealth.io and we will respond in a reasonable time. Please note that Intelehealth is a Personal Information Processor, and we will have to coordinate access or deletion requests with the Personal Information Controller, Department of Health, Government of Philippines.\n
+To make any requests for access, modification, or deletion of your personal information with us, please contact Soumyadipta Charya, at support@intelehealth.io
+
+"
+                android:textAlignment="gravity"/>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

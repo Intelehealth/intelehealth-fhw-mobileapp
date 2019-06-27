@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "181219975633",
+    "firebase_url": "https://mobile-crashlytics.firebaseio.com",
+    "project_id": "mobile-crashlytics",
+    "storage_bucket": "mobile-crashlytics.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:181219975633:android:fa1425c73a745668",
+        "android_client_info": {
+          "package_name": "io.intelehealth.client"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "181219975633-cs2egej9559g6ip11jsnlki086cchvgo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.intelehealth.client",
+            "certificate_hash": "b8be154f0f1f7db36a038d63cfc96abcfb7cab46"
+          }
+        },
+        {
+          "client_id": "181219975633-bov8f0rs29ohk3ti09cetec0160ctf0t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMnxV_lFvda-5jUItPqfq2DPYf_b-OBHQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "181219975633-bov8f0rs29ohk3ti09cetec0160ctf0t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -25,7 +25,7 @@ import io.intelehealth.client.utilities.UuidGenerator;
 public class AppConstants {
     //Constants
     public static final String DATABASE_NAME = "localrecords.db";
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 5;
     public static final String JSON_FOLDER = "Engines";
     public static final String JSON_FOLDER_Update = "Engines_Update";
     public static final String MIND_MAP_SERVER_URL = "http://165.227.97.214:1337/parse/";
