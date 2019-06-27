@@ -157,7 +157,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                     currentFile = new JSONObject(FileUtils.readFileRoot(mFileName, this));
                     physicalExamMap = new PhysicalExam(currentFile, selectedExamsList);
                 } catch (JSONException e) {
-                    Crashlytics.logException(e);
+                    Crashlytics.getInstance().core.logException(e);
                 }
             } else {
                 physicalExamMap = new PhysicalExam(FileUtils.encodeJSON(this, mFileName), selectedExamsList);
@@ -363,7 +363,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
         try {
             imagesDAO.insertObsImageDatabase(patientUuid, visitUuid, encounterAdultIntials, imagePath, image_Prefix);
         } catch (DAOException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
 
 //        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path,image_type,delete_status) values("

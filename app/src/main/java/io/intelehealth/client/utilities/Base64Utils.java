@@ -32,7 +32,7 @@ public class Base64Utils {
             baat = baos.toByteArray();
             encodeString = Base64.encodeToString(baat, Base64.DEFAULT);
         } catch (Exception e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
 
         return encodeString;

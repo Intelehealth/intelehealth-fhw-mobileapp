@@ -54,7 +54,7 @@ public class ImagesPushDAO {
         try {
             patientProfiles = imagesDAO.getPatientProfileUnsyncedImages();
         } catch (DAOException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         int i = 0;
         for (PatientProfile p : patientProfiles) {
@@ -69,7 +69,7 @@ public class ImagesPushDAO {
                             try {
                                 imagesDAO.updateUnsyncedPatientProfile(p.getPerson(), "PP");
                             } catch (DAOException e) {
-                                Crashlytics.logException(e);
+                                Crashlytics.getInstance().core.logException(e);
                             }
                             AppConstants.notificationUtils.showNotificationProgress("Patient Profile", "Uploading Patient Profile", IntelehealthApplication.getAppContext(), finalI);
                         }
@@ -97,7 +97,7 @@ public class ImagesPushDAO {
         try {
             obsImageJsons = imagesDAO.getObsUnsyncedImages();
         } catch (DAOException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         int i = 0;
         for (ObsJsonRequest p : obsImageJsons) {
@@ -106,13 +106,12 @@ public class ImagesPushDAO {
             try {
                 file = new File(imagesDAO.getobsImagePath(p.getUuid()));
             } catch (DAOException e) {
-                Crashlytics.logException(e);
+                Crashlytics.getInstance().core.logException(e);
             }
             RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
             // MultipartBody.Part is used to send also the actual file name
             MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
             Observable<ObsJsonResponse> obsJsonResponseObservable = AppConstants.apiInterface.OBS_JSON_RESPONSE_OBSERVABLE(url, "Basic " + encoded, body, p);
-            int finalI = i;
             obsJsonResponseObservable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new DisposableObserver<ObsJsonResponse>() {
@@ -122,7 +121,7 @@ public class ImagesPushDAO {
 //                            try {
 //                                imagesDAO.updateUnsyncedPatientProfile(p.getPerson(), "PP");
 //                            } catch (DAOException e) {
-//                                  Crashlytics.logException(e);
+//                                  Crashlytics.getInstance().core.logException(e);
 //                            }
 //                            AppConstants.notificationUtils.showNotificationProgress("Patient Profile", "Uploading Patient Profile", IntelehealthApplication.getAppContext(), finalI);
 //                        }
@@ -130,7 +129,6 @@ public class ImagesPushDAO {
                         @Override
                         public void onNext(ObsJsonResponse obsJsonResponse) {
                             Logger.logD(TAG, "success" + obsJsonResponse);
-
 
                         }
 
@@ -146,11 +144,10 @@ public class ImagesPushDAO {
                             try {
                                 imagesDAO.updateUnsyncedObsImages(p.getUuid());
                             } catch (DAOException e) {
-                                Crashlytics.logException(e);
+                                Crashlytics.getInstance().core.logException(e);
                             }
                         }
                     });
-            i++;
         }
         AppConstants.notificationUtils.DownloadDone("Patient Profile", "Completed Uploading Patient Profile", IntelehealthApplication.getAppContext());
         return true;

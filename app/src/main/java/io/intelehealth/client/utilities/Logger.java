@@ -24,7 +24,7 @@ public class Logger {
      */
     public static void logE(String tag, String desc, Exception e) {
         Log.e(tag, desc, e);
-        Crashlytics.logException(e);
+        Crashlytics.getInstance().core.logException(e);
     }
 
     /**

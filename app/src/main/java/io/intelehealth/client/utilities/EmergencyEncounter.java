@@ -40,7 +40,7 @@ public class EmergencyEncounter {
         try {
             encounterDAO.createEncountersToDB(encounterDTO);
         } catch (DAOException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return true;
     }
@@ -74,7 +74,7 @@ public class EmergencyEncounter {
 
                             }
                         } catch (IOException e) {
-                            Crashlytics.logException(e);
+                            Crashlytics.getInstance().core.logException(e);
                         }
                         cursor.moveToNext();
                     }

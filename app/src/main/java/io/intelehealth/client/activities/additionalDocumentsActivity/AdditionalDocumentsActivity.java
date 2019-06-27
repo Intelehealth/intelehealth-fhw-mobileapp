@@ -121,7 +121,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
         try {
             imagesDAO.insertObsImageDatabase(patientUuid, visitUuid, encounterAdultIntials, imagePath, imgPrefix);
         } catch (DAOException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
 //
 //        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();

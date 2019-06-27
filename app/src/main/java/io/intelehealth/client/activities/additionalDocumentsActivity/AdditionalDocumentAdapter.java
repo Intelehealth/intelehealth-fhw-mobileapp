@@ -102,7 +102,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
                 try {
                     imagesDAO.deleteImageFromDatabase(dir);
                 } catch (DAOException e) {
-                    Crashlytics.logException(e);
+                    Crashlytics.getInstance().core.logException(e);
                 }
                 //deleteImageFromDatabase(dir);
             }

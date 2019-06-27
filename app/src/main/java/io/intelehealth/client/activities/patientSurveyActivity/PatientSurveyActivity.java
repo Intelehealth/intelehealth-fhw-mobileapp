@@ -160,7 +160,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         try {
             encounterDAO.createEncountersToDB(encounterDTO);
         } catch (DAOException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
 
         ObsDAO obsDAO = new ObsDAO();
@@ -191,7 +191,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         try {
             visitsDAO.updateVisitEnddate(visitUuid, endate);
         } catch (DAOException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
 
         }
         PullDataDAO pullDataDAO = new PullDataDAO();

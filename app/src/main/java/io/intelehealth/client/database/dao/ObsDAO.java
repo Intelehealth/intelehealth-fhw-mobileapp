@@ -184,7 +184,7 @@ public class ObsDAO {
                 try {
                     insertObs(obsDTO);
                 } catch (DAOException e) {
-                    Crashlytics.logException(e);
+                    Crashlytics.getInstance().core.logException(e);
                 }
             }
             db.setTransactionSuccessful();

@@ -95,7 +95,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         try {
             encounterDAO.createEncountersToDB(encounterDTO);
         } catch (DAOException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
 
         setTitle(patientName + ": " + getTitle());
@@ -135,7 +135,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 try {
                     currentFile = new JSONObject(FileUtils.readFile(file.getName(), this));
                 } catch (JSONException e) {
-                    Crashlytics.logException(e);
+                    Crashlytics.getInstance().core.logException(e);
                 }
                 Log.i(TAG, currentFile.toString());
                 Node currentNode = new Node(currentFile);
@@ -146,7 +146,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             try {
                 fileNames = getApplicationContext().getAssets().list("engines");
             } catch (IOException e) {
-                Crashlytics.logException(e);
+                Crashlytics.getInstance().core.logException(e);
             }
             for (String name : fileNames) {
                 String fileLocation = "engines/" + name;

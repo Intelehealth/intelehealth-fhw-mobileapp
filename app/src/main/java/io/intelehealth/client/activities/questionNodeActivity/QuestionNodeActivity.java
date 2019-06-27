@@ -108,7 +108,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 try {
                     currentFile = new JSONObject(FileUtils.readFile(complaints.get(i) + ".json", this));
                 } catch (JSONException e) {
-                    Crashlytics.logException(e);
+                    Crashlytics.getInstance().core.logException(e);
                 }
             } else {
                 String fileLocation = "engines/" + complaints.get(i) + ".json";

@@ -49,7 +49,7 @@ public class DownloadFilesUtils {
                 Pair<Integer, Long> pairs = new Pair<>(100, 100L);
                 return;
             } catch (IOException e) {
-                Crashlytics.logException(e);
+                Crashlytics.getInstance().core.logException(e);
                 Pair<Integer, Long> pairs = new Pair<>(-1, Long.valueOf(-1));
                 Log.d(TAG, "Failed to save the file!");
                 return;
@@ -58,7 +58,7 @@ public class DownloadFilesUtils {
                 if (outputStream != null) outputStream.close();
             }
         } catch (IOException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
             Log.d(TAG, "Failed to save the file!");
             return;
         }
@@ -91,7 +91,7 @@ public class DownloadFilesUtils {
                 Pair<Integer, Long> pairs = new Pair<>(100, 100L);
                 return;
             } catch (IOException e) {
-                Crashlytics.logException(e);
+                Crashlytics.getInstance().core.logException(e);
                 Pair<Integer, Long> pairs = new Pair<>(-1, Long.valueOf(-1));
                 Log.d(TAG, "Failed to save the file!");
                 return;
@@ -100,7 +100,7 @@ public class DownloadFilesUtils {
                 if (outputStream != null) outputStream.close();
             }
         } catch (IOException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
             Log.d(TAG, "Failed to save the file!");
             return;
         }

@@ -152,7 +152,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 try {
                     encounterDAO.createEncountersToDB(encounterDTO);
                 } catch (DAOException e) {
-                    Crashlytics.logException(e);
+                    Crashlytics.getInstance().core.logException(e);
                 }
 
                 InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity.this);
@@ -217,7 +217,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 try {
                     visitsDAO.insertPatientToDB(visitDTO);
                 } catch (DAOException e) {
-                    Crashlytics.logException(e);
+                    Crashlytics.getInstance().core.logException(e);
                 }
 
                 // visitUuid = String.valueOf(visitLong);
@@ -286,7 +286,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 try {
                     name = patientsDAO.getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
                 } catch (DAOException e) {
-                    Crashlytics.logException(e);
+                    Crashlytics.getInstance().core.logException(e);
                 }
 
                 if (name.equalsIgnoreCase("caste")) {
@@ -349,7 +349,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         try {
             profileImage = imagesDAO.getPatientProfileChangeTime(patientUuid);
         } catch (DAOException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         if (patient_new.getPatient_photo() == null || patient_new.getPatient_photo().equalsIgnoreCase("") || profileImage.equalsIgnoreCase(profileImage1)) {
             if (NetworkConnection.isOnline(getApplication())) {
@@ -549,7 +549,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                                     String visitDate = currentDate.format(formatted);
                                     createOldVisit(visitDate, visit_id, end_date, visitValue);
                                 } catch (ParseException e) {
-                                    Crashlytics.logException(e);
+                                    Crashlytics.getInstance().core.logException(e);
                                 }
                             }
                         }
@@ -562,7 +562,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                                 String visitDate = currentDate.format(formatted);
                                 createOldVisit(visitDate, visit_id, end_date, visitValue);
                             } catch (ParseException e) {
-                                Crashlytics.logException(e);
+                                Crashlytics.getInstance().core.logException(e);
                             }
                         }
                     }
@@ -575,7 +575,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                             String visitDate = currentDate.format(formatted);
                             createOldVisit(visitDate, visit_id, end_date, visitValue);
                         } catch (ParseException e) {
-                            Crashlytics.logException(e);
+                            Crashlytics.getInstance().core.logException(e);
                         }
                     }
                 } while (visitCursor.moveToPrevious());
@@ -615,7 +615,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                         try {
                             updated = patientsDAO.updatePatientPhoto(patientUuid, IMAGE_PATH + patientUuid + ".jpg");
                         } catch (DAOException e) {
-                            Crashlytics.logException(e);
+                            Crashlytics.getInstance().core.logException(e);
                         }
                         if (updated) {
                             Glide.with(PatientDetailActivity.this)

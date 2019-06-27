@@ -123,7 +123,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
                 try {
                     Thread.sleep(5000);
                 } catch (InterruptedException e) {
-                    Crashlytics.logException(e);
+                    Crashlytics.getInstance().core.logException(e);
                 }
                 String content = downloadMindMap(licenseKey, mm);
                 mm.setContent(content);
@@ -154,7 +154,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
                 try {
                     copyFile(physExam, physicalExam);
                 } catch (IOException e) {
-                    Crashlytics.logException(e);
+                    Crashlytics.getInstance().core.logException(e);
                 }
                 physExam.delete();
             }
@@ -166,7 +166,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
                 try {
                     copyFile(famHist, familyHistory);
                 } catch (IOException e) {
-                    Crashlytics.logException(e);
+                    Crashlytics.getInstance().core.logException(e);
                 }
                 famHist.delete();
             }
@@ -178,7 +178,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
                 try {
                     copyFile(patHist, pastMedicalHistory);
                 } catch (IOException e) {
-                    Crashlytics.logException(e);
+                    Crashlytics.getInstance().core.logException(e);
                 }
                 patHist.delete();
             }
@@ -190,7 +190,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
                 try {
                     copyFile(configfile, config);
                 } catch (IOException e) {
-                    Crashlytics.logException(e);
+                    Crashlytics.getInstance().core.logException(e);
                 }
                 configfile.delete();
             }

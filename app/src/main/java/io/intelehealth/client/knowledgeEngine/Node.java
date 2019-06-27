@@ -202,7 +202,7 @@ public class Node implements Serializable {
             this.hasPopUp = !pop_up.isEmpty();
 
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
     }
 
@@ -1322,7 +1322,7 @@ public class Node implements Serializable {
                 createdOptions.add(i, new Node(current));
             }
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
 
         return createdOptions;

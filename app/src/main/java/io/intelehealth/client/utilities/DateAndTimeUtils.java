@@ -89,7 +89,7 @@ public class DateAndTimeUtils {
             sdf1 = new SimpleDateFormat(anotherFormat);
             result = sdf1.format(sdf.parse(date));
         } catch (Exception e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
             return "";
         } finally {
             sdf = null;

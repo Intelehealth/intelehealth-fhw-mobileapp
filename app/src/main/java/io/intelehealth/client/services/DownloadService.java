@@ -100,7 +100,7 @@ public class DownloadService extends IntentService {
                             try {
                                 downloadFile(responseBody, baseDir + patientUuid + "_" + visitUuid + "_" + imgPrefix, finalImageType);
                             } catch (IOException e) {
-                                Crashlytics.logException(e);
+                                Crashlytics.getInstance().core.logException(e);
                             }
                         }
 
@@ -147,13 +147,13 @@ public class DownloadService extends IntentService {
 
                 download.setCurrentFileSize((int) current);
                 download.setProgress(progress);
-                sendNotification(download);
+//                sendNotification(download);
                 timeCount++;
             }
 
             output.write(data, 0, count);
         }
-        onDownloadComplete();
+//        onDownloadComplete();
         output.flush();
         output.close();
         bis.close();
@@ -162,7 +162,7 @@ public class DownloadService extends IntentService {
         try {
             imagesDAO.insertObsImageDatabase(patientUuid, visitUuid, encounterAdultIntials, imagepath, imageType);
         } catch (DAOException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
 
     }

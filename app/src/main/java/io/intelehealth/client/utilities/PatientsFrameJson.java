@@ -84,7 +84,7 @@ public class PatientsFrameJson {
             try {
                 attributeList = patientsDAO.getPatientAttributes(patientDTOList.get(i).getUuid());
             } catch (DAOException e) {
-                Crashlytics.logException(e);
+                Crashlytics.getInstance().core.logException(e);
             }
 
 
@@ -119,7 +119,7 @@ public class PatientsFrameJson {
             try {
                 emergencyVisitUuids = visitsDAO.getEmergencyVisitUuids();
             } catch (DAOException e) {
-                Crashlytics.logException(e);
+                Crashlytics.getInstance().core.logException(e);
             }
             if (emergencyVisitUuids.size() != 0) {
                 emergencyEncounter.removeEncounterEmergency(visitDTO.getUuid(), db);
@@ -129,7 +129,7 @@ public class PatientsFrameJson {
 //            try {
 //                attributeList = visitsDAO.getVisitAttributes(visitDTO.getUuid());
 //            } catch (DAOException e) {
-//                  Crashlytics.logException(e);
+//                  Crashlytics.getInstance().core.logException(e);
 //            }
 
 //            visit.setAttributes(attributeList);

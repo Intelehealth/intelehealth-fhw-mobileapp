@@ -46,7 +46,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("mFirstName");
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }
@@ -58,7 +58,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("mMiddleName");
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }
@@ -70,7 +70,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("mLastName");
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }
@@ -82,7 +82,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("mDOB");
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }
@@ -94,7 +94,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("mPhoneNum");
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }
@@ -106,7 +106,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("mAge");
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }
@@ -118,7 +118,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("mAddress1");
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }
@@ -130,7 +130,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("mAddress2");
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }
@@ -142,7 +142,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("mCity");
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }
@@ -154,7 +154,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("countryStateLayout");
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }
@@ -166,7 +166,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("mPostal");
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }
@@ -178,7 +178,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("mGenderM");
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }
@@ -190,7 +190,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("mGenderF");
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }
@@ -202,7 +202,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("mRelationship");
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }
@@ -214,7 +214,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("mOccupation");
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }
@@ -226,7 +226,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("casteLayout");
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }
@@ -238,7 +238,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("educationLayout");
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }
@@ -250,7 +250,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("economicLayout");
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }
@@ -262,7 +262,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("mHeight");
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }
@@ -274,7 +274,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("mWeight");
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }
@@ -286,7 +286,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("mPulse");
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }
@@ -298,7 +298,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("mBpSys");
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }
@@ -310,7 +310,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("mBpDia");
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }
@@ -322,7 +322,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("mSpo2");
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }
@@ -334,7 +334,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("mBMI");
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }
@@ -346,7 +346,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("mResp");
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }
@@ -358,7 +358,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("mTemperature");
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }
@@ -370,7 +370,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("mCelsius");
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }
@@ -383,7 +383,7 @@ public class ConfigUtils {
             view = object.getBoolean("mFahrenheit");
             Logger.logD(TAG, String.valueOf(view));
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         return view;
     }

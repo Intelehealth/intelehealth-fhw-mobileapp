@@ -61,9 +61,9 @@ public class OfflineLogin {
         try {
             hash = StringEncryption.convertToSHA256(random_salt + password);
         } catch (NoSuchAlgorithmException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         } catch (UnsupportedEncodingException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         SharedPreferences.Editor editor = mSharedPreference.edit();
 
@@ -109,9 +109,9 @@ public class OfflineLogin {
                     try {
                         hash = StringEncryption.convertToSHA256(stored_salt + password);
                     } catch (NoSuchAlgorithmException e) {
-                        Crashlytics.logException(e);
+                        Crashlytics.getInstance().core.logException(e);
                     } catch (UnsupportedEncodingException e) {
-                        Crashlytics.logException(e);
+                        Crashlytics.getInstance().core.logException(e);
                     }
                     Log.i(TAG, "Hashed Password : " + hash);
                     if (hash != null && stored_password.equals(hash) && stored_username.equals(username)) {

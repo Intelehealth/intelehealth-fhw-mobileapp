@@ -42,7 +42,7 @@ public class FileUtils {
             return s;
 
         } catch (Exception e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
             return null;
         }
 
@@ -69,7 +69,7 @@ public class FileUtils {
             return s;
 
         } catch (Exception e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
             return null;
         }
 
@@ -86,14 +86,14 @@ public class FileUtils {
             is.close();
             raw_json = new String(buffer, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
 //      #628
         try {
             encoded = new JSONObject(raw_json);
         } catch (JSONException e) {
             Toast.makeText(context, "config file is missing", Toast.LENGTH_SHORT).show();
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
 
         return encoded;

@@ -174,7 +174,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                 currentFile = new JSONObject(FileUtils.readFileRoot(mFileName, this));
                 familyHistoryMap = new Node(currentFile); //Load the family history mind map
             } catch (JSONException e) {
-                Crashlytics.logException(e);
+                Crashlytics.getInstance().core.logException(e);
             }
         } else {
             familyHistoryMap = new Node(FileUtils.encodeJSON(this, mFileName)); //Load the family history mind map
@@ -263,7 +263,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             try {
                 encounterDAO.updateEncounterSync("false", encounterAdultIntials);
             } catch (DAOException e) {
-                Crashlytics.logException(e);
+                Crashlytics.getInstance().core.logException(e);
             }
             Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientUuid", patientUuid);

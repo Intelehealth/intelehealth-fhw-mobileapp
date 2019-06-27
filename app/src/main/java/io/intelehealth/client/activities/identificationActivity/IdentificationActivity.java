@@ -300,7 +300,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
 //            Issue #627
 //            added the catch exception to check the config and throwing back to setup activity
             Toast.makeText(getApplicationContext(), "JsonException" + e, Toast.LENGTH_LONG).show();
@@ -706,9 +706,6 @@ public class IdentificationActivity extends AppCompatActivity {
                 patient1.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
                 patient1.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
                 patient1.setPatient_photo(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
-                patient1.setEconomic_status(idCursor.getString(idCursor.getColumnIndexOrThrow("economic_status")));
-                patient1.setEducation_level(idCursor.getString(idCursor.getColumnIndexOrThrow("education_status")));
-                patient1.setCaste(idCursor.getString(idCursor.getColumnIndexOrThrow("caste")));
 
             } while (idCursor.moveToNext());
             idCursor.close();
@@ -723,7 +720,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 try {
                     name = patientsDAO.getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
                 } catch (DAOException e) {
-                    Crashlytics.logException(e);
+                    Crashlytics.getInstance().core.logException(e);
                 }
 
                 if (name.equalsIgnoreCase("caste")) {
@@ -1009,7 +1006,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 Toast.makeText(IdentificationActivity.this, "Error of adding the data", Toast.LENGTH_SHORT).show();
             }
         } catch (DAOException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
 
     }
@@ -1041,7 +1038,7 @@ public class IdentificationActivity extends AppCompatActivity {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
-        patientAttributesDTO.setValue(StringUtils.getValue(mCaste.getSelectedItem().toString()));
+        patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         patientAttributesDTO = new PatientAttributesDTO();
@@ -1069,14 +1066,14 @@ public class IdentificationActivity extends AppCompatActivity {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
-        patientAttributesDTO.setValue(StringUtils.getValue(mEconomicStatus.getSelectedItem().toString()));
+        patientAttributesDTO.setValue(StringUtils.getProvided(mEconomicStatus));
         patientAttributesDTOList.add(patientAttributesDTO);
 
         patientAttributesDTO = new PatientAttributesDTO();
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
-        patientAttributesDTO.setValue(StringUtils.getValue(mEducation.getSelectedItem().toString()));
+        patientAttributesDTO.setValue(StringUtils.getProvided(mEducation));
 
         patientAttributesDTO = new PatientAttributesDTO();
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -1109,7 +1106,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 getApplication().startActivity(i);
             }
         } catch (DAOException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
 
     }

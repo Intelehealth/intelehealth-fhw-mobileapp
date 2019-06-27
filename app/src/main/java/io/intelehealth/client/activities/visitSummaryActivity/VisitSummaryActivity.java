@@ -277,7 +277,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 try {
                     doWebViewPrint();
                 } catch (ParseException e) {
-                    Crashlytics.logException(e);
+                    Crashlytics.getInstance().core.logException(e);
                 }
                 return true;
             }
@@ -362,7 +362,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
 
         setTitle(R.string.title_activity_patient_summary);
@@ -605,7 +605,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 tempcel.setVisibility(View.GONE);
             }
         } catch (JSONException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
         spO2View = findViewById(R.id.textView_pulseox_value);
         respiratory = findViewById(R.id.textView_respiratory_value);
@@ -1045,7 +1045,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 startDownload(UuidDictionary.COMPLEX_IMAGE_PE);
             }
         });
-        registerReceiver();
     }
 
     private void startDownload(String imageType) {
@@ -1060,14 +1059,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     }
 
-    private void registerReceiver() {
-
-        LocalBroadcastManager bManager = LocalBroadcastManager.getInstance(this);
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(AppConstants.MESSAGE_PROGRESS);
-        bManager.registerReceiver(broadcastReceiver, intentFilter);
-
-    }
 
     private String stringToWeb(String input) {
         String formatted = "";
@@ -1157,7 +1148,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 }
             }
         } catch (Exception e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
         }
 //        if (temperature.getValue() != null) {
 //            if (Integer.parseInt(temperature.getValue()) > 80) {
