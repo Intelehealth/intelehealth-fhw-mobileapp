@@ -43,7 +43,8 @@ public class DownloadService extends IntentService {
     private String encounterAdultIntials;
     private int totalFileSize;
     private String imgPrefix = "AD";
-    final private String imageDir = "Additional Documents";
+    final private String imageAD = "Additional Documents";
+    final private String imagePE = "Physical Exam";
     public String baseDir = "";
     public String ImageType = "";
     public DownloadService() {
@@ -70,8 +71,11 @@ public class DownloadService extends IntentService {
             ImageType = intent.getStringExtra("ImageType");
         }
         AppConstants.notificationUtils.showNotificationProgress("Download", "Downloading File", IntelehealthApplication.getAppContext(), 0);
-        baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + File.separator + "Patient Images" + File.separator + patientUuid + File.separator +
-                visitUuid + File.separator + imageDir + File.separator;
+        if (ImageType.equalsIgnoreCase(UuidDictionary.COMPLEX_IMAGE_AD))
+            baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + File.separator + "Patient Images" + File.separator + patientUuid + File.separator + visitUuid + File.separator + imageAD + File.separator;
+        else
+            baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + File.separator + "Patient Images" + File.separator + patientUuid + File.separator + visitUuid + File.separator + imagePE + File.separator;
+
         initDownload(ImageType);
 
     }
@@ -91,6 +95,8 @@ public class DownloadService extends IntentService {
             Observable<ResponseBody> downloadobs = AppConstants.apiInterface.OBS_IMAGE_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
             int finalI = i;
             String finalImageType = imageType;
+            List<String> finalImageObsList = imageObsList;
+            int finalI1 = i;
             downloadobs.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new DisposableObserver<ResponseBody>() {
@@ -98,7 +104,7 @@ public class DownloadService extends IntentService {
                         public void onNext(ResponseBody responseBody) {
 
                             try {
-                                downloadFile(responseBody, baseDir + patientUuid + "_" + visitUuid + "_" + imgPrefix, finalImageType);
+                                downloadFile(responseBody, baseDir + finalImageObsList.get(finalI1) + "_" + finalImageType, finalImageType);
                             } catch (IOException e) {
                                 Crashlytics.getInstance().core.logException(e);
                             }
@@ -147,13 +153,13 @@ public class DownloadService extends IntentService {
 
                 download.setCurrentFileSize((int) current);
                 download.setProgress(progress);
-//                sendNotification(download);
+                sendNotification(download);
                 timeCount++;
             }
 
             output.write(data, 0, count);
         }
-//        onDownloadComplete();
+        onDownloadComplete();
         output.flush();
         output.close();
         bis.close();
@@ -180,7 +186,15 @@ public class DownloadService extends IntentService {
         Intent intent = new Intent(AppConstants.MESSAGE_PROGRESS);
         intent.putExtra("download", download);
         LocalBroadcastManager.getInstance(DownloadService.this).sendBroadcast(intent);
+
+
+        Intent i = new Intent();
+        i.setAction("MY_BROADCAST_IMAGE_DOWNLAOD");
+        sendBroadcast(i);
+
+
     }
+
 
     private void onDownloadComplete() {
 

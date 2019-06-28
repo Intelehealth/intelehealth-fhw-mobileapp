@@ -18,6 +18,7 @@ import com.crashlytics.android.Crashlytics;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.cameraActivity.CameraActivity;
@@ -40,6 +41,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
     final private String imageDir = "Additional Documents";
     private String baseDir;
     private String filePath;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -148,7 +150,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_add_docs:
                 Intent cameraIntent = new Intent(this, CameraActivity.class);
-                String imageName = patientUuid + "_" + visitUuid + "_" + imgPrefix;
+                String imageName = UUID.randomUUID().toString() + "_" + imgPrefix;
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, filePath);
                 startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);

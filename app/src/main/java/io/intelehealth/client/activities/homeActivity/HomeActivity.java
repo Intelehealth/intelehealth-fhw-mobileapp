@@ -111,30 +111,30 @@ public class HomeActivity extends AppCompatActivity {
             Log.d("newfilepath", dbfilepath);
             final File db_file = new File(dbfilepath);
 
-            if (db_file.exists()) {
-                new AlertDialog.Builder(this)
-                        .setIcon(R.drawable.ic_file_download_black_48px)
-                        .setTitle(R.string.local_restore_alert_title)
-                        .setMessage(R.string.local_restore_alert_message)
-                        .setCancelable(false)
-                        .setPositiveButton(R.string.generic_yes,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int whichButton) {
-                                        //Restore from local backup
-                                        manageBackup(false, false); // to restore app data if db is empty
-                                    }
-                                }
-                        )
-                        .setNegativeButton(R.string.generic_no,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int whichButton) {
-                                        //Do Nothing!
-                                        // db_file.delete();
-                                    }
-                                }
-                        )
-                        .create().show();
-            }
+//            if (db_file.exists()) {
+//                new AlertDialog.Builder(this)
+//                        .setIcon(R.drawable.ic_file_download_black_48px)
+//                        .setTitle(R.string.local_restore_alert_title)
+//                        .setMessage(R.string.local_restore_alert_message)
+//                        .setCancelable(false)
+//                        .setPositiveButton(R.string.generic_yes,
+//                                new DialogInterface.OnClickListener() {
+//                                    public void onClick(DialogInterface dialog, int whichButton) {
+//                                        //Restore from local backup
+//                                        manageBackup(false, false); // to restore app data if db is empty
+//                                    }
+//                                }
+//                        )
+//                        .setNegativeButton(R.string.generic_no,
+//                                new DialogInterface.OnClickListener() {
+//                                    public void onClick(DialogInterface dialog, int whichButton) {
+//                                        //Do Nothing!
+//                                        // db_file.delete();
+//                                    }
+//                                }
+//                        )
+//                        .create().show();
+//            }
         }
 //        if (sessionManager.isFirstTimeSyncExcuted()) {
 

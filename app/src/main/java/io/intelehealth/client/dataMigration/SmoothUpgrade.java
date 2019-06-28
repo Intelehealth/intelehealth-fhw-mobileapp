@@ -27,11 +27,11 @@ import io.intelehealth.client.database.dao.EncounterDAO;
 import io.intelehealth.client.database.dao.ObsDAO;
 import io.intelehealth.client.database.dao.PatientsDAO;
 import io.intelehealth.client.database.dao.VisitsDAO;
-import io.intelehealth.client.models.EncounterDTO;
-import io.intelehealth.client.models.ObsDTO;
-import io.intelehealth.client.models.PatientAttributesDTO;
-import io.intelehealth.client.models.PatientDTO;
-import io.intelehealth.client.models.VisitDTO;
+import io.intelehealth.client.models.dto.EncounterDTO;
+import io.intelehealth.client.models.dto.ObsDTO;
+import io.intelehealth.client.models.dto.PatientAttributesDTO;
+import io.intelehealth.client.models.dto.PatientDTO;
+import io.intelehealth.client.models.dto.VisitDTO;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.StringUtils;
@@ -252,7 +252,7 @@ public class SmoothUpgrade {
                     visitDTO.setEnddate(cursor.getString(cursor.getColumnIndexOrThrow("end_datetime")));
                     visitDTO.setVisitTypeUuid(UuidDictionary.VISIT_TELEMEDICINE);
                     visitDTO.setLocationuuid(sessionManager.getLocationUuid());
-                    visitDTO.setCreator(4);
+                    visitDTO.setCreatoruuid(sessionManager.getCreatorID());
 
                     cursor.moveToNext();
                 }

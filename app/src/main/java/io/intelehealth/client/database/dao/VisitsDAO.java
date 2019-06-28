@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.intelehealth.client.app.AppConstants;
-import io.intelehealth.client.models.VisitAttributeDTO;
-import io.intelehealth.client.models.VisitAttributeTypeDTO;
-import io.intelehealth.client.models.VisitDTO;
+import io.intelehealth.client.models.dto.VisitAttributeDTO;
+import io.intelehealth.client.models.dto.VisitAttributeTypeDTO;
+import io.intelehealth.client.models.dto.VisitDTO;
 import io.intelehealth.client.models.pushRequestApiCall.Attribute;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
 import io.intelehealth.client.utilities.Logger;
@@ -66,7 +66,7 @@ public class VisitsDAO {
             values.put("patientuuid", visit.getPatientuuid());
             values.put("locationuuid", visit.getLocationuuid());
             values.put("visit_type_uuid", visit.getVisitTypeUuid());
-            values.put("creator", visit.getCreator());
+            values.put("creator", visit.getCreatoruuid());
             values.put("startdate", DateAndTimeUtils.formatDateFromOnetoAnother(visit.getStartdate(), "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
             values.put("enddate", visit.getEnddate());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
@@ -149,7 +149,7 @@ public class VisitsDAO {
             values.put("patientuuid", visit.getPatientuuid());
             values.put("locationuuid", visit.getLocationuuid());
             values.put("visit_type_uuid", visit.getVisitTypeUuid());
-            values.put("creator", visit.getCreator());
+            values.put("creator", visit.getCreatoruuid());
             values.put("startdate", visit.getStartdate());
             values.put("enddate", visit.getEnddate());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
@@ -213,7 +213,7 @@ public class VisitsDAO {
                 visitDTO.setLocationuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("locationuuid")));
                 visitDTO.setStartdate(idCursor.getString(idCursor.getColumnIndexOrThrow("startdate")));
                 visitDTO.setEnddate(idCursor.getString(idCursor.getColumnIndexOrThrow("enddate")));
-                visitDTO.setCreator(idCursor.getInt(idCursor.getColumnIndexOrThrow("creator")));
+                visitDTO.setCreatoruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("creator")));
                 visitDTO.setVisitTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_type_uuid")));
                 visitDTOList.add(visitDTO);
             }

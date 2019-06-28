@@ -3,7 +3,7 @@ package io.intelehealth.client.database.dao;
 import android.database.sqlite.SQLiteDatabase;
 
 import io.intelehealth.client.app.IntelehealthApplication;
-import io.intelehealth.client.models.ResponseDTO;
+import io.intelehealth.client.models.dto.ResponseDTO;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.exception.DAOException;

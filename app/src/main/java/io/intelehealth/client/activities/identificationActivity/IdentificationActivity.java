@@ -52,11 +52,12 @@ import io.intelehealth.client.activities.setupActivity.SetupActivity;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.InteleHealthDatabaseHelper;
 import io.intelehealth.client.database.dao.ImagesDAO;
+import io.intelehealth.client.database.dao.ImagesPushDAO;
 import io.intelehealth.client.database.dao.PatientsDAO;
 import io.intelehealth.client.database.dao.PullDataDAO;
 import io.intelehealth.client.models.Patient;
-import io.intelehealth.client.models.PatientAttributesDTO;
-import io.intelehealth.client.models.PatientDTO;
+import io.intelehealth.client.models.dto.PatientAttributesDTO;
+import io.intelehealth.client.models.dto.PatientDTO;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
 import io.intelehealth.client.utilities.EditTextUtils;
 import io.intelehealth.client.utilities.FileUtils;
@@ -391,14 +392,17 @@ public class IdentificationActivity extends AppCompatActivity {
         if (patientID_edit != null) {
             // setting country according database
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
+
             if (patient1.getEducation_level().equals(getString(R.string.not_provided)))
                 mEducation.setSelection(0);
             else
                 mEducation.setSelection(educationAdapter.getPosition(patient1.getEducation_level()));
+
             if (patient1.getEconomic_status().equals(getString(R.string.not_provided)))
                 mEconomicStatus.setSelection(0);
             else
                 mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
+
             if (patient1.getCaste().equals(getString(R.string.not_provided)))
                 mCaste.setSelection(0);
             else
@@ -508,15 +512,21 @@ public class IdentificationActivity extends AppCompatActivity {
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String patientTemp = "";
+                if (patientUuid.equalsIgnoreCase("")) {
+                    patientTemp = patientID_edit;
+                } else {
+                    patientTemp = patientUuid;
+                }
                 File filePath = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator +
-                        "Patient_Images" + File.separator + patientUuid);
+                        "Patient_Images" + File.separator + patientTemp);
                 if (!filePath.exists()) {
                     filePath.mkdir();
                 }
                 Intent cameraIntent = new Intent(IdentificationActivity.this, CameraActivity.class);
 
                 // cameraIntent.putExtra(CameraActivity.SHOW_DIALOG_MESSAGE, getString(R.string.camera_dialog_default));
-                cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, patientUuid);
+                cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, patientTemp);
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, filePath);
                 startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
             }
@@ -923,6 +933,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setPatientPhoto(mCurrentPhotoPath);
 //                patientdto.setEconomic(StringUtils.getValue(m));
             patientdto.setStateprovince(StringUtils.getValue(mState.getSelectedItem().toString()));
+
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
@@ -963,6 +974,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
             patientAttributesDTO.setValue(StringUtils.getProvided(mEducation));
+            patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -971,7 +983,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
 
             patientAttributesDTOList.add(patientAttributesDTO);
-            Logger.logD(TAG, "PatientAttribute list" + patientAttributesDTOList.size());
+            Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());
             patientdto.setPatientAttributesDTOList(patientAttributesDTOList);
             patientdto.setSyncd(false);
             Logger.logD("patient json : ", "Json : " + gson.toJson(patientdto, PatientDTO.class));
@@ -980,21 +992,30 @@ public class IdentificationActivity extends AppCompatActivity {
 
         try {
             Logger.logD(TAG, "insertpatinet ");
-            boolean b = patientsDAO.insertPatientToDB(patientdto, uuid);
-            boolean c = imagesDAO.insertPatientProfileImages(mCurrentPhotoPath, uuid);
+            boolean isPatientInserted = patientsDAO.insertPatientToDB(patientdto, uuid);
+            boolean isPatientImageInserted = imagesDAO.insertPatientProfileImages(mCurrentPhotoPath, uuid);
 
             if (NetworkConnection.isOnline(getApplication())) {
 //                patientApiCall();
 //                frameJson();
                 AppConstants.notificationUtils.showNotifications("Patient Data Upload", "Uploading " + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s data", getApplication());
                 PullDataDAO pullDataDAO = new PullDataDAO();
+                ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
                 boolean push = pullDataDAO.pushDataApi();
+                boolean pushImage = imagesPushDAO.patientProfileImagesPush();
                 if (push)
                     AppConstants.notificationUtils.DownloadDone("Patient Data Upload", "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s data upload complete.", getApplication());
                 else
                     AppConstants.notificationUtils.DownloadDone("Patient Data Upload", "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s data not uploaded.", getApplication());
+
+                if (pushImage)
+                    AppConstants.notificationUtils.DownloadDone("Patient Data Upload", "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s Image upload complete.", getApplication());
+                else
+                    AppConstants.notificationUtils.DownloadDone("Patient Data Upload", "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s Image not complete.", getApplication());
+
+
             }
-            if (b) {
+            if (isPatientInserted && isPatientImageInserted) {
                 Logger.logD(TAG, "inserted");
                 Intent i = new Intent(getApplication(), PatientDetailActivity.class);
                 i.putExtra("patientUuid", uuid);
@@ -1019,6 +1040,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
         patientdto.setUuid(uuid);
         Gson gson = new Gson();
+        if (mCurrentPhotoPath == null)
+            mCurrentPhotoPath = patientdto.getPatient_photo();
 
         patientdto.setFirst_name(StringUtils.getValue(patientdto.getFirst_name()));
         patientdto.setMiddle_name(StringUtils.getValue(patientdto.getMiddle_name()));
@@ -1074,6 +1097,7 @@ public class IdentificationActivity extends AppCompatActivity {
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
         patientAttributesDTO.setValue(StringUtils.getProvided(mEducation));
+        patientAttributesDTOList.add(patientAttributesDTO);
 
         patientAttributesDTO = new PatientAttributesDTO();
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -1082,21 +1106,34 @@ public class IdentificationActivity extends AppCompatActivity {
         patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
 
         patientAttributesDTOList.add(patientAttributesDTO);
-        Logger.logD(TAG, "PatientAttribute list" + patientAttributesDTOList.size());
+        Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());
         //patientdto.setPatientAttributesDTOList(patientAttributesDTOList);
 
         Logger.logD("patient json onPatientUpdateClicked : ", "Json : " + gson.toJson(patientdto, Patient.class));
 
         try {
             Logger.logD(TAG, "update ");
-            boolean patientUpdated = patientsDAO.updatePatientToDB(patientdto, uuid, patientAttributesDTOList);
+            boolean isPatientUpdated = patientsDAO.updatePatientToDB(patientdto, uuid, patientAttributesDTOList);
+            boolean isPatientImageUpdated = imagesDAO.updatePatientProfileImages(mCurrentPhotoPath, uuid);
 
             if (NetworkConnection.isOnline(getApplication())) {
                 PullDataDAO pullDataDAO = new PullDataDAO();
-                pullDataDAO.pushDataApi();
-                AppConstants.notificationUtils.showNotifications("Patient Data Upload", "" + patientdto.getFirst_name() + "" + patientdto.getLast_name() + "'s data upload complete.", getApplication());
+                ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+                boolean ispush = pullDataDAO.pushDataApi();
+                boolean isPushImage = imagesPushDAO.patientProfileImagesPush();
+
+                if (ispush)
+                    AppConstants.notificationUtils.DownloadDone("Patient Data Upload", "" + patientdto.getFirst_name() + "" + patientdto.getLast_name() + "'s data upload complete.", getApplication());
+                else
+                    AppConstants.notificationUtils.DownloadDone("Patient Data Upload", "" + patientdto.getFirst_name() + "" + patientdto.getLast_name() + "'s data not uploaded.", getApplication());
+
+                if (isPushImage)
+                    AppConstants.notificationUtils.DownloadDone("Patient Data Upload", "" + patientdto.getFirst_name() + "" + patientdto.getLast_name() + "'s Image upload complete.", getApplication());
+                else
+                    AppConstants.notificationUtils.DownloadDone("Patient Data Upload", "" + patientdto.getFirst_name() + "" + patientdto.getLast_name() + "'s Image not complete.", getApplication());
+
             }
-            if (patientUpdated) {
+            if (isPatientUpdated && isPatientImageUpdated) {
                 Logger.logD(TAG, "updated");
                 Intent i = new Intent(getApplication(), PatientDetailActivity.class);
                 i.putExtra("patientUuid", uuid);

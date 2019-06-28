@@ -1,27 +1,20 @@
-package io.intelehealth.client.models;
+
+package io.intelehealth.client.models.dto;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class VisitAttributeTypeDTO {
+public class LocationDTO {
 
-    @SerializedName("uuid")
-    @Expose
-    private String uuid;
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("locationuuid")
+    @Expose
+    private String locationuuid;
     @SerializedName("retired")
     @Expose
     private Integer retired;
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
 
     public String getName() {
         return name;
@@ -31,6 +24,14 @@ public class VisitAttributeTypeDTO {
         this.name = name;
     }
 
+    public String getLocationuuid() {
+        return locationuuid;
+    }
+
+    public void setLocationuuid(String locationuuid) {
+        this.locationuuid = locationuuid;
+    }
+
     public Integer getRetired() {
         return retired;
     }
@@ -38,5 +39,6 @@ public class VisitAttributeTypeDTO {
     public void setRetired(Integer retired) {
         this.retired = retired;
     }
+
 
 }

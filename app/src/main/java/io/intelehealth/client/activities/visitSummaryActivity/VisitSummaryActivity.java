@@ -78,16 +78,16 @@ import io.intelehealth.client.activities.patientSurveyActivity.PatientSurveyActi
 import io.intelehealth.client.activities.physcialExamActivity.PhysicalExamActivity;
 import io.intelehealth.client.activities.vitalActivity.VitalsActivity;
 import io.intelehealth.client.app.AppConstants;
+import io.intelehealth.client.database.dao.EmergencyEncounterDAO;
 import io.intelehealth.client.database.dao.EncounterDAO;
 import io.intelehealth.client.database.dao.ImagesDAO;
+import io.intelehealth.client.database.dao.ImagesPushDAO;
 import io.intelehealth.client.database.dao.PullDataDAO;
 import io.intelehealth.client.knowledgeEngine.Node;
-import io.intelehealth.client.models.ObsDTO;
 import io.intelehealth.client.models.Patient;
-import io.intelehealth.client.models.download.Download;
+import io.intelehealth.client.models.dto.ObsDTO;
 import io.intelehealth.client.services.DownloadService;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
-import io.intelehealth.client.utilities.EmergencyEncounter;
 import io.intelehealth.client.utilities.FileUtils;
 import io.intelehealth.client.utilities.NetworkConnection;
 import io.intelehealth.client.utilities.SessionManager;
@@ -256,10 +256,39 @@ public class VisitSummaryActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    private BroadcastReceiver broadcastReceiverForIamgeDownlaod = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+//            if (intent.getAction().equals(AppConstants.MESSAGE_PROGRESS)) {
+//                Download download = intent.getParcelableExtra("download");
+//                if (download.getProgress() == 100) {
+//                } else {
+//                }
+//            }
+            onResume();
+            physicalDoumentsUpdates();
+
+        }
+    };
+
+    public void registerBroadcastReceiverDynamically() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("MY_BROADCAST_IMAGE_DOWNLAOD");
+        registerReceiver(broadcastReceiverForIamgeDownlaod, filter);
+    }
+
+
     @Override
     public void onBackPressed() {
         //do nothing
         //Use the buttons on the screen to navigate
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiverForIamgeDownlaod);
     }
 
     @Override
@@ -308,18 +337,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
     }
 
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            if (intent.getAction().equals(AppConstants.MESSAGE_PROGRESS)) {
-                Download download = intent.getParcelableExtra("download");
-                if (download.getProgress() == 100) {
-                } else {
-                }
-            }
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -343,6 +360,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 physicalExams.addAll(selectedExams);
             }
         }
+        registerBroadcastReceiverDynamically();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (sharedPreferences.contains("licensekey"))
             hasLicense = true;
@@ -422,17 +440,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             cursor.close();
         }
 
-        if (!phyExamDir.exists()) {
-            phyExamDir.mkdirs();
-            Log.v(TAG, "directory ceated " + phyExamDir.getAbsolutePath());
-        } else {
-            File[] files = phyExamDir.listFiles();
-            List<File> fileList = Arrays.asList(files);
-            HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
-            mPhysicalExamsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
-            mPhysicalExamsRecyclerView.setLayoutManager(mPhysicalExamsLayoutManager);
-            mPhysicalExamsRecyclerView.setAdapter(horizontalAdapter);
-        }
+        physicalDoumentsUpdates();
 
         mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -482,14 +490,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-                EmergencyEncounter emergencyEncounter = new EmergencyEncounter();
+                EmergencyEncounterDAO emergencyEncounterDAO = new EmergencyEncounterDAO();
                 if (flag.isChecked()) {
                     Log.d(TAG, "Emergency flag val: " + flag.isChecked());
                     String emergency_checked = String.valueOf(flag.isChecked());
                     String updateQuery = "UPDATE tbl_visit SET emergency ='" + emergency_checked + "' WHERE uuid = '" + visitUuid + "'";
                     db.execSQL(updateQuery);
                     db.close();
-                    emergencyEncounter.uploadEncounterEmergency(visitUuid);
+                    emergencyEncounterDAO.uploadEncounterEmergency(visitUuid);
                 } else {
                     db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
                     Log.d(TAG, "Emergency flag val: " + flag.isChecked());
@@ -499,7 +507,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     db.close();
                     db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
                     if (NetworkConnection.isOnline(getApplication())) {
-                        emergencyEncounter.removeEncounterEmergency(visitUuid, db);
+                        emergencyEncounterDAO.removeEncounterEmergency(visitUuid, db);
                     }
                     db.close();
                 }
@@ -551,12 +559,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 AppConstants.notificationUtils.showNotifications("Visit Data Upload", "Uploading visit data", VisitSummaryActivity.this);
                 PullDataDAO pullDataDAO = new PullDataDAO();
+                ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
                 boolean pull = pullDataDAO.pushDataApi();
                 if (pull)
                     AppConstants.notificationUtils.DownloadDone("Visit Data Upload", "Uploaded visit data", VisitSummaryActivity.this);
                 else
                     AppConstants.notificationUtils.DownloadDone("Visit Data Upload", "failed to Uploaded", VisitSummaryActivity.this);
-
+                imagesPushDAO.obsImagesPush();
             }
 
         });
@@ -1045,6 +1054,20 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 startDownload(UuidDictionary.COMPLEX_IMAGE_PE);
             }
         });
+    }
+
+    private void physicalDoumentsUpdates() {
+        if (!phyExamDir.exists()) {
+            phyExamDir.mkdirs();
+            Log.v(TAG, "directory ceated " + phyExamDir.getAbsolutePath());
+        } else {
+            File[] files = phyExamDir.listFiles();
+            List<File> fileList = Arrays.asList(files);
+            HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
+            mPhysicalExamsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
+            mPhysicalExamsRecyclerView.setLayoutManager(mPhysicalExamsLayoutManager);
+            mPhysicalExamsRecyclerView.setAdapter(horizontalAdapter);
+        }
     }
 
     private void startDownload(String imageType) {
@@ -1685,6 +1708,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             mAdditionalDocsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
             mAdditionalDocsRecyclerView.setLayoutManager(mAdditionalDocsLayoutManager);
             mAdditionalDocsRecyclerView.setAdapter(horizontalAdapter);
+
         }
     }
 

@@ -27,8 +27,8 @@ import io.intelehealth.client.database.dao.EncounterDAO;
 import io.intelehealth.client.database.dao.ObsDAO;
 import io.intelehealth.client.database.dao.PullDataDAO;
 import io.intelehealth.client.database.dao.VisitsDAO;
-import io.intelehealth.client.models.EncounterDTO;
-import io.intelehealth.client.models.ObsDTO;
+import io.intelehealth.client.models.dto.EncounterDTO;
+import io.intelehealth.client.models.dto.ObsDTO;
 import io.intelehealth.client.utilities.UuidDictionary;
 import io.intelehealth.client.utilities.exception.DAOException;
 

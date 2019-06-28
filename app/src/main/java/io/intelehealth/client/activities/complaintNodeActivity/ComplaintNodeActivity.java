@@ -39,7 +39,7 @@ import io.intelehealth.client.activities.questionNodeActivity.QuestionNodeActivi
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.dao.EncounterDAO;
 import io.intelehealth.client.knowledgeEngine.Node;
-import io.intelehealth.client.models.EncounterDTO;
+import io.intelehealth.client.models.dto.EncounterDTO;
 import io.intelehealth.client.utilities.FileUtils;
 import io.intelehealth.client.utilities.exception.DAOException;
 

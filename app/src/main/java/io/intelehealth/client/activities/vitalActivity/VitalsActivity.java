@@ -32,8 +32,8 @@ import io.intelehealth.client.activities.visitSummaryActivity.VisitSummaryActivi
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.dao.EncounterDAO;
 import io.intelehealth.client.database.dao.ObsDAO;
-import io.intelehealth.client.models.ObsDTO;
 import io.intelehealth.client.models.VitalsObject;
+import io.intelehealth.client.models.dto.ObsDTO;
 import io.intelehealth.client.utilities.ConfigUtils;
 import io.intelehealth.client.utilities.FileUtils;
 import io.intelehealth.client.utilities.SessionManager;

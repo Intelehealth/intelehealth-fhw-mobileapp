@@ -27,7 +27,7 @@ import java.util.List;
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.InteleHealthDatabaseHelper;
-import io.intelehealth.client.models.PatientDTO;
+import io.intelehealth.client.models.dto.PatientDTO;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
 

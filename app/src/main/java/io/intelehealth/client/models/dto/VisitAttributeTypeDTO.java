@@ -1,10 +1,9 @@
-
-package io.intelehealth.client.models;
+package io.intelehealth.client.models.dto;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class PatientAttributeTypeMasterDTO {
+public class VisitAttributeTypeDTO {
 
     @SerializedName("uuid")
     @Expose
@@ -12,6 +11,9 @@ public class PatientAttributeTypeMasterDTO {
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("retired")
+    @Expose
+    private Integer retired;
 
     public String getUuid() {
         return uuid;
@@ -27,6 +29,14 @@ public class PatientAttributeTypeMasterDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getRetired() {
+        return retired;
+    }
+
+    public void setRetired(Integer retired) {
+        this.retired = retired;
     }
 
 }

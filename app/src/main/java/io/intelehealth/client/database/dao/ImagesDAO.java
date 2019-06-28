@@ -95,6 +95,32 @@ public class ImagesDAO {
         return isInserted;
     }
 
+    public boolean updatePatientProfileImages(String imagepath, String patientuuid) throws DAOException {
+        boolean isUpdated = false;
+        long isupdate = 0;
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        localdb.beginTransaction();
+        ContentValues contentValues = new ContentValues();
+        String whereclause = "patientuuid = ? AND image_type = ?";
+        try {
+            contentValues.put("patientuuid", patientuuid);
+            contentValues.put("image_path", imagepath);
+            contentValues.put("obs_time_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            contentValues.put("sync", "false");
+            isupdate = localdb.update("tbl_image_records", contentValues, whereclause, new String[]{patientuuid, "PP"});
+            if (isupdate != 0)
+                isUpdated = true;
+            localdb.setTransactionSuccessful();
+        } catch (SQLiteException e) {
+            isUpdated = false;
+            throw new DAOException(e);
+        } finally {
+            localdb.endTransaction();
+            localdb.close();
+        }
+        return isUpdated;
+    }
+
     public List<PatientProfile> getPatientProfileUnsyncedImages() throws DAOException {
         List<PatientProfile> patientProfiles = new ArrayList<>();
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
@@ -131,7 +157,7 @@ public class ImagesDAO {
                 while (idCursor.moveToNext()) {
                     ObsJsonRequest obsJsonRequest = new ObsJsonRequest();
                     obsJsonRequest.setPerson(idCursor.getString(idCursor.getColumnIndexOrThrow("patientuuid")));
-                    obsJsonRequest.setConcept(UuidDictionary.COMPLEX_IMAGE_AD);
+                    obsJsonRequest.setConcept(getImageTypeUUid(idCursor.getString(idCursor.getColumnIndexOrThrow("image_type"))));
                     obsJsonRequest.setEncounter(idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")));
                     obsJsonRequest.setObsDatetime(idCursor.getString(idCursor.getColumnIndexOrThrow("obs_time_date")));
                     obsJsonRequest.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
@@ -241,6 +267,16 @@ public class ImagesDAO {
             localdb.close();
         }
         return isUpdated;
+    }
+
+    private String getImageTypeUUid(String imageType) {
+        String imagetype = "";
+        if (imageType.equalsIgnoreCase("AD"))
+            imagetype = UuidDictionary.COMPLEX_IMAGE_AD;
+        else
+            imagetype = UuidDictionary.COMPLEX_IMAGE_PE;
+
+        return imagetype;
     }
 
 }

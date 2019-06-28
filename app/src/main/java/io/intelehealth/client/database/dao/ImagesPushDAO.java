@@ -56,10 +56,8 @@ public class ImagesPushDAO {
         } catch (DAOException e) {
             Crashlytics.getInstance().core.logException(e);
         }
-        int i = 0;
         for (PatientProfile p : patientProfiles) {
             Single<ResponseBody> personProfilePicUpload = AppConstants.apiInterface.PERSON_PROFILE_PIC_UPLOAD(url, "Basic " + encoded, p);
-            int finalI = i;
             personProfilePicUpload.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new DisposableSingleObserver<ResponseBody>() {
@@ -71,7 +69,7 @@ public class ImagesPushDAO {
                             } catch (DAOException e) {
                                 Crashlytics.getInstance().core.logException(e);
                             }
-                            AppConstants.notificationUtils.showNotificationProgress("Patient Profile", "Uploading Patient Profile", IntelehealthApplication.getAppContext(), finalI);
+                            AppConstants.notificationUtils.DownloadDone("Patient Profile", "Uploaded Patient Profile", IntelehealthApplication.getAppContext());
                         }
 
                         @Override
@@ -80,7 +78,6 @@ public class ImagesPushDAO {
                             AppConstants.notificationUtils.DownloadDone("Patient Profile", "Error Uploading Patient Profile", IntelehealthApplication.getAppContext());
                         }
                     });
-            i++;
         }
         AppConstants.notificationUtils.DownloadDone("Patient Profile", "Completed Uploading Patient Profile", IntelehealthApplication.getAppContext());
         return true;

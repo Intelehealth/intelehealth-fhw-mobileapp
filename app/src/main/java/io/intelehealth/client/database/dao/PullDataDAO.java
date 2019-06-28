@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.app.IntelehealthApplication;
-import io.intelehealth.client.models.ResponseDTO;
+import io.intelehealth.client.models.dto.ResponseDTO;
 import io.intelehealth.client.models.pushRequestApiCall.PushRequestApiCall;
 import io.intelehealth.client.models.pushResponseApiCall.PushResponseApiCall;
 import io.intelehealth.client.utilities.Logger;

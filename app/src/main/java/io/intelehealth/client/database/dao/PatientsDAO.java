@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,9 +15,9 @@ import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.app.IntelehealthApplication;
 import io.intelehealth.client.database.MyIntentService;
 import io.intelehealth.client.models.Patient;
-import io.intelehealth.client.models.PatientAttributeTypeMasterDTO;
-import io.intelehealth.client.models.PatientAttributesDTO;
-import io.intelehealth.client.models.PatientDTO;
+import io.intelehealth.client.models.dto.PatientAttributeTypeMasterDTO;
+import io.intelehealth.client.models.dto.PatientAttributesDTO;
+import io.intelehealth.client.models.dto.PatientDTO;
 import io.intelehealth.client.models.pushRequestApiCall.Attribute;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
 import io.intelehealth.client.utilities.Logger;
@@ -241,6 +243,7 @@ public class PatientsDAO {
             cursor.close();
             db.setTransactionSuccessful();
         } catch (SQLException e) {
+            Crashlytics.getInstance().core.logException(e);
             throw new DAOException(e.getMessage());
         } finally {
             db.endTransaction();
@@ -267,6 +270,7 @@ public class PatientsDAO {
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             isInserted = false;
+            Crashlytics.getInstance().core.logException(e);
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -295,6 +299,7 @@ public class PatientsDAO {
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             isInserted = false;
+            Crashlytics.getInstance().core.logException(e);
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -335,6 +340,7 @@ public class PatientsDAO {
             db.setTransactionSuccessful();
         } catch (SQLException sql) {
             Logger.logD("patient", "patient" + sql.getMessage());
+            Crashlytics.getInstance().core.logException(sql);
             throw new DAOException(sql.getMessage());
         } finally {
             db.endTransaction();
@@ -397,6 +403,7 @@ public class PatientsDAO {
         } catch (SQLException sql) {
             Logger.logD("patient", "patient" + sql.getMessage());
             isUpdated = false;
+            Crashlytics.getInstance().core.logException(sql);
             throw new DAOException(sql.getMessage());
         } finally {
             db.endTransaction();
@@ -404,6 +411,30 @@ public class PatientsDAO {
 
         }
         return isUpdated;
+    }
+
+    public String getOpenmrsId(String patientuuid) throws DAOException {
+        String id = "";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            Cursor cursor = db.rawQuery("SELECT openmrs_id FROM tbl_patient where uuid = ? COLLATE NOCASE", new String[]{patientuuid});
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    id = cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id"));
+                }
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLException s) {
+            Crashlytics.getInstance().core.logException(s);
+            throw new DAOException(s);
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
+        return id;
+
     }
 
 }

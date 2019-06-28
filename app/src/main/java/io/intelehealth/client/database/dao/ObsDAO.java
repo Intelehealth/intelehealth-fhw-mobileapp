@@ -14,7 +14,7 @@ import java.util.UUID;
 
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.app.IntelehealthApplication;
-import io.intelehealth.client.models.ObsDTO;
+import io.intelehealth.client.models.dto.ObsDTO;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.exception.DAOException;

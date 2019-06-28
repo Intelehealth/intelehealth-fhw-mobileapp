@@ -9,14 +9,15 @@ import java.util.List;
 
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.app.IntelehealthApplication;
+import io.intelehealth.client.database.dao.EmergencyEncounterDAO;
 import io.intelehealth.client.database.dao.EncounterDAO;
 import io.intelehealth.client.database.dao.ObsDAO;
 import io.intelehealth.client.database.dao.PatientsDAO;
 import io.intelehealth.client.database.dao.VisitsDAO;
-import io.intelehealth.client.models.EncounterDTO;
-import io.intelehealth.client.models.ObsDTO;
-import io.intelehealth.client.models.PatientDTO;
-import io.intelehealth.client.models.VisitDTO;
+import io.intelehealth.client.models.dto.EncounterDTO;
+import io.intelehealth.client.models.dto.ObsDTO;
+import io.intelehealth.client.models.dto.PatientDTO;
+import io.intelehealth.client.models.dto.VisitDTO;
 import io.intelehealth.client.models.pushRequestApiCall.Address;
 import io.intelehealth.client.models.pushRequestApiCall.Attribute;
 import io.intelehealth.client.models.pushRequestApiCall.Encounter;
@@ -36,7 +37,7 @@ public class PatientsFrameJson {
     VisitsDAO visitsDAO = new VisitsDAO();
     EncounterDAO encounterDAO = new EncounterDAO();
     ObsDAO obsDAO = new ObsDAO();
-    EmergencyEncounter emergencyEncounter = new EmergencyEncounter();
+    EmergencyEncounterDAO emergencyEncounterDAO = new EmergencyEncounterDAO();
     SQLiteDatabase db = null;
 
     public PushRequestApiCall frameJson() {
@@ -122,7 +123,7 @@ public class PatientsFrameJson {
                 Crashlytics.getInstance().core.logException(e);
             }
             if (emergencyVisitUuids.size() != 0) {
-                emergencyEncounter.removeEncounterEmergency(visitDTO.getUuid(), db);
+                emergencyEncounterDAO.removeEncounterEmergency(visitDTO.getUuid(), db);
             }
 //            List<Attribute> attributeList = new ArrayList<>();
 //            attributeList.clear();
@@ -179,8 +180,8 @@ public class PatientsFrameJson {
         pushRequestApiCall.setVisits(visitList);
         pushRequestApiCall.setEncounters(encounterList);
 
-//        EmergencyEncounter emergencyEncounter=new EmergencyEncounter();
-//        emergencyEncounter.checkEmergency();
+//        EmergencyEncounterDAO emergencyEncounterDAO=new EmergencyEncounterDAO();
+//        emergencyEncounterDAO.checkEmergency();
 
         return pushRequestApiCall;
     }

@@ -1,4 +1,4 @@
-package io.intelehealth.client.models;
+package io.intelehealth.client.models.dto;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

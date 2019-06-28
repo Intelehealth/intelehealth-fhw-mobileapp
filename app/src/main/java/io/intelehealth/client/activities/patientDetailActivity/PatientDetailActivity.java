@@ -49,9 +49,9 @@ import io.intelehealth.client.database.dao.ImagesDAO;
 import io.intelehealth.client.database.dao.PatientsDAO;
 import io.intelehealth.client.database.dao.VisitsDAO;
 import io.intelehealth.client.knowledgeEngine.Node;
-import io.intelehealth.client.models.EncounterDTO;
 import io.intelehealth.client.models.Patient;
-import io.intelehealth.client.models.VisitDTO;
+import io.intelehealth.client.models.dto.EncounterDTO;
+import io.intelehealth.client.models.dto.VisitDTO;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
 import io.intelehealth.client.utilities.DownloadFilesUtils;
 import io.intelehealth.client.utilities.Logger;
@@ -97,7 +97,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     Myreceiver reMyreceive;
     ImageView photoView;
     ImagesDAO imagesDAO = new ImagesDAO();
-
+    TextView idView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -210,7 +210,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 visitDTO.setVisitTypeUuid(UuidDictionary.VISIT_TELEMEDICINE);
                 visitDTO.setLocationuuid(sessionManager.getLocationUuid());
                 visitDTO.setSyncd(false);
-                visitDTO.setCreator(4);//static
+                visitDTO.setCreatoruuid(sessionManager.getCreatorID());//static
 
                 VisitsDAO visitsDAO = new VisitsDAO();
 
@@ -317,7 +317,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         photoView = findViewById(R.id.imageView_patient);
 
-        TextView idView = findViewById(R.id.textView_ID);
+        idView = findViewById(R.id.textView_ID);
         TextView dobView = findViewById(R.id.textView_DOB);
         TextView ageView = findViewById(R.id.textView_age);
         TextView addr1View = findViewById(R.id.textView_address_1);
@@ -624,6 +624,18 @@ public class PatientDetailActivity extends AppCompatActivity {
                                     .centerCrop()
                                     .into(photoView);
                         }
+                        ImagesDAO imagesDAO = new ImagesDAO();
+                        boolean isImageDownloaded = false;
+                        try {
+                            isImageDownloaded = imagesDAO.insertPatientProfileImages(IMAGE_PATH + patientUuid + ".jpg", patientUuid);
+                        } catch (DAOException e) {
+                            Crashlytics.getInstance().core.logException(e);
+                        }
+                        if (isImageDownloaded)
+                            AppConstants.notificationUtils.DownloadDone("Patient Image Download", "" + patient_new.getFirst_name() + "" + patient_new.getLast_name() + "'s Image Download complete.", getApplication());
+                        else
+                            AppConstants.notificationUtils.DownloadDone("Patient Image Download", "" + patient_new.getFirst_name() + "" + patient_new.getLast_name() + "'s Image Download Incomplete.", getApplication());
+
 
                     }
                 });
@@ -785,7 +797,11 @@ public class PatientDetailActivity extends AppCompatActivity {
     public class Myreceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            setDisplay(patientUuid);
+            try {
+                idView.setText(patientsDAO.getOpenmrsId(patientUuid));
+            } catch (DAOException e) {
+                Crashlytics.getInstance().core.logException(e);
+            }
         }
     }
 }

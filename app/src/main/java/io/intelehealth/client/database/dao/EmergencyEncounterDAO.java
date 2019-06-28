@@ -1,4 +1,4 @@
-package io.intelehealth.client.utilities;
+package io.intelehealth.client.database.dao;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,16 +15,18 @@ import java.util.UUID;
 
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.app.IntelehealthApplication;
-import io.intelehealth.client.database.dao.EncounterDAO;
-import io.intelehealth.client.models.EncounterDTO;
+import io.intelehealth.client.models.dto.EncounterDTO;
+import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.exception.DAOException;
 import retrofit2.Call;
 
 import static io.intelehealth.client.app.AppConstants.apiInterface;
 
-public class EmergencyEncounter {
+public class EmergencyEncounterDAO {
+    SessionManager sessionManager = null;
 
     public boolean uploadEncounterEmergency(String visitUuid) {
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
         Date todayDate = new Date();
         String thisDate = currentDate.format(todayDate);
@@ -34,6 +36,7 @@ public class EmergencyEncounter {
         encounterDTO.setEncounterTime(thisDate);
         encounterDTO.setUuid(UUID.randomUUID().toString());
         encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("EMERGENCY"));
+        encounterDTO.setProvideruuid(sessionManager.getProviderID());
         encounterDTO.setVisituuid(visitUuid);
         encounterDTO.setSyncd(false);
 
@@ -89,4 +92,6 @@ public class EmergencyEncounter {
 
         return success;
     }
+
+
 }

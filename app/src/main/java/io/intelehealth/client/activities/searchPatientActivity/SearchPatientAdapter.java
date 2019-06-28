@@ -15,7 +15,7 @@ import java.util.List;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.patientDetailActivity.PatientDetailActivity;
-import io.intelehealth.client.models.PatientDTO;
+import io.intelehealth.client.models.dto.PatientDTO;
 
 public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdapter.Myholder> {
     List<PatientDTO> patients;

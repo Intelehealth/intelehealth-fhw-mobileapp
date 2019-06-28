@@ -1,5 +1,5 @@
 
-package io.intelehealth.client.models;
+package io.intelehealth.client.models.dto;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -17,6 +17,9 @@ public class EncounterDTO {
     @SerializedName("encounter_time")
     @Expose
     private String encounterTime;
+    @SerializedName("provider_uuid")
+    @Expose
+    private String provideruuid;
     @SerializedName("syncd")
     @Expose
     private Boolean syncd;
@@ -70,5 +73,13 @@ public class EncounterDTO {
 
     public void setEncounterTime(String encounterTime) {
         this.encounterTime = encounterTime;
+    }
+
+    public String getProvideruuid() {
+        return provideruuid;
+    }
+
+    public void setProvideruuid(String provideruuid) {
+        this.provideruuid = provideruuid;
     }
 }

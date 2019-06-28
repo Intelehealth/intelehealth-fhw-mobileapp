@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.intelehealth.client.app.AppConstants;
-import io.intelehealth.client.models.EncounterDTO;
+import io.intelehealth.client.models.dto.EncounterDTO;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.exception.DAOException;
 
@@ -17,6 +17,7 @@ public class EncounterDAO {
 
     long createdRecordsCount = 0;
     int updatecount = 0;
+    private String tag = EncounterDAO.class.getSimpleName();
 //    private SQLiteDatabase db = null;
 
     public boolean insertEncounter(List<EncounterDTO> encounterDTOS) throws DAOException {
@@ -48,6 +49,7 @@ public class EncounterDAO {
             values.put("uuid", encounter.getUuid());
             values.put("visituuid", encounter.getVisituuid());
             values.put("encounter_type_uuid", encounter.getEncounterTypeUuid());
+            values.put("provider_uuid", encounter.getProvideruuid());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("sync", encounter.getSyncd());
             values.put("voided", encounter.getVoided());
@@ -73,10 +75,13 @@ public class EncounterDAO {
             values.put("visituuid", encounter.getVisituuid());
             values.put("encounter_time",encounter.getEncounterTime());
             values.put("encounter_type_uuid", encounter.getEncounterTypeUuid());
+            values.put("provider_uuid", encounter.getProvideruuid());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("sync", "false");
             values.put("voided", encounter.getVoided());
             createdRecordsCount = db.insertWithOnConflict("tbl_encounter", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            if (createdRecordsCount != 0)
+                isCreated = true;
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             isCreated = false;
@@ -139,10 +144,10 @@ public class EncounterDAO {
             values.put("sync", synced);
             values.put("uuid", uuid);
             int i = db.update("tbl_encounter", values, whereclause, whereargs);
-            Logger.logD("visit", "updated" + i);
+            Logger.logD(tag, "updated" + i);
             db.setTransactionSuccessful();
         } catch (SQLException sql) {
-            Logger.logD("visit", "updated" + sql.getMessage());
+            Logger.logD(tag, "updated" + sql.getMessage());
             throw new DAOException(sql.getMessage());
         } finally {
             db.endTransaction();

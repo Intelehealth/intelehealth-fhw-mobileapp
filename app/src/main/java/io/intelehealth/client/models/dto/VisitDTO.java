@@ -1,5 +1,5 @@
 
-package io.intelehealth.client.models;
+package io.intelehealth.client.models.dto;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -26,9 +26,9 @@ public class VisitDTO {
     @SerializedName("locationuuid")
     @Expose
     private String locationuuid;
-    @SerializedName("creator")
+    @SerializedName("creator_uuid")
     @Expose
-    private Integer creator;
+    private String creatoruuid;
     @SerializedName("syncd")
     @Expose
     private Boolean syncd;
@@ -83,12 +83,12 @@ public class VisitDTO {
         this.locationuuid = locationuuid;
     }
 
-    public Integer getCreator() {
-        return creator;
+    public String getCreatoruuid() {
+        return creatoruuid;
     }
 
-    public void setCreator(Integer creator) {
-        this.creator = creator;
+    public void setCreatoruuid(String creatoruuid) {
+        this.creatoruuid = creatoruuid;
     }
 
     public Boolean getSyncd() {
