@@ -13,11 +13,8 @@ import android.widget.ImageButton;
 
 import com.crashlytics.android.Crashlytics;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 
 import io.intelehealth.client.R;
@@ -54,7 +51,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
 
     String rating;
     String comments;
-    String thisDate = "";
+
 
     @Override
     public void onBackPressed() {
@@ -71,10 +68,6 @@ public class PatientSurveyActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
         }
-
-        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
-        Date todayDate = new Date();
-        thisDate = currentDate.format(todayDate);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_survey);
         setTitle(R.string.title_activity_login);
@@ -116,14 +109,14 @@ public class PatientSurveyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 uploadSurvey();
-                endVisit(thisDate);
+                endVisit();
             }
         });
 
         mSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                endVisit(thisDate);
+                endVisit();
             }
         });
     }
@@ -144,9 +137,6 @@ public class PatientSurveyActivity extends AppCompatActivity {
 
     private void uploadSurvey() {
 //        ENCOUNTER_PATIENT_EXIT_SURVEY
-        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
-        Date todayDate = new Date();
-        String thisDate = currentDate.format(todayDate);
 
         EncounterDTO encounterDTO = new EncounterDTO();
         String uuid = UUID.randomUUID().toString();
@@ -154,7 +144,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         encounterDTO = new EncounterDTO();
         encounterDTO.setUuid(uuid);
         encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_PATIENT_EXIT_SURVEY"));
-        encounterDTO.setEncounterTime(thisDate);
+        encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
         encounterDTO.setVisituuid(visitUuid);
         encounterDTO.setSyncd(false);
         try {
@@ -178,7 +168,11 @@ public class PatientSurveyActivity extends AppCompatActivity {
         obsDTO.setValue(mComments.getText().toString());
         obsDTO.setConceptuuid(UuidDictionary.COMMENTS);
         obsDTOList.add(obsDTO);
-        obsDAO.insertObsToDb(obsDTOList);
+        try {
+            obsDAO.insertObsToDb(obsDTOList);
+        } catch (DAOException e) {
+            Crashlytics.getInstance().core.logException(e);
+        }
 
 
         AppConstants.notificationUtils.DownloadDone("Upload survey", "Survey uploaded", PatientSurveyActivity.this);
@@ -186,10 +180,10 @@ public class PatientSurveyActivity extends AppCompatActivity {
 
     }
 
-    private void endVisit(String endate) {
+    private void endVisit() {
         VisitsDAO visitsDAO = new VisitsDAO();
         try {
-            visitsDAO.updateVisitEnddate(visitUuid, endate);
+            visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
         } catch (DAOException e) {
             Crashlytics.getInstance().core.logException(e);
 

@@ -155,9 +155,44 @@ public class ObsDAO {
             throw new DAOException(e);
         } finally {
             db.endTransaction();
+            db.close();
         }
 
         return isUpdated;
+
+    }
+
+    public boolean insertEmergencyObs(ObsDTO obsDTO) throws DAOException {
+        boolean isCreated = true;
+        long insertedCount = 0;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+
+        try {
+            values.put("uuid", obsDTO.getUuid());
+            values.put("encounteruuid", obsDTO.getEncounteruuid());
+            values.put("creator", obsDTO.getCreator());
+            values.put("conceptuuid", obsDTO.getConceptuuid());
+            values.put("value", obsDTO.getValue());
+            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("voided", "");
+            values.put("sync", "FALSE");
+            insertedCount = db.insert("tbl_obs", null, values);
+            if (insertedCount != 0)
+                isCreated = true;
+            db.setTransactionSuccessful();
+            Logger.logD("inserted Emergency ", "created count" + insertedCount);
+        } catch (SQLException e) {
+            isCreated = false;
+            Crashlytics.getInstance().core.logException(e);
+            throw new DAOException(e);
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
+
+        return isCreated;
 
     }
 
@@ -200,7 +235,7 @@ public class ObsDAO {
         return true;
     }
 
-    public boolean insertObsToDb(List<ObsDTO> obsDTO) {
+    public boolean insertObsToDb(List<ObsDTO> obsDTO) throws DAOException {
         boolean isUpdated = true;
         long insertedCount = 0;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
@@ -223,8 +258,11 @@ public class ObsDAO {
             Logger.logD("updated", "updatedrecords count" + insertedCount);
         } catch (SQLException e) {
             isUpdated = false;
+            Crashlytics.getInstance().core.logException(e);
+            throw new DAOException(e);
         } finally {
             db.endTransaction();
+            db.close();
         }
 
         return isUpdated;

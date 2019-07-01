@@ -13,12 +13,12 @@ import java.util.List;
 
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.app.IntelehealthApplication;
-import io.intelehealth.client.database.MyIntentService;
 import io.intelehealth.client.models.Patient;
 import io.intelehealth.client.models.dto.PatientAttributeTypeMasterDTO;
 import io.intelehealth.client.models.dto.PatientAttributesDTO;
 import io.intelehealth.client.models.dto.PatientDTO;
 import io.intelehealth.client.models.pushRequestApiCall.Attribute;
+import io.intelehealth.client.services.MyIntentService;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.exception.DAOException;

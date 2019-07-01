@@ -1,6 +1,7 @@
 package io.intelehealth.client.database.dao;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
@@ -10,6 +11,7 @@ import io.intelehealth.client.app.IntelehealthApplication;
 import io.intelehealth.client.models.dto.ResponseDTO;
 import io.intelehealth.client.models.pushRequestApiCall.PushRequestApiCall;
 import io.intelehealth.client.models.pushResponseApiCall.PushResponseApiCall;
+import io.intelehealth.client.services.LastSyncIntentService;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.PatientsFrameJson;
 import io.intelehealth.client.utilities.SessionManager;
@@ -62,6 +64,10 @@ public class PullDataDAO {
                 }
 
                 Logger.logD("End Pull request", "Ended");
+                sessionManager.setLastPulledDateTime(AppConstants.dateAndTimeUtils.currentDateTimeInHome());
+
+                Intent intent = new Intent(IntelehealthApplication.getAppContext(), LastSyncIntentService.class);
+                IntelehealthApplication.getAppContext().startService(intent);
             }
 
             @Override

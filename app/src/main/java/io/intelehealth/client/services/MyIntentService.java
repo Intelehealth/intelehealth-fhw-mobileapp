@@ -1,7 +1,9 @@
-package io.intelehealth.client.database;
+package io.intelehealth.client.services;
 
 import android.app.IntentService;
 import android.content.Intent;
+
+import com.crashlytics.android.Crashlytics;
 
 import io.intelehealth.client.utilities.Logger;
 
@@ -16,6 +18,7 @@ public class MyIntentService extends IntentService {
         try {
             Thread.sleep(3000);
         } catch (Exception e) {
+            Crashlytics.getInstance().core.logException(e);
             Logger.logE(MyIntentService.class.getSimpleName(), "Exception in onHandleIntent method", e);
         }
 

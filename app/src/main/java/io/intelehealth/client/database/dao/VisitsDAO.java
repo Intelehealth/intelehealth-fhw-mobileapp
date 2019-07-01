@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -347,6 +349,33 @@ public class VisitsDAO {
         }
 
         return emergencyVisits;
+    }
+
+    public boolean isUpdatedEmergencyColumn(String visitUuid, boolean isemergency) throws DAOException {
+        boolean isUpdated = false;
+        int updatedcount = 0;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+        String whereclause = "uuid=?";
+        String[] whereargs = {visitUuid};
+        try {
+            values.put("emergency", isemergency);
+            updatedcount = db.update("tbl_visit", values, whereclause, whereargs);
+            if (updatedcount != 0)
+                isUpdated = true;
+            Logger.logD("visit", "updated emergency" + updatedcount);
+            db.setTransactionSuccessful();
+        } catch (SQLException sql) {
+            isUpdated = false;
+            Crashlytics.getInstance().core.logException(sql);
+            Logger.logD("visit", "updated emergency" + sql.getMessage());
+            throw new DAOException(sql.getMessage());
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
+        return isUpdated;
     }
 
 }

@@ -5,11 +5,15 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -27,6 +31,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.work.ExistingPeriodicWorkPolicy;
@@ -69,6 +74,13 @@ public class HomeActivity extends AppCompatActivity {
     CountDownTimer CDT;
     int i = 5;
 
+    TextView lastSyncTextView;
+    TextView manualSyncButton;
+    IntentFilter filter;
+    Myreceiver reMyreceive;
+    PullDataDAO pullDataDAO = new PullDataDAO();
+    ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +97,23 @@ public class HomeActivity extends AppCompatActivity {
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
         setTitle(R.string.title_activity_login);
+        reMyreceive = new Myreceiver();
+        filter = new IntentFilter("lasysync");
+
         Logger.logD(TAG, "onCreate: " + getFilesDir().toString());
+        lastSyncTextView = findViewById(R.id.lastsynctextview);
+        manualSyncButton = findViewById(R.id.manualsyncbutton);
+        manualSyncButton.setPaintFlags(manualSyncButton.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        lastSyncTextView.setText("Last Synced:- " + sessionManager.getLastPulledDateTime());
+        manualSyncButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pullDataDAO.pushDataApi();
+                imagesPushDAO.patientProfileImagesPush();
+                imagesPushDAO.obsImagesPush();
+                pullDataDAO.pullData(HomeActivity.this);
+            }
+        });
         final RecyclerView recyclerView = findViewById(R.id.recyclerview_home);
         recyclerView.setHasFixedSize(true);
 
@@ -230,8 +258,6 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
             case R.id.sync:
-                PullDataDAO pullDataDAO = new PullDataDAO();
-                ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
                 pullDataDAO.pullData(this);
                 pullDataDAO.pushDataApi();
                 AppConstants.notificationUtils.showNotifications("Sync", "Sync Completed", this);
@@ -332,6 +358,18 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        registerReceiver(reMyreceive, filter);
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(reMyreceive);
+        super.onDestroy();
+    }
+
+    @Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)
                 .setMessage("Are you sure you want to EXIT ?")
@@ -348,5 +386,11 @@ public class HomeActivity extends AppCompatActivity {
                 .show();
     }
 
+    public class Myreceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            lastSyncTextView.setText("Last sync:- " + sessionManager.getLastPulledDateTime());
+        }
+    }
 
 }

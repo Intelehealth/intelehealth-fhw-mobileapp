@@ -83,6 +83,7 @@ import io.intelehealth.client.database.dao.EncounterDAO;
 import io.intelehealth.client.database.dao.ImagesDAO;
 import io.intelehealth.client.database.dao.ImagesPushDAO;
 import io.intelehealth.client.database.dao.PullDataDAO;
+import io.intelehealth.client.database.dao.VisitsDAO;
 import io.intelehealth.client.knowledgeEngine.Node;
 import io.intelehealth.client.models.Patient;
 import io.intelehealth.client.models.dto.ObsDTO;
@@ -426,12 +427,20 @@ public class VisitSummaryActivity extends AppCompatActivity {
         phyExamDir = new File(filePathPhyExam);
 
         flag = findViewById(R.id.flaggedcheckbox);
+        EmergencyEncounterDAO emergencyEncounterDAO = new EmergencyEncounterDAO();
+        VisitsDAO visitsDAO = new VisitsDAO();
+        try {
+            visitsDAO.isUpdatedEmergencyColumn(visitUuid, emergencyEncounterDAO.isEmergency(visitUuid));
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         String query = "Select ifnull(emergency,'') as emergency FROM tbl_visit WHERE uuid = '" + visitUuid + "'";
         Cursor cursor = db.rawQuery(query, null);
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 String emergency = cursor.getString(cursor.getColumnIndex("emergency"));
-                if (emergency.equalsIgnoreCase("true")) {
+                if (emergency.equalsIgnoreCase("true") || emergency.equalsIgnoreCase("1")) {
                     flag.setChecked(true);
                 }
             }
@@ -497,7 +506,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     String updateQuery = "UPDATE tbl_visit SET emergency ='" + emergency_checked + "' WHERE uuid = '" + visitUuid + "'";
                     db.execSQL(updateQuery);
                     db.close();
-                    emergencyEncounterDAO.uploadEncounterEmergency(visitUuid);
+                    emergencyEncounterDAO.uploadEncounterEmergency(visitUuid, 0);
                 } else {
                     db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
                     Log.d(TAG, "Emergency flag val: " + flag.isChecked());

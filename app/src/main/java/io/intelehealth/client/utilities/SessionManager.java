@@ -33,7 +33,7 @@ public class SessionManager {
     private static final String NEW_DATABASE = "newDatabase";
     private static final String FIRST_TIME_LAUNCHED = "firsttimelaunched";
     private static final String SYNC_FINISHED = "syncfinished";
-
+    private static final String LAST_PULLED_EXECUTED_DATE_TIME = "lastpulledexecutedtimeanddate";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -294,5 +294,12 @@ public class SessionManager {
         editor.commit();
     }
 
+    public String getLastPulledDateTime() {
+        return pref.getString(LAST_PULLED_EXECUTED_DATE_TIME, "2006-08-22 22:21:48");
+    }  //getting the sync value  and time and saving in the sharedpref
 
+    public void setLastPulledDateTime(String lastPulledDateTime) {
+        editor.putString(LAST_PULLED_EXECUTED_DATE_TIME, lastPulledDateTime);
+        editor.commit();
+    }
 }

@@ -214,7 +214,8 @@
 
 
         <service android:name=".services.DownloadService" />
-        <service android:name=".database.MyIntentService" />
+        <service android:name=".services.MyIntentService" />
+        <service android:name=".services.LastSyncIntentService" />
         <!-- Firebase Services -->
         <service android:name=".services.firebase_services.MyFirebaseMessagingService">
             <intent-filter>

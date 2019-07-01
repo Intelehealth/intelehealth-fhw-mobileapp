@@ -21,6 +21,13 @@ public class DateAndTimeUtils {
         return date.format(todayDate);
     }
 
+    public String currentDateTimeInHome() {
+        DateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+// you can get seconds by adding  "...:ss" to it
+        Date todayDate = new Date();
+        return date.format(todayDate);
+    }
+
     public static int getAge(String s) {
         if (s == null) return 0;
 
