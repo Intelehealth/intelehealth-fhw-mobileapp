@@ -570,7 +570,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 mDOBMonth = monthOfYear;
                 mDOBDay = dayOfMonth;
 
-                String ageString = mAgeYears + getString(R.string.identification_screen_text_years) + mAgeMonths + getString(R.string.identification_screen_text_months);
+                String ageString = String.valueOf(mAgeYears) + getString(R.string.identification_screen_text_years)
+                        +" - "+ String.valueOf(mAgeMonths) + getString(R.string.identification_screen_text_months);
                 mAge.setText(ageString);
             }
         }, mDOBYear, mDOBMonth, mDOBDay);
