@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -46,8 +47,8 @@ public class PatientSurveyActivity extends AppCompatActivity {
     ImageButton mScaleButton4;
     ImageButton mScaleButton5;
     EditText mComments;
-    Button mSkip;
-    Button mSubmit;
+    TextView mSkip;
+    TextView mSubmit;
 
     String rating;
     String comments;
