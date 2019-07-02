@@ -6,11 +6,14 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -47,6 +50,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
     ImageButton mScaleButton4;
     ImageButton mScaleButton5;
     EditText mComments;
+
     TextView mSkip;
     TextView mSubmit;
 
@@ -109,8 +113,17 @@ public class PatientSurveyActivity extends AppCompatActivity {
         mSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadSurvey();
-                endVisit();
+
+                if (rating != null && !TextUtils.isEmpty(rating)) {
+                    Log.d(TAG, "Rating is "+rating);
+                    uploadSurvey();
+                    endVisit();
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(),"Please select a smiley before submitting",Toast.LENGTH_LONG).show();
+                }
+
             }
         });
 
