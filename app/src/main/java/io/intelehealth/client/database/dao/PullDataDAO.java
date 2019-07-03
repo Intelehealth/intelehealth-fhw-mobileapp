@@ -75,7 +75,7 @@ public class PullDataDAO {
                 Logger.logD("pull data", "exception" + t.getMessage());
             }
         });
-
+        sessionManager.setPullSyncFinished(true);
         return true;
     }
 
@@ -170,6 +170,7 @@ public class PullDataDAO {
                         isSucess[0] = false;
                     }
                 });
+        sessionManager.setPullSyncFinished(true);
         return isSucess[0];
     }
 }

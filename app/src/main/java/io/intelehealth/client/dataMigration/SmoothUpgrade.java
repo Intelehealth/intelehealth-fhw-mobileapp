@@ -50,6 +50,7 @@ public class SmoothUpgrade {
     boolean dbexist = checkdatabase();
     String TAG = SmoothUpgrade.class.getSimpleName();
     public String DATABASE_NAME = "YOUR DATABASE NAME HERE";
+
     public SmoothUpgrade(Context context) {
         this.context = context;
         sessionManager = new SessionManager(context);
@@ -281,6 +282,8 @@ public class SmoothUpgrade {
                     encounterDTO.setVisituuid(visituuid);
                     encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid(cursor.getString(cursor.getColumnIndexOrThrow("encounter_type"))));
                     encounterDTO.setEncounterTime(time);
+                    encounterDTO.setProvideruuid(sessionManager.getProviderID());
+                    encounterDTO.setVoided(0);
                     encounterDTO.setSyncd(false);
 
                     try {
@@ -378,7 +381,8 @@ public class SmoothUpgrade {
             encounterDTO.setEncounterTypeUuid(getEncounterTypebasedonConcept(encounterType));
             encounterDTO.setEncounterTime(time);
             encounterDTO.setSyncd(false);
-
+            encounterDTO.setProvideruuid(sessionManager.getProviderID());
+            encounterDTO.setVoided(0);
             try {
                 encounterDAO.createEncountersToDB(encounterDTO);
             } catch (DAOException e) {

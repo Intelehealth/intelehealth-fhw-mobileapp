@@ -79,6 +79,7 @@ public class ImagesPushDAO {
                         }
                     });
         }
+        sessionManager.setPullSyncFinished(true);
         AppConstants.notificationUtils.DownloadDone("Patient Profile", "Completed Uploading Patient Profile", IntelehealthApplication.getAppContext());
         return true;
     }
@@ -146,6 +147,7 @@ public class ImagesPushDAO {
                         }
                     });
         }
+        sessionManager.setPushSyncFinished(true);
         AppConstants.notificationUtils.DownloadDone("Patient Profile", "Completed Uploading Patient Profile", IntelehealthApplication.getAppContext());
         return true;
     }

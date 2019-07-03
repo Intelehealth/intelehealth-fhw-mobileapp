@@ -34,6 +34,8 @@ public class SessionManager {
     private static final String FIRST_TIME_LAUNCHED = "firsttimelaunched";
     private static final String SYNC_FINISHED = "syncfinished";
     private static final String LAST_PULLED_EXECUTED_DATE_TIME = "lastpulledexecutedtimeanddate";
+    private static final String PULL_SYNC_FINISHED = "pullsyncfinished";
+    private static final String PUSH_SYNC_FINISHED = "pushsyncfinished";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -300,6 +302,24 @@ public class SessionManager {
 
     public void setLastPulledDateTime(String lastPulledDateTime) {
         editor.putString(LAST_PULLED_EXECUTED_DATE_TIME, lastPulledDateTime);
+        editor.commit();
+    }
+
+    public boolean isPullSyncFinished() {
+        return pref.getBoolean(PULL_SYNC_FINISHED, false);
+    }
+
+    public void setPullSyncFinished(Boolean syncFinished) {
+        editor.putBoolean(PULL_SYNC_FINISHED, syncFinished);
+        editor.commit();
+    }
+
+    public boolean isPushSyncFinished() {
+        return pref.getBoolean(PUSH_SYNC_FINISHED, false);
+    }
+
+    public void setPushSyncFinished(Boolean syncFinished) {
+        editor.putBoolean(PUSH_SYNC_FINISHED, syncFinished);
         editor.commit();
     }
 }

@@ -147,6 +147,8 @@ public class PatientsFrameJson {
             encounter.setEncounterType(encounterDTO.getEncounterTypeUuid());//right know it is static
             encounter.setPatient(visitsDAO.patientUuidByViistUuid(encounterDTO.getVisituuid()));
             encounter.setVisit(encounterDTO.getVisituuid());
+            encounter.setVoided(encounterDTO.getVoided());
+
             List<EncounterProvider> encounterProviderList = new ArrayList<>();
             EncounterProvider encounterProvider = new EncounterProvider();
             encounterProvider.setEncounterRole("73bbb069-9781-4afc-a9d1-54b6b2270e04");

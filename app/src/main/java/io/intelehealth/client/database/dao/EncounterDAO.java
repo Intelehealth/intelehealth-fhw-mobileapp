@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,7 +75,7 @@ public class EncounterDAO {
 
             values.put("uuid", encounter.getUuid());
             values.put("visituuid", encounter.getVisituuid());
-            values.put("encounter_time",encounter.getEncounterTime());
+            values.put("encounter_time", encounter.getEncounterTime());
             values.put("encounter_type_uuid", encounter.getEncounterTypeUuid());
             values.put("provider_uuid", encounter.getProvideruuid());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
@@ -120,7 +122,9 @@ public class EncounterDAO {
                 encounterDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
                 encounterDTO.setVisituuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visituuid")));
                 encounterDTO.setEncounterTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_type_uuid")));
+                encounterDTO.setProvideruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("provider_uuid")));
                 encounterDTO.setEncounterTime(idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_time")));
+                encounterDTO.setVoided(idCursor.getInt(idCursor.getColumnIndexOrThrow("voided")));
                 encounterDTOList.add(encounterDTO);
             }
         }
@@ -156,6 +160,58 @@ public class EncounterDAO {
         }
 
         return isUpdated;
+    }
+
+    public String getEmergencyEncounters(String visitUuid, String encounterType) throws DAOException {
+        String uuid = "";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_encounter where visituuid = ? AND encounter_type_uuid=? AND voided='0' COLLATE NOCASE", new String[]{visitUuid, encounterType});
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+                    uuid = idCursor.getString(idCursor.getColumnIndexOrThrow("uuid"));
+                }
+            }
+            idCursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            Crashlytics.getInstance().core.logException(e);
+            throw new DAOException(e);
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
+        return uuid;
+    }
+
+    public boolean isEmergency(String visitUuid) throws DAOException {
+        boolean isEmergency = false;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        String selectQuery = "SELECT uuid FROM tbl_encounter WHERE visituuid='" + visitUuid + "'  AND encounter_type_uuid='ca5f5dc3-4f0b-4097-9cae-5cf2eb44a09c' AND voided='0'";
+        db.beginTransaction();
+        try {
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    while (!cursor.isAfterLast()) {
+                        isEmergency = true;
+                        cursor.moveToNext();
+                    }
+                }
+            }
+            if (cursor != null) {
+                cursor.close();
+            }
+        } catch (SQLException e) {
+            isEmergency = false;
+            Crashlytics.getInstance().core.logException(e);
+            throw new DAOException(e);
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
+        return isEmergency;
     }
 
 

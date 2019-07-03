@@ -389,7 +389,7 @@ public class HomeActivity extends AppCompatActivity {
     public class Myreceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            lastSyncTextView.setText("Last sync:- " + sessionManager.getLastPulledDateTime());
+            lastSyncTextView.setText("Last Synced:- " + sessionManager.getLastPulledDateTime());
         }
     }
 

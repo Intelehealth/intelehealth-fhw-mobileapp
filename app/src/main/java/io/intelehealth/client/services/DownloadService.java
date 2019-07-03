@@ -90,6 +90,8 @@ public class DownloadService extends IntentService {
             imageType = "AD";
         else
             imageType = "PE";
+        if (imageObsList.size() == 0)
+            AppConstants.notificationUtils.DownloadDone("Download", "No Images to Download", IntelehealthApplication.getAppContext());
         for (int i = 0; i < imageObsList.size(); i++) {
             url = urlModifiers.obsImageUrl(imageObsList.get(i));
             Observable<ResponseBody> downloadobs = AppConstants.apiInterface.OBS_IMAGE_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());

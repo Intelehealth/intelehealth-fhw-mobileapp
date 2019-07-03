@@ -41,6 +41,7 @@ import io.intelehealth.client.database.dao.EncounterDAO;
 import io.intelehealth.client.knowledgeEngine.Node;
 import io.intelehealth.client.models.dto.EncounterDTO;
 import io.intelehealth.client.utilities.FileUtils;
+import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.exception.DAOException;
 
 public class ComplaintNodeActivity extends AppCompatActivity {
@@ -63,10 +64,10 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     String encounterVitals;
     String encounterAdultIntials;
     EncounterDTO encounterDTO;
-
+    SessionManager sessionManager = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        sessionManager = new SessionManager(this);
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
@@ -92,6 +93,8 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         encounterDTO.setEncounterTime(thisDate);
         encounterDTO.setVisituuid(visitUuid);
         encounterDTO.setSyncd(false);
+        encounterDTO.setProvideruuid(sessionManager.getProviderID());
+        encounterDTO.setVoided(0);
         try {
             encounterDAO.createEncountersToDB(encounterDTO);
         } catch (DAOException e) {

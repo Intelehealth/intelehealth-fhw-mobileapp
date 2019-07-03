@@ -26,6 +26,7 @@ import io.intelehealth.client.database.dao.PullDataDAO;
 import io.intelehealth.client.database.dao.VisitsDAO;
 import io.intelehealth.client.models.dto.EncounterDTO;
 import io.intelehealth.client.models.dto.ObsDTO;
+import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UuidDictionary;
 import io.intelehealth.client.utilities.exception.DAOException;
 
@@ -52,7 +53,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
     String rating;
     String comments;
 
-
+    SessionManager sessionManager = null;
     @Override
     public void onBackPressed() {
         //do nothing
@@ -71,7 +72,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_survey);
         setTitle(R.string.title_activity_login);
-
+        sessionManager = new SessionManager(this);
         db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         context = getApplicationContext();
 
@@ -146,7 +147,9 @@ public class PatientSurveyActivity extends AppCompatActivity {
         encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_PATIENT_EXIT_SURVEY"));
         encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
         encounterDTO.setVisituuid(visitUuid);
+        encounterDTO.setProvideruuid(sessionManager.getProviderID());
         encounterDTO.setSyncd(false);
+        encounterDTO.setVoided(0);
         try {
             encounterDAO.createEncountersToDB(encounterDTO);
         } catch (DAOException e) {

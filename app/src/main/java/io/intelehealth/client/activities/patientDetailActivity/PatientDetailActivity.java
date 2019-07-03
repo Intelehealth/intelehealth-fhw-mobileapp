@@ -149,6 +149,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 encounterDTO.setEncounterTime(thisDate);
                 encounterDTO.setVisituuid(uuid);
                 encounterDTO.setSyncd(false);
+                encounterDTO.setProvideruuid(sessionManager.getProviderID());
+                encounterDTO.setVoided(0);
                 try {
                     encounterDAO.createEncountersToDB(encounterDTO);
                 } catch (DAOException e) {

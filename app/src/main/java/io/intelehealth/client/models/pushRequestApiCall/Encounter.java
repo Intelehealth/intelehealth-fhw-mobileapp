@@ -32,6 +32,9 @@ public class Encounter {
     @SerializedName("location")
     @Expose
     private String location;
+    @SerializedName("voided")
+    @Expose
+    private Integer voided;
 
     public String getUuid() {
         return uuid;
@@ -97,4 +100,11 @@ public class Encounter {
         this.location = location;
     }
 
+    public Integer getVoided() {
+        return voided;
+    }
+
+    public void setVoided(Integer voided) {
+        this.voided = voided;
+    }
 }

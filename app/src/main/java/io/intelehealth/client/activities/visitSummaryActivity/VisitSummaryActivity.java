@@ -90,7 +90,6 @@ import io.intelehealth.client.models.dto.ObsDTO;
 import io.intelehealth.client.services.DownloadService;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
 import io.intelehealth.client.utilities.FileUtils;
-import io.intelehealth.client.utilities.NetworkConnection;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UuidDictionary;
 import io.intelehealth.client.utilities.exception.DAOException;
@@ -427,10 +426,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         phyExamDir = new File(filePathPhyExam);
 
         flag = findViewById(R.id.flaggedcheckbox);
-        EmergencyEncounterDAO emergencyEncounterDAO = new EmergencyEncounterDAO();
+        EncounterDAO encounterDAO = new EncounterDAO();
         VisitsDAO visitsDAO = new VisitsDAO();
         try {
-            visitsDAO.isUpdatedEmergencyColumn(visitUuid, emergencyEncounterDAO.isEmergency(visitUuid));
+            visitsDAO.isUpdatedEmergencyColumn(visitUuid, encounterDAO.isEmergency(visitUuid));
         } catch (DAOException e) {
             e.printStackTrace();
         }
@@ -514,11 +513,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     String updateQuery = "UPDATE tbl_visit SET emergency ='" + emergency_checked + "' WHERE uuid = '" + visitUuid + "'";
                     db.execSQL(updateQuery);
                     db.close();
-                    db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-                    if (NetworkConnection.isOnline(getApplication())) {
-                        emergencyEncounterDAO.removeEncounterEmergency(visitUuid, db);
-                    }
-                    db.close();
+                    emergencyEncounterDAO.uploadEncounterEmergency(visitUuid, 1);
+//                    if (NetworkConnection.isOnline(getApplication())) {
+//                        emergencyEncounterDAO.removeEncounterEmergency(visitUuid, db);
+//                    }
                 }
                 if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
                     String patientSelection = "uuid = ?";
