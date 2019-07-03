@@ -196,9 +196,6 @@
     <string name="visit_summary_upload_reminder" translatable="false">Please upload first before attempting to end the visit.</string>
 
 
-
-
-
     //Diagnostic Tests Screen
     <string name="title_activity_diagnostic_tests_list" translatable="false">Choose a Diagnostic Test</string>
 
@@ -431,6 +428,7 @@
     <string name="title_activity_splash_acticity" translatable="false">SplashActicity</string>
     <string name="title_activity_home" translatable="false">HomeActivity</string>
     <string name="title_activity_sync" translatable="false">ActivitySync</string>
+    <string name="title_activity_privacy_notice" translatable="false">Privacy Notice</string>
     <string name="title_activity_visit_summary" translatable="false">VisitSummaryActivity</string>
     <string name="title_activity_past_medical_history" translatable="false">PastMedicalHistoryActivity</string>
     <string name="title_activity_patient_survey" translatable="false">PatientSurveyActivity</string>

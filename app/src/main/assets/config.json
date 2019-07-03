@@ -32,6 +32,8 @@
   "mSpo2": true,
   "mBMI": true,
   "mResp": true,
+  "privacy_boolean": true,
+  "privacy_value": "This is demo Raunaq VSO privacy notice text values",
   "presciptionHeader1": "Philippines Telemedicine Project",
   "presciptionHeader2": "ePrescription"
 }

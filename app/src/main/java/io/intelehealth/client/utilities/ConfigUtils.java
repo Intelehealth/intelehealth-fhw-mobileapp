@@ -388,6 +388,16 @@ public class ConfigUtils {
         return view;
     }
 
+    public boolean privacy_notice() {
+        boolean view = false;
 
+        JSONObject object = jsonreader();
+        try {
+            view = object.getBoolean("privacy_boolean");
+        } catch (JSONException e) {
+            Crashlytics.getInstance().core.logException(e);
+        }
+        return view;
+    }
 
 }
