@@ -393,7 +393,7 @@ public class ConfigUtils {
 
         JSONObject object = jsonreader();
         try {
-            view = object.getBoolean("privacy_boolean");
+            view = object.getBoolean("privacyNotice");
         } catch (JSONException e) {
             Crashlytics.getInstance().core.logException(e);
         }

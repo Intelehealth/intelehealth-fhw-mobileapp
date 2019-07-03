@@ -57,7 +57,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
                 }
 
-            String privacy_string = obj.getString("privacy_value");
+            String privacy_string = obj.getString("privacyNoticeText");
             privacy_textview.setText(privacy_string);
 
             btn.setOnClickListener(new View.OnClickListener() {
