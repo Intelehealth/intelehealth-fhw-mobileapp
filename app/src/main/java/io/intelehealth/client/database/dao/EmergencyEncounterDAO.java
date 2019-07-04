@@ -25,7 +25,7 @@ import retrofit2.Call;
 import static io.intelehealth.client.app.AppConstants.apiInterface;
 
 public class EmergencyEncounterDAO {
-    SessionManager sessionManager = null;
+    private SessionManager sessionManager = null;
 
     public boolean uploadEncounterEmergency(String visitUuid, Integer voided) {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());

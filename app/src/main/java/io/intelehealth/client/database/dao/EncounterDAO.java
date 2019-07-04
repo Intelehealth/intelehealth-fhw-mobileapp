@@ -9,10 +9,15 @@ import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import io.intelehealth.client.app.AppConstants;
+import io.intelehealth.client.app.IntelehealthApplication;
 import io.intelehealth.client.models.dto.EncounterDTO;
+import io.intelehealth.client.models.dto.ObsDTO;
 import io.intelehealth.client.utilities.Logger;
+import io.intelehealth.client.utilities.SessionManager;
+import io.intelehealth.client.utilities.UuidDictionary;
 import io.intelehealth.client.utilities.exception.DAOException;
 
 public class EncounterDAO {
@@ -162,12 +167,64 @@ public class EncounterDAO {
         return isUpdated;
     }
 
+    public boolean setEmergency(String visitUuid, boolean emergencyChecked) throws DAOException {
+        //delete any existing emergency encounter and insert new
+        //this is the expected behavior in openMRS
+        boolean isExecuted = false;
+        EncounterDAO encounterDAO = new EncounterDAO();
+        String emergency_uuid = encounterDAO.getEncounterTypeUuid("EMERGENCY");
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        //db.beginTransaction();
+        ContentValues values = new ContentValues();
+        String whereclause = "visituuid = ? AND encounter_type_uuid = ? ";
+        String[] whereargs = {visitUuid, emergency_uuid};
+        try {
+            values.put("voided", "1");
+            values.put("sync", false);
+            int i = db.update("tbl_encounter", values, whereclause, whereargs);
+            Logger.logD("encounter", "description" + i);
+            // db.setTransactionSuccessful();
+        } catch (SQLException sql) {
+            Logger.logD("encounter", "encounter" + sql.getMessage());
+            Crashlytics.getInstance().core.logException(sql);
+            throw new DAOException(sql.getMessage());
+        } finally {
+            //   db.endTransaction();
+            db.close();
+        }
+        if (emergencyChecked) {
+            String encounteruuid = UUID.randomUUID().toString();
+            EncounterDTO encounterDTO = new EncounterDTO();
+            encounterDTO.setUuid(encounteruuid);
+            encounterDTO.setVisituuid(visitUuid);
+            encounterDTO.setVoided(0);
+            encounterDTO.setEncounterTypeUuid(emergency_uuid);
+            encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+            encounterDTO.setSyncd(false);
+            encounterDTO.setProvideruuid(sessionManager.getProviderID());
+
+            encounterDAO.createEncountersToDB(encounterDTO);
+
+            ObsDTO obsDTO = new ObsDTO();
+            ObsDAO obsDAO = new ObsDAO();
+            obsDTO.setConceptuuid(UuidDictionary.EMERGENCY_OBS);
+            obsDTO.setCreator(1);
+            obsDTO.setUuid(UUID.randomUUID().toString());
+            obsDTO.setEncounteruuid(encounteruuid);
+            obsDTO.setValue("emergency");
+            obsDAO.insertObs(obsDTO);
+        }
+        return isExecuted;
+    }
+
     public String getEmergencyEncounters(String visitUuid, String encounterType) throws DAOException {
         String uuid = "";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         try {
             Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_encounter where visituuid = ? AND encounter_type_uuid=? AND voided='0' COLLATE NOCASE", new String[]{visitUuid, encounterType});
+
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
                     uuid = idCursor.getString(idCursor.getColumnIndexOrThrow("uuid"));

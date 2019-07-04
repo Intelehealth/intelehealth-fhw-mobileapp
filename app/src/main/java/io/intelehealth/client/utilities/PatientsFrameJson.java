@@ -116,15 +116,15 @@ public class PatientsFrameJson {
             visit.setUuid(visitDTO.getUuid());
             visit.setVisitType(visitDTO.getVisitTypeUuid());
             visit.setStopDatetime(visitDTO.getEnddate());
-            List<String> emergencyVisitUuids = new ArrayList<>();
-            try {
-                emergencyVisitUuids = visitsDAO.getEmergencyVisitUuids();
-            } catch (DAOException e) {
-                Crashlytics.getInstance().core.logException(e);
-            }
-            if (emergencyVisitUuids.size() != 0) {
-                emergencyEncounterDAO.removeEncounterEmergency(visitDTO.getUuid(), db);
-            }
+//            List<String> emergencyVisitUuids = new ArrayList<>();
+//            try {
+//                emergencyVisitUuids = visitsDAO.getEmergencyVisitUuids();
+//            } catch (DAOException e) {
+//                Crashlytics.getInstance().core.logException(e);
+//            }
+//            if (emergencyVisitUuids.size() != 0) {
+//                emergencyEncounterDAO.removeEncounterEmergency(visitDTO.getUuid(), db);
+//            }
 //            List<Attribute> attributeList = new ArrayList<>();
 //            attributeList.clear();
 //            try {

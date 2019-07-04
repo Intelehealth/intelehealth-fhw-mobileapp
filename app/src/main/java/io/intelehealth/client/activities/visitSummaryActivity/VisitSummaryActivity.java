@@ -78,12 +78,10 @@ import io.intelehealth.client.activities.patientSurveyActivity.PatientSurveyActi
 import io.intelehealth.client.activities.physcialExamActivity.PhysicalExamActivity;
 import io.intelehealth.client.activities.vitalActivity.VitalsActivity;
 import io.intelehealth.client.app.AppConstants;
-import io.intelehealth.client.database.dao.EmergencyEncounterDAO;
 import io.intelehealth.client.database.dao.EncounterDAO;
 import io.intelehealth.client.database.dao.ImagesDAO;
 import io.intelehealth.client.database.dao.ImagesPushDAO;
 import io.intelehealth.client.database.dao.PullDataDAO;
-import io.intelehealth.client.database.dao.VisitsDAO;
 import io.intelehealth.client.knowledgeEngine.Node;
 import io.intelehealth.client.models.Patient;
 import io.intelehealth.client.models.dto.ObsDTO;
@@ -426,26 +424,37 @@ public class VisitSummaryActivity extends AppCompatActivity {
         phyExamDir = new File(filePathPhyExam);
 
         flag = findViewById(R.id.flaggedcheckbox);
+//        EncounterDAO encounterDAO = new EncounterDAO();
+//        VisitsDAO visitsDAO = new VisitsDAO();
+//        try {
+//            visitsDAO.isUpdatedEmergencyColumn(visitUuid, encounterDAO.isEmergency(visitUuid));
+//        } catch (DAOException e) {
+//            e.printStackTrace();
+//        }
+//        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+//        String query = "Select ifnull(emergency,'') as emergency FROM tbl_visit WHERE uuid = '" + visitUuid + "'";
+//        Cursor cursor = db.rawQuery(query, null);
+//        if (cursor != null) {
+//            while (cursor.moveToNext()) {
+//                String emergency = cursor.getString(cursor.getColumnIndex("emergency"));
+//                if (emergency.equalsIgnoreCase("true") || emergency.equalsIgnoreCase("1")) {
+//                    flag.setChecked(true);
+//                }
+//            }
+//        }
+//        if (cursor != null) {
+//            cursor.close();
+//        }
         EncounterDAO encounterDAO = new EncounterDAO();
-        VisitsDAO visitsDAO = new VisitsDAO();
+        String emergencyUuid = "";
         try {
-            visitsDAO.isUpdatedEmergencyColumn(visitUuid, encounterDAO.isEmergency(visitUuid));
+            emergencyUuid = encounterDAO.getEmergencyEncounters(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
         } catch (DAOException e) {
-            e.printStackTrace();
+            Crashlytics.getInstance().core.logException(e);
         }
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        String query = "Select ifnull(emergency,'') as emergency FROM tbl_visit WHERE uuid = '" + visitUuid + "'";
-        Cursor cursor = db.rawQuery(query, null);
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                String emergency = cursor.getString(cursor.getColumnIndex("emergency"));
-                if (emergency.equalsIgnoreCase("true") || emergency.equalsIgnoreCase("1")) {
-                    flag.setChecked(true);
-                }
-            }
-        }
-        if (cursor != null) {
-            cursor.close();
+
+        if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) {
+            flag.setChecked(true);
         }
 
         physicalDoumentsUpdates();
@@ -468,7 +477,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         downloadButton.setEnabled(false);
         downloadButton.setVisibility(View.GONE);
-
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         if (isPastVisit) {
             editVitals.setVisibility(View.GONE);
             editComplaint.setVisibility(View.GONE);
@@ -494,30 +503,37 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
 
         }
+        db.close();
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-                EmergencyEncounterDAO emergencyEncounterDAO = new EmergencyEncounterDAO();
-                if (flag.isChecked()) {
-                    Log.d(TAG, "Emergency flag val: " + flag.isChecked());
-                    String emergency_checked = String.valueOf(flag.isChecked());
-                    String updateQuery = "UPDATE tbl_visit SET emergency ='" + emergency_checked + "' WHERE uuid = '" + visitUuid + "'";
-                    db.execSQL(updateQuery);
-                    db.close();
-                    emergencyEncounterDAO.uploadEncounterEmergency(visitUuid, 0);
-                } else {
-                    db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-                    Log.d(TAG, "Emergency flag val: " + flag.isChecked());
-                    String emergency_checked = String.valueOf(flag.isChecked());
-                    String updateQuery = "UPDATE tbl_visit SET emergency ='" + emergency_checked + "' WHERE uuid = '" + visitUuid + "'";
-                    db.execSQL(updateQuery);
-                    db.close();
-                    emergencyEncounterDAO.uploadEncounterEmergency(visitUuid, 1);
-//                    if (NetworkConnection.isOnline(getApplication())) {
-//                        emergencyEncounterDAO.removeEncounterEmergency(visitUuid, db);
-//                    }
+//                db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+//                EmergencyEncounterDAO emergencyEncounterDAO = new EmergencyEncounterDAO();
+                try {
+                    EncounterDAO encounterDAO = new EncounterDAO();
+                    encounterDAO.setEmergency(visitUuid, flag.isChecked());
+                } catch (DAOException e) {
+                    Crashlytics.getInstance().core.logException(e);
                 }
+//                if (flag.isChecked()) {
+////                    Log.d(TAG, "Emergency flag val: " + flag.isChecked());
+////                    String emergency_checked = String.valueOf(flag.isChecked());
+////                    String updateQuery = "UPDATE tbl_visit SET emergency ='" + emergency_checked + "' WHERE uuid = '" + visitUuid + "'";
+////                    db.execSQL(updateQuery);
+////                    db.close();
+//                    emergencyEncounterDAO.uploadEncounterEmergency(visitUuid, 0);
+//                } else {
+////                    db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+////                    Log.d(TAG, "Emergency flag val: " + flag.isChecked());
+////                    String emergency_checked = String.valueOf(flag.isChecked());
+////                    String updateQuery = "UPDATE tbl_visit SET emergency ='" + emergency_checked + "' WHERE uuid = '" + visitUuid + "'";
+////                    db.execSQL(updateQuery);
+////                    db.close();
+//                    emergencyEncounterDAO.uploadEncounterEmergency(visitUuid, 1);
+////                    if (NetworkConnection.isOnline(getApplication())) {
+////                        emergencyEncounterDAO.removeEncounterEmergency(visitUuid, db);
+////                    }
+//                }
                 if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
                     String patientSelection = "uuid = ?";
                     String[] patientArgs = {String.valueOf(patient.getUuid())};
@@ -1398,7 +1414,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
      */
 
     public void queryData(String dataString) {
-
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         String patientSelection = "uuid = ?";
         String[] patientArgs = {dataString};
 
@@ -1933,7 +1949,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String orderBy = "visit_id";
 
             //obscursor checks in obs table
-            Cursor obsCursor = db.query("obs", columns, null, null, null, null, orderBy);
+            Cursor obsCursor = db.query("tbl_obs", columns, null, null, null, null, orderBy);
 
             //dbconceptid will store data found in concept_id
 
