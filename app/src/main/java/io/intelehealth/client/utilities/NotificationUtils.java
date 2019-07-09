@@ -2,13 +2,10 @@ package io.intelehealth.client.utilities;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
 import io.intelehealth.client.R;
-import io.intelehealth.client.activities.homeActivity.HomeActivity;
 
 public class NotificationUtils {
 
@@ -29,9 +26,9 @@ public class NotificationUtils {
         }
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId);
-        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, HomeActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+//        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, HomeActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
 
-        mBuilder.setContentIntent(contentIntent);
+//        mBuilder.setContentIntent(contentIntent);
         mBuilder.setContentTitle(title)
                 .setContentText(text)
                 .setSmallIcon(R.drawable.ic_cloud_upload);
@@ -51,9 +48,9 @@ public class NotificationUtils {
         }
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId);
-        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, HomeActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+//        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, HomeActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
 
-        mBuilder.setContentIntent(contentIntent);
+//        mBuilder.setContentIntent(contentIntent);
         mBuilder.setContentTitle(title)
                 .setContentText(text)
                 .setSmallIcon(R.drawable.ic_cloud_upload);
@@ -75,13 +72,29 @@ public class NotificationUtils {
         }
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId);
-        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, HomeActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+//        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, HomeActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
 
-        mBuilder.setContentIntent(contentIntent);
+//        mBuilder.setContentIntent(contentIntent);
         mBuilder.setContentTitle(title)
                 .setContentText(text)
                 .setSmallIcon(R.drawable.ic_cloud_upload);
         mNotifyManager.notify(mId, mBuilder.build());
 
+    }
+
+    public void clearAllNotifications(Context context) {
+
+        this.context = context;
+        NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        mNotifyManager.cancel(mId);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel(channelId, channelName, importance);
+            mNotifyManager.createNotificationChannel(mChannel);
+        }
+
+        mNotifyManager.cancelAll();
     }
 }

@@ -181,9 +181,9 @@ public class HomeActivity extends AppCompatActivity {
 
             TempDialog.show();
 
-            CDT = new CountDownTimer(5000, 1000) {
+            CDT = new CountDownTimer(7000, 1000) {
                 public void onTick(long millisUntilFinished) {
-                    TempDialog.setMessage("Please wait.." + i + " sec");
+                    TempDialog.setMessage("Please wait.. Syncing");
                     i--;
                 }
 

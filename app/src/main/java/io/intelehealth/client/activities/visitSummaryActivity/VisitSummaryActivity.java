@@ -86,8 +86,10 @@ import io.intelehealth.client.knowledgeEngine.Node;
 import io.intelehealth.client.models.Patient;
 import io.intelehealth.client.models.dto.ObsDTO;
 import io.intelehealth.client.services.DownloadService;
+import io.intelehealth.client.syncModule.SyncUtils;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
 import io.intelehealth.client.utilities.FileUtils;
+import io.intelehealth.client.utilities.NetworkConnection;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UuidDictionary;
 import io.intelehealth.client.utilities.exception.DAOException;
@@ -579,16 +581,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     //
                 }
                 Snackbar.make(view, "Uploading to doctor.", Snackbar.LENGTH_LONG).show();
-
-                AppConstants.notificationUtils.showNotifications("Visit Data Upload", "Uploading visit data", VisitSummaryActivity.this);
-                PullDataDAO pullDataDAO = new PullDataDAO();
-                ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
-                boolean pull = pullDataDAO.pushDataApi();
-                if (pull)
-                    AppConstants.notificationUtils.DownloadDone("Visit Data Upload", "Uploaded visit data", VisitSummaryActivity.this);
-                else
-                    AppConstants.notificationUtils.DownloadDone("Visit Data Upload", "failed to Uploaded", VisitSummaryActivity.this);
-                imagesPushDAO.obsImagesPush();
+                if (NetworkConnection.isOnline(getApplication())) {
+                    AppConstants.notificationUtils.showNotifications("Visit Data Upload", "Uploading visit data", VisitSummaryActivity.this);
+                    PullDataDAO pullDataDAO = new PullDataDAO();
+                    ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+                    boolean pull = pullDataDAO.pushDataApi();
+                    if (pull)
+                        AppConstants.notificationUtils.DownloadDone("Visit Data Upload", "Uploaded visit data", VisitSummaryActivity.this);
+                    else
+                        AppConstants.notificationUtils.DownloadDone("Visit Data Upload", "failed to Uploaded", VisitSummaryActivity.this);
+                    imagesPushDAO.obsImagesPush();
+                } else {
+                    AppConstants.notificationUtils.showNotifications("Visit Data Upload", "Check your connectivity", VisitSummaryActivity.this);
+                }
             }
 
         });
@@ -2048,6 +2053,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             if (internetCheck != null) {
                                 internetCheck.setIcon(R.mipmap.ic_data_on);
                                 flag = 1;
+                                SyncUtils syncUtils = new SyncUtils();
+                                syncUtils.Sync();
                             }
                         }
                     }
