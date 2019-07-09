@@ -47,6 +47,7 @@ import java.util.UUID;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.cameraActivity.CameraActivity;
+import io.intelehealth.client.activities.homeActivity.HomeActivity;
 import io.intelehealth.client.activities.patientDetailActivity.PatientDetailActivity;
 import io.intelehealth.client.activities.setupActivity.SetupActivity;
 import io.intelehealth.client.app.AppConstants;
@@ -125,6 +126,9 @@ public class IdentificationActivity extends AppCompatActivity {
     ImagesDAO imagesDAO = new ImagesDAO();
     private String mCurrentPhotoPath;
 
+    Intent i_privacy;
+    String privacy_value;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,6 +137,9 @@ public class IdentificationActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        i_privacy = getIntent();
+        privacy_value = i_privacy.getStringExtra("privacy"); //privacy_accept value retrieved from previous act.
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -570,7 +577,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 mDOBMonth = monthOfYear;
                 mDOBDay = dayOfMonth;
 
-                String ageString = mAgeYears + getString(R.string.identification_screen_text_years) + mAgeMonths + getString(R.string.identification_screen_text_months);
+                String ageString = String.valueOf(mAgeYears) + getString(R.string.identification_screen_text_years)
+                        +" - "+ String.valueOf(mAgeMonths) + getString(R.string.identification_screen_text_months);
                 mAge.setText(ageString);
             }
         }, mDOBYear, mDOBMonth, mDOBDay);
@@ -765,8 +773,11 @@ public class IdentificationActivity extends AppCompatActivity {
                 .setMessage("Are you sure you want to go back ?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
+                    public void onClick(DialogInterface dialogInterface, int i)
+
+                    {
+                        Intent i_back = new Intent(getApplicationContext(), HomeActivity.class);
+                        startActivity(i_back);
                     }
                 }).setNegativeButton("No", null).show();
 
@@ -1021,6 +1032,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 i.putExtra("patientUuid", uuid);
                 i.putExtra("patientName", patientdto.getFirstname() + " " + patientdto.getLastname());
                 i.putExtra("tag", "newPatient");
+                i.putExtra("privacy", privacy_value);
+                Log.d(TAG, "Value intended (Identification): "+privacy_value); //privacy value transferred to PatientDetail activity.
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 getApplication().startActivity(i);
             } else {

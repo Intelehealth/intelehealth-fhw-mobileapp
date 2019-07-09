@@ -60,6 +60,7 @@ public class EncounterDAO {
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("sync", encounter.getSyncd());
             values.put("voided", encounter.getVoided());
+            values.put("privacynotice_value", encounter.getPrivacynotice_value());
             createdRecordsCount = db.insertWithOnConflict("tbl_encounter", null, values, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (SQLException e) {
             isCreated = false;
@@ -86,6 +87,7 @@ public class EncounterDAO {
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("sync", "false");
             values.put("voided", encounter.getVoided());
+            values.put("privacynotice_value", encounter.getPrivacynotice_value());
             createdRecordsCount = db.insertWithOnConflict("tbl_encounter", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             if (createdRecordsCount != 0)
                 isCreated = true;
@@ -130,6 +132,7 @@ public class EncounterDAO {
                 encounterDTO.setProvideruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("provider_uuid")));
                 encounterDTO.setEncounterTime(idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_time")));
                 encounterDTO.setVoided(idCursor.getInt(idCursor.getColumnIndexOrThrow("voided")));
+                encounterDTO.setPrivacynotice_value(idCursor.getString(idCursor.getColumnIndexOrThrow("privacynotice_value")));
                 encounterDTOList.add(encounterDTO);
             }
         }

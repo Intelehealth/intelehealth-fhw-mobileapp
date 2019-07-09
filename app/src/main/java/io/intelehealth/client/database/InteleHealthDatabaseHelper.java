@@ -27,7 +27,8 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "encounter_type_uuid TEXT," +
             "modified_date TEXT," +
             "sync TEXT," +
-            "voided TEXT" +
+            "voided TEXT," +
+            "privacynotice_value TEXT" +
             ")";
     /*
     * "openmrs_uuid": "8ab7f041-0b02-4ac0-a8f4-aa35f90ae3a1",

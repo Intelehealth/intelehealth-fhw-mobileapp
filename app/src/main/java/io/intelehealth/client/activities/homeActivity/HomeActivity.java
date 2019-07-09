@@ -53,6 +53,7 @@ import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.dao.ImagesPushDAO;
 import io.intelehealth.client.database.dao.PullDataDAO;
 import io.intelehealth.client.services.DownloadProtocolsTask;
+import io.intelehealth.client.utilities.ConfigUtils;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.NetworkConnection;
 import io.intelehealth.client.utilities.OfflineLogin;
@@ -80,6 +81,7 @@ public class HomeActivity extends AppCompatActivity {
     Myreceiver reMyreceive;
     PullDataDAO pullDataDAO = new PullDataDAO();
     ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

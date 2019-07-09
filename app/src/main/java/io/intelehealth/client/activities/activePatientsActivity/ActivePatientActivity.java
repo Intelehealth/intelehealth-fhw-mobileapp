@@ -4,7 +4,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -38,12 +40,20 @@ public class ActivePatientActivity extends AppCompatActivity {
     RecyclerView mActivePatientList;
     TextView textView;
     RecyclerView recyclerView;
+    AlertDialog.Builder dialogBuilder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        binding = DataBindingUtil.setContentView(this, R.layout.activity_active_patient);
         setContentView(R.layout.activity_active_patient);
         mToolbar = findViewById(R.id.toolbar);
+
+
+        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),
+                R.drawable.ic_sort_white_24dp);
+        mToolbar.setOverflowIcon(drawable);
+
         mActivePatientList = findViewById(R.id.today_patient_recycler_view);
         setSupportActionBar(mToolbar);
         textView = findViewById(R.id.textviewmessage);
@@ -117,6 +127,7 @@ public class ActivePatientActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_today_patient, menu);
+        inflater.inflate(R.menu.today_filter, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -126,10 +137,82 @@ public class ActivePatientActivity extends AppCompatActivity {
             case R.id.summary_endAllVisit:
                 endAllVisit();
 
+            case R.id.action_filter:
+                //alert box.
+                displaySingleSelectionDialog();    //function call
+
+
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
+
+
+    private void displaySingleSelectionDialog() {
+
+       /* View checkBoxView = View.inflate(this, R.layout.checkbox_view, null);
+        CheckBox checkBox = (CheckBox) checkBoxView.findViewById(R.id.checkbox);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                // Save to shared preferences
+            }
+        });
+        checkBox.setText("Text to the right of the check box.");*/
+
+        final String[] creator_names = {"Creator 1", "Creator 2", "Creator 3"};
+        boolean[] checkedItems = {false, false, false};
+        // ngo_numbers = getResources().getStringArray(R.array.ngo_numbers);
+        dialogBuilder = new AlertDialog.Builder(ActivePatientActivity.this);
+        dialogBuilder.setTitle("Filter by Creator");
+
+        dialogBuilder.setMultiChoiceItems(creator_names, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+
+            }
+        });
+
+        dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //display filter query code on list menu
+            }
+        });
+
+        dialogBuilder.setNegativeButton("Cancel", null);
+        //dialogBuilder.setView(checkBoxView);
+        //dialogBuilder.setIcon(R.drawable.ic_sort_white_24dp);
+        //  dialogBuilder.setItems(creator_names, new DialogInterface.OnClickListener() {
+        // @Override
+        //  public void onClick(DialogInterface dialog, int which) {
+        // the user clicked on colors[which]
+               /* final String a = "tel:"+"9769025715";
+                final String b = "tel:"+"7304154312";
+
+                if("Team 1".equals(ngo_numbers[which]))
+                {
+                    Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse(a));
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    getApplicationContext().startActivity(i);
+                }
+
+                else if("Team 2".equals(ngo_numbers[which]))
+                {
+                    Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse(b));
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    getApplicationContext().startActivity(i);
+                }*/
+        // }
+        // });
+        dialogBuilder.show();
+
+    }
+
 
     private void endAllVisit() {
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Intelehealth</string>
+    <string name="app_name" translatable="false">Intelehealth</string>
 
     //Generic
     <string name="generic_the_flipping_word_next" translatable="false">Next</string>
@@ -188,7 +188,8 @@
     <string name="visit_summary_additional_comments" translatable="false">Additional Comments</string>
     <string name="visit_summary_heading_name" translatable="false">Name</string>
     <string name="visit_summary_heading_id" translatable="false">ID</string>
-    <string name="visit_summary_button_download" translatable="false">Download from doctor</string>
+    <string name="visit_summary_button_download" translatable="false">Download</string>
+    <string name="visit_summary_button_upload" translatable="false">Upload</string>
     <string name="name_button_download" translatable="false">button_download</string>
     <string name="visit_summary_follow_up_date" translatable="false">Follow Up Date</string>
     <string name="visit_summary_follow_up_reminder" translatable="false">Please remind the patient of their follow up date: </string>
@@ -427,6 +428,7 @@
     <string name="title_activity_splash_acticity" translatable="false">SplashActicity</string>
     <string name="title_activity_home" translatable="false">HomeActivity</string>
     <string name="title_activity_sync" translatable="false">ActivitySync</string>
+    <string name="title_activity_privacy_notice" translatable="false">Privacy Notice</string>
     <string name="title_activity_visit_summary" translatable="false">VisitSummaryActivity</string>
     <string name="title_activity_past_medical_history" translatable="false">PastMedicalHistoryActivity</string>
     <string name="title_activity_patient_survey" translatable="false">PatientSurveyActivity</string>

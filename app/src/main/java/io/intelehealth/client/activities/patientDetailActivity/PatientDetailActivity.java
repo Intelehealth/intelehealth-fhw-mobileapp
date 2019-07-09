@@ -98,6 +98,8 @@ public class PatientDetailActivity extends AppCompatActivity {
     ImageView photoView;
     ImagesDAO imagesDAO = new ImagesDAO();
     TextView idView;
+
+    String privacy_value_selected;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,11 +115,13 @@ public class PatientDetailActivity extends AppCompatActivity {
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
             patientName = intent.getStringExtra("patientName");
+            privacy_value_selected = intent.getStringExtra("privacy"); //intent value from IdentificationActivity.
 
             intentTag = intent.getStringExtra("tag");
             Logger.logD(TAG, "Patient ID: " + patientUuid);
             Logger.logD(TAG, "Patient Name: " + patientName);
             Logger.logD(TAG, "Intent Tag: " + intentTag);
+            Logger.logD(TAG, "Privacy Value(PatientDetail): " + privacy_value_selected);
         }
         editbtn = findViewById(R.id.edit_button);
         editbtn.setOnClickListener(new View.OnClickListener() {
@@ -151,6 +155,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 encounterDTO.setSyncd(false);
                 encounterDTO.setProvideruuid(sessionManager.getProviderID());
                 encounterDTO.setVoided(0);
+                encounterDTO.setPrivacynotice_value(privacy_value_selected);//privacy value added.
+
                 try {
                     encounterDAO.createEncountersToDB(encounterDTO);
                 } catch (DAOException e) {
