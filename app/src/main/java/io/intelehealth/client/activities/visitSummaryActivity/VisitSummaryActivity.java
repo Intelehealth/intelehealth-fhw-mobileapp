@@ -1897,7 +1897,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         db.close();
         downloaded = true;
 
-
     }
 
     @Override

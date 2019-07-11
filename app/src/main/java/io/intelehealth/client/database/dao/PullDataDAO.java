@@ -129,50 +129,54 @@ public class PullDataDAO {
         String encoded = sessionManager.getEncoded();
         Gson gson = new Gson();
         Logger.logD(TAG, "push request model" + gson.toJson(pushRequestApiCall));
-        String url = "http://" + sessionManager.getServerUrl() + ":8080/EMR-Middleware/webapi/push/pushdata";
-        Single<PushResponseApiCall> pushResponseApiCallObservable = AppConstants.apiInterface.PUSH_RESPONSE_API_CALL_OBSERVABLE(url, "Basic " + encoded, pushRequestApiCall);
-        pushResponseApiCallObservable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<PushResponseApiCall>() {
-                    @Override
-                    public void onSuccess(PushResponseApiCall pushResponseApiCall) {
-                        Logger.logD(TAG, "success" + pushResponseApiCall);
-                        for (int i = 0; i < pushResponseApiCall.getData().getPatientlist().size(); i++) {
-                            try {
-                                patientsDAO.updateOpemmrsId(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId(), pushResponseApiCall.getData().getPatientlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
-                            } catch (DAOException e) {
-                                Crashlytics.getInstance().core.logException(e);
+        if (pushRequestApiCall.getPatients().isEmpty() || pushRequestApiCall.getEncounters().isEmpty() || pushRequestApiCall.getPersons().isEmpty() || pushRequestApiCall.getVisits().isEmpty()) {
+        } else {
+            String url = "http://" + sessionManager.getServerUrl() + ":8080/EMR-Middleware/webapi/push/pushdata";
+            Single<PushResponseApiCall> pushResponseApiCallObservable = AppConstants.apiInterface.PUSH_RESPONSE_API_CALL_OBSERVABLE(url, "Basic " + encoded, pushRequestApiCall);
+            pushResponseApiCallObservable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DisposableSingleObserver<PushResponseApiCall>() {
+                        @Override
+                        public void onSuccess(PushResponseApiCall pushResponseApiCall) {
+                            Logger.logD(TAG, "success" + pushResponseApiCall);
+                            for (int i = 0; i < pushResponseApiCall.getData().getPatientlist().size(); i++) {
+                                try {
+                                    patientsDAO.updateOpemmrsId(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId(), pushResponseApiCall.getData().getPatientlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
+                                } catch (DAOException e) {
+                                    Crashlytics.getInstance().core.logException(e);
+                                }
                             }
+
+                            for (int i = 0; i < pushResponseApiCall.getData().getVisitlist().size(); i++) {
+                                try {
+                                    visitsDAO.updateVisitSync(pushResponseApiCall.getData().getVisitlist().get(i).getUuid(), pushResponseApiCall.getData().getVisitlist().get(i).getSyncd().toString());
+                                } catch (DAOException e) {
+                                    Crashlytics.getInstance().core.logException(e);
+                                }
+                            }
+
+                            for (int i = 0; i < pushResponseApiCall.getData().getEncounterlist().size(); i++) {
+                                try {
+                                    encounterDAO.updateEncounterSync(pushResponseApiCall.getData().getEncounterlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getEncounterlist().get(i).getUuid());
+                                } catch (DAOException e) {
+                                    Crashlytics.getInstance().core.logException(e);
+                                }
+                            }
+                            isSucess[0] = true;
+                            sessionManager.setSyncFinished(true);
                         }
 
-                        for (int i = 0; i < pushResponseApiCall.getData().getVisitlist().size(); i++) {
-                            try {
-                                visitsDAO.updateVisitSync(pushResponseApiCall.getData().getVisitlist().get(i).getUuid(), pushResponseApiCall.getData().getVisitlist().get(i).getSyncd().toString());
-                            } catch (DAOException e) {
-                                Crashlytics.getInstance().core.logException(e);
-                            }
+                        @Override
+                        public void onError(Throwable e) {
+                            Logger.logD(TAG, "Onerror " + e.getMessage());
+                            isSucess[0] = false;
                         }
-
-                        for (int i = 0; i < pushResponseApiCall.getData().getEncounterlist().size(); i++) {
-                            try {
-                                encounterDAO.updateEncounterSync(pushResponseApiCall.getData().getEncounterlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getEncounterlist().get(i).getUuid());
-                            } catch (DAOException e) {
-                                Crashlytics.getInstance().core.logException(e);
-                            }
-                        }
-                        isSucess[0] = true;
-                        sessionManager.setSyncFinished(true);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Logger.logD(TAG, "Onerror " + e.getMessage());
-                        isSucess[0] = false;
-                    }
-                });
+                    });
+        }
         sessionManager.setPullSyncFinished(true);
         return isSucess[0];
     }
+
 }
 
 

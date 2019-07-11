@@ -42,7 +42,11 @@ public class SplashActivity extends AppCompatActivity {
         sessionManager = new SessionManager(SplashActivity.this);
 
         String appLanguage = sessionManager.getAppLanguage();
-
+        TempDialog = new ProgressDialog(SplashActivity.this);
+        TempDialog.setMessage("Data migrating...");
+        TempDialog.setCancelable(false);
+        TempDialog.setProgress(i);
+        TempDialog.show();
         if (!appLanguage.equalsIgnoreCase("")) {
             Locale locale = new Locale(appLanguage);
             Locale.setDefault(locale);
@@ -61,11 +65,6 @@ public class SplashActivity extends AppCompatActivity {
             public void onPermissionGranted() {
 //                Toast.makeText(SplashActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
                 Timer t = new Timer();
-                TempDialog = new ProgressDialog(SplashActivity.this);
-                TempDialog.setMessage("Data migrating...");
-                TempDialog.setCancelable(false);
-                TempDialog.setProgress(i);
-                TempDialog.show();
                 t.schedule(new splash(), 2000);
             }
 
