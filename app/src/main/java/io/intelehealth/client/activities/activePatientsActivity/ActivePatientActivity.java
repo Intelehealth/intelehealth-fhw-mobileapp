@@ -27,9 +27,11 @@ import java.util.List;
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.homeActivity.HomeActivity;
 import io.intelehealth.client.database.InteleHealthDatabaseHelper;
+import io.intelehealth.client.database.dao.ProviderDAO;
 import io.intelehealth.client.models.ActivePatientModel;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
+import io.intelehealth.client.utilities.exception.DAOException;
 
 public class ActivePatientActivity extends AppCompatActivity {
     private static final String TAG = ActivePatientActivity.class.getSimpleName();
@@ -148,8 +150,6 @@ public class ActivePatientActivity extends AppCompatActivity {
     }
 
 
-
-
     private void displaySingleSelectionDialog() {
 
        /* View checkBoxView = View.inflate(this, R.layout.checkbox_view, null);
@@ -163,9 +163,14 @@ public class ActivePatientActivity extends AppCompatActivity {
             }
         });
         checkBox.setText("Text to the right of the check box.");*/
-
-        final String[] creator_names = {"Creator 1", "Creator 2", "Creator 3"};
-        boolean[] checkedItems = {false, false, false};
+        ProviderDAO providerDAO = new ProviderDAO();
+        String[] creator_names = null;
+        try {
+            creator_names = providerDAO.getProvidersList().toArray(new String[0]);
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        boolean[] checkedItems = {false, false, false, false};
         // ngo_numbers = getResources().getStringArray(R.array.ngo_numbers);
         dialogBuilder = new AlertDialog.Builder(ActivePatientActivity.this);
         dialogBuilder.setTitle("Filter by Creator");

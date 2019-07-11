@@ -13,7 +13,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -30,6 +29,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,7 +53,6 @@ import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.dao.ImagesPushDAO;
 import io.intelehealth.client.database.dao.PullDataDAO;
 import io.intelehealth.client.services.DownloadProtocolsTask;
-import io.intelehealth.client.utilities.ConfigUtils;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.NetworkConnection;
 import io.intelehealth.client.utilities.OfflineLogin;
@@ -76,7 +75,7 @@ public class HomeActivity extends AppCompatActivity {
     int i = 5;
 
     TextView lastSyncTextView;
-    TextView manualSyncButton;
+    Button manualSyncButton;
     IntentFilter filter;
     Myreceiver reMyreceive;
     PullDataDAO pullDataDAO = new PullDataDAO();
@@ -105,7 +104,7 @@ public class HomeActivity extends AppCompatActivity {
         Logger.logD(TAG, "onCreate: " + getFilesDir().toString());
         lastSyncTextView = findViewById(R.id.lastsynctextview);
         manualSyncButton = findViewById(R.id.manualsyncbutton);
-        manualSyncButton.setPaintFlags(manualSyncButton.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+//        manualSyncButton.setPaintFlags(manualSyncButton.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         lastSyncTextView.setText("Last Synced:- " + sessionManager.getLastPulledDateTime());
         manualSyncButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -133,7 +133,7 @@ public class ImagesPushDAO {
                         @Override
                         public void onError(Throwable e) {
                             Logger.logD(TAG, "Onerror " + e.getMessage());
-                            AppConstants.notificationUtils.DownloadDone("Patient Profile", "Error Uploading Patient Profile", IntelehealthApplication.getAppContext());
+//                            AppConstants.notificationUtils.DownloadDone("Patient Profile", "Error Uploading Patient Profile", IntelehealthApplication.getAppContext());
                         }
 
                         @Override

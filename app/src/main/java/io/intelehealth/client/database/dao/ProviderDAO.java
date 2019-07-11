@@ -1,9 +1,13 @@
 package io.intelehealth.client.database.dao;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.crashlytics.android.Crashlytics;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import io.intelehealth.client.app.AppConstants;
@@ -57,15 +61,15 @@ public class ProviderDAO {
         try {
 //            for (ProviderDTO provider : providerDTOS) {
 //                Logger.logD("insert", "insert has to happen");
-                values.put("uuid", provider.getUuid());
-                values.put("identifier", provider.getIdentifier());
-                values.put("given_name", provider.getGivenName());
-                values.put("family_name", provider.getFamilyName());
-                values.put("voided", provider.getVoided());
-                values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("uuid", provider.getUuid());
+            values.put("identifier", provider.getIdentifier());
+            values.put("given_name", provider.getGivenName());
+            values.put("family_name", provider.getFamilyName());
+            values.put("voided", provider.getVoided());
+            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("sync", "TRUE");
 //                Logger.logD("pulldata", "datadumper" + values);
-                createdRecordsCount = db.insertWithOnConflict("tbl_provider", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            createdRecordsCount = db.insertWithOnConflict("tbl_provider", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 //            }
 //            db.setTransactionSuccessful();
 //            Logger.logD("created records", "created records count" + createdRecordsCount);
@@ -78,7 +82,7 @@ public class ProviderDAO {
         return isCreated;
     }
 
-//    private boolean updateProviders(ProviderDTO provider) throws DAOException {
+    //    private boolean updateProviders(ProviderDTO provider) throws DAOException {
 //        boolean isUpdated = true;
 //
 //        ContentValues values = new ContentValues();
@@ -106,5 +110,29 @@ public class ProviderDAO {
 //        }
 //        return isUpdated;
 //    }
+    public List<String> getProvidersList() throws DAOException {
+        List<String> providersList = new ArrayList<>();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            String query = "select distinct a.uuid,a.given_name,a.family_name from tbl_provider a, tbl_encounter b , tbl_visit c where a.uuid=b.provider_uuid and b.visituuid=c.uuid and c.enddate is  null";
+            Cursor cursor = db.rawQuery(query, new String[]{});
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    providersList.add(cursor.getString(cursor.getColumnIndexOrThrow("given_name")) + cursor.getString(cursor.getColumnIndexOrThrow("family_name")));
+                }
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLException s) {
+            Crashlytics.getInstance().core.logException(s);
+            throw new DAOException(s);
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
+        return providersList;
+
+    }
 
 }
