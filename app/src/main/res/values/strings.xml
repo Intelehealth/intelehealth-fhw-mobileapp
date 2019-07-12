@@ -435,5 +435,8 @@
     <string name="title_activity_past_medical_history" translatable="false">PastMedicalHistoryActivity</string>
     <string name="title_activity_patient_survey" translatable="false">PatientSurveyActivity</string>
 
+    <!--Privacy Notice Activity-->
+    <string name="privacy_toast">Please select an option</string>
+
 
 </resources>

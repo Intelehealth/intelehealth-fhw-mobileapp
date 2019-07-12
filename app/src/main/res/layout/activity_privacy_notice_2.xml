@@ -25,16 +25,18 @@
             android:layout_centerHorizontal="true">
 
             <RadioButton
+                android:id="@+id/radio_accept"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.5"
                 android:text="Accept"
                 android:layout_marginLeft="50dp"/>
 
             <RadioButton
+                android:id="@+id/radio_reject"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.5"
                 android:text="Reject"/>
 
 
