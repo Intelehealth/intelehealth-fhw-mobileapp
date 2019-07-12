@@ -1033,7 +1033,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 i.putExtra("patientName", patientdto.getFirstname() + " " + patientdto.getLastname());
                 i.putExtra("tag", "newPatient");
                 i.putExtra("privacy", privacy_value);
-                Log.d(TAG, "Value intended (Identification): "+privacy_value); //privacy value transferred to PatientDetail activity.
+                Log.d(TAG, "Privacy Value on (Identification): "+privacy_value); //privacy value transferred to PatientDetail activity.
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 getApplication().startActivity(i);
             } else {

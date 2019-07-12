@@ -22,6 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginHorizontal="50dp"
             android:layout_centerHorizontal="true">
 
             <RadioButton
@@ -29,14 +30,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:text="Accept"
-                android:layout_marginLeft="50dp"/>
+                android:text="Accept" />
 
             <RadioButton
                 android:id="@+id/radio_reject"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
+                android:layout_marginLeft="30dp"
                 android:text="Reject"/>
 
 
@@ -62,7 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/buttons"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="15dp">
         <!--Scrollable content here-->
         <LinearLayout
             android:layout_width="match_parent"
