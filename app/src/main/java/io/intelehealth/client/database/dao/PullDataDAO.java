@@ -41,7 +41,7 @@ public class PullDataDAO {
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
             @Override
             public void onResponse(Call<ResponseDTO> call, Response<ResponseDTO> response) {
-                AppConstants.notificationUtils.showNotifications("Sync", "Syncing", IntelehealthApplication.getAppContext());
+                AppConstants.notificationUtils.showNotifications("syncBackground", "Syncing", IntelehealthApplication.getAppContext());
                 if (response.body() != null && response.body().getData() != null) {
                     sessionManager.setPulled(response.body().getData().getPullexecutedtime());
 //                    sessionManager.setPullExcutedTime(response.body().getData().getPullexecutedtime());
@@ -57,9 +57,9 @@ public class PullDataDAO {
                         Crashlytics.getInstance().core.logException(e);
                     }
                     if (sync)
-                        AppConstants.notificationUtils.DownloadDone("Sync", "Successfully synced", IntelehealthApplication.getAppContext());
+                        AppConstants.notificationUtils.DownloadDone("sync", "Successfully synced", IntelehealthApplication.getAppContext());
                     else
-                        AppConstants.notificationUtils.DownloadDone("Sync", "failed synced,You can try again", IntelehealthApplication.getAppContext());
+                        AppConstants.notificationUtils.DownloadDone("sync", "failed synced,You can try again", IntelehealthApplication.getAppContext());
 
                 }
 
@@ -129,9 +129,9 @@ public class PullDataDAO {
         String encoded = sessionManager.getEncoded();
         Gson gson = new Gson();
         Logger.logD(TAG, "push request model" + gson.toJson(pushRequestApiCall));
-        if (pushRequestApiCall.getPatients().isEmpty() || pushRequestApiCall.getEncounters().isEmpty() || pushRequestApiCall.getPersons().isEmpty() || pushRequestApiCall.getVisits().isEmpty()) {
-        } else {
-            String url = "http://" + sessionManager.getServerUrl() + ":8080/EMR-Middleware/webapi/push/pushdata";
+        String url = "http://" + sessionManager.getServerUrl() + ":8080/EMR-Middleware/webapi/push/pushdata";
+//        push only happen if any one data exists.
+        if (!pushRequestApiCall.getVisits().isEmpty() || !pushRequestApiCall.getPersons().isEmpty() || !pushRequestApiCall.getPatients().isEmpty() || !pushRequestApiCall.getEncounters().isEmpty()) {
             Single<PushResponseApiCall> pushResponseApiCallObservable = AppConstants.apiInterface.PUSH_RESPONSE_API_CALL_OBSERVABLE(url, "Basic " + encoded, pushRequestApiCall);
             pushResponseApiCallObservable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -172,8 +172,9 @@ public class PullDataDAO {
                             isSucess[0] = false;
                         }
                     });
+            sessionManager.setPullSyncFinished(true);
         }
-        sessionManager.setPullSyncFinished(true);
+
         return isSucess[0];
     }
 

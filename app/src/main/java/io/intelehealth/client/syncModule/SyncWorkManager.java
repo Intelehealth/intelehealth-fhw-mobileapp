@@ -29,16 +29,16 @@ public class SyncWorkManager extends Worker {
 //        ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
 //
 ////        if (pull)
-////            sendNotification("Sync", "Synced Data");
+////            sendNotification("syncBackground", "Synced Data");
 ////        else
-////            sendNotification("Sync", "failed to Sync");
+////            sendNotification("syncBackground", "failed to syncBackground");
 //
 //        pullDataDAO.pushDataApi();
 //
 ////        if (push)
-////            sendNotification("Sync", "Synced Data");
+////            sendNotification("syncBackground", "Synced Data");
 ////        else
-////            sendNotification("Sync", "failed to Sync");
+////            sendNotification("syncBackground", "failed to syncBackground");
 ////
 //
 //        imagesPushDAO.patientProfileImagesPush();
@@ -46,7 +46,7 @@ public class SyncWorkManager extends Worker {
 //
 //        pullDataDAO.pullData(applicationContext);
         SyncUtils syncUtils = new SyncUtils();
-        syncUtils.Sync();
+        syncUtils.syncBackground();
 
         return Result.success();
     }

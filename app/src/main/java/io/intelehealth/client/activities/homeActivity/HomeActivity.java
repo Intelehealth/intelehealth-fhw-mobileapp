@@ -50,9 +50,8 @@ import io.intelehealth.client.R;
 import io.intelehealth.client.activities.loginActivity.LoginActivity;
 import io.intelehealth.client.activities.settingsActivity.SettingsActivity;
 import io.intelehealth.client.app.AppConstants;
-import io.intelehealth.client.database.dao.ImagesPushDAO;
-import io.intelehealth.client.database.dao.PullDataDAO;
 import io.intelehealth.client.services.DownloadProtocolsTask;
+import io.intelehealth.client.syncModule.SyncUtils;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.NetworkConnection;
 import io.intelehealth.client.utilities.OfflineLogin;
@@ -78,9 +77,7 @@ public class HomeActivity extends AppCompatActivity {
     Button manualSyncButton;
     IntentFilter filter;
     Myreceiver reMyreceive;
-    PullDataDAO pullDataDAO = new PullDataDAO();
-    ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
-
+    SyncUtils syncUtils = new SyncUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,10 +106,12 @@ public class HomeActivity extends AppCompatActivity {
         manualSyncButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pullDataDAO.pushDataApi();
-                imagesPushDAO.patientProfileImagesPush();
-                imagesPushDAO.obsImagesPush();
-                pullDataDAO.pullData(HomeActivity.this);
+
+                syncUtils.syncForeground();
+//                pullDataDAO.pushDataApi();
+//                imagesPushDAO.patientProfileImagesPush();
+//                imagesPushDAO.obsImagesPush();
+//                pullDataDAO.pullData(HomeActivity.this);
             }
         });
         final RecyclerView recyclerView = findViewById(R.id.recyclerview_home);
@@ -167,7 +166,7 @@ public class HomeActivity extends AppCompatActivity {
         }
 //        if (sessionManager.isFirstTimeSyncExcuted()) {
 
-//        AppConstants.notificationUtils.showNotifications("Sync","Sync Compledted",this);
+//        AppConstants.notificationUtils.showNotifications("syncBackground","syncBackground Compledted",this);
 //        pullDataDAO.pushDataApi();
 //            sessionManager.setFirstTimeSyncExecute(false);
 //        }
@@ -259,12 +258,13 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
             case R.id.sync:
-                pullDataDAO.pullData(this);
-                pullDataDAO.pushDataApi();
-                AppConstants.notificationUtils.showNotifications("Sync", "Sync Completed", this);
-                boolean i = imagesPushDAO.patientProfileImagesPush();
-                boolean o = imagesPushDAO.obsImagesPush();
-                if (i && o)
+//                pullDataDAO.pullData(this);
+//                pullDataDAO.pushDataApi();
+                boolean isSynced = syncUtils.syncForeground();
+                AppConstants.notificationUtils.showNotifications("sync", "syncBackground Completed", this);
+//                boolean i = imagesPushDAO.patientProfileImagesPush();
+//                boolean o = imagesPushDAO.obsImagesPush();
+                if (isSynced)
                     AppConstants.notificationUtils.showNotifications("ImageUpload", "ImageUpload Completed", this);
                 else
                     AppConstants.notificationUtils.showNotifications("ImageUpload", "ImageUpload failed", this);

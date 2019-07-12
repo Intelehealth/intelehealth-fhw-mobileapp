@@ -235,7 +235,7 @@
     <string name="pref_default_display_name" translatable="false">John Smith</string>
 
 
-    <!-- Example settings for Data & Sync -->
+    <!-- Example settings for Data & syncBackground -->
     <string name="pref_header_data_sync" translatable="false">Data &amp; sync</string>
 
     <string name="pref_title_server_url" translatable="false">Server URL</string>

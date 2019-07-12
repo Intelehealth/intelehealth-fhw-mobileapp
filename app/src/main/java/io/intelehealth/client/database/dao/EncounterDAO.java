@@ -121,7 +121,7 @@ public class EncounterDAO {
         List<EncounterDTO> encounterDTOList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where sync = ? OR sync=? COLLATE NOCASE", new String[]{"0", "false"});
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where sync = ? OR sync=?  COLLATE NOCASE ORDER BY voided ASC", new String[]{"false", "0"});
         EncounterDTO encounterDTO = new EncounterDTO();
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {

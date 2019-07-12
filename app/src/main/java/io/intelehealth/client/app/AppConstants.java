@@ -71,7 +71,7 @@ public class AppConstants {
     //  Image Conversion Ratio
     public static int IMAGE_JPG_QUALITY = 70;
 
-    //    Sync Timings
+    //    syncBackground Timings
 
     public static int SYNC = 1000 * 60 * 3;
     public static int MAXIMUM_DELAY = 1000 * 60 * 3;

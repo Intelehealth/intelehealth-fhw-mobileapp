@@ -8,7 +8,7 @@ import io.intelehealth.client.utilities.NotificationUtils;
 public class SyncUtils {
 
 
-    public void Sync() {
+    public void syncBackground() {
         PullDataDAO pullDataDAO = new PullDataDAO();
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
 
@@ -22,5 +22,20 @@ public class SyncUtils {
         notificationUtils.clearAllNotifications(IntelehealthApplication.getAppContext());
 
 
+    }
+
+    public boolean syncForeground() {
+        boolean isSynced = false;
+        PullDataDAO pullDataDAO = new PullDataDAO();
+        ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+
+        isSynced = pullDataDAO.pushDataApi();
+        isSynced = pullDataDAO.pullData(IntelehealthApplication.getAppContext());
+
+        imagesPushDAO.patientProfileImagesPush();
+        imagesPushDAO.obsImagesPush();
+
+
+        return isSynced;
     }
 }

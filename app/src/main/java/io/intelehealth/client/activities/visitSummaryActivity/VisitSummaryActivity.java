@@ -16,6 +16,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
@@ -44,6 +45,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -505,18 +507,25 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
 
         }
+        flag.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                try {
+                    EncounterDAO encounterDAO = new EncounterDAO();
+                    encounterDAO.setEmergency(visitUuid, isChecked);
+                } catch (DAOException e) {
+                    Crashlytics.getInstance().core.logException(e);
+                }
+            }
+        });
         db.close();
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
 //                db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
 //                EmergencyEncounterDAO emergencyEncounterDAO = new EmergencyEncounterDAO();
-                try {
-                    EncounterDAO encounterDAO = new EncounterDAO();
-                    encounterDAO.setEmergency(visitUuid, flag.isChecked());
-                } catch (DAOException e) {
-                    Crashlytics.getInstance().core.logException(e);
-                }
+
 //                if (flag.isChecked()) {
 ////                    Log.d(TAG, "Emergency flag val: " + flag.isChecked());
 ////                    String emergency_checked = String.valueOf(flag.isChecked());
@@ -585,12 +594,24 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     AppConstants.notificationUtils.showNotifications("Visit Data Upload", "Uploading visit data", VisitSummaryActivity.this);
                     PullDataDAO pullDataDAO = new PullDataDAO();
                     ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
-                    boolean pull = pullDataDAO.pushDataApi();
-                    if (pull)
-                        AppConstants.notificationUtils.DownloadDone("Visit Data Upload", "Uploaded visit data", VisitSummaryActivity.this);
-                    else
-                        AppConstants.notificationUtils.DownloadDone("Visit Data Upload", "failed to Uploaded", VisitSummaryActivity.this);
-                    imagesPushDAO.obsImagesPush();
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+//                            Added the 4 sec delay and then push data.For some reason doing immediately does not work
+                            //Do something after 100ms
+//                            pullDataDAO.pushDataApi();
+//                            imagesPushDAO.patientProfileImagesPush();
+//                            imagesPushDAO.obsImagesPush();
+//                            pullDataDAO.pullData(VisitSummaryActivity.this);
+                            SyncUtils syncUtils = new SyncUtils();
+                            boolean isSynced = syncUtils.syncForeground();
+                            if (isSynced)
+                                AppConstants.notificationUtils.DownloadDone("Visit Data Upload", "Uploaded visit data", VisitSummaryActivity.this);
+                            else
+                                AppConstants.notificationUtils.DownloadDone("Visit Data Upload", "failed to Uploaded", VisitSummaryActivity.this);
+                        }
+                    }, 4000);
                 } else {
                     AppConstants.notificationUtils.showNotifications("Visit Data Upload", "Check your connectivity", VisitSummaryActivity.this);
                 }
@@ -2054,8 +2075,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             if (internetCheck != null) {
                                 internetCheck.setIcon(R.mipmap.ic_data_on);
                                 flag = 1;
-                                SyncUtils syncUtils = new SyncUtils();
-                                syncUtils.Sync();
+//                                SyncUtils syncUtils = new SyncUtils();
+//                                syncUtils.syncBackground();
                             }
                         }
                     }

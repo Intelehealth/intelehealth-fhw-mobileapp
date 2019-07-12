@@ -226,23 +226,23 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('78284507-fb71-4354-9b34-046ab205e18f','RATING')");
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('36d207d6-bee7-4b3e-9196-7d053c6eddce','COMMENTS')");
 //            patient attributes master
-            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('0f63da10-882f-4352-9507-8c2e295c4bf7','Commune')");
-            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('14d4f066-15f5-102d-96e4-000c29c2a5d7','Telephone Number')");
-            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('1b2f34f7-2bf8-4ef7-9736-f5b858afc160','Son/wife/daughter')");
-            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('1c718819-345c-4368-aad6-d69b4c267db7','Education Level')");
-            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('1d609ff3-6f45-44d3-a0b6-601976571979','Department')");
-            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('4f07985c-88a5-4abd-aa0c-f3ec8324d8e7','Test Patient')");
-            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('5a889d96-0c84-4a04-88dc-59a6e37db2d3','Caste')");
-            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('8d8718c2-c2cc-11de-8d13-0010c6dffd0f','Birthplace')");
-            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('8d871afc-c2cc-11de-8d13-0010c6dffd0f','Citizenship')");
-            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('8d871d18-c2cc-11de-8d13-0010c6dffd0f','Mothers Name')");
-            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('8d871f2a-c2cc-11de-8d13-0010c6dffd0f','Civil Status')");
-            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('8d871d18-c2cc-11de-8d13-0010c6dffd0f','Health District')");
-            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('8d871d18-c2cc-11de-8d13-0010c6dffd0f','Health Center')");
-            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('99d5b4ef-db5a-4ae4-a5e2-2bf1ea0a251e','Cell Number')");
-            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('cf17630b-b966-47e9-974b-8098ee87f773','Prison Name')");
-            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('ecdaadb6-14a0-4ed9-b5b7-cfed87b44b87','occupation')");
-            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('f4af0ef3-579c-448a-8157-750283409122','Economic Status')");
+//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('0f63da10-882f-4352-9507-8c2e295c4bf7','Commune')");
+//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('14d4f066-15f5-102d-96e4-000c29c2a5d7','Telephone Number')");
+//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('1b2f34f7-2bf8-4ef7-9736-f5b858afc160','Son/wife/daughter')");
+//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('1c718819-345c-4368-aad6-d69b4c267db7','Education Level')");
+//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('1d609ff3-6f45-44d3-a0b6-601976571979','Department')");
+//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('4f07985c-88a5-4abd-aa0c-f3ec8324d8e7','Test Patient')");
+//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('5a889d96-0c84-4a04-88dc-59a6e37db2d3','Caste')");
+//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('8d8718c2-c2cc-11de-8d13-0010c6dffd0f','Birthplace')");
+//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('8d871afc-c2cc-11de-8d13-0010c6dffd0f','Citizenship')");
+//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('8d871d18-c2cc-11de-8d13-0010c6dffd0f','Mothers Name')");
+//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('8d871f2a-c2cc-11de-8d13-0010c6dffd0f','Civil Status')");
+//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('8d871d18-c2cc-11de-8d13-0010c6dffd0f','Health District')");
+//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('8d871d18-c2cc-11de-8d13-0010c6dffd0f','Health Center')");
+//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('99d5b4ef-db5a-4ae4-a5e2-2bf1ea0a251e','Cell Number')");
+//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('cf17630b-b966-47e9-974b-8098ee87f773','Prison Name')");
+//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('ecdaadb6-14a0-4ed9-b5b7-cfed87b44b87','occupation')");
+//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('f4af0ef3-579c-448a-8157-750283409122','Economic Status')");
 
 
 
