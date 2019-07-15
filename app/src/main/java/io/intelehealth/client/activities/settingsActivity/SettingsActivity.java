@@ -400,6 +400,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             SharedPreferences prefs = this.getActivity().getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString(langPref, lang);
+            prefs.getAll();
             editor.commit();
         }
 
