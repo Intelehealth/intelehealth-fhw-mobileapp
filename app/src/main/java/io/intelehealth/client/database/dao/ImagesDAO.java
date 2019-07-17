@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -237,6 +239,7 @@ public class ImagesDAO {
             localdb.setTransactionSuccessful();
         } catch (SQLiteException e) {
             isUpdated = false;
+            Crashlytics.getInstance().core.logException(e);
             throw new DAOException(e);
         } finally {
             localdb.endTransaction();
@@ -261,6 +264,7 @@ public class ImagesDAO {
             localdb.setTransactionSuccessful();
         } catch (SQLiteException e) {
             isUpdated = false;
+            Crashlytics.getInstance().core.logException(e);
             throw new DAOException(e);
         } finally {
             localdb.endTransaction();

@@ -22,8 +22,8 @@ import io.intelehealth.client.utilities.exception.DAOException;
 public class ObsDAO {
 
 
-    int updatecount = 0;
-    long createdRecordsCount = 0;
+    //    int updatecount = 0;
+//    long createdRecordsCount = 0;
     private SQLiteDatabase db = null;
     SessionManager sessionManager = null;
     String TAG = ObsDAO.class.getSimpleName();
@@ -65,7 +65,7 @@ public class ObsDAO {
 
     private boolean createObs(ObsDTO obsDTOS) throws DAOException {
         boolean isCreated = true;
-
+        long createdRecordsCount = 0;
         ContentValues values = new ContentValues();
         try {
 

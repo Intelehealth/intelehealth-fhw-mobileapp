@@ -11,10 +11,12 @@ import android.support.multidex.MultiDexApplication;
 import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.parse.Parse;
 
 import io.intelehealth.client.database.InteleHealthDatabaseHelper;
 import io.intelehealth.client.utilities.SessionManager;
+import io.reactivex.plugins.RxJavaPlugins;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 
@@ -56,6 +58,9 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         mContext = getApplicationContext();
         sessionManager = new SessionManager(this);
+        RxJavaPlugins.setErrorHandler(throwable -> {
+            Crashlytics.getInstance().core.logException(throwable);
+        });
         androidId = String
                 .format("%16s", Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID))
                 .replace(' ', '0');

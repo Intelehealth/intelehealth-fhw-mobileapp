@@ -1,13 +1,10 @@
 package io.intelehealth.client.utilities;
 
-import android.database.sqlite.SQLiteDatabase;
-
 import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.app.IntelehealthApplication;
 import io.intelehealth.client.database.dao.EmergencyEncounterDAO;
 import io.intelehealth.client.database.dao.EncounterDAO;
@@ -38,15 +35,20 @@ public class PatientsFrameJson {
     EncounterDAO encounterDAO = new EncounterDAO();
     ObsDAO obsDAO = new ObsDAO();
     EmergencyEncounterDAO emergencyEncounterDAO = new EmergencyEncounterDAO();
-    SQLiteDatabase db = null;
+//    SQLiteDatabase db = null;
 
     public PushRequestApiCall frameJson() {
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+//        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         session = new SessionManager(IntelehealthApplication.getAppContext());
 
         PushRequestApiCall pushRequestApiCall = new PushRequestApiCall();
 
-        List<PatientDTO> patientDTOList = patientsDAO.unsyncedPatients();
+        List<PatientDTO> patientDTOList = null;
+        try {
+            patientDTOList = patientsDAO.unsyncedPatients();
+        } catch (DAOException e) {
+            Crashlytics.getInstance().core.logException(e);
+        }
         List<VisitDTO> visitDTOList = visitsDAO.unsyncedVisits();
         List<EncounterDTO> encounterDTOList = encounterDAO.unsyncedEncounters();
         List<Patient> patientList = new ArrayList<>();

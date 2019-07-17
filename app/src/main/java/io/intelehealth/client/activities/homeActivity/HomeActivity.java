@@ -377,8 +377,9 @@ public class HomeActivity extends AppCompatActivity {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        finish();
+
                         moveTaskToBack(true);
+                        finish();
 
                     }
 

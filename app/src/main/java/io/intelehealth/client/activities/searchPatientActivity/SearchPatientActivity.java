@@ -60,7 +60,7 @@ public class SearchPatientActivity extends AppCompatActivity {
             SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
                     SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
             suggestions.saveRecentQuery(query, null);
-            if (sessionManager.isSyncFinished()) {
+            if (sessionManager.isPullSyncFinished()) {
                 msg.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
                 doQuery(query);
@@ -70,7 +70,7 @@ public class SearchPatientActivity extends AppCompatActivity {
             SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
                     SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
             suggestions.saveRecentQuery(query, null);
-            if (sessionManager.isSyncFinished()) {
+            if (sessionManager.isPullSyncFinished()) {
                 msg.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
                 firstQuery();
