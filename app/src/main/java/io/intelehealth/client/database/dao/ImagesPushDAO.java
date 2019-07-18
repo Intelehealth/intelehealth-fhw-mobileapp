@@ -153,4 +153,13 @@ public class ImagesPushDAO {
     }
 
 
+    public boolean isUuidExisits(ObsJsonRequest obsJsonRequest) {
+
+        obsJsonRequest.getUuid();
+
+
+        return true;
+    }
+
+
 }

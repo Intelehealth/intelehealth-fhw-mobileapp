@@ -63,7 +63,7 @@ public class ActivePatientActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         mDbHelper = new InteleHealthDatabaseHelper(this);
         db = mDbHelper.getWritableDatabase();
-        if (sessionManager.isSyncFinished()) {
+        if (sessionManager.isPullSyncFinished()) {
             textView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
             doQuery();
@@ -170,14 +170,15 @@ public class ActivePatientActivity extends AppCompatActivity {
         } catch (DAOException e) {
             e.printStackTrace();
         }
-        boolean[] checkedItems = {false, false, false, false};
+//        boolean[] checkedItems = {false, false, false, false};
         // ngo_numbers = getResources().getStringArray(R.array.ngo_numbers);
         dialogBuilder = new AlertDialog.Builder(ActivePatientActivity.this);
         dialogBuilder.setTitle("Filter by Creator");
 
-        dialogBuilder.setMultiChoiceItems(creator_names, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+        dialogBuilder.setMultiChoiceItems(creator_names, null, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+                Logger.logD(TAG, "multichoice" + i + b);
 
             }
         });
@@ -186,6 +187,7 @@ public class ActivePatientActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 //display filter query code on list menu
+                Logger.logD(TAG, "onclick" + i);
             }
         });
 
