@@ -16,6 +16,8 @@ package io.intelehealth.client.utilities;
 
 import android.widget.Spinner;
 
+import java.io.File;
+
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.IntelehealthApplication;
 
@@ -125,5 +127,22 @@ public final class StringUtils {
             val = spinner.getSelectedItem().toString();
 
         return val;
+    }
+
+    public static String getFileNameWithoutExtension(File file) {
+        String fileName = "";
+
+        try {
+            if (file != null && file.exists()) {
+                String name = file.getName();
+                fileName = name.replaceFirst("[.][^.]+$", "");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            fileName = "";
+        }
+
+        return fileName;
+
     }
 }

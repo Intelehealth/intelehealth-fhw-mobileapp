@@ -15,27 +15,26 @@ import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.models.ObsImageModel.ObsJsonRequest;
 import io.intelehealth.client.models.patientImageModelRequest.PatientProfile;
 import io.intelehealth.client.utilities.Base64Utils;
+import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.UuidDictionary;
 import io.intelehealth.client.utilities.exception.DAOException;
 
 public class ImagesDAO {
     public String TAG = ImagesDAO.class.getSimpleName();
 
-    public boolean insertObsImageDatabase(String patientUuid, String visitUuid, String encounteruuid, String imagePath, String imageprefix) throws DAOException {
+    public boolean insertObsImageDatabase(String uuid, String encounteruuid, String conceptUuid) throws DAOException {
         boolean isInserted = false;
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         localdb.beginTransaction();
         ContentValues contentValues = new ContentValues();
         try {
-            contentValues.put("uuid", UUID.randomUUID().toString());
-            contentValues.put("patientuuid", patientUuid);
-            contentValues.put("visituuid", visitUuid);
+            contentValues.put("uuid", uuid);
             contentValues.put("encounteruuid", encounteruuid);
-            contentValues.put("image_path", imagePath);
-            contentValues.put("obs_time_date", AppConstants.dateAndTimeUtils.currentDateTime());
-            contentValues.put("image_type", imageprefix);
+            contentValues.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            contentValues.put("conceptuuid", conceptUuid);
+            contentValues.put("voided", "0");
             contentValues.put("sync", "false");
-            localdb.insertWithOnConflict("tbl_image_records", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+            localdb.insertWithOnConflict("tbl_obs", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
             isInserted = true;
             localdb.setTransactionSuccessful();
         } catch (SQLiteException e) {
@@ -48,15 +47,39 @@ public class ImagesDAO {
         return isInserted;
     }
 
-    public void deleteImageFromDatabase(String imagePath) throws DAOException {
+    public boolean updateObs(String uuid) throws DAOException {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        int updatedCount = 0;
+        ContentValues values = new ContentValues();
+        String selection = "uuid = ?";
+        try {
+            values.put("sync", "TRUE");
+            updatedCount = db.update("tbl_obs", values, selection, new String[]{uuid});
+            //If no value is not found, then update fails so insert instead.
+            if (updatedCount == 0) {
+            }
+            db.setTransactionSuccessful();
+        } catch (SQLiteException e) {
+            Logger.logE(TAG, "exception ", e);
+
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
+
+        return true;
+    }
+
+    public void deleteImageFromDatabase(String uuid) throws DAOException {
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         String[] coloumns = {"uuid", "image_path"};
-        String[] selectionArgs = {imagePath};
+        String[] selectionArgs = {uuid};
         localdb.beginTransaction();
         try {
-            Cursor cursor = localdb.query("tbl_image_records", coloumns, "image_path = ?", selectionArgs, null, null, null);
+            Cursor cursor = localdb.query("tbl_obs", coloumns, "uuid = ?", selectionArgs, null, null, null);
             if (cursor != null && cursor.moveToFirst()) {
-                localdb.execSQL("DELETE FROM tbl_image_records WHERE image_path=" + "'" + imagePath + "'");
+                localdb.execSQL("UPDATE FROM tbl_obs SET voided = '1' WHERE uuid=" + "'" + uuid + "'");
                 localdb.setTransactionSuccessful();
             }
             if (cursor != null) {
@@ -154,14 +177,12 @@ public class ImagesDAO {
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         localdb.beginTransaction();
         try {
-            Cursor idCursor = localdb.rawQuery("SELECT * FROM tbl_image_records where sync = ? OR sync=? AND image_type = ? OR image_type = ?  COLLATE NOCASE", new String[]{"0", "false", "AD", "PE"});
+            Cursor idCursor = localdb.rawQuery("SELECT * FROM tbl_obs where sync = ? OR sync=? AND conceptuuid = ? OR conceptuuid = ?  COLLATE NOCASE", new String[]{"0", "false", UuidDictionary.COMPLEX_IMAGE_PE, UuidDictionary.COMPLEX_IMAGE_AD});
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
                     ObsJsonRequest obsJsonRequest = new ObsJsonRequest();
-                    obsJsonRequest.setPerson(idCursor.getString(idCursor.getColumnIndexOrThrow("patientuuid")));
-                    obsJsonRequest.setConcept(getImageTypeUUid(idCursor.getString(idCursor.getColumnIndexOrThrow("image_type"))));
                     obsJsonRequest.setEncounter(idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")));
-                    obsJsonRequest.setObsDatetime(idCursor.getString(idCursor.getColumnIndexOrThrow("obs_time_date")));
+                    obsJsonRequest.setObsDatetime(idCursor.getString(idCursor.getColumnIndexOrThrow("modified_date")));
                     obsJsonRequest.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
                     obsImages.add(obsJsonRequest);
                 }
@@ -258,7 +279,7 @@ public class ImagesDAO {
         try {
             contentValues.put("uuid", uuid);
             contentValues.put("sync", "true");
-            isupdate = localdb.update("tbl_image_records", contentValues, whereclause, new String[]{uuid});
+            isupdate = localdb.update("tbl_obs", contentValues, whereclause, new String[]{uuid});
             if (isupdate != 0)
                 isUpdated = true;
             localdb.setTransactionSuccessful();
@@ -282,6 +303,29 @@ public class ImagesDAO {
 
         return imagetype;
     }
+
+    public ArrayList getImageUuid(String encounterUuid, String conceptuuid) throws DAOException {
+        Logger.logD(TAG, "encounter uuid for image " + encounterUuid);
+        ArrayList<String> uuidList = new ArrayList<>();
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        localdb.beginTransaction();
+        try {
+            Cursor idCursor = localdb.rawQuery("SELECT uuid FROM tbl_obs where encounteruuid=? AND conceptuuid = ? AND voided=? COLLATE NOCASE", new String[]{encounterUuid, conceptuuid, "0"});
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+                    uuidList.add(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                }
+            }
+            idCursor.close();
+        } catch (SQLiteException e) {
+            throw new DAOException(e);
+        } finally {
+            localdb.endTransaction();
+            localdb.close();
+        }
+        return uuidList;
+    }
+
 
 }
 

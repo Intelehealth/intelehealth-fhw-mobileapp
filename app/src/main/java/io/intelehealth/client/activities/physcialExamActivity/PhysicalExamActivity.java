@@ -71,9 +71,9 @@ public class PhysicalExamActivity extends AppCompatActivity {
     SQLiteDatabase localdb;
 
     private static String image_Prefix = "PE";
-    private static String imageDir = "Physical Exam";
+//    private static String imageDir = "Physical Exam";
 
-    static String imageName = patientUuid + "_" + visitUuid + "_" + image_Prefix;
+    static String imageName;
     static String baseDir;
     static File filePath;
 
@@ -130,11 +130,10 @@ public class PhysicalExamActivity extends AppCompatActivity {
             Set<String> selectedExams = mSharedPreference.getStringSet("exam_" + patientUuid, null);
             selectedExamsList.clear();
             if (selectedExams != null) selectedExamsList.addAll(selectedExams);
-            filePath = new File(baseDir + File.separator + "Patient Images" + File.separator +
-                    patientUuid + File.separator + visitUuid + File.separator + imageDir);
+            filePath = new File(AppConstants.IMAGE_PATH);
         }
 
-        imageName = patientUuid + "_" + visitUuid + "_" + image_Prefix;
+        imageName = UUID.randomUUID().toString();
 
         if ((selectedExamsList == null) || selectedExamsList.isEmpty()) {
             Log.d(TAG, "No additional exams were triggered");
@@ -361,7 +360,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
         ImagesDAO imagesDAO = new ImagesDAO();
 
         try {
-            imagesDAO.insertObsImageDatabase(patientUuid, visitUuid, encounterAdultIntials, imagePath, image_Prefix);
+            imagesDAO.insertObsImageDatabase(imageName, encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_PE);
         } catch (DAOException e) {
             Crashlytics.getInstance().core.logException(e);
         }

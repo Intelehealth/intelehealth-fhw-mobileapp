@@ -17,6 +17,7 @@ import io.intelehealth.client.app.IntelehealthApplication;
 import io.intelehealth.client.models.dto.ObsDTO;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
+import io.intelehealth.client.utilities.UuidDictionary;
 import io.intelehealth.client.utilities.exception.DAOException;
 
 public class ObsDAO {
@@ -272,7 +273,8 @@ public class ObsDAO {
     public List<ObsDTO> obsDTOList(String encounteruuid) {
         List<ObsDTO> obsDTOList = new ArrayList<>();
         db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ?", new String[]{encounteruuid});
+        //take All obs except image obs
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND conceptuuid != ? AND conceptuuid != ?", new String[]{encounteruuid, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE});
         ObsDTO obsDTO = new ObsDTO();
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {

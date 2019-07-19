@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.support.annotation.NonNull;
@@ -30,6 +29,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import io.intelehealth.client.R;
+import io.intelehealth.client.app.AppConstants;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -110,11 +110,9 @@ public class CameraActivity extends AppCompatActivity {
                     }
                     File file;
                     if (mFilePath == null) {
-                        file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-                                mImageName + "_" + System.currentTimeMillis() + ".jpg");
+                        file = new File(AppConstants.IMAGE_PATH + mImageName + ".jpg");
                     } else {
-                        file = new File(mFilePath + File.separator + mImageName +
-                                "_" + System.currentTimeMillis() + ".jpg");
+                        file = new File(AppConstants.IMAGE_PATH + mImageName + ".jpg");
                     }
                     OutputStream os = null;
                     try {
@@ -158,7 +156,8 @@ public class CameraActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            if (extras.containsKey(SET_IMAGE_NAME)) mImageName = extras.getString(SET_IMAGE_NAME);
+            if (extras.containsKey(SET_IMAGE_NAME))
+                mImageName = extras.getString(SET_IMAGE_NAME);
             if (extras.containsKey(SHOW_DIALOG_MESSAGE))
                 mDialogMessage = extras.getString(SHOW_DIALOG_MESSAGE);
             if (extras.containsKey(SET_IMAGE_PATH))

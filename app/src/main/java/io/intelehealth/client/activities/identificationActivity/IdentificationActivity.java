@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
@@ -525,8 +524,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 } else {
                     patientTemp = patientUuid;
                 }
-                File filePath = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator +
-                        "Patient_Images" + File.separator + patientTemp);
+                File filePath = new File(AppConstants.IMAGE_PATH + patientTemp);
                 if (!filePath.exists()) {
                     filePath.mkdir();
                 }
@@ -577,8 +575,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 mDOBMonth = monthOfYear;
                 mDOBDay = dayOfMonth;
 
-                String ageString = String.valueOf(mAgeYears) + getString(R.string.identification_screen_text_years)
-                        +" - "+ String.valueOf(mAgeMonths) + getString(R.string.identification_screen_text_months);
+                String ageString = mAgeYears + getString(R.string.identification_screen_text_years)
+                        + " - " + mAgeMonths + getString(R.string.identification_screen_text_months);
                 mAge.setText(ageString);
             }
         }, mDOBYear, mDOBMonth, mDOBDay);

@@ -110,6 +110,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "creator TEXT," +
             "voided TEXT," +
             "modified_date TEXT," +
+            "image_type TEXT," +
             "sync TEXT" +
             ")";
     SessionManager sessionManager = null;

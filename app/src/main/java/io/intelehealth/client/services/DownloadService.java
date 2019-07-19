@@ -2,7 +2,6 @@ package io.intelehealth.client.services;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.os.Environment;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.crashlytics.android.Crashlytics;
@@ -24,7 +23,6 @@ import io.intelehealth.client.models.download.Download;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UrlModifiers;
-import io.intelehealth.client.utilities.UuidDictionary;
 import io.intelehealth.client.utilities.exception.DAOException;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -37,9 +35,9 @@ public class DownloadService extends IntentService {
     UrlModifiers urlModifiers = new UrlModifiers();
     ObsDAO obsDAO = new ObsDAO();
     SessionManager sessionManager = null;
-    private String patientUuid;
-    private String visitUuid;
-    private String encounterVitals;
+    //    private String patientUuid;
+//    private String visitUuid;
+//    private String encounterVitals;
     private String encounterAdultIntials;
     private int totalFileSize;
     private String imgPrefix = "AD";
@@ -54,28 +52,20 @@ public class DownloadService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-
-//        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//
-//        notificationBuilder = new NotificationCompat.Builder(this)
-//                .setSmallIcon(R.drawable.ic_download)
-//                .setContentTitle("Download")
-//                .setContentText("Downloading File")
-//                .setAutoCancel(true);
-//        notificationManager.notify(0, notificationBuilder.build());
         if (intent != null) {
-            patientUuid = intent.getStringExtra("patientUuid");
-            visitUuid = intent.getStringExtra("visitUuid");
-            encounterVitals = intent.getStringExtra("encounterUuidVitals");
+//            patientUuid = intent.getStringExtra("patientUuid");
+//            visitUuid = intent.getStringExtra("visitUuid");
+//            encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
             ImageType = intent.getStringExtra("ImageType");
         }
         AppConstants.notificationUtils.showNotificationProgress("Download", "Downloading File", IntelehealthApplication.getAppContext(), 0);
-        if (ImageType.equalsIgnoreCase(UuidDictionary.COMPLEX_IMAGE_AD))
-            baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + File.separator + "Patient Images" + File.separator + patientUuid + File.separator + visitUuid + File.separator + imageAD + File.separator;
-        else
-            baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + File.separator + "Patient Images" + File.separator + patientUuid + File.separator + visitUuid + File.separator + imagePE + File.separator;
+//        if (ImageType.equalsIgnoreCase(UuidDictionary.COMPLEX_IMAGE_AD))
+//            baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + File.separator + "Patient Images" + File.separator + patientUuid + File.separator + visitUuid + File.separator + imageAD + File.separator;
+//        else
+//            baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + File.separator + "Patient Images" + File.separator + patientUuid + File.separator + visitUuid + File.separator + imagePE + File.separator;
 
+        baseDir = AppConstants.IMAGE_PATH;
         initDownload(ImageType);
 
     }
@@ -85,20 +75,21 @@ public class DownloadService extends IntentService {
         String url = "";
         List<String> imageObsList = new ArrayList<>();
         imageObsList = obsDAO.getImageStrings(ImageType, encounterAdultIntials);
-        String imageType = "";
-        if (ImageType.equalsIgnoreCase(UuidDictionary.COMPLEX_IMAGE_AD))
-            imageType = "AD";
-        else
-            imageType = "PE";
+//        String imageType = "";
+//        if (ImageType.equalsIgnoreCase(UuidDictionary.COMPLEX_IMAGE_AD))
+//            imageType = "AD";
+//        else
+//            imageType = "PE";
         if (imageObsList.size() == 0)
             AppConstants.notificationUtils.DownloadDone("Download", "No Images to Download", IntelehealthApplication.getAppContext());
         for (int i = 0; i < imageObsList.size(); i++) {
             url = urlModifiers.obsImageUrl(imageObsList.get(i));
             Observable<ResponseBody> downloadobs = AppConstants.apiInterface.OBS_IMAGE_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
             int finalI = i;
-            String finalImageType = imageType;
+//            String finalImageType = imageType;
             List<String> finalImageObsList = imageObsList;
             int finalI1 = i;
+            List<String> finalImageObsList1 = imageObsList;
             downloadobs.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new DisposableObserver<ResponseBody>() {
@@ -106,7 +97,7 @@ public class DownloadService extends IntentService {
                         public void onNext(ResponseBody responseBody) {
 
                             try {
-                                downloadFile(responseBody, baseDir + finalImageObsList.get(finalI1) + "_" + finalImageType, finalImageType);
+                                downloadFile(responseBody, finalImageObsList1.get(finalI1));
                             } catch (IOException e) {
                                 Crashlytics.getInstance().core.logException(e);
                             }
@@ -127,13 +118,13 @@ public class DownloadService extends IntentService {
 
     }
 
-    private void downloadFile(ResponseBody body, String mImageName, String imageType) throws IOException {
-        String imagepath = mImageName + "_" + System.currentTimeMillis() + ".jpg";
+    private void downloadFile(ResponseBody body, String imageuuid) throws IOException {
+        String imagepath = imageuuid + ".jpg";
         int count;
         byte[] data = new byte[1024 * 4];
         long fileSize = body.contentLength();
         InputStream bis = new BufferedInputStream(body.byteStream(), 1024 * 8);
-        File outputFile = new File(imagepath);
+        File outputFile = new File(baseDir + imagepath);
         OutputStream output = new FileOutputStream(outputFile);
         long total = 0;
         long startTime = System.currentTimeMillis();
@@ -168,7 +159,7 @@ public class DownloadService extends IntentService {
 
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
-            imagesDAO.insertObsImageDatabase(patientUuid, visitUuid, encounterAdultIntials, imagepath, imageType);
+            imagesDAO.updateObs(imageuuid);
         } catch (DAOException e) {
             Crashlytics.getInstance().core.logException(e);
         }

@@ -63,10 +63,8 @@ import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -91,6 +89,7 @@ import io.intelehealth.client.services.DownloadService;
 import io.intelehealth.client.syncModule.SyncUtils;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
 import io.intelehealth.client.utilities.FileUtils;
+import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.NetworkConnection;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UuidDictionary;
@@ -425,7 +424,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         filePathPhyExam = baseDir + File.separator + "Patient Images" + File.separator + patientUuid + File.separator +
                 visitUuid + File.separator + physicalExamDocumentDir;
 
-        phyExamDir = new File(filePathPhyExam);
+        phyExamDir = new File(AppConstants.IMAGE_PATH);
 
         flag = findViewById(R.id.flaggedcheckbox);
 //        EncounterDAO encounterDAO = new EncounterDAO();
@@ -1106,17 +1105,36 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     private void physicalDoumentsUpdates() {
-        if (!phyExamDir.exists()) {
-            phyExamDir.mkdirs();
-            Log.v(TAG, "directory ceated " + phyExamDir.getAbsolutePath());
-        } else {
-            File[] files = phyExamDir.listFiles();
-            List<File> fileList = Arrays.asList(files);
+
+        ImagesDAO imagesDAO = new ImagesDAO();
+        ArrayList<String> fileuuidList = new ArrayList<String>();
+        ArrayList<File> fileList = new ArrayList<File>();
+        try {
+            fileuuidList = imagesDAO.getImageUuid(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_PE);
+            for (String fileuuid : fileuuidList) {
+                String filename = AppConstants.IMAGE_PATH + "/" + fileuuid + ".jpg";
+                fileList.add(new File(filename));
+            }
             HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
             mPhysicalExamsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
             mPhysicalExamsRecyclerView.setLayoutManager(mPhysicalExamsLayoutManager);
             mPhysicalExamsRecyclerView.setAdapter(horizontalAdapter);
+        } catch (DAOException e) {
+            Crashlytics.getInstance().core.logException(e);
+        } catch (Exception file) {
+            Logger.logD(TAG, file.getMessage());
         }
+//        if (!phyExamDir.exists()) {
+//            phyExamDir.mkdirs();
+//            Log.v(TAG, "directory ceated " + phyExamDir.getAbsolutePath());
+//        } else {
+//            File[] files = phyExamDir.listFiles();
+//            List<File> fileList = Arrays.asList(files);
+//            HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
+//            mPhysicalExamsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
+//            mPhysicalExamsRecyclerView.setLayoutManager(mPhysicalExamsLayoutManager);
+//            mPhysicalExamsRecyclerView.setAdapter(horizontalAdapter);
+//        }
     }
 
     private void startDownload(String imageType) {
@@ -1527,8 +1545,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         visitCursor.close();
 
-        String encounterselection = "encounteruuid = ?";
-        String[] encounterargs = {encounterAdultIntials};
+        String encounterselection = "encounteruuid = ? AND conceptuuid != ? AND conceptuuid != ?";
+        String[] encounterargs = {encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE};
         Cursor encountercursor = db.query("tbl_obs", columns, encounterselection, encounterargs, null, null, null);
         if (encountercursor.moveToFirst()) {
             do {
@@ -1680,6 +1698,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 //checkForDoctor();
                 break;
             }
+
+
             default:
                 Log.i(TAG, "parseData: " + value);
                 break;
@@ -1748,19 +1768,41 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String filePathAddDoc = baseDir + File.separator + "Patient Images" + File.separator + patientUuid + File.separator +
                 visitUuid + File.separator + additionalDocumentDir;
 
-        File addDocDir = new File(filePathAddDoc);
-        if (!addDocDir.exists()) {
-            addDocDir.mkdirs();
-            Log.v(TAG, "directory created " + addDocDir.getAbsolutePath());
-        } else {
-            File[] files = addDocDir.listFiles();
-            List<File> fileList = Arrays.asList(files);
+
+        ImagesDAO imagesDAO = new ImagesDAO();
+        ArrayList<String> fileuuidList = new ArrayList<String>();
+        ArrayList<File> fileList = new ArrayList<File>();
+        try {
+            fileuuidList = imagesDAO.getImageUuid(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD);
+            for (String fileuuid : fileuuidList) {
+                String filename = AppConstants.IMAGE_PATH + fileuuid + ".jpg";
+                fileList.add(new File(filename));
+                Logger.logD(TAG, "Image name:" + filename);
+            }
             HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
             mAdditionalDocsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
             mAdditionalDocsRecyclerView.setLayoutManager(mAdditionalDocsLayoutManager);
             mAdditionalDocsRecyclerView.setAdapter(horizontalAdapter);
-
+        } catch (DAOException e) {
+            Crashlytics.getInstance().core.logException(e);
+        } catch (Exception file) {
+            Logger.logD(TAG, file.getMessage());
         }
+//        if (!addDocDir.exists()) {
+//            addDocDir.mkdirs();
+//            Log.v(TAG, "directory created " + addDocDir.getAbsolutePath());
+//        } else {
+//            File[] files = addDocDir.listFiles();
+//            addDocDir.listFiles(new FilenameFilter() {
+//                @Override
+//                public boolean accept(File dir, String name) {
+//                    return false;
+//                }
+//            })
+        //List<File> fileList = Arrays.asList(files);
+
+
+//    }
     }
 
     @Override

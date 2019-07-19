@@ -164,6 +164,7 @@ public class ActivePatientActivity extends AppCompatActivity {
         });
         checkBox.setText("Text to the right of the check box.");*/
         ProviderDAO providerDAO = new ProviderDAO();
+        ArrayList selectedItems = new ArrayList<>();
         String[] creator_names = null;
         try {
             creator_names = providerDAO.getProvidersList().toArray(new String[0]);
@@ -176,10 +177,18 @@ public class ActivePatientActivity extends AppCompatActivity {
         dialogBuilder.setTitle("Filter by Creator");
 
         dialogBuilder.setMultiChoiceItems(creator_names, null, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i, boolean b) {
-                Logger.logD(TAG, "multichoice" + i + b);
 
+
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which, boolean isChecked) {
+                Logger.logD(TAG, "multichoice" + which + isChecked);
+                if (isChecked) {
+                    // If the user checked the item, add it to the selected items
+                    selectedItems.add(which);
+                } else if (selectedItems.contains(which)) {
+                    // Else, if the item is already in the array, remove it
+                    selectedItems.remove(Integer.valueOf(which));
+                }
             }
         });
 
@@ -188,6 +197,7 @@ public class ActivePatientActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 //display filter query code on list menu
                 Logger.logD(TAG, "onclick" + i);
+//                select distinct a.uuid,c.first_name,c.middle_name,c.last_name,c.openmrs_id,c.phone_number,c.date_of_birth from tbl_visit a,tbl_encounter b ,tbl_patient c where b.visituuid=a.uuid and b.provider_uuid in ('163b48e5-26fb-40c1-8d94-a6c873dd2869') and a.patientuuid=c.uuid and a.enddate is null order by c.first_name
             }
         });
 
