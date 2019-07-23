@@ -2,8 +2,8 @@ package io.intelehealth.client.networkApiCalls;
 
 
 import io.intelehealth.client.models.Location;
-import io.intelehealth.client.models.ObsImageModel.ObsJsonRequest;
 import io.intelehealth.client.models.ObsImageModel.ObsJsonResponse;
+import io.intelehealth.client.models.ObsImageModel.ObsPushDTO;
 import io.intelehealth.client.models.Results;
 import io.intelehealth.client.models.dto.ResponseDTO;
 import io.intelehealth.client.models.loginModel.LoginModel;
@@ -82,5 +82,5 @@ public interface ApiInterface {
     Observable<ObsJsonResponse> OBS_JSON_RESPONSE_OBSERVABLE(@Url String url,
                                                              @Header("Authorization") String authHeader,
                                                              @Part MultipartBody.Part image,
-                                                             @Part("json") ObsJsonRequest obsJsonRequest);
+                                                             @Part("json") ObsPushDTO obsJsonRequest);
 }

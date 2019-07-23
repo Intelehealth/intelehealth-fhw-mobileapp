@@ -17,6 +17,7 @@ package io.intelehealth.client.utilities;
 import android.widget.Spinner;
 
 import java.io.File;
+import java.util.List;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.IntelehealthApplication;
@@ -144,5 +145,13 @@ public final class StringUtils {
 
         return fileName;
 
+    }
+
+    public static String convertUsingStringBuilder(List<String> names) {
+        StringBuilder namesStr = new StringBuilder();
+        for (String name : names) {
+            namesStr = namesStr.length() > 0 ? namesStr.append("','").append(name) : namesStr.append(name);
+        }
+        return namesStr.toString();
     }
 }

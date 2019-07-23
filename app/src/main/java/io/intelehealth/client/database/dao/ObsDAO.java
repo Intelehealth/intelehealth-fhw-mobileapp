@@ -295,7 +295,7 @@ public class ObsDAO {
     public List<String> getImageStrings(String conceptuuid, String encounterUuidAdultIntials) {
         List<String> rawStrings = new ArrayList<>();
         db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_obs where conceptuuid = ? AND encounteruuid = ? ", new String[]{conceptuuid, encounterUuidAdultIntials});
+        Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_obs where conceptuuid = ? AND encounteruuid = ? AND voided='0'", new String[]{conceptuuid, encounterUuidAdultIntials});
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
                 rawStrings.add(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));

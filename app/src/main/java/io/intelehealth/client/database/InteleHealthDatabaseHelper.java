@@ -26,8 +26,8 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "provider_uuid TEXT," +
             "encounter_type_uuid TEXT," +
             "modified_date TEXT," +
-            "sync TEXT," +
-            "voided TEXT," +
+            "sync TEXT DEFAULT 'false' ," +
+            "voided TEXT DEFAULT '0'," +
             "privacynotice_value TEXT" +
             ")";
     /*
@@ -67,7 +67,8 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "caste TEXT," +
             "dead Text," +
             "modified_date TEXT," +
-            "sync TEXT" +
+            "voided TEXT DEFAULT '0'," +
+            "sync TEXT DEFAULT 'false' " +
             ")";
     /* "openmrs_uuid": "834054d5-db4d-481c-8f2b-17da25aa93a2",
                 "value": "123456789",
@@ -80,7 +81,8 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "person_attribute_type_uuid TEXT ," +
             "patientuuid TEXT," +
             "modified_date TEXT," +
-            "sync TEXT" +
+            "voided TEXT DEFAULT '0'," +
+            "sync TEXT DEFAULT 'false' " +
             ")";
     public static final String CREATE_VISIT_MAIN = "CREATE TABLE IF NOT EXISTS tbl_visit (" +
             "uuid TEXT PRIMARY KEY," +
@@ -91,7 +93,8 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "locationuuid TEXT ," +
             "creator TEXT ," +
             "modified_date TEXT," +
-            "sync TEXT" +
+            "voided TEXT DEFAULT '0'," +
+            "sync TEXT DEFAULT 'false' " +
             ")";
 
     /*
@@ -108,10 +111,10 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "conceptuuid TEXT," +
             "value TEXT," +
             "creator TEXT," +
-            "voided TEXT," +
+            "voided TEXT DEFAULT '0'," +
             "modified_date TEXT," +
             "image_type TEXT," +
-            "sync TEXT" +
+            "sync TEXT DEFAULT 'false' " +
             ")";
     SessionManager sessionManager = null;
     /*"openmrs_encounteruuid": "99835c05-8c5c-4d17-b96d-095fb12ebc53",
@@ -122,7 +125,8 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "uuid TEXT PRIMARY KEY," +
             "name TEXT," +
             "modified_date TEXT," +
-            "sync TEXT" +
+            "voided TEXT DEFAULT '0'," +
+            "sync TEXT DEFAULT 'false' " +
             ")";
 
     public static final String CREATE_VISIT_ATTRIBUTE_MASTER_MAIN = "CREATE TABLE IF NOT EXISTS tbl_visit_attribute_master (" +
@@ -148,22 +152,23 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "locationuuid TEXT PRIMARY KEY," +
             "retired integer(10)," +
             "modified_date TEXT," +
-            "sync TEXT" +
+            "voided TEXT DEFAULT '0'," +
+            "sync TEXT DEFAULT 'false' " +
             ")";
     public static final String CREATE_PROVIDER = "CREATE TABLE IF NOT EXISTS tbl_provider (" +
             "uuid TEXT PRIMARY KEY," +
             "identifier TEXT," +
             "given_name TEXT," +
             "family_name TEXT," +
-            "voided integer(10)," +
+            "voided TEXT DEFAULT '0'," +
             "modified_date TEXT," +
-            "sync TEXT" +
+            "sync TEXT DEFAULT 'false' " +
             ")";
 
     public static final String CREATE_SYNC = "CREATE TABLE IF NOT EXISTS tbl_sync (" +
             "locationuuid TEXT PRIMARY KEY," +
             "last_pull_execution_time TEXT," +
-            "sync TEXT," +
+            "sync TEXT DEFAULT 'false' ," +
             "devices_sync TEXT" +
             ")";
 
@@ -179,7 +184,8 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "image_path TEXT," +
             "obs_time_date TEXT," +
             "image_type TEXT," +
-            "sync TEXT" +
+            "voided TEXT DEFAULT '0'," +
+            "sync TEXT DEFAULT 'false' " +
             ")";
 
 

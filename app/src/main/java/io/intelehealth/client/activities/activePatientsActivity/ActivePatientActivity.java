@@ -31,6 +31,7 @@ import io.intelehealth.client.database.dao.ProviderDAO;
 import io.intelehealth.client.models.ActivePatientModel;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
+import io.intelehealth.client.utilities.StringUtils;
 import io.intelehealth.client.utilities.exception.DAOException;
 
 public class ActivePatientActivity extends AppCompatActivity {
@@ -166,8 +167,10 @@ public class ActivePatientActivity extends AppCompatActivity {
         ProviderDAO providerDAO = new ProviderDAO();
         ArrayList selectedItems = new ArrayList<>();
         String[] creator_names = null;
+        String[] creator_uuid = null;
         try {
             creator_names = providerDAO.getProvidersList().toArray(new String[0]);
+            creator_uuid = providerDAO.getProvidersUuidList().toArray(new String[0]);
         } catch (DAOException e) {
             e.printStackTrace();
         }
@@ -176,6 +179,8 @@ public class ActivePatientActivity extends AppCompatActivity {
         dialogBuilder = new AlertDialog.Builder(ActivePatientActivity.this);
         dialogBuilder.setTitle("Filter by Creator");
 
+        String[] finalCreator_names = creator_names;
+        String[] finalCreator_uuid = creator_uuid;
         dialogBuilder.setMultiChoiceItems(creator_names, null, new DialogInterface.OnMultiChoiceClickListener() {
 
 
@@ -184,10 +189,12 @@ public class ActivePatientActivity extends AppCompatActivity {
                 Logger.logD(TAG, "multichoice" + which + isChecked);
                 if (isChecked) {
                     // If the user checked the item, add it to the selected items
-                    selectedItems.add(which);
+                    selectedItems.add(finalCreator_uuid[which]);
+                    Logger.logD(TAG, finalCreator_names[which] + finalCreator_uuid[which]);
                 } else if (selectedItems.contains(which)) {
                     // Else, if the item is already in the array, remove it
-                    selectedItems.remove(Integer.valueOf(which));
+                    selectedItems.remove(finalCreator_uuid[which]);
+                    Logger.logD(TAG, finalCreator_names[which] + finalCreator_uuid[which]);
                 }
             }
         });
@@ -197,6 +204,7 @@ public class ActivePatientActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 //display filter query code on list menu
                 Logger.logD(TAG, "onclick" + i);
+                doQueryWithProviders(selectedItems);
 //                select distinct a.uuid,c.first_name,c.middle_name,c.last_name,c.openmrs_id,c.phone_number,c.date_of_birth from tbl_visit a,tbl_encounter b ,tbl_patient c where b.visituuid=a.uuid and b.provider_uuid in ('163b48e5-26fb-40c1-8d94-a6c873dd2869') and a.patientuuid=c.uuid and a.enddate is null order by c.first_name
             }
         });
@@ -278,6 +286,59 @@ public class ActivePatientActivity extends AppCompatActivity {
     private boolean endVisit(String patientUuid, String patientName, String visitUUID) {
 
         return visitUUID != null;
+
+    }
+
+    private void doQueryWithProviders(List<String> providersuuids) {
+        List<ActivePatientModel> activePatientList = new ArrayList<>();
+        String query = "select distinct a.uuid,c.uuid AS patientuuid,a.startdate AS startdate,a.enddate AS enddate," +
+                "c.first_name,c.middle_name,c.last_name,c.openmrs_id,c.phone_number,c.date_of_birth " +
+                "from tbl_visit a,tbl_encounter b ,tbl_patient c " +
+                "where b.visituuid=a.uuid and b.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "') " +
+                "and a.patientuuid=c.uuid and a.enddate is null OR a.enddate='' order by a.startdate ASC";
+
+//                "SELECT tbl_visit.uuid, tbl_visit.patientuuid, tbl_visit.startdate, tbl_visit.enddate," +
+//                        "tbl_patient.first_name, tbl_patient.middle_name, tbl_patient.last_name, " +
+//                        "tbl_patient.date_of_birth,tbl_patient.openmrs_id,tbl_patient.phone_number FROM tbl_visit, tbl_patient WHERE tbl_visit.patientuuid = tbl_patient.uuid " +
+//                        "AND tbl_visit.enddate IS NULL " +
+//                        "OR tbl_visit.enddate = '' " +
+//                        "ORDER BY tbl_visit.startdate ASC";
+        //  "SELECT * FROM visit, patient WHERE visit.patient_id = patient._id AND visit.start_datetime LIKE '" + currentDate + "T%'";
+//        Logger.logD(TAG, query);
+        final Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    activePatientList.add(new ActivePatientModel(
+                            cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("enddate")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("phone_number"))
+                    ));
+                } while (cursor.moveToNext());
+            }
+        }
+        cursor.close();
+
+        if (!activePatientList.isEmpty()) {
+            for (ActivePatientModel activePatientModel : activePatientList)
+                Logger.logD(TAG, activePatientModel.getFirst_name() + " " + activePatientModel.getLast_name());
+
+            ActivePatientAdapter mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ActivePatientActivity.this);
+            recyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.addItemDecoration(new
+                    DividerItemDecoration(this,
+                    DividerItemDecoration.VERTICAL));
+            recyclerView.setAdapter(mActivePatientAdapter);
+        }
 
     }
 

@@ -9,8 +9,8 @@ import java.util.List;
 
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.app.IntelehealthApplication;
-import io.intelehealth.client.models.ObsImageModel.ObsJsonRequest;
 import io.intelehealth.client.models.ObsImageModel.ObsJsonResponse;
+import io.intelehealth.client.models.ObsImageModel.ObsPushDTO;
 import io.intelehealth.client.models.patientImageModelRequest.PatientProfile;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
@@ -91,17 +91,17 @@ public class ImagesPushDAO {
         UrlModifiers urlModifiers = new UrlModifiers();
         ImagesDAO imagesDAO = new ImagesDAO();
         String url = urlModifiers.setObsImageUrl();
-        List<ObsJsonRequest> obsImageJsons = new ArrayList<>();
+        List<ObsPushDTO> obsImageJsons = new ArrayList<>();
         try {
             obsImageJsons = imagesDAO.getObsUnsyncedImages();
         } catch (DAOException e) {
             Crashlytics.getInstance().core.logException(e);
         }
         int i = 0;
-        for (ObsJsonRequest p : obsImageJsons) {
+        for (ObsPushDTO p : obsImageJsons) {
             //pass it like this
             File file = null;
-            file = new File(AppConstants.IMAGE_PATH + p.getUuid());
+            file = new File(AppConstants.IMAGE_PATH + p.getUuid() + ".jpg");
 
             RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
             // MultipartBody.Part is used to send also the actual file name
@@ -111,17 +111,6 @@ public class ImagesPushDAO {
             obsJsonResponseObservable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new DisposableObserver<ObsJsonResponse>() {
-//                        @Override
-//                        public void onSuccess(ResponseBody responseBody) {
-//                            Logger.logD(TAG, "success" + responseBody);
-//                            try {
-//                                imagesDAO.updateUnsyncedPatientProfile(p.getPerson(), "PP");
-//                            } catch (DAOException e) {
-//                                  Crashlytics.getInstance().core.logException(e);
-//                            }
-//                            AppConstants.notificationUtils.showNotificationProgress("Patient Profile", "Uploading Patient Profile", IntelehealthApplication.getAppContext(), finalI);
-//                        }
-
                         @Override
                         public void onNext(ObsJsonResponse obsJsonResponse) {
                             Logger.logD(TAG, "success" + obsJsonResponse);
@@ -151,7 +140,7 @@ public class ImagesPushDAO {
     }
 
 
-    public boolean isUuidExisits(ObsJsonRequest obsJsonRequest) {
+    public boolean isUuidExisits(ObsPushDTO obsJsonRequest) {
 
         obsJsonRequest.getUuid();
 

@@ -133,7 +133,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
             filePath = new File(AppConstants.IMAGE_PATH);
         }
 
-        imageName = UUID.randomUUID().toString();
+
 
         if ((selectedExamsList == null) || selectedExamsList.isEmpty()) {
             Log.d(TAG, "No additional exams were triggered");
@@ -216,7 +216,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
                     if (imagePathList != null) {
                         for (String imagePath : imagePathList) {
-                            updateImageDatabase(imagePath);
+                            updateImageDatabase();
                         }
                     }
 
@@ -356,7 +356,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    private void updateImageDatabase(String imagePath) {
+    private void updateImageDatabase() {
         ImagesDAO imagesDAO = new ImagesDAO();
 
         try {
@@ -382,6 +382,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                 physicalExamMap.setImagePath(mCurrentPhotoPath);
                 Log.i(TAG, mCurrentPhotoPath);
                 physicalExamMap.displayImage(this, filePath.getAbsolutePath(), imageName);
+                updateImageDatabase();
 
             }
 
@@ -494,6 +495,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                                 boolean res = filePath.mkdirs();
                                 Log.i("RES>", "" + filePath + " -> " + res);
                             }
+                            imageName = UUID.randomUUID().toString();
                             Node.handleQuestion(question, getActivity(), adapter, filePath.toString(), imageName);
                         } else {
                             Node.handleQuestion(question, (Activity) getContext(), adapter, null, null);

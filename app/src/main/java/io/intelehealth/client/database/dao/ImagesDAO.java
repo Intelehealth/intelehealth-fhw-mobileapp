@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 import io.intelehealth.client.app.AppConstants;
-import io.intelehealth.client.models.ObsImageModel.ObsJsonRequest;
+import io.intelehealth.client.models.ObsImageModel.ObsPushDTO;
 import io.intelehealth.client.models.patientImageModelRequest.PatientProfile;
 import io.intelehealth.client.utilities.Base64Utils;
 import io.intelehealth.client.utilities.Logger;
@@ -172,19 +172,23 @@ public class ImagesDAO {
         return patientProfiles;
     }
 
-    public List<ObsJsonRequest> getObsUnsyncedImages() throws DAOException {
-        List<ObsJsonRequest> obsImages = new ArrayList<>();
+    public List<ObsPushDTO> getObsUnsyncedImages() throws DAOException {
+        List<ObsPushDTO> obsImages = new ArrayList<>();
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         localdb.beginTransaction();
         try {
-            Cursor idCursor = localdb.rawQuery("SELECT * FROM tbl_obs where sync = ? OR sync=? AND conceptuuid = ? OR conceptuuid = ?  COLLATE NOCASE", new String[]{"0", "false", UuidDictionary.COMPLEX_IMAGE_PE, UuidDictionary.COMPLEX_IMAGE_AD});
+            Cursor idCursor = localdb.rawQuery("select c.uuid as patientuuid,d.conceptuuid,a.uuid as encounteruuid,d.uuid as obsuuid,d.modified_date  from tbl_encounter a , tbl_visit b , tbl_patient c,tbl_obs d \n" +
+                    "where a.visituuid=b.uuid and b.patientuuid=c.uuid and d.encounteruuid=a.uuid and (d.sync=0 or d.sync='false') and (d.conceptuuid=? or d.conceptuuid=?) and d.voided='0'", new String[]{UuidDictionary.COMPLEX_IMAGE_PE, UuidDictionary.COMPLEX_IMAGE_AD});
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
-                    ObsJsonRequest obsJsonRequest = new ObsJsonRequest();
-                    obsJsonRequest.setEncounter(idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")));
-                    obsJsonRequest.setObsDatetime(idCursor.getString(idCursor.getColumnIndexOrThrow("modified_date")));
-                    obsJsonRequest.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
-                    obsImages.add(obsJsonRequest);
+                    ObsPushDTO obsPushDTO = new ObsPushDTO();
+                    obsPushDTO.setConcept(idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")));
+                    obsPushDTO.setEncounter(idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")));
+                    obsPushDTO.setObsDatetime(idCursor.getString(idCursor.getColumnIndexOrThrow("modified_date")));
+                    obsPushDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("obsuuid")));
+                    obsPushDTO.setPerson(idCursor.getString(idCursor.getColumnIndexOrThrow("patientuuid")));
+//                    obsPushDTO.setPerson(getPatientUuidFromEncounter(idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")), localdb));
+                    obsImages.add(obsPushDTO);
                 }
             }
             idCursor.close();
@@ -302,6 +306,30 @@ public class ImagesDAO {
             imagetype = UuidDictionary.COMPLEX_IMAGE_PE;
 
         return imagetype;
+    }
+
+    public String getPatientUuidFromEncounter(String encounterUuid, SQLiteDatabase localdb) throws DAOException {
+        Logger.logD(TAG, "encounter uuid " + encounterUuid);
+        String visituuid = "";
+//        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        localdb.beginTransaction();
+        try {
+            Cursor idCursor = localdb.rawQuery("SELECT uuid FROM tbl_encounter where uuid=? AND voided=? COLLATE NOCASE", new String[]{encounterUuid, "0"});
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+                    visituuid = idCursor.getString(idCursor.getColumnIndexOrThrow("uuid"));
+                }
+            }
+            idCursor.close();
+        } catch (SQLiteException e) {
+            throw new DAOException(e);
+        } finally {
+//            localdb.endTransaction();
+//            localdb.close();
+        }
+        VisitsDAO visitsDAO = new VisitsDAO();
+        return visitsDAO.patientUuidByViistUuid(visituuid);
+
     }
 
     public ArrayList getImageUuid(String encounterUuid, String conceptuuid) throws DAOException {

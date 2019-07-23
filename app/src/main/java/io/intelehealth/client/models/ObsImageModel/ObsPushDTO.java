@@ -4,7 +4,7 @@ package io.intelehealth.client.models.ObsImageModel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ObsJsonRequest {
+public class ObsPushDTO {
 
     @SerializedName("uuid")
     @Expose

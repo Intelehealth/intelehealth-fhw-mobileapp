@@ -120,6 +120,33 @@ public class ProviderDAO {
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
                     providersList.add(cursor.getString(cursor.getColumnIndexOrThrow("given_name")) + cursor.getString(cursor.getColumnIndexOrThrow("family_name")));
+
+                }
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLException s) {
+            Crashlytics.getInstance().core.logException(s);
+            throw new DAOException(s);
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
+        return providersList;
+
+    }
+
+    public List<String> getProvidersUuidList() throws DAOException {
+        List<String> providersList = new ArrayList<>();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            String query = "select distinct a.uuid,a.given_name,a.family_name from tbl_provider a, tbl_encounter b , tbl_visit c where a.uuid=b.provider_uuid and b.visituuid=c.uuid and c.enddate is  null";
+            Cursor cursor = db.rawQuery(query, new String[]{});
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    providersList.add(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+
                 }
             }
             cursor.close();
