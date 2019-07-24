@@ -73,24 +73,48 @@ public class ImagesDAO {
 
     public void deleteImageFromDatabase(String uuid) throws DAOException {
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        String[] coloumns = {"uuid", "image_path"};
+        String[] coloumns = {"uuid"};
         String[] selectionArgs = {uuid};
         localdb.beginTransaction();
         try {
             Cursor cursor = localdb.query("tbl_obs", coloumns, "uuid = ?", selectionArgs, null, null, null);
             if (cursor != null && cursor.moveToFirst()) {
-                localdb.execSQL("UPDATE FROM tbl_obs SET voided = '1' WHERE uuid=" + "'" + uuid + "'");
+                localdb.execSQL("UPDATE tbl_obs SET voided = '1' WHERE uuid=" + "'" + uuid + "' AND sync='false'");
                 localdb.setTransactionSuccessful();
             }
             if (cursor != null) {
                 cursor.close();
             }
         } catch (SQLiteException e) {
+            Crashlytics.getInstance().core.logException(e);
             throw new DAOException(e);
         } finally {
             localdb.endTransaction();
             localdb.close();
         }
+
+    }
+
+    public List<String> getVoidedImageObs() throws DAOException {
+        Logger.logD(TAG, "uuid for images");
+        ArrayList<String> uuidList = new ArrayList<>();
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        localdb.beginTransaction();
+        try {
+            Cursor idCursor = localdb.rawQuery("SELECT uuid FROM tbl_obs where (conceptuuid=? OR conceptuuid = ?) AND voided=? AND sync = ? COLLATE NOCASE", new String[]{UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE, "1", "false"});
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+                    uuidList.add(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                }
+            }
+            idCursor.close();
+        } catch (SQLiteException e) {
+            throw new DAOException(e);
+        } finally {
+            localdb.endTransaction();
+            localdb.close();
+        }
+        return uuidList;
 
     }
 

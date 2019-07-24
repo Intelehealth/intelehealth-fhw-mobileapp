@@ -215,14 +215,7 @@ public class ObsDAO {
             values.put("sync", "FALSE");
 
             updatedCount = db.update("tbl_obs", values, selection, new String[]{obsDTO.getUuid()});
-            //If no value is not found, then update fails so insert instead.
-            if (updatedCount == 0) {
-                try {
-                    insertObs(obsDTO);
-                } catch (DAOException e) {
-                    Crashlytics.getInstance().core.logException(e);
-                }
-            }
+
             db.setTransactionSuccessful();
         } catch (SQLiteException e) {
             Logger.logE(TAG, "exception ", e);
@@ -230,6 +223,14 @@ public class ObsDAO {
         } finally {
             db.endTransaction();
             db.close();
+        }
+        //If no value is not found, then update fails so insert instead.
+        if (updatedCount == 0) {
+            try {
+                insertObs(obsDTO);
+            } catch (DAOException e) {
+                Crashlytics.getInstance().core.logException(e);
+            }
         }
 
 

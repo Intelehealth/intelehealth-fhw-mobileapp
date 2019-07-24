@@ -147,6 +147,21 @@ public final class StringUtils {
 
     }
 
+    public static String getFileNameWithoutExtensionString(String filename) {
+        String fileName = "";
+
+        try {
+            if (filename.indexOf(".") > 0)
+                fileName = filename.substring(0, filename.lastIndexOf("."));
+        } catch (Exception e) {
+            e.printStackTrace();
+            fileName = "";
+        }
+
+        return fileName;
+
+    }
+
     public static String convertUsingStringBuilder(List<String> names) {
         StringBuilder namesStr = new StringBuilder();
         for (String name : names) {

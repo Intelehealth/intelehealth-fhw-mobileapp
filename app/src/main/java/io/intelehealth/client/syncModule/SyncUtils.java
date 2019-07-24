@@ -17,6 +17,7 @@ public class SyncUtils {
 
         imagesPushDAO.patientProfileImagesPush();
         imagesPushDAO.obsImagesPush();
+        imagesPushDAO.deleteObsImage();
 
         NotificationUtils notificationUtils = new NotificationUtils();
         notificationUtils.clearAllNotifications(IntelehealthApplication.getAppContext());
@@ -34,7 +35,7 @@ public class SyncUtils {
 
         imagesPushDAO.patientProfileImagesPush();
         imagesPushDAO.obsImagesPush();
-
+        imagesPushDAO.deleteObsImage();
 
         return isSynced;
     }

@@ -139,10 +139,44 @@ public class ImagesPushDAO {
         return true;
     }
 
+    public boolean deleteObsImage() {
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        String encoded = sessionManager.getEncoded();
+        Gson gson = new Gson();
+        UrlModifiers urlModifiers = new UrlModifiers();
+        ImagesDAO imagesDAO = new ImagesDAO();
+        List<String> voidedObsImageList = new ArrayList<>();
+        try {
+            voidedObsImageList = imagesDAO.getVoidedImageObs();
+        } catch (DAOException e) {
+            Crashlytics.getInstance().core.logException(e);
+        }
+        for (String voidedObsImage : voidedObsImageList) {
+            String url = urlModifiers.obsImageDeleteUrl(voidedObsImage);
+            Observable<Void> deleteObsImage = AppConstants.apiInterface.DELETE_OBS_IMAGE(url, "Basic " + encoded);
+            deleteObsImage.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DisposableObserver<Void>() {
+                        @Override
+                        public void onNext(Void aVoid) {
+                            Logger.logD(TAG, "success" + aVoid);
+                        }
 
-    public boolean isUuidExisits(ObsPushDTO obsJsonRequest) {
+                        @Override
+                        public void onError(Throwable e) {
+                            Logger.logD(TAG, "Onerror " + e.getMessage());
+                        }
 
-        obsJsonRequest.getUuid();
+                        @Override
+                        public void onComplete() {
+                            Logger.logD(TAG, "successfully Deleted the images from server");
+                        }
+                    });
+        }
+        return true;
+    }
+
+    public boolean isUuidExisits(ObsPushDTO obsPushDTO) {
 
 
         return true;

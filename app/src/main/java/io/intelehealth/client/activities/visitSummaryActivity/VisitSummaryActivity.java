@@ -940,7 +940,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //                                String[] selectionArgs = {phyExamDir.getAbsolutePath() + File.separator + child};
                                 ImagesDAO imagesDAO = new ImagesDAO();
                                 try {
-                                    imagesDAO.deleteImageFromDatabase(phyExamDir.getAbsolutePath() + File.separator + child);
+                                    imagesDAO.deleteImageFromDatabase(io.intelehealth.client.utilities.StringUtils.getFileNameWithoutExtensionString(child));
                                 } catch (DAOException e1) {
                                     e1.printStackTrace();
                                 }

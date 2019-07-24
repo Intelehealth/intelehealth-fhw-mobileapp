@@ -83,4 +83,7 @@ public interface ApiInterface {
                                                              @Header("Authorization") String authHeader,
                                                              @Part MultipartBody.Part image,
                                                              @Part("json") ObsPushDTO obsJsonRequest);
+
+    @DELETE
+    Observable<Void> DELETE_OBS_IMAGE(@Url String url, @Header("Authorization") String authHeader);
 }

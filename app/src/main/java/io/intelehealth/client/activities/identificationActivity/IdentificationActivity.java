@@ -1054,17 +1054,17 @@ public class IdentificationActivity extends AppCompatActivity {
         if (mCurrentPhotoPath == null)
             mCurrentPhotoPath = patientdto.getPatient_photo();
 
-        patientdto.setFirst_name(StringUtils.getValue(patientdto.getFirst_name()));
-        patientdto.setMiddle_name(StringUtils.getValue(patientdto.getMiddle_name()));
-        patientdto.setLast_name(StringUtils.getValue(patientdto.getLast_name()));
-        patientdto.setPhone_number(StringUtils.getValue(patientdto.getPhone_number()));
-        patientdto.setGender(StringUtils.getValue(patientdto.getGender()));
-        patientdto.setDate_of_birth(StringUtils.getValue(patientdto.getDate_of_birth()));
-        patientdto.setAddress1(StringUtils.getValue(patientdto.getAddress1()));
-        patientdto.setAddress2(StringUtils.getValue(patientdto.getAddress2()));
-        patientdto.setCity_village(StringUtils.getValue(patientdto.getCity_village()));
-        patientdto.setPostal_code(StringUtils.getValue(patientdto.getPostal_code()));
-        patientdto.setCountry(StringUtils.getValue(patientdto.getCountry()));
+        patientdto.setFirst_name(StringUtils.getValue(mFirstName.getText().toString()));
+        patientdto.setMiddle_name(StringUtils.getValue(mMiddleName.getText().toString()));
+        patientdto.setLast_name(StringUtils.getValue(mLastName.getText().toString()));
+        patientdto.setPhone_number(StringUtils.getValue(mPhoneNum.getText().toString()));
+        patientdto.setGender(StringUtils.getValue(mGender));
+        patientdto.setDate_of_birth(StringUtils.getValue(mDOB.getText().toString()));
+        patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
+        patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
+        patientdto.setCity_village(StringUtils.getValue(mCity.getText().toString()));
+        patientdto.setPostal_code(StringUtils.getValue(mPostal.getText().toString()));
+        patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
         patientdto.setPatient_photo(mCurrentPhotoPath);
 //                patientdto.setEconomic(StringUtils.getValue(m));
         patientdto.setState_province(StringUtils.getValue(patientdto.getState_province()));
