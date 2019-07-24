@@ -72,7 +72,8 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
             }
             else if(sharedPreferences.getAll().values().contains("or"))
             {
-                privacy_textview.setText("This is oriya");
+                String privacy_string = obj.getString("privacyNoticeText_Odiya");
+                privacy_textview.setText(privacy_string);
             }
             else
             {
