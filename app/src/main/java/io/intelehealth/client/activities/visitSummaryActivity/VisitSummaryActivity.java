@@ -362,8 +362,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 physicalExams.addAll(selectedExams);
             }
         }
-//        get the value from the patient attributes
-        getPatientAttributes(patientUuid);
+
 
         registerBroadcastReceiverDynamically();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -424,9 +423,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
 
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-
-        filePathPhyExam = baseDir + File.separator + "Patient Images" + File.separator + patientUuid + File.separator +
-                visitUuid + File.separator + physicalExamDocumentDir;
+//
+//        filePathPhyExam = baseDir + File.separator + "Patient Images" + File.separator + patientUuid + File.separator +
+//                visitUuid + File.separator + physicalExamDocumentDir;
 
         phyExamDir = new File(AppConstants.IMAGE_PATH);
 
@@ -1495,8 +1494,46 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } while (idCursor.moveToNext());
         }
         idCursor.close();
+        db.close();
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        PatientsDAO patientsDAO = new PatientsDAO();
+        String patientSelection1 = "patientuuid = ?";
+        String[] patientArgs1 = {patientUuid};
+        String[] patientColumns1 = {"value", "person_attribute_type_uuid"};
+        Cursor idCursor1 = db.query("tbl_patient_attribute", patientColumns1, patientSelection1, patientArgs1, null, null, null);
+        String name = "";
+        if (idCursor1.moveToFirst()) {
+            do {
+                try {
+                    name = patientsDAO.getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
+                } catch (DAOException e) {
+                    Crashlytics.getInstance().core.logException(e);
+                }
 
+                if (name.equalsIgnoreCase("caste")) {
+                    patient.setCaste(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Telephone Number")) {
+                    patient.setPhone_number(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Education Level")) {
+                    patient.setEducation_level(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Economic Status")) {
+                    patient.setEconomic_status(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("occupation")) {
+                    patient.setOccupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Son/wife/daughter")) {
+                    patient.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
 
+            } while (idCursor1.moveToNext());
+        }
+        idCursor1.close();
+        db.close();
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         String[] columns = {"value", " conceptuuid"};
 
         try {
@@ -2138,48 +2175,5 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
     }
-
-
-    public void getPatientAttributes(String patientUuid) {
-        PatientsDAO patientsDAO = new PatientsDAO();
-        db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
-        String patientSelection1 = "patientuuid = ?";
-        String[] patientArgs1 = {patientUuid};
-        String[] patientColumns1 = {"value", "person_attribute_type_uuid"};
-        Cursor idCursor1 = db.query("tbl_patient_attribute", patientColumns1, patientSelection1, patientArgs1, null, null, null);
-        String name = "";
-        if (idCursor1.moveToFirst()) {
-            do {
-                try {
-                    name = patientsDAO.getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
-                } catch (DAOException e) {
-                    Crashlytics.getInstance().core.logException(e);
-                }
-
-                if (name.equalsIgnoreCase("caste")) {
-                    patient.setCaste(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }
-                if (name.equalsIgnoreCase("Telephone Number")) {
-                    patient.setPhone_number(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }
-                if (name.equalsIgnoreCase("Education Level")) {
-                    patient.setEducation_level(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }
-                if (name.equalsIgnoreCase("Economic Status")) {
-                    patient.setEconomic_status(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }
-                if (name.equalsIgnoreCase("occupation")) {
-                    patient.setOccupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }
-                if (name.equalsIgnoreCase("Son/wife/daughter")) {
-                    patient.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }
-
-            } while (idCursor1.moveToNext());
-        }
-        idCursor1.close();
-        db.close();
-    }
-
 
 }
