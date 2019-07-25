@@ -83,8 +83,11 @@ public class ActivePatientActivity extends AppCompatActivity {
         String query =
                 "SELECT tbl_visit.uuid, tbl_visit.patientuuid, tbl_visit.startdate, tbl_visit.enddate," +
                         "tbl_patient.first_name, tbl_patient.middle_name, tbl_patient.last_name, " +
-                        "tbl_patient.date_of_birth,tbl_patient.openmrs_id,tbl_patient.phone_number FROM tbl_visit, tbl_patient WHERE tbl_visit.patientuuid = tbl_patient.uuid " +
+                        "tbl_patient.date_of_birth,tbl_patient.openmrs_id,a.value AS phone_number " +
+                        "FROM tbl_visit, tbl_patient, tbl_patient_attribute a " +
+                        "WHERE tbl_visit.patientuuid = tbl_patient.uuid " +
                         "AND tbl_visit.enddate IS NULL " +
+                        "AND a.patientuuid=tbl_patient.uuid and a.person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' " +
                         "OR tbl_visit.enddate = '' " +
                         "ORDER BY tbl_visit.startdate ASC";
         //  "SELECT * FROM visit, patient WHERE visit.patient_id = patient._id AND visit.start_datetime LIKE '" + currentDate + "T%'";
@@ -291,10 +294,17 @@ public class ActivePatientActivity extends AppCompatActivity {
 
     private void doQueryWithProviders(List<String> providersuuids) {
         List<ActivePatientModel> activePatientList = new ArrayList<>();
-        String query = "select distinct a.uuid,c.uuid AS patientuuid,a.startdate AS startdate,a.enddate AS enddate," +
-                "c.first_name,c.middle_name,c.last_name,c.openmrs_id,c.phone_number,c.date_of_birth " +
-                "from tbl_visit a,tbl_encounter b ,tbl_patient c " +
-                "where b.visituuid=a.uuid and b.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "') " +
+        String query =
+//                "select distinct a.uuid,c.uuid AS patientuuid,a.startdate AS startdate,a.enddate AS enddate," +
+//                "c.first_name,c.middle_name,c.last_name,c.openmrs_id,c.phone_number,c.date_of_birth " +
+//                "from tbl_visit a,tbl_encounter b ,tbl_patient c " +
+//                "where b.visituuid=a.uuid and b.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "') " +
+//                "and a.patientuuid=c.uuid and a.enddate is null OR a.enddate='' order by a.startdate ASC";
+
+                "select distinct a.uuid,c.uuid AS patientuuid,a.startdate AS startdate,a.enddate AS enddate, c.first_name,c.middle_name,c.last_name,c.openmrs_id,d.value As phone_number,c.date_of_birth " +
+                        "from tbl_visit a,tbl_encounter b ,tbl_patient c , tbl_patient_attribute d " +
+                        "where b.visituuid=a.uuid and b.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
+                        "AND d.patientuuid=c.uuid and d.person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' " +
                 "and a.patientuuid=c.uuid and a.enddate is null OR a.enddate='' order by a.startdate ASC";
 
 //                "SELECT tbl_visit.uuid, tbl_visit.patientuuid, tbl_visit.startdate, tbl_visit.enddate," +

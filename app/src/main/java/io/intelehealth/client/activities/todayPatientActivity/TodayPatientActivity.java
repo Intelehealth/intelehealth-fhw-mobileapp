@@ -81,7 +81,10 @@ public class TodayPatientActivity extends AppCompatActivity {
         String query =
                 "SELECT tbl_visit.uuid, tbl_visit.patientuuid, tbl_visit.startdate, tbl_visit.enddate," +
                         "tbl_visit.uuid, tbl_patient.first_name, tbl_patient.middle_name, tbl_patient.last_name, " +
-                        "tbl_patient.date_of_birth,tbl_patient.openmrs_id,tbl_patient.phone_number FROM tbl_visit, tbl_patient WHERE tbl_visit.patientuuid = tbl_patient.uuid " +
+                        "tbl_patient.date_of_birth,tbl_patient.openmrs_id,a.value As phone_number " +
+                        "FROM tbl_visit, tbl_patient,tbl_patient_attribute a " +
+                        "WHERE tbl_visit.patientuuid = tbl_patient.uuid " +
+                        "AND a.patientuuid=c.uuid and a.person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' " +
                         "AND tbl_visit.startdate LIKE '" + currentDate + "T%'" +
                         "ORDER BY tbl_patient.first_name ASC";
         //  "SELECT * FROM visit, patient WHERE visit.patient_id = patient._id AND visit.start_datetime LIKE '" + currentDate + "T%'";
