@@ -121,7 +121,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             Logger.logD(TAG, "Patient ID: " + patientUuid);
             Logger.logD(TAG, "Patient Name: " + patientName);
             Logger.logD(TAG, "Intent Tag: " + intentTag);
-            Logger.logD(TAG, "Privacy Value(PatientDetail): " + privacy_value_selected);
+            Logger.logD(TAG, "Privacy Value on (PatientDetail): " + privacy_value_selected);
         }
         editbtn = findViewById(R.id.edit_button);
         editbtn.setOnClickListener(new View.OnClickListener() {

@@ -27,7 +27,9 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
     private boolean hasLicense = false;
     RadioGroup radiogrp;
     RadioButton radiobtn;
-    TextView btn;
+    RadioButton radio_acc;
+    RadioButton radio_rej;
+    TextView txt_next;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +40,10 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
         privacy_textview = (TextView) findViewById(R.id.privacy_text);
 
         radiogrp = (RadioGroup) findViewById(R.id.radio_privacy_grp);
+        radio_acc = (RadioButton) findViewById(R.id.radio_accept);
+        radio_rej = (RadioButton) findViewById(R.id.radio_reject);
 
-        btn = (TextView) findViewById(R.id.txt_privacy);
+        txt_next = (TextView) findViewById(R.id.txt_privacy);
 
 
         if (sessionManager.valueContains("licensekey"))
@@ -60,23 +64,31 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
             String privacy_string = obj.getString("privacyNoticeText");
             privacy_textview.setText(privacy_string);
 
-            btn.setOnClickListener(new View.OnClickListener() {
+            txt_next.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
                     int selected_radio = radiogrp.getCheckedRadioButtonId();
                     radiobtn = (RadioButton) findViewById(selected_radio);
 
-                    if(radiobtn.getText().equals("Accept"))
+                    if (radio_acc.isChecked() || radio_rej.isChecked())
                     {
-                        Intent intent = new Intent(getApplicationContext(), IdentificationActivity.class);
-                        intent.putExtra("privacy",radiobtn.getText()); //privacy value send to identificationActivity
-                        startActivity(intent);
+                        if(radiobtn.getText().equals("Accept"))
+                        {
+                            Intent intent = new Intent(getApplicationContext(), IdentificationActivity.class);
+                            intent.putExtra("privacy",radiobtn.getText()); //privacy value send to identificationActivity
+                            startActivity(intent);
+                        }
+                        else
+                        {
+                            finish();
+                        }
                     }
                     else
                     {
-                        finish();
+                        Toast.makeText(getApplicationContext(),getString(R.string.privacy_toast), Toast.LENGTH_SHORT).show();
                     }
+
 
                 }
             });

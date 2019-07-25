@@ -122,7 +122,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    Toast.makeText(getApplicationContext(),"Please select a smiley before submitting",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),getString(R.string.exit_survey_toast),Toast.LENGTH_LONG).show();
                 }
 
             }
