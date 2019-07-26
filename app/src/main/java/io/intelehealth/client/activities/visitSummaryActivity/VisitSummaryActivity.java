@@ -1574,17 +1574,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
             patHistory.setValue(""); // if medical history does not exist
         }
 
-        String visitSelection = "encounteruuid = ?";
-        String[] visitArgs = {encounterVitals};
-        Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
-        if (visitCursor.moveToFirst()) {
-            do {
-                String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
-                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                parseData(dbConceptID, dbValue);
-            } while (visitCursor.moveToNext());
-        }
-        visitCursor.close();
+//        String visitSelection = "encounteruuid = ?";
+//        String[] visitArgs = {encounterVitals};
+//        Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+//        if (visitCursor.moveToFirst()) {
+//            do {
+//                String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+//                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+//                parseData(dbConceptID, dbValue);
+//            } while (visitCursor.moveToNext());
+//        }
+//        visitCursor.close();
 
         String encounterselection = "encounteruuid = ? AND conceptuuid != ? AND conceptuuid != ?";
         String[] encounterargs = {encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE};

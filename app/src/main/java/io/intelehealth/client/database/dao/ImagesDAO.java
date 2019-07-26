@@ -9,7 +9,6 @@ import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.models.ObsImageModel.ObsPushDTO;
@@ -124,7 +123,7 @@ public class ImagesDAO {
         localdb.beginTransaction();
         ContentValues contentValues = new ContentValues();
         try {
-            contentValues.put("uuid", UUID.randomUUID().toString());
+            contentValues.put("uuid", patientUuid);
             contentValues.put("patientuuid", patientUuid);
             contentValues.put("visituuid", "");
             contentValues.put("image_path", imagepath);
@@ -167,6 +166,8 @@ public class ImagesDAO {
             localdb.endTransaction();
             localdb.close();
         }
+        if (isupdate == 0)
+            isUpdated = insertPatientProfileImages(imagepath, patientuuid);
         return isUpdated;
     }
 

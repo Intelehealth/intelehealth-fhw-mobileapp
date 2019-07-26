@@ -81,15 +81,22 @@ public class ActivePatientActivity extends AppCompatActivity {
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
         String query =
-                "SELECT tbl_visit.uuid, tbl_visit.patientuuid, tbl_visit.startdate, tbl_visit.enddate," +
-                        "tbl_patient.first_name, tbl_patient.middle_name, tbl_patient.last_name, " +
-                        "tbl_patient.date_of_birth,tbl_patient.openmrs_id,a.value AS phone_number " +
-                        "FROM tbl_visit, tbl_patient, tbl_patient_attribute a " +
-                        "WHERE tbl_visit.patientuuid = tbl_patient.uuid " +
-                        "AND tbl_visit.enddate IS NULL " +
-                        "AND a.patientuuid=tbl_patient.uuid and a.person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' " +
-                        "OR tbl_visit.enddate = '' " +
-                        "ORDER BY tbl_visit.startdate ASC";
+//                "SELECT tbl_visit.uuid, tbl_visit.patientuuid, tbl_visit.startdate, tbl_visit.enddate," +
+//                        "tbl_patient.first_name, tbl_patient.middle_name, tbl_patient.last_name, " +
+//                        "tbl_patient.date_of_birth,tbl_patient.openmrs_id,a.value AS phone_number " +
+//                        "FROM tbl_visit, tbl_patient, tbl_patient_attribute a " +
+//                        "WHERE tbl_visit.patientuuid = tbl_patient.uuid " +
+//                        "AND tbl_visit.enddate IS NULL " +
+//                        "AND a.patientuuid=tbl_patient.uuid and a.person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' " +
+//                        "OR tbl_visit.enddate = '' " +
+//                        "ORDER BY tbl_visit.startdate ASC";
+//
+                "SELECT   a.uuid, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id,c.value as phone_number " +
+                        "FROM tbl_visit a, tbl_patient b " +
+                        "left join tbl_patient_attribute c on c.patientuuid=b.uuid " +
+                        "WHERE a.patientuuid = b.uuid " +
+                        "AND c.person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' " +
+                        "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate ASC";
         //  "SELECT * FROM visit, patient WHERE visit.patient_id = patient._id AND visit.start_datetime LIKE '" + currentDate + "T%'";
 //        Logger.logD(TAG, query);
         final Cursor cursor = db.rawQuery(query, null);
@@ -301,11 +308,12 @@ public class ActivePatientActivity extends AppCompatActivity {
 //                "where b.visituuid=a.uuid and b.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "') " +
 //                "and a.patientuuid=c.uuid and a.enddate is null OR a.enddate='' order by a.startdate ASC";
 
-                "select distinct a.uuid,c.uuid AS patientuuid,a.startdate AS startdate,a.enddate AS enddate, c.first_name,c.middle_name,c.last_name,c.openmrs_id,d.value As phone_number,c.date_of_birth " +
-                        "from tbl_visit a,tbl_encounter b ,tbl_patient c , tbl_patient_attribute d " +
+                "select  a.uuid,c.uuid AS patientuuid,a.startdate AS startdate,a.enddate AS enddate, c.first_name,c.middle_name,c.last_name,c.openmrs_id,d.value As phone_number,c.date_of_birth " +
+                        "from tbl_visit a,tbl_encounter b ,tbl_patient c " +
+                        "left join tbl_patient_attribute d on d.patientuuid=c.uuid " +
                         "where b.visituuid=a.uuid and b.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
                         "AND d.patientuuid=c.uuid and d.person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' " +
-                "and a.patientuuid=c.uuid and a.enddate is null OR a.enddate='' order by a.startdate ASC";
+                        "and a.patientuuid=c.uuid and a.enddate is null OR a.enddate='' GROUP BY a.uuid order by a.startdate ASC";
 
 //                "SELECT tbl_visit.uuid, tbl_visit.patientuuid, tbl_visit.startdate, tbl_visit.enddate," +
 //                        "tbl_patient.first_name, tbl_patient.middle_name, tbl_patient.last_name, " +

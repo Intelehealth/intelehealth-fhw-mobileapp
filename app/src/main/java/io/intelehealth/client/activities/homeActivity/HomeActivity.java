@@ -37,13 +37,8 @@ import android.widget.Toast;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-
 import java.io.File;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
 
 import io.intelehealth.client.R;
@@ -53,7 +48,6 @@ import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.services.DownloadProtocolsTask;
 import io.intelehealth.client.syncModule.SyncUtils;
 import io.intelehealth.client.utilities.Logger;
-import io.intelehealth.client.utilities.NetworkConnection;
 import io.intelehealth.client.utilities.OfflineLogin;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.backup.BackupCloud;
@@ -269,13 +263,13 @@ public class HomeActivity extends AppCompatActivity {
                 else
                     AppConstants.notificationUtils.showNotifications("ImageUpload", "ImageUpload failed", this);
                 return true;
-            case R.id.backupOption:
-                manageBackup(true, false);  // to backup app data at any time of the day
-                return true;
-
-            case R.id.restoreOption:
-                manageBackup(false, false); // to restore app data if db is empty
-                return true;
+//            case R.id.backupOption:
+//                manageBackup(true, false);  // to backup app data at any time of the day
+//                return true;
+//
+//            case R.id.restoreOption:
+//                manageBackup(false, false); // to restore app data if db is empty
+//                return true;
 
             case R.id.logoutOption:
                 manageBackup(true, false);
@@ -305,7 +299,7 @@ public class HomeActivity extends AppCompatActivity {
 
         OfflineLogin.getOfflineLogin().setOfflineLoginStatus(false);
 
-        parseLogOut();
+//        parseLogOut();
 
         AccountManager manager = AccountManager.get(HomeActivity.this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
@@ -342,21 +336,21 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    private void parseLogOut() {
-        if (NetworkConnection.isOnline(this)) {
-            ParseQuery<ParseObject> getLogin = ParseQuery.getQuery("Login");
-            getLogin.whereEqualTo("userId", sessionManager.getCreatorID());
-            try {
-                List<ParseObject> loginList = getLogin.find();
-                if (loginList != null && !loginList.isEmpty()) {
-                    for (ParseObject login : loginList)
-                        login.delete();
-                }
-            } catch (ParseException e1) {
-                Log.e(TAG, "parseLogOut: ", e1);
-            }
-        }
-    }
+//    private void parseLogOut() {
+//        if (NetworkConnection.isOnline(this)) {
+//            ParseQuery<ParseObject> getLogin = ParseQuery.getQuery("Login");
+//            getLogin.whereEqualTo("userId", sessionManager.getCreatorID());
+//            try {
+//                List<ParseObject> loginList = getLogin.find();
+//                if (loginList != null && !loginList.isEmpty()) {
+//                    for (ParseObject login : loginList)
+//                        login.delete();
+//                }
+//            } catch (ParseException e1) {
+//                Log.e(TAG, "parseLogOut: ", e1);
+//            }
+//        }
+//    }
 
     @Override
     protected void onResume() {

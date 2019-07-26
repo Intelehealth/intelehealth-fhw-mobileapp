@@ -55,7 +55,7 @@ public class TodayPatientActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         mDbHelper = new InteleHealthDatabaseHelper(this);
         db = mDbHelper.getWritableDatabase();
-        if (sessionManager.isSyncFinished()) {
+        if (sessionManager.isPullSyncFinished()) {
             doQuery();
         }
 
@@ -79,14 +79,22 @@ public class TodayPatientActivity extends AppCompatActivity {
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
         String query =
-                "SELECT tbl_visit.uuid, tbl_visit.patientuuid, tbl_visit.startdate, tbl_visit.enddate," +
-                        "tbl_visit.uuid, tbl_patient.first_name, tbl_patient.middle_name, tbl_patient.last_name, " +
-                        "tbl_patient.date_of_birth,tbl_patient.openmrs_id,a.value As phone_number " +
-                        "FROM tbl_visit, tbl_patient,tbl_patient_attribute a " +
-                        "WHERE tbl_visit.patientuuid = tbl_patient.uuid " +
-                        "AND a.patientuuid=c.uuid and a.person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' " +
-                        "AND tbl_visit.startdate LIKE '" + currentDate + "T%'" +
-                        "ORDER BY tbl_patient.first_name ASC";
+//                "SELECT tbl_visit.uuid, tbl_visit.patientuuid, tbl_visit.startdate, tbl_visit.enddate," +
+//                        "tbl_visit.uuid, tbl_patient.first_name, tbl_patient.middle_name, tbl_patient.last_name, " +
+//                        "tbl_patient.date_of_birth,tbl_patient.openmrs_id,a.value As phone_number " +
+//                        "FROM tbl_visit, tbl_patient,tbl_patient_attribute a " +
+//                        "WHERE tbl_visit.patientuuid = tbl_patient.uuid " +
+//                        "AND a.patientuuid=tbl_patient.uuid and a.person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' " +
+//                        "AND tbl_visit.startdate LIKE '" + currentDate + "T%'" +
+//                        "ORDER BY tbl_patient.first_name ASC";
+//
+                "SELECT  a.uuid, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id,c.value as phone_number " +
+                        "FROM tbl_visit a, tbl_patient b  " +
+                        "left join tbl_patient_attribute c on c.patientuuid=b.uuid " +
+                        "WHERE a.patientuuid = b.uuid " +
+                        "AND c.person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' " +
+                        "AND a.startdate LIKE '" + currentDate + "T%'" +
+                        "GROUP BY a.uuid ORDER BY a.patientuuid ASC ";
         //  "SELECT * FROM visit, patient WHERE visit.patient_id = patient._id AND visit.start_datetime LIKE '" + currentDate + "T%'";
         Logger.logD(TAG, query);
         final Cursor cursor = db.rawQuery(query, null);
