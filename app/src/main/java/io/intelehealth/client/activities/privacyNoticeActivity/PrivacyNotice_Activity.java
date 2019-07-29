@@ -68,12 +68,30 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
             if(sharedPreferences.getAll().values().contains("cb"))
             {
                 String privacy_string = obj.getString("privacyNoticeText_Cebuano");
-                privacy_textview.setText(privacy_string);
+                if(privacy_string.isEmpty())
+                {
+                    privacy_string = obj.getString("privacyNoticeText");
+                    privacy_textview.setText(privacy_string);
+                }
+                else
+                {
+                    privacy_textview.setText(privacy_string);
+                }
+
             }
             else if(sharedPreferences.getAll().values().contains("or"))
             {
                 String privacy_string = obj.getString("privacyNoticeText_Odiya");
-                privacy_textview.setText(privacy_string);
+                if(privacy_string.isEmpty())
+                {
+                    privacy_string = obj.getString("privacyNoticeText");
+                    privacy_textview.setText(privacy_string);
+                }
+                else
+                {
+                    privacy_textview.setText(privacy_string);
+                }
+
             }
             else
             {

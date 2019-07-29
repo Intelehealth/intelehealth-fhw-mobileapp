@@ -75,49 +75,9 @@ Please note that Intelehealth is a Personal Information Processor, and we will h
 To make any requests for access, modification, or deletion of your personal information with us, please contact the Data Privacy Officer, at support@intelehealth.io
 ",
 
-  "privacyNoticeText_Cebuano" : "Pahibalo sa privacy ug porma sa pag-uyon alang sa mga pasyente
-  
-Personal nga Impormasyon
-Gikolekta namo ang mosunod nga personal nga kasayuran gikan kanimo sa dihang ang mga Barangay Health Workers o Midwives makigkita kanimo sa Barangay Health Center o mga pagbisita sa balay:
-● Full name
-● Gender
-● Petsa sa pagkatawo
-● Pulong sa balay
-● Address sa email
-● Mga numero sa kontak
-● Kasayuran sa kahimsog - taas, timbang, tipo sa dugo, presyon sa dugo, kasaysayan sa medisina, impormasyon sa alerdyi, ug ubang impormasyon sa diagnostic nga gikinahanglan
+  "privacyNoticeText_Cebuano" : "",
 
-Paggamit
-Ang imong mga rekord sa medikal ug uban pang mga personal nga datos iproseso agig pagtuman sa Data Privacy Act of 2012, ug ang Implementing Rules and Regulations niini.
-
-Ang imong impormasyon gigamit sa pag-diagnose ug pagtratar nimo.
-
-Ang imong impormasyon sa kontak mahimong gamiton sa
-• magpadala kanimo og mga pahinumdom
-• preskripsyon nga impormasyon,
-• lain nga may kalabutan nga komunikasyon.
-Dugang pa, ang imong personal nga impormasyon dili ipanghingalan aron magamit sa panukiduki, pag-monitor sa sakit, ug pag-analisar aron sa pagtabang kanamo sa pagpalambo sa among mga produkto ug serbisyo. Ang anonymization magwagtang sa imong impormasyon sa pag-ila ug pagpanalipod sa imong privacy.
-
-Mahimo natong ibutyag ang imong personal nga impormasyon:
-● sumala sa gikinahanglan sa balaod, sama sa pagtuman sa usa ka subpoena, o susamang legal nga proseso;
-● kon kita nagtuo sa maayong pagtoo nga ang pagbutyag gikinahanglan aron mapanalipdan ang atong mga katungod, mapanalipdan ang imong kaluwasan o ang kaluwasan sa uban, mag-imbestiga sa panglimbong, o mosanong sa hangyo sa gobyerno;
-● uban sa atong mga sinaligang mga tagdumala nga nagtrabaho alang kanato, walay kaugalingong paggamit sa kasayuran nga atong gibutyag kanila, ug miuyon nga sundon ang atong polisiya sa privacy.
-● Kung ang Intelehealth, Inc. ang nalambigit sa usa ka merger, acquisition, o pagbaligya sa tanan o sa usa ka bahin sa iyang mga kabtangan, ipahibalo ikaw pinaagi sa email ug / o usa ka prominenteng pahibalo sa among website sa bisan unsang pagbag-o sa pagpanag-iya o paggamit niini nga impormasyon , ingon man usab sa bisan unsa nga mga pagpili nga imong mahimo mahitungod niini nga kasayuran.
-
-Mga Panalipod
-• Naghatag kami og mga panalipod sa pisikal, elektronik, ug pamaagi aron mapanalipdan ang kasayuran nga atong giproseso ug gihuptan.
-• Ang gitugyanan lamang nga mga kawani adunay access sa imong personal nga impormasyon. Kon gikinahanglan ang usa ka pagbalhin sa kasayuran, ang pagbaylo niini mapahigayon pinaagi sa email o hard copy. Ang mga digital nga mga file ma-encrypt ug / o protektado sa password sa dili pa kana nga mga pagbalhin.
-• Ang personal nga mga rekord sa datos ibutang sa usa ka kasigurohan nga database alang sa panahon sa among kontrata aron sa paghatag niini nga mga serbisyo, nga human niini ang bisan unsang pisikal nga mga rekord ipagawas pinaagi sa pagwagtang, samtang ang mga digital nga mga file dili ipangalan.
-
-Pag-akses ug Pagtul-id
-Ikaw adunay katungod sa pagpangayo alang sa usa ka kopya sa bisan unsang personal nga kasayuran nga among gihuptan kanimo, ingon man usab sa paghangyo nga kini matul-id kon sa imong hunahuna sayop kini.
-Kung gusto nimo nga tangtangon ang imong personal nga datos nga imong gihatag kanamo, palihug kontaka kami sa support@intelehealth.io ug kami motubag sa makatarunganon nga panahon.
-Palihug timan-i nga ang Intelehealth usa ka Personal Information Processor, ug kinahanglan nga i-coordinate ang access o pagtangtang sa mga hangyo sa Personal Information Controller, Department of Health, Gobyerno sa Pilipinas.
-
-Sa paghimo sa bisan unsang mga hangyo alang sa pag-access, pagbag-o, o pagtangtang sa imong personal nga impormasyon uban kanamo, palihug kontaka ang Data Privacy Officer, sa support@intelehealth.io
-",
-
-"privacyNoticeText_Odiya" : "ପରିବାଚ୍ୟ ନୋଟିସ ଆଣ୍ଡ କଂସେଣ୍ଟ ଫୋରମ୍ରେ ଫୋର ପଟିଏଣ୍ଟସ ",
+"privacyNoticeText_Odiya" : "",
   "presciptionHeader1": "Philippines Telemedicine Project",
   "presciptionHeader2": "ePrescription"
 }
