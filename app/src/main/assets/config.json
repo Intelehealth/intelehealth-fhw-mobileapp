@@ -36,7 +36,7 @@
   "privacyNoticeText": "Privacy notice and consent form for patients
   
 Personal Information
-We collect the following personal information from you when the Barangay Health Workers or Midwives meet you at the Barangay Health Centre or on home visits:
+We collect the following personal information from you when the health-worker meets you at the clinic location or on home visits:
 ●	Full name
 ●	Gender
 ●	Date of birth
@@ -46,7 +46,7 @@ We collect the following personal information from you when the Barangay Health 
 ●	Health information – height, weight, blood type, blood pressure, medical history, allergy information, and other diagnostic information as required
 
 Use
-Your medical records and other personal data will be processed in compliance with the Data Privacy Act of 2012, and its Implementing Rules and Regulations. 
+Your medical records and other personal data will be processed in compliance with the relevant Data Privacy Act, and its Implementing Rules and Regulations of the jurisdiction where your data is collected. 
 
 Your information is used for diagnosing and treating you. 
 
@@ -54,6 +54,7 @@ Your contact information may be used to
 •	send you reminders
 •	prescription information, 
 •	other related communication.
+
 In addition, your personal information will be anonymized for use in research, disease monitoring, and analysis to help us improve our products and services. Anonymization removes your identifying information and protects your privacy.
 
 We may disclose your personal information:
@@ -69,10 +70,12 @@ Protection Measures
 
 Access and Correction
 You have the right to ask for a copy of any personal information we hold about you, as well as to ask for it to be corrected if you think it is wrong.
+
 If you’d like us to delete your personal data that you have provided to us, please contact us at support@intelehealth.io and we will respond in a reasonable time. 
-Please note that Intelehealth is a Personal Information Processor, and we will have to coordinate access or deletion requests with the Personal Information Controller, Department of Health, Government of Philippines.
 
 To make any requests for access, modification, or deletion of your personal information with us, please contact the Data Privacy Officer, at support@intelehealth.io
+
+On clicking “Accept”, I consent to the collection and use of my personal data, including health information, and to give access to the above-mentioned entities.
 ",
 
   "privacyNoticeText_Cebuano" : "",
