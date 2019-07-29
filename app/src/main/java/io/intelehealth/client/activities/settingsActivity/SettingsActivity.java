@@ -38,7 +38,6 @@ import io.intelehealth.client.activities.appCompatPreferenceActivity.AppCompatPr
 import io.intelehealth.client.activities.homeActivity.HomeActivity;
 import io.intelehealth.client.utilities.AdminPassword;
 import io.intelehealth.client.utilities.SessionManager;
-import io.intelehealth.client.utilities.backup.BackupCloud;
 
 public class SettingsActivity extends AppCompatPreferenceActivity {
     private static boolean admin_password = false;
@@ -203,7 +202,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             public void onDismiss(DialogInterface dialog) {
                 if (!admin_password) activity.onBackPressed();
                 else {
-                    BackupCloud b = new BackupCloud(context);
+//                    BackupCloud b = new BackupCloud(context);
 //                    b.cloudRestoreForced();
                     activity.onBackPressed();
                 }

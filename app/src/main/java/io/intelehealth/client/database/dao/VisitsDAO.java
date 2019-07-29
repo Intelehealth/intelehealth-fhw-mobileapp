@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -376,6 +377,58 @@ public class VisitsDAO {
             db.close();
         }
         return isUpdated;
+    }
+
+    public boolean isUpdatedDownloadColumn(String visitUuid, boolean isupdated) throws DAOException {
+        boolean isUpdated = false;
+        int updatedcount = 0;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+        String whereclause = "uuid=?";
+        String[] whereargs = {visitUuid};
+        try {
+            values.put("isdownloaded", isupdated);
+            updatedcount = db.update("tbl_visit", values, whereclause, whereargs);
+            if (updatedcount != 0)
+                isUpdated = true;
+            Logger.logD("visit", "updated isdownloaded" + updatedcount);
+            db.setTransactionSuccessful();
+        } catch (SQLException sql) {
+            isUpdated = false;
+            Crashlytics.getInstance().core.logException(sql);
+            Logger.logD("visit", "updated isdownloaded" + sql.getMessage());
+            throw new DAOException(sql.getMessage());
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
+        return isUpdated;
+    }
+
+    public String getDownloadedValue(String visituuid) throws DAOException {
+        String isDownloaded = null;
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+
+        try {
+            Cursor cursor = db.rawQuery("SELECT isdownloaded FROM tbl_visit where uuid = ? ", new String[]{visituuid});
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    isDownloaded = cursor.getString(cursor.getColumnIndexOrThrow("isdownloaded"));
+                }
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLiteException e) {
+            Crashlytics.getInstance().core.logException(e);
+            throw new DAOException(e);
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
+        return isDownloaded;
     }
 
 }

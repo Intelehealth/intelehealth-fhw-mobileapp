@@ -1,4 +1,4 @@
-package io.intelehealth.client.activities.splashActivity;
+package io.intelehealth.client.activities.splash_activity;
 
 import android.Manifest;
 import android.app.ProgressDialog;

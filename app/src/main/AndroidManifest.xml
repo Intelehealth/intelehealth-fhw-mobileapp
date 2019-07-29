@@ -167,7 +167,7 @@
                 android:value=".activities.homeActivity.HomeActivity" />
         </activity>
         <activity
-            android:name=".activities.splashActivity.SplashActivity"
+            android:name=".activities.splash_activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
@@ -197,13 +197,13 @@
         <service
             android:name=".services.RunAfterBootService"
             android:enabled="true"
-            android:exported="true"
+            android:exported="false"
             android:permission="" />
 
         <receiver
             android:name=".syncModule.BootCompleteReceiver"
             android:enabled="true"
-            android:exported="true">
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

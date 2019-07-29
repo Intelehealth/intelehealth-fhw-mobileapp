@@ -50,7 +50,6 @@ import io.intelehealth.client.syncModule.SyncUtils;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.OfflineLogin;
 import io.intelehealth.client.utilities.SessionManager;
-import io.intelehealth.client.utilities.backup.BackupCloud;
 
 import static io.intelehealth.client.app.AppConstants.UNIQUE_WORK_NAME;
 import static io.intelehealth.client.app.AppConstants.dbfilepath;
@@ -272,7 +271,7 @@ public class HomeActivity extends AppCompatActivity {
 //                return true;
 
             case R.id.logoutOption:
-                manageBackup(true, false);
+//                manageBackup(true, false);
                 logout();
                 return true;
             default:
@@ -326,15 +325,15 @@ public class HomeActivity extends AppCompatActivity {
         finish();
     }
 
-    public void manageBackup(boolean isBackup, boolean isForced) {
-        BackupCloud b = new BackupCloud(this);
-        if (isBackup)
-            b.startCloudBackup(null, false);
-        if (!isBackup) {
-            if (isForced) b.cloudRestoreForced();
-            if (!isForced) b.startCloudRestore();
-        }
-    }
+//    public void manageBackup(boolean isBackup, boolean isForced) {
+//        BackupCloud b = new BackupCloud(this);
+//        if (isBackup)
+//            b.startCloudBackup(null, false);
+//        if (!isBackup) {
+//            if (isForced) b.cloudRestoreForced();
+//            if (!isForced) b.startCloudRestore();
+//        }
+//    }
 
 //    private void parseLogOut() {
 //        if (NetworkConnection.isOnline(this)) {

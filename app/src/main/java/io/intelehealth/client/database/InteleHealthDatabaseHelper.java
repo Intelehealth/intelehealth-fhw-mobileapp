@@ -93,6 +93,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "locationuuid TEXT ," +
             "creator TEXT ," +
             "modified_date TEXT," +
+            "isdownloaded TEXT DEFAULT 'false'," +
             "voided TEXT DEFAULT '0'," +
             "sync TEXT DEFAULT 'false' " +
             ")";

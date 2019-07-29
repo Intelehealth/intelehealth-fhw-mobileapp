@@ -83,12 +83,14 @@ import io.intelehealth.client.database.dao.ImagesDAO;
 import io.intelehealth.client.database.dao.ImagesPushDAO;
 import io.intelehealth.client.database.dao.PatientsDAO;
 import io.intelehealth.client.database.dao.PullDataDAO;
+import io.intelehealth.client.database.dao.VisitsDAO;
 import io.intelehealth.client.knowledgeEngine.Node;
 import io.intelehealth.client.models.Patient;
 import io.intelehealth.client.models.dto.ObsDTO;
 import io.intelehealth.client.services.DownloadService;
 import io.intelehealth.client.syncModule.SyncUtils;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
+import io.intelehealth.client.utilities.DialogUtils;
 import io.intelehealth.client.utilities.FileUtils;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.NetworkConnection;
@@ -612,6 +614,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 AppConstants.notificationUtils.DownloadDone("Visit Data Upload", "Uploaded visit data", VisitSummaryActivity.this);
                             else
                                 AppConstants.notificationUtils.DownloadDone("Visit Data Upload", "failed to Uploaded", VisitSummaryActivity.this);
+                            uploaded = true;
                         }
                     }, 4000);
                 } else {
@@ -1079,17 +1082,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
         downloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PullDataDAO pullDataDAO = new PullDataDAO();
-                boolean pull = pullDataDAO.pullData(VisitSummaryActivity.this);
-                if (pull)
-                    AppConstants.notificationUtils.DownloadDone("download from doctor", "prescription Downloaded", VisitSummaryActivity.this);
-                else
-                    AppConstants.notificationUtils.DownloadDone("download from doctor", "no prescription Downloaded", VisitSummaryActivity.this);
-                if (!downloaded)
+                if (uploaded) {
                     downloadPrescription();
-                else
-                    return;
+                    PullDataDAO pullDataDAO = new PullDataDAO();
+                    boolean pull = pullDataDAO.pullData(VisitSummaryActivity.this);
+                    if (pull)
+                        AppConstants.notificationUtils.DownloadDone("download from doctor", "prescription Downloaded", VisitSummaryActivity.this);
+                    else
+                        AppConstants.notificationUtils.DownloadDone("download from doctor", "no prescription Downloaded", VisitSummaryActivity.this);
 
+                } else {
+                    DialogUtils dialogUtils = new DialogUtils();
+                    dialogUtils.showOkDialog(VisitSummaryActivity.this, "Error", "first need to upload", "ok");
+                }
                 //mLayout.addView(downloadButton, mLayout.getChildCount());
             }
         });
@@ -1115,8 +1120,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         try {
             fileuuidList = imagesDAO.getImageUuid(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_PE);
             for (String fileuuid : fileuuidList) {
-                String filename = AppConstants.IMAGE_PATH + "/" + fileuuid + ".jpg";
-                fileList.add(new File(filename));
+                String filename = AppConstants.IMAGE_PATH + fileuuid + ".jpg";
+                if (new File(filename).exists()) {
+                    fileList.add(new File(filename));
+                }
             }
             HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
             mPhysicalExamsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
@@ -1573,19 +1580,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
         } catch (CursorIndexOutOfBoundsException e) {
             patHistory.setValue(""); // if medical history does not exist
         }
-
-//        String visitSelection = "encounteruuid = ?";
-//        String[] visitArgs = {encounterVitals};
-//        Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
-//        if (visitCursor.moveToFirst()) {
-//            do {
-//                String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
-//                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-//                parseData(dbConceptID, dbValue);
-//            } while (visitCursor.moveToNext());
-//        }
-//        visitCursor.close();
-
+//vitals display code
+        String visitSelection = "encounteruuid = ?";
+        String[] visitArgs = {encounterVitals};
+        Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+        if (visitCursor.moveToFirst()) {
+            do {
+                String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                parseData(dbConceptID, dbValue);
+            } while (visitCursor.moveToNext());
+        }
+        visitCursor.close();
+//adult intails display code
         String encounterselection = "encounteruuid = ? AND conceptuuid != ? AND conceptuuid != ?";
         String[] encounterargs = {encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE};
         Cursor encountercursor = db.query("tbl_obs", columns, encounterselection, encounterargs, null, null, null);
@@ -1817,8 +1824,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             fileuuidList = imagesDAO.getImageUuid(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD);
             for (String fileuuid : fileuuidList) {
                 String filename = AppConstants.IMAGE_PATH + fileuuid + ".jpg";
-                fileList.add(new File(filename));
-                Logger.logD(TAG, "Image name:" + filename);
+                if (new File(filename).exists()) {
+                    fileList.add(new File(filename));
+                }
             }
             HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
             mAdditionalDocsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
@@ -1969,37 +1977,55 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     public void downloadPrescription() {
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        String visitnote = "";
-        EncounterDAO encounterDAO = new EncounterDAO();
-        String encounterIDSelection = "visituuid = ?";
-        String[] encounterIDArgs = {visitUuid};
-        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
-        if (encounterCursor != null && encounterCursor.moveToFirst()) {
-            do {
-                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                    visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                }
-            } while (encounterCursor.moveToNext());
+        VisitsDAO visitsDAO = new VisitsDAO();
+        try {
+            if (visitsDAO.getDownloadedValue(visitUuid).equalsIgnoreCase("false") && uploaded) {
+                db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+                String visitnote = "";
+                EncounterDAO encounterDAO = new EncounterDAO();
+                String encounterIDSelection = "visituuid = ?";
+                String[] encounterIDArgs = {visitUuid};
+                Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+                if (encounterCursor != null && encounterCursor.moveToFirst()) {
+                    do {
+                        if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                            visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                        }
+                    } while (encounterCursor.moveToNext());
 
+                }
+                encounterCursor.close();
+                db.close();
+                db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+                String[] columns = {"value", " conceptuuid"};
+                String visitSelection = "encounteruuid = ? ";
+                String[] visitArgs = {visitnote};
+                Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+                if (visitCursor.moveToFirst()) {
+                    do {
+                        String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                        String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                        parseData(dbConceptID, dbValue);
+                    } while (visitCursor.moveToNext());
+                }
+                visitCursor.close();
+                db.close();
+
+                if (uploaded) {
+                    try {
+                        downloaded = visitsDAO.isUpdatedDownloadColumn(visitUuid, true);
+                    } catch (DAOException e) {
+                        Crashlytics.getInstance().core.logException(e);
+                    }
+                }
+
+            } else {
+                downloaded = false;
+            }
+
+        } catch (DAOException e) {
+            e.printStackTrace();
         }
-        encounterCursor.close();
-        db.close();
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        String[] columns = {"value", " conceptuuid"};
-        String visitSelection = "encounteruuid = ? ";
-        String[] visitArgs = {visitnote};
-        Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
-        if (visitCursor.moveToFirst()) {
-            do {
-                String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
-                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                parseData(dbConceptID, dbValue);
-            } while (visitCursor.moveToNext());
-        }
-        visitCursor.close();
-        db.close();
-        downloaded = true;
 
     }
 

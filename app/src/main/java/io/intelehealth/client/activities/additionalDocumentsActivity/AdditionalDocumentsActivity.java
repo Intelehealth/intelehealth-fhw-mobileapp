@@ -77,8 +77,10 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             try {
                 fileuuidList = imagesDAO.getImageUuid(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD);
                 for (String fileuuid : fileuuidList) {
-                    String filename = AppConstants.IMAGE_PATH + "/" + fileuuid + ".jpg";
-                    fileList.add(new File(filename));
+                    String filename = AppConstants.IMAGE_PATH + fileuuid + ".jpg";
+                    if (new File(filename).exists()) {
+                        fileList.add(new File(filename));
+                    }
                 }
             } catch (DAOException e) {
                 e.printStackTrace();
@@ -104,6 +106,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
 
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();

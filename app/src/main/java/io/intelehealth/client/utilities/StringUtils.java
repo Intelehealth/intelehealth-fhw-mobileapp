@@ -169,4 +169,12 @@ public final class StringUtils {
         }
         return namesStr.toString();
     }
+
+    public static String mobileNumberEmpty(String value) {
+        String val = "Number Not Provided";
+        if (value != null && !value.isEmpty())
+            val = value;
+        return val;
+    }
+
 }

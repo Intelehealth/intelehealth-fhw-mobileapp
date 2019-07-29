@@ -114,7 +114,7 @@ public class ActivePatientActivity extends AppCompatActivity {
                             cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
                             cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
                             cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("phone_number"))
+                            StringUtils.mobileNumberEmpty(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")))
                     ));
                 } while (cursor.moveToNext());
             }
@@ -338,7 +338,7 @@ public class ActivePatientActivity extends AppCompatActivity {
                             cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
                             cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
                             cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("phone_number"))
+                            StringUtils.mobileNumberEmpty(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")))
                     ));
                 } while (cursor.moveToNext());
             }
