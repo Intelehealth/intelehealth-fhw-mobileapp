@@ -264,16 +264,16 @@ public class TodayPatientActivity extends AppCompatActivity {
 //                        "AND tbl_visit.startdate LIKE '" + currentDate + "T%'" +
 //                        "ORDER BY tbl_patient.first_name ASC";
 //
-                "SELECT  a.uuid, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id,d.value as phone_number " +
+                "SELECT  distinct a.uuid, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id,d.value as phone_number " +
                         "FROM tbl_visit a, tbl_patient b, tbl_encounter c " +
                         "left join tbl_patient_attribute d on d.patientuuid=b.uuid " +
                         "WHERE a.patientuuid = b.uuid " +
                         "AND c.visituuid=a.uuid and c.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
                         "AND d.person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' " +
                         "AND a.startdate LIKE '" + currentDate + "T%'" +
-                        "GROUP BY a.uuid ORDER BY a.patientuuid ASC ";
+                        "ORDER BY a.patientuuid ASC ";
         //  "SELECT * FROM visit, patient WHERE visit.patient_id = patient._id AND visit.start_datetime LIKE '" + currentDate + "T%'";
-        Logger.logD(TAG, query);
+//        Logger.logD(TAG, query);
         final Cursor cursor = db.rawQuery(query, null);
 
         if (cursor != null) {
