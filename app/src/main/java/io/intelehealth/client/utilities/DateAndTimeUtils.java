@@ -48,7 +48,7 @@ public class DateAndTimeUtils {
         return period.getYears();
     }
 
-    public static String getFormatedDateOfBirth(String oldformatteddate) {
+    public static String getFormatedDateOfBirth(String oldformatteddate){
 
         DateFormat originalFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
