@@ -65,6 +65,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     String encounterAdultIntials;
     EncounterDTO encounterDTO;
     SessionManager sessionManager = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(this);
@@ -85,7 +86,9 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
         Date todayDate = new Date();
         String thisDate = currentDate.format(todayDate);
-        encounterAdultIntials = UUID.randomUUID().toString();
+        if (encounterAdultIntials.equalsIgnoreCase("") || encounterAdultIntials == null) {
+            encounterAdultIntials = UUID.randomUUID().toString();
+        }
         EncounterDAO encounterDAO = new EncounterDAO();
         encounterDTO = new EncounterDTO();
         encounterDTO.setUuid(encounterAdultIntials);

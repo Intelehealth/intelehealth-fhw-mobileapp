@@ -49,7 +49,7 @@
     <string name="prefix_invalid" translatable="false">Select a different prefix!</string>
     <string name="error_invalid_email" translatable="false">This username is invalid</string>
     <string name="error_invalid_password" translatable="false">This password is too short</string>
-    <string name="error_incorrect_password" translatable="false">This password is incorrect</string>
+    <string name="error_incorrect_password" translatable="false">error_incorrect_password</string>
     <string name="error_field_required" translatable="false">This field is required</string>
     <string name="error_network" translatable="false">Network Error</string>
     <string name="error_location_not_selected" translatable="false">Please select a value form the location dropdown</string>
@@ -156,7 +156,7 @@
     //Patient Search Screen
     <string name="search_hint" translatable="false">Type to search patient by name…</string>
     <string name="action_search" translatable="false">Search</string>
-    <string name="alert_none_found" translatable="false">No patients found with name _.\nDid you spell their name correctly?</string>
+    <string name="alert_none_found" translatable="false">Please check username and pasword entered</string>
 
     //Past Medical History Screen
     <string name="title_activity_patient_history" translatable="false">Past Medical History</string>
@@ -437,6 +437,7 @@
 
     <!--Privacy Notice Activity-->
     <string name="privacy_toast">Please select an option</string>
+    <string name="temperature_f">Temperature (F)</string>
 
 
 </resources>

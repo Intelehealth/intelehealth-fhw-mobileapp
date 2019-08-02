@@ -551,7 +551,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
 
                 //Formatted so that it can be read the way the user sets
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
                 dob.set(year, monthOfYear, dayOfMonth);
                 String dobString = simpleDateFormat.format(dob.getTime());
                 mDOB.setText(dobString);
@@ -933,7 +933,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
             patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientdto.setGender(StringUtils.getValue(mGender));
-            patientdto.setDateofbirth(StringUtils.getValue(mDOB.getText().toString()));
+            patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(mDOB.getText().toString())));
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
             patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));
@@ -1059,7 +1059,7 @@ public class IdentificationActivity extends AppCompatActivity {
         patientdto.setLast_name(StringUtils.getValue(mLastName.getText().toString()));
         patientdto.setPhone_number(StringUtils.getValue(mPhoneNum.getText().toString()));
         patientdto.setGender(StringUtils.getValue(mGender));
-        patientdto.setDate_of_birth(StringUtils.getValue(mDOB.getText().toString()));
+        patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(mDOB.getText().toString())));
         patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
         patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
         patientdto.setCity_village(StringUtils.getValue(mCity.getText().toString()));

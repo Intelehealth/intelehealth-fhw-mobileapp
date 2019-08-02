@@ -7,6 +7,7 @@ import org.joda.time.Period;
 import org.joda.time.PeriodType;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -21,17 +22,20 @@ public class DateAndTimeUtils {
         return date.format(todayDate);
     }
 
-    public String currentDateTimeInHome() {
-        DateFormat date = new SimpleDateFormat("yyyy-MM-dd hh.mm.ss aa", Locale.getDefault());
-// you can get seconds by adding  "...:ss" to it
-        Date todayDate = new Date();
-        return date.format(todayDate);
-    }
-
     public static int getAge(String s) {
         if (s == null) return 0;
 
-        String[] components = s.split("\\-");
+        DateFormat originalFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
+        DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = originalFormat.parse(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String formattedDate = targetFormat.format(date);  // 20120821
+
+        String[] components = formattedDate.split("\\-");
 
         int year = Integer.parseInt(components[0]);
         int month = Integer.parseInt(components[1]);
@@ -42,6 +46,29 @@ public class DateAndTimeUtils {
         Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
 
         return period.getYears();
+    }
+
+    public static String getFormatedDateOfBirth(String oldformatteddate) {
+
+        DateFormat originalFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
+        DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = originalFormat.parse(oldformatteddate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String formattedDate = targetFormat.format(date);  // 20120821
+
+        return formattedDate;
+
+    }
+
+    public String currentDateTimeInHome() {
+        DateFormat date = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
+// you can get seconds by adding  "...:ss" to it
+        Date todayDate = new Date();
+        return date.format(todayDate);
     }
 
     public static String SimpleDatetoLongFollowupDate(String dateString) {

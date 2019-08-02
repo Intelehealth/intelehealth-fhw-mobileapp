@@ -298,7 +298,7 @@ public class SessionManager {
     }
 
     public String getLastPulledDateTime() {
-        return pref.getString(LAST_PULLED_EXECUTED_DATE_TIME, "2006-08-22 22:21:48");
+        return pref.getString(LAST_PULLED_EXECUTED_DATE_TIME, "01 January 2019");
     }  //getting the sync value  and time and saving in the sharedpref
 
     public void setLastPulledDateTime(String lastPulledDateTime) {
@@ -325,7 +325,7 @@ public class SessionManager {
     }
 
     public String getMindMapServerUrl() {
-        return pref.getString(MIND_MAP_SERVER_URL, "http://mindmaps.intelehealth.io");
+        return pref.getString(MIND_MAP_SERVER_URL, "http://mindmaps.intelehealth.io:4040");
     }  //getting the sync value  and time and saving in the sharedpref
 
     public void setMindMapServerUrl(String mindMapServerUrl) {

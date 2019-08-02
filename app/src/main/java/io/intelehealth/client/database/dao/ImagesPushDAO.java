@@ -176,7 +176,7 @@ public class ImagesPushDAO {
         return true;
     }
 
-    public boolean isUuidExisits(ObsPushDTO obsPushDTO) {
+    public boolean isImageUuidExisits(String uuidImage) {
 
 
         return true;

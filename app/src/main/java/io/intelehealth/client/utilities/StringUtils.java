@@ -171,7 +171,7 @@ public final class StringUtils {
     }
 
     public static String mobileNumberEmpty(String value) {
-        String val = "Number Not Provided";
+        String val = "N/A";
         if (value != null && !value.isEmpty())
             val = value;
         return val;

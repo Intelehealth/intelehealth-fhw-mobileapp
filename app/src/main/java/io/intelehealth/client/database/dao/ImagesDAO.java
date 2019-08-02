@@ -70,7 +70,10 @@ public class ImagesDAO {
         return true;
     }
 
-    public void deleteImageFromDatabase(String uuid) throws DAOException {
+    public boolean deleteImageFromDatabase(String uuid) throws DAOException {
+        boolean isDeleted = false;
+        int updateDeltedRows = 0;
+        Logger.logD(TAG, "Deleted image uuid" + uuid);
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         String[] coloumns = {"uuid"};
         String[] selectionArgs = {uuid};
@@ -78,12 +81,19 @@ public class ImagesDAO {
         try {
             Cursor cursor = localdb.query("tbl_obs", coloumns, "uuid = ?", selectionArgs, null, null, null);
             if (cursor != null && cursor.moveToFirst()) {
-                localdb.execSQL("UPDATE tbl_obs SET voided = '1' WHERE uuid=" + "'" + uuid + "' AND sync='false'");
-                localdb.setTransactionSuccessful();
+                ContentValues cv = new ContentValues();
+                cv.put("voided", "1"); //These Fields should be your String values of actual column names
+                cv.put("sync", "false");
+                //cv.put("Field2","Male");
+                updateDeltedRows = localdb.updateWithOnConflict("tbl_obs", cv, "uuid=?", new String[]{uuid}, SQLiteDatabase.CONFLICT_REPLACE);
+//                localdb.execSQL("UPDATE tbl_obs SET voided = '1' WHERE uuid=" + "'" + uuid + "' AND sync='false'");
+//                localdb.setTransactionSuccessful();
             }
             if (cursor != null) {
                 cursor.close();
             }
+            isDeleted = updateDeltedRows != 0;
+            localdb.setTransactionSuccessful();
         } catch (SQLiteException e) {
             Crashlytics.getInstance().core.logException(e);
             throw new DAOException(e);
@@ -91,6 +101,7 @@ public class ImagesDAO {
             localdb.endTransaction();
             localdb.close();
         }
+        return isDeleted;
 
     }
 
