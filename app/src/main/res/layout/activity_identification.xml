@@ -447,20 +447,6 @@
                         android:tag="@string/tag_optional" />
 
 
-                        <EditText
-                            android:id="@+id/identification_address1"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:freezesText="true"
-                            android:hint="@string/identification_screen_prompt_address"
-                            android:maxLength="50"
-                            android:imeOptions="actionUnspecified"
-                            android:inputType="textCapWords"
-                            android:maxLines="2"
-                            android:singleLine="false"
-                            android:tag="@string/tag_optional" />
-
                 </android.support.design.widget.TextInputLayout>
 
 
@@ -468,20 +454,6 @@
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-
-
-                        <EditText
-                            android:id="@+id/identification_address2"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:freezesText="true"
-                            android:hint="@string/identification_screen_prompt_address2"
-                            android:maxLength="50"
-                            android:imeOptions="actionUnspecified"
-                            android:inputType="textCapWords"
-                            android:maxLines="2"
-                            android:tag="@string/tag_optional" />
 
                     <EditText
                         android:id="@+id/identification_relationship"
