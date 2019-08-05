@@ -37,7 +37,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:layout_marginLeft="30dp"
+                android:layout_marginLeft="35dp"
                 android:text="Reject"/>
 
 
@@ -74,6 +74,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:textFontWeight="1"
+                android:fontFamily="sans-serif-light"
                 android:layout_width="wrap_content"
                 android:layout_marginHorizontal="5dp"
                 android:textAlignment="gravity"/>
