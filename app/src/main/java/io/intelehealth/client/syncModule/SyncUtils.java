@@ -1,8 +1,11 @@
 package io.intelehealth.client.syncModule;
 
+import android.content.Intent;
+
 import io.intelehealth.client.app.IntelehealthApplication;
 import io.intelehealth.client.database.dao.ImagesPushDAO;
 import io.intelehealth.client.database.dao.PullDataDAO;
+import io.intelehealth.client.services.UpdateDownloadPrescriptionService;
 import io.intelehealth.client.utilities.NotificationUtils;
 
 public class SyncUtils {
@@ -36,6 +39,9 @@ public class SyncUtils {
         imagesPushDAO.patientProfileImagesPush();
         imagesPushDAO.obsImagesPush();
         imagesPushDAO.deleteObsImage();
+
+        Intent intent = new Intent(IntelehealthApplication.getAppContext(), UpdateDownloadPrescriptionService.class);
+        IntelehealthApplication.getAppContext().startService(intent);
 
         return isSynced;
     }

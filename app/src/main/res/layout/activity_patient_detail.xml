@@ -98,7 +98,32 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
 
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:paddingTop="@dimen/padding_card_action"
+                                    android:text="Patient Name"
+                                    android:textSize="@dimen/card_content_text_size" />
+
+
+                                <android.support.v4.widget.Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="wrap_content" />
+
+                                <TextView
+                                    android:id="@+id/textView_name"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:paddingTop="@dimen/padding_card_action"
+                                    android:textSize="@dimen/card_content_text_size" />
+
+
+                            </TableRow>
                             <TableRow
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent">

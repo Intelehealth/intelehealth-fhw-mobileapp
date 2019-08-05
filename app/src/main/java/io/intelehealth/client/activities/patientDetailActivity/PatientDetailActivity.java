@@ -327,6 +327,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         photoView = findViewById(R.id.imageView_patient);
 
         idView = findViewById(R.id.textView_ID);
+        TextView patinetName = findViewById(R.id.textView_name);
         TextView dobView = findViewById(R.id.textView_DOB);
         TextView ageView = findViewById(R.id.textView_age);
         TextView addr1View = findViewById(R.id.textView_address_1);
@@ -354,7 +355,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         } else {
             patientName = patient_new.getLast_name() + ", " + patient_new.getFirst_name() + " " + patient_new.getMiddle_name();
         }
-        setTitle(patientName);
+//        setTitle(patientName);
+        patinetName.setText(patientName);
         try {
             profileImage = imagesDAO.getPatientProfileChangeTime(patientUuid);
         } catch (DAOException e) {
@@ -387,7 +389,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         int age = DateAndTimeUtils.getAge(patient_new.getDate_of_birth());
         ageView.setText(String.valueOf(age));
 
-        String dob = patient_new.getDate_of_birth();
+        String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient_new.getDate_of_birth());
         dobView.setText(dob);
         if (patient_new.getAddress1() == null || patient_new.getAddress1().equals("")) {
             addr1View.setVisibility(View.GONE);

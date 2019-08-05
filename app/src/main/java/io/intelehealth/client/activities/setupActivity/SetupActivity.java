@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -361,7 +362,7 @@ public class SetupActivity extends AppCompatActivity {
             case R.id.downloadMindmap:
                 if (checked) {
                     r1.setChecked(false);
-                    dialog = new AlertDialog.Builder(this);
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                     LayoutInflater li = LayoutInflater.from(this);
                     View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
                     dialog.setTitle(getString(R.string.enter_license_key))
@@ -401,7 +402,18 @@ public class SetupActivity extends AppCompatActivity {
                                     dialog.dismiss();
                                 }
                             });
-                    dialog.create().show();
+                    AlertDialog alertDialog = dialog.create();
+                    alertDialog.show();
+                    // Get the alert dialog buttons reference
+                    Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+
+                    // Change the alert dialog buttons text and background color
+                    positiveButton.setTextColor(Color.parseColor("#FF0B8B42"));
+                    positiveButton.setBackgroundColor(Color.parseColor("#FFE1FCEA"));
+
+                    negativeButton.setTextColor(Color.parseColor("#FFFF0400"));
+                    negativeButton.setBackgroundColor(Color.parseColor("#FFFCB9B7"));
 
 
                 }

@@ -593,7 +593,7 @@ public class IdentificationActivity extends AppCompatActivity {
         //if patient update then age will be set
         if (patientID_edit != null) {
             int age = DateAndTimeUtils.getAge(patient1.getDate_of_birth());
-            mDOB.setText(patient1.getDate_of_birth());
+            mDOB.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
             int month = DateAndTimeUtils.getMonth(patient1.getDate_of_birth());
             mAge.setText(age + getString(R.string.identification_screen_text_years) + month + getString(R.string.identification_screen_text_months));
         }

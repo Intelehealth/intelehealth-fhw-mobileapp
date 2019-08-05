@@ -49,7 +49,7 @@
     <string name="prefix_invalid" translatable="false">Select a different prefix!</string>
     <string name="error_invalid_email" translatable="false">This username is invalid</string>
     <string name="error_invalid_password" translatable="false">This password is too short</string>
-    <string name="error_incorrect_password" translatable="false">error_incorrect_password</string>
+    <string name="error_incorrect_password" translatable="false">Error incorrect password</string>
     <string name="error_field_required" translatable="false">This field is required</string>
     <string name="error_network" translatable="false">Network Error</string>
     <string name="error_location_not_selected" translatable="false">Please select a value form the location dropdown</string>

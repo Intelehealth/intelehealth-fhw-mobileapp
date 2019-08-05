@@ -80,7 +80,6 @@ import io.intelehealth.client.activities.vitalActivity.VitalsActivity;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.dao.EncounterDAO;
 import io.intelehealth.client.database.dao.ImagesDAO;
-import io.intelehealth.client.database.dao.ImagesPushDAO;
 import io.intelehealth.client.database.dao.PatientsDAO;
 import io.intelehealth.client.database.dao.PullDataDAO;
 import io.intelehealth.client.database.dao.VisitsDAO;
@@ -237,6 +236,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ImageButton additionalDocumentsDownlaod;
     ImageButton onExaminationDownload;
 
+    IntentFilter filter;
+    DownloadPrescriptionService downloadPrescriptionService;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -291,8 +292,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         unregisterReceiver(broadcastReceiverForIamgeDownlaod);
+        unregisterReceiver(downloadPrescriptionService);
+        super.onDestroy();
+
     }
 
     @Override
@@ -365,7 +368,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         }
 
-
+        filter = new IntentFilter("downloadprescription");
         registerBroadcastReceiverDynamically();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (sharedPreferences.contains("licensekey"))
@@ -597,7 +600,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 if (NetworkConnection.isOnline(getApplication())) {
                     AppConstants.notificationUtils.showNotifications("Visit Data Upload", "Uploading visit data", VisitSummaryActivity.this);
                     PullDataDAO pullDataDAO = new PullDataDAO();
-                    ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
@@ -615,6 +617,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             else
                                 AppConstants.notificationUtils.DownloadDone("Visit Data Upload", "failed to Uploaded", VisitSummaryActivity.this);
                             uploaded = true;
+                            Toast.makeText(VisitSummaryActivity.this, "Upload Completed", Toast.LENGTH_SHORT).show();
                         }
                     }, 4000);
                 } else {
@@ -1083,14 +1086,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (uploaded) {
-                    downloadPrescription();
                     PullDataDAO pullDataDAO = new PullDataDAO();
                     boolean pull = pullDataDAO.pullData(VisitSummaryActivity.this);
                     if (pull)
                         AppConstants.notificationUtils.DownloadDone("download from doctor", "prescription Downloaded", VisitSummaryActivity.this);
                     else
                         AppConstants.notificationUtils.DownloadDone("download from doctor", "no prescription Downloaded", VisitSummaryActivity.this);
-
+                    downloadPrescription();
                 } else {
                     DialogUtils dialogUtils = new DialogUtils();
                     dialogUtils.showOkDialog(VisitSummaryActivity.this, "Error", "first need to upload", "ok");
@@ -1605,7 +1607,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         encountercursor.close();
 //    setup the downloaded prescription
-        downloadPrescription();
+//        downloadPrescription();
+        downloadPrescriptionDefault();
     }
 
     /**
@@ -1783,16 +1786,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("value", string);
+        contentValues.put("sync", "false");
 
         String selection = "encounteruuid = ? AND conceptuuid = ?";
         String[] args = {encounterUuid, String.valueOf(conceptID)};
 
-        localdb.update(
-                "tbl_obs",
-                contentValues,
-                selection,
-                args
-        );
+        localdb.updateWithOnConflict("tbl_obs", contentValues, selection, args, SQLiteDatabase.CONFLICT_REPLACE);
 
     }
 
@@ -1837,6 +1836,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         } catch (Exception file) {
             Logger.logD(TAG, file.getMessage());
         }
+
+
 //        if (!addDocDir.exists()) {
 //            addDocDir.mkdirs();
 //            Log.v(TAG, "directory created " + addDocDir.getAbsolutePath());
@@ -1994,7 +1995,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     } while (encounterCursor.moveToNext());
 
                 }
-                encounterCursor.close();
+                if (encounterCursor != null) {
+                    encounterCursor.close();
+                }
                 db.close();
                 db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
                 String[] columns = {"value", " conceptuuid"};
@@ -2029,14 +2032,49 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     }
 
+    public void downloadPrescriptionDefault() {
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        String visitnote = "";
+        EncounterDAO encounterDAO = new EncounterDAO();
+        String encounterIDSelection = "visituuid = ?";
+        String[] encounterIDArgs = {visitUuid};
+        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+        if (encounterCursor != null && encounterCursor.moveToFirst()) {
+            do {
+                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                }
+            } while (encounterCursor.moveToNext());
+
+        }
+        encounterCursor.close();
+        db.close();
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        String[] columns = {"value", " conceptuuid"};
+        String visitSelection = "encounteruuid = ? ";
+        String[] visitArgs = {visitnote};
+        Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+        if (visitCursor.moveToFirst()) {
+            do {
+                String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                parseData(dbConceptID, dbValue);
+            } while (visitCursor.moveToNext());
+        }
+        visitCursor.close();
+        db.close();
+    }
+
     @Override
     protected void onStart() {
+        registerReceiver(downloadPrescriptionService, filter);
         super.onStart();
         LocalBroadcastManager.getInstance(this).registerReceiver((mMessageReceiver), new IntentFilter(FILTER));
     }
 
     @Override
     protected void onStop() {
+        unregisterReceiver(downloadPrescriptionService);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
         super.onStop();
     }
@@ -2200,6 +2238,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    public class DownloadPrescriptionService extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            downloadPrescriptionDefault();
+        }
     }
 
 }

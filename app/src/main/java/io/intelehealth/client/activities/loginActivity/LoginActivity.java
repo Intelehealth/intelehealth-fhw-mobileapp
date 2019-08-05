@@ -318,6 +318,9 @@ public class LoginActivity extends AppCompatActivity {
                                                 startActivity(intent);
                                                 finish();
                                                 showProgress(false);
+
+                                                sessionManager.setReturningUser(true);
+
                                             }
                                         }
                                     }

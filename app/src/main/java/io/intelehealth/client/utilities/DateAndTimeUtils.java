@@ -25,8 +25,8 @@ public class DateAndTimeUtils {
     public static int getAge(String s) {
         if (s == null) return 0;
 
-        DateFormat originalFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
-        DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date date = null;
         try {
             date = originalFormat.parse(s);
@@ -37,9 +37,9 @@ public class DateAndTimeUtils {
 
         String[] components = formattedDate.split("\\-");
 
-        int year = Integer.parseInt(components[0]);
+        int year = Integer.parseInt(components[2]);
         int month = Integer.parseInt(components[1]);
-        int day = Integer.parseInt(components[2]);
+        int day = Integer.parseInt(components[0]);
 
         LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
         LocalDate now = new LocalDate();                    //Today's date
@@ -52,6 +52,21 @@ public class DateAndTimeUtils {
 
         DateFormat originalFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = originalFormat.parse(oldformatteddate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String formattedDate = targetFormat.format(date);  // 20120821
+
+        return formattedDate;
+
+    }
+
+    public static String getFormatedDateOfBirthAsView(String oldformatteddate) {
+        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        DateFormat targetFormat = new SimpleDateFormat("dd MMMM yyyy");
         Date date = null;
         try {
             date = originalFormat.parse(oldformatteddate);

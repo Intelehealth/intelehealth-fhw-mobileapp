@@ -37,6 +37,7 @@ public class SessionManager {
     private static final String PULL_SYNC_FINISHED = "pullsyncfinished";
     private static final String PUSH_SYNC_FINISHED = "pushsyncfinished";
     private static final String MIND_MAP_SERVER_URL = "mindmapurl";
+    private static final String RETURNING_USER = "returninguser";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -330,6 +331,15 @@ public class SessionManager {
 
     public void setMindMapServerUrl(String mindMapServerUrl) {
         editor.putString(MIND_MAP_SERVER_URL, mindMapServerUrl);
+        editor.commit();
+    }
+
+    public boolean isReturningUser() {
+        return pref.getBoolean(RETURNING_USER, false);
+    }
+
+    public void setReturningUser(Boolean returningUser) {
+        editor.putBoolean(RETURNING_USER, returningUser);
         editor.commit();
     }
 }

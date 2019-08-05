@@ -189,6 +189,10 @@ public class HomeActivity extends AppCompatActivity {
 
         }
 
+        if (sessionManager.isReturningUser()) {
+            syncUtils.syncForeground();
+        }
+
 
     }
 
@@ -323,6 +327,11 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();
+
+        SyncUtils syncUtils = new SyncUtils();
+        syncUtils.syncBackground();
+
+        sessionManager.setReturningUser(false);
     }
 
 //    public void manageBackup(boolean isBackup, boolean isForced) {
