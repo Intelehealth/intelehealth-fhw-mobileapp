@@ -1,6 +1,8 @@
 package io.intelehealth.client.activities.privacyNoticeActivity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +18,7 @@ import org.json.JSONObject;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.identificationActivity.IdentificationActivity;
+import io.intelehealth.client.activities.settingsActivity.SettingsActivity;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.utilities.ConfigUtils;
 import io.intelehealth.client.utilities.FileUtils;
@@ -61,8 +64,42 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
                 }
 
-            String privacy_string = obj.getString("privacyNoticeText");
-            privacy_textview.setText(privacy_string);
+            SharedPreferences sharedPreferences = getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
+            if(sharedPreferences.getAll().values().contains("cb"))
+            {
+                String privacy_string = obj.getString("privacyNoticeText_Cebuano");
+                if(privacy_string.isEmpty())
+                {
+                    privacy_string = obj.getString("privacyNoticeText");
+                    privacy_textview.setText(privacy_string);
+                }
+                else
+                {
+                    privacy_textview.setText(privacy_string);
+                }
+
+            }
+            else if(sharedPreferences.getAll().values().contains("or"))
+            {
+                String privacy_string = obj.getString("privacyNoticeText_Odiya");
+                if(privacy_string.isEmpty())
+                {
+                    privacy_string = obj.getString("privacyNoticeText");
+                    privacy_textview.setText(privacy_string);
+                }
+                else
+                {
+                    privacy_textview.setText(privacy_string);
+                }
+
+            }
+            else
+            {
+                String privacy_string = obj.getString("privacyNoticeText");
+                privacy_textview.setText(privacy_string);
+            }
+
+
 
             txt_next.setOnClickListener(new View.OnClickListener() {
                 @Override
