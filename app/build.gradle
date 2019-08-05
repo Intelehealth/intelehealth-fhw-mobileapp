@@ -6,18 +6,13 @@ android {
         applicationId "io.intelehealth.client"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 25
+        versionCode 27
         versionName "version 2.0 beta 1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        lintOptions {
-            checkReleaseBuilds false
-            // Or, if you prefer, you can continue to check for errors in release builds,
-            // but continue the build even when errors are found:
-            abortOnError false
-        }
+
     }
     compileOptions {
         sourceCompatibility = '1.8'
@@ -29,7 +24,7 @@ android {
                 disable 'MissingTranslation'
             }
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 

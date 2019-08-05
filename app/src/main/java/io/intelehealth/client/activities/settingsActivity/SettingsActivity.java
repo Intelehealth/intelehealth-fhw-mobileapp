@@ -37,7 +37,7 @@ import io.intelehealth.client.R;
 import io.intelehealth.client.activities.appCompatPreferenceActivity.AppCompatPreferenceActivity;
 import io.intelehealth.client.activities.homeActivity.HomeActivity;
 import io.intelehealth.client.utilities.AdminPassword;
-import io.intelehealth.client.utilities.backup.BackupCloud;
+import io.intelehealth.client.utilities.SessionManager;
 
 public class SettingsActivity extends AppCompatPreferenceActivity {
     private static boolean admin_password = false;
@@ -47,6 +47,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
      */
+
+    SessionManager sessionManager = null;
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener =
             new Preference.OnPreferenceChangeListener() {
                 @Override
@@ -200,7 +202,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             public void onDismiss(DialogInterface dialog) {
                 if (!admin_password) activity.onBackPressed();
                 else {
-                    BackupCloud b = new BackupCloud(context);
+//                    BackupCloud b = new BackupCloud(context);
 //                    b.cloudRestoreForced();
                     activity.onBackPressed();
                 }
@@ -214,6 +216,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle(R.string.menu_option_settings);
+        sessionManager = new SessionManager(this);
         setupActionBar();
     }
 
@@ -390,14 +393,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         public void loadLocale() {
             String langPref = "Language";
-            SharedPreferences prefs = this.getActivity().getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
+            SharedPreferences prefs = this.getActivity().getSharedPreferences("Intelehealth", Activity.MODE_PRIVATE);
             String language = prefs.getString(langPref, "");
             setLocale(language);
         }
 
         public void saveLocale(String lang) {
             String langPref = "Language";
-            SharedPreferences prefs = this.getActivity().getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
+            SharedPreferences prefs = this.getActivity().getSharedPreferences("Intelehealth", Activity.MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString(langPref, lang);
             prefs.getAll();

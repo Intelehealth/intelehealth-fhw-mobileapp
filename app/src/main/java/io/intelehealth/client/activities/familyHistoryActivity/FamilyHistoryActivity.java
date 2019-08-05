@@ -351,7 +351,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         ContentValues contentValues = new ContentValues();
         contentValues.put("value", string);
 
-        String selection = "encounteruuid AND conceptuuid = ?";
+        String selection = "encounteruuid = ? AND conceptuuid = ?";
         String[] args = {encounterAdultIntials, conceptID};
 
         localdb.update(

@@ -31,6 +31,7 @@ import io.intelehealth.client.database.dao.ProviderDAO;
 import io.intelehealth.client.models.ActivePatientModel;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
+import io.intelehealth.client.utilities.StringUtils;
 import io.intelehealth.client.utilities.exception.DAOException;
 
 public class ActivePatientActivity extends AppCompatActivity {
@@ -63,7 +64,7 @@ public class ActivePatientActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         mDbHelper = new InteleHealthDatabaseHelper(this);
         db = mDbHelper.getWritableDatabase();
-        if (sessionManager.isSyncFinished()) {
+        if (sessionManager.isPullSyncFinished()) {
             textView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
             doQuery();
@@ -80,12 +81,22 @@ public class ActivePatientActivity extends AppCompatActivity {
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
         String query =
-                "SELECT tbl_visit.uuid, tbl_visit.patientuuid, tbl_visit.startdate, tbl_visit.enddate," +
-                        "tbl_patient.first_name, tbl_patient.middle_name, tbl_patient.last_name, " +
-                        "tbl_patient.date_of_birth,tbl_patient.openmrs_id,tbl_patient.phone_number FROM tbl_visit, tbl_patient WHERE tbl_visit.patientuuid = tbl_patient.uuid " +
-                        "AND tbl_visit.enddate IS NULL " +
-                        "OR tbl_visit.enddate = '' " +
-                        "ORDER BY tbl_visit.startdate ASC";
+//                "SELECT tbl_visit.uuid, tbl_visit.patientuuid, tbl_visit.startdate, tbl_visit.enddate," +
+//                        "tbl_patient.first_name, tbl_patient.middle_name, tbl_patient.last_name, " +
+//                        "tbl_patient.date_of_birth,tbl_patient.openmrs_id,a.value AS phone_number " +
+//                        "FROM tbl_visit, tbl_patient, tbl_patient_attribute a " +
+//                        "WHERE tbl_visit.patientuuid = tbl_patient.uuid " +
+//                        "AND tbl_visit.enddate IS NULL " +
+//                        "AND a.patientuuid=tbl_patient.uuid and a.person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' " +
+//                        "OR tbl_visit.enddate = '' " +
+//                        "ORDER BY tbl_visit.startdate ASC";
+//
+                "SELECT   a.uuid, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id,c.value as phone_number " +
+                        "FROM tbl_visit a, tbl_patient b " +
+                        "left join tbl_patient_attribute c on c.patientuuid=b.uuid " +
+                        "WHERE a.patientuuid = b.uuid " +
+                        "AND c.person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' " +
+                        "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate ASC";
         //  "SELECT * FROM visit, patient WHERE visit.patient_id = patient._id AND visit.start_datetime LIKE '" + currentDate + "T%'";
 //        Logger.logD(TAG, query);
         final Cursor cursor = db.rawQuery(query, null);
@@ -103,7 +114,7 @@ public class ActivePatientActivity extends AppCompatActivity {
                             cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
                             cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
                             cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("phone_number"))
+                            StringUtils.mobileNumberEmpty(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")))
                     ));
                 } while (cursor.moveToNext());
             }
@@ -164,21 +175,37 @@ public class ActivePatientActivity extends AppCompatActivity {
         });
         checkBox.setText("Text to the right of the check box.");*/
         ProviderDAO providerDAO = new ProviderDAO();
+        ArrayList selectedItems = new ArrayList<>();
         String[] creator_names = null;
+        String[] creator_uuid = null;
         try {
             creator_names = providerDAO.getProvidersList().toArray(new String[0]);
+            creator_uuid = providerDAO.getProvidersUuidList().toArray(new String[0]);
         } catch (DAOException e) {
             e.printStackTrace();
         }
-        boolean[] checkedItems = {false, false, false, false};
+//        boolean[] checkedItems = {false, false, false, false};
         // ngo_numbers = getResources().getStringArray(R.array.ngo_numbers);
         dialogBuilder = new AlertDialog.Builder(ActivePatientActivity.this);
         dialogBuilder.setTitle("Filter by Creator");
 
-        dialogBuilder.setMultiChoiceItems(creator_names, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+        String[] finalCreator_names = creator_names;
+        String[] finalCreator_uuid = creator_uuid;
+        dialogBuilder.setMultiChoiceItems(creator_names, null, new DialogInterface.OnMultiChoiceClickListener() {
 
+
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which, boolean isChecked) {
+                Logger.logD(TAG, "multichoice" + which + isChecked);
+                if (isChecked) {
+                    // If the user checked the item, add it to the selected items
+                    selectedItems.add(finalCreator_uuid[which]);
+                    Logger.logD(TAG, finalCreator_names[which] + finalCreator_uuid[which]);
+                } else if (selectedItems.contains(which)) {
+                    // Else, if the item is already in the array, remove it
+                    selectedItems.remove(finalCreator_uuid[which]);
+                    Logger.logD(TAG, finalCreator_names[which] + finalCreator_uuid[which]);
+                }
             }
         });
 
@@ -186,6 +213,9 @@ public class ActivePatientActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 //display filter query code on list menu
+                Logger.logD(TAG, "onclick" + i);
+                doQueryWithProviders(selectedItems);
+//                select distinct a.uuid,c.first_name,c.middle_name,c.last_name,c.openmrs_id,c.phone_number,c.date_of_birth from tbl_visit a,tbl_encounter b ,tbl_patient c where b.visituuid=a.uuid and b.provider_uuid in ('163b48e5-26fb-40c1-8d94-a6c873dd2869') and a.patientuuid=c.uuid and a.enddate is null order by c.first_name
             }
         });
 
@@ -266,6 +296,67 @@ public class ActivePatientActivity extends AppCompatActivity {
     private boolean endVisit(String patientUuid, String patientName, String visitUUID) {
 
         return visitUUID != null;
+
+    }
+
+    private void doQueryWithProviders(List<String> providersuuids) {
+        List<ActivePatientModel> activePatientList = new ArrayList<>();
+        String query =
+//                "select distinct a.uuid,c.uuid AS patientuuid,a.startdate AS startdate,a.enddate AS enddate," +
+//                "c.first_name,c.middle_name,c.last_name,c.openmrs_id,c.phone_number,c.date_of_birth " +
+//                "from tbl_visit a,tbl_encounter b ,tbl_patient c " +
+//                "where b.visituuid=a.uuid and b.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "') " +
+//                "and a.patientuuid=c.uuid and a.enddate is null OR a.enddate='' order by a.startdate ASC";
+
+                "select  distinct a.uuid,c.uuid AS patientuuid,a.startdate AS startdate,a.enddate AS enddate, c.first_name,c.middle_name,c.last_name,c.openmrs_id,d.value As phone_number,c.date_of_birth " +
+                        "from tbl_visit a,tbl_encounter b ,tbl_patient c " +
+                        "left join tbl_patient_attribute d on d.patientuuid=c.uuid " +
+                        "where b.visituuid=a.uuid and b.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
+                        "AND d.patientuuid=c.uuid and d.person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' " +
+                        "and a.patientuuid=c.uuid and (a.enddate is null OR a.enddate='')  order by a.startdate ASC";
+
+//                "SELECT tbl_visit.uuid, tbl_visit.patientuuid, tbl_visit.startdate, tbl_visit.enddate," +
+//                        "tbl_patient.first_name, tbl_patient.middle_name, tbl_patient.last_name, " +
+//                        "tbl_patient.date_of_birth,tbl_patient.openmrs_id,tbl_patient.phone_number FROM tbl_visit, tbl_patient WHERE tbl_visit.patientuuid = tbl_patient.uuid " +
+//                        "AND tbl_visit.enddate IS NULL " +
+//                        "OR tbl_visit.enddate = '' " +
+//                        "ORDER BY tbl_visit.startdate ASC";
+        //  "SELECT * FROM visit, patient WHERE visit.patient_id = patient._id AND visit.start_datetime LIKE '" + currentDate + "T%'";
+        Logger.logD(TAG, query);
+        final Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    activePatientList.add(new ActivePatientModel(
+                            cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("enddate")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                            StringUtils.mobileNumberEmpty(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")))
+                    ));
+                } while (cursor.moveToNext());
+            }
+        }
+        cursor.close();
+
+        if (!activePatientList.isEmpty()) {
+            for (ActivePatientModel activePatientModel : activePatientList)
+                Logger.logD(TAG, activePatientModel.getFirst_name() + " " + activePatientModel.getLast_name());
+
+            ActivePatientAdapter mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ActivePatientActivity.this);
+            recyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.addItemDecoration(new
+                    DividerItemDecoration(this,
+                    DividerItemDecoration.VERTICAL));
+            recyclerView.setAdapter(mActivePatientAdapter);
+        }
 
     }
 

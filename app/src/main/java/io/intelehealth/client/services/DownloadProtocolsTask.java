@@ -246,7 +246,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
         try {
             publishProgress("progress", "Downloading Mindmap List");
             //Download List of Protocols Available
-            String servStr = AppConstants.MIND_MAP_SERVER_URL + "functions/downloadMindMapList";
+            String servStr = "http://" + sessionManager.getMindMapServerUrl() + ":4040/parse/functions/downloadMindMap";
             URL url = new URL(servStr);
             Log.i("GetMMList", servStr);
             byte[] mmListRequestBytes = mmListRequest.getBytes(StandardCharsets.UTF_8);
@@ -294,8 +294,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
                     publishProgress("toast", jsonObject.get("error").toString());
                 }
             } else {
-                Toast.makeText(IntelehealthApplication.getAppContext(), "Error Downloadind Mindmap List",
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(IntelehealthApplication.getAppContext(), "Error Downloadind Mindmap List", Toast.LENGTH_LONG).show();
             }
 
 
@@ -323,7 +322,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
         try {
             publishProgress("progress", "Downloading Mindmap " + mindmap.name);
             //Download List of Protocols Available
-            String servStr = AppConstants.MIND_MAP_SERVER_URL + "functions/downloadMindMap";
+            String servStr = "http://" + sessionManager.getMindMapServerUrl() + ":4040/parse/functions/downloadMindMap";
             URL url = new URL(servStr);
             Log.i("GetMM", servStr);
             byte[] mmListRequestBytes = mmListRequest.getBytes(StandardCharsets.UTF_8);

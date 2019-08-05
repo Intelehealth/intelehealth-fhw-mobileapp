@@ -266,7 +266,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Temperature (F)"
+                            android:text="@string/temperature_f"
                             android:textSize="@dimen/card_content_text_size" />
 
                         <TextView

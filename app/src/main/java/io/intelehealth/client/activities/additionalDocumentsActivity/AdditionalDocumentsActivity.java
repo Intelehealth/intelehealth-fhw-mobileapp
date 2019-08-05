@@ -2,7 +2,6 @@ package io.intelehealth.client.activities.additionalDocumentsActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,8 +21,11 @@ import java.util.UUID;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.cameraActivity.CameraActivity;
+import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.dao.ImagesDAO;
 import io.intelehealth.client.models.DocumentObject;
+import io.intelehealth.client.utilities.StringUtils;
+import io.intelehealth.client.utilities.UuidDictionary;
 import io.intelehealth.client.utilities.exception.DAOException;
 
 public class AdditionalDocumentsActivity extends AppCompatActivity {
@@ -38,9 +40,9 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
 
     private final String imgPrefix = "AD";
 
-    final private String imageDir = "Additional Documents";
-    private String baseDir;
-    private String filePath;
+//    final private String imageDir = "Additional Documents";
+//    private String baseDir;
+//    private String filePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +60,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             }
         });
 
-        baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+//        baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
@@ -66,13 +68,28 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
 
-            filePath = baseDir + File.separator + "Patient Images" + File.separator + patientUuid + File.separator +
-                    visitUuid + File.separator + imageDir;
+//            filePath = baseDir + File.separator + "Patient Images" + File.separator + patientUuid + File.separator +
+//                    visitUuid + File.separator + imageDir;
 
-            File dir = new File(filePath);
-            if (!dir.exists())
-                dir.mkdirs();
-            File[] fileList = dir.listFiles();
+            ImagesDAO imagesDAO = new ImagesDAO();
+            ArrayList<String> fileuuidList = new ArrayList<String>();
+            ArrayList<File> fileList = new ArrayList<File>();
+            try {
+                fileuuidList = imagesDAO.getImageUuid(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD);
+                for (String fileuuid : fileuuidList) {
+                    String filename = AppConstants.IMAGE_PATH + fileuuid + ".jpg";
+                    if (new File(filename).exists()) {
+                        fileList.add(new File(filename));
+                    }
+                }
+            } catch (DAOException e) {
+                e.printStackTrace();
+            }
+
+//            File dir = new File(AppConstants.IMAGE_PATH);
+//            if (!dir.exists())
+//                dir.mkdirs();
+//            File[] fileList = dir.listFiles();
             rowListItem = new ArrayList<>();
 
             for (File file : fileList)
@@ -84,11 +101,12 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(linearLayoutManager);
 
-            recyclerViewAdapter = new AdditionalDocumentAdapter(this, rowListItem, filePath);
+            recyclerViewAdapter = new AdditionalDocumentAdapter(this, rowListItem, AppConstants.IMAGE_PATH);
             recyclerView.setAdapter(recyclerViewAdapter);
 
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -106,7 +124,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
                 File photo = new File(mCurrentPhotoPath);
                 if (photo.exists()) {
                     recyclerViewAdapter.add(new DocumentObject(photo.getName(), photo.getAbsolutePath()));
-                    updateImageDatabase(photo.getAbsolutePath());
+                    updateImageDatabase(StringUtils.getFileNameWithoutExtension(photo));
                 }
             }
         }
@@ -118,10 +136,10 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
     // }
 
 
-    private void updateImageDatabase(String imagePath) {
+    private void updateImageDatabase(String imageuuid) {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
-            imagesDAO.insertObsImageDatabase(patientUuid, visitUuid, encounterAdultIntials, imagePath, imgPrefix);
+            imagesDAO.insertObsImageDatabase(imageuuid, encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD);
         } catch (DAOException e) {
             Crashlytics.getInstance().core.logException(e);
         }
@@ -150,9 +168,9 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_add_docs:
                 Intent cameraIntent = new Intent(this, CameraActivity.class);
-                String imageName = UUID.randomUUID().toString() + "_" + imgPrefix;
+                String imageName = UUID.randomUUID().toString();
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
-                cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, filePath);
+                cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
                 startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
                 return true;
             default:

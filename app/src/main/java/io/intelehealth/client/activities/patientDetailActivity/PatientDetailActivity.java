@@ -27,6 +27,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.crashlytics.android.Crashlytics;
 
 import org.apache.commons.lang3.StringUtils;
@@ -359,7 +360,12 @@ public class PatientDetailActivity extends AppCompatActivity {
         } catch (DAOException e) {
             Crashlytics.getInstance().core.logException(e);
         }
-        if (patient_new.getPatient_photo() == null || patient_new.getPatient_photo().equalsIgnoreCase("") || profileImage.equalsIgnoreCase(profileImage1)) {
+        if (patient_new.getPatient_photo() == null || patient_new.getPatient_photo().equalsIgnoreCase("")) {
+            if (NetworkConnection.isOnline(getApplication())) {
+                profilePicDownloaded();
+            }
+        }
+        if (!profileImage.equalsIgnoreCase(profileImage1)) {
             if (NetworkConnection.isOnline(getApplication())) {
                 profilePicDownloaded();
             }
@@ -368,6 +374,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 .load(patient_new.getPatient_photo())
                 .thumbnail(0.3f)
                 .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .into(photoView);
 
         if (patient_new.getOpenmrs_id() != null && !patient_new.getOpenmrs_id().isEmpty()) {
@@ -630,6 +638,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                                     .load(IMAGE_PATH + patientUuid + ".jpg")
                                     .thumbnail(0.3f)
                                     .centerCrop()
+                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                    .skipMemoryCache(true)
                                     .into(photoView);
                         }
                         ImagesDAO imagesDAO = new ImagesDAO();

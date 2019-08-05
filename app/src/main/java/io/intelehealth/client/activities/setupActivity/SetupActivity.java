@@ -76,6 +76,7 @@ public class SetupActivity extends AppCompatActivity {
     String encoded = null;
     AlertDialog.Builder dialog;
     String key = null;
+    String licenseUrl = null;
     SessionManager sessionManager = null;
     public File base_dir;
     public String[] FILES;
@@ -372,7 +373,10 @@ public class SetupActivity extends AppCompatActivity {
                                     Dialog d = (Dialog) dialog;
 
                                     EditText text = d.findViewById(R.id.licensekey);
+                                    EditText url = d.findViewById(R.id.licenseurl);
                                     key = text.getText().toString();
+                                    licenseUrl = url.getText().toString();
+                                    sessionManager.setMindMapServerUrl(licenseUrl);
                                     //Toast.makeText(SetupActivity.this, "" + key, Toast.LENGTH_SHORT).show();
                                     if (keyVerified(key)) {
                                         // create a shared pref to store the key

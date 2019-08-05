@@ -16,6 +16,9 @@ package io.intelehealth.client.utilities;
 
 import android.widget.Spinner;
 
+import java.io.File;
+import java.util.List;
+
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.IntelehealthApplication;
 
@@ -126,4 +129,52 @@ public final class StringUtils {
 
         return val;
     }
+
+    public static String getFileNameWithoutExtension(File file) {
+        String fileName = "";
+
+        try {
+            if (file != null && file.exists()) {
+                String name = file.getName();
+                fileName = name.replaceFirst("[.][^.]+$", "");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            fileName = "";
+        }
+
+        return fileName;
+
+    }
+
+    public static String getFileNameWithoutExtensionString(String filename) {
+        String fileName = "";
+
+        try {
+            if (filename.indexOf(".") > 0)
+                fileName = filename.substring(0, filename.lastIndexOf("."));
+        } catch (Exception e) {
+            e.printStackTrace();
+            fileName = "";
+        }
+
+        return fileName;
+
+    }
+
+    public static String convertUsingStringBuilder(List<String> names) {
+        StringBuilder namesStr = new StringBuilder();
+        for (String name : names) {
+            namesStr = namesStr.length() > 0 ? namesStr.append("','").append(name) : namesStr.append(name);
+        }
+        return namesStr.toString();
+    }
+
+    public static String mobileNumberEmpty(String value) {
+        String val = "N/A";
+        if (value != null && !value.isEmpty())
+            val = value;
+        return val;
+    }
+
 }

@@ -1,13 +1,10 @@
 package io.intelehealth.client.utilities;
 
-import android.database.sqlite.SQLiteDatabase;
-
 import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.app.IntelehealthApplication;
 import io.intelehealth.client.database.dao.EmergencyEncounterDAO;
 import io.intelehealth.client.database.dao.EncounterDAO;
@@ -38,15 +35,20 @@ public class PatientsFrameJson {
     EncounterDAO encounterDAO = new EncounterDAO();
     ObsDAO obsDAO = new ObsDAO();
     EmergencyEncounterDAO emergencyEncounterDAO = new EmergencyEncounterDAO();
-    SQLiteDatabase db = null;
+//    SQLiteDatabase db = null;
 
     public PushRequestApiCall frameJson() {
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+//        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         session = new SessionManager(IntelehealthApplication.getAppContext());
 
         PushRequestApiCall pushRequestApiCall = new PushRequestApiCall();
 
-        List<PatientDTO> patientDTOList = patientsDAO.unsyncedPatients();
+        List<PatientDTO> patientDTOList = null;
+        try {
+            patientDTOList = patientsDAO.unsyncedPatients();
+        } catch (DAOException e) {
+            Crashlytics.getInstance().core.logException(e);
+        }
         List<VisitDTO> visitDTOList = visitsDAO.unsyncedVisits();
         List<EncounterDTO> encounterDTOList = encounterDAO.unsyncedEncounters();
         List<Patient> patientList = new ArrayList<>();
@@ -116,24 +118,6 @@ public class PatientsFrameJson {
             visit.setUuid(visitDTO.getUuid());
             visit.setVisitType(visitDTO.getVisitTypeUuid());
             visit.setStopDatetime(visitDTO.getEnddate());
-//            List<String> emergencyVisitUuids = new ArrayList<>();
-//            try {
-//                emergencyVisitUuids = visitsDAO.getEmergencyVisitUuids();
-//            } catch (DAOException e) {
-//                Crashlytics.getInstance().core.logException(e);
-//            }
-//            if (emergencyVisitUuids.size() != 0) {
-//                emergencyEncounterDAO.removeEncounterEmergency(visitDTO.getUuid(), db);
-//            }
-//            List<Attribute> attributeList = new ArrayList<>();
-//            attributeList.clear();
-//            try {
-//                attributeList = visitsDAO.getVisitAttributes(visitDTO.getUuid());
-//            } catch (DAOException e) {
-//                  Crashlytics.getInstance().core.logException(e);
-//            }
-
-//            visit.setAttributes(attributeList);
             visitList.add(visit);
 
         }
@@ -163,7 +147,11 @@ public class PatientsFrameJson {
                 if (obs != null && obs.getValue() != null) {
                     if (!obs.getValue().isEmpty()) {
                         ob = new Ob();
-                        ob.setUuid(obs.getUuid());
+                        //Do not set obs uuid in case of emergency encounter type .Some error occuring in open MRS if passed
+                        if (!encounterDTO.getEncounterTypeUuid().equalsIgnoreCase(UuidDictionary.EMERGENCY)) {
+
+                            ob.setUuid(obs.getUuid());
+                        }
                         ob.setConcept(obs.getConceptuuid());
                         ob.setValue(obs.getValue());
                         obsList.add(ob);

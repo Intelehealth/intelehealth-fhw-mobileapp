@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
@@ -525,8 +524,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 } else {
                     patientTemp = patientUuid;
                 }
-                File filePath = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator +
-                        "Patient_Images" + File.separator + patientTemp);
+                File filePath = new File(AppConstants.IMAGE_PATH + patientTemp);
                 if (!filePath.exists()) {
                     filePath.mkdir();
                 }
@@ -553,7 +551,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
 
                 //Formatted so that it can be read the way the user sets
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
                 dob.set(year, monthOfYear, dayOfMonth);
                 String dobString = simpleDateFormat.format(dob.getTime());
                 mDOB.setText(dobString);
@@ -577,8 +575,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 mDOBMonth = monthOfYear;
                 mDOBDay = dayOfMonth;
 
-                String ageString = String.valueOf(mAgeYears) + getString(R.string.identification_screen_text_years)
-                        +" - "+ String.valueOf(mAgeMonths) + getString(R.string.identification_screen_text_months);
+                String ageString = mAgeYears + getString(R.string.identification_screen_text_years)
+                        + " - " + mAgeMonths + getString(R.string.identification_screen_text_months);
                 mAge.setText(ageString);
             }
         }, mDOBYear, mDOBMonth, mDOBDay);
@@ -935,7 +933,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
             patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientdto.setGender(StringUtils.getValue(mGender));
-            patientdto.setDateofbirth(StringUtils.getValue(mDOB.getText().toString()));
+            patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(mDOB.getText().toString())));
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
             patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));
@@ -1056,17 +1054,17 @@ public class IdentificationActivity extends AppCompatActivity {
         if (mCurrentPhotoPath == null)
             mCurrentPhotoPath = patientdto.getPatient_photo();
 
-        patientdto.setFirst_name(StringUtils.getValue(patientdto.getFirst_name()));
-        patientdto.setMiddle_name(StringUtils.getValue(patientdto.getMiddle_name()));
-        patientdto.setLast_name(StringUtils.getValue(patientdto.getLast_name()));
-        patientdto.setPhone_number(StringUtils.getValue(patientdto.getPhone_number()));
-        patientdto.setGender(StringUtils.getValue(patientdto.getGender()));
-        patientdto.setDate_of_birth(StringUtils.getValue(patientdto.getDate_of_birth()));
-        patientdto.setAddress1(StringUtils.getValue(patientdto.getAddress1()));
-        patientdto.setAddress2(StringUtils.getValue(patientdto.getAddress2()));
-        patientdto.setCity_village(StringUtils.getValue(patientdto.getCity_village()));
-        patientdto.setPostal_code(StringUtils.getValue(patientdto.getPostal_code()));
-        patientdto.setCountry(StringUtils.getValue(patientdto.getCountry()));
+        patientdto.setFirst_name(StringUtils.getValue(mFirstName.getText().toString()));
+        patientdto.setMiddle_name(StringUtils.getValue(mMiddleName.getText().toString()));
+        patientdto.setLast_name(StringUtils.getValue(mLastName.getText().toString()));
+        patientdto.setPhone_number(StringUtils.getValue(mPhoneNum.getText().toString()));
+        patientdto.setGender(StringUtils.getValue(mGender));
+        patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(mDOB.getText().toString())));
+        patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
+        patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
+        patientdto.setCity_village(StringUtils.getValue(mCity.getText().toString()));
+        patientdto.setPostal_code(StringUtils.getValue(mPostal.getText().toString()));
+        patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
         patientdto.setPatient_photo(mCurrentPhotoPath);
 //                patientdto.setEconomic(StringUtils.getValue(m));
         patientdto.setState_province(StringUtils.getValue(patientdto.getState_province()));

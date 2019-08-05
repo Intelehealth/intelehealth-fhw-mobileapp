@@ -49,7 +49,6 @@ public class SmoothUpgrade {
     Backup backup = new Backup();
     boolean dbexist = checkdatabase();
     String TAG = SmoothUpgrade.class.getSimpleName();
-    public String DATABASE_NAME = "YOUR DATABASE NAME HERE";
 
     public SmoothUpgrade(Context context) {
         this.context = context;

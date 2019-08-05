@@ -16,6 +16,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
@@ -44,6 +45,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -61,10 +63,8 @@ import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -81,14 +81,18 @@ import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.dao.EncounterDAO;
 import io.intelehealth.client.database.dao.ImagesDAO;
 import io.intelehealth.client.database.dao.ImagesPushDAO;
+import io.intelehealth.client.database.dao.PatientsDAO;
 import io.intelehealth.client.database.dao.PullDataDAO;
+import io.intelehealth.client.database.dao.VisitsDAO;
 import io.intelehealth.client.knowledgeEngine.Node;
 import io.intelehealth.client.models.Patient;
 import io.intelehealth.client.models.dto.ObsDTO;
 import io.intelehealth.client.services.DownloadService;
 import io.intelehealth.client.syncModule.SyncUtils;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
+import io.intelehealth.client.utilities.DialogUtils;
 import io.intelehealth.client.utilities.FileUtils;
+import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.NetworkConnection;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UuidDictionary;
@@ -360,6 +364,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 physicalExams.addAll(selectedExams);
             }
         }
+
+
         registerBroadcastReceiverDynamically();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (sharedPreferences.contains("licensekey"))
@@ -419,11 +425,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
 
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+//
+//        filePathPhyExam = baseDir + File.separator + "Patient Images" + File.separator + patientUuid + File.separator +
+//                visitUuid + File.separator + physicalExamDocumentDir;
 
-        filePathPhyExam = baseDir + File.separator + "Patient Images" + File.separator + patientUuid + File.separator +
-                visitUuid + File.separator + physicalExamDocumentDir;
-
-        phyExamDir = new File(filePathPhyExam);
+        phyExamDir = new File(AppConstants.IMAGE_PATH);
 
         flag = findViewById(R.id.flaggedcheckbox);
 //        EncounterDAO encounterDAO = new EncounterDAO();
@@ -505,18 +511,25 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
 
         }
+        flag.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                try {
+                    EncounterDAO encounterDAO = new EncounterDAO();
+                    encounterDAO.setEmergency(visitUuid, isChecked);
+                } catch (DAOException e) {
+                    Crashlytics.getInstance().core.logException(e);
+                }
+            }
+        });
         db.close();
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
 //                db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
 //                EmergencyEncounterDAO emergencyEncounterDAO = new EmergencyEncounterDAO();
-                try {
-                    EncounterDAO encounterDAO = new EncounterDAO();
-                    encounterDAO.setEmergency(visitUuid, flag.isChecked());
-                } catch (DAOException e) {
-                    Crashlytics.getInstance().core.logException(e);
-                }
+
 //                if (flag.isChecked()) {
 ////                    Log.d(TAG, "Emergency flag val: " + flag.isChecked());
 ////                    String emergency_checked = String.valueOf(flag.isChecked());
@@ -585,12 +598,25 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     AppConstants.notificationUtils.showNotifications("Visit Data Upload", "Uploading visit data", VisitSummaryActivity.this);
                     PullDataDAO pullDataDAO = new PullDataDAO();
                     ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
-                    boolean pull = pullDataDAO.pushDataApi();
-                    if (pull)
-                        AppConstants.notificationUtils.DownloadDone("Visit Data Upload", "Uploaded visit data", VisitSummaryActivity.this);
-                    else
-                        AppConstants.notificationUtils.DownloadDone("Visit Data Upload", "failed to Uploaded", VisitSummaryActivity.this);
-                    imagesPushDAO.obsImagesPush();
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+//                            Added the 4 sec delay and then push data.For some reason doing immediately does not work
+                            //Do something after 100ms
+//                            pullDataDAO.pushDataApi();
+//                            imagesPushDAO.patientProfileImagesPush();
+//                            imagesPushDAO.obsImagesPush();
+//                            pullDataDAO.pullData(VisitSummaryActivity.this);
+                            SyncUtils syncUtils = new SyncUtils();
+                            boolean isSynced = syncUtils.syncForeground();
+                            if (isSynced)
+                                AppConstants.notificationUtils.DownloadDone("Visit Data Upload", "Uploaded visit data", VisitSummaryActivity.this);
+                            else
+                                AppConstants.notificationUtils.DownloadDone("Visit Data Upload", "failed to Uploaded", VisitSummaryActivity.this);
+                            uploaded = true;
+                        }
+                    }, 4000);
                 } else {
                     AppConstants.notificationUtils.showNotifications("Visit Data Upload", "Check your connectivity", VisitSummaryActivity.this);
                 }
@@ -920,7 +946,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //                                String[] selectionArgs = {phyExamDir.getAbsolutePath() + File.separator + child};
                                 ImagesDAO imagesDAO = new ImagesDAO();
                                 try {
-                                    imagesDAO.deleteImageFromDatabase(phyExamDir.getAbsolutePath() + File.separator + child);
+                                    imagesDAO.deleteImageFromDatabase(io.intelehealth.client.utilities.StringUtils.getFileNameWithoutExtensionString(child));
                                 } catch (DAOException e1) {
                                     e1.printStackTrace();
                                 }
@@ -1056,17 +1082,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
         downloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PullDataDAO pullDataDAO = new PullDataDAO();
-                boolean pull = pullDataDAO.pullData(VisitSummaryActivity.this);
-                if (pull)
-                    AppConstants.notificationUtils.DownloadDone("download from doctor", "prescription Downloaded", VisitSummaryActivity.this);
-                else
-                    AppConstants.notificationUtils.DownloadDone("download from doctor", "no prescription Downloaded", VisitSummaryActivity.this);
-                if (!downloaded)
+                if (uploaded) {
                     downloadPrescription();
-                else
-                    return;
+                    PullDataDAO pullDataDAO = new PullDataDAO();
+                    boolean pull = pullDataDAO.pullData(VisitSummaryActivity.this);
+                    if (pull)
+                        AppConstants.notificationUtils.DownloadDone("download from doctor", "prescription Downloaded", VisitSummaryActivity.this);
+                    else
+                        AppConstants.notificationUtils.DownloadDone("download from doctor", "no prescription Downloaded", VisitSummaryActivity.this);
 
+                } else {
+                    DialogUtils dialogUtils = new DialogUtils();
+                    dialogUtils.showOkDialog(VisitSummaryActivity.this, "Error", "first need to upload", "ok");
+                }
                 //mLayout.addView(downloadButton, mLayout.getChildCount());
             }
         });
@@ -1085,17 +1113,38 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     private void physicalDoumentsUpdates() {
-        if (!phyExamDir.exists()) {
-            phyExamDir.mkdirs();
-            Log.v(TAG, "directory ceated " + phyExamDir.getAbsolutePath());
-        } else {
-            File[] files = phyExamDir.listFiles();
-            List<File> fileList = Arrays.asList(files);
+
+        ImagesDAO imagesDAO = new ImagesDAO();
+        ArrayList<String> fileuuidList = new ArrayList<String>();
+        ArrayList<File> fileList = new ArrayList<File>();
+        try {
+            fileuuidList = imagesDAO.getImageUuid(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_PE);
+            for (String fileuuid : fileuuidList) {
+                String filename = AppConstants.IMAGE_PATH + fileuuid + ".jpg";
+                if (new File(filename).exists()) {
+                    fileList.add(new File(filename));
+                }
+            }
             HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
             mPhysicalExamsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
             mPhysicalExamsRecyclerView.setLayoutManager(mPhysicalExamsLayoutManager);
             mPhysicalExamsRecyclerView.setAdapter(horizontalAdapter);
+        } catch (DAOException e) {
+            Crashlytics.getInstance().core.logException(e);
+        } catch (Exception file) {
+            Logger.logD(TAG, file.getMessage());
         }
+//        if (!phyExamDir.exists()) {
+//            phyExamDir.mkdirs();
+//            Log.v(TAG, "directory ceated " + phyExamDir.getAbsolutePath());
+//        } else {
+//            File[] files = phyExamDir.listFiles();
+//            List<File> fileList = Arrays.asList(files);
+//            HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
+//            mPhysicalExamsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
+//            mPhysicalExamsRecyclerView.setLayoutManager(mPhysicalExamsLayoutManager);
+//            mPhysicalExamsRecyclerView.setAdapter(horizontalAdapter);
+//        }
     }
 
     private void startDownload(String imageType) {
@@ -1452,8 +1501,46 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } while (idCursor.moveToNext());
         }
         idCursor.close();
+        db.close();
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        PatientsDAO patientsDAO = new PatientsDAO();
+        String patientSelection1 = "patientuuid = ?";
+        String[] patientArgs1 = {patientUuid};
+        String[] patientColumns1 = {"value", "person_attribute_type_uuid"};
+        Cursor idCursor1 = db.query("tbl_patient_attribute", patientColumns1, patientSelection1, patientArgs1, null, null, null);
+        String name = "";
+        if (idCursor1.moveToFirst()) {
+            do {
+                try {
+                    name = patientsDAO.getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
+                } catch (DAOException e) {
+                    Crashlytics.getInstance().core.logException(e);
+                }
 
+                if (name.equalsIgnoreCase("caste")) {
+                    patient.setCaste(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Telephone Number")) {
+                    patient.setPhone_number(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Education Level")) {
+                    patient.setEducation_level(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Economic Status")) {
+                    patient.setEconomic_status(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("occupation")) {
+                    patient.setOccupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Son/wife/daughter")) {
+                    patient.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
 
+            } while (idCursor1.moveToNext());
+        }
+        idCursor1.close();
+        db.close();
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         String[] columns = {"value", " conceptuuid"};
 
         try {
@@ -1493,7 +1580,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         } catch (CursorIndexOutOfBoundsException e) {
             patHistory.setValue(""); // if medical history does not exist
         }
-
+//vitals display code
         String visitSelection = "encounteruuid = ?";
         String[] visitArgs = {encounterVitals};
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
@@ -1505,9 +1592,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } while (visitCursor.moveToNext());
         }
         visitCursor.close();
-
-        String encounterselection = "encounteruuid = ?";
-        String[] encounterargs = {encounterAdultIntials};
+//adult intails display code
+        String encounterselection = "encounteruuid = ? AND conceptuuid != ? AND conceptuuid != ?";
+        String[] encounterargs = {encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE};
         Cursor encountercursor = db.query("tbl_obs", columns, encounterselection, encounterargs, null, null, null);
         if (encountercursor.moveToFirst()) {
             do {
@@ -1659,6 +1746,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 //checkForDoctor();
                 break;
             }
+
+
             default:
                 Log.i(TAG, "parseData: " + value);
                 break;
@@ -1727,19 +1816,42 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String filePathAddDoc = baseDir + File.separator + "Patient Images" + File.separator + patientUuid + File.separator +
                 visitUuid + File.separator + additionalDocumentDir;
 
-        File addDocDir = new File(filePathAddDoc);
-        if (!addDocDir.exists()) {
-            addDocDir.mkdirs();
-            Log.v(TAG, "directory created " + addDocDir.getAbsolutePath());
-        } else {
-            File[] files = addDocDir.listFiles();
-            List<File> fileList = Arrays.asList(files);
+
+        ImagesDAO imagesDAO = new ImagesDAO();
+        ArrayList<String> fileuuidList = new ArrayList<String>();
+        ArrayList<File> fileList = new ArrayList<File>();
+        try {
+            fileuuidList = imagesDAO.getImageUuid(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD);
+            for (String fileuuid : fileuuidList) {
+                String filename = AppConstants.IMAGE_PATH + fileuuid + ".jpg";
+                if (new File(filename).exists()) {
+                    fileList.add(new File(filename));
+                }
+            }
             HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
             mAdditionalDocsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
             mAdditionalDocsRecyclerView.setLayoutManager(mAdditionalDocsLayoutManager);
             mAdditionalDocsRecyclerView.setAdapter(horizontalAdapter);
-
+        } catch (DAOException e) {
+            Crashlytics.getInstance().core.logException(e);
+        } catch (Exception file) {
+            Logger.logD(TAG, file.getMessage());
         }
+//        if (!addDocDir.exists()) {
+//            addDocDir.mkdirs();
+//            Log.v(TAG, "directory created " + addDocDir.getAbsolutePath());
+//        } else {
+//            File[] files = addDocDir.listFiles();
+//            addDocDir.listFiles(new FilenameFilter() {
+//                @Override
+//                public boolean accept(File dir, String name) {
+//                    return false;
+//                }
+//            })
+        //List<File> fileList = Arrays.asList(files);
+
+
+//    }
     }
 
     @Override
@@ -1865,38 +1977,55 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     public void downloadPrescription() {
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        String visitnote = "";
-        EncounterDAO encounterDAO = new EncounterDAO();
-        String encounterIDSelection = "visituuid = ?";
-        String[] encounterIDArgs = {visitUuid};
-        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
-        if (encounterCursor != null && encounterCursor.moveToFirst()) {
-            do {
-                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                    visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+        VisitsDAO visitsDAO = new VisitsDAO();
+        try {
+            if (visitsDAO.getDownloadedValue(visitUuid).equalsIgnoreCase("false") && uploaded) {
+                db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+                String visitnote = "";
+                EncounterDAO encounterDAO = new EncounterDAO();
+                String encounterIDSelection = "visituuid = ?";
+                String[] encounterIDArgs = {visitUuid};
+                Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+                if (encounterCursor != null && encounterCursor.moveToFirst()) {
+                    do {
+                        if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                            visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                        }
+                    } while (encounterCursor.moveToNext());
+
                 }
-            } while (encounterCursor.moveToNext());
+                encounterCursor.close();
+                db.close();
+                db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+                String[] columns = {"value", " conceptuuid"};
+                String visitSelection = "encounteruuid = ? ";
+                String[] visitArgs = {visitnote};
+                Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+                if (visitCursor.moveToFirst()) {
+                    do {
+                        String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                        String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                        parseData(dbConceptID, dbValue);
+                    } while (visitCursor.moveToNext());
+                }
+                visitCursor.close();
+                db.close();
 
-        }
-        encounterCursor.close();
-        db.close();
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        String[] columns = {"value", " conceptuuid"};
-        String visitSelection = "encounteruuid = ? ";
-        String[] visitArgs = {visitnote};
-        Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
-        if (visitCursor.moveToFirst()) {
-            do {
-                String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
-                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                parseData(dbConceptID, dbValue);
-            } while (visitCursor.moveToNext());
-        }
-        visitCursor.close();
-        db.close();
-        downloaded = true;
+                if (uploaded) {
+                    try {
+                        downloaded = visitsDAO.isUpdatedDownloadColumn(visitUuid, true);
+                    } catch (DAOException e) {
+                        Crashlytics.getInstance().core.logException(e);
+                    }
+                }
 
+            } else {
+                downloaded = false;
+            }
+
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -2055,8 +2184,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             if (internetCheck != null) {
                                 internetCheck.setIcon(R.mipmap.ic_data_on);
                                 flag = 1;
-                                SyncUtils syncUtils = new SyncUtils();
-                                syncUtils.Sync();
+//                                SyncUtils syncUtils = new SyncUtils();
+//                                syncUtils.syncBackground();
                             }
                         }
                     }
@@ -2072,6 +2201,5 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
     }
-
 
 }

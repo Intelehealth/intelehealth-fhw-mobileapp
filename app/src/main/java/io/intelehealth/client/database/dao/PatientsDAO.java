@@ -352,36 +352,43 @@ public class PatientsDAO {
         return isUpdated;
     }
 
-    public List<PatientDTO> unsyncedPatients() {
+    public List<PatientDTO> unsyncedPatients() throws DAOException {
         List<PatientDTO> patientDTOList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_patient where sync = ? OR sync=? COLLATE NOCASE", new String[]{"0", "false"});
-        PatientDTO patientDTO = new PatientDTO();
-        if (idCursor.getCount() != 0) {
-            while (idCursor.moveToNext()) {
-                patientDTO = new PatientDTO();
-                patientDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
-                patientDTO.setOpenmrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_id")));
-                patientDTO.setFirstname(idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")));
-                patientDTO.setLastname(idCursor.getString(idCursor.getColumnIndexOrThrow("last_name")));
-                patientDTO.setMiddlename(idCursor.getString(idCursor.getColumnIndexOrThrow("middle_name")));
-                patientDTO.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
-                patientDTO.setDateofbirth(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
-                patientDTO.setPhonenumber(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
-                patientDTO.setCountry(idCursor.getString(idCursor.getColumnIndexOrThrow("country")));
-                patientDTO.setStateprovince(idCursor.getString(idCursor.getColumnIndexOrThrow("state_province")));
-                patientDTO.setCityvillage(idCursor.getString(idCursor.getColumnIndexOrThrow("city_village")));
-                patientDTO.setAddress1(idCursor.getString(idCursor.getColumnIndexOrThrow("address1")));
-                patientDTO.setAddress2(idCursor.getString(idCursor.getColumnIndexOrThrow("address2")));
-                patientDTO.setPostalcode(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
-                patientDTOList.add(patientDTO);
+        try {
+            Cursor idCursor = db.rawQuery("SELECT * FROM tbl_patient where sync = ? OR sync=? COLLATE NOCASE", new String[]{"0", "false"});
+            PatientDTO patientDTO = new PatientDTO();
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+                    patientDTO = new PatientDTO();
+                    patientDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                    patientDTO.setOpenmrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_id")));
+                    patientDTO.setFirstname(idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")));
+                    patientDTO.setLastname(idCursor.getString(idCursor.getColumnIndexOrThrow("last_name")));
+                    patientDTO.setMiddlename(idCursor.getString(idCursor.getColumnIndexOrThrow("middle_name")));
+                    patientDTO.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                    patientDTO.setDateofbirth(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
+                    patientDTO.setPhonenumber(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
+                    patientDTO.setCountry(idCursor.getString(idCursor.getColumnIndexOrThrow("country")));
+                    patientDTO.setStateprovince(idCursor.getString(idCursor.getColumnIndexOrThrow("state_province")));
+                    patientDTO.setCityvillage(idCursor.getString(idCursor.getColumnIndexOrThrow("city_village")));
+                    patientDTO.setAddress1(idCursor.getString(idCursor.getColumnIndexOrThrow("address1")));
+                    patientDTO.setAddress2(idCursor.getString(idCursor.getColumnIndexOrThrow("address2")));
+                    patientDTO.setPostalcode(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
+                    patientDTOList.add(patientDTO);
+                }
             }
+            idCursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            Crashlytics.getInstance().core.logException(e);
+            throw new DAOException(e);
+        } finally {
+            db.endTransaction();
+            db.close();
         }
-        idCursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
-        db.close();
+
         return patientDTOList;
     }
 

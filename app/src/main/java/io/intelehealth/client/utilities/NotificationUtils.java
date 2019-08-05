@@ -15,6 +15,7 @@ public class NotificationUtils {
     private int mId = 1;
     Context context;
 
+
     public void showNotifications(String title, String text, Context context) {
         this.context = context;
         NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

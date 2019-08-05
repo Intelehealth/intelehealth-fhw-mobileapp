@@ -28,7 +28,7 @@ public class AppConstants {
     public static final int DATABASE_VERSION = 4;
     public static final String JSON_FOLDER = "Engines";
     public static final String JSON_FOLDER_Update = "Engines_Update";
-    public static final String MIND_MAP_SERVER_URL = "http://165.227.97.214:1337/parse/";
+    public static final String MIND_MAP_SERVER_URL = "http://mindmaps.intelehealth.io/";
     public static final String IMAGE_APP_ID = "app2";
     public static final String dbfilepath = Environment.getExternalStorageDirectory() + File.separator + "InteleHealth_DB" + File.separator + "Intelehealth.db"; // directory: Intelehealth_DB   ,  filename: Intelehealth.db
     public static String CONFIG_FILE_NAME = "config.json";
@@ -41,7 +41,7 @@ public class AppConstants {
     public static final String MAXIMUM_BP_SYS = "150";
     public static final String MAXIMUM_HEIGHT = "272";
     public static final String MAXIMUM_WEIGHT = "150";
-    public static int APP_VERSION_CODE = 25;
+    public static int APP_VERSION_CODE = 26;
     public static final String MINIMUM_BP_SYS = "50";
     public static final String MAXIMUM_BP_DSYS = "150";
     public static final String MINIMUM_BP_DSYS = "30";
@@ -71,7 +71,7 @@ public class AppConstants {
     //  Image Conversion Ratio
     public static int IMAGE_JPG_QUALITY = 70;
 
-    //    Sync Timings
+    //    syncBackground Timings
 
     public static int SYNC = 1000 * 60 * 3;
     public static int MAXIMUM_DELAY = 1000 * 60 * 3;

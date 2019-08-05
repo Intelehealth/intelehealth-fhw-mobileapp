@@ -1,10 +1,11 @@
-package io.intelehealth.client.activities.splashActivity;
+package io.intelehealth.client.activities.splash_activity;
 
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
@@ -15,8 +16,6 @@ import com.gun0912.tedpermission.TedPermission;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import io.intelehealth.client.BuildConfig;
 import io.intelehealth.client.R;
@@ -43,6 +42,7 @@ public class SplashActivity extends AppCompatActivity {
 
         String appLanguage = sessionManager.getAppLanguage();
 
+
         if (!appLanguage.equalsIgnoreCase("")) {
             Locale locale = new Locale(appLanguage);
             Locale.setDefault(locale);
@@ -50,6 +50,7 @@ public class SplashActivity extends AppCompatActivity {
             config.locale = locale;
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
+
         checkPerm();
         Crashlytics.log(Log.DEBUG, "tag", "message");
     }
@@ -60,13 +61,37 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onPermissionGranted() {
 //                Toast.makeText(SplashActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
-                Timer t = new Timer();
+//                Timer t = new Timer();
+//                t.schedule(new splash(), 2000);
+
                 TempDialog = new ProgressDialog(SplashActivity.this);
                 TempDialog.setMessage("Data migrating...");
                 TempDialog.setCancelable(false);
                 TempDialog.setProgress(i);
                 TempDialog.show();
-                t.schedule(new splash(), 2000);
+
+                if (BuildConfig.VERSION_CODE <= APP_VERSION_CODE && sessionManager.isFirstTimeLaunched()) {
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            //Do something after 100ms
+                            SmoothUpgrade smoothUpgrade = new SmoothUpgrade(SplashActivity.this);
+                            boolean smoothupgrade = smoothUpgrade.checkingDatabase();
+                            if (smoothupgrade) {
+                                TempDialog.dismiss();
+                                nextActivity();
+                            } else {
+                                TempDialog.dismiss();
+                                nextActivity();
+                            }
+
+                        }
+                    }, 2000);
+                } else {
+                    nextActivity();
+                }
+
             }
 
             @Override
@@ -106,23 +131,4 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
-    class splash extends TimerTask {
-
-        @Override
-        public void run() {
-            if (BuildConfig.VERSION_CODE <= APP_VERSION_CODE && sessionManager.isFirstTimeLaunched()) {
-                SmoothUpgrade smoothUpgrade = new SmoothUpgrade(SplashActivity.this);
-                boolean smoothupgrade = smoothUpgrade.checkingDatabase();
-                if (smoothupgrade) {
-                    TempDialog.dismiss();
-                    nextActivity();
-                } else {
-                    TempDialog.dismiss();
-                    nextActivity();
-                }
-            } else {
-                nextActivity();
-            }
-        }
-    }
 }

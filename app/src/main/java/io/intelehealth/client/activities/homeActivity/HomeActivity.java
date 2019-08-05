@@ -37,27 +37,19 @@ import android.widget.Toast;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-
 import java.io.File;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.loginActivity.LoginActivity;
 import io.intelehealth.client.activities.settingsActivity.SettingsActivity;
 import io.intelehealth.client.app.AppConstants;
-import io.intelehealth.client.database.dao.ImagesPushDAO;
-import io.intelehealth.client.database.dao.PullDataDAO;
 import io.intelehealth.client.services.DownloadProtocolsTask;
+import io.intelehealth.client.syncModule.SyncUtils;
 import io.intelehealth.client.utilities.Logger;
-import io.intelehealth.client.utilities.NetworkConnection;
 import io.intelehealth.client.utilities.OfflineLogin;
 import io.intelehealth.client.utilities.SessionManager;
-import io.intelehealth.client.utilities.backup.BackupCloud;
 
 import static io.intelehealth.client.app.AppConstants.UNIQUE_WORK_NAME;
 import static io.intelehealth.client.app.AppConstants.dbfilepath;
@@ -78,9 +70,7 @@ public class HomeActivity extends AppCompatActivity {
     Button manualSyncButton;
     IntentFilter filter;
     Myreceiver reMyreceive;
-    PullDataDAO pullDataDAO = new PullDataDAO();
-    ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
-
+    SyncUtils syncUtils = new SyncUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,10 +99,12 @@ public class HomeActivity extends AppCompatActivity {
         manualSyncButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pullDataDAO.pushDataApi();
-                imagesPushDAO.patientProfileImagesPush();
-                imagesPushDAO.obsImagesPush();
-                pullDataDAO.pullData(HomeActivity.this);
+
+                syncUtils.syncForeground();
+//                pullDataDAO.pushDataApi();
+//                imagesPushDAO.patientProfileImagesPush();
+//                imagesPushDAO.obsImagesPush();
+//                pullDataDAO.pullData(HomeActivity.this);
             }
         });
         final RecyclerView recyclerView = findViewById(R.id.recyclerview_home);
@@ -167,7 +159,7 @@ public class HomeActivity extends AppCompatActivity {
         }
 //        if (sessionManager.isFirstTimeSyncExcuted()) {
 
-//        AppConstants.notificationUtils.showNotifications("Sync","Sync Compledted",this);
+//        AppConstants.notificationUtils.showNotifications("syncBackground","syncBackground Compledted",this);
 //        pullDataDAO.pushDataApi();
 //            sessionManager.setFirstTimeSyncExecute(false);
 //        }
@@ -259,26 +251,27 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
             case R.id.sync:
-                pullDataDAO.pullData(this);
-                pullDataDAO.pushDataApi();
-                AppConstants.notificationUtils.showNotifications("Sync", "Sync Completed", this);
-                boolean i = imagesPushDAO.patientProfileImagesPush();
-                boolean o = imagesPushDAO.obsImagesPush();
-                if (i && o)
+//                pullDataDAO.pullData(this);
+//                pullDataDAO.pushDataApi();
+                boolean isSynced = syncUtils.syncForeground();
+                AppConstants.notificationUtils.showNotifications("sync", "syncBackground Completed", this);
+//                boolean i = imagesPushDAO.patientProfileImagesPush();
+//                boolean o = imagesPushDAO.obsImagesPush();
+                if (isSynced)
                     AppConstants.notificationUtils.showNotifications("ImageUpload", "ImageUpload Completed", this);
                 else
                     AppConstants.notificationUtils.showNotifications("ImageUpload", "ImageUpload failed", this);
                 return true;
-            case R.id.backupOption:
-                manageBackup(true, false);  // to backup app data at any time of the day
-                return true;
-
-            case R.id.restoreOption:
-                manageBackup(false, false); // to restore app data if db is empty
-                return true;
+//            case R.id.backupOption:
+//                manageBackup(true, false);  // to backup app data at any time of the day
+//                return true;
+//
+//            case R.id.restoreOption:
+//                manageBackup(false, false); // to restore app data if db is empty
+//                return true;
 
             case R.id.logoutOption:
-                manageBackup(true, false);
+//                manageBackup(true, false);
                 logout();
                 return true;
             default:
@@ -305,7 +298,7 @@ public class HomeActivity extends AppCompatActivity {
 
         OfflineLogin.getOfflineLogin().setOfflineLoginStatus(false);
 
-        parseLogOut();
+//        parseLogOut();
 
         AccountManager manager = AccountManager.get(HomeActivity.this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
@@ -332,31 +325,31 @@ public class HomeActivity extends AppCompatActivity {
         finish();
     }
 
-    public void manageBackup(boolean isBackup, boolean isForced) {
-        BackupCloud b = new BackupCloud(this);
-        if (isBackup)
-            b.startCloudBackup(null, false);
-        if (!isBackup) {
-            if (isForced) b.cloudRestoreForced();
-            if (!isForced) b.startCloudRestore();
-        }
-    }
+//    public void manageBackup(boolean isBackup, boolean isForced) {
+//        BackupCloud b = new BackupCloud(this);
+//        if (isBackup)
+//            b.startCloudBackup(null, false);
+//        if (!isBackup) {
+//            if (isForced) b.cloudRestoreForced();
+//            if (!isForced) b.startCloudRestore();
+//        }
+//    }
 
-    private void parseLogOut() {
-        if (NetworkConnection.isOnline(this)) {
-            ParseQuery<ParseObject> getLogin = ParseQuery.getQuery("Login");
-            getLogin.whereEqualTo("userId", sessionManager.getCreatorID());
-            try {
-                List<ParseObject> loginList = getLogin.find();
-                if (loginList != null && !loginList.isEmpty()) {
-                    for (ParseObject login : loginList)
-                        login.delete();
-                }
-            } catch (ParseException e1) {
-                Log.e(TAG, "parseLogOut: ", e1);
-            }
-        }
-    }
+//    private void parseLogOut() {
+//        if (NetworkConnection.isOnline(this)) {
+//            ParseQuery<ParseObject> getLogin = ParseQuery.getQuery("Login");
+//            getLogin.whereEqualTo("userId", sessionManager.getCreatorID());
+//            try {
+//                List<ParseObject> loginList = getLogin.find();
+//                if (loginList != null && !loginList.isEmpty()) {
+//                    for (ParseObject login : loginList)
+//                        login.delete();
+//                }
+//            } catch (ParseException e1) {
+//                Log.e(TAG, "parseLogOut: ", e1);
+//            }
+//        }
+//    }
 
     @Override
     protected void onResume() {
@@ -377,8 +370,8 @@ public class HomeActivity extends AppCompatActivity {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        finish();
                         moveTaskToBack(true);
+                        finish();
 
                     }
 

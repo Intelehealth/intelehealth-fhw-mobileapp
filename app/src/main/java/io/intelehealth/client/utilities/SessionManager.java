@@ -36,6 +36,7 @@ public class SessionManager {
     private static final String LAST_PULLED_EXECUTED_DATE_TIME = "lastpulledexecutedtimeanddate";
     private static final String PULL_SYNC_FINISHED = "pullsyncfinished";
     private static final String PUSH_SYNC_FINISHED = "pushsyncfinished";
+    private static final String MIND_MAP_SERVER_URL = "mindmapurl";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -297,7 +298,7 @@ public class SessionManager {
     }
 
     public String getLastPulledDateTime() {
-        return pref.getString(LAST_PULLED_EXECUTED_DATE_TIME, "2006-08-22 22:21:48");
+        return pref.getString(LAST_PULLED_EXECUTED_DATE_TIME, "01 January 2019");
     }  //getting the sync value  and time and saving in the sharedpref
 
     public void setLastPulledDateTime(String lastPulledDateTime) {
@@ -320,6 +321,15 @@ public class SessionManager {
 
     public void setPushSyncFinished(Boolean syncFinished) {
         editor.putBoolean(PUSH_SYNC_FINISHED, syncFinished);
+        editor.commit();
+    }
+
+    public String getMindMapServerUrl() {
+        return pref.getString(MIND_MAP_SERVER_URL, "http://mindmaps.intelehealth.io:4040");
+    }  //getting the sync value  and time and saving in the sharedpref
+
+    public void setMindMapServerUrl(String mindMapServerUrl) {
+        editor.putString(MIND_MAP_SERVER_URL, mindMapServerUrl);
         editor.commit();
     }
 }
