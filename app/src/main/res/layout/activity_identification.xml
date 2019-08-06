@@ -403,7 +403,7 @@
                         android:hint="@string/identification_screen_prompt_address"
                         android:imeOptions="actionUnspecified"
                         android:inputType="textCapWords"
-                        android:maxLength="30"
+                        android:maxLength="50"
                         android:maxLines="2"
                         android:singleLine="false"
                         android:tag="@string/tag_optional" />
@@ -423,7 +423,7 @@
                         android:hint="@string/identification_screen_prompt_address2"
                         android:imeOptions="actionUnspecified"
                         android:inputType="textCapWords"
-                        android:maxLength="30"
+                        android:maxLength="50"
                         android:maxLines="2"
                         android:tag="@string/tag_optional" />
 
