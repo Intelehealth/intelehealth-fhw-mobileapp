@@ -7,7 +7,6 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -409,11 +408,9 @@ public class SetupActivity extends AppCompatActivity {
                     Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
 
                     // Change the alert dialog buttons text and background color
-                    positiveButton.setTextColor(Color.parseColor("#FF0B8B42"));
-                    positiveButton.setBackgroundColor(Color.parseColor("#FFE1FCEA"));
+                    positiveButton.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
 
-                    negativeButton.setTextColor(Color.parseColor("#FFFF0400"));
-                    negativeButton.setBackgroundColor(Color.parseColor("#FFFCB9B7"));
+                    negativeButton.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
 
 
                 }

@@ -221,6 +221,7 @@
                                     android:id="@+id/textView_address_1"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_weight="1"
                                     android:textSize="@dimen/card_content_text_size" />
 
 
@@ -246,6 +247,7 @@
                                     android:id="@+id/textView_address2"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_weight="1"
                                     android:textSize="@dimen/card_content_text_size" />
 
 
@@ -271,6 +273,7 @@
                                     android:id="@+id/textView_address_final"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_weight="1"
                                     android:textSize="@dimen/card_content_text_size" />
 
 

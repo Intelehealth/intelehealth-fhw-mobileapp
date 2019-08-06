@@ -236,7 +236,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ImageButton additionalDocumentsDownlaod;
     ImageButton onExaminationDownload;
 
-    IntentFilter filter;
     DownloadPrescriptionService downloadPrescriptionService;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -283,6 +282,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
         registerReceiver(broadcastReceiverForIamgeDownlaod, filter);
     }
 
+    public void registerDownloadPrescription() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("downloadprescription");
+        registerReceiver(downloadPrescriptionService, filter);
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -293,7 +298,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         unregisterReceiver(broadcastReceiverForIamgeDownlaod);
-        unregisterReceiver(downloadPrescriptionService);
+        if (downloadPrescriptionService != null) {
+            LocalBroadcastManager.getInstance(context).unregisterReceiver(downloadPrescriptionService);
+        }
         super.onDestroy();
 
     }
@@ -367,9 +374,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 physicalExams.addAll(selectedExams);
             }
         }
-
-        filter = new IntentFilter("downloadprescription");
         registerBroadcastReceiverDynamically();
+        registerDownloadPrescription();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (sharedPreferences.contains("licensekey"))
             hasLicense = true;
@@ -1808,6 +1814,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
     @Override
     public void onResume() // register the receiver here
     {
+        if (downloadPrescriptionService == null) {
+            registerDownloadPrescription();
+        }
+
         super.onResume();
 
         callBroadcastReceiver();
@@ -1858,7 +1868,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
-        unregisterReceiver(receiver);
+        if (receiver != null) {
+            LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver);
+            receiver = null;
+        }
+        if (downloadPrescriptionService != null) {
+            LocalBroadcastManager.getInstance(context).unregisterReceiver(downloadPrescriptionService);
+            downloadPrescriptionService = null;
+        }
         isReceiverRegistered = false;
     }
 
@@ -2067,16 +2084,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        registerReceiver(downloadPrescriptionService, filter);
-        super.onStart();
+        registerDownloadPrescription();
         LocalBroadcastManager.getInstance(this).registerReceiver((mMessageReceiver), new IntentFilter(FILTER));
+        super.onStart();
     }
 
     @Override
     protected void onStop() {
-        unregisterReceiver(downloadPrescriptionService);
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
         super.onStop();
+        if (downloadPrescriptionService != null) {
+            LocalBroadcastManager.getInstance(context).unregisterReceiver(downloadPrescriptionService);
+        }
+
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
     }
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
