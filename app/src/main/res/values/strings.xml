@@ -165,7 +165,7 @@
     <string name="title_activity_family_history" translatable="false">Family History</string>
     <string name="title_activity_physical_exam" translatable="false">Physical Exam</string>
     <string name="title_activity_patient_summary" translatable="false">Visit Summary</string>
-    <string name="visit_summary_temperature" translatable="false">Temperature (C)</string>
+    <string name="visit_summary_temperature" translatable="false">Temperature(C)</string>
     <string name="visit_summary_pulseox" translatable="false">SpO2 (%)</string>
     <string name="visit_summary_hw_on_duty" translatable="false">CHW On Duty</string>
     <string name="visit_summary_vitals_heading" translatable="false">Vitals</string>
