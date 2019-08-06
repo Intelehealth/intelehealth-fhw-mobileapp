@@ -46,6 +46,7 @@ public class TodayPatientActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_today_patient);
 //        binding = DataBindingUtil.setContentView(this, R.layout.activity_today_patient);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
 
         Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),
@@ -54,6 +55,9 @@ public class TodayPatientActivity extends AppCompatActivity {
 
 
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+
         mTodayPatientList = findViewById(R.id.today_patient_recycler_view);
         sessionManager = new SessionManager(this);
         mDbHelper = new InteleHealthDatabaseHelper(this);
@@ -148,6 +152,9 @@ public class TodayPatientActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
             case R.id.summary_endAllVisit:
                 endAllVisit();
 

@@ -6,8 +6,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -58,9 +60,13 @@ public class SearchPatientActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_patient);
         Toolbar toolbar = findViewById(R.id.toolbar);
+
+        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),
+                R.drawable.ic_sort_white_24dp);
+        toolbar.setOverflowIcon(drawable);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
         // Get the intent, verify the action and get the query
         sessionManager = new SessionManager(this);
         mDbHelper = new InteleHealthDatabaseHelper(this);
@@ -139,7 +145,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         // Assumes current activity is the searchable activity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
-        searchView.setMaxWidth(Integer.MAX_VALUE);
+        //searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.setFocusable(true);
         searchView.requestFocus();
 
@@ -161,7 +167,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         });
 
 
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

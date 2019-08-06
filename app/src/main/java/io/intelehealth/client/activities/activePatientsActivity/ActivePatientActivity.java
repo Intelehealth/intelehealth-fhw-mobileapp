@@ -58,7 +58,11 @@ public class ActivePatientActivity extends AppCompatActivity {
         mToolbar.setOverflowIcon(drawable);
 
         mActivePatientList = findViewById(R.id.today_patient_recycler_view);
+
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+
         textView = findViewById(R.id.textviewmessage);
         recyclerView = findViewById(R.id.today_patient_recycler_view);
         sessionManager = new SessionManager(this);
@@ -147,6 +151,9 @@ public class ActivePatientActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
             case R.id.summary_endAllVisit:
                 endAllVisit();
 

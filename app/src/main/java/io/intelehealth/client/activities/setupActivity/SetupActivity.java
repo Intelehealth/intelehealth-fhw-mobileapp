@@ -565,6 +565,8 @@ public class SetupActivity extends AppCompatActivity {
             public void onError(Throwable e) {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 progress.dismiss();
+                mEmailView.requestFocus();
+                mEmailView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
             }
