@@ -96,7 +96,8 @@
 
                         <TableLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:shrinkColumns="1">
 
                             <TableRow
                                 android:layout_width="match_parent"
@@ -170,6 +171,8 @@
                                     android:id="@+id/textView_DOB"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:paddingTop="@dimen/padding_card_action"
                                     android:textSize="@dimen/card_content_text_size" />
 
 
@@ -195,6 +198,7 @@
                                     android:id="@+id/textView_age"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:paddingTop="@dimen/padding_card_action"
                                     android:textSize="@dimen/card_content_text_size" />
 
 
@@ -222,6 +226,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
+                                    android:paddingTop="@dimen/padding_card_action"
                                     android:textSize="@dimen/card_content_text_size" />
 
 
@@ -248,6 +253,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
+                                    android:paddingTop="@dimen/padding_card_action"
                                     android:textSize="@dimen/card_content_text_size" />
 
 
@@ -274,6 +280,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
+                                    android:paddingTop="@dimen/padding_card_action"
                                     android:textSize="@dimen/card_content_text_size" />
 
 
@@ -299,6 +306,7 @@
                                     android:id="@+id/textView_phone"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:paddingTop="@dimen/padding_card_action"
                                     android:textSize="@dimen/card_content_text_size" />
 
 
@@ -314,6 +322,7 @@
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:text="Son/Daughter/Wife of"
+                                    android:paddingRight="5dp"
                                     android:textSize="@dimen/card_content_text_size" />
 
 
@@ -325,6 +334,8 @@
                                     android:id="@+id/textView_SDW"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:paddingTop="@dimen/padding_card_action"
                                     android:textSize="@dimen/card_content_text_size" />
 
 
@@ -351,6 +362,8 @@
                                     android:id="@+id/textView_occupation"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:paddingTop="@dimen/padding_card_action"
                                     android:textSize="@dimen/card_content_text_size" />
 
 
@@ -377,6 +390,7 @@
                                     android:id="@+id/textView_economic_status"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:paddingTop="@dimen/padding_card_action"
                                     android:textSize="@dimen/card_content_text_size" />
 
 
@@ -403,6 +417,7 @@
                                     android:id="@+id/textView_education_status"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:paddingTop="@dimen/padding_card_action"
                                     android:textSize="@dimen/card_content_text_size" />
 
 
@@ -429,6 +444,7 @@
                                     android:id="@+id/textView_caste"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:paddingTop="@dimen/padding_card_action"
                                     android:textSize="@dimen/card_content_text_size" />
 
 
@@ -490,6 +506,9 @@
                                     android:id="@+id/textView_patHist"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:paddingTop="@dimen/padding_card_action"
+                                    android:layout_weight="1"
+                                    android:paddingHorizontal="5dp"
                                     android:textSize="@dimen/card_content_text_size" />
 
 
@@ -514,6 +533,9 @@
                                     android:id="@+id/textView_famHist"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:paddingTop="@dimen/padding_card_action"
+                                    android:layout_weight="1"
+                                    android:paddingHorizontal="5dp"
                                     android:textSize="@dimen/card_content_text_size" />
 
 
