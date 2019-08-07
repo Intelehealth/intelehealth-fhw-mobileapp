@@ -24,6 +24,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -345,7 +346,13 @@ public class LoginActivity extends AppCompatActivity {
                     Logger.logD(TAG, "Login Failure" + e.getMessage());
 //                    success = false;
                     showProgress(false);
-                    mPasswordView.setError(getString(R.string.error_incorrect_password));
+//                    DialogUtils dialogUtils=new DialogUtils();
+//                    dialogUtils.showerrorDialog(LoginActivity.this,"Error Login",getString(R.string.error_incorrect_password),"ok");
+                    Toast.makeText(LoginActivity.this, getString(R.string.error_incorrect_password), Toast.LENGTH_SHORT).show();
+                    mPasswordView.setError("");
+                    mUsernameView.setError("");
+                    mPasswordView.setText("");
+                    mUsernameView.setText("");
                     mPasswordView.requestFocus();
                 }
 

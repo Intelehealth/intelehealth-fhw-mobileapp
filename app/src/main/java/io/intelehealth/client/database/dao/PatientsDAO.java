@@ -357,7 +357,7 @@ public class PatientsDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         try {
-            Cursor idCursor = db.rawQuery("SELECT * FROM tbl_patient where sync = ? OR sync=? COLLATE NOCASE", new String[]{"0", "false"});
+            Cursor idCursor = db.rawQuery("SELECT * FROM tbl_patient where (sync = ? OR sync=?) COLLATE NOCASE", new String[]{"0", "false"});
             PatientDTO patientDTO = new PatientDTO();
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
@@ -441,6 +441,30 @@ public class PatientsDAO {
             db.close();
         }
         return id;
+
+    }
+
+    public String getPatientPhonenumber(String patientUuid) throws DAOException {
+        String phonenumber = "";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            Cursor cursor = db.rawQuery("SELECT value FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' COLLATE NOCASE", new String[]{patientUuid});
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    phonenumber = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+                }
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLException s) {
+            Crashlytics.getInstance().core.logException(s);
+            throw new DAOException(s);
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
+        return phonenumber;
 
     }
 

@@ -3,6 +3,7 @@ package io.intelehealth.client.activities.todayPatientActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -17,6 +18,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import com.crashlytics.android.Crashlytics;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -95,13 +98,11 @@ public class TodayPatientActivity extends AppCompatActivity {
 //                        "AND tbl_visit.startdate LIKE '" + currentDate + "T%'" +
 //                        "ORDER BY tbl_patient.first_name ASC";
 //
-                "SELECT  a.uuid, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id,c.value as phone_number " +
+                "SELECT a.uuid, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
                         "FROM tbl_visit a, tbl_patient b  " +
-                        "left join tbl_patient_attribute c on c.patientuuid=b.uuid " +
                         "WHERE a.patientuuid = b.uuid " +
-                        "AND c.person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' " +
-                        "AND a.startdate LIKE '" + currentDate + "T%'" +
-                        "GROUP BY a.uuid ORDER BY a.patientuuid ASC ";
+                        "AND a.startdate LIKE '2019-08-07T%' " +
+                        "GROUP BY a.uuid ORDER BY a.patientuuid ASC";
         //  "SELECT * FROM visit, patient WHERE visit.patient_id = patient._id AND visit.start_datetime LIKE '" + currentDate + "T%'";
         Logger.logD(TAG, query);
         final Cursor cursor = db.rawQuery(query, null);
@@ -109,18 +110,22 @@ public class TodayPatientActivity extends AppCompatActivity {
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
-                    todayPatientList.add(new TodayPatientModel(
-                            cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("enddate")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
-                            StringUtils.mobileNumberEmpty(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")))
-                    ));
+                    try {
+                        todayPatientList.add(new TodayPatientModel(
+                                cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("enddate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                                StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid"))))
+                        ));
+                    } catch (DAOException e) {
+                        e.printStackTrace();
+                    }
                 } while (cursor.moveToNext());
             }
         }
@@ -271,33 +276,35 @@ public class TodayPatientActivity extends AppCompatActivity {
 //                        "AND tbl_visit.startdate LIKE '" + currentDate + "T%'" +
 //                        "ORDER BY tbl_patient.first_name ASC";
 //
-                "SELECT  distinct a.uuid, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id,d.value as phone_number " +
+                "SELECT  distinct a.uuid, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
                         "FROM tbl_visit a, tbl_patient b, tbl_encounter c " +
-                        "left join tbl_patient_attribute d on d.patientuuid=b.uuid " +
                         "WHERE a.patientuuid = b.uuid " +
                         "AND c.visituuid=a.uuid and c.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
-                        "AND d.person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' " +
                         "AND a.startdate LIKE '" + currentDate + "T%'" +
                         "ORDER BY a.patientuuid ASC ";
         //  "SELECT * FROM visit, patient WHERE visit.patient_id = patient._id AND visit.start_datetime LIKE '" + currentDate + "T%'";
-//        Logger.logD(TAG, query);
+        Logger.logD(TAG, query);
         final Cursor cursor = db.rawQuery(query, null);
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
-                    todayPatientList.add(new TodayPatientModel(
-                            cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("enddate")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
-                            StringUtils.mobileNumberEmpty(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")))
-                    ));
+                    try {
+                        todayPatientList.add(new TodayPatientModel(
+                                cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("enddate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                                StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))
+                                )));
+                    } catch (DAOException e) {
+                        e.printStackTrace();
+                    }
                 } while (cursor.moveToNext());
             }
         }
@@ -369,6 +376,25 @@ public class TodayPatientActivity extends AppCompatActivity {
 
         return visitUUID != null;
 
+    }
+
+    private String phoneNumber(String patientuuid) throws DAOException {
+        String phone = null;
+        Cursor idCursor = db.rawQuery("SELECT value  FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' ", new String[]{patientuuid});
+        try {
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+
+                    phone = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
+
+                }
+            }
+        } catch (SQLException s) {
+            Crashlytics.getInstance().core.logException(s);
+        }
+        idCursor.close();
+
+        return phone;
     }
 }
 

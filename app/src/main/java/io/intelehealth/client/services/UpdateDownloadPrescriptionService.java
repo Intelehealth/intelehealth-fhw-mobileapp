@@ -19,14 +19,14 @@ public class UpdateDownloadPrescriptionService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         try {
-            Thread.sleep(3000);
+            Intent in = new Intent();
+            in.setAction("downloadprescription");
+            sendBroadcast(in);
         } catch (Exception e) {
             Crashlytics.getInstance().core.logException(e);
             Logger.logE(UpdateDownloadPrescriptionService.class.getSimpleName(), "Exception in onHandleIntent method", e);
         }
 
-        Intent in = new Intent();
-        in.setAction("downloadprescription");
-        sendBroadcast(in);
+
     }
 }

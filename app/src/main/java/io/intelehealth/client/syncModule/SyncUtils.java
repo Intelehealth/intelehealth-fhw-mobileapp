@@ -25,6 +25,8 @@ public class SyncUtils {
         NotificationUtils notificationUtils = new NotificationUtils();
         notificationUtils.clearAllNotifications(IntelehealthApplication.getAppContext());
 
+        Intent intent = new Intent(IntelehealthApplication.getAppContext(), UpdateDownloadPrescriptionService.class);
+        IntelehealthApplication.getAppContext().startService(intent);
 
     }
 

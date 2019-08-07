@@ -12,16 +12,15 @@
 
     <!--Split the screen into two columns of cards-->
 
-    <LinearLayout 
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <LinearLayout xmlns:card_view="http://schemas.android.com/apk/res-auto"
 
         android:id="@+id/summary_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/padding_visit_summary_screen"
+        android:layout_marginRight="@dimen/padding_visit_summary_screen"
         android:animateLayoutChanges="true"
-        android:orientation="vertical"
-        android:layout_marginLeft= "@dimen/padding_visit_summary_screen"
-        android:layout_marginRight= "@dimen/padding_visit_summary_screen">
+        android:orientation="vertical">
 
 
         <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -29,8 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/padding_card"
             android:layout_marginTop="@dimen/padding_card"
+            android:layout_marginBottom="@dimen/padding_card"
             card_view:cardCornerRadius="@dimen/card_corner_radius"
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true"
@@ -116,8 +115,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/padding_card"
             android:layout_marginTop="@dimen/padding_card"
+            android:layout_marginBottom="@dimen/padding_card"
             card_view:cardCornerRadius="@dimen/card_corner_radius"
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true"
@@ -254,21 +253,26 @@
                     <!--Temperature-->
                     <TableRow>
 
-                        <TextView
-                            android:id="@+id/textView_temp"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.6"
-                            android:paddingRight="5dp"
-                            android:text="@string/visit_summary_temperature"
-                            android:textSize="@dimen/card_content_text_size" />
-                        <TextView
-                            android:id="@+id/textView_temp_faren"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/temperature_f"
-                            android:textSize="@dimen/card_content_text_size" />
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/textView_temp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/visit_summary_temperature"
+                                android:textSize="@dimen/card_content_text_size" />
+
+                            <TextView
+                                android:id="@+id/textView_temp_faren"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/temperature_f"
+                                android:textSize="@dimen/card_content_text_size" />
+
+                        </LinearLayout>
 
                         <TextView
                             android:id="@+id/textView_temp_value"
@@ -324,8 +328,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/padding_card"
             android:layout_marginTop="@dimen/padding_card"
+            android:layout_marginBottom="@dimen/padding_card"
             card_view:cardCornerRadius="@dimen/card_corner_radius"
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true"
@@ -369,8 +373,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/padding_card"
             android:layout_marginTop="@dimen/padding_card"
+            android:layout_marginBottom="@dimen/padding_card"
             card_view:cardCornerRadius="@dimen/card_corner_radius"
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true"
@@ -432,8 +436,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/padding_card"
             android:layout_marginTop="@dimen/padding_card"
+            android:layout_marginBottom="@dimen/padding_card"
             card_view:cardCornerRadius="@dimen/card_corner_radius"
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true"
@@ -478,8 +482,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/padding_card"
             android:layout_marginTop="@dimen/padding_card"
+            android:layout_marginBottom="@dimen/padding_card"
             card_view:cardCornerRadius="@dimen/card_corner_radius"
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true"
@@ -523,8 +527,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/padding_card"
             android:layout_marginTop="@dimen/padding_card"
+            android:layout_marginBottom="@dimen/padding_card"
             card_view:cardCornerRadius="@dimen/card_corner_radius"
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true"
@@ -580,8 +584,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/padding_card"
             android:layout_marginTop="@dimen/padding_card"
+            android:layout_marginBottom="@dimen/padding_card"
             android:visibility="gone"
             card_view:cardCornerRadius="@dimen/card_corner_radius"
             card_view:cardElevation="2dp"
@@ -632,8 +636,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/padding_card"
             android:layout_marginTop="@dimen/padding_card"
+            android:layout_marginBottom="@dimen/padding_card"
             android:visibility="gone"
             card_view:cardCornerRadius="@dimen/card_corner_radius"
             card_view:cardElevation="2dp"
@@ -684,8 +688,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/padding_card"
             android:layout_marginTop="@dimen/padding_card"
+            android:layout_marginBottom="@dimen/padding_card"
             android:visibility="gone"
             card_view:cardCornerRadius="@dimen/card_corner_radius"
             card_view:cardElevation="2dp"
@@ -736,8 +740,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/padding_card"
             android:layout_marginTop="@dimen/padding_card"
+            android:layout_marginBottom="@dimen/padding_card"
             android:visibility="gone"
             card_view:cardCornerRadius="@dimen/card_corner_radius"
             card_view:cardElevation="2dp"
@@ -788,8 +792,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/padding_card"
             android:layout_marginTop="@dimen/padding_card"
+            android:layout_marginBottom="@dimen/padding_card"
             android:visibility="gone"
             card_view:cardCornerRadius="@dimen/card_corner_radius"
             card_view:cardElevation="2dp"
@@ -839,8 +843,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/padding_card"
             android:layout_marginTop="@dimen/padding_card"
+            android:layout_marginBottom="@dimen/padding_card"
             android:visibility="gone"
             card_view:cardCornerRadius="@dimen/card_corner_radius"
             card_view:cardElevation="2dp"
@@ -890,18 +894,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/padding_card"
             android:layout_marginTop="@dimen/padding_card"
+            android:layout_marginBottom="@dimen/padding_card"
             card_view:cardCornerRadius="@dimen/card_corner_radius"
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true"
             card_view:contentPadding="@dimen/padding_card">
 
             <LinearLayout
-                android:animateLayoutChanges="true"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/title_doctor"
@@ -940,23 +944,24 @@
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
+
         <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:id="@+id/flageddetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/padding_card"
             android:layout_marginTop="@dimen/padding_card"
+            android:layout_marginBottom="@dimen/padding_card"
             card_view:cardCornerRadius="@dimen/card_corner_radius"
             card_view:cardElevation="2dp"
             card_view:cardUseCompatPadding="true"
             card_view:contentPadding="@dimen/padding_card">
 
             <LinearLayout
-                android:animateLayoutChanges="true"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                android:orientation="horizontal"
                 android:weightSum="1">
 
                 <TextView
@@ -971,9 +976,9 @@
                 <CheckBox
                     android:id="@+id/flaggedcheckbox"
                     android:layout_width="100dp"
-                    android:textSize="20sp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.5" />
+                    android:layout_weight="0.5"
+                    android:textSize="20sp" />
 
 
             </LinearLayout>
@@ -1062,31 +1067,29 @@
             android:id="@+id/button_upload"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/visit_summary_button_upload"
-            android:background="@color/gray"
-            android:textColor="@android:color/white"
             android:layout_marginBottom="5dp"
-            android:textStyle="bold"
-            android:paddingRight="45dp"
-            android:textAlignment="center"
-            android:textSize="24dp"
+            android:background="@color/gray"
             android:drawableLeft="@drawable/ic_cloud_upload"
-            />
+            android:paddingRight="45dp"
+            android:text="@string/visit_summary_button_upload"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="24dp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/button_download"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/divider"
-            android:text="@string/visit_summary_button_download"
-            android:textColor="@android:color/white"
             android:layout_marginBottom="5dp"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:textSize="24dp"
-            android:paddingRight="40dp"
+            android:background="@color/divider"
             android:drawableLeft="@drawable/ic_cloud_download"
-            />
+            android:paddingRight="40dp"
+            android:text="@string/visit_summary_button_download"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="24dp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

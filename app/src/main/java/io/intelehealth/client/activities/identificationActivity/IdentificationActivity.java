@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 
@@ -582,6 +583,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }, mDOBYear, mDOBMonth, mDOBDay);
 
         //DOB Picker is shown when clicked
+        mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());
         mDOB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -812,6 +814,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 Glide.with(this)
                         .load(new File(mCurrentPhotoPath))
                         .thumbnail(0.25f)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
                         .into(mImageView);
             }
         }

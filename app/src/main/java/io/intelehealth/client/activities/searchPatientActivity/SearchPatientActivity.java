@@ -6,14 +6,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -31,12 +28,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.intelehealth.client.R;
-import io.intelehealth.client.activities.activePatientsActivity.ActivePatientAdapter;
 import io.intelehealth.client.activities.homeActivity.HomeActivity;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.InteleHealthDatabaseHelper;
 import io.intelehealth.client.database.dao.ProviderDAO;
-import io.intelehealth.client.models.ActivePatientModel;
 import io.intelehealth.client.models.dto.PatientDTO;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
@@ -61,12 +56,13 @@ public class SearchPatientActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_patient);
         Toolbar toolbar = findViewById(R.id.toolbar);
 
-        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),
-                R.drawable.ic_sort_white_24dp);
-        toolbar.setOverflowIcon(drawable);
+//        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),
+//                R.drawable.ic_sort_white_24dp);
+//        toolbar.setOverflowIcon(drawable);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         // Get the intent, verify the action and get the query
         sessionManager = new SessionManager(this);
         mDbHelper = new InteleHealthDatabaseHelper(this);
@@ -74,12 +70,27 @@ public class SearchPatientActivity extends AppCompatActivity {
         msg = findViewById(R.id.textviewmessage);
         recyclerView = findViewById(R.id.recycle);
         Intent intent = getIntent();
-
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             query = intent.getStringExtra(SearchManager.QUERY);
-            SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
-                    SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
+            SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this, SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
             suggestions.saveRecentQuery(query, null);
+//            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//                @Override
+//                public boolean onQueryTextSubmit(String s) {
+//                    return false;
+//                }
+//
+//                @Override
+//                public boolean onQueryTextChange(String s) {
+//                    Log.d("Hack", "in query text change");
+//                SearchRecentSuggestions suggestions = new SearchRecentSuggestions(SearchPatientActivity.this,
+//                        SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
+//                suggestions.clearHistory();
+//                doQuery(s);
+//                return true;
+////                    return false;
+//                }
+//            });
             if (sessionManager.isPullSyncFinished()) {
                 msg.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
@@ -138,16 +149,17 @@ public class SearchPatientActivity extends AppCompatActivity {
         // Inflate the options menu from XMLz
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_search, menu);
-        inflater.inflate(R.menu.today_filter, menu);
+//        inflater.inflate(R.menu.today_filter, menu);
         // Get the SearchView and set the searchable configuration
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         // Assumes current activity is the searchable activity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
+//        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
         //searchView.setMaxWidth(Integer.MAX_VALUE);
-        searchView.setFocusable(true);
-        searchView.requestFocus();
+
+//        searchView.setFocusable(true);
+//        searchView.requestFocus();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -161,6 +173,7 @@ public class SearchPatientActivity extends AppCompatActivity {
                 SearchRecentSuggestions suggestions = new SearchRecentSuggestions(SearchPatientActivity.this,
                         SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
                 suggestions.clearHistory();
+                query = newText;
                 doQuery(newText);
                 return true;
             }
@@ -179,6 +192,8 @@ public class SearchPatientActivity extends AppCompatActivity {
             case R.id.action_filter:
                 //alert box.
                 displaySingleSelectionDialog();    //function call
+            case R.id.action_search:
+
 
 
             default:
@@ -307,11 +322,13 @@ public class SearchPatientActivity extends AppCompatActivity {
                     // If the user checked the item, add it to the selected items
                     selectedItems.add(finalCreator_uuid[which]);
                     Logger.logD(TAG, finalCreator_names[which] + finalCreator_uuid[which]);
+
                 } else if (selectedItems.contains(which)) {
                     // Else, if the item is already in the array, remove it
                     selectedItems.remove(finalCreator_uuid[which]);
                     Logger.logD(TAG, finalCreator_names[which] + finalCreator_uuid[which]);
                 }
+
             }
         });
 
@@ -320,7 +337,7 @@ public class SearchPatientActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 //display filter query code on list menu
                 Logger.logD(TAG, "onclick" + i);
-                doQueryWithProviders(selectedItems);
+                doQueryWithProviders(query, selectedItems);
 //                select distinct a.uuid,c.first_name,c.middle_name,c.last_name,c.openmrs_id,c.phone_number,c.date_of_birth from tbl_visit a,tbl_encounter b ,tbl_patient c where b.visituuid=a.uuid and b.provider_uuid in ('163b48e5-26fb-40c1-8d94-a6c873dd2869') and a.patientuuid=c.uuid and a.enddate is null order by c.first_name
             }
         });
@@ -360,48 +377,52 @@ public class SearchPatientActivity extends AppCompatActivity {
 
     }
 
-    private void doQueryWithProviders(List<String> providersuuids) {
-        List<ActivePatientModel> activePatientList = new ArrayList<>();
-        String query =
-                "select  distinct a.uuid,c.uuid AS patientuuid,a.startdate AS startdate,a.enddate AS enddate, c.first_name,c.middle_name,c.last_name,c.openmrs_id,d.value As phone_number,c.date_of_birth " +
-                        "from tbl_visit a,tbl_encounter b ,tbl_patient c " +
-                        "left join tbl_patient_attribute d on d.patientuuid=c.uuid " +
-                        "where b.visituuid=a.uuid and b.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
-                        "and a.patientuuid=c.uuid and (a.enddate is null OR a.enddate='')  order by a.startdate ASC";
-        Logger.logD(TAG, query);
-        final Cursor cursor = db.rawQuery(query, null);
+    private void doQueryWithProviders(String querytext, List<String> providersuuids) {
+        if (null != querytext && !querytext.isEmpty()) {
+            String search = querytext.trim();
+            List<PatientDTO> modelList = new ArrayList<PatientDTO>();
+            String query =
+                    "select  *  " +
+                            "from tbl_encounter a ,tbl_patient b " +
+                            "left join tbl_patient_attribute c on c.patientuuid=b.uuid " +
+                            " WHERE first_name LIKE " + "'" + search +
+                            "%' OR last_name LIKE '" + search +
+                            "%' OR openmrs_id LIKE '" + search +
+                            "%' OR middle_name LIKE '" + search + "%' " +
+                            "AND a.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
+                            "group by b.uuid order by b.uuid ASC";
+            Logger.logD(TAG, query);
+            final Cursor cursor = db.rawQuery(query, null);
 
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    activePatientList.add(new ActivePatientModel(
-                            cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("enddate")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
-                            StringUtils.mobileNumberEmpty(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")))
-                    ));
-                } while (cursor.moveToNext());
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        PatientDTO model = new PatientDTO();
+                        model.setOpenmrsId(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                        model.setFirstname(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                        model.setLastname(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                        model.setOpenmrsId(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                        model.setMiddlename(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
+                        model.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+
+                        modelList.add(model);
+
+                    } while (cursor.moveToNext());
+                }
             }
-        }
-        cursor.close();
+            cursor.close();
 
-        if (!activePatientList.isEmpty()) {
-            for (ActivePatientModel activePatientModel : activePatientList)
-                Logger.logD(TAG, activePatientModel.getFirst_name() + " " + activePatientModel.getLast_name());
+            try {
+                recycler = new SearchPatientAdapter(modelList, SearchPatientActivity.this);
+//            Log.i("db data", "" + getQueryPatients(query));
+                RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
+                recyclerView.setLayoutManager(reLayoutManager);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.setAdapter(recycler);
 
-            ActivePatientAdapter mActivePatientAdapter = new ActivePatientAdapter(activePatientList, SearchPatientActivity.this);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SearchPatientActivity.this);
-            recyclerView.setLayoutManager(linearLayoutManager);
-            recyclerView.addItemDecoration(new
-                    DividerItemDecoration(this,
-                    DividerItemDecoration.VERTICAL));
-            recyclerView.setAdapter(mActivePatientAdapter);
+            } catch (Exception e) {
+                Logger.logE("doquery", "doquery", e);
+            }
         }
 
     }

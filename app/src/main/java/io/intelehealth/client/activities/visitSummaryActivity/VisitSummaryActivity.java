@@ -1,6 +1,7 @@
 package io.intelehealth.client.activities.visitSummaryActivity;
 
 import android.app.NotificationManager;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -89,7 +90,6 @@ import io.intelehealth.client.models.dto.ObsDTO;
 import io.intelehealth.client.services.DownloadService;
 import io.intelehealth.client.syncModule.SyncUtils;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
-import io.intelehealth.client.utilities.DialogUtils;
 import io.intelehealth.client.utilities.FileUtils;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.NetworkConnection;
@@ -237,6 +237,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ImageButton onExaminationDownload;
 
     DownloadPrescriptionService downloadPrescriptionService;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -947,7 +948,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         if (phyExamDir.exists()) {
                             String[] children = phyExamDir.list();
                             String[] childList = children;
-                            SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+                            //SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
                             for (String child : childList) {
                                 new File(phyExamDir, child).delete();
 
@@ -974,7 +975,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //                                }
                             }
                             phyExamDir.delete();
-                            localdb.close();
+                            //localdb.close();
                         }
                         Intent intent1 = new Intent(VisitSummaryActivity.this, PhysicalExamActivity.class);
                         intent1.putExtra("patientUuid", patientUuid);
@@ -1091,18 +1092,32 @@ public class VisitSummaryActivity extends AppCompatActivity {
         downloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (uploaded) {
-                    PullDataDAO pullDataDAO = new PullDataDAO();
-                    boolean pull = pullDataDAO.pullData(VisitSummaryActivity.this);
-                    if (pull)
-                        AppConstants.notificationUtils.DownloadDone("download from doctor", "prescription Downloaded", VisitSummaryActivity.this);
-                    else
-                        AppConstants.notificationUtils.DownloadDone("download from doctor", "no prescription Downloaded", VisitSummaryActivity.this);
-                    downloadPrescription();
-                } else {
-                    DialogUtils dialogUtils = new DialogUtils();
-                    dialogUtils.showOkDialog(VisitSummaryActivity.this, "Error", "first need to upload", "ok");
-                }
+//                if (uploaded) {
+                SyncUtils syncUtils = new SyncUtils();
+                syncUtils.syncForeground();
+
+//                    boolean pull = pullDataDAO.pullData(VisitSummaryActivity.this);
+//                    if (pull)
+                AppConstants.notificationUtils.DownloadDone("download from doctor", "prescription Downloaded", VisitSummaryActivity.this);
+//                    else
+//                        AppConstants.notificationUtils.DownloadDone("download from doctor", "no prescription Downloaded", VisitSummaryActivity.this);
+                uploaded = true;
+                ProgressDialog pd = new ProgressDialog(VisitSummaryActivity.this);
+                pd.setTitle("Downloading prescription");
+                pd.show();
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        downloadPrescription();
+                        pd.dismiss();
+                    }
+                }, 2000);
+
+//                } else {
+//                    DialogUtils dialogUtils = new DialogUtils();
+//                    dialogUtils.showOkDialog(VisitSummaryActivity.this, "Error", "first need to upload", "ok");
+//                }
                 //mLayout.addView(downloadButton, mLayout.getChildCount());
             }
         });
@@ -1795,10 +1810,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
         contentValues.put("sync", "false");
 
         String selection = "encounteruuid = ? AND conceptuuid = ?";
-        String[] args = {encounterUuid, String.valueOf(conceptID)};
+        String[] args = {encounterAdultIntials, String.valueOf(conceptID)};
 
-        localdb.updateWithOnConflict("tbl_obs", contentValues, selection, args, SQLiteDatabase.CONFLICT_REPLACE);
+        int updated = localdb.updateWithOnConflict("tbl_obs", contentValues, selection, args, SQLiteDatabase.CONFLICT_REPLACE);
 
+        localdb.close();
+        EncounterDAO encounterDAO = new EncounterDAO();
+        try {
+            encounterDAO.updateEncounterSync("false", encounterAdultIntials);
+        } catch (DAOException e) {
+            Crashlytics.getInstance().core.logException(e);
+        }
     }
 
 
@@ -2080,11 +2102,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         visitCursor.close();
         db.close();
+        downloaded = true;
     }
 
     @Override
     protected void onStart() {
         registerDownloadPrescription();
+        callBroadcastReceiver();
         LocalBroadcastManager.getInstance(this).registerReceiver((mMessageReceiver), new IntentFilter(FILTER));
         super.onStart();
     }
@@ -2095,7 +2119,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (downloadPrescriptionService != null) {
             LocalBroadcastManager.getInstance(context).unregisterReceiver(downloadPrescriptionService);
         }
-
+        if (receiver != null) {
+            unregisterReceiver(receiver);
+        }
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
     }
 

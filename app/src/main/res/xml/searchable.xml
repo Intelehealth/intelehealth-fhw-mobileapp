@@ -3,4 +3,4 @@
     android:hint="@string/search_hint"
     android:label="@string/search_hint"
     android:searchSuggestAuthority="io.intelehealth.client.activities.searchPatientActivity.SearchSuggestionProvider"
-    android:searchSuggestSelection=" ?"></searchable>
+    android:searchSuggestSelection=" ?" />

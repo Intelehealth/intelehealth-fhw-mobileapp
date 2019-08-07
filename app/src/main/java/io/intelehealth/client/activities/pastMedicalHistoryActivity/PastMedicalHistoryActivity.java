@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
@@ -320,9 +321,14 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
         complaintEntries.put("value", StringUtils.getValue(value));
         complaintEntries.put("conceptuuid", CONCEPT_ID);
         complaintEntries.put("creator", CREATOR_ID);
-
-
-        return localdb.insert("tbl_obs", null, complaintEntries);
+        complaintEntries.put("sync", "false");
+        long insert = 0;
+        try {
+            insert = localdb.insert("tbl_obs", null, complaintEntries);
+        } catch (SQLException sql) {
+            Crashlytics.getInstance().core.logException(sql);
+        }
+        return insert;
     }
 
 
@@ -347,6 +353,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
         String conceptID = UuidDictionary.RHK_MEDICAL_HISTORY_BLURB;
         ContentValues contentValues = new ContentValues();
         contentValues.put("value", string);
+        contentValues.put("sync", "false");
 
         String selection = "encounteruuid = ? AND conceptuuid = ?";
         String[] args = {encounterAdultIntials, conceptID};
@@ -375,6 +382,12 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        localdb.close();
     }
 }
 

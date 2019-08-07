@@ -330,6 +330,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         complaintEntries.put("value", io.intelehealth.client.utilities.StringUtils.getValue(value));
         complaintEntries.put("conceptuuid", CONCEPT_ID);
         complaintEntries.put("creator", CREATOR_ID);
+        complaintEntries.put("sync", "false");
 
 
         return localdb.insert("tbl_obs", null, complaintEntries);
@@ -350,7 +351,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         String conceptID = UuidDictionary.RHK_FAMILY_HISTORY_BLURB;
         ContentValues contentValues = new ContentValues();
         contentValues.put("value", string);
-
+        contentValues.put("sync", "false");
         String selection = "encounteruuid = ? AND conceptuuid = ?";
         String[] args = {encounterAdultIntials, conceptID};
 

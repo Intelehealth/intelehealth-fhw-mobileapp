@@ -34,8 +34,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.privacyNoticeActivity.PrivacyNotice_Activity"
-            android:label="@string/title_activity_privacy_notice"></activity>
+        <activity
+            android:name=".activities.privacyNoticeActivity.PrivacyNotice_Activity"
+            android:label="@string/title_activity_privacy_notice" />
         <activity
             android:name=".activities.additionalDocumentsActivity.AdditionalDocumentsActivity"
             android:label="@string/title_activity_additional_documents"

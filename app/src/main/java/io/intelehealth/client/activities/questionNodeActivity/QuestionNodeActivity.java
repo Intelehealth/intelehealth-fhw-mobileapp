@@ -375,9 +375,13 @@ public class QuestionNodeActivity extends AppCompatActivity {
         complaintEntries.put("creator", CREATOR_ID);
         complaintEntries.put("value", StringUtils.getValue(value));
         complaintEntries.put("conceptuuid", CONCEPT_ID);
+        complaintEntries.put("sync", "false");
 
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        return localdb.insert("tbl_obs", null, complaintEntries);
+        long insertedvalues = localdb.insert("tbl_obs", null, complaintEntries);
+        localdb.close();
+
+        return insertedvalues;
     }
 
     private void updateImageDatabase(String imagePath) {
@@ -389,6 +393,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 + "'" + imagePath + "','" + "CO" + "'," +
                 0 +
                 ")");
+        localdb.close();
     }
 
     private void updateDatabase(String string) {
@@ -398,6 +403,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
         String conceptID = UuidDictionary.CURRENT_COMPLAINT;
         ContentValues contentValues = new ContentValues();
         contentValues.put("value", string);
+        contentValues.put("sync", "false");
 
         String selection = "encounteruuid = ?  AND conceptuuid = ?";
         String[] args = {encounterVitals, conceptID};
@@ -408,10 +414,11 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 selection,
                 args
         );
-
+        localdb.close();
         if (i == 0) {
             insertDb(string);
         }
+
 
     }
 
