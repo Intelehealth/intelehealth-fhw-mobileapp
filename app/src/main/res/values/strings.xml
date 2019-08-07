@@ -256,6 +256,7 @@
     <string name="title_activity_additional_documents">"Additional Documents"</string>
     <string name="title_activity_video_library">"Video Library"</string>
     <string name="visit_summary_patient_details">Patient Details</string>
+    <string name="title_activity_privacy_notice" translatable="false">Privacy Notice</string>
 
     <!--Setup Activity-->
     <string name="setup_internet">A strong Internet connection is required for setup.</string>
@@ -423,5 +424,8 @@
     <string name="user_login_check_success">Login Successful!</string>
     <string name="user_login_error">Another user is logged into this location. Please contact admin</string>
     <string name="user_server_unreachable">Device Offline. Cannot check server for login verification</string>
+
+    <!--Privacy Notice Activity-->
+    <string name="privacy_toast">Please select an option</string>
 
 </resources>

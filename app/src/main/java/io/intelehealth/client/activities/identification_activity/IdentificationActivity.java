@@ -143,6 +143,9 @@ public class IdentificationActivity extends AppCompatActivity {
     private ArrayAdapter<CharSequence> educationAdapter;
     private ArrayAdapter<CharSequence> economicStatusAdapter;
 
+    Intent i_privacy;
+    String privacy_value;
+
     // Boolean isDateChanged = false; //prajw
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +157,9 @@ public class IdentificationActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+        i_privacy = getIntent();
+        privacy_value = i_privacy.getStringExtra("privacy"); //privacy_accept value retrieved from previous act.
 
         //Initialize the local database to store patient information
         mDbHelper = new LocalRecordsDatabaseHelper(this);
@@ -1110,7 +1116,9 @@ try {
             patientEntries.put("economic_status", patient.getEconomic_status());
             patientEntries.put("education_status", patient.getEducation_level());
             patientEntries.put("caste", patient.getCaste());
+            patientEntries.put("privacynotice_value", privacy_value);
 
+            Log.d(TAG, "Privacy Value on (Identifi): "+ patientEntries);
 
             //TODO: move identifier1 and id2 from patient table to patient_attribute table
         }

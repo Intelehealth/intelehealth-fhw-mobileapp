@@ -53,6 +53,9 @@
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait" />
+
+        <activity android:name=".activities.privacy_notice_activity.PrivacyNotice_Activity"
+            android:label="@string/title_activity_privacy_notice"/>
         <activity
             android:name=".activities.login_activity.LoginActivity"
             android:configChanges="orientation|keyboardHidden"

@@ -2,6 +2,8 @@ package io.intelehealth.client.activities.home_activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,14 +13,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.active_patient_activity.ActivePatientActivity;
 import io.intelehealth.client.activities.identification_activity.IdentificationActivity;
+import io.intelehealth.client.activities.privacy_notice_activity.PrivacyNotice_Activity;
 import io.intelehealth.client.activities.search_patient_activity.SearchPatientActivity;
 import io.intelehealth.client.activities.sync_activity.ActivitySync;
 import io.intelehealth.client.activities.today_patient_activity.TodayPatientActivity;
 import io.intelehealth.client.activities.video_library_activity.VideoLibraryActivity;
 import io.intelehealth.client.application.IntelehealthApplication;
+import io.intelehealth.client.utilities.ConfigUtils;
+import io.intelehealth.client.utilities.HelperMethods;
 
 /**
  * Created by tusharjois on 9/20/16.
@@ -26,6 +34,7 @@ import io.intelehealth.client.application.IntelehealthApplication;
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder> {
 
     final static String TAG = HomeAdapter.class.getSimpleName();
+
 
     final String[] options = {IntelehealthApplication.getAppContext().getString(R.string.new_patient),
             IntelehealthApplication.getAppContext().getString(R.string.find_patient),
@@ -79,9 +88,20 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
         public void onClick(View v) {
             switch (this.optionName.getId()) {
                 case 0: {
-                    Intent intent = new Intent(this.context, IdentificationActivity.class);
-                    this.context.startActivity(intent);
-                    break;
+                    //Loads the config file values and check for the boolean value of privacy key.
+                    ConfigUtils configUtils = new ConfigUtils(this.context);
+                    if(configUtils.privacy_notice())
+                    {
+                        Intent intent = new Intent(this.context, PrivacyNotice_Activity.class);
+                        this.context.startActivity(intent);
+                        break;
+                    }
+                    else
+                    {
+                        Intent intent = new Intent(this.context, IdentificationActivity.class);
+                        this.context.startActivity(intent);
+                        break;
+                    }
                 }
                 case 1: {
                     Intent intent = new Intent(this.context, SearchPatientActivity.class);

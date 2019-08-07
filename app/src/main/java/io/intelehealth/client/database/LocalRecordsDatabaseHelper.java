@@ -37,7 +37,8 @@ LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             "patient_photo TEXT,"+
             "economic_status TEXT,"+
             "education_status TEXT,"+
-            "caste TEXT"+
+            "caste TEXT,"+
+            "privacynotice_value TEXT" +
             ")";
     public static final String CREATE_ATTRIB = "CREATE TABLE IF NOT EXISTS patient_attribute (" +
             "_id integer PRIMARY KEY," +

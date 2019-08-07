@@ -276,7 +276,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         String[] patientColumns = {"openmrs_id", "first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw", "occupation",
-                "patient_photo", "economic_status", "education_status", "caste"};
+                "patient_photo", "economic_status", "education_status", "caste", "privacynotice_value"};
         final Cursor idCursor = db.query("patient", patientColumns, patientSelection, patientArgs, null, null, null);
 
         if (idCursor.moveToFirst()) {
@@ -300,6 +300,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 patient.setEconomic_status(idCursor.getString(idCursor.getColumnIndexOrThrow("economic_status")));
                 patient.setEducation_level(idCursor.getString(idCursor.getColumnIndexOrThrow("education_status")));
                 patient.setCaste(idCursor.getString(idCursor.getColumnIndexOrThrow("caste")));
+                patient.setPrivacynotice_value(idCursor.getString(idCursor.getColumnIndexOrThrow("privacynotice_value")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.privacyNoticeActivity.PrivacyNotice_Activity">
+
+
+    <RelativeLayout
+        android:id="@+id/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_alignParentBottom="true">
+
+        <RadioGroup
+            android:id="@+id/radio_privacy_grp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="50dp"
+            android:layout_centerHorizontal="true">
+
+            <RadioButton
+                android:id="@+id/radio_accept"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="Accept" />
+
+            <RadioButton
+                android:id="@+id/radio_reject"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:layout_marginLeft="35dp"
+                android:text="Reject"/>
+
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/txt_privacy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Next"
+            android:textColor="@color/white"
+            android:background="@color/colorPrimary"
+            android:textStyle="bold"
+            android:layout_below="@+id/radio_privacy_grp"
+            android:layout_alignParentRight="true"
+            android:layout_marginVertical="15dp"
+            android:textAlignment="center"
+            android:layout_marginHorizontal="10dp"
+            android:padding="15dp"/>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/buttons"
+        android:layout_marginBottom="15dp">
+        <!--Scrollable content here-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/privacy_text"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif-light"
+                android:layout_width="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:textAlignment="gravity"/>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
