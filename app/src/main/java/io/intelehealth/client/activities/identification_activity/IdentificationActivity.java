@@ -62,6 +62,7 @@ import java.util.Locale;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.camera_activity.CameraActivity;
+import io.intelehealth.client.activities.home_activity.HomeActivity;
 import io.intelehealth.client.activities.patient_detail_activity.PatientDetailActivity;
 
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
@@ -1301,7 +1302,11 @@ try {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
+                        //finish();
+                        Intent intent = new Intent(IdentificationActivity.this, HomeActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
                     }
                 }).setNegativeButton("No", null).show();
 

@@ -26,10 +26,10 @@ public class ConfigUtils {
         JSONObject obj = null;
         try {
             if (sessionManager.valueContains("licensekey")) {
-                obj = new JSONObject(FileUtils.readFileRoot(mFileName, context)); //Load the config file
+                obj = new JSONObject(HelperMethods.readFileRoot(mFileName, context)); //Load the config file
 
             } else {
-                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(context, mFileName)));
+                obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(context, mFileName)));
 
             }
         } catch (JSONException e) {

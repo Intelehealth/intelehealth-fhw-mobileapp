@@ -19,7 +19,6 @@ import org.json.JSONObject;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.identification_activity.IdentificationActivity;
-import io.intelehealth.client.utilities.FileUtils;
 import io.intelehealth.client.utilities.HelperMethods;
 import io.intelehealth.client.utilities.SessionManager;
 
@@ -58,11 +57,11 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
             JSONObject obj = null;
             if (hasLicense)
             {
-                obj = new JSONObject(FileUtils.readFileRoot(mFileName, this)); //Load the config file
+                obj = new JSONObject(HelperMethods.readFileRoot(mFileName, this)); //Load the config file
 
             } else
             {
-                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, mFileName)));
+                obj = new JSONObject(String.valueOf(HelperMethods.encodeJSON(this, mFileName)));
             }
 
             SharedPreferences sharedPreferences = getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
