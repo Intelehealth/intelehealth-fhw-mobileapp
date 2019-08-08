@@ -92,7 +92,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
 
-        localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage(R.string.wash_hands);
@@ -271,7 +271,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
         Log.i(TAG, "insertDb: ");
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         final String CREATOR_ID = prefs.getString("creatorid", null);
 
         final String CONCEPT_ID = UuidDictionary.PHYSICAL_EXAMINATION; // RHK ON EXAM
@@ -326,7 +325,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
         String conceptID = UuidDictionary.PHYSICAL_EXAMINATION;
         ContentValues contentValues = new ContentValues();
         contentValues.put("value", string);
-        localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         String selection = "encounteruuid = ? AND conceptuuid = ?";
         String[] args = {encounterAdultIntials, conceptID};
 
@@ -340,7 +338,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
         if (i == 0) {
             insertDb(string);
         }
-        localdb.close();
     }
 
     public void questionsMissing() {

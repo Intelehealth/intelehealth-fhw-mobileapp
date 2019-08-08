@@ -83,7 +83,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(this);
-        localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         e = sharedPreferences.edit();
 
@@ -387,7 +387,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        localdb.close();
     }
 }
 

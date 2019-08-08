@@ -32,7 +32,7 @@ public class ObsDAO {
     public boolean insertObsTemp(List<ObsDTO> obsDTOS) throws DAOException {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         boolean isInserted = true;
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         try {
             db.beginTransaction();
             Logger.logD("insert", " insert obs");
@@ -57,7 +57,7 @@ public class ObsDAO {
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
-            db.close();
+
         }
 
         return isInserted;
@@ -134,7 +134,7 @@ public class ObsDAO {
     public boolean insertObs(ObsDTO obsDTO) throws DAOException {
         boolean isUpdated = true;
         long insertedCount = 0;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         ContentValues values = new ContentValues();
 
@@ -156,7 +156,7 @@ public class ObsDAO {
             throw new DAOException(e);
         } finally {
             db.endTransaction();
-            db.close();
+
         }
 
         return isUpdated;
@@ -166,7 +166,7 @@ public class ObsDAO {
     public boolean insertEmergencyObs(ObsDTO obsDTO) throws DAOException {
         boolean isCreated = true;
         long insertedCount = 0;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         ContentValues values = new ContentValues();
 
@@ -190,7 +190,7 @@ public class ObsDAO {
             throw new DAOException(e);
         } finally {
             db.endTransaction();
-            db.close();
+
         }
 
         return isCreated;
@@ -199,7 +199,7 @@ public class ObsDAO {
 
 
     public boolean updateObs(ObsDTO obsDTO) {
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         int updatedCount = 0;
         ContentValues values = new ContentValues();
@@ -222,7 +222,7 @@ public class ObsDAO {
 
         } finally {
             db.endTransaction();
-            db.close();
+
         }
         //If no value is not found, then update fails so insert instead.
         if (updatedCount == 0) {
@@ -240,7 +240,7 @@ public class ObsDAO {
     public boolean insertObsToDb(List<ObsDTO> obsDTO) throws DAOException {
         boolean isUpdated = true;
         long insertedCount = 0;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         ContentValues values = new ContentValues();
 
@@ -264,7 +264,7 @@ public class ObsDAO {
             throw new DAOException(e);
         } finally {
             db.endTransaction();
-            db.close();
+
         }
 
         return isUpdated;
@@ -273,7 +273,7 @@ public class ObsDAO {
 
     public List<ObsDTO> obsDTOList(String encounteruuid) {
         List<ObsDTO> obsDTOList = new ArrayList<>();
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         //take All obs except image obs
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND (conceptuuid != ? AND conceptuuid != ?)", new String[]{encounteruuid, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE});
         ObsDTO obsDTO = new ObsDTO();
@@ -288,14 +288,13 @@ public class ObsDAO {
             }
         }
         idCursor.close();
-        db.close();
 
         return obsDTOList;
     }
 
     public List<String> getImageStrings(String conceptuuid, String encounterUuidAdultIntials) {
         List<String> rawStrings = new ArrayList<>();
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_obs where conceptuuid = ? AND encounteruuid = ? AND voided='0'", new String[]{conceptuuid, encounterUuidAdultIntials});
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
@@ -303,7 +302,7 @@ public class ObsDAO {
             }
         }
         idCursor.close();
-        db.close();
+
 
         return rawStrings;
     }

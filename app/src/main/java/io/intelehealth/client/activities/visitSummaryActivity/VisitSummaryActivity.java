@@ -402,7 +402,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         setTitle(R.string.title_activity_patient_summary);
         setTitle(patientName + ": " + getTitle());
 
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
 
         super.onCreate(savedInstanceState);
@@ -495,7 +495,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         downloadButton.setEnabled(false);
         downloadButton.setVisibility(View.GONE);
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         if (isPastVisit) {
             editVitals.setVisibility(View.GONE);
             editComplaint.setVisibility(View.GONE);
@@ -532,7 +531,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 }
             }
         });
-        db.close();
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -562,7 +560,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
                     String patientSelection = "uuid = ?";
                     String[] patientArgs = {String.valueOf(patient.getUuid())};
-                    db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
                     String table = "tbl_patient";
                     String[] columnsToReturn = {"openmrs_id"};
                     final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
@@ -589,8 +586,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     if (visitIDCursor != null)
                         visitIDCursor.close();
                 }
-                db.close();
-                db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
                 String[] columnsToReturn = {"startdate"};
                 String visitIDorderBy = "startdate";
                 String visitIDSelection = "uuid = ?";
@@ -1399,7 +1394,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         // Keep a reference to WebView object until you pass the PrintDocumentAdapter
         // to the PrintManager
         mWebView = webView;
-        db.close();
     }
 
     /**
@@ -1493,7 +1487,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
      */
 
     public void queryData(String dataString) {
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         String patientSelection = "uuid = ?";
         String[] patientArgs = {dataString};
 
@@ -1524,8 +1517,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } while (idCursor.moveToNext());
         }
         idCursor.close();
-        db.close();
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         PatientsDAO patientsDAO = new PatientsDAO();
         String patientSelection1 = "patientuuid = ?";
         String[] patientArgs1 = {patientUuid};
@@ -1562,8 +1553,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } while (idCursor1.moveToNext());
         }
         idCursor1.close();
-        db.close();
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         String[] columns = {"value", " conceptuuid"};
 
         try {
@@ -1803,7 +1792,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
      */
 
     private void updateDatabase(String string, String conceptID) {
-        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("value", string);
@@ -1814,7 +1803,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         int updated = localdb.updateWithOnConflict("tbl_obs", contentValues, selection, args, SQLiteDatabase.CONFLICT_REPLACE);
 
-        localdb.close();
         EncounterDAO encounterDAO = new EncounterDAO();
         try {
             encounterDAO.updateEncounterSync("false", encounterAdultIntials);
@@ -2020,7 +2008,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         VisitsDAO visitsDAO = new VisitsDAO();
         try {
             if (visitsDAO.getDownloadedValue(visitUuid).equalsIgnoreCase("false") && uploaded) {
-                db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
                 String visitnote = "";
                 EncounterDAO encounterDAO = new EncounterDAO();
                 String encounterIDSelection = "visituuid = ?";
@@ -2037,8 +2024,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 if (encounterCursor != null) {
                     encounterCursor.close();
                 }
-                db.close();
-                db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
                 String[] columns = {"value", " conceptuuid"};
                 String visitSelection = "encounteruuid = ? ";
                 String[] visitArgs = {visitnote};
@@ -2051,7 +2036,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     } while (visitCursor.moveToNext());
                 }
                 visitCursor.close();
-                db.close();
 
                 if (uploaded) {
                     try {
@@ -2072,7 +2056,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     public void downloadPrescriptionDefault() {
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         String visitnote = "";
         EncounterDAO encounterDAO = new EncounterDAO();
         String encounterIDSelection = "visituuid = ?";
@@ -2087,8 +2070,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         }
         encounterCursor.close();
-        db.close();
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         String[] columns = {"value", " conceptuuid"};
         String visitSelection = "encounteruuid = ? ";
         String[] visitArgs = {visitnote};
@@ -2101,7 +2082,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } while (visitCursor.moveToNext());
         }
         visitCursor.close();
-        db.close();
         downloaded = true;
     }
 

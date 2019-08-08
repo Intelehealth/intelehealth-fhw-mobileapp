@@ -28,6 +28,7 @@ import java.util.List;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.homeActivity.HomeActivity;
+import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.InteleHealthDatabaseHelper;
 import io.intelehealth.client.database.dao.ProviderDAO;
 import io.intelehealth.client.models.TodayPatientModel;
@@ -63,8 +64,7 @@ public class TodayPatientActivity extends AppCompatActivity {
 
         mTodayPatientList = findViewById(R.id.today_patient_recycler_view);
         sessionManager = new SessionManager(this);
-        mDbHelper = new InteleHealthDatabaseHelper(this);
-        db = mDbHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         if (sessionManager.isPullSyncFinished()) {
             doQuery();
         }

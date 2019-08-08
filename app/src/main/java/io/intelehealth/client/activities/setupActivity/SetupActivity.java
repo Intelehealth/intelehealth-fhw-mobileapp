@@ -180,7 +180,7 @@ public class SetupActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     // user didn't typed for 1.5 seconds, do whatever you want
-                    if (!mUrlField.getText().toString().trim().isEmpty() && mUrlField.getText().toString().length() >= 12 ) {
+                    if (!mUrlField.getText().toString().trim().isEmpty() && mUrlField.getText().toString().length() >= 12) {
                         if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
                             String BASE_URL = "http://" + mUrlField.getText().toString() + ":8080/openmrs/ws/rest/v1/";
                             if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched)
@@ -193,7 +193,6 @@ public class SetupActivity extends AppCompatActivity {
             };
 
         });
-
 
 
     }
@@ -522,9 +521,8 @@ public class SetupActivity extends AppCompatActivity {
                                             Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
                                             intent.putExtra("setup", true);
                                             if (r2.isChecked()) {
-                                                if (sessionManager.valueContains("licensekey")) {
+                                                if (sessionManager.getLicenseKey() != null && !sessionManager.getLicenseKey().isEmpty()) {
                                                     startActivity(intent);
-//                        startJobDispatcherService(SetupActivity.this);
                                                     finish();
                                                 } else {
                                                     Toast.makeText(SetupActivity.this, "Please enter a valid license key", Toast.LENGTH_LONG).show();
@@ -534,14 +532,6 @@ public class SetupActivity extends AppCompatActivity {
                                                 finish();
                                             }
                                             progress.dismiss();
-
-//                                        } else if (success == 201) {
-//                                            activitySetupBinding.password.setError(getString(R.string.error_incorrect_password));
-//                                            activitySetupBinding.password.requestFocus();
-//                                        } else if (success == 3) {
-//                                            activitySetupBinding.editTextURL.setError(getString(R.string.url_invalid));
-//                                            activitySetupBinding.editTextURL.requestFocus();
-//                                        }
                                         }
                                     }
 

@@ -77,7 +77,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(this);
-        localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         boolean past = sessionManager.isReturning();
         if (past) {
             AlertDialog.Builder alertdialog = new AlertDialog.Builder(FamilyHistoryActivity.this);

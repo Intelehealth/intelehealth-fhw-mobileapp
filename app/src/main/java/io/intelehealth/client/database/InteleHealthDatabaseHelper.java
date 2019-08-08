@@ -13,6 +13,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = AppConstants.DATABASE_VERSION;
     public static final String DATABASE_NAME = AppConstants.DATABASE_NAME;
+    public static SQLiteDatabase database;
     /*"openmrs_obsuuid": "5e3e7c8d-e3c3-4a1d-a391-d3d04e45df0e",
                 "openmrs_encounteruuid": "99835c05-8c5c-4d17-b96d-095fb12ebc53",
                 "conceptid": 5090,
@@ -274,6 +275,8 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_UUID_DICTIONARY);
         uuidInsert(db);
 
+        database = db;
+
     }
 
     @Override
@@ -300,4 +303,10 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
 //        db.execSQL("Drop table  IF Exists patients");
     }
 
+    public SQLiteDatabase getWriteDb() {
+        if (database != null && database.isOpen())
+            return database;
+        else
+            return getWritableDatabase();
+    }
 }

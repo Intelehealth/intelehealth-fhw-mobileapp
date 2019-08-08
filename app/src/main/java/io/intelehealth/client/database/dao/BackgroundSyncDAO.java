@@ -16,7 +16,7 @@ public class BackgroundSyncDAO {
     public boolean insertAfterPull() throws DAOException {
         boolean isInserted = true;
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         ContentValues values = new ContentValues();
         db.beginTransaction();
         try {
@@ -31,7 +31,7 @@ public class BackgroundSyncDAO {
             throw new DAOException(sql.getMessage());
         } finally {
             db.endTransaction();
-            db.close();
+
         }
 
         return isInserted;

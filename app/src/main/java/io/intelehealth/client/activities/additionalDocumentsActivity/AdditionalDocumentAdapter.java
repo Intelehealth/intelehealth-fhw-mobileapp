@@ -111,7 +111,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
     }
 
     private void deleteImageFromDatabase(String imagePath) {
-        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         String[] coloumns = {"_id", "parse_id"};
         String[] selectionArgs = {imagePath};
         Cursor cursor = localdb.query("image_records", coloumns, "image_path = ?", selectionArgs, null, null, null);
@@ -126,7 +126,6 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
                 localdb.execSQL("DELETE FROM image_records WHERE image_path=" + "'" + imagePath + "'");
             }
         }
-        localdb.close();
     }
 
 

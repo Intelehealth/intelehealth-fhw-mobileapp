@@ -28,7 +28,7 @@ public class VisitsDAO {
 
     public boolean insertVisit(List<VisitDTO> visitDTOS) throws DAOException {
         boolean isInserted = true;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
 
@@ -50,7 +50,7 @@ public class VisitsDAO {
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
-            db.close();
+
         }
 
         return isInserted;
@@ -90,7 +90,7 @@ public class VisitsDAO {
 
     public boolean insertVisitAttribType(List<VisitAttributeTypeDTO> visit) throws DAOException {
         boolean isCreated = true;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         ContentValues values = new ContentValues();
         db.beginTransaction();
         try {
@@ -114,7 +114,7 @@ public class VisitsDAO {
 
     public boolean insertVisitAttrib(List<VisitAttributeDTO> visits) throws DAOException {
         boolean isCreated = true;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         ContentValues values = new ContentValues();
         db.beginTransaction();
         try {
@@ -141,8 +141,7 @@ public class VisitsDAO {
     public boolean insertPatientToDB(VisitDTO visit) throws DAOException {
         boolean isCreated = true;
         long createdRecordsCount1 = 0;
-        SQLiteDatabase db = null;
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         ContentValues values = new ContentValues();
         db.beginTransaction();
         List<VisitAttributeDTO> visitAttributeDTOS = new ArrayList<>();
@@ -171,7 +170,7 @@ public class VisitsDAO {
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
-            AppConstants.sqliteDbCloseHelper.dbClose(db);
+
         }
         return isCreated;
 
@@ -204,7 +203,7 @@ public class VisitsDAO {
 
     public List<VisitDTO> unsyncedVisits() {
         List<VisitDTO> visitDTOList = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit where sync = ? OR sync=? COLLATE NOCASE", new String[]{"0", "false"});
         VisitDTO visitDTO = new VisitDTO();
@@ -224,14 +223,14 @@ public class VisitsDAO {
         idCursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
-        db.close();
+
         return visitDTOList;
     }
 
     public boolean updateVisitSync(String uuid, String synced) throws DAOException {
         boolean isUpdated = true;
         Logger.logD("visitdao", "updatesynv visit " + uuid + synced);
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         ContentValues values = new ContentValues();
         String whereclause = "uuid=?";
@@ -247,7 +246,7 @@ public class VisitsDAO {
             throw new DAOException(sql.getMessage());
         } finally {
             db.endTransaction();
-            db.close();
+
 
         }
 
@@ -258,7 +257,7 @@ public class VisitsDAO {
     public boolean updateVisitEnddate(String uuid, String enddate) throws DAOException {
         boolean isUpdated = true;
         Logger.logD("visitdao", "updatesynv visit " + uuid + enddate);
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         ContentValues values = new ContentValues();
         String whereclause = "uuid=?";
@@ -274,7 +273,7 @@ public class VisitsDAO {
             throw new DAOException(sql.getMessage());
         } finally {
             db.endTransaction();
-            db.close();
+
 
         }
 
@@ -283,7 +282,7 @@ public class VisitsDAO {
 
     public String patientUuidByViistUuid(String visituuid) {
         String patientUuidByViistUuid = "";
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         Cursor cursor = db.rawQuery("SELECT patientuuid FROM tbl_visit where uuid = ? ", new String[]{visituuid});
         if (cursor.getCount() != 0) {
@@ -294,14 +293,14 @@ public class VisitsDAO {
         cursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
-        db.close();
+
 
         return patientUuidByViistUuid;
     }
 
     public List<Attribute> getVisitAttributes(String visitUuid) throws DAOException {
         List<Attribute> visitAttribute = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
             String query = "SELECT * from tbl_visit_attribute WHERE visituuid= '" + visitUuid + "'";
@@ -322,14 +321,14 @@ public class VisitsDAO {
             throw new DAOException(e.getMessage());
         } finally {
             db.endTransaction();
-            db.close();
+
         }
         return visitAttribute;
     }
 
     public List<String> getEmergencyVisitUuids() throws DAOException {
         List<String> emergencyVisits = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
             String query = "SELECT uuid from tbl_visit WHERE emergency= 'false' COLLATE NOCASE";
@@ -346,7 +345,6 @@ public class VisitsDAO {
             throw new DAOException(e.getMessage());
         } finally {
             db.endTransaction();
-            db.close();
         }
 
         return emergencyVisits;
@@ -355,7 +353,7 @@ public class VisitsDAO {
     public boolean isUpdatedEmergencyColumn(String visitUuid, boolean isemergency) throws DAOException {
         boolean isUpdated = false;
         int updatedcount = 0;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         ContentValues values = new ContentValues();
         String whereclause = "uuid=?";
@@ -374,7 +372,6 @@ public class VisitsDAO {
             throw new DAOException(sql.getMessage());
         } finally {
             db.endTransaction();
-            db.close();
         }
         return isUpdated;
     }
@@ -382,7 +379,7 @@ public class VisitsDAO {
     public boolean isUpdatedDownloadColumn(String visitUuid, boolean isupdated) throws DAOException {
         boolean isUpdated = false;
         int updatedcount = 0;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         ContentValues values = new ContentValues();
         String whereclause = "uuid=?";
@@ -401,7 +398,6 @@ public class VisitsDAO {
             throw new DAOException(sql.getMessage());
         } finally {
             db.endTransaction();
-            db.close();
         }
         return isUpdated;
     }
@@ -409,7 +405,7 @@ public class VisitsDAO {
     public String getDownloadedValue(String visituuid) throws DAOException {
         String isDownloaded = null;
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         try {
@@ -426,7 +422,6 @@ public class VisitsDAO {
             throw new DAOException(e);
         } finally {
             db.endTransaction();
-            db.close();
         }
         return isDownloaded;
     }

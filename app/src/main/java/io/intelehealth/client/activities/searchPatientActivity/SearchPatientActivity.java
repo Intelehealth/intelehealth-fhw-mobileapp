@@ -30,7 +30,6 @@ import java.util.List;
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.homeActivity.HomeActivity;
 import io.intelehealth.client.app.AppConstants;
-import io.intelehealth.client.database.InteleHealthDatabaseHelper;
 import io.intelehealth.client.database.dao.ProviderDAO;
 import io.intelehealth.client.models.dto.PatientDTO;
 import io.intelehealth.client.utilities.Logger;
@@ -40,7 +39,6 @@ import io.intelehealth.client.utilities.exception.DAOException;
 
 public class SearchPatientActivity extends AppCompatActivity {
     SearchView searchView;
-    InteleHealthDatabaseHelper mDbHelper;
     String query;
     private SearchPatientAdapter recycler;
     RecyclerView recyclerView;
@@ -65,8 +63,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         // Get the intent, verify the action and get the query
         sessionManager = new SessionManager(this);
-        mDbHelper = new InteleHealthDatabaseHelper(this);
-        db = mDbHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         msg = findViewById(R.id.textviewmessage);
         recyclerView = findViewById(R.id.recycle);
         Intent intent = getIntent();
@@ -427,6 +424,10 @@ public class SearchPatientActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
 }
 
 

@@ -29,7 +29,7 @@ public class EncounterDAO {
 
     public boolean insertEncounter(List<EncounterDTO> encounterDTOS) throws DAOException {
         boolean isInserted = true;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
             for (EncounterDTO encounter : encounterDTOS) {
@@ -42,7 +42,7 @@ public class EncounterDAO {
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
-            db.close();
+
         }
         return isInserted;
     }
@@ -74,7 +74,7 @@ public class EncounterDAO {
 
     public boolean createEncountersToDB(EncounterDTO encounter) throws DAOException {
         boolean isCreated = false;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         ContentValues values = new ContentValues();
         try {
@@ -97,14 +97,14 @@ public class EncounterDAO {
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
-            db.close();
+
         }
         return isCreated;
     }
 
     public String getEncounterTypeUuid(String attr) {
         String encounterTypeUuid = "";
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_uuid_dictionary where name = ? COLLATE NOCASE", new String[]{attr});
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
@@ -112,14 +112,13 @@ public class EncounterDAO {
             }
         }
         cursor.close();
-        db.close();
 
         return encounterTypeUuid;
     }
 
     public List<EncounterDTO> unsyncedEncounters() {
         List<EncounterDTO> encounterDTOList = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where sync = ? OR sync=?  COLLATE NOCASE ORDER BY voided ASC", new String[]{"false", "0"});
         EncounterDTO encounterDTO = new EncounterDTO();
@@ -139,7 +138,7 @@ public class EncounterDAO {
         idCursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
-        db.close();
+
 
         return encounterDTOList;
     }
@@ -147,7 +146,7 @@ public class EncounterDAO {
     public boolean updateEncounterSync(String synced, String uuid) throws DAOException {
         boolean isUpdated = true;
         Logger.logD("encounterdao", "updatesynv encounter " + uuid + synced);
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         ContentValues values = new ContentValues();
         String whereclause = "uuid=?";
@@ -163,7 +162,7 @@ public class EncounterDAO {
             throw new DAOException(sql.getMessage());
         } finally {
             db.endTransaction();
-            db.close();
+
 
         }
 
@@ -177,7 +176,7 @@ public class EncounterDAO {
         EncounterDAO encounterDAO = new EncounterDAO();
         String emergency_uuid = encounterDAO.getEncounterTypeUuid("EMERGENCY");
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         //db.beginTransaction();
         ContentValues values = new ContentValues();
         String whereclause = "visituuid = ? AND encounter_type_uuid = ? ";
@@ -194,7 +193,7 @@ public class EncounterDAO {
             throw new DAOException(sql.getMessage());
         } finally {
             //   db.endTransaction();
-            db.close();
+
         }
         if (emergencyChecked) {
             String encounteruuid = UUID.randomUUID().toString();
@@ -223,7 +222,7 @@ public class EncounterDAO {
 
     public String getEmergencyEncounters(String visitUuid, String encounterType) throws DAOException {
         String uuid = "";
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
             Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_encounter where visituuid = ? AND encounter_type_uuid=? AND voided='0' COLLATE NOCASE", new String[]{visitUuid, encounterType});
@@ -240,14 +239,14 @@ public class EncounterDAO {
             throw new DAOException(e);
         } finally {
             db.endTransaction();
-            db.close();
+
         }
         return uuid;
     }
 
     public boolean isEmergency(String visitUuid) throws DAOException {
         boolean isEmergency = false;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         String selectQuery = "SELECT uuid FROM tbl_encounter WHERE visituuid='" + visitUuid + "'  AND encounter_type_uuid='ca5f5dc3-4f0b-4097-9cae-5cf2eb44a09c' AND voided='0'";
         db.beginTransaction();
         try {
@@ -269,7 +268,7 @@ public class EncounterDAO {
             throw new DAOException(e);
         } finally {
             db.endTransaction();
-            db.close();
+
         }
         return isEmergency;
     }

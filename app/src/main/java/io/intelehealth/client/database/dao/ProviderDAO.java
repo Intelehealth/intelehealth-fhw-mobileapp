@@ -23,7 +23,7 @@ public class ProviderDAO {
     public boolean insertProviders(List<ProviderDTO> providerDTOS) throws DAOException {
 
         boolean isInserted = true;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 //        AppConstants.inteleHealthDatabaseHelper.onCreate(db);
         ContentValues values = new ContentValues();
         db.beginTransaction();
@@ -46,7 +46,7 @@ public class ProviderDAO {
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
-            AppConstants.sqliteDbCloseHelper.dbClose(db);
+
         }
 
         return isInserted;
@@ -112,7 +112,7 @@ public class ProviderDAO {
 //    }
     public List<String> getProvidersList() throws DAOException {
         List<String> providersList = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
             String query = "select distinct a.uuid,a.given_name,a.family_name from tbl_provider a, tbl_encounter b , tbl_visit c where a.uuid=b.provider_uuid and b.visituuid=c.uuid and c.enddate is  null";
@@ -130,7 +130,7 @@ public class ProviderDAO {
             throw new DAOException(s);
         } finally {
             db.endTransaction();
-            db.close();
+
         }
         return providersList;
 
@@ -138,7 +138,7 @@ public class ProviderDAO {
 
     public List<String> getProvidersUuidList() throws DAOException {
         List<String> providersList = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
             String query = "select distinct a.uuid,a.given_name,a.family_name from tbl_provider a, tbl_encounter b , tbl_visit c where a.uuid=b.provider_uuid and b.visituuid=c.uuid and c.enddate is  null";
@@ -156,7 +156,7 @@ public class ProviderDAO {
             throw new DAOException(s);
         } finally {
             db.endTransaction();
-            db.close();
+
         }
         return providersList;
 

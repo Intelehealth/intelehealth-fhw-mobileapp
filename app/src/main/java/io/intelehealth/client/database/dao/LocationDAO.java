@@ -20,7 +20,7 @@ public class LocationDAO {
     public boolean insertLocations(List<LocationDTO> locationDTOS) throws DAOException {
 
         boolean isInserted = true;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 //        AppConstants.inteleHealthDatabaseHelper.onCreate(db);
         ContentValues values = new ContentValues();
         db.beginTransaction();
@@ -43,7 +43,7 @@ public class LocationDAO {
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
-            AppConstants.sqliteDbCloseHelper.dbClose(db);
+
         }
 
         return isInserted;

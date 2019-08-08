@@ -86,7 +86,7 @@ public class EmergencyEncounterDAO {
     public boolean removeEncounterEmergency(final String visitUuid, SQLiteDatabase db) {
 
         boolean success = false;
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         SessionManager session = new SessionManager(IntelehealthApplication.getAppContext());
         if (visitUuid != null) {
             String selectQuery = "SELECT uuid FROM tbl_encounter WHERE visituuid='" + visitUuid + "'  and encounter_type_uuid='ca5f5dc3-4f0b-4097-9cae-5cf2eb44a09c'";
@@ -122,7 +122,7 @@ public class EmergencyEncounterDAO {
             if (cursor != null) {
                 cursor.close();
             }
-            db.close();
+
         }
 
         return success;

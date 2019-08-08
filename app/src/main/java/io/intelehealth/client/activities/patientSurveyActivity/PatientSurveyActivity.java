@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -78,7 +77,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_patient_survey);
         setTitle(R.string.title_activity_login);
         sessionManager = new SessionManager(this);
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         context = getApplicationContext();
 
         mScaleButton1 = findViewById(R.id.button_scale_1);

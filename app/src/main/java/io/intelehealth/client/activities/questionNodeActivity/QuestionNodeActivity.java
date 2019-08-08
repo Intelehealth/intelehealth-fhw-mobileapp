@@ -377,28 +377,26 @@ public class QuestionNodeActivity extends AppCompatActivity {
         complaintEntries.put("conceptuuid", CONCEPT_ID);
         complaintEntries.put("sync", "false");
 
-        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         long insertedvalues = localdb.insert("tbl_obs", null, complaintEntries);
-        localdb.close();
 
         return insertedvalues;
     }
 
     private void updateImageDatabase(String imagePath) {
 
-        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path,image_type,delete_status) values("
                 + "'" + patientUuid + "'" + ","
                 + visitUuid + ","
                 + "'" + imagePath + "','" + "CO" + "'," +
                 0 +
                 ")");
-        localdb.close();
     }
 
     private void updateDatabase(String string) {
         Log.i(TAG, "updateDatabase: " + patientUuid + " " + visitUuid + " " + UuidDictionary.CURRENT_COMPLAINT);
-        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
         String conceptID = UuidDictionary.CURRENT_COMPLAINT;
         ContentValues contentValues = new ContentValues();
@@ -414,7 +412,6 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 selection,
                 args
         );
-        localdb.close();
         if (i == 0) {
             insertDb(string);
         }

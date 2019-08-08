@@ -449,7 +449,6 @@ public class VitalsActivity extends AppCompatActivity {
             } while (visitCursor.moveToNext());
         }
         visitCursor.close();
-        db.close();
     }
 
     private void parseData(String concept_id, String value) {

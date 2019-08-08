@@ -29,7 +29,7 @@ import java.util.List;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.homeActivity.HomeActivity;
-import io.intelehealth.client.database.InteleHealthDatabaseHelper;
+import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.dao.ProviderDAO;
 import io.intelehealth.client.models.ActivePatientModel;
 import io.intelehealth.client.utilities.Logger;
@@ -39,7 +39,6 @@ import io.intelehealth.client.utilities.exception.DAOException;
 
 public class ActivePatientActivity extends AppCompatActivity {
     private static final String TAG = ActivePatientActivity.class.getSimpleName();
-    InteleHealthDatabaseHelper mDbHelper;
     private SQLiteDatabase db;
     SessionManager sessionManager = null;
     Toolbar mToolbar;
@@ -69,8 +68,7 @@ public class ActivePatientActivity extends AppCompatActivity {
         textView = findViewById(R.id.textviewmessage);
         recyclerView = findViewById(R.id.today_patient_recycler_view);
         sessionManager = new SessionManager(this);
-        mDbHelper = new InteleHealthDatabaseHelper(this);
-        db = mDbHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         if (sessionManager.isPullSyncFinished()) {
             textView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
