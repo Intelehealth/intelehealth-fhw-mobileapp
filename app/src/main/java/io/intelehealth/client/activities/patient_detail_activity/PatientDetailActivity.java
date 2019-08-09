@@ -17,6 +17,7 @@ import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -254,6 +255,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.detail_home:
                 Intent intent = new Intent(PatientDetailActivity.this, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 return true;
             default:
@@ -276,7 +279,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         String[] patientColumns = {"openmrs_id", "first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw", "occupation",
-                "patient_photo", "economic_status", "education_status", "caste"};
+                "patient_photo", "economic_status", "education_status", "caste", "privacynotice_value"};
         final Cursor idCursor = db.query("patient", patientColumns, patientSelection, patientArgs, null, null, null);
 
         if (idCursor.moveToFirst()) {
@@ -300,6 +303,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 patient.setEconomic_status(idCursor.getString(idCursor.getColumnIndexOrThrow("economic_status")));
                 patient.setEducation_level(idCursor.getString(idCursor.getColumnIndexOrThrow("education_status")));
                 patient.setCaste(idCursor.getString(idCursor.getColumnIndexOrThrow("caste")));
+                patient.setPrivacynotice_value(idCursor.getString(idCursor.getColumnIndexOrThrow("privacynotice_value")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -735,5 +739,13 @@ public class PatientDetailActivity extends AppCompatActivity {
         previousVisitsList.addView(convertView);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
 }
 

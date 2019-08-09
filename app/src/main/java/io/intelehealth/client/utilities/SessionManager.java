@@ -2,6 +2,7 @@ package io.intelehealth.client.utilities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Base64;
 
 import java.io.UnsupportedEncodingException;
@@ -14,6 +15,8 @@ public class SessionManager {
     private static final String VISIT_ID="visitID";
     private static final String BASE_URL="base_url";
     private static final String ENCODED="encoded";
+    private static final String LICENSE_KEY = "licensekey";
+    private static final String LICENSE = "license";
     // Shared Preferences
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
@@ -52,6 +55,27 @@ public class SessionManager {
     public void setEncoded(String encoded) {
         editor.putString(ENCODED, encoded);
         editor.commit();
+    }
+
+    public String getLicenseKey() {
+        return pref.getString(LICENSE_KEY, "");
+    }
+
+    public void setLicenseKey(String licenseKey) {
+        editor.putString(LICENSE_KEY, licenseKey);
+        editor.commit();
+    }
+
+    public void deleteLicensekey() {
+        editor.remove(LICENSE_KEY);
+        editor.commit();
+    }
+
+    public boolean valueContains(String value) {
+        boolean hasvalue = false;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(_context);
+        hasvalue = sharedPreferences.contains(value);
+        return hasvalue;
     }
 
 }

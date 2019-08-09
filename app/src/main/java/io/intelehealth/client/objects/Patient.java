@@ -28,6 +28,16 @@ public class Patient {
     private String caste;
     private String emergency;
 
+    public String getPrivacynotice_value() {
+        return privacynotice_value;
+    }
+
+    public void setPrivacynotice_value(String privacynotice_value) {
+        this.privacynotice_value = privacynotice_value;
+    }
+
+    private String privacynotice_value;
+
     public String getEmergency() {
         return emergency;
     }

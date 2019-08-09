@@ -56,6 +56,7 @@ dependencies {
 
     implementation "com.github.hotchemi:permissionsdispatcher:$rootProject.permissionDispatcherVersion"
     implementation 'com.google.firebase:firebase-crash:16.2.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:$rootProject.permissionDispatcherVersion"
 
     implementation "com.github.google:cameraview:$rootProject.cameraviewVersion"

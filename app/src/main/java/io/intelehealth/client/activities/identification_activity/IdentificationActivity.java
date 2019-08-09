@@ -62,6 +62,7 @@ import java.util.Locale;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.camera_activity.CameraActivity;
+import io.intelehealth.client.activities.home_activity.HomeActivity;
 import io.intelehealth.client.activities.patient_detail_activity.PatientDetailActivity;
 
 import io.intelehealth.client.database.LocalRecordsDatabaseHelper;
@@ -143,6 +144,9 @@ public class IdentificationActivity extends AppCompatActivity {
     private ArrayAdapter<CharSequence> educationAdapter;
     private ArrayAdapter<CharSequence> economicStatusAdapter;
 
+    Intent i_privacy;
+    String privacy_value;
+
     // Boolean isDateChanged = false; //prajw
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +158,9 @@ public class IdentificationActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+        i_privacy = getIntent();
+        privacy_value = i_privacy.getStringExtra("privacy"); //privacy_accept value retrieved from previous act.
 
         //Initialize the local database to store patient information
         mDbHelper = new LocalRecordsDatabaseHelper(this);
@@ -1110,7 +1117,9 @@ try {
             patientEntries.put("economic_status", patient.getEconomic_status());
             patientEntries.put("education_status", patient.getEducation_level());
             patientEntries.put("caste", patient.getCaste());
+            patientEntries.put("privacynotice_value", privacy_value);
 
+            Log.d(TAG, "Privacy Value on (Identifi): "+ patientEntries);
 
             //TODO: move identifier1 and id2 from patient table to patient_attribute table
         }
@@ -1293,7 +1302,11 @@ try {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
+                        //finish();
+                        Intent intent = new Intent(IdentificationActivity.this, HomeActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
                     }
                 }).setNegativeButton("No", null).show();
 
