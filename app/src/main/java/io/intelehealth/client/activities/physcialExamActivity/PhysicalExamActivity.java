@@ -50,6 +50,7 @@ import io.intelehealth.client.database.dao.ImagesDAO;
 import io.intelehealth.client.knowledgeEngine.Node;
 import io.intelehealth.client.knowledgeEngine.PhysicalExam;
 import io.intelehealth.client.utilities.FileUtils;
+import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.StringUtils;
 import io.intelehealth.client.utilities.UuidDictionary;
 import io.intelehealth.client.utilities.exception.DAOException;
@@ -87,13 +88,14 @@ public class PhysicalExamActivity extends AppCompatActivity {
     Boolean complaintConfirmed = false;
     String encounterVitals;
     String encounterAdultIntials;
+    SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
 
         localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-
+        sessionManager = new SessionManager(this);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage(R.string.wash_hands);
         LayoutInflater factory = LayoutInflater.from(this);
@@ -147,7 +149,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             boolean hasLicense = false;
-            if (sharedPreferences.contains("licensekey"))
+            if (sessionManager.getLicenseKey() != null && !sessionManager.getLicenseKey().isEmpty())
                 hasLicense = true;
 
             if (hasLicense) {

@@ -363,6 +363,8 @@ public class SetupActivity extends AppCompatActivity {
                     AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                     LayoutInflater li = LayoutInflater.from(this);
                     View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
+
+
                     dialog.setTitle(getString(R.string.enter_license_key))
                             .setView(promptsView)
 
@@ -372,9 +374,24 @@ public class SetupActivity extends AppCompatActivity {
                                     Dialog d = (Dialog) dialog;
 
                                     EditText text = d.findViewById(R.id.licensekey);
+                                    // text.setText(sessionManager.getLicenseKey());
                                     EditText url = d.findViewById(R.id.licenseurl);
+                                    // url.setText(sessionManager.getMindMapServerUrl());
+                                    if (text.getText().toString().isEmpty() && text.getText() == null || url.getText().toString().isEmpty() && url.getText() == null) {
+                                        text.setFocusable(true);
+                                        text.setError("Enter license key");
+                                    }
+
+                                    if (sessionManager.getLicenseKey() != null && sessionManager.getLicenseKey().equalsIgnoreCase("http://mindmaps.intelehealth.io:4040")) {
+                                        text.setText(sessionManager.getLicenseKey());
+                                        url.setText(sessionManager.getMindMapServerUrl());
+                                    }
+
+
                                     key = text.getText().toString();
                                     licenseUrl = url.getText().toString();
+
+
                                     sessionManager.setMindMapServerUrl(licenseUrl);
                                     //Toast.makeText(SetupActivity.this, "" + key, Toast.LENGTH_SHORT).show();
                                     if (keyVerified(key)) {
@@ -390,6 +407,7 @@ public class SetupActivity extends AppCompatActivity {
                                         DownloadProtocolsTask downloadProtocolsTask = new DownloadProtocolsTask(SetupActivity.this);
                                         downloadProtocolsTask.execute(key);
 
+
                                     }
                                 }
                             })
@@ -398,6 +416,9 @@ public class SetupActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
+                                    r2.setChecked(false);
+                                    r1.setChecked(true);
+
                                 }
                             });
                     AlertDialog alertDialog = dialog.create();

@@ -145,7 +145,7 @@ public class EncounterDAO {
 
     public boolean updateEncounterSync(String synced, String uuid) throws DAOException {
         boolean isUpdated = true;
-        Logger.logD("encounterdao", "updatesynv encounter " + uuid + synced);
+        Logger.logD("encounterdao", "updatesynv encounter " + uuid + "" + synced);
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         ContentValues values = new ContentValues();

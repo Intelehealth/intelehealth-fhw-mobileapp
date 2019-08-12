@@ -101,7 +101,7 @@ public class TodayPatientActivity extends AppCompatActivity {
                 "SELECT a.uuid, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
                         "FROM tbl_visit a, tbl_patient b  " +
                         "WHERE a.patientuuid = b.uuid " +
-                        "AND a.startdate LIKE '2019-08-07T%' " +
+                        "AND a.startdate LIKE '" + currentDate + "T%'   " +
                         "GROUP BY a.uuid ORDER BY a.patientuuid ASC";
         //  "SELECT * FROM visit, patient WHERE visit.patient_id = patient._id AND visit.start_datetime LIKE '" + currentDate + "T%'";
         Logger.logD(TAG, query);

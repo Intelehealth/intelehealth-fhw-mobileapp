@@ -199,7 +199,7 @@ public class SessionManager {
     }
 
     public String getLicenseKey() {
-        return pref.getString(LICENSE_KEY, "");
+        return pref.getString(LICENSE_KEY, null);
     }
 
     public void setLicenseKey(String licenseKey) {
@@ -299,7 +299,7 @@ public class SessionManager {
     }
 
     public String getLastPulledDateTime() {
-        return pref.getString(LAST_PULLED_EXECUTED_DATE_TIME, "01 January 2019");
+        return pref.getString(LAST_PULLED_EXECUTED_DATE_TIME, "01 January 2019 12:15:26");
     }  //getting the sync value  and time and saving in the sharedpref
 
     public void setLastPulledDateTime(String lastPulledDateTime) {
