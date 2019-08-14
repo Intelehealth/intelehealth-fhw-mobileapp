@@ -14,7 +14,7 @@ public class
 LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 5;   //on 14th Aug it was 4
     public static final String DATABASE_NAME = "localRecords.db";
     public static final String CREATE_PATIENT = "CREATE TABLE IF NOT EXISTS patient(" +
             "_id integer PRIMARY KEY," +
@@ -165,6 +165,8 @@ LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // TODO: discuss upgrade policy
+       // updatePrivacyColumn();
+        db.execSQL("ALTER TABLE patient ADD COLUMN privacynotice_value");
     }
 
     public  void updateColumn(){
@@ -177,4 +179,10 @@ LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("ALTER TABLE visit ADD COLUMN emergency TEXT");
         }
     }
+
+   /* public void updatePrivacyColumn()
+    {
+        //SQLiteDatabase db = this.getWritableDatabase();
+        execSQL("ALTER TABLE patient ADD COLUMN privacynotice_value");
+    }*/
 }
