@@ -5,6 +5,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import static com.crashlytics.android.Crashlytics.TAG;
 
 /**
  * Class to manage input/output with the database.
@@ -166,7 +169,14 @@ LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // TODO: discuss upgrade policy
        // updatePrivacyColumn();
-        db.execSQL("ALTER TABLE patient ADD COLUMN privacynotice_value");
+        try {
+            db.execSQL("ALTER TABLE patient ADD COLUMN privacynotice_value");
+        }
+        catch (SQLiteException ex)
+        {
+            Log.e(TAG,"Error of Privacy at: ",ex);
+        }
+
     }
 
     public  void updateColumn(){
