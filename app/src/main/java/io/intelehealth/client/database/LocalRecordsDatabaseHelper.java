@@ -174,7 +174,7 @@ LocalRecordsDatabaseHelper extends SQLiteOpenHelper {
         }
         catch (SQLiteException ex)
         {
-            Log.e(TAG,"Error of Privacy at: ",ex);
+            Log.e("Privacy","Error of Privacy at: ",ex);
         }
 
     }
