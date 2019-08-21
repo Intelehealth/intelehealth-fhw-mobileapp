@@ -44,17 +44,6 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/textView_Aid"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:text="Android Id:"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-                    <Space
-                        android:layout_width="match_parent"
-                        android:layout_height="20sp" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -213,6 +202,14 @@
                     <Space
                         android:layout_width="match_parent"
                         android:layout_height="20sp" />
+
+                    <TextView
+                        android:id="@+id/textView_Aid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:text="Android Id:"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
                 </LinearLayout>
             </ScrollView>

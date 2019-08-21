@@ -250,7 +250,7 @@
     <string name="toast_crash" translatable="false">Application error encountered; report sent</string>
 
 
-    <string name="title_activity_setup" translatable="false">SetupActivity</string>
+    <string name="title_activity_setup" translatable="false">Setup</string>
 
     <string name="title_activity_camera" translatable="false">Camera</string>
     <string name="title_activity_today_patient" translatable="false">"Today's Patients"</string>
