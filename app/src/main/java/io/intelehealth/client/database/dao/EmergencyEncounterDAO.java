@@ -55,7 +55,7 @@ public class EmergencyEncounterDAO {
             encounterDTO.setSyncd(false);
 
             obsDTO.setConceptuuid(UuidDictionary.EMERGENCY_OBS);
-            obsDTO.setCreator(1);
+            obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setUuid(UUID.randomUUID().toString());
             obsDTO.setEncounteruuid(emergencyEncounterUuid);
             obsDTO.setValue("emergency");
@@ -69,7 +69,7 @@ public class EmergencyEncounterDAO {
             encounterDTO.setSyncd(false);
 
             obsDTO.setConceptuuid(UuidDictionary.EMERGENCY_OBS);
-            obsDTO.setCreator(1);
+            obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setUuid(UUID.randomUUID().toString());
             obsDTO.setEncounteruuid(uuid);
             obsDTO.setValue("emergency");

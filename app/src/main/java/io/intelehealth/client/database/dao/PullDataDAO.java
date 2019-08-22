@@ -35,6 +35,7 @@ public class PullDataDAO {
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
 //        1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a
+        String oldDate = sessionManager.getPullExcutedTime();
         String url = "http://" + sessionManager.getServerUrl() + ":8080/EMR-Middleware/webapi/pull/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(url, "Basic " + encoded);
         Logger.logD("Start pull request", "Started");

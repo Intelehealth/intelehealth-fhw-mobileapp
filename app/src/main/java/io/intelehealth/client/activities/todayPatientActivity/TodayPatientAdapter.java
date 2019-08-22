@@ -53,7 +53,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         }
         int age = DateAndTimeUtils.getAge(todayPatientModel.getDate_of_birth());
         String dob = DateAndTimeUtils.SimpleDatetoLongDate(todayPatientModel.getDate_of_birth());
-        String body = String.format(context.getString(R.string.id_number) + ": %s \n " +
+        String body = String.format(context.getString(R.string.id_number) + ": %s \n" +
                         context.getString(R.string.identification_screen_prompt_phone_number) + ": %s\n" +
                         context.getString(R.string.identification_screen_prompt_birthday) +
                         ": %s (" + context.getString(R.string.identification_screen_prompt_age) + " %d)", todayPatientModel.getOpenmrs_id(), todayPatientModel.getPhone_number(),

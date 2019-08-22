@@ -20,7 +20,7 @@ public class ObsDTO {
     private String value;
     @SerializedName("creator")
     @Expose
-    private Integer creator;
+    private String creator;
     @SerializedName("voided")
     @Expose
     private Integer voided;
@@ -57,11 +57,11 @@ public class ObsDTO {
         this.value = value;
     }
 
-    public Integer getCreator() {
+    public String getCreator() {
         return creator;
     }
 
-    public void setCreator(Integer creator) {
+    public void setCreator(String creator) {
         this.creator = creator;
     }
 

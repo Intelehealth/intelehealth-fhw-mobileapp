@@ -10,20 +10,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,22 +33,26 @@ import android.widget.Toast;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
-import java.io.File;
-import java.util.Calendar;
 import java.util.Locale;
 
 import io.intelehealth.client.R;
+import io.intelehealth.client.activities.activePatientsActivity.ActivePatientActivity;
+import io.intelehealth.client.activities.identificationActivity.IdentificationActivity;
 import io.intelehealth.client.activities.loginActivity.LoginActivity;
+import io.intelehealth.client.activities.privacyNoticeActivity.PrivacyNotice_Activity;
+import io.intelehealth.client.activities.searchPatientActivity.SearchPatientActivity;
 import io.intelehealth.client.activities.settingsActivity.SettingsActivity;
+import io.intelehealth.client.activities.todayPatientActivity.TodayPatientActivity;
+import io.intelehealth.client.activities.videoLibraryActivity.VideoLibraryActivity;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.services.DownloadProtocolsTask;
 import io.intelehealth.client.syncModule.SyncUtils;
+import io.intelehealth.client.utilities.ConfigUtils;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.OfflineLogin;
 import io.intelehealth.client.utilities.SessionManager;
 
 import static io.intelehealth.client.app.AppConstants.UNIQUE_WORK_NAME;
-import static io.intelehealth.client.app.AppConstants.dbfilepath;
 
 /**
  * Home Screen
@@ -71,6 +71,9 @@ public class HomeActivity extends AppCompatActivity {
     IntentFilter filter;
     Myreceiver reMyreceive;
     SyncUtils syncUtils = new SyncUtils();
+    CardView c1, c2, c3, c4, c5;
+    private String key = null;
+    private String licenseUrl = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +97,54 @@ public class HomeActivity extends AppCompatActivity {
         Logger.logD(TAG, "onCreate: " + getFilesDir().toString());
         lastSyncTextView = findViewById(R.id.lastsynctextview);
         manualSyncButton = findViewById(R.id.manualsyncbutton);
+        c1 = findViewById(R.id.cardview_newpat);
+        c2 = findViewById(R.id.cardview_find_patient);
+        c3 = findViewById(R.id.cardview_today_patient);
+        c4 = findViewById(R.id.cardview_active_patients);
+        c5 = findViewById(R.id.cardview_video_libraby);
+        c1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Loads the config file values and check for the boolean value of privacy key.
+                ConfigUtils configUtils = new ConfigUtils(HomeActivity.this);
+                if (configUtils.privacy_notice()) {
+                    Intent intent = new Intent(HomeActivity.this, PrivacyNotice_Activity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(HomeActivity.this, IdentificationActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
+        c2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, SearchPatientActivity.class);
+                startActivity(intent);
+            }
+        });
+        c3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, TodayPatientActivity.class);
+                startActivity(intent);
+            }
+        });
+        c4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, ActivePatientActivity.class);
+                startActivity(intent);
+            }
+        });
+        c5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, VideoLibraryActivity.class);
+                startActivity(intent);
+            }
+        });
+
 //        manualSyncButton.setPaintFlags(manualSyncButton.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         lastSyncTextView.setText("Last Synced:- " + sessionManager.getLastPulledDateTime());
         manualSyncButton.setOnClickListener(new View.OnClickListener() {
@@ -107,30 +158,30 @@ public class HomeActivity extends AppCompatActivity {
 //                pullDataDAO.pullData(HomeActivity.this);
             }
         });
-        final RecyclerView recyclerView = findViewById(R.id.recyclerview_home);
-        recyclerView.setHasFixedSize(true);
+//        final RecyclerView recyclerView = findViewById(R.id.recyclerview_home);
+//        recyclerView.setHasFixedSize(true);
+//
+//        GridLayoutManager gridLayoutManager = new GridLayoutManager(HomeActivity.this, 1);
+//        recyclerView.setLayoutManager(gridLayoutManager);
+//
+//        recyclerView.setAdapter(new HomeAdapter());
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(HomeActivity.this, 1);
-        recyclerView.setLayoutManager(gridLayoutManager);
-
-        recyclerView.setAdapter(new HomeAdapter());
-
-        String date = sessionManager.getDate();
-        String time = sessionManager.getTime();
-        final Calendar startDate = Calendar.getInstance();
-        startDate.set(Calendar.HOUR, 10);
-        startDate.set(Calendar.MINUTE, 00);
-        startDate.set(Calendar.AM_PM, Calendar.PM);
-
-
-        final Calendar endDate = Calendar.getInstance();
-        endDate.set(Calendar.HOUR, 10);
-        endDate.set(Calendar.MINUTE, 15);
-        endDate.set(Calendar.AM_PM, Calendar.PM);
-        if (getIntent().hasExtra("setup") && getIntent().getBooleanExtra("setup", false)) {
-
-            Log.d("newfilepath", dbfilepath);
-            final File db_file = new File(dbfilepath);
+//        String date = sessionManager.getDate();
+//        String time = sessionManager.getTime();
+//        final Calendar startDate = Calendar.getInstance();
+//        startDate.set(Calendar.HOUR, 10);
+//        startDate.set(Calendar.MINUTE, 00);
+//        startDate.set(Calendar.AM_PM, Calendar.PM);
+//
+//
+//        final Calendar endDate = Calendar.getInstance();
+//        endDate.set(Calendar.HOUR, 10);
+//        endDate.set(Calendar.MINUTE, 15);
+//        endDate.set(Calendar.AM_PM, Calendar.PM);
+//        if (getIntent().hasExtra("setup") && getIntent().getBooleanExtra("setup", false)) {
+//
+//            Log.d("newfilepath", dbfilepath);
+//            final File db_file = new File(dbfilepath);
 
 //            if (db_file.exists()) {
 //                new AlertDialog.Builder(this)
@@ -156,7 +207,7 @@ public class HomeActivity extends AppCompatActivity {
 //                        )
 //                        .create().show();
 //            }
-        }
+//        }
 //        if (sessionManager.isFirstTimeSyncExcuted()) {
 
 //        AppConstants.notificationUtils.showNotifications("syncBackground","syncBackground Compledted",this);
@@ -215,9 +266,9 @@ public class HomeActivity extends AppCompatActivity {
                 settings();
                 return true;
             case R.id.updateProtocolsOption: {
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                if (sharedPreferences.contains("licensekey")) {
-                    String license = sharedPreferences.getString("licensekey", null);
+
+                if (sessionManager.getLicenseKey() != null && sessionManager.getLicenseKey().equalsIgnoreCase("http://mindmaps.intelehealth.io:4040")) {
+                    String license = sessionManager.getLicenseKey();
                     if (license != null) {
                         DownloadProtocolsTask downloadProtocolsTask = new DownloadProtocolsTask(this);
                         downloadProtocolsTask.execute(license);
@@ -233,13 +284,31 @@ public class HomeActivity extends AppCompatActivity {
                             .setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+
                                     Dialog d = (Dialog) dialog;
 
                                     EditText text = d.findViewById(R.id.licensekey);
-                                    String key = text.getText().toString();
-                                    if (key != null && !key.trim().isEmpty()) {
+                                    // text.setText(sessionManager.getLicenseKey());
+                                    EditText url = d.findViewById(R.id.licenseurl);
+                                    // url.setText(sessionManager.getMindMapServerUrl());
+                                    if (text.getText().toString().isEmpty() && text.getText() == null || url.getText().toString().isEmpty() && url.getText() == null) {
+                                        text.setFocusable(true);
+                                        text.setError("Enter license key");
+                                    }
+                                    if (sessionManager.getLicenseKey() != null && sessionManager.getLicenseKey().equalsIgnoreCase("http://mindmaps.intelehealth.io:4040")) {
+                                        text.setText(sessionManager.getLicenseKey());
+                                        url.setText(sessionManager.getMindMapServerUrl());
+                                    }
+                                    key = text.getText().toString();
+                                    licenseUrl = url.getText().toString();
+
+                                    sessionManager.setMindMapServerUrl(licenseUrl);
+
+                                    if (keyVerified(key)) {
                                         DownloadProtocolsTask downloadProtocolsTask = new DownloadProtocolsTask(HomeActivity.this);
                                         downloadProtocolsTask.execute(key);
+
+
                                     }
                                 }
                             })
@@ -372,6 +441,10 @@ public class HomeActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    private boolean keyVerified(String key) {
+        //TODO: Verify License Key
+        return true;
+    }
     @Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)

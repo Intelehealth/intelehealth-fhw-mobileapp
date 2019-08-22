@@ -3,7 +3,6 @@ package io.intelehealth.client.activities.visitSummaryActivity;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +10,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -81,6 +81,7 @@ import io.intelehealth.client.activities.vitalActivity.VitalsActivity;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.dao.EncounterDAO;
 import io.intelehealth.client.database.dao.ImagesDAO;
+import io.intelehealth.client.database.dao.ObsDAO;
 import io.intelehealth.client.database.dao.PatientsDAO;
 import io.intelehealth.client.database.dao.PullDataDAO;
 import io.intelehealth.client.database.dao.VisitsDAO;
@@ -368,7 +369,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             intentTag = intent.getStringExtra("tag");
             isPastVisit = intent.getBooleanExtra("pastVisit", false);
 
-            Set<String> selectedExams = mSharedPreference.getStringSet("exam_" + patientUuid, null);
+            Set<String> selectedExams = sessionManager.getVisitSummary(patientUuid);
             if (physicalExams == null) physicalExams = new ArrayList<>();
             physicalExams.clear();
             if (selectedExams != null && !selectedExams.isEmpty()) {
@@ -602,16 +603,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 if (NetworkConnection.isOnline(getApplication())) {
                     AppConstants.notificationUtils.showNotifications("Visit Data Upload", "Uploading visit data", VisitSummaryActivity.this);
                     PullDataDAO pullDataDAO = new PullDataDAO();
+                    ProgressDialog pd = new ProgressDialog(VisitSummaryActivity.this);
+                    pd.setTitle("Syncing");
+                    pd.show();
+                    pd.setCancelable(false);
+
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
 //                            Added the 4 sec delay and then push data.For some reason doing immediately does not work
                             //Do something after 100ms
-//                            pullDataDAO.pushDataApi();
-//                            imagesPushDAO.patientProfileImagesPush();
-//                            imagesPushDAO.obsImagesPush();
-//                            pullDataDAO.pullData(VisitSummaryActivity.this);
                             SyncUtils syncUtils = new SyncUtils();
                             boolean isSynced = syncUtils.syncForeground();
                             if (isSynced)
@@ -619,6 +621,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             else
                                 AppConstants.notificationUtils.DownloadDone("Visit Data Upload", "failed to Uploaded", VisitSummaryActivity.this);
                             uploaded = true;
+                            pd.dismiss();
                             Toast.makeText(VisitSummaryActivity.this, "Upload Completed", Toast.LENGTH_SHORT).show();
                         }
                     }, 4000);
@@ -865,6 +868,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 complaintDialog.setNegativeButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        //Deleting the old image in physcial examination
+                        if (phyExamDir.exists()) {
+                            String[] children = phyExamDir.list();
+                            String[] childList = children;
+                            for (String child : childList) {
+                                new File(phyExamDir, child).delete();
+
+                                ImagesDAO imagesDAO = new ImagesDAO();
+                                try {
+                                    imagesDAO.deleteImageFromDatabase(io.intelehealth.client.utilities.StringUtils.getFileNameWithoutExtensionString(child));
+                                } catch (DAOException e1) {
+                                    e1.printStackTrace();
+                                }
+                            }
+                            phyExamDir.delete();
+                        }
+
                         Intent intent1 = new Intent(VisitSummaryActivity.this, ComplaintNodeActivity.class);
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
@@ -943,34 +963,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         if (phyExamDir.exists()) {
                             String[] children = phyExamDir.list();
                             String[] childList = children;
-                            //SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
                             for (String child : childList) {
                                 new File(phyExamDir, child).delete();
 
-//                                String[] coloumns = {"uuid","image_path"};
-//                                String[] selectionArgs = {phyExamDir.getAbsolutePath() + File.separator + child};
                                 ImagesDAO imagesDAO = new ImagesDAO();
                                 try {
                                     imagesDAO.deleteImageFromDatabase(io.intelehealth.client.utilities.StringUtils.getFileNameWithoutExtensionString(child));
                                 } catch (DAOException e1) {
                                     e1.printStackTrace();
                                 }
-//                                Cursor cursor = localdb.query("tbl_image_records", coloumns, "image_path = ?", selectionArgs, null, null, null);
-//                                if (cursor != null && cursor.moveToFirst()) {
-//                                    String parse_id = cursor.getString(cursor.getColumnIndexOrThrow("image_path"));
-//                                    if (parse_id != null && !parse_id.isEmpty()) {
-//                                        ContentValues contentValues = new ContentValues();
-//                                        contentValues.put("delete_status", 1);
-//                                        String[] whereArgs = {parse_id};
-//                                        localdb.update("image_records", contentValues, "parse_id = ?", whereArgs);
-//                                    } else {
-//                                        localdb.execSQL("DELETE FROM image_records WHERE image_path=" +
-//                                                "'" + phyExamDir.getAbsolutePath() + File.separator + child + "'");
-//                                    }
-//                                }
                             }
                             phyExamDir.delete();
-                            //localdb.close();
                         }
                         Intent intent1 = new Intent(VisitSummaryActivity.this, PhysicalExamActivity.class);
                         intent1.putExtra("patientUuid", patientUuid);
@@ -1593,29 +1596,40 @@ public class VisitSummaryActivity extends AppCompatActivity {
             patHistory.setValue(""); // if medical history does not exist
         }
 //vitals display code
-        String visitSelection = "encounteruuid = ?";
+        String visitSelection = "encounteruuid = ? AND voided!='1'";
         String[] visitArgs = {encounterVitals};
-        Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
-        if (visitCursor.moveToFirst()) {
-            do {
-                String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
-                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                parseData(dbConceptID, dbValue);
-            } while (visitCursor.moveToNext());
+        if (encounterVitals != null) {
+            try {
+                Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+                if (visitCursor != null && visitCursor.moveToFirst()) {
+                    do {
+                        String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                        String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                        parseData(dbConceptID, dbValue);
+                    } while (visitCursor.moveToNext());
+                }
+                visitCursor.close();
+            } catch (SQLException e) {
+                Crashlytics.getInstance().core.logException(e);
+            }
         }
-        visitCursor.close();
 //adult intails display code
-        String encounterselection = "encounteruuid = ? AND conceptuuid != ? AND conceptuuid != ?";
+        String encounterselection = "encounteruuid = ? AND conceptuuid != ? AND conceptuuid != ? AND voided!='1'";
         String[] encounterargs = {encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE};
         Cursor encountercursor = db.query("tbl_obs", columns, encounterselection, encounterargs, null, null, null);
-        if (encountercursor.moveToFirst()) {
-            do {
-                String dbConceptID = encountercursor.getString(encountercursor.getColumnIndex("conceptuuid"));
-                String dbValue = encountercursor.getString(encountercursor.getColumnIndex("value"));
-                parseData(dbConceptID, dbValue);
-            } while (encountercursor.moveToNext());
+        try {
+            if (encountercursor != null && encountercursor.moveToFirst()) {
+                do {
+                    String dbConceptID = encountercursor.getString(encountercursor.getColumnIndex("conceptuuid"));
+                    String dbValue = encountercursor.getString(encountercursor.getColumnIndex("value"));
+                    parseData(dbConceptID, dbValue);
+                } while (encountercursor.moveToNext());
+            }
+            encountercursor.close();
+        } catch (SQLException sql) {
+            Crashlytics.getInstance().core.logException(sql);
         }
-        encountercursor.close();
+
 //    setup the downloaded prescription
 //        downloadPrescription();
         downloadPrescriptionDefault();
@@ -1792,20 +1806,38 @@ public class VisitSummaryActivity extends AppCompatActivity {
      */
 
     private void updateDatabase(String string, String conceptID) {
-        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+//        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+//
+//        ContentValues contentValues = new ContentValues();
+//        contentValues.put("value", string);
+//        contentValues.put("sync", "false");
+//        contentValues.put("modified_date",AppConstants.dateAndTimeUtils.currentDateTime());
+//
+//        String selection = "encounteruuid = ? AND conceptuuid = ?";
+//        String[] args = {encounterAdultIntials, String.valueOf(conceptID)};
+//
+//        int updated = localdb.updateWithOnConflict("tbl_obs", contentValues, selection, args, SQLiteDatabase.CONFLICT_REPLACE);
+//
+//
+        ObsDTO obsDTO = new ObsDTO();
+        ObsDAO obsDAO = new ObsDAO();
+        try {
+            obsDTO.setConceptuuid(String.valueOf(conceptID));
+            obsDTO.setEncounteruuid(encounterAdultIntials);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(string);
+            obsDTO.setUuid(obsDAO.getObsuuid(encounterAdultIntials, String.valueOf(conceptID)));
 
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("value", string);
-        contentValues.put("sync", "false");
+            obsDAO.updateObs(obsDTO);
 
-        String selection = "encounteruuid = ? AND conceptuuid = ?";
-        String[] args = {encounterAdultIntials, String.valueOf(conceptID)};
-
-        int updated = localdb.updateWithOnConflict("tbl_obs", contentValues, selection, args, SQLiteDatabase.CONFLICT_REPLACE);
+        } catch (DAOException dao) {
+            Crashlytics.getInstance().core.logException(dao);
+        }
 
         EncounterDAO encounterDAO = new EncounterDAO();
         try {
             encounterDAO.updateEncounterSync("false", encounterAdultIntials);
+            encounterDAO.updateEncounterModifiedDate(encounterAdultIntials);
         } catch (DAOException e) {
             Crashlytics.getInstance().core.logException(e);
         }
@@ -2010,7 +2042,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (visitsDAO.getDownloadedValue(visitUuid).equalsIgnoreCase("false") && uploaded) {
                 String visitnote = "";
                 EncounterDAO encounterDAO = new EncounterDAO();
-                String encounterIDSelection = "visituuid = ?";
+                String encounterIDSelection = "visituuid = ? ";
                 String[] encounterIDArgs = {visitUuid};
                 Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
                 if (encounterCursor != null && encounterCursor.moveToFirst()) {
@@ -2024,8 +2056,26 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 if (encounterCursor != null) {
                     encounterCursor.close();
                 }
+                if (!diagnosisReturned.isEmpty()) {
+                    diagnosisReturned = "";
+                }
+                if (!rxReturned.isEmpty()) {
+                    rxReturned = "";
+                }
+                if (!adviceReturned.isEmpty()) {
+                    adviceReturned = "";
+                }
+                if (!testsReturned.isEmpty()) {
+                    testsReturned = "";
+                }
+                if (!additionalReturned.isEmpty()) {
+                    additionalReturned = "";
+                }
+                if (!followUpDate.isEmpty()) {
+                    followUpDate = "";
+                }
                 String[] columns = {"value", " conceptuuid"};
-                String visitSelection = "encounteruuid = ? ";
+                String visitSelection = "encounteruuid = ? and voided!='1'";
                 String[] visitArgs = {visitnote};
                 Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
                 if (visitCursor.moveToFirst()) {
@@ -2071,7 +2121,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         encounterCursor.close();
         String[] columns = {"value", " conceptuuid"};
-        String visitSelection = "encounteruuid = ? ";
+        String visitSelection = "encounteruuid = ? and voided!='1' ";
         String[] visitArgs = {visitnote};
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
         if (visitCursor.moveToFirst()) {
@@ -2269,6 +2319,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     public class DownloadPrescriptionService extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+            Logger.logD(TAG, "Download prescription happen" + new SimpleDateFormat("yyyy MM dd_HH mm ss").format(Calendar.getInstance().getTime()));
             downloadPrescriptionDefault();
         }
     }

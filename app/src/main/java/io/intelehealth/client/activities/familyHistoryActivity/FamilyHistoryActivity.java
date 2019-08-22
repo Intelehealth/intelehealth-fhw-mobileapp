@@ -1,6 +1,5 @@
 package io.intelehealth.client.activities.familyHistoryActivity;
 
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,8 +7,6 @@ import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -35,7 +32,10 @@ import io.intelehealth.client.activities.physcialExamActivity.PhysicalExamActivi
 import io.intelehealth.client.activities.visitSummaryActivity.VisitSummaryActivity;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.dao.EncounterDAO;
+import io.intelehealth.client.database.dao.ImagesDAO;
+import io.intelehealth.client.database.dao.ObsDAO;
 import io.intelehealth.client.knowledgeEngine.Node;
+import io.intelehealth.client.models.dto.ObsDTO;
 import io.intelehealth.client.utilities.FileUtils;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UuidDictionary;
@@ -73,11 +73,14 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     SessionManager sessionManager;
     String encounterVitals;
     String encounterAdultIntials;
+    private String imageName = null;
+    private File filePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(this);
         localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        filePath = new File(AppConstants.IMAGE_PATH);
         boolean past = sessionManager.isReturning();
         if (past) {
             AlertDialog.Builder alertdialog = new AlertDialog.Builder(FamilyHistoryActivity.this);
@@ -99,7 +102,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                     String[] columns = {"value", " conceptuuid"};
 
                     try {
-                        String famHistSelection = "encounteruuid = ? AND conceptuuid = ?";
+                        String famHistSelection = "encounteruuid = ? AND conceptuuid = ? AND voided!='1'";
                         String[] famHistArgs = {encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB};
                         Cursor famHistCursor = localdb.query("tbl_obs", columns, famHistSelection, famHistArgs, null, null, null);
                         famHistCursor.moveToLast();
@@ -165,7 +168,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             }
         });
 
-        if (sessionManager.valueContains("licensekey"))
+        if (sessionManager.getLicenseKey() != null && !sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
 
         if (hasLicense) {
@@ -205,10 +208,17 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                     }
                 }
 
-                String imageName = patientUuid + "_" + visitUuid + "_" + image_Prefix;
-                String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-                File filePath = new File(baseDir + File.separator + "Patient Images" + File.separator +
-                        patientUuid + File.separator + visitUuid + File.separator + imageDir);
+//                String imageName = patientUuid + "_" + visitUuid + "_" + image_Prefix;
+//                String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+//                File filePath = new File(baseDir + File.separator + "Patient Images" + File.separator +
+//                        patientUuid + File.separator + visitUuid + File.separator + imageDir);
+
+                if (!filePath.exists()) {
+                    boolean res = filePath.mkdirs();
+                    Log.i("RES>", "" + filePath + " -> " + res);
+                }
+
+                imageName = UUID.randomUUID().toString();
 
                 if (!familyHistoryMap.getOption(groupPosition).getOption(childPosition).isTerminal() &&
                         familyHistoryMap.getOption(groupPosition).getOption(childPosition).isSelected()) {
@@ -259,12 +269,12 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             updateDatabase(insertion);
 
             //making flag to false in the encounter table so it will sync again
-            EncounterDAO encounterDAO = new EncounterDAO();
-            try {
-                encounterDAO.updateEncounterSync("false", encounterAdultIntials);
-            } catch (DAOException e) {
-                Crashlytics.getInstance().core.logException(e);
-            }
+//            EncounterDAO encounterDAO = new EncounterDAO();
+//            try {
+//                encounterDAO.updateEncounterSync("false", encounterAdultIntials);
+//            } catch (DAOException e) {
+//                Crashlytics.getInstance().core.logException(e);
+//            }
             Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientUuid", patientUuid);
             intent.putExtra("visitUuid", visitUuid);
@@ -312,56 +322,96 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 
     }
 
-    public long insertDb(String value) {
+    public boolean insertDb(String value) {
 
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        final String CREATOR_ID = prefs.getString("creatorid", null);// TODO: Connect the proper CREATOR_ID
-
-        final String CONCEPT_ID = UuidDictionary.RHK_FAMILY_HISTORY_BLURB; // RHK FAMILY HISTORY BLURB
-
-        ContentValues complaintEntries = new ContentValues();
+//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+//
+//        final String CREATOR_ID = prefs.getString("creatorid", null);// TODO: Connect the proper CREATOR_ID
+//
+//        final String CONCEPT_ID = UuidDictionary.RHK_FAMILY_HISTORY_BLURB; // RHK FAMILY HISTORY BLURB
+//
+//        ContentValues complaintEntries = new ContentValues();
 
 //        complaintEntries.put("patient_id", patientID);
 //        complaintEntries.put("visit_id", visitID);
-        complaintEntries.put("uuid", UUID.randomUUID().toString());
-        complaintEntries.put("encounteruuid", encounterAdultIntials);
-        complaintEntries.put("value", io.intelehealth.client.utilities.StringUtils.getValue(value));
-        complaintEntries.put("conceptuuid", CONCEPT_ID);
-        complaintEntries.put("creator", CREATOR_ID);
-        complaintEntries.put("sync", "false");
+//        complaintEntries.put("uuid", UUID.randomUUID().toString());
+//        complaintEntries.put("encounteruuid", encounterAdultIntials);
+//        complaintEntries.put("value", io.intelehealth.client.utilities.StringUtils.getValue(value));
+//        complaintEntries.put("conceptuuid", CONCEPT_ID);
+//        complaintEntries.put("creator", CREATOR_ID);
+//        complaintEntries.put("sync", "false");
 
+        ObsDAO obsDAO = new ObsDAO();
+        ObsDTO obsDTO = new ObsDTO();
+        obsDTO.setConceptuuid(UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
+        obsDTO.setEncounteruuid(encounterAdultIntials);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(io.intelehealth.client.utilities.StringUtils.getValue(value));
+        boolean isInserted = false;
+        try {
+            isInserted = obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            Crashlytics.getInstance().core.logException(e);
+        }
 
-        return localdb.insert("tbl_obs", null, complaintEntries);
+        return isInserted;
     }
 
     private void updateImageDatabase(String imagePath) {
 
-        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path,image_type,delete_status) values("
-                + "'" + patientUuid + "'" + ","
-                + visitUuid + ","
-                + "'" + imagePath + "','" + image_Prefix + "'," +
-                0 +
-                ")");
+//        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path,image_type,delete_status) values("
+//                + "'" + patientUuid + "'" + ","
+//                + visitUuid + ","
+//                + "'" + imagePath + "','" + image_Prefix + "'," +
+//                0 +
+//                ")");
+        ImagesDAO imagesDAO = new ImagesDAO();
+
+        try {
+            imagesDAO.insertObsImageDatabase(imageName, encounterAdultIntials, "");
+        } catch (DAOException e) {
+            Crashlytics.getInstance().core.logException(e);
+        }
     }
 
     private void updateDatabase(String string) {
 
-        String conceptID = UuidDictionary.RHK_FAMILY_HISTORY_BLURB;
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("value", string);
-        contentValues.put("sync", "false");
-        String selection = "encounteruuid = ? AND conceptuuid = ?";
-        String[] args = {encounterAdultIntials, conceptID};
+//        String conceptID = UuidDictionary.RHK_FAMILY_HISTORY_BLURB;
+//        ContentValues contentValues = new ContentValues();
+//        contentValues.put("value", string);
+//        contentValues.put("sync", "false");
+//        String selection = "encounteruuid = ? AND conceptuuid = ?";
+//        String[] args = {encounterAdultIntials, conceptID};
+//
+//        localdb.update(
+//                "tbl_obs",
+//                contentValues,
+//                selection,
+//                args
+//        );
+        ObsDTO obsDTO = new ObsDTO();
+        ObsDAO obsDAO = new ObsDAO();
+        try {
+            obsDTO.setConceptuuid(UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
+            obsDTO.setEncounteruuid(encounterAdultIntials);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(string);
+            obsDTO.setUuid(obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB));
 
-        localdb.update(
-                "tbl_obs",
-                contentValues,
-                selection,
-                args
-        );
+            obsDAO.updateObs(obsDTO);
 
+        } catch (DAOException dao) {
+            Crashlytics.getInstance().core.logException(dao);
+        }
+
+        EncounterDAO encounterDAO = new EncounterDAO();
+        try {
+            encounterDAO.updateEncounterSync("false", encounterAdultIntials);
+            encounterDAO.updateEncounterModifiedDate(encounterAdultIntials);
+        } catch (DAOException e) {
+            Crashlytics.getInstance().core.logException(e);
+        }
     }
 
     @Override

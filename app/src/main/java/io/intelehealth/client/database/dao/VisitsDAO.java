@@ -205,7 +205,7 @@ public class VisitsDAO {
         List<VisitDTO> visitDTOList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit where sync = ? OR sync=? COLLATE NOCASE", new String[]{"0", "false"});
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit where (sync = ? OR sync=?) COLLATE NOCASE", new String[]{"0", "false"});
         VisitDTO visitDTO = new VisitDTO();
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {

@@ -5,9 +5,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -23,6 +26,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,9 +59,9 @@ public class SearchPatientActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_patient);
         Toolbar toolbar = findViewById(R.id.toolbar);
 
-//        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),
-//                R.drawable.ic_sort_white_24dp);
-//        toolbar.setOverflowIcon(drawable);
+        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),
+                R.drawable.ic_sort_white_24dp);
+        toolbar.setOverflowIcon(drawable);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -146,6 +151,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         // Inflate the options menu from XMLz
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_search, menu);
+        inflater.inflate(R.menu.today_filter, menu);
 //        inflater.inflate(R.menu.today_filter, menu);
         // Get the SearchView and set the searchable configuration
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -192,7 +198,6 @@ public class SearchPatientActivity extends AppCompatActivity {
             case R.id.action_search:
 
 
-
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -216,8 +221,7 @@ public class SearchPatientActivity extends AppCompatActivity {
     public List<PatientDTO> getAllPatientsFromDB() {
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
         String table = "tbl_patient";
-        final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table +
-                " ORDER BY first_name ASC", null);
+        final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " ORDER BY first_name ASC", null);
 
         if (searchCursor.moveToFirst()) {
             do {
@@ -227,6 +231,7 @@ public class SearchPatientActivity extends AppCompatActivity {
                 model.setLastname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")));
                 model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
                 model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
+                model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
                 modelList.add(model);
             } while (searchCursor.moveToNext());
         }
@@ -356,58 +361,114 @@ public class SearchPatientActivity extends AppCompatActivity {
                 "%' OR openmrs_id LIKE '" + search +
                 "%' OR middle_name LIKE '" + search + "%' " +
                 "ORDER BY first_name ASC", null);
-
-        if (searchCursor.moveToFirst()) {
-            do {
-                PatientDTO model = new PatientDTO();
-                model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
-                model.setFirstname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")));
-                model.setLastname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")));
-                model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
-                model.setMiddlename(searchCursor.getString(searchCursor.getColumnIndexOrThrow("middle_name")));
-                model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
-
-                modelList.add(model);
-            } while (searchCursor.moveToNext());
+        try {
+            if (searchCursor.moveToFirst()) {
+                do {
+                    PatientDTO model = new PatientDTO();
+                    model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
+                    model.setFirstname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")));
+                    model.setLastname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")));
+                    model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
+                    model.setMiddlename(searchCursor.getString(searchCursor.getColumnIndexOrThrow("middle_name")));
+                    model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
+                    model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
+                    model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
+                    modelList.add(model);
+                } while (searchCursor.moveToNext());
+            }
+        } catch (DAOException e) {
+            Crashlytics.getInstance().core.logException(e);
         }
         return modelList;
 
     }
 
     private void doQueryWithProviders(String querytext, List<String> providersuuids) {
-        if (null != querytext && !querytext.isEmpty()) {
+        if (querytext == null) {
+            List<PatientDTO> modelList = new ArrayList<PatientDTO>();
+            String query =
+                    "select  *  " +
+                            "from tbl_encounter a ,tbl_patient b " +
+                            " WHERE a.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
+                            "group by a.uuid order by b.uuid ASC";
+            Logger.logD(TAG, query);
+            final Cursor cursor = db.rawQuery(query, null);
+            Logger.logD(TAG, "Cursour count" + cursor.getCount());
+            try {
+                if (cursor != null) {
+                    if (cursor.moveToFirst()) {
+                        do {
+                            PatientDTO model = new PatientDTO();
+                            model.setOpenmrsId(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                            model.setFirstname(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                            model.setLastname(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                            model.setOpenmrsId(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                            model.setMiddlename(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
+                            model.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                            model.setDateofbirth(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                            model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))));
+                            modelList.add(model);
+
+                        } while (cursor.moveToNext());
+                    }
+                }
+                if (cursor != null) {
+                    cursor.close();
+                }
+
+            } catch (DAOException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                recycler = new SearchPatientAdapter(modelList, SearchPatientActivity.this);
+//            Log.i("db data", "" + getQueryPatients(query));
+                RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
+                recyclerView.setLayoutManager(reLayoutManager);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.setAdapter(recycler);
+
+            } catch (Exception e) {
+                Logger.logE("doquery", "doquery", e);
+            }
+        } else {
             String search = querytext.trim();
             List<PatientDTO> modelList = new ArrayList<PatientDTO>();
             String query =
                     "select  *  " +
                             "from tbl_encounter a ,tbl_patient b " +
-                            "left join tbl_patient_attribute c on c.patientuuid=b.uuid " +
                             " WHERE first_name LIKE " + "'" + search +
                             "%' OR last_name LIKE '" + search +
                             "%' OR openmrs_id LIKE '" + search +
                             "%' OR middle_name LIKE '" + search + "%' " +
                             "AND a.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
-                            "group by b.uuid order by b.uuid ASC";
+                            "group by a.uuid order by b.uuid ASC";
             Logger.logD(TAG, query);
             final Cursor cursor = db.rawQuery(query, null);
+            Logger.logD(TAG, "Cursour count" + cursor.getCount());
+            try {
+                if (cursor != null) {
+                    if (cursor.moveToFirst()) {
+                        do {
+                            PatientDTO model = new PatientDTO();
+                            model.setOpenmrsId(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                            model.setFirstname(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                            model.setLastname(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                            model.setOpenmrsId(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                            model.setMiddlename(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
+                            model.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                            model.setDateofbirth(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                            model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))));
+                            modelList.add(model);
 
-            if (cursor != null) {
-                if (cursor.moveToFirst()) {
-                    do {
-                        PatientDTO model = new PatientDTO();
-                        model.setOpenmrsId(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
-                        model.setFirstname(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
-                        model.setLastname(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
-                        model.setOpenmrsId(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
-                        model.setMiddlename(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
-                        model.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
-
-                        modelList.add(model);
-
-                    } while (cursor.moveToNext());
+                        } while (cursor.moveToNext());
+                    }
                 }
+                cursor.close();
+            } catch (DAOException sql) {
+                Crashlytics.getInstance().core.logException(sql);
             }
-            cursor.close();
+
 
             try {
                 recycler = new SearchPatientAdapter(modelList, SearchPatientActivity.this);
@@ -422,6 +483,26 @@ public class SearchPatientActivity extends AppCompatActivity {
             }
         }
 
+
+    }
+
+    private String phoneNumber(String patientuuid) throws DAOException {
+        String phone = null;
+        Cursor idCursor = db.rawQuery("SELECT value  FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' ", new String[]{patientuuid});
+        try {
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+
+                    phone = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
+
+                }
+            }
+        } catch (SQLException s) {
+            Crashlytics.getInstance().core.logException(s);
+        }
+        idCursor.close();
+
+        return phone;
     }
 
     @Override

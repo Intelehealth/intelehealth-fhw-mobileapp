@@ -2,9 +2,7 @@ package io.intelehealth.client.activities.complaintNodeActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -27,11 +25,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 
 import io.intelehealth.client.R;
@@ -83,17 +78,19 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 //            Log.v(TAG, "Patient Name: " + patientName);
 //            Log.v(TAG, "Intent Tag: " + intentTag);
         }
-        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
-        Date todayDate = new Date();
-        String thisDate = currentDate.format(todayDate);
+//        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+//        Date todayDate = new Date();
+//        String thisDate = currentDate.format(todayDate);
         if (encounterAdultIntials.equalsIgnoreCase("") || encounterAdultIntials == null) {
             encounterAdultIntials = UUID.randomUUID().toString();
+
         }
+
         EncounterDAO encounterDAO = new EncounterDAO();
         encounterDTO = new EncounterDTO();
         encounterDTO.setUuid(encounterAdultIntials);
         encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL"));
-        encounterDTO.setEncounterTime(thisDate);
+        encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
         encounterDTO.setVisituuid(visitUuid);
         encounterDTO.setSyncd(false);
         encounterDTO.setProvideruuid(sessionManager.getProviderID());
@@ -130,9 +127,10 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         complaints = new ArrayList<>();
 
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         boolean hasLicense = false;
-        if (sharedPreferences.contains("licensekey")) hasLicense = true;
+        if (sessionManager.getLicenseKey() != null && !sessionManager.getLicenseKey().isEmpty())
+            hasLicense = true;
         JSONObject currentFile = null;
         if (hasLicense) {
             File base_dir = new File(getFilesDir().getAbsolutePath() + File.separator + AppConstants.JSON_FOLDER);

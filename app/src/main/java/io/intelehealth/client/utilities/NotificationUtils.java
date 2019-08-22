@@ -10,7 +10,7 @@ import io.intelehealth.client.R;
 public class NotificationUtils {
 
 
-    private String channelId = "intelehealth";
+    private String channelId = "1";
     private String channelName = "intelehealth";
     private int mId = 1;
     Context context;

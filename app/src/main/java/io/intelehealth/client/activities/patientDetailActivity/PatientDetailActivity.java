@@ -766,7 +766,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         String visitSelection = "patientuuid = ?";
         String[] visitArgs = {patientuuid};
         String[] visitColumns = {"uuid, startdate", "enddate"};
-        String visitOrderBy = "uuid";
+        String visitOrderBy = "startdate";
         Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
 
         previousVisitsList = findViewById(R.id.linearLayout_previous_visits);

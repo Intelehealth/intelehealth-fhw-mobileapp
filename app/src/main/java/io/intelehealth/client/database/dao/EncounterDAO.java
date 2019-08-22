@@ -120,7 +120,7 @@ public class EncounterDAO {
         List<EncounterDTO> encounterDTOList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where sync = ? OR sync=?  COLLATE NOCASE ORDER BY voided ASC", new String[]{"false", "0"});
+        Cursor idCursor = db.rawQuery("SELECT distinct a.uuid,a.visituuid,a.encounter_type_uuid,a.provider_uuid,a.encounter_time,a.voided,a.privacynotice_value FROM tbl_encounter a,tbl_obs b where (a.sync = ? OR a.sync=?) and a.uuid = b.encounteruuid  and b.sync='false' AND b.voided='0' ", new String[]{"false", "0"});
         EncounterDTO encounterDTO = new EncounterDTO();
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
@@ -211,7 +211,7 @@ public class EncounterDAO {
             ObsDTO obsDTO = new ObsDTO();
             ObsDAO obsDAO = new ObsDAO();
             obsDTO.setConceptuuid(UuidDictionary.EMERGENCY_OBS);
-            obsDTO.setCreator(1);
+            obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setUuid(UUID.randomUUID().toString());
             obsDTO.setEncounteruuid(encounteruuid);
             obsDTO.setValue("emergency");
@@ -271,6 +271,32 @@ public class EncounterDAO {
 
         }
         return isEmergency;
+    }
+
+    public boolean updateEncounterModifiedDate(String encounterUuid) throws DAOException {
+        boolean isUpdated = true;
+        Logger.logD("encounterdao", "update encounter date and time" + encounterUuid + "" + AppConstants.dateAndTimeUtils.currentDateTime());
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+        String whereclause = "uuid=?";
+        String[] whereargs = {encounterUuid};
+        try {
+            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("encounter_time", AppConstants.dateAndTimeUtils.currentDateTime());
+            int i = db.update("tbl_encounter", values, whereclause, whereargs);
+            Logger.logD(tag, "updated" + i);
+            db.setTransactionSuccessful();
+        } catch (SQLException sql) {
+            Logger.logD(tag, "updated" + sql.getMessage());
+            throw new DAOException(sql.getMessage());
+        } finally {
+            db.endTransaction();
+
+
+        }
+
+        return isUpdated;
     }
 
 

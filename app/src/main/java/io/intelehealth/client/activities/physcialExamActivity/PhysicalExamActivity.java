@@ -1,17 +1,13 @@
 package io.intelehealth.client.activities.physcialExamActivity;
 
 import android.app.Activity;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -46,9 +42,12 @@ import java.util.UUID;
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.visitSummaryActivity.VisitSummaryActivity;
 import io.intelehealth.client.app.AppConstants;
+import io.intelehealth.client.database.dao.EncounterDAO;
 import io.intelehealth.client.database.dao.ImagesDAO;
+import io.intelehealth.client.database.dao.ObsDAO;
 import io.intelehealth.client.knowledgeEngine.Node;
 import io.intelehealth.client.knowledgeEngine.PhysicalExam;
+import io.intelehealth.client.models.dto.ObsDTO;
 import io.intelehealth.client.utilities.FileUtils;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.StringUtils;
@@ -127,14 +126,13 @@ public class PhysicalExamActivity extends AppCompatActivity {
 //            Log.v(TAG, "Visit ID: " + visitID);
 //            Log.v(TAG, "Patient Name: " + patientName);
 //            Log.v(TAG, "Intent Tag: " + intentTag);
-            SharedPreferences mSharedPreference = this.getSharedPreferences(
-                    "visit_summary", Context.MODE_PRIVATE);
-            Set<String> selectedExams = mSharedPreference.getStringSet("exam_" + patientUuid, null);
+//            SharedPreferences mSharedPreference = this.getSharedPreferences(
+//                    "visit_summary", Context.MODE_PRIVATE);
+            Set<String> selectedExams = sessionManager.getVisitSummary(patientUuid);
             selectedExamsList.clear();
             if (selectedExams != null) selectedExamsList.addAll(selectedExams);
             filePath = new File(AppConstants.IMAGE_PATH);
         }
-
 
 
         if ((selectedExamsList == null) || selectedExamsList.isEmpty()) {
@@ -147,7 +145,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
             Log.d(TAG, selectedExamsList.toString());
             for (String string : selectedExamsList) Log.d(TAG, string);
 
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             boolean hasLicense = false;
             if (sessionManager.getLicenseKey() != null && !sessionManager.getLicenseKey().isEmpty())
                 hasLicense = true;
@@ -238,7 +235,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                         // intent.putStringArrayListExtra("exams", selectedExamsList);
                         startActivity(intent);
                     } else {
-                        long obsId = insertDb(physicalString);
+                        boolean obsId = insertDb(physicalString);
                         Intent intent1 = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class); // earlier visitsummary
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
@@ -269,25 +266,37 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
     }
 
-    private long insertDb(String value) {
+    private boolean insertDb(String value) {
         Log.i(TAG, "insertDb: ");
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        final String CREATOR_ID = prefs.getString("creatorid", null);
+//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+//        final String CREATOR_ID = prefs.getString("creatorid", null);
 
-        final String CONCEPT_ID = UuidDictionary.PHYSICAL_EXAMINATION; // RHK ON EXAM
+//        final String CONCEPT_ID = UuidDictionary.PHYSICAL_EXAMINATION; // RHK ON EXAM
 
-        ContentValues complaintEntries = new ContentValues();
+//        ContentValues complaintEntries = new ContentValues();
 
 //        complaintEntries.put("patient_id", patientUuid);
 //        complaintEntries.put("visit_id", visitUuid);
-        complaintEntries.put("uuid", UUID.randomUUID().toString());
-        complaintEntries.put("encounteruuid", encounterAdultIntials);
-        complaintEntries.put("creator", CREATOR_ID);
-        complaintEntries.put("value", StringUtils.getValue(value));
-        complaintEntries.put("conceptuuid", CONCEPT_ID);
+//        complaintEntries.put("uuid", UUID.randomUUID().toString());
+//        complaintEntries.put("encounteruuid", encounterAdultIntials);
+//        complaintEntries.put("creator", CREATOR_ID);
+//        complaintEntries.put("value", StringUtils.getValue(value));
+//        complaintEntries.put("conceptuuid", CONCEPT_ID);
+        ObsDAO obsDAO = new ObsDAO();
+        ObsDTO obsDTO = new ObsDTO();
+        obsDTO.setConceptuuid(UuidDictionary.PHYSICAL_EXAMINATION);
+        obsDTO.setEncounteruuid(encounterAdultIntials);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(StringUtils.getValue(value));
+        boolean isInserted = false;
+        try {
+            isInserted = obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            Crashlytics.getInstance().core.logException(e);
+        }
 
-        return localdb.insert("tbl_obs", null, complaintEntries);
+        return isInserted;
     }
 
     /**
@@ -324,21 +333,44 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
     private void updateDatabase(String string) {
 
-        String conceptID = UuidDictionary.PHYSICAL_EXAMINATION;
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("value", string);
-        String selection = "encounteruuid = ? AND conceptuuid = ?";
-        String[] args = {encounterAdultIntials, conceptID};
+//        String conceptID = UuidDictionary.PHYSICAL_EXAMINATION;
+//        ContentValues contentValues = new ContentValues();
+//        contentValues.put("value", string);
+//        String selection = "encounteruuid = ? AND conceptuuid = ?";
+//        String[] args = {encounterAdultIntials, conceptID};
+//
+//        int i = localdb.update(
+//                "tbl_obs",
+//                contentValues,
+//                selection,
+//                args
+//        );
+//        Log.i(TAG, "updateDatabase: " + i);
+//        if (i == 0) {
+//            insertDb(string);
+//        }
 
-        int i = localdb.update(
-                "tbl_obs",
-                contentValues,
-                selection,
-                args
-        );
-        Log.i(TAG, "updateDatabase: " + i);
-        if (i == 0) {
-            insertDb(string);
+        ObsDTO obsDTO = new ObsDTO();
+        ObsDAO obsDAO = new ObsDAO();
+        try {
+            obsDTO.setConceptuuid(UuidDictionary.PHYSICAL_EXAMINATION);
+            obsDTO.setEncounteruuid(encounterAdultIntials);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(string);
+            obsDTO.setUuid(obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.PHYSICAL_EXAMINATION));
+
+            obsDAO.updateObs(obsDTO);
+
+        } catch (DAOException dao) {
+            Crashlytics.getInstance().core.logException(dao);
+        }
+
+        EncounterDAO encounterDAO = new EncounterDAO();
+        try {
+            encounterDAO.updateEncounterSync("false", encounterAdultIntials);
+            encounterDAO.updateEncounterModifiedDate(encounterAdultIntials);
+        } catch (DAOException e) {
+            Crashlytics.getInstance().core.logException(e);
         }
     }
 

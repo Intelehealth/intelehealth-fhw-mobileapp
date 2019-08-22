@@ -9,6 +9,7 @@ import org.joda.time.PeriodType;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -46,6 +47,13 @@ public class DateAndTimeUtils {
         Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
 
         return period.getYears();
+    }
+
+    public static String getSubtractedPulledExcutedTime(String lastPulledTime) {
+        Calendar now = Calendar.getInstance();
+
+
+        return "";
     }
 
     public static String getFormatedDateOfBirth(String oldformatteddate){

@@ -96,7 +96,8 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "modified_date TEXT," +
             "isdownloaded TEXT DEFAULT 'false'," +
             "voided TEXT DEFAULT '0'," +
-            "sync TEXT DEFAULT 'false' " +
+            "sync TEXT DEFAULT 'false' ," +
+            "issubmitted Integer DEFAULT 0 " +
             ")";
 
     /*
@@ -115,6 +116,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "creator TEXT," +
             "voided TEXT DEFAULT '0'," +
             "modified_date TEXT," +
+            "created_date TEXT DEFAULT CURRENT_TIMESTAMP ," +
             "sync TEXT DEFAULT 'false' " +
             ")";
     SessionManager sessionManager = null;

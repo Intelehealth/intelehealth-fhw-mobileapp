@@ -2,7 +2,6 @@ package io.intelehealth.client.activities.patientSurveyActivity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -204,13 +203,17 @@ public class PatientSurveyActivity extends AppCompatActivity {
             Crashlytics.getInstance().core.logException(e);
 
         }
+
         PullDataDAO pullDataDAO = new PullDataDAO();
         pullDataDAO.pushDataApi();
 
         AppConstants.notificationUtils.DownloadDone("End visit", "Visit ended", PatientSurveyActivity.this);
-        SharedPreferences.Editor editor = context.getSharedPreferences(patientUuid + "_" + visitUuid, MODE_PRIVATE).edit();
-        editor.remove("exam_" + patientUuid + "_" + visitUuid);
-        editor.commit();
+
+//        SharedPreferences.Editor editor = context.getSharedPreferences(patientUuid + "_" + visitUuid, MODE_PRIVATE).edit();
+        sessionManager.removeVisitSummary(patientUuid, visitUuid);
+//        editor.remove("exam_" + patientUuid + "_" + visitUuid);
+//        editor.commit();
+
         Intent i = new Intent(this, HomeActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);

@@ -114,7 +114,7 @@ public class ObsDAO {
 //            values.put("value", obsDTOS.getValue());
 //            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
 //            values.put("voided", obsDTOS.getVoided());
-//            values.put("synced", "TRUE");
+//            values.put("synced", "false");
 ////                Logger.logD("pulldata", "datadumper" + values);
 //            updatecount = db.updateWithOnConflict("tbl_obs", values, selection, new String[]{obsDTOS.getUuid()}, SQLiteDatabase.CONFLICT_REPLACE);
 ////            }
@@ -145,7 +145,7 @@ public class ObsDAO {
             values.put("conceptuuid", obsDTO.getConceptuuid());
             values.put("value", obsDTO.getValue());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-            values.put("voided", "");
+            values.put("voided", "0");
             values.put("sync", "false");
             insertedCount = db.insert("tbl_obs", null, values);
 
@@ -177,7 +177,7 @@ public class ObsDAO {
             values.put("conceptuuid", obsDTO.getConceptuuid());
             values.put("value", obsDTO.getValue());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-            values.put("voided", "");
+            values.put("voided", "0");
             values.put("sync", "FALSE");
             insertedCount = db.insert("tbl_obs", null, values);
             if (insertedCount != 0)
@@ -211,7 +211,7 @@ public class ObsDAO {
             values.put("conceptuuid", obsDTO.getConceptuuid());
             values.put("value", obsDTO.getValue());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-            values.put("voided", "");
+            values.put("voided", "0");
             values.put("sync", "false");
 
             updatedCount = db.update("tbl_obs", values, selection, new String[]{obsDTO.getUuid()});
@@ -224,7 +224,7 @@ public class ObsDAO {
             db.endTransaction();
 
         }
-        //If no value is not found, then update fails so insert instead.
+//        If no value is not found, then update fails so insert instead.
         if (updatedCount == 0) {
             try {
                 insertObs(obsDTO);
@@ -252,7 +252,7 @@ public class ObsDAO {
                 values.put("conceptuuid", ob.getConceptuuid());
                 values.put("value", ob.getValue());
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-                values.put("voided", "");
+                values.put("voided", "0");
                 values.put("sync", "FALSE");
                 insertedCount = db.insert("tbl_obs", null, values);
             }
@@ -275,7 +275,7 @@ public class ObsDAO {
         List<ObsDTO> obsDTOList = new ArrayList<>();
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         //take All obs except image obs
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND (conceptuuid != ? AND conceptuuid != ?)", new String[]{encounteruuid, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE});
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND (conceptuuid != ? AND conceptuuid != ?) AND voided='0' AND sync='false'", new String[]{encounteruuid, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE});
         ObsDTO obsDTO = new ObsDTO();
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
@@ -306,5 +306,29 @@ public class ObsDAO {
 
         return rawStrings;
     }
+
+    public String getObsuuid(String encounterUuid, String conceptUuid) throws DAOException {
+        String obsuuid = null;
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor obsCursoursor = db.rawQuery("Select uuid from tbl_obs where conceptuuid=? and encounteruuid=? and voided='0' order by created_date desc limit 1 ", new String[]{conceptUuid, encounterUuid});
+        try {
+            if (obsCursoursor.getCount() != 0) {
+                while (obsCursoursor.moveToNext()) {
+                    obsuuid = obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("uuid"));
+                }
+
+            }
+        } catch (SQLException sql) {
+            Crashlytics.getInstance().core.logException(sql);
+            throw new DAOException(sql);
+        } finally {
+            obsCursoursor.close();
+        }
+
+
+        return obsuuid;
+    }
+
+
 
 }

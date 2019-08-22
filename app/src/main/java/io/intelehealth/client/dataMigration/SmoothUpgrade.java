@@ -316,7 +316,7 @@ public class SmoothUpgrade {
                     ObsDTO.setConceptuuid(convertConcepttoUuid(cursor.getString(cursor.getColumnIndexOrThrow("concept_id"))));
                     ObsDTO.setValue(cursor.getString(cursor.getColumnIndexOrThrow("value")));
                     ObsDTO.setEncounteruuid(encounterUuid);
-                    ObsDTO.setCreator(4);
+                    ObsDTO.setCreator(sessionManager.getCreatorID());
 
                     try {
                         obsDAO.insertObs(ObsDTO);
@@ -407,7 +407,6 @@ public class SmoothUpgrade {
         arr.add("5092AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
 
-        ArrayList<String> arr1 = new ArrayList<String>();
 
 
         if (arr.contains(encountertype)) {
