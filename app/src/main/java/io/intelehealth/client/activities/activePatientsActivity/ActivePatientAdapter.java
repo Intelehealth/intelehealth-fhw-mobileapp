@@ -49,7 +49,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         final ActivePatientModel activePatientModel = activePatientModels.get(position);
         String header;
         if (activePatientModel.getOpenmrs_id() != null) {
-            header = String.format("%s %s - " + context.getString(R.string.visit_summary_heading_id) + ": %s", activePatientModel.getFirst_name(),
+            header = String.format("%s %s, %s", activePatientModel.getFirst_name(),
                     activePatientModel.getLast_name(), activePatientModel.getOpenmrs_id());
         } else {
             header = String.format("%s %s", activePatientModel.getFirst_name(),
@@ -57,11 +57,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         }
         int age = DateAndTimeUtils.getAge(activePatientModel.getDate_of_birth());
         String dob = DateAndTimeUtils.SimpleDatetoLongDate(activePatientModel.getDate_of_birth());
-        String body = String.format(context.getString(R.string.id_number) + ": %s \n " +
-                        context.getString(R.string.identification_screen_prompt_phone_number) + ": %s\n" +
-                        context.getString(R.string.identification_screen_prompt_birthday) +
-                        ": %s (" + context.getString(R.string.identification_screen_prompt_age) + " %d)", activePatientModel.getOpenmrs_id(), activePatientModel.getPhone_number(),
-                dob, age);
+        String body = String.format(context.getString(R.string.identification_screen_prompt_age) + " %d yrs", age);
 
 //        holder.listItemActivePatientBinding.listItemHeadTextView.setText(header);
 //        holder.listItemActivePatientBinding.listItemBodyTextView.setText(body);
