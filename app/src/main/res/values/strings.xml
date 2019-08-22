@@ -57,7 +57,7 @@
     <string name="permission_rationale" translatable="false">"Contacts permissions are needed for providing email completions."
     </string>
     <string name="device_id" translatable="false">Device ID:</string>
-    <string name="enter_license_key" translatable="false">Enter License Key</string>
+    <string name="enter_license_key" translatable="false">&lt;b>Enter license key&lt;/b></string>
 
     <string name="cant_login_user" translatable="false">Can\'t log in ?</string>
     <string name="email_link" translatable="false">Please contact your System Administrator to reset your password or send an email to support@intelehealth.io</string>
@@ -270,7 +270,7 @@
     <string name="permission_camera_never_askagain" translatable="false">Camera permission was denied with never ask again.</string>
     <string name="button_allow" translatable="false">Allow</string>
     <string name="button_deny" translatable="false">Deny</string>
-    <string name="button_ok" translatable="false">Ok</string>
+    <string name="button_ok" translatable="false">OK</string>
     <string name="button_cancel" translatable="false">Cancel</string>
     <string name="picture_taken" translatable="false">Picture taken</string>
     <string name="switch_flash" translatable="false">Switch flash</string>

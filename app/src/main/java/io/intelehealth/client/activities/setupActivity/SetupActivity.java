@@ -7,12 +7,14 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -364,7 +366,7 @@ public class SetupActivity extends AppCompatActivity {
                     AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                     LayoutInflater li = LayoutInflater.from(this);
                     View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
-                    dialog.setTitle(getString(R.string.enter_license_key))
+                    dialog.setTitle(Html.fromHtml(getString(R.string.enter_license_key)))
                             .setView(promptsView)
 
                             .setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
@@ -409,9 +411,11 @@ public class SetupActivity extends AppCompatActivity {
 
                     // Change the alert dialog buttons text and background color
                     positiveButton.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                    positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
 
                     negativeButton.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-
+                    negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
                 }
                 break;
