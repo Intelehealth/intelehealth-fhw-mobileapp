@@ -202,7 +202,8 @@
                         android:text="@string/action_sign_in"
                         android:textStyle="bold"
                         android:background="@color/colorPrimary"
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/white"
+                        android:foreground="?android:attr/selectableItemBackground"/>
 
                     <Space
                         android:layout_width="match_parent"
