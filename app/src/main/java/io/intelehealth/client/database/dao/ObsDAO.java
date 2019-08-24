@@ -80,6 +80,7 @@ public class ObsDAO {
             values.put("creator", obsDTOS.getCreator());
             values.put("conceptuuid", obsDTOS.getConceptuuid());
             values.put("value", obsDTOS.getValue());
+            values.put("obsservermodifieddate", obsDTOS.getObsServerModifiedDate());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("voided", obsDTOS.getVoided());
             values.put("sync", "TRUE");
@@ -310,7 +311,7 @@ public class ObsDAO {
     public String getObsuuid(String encounterUuid, String conceptUuid) throws DAOException {
         String obsuuid = null;
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        Cursor obsCursoursor = db.rawQuery("Select uuid from tbl_obs where conceptuuid=? and encounteruuid=? and voided='0' order by created_date desc limit 1 ", new String[]{conceptUuid, encounterUuid});
+        Cursor obsCursoursor = db.rawQuery("Select uuid from tbl_obs where conceptuuid=? and encounteruuid=? and voided='0' order by created_date,obsservermodifieddate desc limit 1 ", new String[]{conceptUuid, encounterUuid});
         try {
             if (obsCursoursor.getCount() != 0) {
                 while (obsCursoursor.moveToNext()) {

@@ -137,6 +137,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
         if ((selectedExamsList == null) || selectedExamsList.isEmpty()) {
             Log.d(TAG, "No additional exams were triggered");
+            physicalExamMap = new PhysicalExam(FileUtils.encodeJSON(this, mFileName), selectedExamsList);
         } else {
             Set<String> selectedExamsWithoutDuplicates = new LinkedHashSet<>(selectedExamsList);
             Log.d(TAG, selectedExamsList.toString());

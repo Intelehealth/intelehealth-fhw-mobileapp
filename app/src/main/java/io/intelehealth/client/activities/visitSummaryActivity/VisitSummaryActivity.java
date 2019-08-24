@@ -66,6 +66,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -175,7 +176,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String medHistory;
     String baseDir;
     String filePathPhyExam;
-    File phyExamDir;
+    File obsImgdir;
 
     NotificationManager mNotificationManager;
     NotificationCompat.Builder mBuilder;
@@ -229,7 +230,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     SessionManager sessionManager;
     String encounterUuid;
     String encounterVitals;
-    String encounterAdultIntials;
+    String encounterUuidAdultIntial;
 
     ProgressBar mProgressBar;
     TextView mProgressText;
@@ -362,7 +363,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
-            encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
+            encounterUuidAdultIntial = intent.getStringExtra("encounterUuidAdultIntial");
             mSharedPreference = this.getSharedPreferences(
                     "visit_summary", Context.MODE_PRIVATE);
             patientName = intent.getStringExtra("name");
@@ -440,7 +441,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //        filePathPhyExam = baseDir + File.separator + "Patient Images" + File.separator + patientUuid + File.separator +
 //                visitUuid + File.separator + physicalExamDocumentDir;
 
-        phyExamDir = new File(AppConstants.IMAGE_PATH);
+        obsImgdir = new File(AppConstants.IMAGE_PATH);
 
         flag = findViewById(R.id.flaggedcheckbox);
 //        EncounterDAO encounterDAO = new EncounterDAO();
@@ -734,7 +735,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 intent1.putExtra("patientUuid", patientUuid);
                 intent1.putExtra("visitUuid", visitUuid);
                 intent1.putExtra("encounterUuidVitals", encounterVitals);
-                intent1.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                 intent1.putExtra("name", patientName);
                 //   intent.putStringArrayListExtra("exams", physicalExams);
                 intent1.putExtra("tag", "edit");
@@ -805,7 +806,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("encounterUuidVitals", encounterVitals);
-                        intent1.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("tag", "edit");
                         startActivity(intent1);
@@ -869,27 +870,26 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Deleting the old image in physcial examination
-                        if (phyExamDir.exists()) {
-                            String[] children = phyExamDir.list();
-                            String[] childList = children;
-                            for (String child : childList) {
-                                new File(phyExamDir, child).delete();
+                        if (obsImgdir.exists()) {
+                            ImagesDAO imagesDAO = new ImagesDAO();
 
-                                ImagesDAO imagesDAO = new ImagesDAO();
-                                try {
-                                    imagesDAO.deleteImageFromDatabase(io.intelehealth.client.utilities.StringUtils.getFileNameWithoutExtensionString(child));
-                                } catch (DAOException e1) {
-                                    e1.printStackTrace();
+                            try {
+                                List<String> imageList = imagesDAO.getImages(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
+                                for (String obsImageUuid : imageList) {
+                                    String imageName = obsImageUuid + ".jpg";
+                                    new File(obsImgdir, imageName).deleteOnExit();
                                 }
+                                imagesDAO.deleteConceptImages(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
+                            } catch (DAOException e1) {
+                                Crashlytics.getInstance().core.logException(e1);
                             }
-                            phyExamDir.delete();
                         }
 
                         Intent intent1 = new Intent(VisitSummaryActivity.this, ComplaintNodeActivity.class);
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("encounterUuidVitals", encounterVitals);
-                        intent1.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("tag", "edit");
                         startActivity(intent1);
@@ -960,26 +960,40 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 physicalDialog.setNegativeButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if (phyExamDir.exists()) {
-                            String[] children = phyExamDir.list();
-                            String[] childList = children;
-                            for (String child : childList) {
-                                new File(phyExamDir, child).delete();
+                        if (obsImgdir.exists()) {
+//                            String[] children = obsImgdir.list();
+                            ImagesDAO imagesDAO = new ImagesDAO();
 
-                                ImagesDAO imagesDAO = new ImagesDAO();
-                                try {
-                                    imagesDAO.deleteImageFromDatabase(io.intelehealth.client.utilities.StringUtils.getFileNameWithoutExtensionString(child));
-                                } catch (DAOException e1) {
-                                    e1.printStackTrace();
+                            try {
+                                List<String> imageList = imagesDAO.getImages(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
+                                for (String obsImageUuid : imageList) {
+                                    String imageName = obsImageUuid + ".jpg";
+                                    new File(obsImgdir, imageName).deleteOnExit();
                                 }
+                                imagesDAO.deleteConceptImages(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
+                            } catch (DAOException e1) {
+                                Crashlytics.getInstance().core.logException(e1);
                             }
-                            phyExamDir.delete();
+
+//                            String[] childList = children;
+//                            for (String child : childList) {
+//                                new File(obsImgdir, child).delete();
+//
+//                                ImagesDAO imagesDAO = new ImagesDAO();
+//im
+//                                try {
+//                                    imagesDAO.deleteImageFromDatabase(io.intelehealth.client.utilities.StringUtils.getFileNameWithoutExtensionString(child));
+//                                } catch (DAOException e1) {
+//                                    e1.printStackTrace();
+//                                }
+//                            }
+//                            obsImgdir.delete();
                         }
                         Intent intent1 = new Intent(VisitSummaryActivity.this, PhysicalExamActivity.class);
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("encounterUuidVitals", encounterVitals);
-                        intent1.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("tag", "edit");
                         //    intent1.putStringArrayListExtra("exams", physicalExams);
@@ -1056,7 +1070,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("encounterUuidVitals", encounterVitals);
-                        intent1.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("tag", "edit");
                         startActivity(intent1);
@@ -1082,7 +1096,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 addDocs.putExtra("patientUuid", patientUuid);
                 addDocs.putExtra("visitUuid", visitUuid);
                 addDocs.putExtra("encounterUuidVitals", encounterVitals);
-                addDocs.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                addDocs.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                 startActivity(addDocs);
             }
         });
@@ -1139,7 +1153,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         ArrayList<String> fileuuidList = new ArrayList<String>();
         ArrayList<File> fileList = new ArrayList<File>();
         try {
-            fileuuidList = imagesDAO.getImageUuid(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_PE);
+            fileuuidList = imagesDAO.getImageUuid(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
             for (String fileuuid : fileuuidList) {
                 String filename = AppConstants.IMAGE_PATH + fileuuid + ".jpg";
                 if (new File(filename).exists()) {
@@ -1155,11 +1169,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         } catch (Exception file) {
             Logger.logD(TAG, file.getMessage());
         }
-//        if (!phyExamDir.exists()) {
-//            phyExamDir.mkdirs();
-//            Log.v(TAG, "directory ceated " + phyExamDir.getAbsolutePath());
+//        if (!obsImgdir.exists()) {
+//            obsImgdir.mkdirs();
+//            Log.v(TAG, "directory ceated " + obsImgdir.getAbsolutePath());
 //        } else {
-//            File[] files = phyExamDir.listFiles();
+//            File[] files = obsImgdir.listFiles();
 //            List<File> fileList = Arrays.asList(files);
 //            HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
 //            mPhysicalExamsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
@@ -1174,7 +1188,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         intent.putExtra("patientUuid", patientUuid);
         intent.putExtra("visitUuid", visitUuid);
         intent.putExtra("encounterUuidVitals", encounterVitals);
-        intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+        intent.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
         intent.putExtra("ImageType", imageType);
         startService(intent);
 
@@ -1443,7 +1457,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent.putExtra("patientUuid", patientUuid);
                         intent.putExtra("visitUuid", visitUuid);
                         intent.putExtra("encounterUuidVitals", encounterVitals);
-                        intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                        intent.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent.putExtra("state", state);
                         intent.putExtra("name", patientName);
                         intent.putExtra("tag", intentTag);
@@ -1457,7 +1471,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 intent.putExtra("patientUuid", patientUuid);
                 intent.putExtra("visitUuid", visitUuid);
                 intent.putExtra("encounterUuidVitals", encounterVitals);
-                intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                intent.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                 intent.putExtra("state", state);
                 intent.putExtra("name", patientName);
                 intent.putExtra("tag", intentTag);
@@ -1560,7 +1574,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         try {
             String famHistSelection = "encounteruuid = ? AND conceptuuid = ?";
-            String[] famHistArgs = {encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB};
+            String[] famHistArgs = {encounterUuidAdultIntial, UuidDictionary.RHK_FAMILY_HISTORY_BLURB};
             Cursor famHistCursor = db.query("tbl_obs", columns, famHistSelection, famHistArgs, null, null, null);
             famHistCursor.moveToLast();
             String famHistText = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
@@ -1573,7 +1587,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         try {
             String medHistSelection = "encounteruuid = ? AND conceptuuid = ?";
 
-            String[] medHistArgs = {encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
+            String[] medHistArgs = {encounterUuidAdultIntial, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
 
             Cursor medHistCursor = db.query("tbl_obs", columns, medHistSelection, medHistArgs, null, null, null);
             medHistCursor.moveToLast();
@@ -1615,7 +1629,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 //adult intails display code
         String encounterselection = "encounteruuid = ? AND conceptuuid != ? AND conceptuuid != ? AND voided!='1'";
-        String[] encounterargs = {encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE};
+        String[] encounterargs = {encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE};
         Cursor encountercursor = db.query("tbl_obs", columns, encounterselection, encounterargs, null, null, null);
         try {
             if (encountercursor != null && encountercursor.moveToFirst()) {
@@ -1814,7 +1828,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //        contentValues.put("modified_date",AppConstants.dateAndTimeUtils.currentDateTime());
 //
 //        String selection = "encounteruuid = ? AND conceptuuid = ?";
-//        String[] args = {encounterAdultIntials, String.valueOf(conceptID)};
+//        String[] args = {encounterUuidAdultIntial, String.valueOf(conceptID)};
 //
 //        int updated = localdb.updateWithOnConflict("tbl_obs", contentValues, selection, args, SQLiteDatabase.CONFLICT_REPLACE);
 //
@@ -1823,10 +1837,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         ObsDAO obsDAO = new ObsDAO();
         try {
             obsDTO.setConceptuuid(String.valueOf(conceptID));
-            obsDTO.setEncounteruuid(encounterAdultIntials);
+            obsDTO.setEncounteruuid(encounterUuidAdultIntial);
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(string);
-            obsDTO.setUuid(obsDAO.getObsuuid(encounterAdultIntials, String.valueOf(conceptID)));
+            obsDTO.setUuid(obsDAO.getObsuuid(encounterUuidAdultIntial, String.valueOf(conceptID)));
 
             obsDAO.updateObs(obsDTO);
 
@@ -1836,8 +1850,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         EncounterDAO encounterDAO = new EncounterDAO();
         try {
-            encounterDAO.updateEncounterSync("false", encounterAdultIntials);
-            encounterDAO.updateEncounterModifiedDate(encounterAdultIntials);
+            encounterDAO.updateEncounterSync("false", encounterUuidAdultIntial);
+            encounterDAO.updateEncounterModifiedDate(encounterUuidAdultIntial);
         } catch (DAOException e) {
             Crashlytics.getInstance().core.logException(e);
         }
@@ -1872,7 +1886,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         ArrayList<String> fileuuidList = new ArrayList<String>();
         ArrayList<File> fileList = new ArrayList<File>();
         try {
-            fileuuidList = imagesDAO.getImageUuid(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD);
+            fileuuidList = imagesDAO.getImageUuid(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD);
             for (String fileuuid : fileuuidList) {
                 String filename = AppConstants.IMAGE_PATH + fileuuid + ".jpg";
                 if (new File(filename).exists()) {

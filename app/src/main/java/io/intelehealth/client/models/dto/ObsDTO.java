@@ -18,6 +18,9 @@ public class ObsDTO {
     @SerializedName("value")
     @Expose
     private String value;
+    @SerializedName("obsServerModifiedDate")
+    @Expose
+    private String obsServerModifiedDate;
     @SerializedName("creator")
     @Expose
     private String creator;
@@ -73,4 +76,11 @@ public class ObsDTO {
         this.voided = voided;
     }
 
+    public String getObsServerModifiedDate() {
+        return obsServerModifiedDate;
+    }
+
+    public void setObsServerModifiedDate(String obsServerModifiedDate) {
+        this.obsServerModifiedDate = obsServerModifiedDate;
+    }
 }

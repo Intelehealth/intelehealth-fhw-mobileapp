@@ -2,6 +2,7 @@ package io.intelehealth.client.database.dao;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
@@ -70,36 +71,49 @@ public class ImagesDAO {
         return true;
     }
 
-    public boolean deleteImageFromDatabase(String uuid) throws DAOException {
+    public boolean deleteConceptImages(String encounterUuid, String conceptUuid) throws DAOException {
         boolean isDeleted = false;
         int updateDeltedRows = 0;
-        Logger.logD(TAG, "Deleted image uuid" + uuid);
+        Logger.logD(TAG, "Deleted image uuid" + encounterUuid);
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         String[] coloumns = {"uuid"};
-        String[] selectionArgs = {uuid};
+        String[] selectionArgs = {encounterUuid};
         localdb.beginTransaction();
         try {
-            Cursor cursor = localdb.query("tbl_obs", coloumns, "uuid = ?", selectionArgs, null, null, null);
-            if (cursor != null && cursor.moveToFirst()) {
-                ContentValues cv = new ContentValues();
-                cv.put("voided", "1"); //These Fields should be your String values of actual column names
-                cv.put("sync", "false");
-                //cv.put("Field2","Male");
-                updateDeltedRows = localdb.updateWithOnConflict("tbl_obs", cv, "uuid=?", new String[]{uuid}, SQLiteDatabase.CONFLICT_REPLACE);
-//                localdb.execSQL("UPDATE tbl_obs SET voided = '1' WHERE uuid=" + "'" + uuid + "' AND sync='false'");
-//                localdb.setTransactionSuccessful();
-            }
-            if (cursor != null) {
-                cursor.close();
-            }
-            isDeleted = updateDeltedRows != 0;
+            ContentValues cv = new ContentValues();
+            cv.put("voided", "1"); //These Fields should be your String values of actual column names
+            cv.put("sync", "false");
+            localdb.updateWithOnConflict("tbl_obs", cv, "encounteruuid=? AND conceptuuid=?", new String[]{encounterUuid, conceptUuid}, SQLiteDatabase.CONFLICT_REPLACE);
             localdb.setTransactionSuccessful();
-        } catch (SQLiteException e) {
-            Crashlytics.getInstance().core.logException(e);
-            throw new DAOException(e);
+        } catch (SQLException sql) {
+            Crashlytics.getInstance().core.logException(sql);
+            throw new DAOException(sql);
         } finally {
             localdb.endTransaction();
+        }
+        return isDeleted;
 
+    }
+
+    public boolean deleteImageFromDatabase(String obsUuid) throws DAOException {
+        boolean isDeleted = false;
+        int updateDeltedRows = 0;
+        Logger.logD(TAG, "Deleted image uuid" + obsUuid);
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+
+        localdb.beginTransaction();
+        try {
+
+            ContentValues cv = new ContentValues();
+            cv.put("voided", "1"); //These Fields should be your String values of actual column names
+            cv.put("sync", "false");
+            localdb.updateWithOnConflict("tbl_obs", cv, "uuid=? ", new String[]{obsUuid}, SQLiteDatabase.CONFLICT_REPLACE);
+            localdb.setTransactionSuccessful();
+        } catch (SQLException sql) {
+            Crashlytics.getInstance().core.logException(sql);
+            throw new DAOException(sql);
+        } finally {
+            localdb.endTransaction();
         }
         return isDeleted;
 
@@ -387,6 +401,28 @@ public class ImagesDAO {
 
         }
         return uuidList;
+    }
+
+
+    public List<String> getImages(String encounterUUid, String ConceptUuid) throws DAOException {
+        List<String> imagesList = new ArrayList<>();
+
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        localdb.beginTransaction();
+        try {
+            Cursor idCursor = localdb.rawQuery("SELECT uuid FROM tbl_obs where encounteruuid=? AND conceptuuid = ? AND voided=? COLLATE NOCASE", new String[]{encounterUUid, ConceptUuid, "0"});
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+                    imagesList.add(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                }
+            }
+            idCursor.close();
+        } catch (SQLiteException e) {
+            throw new DAOException(e);
+        } finally {
+            localdb.endTransaction();
+        }
+        return imagesList;
     }
 
 

@@ -438,6 +438,8 @@
     <!--Privacy Notice Activity-->
     <string name="privacy_toast">Please select an option</string>
     <string name="temperature_f">Temperature (F)</string>
+    <string name="sync_now">Sync Now</string>
+    <string name="lastsync">lastsync</string>
 
 
 </resources>

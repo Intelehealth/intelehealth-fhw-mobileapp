@@ -385,15 +385,15 @@ public class SearchPatientActivity extends AppCompatActivity {
 
     private void doQueryWithProviders(String querytext, List<String> providersuuids) {
         if (querytext == null) {
-            List<PatientDTO> modelList = new ArrayList<PatientDTO>();
+            List<PatientDTO> modelListwihtoutQuery = new ArrayList<PatientDTO>();
             String query =
-                    "select  *  " +
-                            "from tbl_encounter a ,tbl_patient b " +
-                            " WHERE a.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
+                    "select b.openmrs_id,b.first_name,b.last_name,b.middle_name,b.uuid,b.date_of_birth from tbl_visit a, tbl_patient b, tbl_encounter c WHERE a.patientuuid = b.uuid  AND c.visituuid=a.uuid and c.provider_uuid in " +
+                            "('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
                             "group by a.uuid order by b.uuid ASC";
             Logger.logD(TAG, query);
             final Cursor cursor = db.rawQuery(query, null);
             Logger.logD(TAG, "Cursour count" + cursor.getCount());
+
             try {
                 if (cursor != null) {
                     if (cursor.moveToFirst()) {
@@ -402,12 +402,11 @@ public class SearchPatientActivity extends AppCompatActivity {
                             model.setOpenmrsId(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
                             model.setFirstname(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
                             model.setLastname(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
-                            model.setOpenmrsId(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
                             model.setMiddlename(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                             model.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                             model.setDateofbirth(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                             model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))));
-                            modelList.add(model);
+                            modelListwihtoutQuery.add(model);
 
                         } while (cursor.moveToNext());
                     }
@@ -421,7 +420,7 @@ public class SearchPatientActivity extends AppCompatActivity {
             }
 
             try {
-                recycler = new SearchPatientAdapter(modelList, SearchPatientActivity.this);
+                recycler = new SearchPatientAdapter(modelListwihtoutQuery, SearchPatientActivity.this);
 //            Log.i("db data", "" + getQueryPatients(query));
                 RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
                 recyclerView.setLayoutManager(reLayoutManager);
@@ -435,13 +434,13 @@ public class SearchPatientActivity extends AppCompatActivity {
             String search = querytext.trim();
             List<PatientDTO> modelList = new ArrayList<PatientDTO>();
             String query =
-                    "select  *  " +
-                            "from tbl_encounter a ,tbl_patient b " +
-                            " WHERE first_name LIKE " + "'" + search +
+                    "select   b.openmrs_id,b.firstname,b.last_name,b.middle_name,b.uuid,b.date_of_birth  from tbl_visit a, tbl_patient b, tbl_encounter c WHERE" +
+                            "first_name LIKE " + "'" + search +
                             "%' OR last_name LIKE '" + search +
                             "%' OR openmrs_id LIKE '" + search +
                             "%' OR middle_name LIKE '" + search + "%' " +
                             "AND a.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
+                            "AND  a.patientuuid = b.uuid  AND c.visituuid=a.uuid " +
                             "group by a.uuid order by b.uuid ASC";
             Logger.logD(TAG, query);
             final Cursor cursor = db.rawQuery(query, null);
@@ -454,7 +453,6 @@ public class SearchPatientActivity extends AppCompatActivity {
                             model.setOpenmrsId(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
                             model.setFirstname(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
                             model.setLastname(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
-                            model.setOpenmrsId(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
                             model.setMiddlename(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                             model.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                             model.setDateofbirth(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));

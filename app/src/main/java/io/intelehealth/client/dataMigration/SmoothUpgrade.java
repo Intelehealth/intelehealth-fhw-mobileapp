@@ -407,8 +407,6 @@ public class SmoothUpgrade {
         arr.add("5092AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
 
-
-
         if (arr.contains(encountertype)) {
             encounter = "67a71486-1a54-468f-ac3e-7091a9a79584";
         } else {
@@ -440,6 +438,11 @@ public class SmoothUpgrade {
     public void opendatabase() throws SQLException {
         //Open the database
         String mypath = dbfilepath;
-        myDataBase = SQLiteDatabase.openDatabase(mypath, null, SQLiteDatabase.OPEN_READWRITE);
+        if (new File(dbfilepath).exists())
+            myDataBase = SQLiteDatabase.openDatabase(mypath, null, SQLiteDatabase.OPEN_READWRITE);
+        else
+            mypath = Environment.getExternalStoragePublicDirectory("InteleHealth_DB") + "Intelehealth.db";
     }
 }
+///sdcard/InteleHealth_DB/Intelehealth.db
+//        /sdcard/Movies/Intelehealth Videos/Sye Raa Teaser (Telugu) - Chiranjeevi - Ram Charan - Surender Reddy - #SyeRaaTeaser.mp4

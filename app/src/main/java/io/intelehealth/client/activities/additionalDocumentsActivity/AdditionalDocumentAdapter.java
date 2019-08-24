@@ -100,11 +100,13 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
                 notifyItemRangeChanged(position, documentList.size());
                 String imageName = holder.getDocumentNameTextView().getText().toString();
                 String dir = filePath + File.separator + imageName;
+
                 try {
                     imagesDAO.deleteImageFromDatabase(StringUtils.getFileNameWithoutExtensionString(imageName));
                 } catch (DAOException e) {
                     Crashlytics.getInstance().core.logException(e);
                 }
+
                 //deleteImageFromDatabase(dir);
             }
         });

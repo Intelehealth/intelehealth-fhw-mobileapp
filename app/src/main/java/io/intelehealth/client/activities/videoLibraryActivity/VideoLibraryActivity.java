@@ -15,8 +15,10 @@ import android.widget.Toast;
 import java.io.File;
 
 import io.intelehealth.client.R;
+import io.intelehealth.client.utilities.Logger;
 
 public class VideoLibraryActivity extends AppCompatActivity implements VideoLibraryFragment.OnFragmentInteractionListener {
+    private static final String TAG = VideoLibraryActivity.class.getSimpleName();
     final String LOG_TAG = VideoLibraryActivity.class.getSimpleName();
     Toolbar mToolbar;
 
@@ -100,9 +102,18 @@ public class VideoLibraryActivity extends AppCompatActivity implements VideoLibr
         // Get the directory for the app's private pictures directory.
         File file = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_MOVIES), folderName);
+        Logger.logD(TAG, file.getAbsolutePath());
         if (!file.mkdirs()) {
             Log.e(LOG_TAG, "Directory not created");
         }
         return file;
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
+
+    }
+
 }

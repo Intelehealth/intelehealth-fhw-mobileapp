@@ -71,6 +71,8 @@ public class SplashActivity extends AppCompatActivity {
                 TempDialog.show();
 
                 if (BuildConfig.VERSION_CODE <= APP_VERSION_CODE && sessionManager.isFirstTimeLaunched()) {
+                    nextActivity();
+                } else {
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
@@ -88,8 +90,6 @@ public class SplashActivity extends AppCompatActivity {
 
                         }
                     }, 2000);
-                } else {
-                    nextActivity();
                 }
 
             }
