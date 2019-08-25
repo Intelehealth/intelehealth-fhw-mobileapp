@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteException;
 
 import com.crashlytics.android.Crashlytics;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -423,6 +424,46 @@ public class ImagesDAO {
             localdb.endTransaction();
         }
         return imagesList;
+    }
+
+    public boolean isImageObsExists(String encounterUuid, String conceptUuid) throws DAOException {
+        boolean isImageObsExists = false;
+        List<String> imagesList = new ArrayList<>();
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        localdb.beginTransaction();
+        try {
+            Cursor idCursor = localdb.rawQuery("SELECT uuid FROM tbl_obs where encounteruuid=? AND conceptuuid = ? AND voided=? COLLATE NOCASE", new String[]{encounterUuid, conceptUuid, "0"});
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+                    imagesList.add(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                }
+            }
+            idCursor.close();
+        } catch (SQLiteException e) {
+            throw new DAOException(e);
+        } finally {
+            localdb.endTransaction();
+        }
+        if (imagesList.size() != 0)
+            isImageObsExists = true;
+        return isImageObsExists;
+    }
+
+    public boolean isLocalImageExists(String encounterUuidAdultIntial, String conceptUuid) throws DAOException {
+        boolean isLocalImageExists = false;
+        File imagesPath = new File(AppConstants.IMAGE_PATH);
+        try {
+            List<String> imageList = getImages(encounterUuidAdultIntial, conceptUuid);
+            for (String obsImageUuid : imageList) {
+                String imageName = obsImageUuid + ".jpg";
+                if (new File(imagesPath + "/" + imageName).exists()) {
+                    isLocalImageExists = true;
+                }
+            }
+        } catch (DAOException e1) {
+            Crashlytics.getInstance().core.logException(e1);
+        }
+        return isLocalImageExists;
     }
 
 

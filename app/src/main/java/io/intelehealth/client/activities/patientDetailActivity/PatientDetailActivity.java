@@ -889,7 +889,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     encounterCursor.close();
 
 
-                    String previsitSelection = "encounteruuid = ? AND conceptuuid = ?";
+                    String previsitSelection = "encounteruuid = ? AND conceptuuid = ? and voided !='1'";
                     String[] previsitArgs = {encounterlocalAdultintial, UuidDictionary.CURRENT_COMPLAINT};
                     String[] previsitColumms = {"value", " conceptuuid", "encounteruuid"};
                     Cursor previsitCursor = db.query("tbl_obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);

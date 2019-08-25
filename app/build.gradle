@@ -7,7 +7,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 28
-        versionName "version 2.0 beta 2"
+        versionName "version 2.0 beta 3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true

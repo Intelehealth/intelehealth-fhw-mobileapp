@@ -1,6 +1,7 @@
 package io.intelehealth.client.syncModule;
 
 import android.content.Intent;
+import android.os.Handler;
 
 import io.intelehealth.client.app.IntelehealthApplication;
 import io.intelehealth.client.database.dao.ImagesPushDAO;
@@ -41,9 +42,17 @@ public class SyncUtils {
         isSynced = pullDataDAO.pushDataApi();
         Logger.logD(TAG, "Push ended");
 
-        Logger.logD(TAG, "Pull Started");
-        pullDataDAO.pullData(IntelehealthApplication.getAppContext());
-        Logger.logD(TAG, "Pull ended");
+
+//        need to add delay for pulling the obs correctly
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Logger.logD(TAG, "Pull Started");
+                pullDataDAO.pullData(IntelehealthApplication.getAppContext());
+                Logger.logD(TAG, "Pull ended");
+            }
+        }, 3000);
 
         Logger.logD(TAG, "patient profile image push Started");
         imagesPushDAO.patientProfileImagesPush();
@@ -56,15 +65,6 @@ public class SyncUtils {
         Logger.logD(TAG, "obs delete image started");
         imagesPushDAO.deleteObsImage();
         Logger.logD(TAG, "obs delete image ended");
-        //need to add delay for pulling the obs correctly
-//        final Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//            }
-//        }, 3000);
-
 
         Intent intent = new Intent(IntelehealthApplication.getAppContext(), UpdateDownloadPrescriptionService.class);
         IntelehealthApplication.getAppContext().startService(intent);

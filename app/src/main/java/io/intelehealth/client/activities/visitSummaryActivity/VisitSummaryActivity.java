@@ -12,6 +12,8 @@ import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -239,6 +241,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ImageButton onExaminationDownload;
 
     DownloadPrescriptionService downloadPrescriptionService;
+    private TextView additionalImageDownloadText;
+    private TextView physcialExaminationDownloadText;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -379,8 +383,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         registerBroadcastReceiverDynamically();
         registerDownloadPrescription();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if (sharedPreferences.contains("licensekey"))
+        if (sessionManager.getLicenseKey() != null && !sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
 
         //Check for license key and load the correct config file
@@ -493,6 +496,79 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         additionalDocumentsDownlaod = findViewById(R.id.imagebutton_download_additional_document);
         onExaminationDownload = findViewById(R.id.imagebutton_download_physexam);
+
+        additionalDocumentsDownlaod.setVisibility(View.GONE);
+
+        physcialExaminationDownloadText = findViewById(R.id.physcial_examination_download);
+        onExaminationDownload.setVisibility(View.GONE);
+
+        //image download for additional documents
+        additionalImageDownloadText = findViewById(R.id.additional_documents_download);
+        Paint p = new Paint();
+        p.setColor(Color.BLUE);
+        additionalImageDownloadText.setPaintFlags(p.getColor());
+        additionalImageDownloadText.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+        ImagesDAO imagesDAO = new ImagesDAO();
+        try {
+            if (imagesDAO.isImageObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD)) {
+                if (imagesDAO.isLocalImageExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD))
+                    additionalImageDownloadText.setVisibility(View.GONE);
+                else
+                    additionalImageDownloadText.setVisibility(View.VISIBLE);
+            } else
+                additionalImageDownloadText.setVisibility(View.GONE);
+
+
+//            if (imagesDAO.isImageObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD) && imagesDAO.isLocalImageExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD)) {
+//                additionalImageDownloadText.setVisibility(View.VISIBLE);
+//            }else{
+//                additionalImageDownloadText.setVisibility(View.GONE);
+//
+//            }
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        additionalImageDownloadText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startDownload(UuidDictionary.COMPLEX_IMAGE_AD);
+                additionalImageDownloadText.setVisibility(View.GONE);
+            }
+        });
+
+        //image download for physcialExamination documents
+        physcialExaminationDownloadText.setPaintFlags(p.getColor());
+        physcialExaminationDownloadText.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+        try {
+            if (imagesDAO.isImageObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE)) {
+                if (imagesDAO.isLocalImageExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE))
+                    physcialExaminationDownloadText.setVisibility(View.GONE);
+                else
+                    physcialExaminationDownloadText.setVisibility(View.VISIBLE);
+            } else
+                physcialExaminationDownloadText.setVisibility(View.GONE);
+//            if (imagesDAO.isImageObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE)) {
+//                physcialExaminationDownloadText.setVisibility(View.VISIBLE);
+//            }
+//            if (imagesDAO.isLocalImageExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE))
+//                physcialExaminationDownloadText.setVisibility(View.GONE);
+//
+//            if (imagesDAO.isImageObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE) || imagesDAO.isLocalImageExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE)) {
+//                physcialExaminationDownloadText.setVisibility(View.VISIBLE);
+//            }else{
+//                physcialExaminationDownloadText.setVisibility(View.GONE);
+//            }
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        physcialExaminationDownloadText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startDownload(UuidDictionary.COMPLEX_IMAGE_PE);
+                physcialExaminationDownloadText.setVisibility(View.GONE);
+            }
+        });
+
 
 
         downloadButton.setEnabled(false);
@@ -724,8 +800,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             patHistView.setText(Html.fromHtml(patHistory.getValue()));
         if (phyExam.getValue() != null)
             physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
-
-        SharedPreferences.Editor e = sharedPreferences.edit();
 
 
         editVitals.setOnClickListener(new View.OnClickListener() {
@@ -1124,7 +1198,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         downloadPrescription();
                         pd.dismiss();
                     }
-                }, 2000);
+                }, 5000);
 
 //                } else {
 //                    DialogUtils dialogUtils = new DialogUtils();
@@ -1877,9 +1951,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         super.onResume();
 
         callBroadcastReceiver();
-
-        String filePathAddDoc = baseDir + File.separator + "Patient Images" + File.separator + patientUuid + File.separator +
-                visitUuid + File.separator + additionalDocumentDir;
 
 
         ImagesDAO imagesDAO = new ImagesDAO();
