@@ -540,9 +540,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                             Crashlytics.getInstance().core.logException(e);
                         }
                         if (isImageDownloaded)
-                            AppConstants.notificationUtils.DownloadDone("Patient Image Download", "" + patient_new.getFirst_name() + "" + patient_new.getLast_name() + "'s Image Download complete.", getApplication());
+                            AppConstants.notificationUtils.DownloadDone("Patient Image Download", "" + patient_new.getFirst_name() + "" + patient_new.getLast_name() + "'s Image Download complete.", 4, getApplication());
                         else
-                            AppConstants.notificationUtils.DownloadDone("Patient Image Download", "" + patient_new.getFirst_name() + "" + patient_new.getLast_name() + "'s Image Download Incomplete.", getApplication());
+                            AppConstants.notificationUtils.DownloadDone("Patient Image Download", "" + patient_new.getFirst_name() + "" + patient_new.getLast_name() + "'s Image Download Incomplete.", 4, getApplication());
 
 
                     }
@@ -722,7 +722,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         previousVisitsList = findViewById(R.id.linearLayout_previous_visits);
         if (visitCursor.getCount() < 1) {
-            neverSeen();
+//            neverSeen();
         } else {
 
             if (visitCursor.moveToLast() && visitCursor != null) {
@@ -790,7 +790,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         previousVisitsList = findViewById(R.id.linearLayout_previous_visits);
         if (visitCursor.getCount() < 1) {
-            neverSeen();
+//            neverSeen();
         } else {
 
             if (visitCursor.moveToLast() && visitCursor != null) {

@@ -42,7 +42,7 @@ public class PullDataDAO {
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
             @Override
             public void onResponse(Call<ResponseDTO> call, Response<ResponseDTO> response) {
-                AppConstants.notificationUtils.showNotifications("syncBackground", "Syncing", IntelehealthApplication.getAppContext());
+                AppConstants.notificationUtils.showNotifications("syncBackground", "Syncing", 1, IntelehealthApplication.getAppContext());
                 if (response.body() != null && response.body().getData() != null) {
                     sessionManager.setPulled(response.body().getData().getPullexecutedtime());
 //                    sessionManager.setPullExcutedTime(response.body().getData().getPullexecutedtime());
@@ -58,9 +58,9 @@ public class PullDataDAO {
                         Crashlytics.getInstance().core.logException(e);
                     }
                     if (sync)
-                        AppConstants.notificationUtils.DownloadDone("sync", "Successfully synced", IntelehealthApplication.getAppContext());
+                        AppConstants.notificationUtils.DownloadDone("sync", "Successfully synced", 1, IntelehealthApplication.getAppContext());
                     else
-                        AppConstants.notificationUtils.DownloadDone("sync", "failed synced,You can try again", IntelehealthApplication.getAppContext());
+                        AppConstants.notificationUtils.DownloadDone("sync", "failed synced,You can try again", 1, IntelehealthApplication.getAppContext());
 
                 }
 

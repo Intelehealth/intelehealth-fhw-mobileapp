@@ -190,7 +190,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         }
 
 
-        AppConstants.notificationUtils.DownloadDone("Upload survey", "Survey uploaded", PatientSurveyActivity.this);
+        AppConstants.notificationUtils.DownloadDone("Upload survey", "Survey uploaded", 3, PatientSurveyActivity.this);
 
 
     }
@@ -207,7 +207,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         PullDataDAO pullDataDAO = new PullDataDAO();
         pullDataDAO.pushDataApi();
 
-        AppConstants.notificationUtils.DownloadDone("End visit", "Visit ended", PatientSurveyActivity.this);
+        AppConstants.notificationUtils.DownloadDone("End visit", "Visit ended", 3, PatientSurveyActivity.this);
 
 //        SharedPreferences.Editor editor = context.getSharedPreferences(patientUuid + "_" + visitUuid, MODE_PRIVATE).edit();
         sessionManager.removeVisitSummary(patientUuid, visitUuid);

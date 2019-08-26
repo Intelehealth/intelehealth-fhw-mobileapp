@@ -301,7 +301,7 @@ public class BackupCloud {
 //                    mBuilder.setProgress(100, percentDone, false);
 //                    mNotifyManager.notify(mId, mBuilder.build());
                     Log.i(TAG, "done: " + percentDone);
-                    AppConstants.notificationUtils.showNotificationProgress("DB Upload", "Database uploading", context, percentDone);
+                    AppConstants.notificationUtils.showNotificationProgress("DB Upload", "Database uploading", 4, context, percentDone);
                 }
             });
 
@@ -319,7 +319,7 @@ public class BackupCloud {
 //                        if (queue_id != null && !queue_id.equals(-1)) {
 //                            removeJobFromQueue(queue_id);
 //                        }
-                        AppConstants.notificationUtils.DownloadDone("DB Upload", "Database uplod completed", context);
+                        AppConstants.notificationUtils.DownloadDone("DB Upload", "Database uplod completed", 4, context);
                     } else {
 //                        mBuilder.setSmallIcon(R.mipmap.ic_launcher)
 //                                .setContentTitle(context.getString(R.string.database_upload))
@@ -330,7 +330,7 @@ public class BackupCloud {
 //                        if (queue_id == null || queue_id.equals(-1)) {
 //                            addJobToQueue();
 //                        }
-                        AppConstants.notificationUtils.DownloadDone("DB Upload", "Database uplod failed", context);
+                        AppConstants.notificationUtils.DownloadDone("DB Upload", "Database uplod failed", 4, context);
 
                     }
                 }

@@ -69,18 +69,18 @@ public class ImagesPushDAO {
                             } catch (DAOException e) {
                                 Crashlytics.getInstance().core.logException(e);
                             }
-                            AppConstants.notificationUtils.DownloadDone("Patient Profile", "Uploaded Patient Profile", IntelehealthApplication.getAppContext());
+                            AppConstants.notificationUtils.DownloadDone("Patient Profile", "Uploaded Patient Profile", 4, IntelehealthApplication.getAppContext());
                         }
 
                         @Override
                         public void onError(Throwable e) {
                             Logger.logD(TAG, "Onerror " + e.getMessage());
-                            AppConstants.notificationUtils.DownloadDone("Patient Profile", "Error Uploading Patient Profile", IntelehealthApplication.getAppContext());
+                            AppConstants.notificationUtils.DownloadDone("Patient Profile", "Error Uploading Patient Profile", 4, IntelehealthApplication.getAppContext());
                         }
                     });
         }
         sessionManager.setPullSyncFinished(true);
-        AppConstants.notificationUtils.DownloadDone("Patient Profile", "Completed Uploading Patient Profile", IntelehealthApplication.getAppContext());
+        AppConstants.notificationUtils.DownloadDone("Patient Profile", "Completed Uploading Patient Profile", 4, IntelehealthApplication.getAppContext());
         return true;
     }
 
@@ -135,7 +135,7 @@ public class ImagesPushDAO {
                     });
         }
         sessionManager.setPushSyncFinished(true);
-        AppConstants.notificationUtils.DownloadDone("Patient Profile", "Completed Uploading Patient Profile", IntelehealthApplication.getAppContext());
+        AppConstants.notificationUtils.DownloadDone("Patient Profile", "Completed Uploading Patient Profile", 4, IntelehealthApplication.getAppContext());
         return true;
     }
 

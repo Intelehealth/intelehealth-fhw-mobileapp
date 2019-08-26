@@ -676,9 +676,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 if (!flag.isChecked()) {
                     //
                 }
-                Snackbar.make(view, "Uploading to doctor.", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(view, "Uploading to doctor.", Snackbar.LENGTH_LONG).setActionTextColor(R.color.white).show();
+
                 if (NetworkConnection.isOnline(getApplication())) {
-                    AppConstants.notificationUtils.showNotifications("Visit Data Upload", "Uploading visit data", VisitSummaryActivity.this);
+                    AppConstants.notificationUtils.showNotifications("Visit Data Upload", "Uploading visit data", 3, VisitSummaryActivity.this);
                     PullDataDAO pullDataDAO = new PullDataDAO();
                     ProgressDialog pd = new ProgressDialog(VisitSummaryActivity.this);
                     pd.setTitle("Syncing");
@@ -694,16 +695,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             SyncUtils syncUtils = new SyncUtils();
                             boolean isSynced = syncUtils.syncForeground();
                             if (isSynced)
-                                AppConstants.notificationUtils.DownloadDone("Visit Data Upload", "Uploaded visit data", VisitSummaryActivity.this);
+                                AppConstants.notificationUtils.DownloadDone("Visit Data Upload", "Uploaded visit data", 3, VisitSummaryActivity.this);
                             else
-                                AppConstants.notificationUtils.DownloadDone("Visit Data Upload", "failed to Uploaded", VisitSummaryActivity.this);
+                                AppConstants.notificationUtils.DownloadDone("Visit Data Upload", "failed to Uploaded", 3, VisitSummaryActivity.this);
                             uploaded = true;
                             pd.dismiss();
                             Toast.makeText(VisitSummaryActivity.this, "Upload Completed", Toast.LENGTH_SHORT).show();
                         }
                     }, 4000);
                 } else {
-                    AppConstants.notificationUtils.showNotifications("Visit Data Upload", "Check your connectivity", VisitSummaryActivity.this);
+                    AppConstants.notificationUtils.showNotifications("Visit Data Upload", "Check your connectivity", 3, VisitSummaryActivity.this);
                 }
             }
 
@@ -1184,7 +1185,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 //                    boolean pull = pullDataDAO.pullData(VisitSummaryActivity.this);
 //                    if (pull)
-                AppConstants.notificationUtils.DownloadDone("download from doctor", "prescription Downloaded", VisitSummaryActivity.this);
+                AppConstants.notificationUtils.DownloadDone("download from doctor", "prescription Downloaded", 3, VisitSummaryActivity.this);
 //                    else
 //                        AppConstants.notificationUtils.DownloadDone("download from doctor", "no prescription Downloaded", VisitSummaryActivity.this);
                 uploaded = true;

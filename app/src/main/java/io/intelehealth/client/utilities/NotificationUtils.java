@@ -15,14 +15,21 @@ public class NotificationUtils {
     private int mId = 1;
     Context context;
 
+//    notifcation id for the inteleHealth app
+//    #1 for sync module
+//    #2 for patient Details upload and download
+//    #3 for visit uploadand download and end visit
+//    #4 for images upload and download either obs and patient profile
+//
 
-    public void showNotifications(String title, String text, Context context) {
+    public void showNotifications(String title, String text, int notificationId, Context context) {
         this.context = context;
         NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         //mahiti added
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            String channelid = String.valueOf(notificationId);
             int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel mChannel = new NotificationChannel(channelId, channelName, importance);
+            NotificationChannel mChannel = new NotificationChannel(channelid, channelName, importance);
             mNotifyManager.createNotificationChannel(mChannel);
         }
 
@@ -34,17 +41,18 @@ public class NotificationUtils {
                 .setContentText(text)
                 .setSmallIcon(R.drawable.ic_cloud_upload);
         mBuilder.setProgress(100, 0, true);
-        mNotifyManager.notify(mId, mBuilder.build());
+        mNotifyManager.notify(notificationId, mBuilder.build());
 
     }
 
-    public void showNotificationProgress(String title, String text, Context context, Integer progress) {
+    public void showNotificationProgress(String title, String text, int notifcationId, Context context, Integer progress) {
         this.context = context;
         NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         //mahiti added
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel mChannel = new NotificationChannel(channelId, channelName, importance);
+            String channelid = String.valueOf(notifcationId);
+            NotificationChannel mChannel = new NotificationChannel(channelid, channelName, importance);
             mNotifyManager.createNotificationChannel(mChannel);
         }
 
@@ -56,11 +64,11 @@ public class NotificationUtils {
                 .setContentText(text)
                 .setSmallIcon(R.drawable.ic_cloud_upload);
         mBuilder.setProgress(100, progress, false);
-        mNotifyManager.notify(mId, mBuilder.build());
+        mNotifyManager.notify(notifcationId, mBuilder.build());
 
     }
 
-    public void DownloadDone(String title, String text, Context context) {
+    public void DownloadDone(String title, String text, int notificationId, Context context) {
         this.context = context;
         NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -68,7 +76,8 @@ public class NotificationUtils {
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel mChannel = new NotificationChannel(channelId, channelName, importance);
+            String channelid = String.valueOf(notificationId);
+            NotificationChannel mChannel = new NotificationChannel(channelid, channelName, importance);
             mNotifyManager.createNotificationChannel(mChannel);
         }
 
@@ -79,7 +88,7 @@ public class NotificationUtils {
         mBuilder.setContentTitle(title)
                 .setContentText(text)
                 .setSmallIcon(R.drawable.ic_cloud_upload);
-        mNotifyManager.notify(mId, mBuilder.build());
+        mNotifyManager.notify(notificationId, mBuilder.build());
 
     }
 
@@ -88,7 +97,7 @@ public class NotificationUtils {
         this.context = context;
         NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        mNotifyManager.cancel(mId);
+        mNotifyManager.cancelAll();
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             int importance = NotificationManager.IMPORTANCE_HIGH;

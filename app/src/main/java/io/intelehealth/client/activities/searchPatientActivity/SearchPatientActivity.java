@@ -222,7 +222,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
         String table = "tbl_patient";
         final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " ORDER BY first_name ASC", null);
-
+        try {
         if (searchCursor.moveToFirst()) {
             do {
                 PatientDTO model = new PatientDTO();
@@ -232,11 +232,15 @@ public class SearchPatientActivity extends AppCompatActivity {
                 model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
                 model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
                 model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
+                model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
+
                 modelList.add(model);
             } while (searchCursor.moveToNext());
         }
         searchCursor.close();
-
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
 
         //  Log.d("student data", modelList.toString());
 

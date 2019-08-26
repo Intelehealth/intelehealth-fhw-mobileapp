@@ -59,7 +59,7 @@ public class DownloadService extends IntentService {
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
             ImageType = intent.getStringExtra("ImageType");
         }
-        AppConstants.notificationUtils.showNotificationProgress("Download", "Downloading File", IntelehealthApplication.getAppContext(), 0);
+        AppConstants.notificationUtils.showNotificationProgress("Download", "Downloading File", 4, IntelehealthApplication.getAppContext(), 0);
 //        if (ImageType.equalsIgnoreCase(UuidDictionary.COMPLEX_IMAGE_AD))
 //            baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + File.separator + "Patient Images" + File.separator + patientUuid + File.separator + visitUuid + File.separator + imageAD + File.separator;
 //        else
@@ -81,7 +81,7 @@ public class DownloadService extends IntentService {
 //        else
 //            imageType = "PE";
         if (imageObsList.size() == 0)
-            AppConstants.notificationUtils.DownloadDone("Download", "No Images to Download", IntelehealthApplication.getAppContext());
+            AppConstants.notificationUtils.DownloadDone("Download", "No Images to Download", 4, IntelehealthApplication.getAppContext());
         for (int i = 0; i < imageObsList.size(); i++) {
             url = urlModifiers.obsImageUrl(imageObsList.get(i));
             Observable<ResponseBody> downloadobs = AppConstants.apiInterface.OBS_IMAGE_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
@@ -195,7 +195,7 @@ public class DownloadService extends IntentService {
         download.setProgress(100);
         sendIntent(download);
 
-        AppConstants.notificationUtils.showNotificationProgress("Download", "File Downloaded", IntelehealthApplication.getAppContext(), 100);
+        AppConstants.notificationUtils.showNotificationProgress("Download", "File Downloaded", 4, IntelehealthApplication.getAppContext(), 100);
 
 //        notificationManager.cancel(0);
 //        notificationBuilder.setProgress(0,0,false);

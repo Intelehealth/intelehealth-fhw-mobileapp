@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -97,6 +98,7 @@ public class HomeActivity extends AppCompatActivity {
         Logger.logD(TAG, "onCreate: " + getFilesDir().toString());
         lastSyncTextView = findViewById(R.id.lastsynctextview);
         manualSyncButton = findViewById(R.id.manualsyncbutton);
+        manualSyncButton.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
         c1 = findViewById(R.id.cardview_newpat);
         c2 = findViewById(R.id.cardview_find_patient);
         c3 = findViewById(R.id.cardview_today_patient);
@@ -327,13 +329,13 @@ public class HomeActivity extends AppCompatActivity {
 //                pullDataDAO.pullData(this);
 //                pullDataDAO.pushDataApi();
                 boolean isSynced = syncUtils.syncForeground();
-                AppConstants.notificationUtils.showNotifications("sync", "syncBackground Completed", this);
+                AppConstants.notificationUtils.showNotifications("sync", "syncBackground Completed", 1, this);
 //                boolean i = imagesPushDAO.patientProfileImagesPush();
 //                boolean o = imagesPushDAO.obsImagesPush();
                 if (isSynced)
-                    AppConstants.notificationUtils.showNotifications("ImageUpload", "ImageUpload Completed", this);
+                    AppConstants.notificationUtils.showNotifications("ImageUpload", "ImageUpload Completed", 4, this);
                 else
-                    AppConstants.notificationUtils.showNotifications("ImageUpload", "ImageUpload failed", this);
+                    AppConstants.notificationUtils.showNotifications("ImageUpload", "ImageUpload failed", 4, this);
                 return true;
 //            case R.id.backupOption:
 //                manageBackup(true, false);  // to backup app data at any time of the day
