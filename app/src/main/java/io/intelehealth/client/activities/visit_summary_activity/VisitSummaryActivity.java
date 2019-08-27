@@ -1374,7 +1374,7 @@ sessionManager=new SessionManager(getApplicationContext());
                 * variable b contains the string data (medical advice) of patient.
                 * */
 
-                medicalAdviceTextView.setText(Html.fromHtml(medicalAdvice_HyperLink + medicalAdvice_string.replaceAll("\n","<br>")));
+                medicalAdviceTextView.setText(Html.fromHtml(medicalAdvice_HyperLink + medicalAdvice_string.replaceAll("\n","<br><br>")));
                 medicalAdviceTextView.setMovementMethod(LinkMovementMethod.getInstance());
                 //checkForDoctor();
                 break;
