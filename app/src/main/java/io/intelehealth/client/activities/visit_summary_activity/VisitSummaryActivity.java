@@ -36,6 +36,7 @@ import android.support.v7.widget.Toolbar;
 import android.telephony.SmsManager;
 import android.text.Html;
 import android.text.InputType;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -211,6 +212,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     Boolean isPastVisit = false;
     Boolean isReceiverRegistered = false;
+
+    String medicalAdvice_string;
 
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
 
@@ -1361,7 +1364,18 @@ sessionManager=new SessionManager(getApplicationContext());
                 if (medicalAdviceCard.getVisibility() != View.VISIBLE) {
                     medicalAdviceCard.setVisibility(View.VISIBLE);
                 }
-                medicalAdviceTextView.setText(adviceReturned);
+
+                int i = adviceReturned.lastIndexOf('>');
+                String medicalAdvice_HyperLink = adviceReturned.substring(0,i+1);
+                 medicalAdvice_string = adviceReturned.substring(i+1);
+
+                /*
+                * variable a contains the hyperlink sent from webside.
+                * variable b contains the string data (medical advice) of patient.
+                * */
+
+                medicalAdviceTextView.setText(Html.fromHtml(medicalAdvice_HyperLink + medicalAdvice_string.replaceAll("\n","<br>")));
+                medicalAdviceTextView.setMovementMethod(LinkMovementMethod.getInstance());
                 //checkForDoctor();
                 break;
             }
@@ -1588,7 +1602,7 @@ sessionManager=new SessionManager(getApplicationContext());
 
         String tests_web = stringToWeb(testsReturned);
 
-        String advice_web = stringToWeb(adviceReturned);
+        String advice_web = stringToWeb(medicalAdvice_string.trim());
 
         String diagnosis_web = stringToWeb(diagnosisReturned);
 
