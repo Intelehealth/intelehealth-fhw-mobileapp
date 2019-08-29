@@ -213,7 +213,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     Boolean isPastVisit = false;
     Boolean isReceiverRegistered = false;
 
-    String medicalAdvice_string;
+    String medicalAdvice_string="";
 
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
 
