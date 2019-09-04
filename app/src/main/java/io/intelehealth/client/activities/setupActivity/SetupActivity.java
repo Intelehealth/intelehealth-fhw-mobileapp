@@ -375,6 +375,7 @@ public class SetupActivity extends AppCompatActivity {
                                     Dialog d = (Dialog) dialog;
 
                                     EditText text = d.findViewById(R.id.licensekey);
+                                    //text.setPadding(50,0,50,0);  //padding on editText.
                                     EditText url = d.findViewById(R.id.licenseurl);
                                     key = text.getText().toString();
                                     licenseUrl = url.getText().toString();
@@ -404,6 +405,8 @@ public class SetupActivity extends AppCompatActivity {
                                 }
                             });
                     AlertDialog alertDialog = dialog.create();
+                    //will provide spacing i.e margin to the dialog.
+                    alertDialog.setView(promptsView,20,0,20,0);
                     alertDialog.show();
                     // Get the alert dialog buttons reference
                     Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
