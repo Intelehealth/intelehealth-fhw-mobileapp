@@ -1,0 +1,288 @@
+{  
+   "id":"ID_343786845",
+   "text":"Hypertension screening and checkup",
+   "perform-physical-exam":"Arm:BP Reading 3;Arm:BP Reading 1;Arm:BP Reading 2;",
+   "display-or":"ବ୍ଲଡ଼ ପ୍ରେସର ପରୀକ୍ଷା",
+   "options":[  
+      {  
+         "id":"ID_1680030156",
+         "text":"Where is the BP taken?",
+         "language":"BP taken at",
+         "display-or":"ରକ୍ତ ଚାପ କେଉଁ  ଜାଗା ରେ ମପା ଯାଇଥିଲା?",
+         "options":[  
+            {  
+               "id":"ID_1580175951",
+               "text":"CSK clinic",
+               "display-or":"CSK କ୍ଲିନିକ"
+            },
+            {  
+               "id":"ID_1234766292",
+               "text":"Camp",
+               "display-or":"କ୍ୟାମ୍ପ"
+            },
+            {  
+               "id":"ID_1452232913",
+               "text":"Home",
+               "display-or":"ଘର"
+            },
+            {  
+               "id":"ID_1063724924",
+               "text":"Other",
+               "input-type":"text",
+               "display-or":"ଅନ୍ୟ"
+            }
+         ]
+      },
+      {  
+         "id":"ID_508658881",
+         "text":"When did you have you last BP measured?",
+         "language":"Last BP measured",
+         "display-or":"ରକ୍ତ ଚାପ କେବେ  ମପା ଯାଇଥିଲା?",
+         "options":[  
+            {  
+               "id":"ID_1488933090",
+               "text":"Never",
+               "display-or":"କେବେ ନାହିଁ"
+            },
+            {  
+               "id":"ID_1185364426",
+               "text":"Over 12 months ago",
+               "display-or":"୧୨ ମାସ ପୂର୍ବରୁ"
+            },
+            {  
+               "id":"ID_1739266219",
+               "text":"Within last 12 months",
+               "display-or":"୧୨ ମାସ ମଧ୍ୟ ରେ"
+            }
+         ]
+      },
+      {  
+         "id":"ID_1958150988",
+         "text":"Were you previously diagnosed with high BP?",
+         "language":"%",
+         "display-or":"ଆପଣଙ୍କ ର  ରକ୍ତ ଚାପ କେବେ ଅଧିକ ହେଇଥିଲା?",
+         "options":[  
+            {  
+               "id":"ID_1640164953",
+               "text":"Yes",
+               "language":"%",
+               "display-or":"ହାଁ",
+               "options":[  
+                  {  
+                     "id":"ID_975347692",
+                     "text":"Since how long are you living with high BP?",
+                     "input-type":"duration",
+                     "language":"Diagnosed with high BP since",
+                     "display-or":"କେବେଠୁ ଅଧିକ  ରକ୍ତ ଚାପ ଅଛି?"
+                  }
+               ]
+            },
+            {  
+               "id":"ID_769043249",
+               "text":"No",
+               "display-or":"ନାଁ",
+               "language":"Doesn't know if diagnosed with BP previously"
+            },
+            {  
+               "id":"ID_1030681111",
+               "text":"Don't know",
+               "display-or":"ଜଣା ନାହିଁ",
+               "language":"Doesn't know if diagnosed with high BP previously"
+            }
+         ]
+      },
+      {  
+         "id":"ID_124800344",
+         "text":"If female, are you pregnant?",
+         "language":"%",
+         "display-or":"ଯଦି ମହିଳା, ଆପଣ ଗର୍ଭବତୀ ଅଛନ୍ତି ?",
+         "options":[  
+            {  
+               "id":"ID_8587950",
+               "text":"Yes",
+               "language":"Is pregnant",
+               "display-or":"ହାଁ"
+            },
+            {  
+               "id":"ID_330681014",
+               "text":"No",
+               "language":"Is not pregnant",
+               "display-or":"ନାଁ"
+            },
+            {  
+               "id":"ID_1134931520",
+               "text":"Don't know",
+               "language":"Dont know if pregnant",
+               "display-or":"ଜଣା ନାହିଁ"
+            }
+         ]
+      },
+      {  
+         "id":"ID_1659756571",
+         "text":"If female, have you had raised BP in this or previous pregnancy?",
+         "language":"%",
+         "display-or":"ଯଦି ମହିଳା, ଅଧିକ ରକ୍ତ ଚାପ ଏଇ ଗର୍ଭବତୀ ହେଲା ବେଳେ ହେଇଚି ନା ପୂର୍ବ ଥର?",
+         "options":[  
+            {  
+               "id":"ID_27120329",
+               "text":"Yes",
+               "language":"Has raised BP in this or previous pregnancy",
+               "display-or":"ହାଁ"
+            },
+            {  
+               "id":"ID_1251136151",
+               "text":"No",
+               "language":"Does not have raised BP in this or previous pregnancy",
+               "display-or":"ନାଁ"
+            },
+            {  
+               "id":"ID_1365931001",
+               "text":"Don't know",
+               "language":"Doesn't know if she had raised BP in this or previous pregnancy",
+               "display-or":"ଜଣା ନାହିଁ"
+            }
+         ]
+      },
+      {  
+         "id":"ID_1305650743",
+         "text":"Are you currently fasting?",
+         "language":"%",
+         "display-or":"ଆପଣ ଏବେ ଉପାସ କରିଛନ୍ତି?",
+         "options":[  
+            {  
+               "id":"ID_1477683475",
+               "text":"Yes",
+               "language":"Is currently fasting",
+               "display-or":"ହାଁ"
+            },
+            {  
+               "id":"ID_653893664",
+               "text":"No",
+               "language":"Is not currently fasting",
+               "display-or":"ନାଁ"
+            }
+         ]
+      },
+      {  
+         "id":"ID_1237743088",
+         "text":"Do you have diabetes?",
+         "language":"%",
+         "display-or":"ଡାଇବିଟିସ ଅଛି?",
+         "options":[  
+            {  
+               "id":"ID_812134096",
+               "text":"Yes",
+               "language":"Has diabetes",
+               "display-or":"ହାଁ"
+            },
+            {  
+               "id":"ID_1482407600",
+               "text":"No",
+               "language":"Does not have diabetes",
+               "display-or":"ନାଁ"
+            },
+            {  
+               "id":"ID_773653229",
+               "text":"Don't know",
+               "language":"Doesn't know if has diabetes",
+               "display-or":"ଜଣା ନାହିଁ"
+            }
+         ]
+      },
+      {  
+         "id":"ID_1972035156",
+         "text":"Do you consume tobacco (cigarette, bidi, pan gutka)?",
+         "language":"%",
+         "display-or":"ଆପଣ କୌଣସି ମାତ୍ରା ରେ ତମ୍ବାଖୁ (ସିଗାରେଟ, ବିଡି , ପାନ ) ଖାଆନ୍ତି? ଖାଆନ୍ତି?",
+         "options":[  
+            {  
+               "id":"ID_1482834995",
+               "text":"Yes",
+               "language":"Consumes tobacco",
+               "display-or":"ହାଁ"
+            },
+            {  
+               "id":"ID_491639934",
+               "text":"No",
+               "language":"Does not consume tobacco",
+               "display-or":"ନାଁ"
+            }
+         ]
+      },
+      {  
+         "id":"ID_402431084",
+         "text":"Do you consume alcohol?",
+         "language":"Alcohol consumption",
+         "display-or":"ଆପଣ ମଦ ପିୟନ୍ତି?",
+         "options":[  
+            {  
+               "id":"ID_1212585267",
+               "text":"Never/rarely",
+               "display-or":"କେବେ ନାହିଁ"
+            },
+            {  
+               "id":"ID_672062912",
+               "text":"1-3 times per month",
+               "display-or":"୧-୩ ଥର ଗୋଟେ ମାସ ରେ"
+            },
+            {  
+               "id":"ID_612854072",
+               "text":"At least once per week ",
+               "display-or":"ସପ୍ତାହ ରେ ୧ ଥର"
+            }
+         ]
+      },
+      {  
+         "id":"ID_1079488839",
+         "text":"Have you had a heart attack in the past?",
+         "language":"%",
+         "display-or":"ଆଗରୁ ତୁମକୁ କେବେ ହାର୍ଟ ଅଟକ ହୋଇଥିଲା କି?",
+         "options":[  
+            {  
+               "id":"ID_1237292230",
+               "text":"Yes",
+               "language":"History of heart attack",
+               "display-or":"ହାଁ"
+            },
+            {  
+               "id":"ID_847039362",
+               "text":"No",
+               "language":"No history of heart attack",
+               "display-or":"ନାଁ"
+            },
+            {  
+               "id":"ID_1383928729",
+               "text":"Don't know",
+               "language":"Don't know if sufferedheart attack",
+               "display-or":"ଜଣା ନାହିଁ"
+            }
+         ]
+      },
+      {  
+         "id":"ID_266858107",
+         "text":"Have you had a stroke in the past?",
+         "language":"%",
+         "display-or":"ଆଗରୁ ତୁମକୁ କେବେ ଷ୍ଟ୍ରୋକ ହୋଇଥିଲା କି?",
+         "options":[  
+            {  
+               "id":"ID_1352167132",
+               "text":"Yes",
+               "language":"History of stroke",
+               "display-or":"ହାଁ"
+            },
+            {  
+               "id":"ID_528273267",
+               "text":"No",
+               "language":"No history of stroke",
+               "display-or":"ନାଁ"
+            },
+            {  
+               "id":"ID_1391939896",
+               "text":"Don't know",
+               "language":"Don't know if suffered stroke",
+               "display-or":"ଜଣା ନାହିଁ"
+            }
+         ]
+      }
+   ]
+}
