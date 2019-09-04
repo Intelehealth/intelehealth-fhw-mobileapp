@@ -413,11 +413,11 @@ public class SetupActivity extends AppCompatActivity {
                     Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
 
                     // Change the alert dialog buttons text and background color
-                    positiveButton.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                    positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                     positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
 
-                    negativeButton.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                    negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                     negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
                 }
