@@ -36,7 +36,9 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activities.privacyNoticeActivity.PrivacyNotice_Activity"
-            android:label="@string/title_activity_privacy_notice" />
+            android:label="@string/title_activity_privacy_notice"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.additionalDocumentsActivity.AdditionalDocumentsActivity"
             android:label="@string/title_activity_additional_documents"
