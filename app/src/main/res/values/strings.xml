@@ -297,7 +297,7 @@
     <string name="admin_authentication_not_possible" translatable="false">Unable to authenticate.</string>
 
     <string name="login_location_select" translatable="false">Select location</string>
-    <string name="prompt_licensekey" translatable="false">License Key</string>
+    <string name="prompt_licensekey" translatable="false">License key</string>
     <string name="setup_use_demo_mindmap" translatable="false">Use demo protocols</string>
     <string name="setup_download_mindmap" translatable="false">Download protocols</string>
 
