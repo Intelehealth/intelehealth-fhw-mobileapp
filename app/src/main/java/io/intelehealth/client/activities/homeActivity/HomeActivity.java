@@ -167,7 +167,8 @@ public class HomeActivity extends AppCompatActivity {
 
         WorkManager.getInstance().enqueueUniquePeriodicWork(UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
         if (sessionManager.isFirstTimeLaunched()) {
-            TempDialog = new ProgressDialog(HomeActivity.this);
+            TempDialog = new ProgressDialog(HomeActivity.this,R.style.AlertDialogStyle); //thats how to add a style!
+            TempDialog.setTitle("Sync in progress");
             TempDialog.setMessage("Please wait...");
             TempDialog.setCancelable(false);
             TempDialog.setProgress(i);
@@ -176,7 +177,8 @@ public class HomeActivity extends AppCompatActivity {
 
             CDT = new CountDownTimer(7000, 1000) {
                 public void onTick(long millisUntilFinished) {
-                    TempDialog.setMessage("Please wait.. Syncing");
+                    TempDialog.setTitle("Sync in progress");
+                    TempDialog.setMessage("Please wait...");
                     i--;
                 }
 

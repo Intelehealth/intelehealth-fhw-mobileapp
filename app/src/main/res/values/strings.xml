@@ -57,7 +57,7 @@
     <string name="permission_rationale" translatable="false">"Contacts permissions are needed for providing email completions."
     </string>
     <string name="device_id" translatable="false">Device ID:</string>
-    <string name="enter_license_key" translatable="false">&lt;b>Enter license key&lt;/b></string>
+    <string name="enter_license_key" translatable="false">Enter license key</string>
 
     <string name="cant_login_user" translatable="false">Can\'t log in ?</string>
     <string name="email_link" translatable="false">Please contact your System Administrator to reset your password or send an email to support@intelehealth.io</string>

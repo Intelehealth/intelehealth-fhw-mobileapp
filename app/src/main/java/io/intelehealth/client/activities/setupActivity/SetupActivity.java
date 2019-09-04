@@ -363,10 +363,10 @@ public class SetupActivity extends AppCompatActivity {
             case R.id.downloadMindmap:
                 if (checked) {
                     r1.setChecked(false);
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
                     LayoutInflater li = LayoutInflater.from(this);
                     View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
-                    dialog.setTitle(Html.fromHtml(getString(R.string.enter_license_key)))
+                    dialog.setTitle(getString(R.string.enter_license_key))
                             .setView(promptsView)
 
                             .setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
