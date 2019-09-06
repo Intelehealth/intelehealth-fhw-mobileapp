@@ -920,7 +920,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
 
-            Toast.makeText(IdentificationActivity.this, "Please Enter Required Fields", Toast.LENGTH_LONG).show();
+            Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
             return;
         }
 

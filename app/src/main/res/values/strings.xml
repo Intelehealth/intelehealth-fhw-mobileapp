@@ -76,25 +76,25 @@
 
     //Identification Screen
     <string name="title_activity_identification" translatable="false">Add New Patient</string>
-    <string name="identification_screen_prompt_first_name">First Name *</string>
-    <string name="identification_screen_prompt_middle_name">Middle Name</string>
-    <string name="identification_screen_prompt_last_name">Last Name *</string>
-    <string name="identification_screen_prompt_address">Address</string>
-    <string name="identification_screen_prompt_address2">Address Line 2</string>
-    <string name="identification_screen_prompt_phone_number">Phone Number</string>
+    <string name="identification_screen_prompt_first_name">First name *</string>
+    <string name="identification_screen_prompt_middle_name">Middle name</string>
+    <string name="identification_screen_prompt_last_name">Last name *</string>
+    <string name="identification_screen_prompt_address">Address line 1</string>
+    <string name="identification_screen_prompt_address2">Address line 2</string>
+    <string name="identification_screen_prompt_phone_number">Phone number</string>
     <string name="admin_password_dialog_heading" translatable="false">Enter Admin Password</string>
     <string name="identification_screen_prompt_gender" translatable="false">Gender *</string>
     <string name="identification_screen_checkbox_male">Male</string>
     <string name="identification_screen_checkbox_female">Female</string>
-    <string name="identification_screen_prompt_birthday">Date of Birth*</string>
+    <string name="identification_screen_prompt_birthday">Date of birth*</string>
     <string name="identification_screen_prompt_age">Age:</string>
     <string name="identification_screen_prompt_city">Village/Town/City *</string>
     <string name="identification_screen_prompt_state">State *</string>
     <string name="identification_screen_prompt_caste" translatable="false">Caste</string>
-    <string name="identification_screen_prompt_economic_status" translatable="false">Economic Status</string>
-    <string name="identification_screen_prompt_education" translatable="false">Education Level</string>
+    <string name="identification_screen_prompt_economic_status" translatable="false">Economic status</string>
+    <string name="identification_screen_prompt_education" translatable="false">Education level</string>
     <string name="identification_screen_prompt_country" translatable="false">Country *</string>
-    <string name="identification_screen_prompt_postal_code" translatable="false">Postal Code</string>
+    <string name="identification_screen_prompt_postal_code" translatable="false">Postal code</string>
     <string name="identification_screen_prompt_relationship" translatable="false">Son/Daughter/Wife of</string>
     <string name="identification_screen_prompt_occupation" translatable="false">Occupation</string>
     <string name="identification_screen_snack_patient_created" translatable="false">Patient created! Uploading to server.</string>
@@ -102,6 +102,7 @@
     <string name="identification_screen_dialog_age" translatable="false">Please enter age in years</string>
     <string name="identification_screen_dialog_error_dob" translatable="false">Date of birth is set for date after today</string>
     <string name="identification_screen_dialog_error_gender" translatable="false">Gender is not selected</string>
+    <string name="identification_screen_required_fields" translatable="false">Please enter required fields</string>
     <string name="identification_screen_error_dob" translatable="false">Enter a valid DOB</string>
     <string name="identification_screen_error_age" translatable="false">Enter a valid age</string>
     <string name="identification_screen_text_years" translatable="false"> years </string>
@@ -367,7 +368,7 @@
     <string name="resp_error" translatable="false">"Respiratory rate should be in between %1$s and %2$s"</string>
     <string name="temp_error" translatable="false">"Temperature should be in between %1$s and %2$s"</string>
 
-    <string name="not_provided" translatable="false">Not Provided</string>
+    <string name="not_provided" translatable="false">Not provided</string>
 
     <!-- Patient Exit Survey -->
     <string name="exit_survey_label" translatable="false">How was your experience?</string>

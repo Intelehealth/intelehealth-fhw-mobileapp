@@ -45,7 +45,7 @@
     </string-array>
 
     <string-array name="education_en">
-        <item>Select Education</item>
+        <item>Select</item>
         <item>Illiterate</item>
         <item>Primary</item>
         <item>Secondary</item>
@@ -62,7 +62,7 @@
     </string-array>
 
     <string-array name="caste">
-        <item>Select Caste</item>
+        <item>Select</item>
         <item>General</item>
         <item>OBC</item>
         <item>SC</item>
@@ -71,7 +71,7 @@
     </string-array>
 
     <string-array name="economic_en">
-        <item>Select Economic Status</item>
+        <item>Select</item>
         <item>APL</item>
         <item>BPL</item>
     </string-array>
@@ -84,7 +84,7 @@
     </string-array>
 
     <string-array name="economic_cb">
-        <item>Select Economic Status</item>
+        <item>Select</item>
         <item>APL</item>
         <item>BPL</item>
     </string-array>
