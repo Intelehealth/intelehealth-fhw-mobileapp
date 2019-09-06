@@ -142,6 +142,17 @@ public class PatientDetailActivity extends AppCompatActivity {
         });
         setDisplay(patientUuid);
 
+        if(newVisit.isEnabled())
+        {
+            newVisit.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            newVisit.setTextColor(getResources().getColor(R.color.white));
+        }
+        else
+        {
+           //newVisit.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+           //newVisit.setTextColor(getResources().getColor(R.color.white));
+        }
+
         newVisit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
