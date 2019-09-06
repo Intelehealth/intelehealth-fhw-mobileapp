@@ -209,16 +209,16 @@
     <string name="button_history" translatable="false">Patient History</string>
     <string name="title_activity_patient_detail" translatable="false">Patient Detail</string>
     <string name="header_medical_history" translatable="false">History</string>
-    <string name="button_new_visit" translatable="false">Start New Visit</string>
-    <string name="header_previous_visits" translatable="false">Previous Visits</string>
-    <string name="header_patient_history" translatable="false">Medical History</string>
-    <string name="header_family_history" translatable="false">Family History</string>
+    <string name="button_new_visit" translatable="false">Start new visit</string>
+    <string name="header_previous_visits" translatable="false">Previous visits</string>
+    <string name="header_patient_history" translatable="false">Medical history</string>
+    <string name="header_family_history" translatable="false">Family history</string>
     <string name="string_no_hist" translatable="false">No history of illness</string>
     <string name="row_patient_id" translatable="false">Patient ID</string>
     <string name="row_dob" translatable="false">DOB</string>
     <string name="row_age" translatable="false">Age</string>
     <string name="row_address">Address</string>
-    <string name="row_phone_number" translatable="false">Phone Number</string>
+    <string name="row_phone_number" translatable="false">Phone number</string>
     <string name="row_open_visit" translatable="false">Click to open visit</string>
     <string name="title_activity_settings" translatable="false">Settings</string>
 

@@ -107,7 +107,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
-                                    android:text="Patient Name"
+                                    android:text="Patient name"
                                     android:textSize="@dimen/card_content_text_size"
                                     android:textStyle="bold"/>
 
@@ -386,7 +386,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
-                                    android:text="Economic Status"
+                                    android:text="Economic status"
                                     android:textStyle="bold"
                                     android:textSize="@dimen/card_content_text_size" />
 
