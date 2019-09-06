@@ -303,7 +303,6 @@
                                     android:imeOptions="actionUnspecified"
                                     android:inputType="textCapWords"
                                     android:maxLines="1"
-
                                     android:text="@string/identification_screen_prompt_country" />
 
                                 <Spinner
@@ -473,6 +472,9 @@
                         android:freezesText="true"
                         android:hint="@string/identification_screen_prompt_relationship"
                         android:imeOptions="actionUnspecified"
+                        android:drawableStart="@drawable/ic_family_24dp_black"
+                        android:drawableLeft="@drawable/ic_family_24dp_black"
+                        android:drawablePadding="10dp"
                         android:inputType="textCapWords"
                         android:maxLength="25"
                         android:maxLines="1"
@@ -571,7 +573,6 @@
                             android:focusableInTouchMode="false"
                             android:freezesText="true"
                             android:imeOptions="actionUnspecified"
-
                             android:inputType="textCapWords"
                             android:maxLines="1"
                             android:text="@string/identification_screen_prompt_economic_status" />
