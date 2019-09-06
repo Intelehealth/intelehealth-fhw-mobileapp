@@ -357,9 +357,9 @@ public class PatientDetailActivity extends AppCompatActivity {
 
 //changing patient to patient_new object
         if (patient_new.getMiddle_name() == null) {
-            patientName = patient_new.getLast_name() + ", " + patient_new.getFirst_name();
+            patientName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
         } else {
-            patientName = patient_new.getLast_name() + ", " + patient_new.getFirst_name() + " " + patient_new.getMiddle_name();
+            patientName = patient_new.getFirst_name() + " " + patient_new.getMiddle_name() + " " + patient_new.getLast_name();
         }
 //        setTitle(patientName);
         patinetName.setText(patientName);
