@@ -771,9 +771,9 @@ public class IdentificationActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setMessage("Are you sure you want to go back ?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this);
+                alertdialogBuilder.setMessage("Are you sure you want to go back ?");
+                alertdialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i)
 
@@ -781,8 +781,20 @@ public class IdentificationActivity extends AppCompatActivity {
                         Intent i_back = new Intent(getApplicationContext(), HomeActivity.class);
                         startActivity(i_back);
                     }
-                }).setNegativeButton("No", null).show();
+                });
+                alertdialogBuilder.setNegativeButton("No", null);
 
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.show();
+
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
     }
 
     public void showAlertDialogButtonClicked(String errorMessage) {
