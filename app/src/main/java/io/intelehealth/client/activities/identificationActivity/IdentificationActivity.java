@@ -838,9 +838,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (dob.after(today)) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
+            alertDialogBuilder.setTitle("Error");
             alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_dob);
             //alertDialogBuilder.setMessage(getString(R.string.identification_dialog_date_error));
-            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
@@ -850,6 +851,11 @@ public class IdentificationActivity extends AppCompatActivity {
 
             mDOBPicker.show();
             alertDialog.show();
+
+            Button postiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            postiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+            postiveButton.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+
             return;
         }
 
