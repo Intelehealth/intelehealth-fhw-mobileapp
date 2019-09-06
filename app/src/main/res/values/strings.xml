@@ -101,7 +101,7 @@
     <string name="identification_screen_error_data_fields" translatable="false">Error: data fields are not formatted correctly</string>
     <string name="identification_screen_dialog_age" translatable="false">Please enter age in years</string>
     <string name="identification_screen_dialog_error_dob" translatable="false">Error: DOB is set for date after today</string>
-    <string name="identification_screen_dialog_error_gender" translatable="false">Error: Gender is not selected</string>
+    <string name="identification_screen_dialog_error_gender" translatable="false">Gender is not selected</string>
     <string name="identification_screen_error_dob" translatable="false">Enter a valid DOB</string>
     <string name="identification_screen_error_age" translatable="false">Enter a valid age</string>
     <string name="identification_screen_text_years" translatable="false"> years </string>

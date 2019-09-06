@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -866,8 +868,9 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
+            alertDialogBuilder.setTitle("Error");
             alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
-            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
@@ -875,6 +878,11 @@ public class IdentificationActivity extends AppCompatActivity {
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
+
+            Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+            positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
             return;
         }
 
