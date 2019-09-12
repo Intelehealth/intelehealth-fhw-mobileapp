@@ -1104,6 +1104,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 uploaded = true;
                 ProgressDialog pd = new ProgressDialog(VisitSummaryActivity.this);
                 pd.setTitle("Downloading prescription");
+                pd.setMessage("Please wait...");
                 pd.show();
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
