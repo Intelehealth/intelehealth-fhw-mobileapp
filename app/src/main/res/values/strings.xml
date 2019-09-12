@@ -176,10 +176,10 @@
     <string name="visit_summary_bp" translatable="false">BP</string>
     <string name="visit_summary_pulse" translatable="false">Pulse</string>
     <string name="visit_summary_previous_reports" translatable="false">Previous Reports</string>
-    <string name="visit_summary_medical_history">Medical History</string>
-    <string name="visit_summary_family_history" translatable="false">Family History</string>
-    <string name="visit_summary_on_examination" translatable="false">On Examination</string>
-    <string name="visit_summary_complaint" translatable="false">C/O</string>
+    <string name="visit_summary_medical_history">Medical history</string>
+    <string name="visit_summary_family_history" translatable="false">Family history</string>
+    <string name="visit_summary_on_examination" translatable="false">On examination</string>
+    <string name="visit_summary_complaint" translatable="false">Reason for visit</string>
     <string name="visit_summary_vitals" translatable="false">Vitals</string>
     <string name="visit_summary_doctor_details" translatable="false">Doctor Details</string>
     <string name="visit_summary_rx" translatable="false">Prescribed Medications</string>
@@ -257,7 +257,7 @@
     <string name="title_activity_today_patient" translatable="false">"Today's Patients"</string>
     <string name="title_activity_additional_documents" translatable="false">"Additional Documents"</string>
     <string name="title_activity_video_library" translatable="false">"Video Library"</string>
-    <string name="visit_summary_patient_details" translatable="false">Patient Details</string>
+    <string name="visit_summary_patient_details" translatable="false">Patient details</string>
 
     <!--Setup Activity-->
     <string name="setup_internet" translatable="false">A strong Internet connection is required for setup.</string>

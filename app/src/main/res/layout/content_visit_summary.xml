@@ -543,7 +543,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/padding_card_title_text"
-                    android:text="Additional Documents"
+                    android:text="Additional documents"
                     android:textSize="@dimen/card_title_text_size" />
 
                 <ImageButton
@@ -929,7 +929,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/padding_card_title_text"
-                    android:text="Health Worker"
+                    android:text="Health worker"
                     android:textSize="@dimen/card_title_text_size" />
 
                 <TextView
