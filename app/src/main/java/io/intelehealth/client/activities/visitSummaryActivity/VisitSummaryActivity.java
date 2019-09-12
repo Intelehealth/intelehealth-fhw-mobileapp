@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -889,7 +890,21 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 });
 
-                complaintDialog.show();
+                //complaintDialog.show();
+                AlertDialog alertDialog = complaintDialog.create();
+                alertDialog.show();
+                Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                pb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+
+                Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                nb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+
+                Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+                neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                neutralb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+
             }
         });
 
