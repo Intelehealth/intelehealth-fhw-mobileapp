@@ -123,7 +123,7 @@
     <string name="title_activity_complaint_node">Select Complaints</string>
     <string name="complaint_category_selected" translatable="false">Selected Categories:</string>
     <string name="complaint_complaint_selected" translatable="false">Selected Complaints:</string>
-    <string name="complaint_dialog_title">Complaints</string>
+    <string name="complaint_dialog_title">Reason for visit</string>
     <string name="complaint_required" translatable="false">Complaint must be selected!</string>
 
     //Question Node Screen
