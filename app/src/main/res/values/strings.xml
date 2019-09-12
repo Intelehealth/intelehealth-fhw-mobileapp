@@ -205,7 +205,7 @@
 
 
     //Patient Detail Screen
-    <string name="header_patient_detail" translatable="false">Patient Information</string>
+    <string name="header_patient_detail" translatable="false">Patient information</string>
     <string name="button_history" translatable="false">Patient History</string>
     <string name="title_activity_patient_detail" translatable="false">Patient Detail</string>
     <string name="header_medical_history" translatable="false">History</string>
