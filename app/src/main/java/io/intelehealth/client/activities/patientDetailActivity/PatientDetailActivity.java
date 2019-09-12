@@ -622,10 +622,13 @@ public class PatientDetailActivity extends AppCompatActivity {
                 newVisit.setClickable(false);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                    newVisit.setBackgroundColor
+                {newVisit.setBackgroundColor
                             (getColor(R.color.divider));
-                else
+                newVisit.setTextColor(getColor(R.color.white));}
+                else {
                     newVisit.setBackgroundColor(getResources().getColor(R.color.divider));
+                    newVisit.setTextColor(getResources().getColor(R.color.white));
+                }
             }
 
         } else {
