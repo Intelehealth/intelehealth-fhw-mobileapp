@@ -816,7 +816,20 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 });
 
-                famHistDialog.show();
+                //famHistDialog.show();
+                AlertDialog alertDialog = famHistDialog.create();
+                alertDialog.show();
+                Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                pb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+
+                Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                nb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+
+                Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+                neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                neutralb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
             }
         });
 
@@ -1014,7 +1027,20 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 });
 
-                physicalDialog.show();
+                //physicalDialog.show();
+                AlertDialog alertDialog = physicalDialog.create();
+                alertDialog.show();
+                Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                pb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+
+                Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                nb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+
+                Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+                neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                neutralb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
             }
         });
 
@@ -1088,7 +1114,21 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 });
 
-                historyDialog.show();
+                //historyDialog.show();
+                AlertDialog alertDialog = historyDialog.create();
+                alertDialog.show();
+                Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                pb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+
+                Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                nb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+
+                Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+                neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                neutralb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+
             }
         });
 
