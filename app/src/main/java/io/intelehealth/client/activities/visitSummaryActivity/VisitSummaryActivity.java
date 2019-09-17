@@ -950,7 +950,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
-                                phyExam.setValue(dialogEditText.getText().toString());
+                                phyExam.setValue(dialogEditText.getText().toString().replace("\n","<br>"));
                                 if (phyExam.getValue() != null) {
                                     physicalText.setText(Html.fromHtml(phyExam.getValue()));
                                     physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
