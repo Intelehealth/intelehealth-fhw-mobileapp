@@ -13,6 +13,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -38,6 +39,7 @@ import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
 import java.io.File;
+import java.net.InetAddress;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -100,7 +102,15 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                syncUtils.syncForeground();
+                if(isNetworkConnected())
+                {
+                    syncUtils.syncForeground();
+                }
+                else
+                {
+                    AppConstants.notificationUtils.showNotifications_noProgress("Sync not available", "Please connect to an internet connection!", getApplicationContext());
+                }
+
 //                pullDataDAO.pushDataApi();
 //                imagesPushDAO.patientProfileImagesPush();
 //                imagesPushDAO.obsImagesPush();
@@ -196,6 +206,12 @@ public class HomeActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
 
