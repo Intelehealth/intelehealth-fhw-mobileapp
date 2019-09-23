@@ -1075,6 +1075,8 @@
             android:textAlignment="center"
             android:textColor="@android:color/white"
             android:textSize="24dp"
+            style="@style/SelectableItemBackground"
+            android:foreground="?android:attr/selectableItemBackground"
             android:textStyle="bold" />
 
         <Button
@@ -1089,6 +1091,8 @@
             android:textAlignment="center"
             android:textColor="@android:color/white"
             android:textSize="24dp"
+            style="@style/SelectableItemBackground"
+            android:foreground="?android:attr/selectableItemBackground"
             android:textStyle="bold" />
 
     </LinearLayout>
