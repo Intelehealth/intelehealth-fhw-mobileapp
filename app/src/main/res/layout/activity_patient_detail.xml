@@ -567,6 +567,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:textStyle="bold"
+                    style="@style/SelectableItemBackground"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:text="@string/button_new_visit" />
 
                 <android.support.v7.widget.CardView
