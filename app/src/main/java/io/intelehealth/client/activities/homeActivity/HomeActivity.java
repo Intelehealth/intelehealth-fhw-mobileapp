@@ -280,8 +280,10 @@ public class HomeActivity extends AppCompatActivity {
 //                boolean i = imagesPushDAO.patientProfileImagesPush();
 //                boolean o = imagesPushDAO.obsImagesPush();
                 if (isSynced)
-                    AppConstants.notificationUtils.showNotifications("ImageUpload", "ImageUpload Completed", this);
+                    AppConstants.notificationUtils.showNotifications_noProgress("Sync not available", "Please connect to an internet connection!", getApplicationContext());
+                    //AppConstants.notificationUtils.showNotifications("ImageUpload", "ImageUpload Completed", this);
                 else
+                    //AppConstants.notificationUtils.showNotifications_noProgress("Sync not available", "Please connect to an internet connection!", getApplicationContext());
                     AppConstants.notificationUtils.showNotifications("ImageUpload", "ImageUpload failed", this);
                 return true;
 //            case R.id.backupOption:
