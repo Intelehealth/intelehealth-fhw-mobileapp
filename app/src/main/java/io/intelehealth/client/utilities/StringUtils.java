@@ -120,6 +120,14 @@ public final class StringUtils {
 
     }
 
+    public static String getValue1(String value) {
+        String val = " ";
+        if (value != null)
+            val = value;
+        return val;
+
+    }
+
     public static String getProvided(Spinner spinner) {
         String val = "";
         if (spinner.getSelectedItemPosition() == 0)

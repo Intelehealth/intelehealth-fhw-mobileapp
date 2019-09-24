@@ -88,7 +88,7 @@ public class DateAndTimeUtils {
     }
 
     public String currentDateTimeInHome() {
-        DateFormat date = new SimpleDateFormat("dd MMMM yyyy HH:mm:ss", Locale.getDefault());
+        DateFormat date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.getDefault());
 // you can get seconds by adding  "...:ss" to it
         Date todayDate = new Date();
         return date.format(todayDate);

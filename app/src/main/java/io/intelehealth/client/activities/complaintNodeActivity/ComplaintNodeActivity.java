@@ -33,10 +33,14 @@ import io.intelehealth.client.R;
 import io.intelehealth.client.activities.questionNodeActivity.QuestionNodeActivity;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.dao.EncounterDAO;
+import io.intelehealth.client.database.dao.ObsDAO;
 import io.intelehealth.client.knowledgeEngine.Node;
 import io.intelehealth.client.models.dto.EncounterDTO;
+import io.intelehealth.client.models.dto.ObsDTO;
 import io.intelehealth.client.utilities.FileUtils;
 import io.intelehealth.client.utilities.SessionManager;
+import io.intelehealth.client.utilities.StringUtils;
+import io.intelehealth.client.utilities.UuidDictionary;
 import io.intelehealth.client.utilities.exception.DAOException;
 
 public class ComplaintNodeActivity extends AppCompatActivity {
@@ -230,6 +234,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                             intent.putExtra("tag", intentTag);
                         }
                         intent.putStringArrayListExtra("complaints", selection);
+
                         startActivity(intent);
                     }
                 });
@@ -279,5 +284,22 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         return true;
     }
 
+    private boolean insertDb(String value) {
+
+        Log.i(TAG, "insertDb: " + patientUuid + " " + visitUuid + " " + UuidDictionary.CURRENT_COMPLAINT);
+        ObsDAO obsDAO = new ObsDAO();
+        ObsDTO obsDTO = new ObsDTO();
+        obsDTO.setConceptuuid(UuidDictionary.CURRENT_COMPLAINT);
+        obsDTO.setEncounteruuid(encounterAdultIntials);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(StringUtils.getValue(value));
+        boolean isInserted = false;
+        try {
+            isInserted = obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            Crashlytics.getInstance().core.logException(e);
+        }
+        return isInserted;
+    }
 
 }

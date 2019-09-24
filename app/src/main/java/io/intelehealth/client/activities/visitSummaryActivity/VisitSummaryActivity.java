@@ -57,6 +57,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.sandro.restaurant.Restaurant;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
@@ -676,7 +677,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 if (!flag.isChecked()) {
                     //
                 }
-                Snackbar.make(view, "Uploading to doctor.", Snackbar.LENGTH_LONG).setActionTextColor(R.color.white).show();
+
+                new Restaurant(VisitSummaryActivity.this, "Uploading to doctor.", Snackbar.LENGTH_LONG)
+                        .setBackgroundColor(Color.BLACK)
+                        .setTextColor(Color.WHITE)
+                        .show();
+//                Snackbar.make(view, "Uploading to doctor.", Snackbar.LENGTH_LONG).show();
 
                 if (NetworkConnection.isOnline(getApplication())) {
                     AppConstants.notificationUtils.showNotifications("Visit Data Upload", "Uploading visit data", 3, VisitSummaryActivity.this);
@@ -2144,21 +2150,35 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 }
                 if (!diagnosisReturned.isEmpty()) {
                     diagnosisReturned = "";
+                    diagnosisTextView.setText("");
+                    diagnosisCard.setVisibility(View.GONE);
                 }
                 if (!rxReturned.isEmpty()) {
                     rxReturned = "";
+                    prescriptionTextView.setText("");
+                    prescriptionCard.setVisibility(View.GONE);
+
                 }
                 if (!adviceReturned.isEmpty()) {
                     adviceReturned = "";
+                    medicalAdviceTextView.setText("");
+                    medicalAdviceCard.setVisibility(View.GONE);
                 }
                 if (!testsReturned.isEmpty()) {
                     testsReturned = "";
+                    requestedTestsTextView.setText("");
+                    requestedTestsCard.setVisibility(View.GONE);
                 }
                 if (!additionalReturned.isEmpty()) {
                     additionalReturned = "";
+                    additionalCommentsTextView.setText("");
+                    additionalCommentsCard.setVisibility(View.GONE);
+
                 }
                 if (!followUpDate.isEmpty()) {
                     followUpDate = "";
+                    followUpDateTextView.setText("");
+                    followUpDateCard.setVisibility(View.GONE);
                 }
                 String[] columns = {"value", " conceptuuid"};
                 String visitSelection = "encounteruuid = ? and voided!='1'";

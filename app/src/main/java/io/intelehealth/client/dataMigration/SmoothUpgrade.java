@@ -125,6 +125,8 @@ public class SmoothUpgrade {
         return "";
     }
 
+// added the static location details,provider,creator id in the database
+
     public void insertOfflineOldData() {
         myDataBase.beginTransaction();
         PatientDTO patientDTO = new PatientDTO();
@@ -251,8 +253,8 @@ public class SmoothUpgrade {
                     visitDTO.setStartdate(cursor.getString(cursor.getColumnIndexOrThrow("start_datetime")));
                     visitDTO.setEnddate(cursor.getString(cursor.getColumnIndexOrThrow("end_datetime")));
                     visitDTO.setVisitTypeUuid(UuidDictionary.VISIT_TELEMEDICINE);
-                    visitDTO.setLocationuuid(sessionManager.getLocationUuid());
-                    visitDTO.setCreatoruuid(sessionManager.getCreatorID());
+                    visitDTO.setLocationuuid("b56d5d16-bf89-4ac0-918d-e830fbfba290");
+                    visitDTO.setCreatoruuid("8af2f1eb-d7d1-452e-b211-9610947ee80d");
 
                     cursor.moveToNext();
                 }
@@ -281,7 +283,7 @@ public class SmoothUpgrade {
                     encounterDTO.setVisituuid(visituuid);
                     encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid(cursor.getString(cursor.getColumnIndexOrThrow("encounter_type"))));
                     encounterDTO.setEncounterTime(time);
-                    encounterDTO.setProvideruuid(sessionManager.getProviderID());
+                    encounterDTO.setProvideruuid("28cea4ab-3188-434a-82f0-055133090a38");
                     encounterDTO.setVoided(0);
                     encounterDTO.setSyncd(false);
 
@@ -316,7 +318,7 @@ public class SmoothUpgrade {
                     ObsDTO.setConceptuuid(convertConcepttoUuid(cursor.getString(cursor.getColumnIndexOrThrow("concept_id"))));
                     ObsDTO.setValue(cursor.getString(cursor.getColumnIndexOrThrow("value")));
                     ObsDTO.setEncounteruuid(encounterUuid);
-                    ObsDTO.setCreator(sessionManager.getCreatorID());
+                    ObsDTO.setCreator("8af2f1eb-d7d1-452e-b211-9610947ee80d");
 
                     try {
                         obsDAO.insertObs(ObsDTO);
@@ -380,7 +382,7 @@ public class SmoothUpgrade {
             encounterDTO.setEncounterTypeUuid(getEncounterTypebasedonConcept(encounterType));
             encounterDTO.setEncounterTime(time);
             encounterDTO.setSyncd(false);
-            encounterDTO.setProvideruuid(sessionManager.getProviderID());
+            encounterDTO.setProvideruuid("28cea4ab-3188-434a-82f0-055133090a38");
             encounterDTO.setVoided(0);
             try {
                 encounterDAO.createEncountersToDB(encounterDTO);

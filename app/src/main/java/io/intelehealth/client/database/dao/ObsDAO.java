@@ -148,7 +148,7 @@ public class ObsDAO {
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("voided", "0");
             values.put("sync", "false");
-            insertedCount = db.insert("tbl_obs", null, values);
+            insertedCount = db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
             db.setTransactionSuccessful();
             Logger.logD("updated", "updatedrecords count" + insertedCount);

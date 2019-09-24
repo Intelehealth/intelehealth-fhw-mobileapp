@@ -355,16 +355,11 @@ public class SearchPatientActivity extends AppCompatActivity {
     }
 
     public List<PatientDTO> getQueryPatients(String query) {
-        String search = query.trim();
+        String search = query.trim().replaceAll("\\s", "");
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         String table = "tbl_patient";
-        final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table +
-                " WHERE first_name LIKE " + "'" + search +
-                "%' OR last_name LIKE '" + search +
-                "%' OR openmrs_id LIKE '" + search +
-                "%' OR middle_name LIKE '" + search + "%' " +
-                "ORDER BY first_name ASC", null);
+        final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR last_name LIKE '%" + search + "%' OR openmrs_id LIKE '%" + search + "%' " + "ORDER BY first_name ASC", null);
         try {
             if (searchCursor.moveToFirst()) {
                 do {
@@ -435,14 +430,15 @@ public class SearchPatientActivity extends AppCompatActivity {
                 Logger.logE("doquery", "doquery", e);
             }
         } else {
-            String search = querytext.trim();
+            String search = querytext.trim().replaceAll("\\s", "");
             List<PatientDTO> modelList = new ArrayList<PatientDTO>();
             String query =
                     "select   b.openmrs_id,b.firstname,b.last_name,b.middle_name,b.uuid,b.date_of_birth  from tbl_visit a, tbl_patient b, tbl_encounter c WHERE" +
-                            "first_name LIKE " + "'" + search +
-                            "%' OR last_name LIKE '" + search +
-                            "%' OR openmrs_id LIKE '" + search +
-                            "%' OR middle_name LIKE '" + search + "%' " +
+                            "first_name LIKE " + "'%" + search +
+                            "%' OR middle_name LIKE '%" + search +
+                            "%' OR last_name LIKE '%" + search +
+                            "%' OR openmrs_id LIKE '%" + search +
+                            "%' " +
                             "AND a.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
                             "AND  a.patientuuid = b.uuid  AND c.visituuid=a.uuid " +
                             "group by a.uuid order by b.uuid ASC";

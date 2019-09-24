@@ -285,6 +285,9 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 //    complaintDetails.put(complaint, complaintFormatted);
 
                 insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
+            } else {
+                String complaint = currentNode.getText();
+                insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>");
             }
             ArrayList<String> selectedAssociatedComplaintsList = currentNode.getSelectedAssociations();
             if (selectedAssociatedComplaintsList != null && !selectedAssociatedComplaintsList.isEmpty()) {
@@ -397,7 +400,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
         obsDTO.setConceptuuid(UuidDictionary.CURRENT_COMPLAINT);
         obsDTO.setEncounteruuid(encounterAdultIntials);
         obsDTO.setCreator(sessionManager.getCreatorID());
-        obsDTO.setValue(StringUtils.getValue(value));
+        obsDTO.setValue(StringUtils.getValue1(value));
         boolean isInserted = false;
         try {
             isInserted = obsDAO.insertObs(obsDTO);
