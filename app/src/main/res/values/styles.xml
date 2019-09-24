@@ -48,7 +48,7 @@
     </style>
 
     <style name="SelectableItemTheme">
-        <item name="colorControlHighlight">@color/white</item>
+        <item name="colorControlHighlight">#5677FC</item>
     </style>
 
 
