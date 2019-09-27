@@ -287,7 +287,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
             } else {
                 String complaint = currentNode.getText();
-                insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>");
+                insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + " ");
             }
             ArrayList<String> selectedAssociatedComplaintsList = currentNode.getSelectedAssociations();
             if (selectedAssociatedComplaintsList != null && !selectedAssociatedComplaintsList.isEmpty()) {

@@ -449,6 +449,27 @@ public class ImagesDAO {
         return isImageObsExists;
     }
 
+    public List<String> isImageListObsExists(String encounterUuid, String conceptUuid) throws DAOException {
+        List<String> imagesList = new ArrayList<>();
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        localdb.beginTransaction();
+        try {
+            Cursor idCursor = localdb.rawQuery("SELECT uuid FROM tbl_obs where encounteruuid=? AND conceptuuid = ? AND voided=? COLLATE NOCASE order by modified_date", new String[]{encounterUuid, conceptUuid, "0"});
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+                    imagesList.add(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                }
+            }
+            idCursor.close();
+        } catch (SQLiteException e) {
+            throw new DAOException(e);
+        } finally {
+            localdb.endTransaction();
+        }
+
+        return imagesList;
+    }
+
     public boolean isLocalImageExists(String encounterUuidAdultIntial, String conceptUuid) throws DAOException {
         boolean isLocalImageExists = false;
         File imagesPath = new File(AppConstants.IMAGE_PATH);
@@ -465,6 +486,17 @@ public class ImagesDAO {
         }
         return isLocalImageExists;
     }
+
+    public boolean isLocalImageUuidExists(String imageuuid) throws DAOException {
+        boolean isLocalImageExists = false;
+        File imagesPath = new File(AppConstants.IMAGE_PATH);
+        String imageName = imageuuid + ".jpg";
+        if (new File(imagesPath + "/" + imageName).exists()) {
+            isLocalImageExists = true;
+        }
+        return isLocalImageExists;
+    }
+
 
 
 }

@@ -511,21 +511,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
         additionalImageDownloadText.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
-            if (imagesDAO.isImageObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD)) {
-                if (imagesDAO.isLocalImageExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD))
+            List<String> imageList = imagesDAO.isImageListObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD);
+            for (String images : imageList) {
+                if (imagesDAO.isLocalImageUuidExists(images))
                     additionalImageDownloadText.setVisibility(View.GONE);
                 else
                     additionalImageDownloadText.setVisibility(View.VISIBLE);
-            } else
-                additionalImageDownloadText.setVisibility(View.GONE);
-
-
-//            if (imagesDAO.isImageObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD) && imagesDAO.isLocalImageExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD)) {
-//                additionalImageDownloadText.setVisibility(View.VISIBLE);
-//            }else{
-//                additionalImageDownloadText.setVisibility(View.GONE);
-//
-//            }
+            }
         } catch (DAOException e) {
             e.printStackTrace();
         }
@@ -569,7 +561,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 physcialExaminationDownloadText.setVisibility(View.GONE);
             }
         });
-
 
 
         downloadButton.setEnabled(false);
