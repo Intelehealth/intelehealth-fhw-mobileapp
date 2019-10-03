@@ -11,7 +11,7 @@ import io.intelehealth.client.R;
 public class DialogUtils {
 
     public void showOkDialog(Context context, String title, String message, String ok) {
-        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+        AlertDialog alertDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle).create();
         alertDialog.setTitle(title);
         alertDialog.setMessage(message);
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, ok,
