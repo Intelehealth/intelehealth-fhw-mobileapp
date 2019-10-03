@@ -65,7 +65,7 @@
 
     //Home Screen (after login)
     <string name="title_home_screen" translatable="false">Home</string>
-    <string name="button_new_pt">New Patient</string>
+    <string name="button_new_pt">مريض جديد</string>
     <string name="button_find_pt" translatable="false">Find Patient</string>
     <string name="button_diagnostic_tests" translatable="false">Diagnostic Tests</string>
     <string name="button_active_pt" translatable="false">Active Patients</string>
@@ -77,20 +77,19 @@
 
     //Identification Screen
     <string name="title_activity_identification" translatable="false">Add New Patient</string>
-    <string name="identification_screen_prompt_first_name">First name *</string>
-    <string name="identification_screen_prompt_middle_name">Middle name</string>
-    <string name="identification_screen_prompt_last_name">Last name *</string>
+    <string name="identification_screen_prompt_middle_name">الاسم الأوسط</string>
+    <string name="identification_screen_prompt_last_name">الكنية *</string>
     <string name="identification_screen_prompt_address">Address line 1</string>
-    <string name="identification_screen_prompt_address2">Address line 2</string>
-    <string name="identification_screen_prompt_phone_number">Phone number</string>
+    <string name="identification_screen_prompt_address2">سطر العنوان٢</string>
+    <string name="identification_screen_prompt_phone_number">رقم الهاتف</string>
     <string name="admin_password_dialog_heading" translatable="false">Enter Admin Password</string>
     <string name="identification_screen_prompt_gender" translatable="false">Gender *</string>
-    <string name="identification_screen_checkbox_male">Male</string>
-    <string name="identification_screen_checkbox_female">Female</string>
+    <string name="identification_screen_checkbox_male">ذكر</string>
+    <string name="identification_screen_checkbox_female">أنثى</string>
     <string name="identification_screen_prompt_birthday">Date of birth*</string>
     <string name="identification_screen_prompt_age">Age:</string>
-    <string name="identification_screen_prompt_city">Village/Town/City *</string>
-    <string name="identification_screen_prompt_state">State *</string>
+    <string name="identification_screen_prompt_city">قرية/مدينة *</string>
+    <string name="identification_screen_prompt_state">محافظة *</string>
     <string name="identification_screen_prompt_caste" translatable="false">Caste</string>
     <string name="identification_screen_prompt_economic_status" translatable="false">Economic status</string>
     <string name="identification_screen_prompt_education" translatable="false">Education level</string>
@@ -121,7 +120,7 @@
     //Complaint Node Screen
     <string name="title_activity_complaint_select" translatable="false">Select Complaints</string>
     <string name="title_activity_complaint_questions" translatable="false">Answer All Questions</string>
-    <string name="title_activity_complaint_node">Select Complaints</string>
+    <string name="title_activity_complaint_node">"اختر الشكاوي "</string>
     <string name="complaint_category_selected" translatable="false">Selected Categories:</string>
     <string name="complaint_complaint_selected" translatable="false">Selected Complaints:</string>
     <string name="complaint_dialog_title">Reason for visit</string>
@@ -177,7 +176,7 @@
     <string name="visit_summary_bp" translatable="false">BP</string>
     <string name="visit_summary_pulse" translatable="false">Pulse</string>
     <string name="visit_summary_previous_reports" translatable="false">Previous Reports</string>
-    <string name="visit_summary_medical_history">Medical history</string>
+    <string name="visit_summary_medical_history">القصة المرضية</string>
     <string name="visit_summary_family_history" translatable="false">Family history</string>
     <string name="visit_summary_on_examination" translatable="false">On examination</string>
     <string name="visit_summary_complaint" translatable="false">Reason for visit</string>
@@ -218,7 +217,7 @@
     <string name="row_patient_id" translatable="false">Patient ID</string>
     <string name="row_dob" translatable="false">DOB</string>
     <string name="row_age" translatable="false">Age</string>
-    <string name="row_address">Address</string>
+    <string name="row_address">العنوان</string>
     <string name="row_phone_number" translatable="false">Phone number</string>
     <string name="row_open_visit" translatable="false">Click to open visit</string>
     <string name="title_activity_settings" translatable="false">Settings</string>
@@ -444,6 +443,7 @@
     <string name="temperature_f">Temperature (F)</string>
     <string name="enter_password">Enter your password</string>
     <string name="enter_username">Enter your username</string>
+    <string name="identification_screen_prompt_first_name">الاسم الاول *</string>
 
 
 </resources>
