@@ -59,7 +59,7 @@
     <string name="device_id" translatable="false">Device ID:</string>
     <string name="enter_license_key" translatable="false">Enter License Key</string>
 
-    <string name="cant_login_user" translatable="false">Can\'t log in ?</string>
+    <string name="cant_login_user" translatable="false">Can\'t log in?</string>
     <string name="email_link" translatable="false">Please contact your System Administrator to reset your password or send an email to support@intelehealth.io</string>
 
     //Home Screen (after login)
@@ -335,6 +335,8 @@
 
     <string name="backup_completed" translatable="false">Backup Completed!</string>
 
+    <string name="hide_text">HIDE</string>
+    <string name="show_text">SHOW</string>
 
     <string name="new_patient" translatable="false">New Patient</string>
     <string name="find_patient" translatable="false">Find Patients</string>
@@ -438,6 +440,8 @@
     <!--Privacy Notice Activity-->
     <string name="privacy_toast">Please select an option</string>
     <string name="temperature_f">Temperature (F)</string>
+    <string name="enter_password">Enter your password</string>
+    <string name="enter_username">Enter your username</string>
 
 
 </resources>

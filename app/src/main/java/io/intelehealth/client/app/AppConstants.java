@@ -8,7 +8,7 @@ import androidx.work.Constraints;
 import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
 
-import com.snatik.storage.Storage;
+//import com.snatik.storage.Storage;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
@@ -28,7 +28,7 @@ public class AppConstants {
     public static final int DATABASE_VERSION = 4;
     public static final String JSON_FOLDER = "Engines";
     public static final String JSON_FOLDER_Update = "Engines_Update";
-    public static final String MIND_MAP_SERVER_URL = "http://mindmaps.intelehealth.io/";
+    public static final String MIND_MAP_SERVER_URL = "https://mindmaps.intelehealth.io/";
     public static final String IMAGE_APP_ID = "app2";
     public static final String dbfilepath = Environment.getExternalStorageDirectory() + File.separator + "InteleHealth_DB" + File.separator + "Intelehealth.db"; // directory: Intelehealth_DB   ,  filename: Intelehealth.db
     public static String CONFIG_FILE_NAME = "config.json";
@@ -57,7 +57,7 @@ public class AppConstants {
     public static final String MINIMUM_RESPIRATORY = "10";
 
     //functions constants
-    public static Storage storage = new Storage(IntelehealthApplication.getAppContext());
+//    public static Storage storage = new Storage(IntelehealthApplication.getAppContext());
     public static InteleHealthDatabaseHelper inteleHealthDatabaseHelper = new InteleHealthDatabaseHelper(IntelehealthApplication.getAppContext());
     public static final String UNIQUE_WORK_NAME = "intelehealth_workmanager";
     public static ApiInterface apiInterface = ApiClient.createService(ApiInterface.class);

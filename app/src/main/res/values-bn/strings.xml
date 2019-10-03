@@ -18,4 +18,6 @@
     <string name="identification_screen_prompt_phone_number">"ফোন নম্বর  "</string>
     <string name="identification_screen_prompt_city">শহর/গ্রাম</string>
     <string name="identification_screen_prompt_state">রাষ্ট্র</string>
+    <string name="enter_password">Enter your password</string>
+    <string name="enter_username">Enter your username</string>
 </resources>

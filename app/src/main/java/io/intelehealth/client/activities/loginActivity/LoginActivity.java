@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.homeActivity.HomeActivity;
@@ -68,8 +69,9 @@ public class LoginActivity extends AppCompatActivity {
     Base64Utils base64Utils = new Base64Utils();
     String encoded = null;
     // UI references.
-    private AutoCompleteTextView mUsernameView;
-    private EditText mPasswordView;
+    private MaterialEditText mUsernameView;
+    private MaterialEditText mPasswordView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,24 +119,23 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
         // Set up the login form.
-        mUsernameView = findViewById(R.id.email);
+        mUsernameView = findViewById(R.id.et_email);
         // populateAutoComplete(); TODO: create our own autocomplete code
-        mPasswordView = findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int id, KeyEvent event) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
+        mPasswordView = findViewById(R.id.et_password);
+//        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView v, int id, KeyEvent event) {
+//                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+//                    attemptLogin();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
         Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Logger.logD(TAG, "button pressed");
                 attemptLogin();
             }
         });
@@ -154,35 +155,41 @@ public class LoginActivity extends AppCompatActivity {
 //        }
 
         // Reset errors.
-        mUsernameView.setError(null);
-        mPasswordView.setError(null);
+//        mUsernameView.setError(null);
+//        mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mUsernameView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        String email = mUsernameView.getText().toString().trim();
+        String password = mPasswordView.getText().toString().trim();
 
-
-        boolean cancel = false;
-        View focusView = null;
-
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
+//        boolean cancel = false;
+//        View focusView = null;
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
-            mUsernameView.setError(getString(R.string.error_field_required));
-            focusView = mUsernameView;
-            cancel = true;
+            mUsernameView.setError(getString(R.string.enter_username));
+            mUsernameView.requestFocus();
+            return;
         }
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else if (NetworkConnection.isOnline(this)) {
+        // Check for a valid password, if the user entered one.
+        if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError(getString(R.string.enter_password));
+            mPasswordView.requestFocus();
+            return;
+        }
+
+        if (password.length() < 4) {
+            mPasswordView.setError(getString(R.string.error_invalid_password));
+            mPasswordView.requestFocus();
+            return;
+        }
+
+//        if (cancel) {
+//            // There was an error; don't attempt login and focus the first
+//            // form field with an error.
+//            focusView.requestFocus();
+//        } else
+        if (NetworkConnection.isOnline(this)) {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
 //            showProgress(true);
@@ -201,7 +208,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() < 4;
     }
 
     private void showProgress(final boolean show) {
@@ -271,96 +278,96 @@ public class LoginActivity extends AppCompatActivity {
 //                Log.d(TAG, "UN: " + USERNAME);
 //                Log.d(TAG, "PW: " + PASSWORD);
         String urlString = urlModifiers.loginUrl(sessionManager.getServerUrl());
-            Logger.logD(TAG, "usernaem and password" + mEmail + mPassword);
+        Logger.logD(TAG, "usernaem and password" + mEmail + mPassword);
         encoded = base64Utils.encoded(mEmail, mPassword);
-            sessionManager.setEncoded(encoded);
+        sessionManager.setEncoded(encoded);
         showProgress(true);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-            Observable<LoginModel> loginModelObservable = AppConstants.apiInterface.LOGIN_MODEL_OBSERVABLE(urlString, "Basic " + encoded);
-            loginModelObservable.subscribe(new Observer<LoginModel>() {
-                @Override
-                public void onSubscribe(Disposable d) {
+        Observable<LoginModel> loginModelObservable = AppConstants.apiInterface.LOGIN_MODEL_OBSERVABLE(urlString, "Basic " + encoded);
+        loginModelObservable.subscribe(new Observer<LoginModel>() {
+            @Override
+            public void onSubscribe(Disposable d) {
 
-                }
+            }
 
-                @Override
-                public void onNext(LoginModel loginModel) {
-                    int responsCode = loginModel.hashCode();
-                    Boolean authencated = loginModel.getAuthenticated();
-                    Gson gson = new Gson();
-                    Logger.logD(TAG, "success" + gson.toJson(loginModel));
-                    sessionManager.setChwname(loginModel.getUser().getDisplay());
-                    sessionManager.setCreatorID(loginModel.getUser().getUuid());
-                    sessionManager.setSessionID(loginModel.getSessionId());
-                    sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
-                    UrlModifiers urlModifiers = new UrlModifiers();
-                    String url = urlModifiers.loginUrlProvider(sessionManager.getServerUrl(), loginModel.getUser().getUuid());
-                    if (authencated) {
-                        Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);
-                        loginProviderModelObservable
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new DisposableObserver<LoginProviderModel>() {
-                                    @Override
-                                    public void onNext(LoginProviderModel loginProviderModel) {
-                                        if (loginProviderModel.getResults().size() != 0) {
-                                            for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
-                                                Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
-                                                sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
+            @Override
+            public void onNext(LoginModel loginModel) {
+                int responsCode = loginModel.hashCode();
+                Boolean authencated = loginModel.getAuthenticated();
+                Gson gson = new Gson();
+                Logger.logD(TAG, "success" + gson.toJson(loginModel));
+                sessionManager.setChwname(loginModel.getUser().getDisplay());
+                sessionManager.setCreatorID(loginModel.getUser().getUuid());
+                sessionManager.setSessionID(loginModel.getSessionId());
+                sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
+                UrlModifiers urlModifiers = new UrlModifiers();
+                String url = urlModifiers.loginUrlProvider(sessionManager.getServerUrl(), loginModel.getUser().getUuid());
+                if (authencated) {
+                    Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);
+                    loginProviderModelObservable
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new DisposableObserver<LoginProviderModel>() {
+                                @Override
+                                public void onNext(LoginProviderModel loginProviderModel) {
+                                    if (loginProviderModel.getResults().size() != 0) {
+                                        for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
+                                            Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
+                                            sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
 //                                                success = true;
-                                                final Account account = new Account(mEmail, "io.intelehealth.openmrs");
-                                                manager.addAccountExplicitly(account, mPassword, null);
-                                                offlineLogin.invalidateLoginCredentials();
-                                                offlineLogin.setUpOfflineLogin(mEmail, mPassword);
-                                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                                                intent.putExtra("login", true);
+                                            final Account account = new Account(mEmail, "io.intelehealth.openmrs");
+                                            manager.addAccountExplicitly(account, mPassword, null);
+                                            offlineLogin.invalidateLoginCredentials();
+                                            offlineLogin.setUpOfflineLogin(mEmail, mPassword);
+                                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                            intent.putExtra("login", true);
 //                startJobDispatcherService(LoginActivity.this);
-                                                startActivity(intent);
-                                                finish();
-                                                showProgress(false);
+                                            startActivity(intent);
+                                            finish();
+                                            showProgress(false);
 
-                                                sessionManager.setReturningUser(true);
+                                            sessionManager.setReturningUser(true);
 
-                                            }
                                         }
                                     }
+                                }
 
-                                    @Override
-                                    public void onError(Throwable e) {
-                                        Logger.logD(TAG, "handle provider error" + e.getMessage());
+                                @Override
+                                public void onError(Throwable e) {
+                                    Logger.logD(TAG, "handle provider error" + e.getMessage());
 //                                        success = false;
-                                        showProgress(false);
-                                    }
+                                    showProgress(false);
+                                }
 
-                                    @Override
-                                    public void onComplete() {
+                                @Override
+                                public void onComplete() {
 
-                                    }
-                                });
-                    }
+                                }
+                            });
                 }
+            }
 
-                @Override
-                public void onError(Throwable e) {
-                    Logger.logD(TAG, "Login Failure" + e.getMessage());
+            @Override
+            public void onError(Throwable e) {
+                Logger.logD(TAG, "Login Failure" + e.getMessage());
 //                    success = false;
-                    showProgress(false);
+                showProgress(false);
 //                    DialogUtils dialogUtils=new DialogUtils();
 //                    dialogUtils.showerrorDialog(LoginActivity.this,"Error Login",getString(R.string.error_incorrect_password),"ok");
-                    Toast.makeText(LoginActivity.this, getString(R.string.error_incorrect_password), Toast.LENGTH_SHORT).show();
-                    mPasswordView.setError("");
-                    mUsernameView.setError("");
-                    mPasswordView.setText("");
-                    mUsernameView.setText("");
-                    mPasswordView.requestFocus();
-                }
+                Toast.makeText(LoginActivity.this, getString(R.string.error_incorrect_password), Toast.LENGTH_SHORT).show();
+                mPasswordView.setError("");
+                mUsernameView.setError("");
+                mPasswordView.setText("");
+                mUsernameView.setText("");
+                mPasswordView.requestFocus();
+            }
 
-                @Override
-                public void onComplete() {
-                    Logger.logD(TAG, "completed");
-                }
-            });
+            @Override
+            public void onComplete() {
+                Logger.logD(TAG, "completed");
+            }
+        });
 
 
 //            return true;

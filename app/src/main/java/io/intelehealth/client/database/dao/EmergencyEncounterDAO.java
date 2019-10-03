@@ -96,7 +96,7 @@ public class EmergencyEncounterDAO {
                 if (cursor.moveToFirst()) {
                     while (!cursor.isAfterLast()) {
                         String name = cursor.getString(cursor.getColumnIndex("uuid"));
-                        String url = "http://" + session.getServerUrl() + ":8080/openmrs/ws/rest/v1/encounter/" + name;
+                        String url = "https://" + session.getServerUrl() + "/openmrs/ws/rest/v1/encounter/" + name;
                         Call<Void> patientUUIDResponsemodelCall = apiInterface.DELETE_ENCOUNTER(url, "Basic " + session.getEncoded());
                         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                         StrictMode.setThreadPolicy(policy);
