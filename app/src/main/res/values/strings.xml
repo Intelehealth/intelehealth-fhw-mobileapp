@@ -57,7 +57,7 @@
     <string name="permission_rationale" translatable="false">"Contacts permissions are needed for providing email completions."
     </string>
     <string name="device_id" translatable="false">Device ID:</string>
-    <string name="enter_license_key" translatable="false">Enter License Key</string>
+    <string name="enter_license_key" translatable="false">Enter license key</string>
 
     <string name="cant_login_user" translatable="false">Can\'t log in?</string>
     <string name="email_link" translatable="false">Please contact your System Administrator to reset your password or send an email to support@intelehealth.io</string>
@@ -76,32 +76,33 @@
 
     //Identification Screen
     <string name="title_activity_identification" translatable="false">Add New Patient</string>
-    <string name="identification_screen_prompt_first_name">First Name *</string>
-    <string name="identification_screen_prompt_middle_name">Middle Name</string>
-    <string name="identification_screen_prompt_last_name">Last Name *</string>
-    <string name="identification_screen_prompt_address">Address</string>
-    <string name="identification_screen_prompt_address2">Address Line 2</string>
-    <string name="identification_screen_prompt_phone_number">Phone Number</string>
+    <string name="identification_screen_prompt_first_name">First name *</string>
+    <string name="identification_screen_prompt_middle_name">Middle name</string>
+    <string name="identification_screen_prompt_last_name">Last name *</string>
+    <string name="identification_screen_prompt_address">Address line 1</string>
+    <string name="identification_screen_prompt_address2">Address line 2</string>
+    <string name="identification_screen_prompt_phone_number">Phone number</string>
     <string name="admin_password_dialog_heading" translatable="false">Enter Admin Password</string>
     <string name="identification_screen_prompt_gender" translatable="false">Gender *</string>
     <string name="identification_screen_checkbox_male">Male</string>
     <string name="identification_screen_checkbox_female">Female</string>
-    <string name="identification_screen_prompt_birthday">Date of Birth*</string>
-    <string name="identification_screen_prompt_age">Age*</string>
+    <string name="identification_screen_prompt_birthday">Date of birth*</string>
+    <string name="identification_screen_prompt_age">Age:</string>
     <string name="identification_screen_prompt_city">Village/Town/City *</string>
     <string name="identification_screen_prompt_state">State *</string>
     <string name="identification_screen_prompt_caste" translatable="false">Caste</string>
-    <string name="identification_screen_prompt_economic_status" translatable="false">Economic Status</string>
-    <string name="identification_screen_prompt_education" translatable="false">Education Level</string>
+    <string name="identification_screen_prompt_economic_status" translatable="false">Economic status</string>
+    <string name="identification_screen_prompt_education" translatable="false">Education level</string>
     <string name="identification_screen_prompt_country" translatable="false">Country *</string>
-    <string name="identification_screen_prompt_postal_code" translatable="false">Postal Code</string>
+    <string name="identification_screen_prompt_postal_code" translatable="false">Postal code</string>
     <string name="identification_screen_prompt_relationship" translatable="false">Son/Daughter/Wife of</string>
     <string name="identification_screen_prompt_occupation" translatable="false">Occupation</string>
     <string name="identification_screen_snack_patient_created" translatable="false">Patient created! Uploading to server.</string>
     <string name="identification_screen_error_data_fields" translatable="false">Error: data fields are not formatted correctly</string>
     <string name="identification_screen_dialog_age" translatable="false">Please enter age in years</string>
-    <string name="identification_screen_dialog_error_dob" translatable="false">Error: DOB is set for date after today</string>
-    <string name="identification_screen_dialog_error_gender" translatable="false">Error: Gender is not selected</string>
+    <string name="identification_screen_dialog_error_dob" translatable="false">Date of birth is set for date after today</string>
+    <string name="identification_screen_dialog_error_gender" translatable="false">Gender is not selected</string>
+    <string name="identification_screen_required_fields" translatable="false">Please enter required fields</string>
     <string name="identification_screen_error_dob" translatable="false">Enter a valid DOB</string>
     <string name="identification_screen_error_age" translatable="false">Enter a valid age</string>
     <string name="identification_screen_text_years" translatable="false"> years </string>
@@ -122,7 +123,7 @@
     <string name="title_activity_complaint_node">Select Complaints</string>
     <string name="complaint_category_selected" translatable="false">Selected Categories:</string>
     <string name="complaint_complaint_selected" translatable="false">Selected Complaints:</string>
-    <string name="complaint_dialog_title">Complaints</string>
+    <string name="complaint_dialog_title">Reason for visit</string>
     <string name="complaint_required" translatable="false">Complaint must be selected!</string>
 
     //Question Node Screen
@@ -175,10 +176,10 @@
     <string name="visit_summary_bp" translatable="false">BP</string>
     <string name="visit_summary_pulse" translatable="false">Pulse</string>
     <string name="visit_summary_previous_reports" translatable="false">Previous Reports</string>
-    <string name="visit_summary_medical_history">Medical History</string>
-    <string name="visit_summary_family_history" translatable="false">Family History</string>
-    <string name="visit_summary_on_examination" translatable="false">On Examination</string>
-    <string name="visit_summary_complaint" translatable="false">C/O</string>
+    <string name="visit_summary_medical_history">Medical history</string>
+    <string name="visit_summary_family_history" translatable="false">Family history</string>
+    <string name="visit_summary_on_examination" translatable="false">On examination</string>
+    <string name="visit_summary_complaint" translatable="false">Reason for visit</string>
     <string name="visit_summary_vitals" translatable="false">Vitals</string>
     <string name="visit_summary_doctor_details" translatable="false">Doctor Details</string>
     <string name="visit_summary_rx" translatable="false">Prescribed Medications</string>
@@ -204,20 +205,20 @@
 
 
     //Patient Detail Screen
-    <string name="header_patient_detail" translatable="false">Patient Information</string>
+    <string name="header_patient_detail" translatable="false">Patient information</string>
     <string name="button_history" translatable="false">Patient History</string>
     <string name="title_activity_patient_detail" translatable="false">Patient Detail</string>
     <string name="header_medical_history" translatable="false">History</string>
-    <string name="button_new_visit" translatable="false">Start New Visit</string>
-    <string name="header_previous_visits" translatable="false">Previous Visits</string>
-    <string name="header_patient_history" translatable="false">Medical History</string>
-    <string name="header_family_history" translatable="false">Family History</string>
+    <string name="button_new_visit" translatable="false">Start new visit</string>
+    <string name="header_previous_visits" translatable="false">Previous visits</string>
+    <string name="header_patient_history" translatable="false">Medical history</string>
+    <string name="header_family_history" translatable="false">Family history</string>
     <string name="string_no_hist" translatable="false">No history of illness</string>
     <string name="row_patient_id" translatable="false">Patient ID</string>
     <string name="row_dob" translatable="false">DOB</string>
     <string name="row_age" translatable="false">Age</string>
     <string name="row_address">Address</string>
-    <string name="row_phone_number" translatable="false">Phone Number</string>
+    <string name="row_phone_number" translatable="false">Phone number</string>
     <string name="row_open_visit" translatable="false">Click to open visit</string>
     <string name="title_activity_settings" translatable="false">Settings</string>
 
@@ -250,13 +251,13 @@
     <string name="toast_crash" translatable="false">Application error encountered; report sent</string>
 
 
-    <string name="title_activity_setup" translatable="false">SetupActivity</string>
+    <string name="title_activity_setup" translatable="false">Setup</string>
 
     <string name="title_activity_camera" translatable="false">Camera</string>
     <string name="title_activity_today_patient" translatable="false">"Today's Patients"</string>
     <string name="title_activity_additional_documents" translatable="false">"Additional Documents"</string>
     <string name="title_activity_video_library" translatable="false">"Video Library"</string>
-    <string name="visit_summary_patient_details" translatable="false">Patient Details</string>
+    <string name="visit_summary_patient_details" translatable="false">Patient details</string>
 
     <!--Setup Activity-->
     <string name="setup_internet" translatable="false">A strong Internet connection is required for setup.</string>
@@ -270,7 +271,7 @@
     <string name="permission_camera_never_askagain" translatable="false">Camera permission was denied with never ask again.</string>
     <string name="button_allow" translatable="false">Allow</string>
     <string name="button_deny" translatable="false">Deny</string>
-    <string name="button_ok" translatable="false">Ok</string>
+    <string name="button_ok" translatable="false">OK</string>
     <string name="button_cancel" translatable="false">Cancel</string>
     <string name="picture_taken" translatable="false">Picture taken</string>
     <string name="switch_flash" translatable="false">Switch flash</string>
@@ -296,10 +297,10 @@
     <string name="offline_authentication_not_possible" translatable="false">Unable to authenticate offline.</string>
     <string name="admin_authentication_not_possible" translatable="false">Unable to authenticate.</string>
 
-    <string name="login_location_select" translatable="false">Session Location</string>
-    <string name="prompt_licensekey" translatable="false">License Key</string>
-    <string name="setup_use_demo_mindmap" translatable="false">Use Demo Mind-Maps</string>
-    <string name="setup_download_mindmap" translatable="false">Download Mind-Maps</string>
+    <string name="login_location_select" translatable="false">Select location</string>
+    <string name="prompt_licensekey" translatable="false">License key</string>
+    <string name="setup_use_demo_mindmap" translatable="false">Use demo protocols</string>
+    <string name="setup_download_mindmap" translatable="false">Download protocols</string>
 
     <string name="please_wait_progress" translatable="false">Please Wait</string>
     <string name="downloading_protocols" translatable="false">Downloading protocols</string>
@@ -369,12 +370,12 @@
     <string name="resp_error" translatable="false">"Respiratory rate should be in between %1$s and %2$s"</string>
     <string name="temp_error" translatable="false">"Temperature should be in between %1$s and %2$s"</string>
 
-    <string name="not_provided" translatable="false">Not Provided</string>
+    <string name="not_provided" translatable="false">Not provided</string>
 
     <!-- Patient Exit Survey -->
     <string name="exit_survey_label" translatable="false">How was your experience?</string>
     <string name="exit_survey_prompt" translatable="false">Enter your comments here</string>
-    <string name="exit_survey_skip" translatable="false">Skip</string>
+    <string name="exit_survey_skip" translatable="false">SKIP</string>
     <string name="exit_survey_submit" translatable="false">Submit</string>
     <string name="exit_survey_toast">Please select a smiley before submitting</string>
 

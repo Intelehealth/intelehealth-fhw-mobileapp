@@ -147,6 +147,8 @@
                 android:text="@string/exit_survey_skip"
                 android:textSize="15sp"
                 android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:fontFamily="sans-serif-thin"
                 android:padding="14dp"
                 android:layout_below="@id/button_survey_submit"
                 android:layout_alignParentRight="true"

@@ -543,7 +543,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/padding_card_title_text"
-                    android:text="Additional Documents"
+                    android:text="Additional documents"
                     android:textSize="@dimen/card_title_text_size" />
 
                 <ImageButton
@@ -929,7 +929,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/padding_card_title_text"
-                    android:text="Health Worker"
+                    android:text="Health worker"
                     android:textSize="@dimen/card_title_text_size" />
 
                 <TextView
@@ -1068,13 +1068,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:background="@color/gray"
+            android:background="@color/colorPrimary"
             android:drawableLeft="@drawable/ic_cloud_upload"
             android:paddingRight="45dp"
             android:text="@string/visit_summary_button_upload"
             android:textAlignment="center"
             android:textColor="@android:color/white"
             android:textSize="24dp"
+            style="@style/SelectableItemBackground"
+            android:foreground="?android:attr/selectableItemBackground"
             android:textStyle="bold" />
 
         <Button
@@ -1082,13 +1084,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:background="@color/divider"
+            android:background="@color/colorPrimary"
             android:drawableLeft="@drawable/ic_cloud_download"
             android:paddingRight="40dp"
             android:text="@string/visit_summary_button_download"
             android:textAlignment="center"
             android:textColor="@android:color/white"
             android:textSize="24dp"
+            style="@style/SelectableItemBackground"
+            android:foreground="?android:attr/selectableItemBackground"
             android:textStyle="bold" />
 
     </LinearLayout>

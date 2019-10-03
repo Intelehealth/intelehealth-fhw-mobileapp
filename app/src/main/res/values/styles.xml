@@ -20,10 +20,10 @@
 
     <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowNoTitle">true</item>
         <item name="android:textColorPrimary">@color/primary_text</item>
         <item name="android:editTextColor">@color/primary_text</item>
         <item name="android:background">@color/white</item>
+        <item name="android:windowTitleStyle">@style/TextAppearance.AppCompat.Title</item>
     </style>
 
     <style name="CameraActivityStyle" parent="Theme.AppCompat.Light.NoActionBar">
@@ -47,5 +47,14 @@
         <item name="android:windowBackground">@drawable/background_splash</item>
     </style>
 
+    <style name="SelectableItemTheme">
+        <item name="colorControlHighlight">#5677FC</item>
+    </style>
+
+
+    <style name="SelectableItemBackground">
+        <item name="android:theme">@style/SelectableItemTheme</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
 
 </resources>

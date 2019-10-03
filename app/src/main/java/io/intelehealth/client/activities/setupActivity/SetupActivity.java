@@ -7,12 +7,14 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -361,7 +363,7 @@ public class SetupActivity extends AppCompatActivity {
             case R.id.downloadMindmap:
                 if (checked) {
                     r1.setChecked(false);
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
                     LayoutInflater li = LayoutInflater.from(this);
                     View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
                     dialog.setTitle(getString(R.string.enter_license_key))
@@ -373,6 +375,7 @@ public class SetupActivity extends AppCompatActivity {
                                     Dialog d = (Dialog) dialog;
 
                                     EditText text = d.findViewById(R.id.licensekey);
+                                    //text.setPadding(50,0,50,0);  //padding on editText.
                                     EditText url = d.findViewById(R.id.licenseurl);
                                     key = text.getText().toString();
                                     licenseUrl = url.getText().toString();
@@ -402,16 +405,20 @@ public class SetupActivity extends AppCompatActivity {
                                 }
                             });
                     AlertDialog alertDialog = dialog.create();
+                    //will provide spacing i.e margin to the dialog.
+                    alertDialog.setView(promptsView,20,0,20,0);
                     alertDialog.show();
                     // Get the alert dialog buttons reference
                     Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                     Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
 
                     // Change the alert dialog buttons text and background color
-                    positiveButton.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                    positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-                    negativeButton.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
 
+                    negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
                 }
                 break;

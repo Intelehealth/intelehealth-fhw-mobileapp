@@ -13,6 +13,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -38,6 +39,7 @@ import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
 import java.io.File;
+import java.net.InetAddress;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -100,7 +102,15 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                syncUtils.syncForeground();
+                if(isNetworkConnected())
+                {
+                    syncUtils.syncForeground();
+                }
+                else
+                {
+                    AppConstants.notificationUtils.showNotifications_noProgress("Sync not available", "Please connect to an internet connection!", getApplicationContext());
+                }
+
 //                pullDataDAO.pushDataApi();
 //                imagesPushDAO.patientProfileImagesPush();
 //                imagesPushDAO.obsImagesPush();
@@ -167,7 +177,8 @@ public class HomeActivity extends AppCompatActivity {
 
         WorkManager.getInstance().enqueueUniquePeriodicWork(UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
         if (sessionManager.isFirstTimeLaunched()) {
-            TempDialog = new ProgressDialog(HomeActivity.this);
+            TempDialog = new ProgressDialog(HomeActivity.this,R.style.AlertDialogStyle); //thats how to add a style!
+            TempDialog.setTitle("Sync in progress");
             TempDialog.setMessage("Please wait...");
             TempDialog.setCancelable(false);
             TempDialog.setProgress(i);
@@ -176,7 +187,8 @@ public class HomeActivity extends AppCompatActivity {
 
             CDT = new CountDownTimer(7000, 1000) {
                 public void onTick(long millisUntilFinished) {
-                    TempDialog.setMessage("Please wait.. Syncing");
+                    TempDialog.setTitle("Sync in progress");
+                    TempDialog.setMessage("Please wait...");
                     i--;
                 }
 
@@ -194,6 +206,12 @@ public class HomeActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
 
@@ -262,8 +280,10 @@ public class HomeActivity extends AppCompatActivity {
 //                boolean i = imagesPushDAO.patientProfileImagesPush();
 //                boolean o = imagesPushDAO.obsImagesPush();
                 if (isSynced)
-                    AppConstants.notificationUtils.showNotifications("ImageUpload", "ImageUpload Completed", this);
+                    AppConstants.notificationUtils.showNotifications_noProgress("Sync not available", "Please connect to an internet connection!", getApplicationContext());
+                    //AppConstants.notificationUtils.showNotifications("ImageUpload", "ImageUpload Completed", this);
                 else
+                    //AppConstants.notificationUtils.showNotifications_noProgress("Sync not available", "Please connect to an internet connection!", getApplicationContext());
                     AppConstants.notificationUtils.showNotifications("ImageUpload", "ImageUpload failed", this);
                 return true;
 //            case R.id.backupOption:

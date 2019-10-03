@@ -57,9 +57,9 @@ public class PullDataDAO {
                         Crashlytics.getInstance().core.logException(e);
                     }
                     if (sync)
-                        AppConstants.notificationUtils.DownloadDone("sync", "Successfully synced", IntelehealthApplication.getAppContext());
+                        AppConstants.notificationUtils.DownloadDone("Sync", "Successfully synced", IntelehealthApplication.getAppContext());
                     else
-                        AppConstants.notificationUtils.DownloadDone("sync", "failed synced,You can try again", IntelehealthApplication.getAppContext());
+                        AppConstants.notificationUtils.DownloadDone("Sync", "failed synced,You can try again", IntelehealthApplication.getAppContext());
 
                 }
 

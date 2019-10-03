@@ -7,7 +7,7 @@
 
     <item
         android:id="@+id/action_filter"
-        android:title="Filter by Creator"
+        android:title="Filter by creator"
         app:showAsAction="never"/>
 
 </menu>

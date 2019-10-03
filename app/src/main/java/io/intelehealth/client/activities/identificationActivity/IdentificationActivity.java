@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -769,9 +771,9 @@ public class IdentificationActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setMessage("Are you sure you want to go back ?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this);
+                alertdialogBuilder.setMessage("Are you sure you want to go back ?");
+                alertdialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i)
 
@@ -779,8 +781,20 @@ public class IdentificationActivity extends AppCompatActivity {
                         Intent i_back = new Intent(getApplicationContext(), HomeActivity.class);
                         startActivity(i_back);
                     }
-                }).setNegativeButton("No", null).show();
+                });
+                alertdialogBuilder.setNegativeButton("No", null);
 
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.show();
+
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
     }
 
     public void showAlertDialogButtonClicked(String errorMessage) {
@@ -836,9 +850,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (dob.after(today)) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
+            alertDialogBuilder.setTitle("Error");
             alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_dob);
             //alertDialogBuilder.setMessage(getString(R.string.identification_dialog_date_error));
-            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
@@ -848,6 +863,11 @@ public class IdentificationActivity extends AppCompatActivity {
 
             mDOBPicker.show();
             alertDialog.show();
+
+            Button postiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            postiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+            postiveButton.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+
             return;
         }
 
@@ -866,8 +886,9 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
+            alertDialogBuilder.setTitle("Error");
             alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
-            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
@@ -875,6 +896,11 @@ public class IdentificationActivity extends AppCompatActivity {
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
+
+            Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+            positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
             return;
         }
 
@@ -906,7 +932,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
 
-            Toast.makeText(IdentificationActivity.this, "Please Enter Required Fields", Toast.LENGTH_LONG).show();
+            Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
             return;
         }
 

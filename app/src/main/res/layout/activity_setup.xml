@@ -44,35 +44,25 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/textView_Aid"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:text="Android Id:"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-                    <Space
-                        android:layout_width="match_parent"
-                        android:layout_height="20sp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:text="What is the URL to OpenMRS?"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                        android:text="Which server would you like to connect to?"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp">
 
                         <EditText
                             android:id="@+id/editText_URL"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="URL"
+                            android:hint="Enter URL"
                             android:inputType="textUri" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -85,8 +75,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:text="Choose a location"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                        android:text="Choose a location to login"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -107,8 +97,8 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Choose an option for Mind Maps"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                        android:text="Choose an option for protocols"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                     <Space
                         android:layout_width="match_parent"
@@ -116,11 +106,12 @@
 
                     <RadioButton
                         android:id="@+id/demoMindmap"
-                        style="?android:textAppearanceMedium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
+                        android:textSize="17sp"
                         android:onClick="onRadioClick"
+                        android:textAppearance="@style/RobotoTextViewStyle"
                         android:text="@string/setup_use_demo_mindmap" />
 
                     <Space
@@ -129,10 +120,11 @@
 
                     <RadioButton
                         android:id="@+id/downloadMindmap"
-                        style="?android:textAppearanceMedium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:onClick="onRadioClick"
+                        android:textSize="17sp"
+                        android:textAppearance="@style/RobotoTextViewStyle"
                         android:text="@string/setup_download_mindmap" />
 
                     <Space
@@ -145,7 +137,7 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:text="Please enter your username and password"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -203,16 +195,27 @@
 
                     <Button
                         android:id="@+id/setup_submit_button"
-                        style="?android:textAppearanceMedium"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:text="@string/action_sign_in"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:background="@color/colorPrimary"
+                        android:textColor="@color/white"
+                        style="@style/SelectableItemBackground"
+                        android:foreground="?android:attr/selectableItemBackground"/>
 
                     <Space
                         android:layout_width="match_parent"
                         android:layout_height="20sp" />
+
+                    <TextView
+                        android:id="@+id/textView_Aid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:text="Android Id:"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
                 </LinearLayout>
             </ScrollView>

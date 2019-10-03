@@ -19,6 +19,9 @@ import android.text.style.BackgroundColorSpan;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -141,6 +144,17 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
         });
         setDisplay(patientUuid);
+
+        if(newVisit.isEnabled())
+        {
+            newVisit.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            newVisit.setTextColor(getResources().getColor(R.color.white));
+        }
+        else
+        {
+           //newVisit.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+           //newVisit.setTextColor(getResources().getColor(R.color.white));
+        }
 
         newVisit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -357,9 +371,9 @@ public class PatientDetailActivity extends AppCompatActivity {
 
 //changing patient to patient_new object
         if (patient_new.getMiddle_name() == null) {
-            patientName = patient_new.getLast_name() + ", " + patient_new.getFirst_name();
+            patientName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
         } else {
-            patientName = patient_new.getLast_name() + ", " + patient_new.getFirst_name() + " " + patient_new.getMiddle_name();
+            patientName = patient_new.getFirst_name() + " " + patient_new.getMiddle_name() + " " + patient_new.getLast_name();
         }
 //        setTitle(patientName);
         patinetName.setText(patientName);
@@ -608,10 +622,13 @@ public class PatientDetailActivity extends AppCompatActivity {
                 newVisit.setClickable(false);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                    newVisit.setBackgroundColor
+                {newVisit.setBackgroundColor
                             (getColor(R.color.divider));
-                else
+                newVisit.setTextColor(getColor(R.color.white));}
+                else {
                     newVisit.setBackgroundColor(getResources().getColor(R.color.divider));
+                    newVisit.setTextColor(getResources().getColor(R.color.white));
+                }
             }
 
         } else {
@@ -856,5 +873,28 @@ public class PatientDetailActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+    }
+
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the options menu from XML
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_detail, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.detail_home:
+                Intent intent = new Intent(PatientDetailActivity.this, HomeActivity.class);
+                //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

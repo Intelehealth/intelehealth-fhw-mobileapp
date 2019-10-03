@@ -33,53 +33,29 @@
   "mBMI": true,
   "mResp": true,
   "privacyNotice": true,
-  "privacyNoticeText": "Privacy notice and consent form for patients
+  "privacyNoticeText": "•Personal Information
   
-Personal Information
-We collect the following personal information from you when the health-worker meets you at the clinic location or on home visits:
-●	Full name
-●	Gender
-●	Date of birth
-●	Home address
-●	Email address
-●	Contact numbers
-●	Health information – height, weight, blood type, blood pressure, medical history, allergy information, and other diagnostic information as required
+Health Workers will collect personal information and health information from you for your medical records.
 
-Use
-Your medical records and other personal data will be processed in compliance with the relevant Data Privacy Act, and its Implementing Rules and Regulations of the jurisdiction where your data is collected. 
+•Use
+Your information is 
+- used for diagnosing and treating you. 
+- used to send you reminders, prescription information, and other related communication. 
 
-Your information is used for diagnosing and treating you. 
+Your personal information will be anonymized for use in research, disease monitoring, and analysis to help us improve our products and services. We may disclose your personal information in certain specific circumstances given here [link to full privacy notice].
 
-Your contact information may be used to 
-•	send you reminders
-•	prescription information, 
-•	other related communication.
+•Protection Measures
+We provide physical, electronic, and procedural safeguards to protect information we process and maintain. 
 
-In addition, your personal information will be anonymized for use in research, disease monitoring, and analysis to help us improve our products and services. Anonymization removes your identifying information and protects your privacy.
-
-We may disclose your personal information:
-●	as required by law, such as to comply with a subpoena, or similar legal process;
-●	when we believe in good faith that disclosure is necessary to protect our rights, protect your safety or the safety of others, investigate fraud, or respond to a government request;
-●	with our trusted services providers who work on our behalf, do not have an independent use of the information we disclose to them, and have agreed to adhere to our privacy policy.
-●	if Intelehealth, Inc. is involved in a merger, acquisition, or sale of all or a portion of its assets, you will be notified via email and/or a prominent notice on our website of any change in ownership or uses of this information, as well as any choices you may have regarding this information.
-
-Protection Measures
-•	We provide physical, electronic, and procedural safeguards to protect information we process and maintain. 
-•	Only authorized personnel have access to your personal information. If a transfer of information is required, the exchange of which will be facilitated through email or hard copy. Digital files will be encrypted and/or password-protected before such transfers.
-•	Personal data records will be stored in a secure database for the period of our contract to provide these services, after which any physical records shall be disposed of through shredding, while digital files shall be anonymized. 
-
-Access and Correction
+•Access and Correction
 You have the right to ask for a copy of any personal information we hold about you, as well as to ask for it to be corrected if you think it is wrong.
 
-If you’d like us to delete your personal data that you have provided to us, please contact us at support@intelehealth.io and we will respond in a reasonable time. 
-
-To make any requests for access, modification, or deletion of your personal information with us, please contact the Data Privacy Officer, at support@intelehealth.io
+If you’d like us to delete or modify your personal data that you have provided to us, please contact the Data Privacy Officer at support@intelehealth.io and we will respond in a reasonable time. 
 
 On clicking “Accept”, I consent to the collection and use of my personal data, including health information, and to give access to the above-mentioned entities.
 ",
 
-  "privacyNoticeText_Cebuano" : "",
-
+"privacyNoticeText_Cebuano" : "",
 "privacyNoticeText_Odiya" : "",
   "presciptionHeader1": "Philippines Telemedicine Project",
   "presciptionHeader2": "ePrescription"

@@ -31,12 +31,14 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".activities.privacyNoticeActivity.PrivacyNotice_Activity"
-            android:label="@string/title_activity_privacy_notice" />
+            android:label="@string/title_activity_privacy_notice"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.additionalDocumentsActivity.AdditionalDocumentsActivity"
             android:label="@string/title_activity_additional_documents"

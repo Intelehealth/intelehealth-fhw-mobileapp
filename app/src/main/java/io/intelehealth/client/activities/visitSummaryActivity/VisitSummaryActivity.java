@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -815,7 +816,20 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 });
 
-                famHistDialog.show();
+                //famHistDialog.show();
+                AlertDialog alertDialog = famHistDialog.create();
+                alertDialog.show();
+                Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                pb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+
+                Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                nb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+
+                Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+                neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                neutralb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
             }
         });
 
@@ -847,7 +861,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                complaint.setValue(dialogEditText.getText().toString());
+                                complaint.setValue(dialogEditText.getText().toString().replace("\n","<br>"));
                                 if (complaint.getValue() != null) {
                                     complaintText.setText(Html.fromHtml(complaint.getValue()));
                                     complaintView.setText(Html.fromHtml(complaint.getValue()));
@@ -889,7 +903,21 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 });
 
-                complaintDialog.show();
+                //complaintDialog.show();
+                AlertDialog alertDialog = complaintDialog.create();
+                alertDialog.show();
+                Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                pb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+
+                Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                nb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+
+                Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+                neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                neutralb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+
             }
         });
 
@@ -922,7 +950,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
-                                phyExam.setValue(dialogEditText.getText().toString());
+                                phyExam.setValue(dialogEditText.getText().toString().replace("\n","<br>"));
                                 if (phyExam.getValue() != null) {
                                     physicalText.setText(Html.fromHtml(phyExam.getValue()));
                                     physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
@@ -999,7 +1027,20 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 });
 
-                physicalDialog.show();
+                //physicalDialog.show();
+                AlertDialog alertDialog = physicalDialog.create();
+                alertDialog.show();
+                Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                pb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+
+                Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                nb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+
+                Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+                neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                neutralb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
             }
         });
 
@@ -1073,7 +1114,21 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 });
 
-                historyDialog.show();
+                //historyDialog.show();
+                AlertDialog alertDialog = historyDialog.create();
+                alertDialog.show();
+                Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                pb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+
+                Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                nb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+
+                Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+                neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                neutralb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+
             }
         });
 
@@ -1104,6 +1159,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 uploaded = true;
                 ProgressDialog pd = new ProgressDialog(VisitSummaryActivity.this);
                 pd.setTitle("Downloading prescription");
+                pd.setMessage("Please wait...");
                 pd.show();
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {

@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
@@ -199,7 +200,7 @@ public class ActivePatientActivity extends AppCompatActivity {
 //        boolean[] checkedItems = {false, false, false, false};
         // ngo_numbers = getResources().getStringArray(R.array.ngo_numbers);
         dialogBuilder = new AlertDialog.Builder(ActivePatientActivity.this);
-        dialogBuilder.setTitle("Filter by Creator");
+        dialogBuilder.setTitle("Filter by creator");
 
         String[] finalCreator_names = creator_names;
         String[] finalCreator_uuid = creator_uuid;
@@ -256,7 +257,16 @@ public class ActivePatientActivity extends AppCompatActivity {
                 }*/
         // }
         // });
-        dialogBuilder.show();
+       // dialogBuilder.show();
+      AlertDialog alertDialog = dialogBuilder.create();
+      alertDialog.show();
+
+      Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+      positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+      Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+      negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+
 
     }
 
