@@ -3,23 +3,23 @@
     <string name="app_name" translatable="false">Intelehealth</string>
 
     //Generic
-    <string name="generic_the_flipping_word_next" translatable="false">Next</string>
-    <string name="hint_required" translatable="false">Required</string>
-    <string name="hint_optional" translatable="false">Optional</string>
-    <string name="tag_optional" translatable="false">optional</string>
-    <string name="generic_ok" translatable="false">OK</string>
-    <string name="generic_cancel" translatable="false">Cancel</string>
-    <string name="generic_yes" translatable="false">Yes</string>
-    <string name="generic_no" translatable="false">No</string>
-    <string name="generic_back" translatable="false">Back</string>
-    <string name="generic_coming_soon" translatable="false">Coming Soon.....</string>
-    <string name="action_print" translatable="false">Print</string>
-    <string name="action_sms" translatable="false">Sms</string>
-    <string name="action_home" translatable="false">Home</string>
-    <string name="action_settings" translatable="false">Settings</string>
-    <string name="generic_warning" translatable="false">Warning!</string>
-    <string name="generic_update" translatable="false">Update</string>
-    <string name="generic_deleted" translatable="false">Deleted</string>
+    <string name="generic_the_flipping_word_next" translatable="false">التالي</string>
+    <string name="hint_required" translatable="false">مطلوب</string>
+    <string name="hint_optional" translatable="false">اختياري</string>
+    <string name="tag_optional" translatable="false">اختياري</string>
+    <string name="generic_ok" translatable="false">حسنا</string>
+    <string name="generic_cancel" translatable="false">إلغاء</string>
+    <string name="generic_yes" translatable="false">نعم</string>
+    <string name="generic_no" translatable="false">لا</string>
+    <string name="generic_back" translatable="false">خلف</string>
+    <string name="generic_coming_soon" translatable="false">قريبا.....</string>
+    <string name="action_print" translatable="false">طباعة</string>
+    <string name="action_sms" translatable="false">رسالة نصية</string>
+    <string name="action_home" translatable="false">الصفحة الرئيسية</string>
+    <string name="action_settings" translatable="false">الإعدادات</string>
+    <string name="generic_warning" translatable="false">تحذير!</string>
+    <string name="generic_update" translatable="false">تحديث</string>
+    <string name="generic_deleted" translatable="false">تم الحذف</string>
 
 
     //Database Schema Names
@@ -41,323 +41,322 @@
 
     //Login Screen
     <string name="title_activity_login" translatable="false">Intelehealth</string>
-    <string name="prompt_email" translatable="false">Username</string>
-    <string name="prompt_password" translatable="false">Password</string>
-    <string name="prompt_admin_password" translatable="false">Admin Password</string>
-    <string name="action_sign_in" translatable="false">Login</string>
-    <string name="action_sign_in_short" translatable="false">Sign in</string>
-    <string name="url_invalid" translatable="false">Check your URL.</string>
-    <string name="prefix_invalid" translatable="false">Select a different prefix!</string>
-    <string name="error_invalid_email" translatable="false">This username is invalid</string>
-    <string name="error_invalid_password" translatable="false">This password is too short</string>
+    <string name="prompt_email" translatable="false">اسم المستخدم</string>
+    <string name="prompt_password" translatable="false">كلمه السر</string>
+    <string name="prompt_admin_password" translatable="false">كلمة سر المشرف</string>
+    <string name="action_sign_in" translatable="false">تسجيل الدخول</string>
+    <string name="action_sign_in_short" translatable="false">التسجيل</string>
+    <string name="url_invalid" translatable="false">تحقق عن الURL الخاص بك.</string>
+    <string name="prefix_invalid" translatable="false">حدد بادئة مختلفة!</string>
+    <string name="error_invalid_email" translatable="false">هذا المستخدم غير صالح</string>
+    <string name="error_invalid_password" translatable="false">كلمة المرور قصيرة جدا</string>
     <string name="error_incorrect_password" translatable="false">please check username and password entered</string>
-    <string name="error_field_required" translatable="false">This field is required</string>
-    <string name="error_network" translatable="false">Network Error</string>
-    <string name="error_location_not_selected" translatable="false">Please select a value form the location dropdown</string>
-    <string name="error_location_not_fetched" translatable="false">Unable to fetch locations</string>
+    <string name="error_field_required" translatable="false">هذه الخانة مطلوبه</string>
+    <string name="error_network" translatable="false">خطأ في الشبكة</string>
+    <string name="error_location_not_selected" translatable="false">يرجى تحديد الموقع من القائمة المنسدلة</string>
+    <string name="error_location_not_fetched" translatable="false">غير قادر على جلب المواقع</string>
     <string name="permission_rationale" translatable="false">"Contacts permissions are needed for providing email completions."
     </string>
-    <string name="device_id" translatable="false">Device ID:</string>
-    <string name="enter_license_key" translatable="false">Enter license key</string>
+    <string name="device_id" translatable="false">معرف الجهاز:</string>
+    <string name="enter_license_key" translatable="false">أدخل مفتاح الترخيص</string>
 
     <string name="cant_login_user" translatable="false">Can\'t log in?</string>
-    <string name="email_link" translatable="false">Please contact your System Administrator to reset your password or send an email to support@intelehealth.io</string>
+    <string name="email_link" translatable="false">الرجاء الاتصال بمسؤول النظام لإعادة تعيين كلمة المرور الخاصة بك أو إرسال بريد إلكتروني إلى support@intelehealth.io</string>
 
     //Home Screen (after login)
-    <string name="title_home_screen" translatable="false">Home</string>
+    <string name="title_home_screen" translatable="false">الصفحة الرئيسية</string>
     <string name="button_new_pt">مريض جديد</string>
-    <string name="button_find_pt" translatable="false">Find Patient</string>
-    <string name="button_diagnostic_tests" translatable="false">Diagnostic Tests</string>
-    <string name="button_active_pt" translatable="false">Active Patients</string>
-    <string name="menu_option_sync" translatable="false">Sync Data</string>
-    <string name="menu_option_settings" translatable="false">Settings</string>
-    <string name="menu_option_end_of_day" translatable="false">End of Day</string>
-    <string name="menu_option_logout" translatable="false">Logout</string>
+    <string name="button_find_pt" translatable="false">مريض جديد</string>
+    <string name="button_diagnostic_tests" translatable="false">الاختبارات التشخيصية</string>
+    <string name="button_active_pt" translatable="false">المرضى النشطاء</string>
+    <string name="menu_option_sync" translatable="false">مزامنة البيانات</string>
+    <string name="menu_option_settings" translatable="false">الإعدادات</string>
+    <string name="menu_option_end_of_day" translatable="false">نهاية اليوم</string>
+    <string name="menu_option_logout" translatable="false">تسجيل الخروج</string>
 
 
     //Identification Screen
-    <string name="title_activity_identification" translatable="false">Add New Patient</string>
+    <string name="title_activity_identification" translatable="false">إضافة مريض جديد</string>
     <string name="identification_screen_prompt_middle_name">الاسم الأوسط</string>
     <string name="identification_screen_prompt_last_name">الكنية *</string>
     <string name="identification_screen_prompt_address">Address line 1</string>
     <string name="identification_screen_prompt_address2">سطر العنوان٢</string>
     <string name="identification_screen_prompt_phone_number">رقم الهاتف</string>
-    <string name="admin_password_dialog_heading" translatable="false">Enter Admin Password</string>
-    <string name="identification_screen_prompt_gender" translatable="false">Gender *</string>
+    <string name="admin_password_dialog_heading" translatable="false">أدخل كلمة مرور المشرف</string>
+    <string name="identification_screen_prompt_gender" translatable="false">الجنس *</string>
     <string name="identification_screen_checkbox_male">ذكر</string>
     <string name="identification_screen_checkbox_female">أنثى</string>
-    <string name="identification_screen_prompt_birthday">Date of birth*</string>
+    <string name="identification_screen_prompt_birthday">تاريخ الولادة*</string>
     <string name="identification_screen_prompt_age">Age:</string>
     <string name="identification_screen_prompt_city">قرية/مدينة *</string>
     <string name="identification_screen_prompt_state">محافظة *</string>
-    <string name="identification_screen_prompt_caste" translatable="false">Caste</string>
-    <string name="identification_screen_prompt_economic_status" translatable="false">Economic status</string>
-    <string name="identification_screen_prompt_education" translatable="false">Education level</string>
-    <string name="identification_screen_prompt_country" translatable="false">Country *</string>
-    <string name="identification_screen_prompt_postal_code" translatable="false">Postal code</string>
-    <string name="identification_screen_prompt_relationship" translatable="false">Son/Daughter/Wife of</string>
-    <string name="identification_screen_prompt_occupation" translatable="false">Occupation</string>
-    <string name="identification_screen_snack_patient_created" translatable="false">Patient created! Uploading to server.</string>
-    <string name="identification_screen_error_data_fields" translatable="false">Error: data fields are not formatted correctly</string>
-    <string name="identification_screen_dialog_age" translatable="false">Please enter age in years</string>
+    <string name="identification_screen_prompt_caste" translatable="false">الطائفة</string>
+    <string name="identification_screen_prompt_economic_status" translatable="false">الحالة المادية</string>
+    <string name="identification_screen_prompt_education" translatable="false">مستوى التعليم</string>
+    <string name="identification_screen_prompt_country" translatable="false">بلد *</string>
+    <string name="identification_screen_prompt_postal_code" translatable="false">الرمز البريدي</string>
+    <string name="identification_screen_prompt_relationship" translatable="false">ابن/ابنة/زوجة لـ</string>
+    <string name="identification_screen_prompt_occupation" translatable="false">الوظيفة</string>
+    <string name="identification_screen_snack_patient_created" translatable="false">تم إنشاء المريض! جاري التحميل للسيرفر.</string>
+    <string name="identification_screen_error_data_fields" translatable="false">خطأ: لم يتم تنسيق حقول الداتا بشكل صحيح</string>
+    <string name="identification_screen_dialog_age" translatable="false">الرجاء إدخال العمر بالسنوات</string>
     <string name="identification_screen_dialog_error_dob" translatable="false">Date of birth is set for date after today</string>
     <string name="identification_screen_dialog_error_gender" translatable="false">Gender is not selected</string>
-    <string name="identification_screen_required_fields" translatable="false">Please enter required fields</string>
-    <string name="identification_screen_error_dob" translatable="false">Enter a valid DOB</string>
-    <string name="identification_screen_error_age" translatable="false">Enter a valid age</string>
+    <string name="identification_screen_required_fields" translatable="false">الرجاء إدخال الحقول المطلوبة</string>
+    <string name="identification_screen_error_dob" translatable="false">أدخل تاريخ ميلاد صحيح</string>
+    <string name="identification_screen_error_age" translatable="false">أدخل عمر بصيغة صحيحة</string>
     <string name="identification_screen_text_years" translatable="false"> years </string>
     <string name="identification_screen_text_months" translatable="false"> months</string>
-    <string name="identification_screen_picker_years" translatable="false">years</string>
-    <string name="identification_screen_picker_months" translatable="false">months</string>
+    <string name="identification_screen_picker_years" translatable="false">سنوات</string>
+    <string name="identification_screen_picker_months" translatable="false">شهور</string>
 
     //Active Patients Screen
-    <string name="title_activity_active_patient" translatable="false">Active Patients</string>
+    <string name="title_activity_active_patient" translatable="false">المرضى النشطاء</string>
 
     //Patient History Screen
-    <string name="title_activity_get_patient_history" translatable="false">Patient History</string>
-    <string name="title_activity_search_patient" translatable="false">Patient Lookup</string>
+    <string name="title_activity_get_patient_history" translatable="false">التاريخ الصحي للمريض</string>
+    <string name="title_activity_search_patient" translatable="false">بحث عن مريض</string>
 
     //Complaint Node Screen
-    <string name="title_activity_complaint_select" translatable="false">Select Complaints</string>
-    <string name="title_activity_complaint_questions" translatable="false">Answer All Questions</string>
+    <string name="title_activity_complaint_select" translatable="false">"اختر الشكاوي "</string>
+    <string name="title_activity_complaint_questions" translatable="false">جاوب على جميع الأسئلة</string>
     <string name="title_activity_complaint_node">"اختر الشكاوي "</string>
-    <string name="complaint_category_selected" translatable="false">Selected Categories:</string>
-    <string name="complaint_complaint_selected" translatable="false">Selected Complaints:</string>
+    <string name="complaint_category_selected" translatable="false">الفئات المختارة:</string>
+    <string name="complaint_complaint_selected" translatable="false">الشكاوى المختارة:</string>
     <string name="complaint_dialog_title">Reason for visit</string>
-    <string name="complaint_required" translatable="false">Complaint must be selected!</string>
+    <string name="complaint_required" translatable="false">يجب تحديد شكوى!</string>
 
     //Question Node Screen
     <string name="title_activity_question_node" translatable="false">QuestionNodeActivity</string>
-    <string name="complaint_change_selected" translatable="false">Modify</string>
-    <string name="question_answer_all" translatable="false">Are you sure you have answered all questions.</string>
-    <string name="question_answer_all_phy_exam" translatable="false">Please answer all general exam questions.</string>
-    <string name="question_duration_picker" translatable="false">Please enter duration</string>
-    <string name="question_text_input" translatable="false">Please enter text</string>
-    <string name="question_date_picker" translatable="false">Please select date</string>
-    <string name="question_location_picker" translatable="false">Please select locations</string>
-    <string name="question_number_picker" translatable="false">Please enter number</string>
+    <string name="complaint_change_selected" translatable="false">تعديل</string>
+    <string name="question_answer_all" translatable="false">هل أنت متأكد من أنك قد أجبت على جميع الأسئلة.</string>
+    <string name="question_answer_all_phy_exam" translatable="false">يرجى الإجابة على جميع أسئلة الفحص العام.</string>
+    <string name="question_duration_picker" translatable="false">الرجاء إدخال المدة</string>
+    <string name="question_text_input" translatable="false">الرجاء إدخال نص</string>
+    <string name="question_date_picker" translatable="false">يرجى تحديد التاريخ</string>
+    <string name="question_location_picker" translatable="false">الرجاء تحديد المواقع</string>
+    <string name="question_number_picker" translatable="false">الرجاء إدخال رقم</string>
     <string name="question_area_picker" translatable="false">Please enter the area (width X length)</string>
-    <string name="question_range_picker" translatable="false">Please enter a range</string>
-    <string name="question_frequency_picker" translatable="false">Please enter how many times</string>
+    <string name="question_range_picker" translatable="false">يرجى إدخال مجال</string>
+    <string name="question_frequency_picker" translatable="false">الرجاء إدخال عدد المرات</string>
 
 
     //Table Exam Screen
-    <string name="title_activity_vitals" translatable="false">Vitals</string>
-    <string name="table_hw" translatable="false">Body Measurements</string>
-    <string name="table_height" translatable="false">Height (cm)</string>
-    <string name="table_weight" translatable="false">Weight (kg)</string>
+    <string name="title_activity_vitals" translatable="false">العلامات الحيوية</string>
+    <string name="table_hw" translatable="false">قياسات الجسم</string>
+    <string name="table_height" translatable="false">الطول (سم)</string>
+    <string name="table_weight" translatable="false">الوزن (كلغ)</string>
     <string name="table_bmi" translatable="false">BMI </string>
-    <string name="table_pulse" translatable="false">Pulse (bpm)</string>
-    <string name="table_bp" translatable="false">Vital Signs</string>
-    <string name="table_bpsys" translatable="false">BP Sys</string>
-    <string name="table_bpdia" translatable="false">BP Dia</string>
+    <string name="table_pulse" translatable="false">النبض (نبضة في الدقيقة)</string>
+    <string name="table_bp" translatable="false">علامات حيوية</string>
+    <string name="table_bpsys" translatable="false">الضغط الانقباضي</string>
+    <string name="table_bpdia" translatable="false">الضغط الانبساطي</string>
     <string name="table_temp" translatable="false">Temperature (C)</string>
-    <string name="table_spo2" translatable="false">SpO2 (%)</string>
+    <string name="table_spo2" translatable="false">الاكسجة</string>
 
     //Patient Search Screen
-    <string name="search_hint" translatable="false">Type to search patient by name…</string>
-    <string name="action_search" translatable="false">Search</string>
+    <string name="search_hint" translatable="false">اكتب للبحث عن المريض بالاسم ...</string>
+    <string name="action_search" translatable="false">بحث</string>
     <string name="alert_none_found" translatable="false">Please check username and pasword entered</string>
 
     //Past Medical History Screen
-    <string name="title_activity_patient_history" translatable="false">Past Medical History</string>
+    <string name="title_activity_patient_history" translatable="false">تاريخ المريض الصحي السابق</string>
 
     //Visit Summary Screen
-    <string name="title_activity_family_history" translatable="false">Family History</string>
-    <string name="title_activity_physical_exam" translatable="false">Physical Exam</string>
-    <string name="title_activity_patient_summary" translatable="false">Visit Summary</string>
+    <string name="title_activity_family_history" translatable="false">التاريخ المرضي للعائلة</string>
+    <string name="title_activity_physical_exam" translatable="false">الفحص السريري</string>
+    <string name="title_activity_patient_summary" translatable="false">موجز الزيارة</string>
     <string name="visit_summary_temperature" translatable="false">Temperature(C)</string>
-    <string name="visit_summary_pulseox" translatable="false">SpO2 (%)</string>
-    <string name="visit_summary_hw_on_duty" translatable="false">CHW On Duty</string>
-    <string name="visit_summary_vitals_heading" translatable="false">Vitals</string>
-    <string name="visit_summary_height_heading" translatable="false">Height (cm)</string>
-    <string name="visit_summary_weight" translatable="false">Weight (kg)</string>
+    <string name="visit_summary_pulseox" translatable="false">الاكسجة</string>
+    <string name="visit_summary_hw_on_duty" translatable="false">"كود عامل الصحة المجتمعية "</string>
+    <string name="visit_summary_vitals_heading" translatable="false">العلامات الحيوية</string>
+    <string name="visit_summary_height_heading" translatable="false">الطول (سم)</string>
+    <string name="visit_summary_weight" translatable="false">الوزن (كلغ)</string>
     <string name="visit_summary_bmi" translatable="false">BMI</string>
-    <string name="visit_summary_bp" translatable="false">BP</string>
-    <string name="visit_summary_pulse" translatable="false">Pulse</string>
-    <string name="visit_summary_previous_reports" translatable="false">Previous Reports</string>
+    <string name="visit_summary_bp" translatable="false">ضغط الدم</string>
+    <string name="visit_summary_pulse" translatable="false">نبض</string>
+    <string name="visit_summary_previous_reports" translatable="false">تقارير السابقة</string>
     <string name="visit_summary_medical_history">القصة المرضية</string>
-    <string name="visit_summary_family_history" translatable="false">Family history</string>
-    <string name="visit_summary_on_examination" translatable="false">On examination</string>
+    <string name="visit_summary_family_history" translatable="false">تاريخ العائلة المرضي</string>
+    <string name="visit_summary_on_examination" translatable="false">في الفحص السريري</string>
     <string name="visit_summary_complaint" translatable="false">Reason for visit</string>
-    <string name="visit_summary_vitals" translatable="false">Vitals</string>
-    <string name="visit_summary_doctor_details" translatable="false">Doctor Details</string>
-    <string name="visit_summary_rx" translatable="false">Prescribed Medications</string>
-    <string name="visit_summary_diagnosis" translatable="false">Diagnosis</string>
-    <string name="visit_summary_advice" translatable="false">Medical Advice</string>
-    <string name="visit_summary_tests_prescribed" translatable="false">Tests/Referrals</string>
-    <string name="visit_summary_additional_comments" translatable="false">Additional Comments</string>
-    <string name="visit_summary_heading_name" translatable="false">Name</string>
-    <string name="visit_summary_heading_id" translatable="false">ID</string>
+    <string name="visit_summary_vitals" translatable="false">العلامات الحيوية</string>
+    <string name="visit_summary_doctor_details" translatable="false">تفاصيل الطبيب</string>
+    <string name="visit_summary_rx" translatable="false">الأدوية الموصوفة</string>
+    <string name="visit_summary_diagnosis" translatable="false">التشخيص</string>
+    <string name="visit_summary_advice" translatable="false">نصيحة طبية</string>
+    <string name="visit_summary_tests_prescribed" translatable="false">اختبارات/تحويلات</string>
+    <string name="visit_summary_additional_comments" translatable="false">تعليقات اضافية</string>
+    <string name="visit_summary_heading_name" translatable="false">اسم</string>
+    <string name="visit_summary_heading_id" translatable="false">هوية شخصية</string>
     <string name="visit_summary_button_download" translatable="false">Download</string>
     <string name="visit_summary_button_upload" translatable="false">Upload</string>
     <string name="name_button_download" translatable="false">button_download</string>
-    <string name="visit_summary_follow_up_date" translatable="false">Follow Up Date</string>
+    <string name="visit_summary_follow_up_date" translatable="false">تاريخ المتابعة</string>
     <string name="visit_summary_follow_up_reminder" translatable="false">Please remind the patient of their follow up date: </string>
-    <string name="visit_summary_upload_reminder" translatable="false">Please upload first before attempting to end the visit.</string>
+    <string name="visit_summary_upload_reminder" translatable="false">يرجى الرفع أولا قبل محاولة إنهاء الزيارة.</string>
 
 
     //Diagnostic Tests Screen
-    <string name="title_activity_diagnostic_tests_list" translatable="false">Choose a Diagnostic Test</string>
+    <string name="title_activity_diagnostic_tests_list" translatable="false">اختر اختبار تشخيصي</string>
 
     //Physical Exam Dialog
-    <string name="wash_hands" translatable="false">Remember to wash your hands</string>
+    <string name="wash_hands" translatable="false">تذكر أن تغسل يديك</string>
 
 
     //Patient Detail Screen
-    <string name="header_patient_detail" translatable="false">Patient information</string>
-    <string name="button_history" translatable="false">Patient History</string>
-    <string name="title_activity_patient_detail" translatable="false">Patient Detail</string>
-    <string name="header_medical_history" translatable="false">History</string>
-    <string name="button_new_visit" translatable="false">Start new visit</string>
-    <string name="header_previous_visits" translatable="false">Previous visits</string>
-    <string name="header_patient_history" translatable="false">Medical history</string>
-    <string name="header_family_history" translatable="false">Family history</string>
-    <string name="string_no_hist" translatable="false">No history of illness</string>
-    <string name="row_patient_id" translatable="false">Patient ID</string>
-    <string name="row_dob" translatable="false">DOB</string>
-    <string name="row_age" translatable="false">Age</string>
+    <string name="header_patient_detail" translatable="false">معلومات المريض</string>
+    <string name="button_history" translatable="false">التاريخ الصحي للمريض</string>
+    <string name="title_activity_patient_detail" translatable="false">تفاصيل المريض</string>
+    <string name="header_medical_history" translatable="false">التاريخ</string>
+    <string name="button_new_visit" translatable="false">بدء زيارة جديدة</string>
+    <string name="header_previous_visits" translatable="false">الزيارات السابقة</string>
+    <string name="header_patient_history" translatable="false">القصة المرضية للمريض</string>
+    <string name="header_family_history" translatable="false">التاريخ المرضي للعائلة</string>
+    <string name="string_no_hist" translatable="false">لا يوجد تاريخ مرضي</string>
+    <string name="row_patient_id" translatable="false">رقم المريض</string>
+    <string name="row_dob" translatable="false">تاريخ الميلاد</string>
+    <string name="row_age" translatable="false">العمر</string>
     <string name="row_address">العنوان</string>
-    <string name="row_phone_number" translatable="false">Phone number</string>
-    <string name="row_open_visit" translatable="false">Click to open visit</string>
-    <string name="title_activity_settings" translatable="false">Settings</string>
+    <string name="row_phone_number" translatable="false">رقم الهاتف</string>
+    <string name="row_open_visit" translatable="false">انقر لفتح الزيارة</string>
+    <string name="title_activity_settings" translatable="false">الإعدادات</string>
 
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->
-    <string name="pref_header_general" translatable="false">General</string>
+    <string name="pref_header_general" translatable="false">عام</string>
 
     <string name="pref_title_social_recommendations" translatable="false">Enable social recommendations</string>
     <string name="pref_description_social_recommendations" translatable="false">Recommendations for people to contact based on your message
         history
     </string>
 
-    <string name="pref_title_display_name" translatable="false">Display name</string>
-    <string name="pref_default_display_name" translatable="false">John Smith</string>
+    <string name="pref_title_display_name" translatable="false">اسم العرض</string>
+    <string name="pref_default_display_name" translatable="false">جون سميث</string>
 
 
     <!-- Example settings for Data & syncBackground -->
     <string name="pref_header_data_sync" translatable="false">Data &amp; sync</string>
 
-    <string name="pref_title_server_url" translatable="false">Server URL</string>
-    <string name="pref_title_id_prefix" translatable="false">Location Prefix</string>
+    <string name="pref_title_server_url" translatable="false">URL السيرفر</string>
+    <string name="pref_title_id_prefix" translatable="false">لاحقة الموقع</string>
 
     <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications" translatable="false">Notifications</string>
-    <string name="pref_title_new_message_notifications" translatable="false">New message notifications</string>
-    <string name="pref_title_ringtone" translatable="false">Ringtone</string>
-    <string name="pref_ringtone_silent" translatable="false">Silent</string>
-    <string name="pref_title_vibrate" translatable="false">Vibrate</string>
-    <string name="toast_crash" translatable="false">Application error encountered; report sent</string>
+    <string name="pref_header_notifications" translatable="false">تنبيهات</string>
+    <string name="pref_title_new_message_notifications" translatable="false">تنبيهات رسالة جديدة</string>
+    <string name="pref_title_ringtone" translatable="false">نغمة رنين</string>
+    <string name="pref_ringtone_silent" translatable="false">صامت</string>
+    <string name="pref_title_vibrate" translatable="false">هزاز</string>
+    <string name="toast_crash" translatable="false">خطأ في التطبيق؛ تم إرسال تقرير</string>
 
 
     <string name="title_activity_setup" translatable="false">Setup</string>
 
-    <string name="title_activity_camera" translatable="false">Camera</string>
-    <string name="title_activity_today_patient" translatable="false">"Today's Patients"</string>
-    <string name="title_activity_additional_documents" translatable="false">"Additional Documents"</string>
-    <string name="title_activity_video_library" translatable="false">"Video Library"</string>
-    <string name="visit_summary_patient_details" translatable="false">Patient details</string>
+    <string name="title_activity_camera" translatable="false">كاميرا</string>
+    <string name="title_activity_today_patient" translatable="false">المرضى اليوم</string>
+    <string name="title_activity_additional_documents" translatable="false">وثائق إضافية</string>
+    <string name="title_activity_video_library" translatable="false">مكتبة الفيديو</string>
+    <string name="visit_summary_patient_details" translatable="false">تفاصيل المريض</string>
 
     <!--Setup Activity-->
-    <string name="setup_internet" translatable="false">A strong Internet connection is required for setup.</string>
-    <string name="generic_manual_entry" translatable="false">Manual Entry</string>
-    <string name="generic_erase_redo" translatable="false">Erase and Re-Do</string>
-    <string name="visit_summary_edit_vitals" translatable="false">You can re-do the vitals from the vitals screen</string>
+    <string name="setup_internet" translatable="false">مطلوب اتصال جيد بالانترنت من أجل الإعداد.</string>
+    <string name="generic_manual_entry" translatable="false">الإدخال اليدوي</string>
+    <string name="generic_erase_redo" translatable="false">محو وإعادة إدخال</string>
+    <string name="visit_summary_edit_vitals" translatable="false">يمكنك إعادة إدخال العلامات الحيوية من شاشة العلامات الحيوية</string>
 
     //Camera Permissions
-    <string name="permission_camera_rationale" translatable="false">Camera permission is needed to show the camera preview.</string>
-    <string name="permission_camera_denied" translatable="false">Camera permission was denied. Please consider granting it in order to access the camera!</string>
-    <string name="permission_camera_never_askagain" translatable="false">Camera permission was denied with never ask again.</string>
-    <string name="button_allow" translatable="false">Allow</string>
-    <string name="button_deny" translatable="false">Deny</string>
-    <string name="button_ok" translatable="false">OK</string>
-    <string name="button_cancel" translatable="false">Cancel</string>
-    <string name="picture_taken" translatable="false">Picture taken</string>
+    <string name="permission_camera_rationale" translatable="false">هناك حاجة إلى إذن الوصول للكاميرا لتظهر معاينة الكاميرا.</string>
+    <string name="permission_camera_denied" translatable="false">تم رفض الوصول للكاميرا، الرجاء الحصول على الاذن لاستخدامها!</string>
+    <string name="permission_camera_never_askagain" translatable="false">تم رفض الوصول للكاميرا مع عدم السؤال مرة أخرى.</string>
+    <string name="button_allow" translatable="false">قبول</string>
+    <string name="button_deny" translatable="false">رفض</string>
+    <string name="button_ok" translatable="false">حسنا</string>
+    <string name="button_cancel" translatable="false">إلغاء</string>
+    <string name="picture_taken" translatable="false">تم أخذ الصورة</string>
     <string name="switch_flash" translatable="false">Switch flash</string>
-    <string name="switch_camera" translatable="false">Switch camera</string>
-    <string name="flash_auto" translatable="false">Flash auto</string>
-    <string name="flash_off" translatable="false">Flash off</string>
-    <string name="flash_on" translatable="false">Flash on</string>
+    <string name="switch_camera" translatable="false">زر الكاميرا</string>
+    <string name="flash_auto" translatable="false">فلاش تلقائي</string>
+    <string name="flash_off" translatable="false">ايقاف الفلاش</string>
+    <string name="flash_on" translatable="false">تشغيل الفلاش</string>
 
     //SEND SMS Permissions
-    <string name="permission_sms_rationale" translatable="false">SMS permission is needed to send SMS.</string>
-    <string name="permission_sms_denied" translatable="false">SMS permission was denied. Please consider granting it in order to send sms from the application!</string>
-    <string name="permission_sms_never_askagain" translatable="false">SMS permission was denied with never ask again.</string>
+    <string name="permission_sms_rationale" translatable="false">هناك حاجة إلى إذن لإرسال SMS.</string>
+    <string name="permission_sms_denied" translatable="false">تم رفض الوصول لرسائل SMS. الرجاء الحصول على الاذن لاستخدامها!</string>
+    <string name="permission_sms_never_askagain" translatable="false">تم رفض الوصول لرسائل SMS مع عدم السؤال مرة أخرى.</string>
 
-    <string name="button_save" translatable="false">Save</string>
-    <string name="button_delete" translatable="false">Delete</string>
+    <string name="button_save" translatable="false">حفظ</string>
+    <string name="button_delete" translatable="false">حذف</string>
 
     //Camera Dialog
-    <string name="camera_dialog_default" translatable="false">Please click document photo in good lighting conditions only. If document photo is not clear, please retake the document photo.</string>
+    <string name="camera_dialog_default" translatable="false">يرجى التقاط صور الوثائق ضمن اضاءة مرتفعة, يرجى اعاد التقاط الصورة مرة اخرى في حال عدم وضوحها.</string>
 
     <!--Offline Login Errors-->
-    <string name="offline_credentials_unavailable" translatable="false">Offline Login is not available.</string>
-    <string name="offline_user_does_not_match" translatable="false">User does not match.</string>
-    <string name="offline_authentication_not_possible" translatable="false">Unable to authenticate offline.</string>
+    <string name="offline_credentials_unavailable" translatable="false">حاليا الدخول غير متوفر بدون اتصال انترنت.</string>
+    <string name="offline_user_does_not_match" translatable="false">المستخدم غير مطابق.</string>
+    <string name="offline_authentication_not_possible" translatable="false">تعذرت المصادقة بدون اتصال انترنت.</string>
     <string name="admin_authentication_not_possible" translatable="false">Unable to authenticate.</string>
 
     <string name="login_location_select" translatable="false">Select location</string>
-    <string name="prompt_licensekey" translatable="false">License key</string>
+    <string name="prompt_licensekey" translatable="false">مفتاح الترخيص</string>
     <string name="setup_use_demo_mindmap" translatable="false">Use demo protocols</string>
     <string name="setup_download_mindmap" translatable="false">Download protocols</string>
 
-    <string name="please_wait_progress" translatable="false">Please Wait</string>
-    <string name="downloading_protocols" translatable="false">Downloading protocols</string>
-    <string name="logging_in" translatable="false">Logging in</string>
-    <string name="error_downloading_protocols" translatable="false">Error Downloading Mind Maps</string>
+    <string name="please_wait_progress" translatable="false">الرجاء الانتظار</string>
+    <string name="downloading_protocols" translatable="false">تحميل البروتوكولات</string>
+    <string name="logging_in" translatable="false">تسجيل الدخول</string>
 
     //Sync strings
     <string name="sync_stopped" translatable="false">Stopped</string>
     <string name="sync_in_progress" translatable="false">In progress</string>
-    <string name="sync_complete" translatable="false">Complete</string>
+    <string name="sync_complete" translatable="false">اكتمال</string>
     <string name="sync_error" translatable="false">Error : No such status</string>
 
-    <string name="id_number" translatable="false">ID Number</string>
-    <string name="uploading" translatable="false">Uploading</string>
-    <string name="downloading" translatable="false">Downloading</string>
+    <string name="id_number" translatable="false">رقم الهوية</string>
+    <string name="uploading" translatable="false">رفع</string>
+    <string name="downloading" translatable="false">جارى التحميل</string>
 
-    <string name="visit" translatable="false">Visit</string>
-    <string name="visit_update" translatable="false">Visit Update</string>
-    <string name="patient" translatable="false">Patient</string>
-    <string name="patient_update" translatable="false">Patient Update</string>
-    <string name="patient_images" translatable="false">Patient Profile Image</string>
-    <string name="visit_images" translatable="false">Visit Images</string>
-    <string name="prescription" translatable="false">Prescription</string>
+    <string name="visit" translatable="false">زيارة</string>
+    <string name="visit_update" translatable="false">تحديث الزيارة</string>
+    <string name="patient" translatable="false">مريض</string>
+    <string name="patient_update" translatable="false">تحديث معلومات المريض</string>
+    <string name="patient_images" translatable="false">صورة ملف المريض</string>
+    <string name="visit_images" translatable="false">صور الزيارة</string>
+    <string name="prescription" translatable="false">وصفة طبية</string>
 
-    <string name="error_no_data" translatable="false">Please download first before attempting to end the visit.</string>
-    <string name="error_phone_number" translatable="false">Phone number can\'t be empty</string>
-    <string name="action_end_visit" translatable="false">End Visit</string>
+    <string name="error_no_data" translatable="false">يرجى التحميل قبل محاولة إنهاء الزيارة.</string>
+    <string name="error_phone_number" translatable="false">رقم الهاتف لا يمكن أن يكون فارغا</string>
+    <string name="action_end_visit" translatable="false">نهاية زيارة</string>
 
-    <string name="error_sms" translatable="false">SMS failed, please try again later!</string>
+    <string name="error_sms" translatable="false">فشل ارسال الرسالة النصية، يرجى المحاولة مرة أخرى في وقت لاحق!</string>
     <string name="sms_success" translatable="false">SMS Sent!</string>
 
-    <string name="question_update_details" translatable="false">Do you want to update details?</string>
+    <string name="question_update_details" translatable="false">هل تريد تحديث التفاصيل؟</string>
 
-    <string name="backup_completed" translatable="false">Backup Completed!</string>
+    <string name="backup_completed" translatable="false">الباك أب مكتمل!</string>
 
     <string name="hide_text">HIDE</string>
     <string name="show_text">SHOW</string>
 
-    <string name="new_patient" translatable="false">New Patient</string>
-    <string name="find_patient" translatable="false">Find Patients</string>
-    <string name="today_patient" translatable="false">"Today's Patients"</string>
-    <string name="active_patient" translatable="false">"Active Patients"</string>
-    <string name="video_library" translatable="false">Video Library</string>
+    <string name="new_patient" translatable="false">مريض جديد</string>
+    <string name="find_patient" translatable="false">البحث عن المرضى</string>
+    <string name="today_patient" translatable="false">مرضى اليوم</string>
+    <string name="active_patient" translatable="false">المرضى النشطاء</string>
+    <string name="video_library" translatable="false">مكتبة الفيديو</string>
 
-    <string name="error_no_sd" translatable="false">This feature is only available to devices with SD cards.</string>
-    <string name="error_admin_password" translatable="false">Admin Password Wrong</string>
-    <string name="error_no_file" translatable="false">"No Files in this directory"</string>
-    <string name="error_no_camera" translatable="false">No camera installed.</string>
-    <string name="error_delete" translatable="false">"Error in deleting"</string>
-    <string name="error_offline_login" translatable="false">"Offline Login Unsuccessful"</string>
-    <string name="success_offline_login" translatable="false">"Offline Login Successful"</string>
-    <string name="invalidate_offline_login" translatable="false">"Offline Login Invalidated"</string>
+    <string name="error_no_sd" translatable="false">هذه الميزة متوفرة فقط لأجهزة مع منفذ بطاقات SD</string>
+    <string name="error_admin_password" translatable="false">كلمة مرور المشرف خاطئة</string>
+    <string name="error_no_file" translatable="false">لا يوجد ملفات في هذا الدليل</string>
+    <string name="error_no_camera" translatable="false">لا يوجد كاميرا مثبتة.</string>
+    <string name="error_delete" translatable="false">خطأ في الحذف</string>
+    <string name="error_offline_login" translatable="false">دخول غير ناجح بدون اتصال انترنت</string>
+    <string name="success_offline_login" translatable="false">تم الدخول بدون انترنت</string>
+    <string name="invalidate_offline_login" translatable="false">"الدخول غير صالح بدون ادخال انترنت "</string>
 
-    <string name="patient_upload_error" translatable="false">Patient has not been uploaded</string>
-    <string name="patient_not_registered" translatable="false">Patient not registered</string>
+    <string name="patient_upload_error" translatable="false">لم يتم تحميل بيانات المريض</string>
+    <string name="patient_not_registered" translatable="false">المريض غير مسجل</string>
 
-    <string name="action_sync_all" translatable="false">Sync Data</string>
+    <string name="action_sync_all" translatable="false">مزامنة البيانات</string>
 
     <!-- Vitals Screen Error-->
 
@@ -370,65 +369,65 @@
     <string name="resp_error" translatable="false">"Respiratory rate should be in between %1$s and %2$s"</string>
     <string name="temp_error" translatable="false">"Temperature should be in between %1$s and %2$s"</string>
 
-    <string name="not_provided" translatable="false">Not provided</string>
+    <string name="not_provided" translatable="false">غير متاح</string>
 
     <!-- Patient Exit Survey -->
-    <string name="exit_survey_label" translatable="false">How was your experience?</string>
-    <string name="exit_survey_prompt" translatable="false">Enter your comments here</string>
-    <string name="exit_survey_skip" translatable="false">SKIP</string>
-    <string name="exit_survey_submit" translatable="false">Submit</string>
+    <string name="exit_survey_label" translatable="false">كيف كانت تجربتك معنا؟</string>
+    <string name="exit_survey_prompt" translatable="false">أدخل ملاحظاتك هنا</string>
+    <string name="exit_survey_skip" translatable="false">تخطى</string>
+    <string name="exit_survey_submit" translatable="false">تسجيل</string>
     <string name="exit_survey_toast">Please select a smiley before submitting</string>
 
 
     <!--DB Backup-->
 
-    <string name="db_backup_complete" translatable="false">Database Backup Complete!</string>
-    <string name="db_restore_complete" translatable="false">Database Restore Complete!</string>
+    <string name="db_backup_complete" translatable="false">النسخ الاحتياطي تم بنجاح</string>
+    <string name="db_restore_complete" translatable="false">تمت استعادة قاعدة البيانات</string>
 
     <!--Cloud Backup-->
 
-    <string name="cloud_upload_header" translatable="false">Uploading database to cloud</string>
-    <string name="no_network" translatable="false">Internet connection not available</string>
-    <string name="no_data" translatable="false">No data to backup!</string>
-    <string name="local_backup_failed" translatable="false">Local backup not available</string>
-    <string name="local_backup_restore" translatable="false">Restoring from local backup</string>
+    <string name="cloud_upload_header" translatable="false">رفع قاعدة البيانات الى السيرفر</string>
+    <string name="no_network" translatable="false">لا يوجد اتصال بالانترنت</string>
+    <string name="no_data" translatable="false">لا يوجد بيانات ليتم تحميلها</string>
+    <string name="local_backup_failed" translatable="false">النسخ الاحتياطي المحلي غير متوفر</string>
+    <string name="local_backup_restore" translatable="false">استعادة البيانات من السيرفر المحلي</string>
 
-    <string name="cloud_restore_header" translatable="false">Restore form cloud</string>
-    <string name="restore_data" translatable="false">Restoring data</string>
-    <string name="error_existing_data" translatable="false">Database contains data, cannot restore!</string>
-    <string name="cloud_download_data" translatable="false">Downloading database from cloud</string>
+    <string name="cloud_restore_header" translatable="false">استعادة البيانات من السيرفر</string>
+    <string name="restore_data" translatable="false">استعادة البيانات</string>
+    <string name="error_existing_data" translatable="false">بوجد بيانات في الداتابيز، لا يمكن استعادة نسخة احتياطية</string>
+    <string name="cloud_download_data" translatable="false">تحميل الداتابيز من الكلاود</string>
 
-    <string name="force_restore_header" translatable="false">"Restoring data from cloud(Forced)"</string>
+    <string name="force_restore_header" translatable="false">استعادة الداتا من الكلاود (إجباري)</string>
 
-    <string name="database_upload" translatable="false">Database Upload</string>
-    <string name="database_uploading" translatable="false">Database Uploading</string>
-    <string name="database_upload_complete" translatable="false">Database Upload Complete</string>
-    <string name="database_upload_failed" translatable="false">Database Upload Failed</string>
+    <string name="database_upload" translatable="false">حمل الداتابيز للسيرفر</string>
+    <string name="database_uploading" translatable="false">تحميل الداتابيز على السيرفر</string>
+    <string name="database_upload_complete" translatable="false">تم تحميل الداتابيز على السيرفر بنجاح</string>
+    <string name="database_upload_failed" translatable="false">فشل تحميل الداتابيز</string>
 
-    <string name="db_backup_unavailable" translatable="false">Database backup not available</string>
-    <string name="db_file_write_error" translatable="false">Error writing backup file</string>
+    <string name="db_backup_unavailable" translatable="false">اخذ نسخة احتياطية غير متوفر</string>
+    <string name="db_file_write_error" translatable="false">خطأ في الكتابة إلى ملف الباك أب</string>
 
-    <string name="local_restore_alert_title" translatable="false">Restore backup</string>
-    <string name="local_restore_alert_message" translatable="false">A local backup has been found. Do you want to restore?</string>
+    <string name="local_restore_alert_title" translatable="false">استرجاع النسخة الاحتياطية</string>
+    <string name="local_restore_alert_message" translatable="false">تم العثور على نسخة احتياطية محلية. هل تريد استعادتها؟</string>
 
 
     <!--Image Download Service-->
-    <string name="image_downloading_service_title" translatable="false">Downloading</string>
-    <string name="image_downloading_service_message" translatable="false">Downloading Image Data</string>
-    <string name="image_downloading_service_complete_title" translatable="false">Image Data Download Complete</string>
-    <string name="image_downloading_service_complete_message" translatable="false">All image files have been downloaded</string>
-    <string name="image_downloading_service_process_message" translatable="false">Downloaded</string>
-    <string name="error_img_unavailable" translatable="false">Image not available</string>
-    <string name="error_img_download_failed" translatable="false">Image Download failed</string>
+    <string name="image_downloading_service_title" translatable="false">جارى التحميل</string>
+    <string name="image_downloading_service_message" translatable="false">تحميل للصور</string>
+    <string name="image_downloading_service_complete_title" translatable="false">اكتمل تحميل الصور</string>
+    <string name="image_downloading_service_complete_message" translatable="false">تم تحميل جميع ملفات الصور</string>
+    <string name="image_downloading_service_process_message" translatable="false">تم التحميل</string>
+    <string name="error_img_unavailable" translatable="false">الصورة غير متاحة</string>
+    <string name="error_img_download_failed" translatable="false">فشل تحميل الصورة</string>
 
     <!--Parse Validation User login-->
 
-    <string name="user_logged_in" translatable="false">Already logged in!</string>
+    <string name="user_logged_in" translatable="false">تم الدخول مسبقا!</string>
     <string name="user_logged_in_other_device" translatable="false">Already logged in.Please logout from other device.</string>
-    <string name="user_logged_out" translatable="false">Logged out from server</string>
-    <string name="user_login_check_success" translatable="false">Login Successful!</string>
-    <string name="user_login_error" translatable="false">Another user is logged into this location. Please contact admin</string>
-    <string name="user_server_unreachable" translatable="false">Device Offline. Cannot check server for login verification</string>
+    <string name="user_logged_out" translatable="false">تم تسجيل الخروج من السيرفر</string>
+    <string name="user_login_check_success" translatable="false">تم تسجيل الدخول بنجاح</string>
+    <string name="user_login_error" translatable="false">يوزر آخر داخل على النظام في هذا المكان. يرجى الاتصال بالمشرف</string>
+    <string name="user_server_unreachable" translatable="false">لا يوجد انترنت. لا يمكن تسجيل الدخول</string>
 
     <string name="title_activity_splash_acticity" translatable="false">SplashActicity</string>
     <string name="title_activity_home" translatable="false">HomeActivity</string>
@@ -444,6 +443,7 @@
     <string name="enter_password">Enter your password</string>
     <string name="enter_username">Enter your username</string>
     <string name="identification_screen_prompt_first_name">الاسم الاول *</string>
+    <string name="error_downloading_protocols" translatable="false">"خطأ في تحميل المايندماب "</string>
 
 
 </resources>
