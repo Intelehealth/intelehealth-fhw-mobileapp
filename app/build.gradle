@@ -38,10 +38,9 @@ dependencies {
     implementation 'com.android.support:support-v4:28.0.0'
     testImplementation 'junit:junit:4.13-beta-2'
 
-
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    //    mvvm
+    //mvvm
     implementation 'android.arch.lifecycle:extensions:1.1.1'
     implementation "android.arch.lifecycle:viewmodel:1.1.1"
     // JSON Converter
@@ -60,14 +59,14 @@ dependencies {
     //Permission libraby
     implementation 'gun0912.ted:tedpermission:2.2.2'
     //logging and interceptor
-//    implementation "com.squareup.okhttp3:logging-interceptor:3.14.1"
+//  implementation "com.squareup.okhttp3:logging-interceptor:3.14.1"
 
     implementation "com.squareup.okhttp3:logging-interceptor:3.8.0"
 
-    //    debug bridge
-    debugImplementation 'com.amitshekhar.android:debug-db:1.0.4'
+    //debug bridge
+//    debugImplementation 'com.amitshekhar.android:debug-db:1.0.4'
     //image loaders
-    implementation 'com.squareup.picasso:picasso:2.71828'
+//    implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.github.bumptech.glide:glide:3.8.0'
     //Uncomment below line to enable multidex support for Kitkat
     implementation 'com.android.support:multidex:1.0.3'
@@ -76,14 +75,8 @@ dependencies {
     //Google Guava
     implementation 'com.google.guava:guava:27.1-jre'
     //Storage librabry
-    implementation 'com.snatik:storage:2.1.0'
+    //    implementation 'com.snatik:storage:2.1.0'
     //    dexter permission
-    //    implementation 'com.karumi:dexter:5.0.0'
-    //Room database
-    annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
-    implementation "android.arch.persistence.room:runtime:1.1.1"
-    annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
-    implementation "android.arch.persistence.room:rxjava2:1.1.1"
     //Parse SDK
     implementation 'com.parse:parse-android:1.15.7'
     //date and time
@@ -105,9 +98,13 @@ dependencies {
     implementation "com.google.firebase:firebase-core:16.0.7"
     implementation "com.google.firebase:firebase-messaging:17.3.4"
     implementation 'com.google.firebase:firebase-crash:16.2.1'
+
     implementation('com.github.SandroMachado:restaurant:0.2.0@aar') {
         transitive = true
     }
+
+    implementation 'com.rengwuxian.materialedittext:library:2.1.4'
+
 
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin

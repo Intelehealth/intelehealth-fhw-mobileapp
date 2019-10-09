@@ -288,96 +288,96 @@ public class LoginActivity extends AppCompatActivity {
 //                Log.d(TAG, "UN: " + USERNAME);
 //                Log.d(TAG, "PW: " + PASSWORD);
         String urlString = urlModifiers.loginUrl(sessionManager.getServerUrl());
-            Logger.logD(TAG, "usernaem and password" + mEmail + mPassword);
+        Logger.logD(TAG, "usernaem and password" + mEmail + mPassword);
         encoded = base64Utils.encoded(mEmail, mPassword);
-            sessionManager.setEncoded(encoded);
+        sessionManager.setEncoded(encoded);
         showProgress(true);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-            Observable<LoginModel> loginModelObservable = AppConstants.apiInterface.LOGIN_MODEL_OBSERVABLE(urlString, "Basic " + encoded);
-            loginModelObservable.subscribe(new Observer<LoginModel>() {
-                @Override
-                public void onSubscribe(Disposable d) {
+        Observable<LoginModel> loginModelObservable = AppConstants.apiInterface.LOGIN_MODEL_OBSERVABLE(urlString, "Basic " + encoded);
+        loginModelObservable.subscribe(new Observer<LoginModel>() {
+            @Override
+            public void onSubscribe(Disposable d) {
 
-                }
+            }
 
-                @Override
-                public void onNext(LoginModel loginModel) {
-                    int responsCode = loginModel.hashCode();
-                    Boolean authencated = loginModel.getAuthenticated();
-                    Gson gson = new Gson();
-                    Logger.logD(TAG, "success" + gson.toJson(loginModel));
-                    sessionManager.setChwname(loginModel.getUser().getDisplay());
-                    sessionManager.setCreatorID(loginModel.getUser().getUuid());
-                    sessionManager.setSessionID(loginModel.getSessionId());
-                    sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
-                    UrlModifiers urlModifiers = new UrlModifiers();
-                    String url = urlModifiers.loginUrlProvider(sessionManager.getServerUrl(), loginModel.getUser().getUuid());
-                    if (authencated) {
-                        Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);
-                        loginProviderModelObservable
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new DisposableObserver<LoginProviderModel>() {
-                                    @Override
-                                    public void onNext(LoginProviderModel loginProviderModel) {
-                                        if (loginProviderModel.getResults().size() != 0) {
-                                            for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
-                                                Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
-                                                sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
+            @Override
+            public void onNext(LoginModel loginModel) {
+                int responsCode = loginModel.hashCode();
+                Boolean authencated = loginModel.getAuthenticated();
+                Gson gson = new Gson();
+                Logger.logD(TAG, "success" + gson.toJson(loginModel));
+                sessionManager.setChwname(loginModel.getUser().getDisplay());
+                sessionManager.setCreatorID(loginModel.getUser().getUuid());
+                sessionManager.setSessionID(loginModel.getSessionId());
+                sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
+                UrlModifiers urlModifiers = new UrlModifiers();
+                String url = urlModifiers.loginUrlProvider(sessionManager.getServerUrl(), loginModel.getUser().getUuid());
+                if (authencated) {
+                    Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);
+                    loginProviderModelObservable
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new DisposableObserver<LoginProviderModel>() {
+                                @Override
+                                public void onNext(LoginProviderModel loginProviderModel) {
+                                    if (loginProviderModel.getResults().size() != 0) {
+                                        for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
+                                            Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
+                                            sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
 //                                                success = true;
-                                                final Account account = new Account(mEmail, "io.intelehealth.openmrs");
-                                                manager.addAccountExplicitly(account, mPassword, null);
-                                                offlineLogin.invalidateLoginCredentials();
-                                                offlineLogin.setUpOfflineLogin(mEmail, mPassword);
-                                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                                                intent.putExtra("login", true);
+                                            final Account account = new Account(mEmail, "io.intelehealth.openmrs");
+                                            manager.addAccountExplicitly(account, mPassword, null);
+                                            offlineLogin.invalidateLoginCredentials();
+                                            offlineLogin.setUpOfflineLogin(mEmail, mPassword);
+                                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                            intent.putExtra("login", true);
 //                startJobDispatcherService(LoginActivity.this);
-                                                startActivity(intent);
-                                                finish();
-                                                showProgress(false);
+                                            startActivity(intent);
+                                            finish();
+                                            showProgress(false);
 
-                                                sessionManager.setReturningUser(true);
+                                            sessionManager.setReturningUser(true);
 
-                                            }
                                         }
                                     }
+                                }
 
-                                    @Override
-                                    public void onError(Throwable e) {
-                                        Logger.logD(TAG, "handle provider error" + e.getMessage());
+                                @Override
+                                public void onError(Throwable e) {
+                                    Logger.logD(TAG, "handle provider error" + e.getMessage());
 //                                        success = false;
-                                        showProgress(false);
-                                    }
+                                    showProgress(false);
+                                }
 
-                                    @Override
-                                    public void onComplete() {
+                                @Override
+                                public void onComplete() {
 
-                                    }
-                                });
-                    }
+                                }
+                            });
                 }
+            }
 
-                @Override
-                public void onError(Throwable e) {
-                    Logger.logD(TAG, "Login Failure" + e.getMessage());
+            @Override
+            public void onError(Throwable e) {
+                Logger.logD(TAG, "Login Failure" + e.getMessage());
 //                    success = false;
-                    showProgress(false);
+                showProgress(false);
 //                    DialogUtils dialogUtils=new DialogUtils();
 //                    dialogUtils.showerrorDialog(LoginActivity.this,"Error Login",getString(R.string.error_incorrect_password),"ok");
-                    Toast.makeText(LoginActivity.this, getString(R.string.error_incorrect_password), Toast.LENGTH_SHORT).show();
-                    mPasswordView.setError("");
-                    mUsernameView.setError("");
-                    mPasswordView.setText("");
-                    mUsernameView.setText("");
-                    mPasswordView.requestFocus();
-                }
+                Toast.makeText(LoginActivity.this, getString(R.string.error_incorrect_password), Toast.LENGTH_SHORT).show();
+                mPasswordView.setError("");
+                mUsernameView.setError("");
+                mPasswordView.setText("");
+                mUsernameView.setText("");
+                mPasswordView.requestFocus();
+            }
 
-                @Override
-                public void onComplete() {
-                    Logger.logD(TAG, "completed");
-                }
-            });
+            @Override
+            public void onComplete() {
+                Logger.logD(TAG, "completed");
+            }
+        });
 
 
 //            return true;
