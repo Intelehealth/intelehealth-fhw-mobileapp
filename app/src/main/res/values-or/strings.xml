@@ -272,5 +272,7 @@
     <string name="user_login_check_success">ଲଗନ ସଫଳ  ହେଲା</string>
     <string name="user_login_error">ଅନ୍ୟ  ଉସର ସାମାନ୍ୟ ସ୍ଥାନ ରୁ ଲଗନ ଅଛନ୍ତି . ଆଡମିନ କୁ ଯୋଗାଯୋଗ କର</string>
     <string name="user_server_unreachable">"ଫୋନ  ଅଫଲାଇନ ଅଛି | ସରବର ରେ ଲଗନ ହେଇ ପାରିବ ନାହିଁ "</string>
+    <string name="enter_password">Enter your password</string>
+    <string name="enter_username">Enter your username</string>
 
 </resources>

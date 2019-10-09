@@ -306,4 +306,6 @@
     <string name="visit_summary_upload_reminder">Palihug i-upload una pa musulay nga tapuson ang pagbisita.</string>
     <string name="visit_summary_pulse">Pulso</string>
     <string name="title_activity_search_patient">Pagpangita sa Pasyente</string>
+    <string name="enter_password">Enter your password</string>
+    <string name="enter_username">Enter your username</string>
 </resources>
