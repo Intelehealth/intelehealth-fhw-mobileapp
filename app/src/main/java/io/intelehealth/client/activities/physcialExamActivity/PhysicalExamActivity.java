@@ -70,8 +70,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
     SQLiteDatabase localdb;
 
-    private static String image_Prefix = "PE";
-//    private static String imageDir = "Physical Exam";
 
     static String imageName;
     static String baseDir;
@@ -109,8 +107,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
 
-        //For Testing
-//        patientID = Long.valueOf("1");
         selectedExamsList = new ArrayList<>();
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -121,13 +117,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
-            //  selectedExamsList = intent.getStringArrayListExtra("exams");
-//            Log.v(TAG, "Patient ID: " + patientID);
-//            Log.v(TAG, "Visit ID: " + visitID);
-//            Log.v(TAG, "Patient Name: " + patientName);
-//            Log.v(TAG, "Intent Tag: " + intentTag);
-//            SharedPreferences mSharedPreference = this.getSharedPreferences(
-//                    "visit_summary", Context.MODE_PRIVATE);
             Set<String> selectedExams = sessionManager.getVisitSummary(patientUuid);
             selectedExamsList.clear();
             if (selectedExams != null) selectedExamsList.addAll(selectedExams);
@@ -161,7 +150,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
             } else {
                 physicalExamMap = new PhysicalExam(FileUtils.encodeJSON(this, mFileName), selectedExamsList);
             }
-            //physicalExamMap = new PhysicalExam(HelperMethods.encodeJSON(this, mFileName), selectedExamsList);
         }
 
         super.onCreate(savedInstanceState);
@@ -252,16 +240,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
                 } else {
                     questionsMissing();
                 }
-//                    Node genExams = physicalExamMap.getOption(0);
-//                    for (int i = 0; i < genExams.getOptionsList().size(); i++) {
-////                        Log.d(TAG, "current i value " + i);
-//                        if(!genExams.getOption(i).anySubSelected()){
-////                            Log.d(TAG, genExams.getOption(i).getText());
-//                            mViewPager.setCurrentItem(i);
-//                            return;
-//                        }
-//                    }
-
             }
         });
 
@@ -270,20 +248,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
     private boolean insertDb(String value) {
         Log.i(TAG, "insertDb: ");
 
-//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-//        final String CREATOR_ID = prefs.getString("creatorid", null);
-
-//        final String CONCEPT_ID = UuidDictionary.PHYSICAL_EXAMINATION; // RHK ON EXAM
-
-//        ContentValues complaintEntries = new ContentValues();
-
-//        complaintEntries.put("patient_id", patientUuid);
-//        complaintEntries.put("visit_id", visitUuid);
-//        complaintEntries.put("uuid", UUID.randomUUID().toString());
-//        complaintEntries.put("encounteruuid", encounterAdultIntials);
-//        complaintEntries.put("creator", CREATOR_ID);
-//        complaintEntries.put("value", StringUtils.getValue(value));
-//        complaintEntries.put("conceptuuid", CONCEPT_ID);
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();
         obsDTO.setConceptuuid(UuidDictionary.PHYSICAL_EXAMINATION);
@@ -333,24 +297,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
     }
 
     private void updateDatabase(String string) {
-
-//        String conceptID = UuidDictionary.PHYSICAL_EXAMINATION;
-//        ContentValues contentValues = new ContentValues();
-//        contentValues.put("value", string);
-//        String selection = "encounteruuid = ? AND conceptuuid = ?";
-//        String[] args = {encounterAdultIntials, conceptID};
-//
-//        int i = localdb.update(
-//                "tbl_obs",
-//                contentValues,
-//                selection,
-//                args
-//        );
-//        Log.i(TAG, "updateDatabase: " + i);
-//        if (i == 0) {
-//            insertDb(string);
-//        }
-
         ObsDTO obsDTO = new ObsDTO();
         ObsDAO obsDAO = new ObsDAO();
         try {
@@ -396,13 +342,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
         } catch (DAOException e) {
             Crashlytics.getInstance().core.logException(e);
         }
-
-//        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path,image_type,delete_status) values("
-//                + "'" + patientUuid + "'" + ","
-//                + visitUuid + ","
-//                + "'" + imagePath + "','" + image_Prefix + "'," +
-//                0 +
-//                ")");
     }
 
     @Override
@@ -462,8 +401,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
             final ImageView imageView = rootView.findViewById(R.id.physical_exam_image_view);
             TextView textView = rootView.findViewById(R.id.physical_exam_text_view);
             ExpandableListView expandableListView = rootView.findViewById(R.id.physical_exam_expandable_list_view);
-            //ListView listView = (ListView) rootView.findViewById(R.id.physical_exam_list_view);
-            //VideoView videoView = (VideoView) rootView.findViewById(R.id.physical_exam_video_view);
 
             int viewNumber = getArguments().getInt(ARG_SECTION_NUMBER);
             final String patientUuid1 = getArguments().getString("patientUuid");
@@ -478,7 +415,6 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
             if (displayNode.isAidAvailable()) {
                 String type = displayNode.getJobAidType();
-                //Log.d(displayNode.getText(), type);
                 if (type.equals("video")) {
                     imageView.setVisibility(View.GONE);
                 } else if (type.equals("image")) {

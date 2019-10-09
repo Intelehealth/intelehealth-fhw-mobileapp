@@ -147,11 +147,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
-            //      physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
-//            Log.v(TAG, "Patient ID: " + patientID);
-//            Log.v(TAG, "Visit ID: " + visitID);
-//            Log.v(TAG, "Patient Name: " + patientName);
-//            Log.v(TAG, "Intent Tag: " + intentTag);
         }
 
 
@@ -205,8 +200,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     if (flag == true) { // only if OK clicked, collect this new info (old patient)
                         phistory = phistory + patientHistory; // only PMH updated
                         sessionManager.setReturning(true);
-//                        e.putBoolean("returning", true);
-//                        e.commit();
 
 
                         insertDb(phistory);
@@ -277,10 +270,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                 Log.i(TAG, String.valueOf(clickedNode.isTerminal()));
                 if (!clickedNode.isTerminal() && clickedNode.isSelected()) {
                     imageName = UUID.randomUUID().toString();
-//                    imageName = patientUuid + "_" + visitUuid + "_" + image_Prefix;
-//                    String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-//                    filePath = new File(baseDir + File.separator + "Patient Images" + File.separator +
-//                            patientUuid + File.separator + visitUuid + File.separator + imageDir);
 
                     Node.subLevelQuestion(clickedNode, PastMedicalHistoryActivity.this, adapter, filePath.toString(), imageName);
                 }
@@ -325,41 +314,11 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
         }
 
         return isInserted;
-//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-//
-//        final String CREATOR_ID = prefs.getString("creatorid", null);
-//        //TODO: Get the right creator_ID
-//
-//
-//        String CONCEPT_ID = UuidDictionary.RHK_MEDICAL_HISTORY_BLURB; // RHK MEDICAL HISTORY BLURB
-//        //Eventually will be stored in a separate table
-//
-//        ContentValues complaintEntries = new ContentValues();
-//
-//        complaintEntries.put("uuid", UUID.randomUUID().toString());
-//        complaintEntries.put("encounteruuid", encounterAdultIntials);
-//        complaintEntries.put("value", StringUtils.getValue(value));
-//        complaintEntries.put("conceptuuid", CONCEPT_ID);
-//        complaintEntries.put("creator", CREATOR_ID);
-//        complaintEntries.put("sync", "false");
-//        long insert = 0;
-//        try {
-//            insert = localdb.insert("tbl_obs", null, complaintEntries);
-//        } catch (SQLException sql) {
-//            Crashlytics.getInstance().core.logException(sql);
-//        }
-//        return insert;
     }
 
 
     private void updateImageDatabase(String imagePath) {
 
-//        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path,image_type,delete_status) values("
-//                + "'" + patientUuid + "'" + ","
-//                + visitUuid + ","
-//                + "'" + imagePath + "','" + image_Prefix + "'," +
-//                0 +
-//                ")");
         ImagesDAO imagesDAO = new ImagesDAO();
 
         try {
@@ -377,20 +336,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
      * @return void
      */
     private void updateDatabase(String string) {
-//        String conceptID = UuidDictionary.RHK_MEDICAL_HISTORY_BLURB;
-//        ContentValues contentValues = new ContentValues();
-//        contentValues.put("value", string);
-//        contentValues.put("sync", "false");
-//
-//        String selection = "encounteruuid = ? AND conceptuuid = ?";
-//        String[] args = {encounterAdultIntials, conceptID};
-//
-//        localdb.update(
-//                "tbl_obs",
-//                contentValues,
-//                selection,
-//                args
-//        );
 
         ObsDTO obsDTO = new ObsDTO();
         ObsDAO obsDAO = new ObsDAO();

@@ -14,7 +14,6 @@ import com.google.gson.Gson;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import io.intelehealth.client.BuildConfig;
 import io.intelehealth.client.database.dao.EncounterDAO;
 import io.intelehealth.client.database.dao.ObsDAO;
 import io.intelehealth.client.database.dao.PatientsDAO;
@@ -36,17 +34,14 @@ import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.StringUtils;
 import io.intelehealth.client.utilities.UuidDictionary;
-import io.intelehealth.client.utilities.backup.Backup;
 import io.intelehealth.client.utilities.exception.DAOException;
 
-import static io.intelehealth.client.app.AppConstants.APP_VERSION_CODE;
 import static io.intelehealth.client.app.AppConstants.dbfilepath;
 
 public class SmoothUpgrade {
     public SQLiteDatabase myDataBase;
     SessionManager sessionManager = null;
     Context context;
-    Backup backup = new Backup();
     boolean dbexist = checkdatabase();
     String TAG = SmoothUpgrade.class.getSimpleName();
 
@@ -55,19 +50,7 @@ public class SmoothUpgrade {
         sessionManager = new SessionManager(context);
     }
 
-    public void copyDatabase() {
-        int versionCode = BuildConfig.VERSION_CODE;
 
-        if (versionCode <= APP_VERSION_CODE) {
-            try {
-                backup.createFileInMemory(context, true);
-            } catch (IOException e) {
-                Crashlytics.getInstance().core.logException(e);
-
-            }
-        }
-
-    }
 
 
     public void exportDB() {
@@ -180,42 +163,42 @@ public class SmoothUpgrade {
                     patientAttributesDTO = new PatientAttributesDTO();
                     patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                     patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
+                    patientAttributesDTO.setPersonAttributeTypeUuid("5a889d96-0c84-4a04-88dc-59a6e37db2d3");
                     patientAttributesDTO.setValue(StringUtils.getValue(cursor.getString(cursor.getColumnIndexOrThrow("caste"))));
                     patientAttributesDTOList.add(patientAttributesDTO);
 
                     patientAttributesDTO = new PatientAttributesDTO();
                     patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                     patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
+                    patientAttributesDTO.setPersonAttributeTypeUuid("14d4f066-15f5-102d-96e4-000c29c2a5d7");
                     patientAttributesDTO.setValue(StringUtils.getValue(cursor.getString(cursor.getColumnIndexOrThrow("phone_number"))));
                     patientAttributesDTOList.add(patientAttributesDTO);
 
                     patientAttributesDTO = new PatientAttributesDTO();
                     patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                     patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Son/wife/daughter"));
+                    patientAttributesDTO.setPersonAttributeTypeUuid("1b2f34f7-2bf8-4ef7-9736-f5b858afc160");
                     patientAttributesDTO.setValue(StringUtils.getValue(cursor.getString(cursor.getColumnIndexOrThrow("sdw"))));
                     patientAttributesDTOList.add(patientAttributesDTO);
 
                     patientAttributesDTO = new PatientAttributesDTO();
                     patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                     patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+                    patientAttributesDTO.setPersonAttributeTypeUuid("ecdaadb6-14a0-4ed9-b5b7-cfed87b44b87");
                     patientAttributesDTO.setValue(StringUtils.getValue(cursor.getString(cursor.getColumnIndexOrThrow("occupation"))));
                     patientAttributesDTOList.add(patientAttributesDTO);
 
                     patientAttributesDTO = new PatientAttributesDTO();
                     patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                     patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
+                    patientAttributesDTO.setPersonAttributeTypeUuid("f4af0ef3-579c-448a-8157-750283409122");
                     patientAttributesDTO.setValue(StringUtils.getValue(cursor.getString(cursor.getColumnIndexOrThrow("economic_status"))));
                     patientAttributesDTOList.add(patientAttributesDTO);
 
                     patientAttributesDTO = new PatientAttributesDTO();
                     patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                     patientAttributesDTO.setPatientuuid(uuid);
-                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
+                    patientAttributesDTO.setPersonAttributeTypeUuid("1c718819-345c-4368-aad6-d69b4c267db7");
                     patientAttributesDTO.setValue(StringUtils.getValue(cursor.getString(cursor.getColumnIndexOrThrow("education_status"))));
                     patientAttributesDTOList.add(patientAttributesDTO);
                     Logger.logD(TAG, "PatientAttribute list" + patientAttributesDTOList.size());
@@ -440,11 +423,14 @@ public class SmoothUpgrade {
     public void opendatabase() throws SQLException {
         //Open the database
         String mypath = dbfilepath;
+        if (myDataBase != null && myDataBase.isOpen())
+            return;
         if (new File(dbfilepath).exists())
             myDataBase = SQLiteDatabase.openDatabase(mypath, null, SQLiteDatabase.OPEN_READWRITE);
-        else
+        else {
             mypath = Environment.getExternalStoragePublicDirectory("InteleHealth_DB") + "Intelehealth.db";
+            if (new File(mypath).exists())
+                myDataBase = SQLiteDatabase.openDatabase(mypath, null, SQLiteDatabase.OPEN_READWRITE);
+        }
     }
 }
-///sdcard/InteleHealth_DB/Intelehealth.db
-//        /sdcard/Movies/Intelehealth Videos/Sye Raa Teaser (Telugu) - Chiranjeevi - Ram Charan - Surender Reddy - #SyeRaaTeaser.mp4

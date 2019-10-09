@@ -15,9 +15,6 @@ public class LastSyncIntentService extends IntentService {
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
      */
-//    public LastSyncIntentService(String name) {
-//        super(name);
-//    }
     @Override
     protected void onHandleIntent(Intent intent) {
         try {

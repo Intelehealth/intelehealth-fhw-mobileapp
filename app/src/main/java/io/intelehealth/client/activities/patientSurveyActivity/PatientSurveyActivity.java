@@ -24,7 +24,7 @@ import io.intelehealth.client.activities.homeActivity.HomeActivity;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.dao.EncounterDAO;
 import io.intelehealth.client.database.dao.ObsDAO;
-import io.intelehealth.client.database.dao.PullDataDAO;
+import io.intelehealth.client.database.dao.SyncDAO;
 import io.intelehealth.client.database.dao.VisitsDAO;
 import io.intelehealth.client.models.dto.EncounterDTO;
 import io.intelehealth.client.models.dto.ObsDTO;
@@ -204,15 +204,12 @@ public class PatientSurveyActivity extends AppCompatActivity {
 
         }
 
-        PullDataDAO pullDataDAO = new PullDataDAO();
-        pullDataDAO.pushDataApi();
+        SyncDAO syncDAO = new SyncDAO();
+        syncDAO.pushDataApi();
 
         AppConstants.notificationUtils.DownloadDone("End visit", "Visit ended", 3, PatientSurveyActivity.this);
 
-//        SharedPreferences.Editor editor = context.getSharedPreferences(patientUuid + "_" + visitUuid, MODE_PRIVATE).edit();
         sessionManager.removeVisitSummary(patientUuid, visitUuid);
-//        editor.remove("exam_" + patientUuid + "_" + visitUuid);
-//        editor.commit();
 
         Intent i = new Intent(this, HomeActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);

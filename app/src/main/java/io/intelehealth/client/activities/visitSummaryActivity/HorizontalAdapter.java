@@ -121,16 +121,6 @@ public class HorizontalAdapter extends RecyclerView.Adapter<MyViewHolder> {
                         })
                         .override(screen_width, screen_height)
                         .into(imageView);
-
-               /* new AsyncTask<Void, Void, Bitmap>() {
-                    protected Bitmap doInBackground(Void... params) {
-                        return decodeSampledBitmapFromResource(file.getAbsolutePath(),screen_width,screen_height);
-                    }
-                    protected void onPostExecute(Bitmap result) {
-                        imageView.setImageBitmap(result);
-                    }
-
-                }.execute(); */
             }
         });
 

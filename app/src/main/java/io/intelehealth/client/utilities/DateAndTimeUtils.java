@@ -102,7 +102,7 @@ public class DateAndTimeUtils {
             Date date = originalFormat.parse(dateString);
             formattedDate = targetFormat.format(date);
         } catch (Exception ex) {
-            System.out.println(ex);
+            Crashlytics.getInstance().core.logException(ex);
         }
         return formattedDate;
     }
@@ -115,7 +115,7 @@ public class DateAndTimeUtils {
             Date date = originalFormat.parse(dateString);
             formattedDate = targetFormat.format(date);
         } catch (Exception ex) {
-            System.out.println(ex);
+            Crashlytics.getInstance().core.logException(ex);
         }
         return formattedDate;
     }

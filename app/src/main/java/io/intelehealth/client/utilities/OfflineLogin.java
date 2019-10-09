@@ -60,9 +60,7 @@ public class OfflineLogin {
         String hash = null;
         try {
             hash = StringEncryption.convertToSHA256(random_salt + password);
-        } catch (NoSuchAlgorithmException e) {
-            Crashlytics.getInstance().core.logException(e);
-        } catch (UnsupportedEncodingException e) {
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
             Crashlytics.getInstance().core.logException(e);
         }
         SharedPreferences.Editor editor = mSharedPreference.edit();
@@ -108,9 +106,7 @@ public class OfflineLogin {
                     String hash = null;
                     try {
                         hash = StringEncryption.convertToSHA256(stored_salt + password);
-                    } catch (NoSuchAlgorithmException e) {
-                        Crashlytics.getInstance().core.logException(e);
-                    } catch (UnsupportedEncodingException e) {
+                    } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
                         Crashlytics.getInstance().core.logException(e);
                     }
                     Log.i(TAG, "Hashed Password : " + hash);
@@ -137,7 +133,7 @@ public class OfflineLogin {
     }
 
     public void invalidateLoginCredentials() {
-        mSharedPreference.edit().clear().commit();
+        mSharedPreference.edit().clear().apply();
         Log.i(TAG, mContext.getString(R.string.invalidate_offline_login));
     }
 
@@ -152,6 +148,6 @@ public class OfflineLogin {
         SharedPreferences.Editor editor = mSharedPreference.edit();
         editor.putBoolean(
                 mContext.getString(R.string.offline_login_status), status);
-        editor.commit();
+        editor.apply();
     }
 }

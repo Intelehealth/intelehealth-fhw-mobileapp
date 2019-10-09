@@ -40,15 +40,6 @@ public class VideoLibraryActivity extends AppCompatActivity implements VideoLibr
 
         if (isSDPresent) {
             if (isExternalStorageWritable()) {
-                /*
-                File[] files = getExternalFilesDirs(null);
-                if (files != null || files.length != 0) {
-                    rootFile = files[files.length - 1];
-                    rootFile = new File(rootFile.getAbsolutePath() + File.separator + "Intelehealth Videos");
-                    if (!rootFile.exists()) rootFile.mkdir();
-                    openFragment(rootFile.getAbsolutePath());
-                     }
-                */
 
                 rootFile = getExtVideoStorageDir(this, "Intelehealth Videos");
                 openFragment(rootFile.getAbsolutePath());

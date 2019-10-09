@@ -27,7 +27,6 @@ public class PatientsDAO {
 
     private int updatecount = 0;
     private long createdRecordsCount = 0;
-//    SQLiteDatabase db = null;
 
     public boolean insertPatients(List<PatientDTO> patientDTO) throws DAOException {
 
@@ -182,7 +181,6 @@ public class PatientsDAO {
                 values.put("value", patientAttributesDTOS.get(i).getValue());
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
                 values.put("sync", "TRUE");
-//                Logger.logD("pulldata", "datadumper" + values);
                 db.insertWithOnConflict("tbl_patient_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             }
             db.setTransactionSuccessful();
@@ -260,7 +258,6 @@ public class PatientsDAO {
                 values.put("value", patientAttributesDTOS.get(i).getValue());
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
                 values.put("sync", false);
-//                Logger.logD("pulldata", "datadumper" + values);
                 db.insertWithOnConflict("tbl_patient_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             }
             db.setTransactionSuccessful();
@@ -289,7 +286,6 @@ public class PatientsDAO {
                 values.put("name", patientAttributeTypeMasterDTOS.get(i).getName());
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
                 values.put("sync", "TRUE");
-//                Logger.logD("pulldata", "datadumper" + values);
                 db.insertWithOnConflict("tbl_patient_attribute_master", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             }
             db.setTransactionSuccessful();
@@ -439,28 +435,5 @@ public class PatientsDAO {
 
     }
 
-    public String getPatientPhonenumber(String patientUuid) throws DAOException {
-        String phonenumber = "";
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
-        try {
-            Cursor cursor = db.rawQuery("SELECT value FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' COLLATE NOCASE", new String[]{patientUuid});
-            if (cursor.getCount() != 0) {
-                while (cursor.moveToNext()) {
-                    phonenumber = cursor.getString(cursor.getColumnIndexOrThrow("value"));
-                }
-            }
-            cursor.close();
-            db.setTransactionSuccessful();
-        } catch (SQLException s) {
-            Crashlytics.getInstance().core.logException(s);
-            throw new DAOException(s);
-        } finally {
-            db.endTransaction();
-
-        }
-        return phonenumber;
-
-    }
 
 }

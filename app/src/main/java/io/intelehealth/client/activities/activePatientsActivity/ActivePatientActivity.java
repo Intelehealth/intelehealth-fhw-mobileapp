@@ -22,7 +22,6 @@ import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -84,24 +83,10 @@ public class ActivePatientActivity extends AppCompatActivity {
     private void doQuery() {
         List<ActivePatientModel> activePatientList = new ArrayList<>();
         Date cDate = new Date();
-        String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
-        String query =
-//                "SELECT tbl_visit.uuid, tbl_visit.patientuuid, tbl_visit.startdate, tbl_visit.enddate," +
-//                        "tbl_patient.first_name, tbl_patient.middle_name, tbl_patient.last_name, " +
-//                        "tbl_patient.date_of_birth,tbl_patient.openmrs_id,a.value AS phone_number " +
-//                        "FROM tbl_visit, tbl_patient, tbl_patient_attribute a " +
-//                        "WHERE tbl_visit.patientuuid = tbl_patient.uuid " +
-//                        "AND tbl_visit.enddate IS NULL " +
-//                        "AND a.patientuuid=tbl_patient.uuid and a.person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' " +
-//                        "OR tbl_visit.enddate = '' " +
-//                        "ORDER BY tbl_visit.startdate ASC";
-//
-                "SELECT   a.uuid, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id  " +
+        String query = "SELECT   a.uuid, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id  " +
                         "FROM tbl_visit a, tbl_patient b " +
                         "WHERE a.patientuuid = b.uuid " +
                         "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate ASC";
-        //  "SELECT * FROM visit, patient WHERE visit.patient_id = patient._id AND visit.start_datetime LIKE '" + currentDate + "T%'";
-//        Logger.logD(TAG, query);
         final Cursor cursor = db.rawQuery(query, null);
 
         if (cursor != null) {
@@ -126,7 +111,9 @@ public class ActivePatientActivity extends AppCompatActivity {
                 } while (cursor.moveToNext());
             }
         }
-        cursor.close();
+        if (cursor != null) {
+            cursor.close();
+        }
 
         if (!activePatientList.isEmpty()) {
             for (ActivePatientModel activePatientModel : activePatientList)
@@ -161,10 +148,8 @@ public class ActivePatientActivity extends AppCompatActivity {
                 endAllVisit();
 
             case R.id.action_filter:
-                //alert box.
-                displaySingleSelectionDialog();    //function call
-
-
+                //function call
+                displaySingleSelectionDialog();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -173,17 +158,6 @@ public class ActivePatientActivity extends AppCompatActivity {
 
     private void displaySingleSelectionDialog() {
 
-       /* View checkBoxView = View.inflate(this, R.layout.checkbox_view, null);
-        CheckBox checkBox = (CheckBox) checkBoxView.findViewById(R.id.checkbox);
-        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                // Save to shared preferences
-            }
-        });
-        checkBox.setText("Text to the right of the check box.");*/
         ProviderDAO providerDAO = new ProviderDAO();
         ArrayList selectedItems = new ArrayList<>();
         String[] creator_names = null;
@@ -194,8 +168,6 @@ public class ActivePatientActivity extends AppCompatActivity {
         } catch (DAOException e) {
             e.printStackTrace();
         }
-//        boolean[] checkedItems = {false, false, false, false};
-        // ngo_numbers = getResources().getStringArray(R.array.ngo_numbers);
         dialogBuilder = new AlertDialog.Builder(ActivePatientActivity.this);
         dialogBuilder.setTitle("Filter by Creator");
 
@@ -225,35 +197,10 @@ public class ActivePatientActivity extends AppCompatActivity {
                 //display filter query code on list menu
                 Logger.logD(TAG, "onclick" + i);
                 doQueryWithProviders(selectedItems);
-//                select distinct a.uuid,c.first_name,c.middle_name,c.last_name,c.openmrs_id,c.phone_number,c.date_of_birth from tbl_visit a,tbl_encounter b ,tbl_patient c where b.visituuid=a.uuid and b.provider_uuid in ('163b48e5-26fb-40c1-8d94-a6c873dd2869') and a.patientuuid=c.uuid and a.enddate is null order by c.first_name
             }
         });
 
         dialogBuilder.setNegativeButton("Cancel", null);
-        //dialogBuilder.setView(checkBoxView);
-        //dialogBuilder.setIcon(R.drawable.ic_sort_white_24dp);
-        //  dialogBuilder.setItems(creator_names, new DialogInterface.OnClickListener() {
-        // @Override
-        //  public void onClick(DialogInterface dialog, int which) {
-        // the user clicked on colors[which]
-               /* final String a = "tel:"+"9769025715";
-                final String b = "tel:"+"7304154312";
-
-                if("Team 1".equals(ngo_numbers[which]))
-                {
-                    Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse(a));
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    getApplicationContext().startActivity(i);
-                }
-
-                else if("Team 2".equals(ngo_numbers[which]))
-                {
-                    Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse(b));
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    getApplicationContext().startActivity(i);
-                }*/
-        // }
-        // });
         dialogBuilder.show();
 
     }
@@ -311,25 +258,10 @@ public class ActivePatientActivity extends AppCompatActivity {
 
     private void doQueryWithProviders(List<String> providersuuids) {
         List<ActivePatientModel> activePatientList = new ArrayList<>();
-        String query =
-//                "select distinct a.uuid,c.uuid AS patientuuid,a.startdate AS startdate,a.enddate AS enddate," +
-//                "c.first_name,c.middle_name,c.last_name,c.openmrs_id,c.phone_number,c.date_of_birth " +
-//                "from tbl_visit a,tbl_encounter b ,tbl_patient c " +
-//                "where b.visituuid=a.uuid and b.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "') " +
-//                "and a.patientuuid=c.uuid and a.enddate is null OR a.enddate='' order by a.startdate ASC";
-
-                "select  distinct a.uuid,c.uuid AS patientuuid,a.startdate AS startdate,a.enddate AS enddate, c.first_name,c.middle_name,c.last_name,c.openmrs_id,c.date_of_birth " +
+        String query = "select  distinct a.uuid,c.uuid AS patientuuid,a.startdate AS startdate,a.enddate AS enddate, c.first_name,c.middle_name,c.last_name,c.openmrs_id,c.date_of_birth " +
                         "from tbl_visit a,tbl_encounter b ,tbl_patient c " +
                         "where b.visituuid=a.uuid and b.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
                         "and a.patientuuid=c.uuid and (a.enddate is null OR a.enddate='')  order by a.startdate ASC";
-
-//                "SELECT tbl_visit.uuid, tbl_visit.patientuuid, tbl_visit.startdate, tbl_visit.enddate," +
-//                        "tbl_patient.first_name, tbl_patient.middle_name, tbl_patient.last_name, " +
-//                        "tbl_patient.date_of_birth,tbl_patient.openmrs_id,tbl_patient.phone_number FROM tbl_visit, tbl_patient WHERE tbl_visit.patientuuid = tbl_patient.uuid " +
-//                        "AND tbl_visit.enddate IS NULL " +
-//                        "OR tbl_visit.enddate = '' " +
-//                        "ORDER BY tbl_visit.startdate ASC";
-        //  "SELECT * FROM visit, patient WHERE visit.patient_id = patient._id AND visit.start_datetime LIKE '" + currentDate + "T%'";
         Logger.logD(TAG, query);
         final Cursor cursor = db.rawQuery(query, null);
 
@@ -355,7 +287,9 @@ public class ActivePatientActivity extends AppCompatActivity {
                 } while (cursor.moveToNext());
             }
         }
-        cursor.close();
+        if (cursor != null) {
+            cursor.close();
+        }
 
         if (!activePatientList.isEmpty()) {
             for (ActivePatientModel activePatientModel : activePatientList)

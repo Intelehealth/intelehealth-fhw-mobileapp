@@ -35,14 +35,8 @@ public class DownloadService extends IntentService {
     UrlModifiers urlModifiers = new UrlModifiers();
     ObsDAO obsDAO = new ObsDAO();
     SessionManager sessionManager = null;
-    //    private String patientUuid;
-//    private String visitUuid;
-//    private String encounterVitals;
     private String encounterAdultIntials;
     private int totalFileSize;
-    private String imgPrefix = "AD";
-    final private String imageAD = "Additional Documents";
-    final private String imagePE = "Physical Exam";
     public String baseDir = "";
     public String ImageType = "";
     public DownloadService() {
@@ -53,17 +47,10 @@ public class DownloadService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
-//            patientUuid = intent.getStringExtra("patientUuid");
-//            visitUuid = intent.getStringExtra("visitUuid");
-//            encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
             ImageType = intent.getStringExtra("ImageType");
         }
         AppConstants.notificationUtils.showNotificationProgress("Download", "Downloading File", 4, IntelehealthApplication.getAppContext(), 0);
-//        if (ImageType.equalsIgnoreCase(UuidDictionary.COMPLEX_IMAGE_AD))
-//            baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + File.separator + "Patient Images" + File.separator + patientUuid + File.separator + visitUuid + File.separator + imageAD + File.separator;
-//        else
-//            baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + File.separator + "Patient Images" + File.separator + patientUuid + File.separator + visitUuid + File.separator + imagePE + File.separator;
 
         baseDir = AppConstants.IMAGE_PATH;
         initDownload(ImageType);
@@ -75,19 +62,11 @@ public class DownloadService extends IntentService {
         String url = "";
         List<String> imageObsList = new ArrayList<>();
         imageObsList = obsDAO.getImageStrings(ImageType, encounterAdultIntials);
-//        String imageType = "";
-//        if (ImageType.equalsIgnoreCase(UuidDictionary.COMPLEX_IMAGE_AD))
-//            imageType = "AD";
-//        else
-//            imageType = "PE";
         if (imageObsList.size() == 0)
             AppConstants.notificationUtils.DownloadDone("Download", "No Images to Download", 4, IntelehealthApplication.getAppContext());
         for (int i = 0; i < imageObsList.size(); i++) {
             url = urlModifiers.obsImageUrl(imageObsList.get(i));
             Observable<ResponseBody> downloadobs = AppConstants.apiInterface.OBS_IMAGE_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
-            int finalI = i;
-//            String finalImageType = imageType;
-            List<String> finalImageObsList = imageObsList;
             int finalI1 = i;
             List<String> finalImageObsList1 = imageObsList;
             downloadobs.subscribeOn(Schedulers.io())
@@ -169,9 +148,6 @@ public class DownloadService extends IntentService {
     private void sendNotification(Download download) {
 
         sendIntent(download);
-//        notificationBuilder.setProgress(100,download.getProgress(),false);
-//        notificationBuilder.setContentText("Downloading file "+ download.getCurrentFileSize() +"/"+totalFileSize +" MB");
-//        notificationManager.notify(0, notificationBuilder.build());
     }
 
     private void sendIntent(Download download) {
@@ -197,16 +173,8 @@ public class DownloadService extends IntentService {
 
         AppConstants.notificationUtils.showNotificationProgress("Download", "File Downloaded", 4, IntelehealthApplication.getAppContext(), 100);
 
-//        notificationManager.cancel(0);
-//        notificationBuilder.setProgress(0,0,false);
-//        notificationBuilder.setContentText("File Downloaded");
-//        notificationManager.notify(0, notificationBuilder.build());
 
     }
 
-    @Override
-    public void onTaskRemoved(Intent rootIntent) {
-//        notificationManager.cancel(0);
-    }
 
 }

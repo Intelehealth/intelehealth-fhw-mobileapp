@@ -33,14 +33,10 @@ import io.intelehealth.client.R;
 import io.intelehealth.client.activities.questionNodeActivity.QuestionNodeActivity;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.dao.EncounterDAO;
-import io.intelehealth.client.database.dao.ObsDAO;
 import io.intelehealth.client.knowledgeEngine.Node;
 import io.intelehealth.client.models.dto.EncounterDTO;
-import io.intelehealth.client.models.dto.ObsDTO;
 import io.intelehealth.client.utilities.FileUtils;
 import io.intelehealth.client.utilities.SessionManager;
-import io.intelehealth.client.utilities.StringUtils;
-import io.intelehealth.client.utilities.UuidDictionary;
 import io.intelehealth.client.utilities.exception.DAOException;
 
 public class ComplaintNodeActivity extends AppCompatActivity {
@@ -56,8 +52,6 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
 
     List<Node> complaints;
-    String mFileName = "knowledge.json";
-    //String mFileName = "DemoBrain.json";
 
     CustomArrayAdapter listAdapter;
     String encounterVitals;
@@ -77,14 +71,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
-//            Log.v(TAG, "Patient ID: " + patientID);
-//            Log.v(TAG, "Visit ID: " + visitID);
-//            Log.v(TAG, "Patient Name: " + patientName);
-//            Log.v(TAG, "Intent Tag: " + intentTag);
         }
-//        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
-//        Date todayDate = new Date();
-//        String thisDate = currentDate.format(todayDate);
         if (encounterAdultIntials.equalsIgnoreCase("") || encounterAdultIntials == null) {
             encounterAdultIntials = UUID.randomUUID().toString();
 
@@ -131,7 +118,6 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         complaints = new ArrayList<>();
 
 
-//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         boolean hasLicense = false;
         if (sessionManager.getLicenseKey() != null && !sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
@@ -145,9 +131,11 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     Crashlytics.getInstance().core.logException(e);
                 }
-                Log.i(TAG, currentFile.toString());
-                Node currentNode = new Node(currentFile);
-                complaints.add(currentNode);
+                if (currentFile != null) {
+                    Log.i(TAG, currentFile.toString());
+                    Node currentNode = new Node(currentFile);
+                    complaints.add(currentNode);
+                }
             }
         } else {
             String[] fileNames = new String[0];
@@ -156,11 +144,13 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             } catch (IOException e) {
                 Crashlytics.getInstance().core.logException(e);
             }
-            for (String name : fileNames) {
-                String fileLocation = "engines/" + name;
-                currentFile = FileUtils.encodeJSON(this, fileLocation);
-                Node currentNode = new Node(currentFile);
-                complaints.add(currentNode);
+            if (fileNames != null) {
+                for (String name : fileNames) {
+                    String fileLocation = "engines/" + name;
+                    currentFile = FileUtils.encodeJSON(this, fileLocation);
+                    Node currentNode = new Node(currentFile);
+                    complaints.add(currentNode);
+                }
             }
         }
 
@@ -283,23 +273,4 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
         return true;
     }
-
-    private boolean insertDb(String value) {
-
-        Log.i(TAG, "insertDb: " + patientUuid + " " + visitUuid + " " + UuidDictionary.CURRENT_COMPLAINT);
-        ObsDAO obsDAO = new ObsDAO();
-        ObsDTO obsDTO = new ObsDTO();
-        obsDTO.setConceptuuid(UuidDictionary.CURRENT_COMPLAINT);
-        obsDTO.setEncounteruuid(encounterAdultIntials);
-        obsDTO.setCreator(sessionManager.getCreatorID());
-        obsDTO.setValue(StringUtils.getValue(value));
-        boolean isInserted = false;
-        try {
-            isInserted = obsDAO.insertObs(obsDTO);
-        } catch (DAOException e) {
-            Crashlytics.getInstance().core.logException(e);
-        }
-        return isInserted;
-    }
-
 }

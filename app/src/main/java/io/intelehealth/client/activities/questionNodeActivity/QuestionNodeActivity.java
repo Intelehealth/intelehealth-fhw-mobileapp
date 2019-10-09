@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -70,8 +69,6 @@ public class QuestionNodeActivity extends AppCompatActivity {
     CustomExpandableListAdapter adapter;
     boolean nodeComplete = false;
 
-    String image_Prefix = "QN";
-    String imageDir = "Question Node";
     int lastExpandedPosition = -1;
     String insertion = "";
     private SharedPreferences prefs;
@@ -92,17 +89,11 @@ public class QuestionNodeActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             complaints = intent.getStringArrayListExtra("complaints");
-//            Log.v(TAG, "Patient ID: " + patientID);
-//            Log.v(TAG, "Visit ID: " + visitID);
-//            Log.v(TAG, "Patient Name: " + patientName);
-//            Log.v(TAG, "Intent Tag: " + intentTag);
         }
         complaintDetails = new HashMap<>();
         physicalExams = new ArrayList<>();
-//mKnowledge = new Knowledge(HelperMethods.encodeJSON(this, mFileName));
         complaintsNodes = new ArrayList<>();
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         boolean hasLicense = false;
         if (sessionManager.getLicenseKey() != null && !sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
@@ -145,12 +136,6 @@ public class QuestionNodeActivity extends AppCompatActivity {
         questionListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-
-//                imageName = patientUuid + "_" + visitUuid + "_" + image_Prefix;
-//                String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-//                filePath = new File(baseDir + File.separator + "Patient Images" + File.separator +
-//                        patientUuid + File.separator + visitUuid + File.separator + imageDir);
-
                 if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && !currentNode.getOption(groupPosition).anySubSelected()) {
                     Node question = currentNode.getOption(groupPosition).getOption(childPosition);
                     question.toggleSelected();
@@ -245,29 +230,11 @@ public class QuestionNodeActivity extends AppCompatActivity {
      * All exams are also stored into a string, which will be passed through the activities to the Physical Exam Activity.
      */
     private void fabClick() {
-//        for (int i = 0; i < adapter.getGroupCount(); i++) {
-//            if (!currentNode.getOption(i).isSelected()) {
-//                nodeComplete = false;
-//                questionListView.expandGroup(i);
-//                break;
-//            } else {
-//                nodeComplete = true;
-//            }
-//        }
         nodeComplete = true;
 
         if (!complaintConfirmed) {
             questionsMissing();
         } else {
-
-            //TODO: Under this new scheme where there is just a list of existing JSONS, need to parse out associated symptomsArrayList<String> selectedAssociations = currentNode.getSelectedAssociations();
-//            for (int i = 0; i < selectedAssociations.size(); i++) {
-//                if (!complaints.contains(selectedAssociations.get(i))) {
-//                    complaints.add(selectedAssociations.get(i));
-//                    complaintsNodes.add(mKnowledge.getComplaint(selectedAssociations.get(i)));
-//                }
-//            }
-
             List<String> imagePathList = currentNode.getImagePathList();
 
             if (imagePathList != null) {
@@ -307,7 +274,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 physicalExams.addAll(childNodeSelectedPhysicalExams); //For Selected child nodes
 
             ArrayList<String> rootNodePhysicalExams = parseExams(currentNode);
-            if (!rootNodePhysicalExams.isEmpty())
+            if (rootNodePhysicalExams != null && !rootNodePhysicalExams.isEmpty())
                 physicalExams.addAll(rootNodePhysicalExams); //For Root Node
 
             if (complaintNumber < complaints.size() - 1) {
@@ -327,16 +294,9 @@ public class QuestionNodeActivity extends AppCompatActivity {
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
 
-//                    SharedPreferences sharedPreference = this.getSharedPreferences(
-//                            "visit_summary", Context.MODE_PRIVATE);
-//                    SharedPreferences.Editor editor = sharedPreference.edit();
                     Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
                     sessionManager.setVisitSummary(patientUuid, selectedExams);
 
-//                    editor.putStringSet("exam_" + patientUuid, selectedExams);
-//                    editor.commit();
-
-                    //intent.putStringArrayListExtra("exams", physicalExams);
                     startActivity(intent);
                 } else {
                     Log.i(TAG, "fabClick: " + insertion);
@@ -349,15 +309,9 @@ public class QuestionNodeActivity extends AppCompatActivity {
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
-//                    SharedPreferences sharedPreference = this.getSharedPreferences(
-//                            "visit_summary", Context.MODE_PRIVATE);
-//                    SharedPreferences.Editor editor = sharedPreference.edit();
                     Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
                     sessionManager.setVisitSummary(patientUuid, selectedExams);
 
-//                    editor.putStringSet("exam_" + patientUuid, selectedExams);
-//                    editor.commit();
-                    //intent.putStringArrayListExtra("exams", physicalExams);
                     startActivity(intent);
                 }
             }
@@ -376,25 +330,6 @@ public class QuestionNodeActivity extends AppCompatActivity {
     private boolean insertDb(String value) {
 
         Log.i(TAG, "insertDb: " + patientUuid + " " + visitUuid + " " + UuidDictionary.CURRENT_COMPLAINT);
-
-//
-//        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-//
-//        String CREATOR_ID = prefs.getString("creatorid", null);
-//
-//        String CONCEPT_ID = UuidDictionary.CURRENT_COMPLAINT; //OpenMRS complaint concept ID
-//
-//        ContentValues complaintEntries = new ContentValues();
-//        complaintEntries.put("uuid", UUID.randomUUID().toString());
-//        complaintEntries.put("encounteruuid", encounterAdultIntials);
-//        complaintEntries.put("creator", CREATOR_ID);
-//        complaintEntries.put("value", StringUtils.getValue(value));
-//        complaintEntries.put("conceptuuid", CONCEPT_ID);
-//        complaintEntries.put("sync", "false");
-//
-//        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-//        long insertedvalues = localdb.insert("tbl_obs", null, complaintEntries);
-
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();
         obsDTO.setConceptuuid(UuidDictionary.CURRENT_COMPLAINT);
@@ -408,20 +343,12 @@ public class QuestionNodeActivity extends AppCompatActivity {
             Crashlytics.getInstance().core.logException(e);
         }
 
-//        return isInserted;
 
         return isInserted;
     }
 
     private void updateImageDatabase(String imagePath) {
 
-//        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-//        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path,image_type,delete_status) values("
-//                + "'" + patientUuid + "'" + ","
-//                + visitUuid + ","
-//                + "'" + imagePath + "','" + "CO" + "'," +
-//                0 +
-//                ")");
 
         ImagesDAO imagesDAO = new ImagesDAO();
 
@@ -434,24 +361,6 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
     private void updateDatabase(String string) {
         Log.i(TAG, "updateDatabase: " + patientUuid + " " + visitUuid + " " + UuidDictionary.CURRENT_COMPLAINT);
-//        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-//
-//        String conceptID = UuidDictionary.CURRENT_COMPLAINT;
-//        ContentValues contentValues = new ContentValues();
-//        contentValues.put("value", string);
-//        contentValues.put("sync", "false");
-//
-//        String selection = "encounteruuid = ?  AND conceptuuid = ?";
-//        String[] args = {encounterVitals, conceptID};
-//
-//        int i = localdb.update(
-//                "tbl_obs",
-//                contentValues,
-//                selection,
-//                args
-//        );
-//        if (i == 0) {
-//            insertDb(string);
 //        }
         ObsDTO obsDTO = new ObsDTO();
         ObsDAO obsDAO = new ObsDAO();

@@ -54,7 +54,7 @@ import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.dao.ImagesDAO;
 import io.intelehealth.client.database.dao.ImagesPushDAO;
 import io.intelehealth.client.database.dao.PatientsDAO;
-import io.intelehealth.client.database.dao.PullDataDAO;
+import io.intelehealth.client.database.dao.SyncDAO;
 import io.intelehealth.client.models.Patient;
 import io.intelehealth.client.models.dto.PatientAttributesDTO;
 import io.intelehealth.client.models.dto.PatientDTO;
@@ -1009,9 +1009,9 @@ public class IdentificationActivity extends AppCompatActivity {
 //                patientApiCall();
 //                frameJson();
                 AppConstants.notificationUtils.showNotifications("Patient Data Upload", "Uploading " + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s data", 2, getApplication());
-                PullDataDAO pullDataDAO = new PullDataDAO();
+                SyncDAO syncDAO = new SyncDAO();
                 ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
-                boolean push = pullDataDAO.pushDataApi();
+                boolean push = syncDAO.pushDataApi();
                 boolean pushImage = imagesPushDAO.patientProfileImagesPush();
                 if (push)
                     AppConstants.notificationUtils.DownloadDone("Patient Data Upload", "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s data upload complete.", 2, getApplication());
@@ -1129,9 +1129,9 @@ public class IdentificationActivity extends AppCompatActivity {
             boolean isPatientImageUpdated = imagesDAO.updatePatientProfileImages(mCurrentPhotoPath, uuid);
 
             if (NetworkConnection.isOnline(getApplication())) {
-                PullDataDAO pullDataDAO = new PullDataDAO();
+                SyncDAO syncDAO = new SyncDAO();
                 ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
-                boolean ispush = pullDataDAO.pushDataApi();
+                boolean ispush = syncDAO.pushDataApi();
                 boolean isPushImage = imagesPushDAO.patientProfileImagesPush();
 
                 if (ispush)

@@ -76,23 +76,6 @@ public class SearchPatientActivity extends AppCompatActivity {
             query = intent.getStringExtra(SearchManager.QUERY);
             SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this, SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
             suggestions.saveRecentQuery(query, null);
-//            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//                @Override
-//                public boolean onQueryTextSubmit(String s) {
-//                    return false;
-//                }
-//
-//                @Override
-//                public boolean onQueryTextChange(String s) {
-//                    Log.d("Hack", "in query text change");
-//                SearchRecentSuggestions suggestions = new SearchRecentSuggestions(SearchPatientActivity.this,
-//                        SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
-//                suggestions.clearHistory();
-//                doQuery(s);
-//                return true;
-////                    return false;
-//                }
-//            });
             if (sessionManager.isPullSyncFinished()) {
                 msg.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
@@ -117,13 +100,13 @@ public class SearchPatientActivity extends AppCompatActivity {
     private void doQuery(String query) {
         try {
             recycler = new SearchPatientAdapter(getQueryPatients(query), SearchPatientActivity.this);
-//            Log.i("db data", "" + getQueryPatients(query));
             RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerView.setLayoutManager(reLayoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.setAdapter(recycler);
 
         } catch (Exception e) {
+            Crashlytics.getInstance().core.logException(e);
             Logger.logE("doquery", "doquery", e);
         }
     }
@@ -142,6 +125,7 @@ public class SearchPatientActivity extends AppCompatActivity {
             recyclerView.setAdapter(recycler);
 
         } catch (Exception e) {
+            Crashlytics.getInstance().core.logException(e);
             Logger.logE("firstquery", "exception", e);
         }
     }
@@ -158,11 +142,6 @@ public class SearchPatientActivity extends AppCompatActivity {
         searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         // Assumes current activity is the searchable activity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-//        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
-        //searchView.setMaxWidth(Integer.MAX_VALUE);
-
-//        searchView.setFocusable(true);
-//        searchView.requestFocus();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -241,10 +220,6 @@ public class SearchPatientActivity extends AppCompatActivity {
         } catch (DAOException e) {
             e.printStackTrace();
         }
-
-        //  Log.d("student data", modelList.toString());
-
-
         return modelList;
 
     }
@@ -272,7 +247,9 @@ public class SearchPatientActivity extends AppCompatActivity {
                 } while (cursor.moveToNext());
             }
         }
-        cursor.close();
+        if (cursor != null) {
+            cursor.close();
+        }
 
         if (failedUploads == 0) {
             Intent intent = new Intent(this, HomeActivity.class);
@@ -311,8 +288,6 @@ public class SearchPatientActivity extends AppCompatActivity {
         } catch (DAOException e) {
             e.printStackTrace();
         }
-//        boolean[] checkedItems = {false, false, false, false};
-        // ngo_numbers = getResources().getStringArray(R.array.ngo_numbers);
         dialogBuilder = new AlertDialog.Builder(SearchPatientActivity.this);
         dialogBuilder.setTitle("Filter by Creator");
 
@@ -326,13 +301,15 @@ public class SearchPatientActivity extends AppCompatActivity {
                 Logger.logD(TAG, "multichoice" + which + isChecked);
                 if (isChecked) {
                     // If the user checked the item, add it to the selected items
-                    selectedItems.add(finalCreator_uuid[which]);
-                    Logger.logD(TAG, finalCreator_names[which] + finalCreator_uuid[which]);
+                    if (finalCreator_uuid != null) {
+                        selectedItems.add(finalCreator_uuid[which]);
+                    }
 
                 } else if (selectedItems.contains(which)) {
                     // Else, if the item is already in the array, remove it
-                    selectedItems.remove(finalCreator_uuid[which]);
-                    Logger.logD(TAG, finalCreator_names[which] + finalCreator_uuid[which]);
+                    if (finalCreator_uuid != null) {
+                        selectedItems.remove(finalCreator_uuid[which]);
+                    }
                 }
 
             }
@@ -344,7 +321,6 @@ public class SearchPatientActivity extends AppCompatActivity {
                 //display filter query code on list menu
                 Logger.logD(TAG, "onclick" + i);
                 doQueryWithProviders(query, selectedItems);
-//                select distinct a.uuid,c.first_name,c.middle_name,c.last_name,c.openmrs_id,c.phone_number,c.date_of_birth from tbl_visit a,tbl_encounter b ,tbl_patient c where b.visituuid=a.uuid and b.provider_uuid in ('163b48e5-26fb-40c1-8d94-a6c873dd2869') and a.patientuuid=c.uuid and a.enddate is null order by c.first_name
             }
         });
 
@@ -470,13 +446,13 @@ public class SearchPatientActivity extends AppCompatActivity {
 
             try {
                 recycler = new SearchPatientAdapter(modelList, SearchPatientActivity.this);
-//            Log.i("db data", "" + getQueryPatients(query));
                 RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
                 recyclerView.setLayoutManager(reLayoutManager);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 recyclerView.setAdapter(recycler);
 
             } catch (Exception e) {
+                Crashlytics.getInstance().core.logException(e);
                 Logger.logE("doquery", "doquery", e);
             }
         }

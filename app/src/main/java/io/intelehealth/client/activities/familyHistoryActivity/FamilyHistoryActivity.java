@@ -50,13 +50,10 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     String patientName;
     String intentTag;
 
-    String image_Prefix = "FH"; //Abbreviation for Family History
-    String imageDir = "Family History"; //Abbreviation for Family History
 
     ArrayList<String> physicalExams;
 
     String mFileName = "famHist.json";
-//    String mFileName = "DemoFamily.json";
 
     int lastExpandedPosition = -1;
 
@@ -115,8 +112,6 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                     if (fhistory != null && !fhistory.isEmpty() && !fhistory.equals("null")) {
                         insertDb(fhistory);
                     }
-                    //  PastMedicalHistoryActivity pmh = new PastMedicalHistoryActivity();
-                    // pmh.insertDb(phistory);
 
                     Intent intent = new Intent(FamilyHistoryActivity.this, PhysicalExamActivity.class);
                     intent.putExtra("patientUuid", patientUuid);
@@ -126,7 +121,6 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
-                    //  intent.putStringArrayListExtra("exams", physicalExams);
 
                     startActivity(intent);
 
@@ -143,11 +137,6 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
-            //       physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
-//            Log.v(TAG, "Patient ID: " + patientID);
-//            Log.v(TAG, "Visit ID: " + visitID);
-//            Log.v(TAG, "Patient Name: " + patientName);
-//            Log.v(TAG, "Intent Tag: " + intentTag);
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_family_history);
@@ -183,7 +172,6 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             familyHistoryMap = new Node(FileUtils.encodeJSON(this, mFileName)); //Load the family history mind map
         }
 
-        // familyHistoryMap = new Node(HelperMethods.encodeJSON(this, mFileName)); //Load the family history mind map
         familyListView = findViewById(R.id.family_history_expandable_list_view);
         adapter = new CustomExpandableListAdapter(this, familyHistoryMap, this.getClass().getSimpleName());
         familyListView.setAdapter(adapter);
@@ -194,7 +182,6 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                 Node clickedNode = familyHistoryMap.getOption(groupPosition).getOption(childPosition);
                 Log.i(TAG, "onChildClick: ");
                 clickedNode.toggleSelected();
-                //Log.d(TAG, String.valueOf(clickedNode.isSelected()));
                 if (familyHistoryMap.getOption(groupPosition).anySubSelected()) {
                     familyHistoryMap.getOption(groupPosition).setSelected();
                 } else {
@@ -207,12 +194,6 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                         Node.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter, null, null);
                     }
                 }
-
-//                String imageName = patientUuid + "_" + visitUuid + "_" + image_Prefix;
-//                String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-//                File filePath = new File(baseDir + File.separator + "Patient Images" + File.separator +
-//                        patientUuid + File.separator + visitUuid + File.separator + imageDir);
-
                 if (!filePath.exists()) {
                     boolean res = filePath.mkdirs();
                     Log.i("RES>", "" + filePath + " -> " + res);
@@ -268,13 +249,6 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         if (intentTag != null && intentTag.equals("edit")) {
             updateDatabase(insertion);
 
-            //making flag to false in the encounter table so it will sync again
-//            EncounterDAO encounterDAO = new EncounterDAO();
-//            try {
-//                encounterDAO.updateEncounterSync("false", encounterAdultIntials);
-//            } catch (DAOException e) {
-//                Crashlytics.getInstance().core.logException(e);
-//            }
             Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientUuid", patientUuid);
             intent.putExtra("visitUuid", visitUuid);
@@ -294,13 +268,6 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                     fhistory = fhistory + "";
                 }
                 insertDb(fhistory);
-
-                // PastMedicalHistoryActivity pmh = new PastMedicalHistoryActivity();
-                // pmh.insertDb(phistory);
-
-                // this will display history data as it is present in database
-                // Toast.makeText(FamilyHistoryActivity.this,"new PMH: "+phistory,Toast.LENGTH_SHORT).show();
-                // Toast.makeText(FamilyHistoryActivity.this,"new FH: "+fhistory,Toast.LENGTH_SHORT).show();
             } else {
                 insertDb(insertion); // new details of family history
             }
@@ -323,25 +290,6 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     }
 
     public boolean insertDb(String value) {
-
-
-//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-//
-//        final String CREATOR_ID = prefs.getString("creatorid", null);// TODO: Connect the proper CREATOR_ID
-//
-//        final String CONCEPT_ID = UuidDictionary.RHK_FAMILY_HISTORY_BLURB; // RHK FAMILY HISTORY BLURB
-//
-//        ContentValues complaintEntries = new ContentValues();
-
-//        complaintEntries.put("patient_id", patientID);
-//        complaintEntries.put("visit_id", visitID);
-//        complaintEntries.put("uuid", UUID.randomUUID().toString());
-//        complaintEntries.put("encounteruuid", encounterAdultIntials);
-//        complaintEntries.put("value", io.intelehealth.client.utilities.StringUtils.getValue(value));
-//        complaintEntries.put("conceptuuid", CONCEPT_ID);
-//        complaintEntries.put("creator", CREATOR_ID);
-//        complaintEntries.put("sync", "false");
-
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();
         obsDTO.setConceptuuid(UuidDictionary.RHK_FAMILY_HISTORY_BLURB);
@@ -360,12 +308,6 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 
     private void updateImageDatabase(String imagePath) {
 
-//        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path,image_type,delete_status) values("
-//                + "'" + patientUuid + "'" + ","
-//                + visitUuid + ","
-//                + "'" + imagePath + "','" + image_Prefix + "'," +
-//                0 +
-//                ")");
         ImagesDAO imagesDAO = new ImagesDAO();
 
         try {
@@ -377,19 +319,6 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 
     private void updateDatabase(String string) {
 
-//        String conceptID = UuidDictionary.RHK_FAMILY_HISTORY_BLURB;
-//        ContentValues contentValues = new ContentValues();
-//        contentValues.put("value", string);
-//        contentValues.put("sync", "false");
-//        String selection = "encounteruuid = ? AND conceptuuid = ?";
-//        String[] args = {encounterAdultIntials, conceptID};
-//
-//        localdb.update(
-//                "tbl_obs",
-//                contentValues,
-//                selection,
-//                args
-//        );
         ObsDTO obsDTO = new ObsDTO();
         ObsDAO obsDAO = new ObsDAO();
         try {

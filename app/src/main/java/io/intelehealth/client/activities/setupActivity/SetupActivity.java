@@ -30,6 +30,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.parse.Parse;
 
@@ -323,8 +324,7 @@ public class SetupActivity extends AppCompatActivity {
                         }
                     });
         } catch (IllegalArgumentException e) {
-            Log.e(TAG, "changeApiBaseUrl: " + e.getMessage());
-            Log.e(TAG, "changeApiBaseUrl: " + e.getStackTrace());
+            Crashlytics.getInstance().core.logException(e);
             mUrlField.setError(getString(R.string.url_invalid));
         }
 
@@ -374,9 +374,7 @@ public class SetupActivity extends AppCompatActivity {
                                     Dialog d = (Dialog) dialog;
 
                                     EditText text = d.findViewById(R.id.licensekey);
-                                    // text.setText(sessionManager.getLicenseKey());
                                     EditText url = d.findViewById(R.id.licenseurl);
-                                    // url.setText(sessionManager.getMindMapServerUrl());
                                     if (text.getText().toString().isEmpty() && text.getText() == null || url.getText().toString().isEmpty() && url.getText() == null) {
                                         text.setFocusable(true);
                                         text.setError("Enter license key");
@@ -450,32 +448,8 @@ public class SetupActivity extends AppCompatActivity {
      */
     public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD, Location location) {
 
-//         String USERNAME;
-//         String PASSWORD;
-//         String CLEAN_URL;
-//         String ADMIN_PASSWORD;
         ProgressDialog progress;
 
-//         Location LOCATION;
-//        int responsecode;
-
-//        TestSetup(String url, String username, String password, String adminPassword, Location location) {
-//            CLEAN_URL = url;
-//            USERNAME = username;
-//            PASSWORD = password;
-//            LOCATION = location;
-//            ADMIN_PASSWORD = adminPassword;
-//        }
-
-//        @Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-
-//        }
-
-
-//        @Override
-//        protected Integer doInBackground(Void... params) {
         String urlString = urlModifiers.loginUrl(CLEAN_URL);
         Logger.logD(TAG, "usernaem and password" + USERNAME + PASSWORD);
         encoded = base64Utils.encoded(USERNAME, PASSWORD);
@@ -498,7 +472,6 @@ public class SetupActivity extends AppCompatActivity {
             public void onNext(LoginModel loginModel) {
                 Boolean authencated = loginModel.getAuthenticated();
                 Gson gson = new Gson();
-                Logger.logD(TAG, "success" + gson.toJson(loginModel));
                 sessionManager.setChwname(loginModel.getUser().getDisplay());
                 sessionManager.setCreatorID(loginModel.getUser().getUuid());
                 sessionManager.setSessionID(loginModel.getSessionId());
@@ -579,8 +552,6 @@ public class SetupActivity extends AppCompatActivity {
                 DialogUtils dialogUtils = new DialogUtils();
                 dialogUtils.showerrorDialog(SetupActivity.this, "Error Login", getString(R.string.error_incorrect_password), "ok");
                 mEmailView.requestFocus();
-                // mEmailView.setError(getString(R.string.error_incorrect_password));
-                // mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
             }
 

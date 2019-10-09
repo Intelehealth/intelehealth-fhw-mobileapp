@@ -348,9 +348,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
     }
 
-
-    //prajwal end
-
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class CloudRestoreFragment extends Fragment {
         @Override
@@ -385,9 +382,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             Configuration conf = res.getConfiguration();
             conf.locale = myLocale;
             res.updateConfiguration(conf, dm);
-            //Intent refresh = new Intent(this, HomeActivity.class);
-            //finish();
-            // startActivity(refresh);
         }
 
 
@@ -395,7 +389,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             String langPref = "Language";
             SharedPreferences prefs = this.getActivity().getSharedPreferences("Intelehealth", Activity.MODE_PRIVATE);
             String language = prefs.getString(langPref, "");
-            setLocale(language);
+            if (language != null) {
+                setLocale(language);
+            }
         }
 
         public void saveLocale(String lang) {
@@ -458,7 +454,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
             int id = item.getItemId();
             if (id == android.R.id.home) {
-                //setLocale("or");
                 startActivity(new Intent(getActivity(), HomeActivity.class));
                 return true;
             }

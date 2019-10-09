@@ -106,21 +106,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
                     break;
                 }
                 case 2: {
-
-                    //TODO: Change Activity after coding is done.
-
-                    // Query for today's patient
-                    // SELECT * FROM visit WHERE start_datetime LIKE "2017-05-08T%" ORDER BY start_datetime ASC
                     Intent intent = new Intent(this.context, TodayPatientActivity.class);
                     this.context.startActivity(intent);
                     break;
                 }
                 case 3: {
-
-                    //TODO: Change Activity after coding is done.
-
-                    // Query for today's patient
-                    // SELECT * FROM visit WHERE start_datetime LIKE "2017-05-08T%" ORDER BY start_datetime ASC
                     Intent intent = new Intent(this.context, ActivePatientActivity.class);
                     this.context.startActivity(intent);
                     break;

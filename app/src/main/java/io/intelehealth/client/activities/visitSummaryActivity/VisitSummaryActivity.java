@@ -87,7 +87,7 @@ import io.intelehealth.client.database.dao.EncounterDAO;
 import io.intelehealth.client.database.dao.ImagesDAO;
 import io.intelehealth.client.database.dao.ObsDAO;
 import io.intelehealth.client.database.dao.PatientsDAO;
-import io.intelehealth.client.database.dao.PullDataDAO;
+import io.intelehealth.client.database.dao.SyncDAO;
 import io.intelehealth.client.database.dao.VisitsDAO;
 import io.intelehealth.client.knowledgeEngine.Node;
 import io.intelehealth.client.models.Patient;
@@ -112,8 +112,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     boolean uploaded = false;
     boolean downloaded = false;
-    boolean dataChanged = false;
-    String failedMessage;
 
     Context context;
 
@@ -223,8 +221,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     public static String prescriptionHeader1;
     public static String prescriptionHeader2;
-    String additionalDocumentDir = "Additional Documents";
-    String physicalExamDocumentDir = "Physical Exam";
     SharedPreferences mSharedPreference;
     boolean hasLicense = false;
     String mFileName = "config.json";
@@ -272,12 +268,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-//            if (intent.getAction().equals(AppConstants.MESSAGE_PROGRESS)) {
-//                Download download = intent.getParcelableExtra("download");
-//                if (download.getProgress() == 100) {
-//                } else {
-//                }
-//            }
             onResume();
             physicalDoumentsUpdates();
 
@@ -441,34 +431,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
 
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-//
-//        filePathPhyExam = baseDir + File.separator + "Patient Images" + File.separator + patientUuid + File.separator +
-//                visitUuid + File.separator + physicalExamDocumentDir;
-
         obsImgdir = new File(AppConstants.IMAGE_PATH);
 
         flag = findViewById(R.id.flaggedcheckbox);
-//        EncounterDAO encounterDAO = new EncounterDAO();
-//        VisitsDAO visitsDAO = new VisitsDAO();
-//        try {
-//            visitsDAO.isUpdatedEmergencyColumn(visitUuid, encounterDAO.isEmergency(visitUuid));
-//        } catch (DAOException e) {
-//            e.printStackTrace();
-//        }
-//        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-//        String query = "Select ifnull(emergency,'') as emergency FROM tbl_visit WHERE uuid = '" + visitUuid + "'";
-//        Cursor cursor = db.rawQuery(query, null);
-//        if (cursor != null) {
-//            while (cursor.moveToNext()) {
-//                String emergency = cursor.getString(cursor.getColumnIndex("emergency"));
-//                if (emergency.equalsIgnoreCase("true") || emergency.equalsIgnoreCase("1")) {
-//                    flag.setChecked(true);
-//                }
-//            }
-//        }
-//        if (cursor != null) {
-//            cursor.close();
-//        }
         EncounterDAO encounterDAO = new EncounterDAO();
         String emergencyUuid = "";
         try {
@@ -509,58 +474,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
         p.setColor(Color.BLUE);
         additionalImageDownloadText.setPaintFlags(p.getColor());
         additionalImageDownloadText.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
-        ImagesDAO imagesDAO = new ImagesDAO();
-        try {
-            List<String> imageList = imagesDAO.isImageListObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD);
-            for (String images : imageList) {
-                if (imagesDAO.isLocalImageUuidExists(images))
-                    additionalImageDownloadText.setVisibility(View.GONE);
-                else
-                    additionalImageDownloadText.setVisibility(View.VISIBLE);
-            }
-        } catch (DAOException e) {
-            e.printStackTrace();
-        }
-        additionalImageDownloadText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startDownload(UuidDictionary.COMPLEX_IMAGE_AD);
-                additionalImageDownloadText.setVisibility(View.GONE);
-            }
-        });
+
+
+        additionalDocumentImagesDownload();
 
         //image download for physcialExamination documents
         physcialExaminationDownloadText.setPaintFlags(p.getColor());
         physcialExaminationDownloadText.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
-        try {
-            if (imagesDAO.isImageObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE)) {
-                if (imagesDAO.isLocalImageExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE))
-                    physcialExaminationDownloadText.setVisibility(View.GONE);
-                else
-                    physcialExaminationDownloadText.setVisibility(View.VISIBLE);
-            } else
-                physcialExaminationDownloadText.setVisibility(View.GONE);
-//            if (imagesDAO.isImageObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE)) {
-//                physcialExaminationDownloadText.setVisibility(View.VISIBLE);
-//            }
-//            if (imagesDAO.isLocalImageExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE))
-//                physcialExaminationDownloadText.setVisibility(View.GONE);
-//
-//            if (imagesDAO.isImageObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE) || imagesDAO.isLocalImageExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE)) {
-//                physcialExaminationDownloadText.setVisibility(View.VISIBLE);
-//            }else{
-//                physcialExaminationDownloadText.setVisibility(View.GONE);
-//            }
-        } catch (DAOException e) {
-            e.printStackTrace();
-        }
-        physcialExaminationDownloadText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startDownload(UuidDictionary.COMPLEX_IMAGE_PE);
-                physcialExaminationDownloadText.setVisibility(View.GONE);
-            }
-        });
+        physcialExaminationImagesDownload();
+
 
 
         downloadButton.setEnabled(false);
@@ -604,29 +526,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-//                db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-//                EmergencyEncounterDAO emergencyEncounterDAO = new EmergencyEncounterDAO();
-
-//                if (flag.isChecked()) {
-////                    Log.d(TAG, "Emergency flag val: " + flag.isChecked());
-////                    String emergency_checked = String.valueOf(flag.isChecked());
-////                    String updateQuery = "UPDATE tbl_visit SET emergency ='" + emergency_checked + "' WHERE uuid = '" + visitUuid + "'";
-////                    db.execSQL(updateQuery);
-////                    db.close();
-//                    emergencyEncounterDAO.uploadEncounterEmergency(visitUuid, 0);
-//                } else {
-////                    db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-////                    Log.d(TAG, "Emergency flag val: " + flag.isChecked());
-////                    String emergency_checked = String.valueOf(flag.isChecked());
-////                    String updateQuery = "UPDATE tbl_visit SET emergency ='" + emergency_checked + "' WHERE uuid = '" + visitUuid + "'";
-////                    db.execSQL(updateQuery);
-////                    db.close();
-//                    emergencyEncounterDAO.uploadEncounterEmergency(visitUuid, 1);
-////                    if (NetworkConnection.isOnline(getApplication())) {
-////                        emergencyEncounterDAO.removeEncounterEmergency(visitUuid, db);
-////                    }
-//                }
                 if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
                     String patientSelection = "uuid = ?";
                     String[] patientArgs = {String.valueOf(patient.getUuid())};
@@ -673,11 +572,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         .setBackgroundColor(Color.BLACK)
                         .setTextColor(Color.WHITE)
                         .show();
-//                Snackbar.make(view, "Uploading to doctor.", Snackbar.LENGTH_LONG).show();
 
                 if (NetworkConnection.isOnline(getApplication())) {
                     AppConstants.notificationUtils.showNotifications("Visit Data Upload", "Uploading visit data", 3, VisitSummaryActivity.this);
-                    PullDataDAO pullDataDAO = new PullDataDAO();
+                    SyncDAO syncDAO = new SyncDAO();
                     ProgressDialog pd = new ProgressDialog(VisitSummaryActivity.this);
                     pd.setTitle("Syncing");
                     pd.show();
@@ -731,12 +629,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         bpView = findViewById(R.id.textView_bp_value);
         tempView = findViewById(R.id.textView_temp_value);
 
-//        textView_temp
         tempfaren = findViewById(R.id.textView_temp_faren);
         tempcel = findViewById(R.id.textView_temp);
         try {
             JSONObject obj = null;
-//            #630
             if (hasLicense) {
                 obj = new JSONObject(FileUtils.readFileRoot(mFileName, VisitSummaryActivity.this)); //Load the config file
             } else {
@@ -809,7 +705,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 intent1.putExtra("encounterUuidVitals", encounterVitals);
                 intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                 intent1.putExtra("name", patientName);
-                //   intent.putStringArrayListExtra("exams", physicalExams);
                 intent1.putExtra("tag", "edit");
                 startActivity(intent1);
             }
@@ -1033,7 +928,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (obsImgdir.exists()) {
-//                            String[] children = obsImgdir.list();
                             ImagesDAO imagesDAO = new ImagesDAO();
 
                             try {
@@ -1046,20 +940,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             } catch (DAOException e1) {
                                 Crashlytics.getInstance().core.logException(e1);
                             }
-
-//                            String[] childList = children;
-//                            for (String child : childList) {
-//                                new File(obsImgdir, child).delete();
-//
-//                                ImagesDAO imagesDAO = new ImagesDAO();
-//im
-//                                try {
-//                                    imagesDAO.deleteImageFromDatabase(io.intelehealth.client.utilities.StringUtils.getFileNameWithoutExtensionString(child));
-//                                } catch (DAOException e1) {
-//                                    e1.printStackTrace();
-//                                }
-//                            }
-//                            obsImgdir.delete();
                         }
                         Intent intent1 = new Intent(VisitSummaryActivity.this, PhysicalExamActivity.class);
                         intent1.putExtra("patientUuid", patientUuid);
@@ -1176,15 +1056,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
         downloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if (uploaded) {
                 SyncUtils syncUtils = new SyncUtils();
                 syncUtils.syncForeground();
-
-//                    boolean pull = pullDataDAO.pullData(VisitSummaryActivity.this);
-//                    if (pull)
                 AppConstants.notificationUtils.DownloadDone("download from doctor", "prescription Downloaded", 3, VisitSummaryActivity.this);
-//                    else
-//                        AppConstants.notificationUtils.DownloadDone("download from doctor", "no prescription Downloaded", VisitSummaryActivity.this);
                 uploaded = true;
                 ProgressDialog pd = new ProgressDialog(VisitSummaryActivity.this);
                 pd.setTitle("Downloading prescription");
@@ -1197,12 +1071,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         pd.dismiss();
                     }
                 }, 5000);
-
-//                } else {
-//                    DialogUtils dialogUtils = new DialogUtils();
-//                    dialogUtils.showOkDialog(VisitSummaryActivity.this, "Error", "first need to upload", "ok");
-//                }
-                //mLayout.addView(downloadButton, mLayout.getChildCount());
             }
         });
         additionalDocumentsDownlaod.setOnClickListener(new View.OnClickListener() {
@@ -1217,6 +1085,51 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 startDownload(UuidDictionary.COMPLEX_IMAGE_PE);
             }
         });
+    }
+
+    private void physcialExaminationImagesDownload() {
+        ImagesDAO imagesDAO = new ImagesDAO();
+        try {
+            List<String> imageList = imagesDAO.isImageListObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
+            for (String images : imageList) {
+                if (imagesDAO.isLocalImageUuidExists(images))
+                    physcialExaminationDownloadText.setVisibility(View.GONE);
+                else
+                    physcialExaminationDownloadText.setVisibility(View.VISIBLE);
+            }
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        physcialExaminationDownloadText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startDownload(UuidDictionary.COMPLEX_IMAGE_PE);
+                physcialExaminationDownloadText.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void additionalDocumentImagesDownload() {
+        ImagesDAO imagesDAO = new ImagesDAO();
+        try {
+            List<String> imageList = imagesDAO.isImageListObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD);
+            for (String images : imageList) {
+                if (imagesDAO.isLocalImageUuidExists(images))
+                    additionalImageDownloadText.setVisibility(View.GONE);
+                else
+                    additionalImageDownloadText.setVisibility(View.VISIBLE);
+            }
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        additionalImageDownloadText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startDownload(UuidDictionary.COMPLEX_IMAGE_AD);
+                additionalImageDownloadText.setVisibility(View.GONE);
+            }
+        });
+
     }
 
     private void physicalDoumentsUpdates() {
@@ -1241,17 +1154,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         } catch (Exception file) {
             Logger.logD(TAG, file.getMessage());
         }
-//        if (!obsImgdir.exists()) {
-//            obsImgdir.mkdirs();
-//            Log.v(TAG, "directory ceated " + obsImgdir.getAbsolutePath());
-//        } else {
-//            File[] files = obsImgdir.listFiles();
-//            List<File> fileList = Arrays.asList(files);
-//            HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
-//            mPhysicalExamsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
-//            mPhysicalExamsRecyclerView.setLayoutManager(mPhysicalExamsLayoutManager);
-//            mPhysicalExamsRecyclerView.setAdapter(horizontalAdapter);
-//        }
     }
 
     private void startDownload(String imageType) {
@@ -1358,18 +1260,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         } catch (Exception e) {
             Crashlytics.getInstance().core.logException(e);
         }
-//        if (temperature.getValue() != null) {
-//            if (Integer.parseInt(temperature.getValue()) > 80) {
-//                mTemp = "Temperature(F): " + temperature.getValue();
-//            } else {
-//                mTemp = "Temperature(C): " + temperature.getValue();
-//            }
-//        }else{
-//            mTemp="";
-//        }
-
-//        mTemp = temperature.getValue();
-
         mresp = resp.getValue();
         mSPO2 = "SpO2(%): " + spO2.getValue();
         String mComplaint = complaint.getValue();
@@ -1533,7 +1423,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent.putExtra("state", state);
                         intent.putExtra("name", patientName);
                         intent.putExtra("tag", intentTag);
-                        //   intent.putStringArrayListExtra("exams", physicalExams);
                         startActivity(intent);
                     }
                 });
@@ -1547,7 +1436,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 intent.putExtra("state", state);
                 intent.putExtra("name", patientName);
                 intent.putExtra("tag", intentTag);
-                //   intent.putStringArrayListExtra("exams", physicalExams);
                 startActivity(intent);
             }
         } else {
@@ -1694,7 +1582,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         parseData(dbConceptID, dbValue);
                     } while (visitCursor.moveToNext());
                 }
-                visitCursor.close();
+                if (visitCursor != null) {
+                    visitCursor.close();
+                }
             } catch (SQLException e) {
                 Crashlytics.getInstance().core.logException(e);
             }
@@ -1711,13 +1601,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     parseData(dbConceptID, dbValue);
                 } while (encountercursor.moveToNext());
             }
-            encountercursor.close();
+            if (encountercursor != null) {
+                encountercursor.close();
+            }
         } catch (SQLException sql) {
             Crashlytics.getInstance().core.logException(sql);
         }
 
-//    setup the downloaded prescription
-//        downloadPrescription();
         downloadPrescriptionDefault();
     }
 
@@ -1892,19 +1782,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
      */
 
     private void updateDatabase(String string, String conceptID) {
-//        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-//
-//        ContentValues contentValues = new ContentValues();
-//        contentValues.put("value", string);
-//        contentValues.put("sync", "false");
-//        contentValues.put("modified_date",AppConstants.dateAndTimeUtils.currentDateTime());
-//
-//        String selection = "encounteruuid = ? AND conceptuuid = ?";
-//        String[] args = {encounterUuidAdultIntial, String.valueOf(conceptID)};
-//
-//        int updated = localdb.updateWithOnConflict("tbl_obs", contentValues, selection, args, SQLiteDatabase.CONFLICT_REPLACE);
-//
-//
         ObsDTO obsDTO = new ObsDTO();
         ObsDAO obsDAO = new ObsDAO();
         try {
@@ -1971,23 +1848,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         } catch (Exception file) {
             Logger.logD(TAG, file.getMessage());
         }
-
-
-//        if (!addDocDir.exists()) {
-//            addDocDir.mkdirs();
-//            Log.v(TAG, "directory created " + addDocDir.getAbsolutePath());
-//        } else {
-//            File[] files = addDocDir.listFiles();
-//            addDocDir.listFiles(new FilenameFilter() {
-//                @Override
-//                public boolean accept(File dir, String name) {
-//                    return false;
-//                }
-//            })
-        //List<File> fileList = Arrays.asList(files);
-
-
-//    }
     }
 
     @Override
@@ -2192,9 +2052,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 }
 
-            } else {
-                downloaded = false;
             }
+
+            additionalDocumentImagesDownload();
+            physcialExaminationImagesDownload();
 
         } catch (DAOException e) {
             e.printStackTrace();
@@ -2262,7 +2123,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private void handleMessage(Intent msg) {
         Log.i(TAG, "handleMessage: Entered");
         Bundle data = msg.getExtras();
-        int check = data.getInt("Restart");
+        int check = 0;
+        if (data != null) {
+            check = data.getInt("Restart");
+        }
         if (check == 100) {
             Log.i(TAG, "handleMessage: 100");
             diagnosisReturned = "";
@@ -2285,13 +2149,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             visitCursor.close();
         } else if (check == 200) {
             Log.i(TAG, "handleMessage: 200");
-            //meera
-            // addDownloadButton();
-
-//          <-----  code to end the visit only after doctor sends anything ----->
-
-
-            //if(downloaded){
             String[] columns = {"concept_id"};
             String orderBy = "visit_id";
 
@@ -2331,20 +2188,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 //endVisit();
 
             }
-//                    <-----if obs not found restrict user to end the visit ----->
             else {
                 Log.i(TAG, "found sothing for test");
-           /* downloaded=false;
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-                alertDialogBuilder.setMessage(R.string.error_no_data);
-                alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();*/
 
             }
 
@@ -2358,23 +2203,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (!downloadButton.isEnabled()) {
             downloadButton.setEnabled(true);
             downloadButton.setVisibility(View.VISIBLE);
-            /*
-            final float scale = getResources().getDisplayMetrics().density;
-            int pixels = (int) (11 * scale + 0.5f);
-
-            downloadButton = new Button((new ContextThemeWrapper(context, R.style.RobotoButtonStyle)));
-            LinearLayoutCompat.LayoutParams layoutParams= new LinearLayoutCompat.LayoutParams(
-                    LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT);
-            layoutParams.setMargins(10,10,10,10);
-            downloadButton.setPadding(0,0,0,0);
-            downloadButton.setLayoutParams(layoutParams);
-            downloadButton.setAllCaps(false);
-            downloadButton.setTextSize(TypedValue.COMPLEX_UNIT_SP,20);
-            downloadButton.setBackgroundColor(getResources().getColor(R.color.divider));
-            downloadButton.setText(R.string.visit_summary_button_download);
-            */
-
-            // Toast.makeText(this, getString(R.string.visit_summary_button_download), Toast.LENGTH_SHORT).show();
 
 
         }
@@ -2395,8 +2223,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             if (internetCheck != null) {
                                 internetCheck.setIcon(R.mipmap.ic_data_on);
                                 flag = 1;
-//                                SyncUtils syncUtils = new SyncUtils();
-//                                syncUtils.syncBackground();
                             }
                         }
                     }

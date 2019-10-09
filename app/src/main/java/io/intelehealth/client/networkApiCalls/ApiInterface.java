@@ -33,12 +33,6 @@ public interface ApiInterface {
     @GET("location?tag=Login%20Location")
     Observable<Results<Location>> LOCATION_OBSERVABLE(@Query("v") String representation);
 
-//    @GET("visit")
-//    Call<PatientUUIDResponsemodel> GETPATIENT(@Query("patient") String patientUUID, @Header("Authorization") String authHeader);
-//
-//
-//    @GET
-//    Call<VisitResponsemodel> VISIT_RESPONSEMODEL_CALL(@Url String url, @Header("Authorization") String authHeader);
 
     @DELETE
     Call<Void> DELETE_ENCOUNTER(@Url String url,

@@ -237,7 +237,6 @@ public class ImagesDAO {
                     obsPushDTO.setObsDatetime(idCursor.getString(idCursor.getColumnIndexOrThrow("modified_date")));
                     obsPushDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("obsuuid")));
                     obsPushDTO.setPerson(idCursor.getString(idCursor.getColumnIndexOrThrow("patientuuid")));
-//                    obsPushDTO.setPerson(getPatientUuidFromEncounter(idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")), localdb));
                     obsImages.add(obsPushDTO);
                 }
             }
@@ -253,27 +252,6 @@ public class ImagesDAO {
 
     }
 
-    public String getobsImagePath(String uuid) throws DAOException {
-        String imagePath = "";
-        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        localdb.beginTransaction();
-        try {
-            Cursor idCursor = localdb.rawQuery("SELECT * FROM tbl_image_records where uuid=? COLLATE NOCASE", new String[]{uuid});
-            if (idCursor.getCount() != 0) {
-                while (idCursor.moveToNext()) {
-                    imagePath = idCursor.getString(idCursor.getColumnIndexOrThrow("image_path"));
-                }
-            }
-            idCursor.close();
-        } catch (SQLiteException e) {
-            throw new DAOException(e);
-        } finally {
-            localdb.endTransaction();
-
-        }
-
-        return imagePath;
-    }
 
     public String getPatientProfileChangeTime(String patientUuid) throws DAOException {
         String datetime = "";
@@ -348,39 +326,6 @@ public class ImagesDAO {
         return isUpdated;
     }
 
-    private String getImageTypeUUid(String imageType) {
-        String imagetype = "";
-        if (imageType.equalsIgnoreCase("AD"))
-            imagetype = UuidDictionary.COMPLEX_IMAGE_AD;
-        else
-            imagetype = UuidDictionary.COMPLEX_IMAGE_PE;
-
-        return imagetype;
-    }
-
-    public String getPatientUuidFromEncounter(String encounterUuid, SQLiteDatabase localdb) throws DAOException {
-        Logger.logD(TAG, "encounter uuid " + encounterUuid);
-        String visituuid = "";
-//        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        localdb.beginTransaction();
-        try {
-            Cursor idCursor = localdb.rawQuery("SELECT uuid FROM tbl_encounter where uuid=? AND voided=? COLLATE NOCASE", new String[]{encounterUuid, "0"});
-            if (idCursor.getCount() != 0) {
-                while (idCursor.moveToNext()) {
-                    visituuid = idCursor.getString(idCursor.getColumnIndexOrThrow("uuid"));
-                }
-            }
-            idCursor.close();
-        } catch (SQLiteException e) {
-            throw new DAOException(e);
-        } finally {
-//            localdb.endTransaction();
-//            
-        }
-        VisitsDAO visitsDAO = new VisitsDAO();
-        return visitsDAO.patientUuidByViistUuid(visituuid);
-
-    }
 
     public ArrayList getImageUuid(String encounterUuid, String conceptuuid) throws DAOException {
         Logger.logD(TAG, "encounter uuid for image " + encounterUuid);
@@ -426,28 +371,6 @@ public class ImagesDAO {
         return imagesList;
     }
 
-    public boolean isImageObsExists(String encounterUuid, String conceptUuid) throws DAOException {
-        boolean isImageObsExists = false;
-        List<String> imagesList = new ArrayList<>();
-        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        localdb.beginTransaction();
-        try {
-            Cursor idCursor = localdb.rawQuery("SELECT uuid FROM tbl_obs where encounteruuid=? AND conceptuuid = ? AND voided=? COLLATE NOCASE", new String[]{encounterUuid, conceptUuid, "0"});
-            if (idCursor.getCount() != 0) {
-                while (idCursor.moveToNext()) {
-                    imagesList.add(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
-                }
-            }
-            idCursor.close();
-        } catch (SQLiteException e) {
-            throw new DAOException(e);
-        } finally {
-            localdb.endTransaction();
-        }
-        if (imagesList.size() != 0)
-            isImageObsExists = true;
-        return isImageObsExists;
-    }
 
     public List<String> isImageListObsExists(String encounterUuid, String conceptUuid) throws DAOException {
         List<String> imagesList = new ArrayList<>();
@@ -470,22 +393,6 @@ public class ImagesDAO {
         return imagesList;
     }
 
-    public boolean isLocalImageExists(String encounterUuidAdultIntial, String conceptUuid) throws DAOException {
-        boolean isLocalImageExists = false;
-        File imagesPath = new File(AppConstants.IMAGE_PATH);
-        try {
-            List<String> imageList = getImages(encounterUuidAdultIntial, conceptUuid);
-            for (String obsImageUuid : imageList) {
-                String imageName = obsImageUuid + ".jpg";
-                if (new File(imagesPath + "/" + imageName).exists()) {
-                    isLocalImageExists = true;
-                }
-            }
-        } catch (DAOException e1) {
-            Crashlytics.getInstance().core.logException(e1);
-        }
-        return isLocalImageExists;
-    }
 
     public boolean isLocalImageUuidExists(String imageuuid) throws DAOException {
         boolean isLocalImageExists = false;

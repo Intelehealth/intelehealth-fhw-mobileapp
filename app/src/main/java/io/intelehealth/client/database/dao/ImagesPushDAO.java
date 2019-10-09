@@ -31,16 +31,6 @@ public class ImagesPushDAO {
     String TAG = ImagesPushDAO.class.getSimpleName();
     SessionManager sessionManager = null;
 
-//    public PatientProfile PatientProfileFrameJson(String uuid) {
-//
-//
-//        PatientProfile patientProfile = new PatientProfile();
-//        patientProfile.setBase64EncodedImage("");
-//        patientProfile.setPerson("");
-//
-//
-//        return patientProfile;
-//    }
 
 
     public boolean patientProfileImagesPush() {
@@ -175,12 +165,5 @@ public class ImagesPushDAO {
         }
         return true;
     }
-
-    public boolean isImageUuidExisits(String uuidImage) {
-
-
-        return true;
-    }
-
 
 }

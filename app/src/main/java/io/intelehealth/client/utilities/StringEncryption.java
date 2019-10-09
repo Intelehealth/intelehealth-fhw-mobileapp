@@ -15,16 +15,16 @@ import java.security.SecureRandom;
 
 public class StringEncryption {
 
-    SecureRandom secureRandom = null;
+    private SecureRandom secureRandom = null;
 
-    public static String convertToSHA256(String text) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    static String convertToSHA256(String text) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(text.getBytes(StandardCharsets.ISO_8859_1), 0, text.length());
         byte[] digest = md.digest();
         return String.format("%064x", new BigInteger(1, digest));
     }
 
-    public String getRandomSaltString() {
+    String getRandomSaltString() {
         if (secureRandom == null) secureRandom = new SecureRandom();
         return new BigInteger(130, secureRandom).toString(32);
     }

@@ -25,7 +25,6 @@ public class NotificationUtils {
     public void showNotifications(String title, String text, int notificationId, Context context) {
         this.context = context;
         NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        //mahiti added
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             String channelid = String.valueOf(notificationId);
             int importance = NotificationManager.IMPORTANCE_HIGH;
@@ -34,9 +33,6 @@ public class NotificationUtils {
         }
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId);
-//        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, HomeActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
-
-//        mBuilder.setContentIntent(contentIntent);
         mBuilder.setContentTitle(title)
                 .setContentText(text)
                 .setSmallIcon(R.drawable.ic_cloud_upload);
@@ -48,7 +44,6 @@ public class NotificationUtils {
     public void showNotificationProgress(String title, String text, int notifcationId, Context context, Integer progress) {
         this.context = context;
         NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        //mahiti added
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             int importance = NotificationManager.IMPORTANCE_HIGH;
             String channelid = String.valueOf(notifcationId);
@@ -57,9 +52,6 @@ public class NotificationUtils {
         }
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId);
-//        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, HomeActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
-
-//        mBuilder.setContentIntent(contentIntent);
         mBuilder.setContentTitle(title)
                 .setContentText(text)
                 .setSmallIcon(R.drawable.ic_cloud_upload);
@@ -82,9 +74,6 @@ public class NotificationUtils {
         }
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId);
-//        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, HomeActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
-
-//        mBuilder.setContentIntent(contentIntent);
         mBuilder.setContentTitle(title)
                 .setContentText(text)
                 .setSmallIcon(R.drawable.ic_cloud_upload);

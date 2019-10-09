@@ -42,6 +42,7 @@ public class SessionManager {
     private static final String RETURNING_USER = "returninguser";
     private static final String VISIT_SUMMARY = "visit_summary";
     private static final String EXAM = "exam_";
+    private static final String MIGRATION_KEY = "migrationkey";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -364,6 +365,14 @@ public class SessionManager {
 
     }
 
+    public boolean isMigration() {
+        return pref.getBoolean(MIGRATION_KEY, false);
+    }
+
+    public void setMigration(Boolean migration) {
+        editor.putBoolean(MIGRATION_KEY, migration);
+        editor.commit();
+    }
 
 
 }

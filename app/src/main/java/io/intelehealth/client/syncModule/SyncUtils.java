@@ -5,7 +5,7 @@ import android.os.Handler;
 
 import io.intelehealth.client.app.IntelehealthApplication;
 import io.intelehealth.client.database.dao.ImagesPushDAO;
-import io.intelehealth.client.database.dao.PullDataDAO;
+import io.intelehealth.client.database.dao.SyncDAO;
 import io.intelehealth.client.services.UpdateDownloadPrescriptionService;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.NotificationUtils;
@@ -16,11 +16,11 @@ public class SyncUtils {
     private static final String TAG = SyncUtils.class.getSimpleName();
 
     public void syncBackground() {
-        PullDataDAO pullDataDAO = new PullDataDAO();
+        SyncDAO syncDAO = new SyncDAO();
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
 
-        pullDataDAO.pushDataApi();
-        pullDataDAO.pullData(IntelehealthApplication.getAppContext());
+        syncDAO.pushDataApi();
+        syncDAO.pullData(IntelehealthApplication.getAppContext());
 
         imagesPushDAO.patientProfileImagesPush();
         imagesPushDAO.obsImagesPush();
@@ -36,10 +36,10 @@ public class SyncUtils {
 
     public boolean syncForeground() {
         boolean isSynced = false;
-        PullDataDAO pullDataDAO = new PullDataDAO();
+        SyncDAO syncDAO = new SyncDAO();
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
         Logger.logD(TAG, "Push Started");
-        isSynced = pullDataDAO.pushDataApi();
+        isSynced = syncDAO.pushDataApi();
         Logger.logD(TAG, "Push ended");
 
 
@@ -49,22 +49,16 @@ public class SyncUtils {
             @Override
             public void run() {
                 Logger.logD(TAG, "Pull Started");
-                pullDataDAO.pullData(IntelehealthApplication.getAppContext());
+                syncDAO.pullData(IntelehealthApplication.getAppContext());
                 Logger.logD(TAG, "Pull ended");
             }
         }, 3000);
 
-        Logger.logD(TAG, "patient profile image push Started");
         imagesPushDAO.patientProfileImagesPush();
-        Logger.logD(TAG, "patient profile image push ended");
 
-        Logger.logD(TAG, "obs image started");
         imagesPushDAO.obsImagesPush();
-        Logger.logD(TAG, "obs image ended");
 
-        Logger.logD(TAG, "obs delete image started");
         imagesPushDAO.deleteObsImage();
-        Logger.logD(TAG, "obs delete image ended");
 
         Intent intent = new Intent(IntelehealthApplication.getAppContext(), UpdateDownloadPrescriptionService.class);
         IntelehealthApplication.getAppContext().startService(intent);

@@ -894,7 +894,6 @@ public class VitalsActivity extends AppCompatActivity {
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
             intent.putExtra("tag", intentTag);
-            //   intent.putStringArrayListExtra("exams", physicalExams);
             startActivity(intent);
         }
     }

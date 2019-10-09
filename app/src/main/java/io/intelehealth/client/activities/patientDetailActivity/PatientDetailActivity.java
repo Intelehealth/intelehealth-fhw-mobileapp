@@ -459,8 +459,6 @@ public class PatientDetailActivity extends AppCompatActivity {
             if (visitIDCursor != null) {
                 visitIDCursor.close();
             }
-//            VisitUuidModel visitUuidModel;
-//            List<VisitUuidModel> visitUuidModelList = new ArrayList<>();
             for (String visituuid : visitUuidList) {
                 Logger.logD(TAG, visituuid);
                 EncounterDAO encounterDAO = new EncounterDAO();
@@ -476,8 +474,6 @@ public class PatientDetailActivity extends AppCompatActivity {
                         if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
                             encounterAdultIntials = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
                         }
-//                        visitUuidModel = new VisitUuidModel(encounterVitals, encounterAdultIntials);
-//                        visitUuidModelList.add(visitUuidModel);
                     } while (encounterCursor.moveToNext());
                 }
                 encounterCursor.close();
@@ -493,7 +489,6 @@ public class PatientDetailActivity extends AppCompatActivity {
     }
 
     public void profilePicDownloaded() {
-//        String url = "http://demo.intelehealth.io/openmrs/ws/rest/v1/personimage/" + patientUuid;
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.patientProfileImageUrl(patientUuid);
         Logger.logD(TAG, "profileimage url" + url);
@@ -556,9 +551,6 @@ public class PatientDetailActivity extends AppCompatActivity {
      * @return void
      */
     private void createOldVisit(final String datetime, String visit_id, String end_datetime, String visitValue, String encounterVitalslocal, String encounterAdultIntialslocal) throws ParseException {
-        // final LayoutInflater inflater = PatientDetailActivity.this.getLayoutInflater();
-        //  View convertView = inflater.inflate(R.layout.list_item_previous_visit, null);
-        //  TextView textView = (TextView) convertView.findViewById(R.id.textView_visit_info);
 
         final Boolean past_visit;
         final TextView textView = new TextView(this);
@@ -636,30 +628,6 @@ public class PatientDetailActivity extends AppCompatActivity {
         textView.setLayoutParams(llp);
         textView.setTag(visit_id);
 
-//        previousVisitsList.addView(textView);
-       /* textView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int action = event.getAction();
-
-                switch (action) {
-                    case MotionEvent.ACTION_DOWN:
-                        // Disallow ScrollView to intercept touch events.
-                        Toast.makeText(PatientDetailActivity.this,"Touch Down",Toast.LENGTH_SHORT).show();
-                        v.getParent().getParent().getParent()
-                                .requestDisallowInterceptTouchEvent(true);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        // Allow ScrollView to intercept touch events.
-                        Toast.makeText(PatientDetailActivity.this,"Touch Up",Toast.LENGTH_SHORT).show();
-                        v.getParent().getParent()
-                                .requestDisallowInterceptTouchEvent(false);
-
-                        break;
-                }
-                return true;
-            }
-        });*/
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

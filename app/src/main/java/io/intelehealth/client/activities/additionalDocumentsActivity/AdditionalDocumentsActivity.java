@@ -38,11 +38,6 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
     private List<DocumentObject> rowListItem;
     private AdditionalDocumentAdapter recyclerViewAdapter;
 
-    private final String imgPrefix = "AD";
-
-//    final private String imageDir = "Additional Documents";
-//    private String baseDir;
-//    private String filePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,17 +54,12 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-
-//        baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
-
-//            filePath = baseDir + File.separator + "Patient Images" + File.separator + patientUuid + File.separator +
-//                    visitUuid + File.separator + imageDir;
 
             ImagesDAO imagesDAO = new ImagesDAO();
             ArrayList<String> fileuuidList = new ArrayList<String>();
@@ -85,11 +75,6 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             } catch (DAOException e) {
                 e.printStackTrace();
             }
-
-//            File dir = new File(AppConstants.IMAGE_PATH);
-//            if (!dir.exists())
-//                dir.mkdirs();
-//            File[] fileList = dir.listFiles();
             rowListItem = new ArrayList<>();
 
             for (File file : fileList)
@@ -129,13 +114,6 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             }
         }
     }
-    // File base_dir = new File(filePath);
-    //File files[] = base_dir.listFiles();
-    //for (File file : files)
-
-    // }
-
-
     private void updateImageDatabase(String imageuuid) {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
@@ -143,24 +121,6 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
         } catch (DAOException e) {
             Crashlytics.getInstance().core.logException(e);
         }
-//
-//        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-//        ContentValues contentValues=new ContentValues();
-//        try {
-//            contentValues.put("uuid", UUID.randomUUID().toString());
-//            contentValues.put("patinetuuid", patientUuid);
-//            contentValues.put("visituuid", visitUuid);
-//            contentValues.put("image_path", imagePath);
-//            contentValues.put("image_type", "AD");
-//            localdb.insertWithOnConflict("tbl_image_records", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
-////        localdb.execSQL("INSERT INTO image_records (uuid,patientUuid,visituuid,image_path,image_type) values("
-////                + "'" + UUID.randomUUID().toString() + "'" + ","
-////                + "'" + patientUuid + "'" + ","
-////                + visitUuid + ","
-////                + "'" + imagePath + "','"
-////                + "AD" +
-////                ")");
-//        }
     }
 
     @Override

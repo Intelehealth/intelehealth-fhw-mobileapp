@@ -147,77 +147,14 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-//        manualSyncButton.setPaintFlags(manualSyncButton.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         lastSyncTextView.setText("Last Synced:- " + sessionManager.getLastPulledDateTime());
         manualSyncButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 syncUtils.syncForeground();
-//                pullDataDAO.pushDataApi();
-//                imagesPushDAO.patientProfileImagesPush();
-//                imagesPushDAO.obsImagesPush();
-//                pullDataDAO.pullData(HomeActivity.this);
             }
         });
-//        final RecyclerView recyclerView = findViewById(R.id.recyclerview_home);
-//        recyclerView.setHasFixedSize(true);
-//
-//        GridLayoutManager gridLayoutManager = new GridLayoutManager(HomeActivity.this, 1);
-//        recyclerView.setLayoutManager(gridLayoutManager);
-//
-//        recyclerView.setAdapter(new HomeAdapter());
-
-//        String date = sessionManager.getDate();
-//        String time = sessionManager.getTime();
-//        final Calendar startDate = Calendar.getInstance();
-//        startDate.set(Calendar.HOUR, 10);
-//        startDate.set(Calendar.MINUTE, 00);
-//        startDate.set(Calendar.AM_PM, Calendar.PM);
-//
-//
-//        final Calendar endDate = Calendar.getInstance();
-//        endDate.set(Calendar.HOUR, 10);
-//        endDate.set(Calendar.MINUTE, 15);
-//        endDate.set(Calendar.AM_PM, Calendar.PM);
-//        if (getIntent().hasExtra("setup") && getIntent().getBooleanExtra("setup", false)) {
-//
-//            Log.d("newfilepath", dbfilepath);
-//            final File db_file = new File(dbfilepath);
-
-//            if (db_file.exists()) {
-//                new AlertDialog.Builder(this)
-//                        .setIcon(R.drawable.ic_file_download_black_48px)
-//                        .setTitle(R.string.local_restore_alert_title)
-//                        .setMessage(R.string.local_restore_alert_message)
-//                        .setCancelable(false)
-//                        .setPositiveButton(R.string.generic_yes,
-//                                new DialogInterface.OnClickListener() {
-//                                    public void onClick(DialogInterface dialog, int whichButton) {
-//                                        //Restore from local backup
-//                                        manageBackup(false, false); // to restore app data if db is empty
-//                                    }
-//                                }
-//                        )
-//                        .setNegativeButton(R.string.generic_no,
-//                                new DialogInterface.OnClickListener() {
-//                                    public void onClick(DialogInterface dialog, int whichButton) {
-//                                        //Do Nothing!
-//                                        // db_file.delete();
-//                                    }
-//                                }
-//                        )
-//                        .create().show();
-//            }
-//        }
-//        if (sessionManager.isFirstTimeSyncExcuted()) {
-
-//        AppConstants.notificationUtils.showNotifications("syncBackground","syncBackground Compledted",this);
-//        pullDataDAO.pushDataApi();
-//            sessionManager.setFirstTimeSyncExecute(false);
-//        }
-
-
         WorkManager.getInstance().enqueueUniquePeriodicWork(UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
         if (sessionManager.isFirstTimeLaunched()) {
             TempDialog = new ProgressDialog(HomeActivity.this);
@@ -237,10 +174,12 @@ public class HomeActivity extends AppCompatActivity {
                     TempDialog.dismiss();
                     //Your Code ...
                     sessionManager.setFirstTimeLaunched(false);
+                    sessionManager.setMigration(true);
                 }
             }.start();
 
         }
+        sessionManager.setMigration(true);
 
         if (sessionManager.isReturningUser()) {
             syncUtils.syncForeground();
@@ -405,31 +344,6 @@ public class HomeActivity extends AppCompatActivity {
         sessionManager.setReturningUser(false);
     }
 
-//    public void manageBackup(boolean isBackup, boolean isForced) {
-//        BackupCloud b = new BackupCloud(this);
-//        if (isBackup)
-//            b.startCloudBackup(null, false);
-//        if (!isBackup) {
-//            if (isForced) b.cloudRestoreForced();
-//            if (!isForced) b.startCloudRestore();
-//        }
-//    }
-
-//    private void parseLogOut() {
-//        if (NetworkConnection.isOnline(this)) {
-//            ParseQuery<ParseObject> getLogin = ParseQuery.getQuery("Login");
-//            getLogin.whereEqualTo("userId", sessionManager.getCreatorID());
-//            try {
-//                List<ParseObject> loginList = getLogin.find();
-//                if (loginList != null && !loginList.isEmpty()) {
-//                    for (ParseObject login : loginList)
-//                        login.delete();
-//                }
-//            } catch (ParseException e1) {
-//                Log.e(TAG, "parseLogOut: ", e1);
-//            }
-//        }
-//    }
 
     @Override
     protected void onResume() {

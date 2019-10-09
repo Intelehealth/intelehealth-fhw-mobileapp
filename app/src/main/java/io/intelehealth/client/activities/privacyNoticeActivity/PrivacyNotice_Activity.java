@@ -132,8 +132,6 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
         }
         catch (JSONException e) {
             Crashlytics.getInstance().core.logException(e);
-//            Issue #627
-//            added the catch exception to check the config and throwing back to setup activity
             Toast.makeText(getApplicationContext(), "JsonException" + e, Toast.LENGTH_LONG).show();
         }
 

@@ -23,8 +23,6 @@ import io.intelehealth.client.utilities.exception.DAOException;
 public class ObsDAO {
 
 
-    //    int updatecount = 0;
-//    long createdRecordsCount = 0;
     private SQLiteDatabase db = null;
     SessionManager sessionManager = null;
     String TAG = ObsDAO.class.getSimpleName();
@@ -38,17 +36,8 @@ public class ObsDAO {
             Logger.logD("insert", " insert obs");
             for (ObsDTO obs : obsDTOS) {
                 if (sessionManager.isFirstTimeSyncExcuted() && obs.getVoided() == 1)
-                    continue;//performance reason
-                /*Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_obs where uuid=  ?", new String[]{obs.getUuid()});
-                if (cursor.getCount() != 0) {
-                    while (cursor.moveToNext()) {
-//                        Logger.logD("update", "update has to happen");
-                        updateObs(obs);
-                    }
-                } else {*/
+                    continue;
                 createObs(obs);
-                //}
-                //AppConstants.sqliteDbCloseHelper.cursorClose(cursor);
             }
             db.setTransactionSuccessful();
             Logger.logD("insert obs finished", " insert obs finished");
@@ -69,12 +58,6 @@ public class ObsDAO {
         long createdRecordsCount = 0;
         ContentValues values = new ContentValues();
         try {
-
-//           for (ObsDTO obs : obsDTOS) {
-//                Logger.logD("insert", "insert has to happen");
-
-            //     db.beginTransaction();
-
             values.put("uuid", obsDTOS.getUuid());
             values.put("encounteruuid", obsDTOS.getEncounteruuid());
             values.put("creator", obsDTOS.getCreator());
@@ -84,53 +67,16 @@ public class ObsDAO {
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("voided", obsDTOS.getVoided());
             values.put("sync", "TRUE");
-//               createdRecordsCount = db.insert("temp_obs", null, values);
-//                Logger.logD("pulldata", "datadumper" + values);
             createdRecordsCount = db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
-//            }
-            //db.setTransactionSuccessful();
-//            Logger.logD("created records", "created records count" + createdRecordsCount);
         } catch (SQLException e) {
             isCreated = false;
             throw new DAOException(e.getMessage(), e);
         } finally {
-            //db.endTransaction();
         }
 
         return isCreated;
 
     }
-
-//    private boolean updateObs(ObsDTO obsDTOS) throws DAOException {
-//        boolean isUpdated = true;
-//        db.beginTransaction();
-//        ContentValues values = new ContentValues();
-//        String selection = "uuid = ?";
-//        try {
-////            for (ObsDTO obs : obsDTOS) {
-////                Logger.logD("update", "update has to happen");
-//            values.put("encounteruuid", obsDTOS.getEncounteruuid());
-//            values.put("creator", obsDTOS.getCreator());
-//            values.put("conceptuuid", obsDTOS.getConceptuuid());
-//            values.put("value", obsDTOS.getValue());
-//            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-//            values.put("voided", obsDTOS.getVoided());
-//            values.put("synced", "false");
-////                Logger.logD("pulldata", "datadumper" + values);
-//            updatecount = db.updateWithOnConflict("tbl_obs", values, selection, new String[]{obsDTOS.getUuid()}, SQLiteDatabase.CONFLICT_REPLACE);
-////            }
-//            db.setTransactionSuccessful();
-////            Logger.logD("updated", "updatedrecords count" + updatecount);
-//        } catch (SQLException e) {
-//            isUpdated = false;
-//            throw new DAOException(e.getMessage(), e);
-//        } finally {
-//            db.endTransaction();
-//        }
-//
-//        return isUpdated;
-//
-//    }
 
     public boolean insertObs(ObsDTO obsDTO) throws DAOException {
         boolean isUpdated = true;
@@ -161,40 +107,6 @@ public class ObsDAO {
         }
 
         return isUpdated;
-
-    }
-
-    public boolean insertEmergencyObs(ObsDTO obsDTO) throws DAOException {
-        boolean isCreated = true;
-        long insertedCount = 0;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
-        ContentValues values = new ContentValues();
-
-        try {
-            values.put("uuid", obsDTO.getUuid());
-            values.put("encounteruuid", obsDTO.getEncounteruuid());
-            values.put("creator", obsDTO.getCreator());
-            values.put("conceptuuid", obsDTO.getConceptuuid());
-            values.put("value", obsDTO.getValue());
-            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-            values.put("voided", "0");
-            values.put("sync", "FALSE");
-            insertedCount = db.insert("tbl_obs", null, values);
-            if (insertedCount != 0)
-                isCreated = true;
-            db.setTransactionSuccessful();
-            Logger.logD("inserted Emergency ", "created count" + insertedCount);
-        } catch (SQLException e) {
-            isCreated = false;
-            Crashlytics.getInstance().core.logException(e);
-            throw new DAOException(e);
-        } finally {
-            db.endTransaction();
-
-        }
-
-        return isCreated;
 
     }
 
@@ -329,7 +241,6 @@ public class ObsDAO {
 
         return obsuuid;
     }
-
 
 
 }

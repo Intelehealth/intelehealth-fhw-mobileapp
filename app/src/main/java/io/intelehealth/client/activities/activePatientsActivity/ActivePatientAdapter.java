@@ -40,7 +40,6 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View row = inflater.inflate(R.layout.list_item_active_patient, parent, false);
         ActivePatientViewHolder viewHolder = new ActivePatientViewHolder(row);
-//        ListItemActivePatientBinding listItemActivePatientBinding= DataBindingUtil.inflate(layoutInflater,R.layout.list_item_active_patient,parent,false);
         return viewHolder;
     }
 
@@ -63,40 +62,15 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                         ": %s (" + context.getString(R.string.identification_screen_prompt_age) + " %d)", activePatientModel.getOpenmrs_id(), activePatientModel.getPhone_number(),
                 dob, age);
 
-//        holder.listItemActivePatientBinding.listItemHeadTextView.setText(header);
-//        holder.listItemActivePatientBinding.listItemBodyTextView.setText(body);
         holder.getHeadTextView().setText(header);
         holder.getBodyTextView().setText(body);
         if (activePatientModel.getEnddate() == null) {
-        /*    Drawable drawable = DrawableHelper
-                    .withContext(context)
-                    //TODO: Dummy color. Change color before release.
-                    .withColor(R.color.green)
-                    .withDrawable(R.drawable.circle)
-                    .tint()
-                    .get();
-            holder.getIndicatorImageView().setImageDrawable(drawable);*/
-
             holder.getIndicatorTextView().setText("Active");
             holder.getIndicatorTextView().setBackgroundColor(Color.GREEN);
-//            holder.listItemActivePatientBinding.listItemIndicatorTextView.setText("Active");
-//            holder.listItemActivePatientBinding.listItemIndicatorTextView.setBackgroundColor(Color.GREEN);
         } else {
-        /*    Drawable drawable = DrawableHelper
-                    .withContext(context)
-                    //TODO: Dummy color. Change color before release.
-                    .withColor(R.color.red)
-                    .withDrawable(R.drawable.circle)
-                    .tint()
-                    .get();
-            holder.getIndicatorImageView().setImageDrawable(drawable);
-            */
             holder.getIndicatorTextView().setText("Closed");
             holder.getIndicatorTextView().setBackgroundColor(Color.RED);
-//            holder.listItemActivePatientBinding.listItemIndicatorTextView.setText("Closed");
-//            holder.listItemActivePatientBinding.listItemIndicatorTextView.setBackgroundColor(Color.RED);
         }
-//
         holder.getRootView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,18 +82,6 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                 context.startActivity(intent);
             }
         });
-//        holder.listItemActivePatientBinding.getRoot().setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String patientStatus = "returning";
-//                Intent intent = new Intent(context, PatientDetailActivity.class);
-//                intent.putExtra("patientUuid", activePatientModel.getPatientuuid());
-//                intent.putExtra("status", patientStatus);
-//                intent.putExtra("tag", "");
-//                context.startActivity(intent);
-//            }
-//        });
-
     }
 
 
@@ -129,7 +91,6 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
     }
 
     public class ActivePatientViewHolder extends RecyclerView.ViewHolder {
-        //ListItemActivePatientBinding listItemActivePatientBinding;
         private TextView headTextView;
         private TextView bodyTextView;
         private TextView indicatorTextView;
@@ -142,8 +103,6 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
             indicatorTextView = itemView.findViewById(R.id.list_item_indicator_text_view);
             rootView = itemView;
         }
-
-        //
         public TextView getHeadTextView() {
             return headTextView;
         }

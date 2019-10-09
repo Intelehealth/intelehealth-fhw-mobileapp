@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.cameraview.CameraView;
 
 import java.io.File;
@@ -140,7 +141,7 @@ public class CameraActivity extends AppCompatActivity {
                             try {
                                 os.close();
                             } catch (IOException e) {
-                                // Ignore
+                                Crashlytics.getInstance().core.logException(e);
                             }
                         }
                     }
@@ -284,20 +285,6 @@ public class CameraActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
-     /*   new AlertDialog.Builder(this)
-                .setMessage("Are you sure you want to EXIT ?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-
-                })
-                .setNegativeButton("No", null)
-                .show();  //prajwal_changes
-                */
         //do nothing
         finish();
 
