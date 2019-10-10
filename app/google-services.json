@@ -1,7 +1,7 @@
 {
   "project_info": {
     "project_number": "181219975633",
-    "firebase_url": "https://mobile-crashlytics.firebaseio.com",
+    "firebase_url": "http://mobile-crashlytics.firebaseio.com",
     "project_id": "mobile-crashlytics",
     "storage_bucket": "mobile-crashlytics.appspot.com"
   },

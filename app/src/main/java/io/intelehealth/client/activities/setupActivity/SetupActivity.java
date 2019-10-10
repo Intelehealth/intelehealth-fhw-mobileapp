@@ -184,7 +184,7 @@ public class SetupActivity extends AppCompatActivity {
                     // user didn't typed for 1.5 seconds, do whatever you want
                     if (!mUrlField.getText().toString().trim().isEmpty() && mUrlField.getText().toString().length() >= 12 ) {
                         if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
-                            String BASE_URL = "https://" + mUrlField.getText().toString() + "/openmrs/ws/rest/v1/";
+                            String BASE_URL = "http://" + mUrlField.getText().toString() + "/openmrs/ws/rest/v1/";
                             if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched)
                                 getLocationFromServer(BASE_URL);
                             else
@@ -513,7 +513,7 @@ public class SetupActivity extends AppCompatActivity {
                                             sessionManager.setLocationDescription(location.getDescription());
                                             sessionManager.setServerUrl(CLEAN_URL);
                                             sessionManager.setServerUrlRest(BASE_URL);
-                                            sessionManager.setServerUrlBase("https://" + CLEAN_URL + "/openmrs");
+                                            sessionManager.setServerUrlBase("http://" + CLEAN_URL + "/openmrs");
                                             sessionManager.setBaseUrl(BASE_URL);
                                             sessionManager.setSetupComplete(true);
 
@@ -522,7 +522,7 @@ public class SetupActivity extends AppCompatActivity {
 
                                             Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
                                                     .applicationId(AppConstants.IMAGE_APP_ID)
-                                                    .server("https://" + CLEAN_URL + ":4040/parse/")
+                                                    .server("http://" + CLEAN_URL + ":4040/parse/")
                                                     .build()
                                             );
                                             Log.i(TAG, "onPostExecute: Parse init");

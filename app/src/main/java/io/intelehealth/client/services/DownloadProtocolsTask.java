@@ -246,7 +246,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
         try {
             publishProgress("progress", "Downloading Mindmap List");
             //Download List of Protocols Available
-            String servStr = "https://" + sessionManager.getMindMapServerUrl() + ":4040/parse/functions/downloadMindMap";
+            String servStr = "http://" + sessionManager.getMindMapServerUrl() + ":4040/parse/functions/downloadMindMap";
             URL url = new URL(servStr);
             Log.i("GetMMList", servStr);
             byte[] mmListRequestBytes = mmListRequest.getBytes(StandardCharsets.UTF_8);
@@ -322,7 +322,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
         try {
             publishProgress("progress", "Downloading Mindmap " + mindmap.name);
             //Download List of Protocols Available
-            String servStr = "https://" + sessionManager.getMindMapServerUrl() + ":4040/parse/functions/downloadMindMap";
+            String servStr = "http://" + sessionManager.getMindMapServerUrl() + ":4040/parse/functions/downloadMindMap";
             URL url = new URL(servStr);
             Log.i("GetMM", servStr);
             byte[] mmListRequestBytes = mmListRequest.getBytes(StandardCharsets.UTF_8);
