@@ -63,6 +63,15 @@
         <item>Graduation &amp; Higher</item>
     </string-array>
 
+    <string-array name="education_ar">
+    <item>Select Education</item>
+    <item>Illiterate</item>
+    <item>Primary</item>
+    <item>Secondary</item>
+    <item>Higher Secondary</item>
+    <item>Graduation &amp; Higher</item>
+    </string-array>
+
     <string-array name="caste">
         <item>Select</item>
         <item>General</item>
@@ -78,6 +87,11 @@
         <item>BPL</item>
     </string-array>
 
+    <string-array name="economic_ar">
+        <item>Select</item>
+        <item>APL</item>
+        <item>BPL</item>
+    </string-array>
 
     <string-array name="economic_or">
         <item>ଚୟନ</item>
