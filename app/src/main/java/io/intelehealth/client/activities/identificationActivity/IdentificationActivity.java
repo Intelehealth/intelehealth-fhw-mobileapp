@@ -139,8 +139,7 @@ public class IdentificationActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
+        
         i_privacy = getIntent();
         privacy_value = i_privacy.getStringExtra("privacy"); //privacy_accept value retrieved from previous act.
 

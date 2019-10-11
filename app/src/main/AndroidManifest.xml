@@ -34,6 +34,11 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="firebase_crash_collection_enabled"
+            android:value="${analytics_deactivated}"/>
+
         <activity
             android:name=".activities.privacyNoticeActivity.PrivacyNotice_Activity"
             android:label="@string/title_activity_privacy_notice"
