@@ -555,8 +555,6 @@
                             android:drawablePadding="10dp"
                             android:focusable="false"
                             android:focusableInTouchMode="false"
-                            android:layout_gravity="start"
-                            android:textAlignment="viewStart"
                             android:freezesText="true"
                             android:imeOptions="actionUnspecified"
                             android:inputType="textCapWords"
@@ -566,7 +564,8 @@
                         <Spinner
                             android:id="@+id/spinner_caste"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            />
                     </LinearLayout>
 
                 </android.support.design.widget.TextInputLayout>
@@ -594,8 +593,6 @@
                             android:focusable="false"
                             android:focusableInTouchMode="false"
                             android:freezesText="true"
-                            android:layout_gravity="start"
-                            android:textAlignment="viewStart"
                             android:imeOptions="actionUnspecified"
                             android:inputType="textCapWords"
                             android:maxLines="1"
@@ -632,9 +629,6 @@
                             android:focusableInTouchMode="false"
                             android:freezesText="true"
                             android:imeOptions="actionUnspecified"
-                            android:layout_gravity="start"
-                            android:textAlignment="viewStart"
-
                             android:inputType="textCapWords"
                             android:maxLines="1"
                             android:text="@string/identification_screen_prompt_education" />
