@@ -137,17 +137,18 @@
                                     android:textSize="@dimen/card_content_text_size"
                                     android:textStyle="bold" />
 
+                                <android.support.v4.widget.Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="wrap_content" />
 
                                 <TextView
                                     android:id="@+id/textView_ID"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_weight="1"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:textSize="@dimen/card_content_text_size" />
 
-                                <android.support.v4.widget.Space
-                                    android:layout_width="10dp"
-                                    android:layout_height="wrap_content" />
 
 
                             </TableRow>
@@ -398,6 +399,7 @@
                                     android:id="@+id/textView_economic_status"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_weight="1"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:textSize="@dimen/card_content_text_size" />
 
@@ -426,6 +428,7 @@
                                     android:id="@+id/textView_education_status"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_weight="1"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:textSize="@dimen/card_content_text_size" />
 
@@ -454,6 +457,7 @@
                                     android:id="@+id/textView_caste"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_weight="1"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:textSize="@dimen/card_content_text_size" />
 
