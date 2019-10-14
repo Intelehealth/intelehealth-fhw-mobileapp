@@ -37,7 +37,7 @@
 
         <meta-data
             android:name="firebase_crash_collection_enabled"
-            android:value="${analytics_deactivated}"/>
+            android:value="false"/>
 
         <activity
             android:name=".activities.privacyNoticeActivity.PrivacyNotice_Activity"

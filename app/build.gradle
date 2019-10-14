@@ -20,12 +20,10 @@ android {
     }
     buildTypes {
 
-        debug {
-            manifestPlaceholders = [analytics_deactivated: "false"]
-        }
+
 
         release {
-            manifestPlaceholders = [analytics_deactivated: "true"]
+
             lintOptions {
                 disable 'MissingTranslation'
             }
