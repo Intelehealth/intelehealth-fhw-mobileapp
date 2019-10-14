@@ -16,6 +16,7 @@ public class DateAndTimeUtils {
 
 
     public String currentDateTime() {
+        Locale.setDefault(Locale.ENGLISH);
         DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
 // you can get seconds by adding  "...:ss" to it
         Date todayDate = new Date();
@@ -51,7 +52,7 @@ public class DateAndTimeUtils {
     public static String getFormatedDateOfBirth(String oldformatteddate){
 
         DateFormat originalFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
-        DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         Date date = null;
         try {
             date = originalFormat.parse(oldformatteddate);
@@ -91,7 +92,7 @@ public class DateAndTimeUtils {
         String formattedDate = null;
         try {
             DateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
-            DateFormat targetFormat = new SimpleDateFormat("dd-MMMM-yyyy");
+            DateFormat targetFormat = new SimpleDateFormat("dd-MMMM-yyyy", Locale.ENGLISH);
             Date date = originalFormat.parse(dateString);
             formattedDate = targetFormat.format(date);
         } catch (Exception ex) {
@@ -104,7 +105,7 @@ public class DateAndTimeUtils {
         String formattedDate = null;
         try {
             DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-            DateFormat targetFormat = new SimpleDateFormat("dd-MMM-yyyy");
+            DateFormat targetFormat = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
             Date date = originalFormat.parse(dateString);
             formattedDate = targetFormat.format(date);
         } catch (Exception ex) {
@@ -135,8 +136,8 @@ public class DateAndTimeUtils {
         SimpleDateFormat sdf1;
 
         try {
-            sdf = new SimpleDateFormat(sourceFormat);
-            sdf1 = new SimpleDateFormat(anotherFormat);
+            sdf = new SimpleDateFormat(sourceFormat, Locale.ENGLISH);
+            sdf1 = new SimpleDateFormat(anotherFormat, Locale.ENGLISH);
             result = sdf1.format(sdf.parse(date));
         } catch (Exception e) {
             Crashlytics.getInstance().core.logException(e);
