@@ -6,6 +6,17 @@
     android:orientation="horizontal">
 
 
+
+
+    <ImageView
+        android:id="@+id/expandable_list_item_image"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="TODO"
+        android:paddingStart="?android:attr/expandableListPreferredChildPaddingLeft"
+        android:paddingEnd="10dp" />
+
     <TextView
         android:id="@+id/expandable_list_item"
         android:foreground="?android:attr/selectableItemBackground"
@@ -18,15 +29,5 @@
         android:paddingBottom="@dimen/padding_complaint_select"
         android:paddingTop="@dimen/padding_complaint_select"
         android:textSize="@dimen/text_size_complaint" />
-
-    <ImageView
-        android:id="@+id/expandable_list_item_image"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:contentDescription="TODO"
-        android:paddingStart="?android:attr/expandableListPreferredChildPaddingLeft"
-        android:paddingEnd="10dp" />
-
 
 </LinearLayout>
