@@ -26,7 +26,7 @@ public class DateAndTimeUtils {
         if (s == null) return 0;
 
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
+        DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
         Date date = null;
         try {
             date = originalFormat.parse(s);
