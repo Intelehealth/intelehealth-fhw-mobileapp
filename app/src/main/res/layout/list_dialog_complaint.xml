@@ -11,7 +11,7 @@
         android:fontFamily="sans-serif"
         android:textStyle="normal"
         android:clickable="true"
-        android:paddingLeft="20dp"
+        android:paddingStart="20dp"
         android:id="@+id/complaint_dialog_list_view"
         />
 </LinearLayout>
