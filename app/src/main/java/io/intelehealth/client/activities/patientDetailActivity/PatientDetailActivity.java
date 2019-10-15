@@ -116,6 +116,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setTitle(R.string.title_activity_patient_detail);
         db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         sessionManager = new SessionManager(this);
         reMyreceive = new Myreceiver();
