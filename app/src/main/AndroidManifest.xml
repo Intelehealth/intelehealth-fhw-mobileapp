@@ -36,8 +36,8 @@
         android:theme="@style/AppTheme">
 
         <meta-data
-            android:name="firebase_crash_collection_enabled"
-            android:value="false"/>
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="${crashlyticsEnabled}"/>
 
         <activity
             android:name=".activities.privacyNoticeActivity.PrivacyNotice_Activity"

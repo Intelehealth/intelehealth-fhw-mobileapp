@@ -21,8 +21,13 @@ android {
     buildTypes {
 
 
+        debug {
+            manifestPlaceholders = [crashlyticsEnabled: false]
+        }
 
         release {
+
+            manifestPlaceholders = [crashlyticsEnabled: true]
 
             lintOptions {
                 disable 'MissingTranslation'
