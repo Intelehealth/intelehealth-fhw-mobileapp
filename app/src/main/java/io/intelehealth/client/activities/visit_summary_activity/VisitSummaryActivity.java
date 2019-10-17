@@ -36,6 +36,7 @@ import android.support.v7.widget.Toolbar;
 import android.telephony.SmsManager;
 import android.text.Html;
 import android.text.InputType;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -211,6 +212,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     Boolean isPastVisit = false;
     Boolean isReceiverRegistered = false;
+
+    String medicalAdvice_string="";
+    String medicalAdvice_HyperLink="";
+
 
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
 
@@ -1361,7 +1366,33 @@ sessionManager=new SessionManager(getApplicationContext());
                 if (medicalAdviceCard.getVisibility() != View.VISIBLE) {
                     medicalAdviceCard.setVisibility(View.VISIBLE);
                 }
-                medicalAdviceTextView.setText(adviceReturned);
+
+                Log.d("Hyperlink","hyper_global: " + medicalAdvice_string);
+
+                int j = adviceReturned.indexOf('<');
+                int i = adviceReturned.lastIndexOf('>');
+
+                if(i>=0 && j>=0)
+                {
+                     medicalAdvice_HyperLink = adviceReturned.substring(j,i+1);
+                }
+                else
+                {
+                     medicalAdvice_HyperLink = "";
+                }
+
+                Log.d("Hyperlink","Hyperlink: " + medicalAdvice_HyperLink);
+
+                 medicalAdvice_string = adviceReturned.replaceAll(medicalAdvice_HyperLink,"");
+                Log.d("Hyperlink","hyper_string: " + medicalAdvice_string);
+                /*
+                * variable a contains the hyperlink sent from webside.
+                * variable b contains the string data (medical advice) of patient.
+                * */
+
+                medicalAdviceTextView.setText(Html.fromHtml(medicalAdvice_HyperLink + medicalAdvice_string.replaceAll("\n","<br><br>")));
+                medicalAdviceTextView.setMovementMethod(LinkMovementMethod.getInstance());
+                Log.d("hyper_textview","hyper_textview: " + medicalAdviceTextView);
                 //checkForDoctor();
                 break;
             }
@@ -1588,7 +1619,8 @@ sessionManager=new SessionManager(getApplicationContext());
 
         String tests_web = stringToWeb(testsReturned);
 
-        String advice_web = stringToWeb(adviceReturned);
+        String advice_web = stringToWeb(medicalAdvice_string.trim());
+        Log.d("Hyperlink","hyper_print: " + advice_web);
 
         String diagnosis_web = stringToWeb(diagnosisReturned);
 
