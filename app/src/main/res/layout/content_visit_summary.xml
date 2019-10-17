@@ -12,28 +12,28 @@
 
     <!--Split the screen into two columns of cards-->
 
-    <LinearLayout xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
 
         android:id="@+id/summary_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/padding_visit_summary_screen"
-        android:layout_marginRight="@dimen/padding_visit_summary_screen"
+        android:layout_marginStart="@dimen/padding_visit_summary_screen"
+        android:layout_marginEnd="@dimen/padding_visit_summary_screen"
         android:animateLayoutChanges="true"
         android:orientation="vertical">
 
 
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_patient_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
             android:layout_marginBottom="@dimen/padding_card"
-            card_view:cardCornerRadius="@dimen/card_corner_radius"
-            card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="@dimen/padding_card">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -110,17 +110,17 @@
 
         <!-- Vitals Card contains a TableView-->
 
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_vitals"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
             android:layout_marginBottom="@dimen/padding_card"
-            card_view:cardCornerRadius="@dimen/card_corner_radius"
-            card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="@dimen/padding_card">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -323,17 +323,17 @@
         </android.support.v7.widget.CardView>
 
         <!--C/O Card contains text-->
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_complaint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
             android:layout_marginBottom="@dimen/padding_card"
-            card_view:cardCornerRadius="@dimen/card_corner_radius"
-            card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="@dimen/padding_card">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -351,7 +351,7 @@
                     android:id="@+id/imagebutton_edit_complaint"
                     android:layout_width="@dimen/edit_icon_width"
                     android:layout_height="@dimen/edit_icon_height"
-                    android:layout_alignRight="@id/textView_heading_complaint"
+                    android:layout_alignEnd="@id/textView_heading_complaint"
                     android:background="@null"
                     android:contentDescription="TODO"
                     android:padding="@dimen/padding_card_action"
@@ -368,17 +368,17 @@
         </android.support.v7.widget.CardView>
 
         <!--Physical Exam Card contains text-->
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        <android.support.v7.widget.CardView
             android:id="@+id/cardView_physexam"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
             android:layout_marginBottom="@dimen/padding_card"
-            card_view:cardCornerRadius="@dimen/card_corner_radius"
-            card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="@dimen/padding_card">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -396,7 +396,7 @@
                     android:id="@+id/imagebutton_edit_physexam"
                     android:layout_width="@dimen/edit_icon_width"
                     android:layout_height="@dimen/edit_icon_height"
-                    android:layout_alignRight="@id/textView_heading_physexam"
+                    android:layout_alignEnd="@id/textView_heading_physexam"
                     android:background="@null"
                     android:contentDescription="TODO"
                     android:padding="@dimen/padding_card_action"
@@ -406,8 +406,8 @@
                     android:id="@+id/imagebutton_download_physexam"
                     android:layout_width="@dimen/edit_icon_width"
                     android:layout_height="@dimen/edit_icon_height"
-                    android:layout_alignLeft="@id/imagebutton_edit_physexam"
-                    android:layout_marginLeft="-29dp"
+                    android:layout_alignStart="@id/imagebutton_edit_physexam"
+                    android:layout_marginStart="-29dp"
                     android:background="@null"
                     android:contentDescription="TODO"
                     android:padding="@dimen/padding_card_action"
@@ -426,22 +426,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView_content_physexam"
+                    android:layout_marginTop="-3dp"
                     android:padding="10dp" />
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
         <!--Patient History Card contains text-->
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_pathist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
             android:layout_marginBottom="@dimen/padding_card"
-            card_view:cardCornerRadius="@dimen/card_corner_radius"
-            card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="@dimen/padding_card">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -459,7 +460,7 @@
                     android:id="@+id/imagebutton_edit_pathist"
                     android:layout_width="@dimen/edit_icon_width"
                     android:layout_height="@dimen/edit_icon_height"
-                    android:layout_alignRight="@id/textView_heading_pathist"
+                    android:layout_alignEnd="@id/textView_heading_pathist"
                     android:background="@null"
                     android:contentDescription="TODO"
                     android:padding="@dimen/padding_card_action"
@@ -477,17 +478,17 @@
         </android.support.v7.widget.CardView>
 
         <!--Family History Card contains text-->
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_famhist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
             android:layout_marginBottom="@dimen/padding_card"
-            card_view:cardCornerRadius="@dimen/card_corner_radius"
-            card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="@dimen/padding_card">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -505,7 +506,7 @@
                     android:id="@+id/imagebutton_edit_famhist"
                     android:layout_width="@dimen/edit_icon_width"
                     android:layout_height="@dimen/edit_icon_height"
-                    android:layout_alignRight="@id/textView_heading_famhist"
+                    android:layout_alignEnd="@id/textView_heading_famhist"
                     android:background="@null"
                     android:contentDescription="TODO"
                     android:padding="@dimen/padding_card_action"
@@ -522,17 +523,17 @@
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/additional_document_images"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
             android:layout_marginBottom="@dimen/padding_card"
-            card_view:cardCornerRadius="@dimen/card_corner_radius"
-            card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="@dimen/padding_card">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -550,7 +551,7 @@
                     android:id="@+id/imagebutton_edit_additional_document"
                     android:layout_width="@dimen/edit_icon_width"
                     android:layout_height="@dimen/edit_icon_height"
-                    android:layout_alignRight="@id/textView_additional_document_images"
+                    android:layout_alignEnd="@id/textView_additional_document_images"
                     android:background="@null"
                     android:contentDescription="TODO"
                     android:padding="@dimen/padding_card_action"
@@ -560,8 +561,8 @@
                     android:id="@+id/imagebutton_download_additional_document"
                     android:layout_width="@dimen/edit_icon_width"
                     android:layout_height="@dimen/edit_icon_height"
-                    android:layout_alignLeft="@id/imagebutton_edit_additional_document"
-                    android:layout_marginLeft="-29dp"
+                    android:layout_alignStart="@id/imagebutton_edit_additional_document"
+                    android:layout_marginStart="-29dp"
                     android:background="@null"
                     android:contentDescription="TODO"
                     android:padding="@dimen/padding_card_action"
@@ -572,14 +573,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView_additional_document_images"
-                    android:padding="10dp"></android.support.v7.widget.RecyclerView>
+                    android:padding="10dp">
+                </android.support.v7.widget.RecyclerView>
             </RelativeLayout>
 
 
         </android.support.v7.widget.CardView>
 
         <!-- Diagnosis contains a TableView-->
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_diagnosis"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -587,10 +589,10 @@
             android:layout_marginTop="@dimen/padding_card"
             android:layout_marginBottom="@dimen/padding_card"
             android:visibility="gone"
-            card_view:cardCornerRadius="@dimen/card_corner_radius"
-            card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="@dimen/padding_card">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -631,7 +633,7 @@
         </android.support.v7.widget.CardView>
 
         <!-- Prescription contains a TableView-->
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_rx"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -639,10 +641,10 @@
             android:layout_marginTop="@dimen/padding_card"
             android:layout_marginBottom="@dimen/padding_card"
             android:visibility="gone"
-            card_view:cardCornerRadius="@dimen/card_corner_radius"
-            card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="@dimen/padding_card">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -683,7 +685,7 @@
         </android.support.v7.widget.CardView>
 
         <!-- Medical Advice contains a TableView-->
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_medical_advice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -691,10 +693,10 @@
             android:layout_marginTop="@dimen/padding_card"
             android:layout_marginBottom="@dimen/padding_card"
             android:visibility="gone"
-            card_view:cardCornerRadius="@dimen/card_corner_radius"
-            card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="@dimen/padding_card">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -735,7 +737,7 @@
         </android.support.v7.widget.CardView>
 
         <!-- Requested Tests contains a TableView-->
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_tests"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -743,10 +745,10 @@
             android:layout_marginTop="@dimen/padding_card"
             android:layout_marginBottom="@dimen/padding_card"
             android:visibility="gone"
-            card_view:cardCornerRadius="@dimen/card_corner_radius"
-            card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="@dimen/padding_card">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -787,7 +789,7 @@
         </android.support.v7.widget.CardView>
 
         <!-- Additional Comments contains a TableView-->
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_additional_comments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -795,10 +797,10 @@
             android:layout_marginTop="@dimen/padding_card"
             android:layout_marginBottom="@dimen/padding_card"
             android:visibility="gone"
-            card_view:cardCornerRadius="@dimen/card_corner_radius"
-            card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="@dimen/padding_card">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -838,7 +840,7 @@
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_follow_up_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -846,10 +848,10 @@
             android:layout_marginTop="@dimen/padding_card"
             android:layout_marginBottom="@dimen/padding_card"
             android:visibility="gone"
-            card_view:cardCornerRadius="@dimen/card_corner_radius"
-            card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="@dimen/padding_card">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -889,17 +891,17 @@
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/chw_and_doctor_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
             android:layout_marginBottom="@dimen/padding_card"
-            card_view:cardCornerRadius="@dimen/card_corner_radius"
-            card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="@dimen/padding_card">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -945,17 +947,17 @@
 
         </android.support.v7.widget.CardView>
 
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/flageddetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
             android:layout_marginBottom="@dimen/padding_card"
-            card_view:cardCornerRadius="@dimen/card_corner_radius"
-            card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="@dimen/padding_card">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -1069,8 +1071,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:background="@color/colorPrimary"
-            android:drawableLeft="@drawable/ic_cloud_upload"
-            android:paddingRight="45dp"
+            android:drawableStart="@drawable/ic_cloud_upload"
+            android:paddingEnd="45dp"
             android:text="@string/visit_summary_button_upload"
             android:textAlignment="center"
             android:textColor="@android:color/white"
@@ -1085,8 +1087,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:background="@color/colorPrimary"
-            android:drawableLeft="@drawable/ic_cloud_download"
-            android:paddingRight="40dp"
+            android:drawableStart="@drawable/ic_cloud_download"
+            android:paddingEnd="40dp"
             android:text="@string/visit_summary_button_download"
             android:textAlignment="center"
             android:textColor="@android:color/white"
