@@ -14,6 +14,7 @@ import android.util.Log;
 import com.crashlytics.android.Crashlytics;
 import com.parse.Parse;
 
+import io.fabric.sdk.android.Fabric;
 import io.intelehealth.client.database.InteleHealthDatabaseHelper;
 import io.intelehealth.client.utilities.SessionManager;
 import io.reactivex.plugins.RxJavaPlugins;
@@ -58,6 +59,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         mContext = getApplicationContext();
         sessionManager = new SessionManager(this);
+        Fabric.with(this, new Crashlytics());
         RxJavaPlugins.setErrorHandler(throwable -> {
             Crashlytics.getInstance().core.logException(throwable);
         });
