@@ -12,6 +12,7 @@ android {
         versionCode 30
         versionName "1.5.5-1"
         //Change this to true to enable multidex support for Kitkat
+
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
 
