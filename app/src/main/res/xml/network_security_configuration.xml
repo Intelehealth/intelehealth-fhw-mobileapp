@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">13.233.50.223</domain>
-        <domain includeSubdomains="true">demo.intelehealth.io</domain>
+        <domain includeSubdomains="true">intelehealth.io</domain>
     </domain-config>
 </network-security-config>
