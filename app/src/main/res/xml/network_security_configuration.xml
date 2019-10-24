@@ -3,7 +3,5 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">intelehealth.io</domain>
         <domain includeSubdomains="true">165.227.97.214</domain>
-        <domain includeSubdomains="true">13.233.50.223</domain>
-
     </domain-config>
 </network-security-config>
