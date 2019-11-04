@@ -30,7 +30,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
 
     public static final String CREATE_USER_CREDENTIALS = "CREATE TABLE IF NOT EXISTS tbl_user_credentials (" +
             "username TEXT," +
-            "password TEXT" +
+            "password TEXT UNIQUE" +
             ")";
 
 
