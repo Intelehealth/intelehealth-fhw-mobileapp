@@ -160,96 +160,33 @@ public class OfflineLogin {
 
     public void offline_login(String username, String password)
     {
-        //String[] cols = {"username","password"};
+        String[] cols = {username,password};
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM tbl_user_credentials",null);
+        Cursor cursor = db.query(
+                "tbl_user_credentials",
+                null,
+                "username=? AND password=?",
+                cols, null,null,null
+                );
 
         if(cursor.moveToFirst())
         {
-            do
-            {
-                user = cursor.getString(cursor.getColumnIndexOrThrow("username"));
-                pass = cursor.getString(cursor.getColumnIndexOrThrow("password"));
-                Log.d("OFF_USER","USER"+user+" "+pass);
-
-
-            }
-            while(cursor.moveToNext());
-
-        }
-        cursor.close();
-
-
-        if(user.equals(username) && pass.equals(password))
-        {
-            Intent intent = new Intent(mContext, HomeActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            setOfflineLoginStatus(true);
-            mContext.startActivity(intent);
-        }
-        else
-        {
-            Toast.makeText(mContext, "OFFLINE LOG UNSUCC", Toast.LENGTH_LONG).show();
-        }
-
-      /*  try {
             user = cursor.getString(cursor.getColumnIndexOrThrow("username"));
             pass = cursor.getString(cursor.getColumnIndexOrThrow("password"));
-            Log.d("OFF_USER","USER"+user+" "+pass);
+            Log.d("OFF_USER","DB_DATA"+user+" "+pass);
 
-            if(user.equals(username) && !user.isEmpty() && user.matches(username)
-                    && pass.equals(password) && !pass.isEmpty() && pass.matches(password) )
-            {
                 Intent intent = new Intent(mContext, HomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 setOfflineLoginStatus(true);
                 mContext.startActivity(intent);
-            }
-            else
-            {
-                Toast.makeText(mContext, "OFFLINE LOG UNSUCC", Toast.LENGTH_LONG).show();
-            }
-
-            cursor.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } */
-
-
-
-
-
-
-       /* if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    try {
-                        user = cursor.getString(cursor.getColumnIndexOrThrow("username"));
-                        pass = cursor.getString(cursor.getColumnIndexOrThrow("password"));
-                        Log.d("OFF_USER","USER"+user+" "+pass);
-
-                        if(user.equals(username) && !user.isEmpty() && user.matches(username)
-                                && pass.equals(password) && !pass.isEmpty() && pass.matches(password) )
-                        {
-                            Intent intent = new Intent(mContext, HomeActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            setOfflineLoginStatus(true);
-                            mContext.startActivity(intent);
-                        }
-                        else
-                        {
-                            Toast.makeText(mContext, "OFFLINE LOG UNSUCC", Toast.LENGTH_LONG).show();
-                        }
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                } while (cursor.moveToNext());
-            }
+            Toast.makeText(mContext, mContext.getString(R.string.success_offline_login), Toast.LENGTH_LONG).show();
         }
-        if (cursor != null) {
-            cursor.close();
-        } */
-
+        else
+        {
+            //Toast.makeText(mContext, "Offline login unsuccessful", Toast.LENGTH_LONG).show();
+            
+        }
+        cursor.close();
 
     }
 }

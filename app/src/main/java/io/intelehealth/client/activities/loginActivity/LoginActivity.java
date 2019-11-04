@@ -214,6 +214,7 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             //offlineLogin.login(email, password);
             offlineLogin.offline_login(email, password);
+
         }
 
     }
