@@ -4,9 +4,13 @@ import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -70,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
     // UI references.
     private AutoCompleteTextView mUsernameView;
     private EditText mPasswordView;
+    private long createdRecordsCount = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -207,7 +212,8 @@ public class LoginActivity extends AppCompatActivity {
 //            mAuthTask.execute((Void) null);
             Log.d(TAG, "attempting login");
         } else {
-            offlineLogin.login(email, password);
+            //offlineLogin.login(email, password);
+            offlineLogin.offline_login(email, password);
         }
 
     }
@@ -328,8 +334,40 @@ public class LoginActivity extends AppCompatActivity {
 //                                                success = true;
                                             final Account account = new Account(mEmail, "io.intelehealth.openmrs");
                                             manager.addAccountExplicitly(account, mPassword, null);
-                                            offlineLogin.invalidateLoginCredentials();
+                                            Log.d("MANAGER", "MANAGER "+account);
+                                            //offlineLogin.invalidateLoginCredentials();
+
+
+                                            SQLiteDatabase sqLiteDatabase = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+                                            //SQLiteDatabase read_db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+
+                                            sqLiteDatabase.beginTransaction();
+                                            //read_db.beginTransaction();
+                                            ContentValues values = new ContentValues();
+
+                                            try
+                                            {
+                                                values.put("username",mEmail);
+                                                values.put("password", mPassword);
+                                                createdRecordsCount = sqLiteDatabase.insertWithOnConflict("tbl_user_credentials", null, values,SQLiteDatabase.CONFLICT_REPLACE);
+                                                sqLiteDatabase.setTransactionSuccessful();
+
+                                                Logger.logD("values", "values" + values);
+                                                Logger.logD("created user credentials", "create user records" + createdRecordsCount);
+                                            }
+                                            catch (SQLException e)
+                                            {
+                                                Log.d("SQL","SQL user credentials: "+e);
+                                            }
+
+                                            finally {
+                                                sqLiteDatabase.endTransaction();
+
+                                            }
+
+
                                             offlineLogin.setUpOfflineLogin(mEmail, mPassword);
+
                                             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                                             intent.putExtra("login", true);
 //                startJobDispatcherService(LoginActivity.this);

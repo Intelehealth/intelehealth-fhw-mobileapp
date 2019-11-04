@@ -3,6 +3,9 @@ package io.intelehealth.client.utilities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -14,7 +17,10 @@ import java.security.NoSuchAlgorithmException;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.homeActivity.HomeActivity;
+import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.app.IntelehealthApplication;
+import io.intelehealth.client.models.TodayPatientModel;
+import io.intelehealth.client.utilities.exception.DAOException;
 
 
 /**
@@ -30,6 +36,7 @@ public class OfflineLogin {
     private static OfflineLogin mOfflineLogin;
     private Context mContext;
     private SharedPreferences mSharedPreference;
+    String user,pass;
 
     private OfflineLogin(Context context) {
         mContext = context;
@@ -149,5 +156,100 @@ public class OfflineLogin {
         editor.putBoolean(
                 mContext.getString(R.string.offline_login_status), status);
         editor.apply();
+    }
+
+    public void offline_login(String username, String password)
+    {
+        //String[] cols = {"username","password"};
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_user_credentials",null);
+
+        if(cursor.moveToFirst())
+        {
+            do
+            {
+                user = cursor.getString(cursor.getColumnIndexOrThrow("username"));
+                pass = cursor.getString(cursor.getColumnIndexOrThrow("password"));
+                Log.d("OFF_USER","USER"+user+" "+pass);
+
+
+            }
+            while(cursor.moveToNext());
+
+        }
+        cursor.close();
+
+
+        if(user.equals(username) && pass.equals(password))
+        {
+            Intent intent = new Intent(mContext, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            setOfflineLoginStatus(true);
+            mContext.startActivity(intent);
+        }
+        else
+        {
+            Toast.makeText(mContext, "OFFLINE LOG UNSUCC", Toast.LENGTH_LONG).show();
+        }
+
+      /*  try {
+            user = cursor.getString(cursor.getColumnIndexOrThrow("username"));
+            pass = cursor.getString(cursor.getColumnIndexOrThrow("password"));
+            Log.d("OFF_USER","USER"+user+" "+pass);
+
+            if(user.equals(username) && !user.isEmpty() && user.matches(username)
+                    && pass.equals(password) && !pass.isEmpty() && pass.matches(password) )
+            {
+                Intent intent = new Intent(mContext, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                setOfflineLoginStatus(true);
+                mContext.startActivity(intent);
+            }
+            else
+            {
+                Toast.makeText(mContext, "OFFLINE LOG UNSUCC", Toast.LENGTH_LONG).show();
+            }
+
+            cursor.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } */
+
+
+
+
+
+
+       /* if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    try {
+                        user = cursor.getString(cursor.getColumnIndexOrThrow("username"));
+                        pass = cursor.getString(cursor.getColumnIndexOrThrow("password"));
+                        Log.d("OFF_USER","USER"+user+" "+pass);
+
+                        if(user.equals(username) && !user.isEmpty() && user.matches(username)
+                                && pass.equals(password) && !pass.isEmpty() && pass.matches(password) )
+                        {
+                            Intent intent = new Intent(mContext, HomeActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            setOfflineLoginStatus(true);
+                            mContext.startActivity(intent);
+                        }
+                        else
+                        {
+                            Toast.makeText(mContext, "OFFLINE LOG UNSUCC", Toast.LENGTH_LONG).show();
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                } while (cursor.moveToNext());
+            }
+        }
+        if (cursor != null) {
+            cursor.close();
+        } */
+
+
     }
 }
