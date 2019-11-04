@@ -17,6 +17,7 @@ import java.security.NoSuchAlgorithmException;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.homeActivity.HomeActivity;
+import io.intelehealth.client.activities.loginActivity.LoginActivity;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.app.IntelehealthApplication;
 import io.intelehealth.client.models.TodayPatientModel;
@@ -183,9 +184,10 @@ public class OfflineLogin {
         }
         else
         {
-            //Toast.makeText(mContext, "Offline login unsuccessful", Toast.LENGTH_LONG).show();
-            
+            Toast.makeText(mContext, mContext.getString
+                    (R.string.error_incorrect_password), Toast.LENGTH_SHORT).show();
         }
+        
         cursor.close();
 
     }
