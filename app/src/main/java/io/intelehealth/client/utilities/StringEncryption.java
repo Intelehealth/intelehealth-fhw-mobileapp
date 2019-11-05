@@ -17,14 +17,14 @@ public class StringEncryption {
 
     private SecureRandom secureRandom = null;
 
-    static String convertToSHA256(String text) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    public static String convertToSHA256(String text) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(text.getBytes(StandardCharsets.ISO_8859_1), 0, text.length());
         byte[] digest = md.digest();
         return String.format("%064x", new BigInteger(1, digest));
     }
 
-    String getRandomSaltString() {
+    public String getRandomSaltString() {
         if (secureRandom == null) secureRandom = new SecureRandom();
         return new BigInteger(130, secureRandom).toString(32);
     }

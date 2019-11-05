@@ -30,7 +30,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
+
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.homeActivity.HomeActivity;
@@ -41,7 +45,9 @@ import io.intelehealth.client.utilities.Base64Utils;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.NetworkConnection;
 import io.intelehealth.client.utilities.OfflineLogin;
+import io.intelehealth.client.utilities.Salt_Getter_Setter;
 import io.intelehealth.client.utilities.SessionManager;
+import io.intelehealth.client.utilities.StringEncryption;
 import io.intelehealth.client.utilities.UrlModifiers;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -346,10 +352,27 @@ public class LoginActivity extends AppCompatActivity {
                                             //read_db.beginTransaction();
                                             ContentValues values = new ContentValues();
 
+                                            StringEncryption stringEncryption = new StringEncryption();
+
+                                            String random_salt = stringEncryption.getRandomSaltString();
+                                            Log.d("salt", "salt: "+random_salt);
+                                            Salt_Getter_Setter salt_getter_setter = new Salt_Getter_Setter();
+                                            salt_getter_setter.setSalt(random_salt);
+
+
+                                            String hash_password = null;
+                                            try {
+                                                //hash_email = StringEncryption.convertToSHA256(random_salt + mEmail);
+                                                hash_password = StringEncryption.convertToSHA256(random_salt + mPassword);
+                                            }
+                                            catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                                                Crashlytics.getInstance().core.logException(e);
+                                            }
+
                                             try
                                             {
                                                 values.put("username",mEmail);
-                                                values.put("password", mPassword);
+                                                values.put("password", hash_password);
                                                 createdRecordsCount = sqLiteDatabase.insertWithOnConflict("tbl_user_credentials", null, values,SQLiteDatabase.CONFLICT_REPLACE);
                                                 sqLiteDatabase.setTransactionSuccessful();
 
@@ -363,7 +386,6 @@ public class LoginActivity extends AppCompatActivity {
 
                                             finally {
                                                 sqLiteDatabase.endTransaction();
-
                                             }
 
 

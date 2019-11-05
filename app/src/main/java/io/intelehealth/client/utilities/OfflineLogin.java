@@ -161,7 +161,43 @@ public class OfflineLogin {
 
     public void offline_login(String username, String password)
     {
-        String[] cols = {username,password};
+        Salt_Getter_Setter salt_getter_setter = new Salt_Getter_Setter();
+        SQLiteDatabase db_1 = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        Cursor c = db_1.rawQuery("SELECT * FROM tbl_user_credentials",null);
+
+        //StringEncryption stringEncryption = new StringEncryption();
+        //tring hash_de_email = null;
+        String hash_de_password = null;
+
+        if(c.moveToFirst() && c != null)
+        {
+            //String user_decode = c.getString(c.getColumnIndexOrThrow("username"));
+            String pass_decode = c.getString(c.getColumnIndexOrThrow("password"));
+            Log.d("pass_read", "pass_read"+pass_decode);
+
+
+            String salty = salt_getter_setter.getSalt();
+            Log.d("salt_dec", "salt_dec: "+salty);
+
+            try {
+                //hash_de_email = StringEncryption.convertToSHA256(salt_getter_setter.getSalt() + user_decode);
+                hash_de_password = StringEncryption.convertToSHA256(salt_getter_setter.getSalt() + password);
+
+
+            } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                Crashlytics.getInstance().core.logException(e);
+            }
+            Log.d("HASH","HASH: "+hash_de_password);
+        }
+        else
+        {
+            Log.d("OFFLINE_C_EMPTY", "OFFLINE_C_EMPTY : "+c);
+        }
+        c.close();
+
+        String[] cols = {username,hash_de_password};
+        Log.d("Column","Column: "+username+" "+hash_de_password);
+
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
         Cursor cursor = db.query(
                 "tbl_user_credentials",
