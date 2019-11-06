@@ -353,11 +353,12 @@ public class LoginActivity extends AppCompatActivity {
                                             ContentValues values = new ContentValues();
 
                                             StringEncryption stringEncryption = new StringEncryption();
+                                            String random_salt = stringEncryption.getSaltString();
 
-                                            String random_salt = stringEncryption.getRandomSaltString();
+                                            //String random_salt = stringEncryption.getRandomSaltString();
                                             Log.d("salt", "salt: "+random_salt);
-                                            Salt_Getter_Setter salt_getter_setter = new Salt_Getter_Setter();
-                                            salt_getter_setter.setSalt(random_salt);
+                                            //Salt_Getter_Setter salt_getter_setter = new Salt_Getter_Setter();
+                                            //salt_getter_setter.setSalt(random`_salt);
 
 
                                             String hash_password = null;

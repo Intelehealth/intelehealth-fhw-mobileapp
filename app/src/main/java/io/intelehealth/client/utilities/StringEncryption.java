@@ -28,4 +28,10 @@ public class StringEncryption {
         if (secureRandom == null) secureRandom = new SecureRandom();
         return new BigInteger(130, secureRandom).toString(32);
     }
+
+    public String getSaltString()
+    {
+        String salt = "123456789";
+        return salt;
+    }
 }

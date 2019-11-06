@@ -161,7 +161,8 @@ public class OfflineLogin {
 
     public void offline_login(String username, String password)
     {
-        Salt_Getter_Setter salt_getter_setter = new Salt_Getter_Setter();
+        //Salt_Getter_Setter salt_getter_setter = new Salt_Getter_Setter();
+        StringEncryption stringEncryption = new StringEncryption();
         SQLiteDatabase db_1 = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
         Cursor c = db_1.rawQuery("SELECT * FROM tbl_user_credentials",null);
 
@@ -176,12 +177,12 @@ public class OfflineLogin {
             Log.d("pass_read", "pass_read"+pass_decode);
 
 
-            String salty = salt_getter_setter.getSalt();
-            Log.d("salt_dec", "salt_dec: "+salty);
+            //String salty = salt_getter_setter.getSalt();
+            //Log.d("salt_dec", "salt_dec: "+salty);
 
             try {
                 //hash_de_email = StringEncryption.convertToSHA256(salt_getter_setter.getSalt() + user_decode);
-                hash_de_password = StringEncryption.convertToSHA256(salt_getter_setter.getSalt() + password);
+                hash_de_password = StringEncryption.convertToSHA256(stringEncryption.getSaltString() + password);
 
 
             } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
