@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
@@ -161,13 +163,9 @@ public class OfflineLogin {
 
     public void offline_login(String username, String password)
     {
-        //Salt_Getter_Setter salt_getter_setter = new Salt_Getter_Setter();
-        StringEncryption stringEncryption = new StringEncryption();
         SQLiteDatabase db_1 = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
         Cursor c = db_1.rawQuery("SELECT * FROM tbl_user_credentials",null);
 
-        //StringEncryption stringEncryption = new StringEncryption();
-        //tring hash_de_email = null;
         String hash_de_password = null;
 
         if(c.moveToFirst() && c != null)
@@ -176,13 +174,10 @@ public class OfflineLogin {
             String pass_decode = c.getString(c.getColumnIndexOrThrow("password"));
             Log.d("pass_read", "pass_read"+pass_decode);
 
-
-            //String salty = salt_getter_setter.getSalt();
-            //Log.d("salt_dec", "salt_dec: "+salty);
-
             try {
+                Log.d("MICE", "MICE: "+getSalt_DATA());
                 //hash_de_email = StringEncryption.convertToSHA256(salt_getter_setter.getSalt() + user_decode);
-                hash_de_password = StringEncryption.convertToSHA256(stringEncryption.getSaltString() + password);
+                hash_de_password = StringEncryption.convertToSHA256(getSalt_DATA() + password);
 
 
             } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
@@ -226,6 +221,35 @@ public class OfflineLogin {
         }
         
         cursor.close();
+
+    }
+
+    public String getSalt_DATA() {
+        BufferedReader reader = null;
+        String salt = null;
+        try {
+            reader = new BufferedReader(
+                    new InputStreamReader(mContext.getAssets().open("salt.env")));
+
+            // do reading, usually loop until end of file reading
+            String mLine;
+            while ((mLine = reader.readLine()) != null) {
+                //process line
+                salt = mLine;
+                Log.d("SA", "SA " + salt);
+            }
+        } catch (Exception e) {
+            //log the exception
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (Exception e) {
+                    //log the exception
+                }
+            }
+        }
+        return salt;
 
     }
 }

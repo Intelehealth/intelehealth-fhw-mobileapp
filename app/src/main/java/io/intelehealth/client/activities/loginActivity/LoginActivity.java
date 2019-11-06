@@ -8,7 +8,6 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -33,6 +32,8 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
@@ -45,7 +46,6 @@ import io.intelehealth.client.utilities.Base64Utils;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.NetworkConnection;
 import io.intelehealth.client.utilities.OfflineLogin;
-import io.intelehealth.client.utilities.Salt_Getter_Setter;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.StringEncryption;
 import io.intelehealth.client.utilities.UrlModifiers;
@@ -81,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
     private AutoCompleteTextView mUsernameView;
     private EditText mPasswordView;
     private long createdRecordsCount = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -341,7 +342,7 @@ public class LoginActivity extends AppCompatActivity {
 //                                                success = true;
                                             final Account account = new Account(mEmail, "io.intelehealth.openmrs");
                                             manager.addAccountExplicitly(account, mPassword, null);
-                                            Log.d("MANAGER", "MANAGER "+account);
+                                            Log.d("MANAGER", "MANAGER " + account);
                                             //offlineLogin.invalidateLoginCredentials();
 
 
@@ -352,11 +353,11 @@ public class LoginActivity extends AppCompatActivity {
                                             //read_db.beginTransaction();
                                             ContentValues values = new ContentValues();
 
-                                            StringEncryption stringEncryption = new StringEncryption();
-                                            String random_salt = stringEncryption.getSaltString();
+                                            //StringEncryption stringEncryption = new StringEncryption();
+                                            String random_salt = getSalt_DATA();
 
                                             //String random_salt = stringEncryption.getRandomSaltString();
-                                            Log.d("salt", "salt: "+random_salt);
+                                            Log.d("salt", "salt: " + random_salt);
                                             //Salt_Getter_Setter salt_getter_setter = new Salt_Getter_Setter();
                                             //salt_getter_setter.setSalt(random`_salt);
 
@@ -364,28 +365,22 @@ public class LoginActivity extends AppCompatActivity {
                                             String hash_password = null;
                                             try {
                                                 //hash_email = StringEncryption.convertToSHA256(random_salt + mEmail);
-                                                hash_password = StringEncryption.convertToSHA256(random_salt + mPassword);
-                                            }
-                                            catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                                                hash_password = StringEncryption.convertToSHA256(random_salt + "12345");
+                                            } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
                                                 Crashlytics.getInstance().core.logException(e);
                                             }
 
-                                            try
-                                            {
-                                                values.put("username",mEmail);
+                                            try {
+                                                values.put("username", mEmail);
                                                 values.put("password", hash_password);
-                                                createdRecordsCount = sqLiteDatabase.insertWithOnConflict("tbl_user_credentials", null, values,SQLiteDatabase.CONFLICT_REPLACE);
+                                                createdRecordsCount = sqLiteDatabase.insertWithOnConflict("tbl_user_credentials", null, values, SQLiteDatabase.CONFLICT_REPLACE);
                                                 sqLiteDatabase.setTransactionSuccessful();
 
                                                 Logger.logD("values", "values" + values);
                                                 Logger.logD("created user credentials", "create user records" + createdRecordsCount);
-                                            }
-                                            catch (SQLException e)
-                                            {
-                                                Log.d("SQL","SQL user credentials: "+e);
-                                            }
-
-                                            finally {
+                                            } catch (SQLException e) {
+                                                Log.d("SQL", "SQL user credentials: " + e);
+                                            } finally {
                                                 sqLiteDatabase.endTransaction();
                                             }
 
@@ -465,4 +460,32 @@ public class LoginActivity extends AppCompatActivity {
 //        }
     }
 
+    public String getSalt_DATA() {
+        BufferedReader reader = null;
+        String salt = null;
+        try {
+            reader = new BufferedReader(
+                    new InputStreamReader(getAssets().open("salt.env")));
+
+            // do reading, usually loop until end of file reading
+            String mLine;
+            while ((mLine = reader.readLine()) != null) {
+                //process line
+                salt = mLine;
+                Log.d("SA", "SA " + salt);
+            }
+        } catch (Exception e) {
+            //log the exception
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (Exception e) {
+                    //log the exception
+                }
+            }
+        }
+        return salt;
+
+    }
 }

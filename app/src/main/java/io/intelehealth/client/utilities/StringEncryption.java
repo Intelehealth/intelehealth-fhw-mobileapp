@@ -1,11 +1,20 @@
 package io.intelehealth.client.utilities;
 
+import android.content.res.AssetManager;
+
+import com.crashlytics.android.Crashlytics;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+
+import io.intelehealth.client.activities.complaintNodeActivity.ComplaintNodeActivity;
+import io.intelehealth.client.knowledgeEngine.Node;
 
 /**
  * Created by Dexter Barretto on 5/24/17.
