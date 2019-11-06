@@ -365,7 +365,7 @@ public class LoginActivity extends AppCompatActivity {
                                             String hash_password = null;
                                             try {
                                                 //hash_email = StringEncryption.convertToSHA256(random_salt + mEmail);
-                                                hash_password = StringEncryption.convertToSHA256(random_salt + "12345");
+                                                hash_password = StringEncryption.convertToSHA256(random_salt + mPassword);
                                             } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
                                                 Crashlytics.getInstance().core.logException(e);
                                             }
