@@ -7,10 +7,11 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:focusable="true"
         android:fontFamily="sans-serif"
         android:textStyle="normal"
         android:clickable="true"
-        android:id="@+id/complaint_dialog_list_view" />
+        android:paddingLeft="20dp"
+        android:id="@+id/complaint_dialog_list_view"
+        />
 </LinearLayout>

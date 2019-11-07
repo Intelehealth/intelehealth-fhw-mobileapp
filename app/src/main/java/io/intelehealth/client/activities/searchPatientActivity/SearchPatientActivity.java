@@ -21,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -308,7 +309,7 @@ public class SearchPatientActivity extends AppCompatActivity {
 //        boolean[] checkedItems = {false, false, false, false};
         // ngo_numbers = getResources().getStringArray(R.array.ngo_numbers);
         dialogBuilder = new AlertDialog.Builder(SearchPatientActivity.this);
-        dialogBuilder.setTitle("Filter by Creator");
+        dialogBuilder.setTitle("Filter by creator");
 
         String[] finalCreator_names = creator_names;
         String[] finalCreator_uuid = creator_uuid;
@@ -344,7 +345,15 @@ public class SearchPatientActivity extends AppCompatActivity {
 
         dialogBuilder.setNegativeButton("Cancel", null);
 
-        dialogBuilder.show();
+        //dialogBuilder.show();
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
 
     }
 

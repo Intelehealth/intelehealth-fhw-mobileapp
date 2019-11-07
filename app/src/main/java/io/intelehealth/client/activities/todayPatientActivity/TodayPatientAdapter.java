@@ -45,7 +45,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         final TodayPatientModel todayPatientModel = todayPatientModelList.get(position);
         String header;
         if (todayPatientModel.getOpenmrs_id() != null) {
-            header = String.format("%s %s - " + context.getString(R.string.visit_summary_heading_id) + ": %s", todayPatientModel.getFirst_name(),
+            header = String.format("%s %s, %s", todayPatientModel.getFirst_name(),
                     todayPatientModel.getLast_name(), todayPatientModel.getOpenmrs_id());
         } else {
             header = String.format("%s %s", todayPatientModel.getFirst_name(),
@@ -53,11 +53,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         }
         int age = DateAndTimeUtils.getAge(todayPatientModel.getDate_of_birth());
         String dob = DateAndTimeUtils.SimpleDatetoLongDate(todayPatientModel.getDate_of_birth());
-        String body = String.format(context.getString(R.string.id_number) + ": %s \n " +
-                        context.getString(R.string.identification_screen_prompt_phone_number) + ": %s\n" +
-                        context.getString(R.string.identification_screen_prompt_birthday) +
-                        ": %s (" + context.getString(R.string.identification_screen_prompt_age) + " %d)", todayPatientModel.getOpenmrs_id(), todayPatientModel.getPhone_number(),
-                dob, age);
+        String body = String.format(context.getString(R.string.identification_screen_prompt_age) + " %d yrs", age);
 
 //        holder.listItemTodayPatientBinding.listItemHeadTextView.setText(header);
 //        holder.listItemTodayPatientBinding.listItemBodyTextView.setText(body);
@@ -110,6 +106,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                 intent.putExtra("patientUuid", todayPatientModel.getPatientuuid());
                 intent.putExtra("status", patientStatus);
                 intent.putExtra("tag", "");
+                intent.putExtra("hasPrescription", "false");
                 context.startActivity(intent);
             }
         });

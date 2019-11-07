@@ -1,6 +1,7 @@
 package io.intelehealth.client.networkApiCalls;
 
 
+import io.intelehealth.client.models.DownloadMindMapRes;
 import io.intelehealth.client.models.Location;
 import io.intelehealth.client.models.ObsImageModel.ObsJsonResponse;
 import io.intelehealth.client.models.ObsImageModel.ObsPushDTO;
@@ -32,6 +33,9 @@ public interface ApiInterface {
 
     @GET("location?tag=Login%20Location")
     Observable<Results<Location>> LOCATION_OBSERVABLE(@Query("v") String representation);
+
+    @GET("/api/mindmap/download")
+    Observable<DownloadMindMapRes> DOWNLOAD_MIND_MAP_RES_OBSERVABLE(@Query("key") String licenseKey);
 
 //    @GET("visit")
 //    Call<PatientUUIDResponsemodel> GETPATIENT(@Query("patient") String patientUUID, @Header("Authorization") String authHeader);

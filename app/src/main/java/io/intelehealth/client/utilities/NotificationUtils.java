@@ -1,5 +1,6 @@
 package io.intelehealth.client.utilities;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -97,5 +98,34 @@ public class NotificationUtils {
         }
 
         mNotifyManager.cancelAll();
+    }
+
+    public void showNotifications_noProgress(String title, String text, Context context) {
+        this.context = context;
+        NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        //mahiti added
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel(channelId, channelName, importance);
+            mNotifyManager.createNotificationChannel(mChannel);
+        }
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId);
+//        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, HomeActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+
+//        mBuilder.setContentIntent(contentIntent);
+      /*  mBuilder.setContentTitle(title)
+                .setContentText(text)
+                .setSmallIcon(R.drawable.ic_cloud_upload);
+        //mBuilder.setProgress(100, 0, true);
+*/
+
+        Notification notification = mBuilder
+                .setSmallIcon(R.drawable.ic_cloud_upload)
+                .setAutoCancel(true).setContentTitle(title)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
+                .setContentText(text).build();
+        mNotifyManager.notify(mId, mBuilder.build());
+
     }
 }

@@ -15,6 +15,7 @@ import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.app.IntelehealthApplication;
 import io.intelehealth.client.models.dto.EncounterDTO;
 import io.intelehealth.client.models.dto.ObsDTO;
+import io.intelehealth.client.models.dto.VisitDTO;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UuidDictionary;
@@ -122,6 +123,33 @@ public class EncounterDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where sync = ? OR sync=?  COLLATE NOCASE ORDER BY voided ASC", new String[]{"false", "0"});
+        EncounterDTO encounterDTO = new EncounterDTO();
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                encounterDTO = new EncounterDTO();
+                encounterDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                encounterDTO.setVisituuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visituuid")));
+                encounterDTO.setEncounterTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_type_uuid")));
+                encounterDTO.setProvideruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("provider_uuid")));
+                encounterDTO.setEncounterTime(idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_time")));
+                encounterDTO.setVoided(idCursor.getInt(idCursor.getColumnIndexOrThrow("voided")));
+                encounterDTO.setPrivacynotice_value(idCursor.getString(idCursor.getColumnIndexOrThrow("privacynotice_value")));
+                encounterDTOList.add(encounterDTO);
+            }
+        }
+        idCursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+
+        return encounterDTOList;
+    }
+
+    public List<EncounterDTO> getAllEncounters() {
+        List<EncounterDTO> encounterDTOList = new ArrayList<>();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter", null);
         EncounterDTO encounterDTO = new EncounterDTO();
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {

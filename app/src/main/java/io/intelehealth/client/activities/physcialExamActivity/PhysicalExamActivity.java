@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -50,6 +52,7 @@ import io.intelehealth.client.database.dao.ImagesDAO;
 import io.intelehealth.client.knowledgeEngine.Node;
 import io.intelehealth.client.knowledgeEngine.PhysicalExam;
 import io.intelehealth.client.utilities.FileUtils;
+import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.StringUtils;
 import io.intelehealth.client.utilities.UuidDictionary;
 import io.intelehealth.client.utilities.exception.DAOException;
@@ -88,6 +91,8 @@ public class PhysicalExamActivity extends AppCompatActivity {
     String encounterVitals;
     String encounterAdultIntials;
 
+    SessionManager sessionManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
@@ -95,11 +100,11 @@ public class PhysicalExamActivity extends AppCompatActivity {
         localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setMessage(R.string.wash_hands);
+        alertDialogBuilder.setTitle(R.string.wash_hands);
         LayoutInflater factory = LayoutInflater.from(this);
         final View view = factory.inflate(R.layout.hand_wash, null);
         alertDialogBuilder.setView(view);
-        alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -107,6 +112,12 @@ public class PhysicalExamActivity extends AppCompatActivity {
         });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+
+        sessionManager = new SessionManager(this);
+
+        Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+        pb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
 
         //For Testing
 //        patientID = Long.valueOf("1");
@@ -147,7 +158,8 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             boolean hasLicense = false;
-            if (sharedPreferences.contains("licensekey"))
+//            if (sharedPreferences.contains("licensekey"))
+            if (!sessionManager.getLicenseKey().isEmpty())
                 hasLicense = true;
 
             if (hasLicense) {
@@ -230,6 +242,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                         intent.putExtra("state", state);
                         intent.putExtra("name", patientName);
                         intent.putExtra("tag", intentTag);
+                        intent.putExtra("hasPrescription", "false");
                         for (String exams : selectedExamsList) {
                             Log.i(TAG, "onClick:++ " + exams);
                         }
@@ -245,6 +258,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
                         intent1.putExtra("state", state);
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("tag", intentTag);
+                        intent1.putExtra("hasPrescription", "false");
                         // intent1.putStringArrayListExtra("exams", selectedExamsList);
                         startActivity(intent1);
                     }

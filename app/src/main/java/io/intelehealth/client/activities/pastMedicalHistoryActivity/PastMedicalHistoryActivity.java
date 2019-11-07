@@ -195,6 +195,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     intent.putExtra("encounterUuidVitals", encounterVitals);
                     intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
                     intent.putExtra("state", state);
+                    intent.putExtra("hasPrescription", "false");
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
                     startActivity(intent);
@@ -232,7 +233,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
         });
 
 
-        if (sharedPreferences.contains("licensekey")) hasLicense = true;
+//        if (sharedPreferences.contains("licensekey"))
+        if (!sessionManager.getLicenseKey().isEmpty())
+            hasLicense = true;
 
         if (hasLicense) {
             try {

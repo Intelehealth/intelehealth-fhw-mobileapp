@@ -111,7 +111,8 @@ public class VitalsActivity extends AppCompatActivity {
         try {
             JSONObject obj = null;
 //            #633 #632
-            if (sessionManager.valueContains("licensekey")) {
+            if (!sessionManager.getLicenseKey().isEmpty()) {
+//            if (sessionManager.valueContains("licensekey")) {
                 obj = new JSONObject(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this)); //Load the config file
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
@@ -780,6 +781,7 @@ public class VitalsActivity extends AppCompatActivity {
             intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
+            intent.putExtra("hasPrescription", "false");
             intent.putExtra("tag", intentTag);
             startActivity(intent);
         } else {

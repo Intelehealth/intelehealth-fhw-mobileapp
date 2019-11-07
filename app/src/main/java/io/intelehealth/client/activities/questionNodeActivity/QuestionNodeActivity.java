@@ -17,16 +17,20 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -39,6 +43,7 @@ import io.intelehealth.client.activities.physcialExamActivity.PhysicalExamActivi
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.knowledgeEngine.Node;
 import io.intelehealth.client.utilities.FileUtils;
+import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.StringUtils;
 import io.intelehealth.client.utilities.UuidDictionary;
 
@@ -75,6 +80,14 @@ public class QuestionNodeActivity extends AppCompatActivity {
     private String encounterVitals;
     private String encounterAdultIntials;
 
+    SessionManager sessionManager;
+    private List<Node> optionsList = new ArrayList<>();
+    Node assoSympNode;
+    Node optionSympNode;
+    private JSONObject assoSympObj = new JSONObject();
+    private JSONArray assoSympArr = new JSONArray();
+    private JSONObject finalAssoSympObj = new JSONObject();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent intent = this.getIntent(); // The intent was passed to the activity
@@ -97,9 +110,12 @@ public class QuestionNodeActivity extends AppCompatActivity {
 //mKnowledge = new Knowledge(HelperMethods.encodeJSON(this, mFileName));
         complaintsNodes = new ArrayList<>();
 
+        sessionManager = new SessionManager(this);
+
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         boolean hasLicense = false;
-        if (sharedPreferences.contains("licensekey"))
+//        if (sharedPreferences.contains("licensekey"))
+        if (!sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
 
         JSONObject currentFile = null;
@@ -305,6 +321,10 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 complaintNumber++;
                 setupQuestions(complaintNumber);
                 complaintConfirmed = false;
+            } else if (complaints.size() > 1 && complaintNumber == complaints.size() - 1) {
+                complaintNumber++;
+                removeDuplicateSymptoms();
+                complaintConfirmed = false;
             } else {
                 if (intentTag != null && intentTag.equals("edit")) {
                     Log.i(TAG, "fabClick: update" + insertion);
@@ -350,6 +370,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
         }
 
     }
+
 
     /**
      * Insert into DB could be made into a Helper Method, but isn't because there are specific concept IDs used each time.
@@ -428,13 +449,94 @@ public class QuestionNodeActivity extends AppCompatActivity {
      * @param complaintIndex Index of complaint being displayed to user.
      */
     private void setupQuestions(int complaintIndex) {
+
         nodeComplete = false;
-        currentNode = complaintsNodes.get(complaintIndex);
+
+        if (complaints.size() > 1) {
+            getAssociatedSymptoms(complaintIndex);
+        } else {
+            currentNode = complaintsNodes.get(complaintIndex);
+        }
+
         adapter = new CustomExpandableListAdapter(this, currentNode, this.getClass().getSimpleName());
         questionListView.setAdapter(adapter);
         questionListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
         questionListView.expandGroup(0);
         setTitle(patientName + ": " + currentNode.findDisplay());
+
+    }
+
+    private void getAssociatedSymptoms(int complaintIndex) {
+
+        List<Node> assoComplaintsNodes = new ArrayList<>();
+        assoComplaintsNodes.addAll(complaintsNodes);
+
+        for (int i = 0; i < complaintsNodes.get(complaintIndex).size(); i++) {
+
+            if (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
+                    .equalsIgnoreCase("Associated symptoms")) {
+
+                optionsList.addAll(complaintsNodes.get(complaintIndex).getOptionsList().get(i).getOptionsList());
+
+                assoComplaintsNodes.get(complaintIndex).getOptionsList().remove(i);
+                currentNode = assoComplaintsNodes.get(complaintIndex);
+                Log.e("CurrentNode", "" + currentNode);
+
+            }
+        }
+    }
+
+    private void removeDuplicateSymptoms() {
+
+        nodeComplete = false;
+
+        HashSet<String> hashSet = new HashSet<>();
+
+        List<Node> finalOptionsList = new ArrayList<>(optionsList);
+
+        if (optionsList.size() != 0) {
+
+            for (int i = 0; i < optionsList.size(); i++) {
+
+                if (hashSet.contains(optionsList.get(i).getText())) {
+
+                    finalOptionsList.remove(optionsList.get(i));
+
+                } else {
+                    hashSet.add(optionsList.get(i).getText());
+                }
+            }
+
+            try {
+                assoSympObj.put("id", "ID_294177528");
+                assoSympObj.put("text", "Associated symptoms");
+                assoSympObj.put("display", "Do you have the following symptom(s)?");
+                assoSympObj.put("display-or", "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?");
+                assoSympObj.put("pos-condition", "c.");
+                assoSympObj.put("neg-condition", "s.");
+                assoSympArr.put(0, assoSympObj);
+                finalAssoSympObj.put("id", "ID_844006222");
+                finalAssoSympObj.put("text", "Associated symptoms");
+                finalAssoSympObj.put("display-or", "ପେଟଯନ୍ତ୍ରଣା");
+                finalAssoSympObj.put("perform-physical-exam", "");
+                finalAssoSympObj.put("options", assoSympArr);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            assoSympNode = new Node(finalAssoSympObj);
+            assoSympNode.getOptionsList().get(0).setOptionsList(finalOptionsList);
+            assoSympNode.getOptionsList().get(0).setTerminal(false);
+
+            currentNode = assoSympNode;
+            adapter = new CustomExpandableListAdapter(this, currentNode, this.getClass().getSimpleName());
+            questionListView.setAdapter(adapter);
+            questionListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
+            questionListView.expandGroup(0);
+            setTitle(patientName + ": " + currentNode.getText());
+
+        }
     }
 
     //Dialog Alert forcing user to answer all questions.

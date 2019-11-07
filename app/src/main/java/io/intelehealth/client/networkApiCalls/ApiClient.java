@@ -15,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
     //
     private static OkHttpClient.Builder client = new OkHttpClient.Builder();
-    private static String apiBaseUrl = "https://openmrs.intelehealth.io";
+    private static String apiBaseUrl = "http://openmrs.intelehealth.io";
     private static Retrofit retrofit;
     SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
     private static Retrofit.Builder builder =

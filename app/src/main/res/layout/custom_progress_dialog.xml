@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent" >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="10dp" >
+
+        <io.intelehealth.client.widget.materialprogressbar.CircleProgressBar
+            android:id="@+id/ivAnim"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            app:mlpb_arrow_height="5dp"
+            app:mlpb_arrow_width="10dp"
+            app:mlpb_progress_color="@color/colorPrimaryDark"
+            app:mlpb_progress_stoke_width="3dp"
+            app:mlpb_show_arrow="true" />
+
+        <TextView
+            android:id="@+id/tvProgressTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivAnim"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical|center"
+            android:textColor="@color/primary_text"
+            android:textSize="14sp"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+</RelativeLayout>

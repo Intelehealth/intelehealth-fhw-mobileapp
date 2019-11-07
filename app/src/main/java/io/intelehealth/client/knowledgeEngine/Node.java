@@ -312,6 +312,10 @@ public class Node implements Serializable {
         return terminal;
     }
 
+    public void setTerminal(boolean terminal) {
+        this.terminal = terminal;
+    }
+
     //Only complaints should be presented to the user at Complaint Select.
     public boolean isComplaint() {
         return complaint;
@@ -1480,6 +1484,42 @@ public class Node implements Serializable {
 
     public String getText() {
         return text;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getDisplay() {
+        return display;
+    }
+
+    public void setDisplay(String display) {
+        this.display = display;
+    }
+
+    public String getDisplay_oriya() {
+        return display_oriya;
+    }
+
+    public void setDisplay_oriya(String display_oriya) {
+        this.display_oriya = display_oriya;
+    }
+
+    public String getDisplay_cebuno() {
+        return display_cebuno;
+    }
+
+    public void setDisplay_cebuno(String display_cebuno) {
+        this.display_cebuno = display_cebuno;
+    }
+
+    public void setOptionsList(List<Node> optionsList) {
+        this.optionsList = optionsList;
     }
 
     public void setText(String text) {

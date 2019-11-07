@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -49,6 +50,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -238,6 +240,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     DownloadPrescriptionService downloadPrescriptionService;
 
+    ImageView ivPrescription;
+    private String hasPrescription = "";
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -367,6 +372,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             isPastVisit = intent.getBooleanExtra("pastVisit", false);
+            hasPrescription = intent.getStringExtra("hasPrescription");
 
             Set<String> selectedExams = mSharedPreference.getStringSet("exam_" + patientUuid, null);
             if (physicalExams == null) physicalExams = new ArrayList<>();
@@ -378,7 +384,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         registerBroadcastReceiverDynamically();
         registerDownloadPrescription();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if (sharedPreferences.contains("licensekey"))
+//        if (sharedPreferences.contains("licensekey"))
+        if (!sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
 
         //Check for license key and load the correct config file
@@ -433,6 +440,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
         requestedTestsTextView = findViewById(R.id.textView_content_tests);
         additionalCommentsTextView = findViewById(R.id.textView_content_additional_comments);
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
+
+        ivPrescription = findViewById(R.id.iv_prescription);
+
+        if (hasPrescription.equalsIgnoreCase("true")) {
+            ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
+        }
+
 
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
 //
@@ -718,7 +732,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         respiratory.setText(resp.getValue());
         spO2View.setText(spO2.getValue());
         if (complaint.getValue() != null)
-            complaintView.setText(Html.fromHtml(complaint.getValue()));
+            complaintView.setText(Html.fromHtml(complaint.getValue().replace("○ c.", "<br>○ " + getResources().getString(R.string.patient_reports) + " ")
+                    .replace("○ s.", "<br>○ " + getResources().getString(R.string.patient_denies) + " ")
+                    .replace("c.", "")
+                    .replace("s.", "")
+                    .replace("<br/>• Associated symptoms -", "")));
         if (famHistory.getValue() != null)
             famHistView.setText(Html.fromHtml(famHistory.getValue()));
         if (patHistory.getValue() != null)
@@ -815,7 +833,20 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 });
 
-                famHistDialog.show();
+                //famHistDialog.show();
+                AlertDialog alertDialog = famHistDialog.create();
+                alertDialog.show();
+                Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+                Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+                Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+                neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                neutralb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
             }
         });
 
@@ -829,8 +860,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 complaintDialog.setView(convertView);
 
                 final TextView complaintText = convertView.findViewById(R.id.textView_entry);
-                if (complaint.getValue() != null)
-                    complaintText.setText(Html.fromHtml(complaint.getValue()));
+                if (complaint.getValue() != null) {
+                    complaintText.setText(Html.fromHtml(complaint.getValue().replace("○ c.", "<br>○ " + getResources().getString(R.string.patient_reports) + " ")
+                            .replace("○ s.", "<br>○ " + getResources().getString(R.string.patient_denies) + " ")
+                            .replace("c.", "")
+                            .replace("s.", "")
+                            .replace("<br/>• Associated symptoms -", "")));
+                }
                 complaintText.setEnabled(false);
 
                 complaintDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -839,18 +875,31 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         final AlertDialog.Builder textInput = new AlertDialog.Builder(VisitSummaryActivity.this);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
-                        if (complaint.getValue() != null)
-                            dialogEditText.setText(Html.fromHtml(complaint.getValue()));
-                        else
+                        if (complaint.getValue() != null) {
+                            dialogEditText.setText(Html.fromHtml(complaint.getValue().replace("○ c.", "<br>○ " + getResources().getString(R.string.patient_reports) + " ")
+                                    .replace("○ s.", "<br>○ " + getResources().getString(R.string.patient_denies) + " ")
+                                    .replace("c.", "")
+                                    .replace("s.", "")
+                                    .replace("<br/>• Associated symptoms -", "")));
+                        } else {
                             dialogEditText.setText("");
+                        }
                         textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                complaint.setValue(dialogEditText.getText().toString());
+                                complaint.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
                                 if (complaint.getValue() != null) {
-                                    complaintText.setText(Html.fromHtml(complaint.getValue()));
-                                    complaintView.setText(Html.fromHtml(complaint.getValue()));
+                                    complaintText.setText(Html.fromHtml(complaint.getValue().replace("○ c.", "<br>○ " + getResources().getString(R.string.patient_reports) + " ")
+                                            .replace("○ s.", "<br>○ " + getResources().getString(R.string.patient_denies) + " ")
+                                            .replace("c.", "")
+                                            .replace("s.", "")
+                                            .replace("<br/>• Associated symptoms -", "")));
+                                    complaintView.setText(Html.fromHtml(complaint.getValue().replace("○ c.", "<br>○ " + getResources().getString(R.string.patient_reports) + " ")
+                                            .replace("○ s.", "<br>○ " + getResources().getString(R.string.patient_denies) + " ")
+                                            .replace("c.", "")
+                                            .replace("s.", "")
+                                            .replace("<br/>• Associated symptoms -", "")));
                                 }
                                 updateDatabase(complaint.getValue(), UuidDictionary.CURRENT_COMPLAINT);
                                 dialog.dismiss();
@@ -889,7 +938,21 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 });
 
-                complaintDialog.show();
+                //complaintDialog.show();
+                AlertDialog alertDialog = complaintDialog.create();
+                alertDialog.show();
+                Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+                Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+                Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+                neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                neutralb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
             }
         });
 
@@ -922,7 +985,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
-                                phyExam.setValue(dialogEditText.getText().toString());
+                                phyExam.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
                                 if (phyExam.getValue() != null) {
                                     physicalText.setText(Html.fromHtml(phyExam.getValue()));
                                     physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
@@ -999,7 +1062,20 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 });
 
-                physicalDialog.show();
+                //physicalDialog.show();
+                AlertDialog alertDialog = physicalDialog.create();
+                alertDialog.show();
+                Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+                Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+                Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+                neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                neutralb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
             }
         });
 
@@ -1073,7 +1149,21 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 });
 
-                historyDialog.show();
+                //historyDialog.show();
+                AlertDialog alertDialog = historyDialog.create();
+                alertDialog.show();
+                Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+                Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+                Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+                neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                neutralb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
             }
         });
 
@@ -1104,6 +1194,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 uploaded = true;
                 ProgressDialog pd = new ProgressDialog(VisitSummaryActivity.this);
                 pd.setTitle("Downloading prescription");
+                pd.setMessage("Please wait...");
                 pd.show();
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {

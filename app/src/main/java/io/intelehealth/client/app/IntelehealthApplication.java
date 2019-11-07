@@ -12,8 +12,12 @@ import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
+import com.google.firebase.crash.FirebaseCrash;
 import com.parse.Parse;
 
+import io.fabric.sdk.android.Fabric;
+import io.intelehealth.client.BuildConfig;
 import io.intelehealth.client.database.InteleHealthDatabaseHelper;
 import io.intelehealth.client.utilities.SessionManager;
 import io.reactivex.plugins.RxJavaPlugins;
@@ -58,6 +62,9 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         mContext = getApplicationContext();
         sessionManager = new SessionManager(this);
+
+        configureCrashReporting();
+
         RxJavaPlugins.setErrorHandler(throwable -> {
             Crashlytics.getInstance().core.logException(throwable);
         });
@@ -78,7 +85,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
             Parse.initialize(new Parse.Configuration.Builder(this)
                     .clientBuilder(builder)
                     .applicationId(AppConstants.IMAGE_APP_ID)
-                    .server("https://" + url + ":1337/parse/")
+                    .server("http://" + url + ":1337/parse/")
                     .build()
             );
             Log.i(TAG, "onCreate: Parse init");
@@ -88,6 +95,13 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
             mDbHelper.onCreate(localdb);
         }
         registerActivityLifecycleCallbacks(this);
+    }
+
+    private void configureCrashReporting() {
+        CrashlyticsCore crashlyticsCore = new CrashlyticsCore.Builder()
+                .disabled(BuildConfig.DEBUG)
+                .build();
+        Fabric.with(this, new Crashlytics.Builder().core(crashlyticsCore).build());
     }
 
     @Override

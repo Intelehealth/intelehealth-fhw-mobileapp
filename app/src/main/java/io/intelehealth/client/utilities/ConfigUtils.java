@@ -25,7 +25,8 @@ public class ConfigUtils {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         JSONObject obj = null;
         try {
-            if (sessionManager.valueContains("licensekey")) {
+//            if (sessionManager.valueContains("licensekey")) {
+            if (!sessionManager.getLicenseKey().isEmpty()) {
                 obj = new JSONObject(FileUtils.readFileRoot(CONFIG_FILE_NAME, context)); //Load the config file
 
             } else {

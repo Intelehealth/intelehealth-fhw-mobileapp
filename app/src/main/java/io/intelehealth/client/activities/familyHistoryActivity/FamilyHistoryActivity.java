@@ -165,7 +165,8 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             }
         });
 
-        if (sessionManager.valueContains("licensekey"))
+//        if (sessionManager.valueContains("licensekey"))
+        if (!sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
 
         if (hasLicense) {
@@ -273,6 +274,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
             intent.putExtra("tag", intentTag);
+            intent.putExtra("hasPrescription", "false");
             startActivity(intent);
         } else {
 

@@ -303,7 +303,6 @@
                                     android:imeOptions="actionUnspecified"
                                     android:inputType="textCapWords"
                                     android:maxLines="1"
-
                                     android:text="@string/identification_screen_prompt_country" />
 
                                 <Spinner
@@ -402,6 +401,9 @@
                         android:freezesText="true"
                         android:hint="@string/identification_screen_prompt_address"
                         android:imeOptions="actionUnspecified"
+                        android:drawableStart="@drawable/home_icon"
+                        android:drawableLeft="@drawable/home_icon"
+                        android:drawablePadding="10dp"
                         android:inputType="textCapWords"
                         android:maxLength="50"
                         android:maxLines="2"
@@ -425,6 +427,9 @@
                         android:inputType="textCapWords"
                         android:maxLength="50"
                         android:maxLines="2"
+                        android:drawableStart="@drawable/home_icon"
+                        android:drawableLeft="@drawable/home_icon"
+                        android:drawablePadding="10dp"
                         android:tag="@string/tag_optional" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -442,6 +447,9 @@
                         android:hint="@string/identification_screen_prompt_postal_code"
                         android:imeOptions="actionUnspecified"
                         android:inputType="number"
+                        android:drawableStart="@drawable/home_icon"
+                        android:drawableLeft="@drawable/home_icon"
+                        android:drawablePadding="10dp"
                         android:maxLength="9"
                         android:maxLines="1"
                         android:tag="@string/tag_optional" />
@@ -464,6 +472,9 @@
                         android:freezesText="true"
                         android:hint="@string/identification_screen_prompt_relationship"
                         android:imeOptions="actionUnspecified"
+                        android:drawableStart="@drawable/ic_family_24dp_black"
+                        android:drawableLeft="@drawable/ic_family_24dp_black"
+                        android:drawablePadding="10dp"
                         android:inputType="textCapWords"
                         android:maxLength="25"
                         android:maxLines="1"
@@ -562,7 +573,6 @@
                             android:focusableInTouchMode="false"
                             android:freezesText="true"
                             android:imeOptions="actionUnspecified"
-
                             android:inputType="textCapWords"
                             android:maxLines="1"
                             android:text="@string/identification_screen_prompt_economic_status" />

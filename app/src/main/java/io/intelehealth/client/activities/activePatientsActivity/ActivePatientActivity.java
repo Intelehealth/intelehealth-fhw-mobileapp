@@ -14,10 +14,12 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
@@ -25,13 +27,19 @@ import com.crashlytics.android.Crashlytics;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.homeActivity.HomeActivity;
 import io.intelehealth.client.database.InteleHealthDatabaseHelper;
+import io.intelehealth.client.database.dao.EncounterDAO;
+import io.intelehealth.client.database.dao.ImagesDAO;
 import io.intelehealth.client.database.dao.ProviderDAO;
+import io.intelehealth.client.database.dao.VisitsDAO;
 import io.intelehealth.client.models.ActivePatientModel;
+import io.intelehealth.client.models.dto.EncounterDTO;
+import io.intelehealth.client.models.dto.VisitDTO;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.StringUtils;
@@ -47,6 +55,10 @@ public class ActivePatientActivity extends AppCompatActivity {
     TextView textView;
     RecyclerView recyclerView;
     AlertDialog.Builder dialogBuilder;
+
+    private ArrayList<String> listPatientUUID = new ArrayList<String>();
+    public static int index = -1;
+    public static int top = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +83,56 @@ public class ActivePatientActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         mDbHelper = new InteleHealthDatabaseHelper(this);
         db = mDbHelper.getWritableDatabase();
+
+        getVisits();
+
         if (sessionManager.isPullSyncFinished()) {
             textView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
             doQuery();
+        }
+
+    }
+
+    private void getVisits() {
+
+        ArrayList<String> encounterVisitUUID = new ArrayList<String>();
+        HashSet<String> hsPatientUUID = new HashSet<String>();
+
+        //Get all Visits
+        VisitsDAO visitsDAO = new VisitsDAO();
+        List<VisitDTO> visitsDTOList = visitsDAO.getAllVisits();
+
+        //Get all Encounters
+        EncounterDAO encounterDAO = new EncounterDAO();
+        List<EncounterDTO> encounterDTOList = encounterDAO.getAllEncounters();
+
+        //Get Visit Note Encounters only, visit note encounter id - d7151f82-c1f3-4152-a605-2f9ea7414a79
+        if (encounterDTOList.size() > 0) {
+            for (int i = 0; i < encounterDTOList.size(); i++) {
+                if (encounterDTOList.get(i).getEncounterTypeUuid().equalsIgnoreCase("d7151f82-c1f3-4152-a605-2f9ea7414a79")) {
+                    encounterVisitUUID.add(encounterDTOList.get(i).getVisituuid());
+                }
+            }
+        }
+
+        //Get patientUUID from visitList
+        for (int i = 0; i < encounterVisitUUID.size(); i++) {
+
+            for (int j = 0; j < visitsDTOList.size(); j++) {
+
+                if (encounterVisitUUID.get(i).equalsIgnoreCase(visitsDTOList.get(j).getUuid())) {
+                    listPatientUUID.add(visitsDTOList.get(j).getPatientuuid());
+                }
+            }
+        }
+
+        if (listPatientUUID.size() > 0) {
+
+            hsPatientUUID.addAll(listPatientUUID);
+            listPatientUUID.clear();
+            listPatientUUID.addAll(hsPatientUUID);
+
         }
     }
 
@@ -134,8 +192,9 @@ public class ActivePatientActivity extends AppCompatActivity {
             for (ActivePatientModel activePatientModel : activePatientList)
                 Logger.logD(TAG, activePatientModel.getFirst_name() + " " + activePatientModel.getLast_name());
 
-            ActivePatientAdapter mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this);
+            ActivePatientAdapter mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ActivePatientActivity.this);
+            recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(linearLayoutManager);
             recyclerView.addItemDecoration(new
                     DividerItemDecoration(this,
@@ -199,7 +258,7 @@ public class ActivePatientActivity extends AppCompatActivity {
 //        boolean[] checkedItems = {false, false, false, false};
         // ngo_numbers = getResources().getStringArray(R.array.ngo_numbers);
         dialogBuilder = new AlertDialog.Builder(ActivePatientActivity.this);
-        dialogBuilder.setTitle("Filter by Creator");
+        dialogBuilder.setTitle("Filter by creator");
 
         String[] finalCreator_names = creator_names;
         String[] finalCreator_uuid = creator_uuid;
@@ -256,7 +315,16 @@ public class ActivePatientActivity extends AppCompatActivity {
                 }*/
         // }
         // });
-        dialogBuilder.show();
+        // dialogBuilder.show();
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+
 
     }
 
@@ -363,7 +431,7 @@ public class ActivePatientActivity extends AppCompatActivity {
             for (ActivePatientModel activePatientModel : activePatientList)
                 Logger.logD(TAG, activePatientModel.getFirst_name() + " " + activePatientModel.getLast_name());
 
-            ActivePatientAdapter mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this);
+            ActivePatientAdapter mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ActivePatientActivity.this);
             recyclerView.setLayoutManager(linearLayoutManager);
             recyclerView.addItemDecoration(new

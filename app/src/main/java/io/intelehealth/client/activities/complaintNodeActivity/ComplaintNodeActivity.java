@@ -3,6 +3,7 @@ package io.intelehealth.client.activities.complaintNodeActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.crashlytics.android.Crashlytics;
@@ -132,7 +134,9 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         boolean hasLicense = false;
-        if (sharedPreferences.contains("licensekey")) hasLicense = true;
+//        if (sharedPreferences.contains("licensekey"))
+        if (!sessionManager.getLicenseKey().isEmpty())
+            hasLicense = true;
         JSONObject currentFile = null;
         if (hasLicense) {
             File base_dir = new File(getFilesDir().getAbsolutePath() + File.separator + AppConstants.JSON_FOLDER);
@@ -208,6 +212,10 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 });
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
+                Button pb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+                pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                pb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+
             } else {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
                 alertDialogBuilder.setTitle(R.string.complaint_dialog_title);
@@ -215,6 +223,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 View convertView = inflater.inflate(R.layout.list_dialog_complaint, null);
                 alertDialogBuilder.setView(convertView);
                 ListView listView = convertView.findViewById(R.id.complaint_dialog_list_view);
+                listView.setDivider(null);
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, displaySelection);
                 listView.setAdapter(arrayAdapter);
                 alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
@@ -243,6 +252,12 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 });
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
+                Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                pb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+                nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+                nb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
             }
         }
     }
