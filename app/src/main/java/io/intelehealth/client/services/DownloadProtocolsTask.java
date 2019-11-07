@@ -224,9 +224,10 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
         } else {
             File engines_dir = new File(activity.getFilesDir().getAbsolutePath(), AppConstants.JSON_FOLDER);
             if (engines_dir.exists()) deleteFolder(engines_dir);
-            if (sessionManager.getLicenseKey().contains("licensekey"))
+            if (sessionManager.getLicenseKey() != null)
                 sessionManager.deleteLicensekey();
             Toast.makeText(IntelehealthApplication.getAppContext(), "Error downloading protocols", Toast.LENGTH_LONG).show();
+
         }
         if (mProgress != null && mProgress.isShowing()) {
             try {
@@ -246,7 +247,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
         try {
             publishProgress("progress", "Downloading Mindmap List");
             //Download List of Protocols Available
-            String servStr = "http://" + sessionManager.getMindMapServerUrl() + ":1337/parse/functions/downloadMindMapList";
+            String servStr = "http://" + sessionManager.getMindMapServerUrl() + "/parse/functions/downloadMindMapList";
             URL url = new URL(servStr);
             Log.i("GetMMList", servStr);
             byte[] mmListRequestBytes = mmListRequest.getBytes(StandardCharsets.UTF_8);
@@ -294,7 +295,8 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
                     publishProgress("toast", jsonObject.get("error").toString());
                 }
             } else {
-                Toast.makeText(IntelehealthApplication.getAppContext(), "Error Downloading Mindmap List", Toast.LENGTH_LONG).show();
+
+                Toast.makeText(IntelehealthApplication.getAppContext(), "Error Downloadind Mindmap List", Toast.LENGTH_LONG).show();
             }
 
 
@@ -322,7 +324,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
         try {
             publishProgress("progress", "Downloading Mindmap " + mindmap.name);
             //Download List of Protocols Available
-            String servStr = "http://" + sessionManager.getMindMapServerUrl() + ":1337/parse/functions/downloadMindMap";
+            String servStr = "http://" + sessionManager.getMindMapServerUrl() + "/parse/functions/downloadMindMap";
             URL url = new URL(servStr);
             Log.i("GetMM", servStr);
             byte[] mmListRequestBytes = mmListRequest.getBytes(StandardCharsets.UTF_8);

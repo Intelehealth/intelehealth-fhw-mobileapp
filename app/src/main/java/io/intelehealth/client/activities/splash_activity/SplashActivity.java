@@ -17,15 +17,12 @@ import com.gun0912.tedpermission.TedPermission;
 import java.util.List;
 import java.util.Locale;
 
-import io.intelehealth.client.BuildConfig;
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.loginActivity.LoginActivity;
 import io.intelehealth.client.activities.setupActivity.SetupActivity;
 import io.intelehealth.client.dataMigration.SmoothUpgrade;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
-
-import static io.intelehealth.client.app.AppConstants.APP_VERSION_CODE;
 
 
 public class SplashActivity extends AppCompatActivity {
@@ -70,7 +67,9 @@ public class SplashActivity extends AppCompatActivity {
                 TempDialog.setProgress(i);
                 TempDialog.show();
 
-                if (BuildConfig.VERSION_CODE <= APP_VERSION_CODE && sessionManager.isFirstTimeLaunched()) {
+                if (sessionManager.isMigration()) {
+                    nextActivity();
+                } else {
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
@@ -88,8 +87,6 @@ public class SplashActivity extends AppCompatActivity {
 
                         }
                     }, 2000);
-                } else {
-                    nextActivity();
                 }
 
             }
@@ -135,5 +132,10 @@ public class SplashActivity extends AppCompatActivity {
     protected void onDestroy() {
         TempDialog.dismiss();
         super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

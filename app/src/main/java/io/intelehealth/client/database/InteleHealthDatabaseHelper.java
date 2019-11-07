@@ -13,12 +13,8 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = AppConstants.DATABASE_VERSION;
     public static final String DATABASE_NAME = AppConstants.DATABASE_NAME;
-    /*"openmrs_obsuuid": "5e3e7c8d-e3c3-4a1d-a391-d3d04e45df0e",
-                "openmrs_encounteruuid": "99835c05-8c5c-4d17-b96d-095fb12ebc53",
-                "conceptid": 5090,
-                "value": "54",
-                "creator": 4
-    * */
+    public static SQLiteDatabase database;
+
     public static final String CREATE_ENCOUNTER_MAIN = "CREATE TABLE IF NOT EXISTS tbl_encounter (" +
             "uuid TEXT PRIMARY KEY," +
             "visituuid TEXT," +
@@ -30,20 +26,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "voided TEXT DEFAULT '0'," +
             "privacynotice_value TEXT" +
             ")";
-    /*
-    * "openmrs_uuid": "8ab7f041-0b02-4ac0-a8f4-aa35f90ae3a1",
-                    "openmrs_id": "10213-7",
-                    "firstname": "John",
-                    "middlename": "Mira",
-                    "lastname": "Bora",
-                    "dateofbirth": "Oct 27, 2018 12:00:00 AM",
-                    "address1": "Everlasting Village",
-                    "country": "Philippines",
-                    "gender": "M"
-    *
-    * char(36) default (lower(hex(randomblob(4))) || '-' || lower(hex(randomblob(2))) || '-4' || substr(lower(hex(randomblob(2))),2) || '-' || substr('89ab',abs(random()) % 4 + 1, 1) || substr(lower(hex(randomblob(2))),2) || '-' || lower(hex(randomblob(6))))
-    *
-    * */
+
     public static final String CREATE_PATIENT_MAIN = "CREATE TABLE IF NOT EXISTS tbl_patient(" +
             "uuid TEXT PRIMARY KEY," +
             "openmrs_id TEXT," +
@@ -70,11 +53,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "voided TEXT DEFAULT '0'," +
             "sync TEXT DEFAULT 'false' " +
             ")";
-    /* "openmrs_uuid": "834054d5-db4d-481c-8f2b-17da25aa93a2",
-                "value": "123456789",
-                "openmrs_person_attribute_type_uuid": "14d4f066-15f5-102d-96e4-000c29c2a5d7",
-                "openmrs_patientuuid": "8ab7f041-0b02-4ac0-a8f4-aa35f90ae3a1"
-    * */
+
     public static final String CREATE_ATTRIB_MAIN = "CREATE TABLE IF NOT EXISTS tbl_patient_attribute (" +
             "uuid TEXT PRIMARY KEY," +
             "value TEXT," +
@@ -95,17 +74,11 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "modified_date TEXT," +
             "isdownloaded TEXT DEFAULT 'false'," +
             "voided TEXT DEFAULT '0'," +
-            "sync TEXT DEFAULT 'false' " +
+            "sync TEXT DEFAULT 'false' ," +
+            "issubmitted Integer DEFAULT 0 " +
             ")";
 
-    /*
-      "openmrs_patientuuid": "8ab7f041-0b02-4ac0-a8f4-aa35f90ae3a1",
-              "openmrs_visituuid": "8f80610c-2a8f-487e-8ee9-0c2c7ced4d89",
-              "visit_type_id": 4,
-              "startdate": "Nov 13, 2018 1:03:55 PM",
-              "enddate": "Nov 14, 2018 6:37:24 AM",
-              "locationuuid": "1eaa9a54-0fcb-4d5c-9ec7-501d2e5bcf2a",
-              "creator": 4*/
+
     public static final String CREATE_OBS_MAIN = "CREATE TABLE IF NOT EXISTS tbl_obs (" +
             "uuid TEXT PRIMARY KEY ," +
             "encounteruuid TEXT," +
@@ -113,14 +86,13 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "value TEXT," +
             "creator TEXT," +
             "voided TEXT DEFAULT '0'," +
+            "obsservermodifieddate TEXT," +
             "modified_date TEXT," +
+            "created_date TEXT DEFAULT CURRENT_TIMESTAMP ," +
             "sync TEXT DEFAULT 'false' " +
             ")";
     SessionManager sessionManager = null;
-    /*"openmrs_encounteruuid": "99835c05-8c5c-4d17-b96d-095fb12ebc53",
-                    "openmrs_visituuid": "8f80610c-2a8f-487e-8ee9-0c2c7ced4d89",
-                    "encounter_type": "6"
-    * */
+
     public static final String CREATE_PATIENT_ATTRIBUTE_MASTER_MAIN = "CREATE TABLE IF NOT EXISTS tbl_patient_attribute_master (" +
             "uuid TEXT PRIMARY KEY," +
             "name TEXT," +
@@ -129,24 +101,6 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "sync TEXT DEFAULT 'false' " +
             ")";
 
-    public static final String CREATE_VISIT_ATTRIBUTE_MASTER_MAIN = "CREATE TABLE IF NOT EXISTS tbl_visit_attribute_master (" +
-            "uuid TEXT PRIMARY KEY," +
-            "name TEXT," +
-            "retired TEXT," +
-            "modified_date TEXT" +
-            ")";
-
-    public static final String CREATE_VISIT_ATTRIB = "CREATE TABLE IF NOT EXISTS tbl_visit_attribute (" +
-            "uuid TEXT PRIMARY KEY," +
-            "value TEXT," +
-            "visit_attribute_type_uuid TEXT ," +
-            "visituuid TEXT," +
-            "modified_date TEXT," +
-            "sync TEXT" +
-            ")";
-    /*  "openmrs_uuid": "8d871386-c2cc-11de-8d13-0010c6dffd0f",
-                "name": "Race"
-    * */
     public static final String CREATE_LOCATION = "CREATE TABLE IF NOT EXISTS tbl_location (" +
             "name TEXT," +
             "locationuuid TEXT PRIMARY KEY," +
@@ -165,12 +119,6 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "sync TEXT DEFAULT 'false' " +
             ")";
 
-    public static final String CREATE_SYNC = "CREATE TABLE IF NOT EXISTS tbl_sync (" +
-            "locationuuid TEXT PRIMARY KEY," +
-            "last_pull_execution_time TEXT," +
-            "sync TEXT DEFAULT 'false' ," +
-            "devices_sync TEXT" +
-            ")";
 
     public static final String CREATE_UUID_DICTIONARY = "CREATE TABLE IF NOT EXISTS tbl_uuid_dictionary (" +
             "uuid TEXT  PRIMARY KEY," +
@@ -196,7 +144,6 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
     public void uuidInsert(SQLiteDatabase db) {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         if (sessionManager.isFirstTimeLaunched()) {
-//            db.execSQL("Drop Table tbl_uuid_dictionary");
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('3edb0e09-9135-481e-b8f0-07a26fa9a5ce','CURRENTCOMPLAINT')");
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('e1761e85-9b50-48ae-8c4d-e6b7eeeba084','PHYSICAL_EXAMINATION')");
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA','HEIGHT')");
@@ -232,26 +179,6 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('a86ac96e-2e07-47a7-8e72-8216a1a75bfd','VISIT_TELEMEDICINE')");
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('78284507-fb71-4354-9b34-046ab205e18f','RATING')");
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('36d207d6-bee7-4b3e-9196-7d053c6eddce','COMMENTS')");
-//            patient attributes master
-//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('0f63da10-882f-4352-9507-8c2e295c4bf7','Commune')");
-//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('14d4f066-15f5-102d-96e4-000c29c2a5d7','Telephone Number')");
-//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('1b2f34f7-2bf8-4ef7-9736-f5b858afc160','Son/wife/daughter')");
-//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('1c718819-345c-4368-aad6-d69b4c267db7','Education Level')");
-//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('1d609ff3-6f45-44d3-a0b6-601976571979','Department')");
-//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('4f07985c-88a5-4abd-aa0c-f3ec8324d8e7','Test Patient')");
-//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('5a889d96-0c84-4a04-88dc-59a6e37db2d3','Caste')");
-//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('8d8718c2-c2cc-11de-8d13-0010c6dffd0f','Birthplace')");
-//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('8d871afc-c2cc-11de-8d13-0010c6dffd0f','Citizenship')");
-//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('8d871d18-c2cc-11de-8d13-0010c6dffd0f','Mothers Name')");
-//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('8d871f2a-c2cc-11de-8d13-0010c6dffd0f','Civil Status')");
-//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('8d871d18-c2cc-11de-8d13-0010c6dffd0f','Health District')");
-//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('8d871d18-c2cc-11de-8d13-0010c6dffd0f','Health Center')");
-//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('99d5b4ef-db5a-4ae4-a5e2-2bf1ea0a251e','Cell Number')");
-//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('cf17630b-b966-47e9-974b-8098ee87f773','Prison Name')");
-//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('ecdaadb6-14a0-4ed9-b5b7-cfed87b44b87','occupation')");
-//            db.execSQL("INSERT OR REPLACE INTO tbl_patient_attribute_master (uuid,name) VALUES('f4af0ef3-579c-448a-8157-750283409122','Economic Status')");
-
-
 
 
         }
@@ -265,14 +192,12 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_IMAGE_RECORDS);
         db.execSQL(CREATE_OBS_MAIN);
         db.execSQL(CREATE_VISIT_MAIN);
-//        db.execSQL(CREATE_VISIT_ATTRIBUTE_MASTER_MAIN);
-//        db.execSQL(CREATE_VISIT_ATTRIB);
         db.execSQL(CREATE_PATIENT_ATTRIBUTE_MASTER_MAIN);
         db.execSQL(CREATE_LOCATION);
         db.execSQL(CREATE_PROVIDER);
-        db.execSQL(CREATE_SYNC);
         db.execSQL(CREATE_UUID_DICTIONARY);
         uuidInsert(db);
+        database = db;
 
     }
 
@@ -287,8 +212,6 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
                 //upgrade logic from version 3 to 4
             case 4:
                 //upgrade logic from version 4
-                alterTables(db);
-                break;
             default:
                 throw new IllegalStateException(
                         "onUpgrade() with unknown oldVersion " + oldVersion);
@@ -296,8 +219,11 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void alterTables(SQLiteDatabase db) {
-//        db.execSQL("Drop table  IF Exists patients");
-    }
 
+    public SQLiteDatabase getWriteDb() {
+        if (database != null && database.isOpen())
+            return database;
+        else
+            return getWritableDatabase();
+    }
 }

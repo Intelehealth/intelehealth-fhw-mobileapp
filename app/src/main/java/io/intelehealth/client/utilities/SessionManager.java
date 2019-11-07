@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import java.util.Set;
+
 public class SessionManager {
     // Shared preferences file name
     private static final String PREF_NAME = "Intelehealth";
@@ -38,6 +40,9 @@ public class SessionManager {
     private static final String PUSH_SYNC_FINISHED = "pushsyncfinished";
     private static final String MIND_MAP_SERVER_URL = "mindmapurl";
     private static final String RETURNING_USER = "returninguser";
+    private static final String VISIT_SUMMARY = "visit_summary";
+    private static final String EXAM = "exam_";
+    private static final String MIGRATION_KEY = "migrationkey";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -199,7 +204,7 @@ public class SessionManager {
     }
 
     public String getLicenseKey() {
-        return pref.getString(LICENSE_KEY, "");
+        return pref.getString(LICENSE_KEY, null);
     }
 
     public void setLicenseKey(String licenseKey) {
@@ -299,7 +304,7 @@ public class SessionManager {
     }
 
     public String getLastPulledDateTime() {
-        return pref.getString(LAST_PULLED_EXECUTED_DATE_TIME, "01 January 2019");
+        return pref.getString(LAST_PULLED_EXECUTED_DATE_TIME, "01 January 2019 12:15:26");
     }  //getting the sync value  and time and saving in the sharedpref
 
     public void setLastPulledDateTime(String lastPulledDateTime) {
@@ -342,4 +347,32 @@ public class SessionManager {
         editor.putBoolean(RETURNING_USER, returningUser);
         editor.commit();
     }
+
+    public Set<String> getVisitSummary(String patientUUid) {
+
+        return pref.getStringSet(EXAM + patientUUid, null);
+    }
+
+    public void setVisitSummary(String patientUuid, Set<String> selectedExams) {
+        editor.putStringSet(EXAM + patientUuid, selectedExams);
+        editor.commit();
+
+    }
+
+    public void removeVisitSummary(String patientUuid, String visitUuid) {
+        editor.remove(EXAM + patientUuid + "_" + visitUuid);
+        editor.commit();
+
+    }
+
+    public boolean isMigration() {
+        return pref.getBoolean(MIGRATION_KEY, false);
+    }
+
+    public void setMigration(Boolean migration) {
+        editor.putBoolean(MIGRATION_KEY, migration);
+        editor.commit();
+    }
+
+
 }

@@ -56,7 +56,6 @@ import io.intelehealth.client.database.dao.PatientsDAO;
 import io.intelehealth.client.database.dao.VisitsDAO;
 import io.intelehealth.client.knowledgeEngine.Node;
 import io.intelehealth.client.models.Patient;
-import io.intelehealth.client.models.VisitUuidModel;
 import io.intelehealth.client.models.dto.EncounterDTO;
 import io.intelehealth.client.models.dto.VisitDTO;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
@@ -97,7 +96,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     LinearLayout previousVisitsList;
     String visitValue;
     private String encounterVitals = "";
-    private String encounterAdultIntials = null;
+    private String encounterAdultIntials = "";
     SQLiteDatabase db = null;
     Button editbtn;
     Button newVisit;
@@ -119,7 +118,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         sessionManager = new SessionManager(this);
         reMyreceive = new Myreceiver();
         filter = new IntentFilter("OpenmrsID");
@@ -281,7 +280,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     protected void onDestroy() {
         unregisterReceiver(reMyreceive);
         super.onDestroy();
-        db.close();
+
     }
 
     public void setDisplay(String dataString) {
@@ -470,7 +469,6 @@ public class PatientDetailActivity extends AppCompatActivity {
             CardView histCardView = findViewById(R.id.cardView_history);
             histCardView.setVisibility(View.GONE);
         } else {
-            db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
             visitUuidList = new ArrayList<>();
             String visitIDSelection = "patientuuid = ?";
             String[] visitIDArgs = {patientUuid};
@@ -484,8 +482,6 @@ public class PatientDetailActivity extends AppCompatActivity {
             if (visitIDCursor != null) {
                 visitIDCursor.close();
             }
-            VisitUuidModel visitUuidModel;
-            List<VisitUuidModel> visitUuidModelList = new ArrayList<>();
             for (String visituuid : visitUuidList) {
                 Logger.logD(TAG, visituuid);
                 EncounterDAO encounterDAO = new EncounterDAO();
@@ -501,20 +497,13 @@ public class PatientDetailActivity extends AppCompatActivity {
                         if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
                             encounterAdultIntials = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
                         }
-                        visitUuidModel = new VisitUuidModel(encounterVitals, encounterAdultIntials);
-                        visitUuidModelList.add(visitUuidModel);
                     } while (encounterCursor.moveToNext());
-                }
-                for (VisitUuidModel uuidModel : visitUuidModelList) {
-                    if (null != uuidModel.getEncounterAdultIntials() && !uuidModel.getEncounterAdultIntials().isEmpty()) {
-                        familyHistory(famHistView, uuidModel.getEncounterAdultIntials());
-                        pastMedicalHistory(medHistView, uuidModel.getEncounterAdultIntials());
-
-                    }
                 }
                 encounterCursor.close();
             }
-            pastVisits(patientUuid, encounterAdultIntials, visitUuid, encounterVitals);
+            familyHistory(famHistView, patientUuid);
+            pastMedicalHistory(medHistView, patientUuid);
+            pastVisits(patientUuid);
 
 
         }
@@ -523,7 +512,6 @@ public class PatientDetailActivity extends AppCompatActivity {
     }
 
     public void profilePicDownloaded() {
-//        String url = "http://demo.intelehealth.io/openmrs/ws/rest/v1/personimage/" + patientUuid;
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.patientProfileImageUrl(patientUuid);
         Logger.logD(TAG, "profileimage url" + url);
@@ -570,9 +558,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                             Crashlytics.getInstance().core.logException(e);
                         }
                         if (isImageDownloaded)
-                            AppConstants.notificationUtils.DownloadDone("Patient Image Download", "" + patient_new.getFirst_name() + "" + patient_new.getLast_name() + "'s Image Download complete.", getApplication());
+                            AppConstants.notificationUtils.DownloadDone("Patient Image Download", "" + patient_new.getFirst_name() + "" + patient_new.getLast_name() + "'s Image Download complete.", 4, getApplication());
                         else
-                            AppConstants.notificationUtils.DownloadDone("Patient Image Download", "" + patient_new.getFirst_name() + "" + patient_new.getLast_name() + "'s Image Download Incomplete.", getApplication());
+                            AppConstants.notificationUtils.DownloadDone("Patient Image Download", "" + patient_new.getFirst_name() + "" + patient_new.getLast_name() + "'s Image Download Incomplete.", 4, getApplication());
 
 
                     }
@@ -585,10 +573,7 @@ public class PatientDetailActivity extends AppCompatActivity {
      * @param datetime variable of type String.
      * @return void
      */
-    private void createOldVisit(final String datetime, String end_datetime, String visitValue, String visitUuid, String encounterVitals, String encounterAdultIntials) throws ParseException {
-        // final LayoutInflater inflater = PatientDetailActivity.this.getLayoutInflater();
-        //  View convertView = inflater.inflate(R.layout.list_item_previous_visit, null);
-        //  TextView textView = (TextView) convertView.findViewById(R.id.textView_visit_info);
+    private void createOldVisit(final String datetime, String visit_id, String end_datetime, String visitValue, String encounterVitalslocal, String encounterAdultIntialslocal) throws ParseException {
 
         final Boolean past_visit;
         final TextView textView = new TextView(this);
@@ -667,42 +652,18 @@ public class PatientDetailActivity extends AppCompatActivity {
                 (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         llp.setMargins(0, 0, 0, 0);
         textView.setLayoutParams(llp);
-//        textView.setTag(visit_id);
+        textView.setTag(visit_id);
 
-//        previousVisitsList.addView(textView);
-       /* textView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int action = event.getAction();
-
-                switch (action) {
-                    case MotionEvent.ACTION_DOWN:
-                        // Disallow ScrollView to intercept touch events.
-                        Toast.makeText(PatientDetailActivity.this,"Touch Down",Toast.LENGTH_SHORT).show();
-                        v.getParent().getParent().getParent()
-                                .requestDisallowInterceptTouchEvent(true);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        // Allow ScrollView to intercept touch events.
-                        Toast.makeText(PatientDetailActivity.this,"Touch Up",Toast.LENGTH_SHORT).show();
-                        v.getParent().getParent()
-                                .requestDisallowInterceptTouchEvent(false);
-
-                        break;
-                }
-                return true;
-            }
-        });*/
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // int position = (Integer) v.getTag();
+//                 int position = (Integer) v.getTag();
                 Intent visitSummary = new Intent(PatientDetailActivity.this, VisitSummaryActivity.class);
 
-                visitSummary.putExtra("visitUuid", visitUuid);
+                visitSummary.putExtra("visitUuid", visit_id);
                 visitSummary.putExtra("patientUuid", patientUuid);
-                visitSummary.putExtra("encounterUuidVitals", encounterVitals);
-                visitSummary.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                visitSummary.putExtra("encounterUuidVitals", encounterVitalslocal);
+                visitSummary.putExtra("encounterUuidAdultIntial", encounterAdultIntialslocal);
                 visitSummary.putExtra("name", patientName);
                 visitSummary.putExtra("tag", intentTag);
                 visitSummary.putExtra("pastVisit", past_visit);
@@ -751,61 +712,147 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
     }
 
-    public void familyHistory(TextView famHistView, String encounterAdultIntials) {
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        String famHistSelection = "encounteruuid = ? AND conceptuuid = ?";
-        String[] famHistArgs = {encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB};
-        String[] famHistColumns = {"value", " conceptuuid"};
-        Cursor famHistCursor = db.query("tbl_obs", famHistColumns, famHistSelection, famHistArgs, null, null, null);
-        famHistCursor.moveToLast();
-        String famHistValue;
+    public void familyHistory(TextView famHistView, String patientuuid) {
+        String visitSelection = "patientuuid = ? AND enddate IS NULL OR enddate = ''";
+        String[] visitArgs = {patientuuid};
+        String[] visitColumns = {"uuid, startdate", "enddate"};
+        String visitOrderBy = "startdate";
+        Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
 
-        try {
-            famHistValue = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
-        } catch (Exception e) {
-            famHistValue = "";
-        } finally {
-            famHistCursor.close();
+        previousVisitsList = findViewById(R.id.linearLayout_previous_visits);
+        if (visitCursor.getCount() < 1) {
+//            neverSeen();
+        } else {
+
+            if (visitCursor.moveToLast() && visitCursor != null) {
+                do {
+                    EncounterDAO encounterDAO = new EncounterDAO();
+                    String date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("startdate"));
+                    String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
+                    String visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
+
+                    String encounterlocalAdultintial = "";
+                    String encountervitalsLocal = null;
+                    String encounterIDSelection = "visituuid = ?";
+
+                    String[] encounterIDArgs = {visit_id};
+
+                    Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+                    if (encounterCursor != null && encounterCursor.moveToFirst()) {
+                        do {
+                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                                encountervitalsLocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                            }
+                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                                encounterlocalAdultintial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                            }
+
+                        } while (encounterCursor.moveToNext());
+                    }
+                    if (encounterCursor != null) {
+                        encounterCursor.close();
+                    }
+                    String famHistSelection = "encounteruuid = ? AND conceptuuid = ? And voided!='1'";
+                    String[] famHistArgs = {encounterlocalAdultintial, UuidDictionary.RHK_FAMILY_HISTORY_BLURB};
+                    String[] famHistColumns = {"value", " conceptuuid"};
+                    Cursor famHistCursor = db.query("tbl_obs", famHistColumns, famHistSelection, famHistArgs, null, null, null);
+                    famHistCursor.moveToLast();
+                    String famHistValue;
+
+                    try {
+                        famHistValue = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
+                    } catch (Exception e) {
+                        famHistValue = "";
+                    } finally {
+                        famHistCursor.close();
+                    }
+
+                    if (famHistValue != null && !famHistValue.equals("")) {
+                        famHistView.setText(Html.fromHtml(famHistValue));
+                    } else {
+                        famHistView.setText(getString(R.string.string_no_hist));
+                    }
+
+                } while (visitCursor.moveToPrevious());
+            }
+            visitCursor.close();
         }
 
-        if (famHistValue != null && !famHistValue.equals("")) {
-            famHistView.setText(Html.fromHtml(famHistValue));
+    }
+
+    public void pastMedicalHistory(TextView medHistView, String patientuuid) {
+        String visitSelection = "patientuuid = ? AND enddate IS NULL OR enddate = ''";
+        String[] visitArgs = {patientuuid};
+        String[] visitColumns = {"uuid, startdate", "enddate"};
+        String visitOrderBy = "startdate";
+        Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
+
+        previousVisitsList = findViewById(R.id.linearLayout_previous_visits);
+        if (visitCursor.getCount() < 1) {
+//            neverSeen();
         } else {
-            famHistView.setText(getString(R.string.string_no_hist));
+
+            if (visitCursor.moveToLast() && visitCursor != null) {
+                do {
+                    EncounterDAO encounterDAO = new EncounterDAO();
+                    String date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("startdate"));
+                    String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
+                    String visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
+
+                    String encounterlocalAdultintial = "";
+                    String encountervitalsLocal = null;
+                    String encounterIDSelection = "visituuid = ?";
+
+                    String[] encounterIDArgs = {visit_id};
+
+                    Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+                    if (encounterCursor != null && encounterCursor.moveToFirst()) {
+                        do {
+                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                                encountervitalsLocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                            }
+                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                                encounterlocalAdultintial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                            }
+
+                        } while (encounterCursor.moveToNext());
+                    }
+                    if (encounterCursor != null) {
+                        encounterCursor.close();
+                    }
+                    String medHistSelection = "encounteruuid = ? AND conceptuuid = ? And voided!='1'";
+                    String[] medHistArgs = {encounterlocalAdultintial, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
+                    String[] medHistColumms = {"value", " conceptuuid"};
+                    Cursor medHistCursor = db.query("tbl_obs", medHistColumms, medHistSelection, medHistArgs, null, null, null);
+                    medHistCursor.moveToLast();
+
+
+                    String medHistValue;
+
+                    try {
+                        medHistValue = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+                    } catch (Exception e) {
+                        medHistValue = "";
+                    } finally {
+                        medHistCursor.close();
+                    }
+
+                    if (medHistValue != null && !medHistValue.equals("")) {
+                        medHistView.setText(Html.fromHtml(medHistValue));
+                    } else {
+                        medHistView.setText(getString(R.string.string_no_hist));
+                    }
+                } while (visitCursor.moveToPrevious());
+            }
+            visitCursor.close();
         }
     }
 
-    public void pastMedicalHistory(TextView medHistView, String encounterAdultIntials) {
-        String medHistSelection = "encounteruuid = ? AND conceptuuid = ?";
-        String[] medHistArgs = {encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
-        String[] medHistColumms = {"value", " conceptuuid"};
-        Cursor medHistCursor = db.query("tbl_obs", medHistColumms, medHistSelection, medHistArgs, null, null, null);
-        medHistCursor.moveToLast();
-
-
-        String medHistValue;
-
-        try {
-            medHistValue = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
-        } catch (Exception e) {
-            medHistValue = "";
-        } finally {
-            medHistCursor.close();
-        }
-
-        if (medHistValue != null && !medHistValue.equals("")) {
-            medHistView.setText(Html.fromHtml(medHistValue));
-        } else {
-            medHistView.setText(getString(R.string.string_no_hist));
-        }
-
-    }
-
-    public void pastVisits(String patientuuid, String encounterAdultIntials, String visituuid, String encounterVitals) {
+    public void pastVisits(String patientuuid) {
         String visitSelection = "patientuuid = ?";
         String[] visitArgs = {patientuuid};
         String[] visitColumns = {"uuid, startdate", "enddate"};
-        String visitOrderBy = "uuid";
+        String visitOrderBy = "startdate";
         Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
 
         previousVisitsList = findViewById(R.id.linearLayout_previous_visits);
@@ -815,12 +862,34 @@ public class PatientDetailActivity extends AppCompatActivity {
 
             if (visitCursor.moveToLast() && visitCursor != null) {
                 do {
+                    EncounterDAO encounterDAO = new EncounterDAO();
                     String date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("startdate"));
                     String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
                     String visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
 
-                    String previsitSelection = "encounteruuid = ? AND conceptuuid = ?";
-                    String[] previsitArgs = {encounterAdultIntials, UuidDictionary.CURRENT_COMPLAINT};
+                    String encounterlocalAdultintial = "";
+                    String encountervitalsLocal = null;
+                    String encounterIDSelection = "visituuid = ?";
+
+                    String[] encounterIDArgs = {visit_id};
+
+                    Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+                    if (encounterCursor != null && encounterCursor.moveToFirst()) {
+                        do {
+                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                                encountervitalsLocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                            }
+                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                                encounterlocalAdultintial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                            }
+
+                        } while (encounterCursor.moveToNext());
+                    }
+                    encounterCursor.close();
+
+
+                    String previsitSelection = "encounteruuid = ? AND conceptuuid = ? and voided !='1'";
+                    String[] previsitArgs = {encounterlocalAdultintial, UuidDictionary.CURRENT_COMPLAINT};
                     String[] previsitColumms = {"value", " conceptuuid", "encounteruuid"};
                     Cursor previsitCursor = db.query("tbl_obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);
                     if (previsitCursor.moveToLast() && previsitCursor != null) {
@@ -847,7 +916,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                                     Date formatted = currentDate.parse(date);
                                     String visitDate = currentDate.format(formatted);
-                                    createOldVisit(visitDate, end_date, visitValue, visituuid, encounterVitals, encounterAdultIntials);
+                                    createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
                                 } catch (ParseException e) {
                                     Crashlytics.getInstance().core.logException(e);
                                 }
@@ -860,7 +929,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                                 Date formatted = currentDate.parse(date);
                                 String visitDate = currentDate.format(formatted);
-                                createOldVisit(visitDate, end_date, visitValue, visituuid, encounterVitals, encounterAdultIntials);
+                                createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
                             } catch (ParseException e) {
                                 Crashlytics.getInstance().core.logException(e);
                             }
@@ -873,7 +942,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                             Date formatted = currentDate.parse(date);
                             String visitDate = currentDate.format(formatted);
-                            createOldVisit(visitDate, end_date, visitValue, visituuid, encounterVitals, encounterAdultIntials);
+                            createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
                         } catch (ParseException e) {
                             Crashlytics.getInstance().core.logException(e);
                         }

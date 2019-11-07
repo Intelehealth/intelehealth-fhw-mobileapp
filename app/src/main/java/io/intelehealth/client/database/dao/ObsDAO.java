@@ -23,8 +23,6 @@ import io.intelehealth.client.utilities.exception.DAOException;
 public class ObsDAO {
 
 
-    //    int updatecount = 0;
-//    long createdRecordsCount = 0;
     private SQLiteDatabase db = null;
     SessionManager sessionManager = null;
     String TAG = ObsDAO.class.getSimpleName();
@@ -32,23 +30,14 @@ public class ObsDAO {
     public boolean insertObsTemp(List<ObsDTO> obsDTOS) throws DAOException {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         boolean isInserted = true;
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         try {
             db.beginTransaction();
             Logger.logD("insert", " insert obs");
             for (ObsDTO obs : obsDTOS) {
                 if (sessionManager.isFirstTimeSyncExcuted() && obs.getVoided() == 1)
-                    continue;//performance reason
-                /*Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_obs where uuid=  ?", new String[]{obs.getUuid()});
-                if (cursor.getCount() != 0) {
-                    while (cursor.moveToNext()) {
-//                        Logger.logD("update", "update has to happen");
-                        updateObs(obs);
-                    }
-                } else {*/
+                    continue;
                 createObs(obs);
-                //}
-                //AppConstants.sqliteDbCloseHelper.cursorClose(cursor);
             }
             db.setTransactionSuccessful();
             Logger.logD("insert obs finished", " insert obs finished");
@@ -57,7 +46,7 @@ public class ObsDAO {
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
-            db.close();
+
         }
 
         return isInserted;
@@ -69,72 +58,30 @@ public class ObsDAO {
         long createdRecordsCount = 0;
         ContentValues values = new ContentValues();
         try {
-
-//           for (ObsDTO obs : obsDTOS) {
-//                Logger.logD("insert", "insert has to happen");
-
-            //     db.beginTransaction();
-
             values.put("uuid", obsDTOS.getUuid());
             values.put("encounteruuid", obsDTOS.getEncounteruuid());
             values.put("creator", obsDTOS.getCreator());
             values.put("conceptuuid", obsDTOS.getConceptuuid());
             values.put("value", obsDTOS.getValue());
+            values.put("obsservermodifieddate", obsDTOS.getObsServerModifiedDate());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("voided", obsDTOS.getVoided());
             values.put("sync", "TRUE");
-//               createdRecordsCount = db.insert("temp_obs", null, values);
-//                Logger.logD("pulldata", "datadumper" + values);
             createdRecordsCount = db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
-//            }
-            //db.setTransactionSuccessful();
-//            Logger.logD("created records", "created records count" + createdRecordsCount);
         } catch (SQLException e) {
             isCreated = false;
             throw new DAOException(e.getMessage(), e);
         } finally {
-            //db.endTransaction();
         }
 
         return isCreated;
 
     }
 
-//    private boolean updateObs(ObsDTO obsDTOS) throws DAOException {
-//        boolean isUpdated = true;
-//        db.beginTransaction();
-//        ContentValues values = new ContentValues();
-//        String selection = "uuid = ?";
-//        try {
-////            for (ObsDTO obs : obsDTOS) {
-////                Logger.logD("update", "update has to happen");
-//            values.put("encounteruuid", obsDTOS.getEncounteruuid());
-//            values.put("creator", obsDTOS.getCreator());
-//            values.put("conceptuuid", obsDTOS.getConceptuuid());
-//            values.put("value", obsDTOS.getValue());
-//            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-//            values.put("voided", obsDTOS.getVoided());
-//            values.put("synced", "TRUE");
-////                Logger.logD("pulldata", "datadumper" + values);
-//            updatecount = db.updateWithOnConflict("tbl_obs", values, selection, new String[]{obsDTOS.getUuid()}, SQLiteDatabase.CONFLICT_REPLACE);
-////            }
-//            db.setTransactionSuccessful();
-////            Logger.logD("updated", "updatedrecords count" + updatecount);
-//        } catch (SQLException e) {
-//            isUpdated = false;
-//            throw new DAOException(e.getMessage(), e);
-//        } finally {
-//            db.endTransaction();
-//        }
-//
-//        return isUpdated;
-//
-//    }
-
     public boolean insertObs(ObsDTO obsDTO) throws DAOException {
         boolean isUpdated = true;
         long insertedCount = 0;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         ContentValues values = new ContentValues();
 
@@ -145,9 +92,9 @@ public class ObsDAO {
             values.put("conceptuuid", obsDTO.getConceptuuid());
             values.put("value", obsDTO.getValue());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-            values.put("voided", "");
+            values.put("voided", "0");
             values.put("sync", "false");
-            insertedCount = db.insert("tbl_obs", null, values);
+            insertedCount = db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
             db.setTransactionSuccessful();
             Logger.logD("updated", "updatedrecords count" + insertedCount);
@@ -156,50 +103,16 @@ public class ObsDAO {
             throw new DAOException(e);
         } finally {
             db.endTransaction();
-            db.close();
+
         }
 
         return isUpdated;
 
     }
 
-    public boolean insertEmergencyObs(ObsDTO obsDTO) throws DAOException {
-        boolean isCreated = true;
-        long insertedCount = 0;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
-        ContentValues values = new ContentValues();
-
-        try {
-            values.put("uuid", obsDTO.getUuid());
-            values.put("encounteruuid", obsDTO.getEncounteruuid());
-            values.put("creator", obsDTO.getCreator());
-            values.put("conceptuuid", obsDTO.getConceptuuid());
-            values.put("value", obsDTO.getValue());
-            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-            values.put("voided", "");
-            values.put("sync", "FALSE");
-            insertedCount = db.insert("tbl_obs", null, values);
-            if (insertedCount != 0)
-                isCreated = true;
-            db.setTransactionSuccessful();
-            Logger.logD("inserted Emergency ", "created count" + insertedCount);
-        } catch (SQLException e) {
-            isCreated = false;
-            Crashlytics.getInstance().core.logException(e);
-            throw new DAOException(e);
-        } finally {
-            db.endTransaction();
-            db.close();
-        }
-
-        return isCreated;
-
-    }
-
 
     public boolean updateObs(ObsDTO obsDTO) {
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         int updatedCount = 0;
         ContentValues values = new ContentValues();
@@ -211,7 +124,7 @@ public class ObsDAO {
             values.put("conceptuuid", obsDTO.getConceptuuid());
             values.put("value", obsDTO.getValue());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-            values.put("voided", "");
+            values.put("voided", "0");
             values.put("sync", "false");
 
             updatedCount = db.update("tbl_obs", values, selection, new String[]{obsDTO.getUuid()});
@@ -222,9 +135,9 @@ public class ObsDAO {
 
         } finally {
             db.endTransaction();
-            db.close();
+
         }
-        //If no value is not found, then update fails so insert instead.
+//        If no value is not found, then update fails so insert instead.
         if (updatedCount == 0) {
             try {
                 insertObs(obsDTO);
@@ -240,7 +153,7 @@ public class ObsDAO {
     public boolean insertObsToDb(List<ObsDTO> obsDTO) throws DAOException {
         boolean isUpdated = true;
         long insertedCount = 0;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         ContentValues values = new ContentValues();
 
@@ -252,7 +165,7 @@ public class ObsDAO {
                 values.put("conceptuuid", ob.getConceptuuid());
                 values.put("value", ob.getValue());
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-                values.put("voided", "");
+                values.put("voided", "0");
                 values.put("sync", "FALSE");
                 insertedCount = db.insert("tbl_obs", null, values);
             }
@@ -264,7 +177,7 @@ public class ObsDAO {
             throw new DAOException(e);
         } finally {
             db.endTransaction();
-            db.close();
+
         }
 
         return isUpdated;
@@ -273,9 +186,9 @@ public class ObsDAO {
 
     public List<ObsDTO> obsDTOList(String encounteruuid) {
         List<ObsDTO> obsDTOList = new ArrayList<>();
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         //take All obs except image obs
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND (conceptuuid != ? AND conceptuuid != ?)", new String[]{encounteruuid, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE});
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND (conceptuuid != ? AND conceptuuid != ?) AND voided='0' AND sync='false'", new String[]{encounteruuid, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE});
         ObsDTO obsDTO = new ObsDTO();
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
@@ -288,14 +201,13 @@ public class ObsDAO {
             }
         }
         idCursor.close();
-        db.close();
 
         return obsDTOList;
     }
 
     public List<String> getImageStrings(String conceptuuid, String encounterUuidAdultIntials) {
         List<String> rawStrings = new ArrayList<>();
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_obs where conceptuuid = ? AND encounteruuid = ? AND voided='0'", new String[]{conceptuuid, encounterUuidAdultIntials});
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
@@ -303,9 +215,32 @@ public class ObsDAO {
             }
         }
         idCursor.close();
-        db.close();
+
 
         return rawStrings;
     }
+
+    public String getObsuuid(String encounterUuid, String conceptUuid) throws DAOException {
+        String obsuuid = null;
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor obsCursoursor = db.rawQuery("Select uuid from tbl_obs where conceptuuid=? and encounteruuid=? and voided='0' order by created_date,obsservermodifieddate desc limit 1 ", new String[]{conceptUuid, encounterUuid});
+        try {
+            if (obsCursoursor.getCount() != 0) {
+                while (obsCursoursor.moveToNext()) {
+                    obsuuid = obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("uuid"));
+                }
+
+            }
+        } catch (SQLException sql) {
+            Crashlytics.getInstance().core.logException(sql);
+            throw new DAOException(sql);
+        } finally {
+            obsCursoursor.close();
+        }
+
+
+        return obsuuid;
+    }
+
 
 }

@@ -18,7 +18,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Button;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -29,6 +28,7 @@ import java.util.List;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.homeActivity.HomeActivity;
+import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.InteleHealthDatabaseHelper;
 import io.intelehealth.client.database.dao.ProviderDAO;
 import io.intelehealth.client.models.TodayPatientModel;
@@ -64,8 +64,7 @@ public class TodayPatientActivity extends AppCompatActivity {
 
         mTodayPatientList = findViewById(R.id.today_patient_recycler_view);
         sessionManager = new SessionManager(this);
-        mDbHelper = new InteleHealthDatabaseHelper(this);
-        db = mDbHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         if (sessionManager.isPullSyncFinished()) {
             doQuery();
         }
@@ -73,38 +72,15 @@ public class TodayPatientActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * This method retrieves visit details about patient for a particular
-     * <p>
-     * <p>
-     * <p>
-     * <p>
-     * <p>
-     * <p>
-     * date.
-     *
-     * @return void
-     */
     private void doQuery() {
         List<TodayPatientModel> todayPatientList = new ArrayList<>();
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
-        String query =
-//                "SELECT tbl_visit.uuid, tbl_visit.patientuuid, tbl_visit.startdate, tbl_visit.enddate," +
-//                        "tbl_visit.uuid, tbl_patient.first_name, tbl_patient.middle_name, tbl_patient.last_name, " +
-//                        "tbl_patient.date_of_birth,tbl_patient.openmrs_id,a.value As phone_number " +
-//                        "FROM tbl_visit, tbl_patient,tbl_patient_attribute a " +
-//                        "WHERE tbl_visit.patientuuid = tbl_patient.uuid " +
-//                        "AND a.patientuuid=tbl_patient.uuid and a.person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' " +
-//                        "AND tbl_visit.startdate LIKE '" + currentDate + "T%'" +
-//                        "ORDER BY tbl_patient.first_name ASC";
-//
-                "SELECT a.uuid, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
+        String query = "SELECT a.uuid, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
                         "FROM tbl_visit a, tbl_patient b  " +
                         "WHERE a.patientuuid = b.uuid " +
-                        "AND a.startdate LIKE '2019-08-07T%' " +
+                        "AND a.startdate LIKE '" + currentDate + "T%'   " +
                         "GROUP BY a.uuid ORDER BY a.patientuuid ASC";
-        //  "SELECT * FROM visit, patient WHERE visit.patient_id = patient._id AND visit.start_datetime LIKE '" + currentDate + "T%'";
         Logger.logD(TAG, query);
         final Cursor cursor = db.rawQuery(query, null);
 
@@ -130,7 +106,9 @@ public class TodayPatientActivity extends AppCompatActivity {
                 } while (cursor.moveToNext());
             }
         }
-        cursor.close();
+        if (cursor != null) {
+            cursor.close();
+        }
 
         if (!todayPatientList.isEmpty()) {
             for (TodayPatientModel todayPatientModel : todayPatientList)
@@ -176,19 +154,6 @@ public class TodayPatientActivity extends AppCompatActivity {
 
 
     private void displaySingleSelectionDialog() {
-
-       /* View checkBoxView = View.inflate(this, R.layout.checkbox_view, null);
-        CheckBox checkBox = (CheckBox) checkBoxView.findViewById(R.id.checkbox);
-        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                // Save to shared preferences
-            }
-        });
-        checkBox.setText("Text to the right of the check box.");*/
-
         ProviderDAO providerDAO = new ProviderDAO();
         ArrayList selectedItems = new ArrayList<>();
         String[] creator_names = null;
@@ -202,7 +167,7 @@ public class TodayPatientActivity extends AppCompatActivity {
 //        boolean[] checkedItems = {false, false, false, false};
         // ngo_numbers = getResources().getStringArray(R.array.ngo_numbers);
         dialogBuilder = new AlertDialog.Builder(TodayPatientActivity.this);
-        dialogBuilder.setTitle("Filter by creator");
+        dialogBuilder.setTitle("Filter by Creator");
 
         String[] finalCreator_names = creator_names;
         String[] finalCreator_uuid = creator_uuid;
@@ -230,46 +195,11 @@ public class TodayPatientActivity extends AppCompatActivity {
                 //display filter query code on list menu
                 Logger.logD(TAG, "onclick" + i);
                 doQueryWithProviders(selectedItems);
-//                select distinct a.uuid,c.first_name,c.middle_name,c.last_name,c.openmrs_id,c.phone_number,c.date_of_birth from tbl_visit a,tbl_encounter b ,tbl_patient c where b.visituuid=a.uuid and b.provider_uuid in ('163b48e5-26fb-40c1-8d94-a6c873dd2869') and a.patientuuid=c.uuid and a.enddate is null order by c.first_name
             }
         });
 
         dialogBuilder.setNegativeButton("Cancel", null);
-        //dialogBuilder.setView(checkBoxView);
-        //dialogBuilder.setIcon(R.drawable.ic_sort_white_24dp);
-        //  dialogBuilder.setItems(creator_names, new DialogInterface.OnClickListener() {
-        // @Override
-        //  public void onClick(DialogInterface dialog, int which) {
-        // the user clicked on colors[which]
-               /* final String a = "tel:"+"9769025715";
-                final String b = "tel:"+"7304154312";
-
-                if("Team 1".equals(ngo_numbers[which]))
-                {
-                    Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse(a));
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    getApplicationContext().startActivity(i);
-                }
-
-                else if("Team 2".equals(ngo_numbers[which]))
-                {
-                    Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse(b));
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    getApplicationContext().startActivity(i);
-                }*/
-        // }
-        // });
-       // dialogBuilder.show();
-
-        AlertDialog alertDialog = dialogBuilder.create();
-        alertDialog.show();
-
-        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-
-        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
-        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-
+        dialogBuilder.show();
 
     }
 
@@ -277,23 +207,12 @@ public class TodayPatientActivity extends AppCompatActivity {
         List<TodayPatientModel> todayPatientList = new ArrayList<>();
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
-        String query =
-//                "SELECT tbl_visit.uuid, tbl_visit.patientuuid, tbl_visit.startdate, tbl_visit.enddate," +
-//                        "tbl_visit.uuid, tbl_patient.first_name, tbl_patient.middle_name, tbl_patient.last_name, " +
-//                        "tbl_patient.date_of_birth,tbl_patient.openmrs_id,a.value As phone_number " +
-//                        "FROM tbl_visit, tbl_patient,tbl_patient_attribute a " +
-//                        "WHERE tbl_visit.patientuuid = tbl_patient.uuid " +
-//                        "AND a.patientuuid=tbl_patient.uuid and a.person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' " +
-//                        "AND tbl_visit.startdate LIKE '" + currentDate + "T%'" +
-//                        "ORDER BY tbl_patient.first_name ASC";
-//
-                "SELECT  distinct a.uuid, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
+        String query = "SELECT  distinct a.uuid, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
                         "FROM tbl_visit a, tbl_patient b, tbl_encounter c " +
                         "WHERE a.patientuuid = b.uuid " +
                         "AND c.visituuid=a.uuid and c.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
                         "AND a.startdate LIKE '" + currentDate + "T%'" +
                         "ORDER BY a.patientuuid ASC ";
-        //  "SELECT * FROM visit, patient WHERE visit.patient_id = patient._id AND visit.start_datetime LIKE '" + currentDate + "T%'";
         Logger.logD(TAG, query);
         final Cursor cursor = db.rawQuery(query, null);
 
@@ -319,7 +238,9 @@ public class TodayPatientActivity extends AppCompatActivity {
                 } while (cursor.moveToNext());
             }
         }
-        cursor.close();
+        if (cursor != null) {
+            cursor.close();
+        }
 
         if (!todayPatientList.isEmpty()) {
             for (TodayPatientModel todayPatientModel : todayPatientList)

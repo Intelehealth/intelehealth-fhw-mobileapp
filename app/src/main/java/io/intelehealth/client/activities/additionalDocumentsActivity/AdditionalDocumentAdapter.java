@@ -1,11 +1,8 @@
 package io.intelehealth.client.activities.additionalDocumentsActivity;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -29,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.intelehealth.client.R;
-import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.dao.ImagesDAO;
 import io.intelehealth.client.models.DocumentObject;
 import io.intelehealth.client.utilities.StringUtils;
@@ -99,37 +95,15 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, documentList.size());
                 String imageName = holder.getDocumentNameTextView().getText().toString();
-                String dir = filePath + File.separator + imageName;
+
                 try {
                     imagesDAO.deleteImageFromDatabase(StringUtils.getFileNameWithoutExtensionString(imageName));
                 } catch (DAOException e) {
                     Crashlytics.getInstance().core.logException(e);
                 }
-                //deleteImageFromDatabase(dir);
             }
         });
     }
-
-    private void deleteImageFromDatabase(String imagePath) {
-        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        String[] coloumns = {"_id", "parse_id"};
-        String[] selectionArgs = {imagePath};
-        Cursor cursor = localdb.query("image_records", coloumns, "image_path = ?", selectionArgs, null, null, null);
-        if (cursor != null && cursor.moveToFirst()) {
-            String parse_id = cursor.getString(cursor.getColumnIndexOrThrow("parse_id"));
-            if (parse_id != null && !parse_id.isEmpty()) {
-                ContentValues contentValues = new ContentValues();
-                contentValues.put("delete_status", 1);
-                String[] whereArgs = {parse_id};
-                localdb.update("image_records", contentValues, "parse_id = ?", whereArgs);
-            } else {
-                localdb.execSQL("DELETE FROM image_records WHERE image_path=" + "'" + imagePath + "'");
-            }
-        }
-        localdb.close();
-    }
-
-
     public void add(DocumentObject doc) {
         boolean bool = documentList.add(doc);
         if (bool) Log.d(TAG, "add: Item added to list");
@@ -157,25 +131,31 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
             public void onShow(DialogInterface d) {
                 ImageView imageView = dialog.findViewById(R.id.confirmationImageView);
                 final ProgressBar progressBar = dialog.findViewById(R.id.progressBar);
-                Glide.with(context)
-                        .load(file)
-                        .skipMemoryCache(true)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .listener(new RequestListener<File, GlideDrawable>() {
-                            @Override
-                            public boolean onException(Exception e, File file, Target<GlideDrawable> target, boolean b) {
-                                progressBar.setVisibility(View.GONE);
-                                return false;
-                            }
+                if (imageView != null) {
+                    Glide.with(context)
+                            .load(file)
+                            .skipMemoryCache(true)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .listener(new RequestListener<File, GlideDrawable>() {
+                                @Override
+                                public boolean onException(Exception e, File file, Target<GlideDrawable> target, boolean b) {
+                                    if (progressBar != null) {
+                                        progressBar.setVisibility(View.GONE);
+                                    }
+                                    return false;
+                                }
 
-                            @Override
-                            public boolean onResourceReady(GlideDrawable glideDrawable, File file, Target<GlideDrawable> target, boolean b, boolean b1) {
-                                progressBar.setVisibility(View.GONE);
-                                return false;
-                            }
-                        })
-                        .override(screen_width, screen_height)
-                        .into(imageView);
+                                @Override
+                                public boolean onResourceReady(GlideDrawable glideDrawable, File file, Target<GlideDrawable> target, boolean b, boolean b1) {
+                                    if (progressBar != null) {
+                                        progressBar.setVisibility(View.GONE);
+                                    }
+                                    return false;
+                                }
+                            })
+                            .override(screen_width, screen_height)
+                            .into(imageView);
+                }
             }
         });
 

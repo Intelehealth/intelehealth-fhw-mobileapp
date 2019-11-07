@@ -40,14 +40,6 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
         return androidId;
     }
 
-//        LocalRecordsDatabaseHelper mDbHelper = new LocalRecordsDatabaseHelper(this);
-//        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
-//
-//        localdb.execSQL("UPDATE "+DelayedJobQueueProvider.DELAYED_JOBS_TABLE_NAME +" SET "+ DelayedJobQueueProvider.SYNC_STATUS+"=0");
-
-
-//        registerActivityLifecycleCallbacks(this);
-//    }
 
     @Override
     protected void attachBaseContext(Context base) {

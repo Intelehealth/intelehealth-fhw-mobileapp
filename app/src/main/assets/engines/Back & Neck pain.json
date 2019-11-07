@@ -1,0 +1,428 @@
+{
+  "id": "ID_844006222",
+  "text": "Back & Neck pain",
+  "perform-physical-exam": "Leg:Movement;Leg:Strength;Back:Deformity;Back:Tenderness;Back:Redness;Back:Swelling;Back:Movement;",
+  "display-or": "ପିଠି ଓ ବେକ ଯନ୍ତ୍ରଣା",
+  "options": [
+    {
+      "id": "ID_313791833",
+      "text": "Duration",
+      "display": "Since when have you had this symptom?",
+      "display-or": "କେବେଠାରୁ",
+      "language": "%",
+      "options": [
+        {
+          "id": "ID_826155781",
+          "text": "[Enter since when]",
+          "input-type": "duration",
+          "language": "Since",
+          "display-or": "କେବେ ଠାରୁ ଲେଖ"
+        }
+      ]
+    },
+    {
+      "id": "ID_1731524131",
+      "text": "Site",
+      "display": "Which part of the neck/back do you feel pain?",
+      "display-or": "କୋଉ ଯାଗା",
+      "options": [
+        {
+          "id": "ID_1065573307",
+          "text": "Neck",
+          "display-or": "ବେକ"
+        },
+        {
+          "id": "ID_860011135",
+          "text": "Upper back (Chest level)",
+          "display-or": "ଉପର ପିଠି"
+        },
+        {
+          "id": "ID_428565875",
+          "text": "Lower back",
+          "display-or": "ତଳ ପିଠି"
+        },
+        {
+          "id": "ID_153009314",
+          "text": "Other (Describe)",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)"
+        }
+      ]
+    },
+    {
+      "id": "ID_1755024985",
+      "text": "Radiation",
+      "display": "Does the pain go anywhere?",
+      "display-or": "ଯନ୍ତ୍ରଣା ଅନ୍ୟ ଜାଗା  ଯାଉଛି",
+      "language": "%",
+      "options": [
+        {
+          "id": "ID_206032917",
+          "text": "Yes",
+          "language": "Pain radiates to",
+          "display-or": "ହଁ",
+          "options": [
+            {
+              "id": "ID_1119894651",
+              "text": "Which side",
+              "language": "%",
+              "display-or": "କେଉଁ ଜାଗା ରେ?",
+              "options": [
+                {
+                  "id": "ID_1544169529",
+                  "text": "Left side",
+                  "display-or": "ଡାହାଣ"
+                },
+                {
+                  "id": "ID_553825199",
+                  "text": "Right side",
+                  "display-or": "ବାମ"
+                },
+                {
+                  "id": "ID_700998927",
+                  "text": "Both sides",
+                  "display-or": "ଉଭୟ"
+                }
+              ]
+            },
+            {
+              "id": "ID_858023894",
+              "text": "Radiates to ",
+              "language": "%",
+              "display-or": "ଏହି ଜାଗା ଗତି କରେ",
+              "options": [
+                {
+                  "id": "ID_1757223199",
+                  "text": "Buttock",
+                  "display-or": "ମଳ ପିଚା"
+                },
+                {
+                  "id": "ID_795034298",
+                  "text": "Legs",
+                  "display-or": "ଗୋଡ଼"
+                },
+                {
+                  "id": "ID_1003802391",
+                  "text": "Arms",
+                  "display-or": "ବାହୁ"
+                },
+                {
+                  "id": "ID_1636167619",
+                  "text": "Abdomen",
+                  "display-or": "ପେଟ"
+                },
+                {
+                  "id": "ID_1321533395",
+                  "text": "Other (Describe)",
+                  "input-type": "text",
+                  "language": "%",
+                  "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ID_719881950",
+          "text": "No",
+          "language": "Pain does not radiate",
+          "display-or": "ନାଁ"
+        }
+      ]
+    },
+    {
+      "id": "ID_877218212",
+      "text": "Timing",
+      "display": "In a day, when do you feel pain the most?",
+      "display-or": "ଦିନରେ କେତେବେଳେ ବେଶୀ ହୁଏ",
+      "options": [
+        {
+          "id": "ID_1638634219",
+          "text": "Morning",
+          "display-or": "ସକାଳ"
+        },
+        {
+          "id": "ID_63012444",
+          "text": "Evening",
+          "display-or": "ସନ୍ଧ୍ଯାରେ"
+        },
+        {
+          "id": "ID_190407049",
+          "text": "Night",
+          "display-or": "ରାତି"
+        },
+        {
+          "id": "ID_1302174966",
+          "text": "Constant",
+          "display-or": "ସବୁବେଳେ"
+        },
+        {
+          "id": "ID_383896745",
+          "text": "Other(Describe)",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)"
+        }
+      ]
+    },
+    {
+      "id": "ID_1900307893",
+      "text": "Experience of heavy lifting/twisting",
+      "display": "Have you lifted a heavy object or twisted your back/neck?",
+      "display-or": "ହଠାତ୍ ଓଜନିଅା ଜିନିଷ ଉଠେଇବା",
+      "language": "%",
+      "options": [
+        {
+          "id": "ID_1641578583",
+          "text": "Yes",
+          "display-or": "ହଁ",
+          "language": "Patient has recently lifted heavy objects or twisted their back/neck"
+        },
+        {
+          "id": "ID_1862613985",
+          "text": "No",
+          "display-or": "ନାଁ",
+          "language": "Patient has no recent h/o lifting heavy objects or twisting their back/neck"
+        }
+      ]
+    },
+    {
+      "id": "ID_880975242",
+      "text": "Aggravating factor(s)",
+      "display": "Do(es) the following(s) make your symptom worse?",
+      "display-or": "ଉପରୁକ୍ତ ଦ୍ୱାରା ଲକ୍ଷଣ ସବୁ ବଢ଼ୁ ଛି କି?",
+      "options": [
+        {
+          "id": "ID_1472978738",
+          "text": "Postural change",
+          "display-or": "ବସା ଉଠା କଲେ",
+          "language": "Postural change"
+        },
+        {
+          "id": "ID_1999015442",
+          "text": "Cough/sneezing",
+          "display-or": "କାସିଲେ ବା ଛିଙ୍କିଲେ"
+        },
+        {
+          "id": "ID_1868450180",
+          "text": "Activities",
+          "language": "Activity",
+          "display-or": "କାମ କଲେ",
+          "options": [
+            {
+              "id": "ID_160076589",
+              "text": "[Describe activities]",
+              "language": "like",
+              "display-or": "ବର୍ଣନା କର",
+              "input-type": "text"
+            }
+          ]
+        },
+        {
+          "id": "ID_169891635",
+          "text": "Pain worse at rest",
+          "display-or": "ସ୍ଥିର ଥିବା ାବ ହୁଏ"
+        },
+        {
+          "id": "ID_1794978958",
+          "text": "None",
+          "display-or": "କିଛି ନକଲେ/ ମନା"
+        },
+        {
+          "id": "ID_1955648297",
+          "text": "Don't know/Unsure",
+          "language": "Patient did not know/was unsure",
+          "display-or": "ଜାଣୁ ନଥିଲା/ ନିଶ୍ଚିତ ନଥିଲା"
+        }
+      ]
+    },
+    {
+      "id": "ID_1652156031",
+      "text": "Associated symptoms",
+      "display": "Do you have the following symptom(s)?",
+      "display-or": "ଏପରି ଲକ୍ଷଣ",
+      "pos-condition": "c.",
+      "neg-condition": "s.",
+      "options": [
+        {
+          "id": "ID_338751766",
+          "text": "Numbness/Weakness affecting one or both leg",
+          "display-or": "କ୍ଷରଶ ବଧିରା ବା ଦୁର୍ବଳ ଲାଗିବା",
+          "options": [
+            {
+              "id": "ID_1651887547",
+              "text": "Right leg",
+              "display-or": "ଡ଼ାହାଣ ଗୋଡ଼"
+            },
+            {
+              "id": "ID_4553325",
+              "text": "Left leg",
+              "display-or": "ବାମ ଗୋଡ଼"
+            },
+            {
+              "id": "ID_1433694719",
+              "text": "Both legs",
+              "display-or": "ଦୁଇ ଗୋଡ଼"
+            },
+            {
+              "id": "ID_776389291",
+              "text": "None",
+              "display-or": "ନାହିଁ"
+            }
+          ]
+        },
+        {
+          "id": "ID_1103014075",
+          "text": "Urinary incontinence",
+          "display-or": "ପରିସ୍ରା ନ ରହିବା",
+          "display": "Involuntary passing of urine/Urine leakage"
+        },
+        {
+          "id": "ID_1318383888",
+          "text": "Gait disturbance",
+          "display-or": "ଚାଲିବାରେ ଅସୁବିଧା"
+        },
+        {
+          "id": "ID_1843499401",
+          "text": "Muscle spasm",
+          "display-or": "ମାଂସପେଶୀ ଦରଜ"
+        },
+        {
+          "id": "ID_715672211",
+          "text": "Fever",
+          "display-or": "ଜ୍ୱର"
+        },
+        {
+          "id": "ID_1080197761",
+          "text": "Sweat",
+          "display-or": "ଝାଳ"
+        },
+        {
+          "id": "ID_440858661",
+          "text": "Weight loss",
+          "display-or": "ଓଜନ ହ୍ରାସ",
+          "options": [
+            {
+              "id": "ID_529191460",
+              "text": "[Enter amount of weight lost (kg)]",
+              "input-type": "number",
+              "language": "amount of weight lost in kgs",
+              "display-or": "(ଓଜନ ହ୍ରାସ ପରିମାଣ)"
+            }
+          ]
+        },
+        {
+          "id": "ID_1957174317",
+          "text": "Abdominal pain",
+          "perform-physical-exam": "Abdomen:Tenderness;Abdomen:Lumps;",
+          "display-or": "ପେଟ ଯନ୍ତ୍ରଣା"
+        },
+        {
+          "id": "ID_1417664586",
+          "text": "Headache",
+          "display-or": "ମୁଣ୍ଡବିନ୍ଧା"
+        },
+        {
+          "id": "ID_1990064224",
+          "text": "Depressed mood",
+          "display-or": "ମାନସିକ ଅବଷାଦ"
+        },
+        {
+          "id": "ID_1845304522",
+          "text": "Anxiety",
+          "display-or": "ରାଗ ଲାଗିବା"
+        },
+        {
+          "id": "ID_485544343",
+          "text": "Other (Describe)",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)"
+        }
+      ]
+    },
+    {
+      "id": "ID_549649173",
+      "text": "H/o specific illness",
+      "display": "Have you ever been diagnosed with any of the following specific diseases?",
+      "display-or": "ତମେ କେବେ ଆଗରୁ ଏହି ବିଶିଷ୍ଟ ରୋଗ ର ଲକ୍ଷସହାନ ଦେଖେଇ ଥିଲ କି?",
+      "pos-condition": "h/o",
+      "neg-condition": "no h/o",
+      "options": [
+        {
+          "id": "ID_1600652916",
+          "text": "HIV/AIDS",
+          "display-or": "ଏଡ୍ସ"
+        },
+        {
+          "id": "ID_1350554066",
+          "text": "Trauma history",
+          "display-or": "ଅାଘାତ / ଦୁର୍ଘଟଣା",
+          "options": [
+            {
+              "id": "ID_1688286619",
+              "text": "When",
+              "input-type": "date",
+              "language": "on",
+              "display-or": "କେବେ"
+            },
+            {
+              "id": "ID_1817538464",
+              "text": "Involved area",
+              "display-or": "କୋଉ ଯାଗା",
+              "options": [
+                {
+                  "id": "ID_1978862710",
+                  "text": "Back & Neck",
+                  "display-or": "ପିଠି ଓ ବେକ"
+                },
+                {
+                  "id": "ID_771155446",
+                  "text": "Other (Describe)",
+                  "input-type": "text",
+                  "language": "%",
+                  "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ID_573035068",
+      "text": "Prior treatment sought",
+      "display": "Have you taken any treatment (including self-medication or home remedies) or seen any health provider for this problem before coming here today?",
+      "display-or": "ତମେ ଆଗରୁ କୌଣସି  ପ୍ରାକାର ଔଷଦ ନଇଥିଲ କି? (ନିଜେ ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଘରୋଇ ଉପଚାର)",
+      "options": [
+        {
+          "id": "ID_1763201920",
+          "text": "Yes [Describe]",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ହାଁ (ବର୍ଣନା କର)"
+        },
+        {
+          "id": "ID_1226925547",
+          "text": "None",
+          "display-or": "କିଛି ନାହିଁ"
+        }
+      ]
+    },
+    {
+      "id": "ID_1962864824",
+      "text": "Additional information",
+      "display-or": "ଅତିରିକ୍ତ ସୂଚନା",
+      "options": [
+        {
+          "id": "ID_239409896",
+          "text": "[Enter additional information]",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ଅତିରିକ୍ତ ସୂଚନା ପ୍ରଦାନ କରିବା"
+        }
+      ]
+    }
+  ]
+}

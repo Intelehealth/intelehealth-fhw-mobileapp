@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".activities.visit_summary_activity.VisitSummaryActivity"
+    tools:context=".activities.visitSummaryActivity.VisitSummaryActivity"
     tools:showIn="@layout/activity_visit_summary">
 
     <!-- TODO: Replace hard-coded strings with @string resources-->
@@ -438,6 +438,15 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView_content_physexam"
                     android:padding="10dp" />
+
+                <TextView
+                    android:id="@+id/physcial_examination_download"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/recy_physexam"
+                    android:backgroundTint="@color/cardview_dark_background"
+                    android:text="Click to download the images"
+                    android:visibility="gone" />
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
@@ -584,6 +593,15 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView_additional_document_images"
                     android:padding="10dp"></android.support.v7.widget.RecyclerView>
+
+                <TextView
+                    android:id="@+id/additional_documents_download"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/recy_additional_documents"
+                    android:backgroundTint="@color/cardview_dark_background"
+                    android:text="Click to download the images"
+                    android:visibility="gone" />
             </RelativeLayout>
 
 

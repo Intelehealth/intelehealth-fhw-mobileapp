@@ -3,7 +3,7 @@ package io.intelehealth.client.utilities;
 import io.intelehealth.client.app.IntelehealthApplication;
 
 public class UrlModifiers {
-    SessionManager sessionManager = null;
+    private SessionManager sessionManager = null;
 
     public String loginUrl(String CLEAN_URL) {
 

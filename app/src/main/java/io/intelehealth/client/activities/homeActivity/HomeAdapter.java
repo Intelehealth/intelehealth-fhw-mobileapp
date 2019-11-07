@@ -33,15 +33,17 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
             IntelehealthApplication.getAppContext().getString(R.string.find_patient),
             IntelehealthApplication.getAppContext().getString(R.string.today_patient),
             IntelehealthApplication.getAppContext().getString(R.string.active_patient),
-            IntelehealthApplication.getAppContext().getString(R.string.video_library)
+            IntelehealthApplication.getAppContext().getString(R.string.video_library),
+            "Last sync"
+
             // , IntelehealthApplication.getAppContext().getString(R.string.action_sync_all)
     };
 
 //   TODO: Change placeholder icon "android.R.drawable.ic_menu_my_calendar"
 
     final int[] icons = {R.drawable.ic_person_add_24dp, R.drawable.ic_search_24dp,
-            R.drawable.ic_calendar_intele_24dp, R.drawable.ic_active_patients_black, R.drawable.ic_play_circle_filled_black_24dp
-            //,android.R.drawable.ic_menu_preferences
+            R.drawable.ic_calendar_intele_24dp, R.drawable.ic_calendar_intele_24dp, R.drawable.ic_play_circle_filled_black_24dp
+            , android.R.drawable.ic_menu_preferences
     };
 
     @Override
@@ -104,21 +106,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
                     break;
                 }
                 case 2: {
-
-                    //TODO: Change Activity after coding is done.
-
-                    // Query for today's patient
-                    // SELECT * FROM visit WHERE start_datetime LIKE "2017-05-08T%" ORDER BY start_datetime ASC
                     Intent intent = new Intent(this.context, TodayPatientActivity.class);
                     this.context.startActivity(intent);
                     break;
                 }
                 case 3: {
-
-                    //TODO: Change Activity after coding is done.
-
-                    // Query for today's patient
-                    // SELECT * FROM visit WHERE start_datetime LIKE "2017-05-08T%" ORDER BY start_datetime ASC
                     Intent intent = new Intent(this.context, ActivePatientActivity.class);
                     this.context.startActivity(intent);
                     break;
@@ -129,6 +121,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
                     break;
                 }
                 case 5: {
+                    Intent intent = new Intent(this.context, ActivitySync.class);
+                    this.context.startActivity(intent);
+                    break;
+                }
+                case 6: {
                     Intent intent = new Intent(this.context, ActivitySync.class);
                     this.context.startActivity(intent);
                     break;

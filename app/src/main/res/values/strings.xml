@@ -441,6 +441,8 @@
     <!--Privacy Notice Activity-->
     <string name="privacy_toast">Please select an option</string>
     <string name="temperature_f">Temperature (F)</string>
+    <string name="sync_now">Sync Now</string>
+    <string name="lastsync">lastsync</string>
     <string name="enter_password">Enter your password</string>
     <string name="enter_username">Enter your username</string>
     <string name="has_a_new_prescription">has a new prescription</string>
@@ -448,6 +450,7 @@
     <string name="patient_reports">Patient reports -</string>
     <string name="no_mindmaps_found">No Mindmaps Found</string>
     <string name="unable_to_get_proper_response">Unable to get proper response</string>
+
 
 
 </resources>

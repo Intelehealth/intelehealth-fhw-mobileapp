@@ -43,6 +43,7 @@ public class VideoLibraryAdapter extends RecyclerView.Adapter<VideoLibraryAdapte
     @Override
     public void onBindViewHolder(VideoLibraryHolder holder, final int position) {
         //set Thumbnail
+
         if(videoList.get(position).isDirectory()) holder.image.setImageResource
                 (R.drawable.ic_action_folder_open);
         else if(videoList.get(position).isFile()) holder.image.setImageBitmap(

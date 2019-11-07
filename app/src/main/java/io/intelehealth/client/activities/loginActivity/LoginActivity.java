@@ -4,12 +4,9 @@ import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -26,13 +23,10 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-
-import java.io.File;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.homeActivity.HomeActivity;
@@ -45,7 +39,6 @@ import io.intelehealth.client.utilities.NetworkConnection;
 import io.intelehealth.client.utilities.OfflineLogin;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UrlModifiers;
-import io.intelehealth.client.widget.materialprogressbar.CustomProgressDialog;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -55,35 +48,33 @@ import io.reactivex.schedulers.Schedulers;
 
 public class LoginActivity extends AppCompatActivity {
     TextView txt_cant_login;
-
+    /**
+     * A dummy authentication store containing known user names and passwords.
+     */
+    private static final String[] DUMMY_CREDENTIALS = new String[]{
+            "username:password", "admin:nimda"
+    };
     private final String TAG = LoginActivity.class.getSimpleName();
     protected AccountManager manager;
-    //    ProgressDialog progress;
-    Context context;
-    CustomProgressDialog cpd;
+    ProgressDialog progress;
     SessionManager sessionManager = null;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
+//    private UserLoginTask mAuthTask = null;
     private OfflineLogin offlineLogin = null;
 
     UrlModifiers urlModifiers = new UrlModifiers();
     Base64Utils base64Utils = new Base64Utils();
     String encoded = null;
     // UI references.
-    private EditText mUsernameView;
+    private AutoCompleteTextView mUsernameView;
     private EditText mPasswordView;
-    private ImageView icLogo;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        context = LoginActivity.this;
-        sessionManager = new SessionManager(context);
-        cpd = new CustomProgressDialog(context);
-
+        sessionManager = new SessionManager(this);
         setTitle(R.string.title_activity_login);
 
         offlineLogin = OfflineLogin.getOfflineLogin();
@@ -110,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
         if (accountList.length > 0) {
             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
             intent.putExtra("login", true);
-//          startJobDispatcherService(LoginActivity.this);
+//            startJobDispatcherService(LoginActivity.this);
             startActivity(intent);
             finish();
         }
@@ -125,41 +116,28 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
             }
         }
-        icLogo = findViewById(R.id.iv_logo);
-        setLogo();
-
         // Set up the login form.
-        mUsernameView = findViewById(R.id.et_email);
+        mUsernameView = findViewById(R.id.email);
         // populateAutoComplete(); TODO: create our own autocomplete code
-        mPasswordView = findViewById(R.id.et_password);
-//      mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView v, int id, KeyEvent event) {
-//                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-//                    attemptLogin();
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
+        mPasswordView = findViewById(R.id.password);
+        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int id, KeyEvent event) {
+                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                    attemptLogin();
+                    return true;
+                }
+                return false;
+            }
+        });
         Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Logger.logD(TAG, "button pressed");
                 attemptLogin();
             }
         });
-    }
-
-    private void setLogo() {
-
-        File f = new File("/data/data/" + context.getPackageName() + "/files/logo/ic_sams.png");
-        if (f.isFile()) {
-            Bitmap bitmap = BitmapFactory.decodeFile("/data/data/" + context.getPackageName() + "/files/logo/ic_sams.png");
-            icLogo.setImageBitmap(bitmap);
-        } else {
-            Log.e("SetLogo","No Logo Found in Mindmap Folder");
-        }
 
     }
 
@@ -171,47 +149,87 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void attemptLogin() {
 
+//        if (mAuthTask != null) {
+//            return;
+//        }
+
+        // Reset errors.
+        mUsernameView.setError(null);
+        mPasswordView.setError(null);
+
         // Store values at the time of the login attempt.
-        String email = mUsernameView.getText().toString().trim();
-        String password = mPasswordView.getText().toString().trim();
+        String email = mUsernameView.getText().toString();
+        String password = mPasswordView.getText().toString();
+
+
+        boolean cancel = false;
+        View focusView = null;
+
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
-            mUsernameView.setError(getString(R.string.enter_username));
-            mUsernameView.requestFocus();
-            return;
+            mUsernameView.setError(getString(R.string.error_field_required));
+            focusView = mUsernameView;
+            cancel = true;
+        }
+
+
+        // Check for a valid password.
+        if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError(getString(R.string.error_field_required));
+            focusView = mPasswordView;
+            cancel = true;
         }
         // Check for a valid password, if the user entered one.
-        if (TextUtils.isEmpty(password)) {
-            mPasswordView.setError(getString(R.string.enter_password));
-            mPasswordView.requestFocus();
-            return;
-        }
-
-        if (password.length() < 4) {
+        if (!isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
-            mPasswordView.requestFocus();
-            return;
+            focusView = mPasswordView;
+            cancel = true;
         }
-
-        if (NetworkConnection.isOnline(this)) {
+//
+        if (TextUtils.isEmpty(email) && TextUtils.isEmpty(password)) {
+            mUsernameView.setError(getString(R.string.error_field_required));
+            focusView = mUsernameView;
+            cancel = true;
+            mPasswordView.setError(getString(R.string.error_field_required));
+            focusView = mPasswordView;
+            cancel = true;
+        }
+        if (cancel) {
+            // There was an error; don't attempt login and focus the first
+            // form field with an error.
+            focusView.requestFocus();
+        } else if (NetworkConnection.isOnline(this)) {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
+//            showProgress(true);
             UserLoginTask(email, password);
+//            mAuthTask.execute((Void) null);
+            Log.d(TAG, "attempting login");
         } else {
             offlineLogin.login(email, password);
         }
+
     }
 
-//    private void showProgress(final boolean show) {
-//        if (progress == null) {
-//            progress = new ProgressDialog(LoginActivity.this);
-//            progress.setTitle(getString(R.string.please_wait_progress));
-//            progress.setMessage(getString(R.string.logging_in));
-//        }
-//        if (show) progress.show();
-//        else progress.dismiss();
-//    }
+    /**
+     * @param password Password
+     * @return boolean
+     */
+    private boolean isPasswordValid(String password) {
+        //TODO: Replace this with your own logic
+        return password.length() > 4;
+    }
+
+    private void showProgress(final boolean show) {
+        if (progress == null) {
+            progress = new ProgressDialog(LoginActivity.this);
+            progress.setTitle(getString(R.string.please_wait_progress));
+            progress.setMessage(getString(R.string.logging_in));
+        }
+        if (show) progress.show();
+        else progress.dismiss();
+    }
 
     public void cant_log() {
         final SpannableString span_string = new SpannableString(getApplicationContext().getText(R.string.email_link));
@@ -228,7 +246,7 @@ public class LoginActivity extends AppCompatActivity {
                         intent.setData(Uri.parse("mailto:support@intelehealth.io"));
                         // intent.putExtra(Intent.EXTRA_EMAIL, "support@intelehealth.io");
                         // intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
-                        // intent.putExtra(Intent.EXTRA_TEXT, "I'm email body.");
+                        //  intent.putExtra(Intent.EXTRA_TEXT, "I'm email body.");
 
                         startActivity(Intent.createChooser(intent, "Send Email"));
                         //add email function here !
@@ -237,6 +255,8 @@ public class LoginActivity extends AppCompatActivity {
                 })
                 .setPositiveButton("Close", null)
                 .show();
+
+        //prajwal_changes
     }
 
     /**
@@ -246,12 +266,32 @@ public class LoginActivity extends AppCompatActivity {
      */
     public void UserLoginTask(String mEmail, String mPassword) {
 
+//        private final String mEmail;
+//        private final String mPassword;
+//        boolean success = false;
+
+//        UserLoginTask(String email, String password) {
+//            mEmail = email;
+//            mPassword = password;
+//        }
+
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//            showProgress(true);
+//        }
+
+//        @Override
+//        protected Boolean doInBackground(Void... params) {
+
+
+//                Log.d(TAG, "UN: " + USERNAME);
+//                Log.d(TAG, "PW: " + PASSWORD);
         String urlString = urlModifiers.loginUrl(sessionManager.getServerUrl());
-        Logger.logD(TAG, "username and password" + mEmail + mPassword);
+        Logger.logD(TAG, "usernaem and password" + mEmail + mPassword);
         encoded = base64Utils.encoded(mEmail, mPassword);
         sessionManager.setEncoded(encoded);
-//      showProgress(true);
-        cpd.show();
+        showProgress(true);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         Observable<LoginModel> loginModelObservable = AppConstants.apiInterface.LOGIN_MODEL_OBSERVABLE(urlString, "Basic " + encoded);
@@ -285,18 +325,20 @@ public class LoginActivity extends AppCompatActivity {
                                         for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
                                             Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
                                             sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
+//                                                success = true;
                                             final Account account = new Account(mEmail, "io.intelehealth.openmrs");
                                             manager.addAccountExplicitly(account, mPassword, null);
                                             offlineLogin.invalidateLoginCredentials();
                                             offlineLogin.setUpOfflineLogin(mEmail, mPassword);
                                             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                                             intent.putExtra("login", true);
-//                                          startJobDispatcherService(LoginActivity.this);
+//                startJobDispatcherService(LoginActivity.this);
                                             startActivity(intent);
                                             finish();
-//                                          showProgress(false);
-                                            cpd.dismiss();
+                                            showProgress(false);
+
                                             sessionManager.setReturningUser(true);
+
                                         }
                                     }
                                 }
@@ -304,8 +346,8 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void onError(Throwable e) {
                                     Logger.logD(TAG, "handle provider error" + e.getMessage());
-//                                  showProgress(false);
-                                    cpd.dismiss();
+//                                        success = false;
+                                    showProgress(false);
                                 }
 
                                 @Override
@@ -319,14 +361,16 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onError(Throwable e) {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
-//              showProgress(false);
-                cpd.dismiss();
+//                    success = false;
+                showProgress(false);
+//                    DialogUtils dialogUtils=new DialogUtils();
+//                    dialogUtils.showerrorDialog(LoginActivity.this,"Error Login",getString(R.string.error_incorrect_password),"ok");
                 Toast.makeText(LoginActivity.this, getString(R.string.error_incorrect_password), Toast.LENGTH_SHORT).show();
-//                mPasswordView.setError("");
-//                mUsernameView.setError("");
-//                mPasswordView.setText("");
-//                mUsernameView.setText("");
-//                mPasswordView.requestFocus();
+                mPasswordView.setError("");
+                mUsernameView.setError("");
+                mPasswordView.setText("");
+                mUsernameView.setText("");
+                mPasswordView.requestFocus();
             }
 
             @Override
@@ -334,5 +378,29 @@ public class LoginActivity extends AppCompatActivity {
                 Logger.logD(TAG, "completed");
             }
         });
+
+
+//            return true;
+//
+//        }
+
+//        @Override
+//        protected void onPostExecute(final Boolean success) {
+//            mAuthTask = null;
+
+
+//            if (success) {
+
+//            } else {
+//
+//            }
+//        }
+
+//        @Override
+//        protected void onCancelled() {
+//            mAuthTask = null;
+//            showProgress(false);
+//        }
     }
+
 }

@@ -1,0 +1,281 @@
+{
+  "id": "ID_211456448",
+  "text": "Family History",
+  "display-or": "ପରିବାର ସମ୍ବନ୍ଧୀୟ",
+  "options": [
+    {
+      "id": "ID_1078855957",
+      "text": "High BP",
+      "display-or": "ଉଚ୍ଚ ରକ୍ତଚାପ",
+      "options": [
+        {
+          "id": "ID_1854447992",
+          "text": "Mother",
+          "display-or": "ମା"
+        },
+        {
+          "id": "ID_1609028547",
+          "text": "Father",
+          "display-or": "ବାପା"
+        },
+        {
+          "id": "ID_839417744",
+          "text": "Sister",
+          "display-or": "ଭଉଣୀ"
+        },
+        {
+          "id": "ID_1586264392",
+          "text": "Brother",
+          "display-or": "ଭାଇ"
+        },
+        {
+          "id": "ID_1668112188",
+          "text": "[Describe relation]",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ଅନ୍ଯ ସମ୍ପର୍କୀୟ"
+        }
+      ]
+    },
+    {
+      "id": "ID_1138006551",
+      "text": "Heart Disease",
+      "display-or": "ହୃଦ୍ରୋଗ",
+      "options": [
+        {
+          "id": "ID_756175657",
+          "text": "Mother",
+          "display-or": "ମା"
+        },
+        {
+          "id": "ID_352913221",
+          "text": "Father",
+          "display-or": "ବାପା"
+        },
+        {
+          "id": "ID_210664833",
+          "text": "Sister",
+          "display-or": "ଭଉଣୀ"
+        },
+        {
+          "id": "ID_1359181501",
+          "text": "Brother",
+          "display-or": "ଭାଇ"
+        },
+        {
+          "id": "ID_1113722262",
+          "text": "[Describe relation]",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ଅନ୍ଯ ସମ୍ପର୍କୀୟ"
+        }
+      ]
+    },
+    {
+      "id": "ID_923819641",
+      "text": "Stroke",
+      "display-or": "ପରଲିସିସ attack",
+      "options": [
+        {
+          "id": "ID_235946224",
+          "text": "Mother",
+          "display-or": "ମା"
+        },
+        {
+          "id": "ID_462556614",
+          "text": "Father",
+          "display-or": "ବାପା"
+        },
+        {
+          "id": "ID_694071463",
+          "text": "Sister",
+          "display-or": "ଭଉଣୀ"
+        },
+        {
+          "id": "ID_1366406172",
+          "text": "Brother",
+          "display-or": "ଭାଇ"
+        },
+        {
+          "id": "ID_1977626009",
+          "text": "[Describe relation]",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ଅନ୍ଯ ସମ୍ପର୍କୀୟ"
+        }
+      ]
+    },
+    {
+      "id": "ID_519272944",
+      "text": "Diabetes",
+      "display-or": "ମଧୁମେହ",
+      "options": [
+        {
+          "id": "ID_486810641",
+          "text": "Mother",
+          "display-or": "ମା"
+        },
+        {
+          "id": "ID_652245267",
+          "text": "Father",
+          "display-or": "ବାପା"
+        },
+        {
+          "id": "ID_289390649",
+          "text": "Sister",
+          "display-or": "ଭଉଣୀ"
+        },
+        {
+          "id": "ID_1725905248",
+          "text": "Brother",
+          "display-or": "ଭାଇ"
+        },
+        {
+          "id": "ID_1782077559",
+          "text": "[Describe relation]",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ଅନ୍ଯ ସମ୍ପର୍କୀୟ"
+        }
+      ]
+    },
+    {
+      "id": "ID_1502189405",
+      "text": "Asthma",
+      "display-or": "ନିଶ୍ବାଶ ନେବାରେ କଷ୍ଟ",
+      "options": [
+        {
+          "id": "ID_314608166",
+          "text": "Mother",
+          "display-or": "ମା"
+        },
+        {
+          "id": "ID_1457691080",
+          "text": "Father",
+          "display-or": "ବାପା"
+        },
+        {
+          "id": "ID_106821929",
+          "text": "Sister",
+          "display-or": "ଭଉଣୀ"
+        },
+        {
+          "id": "ID_1118438497",
+          "text": "Brother",
+          "display-or": "ଭାଇ"
+        },
+        {
+          "id": "ID_67727267",
+          "text": "[Describe relation]",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ଅନ୍ଯ ସମ୍ପର୍କୀୟ"
+        }
+      ]
+    },
+    {
+      "id": "ID_1031615963",
+      "text": "Tuberculosis",
+      "display-or": "ଯକ୍ଷ୍ମା",
+      "options": [
+        {
+          "id": "ID_272150375",
+          "text": "Mother",
+          "display-or": "ମା"
+        },
+        {
+          "id": "ID_1592939719",
+          "text": "Father",
+          "display-or": "ବାପା"
+        },
+        {
+          "id": "ID_1456647623",
+          "text": "Sister",
+          "display-or": "ଭଉଣୀ"
+        },
+        {
+          "id": "ID_1619111173",
+          "text": "Brother",
+          "display-or": "ଭାଇ"
+        },
+        {
+          "id": "ID_1185424509",
+          "text": "[Describe relation]",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ଅନ୍ଯ ସମ୍ପର୍କୀୟ"
+        }
+      ]
+    },
+    {
+      "id": "ID_645572228",
+      "text": "Cancer",
+      "display-or": "କ୍ଯାନସର୍",
+      "options": [
+        {
+          "id": "ID_1792917607",
+          "text": "Mother",
+          "display-or": "ମା"
+        },
+        {
+          "id": "ID_1469130675",
+          "text": "Father",
+          "display-or": "ବାପା"
+        },
+        {
+          "id": "ID_718923800",
+          "text": "Sister",
+          "display-or": "ଭଉଣୀ"
+        },
+        {
+          "id": "ID_1385116729",
+          "text": "Brother",
+          "display-or": "ଭାଇ"
+        },
+        {
+          "id": "ID_962569699",
+          "text": "[Describe relation]",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ଅନ୍ଯ ସମ୍ପର୍କୀୟ"
+        }
+      ]
+    },
+    {
+      "id": "ID_525209857",
+      "text": "Other",
+      "input-type": "text",
+      "display-or": "ଅନ୍ଯାନ୍ଯ",
+      "language": "%",
+      "options": [
+        {
+          "id": "ID_1935937602",
+          "text": "Mother",
+          "display-or": "ମା"
+        },
+        {
+          "id": "ID_1622999292",
+          "text": "Father",
+          "display-or": "ବାପା"
+        },
+        {
+          "id": "ID_69280074",
+          "text": "Sister",
+          "display-or": "ଭଉଣୀ"
+        },
+        {
+          "id": "ID_258479257",
+          "text": "Brother",
+          "display-or": "ଭାଇ"
+        },
+        {
+          "id": "ID_840659387",
+          "text": "[Describe relation]",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ଅନ୍ଯ ସମ୍ପର୍କୀୟ"
+        }
+      ]
+    }
+  ]
+}

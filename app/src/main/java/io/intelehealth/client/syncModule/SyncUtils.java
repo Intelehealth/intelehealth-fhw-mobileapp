@@ -1,22 +1,26 @@
 package io.intelehealth.client.syncModule;
 
 import android.content.Intent;
+import android.os.Handler;
 
 import io.intelehealth.client.app.IntelehealthApplication;
 import io.intelehealth.client.database.dao.ImagesPushDAO;
-import io.intelehealth.client.database.dao.PullDataDAO;
+import io.intelehealth.client.database.dao.SyncDAO;
 import io.intelehealth.client.services.UpdateDownloadPrescriptionService;
+import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.NotificationUtils;
 
 public class SyncUtils {
 
 
+    private static final String TAG = SyncUtils.class.getSimpleName();
+
     public void syncBackground() {
-        PullDataDAO pullDataDAO = new PullDataDAO();
+        SyncDAO syncDAO = new SyncDAO();
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
 
-        pullDataDAO.pushDataApi();
-        pullDataDAO.pullData(IntelehealthApplication.getAppContext());
+        syncDAO.pushDataApi();
+        syncDAO.pullData(IntelehealthApplication.getAppContext());
 
         imagesPushDAO.patientProfileImagesPush();
         imagesPushDAO.obsImagesPush();
@@ -32,14 +36,28 @@ public class SyncUtils {
 
     public boolean syncForeground() {
         boolean isSynced = false;
-        PullDataDAO pullDataDAO = new PullDataDAO();
+        SyncDAO syncDAO = new SyncDAO();
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+        Logger.logD(TAG, "Push Started");
+        isSynced = syncDAO.pushDataApi();
+        Logger.logD(TAG, "Push ended");
 
-        isSynced = pullDataDAO.pushDataApi();
-        isSynced = pullDataDAO.pullData(IntelehealthApplication.getAppContext());
+
+//        need to add delay for pulling the obs correctly
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Logger.logD(TAG, "Pull Started");
+                syncDAO.pullData(IntelehealthApplication.getAppContext());
+                Logger.logD(TAG, "Pull ended");
+            }
+        }, 3000);
 
         imagesPushDAO.patientProfileImagesPush();
+
         imagesPushDAO.obsImagesPush();
+
         imagesPushDAO.deleteObsImage();
 
         Intent intent = new Intent(IntelehealthApplication.getAppContext(), UpdateDownloadPrescriptionService.class);

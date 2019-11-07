@@ -3,9 +3,8 @@ package io.intelehealth.client.activities.privacyNoticeActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -19,9 +18,7 @@ import org.json.JSONObject;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.identificationActivity.IdentificationActivity;
-import io.intelehealth.client.activities.settingsActivity.SettingsActivity;
 import io.intelehealth.client.app.AppConstants;
-import io.intelehealth.client.utilities.ConfigUtils;
 import io.intelehealth.client.utilities.FileUtils;
 import io.intelehealth.client.utilities.SessionManager;
 
@@ -40,32 +37,17 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_privacy_notice_2);
 
-       /*
-       * Toolbar which displays back arrow on action bar
-       * Add the below lines for every activity*/
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-
         sessionManager = new SessionManager(this);
-        privacy_textview = (TextView) findViewById(R.id.privacy_text);
+        privacy_textview = findViewById(R.id.privacy_text);
 
-        radiogrp = (RadioGroup) findViewById(R.id.radio_privacy_grp);
-        radio_acc = (RadioButton) findViewById(R.id.radio_accept);
-        radio_rej = (RadioButton) findViewById(R.id.radio_reject);
+        radiogrp = findViewById(R.id.radio_privacy_grp);
+        radio_acc = findViewById(R.id.radio_accept);
+        radio_rej = findViewById(R.id.radio_reject);
 
-        txt_next = (TextView) findViewById(R.id.txt_privacy);
+        txt_next = findViewById(R.id.txt_privacy);
 
 
-//        if (sessionManager.valueContains("licensekey"))
-        if (!sessionManager.getLicenseKey().isEmpty())
+        if (sessionManager.valueContains("licensekey"))
             hasLicense = true;
 
         //Check for license key and load the correct config file
@@ -122,7 +104,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
                 public void onClick(View view) {
 
                     int selected_radio = radiogrp.getCheckedRadioButtonId();
-                    radiobtn = (RadioButton) findViewById(selected_radio);
+                    radiobtn = findViewById(selected_radio);
 
                     if (radio_acc.isChecked() || radio_rej.isChecked())
                     {
@@ -150,8 +132,6 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
         }
         catch (JSONException e) {
             Crashlytics.getInstance().core.logException(e);
-//            Issue #627
-//            added the catch exception to check the config and throwing back to setup activity
             Toast.makeText(getApplicationContext(), "JsonException" + e, Toast.LENGTH_LONG).show();
         }
 

@@ -2,10 +2,7 @@ package io.intelehealth.client.activities.complaintNodeActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +16,6 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.crashlytics.android.Crashlytics;
@@ -29,11 +25,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 
 import io.intelehealth.client.R;
@@ -59,8 +52,6 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
 
     List<Node> complaints;
-    String mFileName = "knowledge.json";
-    //String mFileName = "DemoBrain.json";
 
     CustomArrayAdapter listAdapter;
     String encounterVitals;
@@ -80,22 +71,17 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
-//            Log.v(TAG, "Patient ID: " + patientID);
-//            Log.v(TAG, "Visit ID: " + visitID);
-//            Log.v(TAG, "Patient Name: " + patientName);
-//            Log.v(TAG, "Intent Tag: " + intentTag);
         }
-        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
-        Date todayDate = new Date();
-        String thisDate = currentDate.format(todayDate);
         if (encounterAdultIntials.equalsIgnoreCase("") || encounterAdultIntials == null) {
             encounterAdultIntials = UUID.randomUUID().toString();
+
         }
+
         EncounterDAO encounterDAO = new EncounterDAO();
         encounterDTO = new EncounterDTO();
         encounterDTO.setUuid(encounterAdultIntials);
         encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL"));
-        encounterDTO.setEncounterTime(thisDate);
+        encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
         encounterDTO.setVisituuid(visitUuid);
         encounterDTO.setSyncd(false);
         encounterDTO.setProvideruuid(sessionManager.getProviderID());
@@ -132,10 +118,8 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         complaints = new ArrayList<>();
 
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         boolean hasLicense = false;
-//        if (sharedPreferences.contains("licensekey"))
-        if (!sessionManager.getLicenseKey().isEmpty())
+        if (sessionManager.getLicenseKey() != null && !sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
         JSONObject currentFile = null;
         if (hasLicense) {
@@ -147,9 +131,11 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     Crashlytics.getInstance().core.logException(e);
                 }
-                Log.i(TAG, currentFile.toString());
-                Node currentNode = new Node(currentFile);
-                complaints.add(currentNode);
+                if (currentFile != null) {
+                    Log.i(TAG, currentFile.toString());
+                    Node currentNode = new Node(currentFile);
+                    complaints.add(currentNode);
+                }
             }
         } else {
             String[] fileNames = new String[0];
@@ -158,11 +144,13 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             } catch (IOException e) {
                 Crashlytics.getInstance().core.logException(e);
             }
-            for (String name : fileNames) {
-                String fileLocation = "engines/" + name;
-                currentFile = FileUtils.encodeJSON(this, fileLocation);
-                Node currentNode = new Node(currentFile);
-                complaints.add(currentNode);
+            if (fileNames != null) {
+                for (String name : fileNames) {
+                    String fileLocation = "engines/" + name;
+                    currentFile = FileUtils.encodeJSON(this, fileLocation);
+                    Node currentNode = new Node(currentFile);
+                    complaints.add(currentNode);
+                }
             }
         }
 
@@ -212,10 +200,6 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 });
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
-                Button pb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-                pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-                pb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
-
             } else {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
                 alertDialogBuilder.setTitle(R.string.complaint_dialog_title);
@@ -223,7 +207,6 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 View convertView = inflater.inflate(R.layout.list_dialog_complaint, null);
                 alertDialogBuilder.setView(convertView);
                 ListView listView = convertView.findViewById(R.id.complaint_dialog_list_view);
-                listView.setDivider(null);
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, displaySelection);
                 listView.setAdapter(arrayAdapter);
                 alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
@@ -241,6 +224,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                             intent.putExtra("tag", intentTag);
                         }
                         intent.putStringArrayListExtra("complaints", selection);
+
                         startActivity(intent);
                     }
                 });
@@ -252,12 +236,6 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 });
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
-                Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-                pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-                pb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
-                nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-                nb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
             }
         }
     }
@@ -295,6 +273,4 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
         return true;
     }
-
-
 }

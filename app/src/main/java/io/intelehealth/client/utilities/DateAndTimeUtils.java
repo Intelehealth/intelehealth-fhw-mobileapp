@@ -9,6 +9,7 @@ import org.joda.time.PeriodType;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -48,6 +49,13 @@ public class DateAndTimeUtils {
         return period.getYears();
     }
 
+    public static String getSubtractedPulledExcutedTime(String lastPulledTime) {
+        Calendar now = Calendar.getInstance();
+
+
+        return "";
+    }
+
     public static String getFormatedDateOfBirth(String oldformatteddate){
 
         DateFormat originalFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
@@ -80,7 +88,7 @@ public class DateAndTimeUtils {
     }
 
     public String currentDateTimeInHome() {
-        DateFormat date = new SimpleDateFormat("dd MMMM yyyy HH:mm:ss", Locale.getDefault());
+        DateFormat date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.getDefault());
 // you can get seconds by adding  "...:ss" to it
         Date todayDate = new Date();
         return date.format(todayDate);
@@ -94,7 +102,7 @@ public class DateAndTimeUtils {
             Date date = originalFormat.parse(dateString);
             formattedDate = targetFormat.format(date);
         } catch (Exception ex) {
-            System.out.println(ex);
+            Crashlytics.getInstance().core.logException(ex);
         }
         return formattedDate;
     }
@@ -107,7 +115,7 @@ public class DateAndTimeUtils {
             Date date = originalFormat.parse(dateString);
             formattedDate = targetFormat.format(date);
         } catch (Exception ex) {
-            System.out.println(ex);
+            Crashlytics.getInstance().core.logException(ex);
         }
         return formattedDate;
     }

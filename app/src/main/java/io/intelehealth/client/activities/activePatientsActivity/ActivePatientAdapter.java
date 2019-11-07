@@ -2,29 +2,19 @@ package io.intelehealth.client.activities.activePatientsActivity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.patientDetailActivity.PatientDetailActivity;
-import io.intelehealth.client.database.InteleHealthDatabaseHelper;
-import io.intelehealth.client.database.dao.ImagesDAO;
-import io.intelehealth.client.database.dao.VisitsDAO;
 import io.intelehealth.client.models.ActivePatientModel;
 import io.intelehealth.client.utilities.DateAndTimeUtils;
-import io.intelehealth.client.utilities.exception.DAOException;
 
 /**
  * Created by Dexter Barretto on 5/20/17.
@@ -36,12 +26,10 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
     List<ActivePatientModel> activePatientModels;
     Context context;
     LayoutInflater layoutInflater;
-    ArrayList<String> listPatientUUID;
 
-    public ActivePatientAdapter(List<ActivePatientModel> activePatientModels, Context context, ArrayList<String> _listPatientUUID) {
+    public ActivePatientAdapter(List<ActivePatientModel> activePatientModels, Context context) {
         this.activePatientModels = activePatientModels;
         this.context = context;
-        this.listPatientUUID = _listPatientUUID;
     }
 
     @Override
@@ -52,7 +40,6 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View row = inflater.inflate(R.layout.list_item_active_patient, parent, false);
         ActivePatientViewHolder viewHolder = new ActivePatientViewHolder(row);
-//        ListItemActivePatientBinding listItemActivePatientBinding= DataBindingUtil.inflate(layoutInflater,R.layout.list_item_active_patient,parent,false);
         return viewHolder;
     }
 
@@ -61,7 +48,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         final ActivePatientModel activePatientModel = activePatientModels.get(position);
         String header;
         if (activePatientModel.getOpenmrs_id() != null) {
-            header = String.format("%s %s, %s", activePatientModel.getFirst_name(),
+            header = String.format("%s %s - " + context.getString(R.string.visit_summary_heading_id) + ": %s", activePatientModel.getFirst_name(),
                     activePatientModel.getLast_name(), activePatientModel.getOpenmrs_id());
         } else {
             header = String.format("%s %s", activePatientModel.getFirst_name(),
@@ -69,42 +56,21 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         }
         int age = DateAndTimeUtils.getAge(activePatientModel.getDate_of_birth());
         String dob = DateAndTimeUtils.SimpleDatetoLongDate(activePatientModel.getDate_of_birth());
-        String body = String.format(context.getString(R.string.identification_screen_prompt_age) + " %d yrs", age);
+        String body = String.format(context.getString(R.string.id_number) + ": %s \n " +
+                        context.getString(R.string.identification_screen_prompt_phone_number) + ": %s\n" +
+                        context.getString(R.string.identification_screen_prompt_birthday) +
+                        ": %s (" + context.getString(R.string.identification_screen_prompt_age) + " %d)", activePatientModel.getOpenmrs_id(), activePatientModel.getPhone_number(),
+                dob, age);
 
-//        holder.listItemActivePatientBinding.listItemHeadTextView.setText(header);
-//        holder.listItemActivePatientBinding.listItemBodyTextView.setText(body);
         holder.getHeadTextView().setText(header);
         holder.getBodyTextView().setText(body);
         if (activePatientModel.getEnddate() == null) {
-        /*    Drawable drawable = DrawableHelper
-                    .withContext(context)
-                    //TODO: Dummy color. Change color before release.
-                    .withColor(R.color.green)
-                    .withDrawable(R.drawable.circle)
-                    .tint()
-                    .get();
-            holder.getIndicatorImageView().setImageDrawable(drawable);*/
-
             holder.getIndicatorTextView().setText("Active");
             holder.getIndicatorTextView().setBackgroundColor(Color.GREEN);
-//            holder.listItemActivePatientBinding.listItemIndicatorTextView.setText("Active");
-//            holder.listItemActivePatientBinding.listItemIndicatorTextView.setBackgroundColor(Color.GREEN);
         } else {
-        /*    Drawable drawable = DrawableHelper
-                    .withContext(context)
-                    //TODO: Dummy color. Change color before release.
-                    .withColor(R.color.red)
-                    .withDrawable(R.drawable.circle)
-                    .tint()
-                    .get();
-            holder.getIndicatorImageView().setImageDrawable(drawable);
-            */
             holder.getIndicatorTextView().setText("Closed");
             holder.getIndicatorTextView().setBackgroundColor(Color.RED);
-//            holder.listItemActivePatientBinding.listItemIndicatorTextView.setText("Closed");
-//            holder.listItemActivePatientBinding.listItemIndicatorTextView.setBackgroundColor(Color.RED);
         }
-//
         holder.getRootView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,40 +79,11 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                 intent.putExtra("patientUuid", activePatientModel.getPatientuuid());
                 intent.putExtra("status", patientStatus);
                 intent.putExtra("tag", "");
-
-                if (holder.ivPriscription.getTag().equals("1")) {
-                    intent.putExtra("hasPrescription", "true");
-                } else {
-                    intent.putExtra("hasPrescription", "false");
-                }
                 context.startActivity(intent);
             }
         });
-//        holder.listItemActivePatientBinding.getRoot().setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String patientStatus = "returning";
-//                Intent intent = new Intent(context, PatientDetailActivity.class);
-//                intent.putExtra("patientUuid", activePatientModel.getPatientuuid());
-//                intent.putExtra("status", patientStatus);
-//                intent.putExtra("tag", "");
-//                context.startActivity(intent);
-//            }
-//        });
-
-        for (int i = 0; i < listPatientUUID.size(); i++) {
-            if (activePatientModels.get(position).getPatientuuid().equalsIgnoreCase(listPatientUUID.get(i))) {
-                holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_prescription_green));
-                holder.ivPriscription.setTag("1");
-            }
-        }
-
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
 
     @Override
     public int getItemCount() {
@@ -154,23 +91,18 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
     }
 
     public class ActivePatientViewHolder extends RecyclerView.ViewHolder {
-        //ListItemActivePatientBinding listItemActivePatientBinding;
         private TextView headTextView;
         private TextView bodyTextView;
         private TextView indicatorTextView;
         private View rootView;
-        private ImageView ivPriscription;
 
         public ActivePatientViewHolder(View itemView) {
             super(itemView);
             headTextView = itemView.findViewById(R.id.list_item_head_text_view);
             bodyTextView = itemView.findViewById(R.id.list_item_body_text_view);
-            ivPriscription = itemView.findViewById(R.id.iv_prescription);
             indicatorTextView = itemView.findViewById(R.id.list_item_indicator_text_view);
             rootView = itemView;
         }
-
-        //
         public TextView getHeadTextView() {
             return headTextView;
         }

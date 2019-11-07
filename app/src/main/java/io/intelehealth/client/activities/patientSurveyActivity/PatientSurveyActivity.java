@@ -2,14 +2,12 @@ package io.intelehealth.client.activities.patientSurveyActivity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -26,7 +24,7 @@ import io.intelehealth.client.activities.homeActivity.HomeActivity;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.dao.EncounterDAO;
 import io.intelehealth.client.database.dao.ObsDAO;
-import io.intelehealth.client.database.dao.PullDataDAO;
+import io.intelehealth.client.database.dao.SyncDAO;
 import io.intelehealth.client.database.dao.VisitsDAO;
 import io.intelehealth.client.models.dto.EncounterDTO;
 import io.intelehealth.client.models.dto.ObsDTO;
@@ -78,7 +76,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_patient_survey);
         setTitle(R.string.title_activity_login);
         sessionManager = new SessionManager(this);
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         context = getApplicationContext();
 
         mScaleButton1 = findViewById(R.id.button_scale_1);
@@ -192,7 +190,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         }
 
 
-        AppConstants.notificationUtils.DownloadDone("Upload survey", "Survey uploaded", PatientSurveyActivity.this);
+        AppConstants.notificationUtils.DownloadDone("Upload survey", "Survey uploaded", 3, PatientSurveyActivity.this);
 
 
     }
@@ -205,13 +203,14 @@ public class PatientSurveyActivity extends AppCompatActivity {
             Crashlytics.getInstance().core.logException(e);
 
         }
-        PullDataDAO pullDataDAO = new PullDataDAO();
-        pullDataDAO.pushDataApi();
 
-        AppConstants.notificationUtils.DownloadDone("End visit", "Visit ended", PatientSurveyActivity.this);
-        SharedPreferences.Editor editor = context.getSharedPreferences(patientUuid + "_" + visitUuid, MODE_PRIVATE).edit();
-        editor.remove("exam_" + patientUuid + "_" + visitUuid);
-        editor.commit();
+        SyncDAO syncDAO = new SyncDAO();
+        syncDAO.pushDataApi();
+
+        AppConstants.notificationUtils.DownloadDone("End visit", "Visit ended", 3, PatientSurveyActivity.this);
+
+        sessionManager.removeVisitSummary(patientUuid, visitUuid);
+
         Intent i = new Intent(this, HomeActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);

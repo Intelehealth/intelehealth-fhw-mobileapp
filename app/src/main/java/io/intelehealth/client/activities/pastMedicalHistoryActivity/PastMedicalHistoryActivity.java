@@ -1,16 +1,11 @@
 package io.intelehealth.client.activities.pastMedicalHistoryActivity;
 
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -34,11 +29,15 @@ import io.intelehealth.client.activities.familyHistoryActivity.FamilyHistoryActi
 import io.intelehealth.client.activities.physcialExamActivity.CustomExpandableListAdapter;
 import io.intelehealth.client.activities.visitSummaryActivity.VisitSummaryActivity;
 import io.intelehealth.client.app.AppConstants;
+import io.intelehealth.client.database.dao.EncounterDAO;
+import io.intelehealth.client.database.dao.ImagesDAO;
+import io.intelehealth.client.database.dao.ObsDAO;
 import io.intelehealth.client.knowledgeEngine.Node;
+import io.intelehealth.client.models.dto.ObsDTO;
 import io.intelehealth.client.utilities.FileUtils;
 import io.intelehealth.client.utilities.SessionManager;
-import io.intelehealth.client.utilities.StringUtils;
 import io.intelehealth.client.utilities.UuidDictionary;
+import io.intelehealth.client.utilities.exception.DAOException;
 
 public class PastMedicalHistoryActivity extends AppCompatActivity {
 
@@ -74,7 +73,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
     String phistory = "";
 
     boolean flag = false;
-    SharedPreferences.Editor e;
 
     SessionManager sessionManager = null;
     private String encounterVitals;
@@ -83,9 +81,10 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(this);
-        localdb = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        e = sharedPreferences.edit();
+        localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        filePath = new File(AppConstants.IMAGE_PATH);
+//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//        e = sharedPreferences.edit();
 
         boolean past = sessionManager.isReturning();
         if (past) {
@@ -106,7 +105,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
                     String[] columns = {"value", " conceptuuid"};
                     try {
-                        String medHistSelection = "encounteruuid = ? AND conceptuuid = ?";
+                        String medHistSelection = "encounteruuid = ? AND conceptuuid = ? AND voided!='1'";
                         String[] medHistArgs = {encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
                         Cursor medHistCursor = localdb.query("tbl_obs", columns, medHistSelection, medHistArgs, null, null, null);
                         medHistCursor.moveToLast();
@@ -148,11 +147,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
-            //      physicalExams = intent.getStringArrayListExtra("exams"); //Pass it along
-//            Log.v(TAG, "Patient ID: " + patientID);
-//            Log.v(TAG, "Visit ID: " + visitID);
-//            Log.v(TAG, "Patient Name: " + patientName);
-//            Log.v(TAG, "Intent Tag: " + intentTag);
         }
 
 
@@ -195,7 +189,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     intent.putExtra("encounterUuidVitals", encounterVitals);
                     intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
                     intent.putExtra("state", state);
-                    intent.putExtra("hasPrescription", "false");
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
                     startActivity(intent);
@@ -206,8 +199,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
                     if (flag == true) { // only if OK clicked, collect this new info (old patient)
                         phistory = phistory + patientHistory; // only PMH updated
-                        e.putBoolean("returning", true);
-                        e.commit();
+                        sessionManager.setReturning(true);
+
+
                         insertDb(phistory);
 
                         // however, we concat it here to patientHistory and pass it along to FH, not inserting into db
@@ -233,8 +227,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
         });
 
 
-//        if (sharedPreferences.contains("licensekey"))
-        if (!sessionManager.getLicenseKey().isEmpty())
+        if (sessionManager.getLicenseKey() != null && !sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
 
         if (hasLicense) {
@@ -269,16 +262,15 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
                 if (clickedNode.getInputType() != null) {
                     if (!clickedNode.getInputType().equals("camera")) {
+                        imageName = UUID.randomUUID().toString();
                         Node.handleQuestion(clickedNode, PastMedicalHistoryActivity.this, adapter, null, null);
                     }
                 }
 
                 Log.i(TAG, String.valueOf(clickedNode.isTerminal()));
                 if (!clickedNode.isTerminal() && clickedNode.isSelected()) {
-                    imageName = patientUuid + "_" + visitUuid + "_" + image_Prefix;
-                    String baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-                    filePath = new File(baseDir + File.separator + "Patient Images" + File.separator +
-                            patientUuid + File.separator + visitUuid + File.separator + imageDir);
+                    imageName = UUID.randomUUID().toString();
+
                     Node.subLevelQuestion(clickedNode, PastMedicalHistoryActivity.this, adapter, filePath.toString(), imageName);
                 }
 
@@ -307,42 +299,33 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
      * @param value variable of type String
      * @return long
      */
-    public long insertDb(String value) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        final String CREATOR_ID = prefs.getString("creatorid", null);
-        //TODO: Get the right creator_ID
-
-
-        String CONCEPT_ID = UuidDictionary.RHK_MEDICAL_HISTORY_BLURB; // RHK MEDICAL HISTORY BLURB
-        //Eventually will be stored in a separate table
-
-        ContentValues complaintEntries = new ContentValues();
-
-        complaintEntries.put("uuid", UUID.randomUUID().toString());
-        complaintEntries.put("encounteruuid", encounterAdultIntials);
-        complaintEntries.put("value", StringUtils.getValue(value));
-        complaintEntries.put("conceptuuid", CONCEPT_ID);
-        complaintEntries.put("creator", CREATOR_ID);
-        complaintEntries.put("sync", "false");
-        long insert = 0;
+    public boolean insertDb(String value) {
+        ObsDAO obsDAO = new ObsDAO();
+        ObsDTO obsDTO = new ObsDTO();
+        obsDTO.setConceptuuid(UuidDictionary.RHK_MEDICAL_HISTORY_BLURB);
+        obsDTO.setEncounteruuid(encounterAdultIntials);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(io.intelehealth.client.utilities.StringUtils.getValue(value));
+        boolean isInserted = false;
         try {
-            insert = localdb.insert("tbl_obs", null, complaintEntries);
-        } catch (SQLException sql) {
-            Crashlytics.getInstance().core.logException(sql);
+            isInserted = obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            Crashlytics.getInstance().core.logException(e);
         }
-        return insert;
+
+        return isInserted;
     }
 
 
     private void updateImageDatabase(String imagePath) {
 
-        localdb.execSQL("INSERT INTO image_records (patient_id,visit_id,image_path,image_type,delete_status) values("
-                + "'" + patientUuid + "'" + ","
-                + visitUuid + ","
-                + "'" + imagePath + "','" + image_Prefix + "'," +
-                0 +
-                ")");
+        ImagesDAO imagesDAO = new ImagesDAO();
+
+        try {
+            imagesDAO.insertObsImageDatabase(imageName, encounterAdultIntials, "");
+        } catch (DAOException e) {
+            Crashlytics.getInstance().core.logException(e);
+        }
     }
 
 
@@ -353,20 +336,29 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
      * @return void
      */
     private void updateDatabase(String string) {
-        String conceptID = UuidDictionary.RHK_MEDICAL_HISTORY_BLURB;
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("value", string);
-        contentValues.put("sync", "false");
 
-        String selection = "encounteruuid = ? AND conceptuuid = ?";
-        String[] args = {encounterAdultIntials, conceptID};
+        ObsDTO obsDTO = new ObsDTO();
+        ObsDAO obsDAO = new ObsDAO();
+        try {
+            obsDTO.setConceptuuid(UuidDictionary.RHK_MEDICAL_HISTORY_BLURB);
+            obsDTO.setEncounteruuid(encounterAdultIntials);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(string);
+            obsDTO.setUuid(obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB));
 
-        localdb.update(
-                "tbl_obs",
-                contentValues,
-                selection,
-                args
-        );
+            obsDAO.updateObs(obsDTO);
+
+        } catch (DAOException dao) {
+            Crashlytics.getInstance().core.logException(dao);
+        }
+
+        EncounterDAO encounterDAO = new EncounterDAO();
+        try {
+            encounterDAO.updateEncounterSync("false", encounterAdultIntials);
+            encounterDAO.updateEncounterModifiedDate(encounterAdultIntials);
+        } catch (DAOException e) {
+            Crashlytics.getInstance().core.logException(e);
+        }
 
     }
 
@@ -390,7 +382,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        localdb.close();
     }
 }
 

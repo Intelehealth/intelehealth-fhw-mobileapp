@@ -88,7 +88,6 @@ public class FileUtils {
         } catch (IOException e) {
             Crashlytics.getInstance().core.logException(e);
         }
-//      #628
         try {
             encoded = new JSONObject(raw_json);
         } catch (JSONException e) {

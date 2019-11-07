@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.intelehealth.client.app.IntelehealthApplication;
-import io.intelehealth.client.database.dao.EmergencyEncounterDAO;
 import io.intelehealth.client.database.dao.EncounterDAO;
 import io.intelehealth.client.database.dao.ObsDAO;
 import io.intelehealth.client.database.dao.PatientsDAO;
@@ -29,16 +28,13 @@ import io.intelehealth.client.models.pushRequestApiCall.Visit;
 import io.intelehealth.client.utilities.exception.DAOException;
 
 public class PatientsFrameJson {
-    PatientsDAO patientsDAO = new PatientsDAO();
+    private PatientsDAO patientsDAO = new PatientsDAO();
     private SessionManager session;
-    VisitsDAO visitsDAO = new VisitsDAO();
-    EncounterDAO encounterDAO = new EncounterDAO();
-    ObsDAO obsDAO = new ObsDAO();
-    EmergencyEncounterDAO emergencyEncounterDAO = new EmergencyEncounterDAO();
-//    SQLiteDatabase db = null;
+    private VisitsDAO visitsDAO = new VisitsDAO();
+    private EncounterDAO encounterDAO = new EncounterDAO();
+    private ObsDAO obsDAO = new ObsDAO();
 
     public PushRequestApiCall frameJson() {
-//        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         session = new SessionManager(IntelehealthApplication.getAppContext());
 
         PushRequestApiCall pushRequestApiCall = new PushRequestApiCall();
@@ -56,59 +52,61 @@ public class PatientsFrameJson {
         List<Visit> visitList = new ArrayList<>();
         List<Encounter> encounterList = new ArrayList<>();
 
-        for (int i = 0; i < patientDTOList.size(); i++) {
+        if (patientDTOList != null) {
+            for (int i = 0; i < patientDTOList.size(); i++) {
 
-            Person person = new Person();
-            person.setBirthdate(patientDTOList.get(i).getDateofbirth());
-            person.setGender(patientDTOList.get(i).getGender());
-            person.setUuid(patientDTOList.get(i).getUuid());
-            personList.add(person);
+                Person person = new Person();
+                person.setBirthdate(patientDTOList.get(i).getDateofbirth());
+                person.setGender(patientDTOList.get(i).getGender());
+                person.setUuid(patientDTOList.get(i).getUuid());
+                personList.add(person);
 
-            List<Name> nameList = new ArrayList<>();
-            Name name = new Name();
-            name.setFamilyName(patientDTOList.get(i).getLastname());
-            name.setGivenName(patientDTOList.get(i).getFirstname());
-            name.setMiddleName(patientDTOList.get(i).getMiddlename());
-            nameList.add(name);
+                List<Name> nameList = new ArrayList<>();
+                Name name = new Name();
+                name.setFamilyName(patientDTOList.get(i).getLastname());
+                name.setGivenName(patientDTOList.get(i).getFirstname());
+                name.setMiddleName(patientDTOList.get(i).getMiddlename());
+                nameList.add(name);
 
-            List<Address> addressList = new ArrayList<>();
-            Address address = new Address();
-            address.setAddress1(patientDTOList.get(i).getAddress1());
-            address.setAddress2(patientDTOList.get(i).getAddress2());
-            address.setCityVillage(patientDTOList.get(i).getCityvillage());
-            address.setCountry(patientDTOList.get(i).getCountry());
-            address.setPostalCode(patientDTOList.get(i).getPostalcode());
-            address.setStateProvince(patientDTOList.get(i).getStateprovince());
-            addressList.add(address);
+                List<Address> addressList = new ArrayList<>();
+                Address address = new Address();
+                address.setAddress1(patientDTOList.get(i).getAddress1());
+                address.setAddress2(patientDTOList.get(i).getAddress2());
+                address.setCityVillage(patientDTOList.get(i).getCityvillage());
+                address.setCountry(patientDTOList.get(i).getCountry());
+                address.setPostalCode(patientDTOList.get(i).getPostalcode());
+                address.setStateProvince(patientDTOList.get(i).getStateprovince());
+                addressList.add(address);
 
 
-            List<Attribute> attributeList = new ArrayList<>();
-            attributeList.clear();
-            try {
-                attributeList = patientsDAO.getPatientAttributes(patientDTOList.get(i).getUuid());
-            } catch (DAOException e) {
-                Crashlytics.getInstance().core.logException(e);
+                List<Attribute> attributeList = new ArrayList<>();
+                attributeList.clear();
+                try {
+                    attributeList = patientsDAO.getPatientAttributes(patientDTOList.get(i).getUuid());
+                } catch (DAOException e) {
+                    Crashlytics.getInstance().core.logException(e);
+                }
+
+
+                person.setNames(nameList);
+                person.setAddresses(addressList);
+                person.setAttributes(attributeList);
+                Patient patient = new Patient();
+
+                patient.setPerson(patientDTOList.get(i).getUuid());
+
+                List<Identifier> identifierList = new ArrayList<>();
+                Identifier identifier = new Identifier();
+                identifier.setIdentifierType("05a29f94-c0ed-11e2-94be-8c13b969e334");
+                identifier.setLocation(session.getLocationUuid());
+                identifier.setPreferred(true);
+                identifierList.add(identifier);
+
+                patient.setIdentifiers(identifierList);
+                patientList.add(patient);
+
+
             }
-
-
-            person.setNames(nameList);
-            person.setAddresses(addressList);
-            person.setAttributes(attributeList);
-            Patient patient = new Patient();
-
-            patient.setPerson(patientDTOList.get(i).getUuid());
-
-            List<Identifier> identifierList = new ArrayList<>();
-            Identifier identifier = new Identifier();
-            identifier.setIdentifierType("05a29f94-c0ed-11e2-94be-8c13b969e334");
-            identifier.setLocation(session.getLocationUuid());
-            identifier.setPreferred(true);
-            identifierList.add(identifier);
-
-            patient.setIdentifiers(identifierList);
-            patientList.add(patient);
-
-
         }
         for (VisitDTO visitDTO : visitDTOList) {
             Visit visit = new Visit();
@@ -170,8 +168,6 @@ public class PatientsFrameJson {
         pushRequestApiCall.setVisits(visitList);
         pushRequestApiCall.setEncounters(encounterList);
 
-//        EmergencyEncounterDAO emergencyEncounterDAO=new EmergencyEncounterDAO();
-//        emergencyEncounterDAO.checkEmergency();
 
         return pushRequestApiCall;
     }

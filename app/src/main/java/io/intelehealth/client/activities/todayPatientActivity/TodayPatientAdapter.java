@@ -45,7 +45,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         final TodayPatientModel todayPatientModel = todayPatientModelList.get(position);
         String header;
         if (todayPatientModel.getOpenmrs_id() != null) {
-            header = String.format("%s %s, %s", todayPatientModel.getFirst_name(),
+            header = String.format("%s %s - " + context.getString(R.string.visit_summary_heading_id) + ": %s", todayPatientModel.getFirst_name(),
                     todayPatientModel.getLast_name(), todayPatientModel.getOpenmrs_id());
         } else {
             header = String.format("%s %s", todayPatientModel.getFirst_name(),
@@ -53,51 +53,21 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         }
         int age = DateAndTimeUtils.getAge(todayPatientModel.getDate_of_birth());
         String dob = DateAndTimeUtils.SimpleDatetoLongDate(todayPatientModel.getDate_of_birth());
-        String body = String.format(context.getString(R.string.identification_screen_prompt_age) + " %d yrs", age);
+        String body = String.format(context.getString(R.string.id_number) + ": %s \n" +
+                        context.getString(R.string.identification_screen_prompt_phone_number) + ": %s\n" +
+                        context.getString(R.string.identification_screen_prompt_birthday) +
+                        ": %s (" + context.getString(R.string.identification_screen_prompt_age) + " %d)", todayPatientModel.getOpenmrs_id(), todayPatientModel.getPhone_number(),
+                dob, age);
 
-//        holder.listItemTodayPatientBinding.listItemHeadTextView.setText(header);
-//        holder.listItemTodayPatientBinding.listItemBodyTextView.setText(body);
         holder.getHeadTextView().setText(header);
         holder.getBodyTextView().setText(body);
         if (todayPatientModel.getEnddate() == null) {
-        /*    Drawable drawable = DrawableHelper
-                    .withContext(context)
-                    //TODO: Dummy color. Change color before release.
-                    .withColor(R.color.green)
-                    .withDrawable(R.drawable.circle)
-                    .tint()
-                    .get();
-//            holder.getIndicatorImageView().setImageDrawable(drawable);*/
-//            holder.listItemTodayPatientBinding.listItemIndicatorTextView.setText("Active");
         holder.getIndicatorTextView().setText("Active");
-//            holder.listItemTodayPatientBinding.listItemIndicatorTextView.setBackgroundColor(Color.GREEN);
         holder.getIndicatorTextView().setBackgroundColor(Color.GREEN);
         } else {
-        /*    Drawable drawable = DrawableHelper
-                    .withContext(context)
-                    //TODO: Dummy color. Change color before release.
-                    .withColor(R.color.red)
-                    .withDrawable(R.drawable.circle)
-                    .tint()
-                    .get();
-            holder.getIndicatorImageView().setImageDrawable(drawable);
-            */
-//            holder.listItemTodayPatientBinding.listItemIndicatorTextView.setText("Closed");
-//            holder.listItemTodayPatientBinding.listItemIndicatorTextView.setBackgroundColor(Color.RED);
             holder.getIndicatorTextView().setText("Closed");
             holder.getIndicatorTextView().setBackgroundColor(Color.RED);
         }
-//        holder.listItemTodayPatientBinding.getRoot().setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String patientStatus = "returning";
-//                Intent intent = new Intent(context, PatientDetailActivity.class);
-//                intent.putExtra("patientUuid", todayPatientModel.getPatientuuid());
-//                intent.putExtra("status", patientStatus);
-//                intent.putExtra("tag", "");
-//                context.startActivity(intent);
-//            }
-//        });
         holder.getRootView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,7 +76,6 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                 intent.putExtra("patientUuid", todayPatientModel.getPatientuuid());
                 intent.putExtra("status", patientStatus);
                 intent.putExtra("tag", "");
-                intent.putExtra("hasPrescription", "false");
                 context.startActivity(intent);
             }
         });
@@ -125,7 +94,6 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         private TextView bodyTextView;
         private TextView indicatorTextView;
         private View rootView;
-//        ListItemTodayPatientBinding listItemTodayPatientBinding;
 
         public TodayPatientViewHolder(View itemView) {
             super(itemView);
