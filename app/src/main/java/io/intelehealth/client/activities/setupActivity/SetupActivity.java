@@ -5,8 +5,11 @@ import android.accounts.AccountManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -34,7 +37,11 @@ import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.parse.Parse;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +62,7 @@ import io.intelehealth.client.utilities.DialogUtils;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.OfflineLogin;
 import io.intelehealth.client.utilities.SessionManager;
+import io.intelehealth.client.utilities.StringEncryption;
 import io.intelehealth.client.utilities.UrlModifiers;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -70,6 +78,7 @@ public class SetupActivity extends AppCompatActivity {
     private boolean isLocationFetched;
     String BASE_URL = "";
     private static final int PERMISSION_ALL = 1;
+    private long createdRecordsCount = 0;
 
     protected AccountManager manager;
     UrlModifiers urlModifiers = new UrlModifiers();
@@ -511,6 +520,48 @@ public class SetupActivity extends AppCompatActivity {
                                                     .server("http://" + CLEAN_URL + ":4040/parse/")
                                                     .build()
                                             );
+
+                                            SQLiteDatabase sqLiteDatabase = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+                                            //SQLiteDatabase read_db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+
+                                            sqLiteDatabase.beginTransaction();
+                                            //read_db.beginTransaction();
+                                            ContentValues values = new ContentValues();
+
+                                            //StringEncryption stringEncryption = new StringEncryption();
+                                            String random_salt = getSalt_DATA();
+
+                                            //String random_salt = stringEncryption.getRandomSaltString();
+                                            Log.d("salt", "salt: " + random_salt);
+                                            //Salt_Getter_Setter salt_getter_setter = new Salt_Getter_Setter();
+                                            //salt_getter_setter.setSalt(random`_salt);
+
+
+                                            String hash_password = null;
+                                            try {
+                                                //hash_email = StringEncryption.convertToSHA256(random_salt + mEmail);
+                                                hash_password = StringEncryption.convertToSHA256(random_salt + PASSWORD);
+                                            } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                                                Crashlytics.getInstance().core.logException(e);
+                                            }
+
+                                            try {
+                                                values.put("username", USERNAME);
+                                                values.put("password", hash_password);
+                                                //   values.put("creator_uuid_cred", loginModel.getUser().getUuid());
+                                                //    values.put("chwname",loginModel.getUser().getDisplay());
+                                                //   values.put("provider_uuid_cred", provider_url_uuid);
+                                                createdRecordsCount = sqLiteDatabase.insertWithOnConflict("tbl_user_credentials", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                                                sqLiteDatabase.setTransactionSuccessful();
+
+                                                Logger.logD("values", "values" + values);
+                                                Logger.logD("created user credentials", "create user records" + createdRecordsCount);
+                                            } catch (SQLException e) {
+                                                Log.d("SQL", "SQL user credentials: " + e);
+                                            } finally {
+                                                sqLiteDatabase.endTransaction();
+                                            }
+
                                             Log.i(TAG, "onPostExecute: Parse init");
                                             Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
                                             intent.putExtra("setup", true);
@@ -561,6 +612,35 @@ public class SetupActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    public String getSalt_DATA() {
+        BufferedReader reader = null;
+        String salt = null;
+        try {
+            reader = new BufferedReader(
+                    new InputStreamReader(getAssets().open("salt.env")));
+
+            // do reading, usually loop until end of file reading
+            String mLine;
+            while ((mLine = reader.readLine()) != null) {
+                //process line
+                salt = mLine;
+                Log.d("SA", "SA " + salt);
+            }
+        } catch (Exception e) {
+            //log the exception
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (Exception e) {
+                    //log the exception
+                }
+            }
+        }
+        return salt;
 
     }
 
