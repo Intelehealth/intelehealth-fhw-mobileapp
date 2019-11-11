@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -43,24 +41,20 @@
                         android:padding="16dp">
 
                         <ImageView
+                            android:id="@+id/iv_new_patient"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_centerVertical="true"
                             android:contentDescription="TODO"
                             app:srcCompat="@drawable/ic_person_add_24dp" />
 
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="40dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/new_patient"
-                                android:textSize="28sp" />
-                        </RelativeLayout>
-
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_toEndOf="@+id/iv_new_patient"
+                            android:text="@string/new_patient"
+                            android:textSize="28sp" />
 
                     </RelativeLayout>
 
@@ -84,27 +78,22 @@
                         android:padding="16dp">
 
                         <ImageView
+                            android:id="@+id/iv_find_patient"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:contentDescription="TODO"
                             android:layout_centerVertical="true"
+                            android:contentDescription="TODO"
                             app:srcCompat="@drawable/ic_search_24dp" />
 
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="40dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/find_patient"
-                                android:textSize="28sp" />
-                        </RelativeLayout>
-
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_toEndOf="@+id/iv_find_patient"
+                            android:text="@string/find_patient"
+                            android:textSize="28sp" />
 
                     </RelativeLayout>
-
 
                 </android.support.v7.widget.CardView>
 
@@ -125,27 +114,22 @@
                         android:padding="16dp">
 
                         <ImageView
+                            android:id="@+id/iv_today_patients"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_centerVertical="true"
                             android:contentDescription="TODO"
                             app:srcCompat="@drawable/ic_calendar_intele_24dp" />
 
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="40dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/today_patient"
-                                android:textSize="28sp" />
-                        </RelativeLayout>
-
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_toEndOf="@+id/iv_today_patients"
+                            android:text="@string/today_patient"
+                            android:textSize="28sp" />
 
                     </RelativeLayout>
-
 
                 </android.support.v7.widget.CardView>
 
@@ -166,28 +150,22 @@
                         android:padding="16dp">
 
                         <ImageView
+                            android:id="@+id/iv_active_patients"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:contentDescription="TODO"
                             android:layout_centerVertical="true"
+                            android:contentDescription="TODO"
                             app:srcCompat="@drawable/ic_calendar_intele_24dp" />
 
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="40dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-
-                                android:text="@string/active_patient"
-                                android:textSize="28sp" />
-                        </RelativeLayout>
-
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_toEndOf="@+id/iv_active_patients"
+                            android:text="@string/active_patient"
+                            android:textSize="28sp" />
 
                     </RelativeLayout>
-
 
                 </android.support.v7.widget.CardView>
 
@@ -209,28 +187,22 @@
                         android:padding="16dp">
 
                         <ImageView
+                            android:id="@+id/iv_video_library"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_centerVertical="true"
                             android:contentDescription="TODO"
                             app:srcCompat="@drawable/ic_play_circle_filled_black_24dp" />
 
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="40dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-
-                                android:text="@string/video_library"
-                                android:textSize="28sp" />
-                        </RelativeLayout>
-
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_toEndOf="@+id/iv_video_library"
+                            android:text="@string/video_library"
+                            android:textSize="28sp" />
 
                     </RelativeLayout>
-
 
                 </android.support.v7.widget.CardView>
 
