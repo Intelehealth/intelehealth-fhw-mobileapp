@@ -39,12 +39,16 @@ public class OfflineLogin {
     private static OfflineLogin mOfflineLogin;
     private Context mContext;
     private SharedPreferences mSharedPreference;
-    String user,pass;
+    String user,pass, provider_uuid, creator_uuid, chw_name;
+    //SessionManager sessionManager;
+    SessionManager sessionManager = null;
+
 
     private OfflineLogin(Context context) {
         mContext = context;
         mSharedPreference = mContext.getSharedPreferences(
                 context.getString(R.string.offline_login_shared_preference_key), Context.MODE_PRIVATE);
+        sessionManager = new SessionManager(mContext);
     }
 
     /**
@@ -206,8 +210,16 @@ public class OfflineLogin {
         {
             user = cursor.getString(cursor.getColumnIndexOrThrow("username"));
             pass = cursor.getString(cursor.getColumnIndexOrThrow("password"));
-            Log.d("OFF_USER","DB_DATA"+user+" "+pass);
+           chw_name = cursor.getString(cursor.getColumnIndexOrThrow("chwname"));
+            provider_uuid = cursor.getString(cursor.getColumnIndexOrThrow("provider_uuid_cred"));
+            creator_uuid = cursor.getString(cursor.getColumnIndexOrThrow("creator_uuid_cred"));
+           // Log.d("OFF_USER","DB_DATA"+user+" "+pass);
+            Log.d("OFF_USER","DB_DATA"+user+" "+pass+" " +chw_name+" "+provider_uuid+" "+creator_uuid);
 
+
+           sessionManager.setProviderID(provider_uuid);
+           sessionManager.setCreatorID(creator_uuid);
+           sessionManager.setChwname(chw_name);
                 Intent intent = new Intent(mContext, HomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 setOfflineLoginStatus(true);

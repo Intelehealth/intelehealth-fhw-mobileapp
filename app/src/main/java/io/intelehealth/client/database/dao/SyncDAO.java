@@ -2,6 +2,7 @@ package io.intelehealth.client.database.dao;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
@@ -49,7 +50,7 @@ public class SyncDAO {
             locationDAO.insertLocations(responseDTO.getData().getLocationDTO());
             providerDAO.insertProviders(responseDTO.getData().getProviderlist());
 
-
+            Logger.logD(TAG, "Pull ENCOUNTER: "+responseDTO.getData().getEncounterDTO());
             Logger.logD(TAG, "Pull sync ended");
             sessionManager.setPullExcutedTime(sessionManager.isPulled());
             sessionManager.setFirstTimeSyncExecute(false);
@@ -68,6 +69,7 @@ public class SyncDAO {
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
         String url = "http://" + sessionManager.getServerUrl() + ":8080/EMR-Middleware/webapi/pull/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
+        Logger.logD("PULL", "PULL_DATA: "+url);
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(url, "Basic " + encoded);
         Logger.logD("Start pull request", "Started");
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
@@ -136,6 +138,7 @@ public class SyncDAO {
                             for (int i = 0; i < pushResponseApiCall.getData().getPatientlist().size(); i++) {
                                 try {
                                     patientsDAO.updateOpemmrsId(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId(), pushResponseApiCall.getData().getPatientlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
+                                    Log.d("SYNC","ProvUUDI"+pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
                                 } catch (DAOException e) {
                                     Crashlytics.getInstance().core.logException(e);
                                 }
@@ -152,6 +155,7 @@ public class SyncDAO {
                             for (int i = 0; i < pushResponseApiCall.getData().getEncounterlist().size(); i++) {
                                 try {
                                     encounterDAO.updateEncounterSync(pushResponseApiCall.getData().getEncounterlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getEncounterlist().get(i).getUuid());
+                                    Log.d("SYNC","Encounter Data: "+pushResponseApiCall.getData().getEncounterlist().get(i).toString());
                                 } catch (DAOException e) {
                                     Crashlytics.getInstance().core.logException(e);
                                 }

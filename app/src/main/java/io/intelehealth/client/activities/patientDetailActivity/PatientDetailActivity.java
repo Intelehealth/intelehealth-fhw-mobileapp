@@ -160,6 +160,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 encounterDTO.setVisituuid(uuid);
                 encounterDTO.setSyncd(false);
                 encounterDTO.setProvideruuid(sessionManager.getProviderID());
+                Log.d("DTO","DTO:detail "+ encounterDTO.getProvideruuid());
                 encounterDTO.setVoided(0);
                 encounterDTO.setPrivacynotice_value(privacy_value_selected);//privacy value added.
 
