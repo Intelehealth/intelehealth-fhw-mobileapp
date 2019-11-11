@@ -50,11 +50,8 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     String patientName;
     String intentTag;
 
-
     ArrayList<String> physicalExams;
-
     String mFileName = "famHist.json";
-
     int lastExpandedPosition = -1;
 
     Node familyHistoryMap;
@@ -157,7 +154,8 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             }
         });
 
-        if (sessionManager.getLicenseKey() != null && !sessionManager.getLicenseKey().isEmpty())
+//        if (sessionManager.getLicenseKey() != null && !sessionManager.getLicenseKey().isEmpty())
+        if (!sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
 
         if (hasLicense) {
@@ -257,6 +255,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
             intent.putExtra("tag", intentTag);
+            intent.putExtra("hasPrescription", "false");
             startActivity(intent);
         } else {
 

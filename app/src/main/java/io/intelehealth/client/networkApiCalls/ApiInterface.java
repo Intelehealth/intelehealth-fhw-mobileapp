@@ -1,6 +1,7 @@
 package io.intelehealth.client.networkApiCalls;
 
 
+import io.intelehealth.client.models.DownloadMindMapRes;
 import io.intelehealth.client.models.Location;
 import io.intelehealth.client.models.ObsImageModel.ObsJsonResponse;
 import io.intelehealth.client.models.ObsImageModel.ObsPushDTO;
@@ -80,4 +81,9 @@ public interface ApiInterface {
 
     @DELETE
     Observable<Void> DELETE_OBS_IMAGE(@Url String url, @Header("Authorization") String authHeader);
+
+
+    @GET("/api/mindmap/download")
+    Observable<DownloadMindMapRes> DOWNLOAD_MIND_MAP_RES_OBSERVABLE(@Query("key") String licenseKey);
+
 }

@@ -61,7 +61,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
 
     boolean hasLicense = false;
 
-//    String mFileName = "DemoHistory.json";
+//  String mFileName = "DemoHistory.json";
 
     private static final String TAG = PastMedicalHistoryActivity.class.getSimpleName();
 
@@ -191,6 +191,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
+                    intent.putExtra("hasPrescription", "false");
                     startActivity(intent);
                 } else {
 
@@ -227,7 +228,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
         });
 
 
-        if (sessionManager.getLicenseKey() != null && !sessionManager.getLicenseKey().isEmpty())
+//        if (sessionManager.getLicenseKey() != null && !sessionManager.getLicenseKey().isEmpty())
+        if (!sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
 
         if (hasLicense) {

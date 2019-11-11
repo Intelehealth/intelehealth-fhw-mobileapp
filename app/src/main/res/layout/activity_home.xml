@@ -45,6 +45,7 @@
                         <ImageView
                             android:layout_width="30dp"
                             android:layout_height="30dp"
+                            android:layout_centerVertical="true"
                             android:contentDescription="TODO"
                             app:srcCompat="@drawable/ic_person_add_24dp" />
 
@@ -86,6 +87,7 @@
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:contentDescription="TODO"
+                            android:layout_centerVertical="true"
                             app:srcCompat="@drawable/ic_search_24dp" />
 
                         <RelativeLayout
@@ -96,7 +98,6 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-
                                 android:text="@string/find_patient"
                                 android:textSize="28sp" />
                         </RelativeLayout>
@@ -138,7 +139,6 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-
                                 android:text="@string/today_patient"
                                 android:textSize="28sp" />
                         </RelativeLayout>
@@ -169,6 +169,7 @@
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:contentDescription="TODO"
+                            android:layout_centerVertical="true"
                             app:srcCompat="@drawable/ic_calendar_intele_24dp" />
 
                         <RelativeLayout
@@ -210,6 +211,7 @@
                         <ImageView
                             android:layout_width="30dp"
                             android:layout_height="30dp"
+                            android:layout_centerVertical="true"
                             android:contentDescription="TODO"
                             app:srcCompat="@drawable/ic_play_circle_filled_black_24dp" />
 
@@ -254,8 +256,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:background="@color/white"
+                            android:background="?attr/selectableItemBackground"
                             android:clickable="true"
+                            android:paddingHorizontal="5dp"
                             android:text="@string/sync_now"
                             android:textColor="@color/cardview_dark_background"
                             android:textSize="15sp" />

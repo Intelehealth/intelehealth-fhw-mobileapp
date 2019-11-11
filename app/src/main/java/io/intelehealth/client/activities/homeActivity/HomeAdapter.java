@@ -28,7 +28,6 @@ import io.intelehealth.client.utilities.ConfigUtils;
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder> {
     final static String TAG = HomeAdapter.class.getSimpleName();
 
-
     final String[] options = {IntelehealthApplication.getAppContext().getString(R.string.new_patient),
             IntelehealthApplication.getAppContext().getString(R.string.find_patient),
             IntelehealthApplication.getAppContext().getString(R.string.today_patient),
@@ -42,7 +41,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
 //   TODO: Change placeholder icon "android.R.drawable.ic_menu_my_calendar"
 
     final int[] icons = {R.drawable.ic_person_add_24dp, R.drawable.ic_search_24dp,
-            R.drawable.ic_calendar_intele_24dp, R.drawable.ic_calendar_intele_24dp, R.drawable.ic_play_circle_filled_black_24dp
+            R.drawable.ic_calendar_intele_24dp, R.drawable.ic_active_patients_black, R.drawable.ic_play_circle_filled_black_24dp
             , android.R.drawable.ic_menu_preferences
     };
 

@@ -4,7 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activities.privacyNoticeActivity.PrivacyNotice_Activity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
 
 
     <RelativeLayout
@@ -53,6 +69,8 @@
             android:layout_alignParentRight="true"
             android:layout_marginVertical="15dp"
             android:textAlignment="center"
+            style="@style/SelectableItemBackground"
+            android:foreground="?android:attr/selectableItemBackground"
             android:layout_marginHorizontal="10dp"
             android:padding="15dp"/>
     </RelativeLayout>
@@ -61,6 +79,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/buttons"
+        android:layout_below="@+id/actionbar"
         android:layout_marginBottom="15dp">
         <!--Scrollable content here-->
         <LinearLayout
@@ -72,6 +91,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:textFontWeight="1"
+                android:padding="10dp"
                 android:fontFamily="sans-serif-light"
                 android:layout_width="wrap_content"
                 android:layout_marginHorizontal="5dp"

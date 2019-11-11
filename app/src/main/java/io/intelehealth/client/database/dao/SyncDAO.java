@@ -2,13 +2,22 @@ package io.intelehealth.client.database.dao;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.app.IntelehealthApplication;
+import io.intelehealth.client.database.InteleHealthDatabaseHelper;
+import io.intelehealth.client.models.ActivePatientModel;
 import io.intelehealth.client.models.dto.ResponseDTO;
+import io.intelehealth.client.models.dto.VisitDTO;
 import io.intelehealth.client.models.pushRequestApiCall.PushRequestApiCall;
 import io.intelehealth.client.models.pushResponseApiCall.PushResponseApiCall;
 import io.intelehealth.client.services.LastSyncIntentService;
@@ -27,6 +36,8 @@ import retrofit2.Response;
 public class SyncDAO {
     public static String TAG = "SyncDAO";
     SessionManager sessionManager = null;
+    InteleHealthDatabaseHelper mDbHelper;
+    private SQLiteDatabase db;
 
     public boolean SyncData(ResponseDTO responseDTO) throws DAOException {
         boolean isSynced = true;
@@ -64,10 +75,14 @@ public class SyncDAO {
     }
 
     public boolean pullData(final Context context) {
+
+        mDbHelper = new InteleHealthDatabaseHelper(context);
+        db = mDbHelper.getWritableDatabase();
+
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
-        String url = "http://" + sessionManager.getServerUrl() + ":8080/EMR-Middleware/webapi/pull/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
+        String url = "http://" + sessionManager.getServerUrl() + "/EMR-Middleware/webapi/pull/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(url, "Basic " + encoded);
         Logger.logD("Start pull request", "Started");
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
@@ -91,6 +106,10 @@ public class SyncDAO {
                     else
                         AppConstants.notificationUtils.DownloadDone("sync", "failed synced,You can try again", 1, IntelehealthApplication.getAppContext());
 
+                    if (response.body().getData() != null) {
+                        triggerVisitNotification(response.body().getData().getVisitDTO());
+                    }
+
                 }
 
                 Logger.logD("End Pull request", "Ended");
@@ -109,6 +128,54 @@ public class SyncDAO {
         return true;
     }
 
+    private void triggerVisitNotification(List<VisitDTO> listVisitDTO) {
+
+        List<ActivePatientModel> activePatientList = new ArrayList<>();
+        getPatients(activePatientList);
+
+        List<VisitDTO> visitDTO = new ArrayList<>();
+        visitDTO.addAll(listVisitDTO);
+
+        if (visitDTO != null) {
+            for (int i = 0; i < visitDTO.size(); i++) {
+                for (int j = 0; j < activePatientList.size(); j++) {
+                    if (visitDTO.get(i).getPatientuuid().equalsIgnoreCase(activePatientList.get(j).getPatientuuid())) {
+                        AppConstants.notificationUtils.DownloadDone(IntelehealthApplication.getAppContext().getResources().getString(R.string.patient) + " " + activePatientList.get(j).getFirst_name() + " " + activePatientList.get(j).getLast_name(), IntelehealthApplication.getAppContext().getResources().getString(R.string.has_a_new_prescription), 2, IntelehealthApplication.getAppContext());
+                    }
+                }
+            }
+        }
+    }
+
+    private void getPatients(List<ActivePatientModel> activePatientList) {
+
+        String query =
+                "SELECT   a.uuid, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id  " +
+                        "FROM tbl_visit a, tbl_patient b " +
+                        "WHERE a.patientuuid = b.uuid " +
+                        "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate ASC";
+        final Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    activePatientList.add(new ActivePatientModel(
+                            cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("enddate")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                            ""
+                    ));
+                } while (cursor.moveToNext());
+            }
+        }
+        cursor.close();
+    }
+
     public boolean pushDataApi() {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         PatientsDAO patientsDAO = new PatientsDAO();
@@ -123,7 +190,7 @@ public class SyncDAO {
         String encoded = sessionManager.getEncoded();
         Gson gson = new Gson();
         Logger.logD(TAG, "push request model" + gson.toJson(pushRequestApiCall));
-        String url = "http://" + sessionManager.getServerUrl() + ":8080/EMR-Middleware/webapi/push/pushdata";
+        String url = "http://" + sessionManager.getServerUrl() + "/EMR-Middleware/webapi/push/pushdata";
 //        push only happen if any one data exists.
         if (!pushRequestApiCall.getVisits().isEmpty() || !pushRequestApiCall.getPersons().isEmpty() || !pushRequestApiCall.getPatients().isEmpty() || !pushRequestApiCall.getEncounters().isEmpty()) {
             Single<PushResponseApiCall> pushResponseApiCallObservable = AppConstants.apiInterface.PUSH_RESPONSE_API_CALL_OBSERVABLE(url, "Basic " + encoded, pushRequestApiCall);

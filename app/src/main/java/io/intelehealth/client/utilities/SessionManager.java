@@ -204,7 +204,7 @@ public class SessionManager {
     }
 
     public String getLicenseKey() {
-        return pref.getString(LICENSE_KEY, null);
+        return pref.getString(LICENSE_KEY, "");
     }
 
     public void setLicenseKey(String licenseKey) {

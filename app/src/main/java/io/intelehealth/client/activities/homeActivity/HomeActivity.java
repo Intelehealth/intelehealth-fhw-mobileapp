@@ -13,6 +13,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Paint;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -21,6 +22,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,6 +36,7 @@ import android.widget.Toast;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
+import java.io.File;
 import java.util.Locale;
 
 import io.intelehealth.client.R;
@@ -46,12 +49,21 @@ import io.intelehealth.client.activities.settingsActivity.SettingsActivity;
 import io.intelehealth.client.activities.todayPatientActivity.TodayPatientActivity;
 import io.intelehealth.client.activities.videoLibraryActivity.VideoLibraryActivity;
 import io.intelehealth.client.app.AppConstants;
+import io.intelehealth.client.models.DownloadMindMapRes;
+import io.intelehealth.client.networkApiCalls.ApiClient;
+import io.intelehealth.client.networkApiCalls.ApiInterface;
 import io.intelehealth.client.services.DownloadProtocolsTask;
 import io.intelehealth.client.syncModule.SyncUtils;
 import io.intelehealth.client.utilities.ConfigUtils;
+import io.intelehealth.client.utilities.DownloadMindMaps;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.OfflineLogin;
 import io.intelehealth.client.utilities.SessionManager;
+import io.intelehealth.client.widget.materialprogressbar.CustomProgressDialog;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 
 import static io.intelehealth.client.app.AppConstants.UNIQUE_WORK_NAME;
 
@@ -76,6 +88,11 @@ public class HomeActivity extends AppCompatActivity {
     private String key = null;
     private String licenseUrl = null;
 
+    Context context;
+    CustomProgressDialog customProgressDialog;
+    private String mindmapURL = "";
+    private DownloadMindMaps mTask;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +109,8 @@ public class HomeActivity extends AppCompatActivity {
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
         setTitle(R.string.title_activity_login);
+        context = HomeActivity.this;
+        customProgressDialog = new CustomProgressDialog(context);
         reMyreceive = new Myreceiver();
         filter = new IntentFilter("lasysync");
 
@@ -157,8 +176,8 @@ public class HomeActivity extends AppCompatActivity {
         });
         WorkManager.getInstance().enqueueUniquePeriodicWork(UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
         if (sessionManager.isFirstTimeLaunched()) {
-            TempDialog = new ProgressDialog(HomeActivity.this);
-            TempDialog.setMessage("Please wait...");
+            TempDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle); //thats how to add a style!
+            TempDialog.setTitle("Sync in progress");
             TempDialog.setCancelable(false);
             TempDialog.setProgress(i);
 
@@ -166,7 +185,8 @@ public class HomeActivity extends AppCompatActivity {
 
             CDT = new CountDownTimer(7000, 1000) {
                 public void onTick(long millisUntilFinished) {
-                    TempDialog.setMessage("Please wait.. Syncing");
+                    TempDialog.setTitle("Sync in progress");
+                    TempDialog.setMessage("Please wait...");
                     i--;
                 }
 
@@ -188,6 +208,11 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -208,14 +233,12 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             case R.id.updateProtocolsOption: {
 
-                if (sessionManager.getLicenseKey() != null && sessionManager.getLicenseKey().equalsIgnoreCase("http://mindmaps.intelehealth.io:4040")) {
-                    String license = sessionManager.getLicenseKey();
-                    if (license != null) {
-                        DownloadProtocolsTask downloadProtocolsTask = new DownloadProtocolsTask(this);
-                        downloadProtocolsTask.execute(license);
-                    } else {
-                        Toast.makeText(this, "License invalid", Toast.LENGTH_SHORT).show();
-                    }
+                if (!sessionManager.getLicenseKey().isEmpty()) {
+
+                    String licenseUrl = sessionManager.getMindMapServerUrl();
+                    String licenseKey = sessionManager.getLicenseKey();
+                    getMindmapDownloadURL("http://" + licenseUrl + ":3004/", licenseKey);
+
                 } else {
                     AlertDialog.Builder dialog = new AlertDialog.Builder(this);
                     LayoutInflater li = LayoutInflater.from(this);
@@ -228,29 +251,25 @@ public class HomeActivity extends AppCompatActivity {
 
                                     Dialog d = (Dialog) dialog;
 
-                                    EditText text = d.findViewById(R.id.licensekey);
-                                    // text.setText(sessionManager.getLicenseKey());
-                                    EditText url = d.findViewById(R.id.licenseurl);
-                                    // url.setText(sessionManager.getMindMapServerUrl());
-                                    if (text.getText().toString().isEmpty() && text.getText() == null || url.getText().toString().isEmpty() && url.getText() == null) {
-                                        text.setFocusable(true);
-                                        text.setError("Enter license key");
+                                    EditText etURL = d.findViewById(R.id.licenseurl);
+                                    EditText etKey = d.findViewById(R.id.licensekey);
+                                    String url = etURL.getText().toString().trim();
+                                    String key = etKey.getText().toString().trim();
+
+                                    if (url.isEmpty()) {
+                                        etURL.setError("Enter Server URL");
+                                        etURL.requestFocus();
+                                        return;
                                     }
-                                    if (sessionManager.getLicenseKey() != null && sessionManager.getLicenseKey().equalsIgnoreCase("http://mindmaps.intelehealth.io:4040")) {
-                                        text.setText(sessionManager.getLicenseKey());
-                                        url.setText(sessionManager.getMindMapServerUrl());
+                                    if (key.isEmpty()) {
+                                        etKey.setError("Enter License Key");
+                                        etKey.requestFocus();
+                                        return;
                                     }
-                                    key = text.getText().toString();
-                                    licenseUrl = url.getText().toString();
 
-                                    sessionManager.setMindMapServerUrl(licenseUrl);
+                                    sessionManager.setMindMapServerUrl(url);
+                                    getMindmapDownloadURL("http://" + url + ":3004/", key);
 
-                                    if (keyVerified(key)) {
-                                        DownloadProtocolsTask downloadProtocolsTask = new DownloadProtocolsTask(HomeActivity.this);
-                                        downloadProtocolsTask.execute(key);
-
-
-                                    }
                                 }
                             })
                             .setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
@@ -272,7 +291,7 @@ public class HomeActivity extends AppCompatActivity {
 //                boolean i = imagesPushDAO.patientProfileImagesPush();
 //                boolean o = imagesPushDAO.obsImagesPush();
                 if (isSynced)
-                    AppConstants.notificationUtils.showNotifications("ImageUpload", "ImageUpload Completed", 4, this);
+                    AppConstants.notificationUtils.showNotifications_noProgress("Sync not available", "Please connect to an internet connection!", getApplicationContext());
                 else
                     AppConstants.notificationUtils.showNotifications("ImageUpload", "ImageUpload failed", 4, this);
                 return true;
@@ -383,6 +402,90 @@ public class HomeActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             lastSyncTextView.setText("Last Synced:- " + sessionManager.getLastPulledDateTime());
         }
+    }
+
+    private void getMindmapDownloadURL(String url, String key) {
+        customProgressDialog.show();
+        ApiClient.changeApiBaseUrl(url);
+        ApiInterface apiService = ApiClient.createService(ApiInterface.class);
+        try {
+            Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key);
+            resultsObservable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DisposableObserver<DownloadMindMapRes>() {
+                        @Override
+                        public void onNext(DownloadMindMapRes res) {
+                            customProgressDialog.dismiss();
+                            if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
+
+                                Log.e("MindMapURL", "Successfully get MindMap URL");
+                                mTask = new DownloadMindMaps(context);
+                                mindmapURL = res.getMindmap().trim();
+                                sessionManager.setLicenseKey(key);
+                                checkExistingMindMaps();
+
+                            } else {
+                                Toast.makeText(context, getResources().getString(R.string.no_mindmaps_found), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            customProgressDialog.dismiss();
+                            Toast.makeText(context, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } catch (IllegalArgumentException e) {
+            Log.e(TAG, "changeApiBaseUrl: " + e.getMessage());
+            Log.e(TAG, "changeApiBaseUrl: " + e.getStackTrace());
+        }
+    }
+
+    private void checkExistingMindMaps() {
+
+        //Check is there any existing mindmaps are present, if yes then delete.
+
+        File engines = new File(context.getFilesDir().getAbsolutePath(), "/Engines");
+        Log.e(TAG, "Engines folder=" + engines.exists());
+        if (engines.exists()) {
+            engines.delete();
+        }
+        File logo = new File(context.getFilesDir().getAbsolutePath(), "/logo");
+        Log.e(TAG, "Logo folder=" + logo.exists());
+        if (logo.exists()) {
+            logo.delete();
+        }
+        File physicalExam = new File(context.getFilesDir().getAbsolutePath() + "/physExam.json");
+        Log.e(TAG, "physExam.json=" + physicalExam.exists());
+        if (physicalExam.exists()) {
+            physicalExam.delete();
+        }
+        File familyHistory = new File(context.getFilesDir().getAbsolutePath() + "/famHist.json");
+        Log.e(TAG, "famHist.json=" + familyHistory.exists());
+        if (familyHistory.exists()) {
+            familyHistory.delete();
+        }
+        File pastMedicalHistory = new File(context.getFilesDir().getAbsolutePath() + "/patHist.json");
+        Log.e(TAG, "patHist.json=" + pastMedicalHistory.exists());
+        if (pastMedicalHistory.exists()) {
+            pastMedicalHistory.delete();
+        }
+        File config = new File(context.getFilesDir().getAbsolutePath() + "/config.json");
+        Log.e(TAG, "config.json=" + config.exists());
+        if (config.exists()) {
+            config.delete();
+        }
+
+        //Start downloading mindmaps
+        mTask.execute(mindmapURL, context.getFilesDir().getAbsolutePath() + "/mindmaps.zip");
+        Log.e("DOWNLOAD", "isSTARTED");
+
     }
 
 }

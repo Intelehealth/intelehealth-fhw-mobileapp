@@ -111,7 +111,7 @@ public class VitalsActivity extends AppCompatActivity {
         try {
             JSONObject obj = null;
 //            #633 #632
-            if (sessionManager.valueContains("licensekey")) {
+            if (!sessionManager.getLicenseKey().isEmpty()) {
                 obj = new JSONObject(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this)); //Load the config file
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
@@ -783,6 +783,7 @@ public class VitalsActivity extends AppCompatActivity {
                 intent.putExtra("state", state);
                 intent.putExtra("name", patientName);
                 intent.putExtra("tag", intentTag);
+                intent.putExtra("hasPrescription", "false");
                 startActivity(intent);
             } catch (DAOException dao) {
                 Crashlytics.getInstance().core.logException(dao);

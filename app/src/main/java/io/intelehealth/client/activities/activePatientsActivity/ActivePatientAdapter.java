@@ -7,8 +7,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.intelehealth.client.R;
@@ -26,10 +28,12 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
     List<ActivePatientModel> activePatientModels;
     Context context;
     LayoutInflater layoutInflater;
+    ArrayList<String> listPatientUUID;
 
-    public ActivePatientAdapter(List<ActivePatientModel> activePatientModels, Context context) {
+    public ActivePatientAdapter(List<ActivePatientModel> activePatientModels, Context context, ArrayList<String> _listPatientUUID) {
         this.activePatientModels = activePatientModels;
         this.context = context;
+        this.listPatientUUID = _listPatientUUID;
     }
 
     @Override
@@ -48,7 +52,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         final ActivePatientModel activePatientModel = activePatientModels.get(position);
         String header;
         if (activePatientModel.getOpenmrs_id() != null) {
-            header = String.format("%s %s - " + context.getString(R.string.visit_summary_heading_id) + ": %s", activePatientModel.getFirst_name(),
+            header = String.format("%s %s, %s", activePatientModel.getFirst_name(),
                     activePatientModel.getLast_name(), activePatientModel.getOpenmrs_id());
         } else {
             header = String.format("%s %s", activePatientModel.getFirst_name(),
@@ -56,11 +60,8 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         }
         int age = DateAndTimeUtils.getAge(activePatientModel.getDate_of_birth());
         String dob = DateAndTimeUtils.SimpleDatetoLongDate(activePatientModel.getDate_of_birth());
-        String body = String.format(context.getString(R.string.id_number) + ": %s \n " +
-                        context.getString(R.string.identification_screen_prompt_phone_number) + ": %s\n" +
-                        context.getString(R.string.identification_screen_prompt_birthday) +
-                        ": %s (" + context.getString(R.string.identification_screen_prompt_age) + " %d)", activePatientModel.getOpenmrs_id(), activePatientModel.getPhone_number(),
-                dob, age);
+        String body = String.format(context.getString(R.string.identification_screen_prompt_age) + " %d yrs", age);
+
 
         holder.getHeadTextView().setText(header);
         holder.getBodyTextView().setText(body);
@@ -79,11 +80,28 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                 intent.putExtra("patientUuid", activePatientModel.getPatientuuid());
                 intent.putExtra("status", patientStatus);
                 intent.putExtra("tag", "");
+
+                if (holder.ivPriscription.getTag().equals("1")) {
+                    intent.putExtra("hasPrescription", "true");
+                } else {
+                    intent.putExtra("hasPrescription", "false");
+                }
                 context.startActivity(intent);
             }
         });
+
+        for (int i = 0; i < listPatientUUID.size(); i++) {
+            if (activePatientModels.get(position).getPatientuuid().equalsIgnoreCase(listPatientUUID.get(i))) {
+                holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_prescription_green));
+                holder.ivPriscription.setTag("1");
+            }
+        }
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 
     @Override
     public int getItemCount() {
@@ -95,12 +113,14 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         private TextView bodyTextView;
         private TextView indicatorTextView;
         private View rootView;
+        private ImageView ivPriscription;
 
         public ActivePatientViewHolder(View itemView) {
             super(itemView);
             headTextView = itemView.findViewById(R.id.list_item_head_text_view);
             bodyTextView = itemView.findViewById(R.id.list_item_body_text_view);
             indicatorTextView = itemView.findViewById(R.id.list_item_indicator_text_view);
+            ivPriscription = itemView.findViewById(R.id.iv_prescription);
             rootView = itemView;
         }
         public TextView getHeadTextView() {

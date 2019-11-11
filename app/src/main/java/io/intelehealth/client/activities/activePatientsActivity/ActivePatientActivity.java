@@ -24,13 +24,18 @@ import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.homeActivity.HomeActivity;
 import io.intelehealth.client.app.AppConstants;
+import io.intelehealth.client.database.dao.EncounterDAO;
 import io.intelehealth.client.database.dao.ProviderDAO;
+import io.intelehealth.client.database.dao.VisitsDAO;
 import io.intelehealth.client.models.ActivePatientModel;
+import io.intelehealth.client.models.dto.EncounterDTO;
+import io.intelehealth.client.models.dto.VisitDTO;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.StringUtils;
@@ -45,6 +50,8 @@ public class ActivePatientActivity extends AppCompatActivity {
     TextView textView;
     RecyclerView recyclerView;
     AlertDialog.Builder dialogBuilder;
+
+    private ArrayList<String> listPatientUUID = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +80,50 @@ public class ActivePatientActivity extends AppCompatActivity {
             recyclerView.setVisibility(View.VISIBLE);
             doQuery();
         }
+
+        getVisits();
+    }
+
+    private void getVisits() {
+
+        ArrayList<String> encounterVisitUUID = new ArrayList<String>();
+        HashSet<String> hsPatientUUID = new HashSet<String>();
+
+        //Get all Visits
+        VisitsDAO visitsDAO = new VisitsDAO();
+        List<VisitDTO> visitsDTOList = visitsDAO.getAllVisits();
+
+        //Get all Encounters
+        EncounterDAO encounterDAO = new EncounterDAO();
+        List<EncounterDTO> encounterDTOList = encounterDAO.getAllEncounters();
+
+        //Get Visit Note Encounters only, visit note encounter id - d7151f82-c1f3-4152-a605-2f9ea7414a79
+        if (encounterDTOList.size() > 0) {
+            for (int i = 0; i < encounterDTOList.size(); i++) {
+                if (encounterDTOList.get(i).getEncounterTypeUuid().equalsIgnoreCase("d7151f82-c1f3-4152-a605-2f9ea7414a79")) {
+                    encounterVisitUUID.add(encounterDTOList.get(i).getVisituuid());
+                }
+            }
+        }
+
+        //Get patientUUID from visitList
+        for (int i = 0; i < encounterVisitUUID.size(); i++) {
+
+            for (int j = 0; j < visitsDTOList.size(); j++) {
+
+                if (encounterVisitUUID.get(i).equalsIgnoreCase(visitsDTOList.get(j).getUuid())) {
+                    listPatientUUID.add(visitsDTOList.get(j).getPatientuuid());
+                }
+            }
+        }
+
+        if (listPatientUUID.size() > 0) {
+
+            hsPatientUUID.addAll(listPatientUUID);
+            listPatientUUID.clear();
+            listPatientUUID.addAll(hsPatientUUID);
+
+        }
     }
 
     /**
@@ -84,9 +135,9 @@ public class ActivePatientActivity extends AppCompatActivity {
         List<ActivePatientModel> activePatientList = new ArrayList<>();
         Date cDate = new Date();
         String query = "SELECT   a.uuid, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id  " +
-                        "FROM tbl_visit a, tbl_patient b " +
-                        "WHERE a.patientuuid = b.uuid " +
-                        "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate ASC";
+                "FROM tbl_visit a, tbl_patient b " +
+                "WHERE a.patientuuid = b.uuid " +
+                "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate ASC";
         final Cursor cursor = db.rawQuery(query, null);
 
         if (cursor != null) {
@@ -119,7 +170,7 @@ public class ActivePatientActivity extends AppCompatActivity {
             for (ActivePatientModel activePatientModel : activePatientList)
                 Logger.logD(TAG, activePatientModel.getFirst_name() + " " + activePatientModel.getLast_name());
 
-            ActivePatientAdapter mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this);
+            ActivePatientAdapter mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ActivePatientActivity.this);
             recyclerView.setLayoutManager(linearLayoutManager);
             recyclerView.addItemDecoration(new
@@ -259,9 +310,9 @@ public class ActivePatientActivity extends AppCompatActivity {
     private void doQueryWithProviders(List<String> providersuuids) {
         List<ActivePatientModel> activePatientList = new ArrayList<>();
         String query = "select  distinct a.uuid,c.uuid AS patientuuid,a.startdate AS startdate,a.enddate AS enddate, c.first_name,c.middle_name,c.last_name,c.openmrs_id,c.date_of_birth " +
-                        "from tbl_visit a,tbl_encounter b ,tbl_patient c " +
-                        "where b.visituuid=a.uuid and b.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
-                        "and a.patientuuid=c.uuid and (a.enddate is null OR a.enddate='')  order by a.startdate ASC";
+                "from tbl_visit a,tbl_encounter b ,tbl_patient c " +
+                "where b.visituuid=a.uuid and b.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
+                "and a.patientuuid=c.uuid and (a.enddate is null OR a.enddate='')  order by a.startdate ASC";
         Logger.logD(TAG, query);
         final Cursor cursor = db.rawQuery(query, null);
 
@@ -295,7 +346,7 @@ public class ActivePatientActivity extends AppCompatActivity {
             for (ActivePatientModel activePatientModel : activePatientList)
                 Logger.logD(TAG, activePatientModel.getFirst_name() + " " + activePatientModel.getLast_name());
 
-            ActivePatientAdapter mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this);
+            ActivePatientAdapter mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ActivePatientActivity.this);
             recyclerView.setLayoutManager(linearLayoutManager);
             recyclerView.addItemDecoration(new
