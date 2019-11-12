@@ -58,9 +58,10 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
             header = String.format("%s %s", activePatientModel.getFirst_name(),
                     activePatientModel.getLast_name());
         }
-        int age = DateAndTimeUtils.getAge(activePatientModel.getDate_of_birth());
+//        int age = DateAndTimeUtils.getAge(activePatientModel.getDate_of_birth());
+        String age = DateAndTimeUtils.getAgeInYearMonth(activePatientModel.getDate_of_birth(), context);
         String dob = DateAndTimeUtils.SimpleDatetoLongDate(activePatientModel.getDate_of_birth());
-        String body = String.format(context.getString(R.string.identification_screen_prompt_age) + " %d yrs", age);
+        String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
 
 
         holder.getHeadTextView().setText(header);
@@ -123,6 +124,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
             ivPriscription = itemView.findViewById(R.id.iv_prescription);
             rootView = itemView;
         }
+
         public TextView getHeadTextView() {
             return headTextView;
         }

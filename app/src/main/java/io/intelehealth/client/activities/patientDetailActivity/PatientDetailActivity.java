@@ -110,6 +110,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     ImageView ivPrescription;
     private String hasPrescription = "";
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +124,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         reMyreceive = new Myreceiver();
         filter = new IntentFilter("OpenmrsID");
         newVisit = findViewById(R.id.button_new_visit);
+        context = PatientDetailActivity.this;
 
         ivPrescription = findViewById(R.id.iv_prescription);
 
@@ -414,8 +416,8 @@ public class PatientDetailActivity extends AppCompatActivity {
             idView.setText(getString(R.string.patient_not_registered));
         }
 
-        int age = DateAndTimeUtils.getAge(patient_new.getDate_of_birth());
-        ageView.setText(String.valueOf(age));
+        String age = DateAndTimeUtils.getAgeInYearMonth(patient_new.getDate_of_birth(), context);
+        ageView.setText(age);
 
         String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient_new.getDate_of_birth());
         dobView.setText(dob);
@@ -667,8 +669,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 visitSummary.putExtra("name", patientName);
                 visitSummary.putExtra("tag", intentTag);
                 visitSummary.putExtra("pastVisit", past_visit);
-                if (hasPrescription.equalsIgnoreCase("true")){
-                    visitSummary.putExtra("hasPrescription","true");
+                if (hasPrescription.equalsIgnoreCase("true")) {
+                    visitSummary.putExtra("hasPrescription", "true");
                 } else {
                     visitSummary.putExtra("hasPrescription", "false");
                 }
