@@ -548,9 +548,9 @@ public class SetupActivity extends AppCompatActivity {
                                             try {
                                                 values.put("username", USERNAME);
                                                 values.put("password", hash_password);
-                                                //   values.put("creator_uuid_cred", loginModel.getUser().getUuid());
-                                                //    values.put("chwname",loginModel.getUser().getDisplay());
-                                                //   values.put("provider_uuid_cred", provider_url_uuid);
+                                                values.put("creator_uuid_cred", loginModel.getUser().getUuid());
+                                                values.put("chwname",loginModel.getUser().getDisplay());
+                                                values.put("provider_uuid_cred", sessionManager.getProviderID());
                                                 createdRecordsCount = sqLiteDatabase.insertWithOnConflict("tbl_user_credentials", null, values, SQLiteDatabase.CONFLICT_REPLACE);
                                                 sqLiteDatabase.setTransactionSuccessful();
 
