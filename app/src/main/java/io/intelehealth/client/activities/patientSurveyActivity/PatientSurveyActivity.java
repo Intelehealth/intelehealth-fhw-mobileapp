@@ -159,7 +159,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_PATIENT_EXIT_SURVEY"));
         encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
         encounterDTO.setVisituuid(visitUuid);
-        encounterDTO.setProvideruuid(sessionManager.getProviderID());
+        encounterDTO.setProvideruuid(encounterDTO.getProvideruuid());
         encounterDTO.setSyncd(false);
         encounterDTO.setVoided(0);
         try {
