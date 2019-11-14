@@ -363,9 +363,6 @@ public class ImagesDAO {
                 }
             }
             idCursor.close();
-            localdb.setTransactionSuccessful();
-            localdb.endTransaction();
-            localdb.close();
         } catch (SQLiteException e) {
             throw new DAOException(e);
         } finally {
