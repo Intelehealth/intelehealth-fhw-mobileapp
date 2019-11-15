@@ -257,12 +257,17 @@ public class HomeActivity extends AppCompatActivity {
                                     String key = etKey.getText().toString().trim();
 
                                     if (url.isEmpty()) {
-                                        etURL.setError("Enter Server URL");
+                                        etURL.setError(getResources().getString(R.string.enter_server_url));
+                                        etURL.requestFocus();
+                                        return;
+                                    }
+                                    if (url.contains(":")){
+                                        etURL.setError(getResources().getString(R.string.invalid_url));
                                         etURL.requestFocus();
                                         return;
                                     }
                                     if (key.isEmpty()) {
-                                        etKey.setError("Enter License Key");
+                                        etKey.setError(getResources().getString(R.string.enter_license_key));
                                         etKey.requestFocus();
                                         return;
                                     }

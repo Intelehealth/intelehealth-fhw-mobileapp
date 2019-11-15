@@ -390,7 +390,7 @@ public class SetupActivity extends AppCompatActivity {
                                     EditText url = d.findViewById(R.id.licenseurl);
                                     if (text.getText().toString().isEmpty() && text.getText() == null || url.getText().toString().isEmpty() && url.getText() == null) {
                                         text.setFocusable(true);
-                                        text.setError("Enter license key");
+                                        text.setError(getResources().getString(R.string.enter_license_key));
                                     }
 
                                     if (sessionManager.getLicenseKey() != null && sessionManager.getLicenseKey().equalsIgnoreCase("http://mindmaps.intelehealth.io:4040")) {
@@ -402,6 +402,21 @@ public class SetupActivity extends AppCompatActivity {
                                     key = text.getText().toString();
                                     licenseUrl = url.getText().toString();
 
+                                    if (licenseUrl.isEmpty()) {
+                                        url.setError(getResources().getString(R.string.enter_server_url));
+                                        url.requestFocus();
+                                        return;
+                                    }
+                                    if (licenseUrl.contains(":")){
+                                        url.setError(getResources().getString(R.string.invalid_url));
+                                        url.requestFocus();
+                                        return;
+                                    }
+                                    if (key.isEmpty()) {
+                                        text.setError(getResources().getString(R.string.enter_license_key));
+                                        text.requestFocus();
+                                        return;
+                                    }
 
                                     sessionManager.setMindMapServerUrl(licenseUrl);
                                     //Toast.makeText(SetupActivity.this, "" + key, Toast.LENGTH_SHORT).show();
