@@ -464,14 +464,14 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
             try {
                 assoSympObj.put("id", "ID_294177528");
-                assoSympObj.put("text", "Associated symptoms");
+                assoSympObj.put("text", getResources().getString(R.string.associated_symptoms));
                 assoSympObj.put("display", "Do you have the following symptom(s)?");
                 assoSympObj.put("display-or", "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?");
                 assoSympObj.put("pos-condition", "c.");
                 assoSympObj.put("neg-condition", "s.");
                 assoSympArr.put(0, assoSympObj);
                 finalAssoSympObj.put("id", "ID_844006222");
-                finalAssoSympObj.put("text", "Associated symptoms");
+                finalAssoSympObj.put("text", getResources().getString(R.string.associated_symptoms));
                 finalAssoSympObj.put("display-or", "ପେଟଯନ୍ତ୍ରଣା");
                 finalAssoSympObj.put("perform-physical-exam", "");
                 finalAssoSympObj.put("options", assoSympArr);

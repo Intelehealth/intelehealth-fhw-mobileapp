@@ -450,7 +450,7 @@
     <string name="patient_reports">Patient reports -</string>
     <string name="no_mindmaps_found">No Mindmaps Found</string>
     <string name="unable_to_get_proper_response">Unable to get proper response</string>
-
+    <string name="associated_symptoms">Associated symptoms</string>
 
 
 </resources>
