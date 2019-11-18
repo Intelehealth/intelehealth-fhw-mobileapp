@@ -77,7 +77,6 @@ public class QuestionNodeActivity extends AppCompatActivity {
     private String encounterVitals;
     private String encounterAdultIntials;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(this);

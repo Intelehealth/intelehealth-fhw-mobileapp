@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.app.AppConstants;
@@ -24,6 +25,7 @@ import io.intelehealth.client.models.pushResponseApiCall.PushResponseApiCall;
 import io.intelehealth.client.services.LastSyncIntentService;
 import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.NotificationID;
+import io.intelehealth.client.utilities.NotificationUtils;
 import io.intelehealth.client.utilities.PatientsFrameJson;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.exception.DAOException;
@@ -131,7 +133,6 @@ public class SyncDAO {
                             triggerVisitNotification(listPatientUUID);
                         }
                     }
-
                 }
 
                 Logger.logD("End Pull request", "Ended");
