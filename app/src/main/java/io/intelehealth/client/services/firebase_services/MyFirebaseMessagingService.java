@@ -24,6 +24,7 @@ import io.intelehealth.client.activities.login_activity.OfflineLogin;
  */
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
+    //version 2.0 branch from master which will contain all reverted_back code changes
 
     private static final String TAG = MyFirebaseMessagingService.class.getSimpleName();
 
