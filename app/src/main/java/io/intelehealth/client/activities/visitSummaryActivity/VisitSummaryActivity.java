@@ -699,11 +699,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         respiratory.setText(resp.getValue());
         spO2View.setText(spO2.getValue());
         if (complaint.getValue() != null)
-            complaintView.setText(Html.fromHtml(complaint.getValue().replace("○ c.", "<br>○ " + getResources().getString(R.string.patient_reports) + " ")
-                    .replace("○ s.", "<br>○ " + getResources().getString(R.string.patient_denies) + " ")
-                    .replace("c.", "")
-                    .replace("s.", "")
-                    .replace("<br/>• Associated symptoms -", "")));
+            complaintView.setText(Html.fromHtml(complaint.getValue()));
         if (famHistory.getValue() != null)
             famHistView.setText(Html.fromHtml(famHistory.getValue()));
         if (patHistory.getValue() != null)
@@ -825,11 +821,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 final TextView complaintText = convertView.findViewById(R.id.textView_entry);
                 if (complaint.getValue() != null) {
-                    complaintText.setText(Html.fromHtml(complaint.getValue().replace("○ c.", "<br>○ " + getResources().getString(R.string.patient_reports) + " ")
-                            .replace("○ s.", "<br>○ " + getResources().getString(R.string.patient_denies) + " ")
-                            .replace("c.", "")
-                            .replace("s.", "")
-                            .replace("<br/>• Associated symptoms -", "")));
+                    complaintText.setText(Html.fromHtml(complaint.getValue()));
                 }
                 complaintText.setEnabled(false);
 
@@ -840,11 +832,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
                         if (complaint.getValue() != null) {
-                            dialogEditText.setText(Html.fromHtml(complaint.getValue().replace("○ c.", "<br>○ " + getResources().getString(R.string.patient_reports) + " ")
-                                    .replace("○ s.", "<br>○ " + getResources().getString(R.string.patient_denies) + " ")
-                                    .replace("c.", "")
-                                    .replace("s.", "")
-                                    .replace("<br/>• Associated symptoms -", "")));
+                            dialogEditText.setText(Html.fromHtml(complaint.getValue()));
                         } else {
                             dialogEditText.setText("");
                         }
@@ -854,16 +842,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 complaint.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
                                 if (complaint.getValue() != null) {
-                                    complaintText.setText(Html.fromHtml(complaint.getValue().replace("○ c.", "<br>○ " + getResources().getString(R.string.patient_reports) + " ")
-                                            .replace("○ s.", "<br>○ " + getResources().getString(R.string.patient_denies) + " ")
-                                            .replace("c.", "")
-                                            .replace("s.", "")
-                                            .replace("<br/>• Associated symptoms -", "")));
-                                    complaintView.setText(Html.fromHtml(complaint.getValue().replace("○ c.", "<br>○ " + getResources().getString(R.string.patient_reports) + " ")
-                                            .replace("○ s.", "<br>○ " + getResources().getString(R.string.patient_denies) + " ")
-                                            .replace("c.", "")
-                                            .replace("s.", "")
-                                            .replace("<br/>• Associated symptoms -", "")));
+                                    complaintText.setText(Html.fromHtml(complaint.getValue()));
+                                    complaintView.setText(Html.fromHtml(complaint.getValue()));
                                 }
                                 updateDatabase(complaint.getValue(), UuidDictionary.CURRENT_COMPLAINT);
                                 dialog.dismiss();
