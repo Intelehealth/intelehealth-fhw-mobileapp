@@ -11,7 +11,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
-        vectorDrawables.useSupportLibrary = true
+        //vectorDrawables.useSupportLibrary = true
 
     }
     compileOptions {
