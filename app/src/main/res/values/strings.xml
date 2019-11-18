@@ -453,5 +453,7 @@
     <string name="enter_server_url">Enter Server URL</string>
     <string name="enter_license_key">Enter license key</string>
     <string name="invalid_url">Invalid URL</string>
+    <string name="years">years</string>
+    <string name="months">months</string>
 
 </resources>
