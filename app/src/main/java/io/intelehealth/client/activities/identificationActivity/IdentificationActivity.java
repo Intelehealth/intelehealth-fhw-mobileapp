@@ -1,6 +1,7 @@
 package io.intelehealth.client.activities.identificationActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -125,6 +126,7 @@ public class IdentificationActivity extends AppCompatActivity {
     PatientDTO patientdto = new PatientDTO();
     ImagesDAO imagesDAO = new ImagesDAO();
     private String mCurrentPhotoPath;
+    Context context;
 
     Intent i_privacy;
     String privacy_value;
@@ -139,6 +141,7 @@ public class IdentificationActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         i_privacy = getIntent();
+        context = IdentificationActivity.this;
         privacy_value = i_privacy.getStringExtra("privacy"); //privacy_accept value retrieved from previous act.
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -541,6 +544,8 @@ public class IdentificationActivity extends AppCompatActivity {
         mDOBMonth = today.get(Calendar.MONTH);
         mDOBDay = today.get(Calendar.DAY_OF_MONTH);
         //DOB is set using an AlertDialog
+        Locale.setDefault(Locale.ENGLISH);
+
         mDOBPicker = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -594,7 +599,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         //if patient update then age will be set
         if (patientID_edit != null) {
-            int age = DateAndTimeUtils.getAge(patient1.getDate_of_birth());
+            int age = DateAndTimeUtils.getAge(patient1.getDate_of_birth(),context);
             mDOB.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
             int month = DateAndTimeUtils.getMonth(patient1.getDate_of_birth());
             mAge.setText(age + getString(R.string.identification_screen_text_years) + month + getString(R.string.identification_screen_text_months));

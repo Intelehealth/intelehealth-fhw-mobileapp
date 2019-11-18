@@ -51,7 +51,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
             header = String.format("%s %s", todayPatientModel.getFirst_name(),
                     todayPatientModel.getLast_name());
         }
-        int age = DateAndTimeUtils.getAge(todayPatientModel.getDate_of_birth());
+        int age = DateAndTimeUtils.getAge(todayPatientModel.getDate_of_birth(),context);
         String dob = DateAndTimeUtils.SimpleDatetoLongDate(todayPatientModel.getDate_of_birth());
         String body = String.format(context.getString(R.string.identification_screen_prompt_age) + " %d yrs", age);
 

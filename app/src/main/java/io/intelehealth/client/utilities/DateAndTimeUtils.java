@@ -1,5 +1,8 @@
 package io.intelehealth.client.utilities;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.crashlytics.android.Crashlytics;
 
 import org.joda.time.LocalDate;
@@ -15,19 +18,23 @@ import java.util.Locale;
 
 public class DateAndTimeUtils {
 
-
     public String currentDateTime() {
+        Locale.setDefault(Locale.ENGLISH);
         DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
 // you can get seconds by adding  "...:ss" to it
         Date todayDate = new Date();
         return date.format(todayDate);
     }
 
-    public static int getAge(String s) {
+    public static int getAge(String s, Context context) {
         if (s == null) return 0;
 
+        SessionManager sessionManager = new SessionManager(context);
+        String language = sessionManager.getAppLanguage();
+        Log.d("LANG","LANG: "+ sessionManager.getAppLanguage());
+
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
+        DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         Date date = null;
         try {
             date = originalFormat.parse(s);
@@ -38,15 +45,29 @@ public class DateAndTimeUtils {
 
         String[] components = formattedDate.split("\\-");
 
-        int year = Integer.parseInt(components[2]);
-        int month = Integer.parseInt(components[1]);
-        int day = Integer.parseInt(components[0]);
+        if(language.matches("ar") || language.equals("ar") || language == "ar")
+        {
+            int year = Integer.parseInt(components[2]);
+            int month = Integer.parseInt(components[1]);
+            int day = Integer.parseInt(components[0]);
+            LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
+            LocalDate now = new LocalDate();                    //Today's date
+            Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
+            return period.getYears();
 
-        LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
-        LocalDate now = new LocalDate();                    //Today's date
-        Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
+        }
+        else
+        {
+            int year = Integer.parseInt(components[0]);
+            int month = Integer.parseInt(components[1]);
+            int day = Integer.parseInt(components[2]);
+            LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
+            LocalDate now = new LocalDate();                    //Today's date
+            Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
+            return period.getYears();
 
-        return period.getYears();
+        }
+
     }
 
     public static String getSubtractedPulledExcutedTime(String lastPulledTime) {
@@ -59,7 +80,7 @@ public class DateAndTimeUtils {
     public static String getFormatedDateOfBirth(String oldformatteddate){
 
         DateFormat originalFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
-        DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         Date date = null;
         try {
             date = originalFormat.parse(oldformatteddate);
@@ -74,7 +95,7 @@ public class DateAndTimeUtils {
 
     public static String getFormatedDateOfBirthAsView(String oldformatteddate) {
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        DateFormat targetFormat = new SimpleDateFormat("dd MMMM yyyy");
+        DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         Date date = null;
         try {
             date = originalFormat.parse(oldformatteddate);
@@ -98,7 +119,7 @@ public class DateAndTimeUtils {
         String formattedDate = null;
         try {
             DateFormat originalFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
-            DateFormat targetFormat = new SimpleDateFormat("dd-MMMM-yyyy");
+            DateFormat targetFormat = new SimpleDateFormat("dd-MMMM-yyyy", Locale.ENGLISH);
             Date date = originalFormat.parse(dateString);
             formattedDate = targetFormat.format(date);
         } catch (Exception ex) {
@@ -111,7 +132,7 @@ public class DateAndTimeUtils {
         String formattedDate = null;
         try {
             DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-            DateFormat targetFormat = new SimpleDateFormat("dd-MMM-yyyy");
+            DateFormat targetFormat = new SimpleDateFormat("dd-MMMM-yyyy", Locale.ENGLISH);
             Date date = originalFormat.parse(dateString);
             formattedDate = targetFormat.format(date);
         } catch (Exception ex) {
@@ -142,8 +163,8 @@ public class DateAndTimeUtils {
         SimpleDateFormat sdf1;
 
         try {
-            sdf = new SimpleDateFormat(sourceFormat);
-            sdf1 = new SimpleDateFormat(anotherFormat);
+            sdf = new SimpleDateFormat(sourceFormat, Locale.ENGLISH);
+            sdf1 = new SimpleDateFormat(anotherFormat, Locale.ENGLISH);
             result = sdf1.format(sdf.parse(date));
         } catch (Exception e) {
             Crashlytics.getInstance().core.logException(e);
