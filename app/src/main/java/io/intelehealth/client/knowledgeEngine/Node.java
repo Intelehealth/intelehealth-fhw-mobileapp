@@ -328,7 +328,7 @@ public class Node implements Serializable {
             language = language.replace("_", newText);
             //Log.d("Node", language);
         } else {
-            language = language + " " + newText;
+            language = newText;
             //Log.d("Node", language);
         }
     }
