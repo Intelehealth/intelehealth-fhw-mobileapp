@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
@@ -22,6 +23,7 @@ import io.intelehealth.client.models.pushRequestApiCall.PushRequestApiCall;
 import io.intelehealth.client.models.pushResponseApiCall.PushResponseApiCall;
 import io.intelehealth.client.services.LastSyncIntentService;
 import io.intelehealth.client.utilities.Logger;
+import io.intelehealth.client.utilities.NotificationID;
 import io.intelehealth.client.utilities.PatientsFrameJson;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.exception.DAOException;
@@ -107,7 +109,27 @@ public class SyncDAO {
                         AppConstants.notificationUtils.DownloadDone("sync", "failed synced,You can try again", 1, IntelehealthApplication.getAppContext());
 
                     if (response.body().getData() != null) {
-                        triggerVisitNotification(response.body().getData().getVisitDTO());
+                        ArrayList<String> listPatientUUID = new ArrayList<String>();
+                        List<VisitDTO> listVisitDTO = new ArrayList<>();
+                        ArrayList<String> encounterVisitUUID = new ArrayList<String>();
+                        for (int i = 0; i < response.body().getData().getEncounterDTO().size(); i++) {
+                            if (response.body().getData().getEncounterDTO().get(i)
+                                    .getEncounterTypeUuid().equalsIgnoreCase("d7151f82-c1f3-4152-a605-2f9ea7414a79")) {
+                                encounterVisitUUID.add(response.body().getData().getEncounterDTO().get(i).getVisituuid());
+                            }
+                        }
+                        listVisitDTO.addAll(response.body().getData().getVisitDTO());
+                        for (int i = 0; i < encounterVisitUUID.size() ; i++) {
+                            for (int j = 0; j < listVisitDTO.size(); j++) {
+                                if (encounterVisitUUID.get(i).equalsIgnoreCase(listVisitDTO.get(j).getUuid())){
+                                    listPatientUUID.add(listVisitDTO.get(j).getPatientuuid());
+                                }
+                            }
+                        }
+
+                        if (listPatientUUID.size() > 0) {
+                            triggerVisitNotification(listPatientUUID);
+                        }
                     }
 
                 }
@@ -128,19 +150,18 @@ public class SyncDAO {
         return true;
     }
 
-    private void triggerVisitNotification(List<VisitDTO> listVisitDTO) {
+    private void triggerVisitNotification(ArrayList<String> listPatientUUID) {
 
         List<ActivePatientModel> activePatientList = new ArrayList<>();
         getPatients(activePatientList);
 
-        List<VisitDTO> visitDTO = new ArrayList<>();
-        visitDTO.addAll(listVisitDTO);
-
-        if (visitDTO != null) {
-            for (int i = 0; i < visitDTO.size(); i++) {
+        if (listPatientUUID != null) {
+            for (int i = 0; i < listPatientUUID.size(); i++) {
                 for (int j = 0; j < activePatientList.size(); j++) {
-                    if (visitDTO.get(i).getPatientuuid().equalsIgnoreCase(activePatientList.get(j).getPatientuuid())) {
-                        AppConstants.notificationUtils.DownloadDone(IntelehealthApplication.getAppContext().getResources().getString(R.string.patient) + " " + activePatientList.get(j).getFirst_name() + " " + activePatientList.get(j).getLast_name(), IntelehealthApplication.getAppContext().getResources().getString(R.string.has_a_new_prescription), 2, IntelehealthApplication.getAppContext());
+                    if (listPatientUUID.get(i).equalsIgnoreCase(activePatientList.get(j).getPatientuuid())) {
+                        Log.e("GET-ID", "" + NotificationID.getID());
+                        AppConstants.notificationUtils.DownloadDone(IntelehealthApplication.getAppContext().getResources().getString(R.string.patient) + " " + activePatientList.get(j).getFirst_name() + " " + activePatientList.get(j).getLast_name(),
+                                IntelehealthApplication.getAppContext().getResources().getString(R.string.has_a_new_prescription), NotificationID.getID(), IntelehealthApplication.getAppContext());
                     }
                 }
             }
