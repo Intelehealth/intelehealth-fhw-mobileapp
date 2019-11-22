@@ -206,6 +206,14 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 calculateBMI();
+                if(mHeight.getText().toString().startsWith("."))
+                {
+                    mHeight.setText("");
+                }
+                else
+                {
+
+                }
             }
         });
 
@@ -235,6 +243,14 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
+                if(mWeight.getText().toString().startsWith("."))
+                {
+                    mWeight.setText("");
+                }
+                else
+                {
+
+                }
                 calculateBMI();
             }
         });
@@ -272,6 +288,14 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
+                if(mSpo2.getText().toString().startsWith("."))
+                {
+                    mSpo2.setText("");
+                }
+                else
+                {
+
+                }
             }
         });
 
@@ -310,6 +334,14 @@ public class VitalsActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
+                if(mTemperature.getText().toString().startsWith("."))
+                {
+                    mTemperature.setText("");
+                }
+                else
+                {
+
+                }
 
             }
         });
@@ -335,6 +367,14 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
+                if(mResp.getText().toString().startsWith("."))
+                {
+                    mResp.setText("");
+                }
+                else
+                {
+
+                }
             }
         });
 
@@ -360,6 +400,14 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
+                if(mPulse.getText().toString().startsWith("."))
+                {
+                    mPulse.setText("");
+                }
+                else
+                {
+
+                }
             }
         });
 
@@ -384,6 +432,14 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
+                if(mBpSys.getText().toString().startsWith("."))
+                {
+                    mBpSys.setText("");
+                }
+                else
+                {
+
+                }
             }
         });
 
@@ -408,6 +464,14 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
+                if(mBpDia.getText().toString().startsWith("."))
+                {
+                    mBpDia.setText("");
+                }
+                else
+                {
+
+                }
             }
         });
 
