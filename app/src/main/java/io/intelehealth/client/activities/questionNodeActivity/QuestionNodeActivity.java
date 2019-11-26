@@ -77,6 +77,12 @@ public class QuestionNodeActivity extends AppCompatActivity {
     private String encounterVitals;
     private String encounterAdultIntials;
 
+    private List<Node> optionsList = new ArrayList<>();
+    Node assoSympNode;
+    private JSONObject assoSympObj = new JSONObject();
+    private JSONArray assoSympArr = new JSONArray();
+    private JSONObject finalAssoSympObj = new JSONObject();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(this);
@@ -284,6 +290,10 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 complaintNumber++;
                 setupQuestions(complaintNumber);
                 complaintConfirmed = false;
+            }  else if (complaints.size() > 1 && complaintNumber == complaints.size() - 1) {
+                complaintNumber++;
+                removeDuplicateSymptoms();
+                complaintConfirmed = false;
             } else {
                 if (intentTag != null && intentTag.equals("edit")) {
                     Log.i(TAG, "fabClick: update" + insertion);
@@ -398,7 +408,11 @@ public class QuestionNodeActivity extends AppCompatActivity {
     private void setupQuestions(int complaintIndex) {
         nodeComplete = false;
 
-        currentNode = complaintsNodes.get(complaintIndex);
+        if (complaints.size() > 1) {
+            getAssociatedSymptoms(complaintIndex);
+        } else {
+            currentNode = complaintsNodes.get(complaintIndex);
+        }
 
         adapter = new CustomExpandableListAdapter(this, currentNode, this.getClass().getSimpleName());
         questionListView.setAdapter(adapter);
