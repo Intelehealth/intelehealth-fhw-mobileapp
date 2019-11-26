@@ -1372,7 +1372,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String tests_web = stringToWeb(testsReturned);
 
         //String advice_web = stringToWeb(adviceReturned);
-        String advice_web = stringToWeb(medicalAdvice_string.trim());
+
+        String advice_web = stringToWeb(medicalAdvice_string.trim().replace("\n\n","\n"));
         Log.d("Hyperlink","hyper_print: " + advice_web);
 
         String diagnosis_web = stringToWeb(diagnosisReturned);
@@ -1768,9 +1769,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
             case UuidDictionary.MEDICAL_ADVICE: {
                 if (!adviceReturned.isEmpty()) {
-                    adviceReturned = adviceReturned + "," + value;
+                    adviceReturned = adviceReturned + "\n" + value;
+                    Log.d("GAME","GAME: "+adviceReturned);
                 } else {
                     adviceReturned = value;
+                    Log.d("GAME","GAME_2: "+adviceReturned);
                 }
                 if (medicalAdviceCard.getVisibility() != View.VISIBLE) {
                     medicalAdviceCard.setVisibility(View.VISIBLE);
@@ -1798,10 +1801,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                  * variable a contains the hyperlink sent from webside.
                  * variable b contains the string data (medical advice) of patient.
                  * */
-
+                medicalAdvice_string = medicalAdvice_string.replace("\n\n","\n");
                 medicalAdviceTextView.setText(Html.fromHtml(medicalAdvice_HyperLink + medicalAdvice_string.replaceAll("\n","<br><br>")));
                 medicalAdviceTextView.setMovementMethod(LinkMovementMethod.getInstance());
-                Log.d("hyper_textview","hyper_textview: " + medicalAdviceTextView);
+                Log.d("hyper_textview","hyper_textview: " + medicalAdviceTextView.getText().toString());
                 //checkForDoctor();
                 break;
             }
