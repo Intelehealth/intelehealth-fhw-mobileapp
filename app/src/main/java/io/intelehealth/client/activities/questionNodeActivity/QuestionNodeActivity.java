@@ -406,6 +406,80 @@ public class QuestionNodeActivity extends AppCompatActivity {
         questionListView.expandGroup(0);
         setTitle(patientName + ": " + currentNode.findDisplay());
     }
+
+    private void getAssociatedSymptoms(int complaintIndex) {
+
+        List<Node> assoComplaintsNodes = new ArrayList<>();
+        assoComplaintsNodes.addAll(complaintsNodes);
+
+        for (int i = 0; i < complaintsNodes.get(complaintIndex).size(); i++) {
+
+            if (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
+                    .equalsIgnoreCase("Associated symptoms")) {
+
+                optionsList.addAll(complaintsNodes.get(complaintIndex).getOptionsList().get(i).getOptionsList());
+
+                assoComplaintsNodes.get(complaintIndex).getOptionsList().remove(i);
+                currentNode = assoComplaintsNodes.get(complaintIndex);
+                Log.e("CurrentNode", "" + currentNode);
+
+            }
+        }
+    }
+
+    private void removeDuplicateSymptoms() {
+
+        nodeComplete = false;
+
+        HashSet<String> hashSet = new HashSet<>();
+
+        List<Node> finalOptionsList = new ArrayList<>(optionsList);
+
+        if (optionsList.size() != 0) {
+
+            for (int i = 0; i < optionsList.size(); i++) {
+
+                if (hashSet.contains(optionsList.get(i).getText())) {
+
+                    finalOptionsList.remove(optionsList.get(i));
+
+                } else {
+                    hashSet.add(optionsList.get(i).getText());
+                }
+            }
+
+            try {
+                assoSympObj.put("id", "ID_294177528");
+                assoSympObj.put("text", getResources().getString(R.string.associated_symptoms));
+                assoSympObj.put("display", "Do you have the following symptom(s)?");
+                assoSympObj.put("display-or", "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?");
+                assoSympObj.put("pos-condition", "c.");
+                assoSympObj.put("neg-condition", "s.");
+                assoSympArr.put(0, assoSympObj);
+                finalAssoSympObj.put("id", "ID_844006222");
+                finalAssoSympObj.put("text", getResources().getString(R.string.associated_symptoms));
+                finalAssoSympObj.put("display-or", "ପେଟଯନ୍ତ୍ରଣା");
+                finalAssoSympObj.put("perform-physical-exam", "");
+                finalAssoSympObj.put("options", assoSympArr);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            assoSympNode = new Node(finalAssoSympObj);
+            assoSympNode.getOptionsList().get(0).setOptionsList(finalOptionsList);
+            assoSympNode.getOptionsList().get(0).setTerminal(false);
+
+            currentNode = assoSympNode;
+            adapter = new CustomExpandableListAdapter(this, currentNode, this.getClass().getSimpleName());
+            questionListView.setAdapter(adapter);
+            questionListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
+            questionListView.expandGroup(0);
+            setTitle(patientName + ": " + currentNode.getText());
+
+        }
+    }
+
     //Dialog Alert forcing user to answer all questions.
     //Can be removed if necessary
     //TODO: Add setting to allow for all questions unrequired..addAll(Arrays.asList(splitExams))
