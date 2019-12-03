@@ -88,6 +88,8 @@ public class Node implements Serializable {
     private boolean hasPopUp;
     private boolean subPopUp;
 
+    private boolean isNoSelected;
+
     private List<String> imagePathList;
 
     public static String bullet = "\u2022";
@@ -190,6 +192,7 @@ public class Node implements Serializable {
 
 
             this.selected = false;
+            this.isNoSelected = false;
 
             this.choiceType = jsonNode.optString("choice-type");
 
@@ -216,7 +219,7 @@ public class Node implements Serializable {
         this.text = source.text;
         this.display = source.display;
         this.display_oriya = source.display_oriya;
-        this.display_cebuno=source.display_cebuno;
+        this.display_cebuno = source.display_cebuno;
         this.optionsList = source.optionsList;
         this.terminal = source.terminal;
         this.language = source.language;
@@ -232,6 +235,7 @@ public class Node implements Serializable {
         this.hasPhysicalExams = source.hasPhysicalExams;
         this.hasPopUp = source.hasPopUp;
         this.selected = false;
+        this.isNoSelected = false;
         this.required = source.required;
         this.positiveCondition = source.positiveCondition;
         this.negativeCondition = source.negativeCondition;
@@ -361,8 +365,9 @@ public class Node implements Serializable {
                         return display;
                     }
                 }
-            
-            }case "cb": {
+
+            }
+            case "cb": {
                 //Log.i(TAG, "findDisplay: cb");
                 if (display_cebuno != null && !display_cebuno.isEmpty()) {
                     //Log.i(TAG, "findDisplay: cb ");
@@ -467,6 +472,14 @@ public class Node implements Serializable {
         return selected;
     }
 
+    public boolean isNoSelected() {
+        return isNoSelected;
+    }
+
+    public void setNoSelected(boolean noSelected) {
+        isNoSelected = noSelected;
+    }
+
     public void setUnselected() {
         selected = false;
     }
@@ -551,6 +564,7 @@ public class Node implements Serializable {
                     if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") ||
                             associatedTest.trim().equals("H/o specific illness"))) {
                         raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+//                        raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                     } else {
                         if (node_opt.getLanguage().equals("%")) {
                             raw = raw + bullet + " " + node_opt.formLanguage() + next_line;
@@ -1598,9 +1612,12 @@ public class Node implements Serializable {
         List<String> negativeAssociations = new ArrayList<>();
         List<String> finalTexts = new ArrayList<>();
         List<Node> mOptions = associatedSymptomNode.getOptionsList();
-
-        String mLanguagePositive = associatedSymptomNode.positiveCondition;
-        String mLanguageNegative = associatedSymptomNode.negativeCondition;
+        boolean flagPositive = false;
+        boolean flagNegative = false;
+//        String mLanguagePositive = associatedSymptomNode.positiveCondition;
+        String mLanguagePositive = "Patient reports -" + next_line;
+//        String mLanguageNegative = associatedSymptomNode.negativeCondition;
+        String mLanguageNegative = "Patient denies -" + next_line;
 
         Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + mLanguagePositive);
         Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + mLanguageNegative);
@@ -1626,7 +1643,8 @@ public class Node implements Serializable {
                         positiveAssociations.set(positiveAssociations.size() - 1, tempString);
                     }
                 }
-            } else {
+
+            } else if (mOptions.get(i).isNoSelected()) {
                 if (mOptions.get(i).getLanguage().equals("%")) {
                 } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
                     negativeAssociations.add(mOptions.get(i).getLanguage().substring(1));
@@ -1636,13 +1654,30 @@ public class Node implements Serializable {
                     negativeAssociations.add(mOptions.get(i).getLanguage());
                 }
             }
+
+
+//            else {
+//                if (mOptions.get(i).getLanguage().equals("%")) {
+//                } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
+//                    negativeAssociations.add(mOptions.get(i).getLanguage().substring(1));
+//                } else if (mOptions.get(i).getLanguage().isEmpty()) {
+//                    negativeAssociations.add(mOptions.get(i).getText());
+//                } else {
+//                    negativeAssociations.add(mOptions.get(i).getLanguage());
+//                }
+//            }
         }
 
         if (positiveAssociations != null && !positiveAssociations.isEmpty()) {
             finalTexts.add(bullet_hollow);
             for (String string : positiveAssociations) {
                 Log.i(TAG, "generateAssociatedSymptomsOrHistory:  " + mLanguagePositive);
-                finalTexts.add(mLanguagePositive + " " + string);
+                if (!flagPositive) {
+                    flagPositive = true;
+                    finalTexts.add(mLanguagePositive + " " + string);
+                } else {
+                    finalTexts.add(" " + string);
+                }
             }
         }
 
@@ -1651,7 +1686,12 @@ public class Node implements Serializable {
             finalTexts.add(bullet_hollow);
             for (String string : negativeAssociations) {
                 Log.i(TAG, "generateAssociatedSymptomsOrHistory:  " + mLanguageNegative);
-                finalTexts.add(mLanguageNegative + " " + string);
+                if (!flagNegative) {
+                    flagNegative = true;
+                    finalTexts.add(mLanguageNegative + " " + string);
+                } else {
+                    finalTexts.add(" " + string);
+                }
             }
         }
 
@@ -1666,7 +1706,7 @@ public class Node implements Serializable {
         final_language = final_language.replaceAll("- ,", "- ");
         final_language = final_language.replaceAll("of,", "of");
         final_language = final_language.replaceAll("\\, \\[", " [");
-        final_language = final_language.replaceAll(", " + bullet_hollow + ", ", " " + bullet_hollow + " ");
+        final_language = final_language.replaceAll(", " + bullet_hollow + ", ", " " + next_line + bullet_hollow + " ");
         Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + final_language);
 
         return final_language;
@@ -1675,13 +1715,18 @@ public class Node implements Serializable {
 
     public String formQuestionAnswer(int level) {
         List<String> stringsList = new ArrayList<>();
+        List<String> stringsListNoSelected = new ArrayList<>();
         List<Node> mOptions = optionsList;
+        boolean flag = false;
 
         for (int i = 0; i < mOptions.size(); i++) {
             if (mOptions.get(i).isSelected()) {
                 String question;
                 if (level == 0) {
                     question = big_bullet + " " + mOptions.get(i).findDisplay();
+                    if (mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms")) {
+                        question = question + next_line + "Patient reports -";
+                    }
                 } else {
                     question = bullet + " " + mOptions.get(i).findDisplay();
                 }
@@ -1709,7 +1754,18 @@ public class Node implements Serializable {
                 }
             }
 
+            if (mOptions.get(i).isNoSelected()) {
+                if (!flag) {
+                    flag = true;
+                    stringsListNoSelected.add("Patient denies -" + next_line);
+                }
+                stringsListNoSelected.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
+                Log.e("List", "" + stringsListNoSelected);
+            }
+        }
 
+        if (stringsListNoSelected.size() > 0) {
+            stringsList.addAll(stringsListNoSelected);
         }
 
         String mLanguage = "";

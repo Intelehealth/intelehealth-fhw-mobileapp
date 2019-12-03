@@ -11,7 +11,9 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ExpandableListView;
+import android.widget.RadioButton;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -145,72 +147,9 @@ public class QuestionNodeActivity extends AppCompatActivity {
         questionListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && !currentNode.getOption(groupPosition).anySubSelected()) {
-                    Node question = currentNode.getOption(groupPosition).getOption(childPosition);
-                    question.toggleSelected();
-                    if (currentNode.getOption(groupPosition).anySubSelected()) {
-                        currentNode.getOption(groupPosition).setSelected();
-                    } else {
-                        currentNode.getOption(groupPosition).setUnselected();
-                    }
 
+                onListClicked(v, groupPosition, childPosition);
 
-                    if (!question.getInputType().isEmpty() && question.isSelected()) {
-                        if (question.getInputType().equals("camera")) {
-                            if (!filePath.exists()) {
-                                filePath.mkdirs();
-                            }
-                            imageName = UUID.randomUUID().toString();
-                            Node.handleQuestion(question, QuestionNodeActivity.this, adapter, filePath.toString(), imageName);
-                        } else {
-                            Node.handleQuestion(question, QuestionNodeActivity.this, adapter, null, null);
-                        }
-                    }
-
-
-                    if (!question.isTerminal() && question.isSelected()) {
-                        Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter, filePath.toString(), imageName);
-                        //If the knowledgeEngine is not terminal, that means there are more questions to be asked for this branch.
-                    }
-                } else if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && currentNode.getOption(groupPosition).anySubSelected()) {
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(QuestionNodeActivity.this);
-                    alertDialogBuilder.setMessage("This question can have only one answer.");
-                    alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
-                } else {
-
-                    Node question = currentNode.getOption(groupPosition).getOption(childPosition);
-                    question.toggleSelected();
-                    if (currentNode.getOption(groupPosition).anySubSelected()) {
-                        currentNode.getOption(groupPosition).setSelected();
-                    } else {
-                        currentNode.getOption(groupPosition).setUnselected();
-                    }
-
-                    if (!question.getInputType().isEmpty() && question.isSelected()) {
-                        if (question.getInputType().equals("camera")) {
-                            if (!filePath.exists()) {
-                                filePath.mkdirs();
-                            }
-                            Node.handleQuestion(question, QuestionNodeActivity.this, adapter, filePath.toString(), imageName);
-                        } else {
-                            Node.handleQuestion(question, QuestionNodeActivity.this, adapter, null, null);
-                        }
-                        //If there is an input type, then the question has a special method of data entry.
-                    }
-
-                    if (!question.isTerminal() && question.isSelected()) {
-                        Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter, filePath.toString(), imageName);
-                        //If the knowledgeEngine is not terminal, that means there are more questions to be asked for this branch.
-                    }
-                }
-                adapter.notifyDataSetChanged();
                 return false;
 
             }
@@ -229,6 +168,77 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 lastExpandedPosition = groupPosition;
             }
         });
+
+    }
+
+    public void onListClicked(View v, int groupPosition, int childPosition) {
+
+        if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && !currentNode.getOption(groupPosition).anySubSelected()) {
+            Node question = currentNode.getOption(groupPosition).getOption(childPosition);
+            question.toggleSelected();
+            if (currentNode.getOption(groupPosition).anySubSelected()) {
+                currentNode.getOption(groupPosition).setSelected();
+            } else {
+                currentNode.getOption(groupPosition).setUnselected();
+            }
+
+
+            if (!question.getInputType().isEmpty() && question.isSelected()) {
+                if (question.getInputType().equals("camera")) {
+                    if (!filePath.exists()) {
+                        filePath.mkdirs();
+                    }
+                    imageName = UUID.randomUUID().toString();
+                    Node.handleQuestion(question, QuestionNodeActivity.this, adapter, filePath.toString(), imageName);
+                } else {
+                    Node.handleQuestion(question, QuestionNodeActivity.this, adapter, null, null);
+                }
+            }
+
+
+            if (!question.isTerminal() && question.isSelected()) {
+                Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter, filePath.toString(), imageName);
+                //If the knowledgeEngine is not terminal, that means there are more questions to be asked for this branch.
+            }
+        } else if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && currentNode.getOption(groupPosition).anySubSelected()) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(QuestionNodeActivity.this);
+            alertDialogBuilder.setMessage("This question can have only one answer.");
+            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        } else {
+
+            Node question = currentNode.getOption(groupPosition).getOption(childPosition);
+            question.toggleSelected();
+            if (currentNode.getOption(groupPosition).anySubSelected()) {
+                currentNode.getOption(groupPosition).setSelected();
+            } else {
+                currentNode.getOption(groupPosition).setUnselected();
+            }
+
+            if (!question.getInputType().isEmpty() && question.isSelected()) {
+                if (question.getInputType().equals("camera")) {
+                    if (!filePath.exists()) {
+                        filePath.mkdirs();
+                    }
+                    Node.handleQuestion(question, QuestionNodeActivity.this, adapter, filePath.toString(), imageName);
+                } else {
+                    Node.handleQuestion(question, QuestionNodeActivity.this, adapter, null, null);
+                }
+                //If there is an input type, then the question has a special method of data entry.
+            }
+
+            if (!question.isTerminal() && question.isSelected()) {
+                Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter, filePath.toString(), imageName);
+                //If the knowledgeEngine is not terminal, that means there are more questions to be asked for this branch.
+            }
+        }
+        adapter.notifyDataSetChanged();
 
     }
 
@@ -290,7 +300,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 complaintNumber++;
                 setupQuestions(complaintNumber);
                 complaintConfirmed = false;
-            }  else if (complaints.size() > 1 && complaintNumber == complaints.size() - 1) {
+            } else if (complaints.size() > 1 && complaintNumber == complaints.size() - 1) {
                 complaintNumber++;
                 removeDuplicateSymptoms();
                 complaintConfirmed = false;

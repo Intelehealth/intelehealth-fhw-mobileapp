@@ -446,8 +446,8 @@
     <string name="enter_password">Enter your password</string>
     <string name="enter_username">Enter your username</string>
     <string name="has_a_new_prescription">has a new prescription</string>
-    <string name="patient_denies">Patient denies -</string>
-    <string name="patient_reports">Patient reports -</string>
+    <string name="patient_denies">Patient denies</string>
+    <string name="patient_reports">Patient reports</string>
     <string name="no_mindmaps_found">No Mindmaps Found</string>
     <string name="unable_to_get_proper_response">Unable to get proper response</string>
     <string name="associated_symptoms">Associated symptoms</string>
