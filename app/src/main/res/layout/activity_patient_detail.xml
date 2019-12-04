@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".activities.patientDetailActivity.PatientDetailActivity">
 
         <android.support.design.widget.AppBarLayout
@@ -93,6 +94,8 @@
                         android:layout_width="0dp"
                             android:layout_weight="2"
                         android:layout_height="wrap_content"
+                            style="@style/SelectableItemBackground"
+                            android:foreground="?android:attr/selectableItemBackground"
                             android:background="@drawable/edit_button_icon" />
 
                     <ImageView
@@ -497,8 +500,7 @@
                     android:layout_marginBottom="@dimen/padding_card"
                     app:cardCornerRadius="@dimen/card_corner_radius"
                     app:cardElevation="2dp"
-                    app:cardUseCompatPadding="true"
-                    app:contentPadding="@dimen/padding_card">
+                    app:cardUseCompatPadding="true">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -509,13 +511,18 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingTop="@dimen/padding_card_title_text"
+                            android:padding="10dp"
+                            android:paddingStart="20dp"
+                            android:background="@color/colorPrimary"
                             android:text="@string/header_medical_history"
-                            android:textSize="@dimen/card_title_text_size" />
+                            android:textColor="@color/white"
+                            android:textSize="18sp" />
 
 
                         <TableLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/padding_card">
 
 
                             <TableRow
@@ -588,6 +595,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:textStyle="bold"
+                    android:layout_marginHorizontal="10dp"
+                    android:elevation="5dp"
                     style="@style/SelectableItemBackground"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:text="@string/button_new_visit" />
@@ -601,20 +610,35 @@
                     android:layout_marginBottom="@dimen/padding_card"
                     app:cardCornerRadius="@dimen/card_corner_radius"
                     app:cardElevation="2dp"
-                    app:cardUseCompatPadding="true"
-                    app:contentPadding="@dimen/padding_card">
+                    app:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:background="@color/colorPrimary"
+                            android:text="Previous visits"
+                            android:paddingStart="20dp"
+                            android:padding="10dp"
+                            android:textSize="18sp"/>
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/linearLayout_previous_visits"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:padding="@dimen/padding_card">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingTop="@dimen/padding_card_title_text"
-                            android:text="@string/header_previous_visits"
                             android:textSize="@dimen/card_title_text_size" />
 
 
