@@ -477,8 +477,7 @@
             android:layout_marginBottom="@dimen/padding_card"
             card_view:cardCornerRadius="@dimen/card_corner_radius"
             card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+            card_view:cardUseCompatPadding="true">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -488,9 +487,12 @@
                     android:id="@+id/textView_heading_pathist"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding_card_title_text"
+                   android:paddingVertical="12dp"
                     android:text="@string/visit_summary_medical_history"
-                    android:textSize="@dimen/card_title_text_size" />
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/white"
+                    android:paddingStart="20dp"
+                    android:textSize="@dimen/card_content_text_size" />
 
                 <ImageButton
                     android:id="@+id/imagebutton_edit_pathist"
@@ -507,7 +509,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView_heading_pathist"
-                    android:paddingTop="@dimen/padding_card"
+                    android:padding="@dimen/padding_card"
                     android:textSize="@dimen/card_content_text_size" />
             </RelativeLayout>
 
@@ -523,8 +525,7 @@
             android:layout_marginBottom="@dimen/padding_card"
             card_view:cardCornerRadius="@dimen/card_corner_radius"
             card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+            card_view:cardUseCompatPadding="true">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -534,9 +535,12 @@
                     android:id="@+id/textView_heading_famhist"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding_card_title_text"
                     android:text="@string/visit_summary_family_history"
-                    android:textSize="@dimen/card_title_text_size" />
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/white"
+                    android:paddingStart="20dp"
+                    android:paddingVertical="12dp"
+                    android:textSize="@dimen/card_content_text_size" />
 
                 <ImageButton
                     android:id="@+id/imagebutton_edit_famhist"
@@ -553,8 +557,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView_heading_famhist"
-                    android:paddingTop="@dimen/padding_card"
-                    android:textSize="@dimen/card_content_text_size" />
+                    android:textSize="@dimen/card_content_text_size"
+                    android:padding="@dimen/padding_card"/>
 
             </RelativeLayout>
         </android.support.v7.widget.CardView>
