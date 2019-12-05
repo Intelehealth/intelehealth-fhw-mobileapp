@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="-800dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activities.visitSummaryActivity.VisitSummaryActivity"
     tools:showIn="@layout/activity_visit_summary">
@@ -354,8 +355,7 @@
             android:layout_marginBottom="@dimen/padding_card"
             card_view:cardCornerRadius="@dimen/card_corner_radius"
             card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+            card_view:cardUseCompatPadding="true">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -365,8 +365,11 @@
                     android:id="@+id/textView_heading_complaint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding_card_title_text"
                     android:text="@string/visit_summary_complaint"
+                    android:paddingVertical="12dp"
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/white"
+                    android:paddingStart="20dp"
                     android:textSize="@dimen/card_content_text_size" />
 
                 <ImageButton
@@ -385,7 +388,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView_heading_complaint"
                     android:paddingTop="@dimen/padding_card"
-                    android:textSize="@dimen/card_content_text_size" />
+                    android:textSize="@dimen/card_content_text_size"
+                    android:padding="@dimen/padding_card"/>
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
@@ -412,7 +416,9 @@
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/padding_card_title_text"
                     android:text="@string/visit_summary_on_examination"
-                    android:textSize="@dimen/card_title_text_size" />
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/card_content_text_size" />
 
                 <ImageButton
                     android:id="@+id/imagebutton_edit_physexam"
