@@ -137,20 +137,23 @@
             android:layout_marginBottom="@dimen/padding_card"
             card_view:cardCornerRadius="@dimen/card_corner_radius"
             card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+            card_view:cardUseCompatPadding="true">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                >
 
                 <TextView
                     android:id="@+id/textView_heading_vitals"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding_card_title_text"
                     android:text="@string/visit_summary_vitals_heading"
-                    android:textSize="@dimen/card_title_text_size" />
+                    android:paddingVertical="12dp"
+                    android:textColor="@color/white"
+                    android:paddingStart="20dp"
+                    android:background="@color/colorPrimary"
+                    android:textSize="@dimen/card_content_text_size" />
 
                 <ImageButton
                     android:id="@+id/imagebutton_edit_vitals"
@@ -165,6 +168,7 @@
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="@dimen/padding_card"
                     android:layout_below="@id/textView_heading_vitals">
 
                     <!--Height-->
@@ -363,7 +367,7 @@
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/padding_card_title_text"
                     android:text="@string/visit_summary_complaint"
-                    android:textSize="@dimen/card_title_text_size" />
+                    android:textSize="@dimen/card_content_text_size" />
 
                 <ImageButton
                     android:id="@+id/imagebutton_edit_complaint"
