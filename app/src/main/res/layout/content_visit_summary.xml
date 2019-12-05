@@ -155,12 +155,14 @@
 
                 <ImageButton
                     android:id="@+id/imagebutton_edit_vitals"
-                    android:layout_width="@dimen/edit_icon_width"
-                    android:layout_height="@dimen/edit_icon_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:background="@null"
                     android:contentDescription="TODO"
-                    android:padding="@dimen/padding_card_action"
+                    style="@style/SelectableItemBackground"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="10dp"
                     app:srcCompat="@drawable/edit_icon" />
 
                 <TableLayout
@@ -369,12 +371,14 @@
 
                 <ImageButton
                     android:id="@+id/imagebutton_edit_complaint"
-                    android:layout_width="@dimen/edit_icon_width"
-                    android:layout_height="@dimen/edit_icon_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignRight="@id/textView_heading_complaint"
                     android:background="@null"
                     android:contentDescription="TODO"
-                    android:padding="@dimen/padding_card_action"
+                    style="@style/SelectableItemBackground"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="10dp"
                     app:srcCompat="@drawable/edit_icon" />
 
                 <TextView
@@ -417,23 +421,27 @@
 
                 <ImageButton
                     android:id="@+id/imagebutton_edit_physexam"
-                    android:layout_width="@dimen/edit_icon_width"
-                    android:layout_height="@dimen/edit_icon_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignRight="@id/textView_heading_physexam"
                     android:background="@null"
                     android:contentDescription="TODO"
-                    android:padding="@dimen/padding_card_action"
+                    style="@style/SelectableItemBackground"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="10dp"
                     app:srcCompat="@drawable/edit_icon" />
 
                 <ImageButton
                     android:id="@+id/imagebutton_download_physexam"
-                    android:layout_width="@dimen/edit_icon_width"
-                    android:layout_height="@dimen/edit_icon_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignLeft="@id/imagebutton_edit_physexam"
                     android:layout_marginLeft="-29dp"
                     android:background="@null"
                     android:contentDescription="TODO"
-                    android:padding="@dimen/padding_card_action"
+                    style="@style/SelectableItemBackground"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="10dp"
                     app:srcCompat="@drawable/download" />
 
                 <TextView
@@ -491,12 +499,14 @@
 
                 <ImageButton
                     android:id="@+id/imagebutton_edit_pathist"
-                    android:layout_width="@dimen/edit_icon_width"
-                    android:layout_height="@dimen/edit_icon_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignRight="@id/textView_heading_pathist"
                     android:background="@null"
                     android:contentDescription="TODO"
-                    android:padding="@dimen/padding_card_action"
+                    style="@style/SelectableItemBackground"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="10dp"
                     app:srcCompat="@drawable/edit_icon" />
 
                 <TextView
@@ -539,12 +549,14 @@
 
                 <ImageButton
                     android:id="@+id/imagebutton_edit_famhist"
-                    android:layout_width="@dimen/edit_icon_width"
-                    android:layout_height="@dimen/edit_icon_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignRight="@id/textView_heading_famhist"
                     android:background="@null"
                     android:contentDescription="TODO"
-                    android:padding="@dimen/padding_card_action"
+                    style="@style/SelectableItemBackground"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="10dp"
                     app:srcCompat="@drawable/edit_icon" />
 
                 <TextView
@@ -586,23 +598,27 @@
 
                 <ImageButton
                     android:id="@+id/imagebutton_edit_additional_document"
-                    android:layout_width="@dimen/edit_icon_width"
-                    android:layout_height="@dimen/edit_icon_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignRight="@id/textView_additional_document_images"
                     android:background="@null"
                     android:contentDescription="TODO"
-                    android:padding="@dimen/padding_card_action"
+                    style="@style/SelectableItemBackground"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="10dp"
                     app:srcCompat="@drawable/edit_icon" />
 
                 <ImageButton
                     android:id="@+id/imagebutton_download_additional_document"
-                    android:layout_width="@dimen/edit_icon_width"
-                    android:layout_height="@dimen/edit_icon_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignLeft="@id/imagebutton_edit_additional_document"
                     android:layout_marginLeft="-29dp"
                     android:background="@null"
                     android:contentDescription="TODO"
-                    android:padding="@dimen/padding_card_action"
+                    style="@style/SelectableItemBackground"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="10dp"
                     app:srcCompat="@drawable/download" />
 
                 <android.support.v7.widget.RecyclerView
