@@ -143,6 +143,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             Logger.logD(TAG, "Privacy Value on (PatientDetail): " + privacy_value_selected);
         }
 
+
         if (hasPrescription.equalsIgnoreCase("true")) {
             ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
         }
@@ -380,12 +381,14 @@ public class PatientDetailActivity extends AppCompatActivity {
         TextView medHistView = findViewById(R.id.textView_patHist);
         TextView famHistView = findViewById(R.id.textView_famHist);
 
+
 //changing patient to patient_new object
         if (patient_new.getMiddle_name() == null) {
             patientName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
         } else {
             patientName = patient_new.getFirst_name() + " " + patient_new.getMiddle_name() + " " + patient_new.getLast_name();
         }
+
 //        setTitle(patientName);
         patinetName.setText(patientName);
         try {
@@ -416,6 +419,11 @@ public class PatientDetailActivity extends AppCompatActivity {
         } else {
             idView.setText(getString(R.string.patient_not_registered));
         }
+
+        setTitle(patient_new.getOpenmrs_id());
+        //String id = idView.toString();
+        //Log.d("IDEA","IDEA"+id);
+
 
         String age = DateAndTimeUtils.getAgeInYearMonth(patient_new.getDate_of_birth(), context);
         ageView.setText(age);
@@ -709,9 +717,11 @@ public class PatientDetailActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             try {
                 idView.setText(patientsDAO.getOpenmrsId(patientUuid));
+
             } catch (DAOException e) {
                 Crashlytics.getInstance().core.logException(e);
             }
+            setTitle(idView.getText());
         }
     }
 
