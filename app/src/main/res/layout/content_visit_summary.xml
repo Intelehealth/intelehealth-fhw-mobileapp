@@ -32,8 +32,7 @@
             android:layout_marginBottom="@dimen/padding_card"
             card_view:cardCornerRadius="@dimen/card_corner_radius"
             card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+            card_view:cardUseCompatPadding="true">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -47,30 +46,38 @@
                     android:layout_marginTop="48dp"
                     android:visibility="gone" />
 
-                <TextView
-                    android:id="@+id/textView_heading_patient_details"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding_card_title_text"
-                    android:text="@string/visit_summary_patient_details"
-                    android:textSize="@dimen/card_title_text_size" />
+                    android:background="@color/colorPrimary"
+                    android:id="@+id/linear_card_view">
 
-                <ImageView
-                    android:id="@+id/iv_prescription"
-                    android:layout_width="28dp"
-                    android:layout_height="32dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_gravity="center"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentTop="true"
-                    android:src="@drawable/ic_prescription_gray"/>
+                    <TextView
+                        android:id="@+id/textView_heading_patient_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/white"
+                        android:paddingStart="20dp"
+                        android:layout_centerVertical="true"
+                        android:text="@string/visit_summary_patient_details"
+                        android:textSize="18sp"/>
 
+                    <ImageView
+                        android:id="@+id/iv_prescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginVertical="5dp"
+                        android:src="@drawable/ic_prescription_gray"/>
+
+                </RelativeLayout>
 
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/textView_heading_patient_details">
+                    android:padding="@dimen/padding_card"
+                    android:layout_below="@id/linear_card_view">
 
                     <TableRow
                         android:layout_width="wrap_content"
