@@ -32,8 +32,7 @@
             android:layout_marginBottom="@dimen/padding_card"
             card_view:cardCornerRadius="@dimen/card_corner_radius"
             card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+            card_view:cardUseCompatPadding="true">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -47,30 +46,38 @@
                     android:layout_marginTop="48dp"
                     android:visibility="gone" />
 
-                <TextView
-                    android:id="@+id/textView_heading_patient_details"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding_card_title_text"
-                    android:text="@string/visit_summary_patient_details"
-                    android:textSize="@dimen/card_title_text_size" />
+                    android:background="@color/colorPrimary"
+                    android:id="@+id/linear_card_view">
 
-                <ImageView
-                    android:id="@+id/iv_prescription"
-                    android:layout_width="28dp"
-                    android:layout_height="32dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_gravity="center"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentTop="true"
-                    android:src="@drawable/ic_prescription_gray"/>
+                    <TextView
+                        android:id="@+id/textView_heading_patient_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/white"
+                        android:paddingStart="20dp"
+                        android:layout_centerVertical="true"
+                        android:text="@string/visit_summary_patient_details"
+                        android:textSize="18sp"/>
 
+                    <ImageView
+                        android:id="@+id/iv_prescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginVertical="5dp"
+                        android:src="@drawable/ic_prescription_gray"/>
+
+                </RelativeLayout>
 
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/textView_heading_patient_details">
+                    android:padding="@dimen/padding_card"
+                    android:layout_below="@id/linear_card_view">
 
                     <TableRow
                         android:layout_width="wrap_content"
@@ -81,7 +88,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:paddingTop="@dimen/padding_card"
                             android:text="@string/visit_summary_heading_name"
                             android:textSize="@dimen/card_content_text_size" />
 
@@ -91,7 +97,6 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
                             android:gravity="fill"
-                            android:paddingTop="@dimen/padding_card"
                             android:textSize="@dimen/card_content_text_size" />
                     </TableRow>
 
@@ -130,34 +135,40 @@
             android:layout_marginBottom="@dimen/padding_card"
             card_view:cardCornerRadius="@dimen/card_corner_radius"
             card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+            card_view:cardUseCompatPadding="true">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                >
 
                 <TextView
                     android:id="@+id/textView_heading_vitals"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding_card_title_text"
                     android:text="@string/visit_summary_vitals_heading"
-                    android:textSize="@dimen/card_title_text_size" />
+                    android:paddingVertical="12dp"
+                    android:textColor="@color/white"
+                    android:paddingStart="20dp"
+                    android:background="@color/colorPrimary"
+                    android:textSize="@dimen/card_content_text_size" />
 
                 <ImageButton
                     android:id="@+id/imagebutton_edit_vitals"
-                    android:layout_width="@dimen/edit_icon_width"
-                    android:layout_height="@dimen/edit_icon_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:background="@null"
                     android:contentDescription="TODO"
-                    android:padding="@dimen/padding_card_action"
+                    style="@style/SelectableItemBackground"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="10dp"
                     app:srcCompat="@drawable/edit_icon" />
 
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="@dimen/padding_card"
                     android:layout_below="@id/textView_heading_vitals">
 
                     <!--Height-->
@@ -170,7 +181,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:paddingTop="@dimen/padding_card"
                             android:text="@string/visit_summary_height_heading"
                             android:textSize="@dimen/card_content_text_size" />
 
@@ -179,7 +189,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:paddingTop="@dimen/padding_card"
                             android:textSize="@dimen/card_content_text_size" />
                     </TableRow>
                     <!--Weight-->
@@ -343,8 +352,7 @@
             android:layout_marginBottom="@dimen/padding_card"
             card_view:cardCornerRadius="@dimen/card_corner_radius"
             card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+            card_view:cardUseCompatPadding="true">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -354,18 +362,23 @@
                     android:id="@+id/textView_heading_complaint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding_card_title_text"
                     android:text="@string/visit_summary_complaint"
-                    android:textSize="@dimen/card_title_text_size" />
+                    android:paddingVertical="12dp"
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/white"
+                    android:paddingStart="20dp"
+                    android:textSize="@dimen/card_content_text_size" />
 
                 <ImageButton
                     android:id="@+id/imagebutton_edit_complaint"
-                    android:layout_width="@dimen/edit_icon_width"
-                    android:layout_height="@dimen/edit_icon_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignRight="@id/textView_heading_complaint"
                     android:background="@null"
                     android:contentDescription="TODO"
-                    android:padding="@dimen/padding_card_action"
+                    style="@style/SelectableItemBackground"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="10dp"
                     app:srcCompat="@drawable/edit_icon" />
 
                 <TextView
@@ -374,7 +387,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView_heading_complaint"
                     android:paddingTop="@dimen/padding_card"
-                    android:textSize="@dimen/card_content_text_size" />
+                    android:textSize="@dimen/card_content_text_size"
+                    android:padding="@dimen/padding_card"/>
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
@@ -388,8 +402,7 @@
             android:layout_marginBottom="@dimen/padding_card"
             card_view:cardCornerRadius="@dimen/card_corner_radius"
             card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+            card_view:cardUseCompatPadding="true">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -399,29 +412,36 @@
                     android:id="@+id/textView_heading_physexam"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:paddingVertical="12dp"
+                    android:paddingStart="20dp"
                     android:text="@string/visit_summary_on_examination"
-                    android:textSize="@dimen/card_title_text_size" />
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/card_content_text_size" />
 
                 <ImageButton
                     android:id="@+id/imagebutton_edit_physexam"
-                    android:layout_width="@dimen/edit_icon_width"
-                    android:layout_height="@dimen/edit_icon_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignRight="@id/textView_heading_physexam"
                     android:background="@null"
                     android:contentDescription="TODO"
-                    android:padding="@dimen/padding_card_action"
+                    style="@style/SelectableItemBackground"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="10dp"
                     app:srcCompat="@drawable/edit_icon" />
 
                 <ImageButton
                     android:id="@+id/imagebutton_download_physexam"
-                    android:layout_width="@dimen/edit_icon_width"
-                    android:layout_height="@dimen/edit_icon_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignLeft="@id/imagebutton_edit_physexam"
                     android:layout_marginLeft="-29dp"
                     android:background="@null"
                     android:contentDescription="TODO"
-                    android:padding="@dimen/padding_card_action"
+                    style="@style/SelectableItemBackground"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="10dp"
                     app:srcCompat="@drawable/download" />
 
                 <TextView
@@ -429,8 +449,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView_heading_physexam"
-                    android:paddingTop="@dimen/padding_card"
-                    android:textSize="@dimen/card_content_text_size" />
+                    android:textSize="@dimen/card_content_text_size"
+                    android:padding="@dimen/padding_card"/>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recy_physexam"
@@ -460,8 +480,7 @@
             android:layout_marginBottom="@dimen/padding_card"
             card_view:cardCornerRadius="@dimen/card_corner_radius"
             card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+            card_view:cardUseCompatPadding="true">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -471,18 +490,23 @@
                     android:id="@+id/textView_heading_pathist"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding_card_title_text"
+                   android:paddingVertical="12dp"
                     android:text="@string/visit_summary_medical_history"
-                    android:textSize="@dimen/card_title_text_size" />
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/white"
+                    android:paddingStart="20dp"
+                    android:textSize="@dimen/card_content_text_size" />
 
                 <ImageButton
                     android:id="@+id/imagebutton_edit_pathist"
-                    android:layout_width="@dimen/edit_icon_width"
-                    android:layout_height="@dimen/edit_icon_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignRight="@id/textView_heading_pathist"
                     android:background="@null"
                     android:contentDescription="TODO"
-                    android:padding="@dimen/padding_card_action"
+                    style="@style/SelectableItemBackground"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="10dp"
                     app:srcCompat="@drawable/edit_icon" />
 
                 <TextView
@@ -490,7 +514,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView_heading_pathist"
-                    android:paddingTop="@dimen/padding_card"
+                    android:padding="@dimen/padding_card"
                     android:textSize="@dimen/card_content_text_size" />
             </RelativeLayout>
 
@@ -506,8 +530,7 @@
             android:layout_marginBottom="@dimen/padding_card"
             card_view:cardCornerRadius="@dimen/card_corner_radius"
             card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+            card_view:cardUseCompatPadding="true">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -517,18 +540,23 @@
                     android:id="@+id/textView_heading_famhist"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding_card_title_text"
                     android:text="@string/visit_summary_family_history"
-                    android:textSize="@dimen/card_title_text_size" />
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/white"
+                    android:paddingStart="20dp"
+                    android:paddingVertical="12dp"
+                    android:textSize="@dimen/card_content_text_size" />
 
                 <ImageButton
                     android:id="@+id/imagebutton_edit_famhist"
-                    android:layout_width="@dimen/edit_icon_width"
-                    android:layout_height="@dimen/edit_icon_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignRight="@id/textView_heading_famhist"
                     android:background="@null"
                     android:contentDescription="TODO"
-                    android:padding="@dimen/padding_card_action"
+                    style="@style/SelectableItemBackground"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="10dp"
                     app:srcCompat="@drawable/edit_icon" />
 
                 <TextView
@@ -536,8 +564,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView_heading_famhist"
-                    android:paddingTop="@dimen/padding_card"
-                    android:textSize="@dimen/card_content_text_size" />
+                    android:textSize="@dimen/card_content_text_size"
+                    android:padding="@dimen/padding_card"/>
 
             </RelativeLayout>
         </android.support.v7.widget.CardView>
@@ -551,8 +579,7 @@
             android:layout_marginBottom="@dimen/padding_card"
             card_view:cardCornerRadius="@dimen/card_corner_radius"
             card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+            card_view:cardUseCompatPadding="true">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -562,29 +589,36 @@
                     android:id="@+id/textView_additional_document_images"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding_card_title_text"
                     android:text="Additional documents"
-                    android:textSize="@dimen/card_title_text_size" />
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/white"
+                    android:paddingStart="20dp"
+                    android:paddingVertical="12dp"
+                    android:textSize="@dimen/card_content_text_size" />
 
                 <ImageButton
                     android:id="@+id/imagebutton_edit_additional_document"
-                    android:layout_width="@dimen/edit_icon_width"
-                    android:layout_height="@dimen/edit_icon_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignRight="@id/textView_additional_document_images"
                     android:background="@null"
                     android:contentDescription="TODO"
-                    android:padding="@dimen/padding_card_action"
+                    style="@style/SelectableItemBackground"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="10dp"
                     app:srcCompat="@drawable/edit_icon" />
 
                 <ImageButton
                     android:id="@+id/imagebutton_download_additional_document"
-                    android:layout_width="@dimen/edit_icon_width"
-                    android:layout_height="@dimen/edit_icon_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignLeft="@id/imagebutton_edit_additional_document"
                     android:layout_marginLeft="-29dp"
                     android:background="@null"
                     android:contentDescription="TODO"
-                    android:padding="@dimen/padding_card_action"
+                    style="@style/SelectableItemBackground"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="10dp"
                     app:srcCompat="@drawable/download" />
 
                 <android.support.v7.widget.RecyclerView
@@ -592,7 +626,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView_additional_document_images"
-                    android:padding="10dp"></android.support.v7.widget.RecyclerView>
+                    android:padding="@dimen/padding_card"></android.support.v7.widget.RecyclerView>
 
                 <TextView
                     android:id="@+id/additional_documents_download"
@@ -601,7 +635,8 @@
                     android:layout_below="@id/recy_additional_documents"
                     android:backgroundTint="@color/cardview_dark_background"
                     android:text="Click to download the images"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:padding="@dimen/padding_card"/>
             </RelativeLayout>
 
 
@@ -927,8 +962,7 @@
             android:layout_marginBottom="@dimen/padding_card"
             card_view:cardCornerRadius="@dimen/card_corner_radius"
             card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true"
-            card_view:contentPadding="@dimen/padding_card">
+            card_view:cardUseCompatPadding="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -940,16 +974,19 @@
                     android:id="@+id/title_doctor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:paddingVertical="12dp"
+                    android:paddingStart="20dp"
                     android:text="Doctor"
-                    android:textSize="@dimen/card_title_text_size" />
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/card_content_text_size" />
 
                 <TextView
                     android:id="@+id/doctor_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/title_doctor"
-                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:padding="@dimen/padding_card"
                     android:text=""
                     android:textSize="18sp" />
 
@@ -957,16 +994,19 @@
                     android:id="@+id/title_health_worker"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:paddingVertical="12dp"
                     android:text="Health worker"
-                    android:textSize="@dimen/card_title_text_size" />
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/white"
+                    android:paddingStart="20dp"
+                    android:textSize="@dimen/card_content_text_size" />
 
                 <TextView
                     android:id="@+id/chw_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/title_health_worker"
-                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:padding="@dimen/padding_card"
                     android:text=""
                     android:textSize="18sp" />
 
@@ -995,18 +1035,19 @@
 
                 <TextView
                     android:id="@+id/flag"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:layout_weight="0.9"
                     android:text="Emergency"
-                    android:textSize="@dimen/card_title_text_size" />
+                    android:paddingStart="20dp"
+                    android:paddingVertical="12dp"
+                    android:textSize="@dimen/card_content_text_size" />
 
                 <CheckBox
                     android:id="@+id/flaggedcheckbox"
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.1"
                     android:textSize="20sp" />
 
 

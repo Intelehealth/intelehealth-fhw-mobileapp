@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".activities.patientDetailActivity.PatientDetailActivity">
 
         <android.support.design.widget.AppBarLayout
@@ -44,9 +45,7 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <android.support.v4.widget.NestedScrollView 
-            
-            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        <android.support.v4.widget.NestedScrollView
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -69,46 +68,54 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/padding_card"
                     android:layout_marginBottom="@dimen/padding_card"
-                    card_view:cardCornerRadius="@dimen/card_corner_radius"
-                    card_view:cardElevation="2dp"
-                    card_view:cardUseCompatPadding="true"
-                    card_view:contentPadding="@dimen/padding_card">
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_gravity="end"
-                        android:layout_height="wrap_content">
-
-                    <Button
-                        android:id="@+id/edit_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:background="@drawable/edit_button_icon" />
-
-                    <ImageView
-                        android:id="@+id/iv_prescription"
-                        android:layout_width="28dp"
-                        android:layout_height="32dp"
-                        android:layout_toStartOf="@+id/edit_button"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:src="@drawable/ic_prescription_gray"/>
-
-                    </RelativeLayout>
+                    app:cardCornerRadius="@dimen/card_corner_radius"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true">
 
                     <LinearLayout
                         android:layout_width="match_parent"
+                        android:orientation="horizontal"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:background="@color/colorPrimary">
 
                         <TextView
                             android:id="@+id/textView3"
-                            android:layout_width="247dp"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:paddingTop="@dimen/padding_card_title_text"
+                            android:layout_weight="12"
                             android:text="@string/header_patient_detail"
-                            android:textSize="@dimen/card_title_text_size" />
+                            android:textColor="@color/white"
+                            android:padding="5dp"
+                            android:paddingStart="20dp"
+                            android:textSize="18sp" />
+
+                        <Button
+                        android:id="@+id/edit_button"
+                        android:layout_width="0dp"
+                            android:layout_weight="2"
+                        android:layout_height="wrap_content"
+                            style="@style/SelectableItemBackground"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:background="@drawable/edit_button_icon" />
+
+                    <ImageView
+                        android:id="@+id/iv_prescription"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_height="match_parent"
+                        android:layout_margin="8dp"
+                        android:layout_toStartOf="@+id/edit_button"
+                        android:src="@drawable/ic_prescription_gray"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linear_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="40dp"
+                        android:orientation="vertical"
+                        android:padding="@dimen/padding_card">
 
                         <TableLayout
                             android:layout_width="match_parent"
@@ -125,12 +132,8 @@
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:text="Patient name"
                                     android:textSize="@dimen/card_content_text_size"
-                                    android:textStyle="bold"/>
+                                    android:textStyle="bold" />
 
-
-                                <android.support.v4.widget.Space
-                                    android:layout_width="10dp"
-                                    android:layout_height="wrap_content" />
 
                                 <TextView
                                     android:id="@+id/textView_name"
@@ -140,8 +143,13 @@
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:textSize="@dimen/card_content_text_size" />
 
+                                <android.support.v4.widget.Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="wrap_content" />
+
 
                             </TableRow>
+
                             <TableRow
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent">
@@ -151,13 +159,9 @@
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:text="@string/row_patient_id"
-                                    android:textStyle="bold"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:textSize="@dimen/card_content_text_size"
+                                    android:textStyle="bold" />
 
-
-                                <android.support.v4.widget.Space
-                                    android:layout_width="10dp"
-                                    android:layout_height="wrap_content" />
 
                                 <TextView
                                     android:id="@+id/textView_ID"
@@ -165,6 +169,10 @@
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:textSize="@dimen/card_content_text_size" />
+
+                                <android.support.v4.widget.Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="wrap_content" />
 
 
                             </TableRow>
@@ -178,13 +186,9 @@
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:text="@string/row_dob"
-                                    android:textStyle="bold"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:textSize="@dimen/card_content_text_size"
+                                    android:textStyle="bold" />
 
-
-                                <android.support.v4.widget.Space
-                                    android:layout_width="10dp"
-                                    android:layout_height="wrap_content" />
 
                                 <TextView
                                     android:id="@+id/textView_DOB"
@@ -193,6 +197,10 @@
                                     android:layout_weight="1"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:textSize="@dimen/card_content_text_size" />
+
+                                <android.support.v4.widget.Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="wrap_content" />
 
 
                             </TableRow>
@@ -206,13 +214,9 @@
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:text="@string/row_age"
-                                    android:textStyle="bold"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:textSize="@dimen/card_content_text_size"
+                                    android:textStyle="bold" />
 
-
-                                <android.support.v4.widget.Space
-                                    android:layout_width="10dp"
-                                    android:layout_height="wrap_content" />
 
                                 <TextView
                                     android:id="@+id/textView_age"
@@ -220,6 +224,10 @@
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:textSize="@dimen/card_content_text_size" />
+
+                                <android.support.v4.widget.Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="wrap_content" />
 
 
                             </TableRow>
@@ -234,13 +242,9 @@
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:text="@string/row_address"
-                                    android:textStyle="bold"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:textSize="@dimen/card_content_text_size"
+                                    android:textStyle="bold" />
 
-
-                                <android.support.v4.widget.Space
-                                    android:layout_width="10dp"
-                                    android:layout_height="wrap_content" />
 
                                 <TextView
                                     android:id="@+id/textView_address_1"
@@ -249,6 +253,10 @@
                                     android:layout_weight="1"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:textSize="@dimen/card_content_text_size" />
+
+                                <android.support.v4.widget.Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="wrap_content" />
 
 
                             </TableRow>
@@ -265,10 +273,6 @@
                                     android:textSize="@dimen/card_content_text_size" />
 
 
-                                <android.support.v4.widget.Space
-                                    android:layout_width="10dp"
-                                    android:layout_height="wrap_content" />
-
                                 <TextView
                                     android:id="@+id/textView_address2"
                                     android:layout_width="match_parent"
@@ -276,6 +280,10 @@
                                     android:layout_weight="1"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:textSize="@dimen/card_content_text_size" />
+
+                                <android.support.v4.widget.Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="wrap_content" />
 
 
                             </TableRow>
@@ -292,10 +300,6 @@
                                     android:textSize="@dimen/card_content_text_size" />
 
 
-                                <android.support.v4.widget.Space
-                                    android:layout_width="10dp"
-                                    android:layout_height="wrap_content" />
-
                                 <TextView
                                     android:id="@+id/textView_address_final"
                                     android:layout_width="match_parent"
@@ -303,6 +307,10 @@
                                     android:layout_weight="1"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:textSize="@dimen/card_content_text_size" />
+
+                                <android.support.v4.widget.Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="wrap_content" />
 
 
                             </TableRow>
@@ -316,13 +324,9 @@
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:text="@string/row_phone_number"
-                                    android:textStyle="bold"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:textSize="@dimen/card_content_text_size"
+                                    android:textStyle="bold" />
 
-
-                                <android.support.v4.widget.Space
-                                    android:layout_width="10dp"
-                                    android:layout_height="wrap_content" />
 
                                 <TextView
                                     android:id="@+id/textView_phone"
@@ -330,6 +334,10 @@
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:textSize="@dimen/card_content_text_size" />
+
+                                <android.support.v4.widget.Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="wrap_content" />
 
 
                             </TableRow>
@@ -343,15 +351,11 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
-                                    android:text="Son/Daughter/Wife of"
-                                    android:textStyle="bold"
                                     android:paddingRight="5dp"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:text="Son/Daughter/Wife of"
+                                    android:textSize="@dimen/card_content_text_size"
+                                    android:textStyle="bold" />
 
-
-                                <android.support.v4.widget.Space
-                                    android:layout_width="10dp"
-                                    android:layout_height="wrap_content" />
 
                                 <TextView
                                     android:id="@+id/textView_SDW"
@@ -360,6 +364,10 @@
                                     android:layout_weight="1"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:textSize="@dimen/card_content_text_size" />
+
+                                <android.support.v4.widget.Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="wrap_content" />
 
 
                             </TableRow>
@@ -374,13 +382,9 @@
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:text="Occupation"
-                                    android:textStyle="bold"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:textSize="@dimen/card_content_text_size"
+                                    android:textStyle="bold" />
 
-
-                                <android.support.v4.widget.Space
-                                    android:layout_width="10dp"
-                                    android:layout_height="wrap_content" />
 
                                 <TextView
                                     android:id="@+id/textView_occupation"
@@ -389,6 +393,10 @@
                                     android:layout_weight="1"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:textSize="@dimen/card_content_text_size" />
+
+                                <android.support.v4.widget.Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="wrap_content" />
 
 
                             </TableRow>
@@ -403,13 +411,9 @@
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:text="Economic status"
-                                    android:textStyle="bold"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:textSize="@dimen/card_content_text_size"
+                                    android:textStyle="bold" />
 
-
-                                <android.support.v4.widget.Space
-                                    android:layout_width="10dp"
-                                    android:layout_height="wrap_content" />
 
                                 <TextView
                                     android:id="@+id/textView_economic_status"
@@ -417,6 +421,10 @@
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:textSize="@dimen/card_content_text_size" />
+
+                                <android.support.v4.widget.Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="wrap_content" />
 
 
                             </TableRow>
@@ -431,13 +439,9 @@
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:text="Education level"
-                                    android:textStyle="bold"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:textSize="@dimen/card_content_text_size"
+                                    android:textStyle="bold" />
 
-
-                                <android.support.v4.widget.Space
-                                    android:layout_width="10dp"
-                                    android:layout_height="wrap_content" />
 
                                 <TextView
                                     android:id="@+id/textView_education_status"
@@ -445,6 +449,10 @@
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:textSize="@dimen/card_content_text_size" />
+
+                                <android.support.v4.widget.Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="wrap_content" />
 
 
                             </TableRow>
@@ -459,13 +467,9 @@
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:text="Caste"
-                                    android:textStyle="bold"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:textSize="@dimen/card_content_text_size"
+                                    android:textStyle="bold" />
 
-
-                                <android.support.v4.widget.Space
-                                    android:layout_width="10dp"
-                                    android:layout_height="wrap_content" />
 
                                 <TextView
                                     android:id="@+id/textView_caste"
@@ -473,6 +477,10 @@
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:textSize="@dimen/card_content_text_size" />
+
+                                <android.support.v4.widget.Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="wrap_content" />
 
 
                             </TableRow>
@@ -490,10 +498,9 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/padding_card"
                     android:layout_marginBottom="@dimen/padding_card"
-                    card_view:cardCornerRadius="@dimen/card_corner_radius"
-                    card_view:cardElevation="2dp"
-                    card_view:cardUseCompatPadding="true"
-                    card_view:contentPadding="@dimen/padding_card">
+                    app:cardCornerRadius="@dimen/card_corner_radius"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -504,13 +511,18 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingTop="@dimen/padding_card_title_text"
+                            android:padding="10dp"
+                            android:paddingStart="20dp"
+                            android:background="@color/colorPrimary"
                             android:text="@string/header_medical_history"
-                            android:textSize="@dimen/card_title_text_size" />
+                            android:textColor="@color/white"
+                            android:textSize="18sp" />
 
 
                         <TableLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/padding_card">
 
 
                             <TableRow
@@ -583,6 +595,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:textStyle="bold"
+                    android:layout_marginHorizontal="10dp"
+                    android:elevation="5dp"
                     style="@style/SelectableItemBackground"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:text="@string/button_new_visit" />
@@ -594,22 +608,37 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/padding_card"
                     android:layout_marginBottom="@dimen/padding_card"
-                    card_view:cardCornerRadius="@dimen/card_corner_radius"
-                    card_view:cardElevation="2dp"
-                    card_view:cardUseCompatPadding="true"
-                    card_view:contentPadding="@dimen/padding_card">
+                    app:cardCornerRadius="@dimen/card_corner_radius"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:background="@color/colorPrimary"
+                            android:text="Previous visits"
+                            android:paddingStart="20dp"
+                            android:padding="10dp"
+                            android:textSize="18sp"/>
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/linearLayout_previous_visits"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:padding="@dimen/padding_card">
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingTop="@dimen/padding_card_title_text"
-                            android:text="@string/header_previous_visits"
                             android:textSize="@dimen/card_title_text_size" />
 
 
