@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
@@ -64,7 +65,7 @@ public class SyncDAO {
             locationDAO.insertLocations(responseDTO.getData().getLocationDTO());
             providerDAO.insertProviders(responseDTO.getData().getProviderlist());
 
-
+            Logger.logD(TAG, "Pull ENCOUNTER: "+responseDTO.getData().getEncounterDTO());
             Logger.logD(TAG, "Pull sync ended");
             sessionManager.setPullExcutedTime(sessionManager.isPulled());
             sessionManager.setFirstTimeSyncExecute(false);
@@ -229,6 +230,7 @@ public class SyncDAO {
                             for (int i = 0; i < pushResponseApiCall.getData().getPatientlist().size(); i++) {
                                 try {
                                     patientsDAO.updateOpemmrsId(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId(), pushResponseApiCall.getData().getPatientlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
+                                    Log.d("SYNC","ProvUUDI"+pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
                                 } catch (DAOException e) {
                                     Crashlytics.getInstance().core.logException(e);
                                 }
@@ -245,6 +247,7 @@ public class SyncDAO {
                             for (int i = 0; i < pushResponseApiCall.getData().getEncounterlist().size(); i++) {
                                 try {
                                     encounterDAO.updateEncounterSync(pushResponseApiCall.getData().getEncounterlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getEncounterlist().get(i).getUuid());
+                                    Log.d("SYNC","Encounter Data: "+pushResponseApiCall.getData().getEncounterlist().get(i).toString());
                                 } catch (DAOException e) {
                                     Crashlytics.getInstance().core.logException(e);
                                 }

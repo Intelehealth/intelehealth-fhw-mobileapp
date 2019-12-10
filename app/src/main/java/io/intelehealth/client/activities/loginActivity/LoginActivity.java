@@ -5,11 +5,14 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -30,9 +33,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 
 import java.io.File;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.homeActivity.HomeActivity;
@@ -44,6 +53,7 @@ import io.intelehealth.client.utilities.Logger;
 import io.intelehealth.client.utilities.NetworkConnection;
 import io.intelehealth.client.utilities.OfflineLogin;
 import io.intelehealth.client.utilities.SessionManager;
+import io.intelehealth.client.utilities.StringEncryption;
 import io.intelehealth.client.utilities.UrlModifiers;
 import io.intelehealth.client.widget.materialprogressbar.CustomProgressDialog;
 import io.reactivex.Observable;
@@ -81,6 +91,9 @@ public class LoginActivity extends AppCompatActivity {
 //    private AutoCompleteTextView mUsernameView;
     private EditText mPasswordView;
     private ImageView icLogo;
+
+    private long createdRecordsCount = 0;
+    String provider_url_uuid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -209,7 +222,9 @@ public class LoginActivity extends AppCompatActivity {
             // perform the user login attempt.
             UserLoginTask(email, password);
         } else {
-            offlineLogin.login(email, password);
+            //offlineLogin.login(email, password);
+            offlineLogin.offline_login(email, password);
+
         }
 
     }
@@ -280,8 +295,13 @@ public class LoginActivity extends AppCompatActivity {
                 Logger.logD(TAG, "success" + gson.toJson(loginModel));
                 sessionManager.setChwname(loginModel.getUser().getDisplay());
                 sessionManager.setCreatorID(loginModel.getUser().getUuid());
+                Log.d("SESSOO","SESSOO_creator: "+loginModel.getUser().getUuid());
                 sessionManager.setSessionID(loginModel.getSessionId());
+                Log.d("SESSOO","SESSOO: "+sessionManager.getSessionID());
                 sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
+                Log.d("SESSOO","SESSOO_PROVIDER: "+loginModel.getUser().getPerson().getUuid());
+                Log.d("SESSOO","SESSOO_PROVIDER_session: "+sessionManager.getProviderID());
+
                 UrlModifiers urlModifiers = new UrlModifiers();
                 String url = urlModifiers.loginUrlProvider(sessionManager.getServerUrl(), loginModel.getUser().getUuid());
                 if (authencated) {
@@ -296,20 +316,71 @@ public class LoginActivity extends AppCompatActivity {
                                         for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
                                             Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
                                             sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
+
+                                            provider_url_uuid = loginProviderModel.getResults().get(i).getUuid();
+//                                                success = true;
                                             final Account account = new Account(mEmail, "io.intelehealth.openmrs");
                                             manager.addAccountExplicitly(account, mPassword, null);
-                                            offlineLogin.invalidateLoginCredentials();
-                                            offlineLogin.setUpOfflineLogin(mEmail, mPassword);
-                                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                                            intent.putExtra("login", true);
-                                            startActivity(intent);
-                                            finish();
-                                            cpd.dismiss();
+                                            Log.d("MANAGER", "MANAGER " + account);
+                                            //offlineLogin.invalidateLoginCredentials();
 
-                                            sessionManager.setReturningUser(true);
+
+
 
                                         }
                                     }
+                                    SQLiteDatabase sqLiteDatabase = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+                                    //SQLiteDatabase read_db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+
+                                    sqLiteDatabase.beginTransaction();
+                                    //read_db.beginTransaction();
+                                    ContentValues values = new ContentValues();
+
+                                    //StringEncryption stringEncryption = new StringEncryption();
+                                    String random_salt = getSalt_DATA();
+
+                                    //String random_salt = stringEncryption.getRandomSaltString();
+                                    Log.d("salt", "salt: " + random_salt);
+                                    //Salt_Getter_Setter salt_getter_setter = new Salt_Getter_Setter();
+                                    //salt_getter_setter.setSalt(random`_salt);
+
+
+                                    String hash_password = null;
+                                    try {
+                                        //hash_email = StringEncryption.convertToSHA256(random_salt + mEmail);
+                                        hash_password = StringEncryption.convertToSHA256(random_salt + mPassword);
+                                    } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                                        Crashlytics.getInstance().core.logException(e);
+                                    }
+
+                                    try {
+                                        values.put("username", mEmail);
+                                        values.put("password", hash_password);
+                                        values.put("creator_uuid_cred", loginModel.getUser().getUuid());
+                                        values.put("chwname",loginModel.getUser().getDisplay());
+                                        values.put("provider_uuid_cred", sessionManager.getProviderID());
+                                        createdRecordsCount = sqLiteDatabase.insertWithOnConflict("tbl_user_credentials", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                                        sqLiteDatabase.setTransactionSuccessful();
+
+                                        Logger.logD("values", "values" + values);
+                                        Logger.logD("created user credentials", "create user records" + createdRecordsCount);
+                                    } catch (SQLException e) {
+                                        Log.d("SQL", "SQL user credentials: " + e);
+                                    } finally {
+                                        sqLiteDatabase.endTransaction();
+                                    }
+
+
+                                    // offlineLogin.setUpOfflineLogin(mEmail, mPassword);
+
+                                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                    intent.putExtra("login", true);
+//                startJobDispatcherService(LoginActivity.this);
+                                    startActivity(intent);
+                                    finish();
+                                    showProgress(false);
+
+                                    sessionManager.setReturningUser(true);
                                 }
 
                                 @Override
@@ -342,4 +413,32 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    public String getSalt_DATA() {
+        BufferedReader reader = null;
+        String salt = null;
+        try {
+            reader = new BufferedReader(
+                    new InputStreamReader(getAssets().open("salt.env")));
+
+            // do reading, usually loop until end of file reading
+            String mLine;
+            while ((mLine = reader.readLine()) != null) {
+                //process line
+                salt = mLine;
+                Log.d("SA", "SA " + salt);
+            }
+        } catch (Exception e) {
+            //log the exception
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (Exception e) {
+                    //log the exception
+                }
+            }
+        }
+        return salt;
+
+    }
 }

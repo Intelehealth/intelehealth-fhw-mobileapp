@@ -3,8 +3,8 @@ buildscript {
     repositories {
         google()
         jcenter()
-        maven { url 'https://jitpack.io' }
-        maven { url 'https://maven.fabric.io/public' }
+        maven { url 'http://jitpack.io' }
+        maven { url 'http://maven.fabric.io/public' }
         
     }
     dependencies {
@@ -22,9 +22,9 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url 'https://jitpack.io' }
-        maven { url 'https://maven.google.com' }
-        maven { url 'https://maven.fabric.io/public' }
+        maven { url 'http://jitpack.io' }
+        maven { url 'http://maven.google.com' }
+        maven { url 'http://maven.fabric.io/public' }
 
     }
 }

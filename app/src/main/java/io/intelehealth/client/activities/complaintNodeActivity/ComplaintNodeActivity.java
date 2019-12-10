@@ -83,6 +83,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         encounterDTO.setVisituuid(visitUuid);
         encounterDTO.setSyncd(false);
         encounterDTO.setProvideruuid(sessionManager.getProviderID());
+        Log.d("DTO","DTOcomp: "+ encounterDTO.getProvideruuid());
         encounterDTO.setVoided(0);
         try {
             encounterDAO.createEncountersToDB(encounterDTO);

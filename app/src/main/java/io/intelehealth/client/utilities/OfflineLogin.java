@@ -3,18 +3,27 @@ package io.intelehealth.client.utilities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.homeActivity.HomeActivity;
+import io.intelehealth.client.activities.loginActivity.LoginActivity;
+import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.app.IntelehealthApplication;
+import io.intelehealth.client.models.TodayPatientModel;
+import io.intelehealth.client.utilities.exception.DAOException;
 
 
 /**
@@ -30,11 +39,16 @@ public class OfflineLogin {
     private static OfflineLogin mOfflineLogin;
     private Context mContext;
     private SharedPreferences mSharedPreference;
+    String user,pass, provider_uuid, creator_uuid, chw_name;
+    //SessionManager sessionManager;
+    SessionManager sessionManager = null;
+
 
     private OfflineLogin(Context context) {
         mContext = context;
         mSharedPreference = mContext.getSharedPreferences(
                 context.getString(R.string.offline_login_shared_preference_key), Context.MODE_PRIVATE);
+        sessionManager = new SessionManager(mContext);
     }
 
     /**
@@ -149,5 +163,105 @@ public class OfflineLogin {
         editor.putBoolean(
                 mContext.getString(R.string.offline_login_status), status);
         editor.apply();
+    }
+
+    public void offline_login(String username, String password)
+    {
+        SQLiteDatabase db_1 = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        Cursor c = db_1.rawQuery("SELECT * FROM tbl_user_credentials",null);
+
+        String hash_de_password = null;
+
+        if(c.moveToFirst() && c != null)
+        {
+            //String user_decode = c.getString(c.getColumnIndexOrThrow("username"));
+            String pass_decode = c.getString(c.getColumnIndexOrThrow("password"));
+            Log.d("pass_read", "pass_read"+pass_decode);
+
+            try {
+                Log.d("MICE", "MICE: "+getSalt_DATA());
+                //hash_de_email = StringEncryption.convertToSHA256(salt_getter_setter.getSalt() + user_decode);
+                hash_de_password = StringEncryption.convertToSHA256(getSalt_DATA() + password);
+
+
+            } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                Crashlytics.getInstance().core.logException(e);
+            }
+            Log.d("HASH","HASH: "+hash_de_password);
+        }
+        else
+        {
+            Log.d("OFFLINE_C_EMPTY", "OFFLINE_C_EMPTY : "+c);
+        }
+        c.close();
+
+        String[] cols = {username,hash_de_password};
+        Log.d("Column","Column: "+username+" "+hash_de_password);
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        Cursor cursor = db.query(
+                "tbl_user_credentials",
+                null,
+                "username=? AND password=?",
+                cols, null,null,null
+                );
+
+        if(cursor.moveToFirst())
+        {
+            user = cursor.getString(cursor.getColumnIndexOrThrow("username"));
+            pass = cursor.getString(cursor.getColumnIndexOrThrow("password"));
+           chw_name = cursor.getString(cursor.getColumnIndexOrThrow("chwname"));
+            provider_uuid = cursor.getString(cursor.getColumnIndexOrThrow("provider_uuid_cred"));
+            creator_uuid = cursor.getString(cursor.getColumnIndexOrThrow("creator_uuid_cred"));
+           // Log.d("OFF_USER","DB_DATA"+user+" "+pass);
+            Log.d("OFF_USER","DB_DATA"+user+" "+pass+" " +chw_name+" "+provider_uuid+" "+creator_uuid);
+
+
+           sessionManager.setProviderID(provider_uuid);
+           sessionManager.setCreatorID(creator_uuid);
+           sessionManager.setChwname(chw_name);
+                Intent intent = new Intent(mContext, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                setOfflineLoginStatus(true);
+                mContext.startActivity(intent);
+            Toast.makeText(mContext, mContext.getString(R.string.success_offline_login), Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            Toast.makeText(mContext, mContext.getString
+                    (R.string.error_incorrect_password), Toast.LENGTH_SHORT).show();
+        }
+        
+        cursor.close();
+
+    }
+
+    public String getSalt_DATA() {
+        BufferedReader reader = null;
+        String salt = null;
+        try {
+            reader = new BufferedReader(
+                    new InputStreamReader(mContext.getAssets().open("salt.env")));
+
+            // do reading, usually loop until end of file reading
+            String mLine;
+            while ((mLine = reader.readLine()) != null) {
+                //process line
+                salt = mLine;
+                Log.d("SA", "SA " + salt);
+            }
+        } catch (Exception e) {
+            //log the exception
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (Exception e) {
+                    //log the exception
+                }
+            }
+        }
+        return salt;
+
     }
 }

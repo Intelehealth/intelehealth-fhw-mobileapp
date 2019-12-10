@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -60,6 +61,7 @@ public class EncounterDAO {
             values.put("sync", encounter.getSyncd());
             values.put("voided", encounter.getVoided());
             values.put("privacynotice_value", encounter.getPrivacynotice_value());
+            Log.d("VALUES:","VALUES: "+values);
             createdRecordsCount = db.insertWithOnConflict("tbl_encounter", null, values, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (SQLException e) {
             isCreated = false;
@@ -127,7 +129,9 @@ public class EncounterDAO {
                 encounterDTO.setVisituuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visituuid")));
                 encounterDTO.setEncounterTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_type_uuid")));
                 encounterDTO.setProvideruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("provider_uuid")));
+                Log.d("ENCO","ENCO_PROV: "+idCursor.getString(idCursor.getColumnIndexOrThrow("provider_uuid")));
                 encounterDTO.setEncounterTime(idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_time")));
+                Log.d("ENCO","ENCO_TIME: "+idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_time")));
                 encounterDTO.setVoided(idCursor.getInt(idCursor.getColumnIndexOrThrow("voided")));
                 encounterDTO.setPrivacynotice_value(idCursor.getString(idCursor.getColumnIndexOrThrow("privacynotice_value")));
                 encounterDTOList.add(encounterDTO);
@@ -170,6 +174,7 @@ public class EncounterDAO {
 
     public boolean updateEncounterSync(String synced, String uuid) throws DAOException {
         boolean isUpdated = true;
+
         Logger.logD("encounterdao", "updatesynv encounter " + uuid + "" + synced);
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
@@ -178,7 +183,9 @@ public class EncounterDAO {
         String[] whereargs = {uuid};
         try {
             values.put("sync", synced);
+
             values.put("uuid", uuid);
+
             int i = db.update("tbl_encounter", values, whereclause, whereargs);
             Logger.logD(tag, "updated" + i);
             db.setTransactionSuccessful();
@@ -230,6 +237,7 @@ public class EncounterDAO {
             encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
             encounterDTO.setSyncd(false);
             encounterDTO.setProvideruuid(sessionManager.getProviderID());
+            Log.d("DTO","DTOdao: "+ encounterDTO.getProvideruuid());
 
             encounterDAO.createEncountersToDB(encounterDTO);
 

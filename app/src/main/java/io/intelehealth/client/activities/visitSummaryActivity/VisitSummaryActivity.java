@@ -263,7 +263,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         mCHWname = findViewById(R.id.chw_details);
-        mCHWname.setText(sessionManager.getChwname());
+        mCHWname.setText(sessionManager.getChwname()); //session manager provider
         //Added Prescription Title from config.Json dynamically through sharedPreferences
         prescriptionHeader1 = sharedPreferences.getString("prescriptionTitle1", "");
         prescriptionHeader2 = sharedPreferences.getString("prescriptionTitle2", "");
