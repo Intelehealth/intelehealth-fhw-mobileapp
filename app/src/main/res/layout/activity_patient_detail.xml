@@ -76,7 +76,7 @@
                         android:layout_width="match_parent"
                         android:orientation="horizontal"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorPrimary">
+                        android:background="@color/titleBar_cardview">
 
                         <TextView
                             android:id="@+id/textView3"
@@ -513,7 +513,7 @@
                             android:paddingTop="@dimen/padding_card_title_text"
                             android:padding="10dp"
                             android:paddingStart="20dp"
-                            android:background="@color/colorPrimary"
+                            android:background="@color/titleBar_cardview"
                             android:text="@string/header_medical_history"
                             android:textColor="@color/white"
                             android:textSize="18sp" />
@@ -621,7 +621,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
-                            android:background="@color/colorPrimary"
+                            android:background="@color/titleBar_cardview"
                             android:text="Previous visits"
                             android:paddingStart="20dp"
                             android:padding="10dp"
