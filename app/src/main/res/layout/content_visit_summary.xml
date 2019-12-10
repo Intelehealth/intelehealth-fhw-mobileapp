@@ -570,17 +570,6 @@
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
-        <TextView
-            android:id="@+id/textView_additional_document_images"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/titleBar_cardview"
-            android:paddingVertical="12dp"
-            android:paddingStart="20dp"
-            android:text="Additional documents"
-            android:textColor="@color/white"
-            android:textSize="@dimen/card_content_text_size" />
-
         <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/additional_document_images"
             android:layout_width="match_parent"
@@ -596,6 +585,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <TextView
+                    android:id="@+id/textView_additional_document_images"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_activity_additional_documents"
+                    android:background="@color/titleBar_cardview"
+                    android:textColor="@color/white"
+                    android:paddingStart="20dp"
+                    android:paddingVertical="12dp"
+                    android:textSize="@dimen/card_content_text_size" />
+
                 <ImageButton
                     android:id="@+id/imagebutton_edit_additional_document"
                     android:layout_width="wrap_content"
@@ -608,25 +608,14 @@
                     android:padding="10dp"
                     app:srcCompat="@drawable/edit_icon" />
 
-                <ImageButton
-                    android:id="@+id/imagebutton_download_additional_document"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/imagebutton_edit_additional_document"
-                    android:layout_marginLeft="-29dp"
-                    android:background="@null"
-                    android:contentDescription="TODO"
-                    style="@style/SelectableItemBackground"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:padding="10dp"
-                    app:srcCompat="@drawable/download" />
-
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recy_additional_documents"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView_additional_document_images"
-                    android:padding="@dimen/padding_card"></android.support.v7.widget.RecyclerView>
+                    android:padding="@dimen/padding_card">
+
+                </android.support.v7.widget.RecyclerView>
 
                 <TextView
                     android:id="@+id/additional_documents_download"
@@ -1039,7 +1028,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.9"
                     android:text="Emergency"
-                    android:paddingStart="20dp"
+                    android:paddingStart="5dp"
                     android:paddingVertical="12dp"
                     android:textSize="@dimen/card_content_text_size" />
 

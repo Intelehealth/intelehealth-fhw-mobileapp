@@ -475,10 +475,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         uploadButton = findViewById(R.id.button_upload);
         downloadButton = findViewById(R.id.button_download);
 
-        additionalDocumentsDownlaod = findViewById(R.id.imagebutton_download_additional_document);
+        //additionalDocumentsDownlaod = findViewById(R.id.imagebutton_download_additional_document);
         onExaminationDownload = findViewById(R.id.imagebutton_download_physexam);
 
-        additionalDocumentsDownlaod.setVisibility(View.GONE);
+        //additionalDocumentsDownlaod.setVisibility(View.GONE);
 
         physcialExaminationDownloadText = findViewById(R.id.physcial_examination_download);
         onExaminationDownload.setVisibility(View.GONE);
@@ -1140,12 +1140,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 }, 5000);
             }
         });
-        additionalDocumentsDownlaod.setOnClickListener(new View.OnClickListener() {
+     /*   additionalDocumentsDownlaod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startDownload(UuidDictionary.COMPLEX_IMAGE_AD);
             }
-        });
+        }); */
         onExaminationDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
