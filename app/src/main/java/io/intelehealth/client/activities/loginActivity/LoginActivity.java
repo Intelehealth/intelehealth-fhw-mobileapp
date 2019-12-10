@@ -378,7 +378,7 @@ public class LoginActivity extends AppCompatActivity {
 //                startJobDispatcherService(LoginActivity.this);
                                     startActivity(intent);
                                     finish();
-                                    showProgress(false);
+                                  //  showProgress(false);
 
                                     sessionManager.setReturningUser(true);
                                 }

@@ -648,21 +648,6 @@ public class SetupActivity extends AppCompatActivity {
 
 
     }
-
-    private void getMindmapDownloadURL(String url) {
-        customProgressDialog.show();
-        ApiClient.changeApiBaseUrl(url);
-        ApiInterface apiService = ApiClient.createService(ApiInterface.class);
-        try {
-            Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key);
-            resultsObservable
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DisposableObserver<DownloadMindMapRes>() {
-                        @Override
-                        public void onNext(DownloadMindMapRes res) {
-                            customProgressDialog.dismiss();
-                            if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
     public String getSalt_DATA() {
         BufferedReader reader = null;
         String salt = null;
@@ -691,6 +676,22 @@ public class SetupActivity extends AppCompatActivity {
         return salt;
 
     }
+
+    private void getMindmapDownloadURL(String url) {
+        customProgressDialog.show();
+        ApiClient.changeApiBaseUrl(url);
+        ApiInterface apiService = ApiClient.createService(ApiInterface.class);
+        try {
+            Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key);
+            resultsObservable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DisposableObserver<DownloadMindMapRes>() {
+                        @Override
+                        public void onNext(DownloadMindMapRes res) {
+                            customProgressDialog.dismiss();
+                            if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
+
 
 
                                 Log.e("MindMapURL", "Successfully get MindMap URL");
