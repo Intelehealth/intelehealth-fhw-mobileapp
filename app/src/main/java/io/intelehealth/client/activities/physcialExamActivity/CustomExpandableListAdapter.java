@@ -2,14 +2,19 @@ package io.intelehealth.client.activities.physcialExamActivity;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import io.intelehealth.client.R;
+import io.intelehealth.client.activities.questionNodeActivity.QuestionNodeActivity;
 import io.intelehealth.client.knowledgeEngine.Node;
 
 /**
@@ -105,33 +110,92 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        if (convertView == null) {
+
+        Node nodeGroup = (Node) getGroup(groupPosition);
+        if (nodeGroup.getText().equalsIgnoreCase(mContext.getResources().getString(R.string.associated_symptoms))) {
+            convertView = mInflater.inflate(R.layout.list_expandable_item_radio, null);
+
+            final Node node = (Node) getChild(groupPosition, childPosition);
+
+            final TextView textView = convertView.findViewById(R.id.expandable_list_item);
+            final RadioButton rbYes = convertView.findViewById(R.id.radio_yes);
+            final RadioButton rbNo = convertView.findViewById(R.id.radio_no);
+
+            textView.setText(node.findDisplay());
+
+            View finalConvertView = convertView;
+            rbYes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    node.setNoSelected(false);
+                    ((QuestionNodeActivity) mContext).onListClicked(finalConvertView, groupPosition, childPosition);
+                }
+            });
+
+            rbNo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    node.setNoSelected(true);
+                    node.setUnselected();
+                }
+            });
+
+            switch (callingClass) {
+
+                case "ComplaintNodeActivity":
+                    if (node.isSelected()) {
+                        rbYes.setChecked(true);
+                    } else {
+                        rbNo.setChecked(true);
+                    }
+                    break;
+                default:
+                    if (node.isSelected()) {
+                        rbYes.setChecked(true);
+                    } else {
+                        if (node.isNoSelected()) {
+                            rbNo.setChecked(true);
+                        } else {
+                            rbNo.setChecked(false);
+                        }
+                    }
+                    break;
+            }
+
+        } else {
+
+//            if (convertView == null) {
+//                convertView = mInflater.inflate(R.layout.list_expandable_item, null);
+//            }
             convertView = mInflater.inflate(R.layout.list_expandable_item, null);
-        }
-        final Node node = (Node) getChild(groupPosition, childPosition);
-        final TextView textView = convertView.findViewById(R.id.expandable_list_item);
-        textView.setText(node.findDisplay());
 
-        ImageView imageView = convertView.findViewById(R.id.expandable_list_item_image);
 
-        switch (callingClass) {
+            final Node node = (Node) getChild(groupPosition, childPosition);
+            final TextView textView = convertView.findViewById(R.id.expandable_list_item);
+            textView.setText(node.findDisplay());
 
-            case "ComplaintNodeActivity":
-                if (node.isSelected()) {
-                    imageView.setImageResource(R.drawable.checkbox);
-                } else {
-                    imageView.setImageResource(R.drawable.blank_checkbox);
-                }
-                break;
-            default:
-                if (node.isSelected()) {
-                    imageView.setImageResource(R.drawable.checkbox);
-                    //textView.setBackgroundResource(R.color.colorAccent);
-                } else {
-                    //textView.setBackgroundResource(0);
-                    imageView.setImageResource(R.drawable.blank_checkbox);
-                }
-                break;
+            ImageView imageView = convertView.findViewById(R.id.expandable_list_item_image);
+
+            switch (callingClass) {
+
+                case "ComplaintNodeActivity":
+                    if (node.isSelected()) {
+                        imageView.setImageResource(R.drawable.checkbox);
+                    } else {
+                        imageView.setImageResource(R.drawable.blank_checkbox);
+                    }
+                    break;
+                default:
+                    if (node.isSelected()) {
+                        imageView.setImageResource(R.drawable.checkbox);
+                        //textView.setBackgroundResource(R.color.colorAccent);
+                    } else {
+                        //textView.setBackgroundResource(0);
+                        imageView.setImageResource(R.drawable.blank_checkbox);
+                    }
+                    break;
+            }
+
         }
 
         return convertView;
