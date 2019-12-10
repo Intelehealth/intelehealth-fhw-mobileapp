@@ -110,28 +110,32 @@ public class SyncDAO {
                     else
                         AppConstants.notificationUtils.DownloadDone("sync", "failed synced,You can try again", 1, IntelehealthApplication.getAppContext());
 
-                    if (response.body().getData() != null) {
-                        ArrayList<String> listPatientUUID = new ArrayList<String>();
-                        List<VisitDTO> listVisitDTO = new ArrayList<>();
-                        ArrayList<String> encounterVisitUUID = new ArrayList<String>();
-                        for (int i = 0; i < response.body().getData().getEncounterDTO().size(); i++) {
-                            if (response.body().getData().getEncounterDTO().get(i)
-                                    .getEncounterTypeUuid().equalsIgnoreCase("d7151f82-c1f3-4152-a605-2f9ea7414a79")) {
-                                encounterVisitUUID.add(response.body().getData().getEncounterDTO().get(i).getVisituuid());
-                            }
-                        }
-                        listVisitDTO.addAll(response.body().getData().getVisitDTO());
-                        for (int i = 0; i < encounterVisitUUID.size() ; i++) {
-                            for (int j = 0; j < listVisitDTO.size(); j++) {
-                                if (encounterVisitUUID.get(i).equalsIgnoreCase(listVisitDTO.get(j).getUuid())){
-                                    listPatientUUID.add(listVisitDTO.get(j).getPatientuuid());
+                    if (sessionManager.getTriggerNoti().equals("yes")) {
+                        if (response.body().getData() != null) {
+                            ArrayList<String> listPatientUUID = new ArrayList<String>();
+                            List<VisitDTO> listVisitDTO = new ArrayList<>();
+                            ArrayList<String> encounterVisitUUID = new ArrayList<String>();
+                            for (int i = 0; i < response.body().getData().getEncounterDTO().size(); i++) {
+                                if (response.body().getData().getEncounterDTO().get(i)
+                                        .getEncounterTypeUuid().equalsIgnoreCase("d7151f82-c1f3-4152-a605-2f9ea7414a79")) {
+                                    encounterVisitUUID.add(response.body().getData().getEncounterDTO().get(i).getVisituuid());
                                 }
                             }
-                        }
+                            listVisitDTO.addAll(response.body().getData().getVisitDTO());
+                            for (int i = 0; i < encounterVisitUUID.size(); i++) {
+                                for (int j = 0; j < listVisitDTO.size(); j++) {
+                                    if (encounterVisitUUID.get(i).equalsIgnoreCase(listVisitDTO.get(j).getUuid())) {
+                                        listPatientUUID.add(listVisitDTO.get(j).getPatientuuid());
+                                    }
+                                }
+                            }
 
-                        if (listPatientUUID.size() > 0) {
-                            triggerVisitNotification(listPatientUUID);
+                            if (listPatientUUID.size() > 0) {
+                                triggerVisitNotification(listPatientUUID);
+                            }
                         }
+                    } else {
+                        sessionManager.setTriggerNoti("yes");
                     }
                 }
 

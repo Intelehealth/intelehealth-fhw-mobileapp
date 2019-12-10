@@ -548,12 +548,14 @@ public class SetupActivity extends AppCompatActivity {
                                             intent.putExtra("setup", true);
                                             if (r2.isChecked()) {
                                                 if (!sessionManager.getLicenseKey().isEmpty()) {
+                                                    sessionManager.setTriggerNoti("no");
                                                     startActivity(intent);
                                                     finish();
                                                 } else {
                                                     Toast.makeText(SetupActivity.this, "Please enter a valid license key", Toast.LENGTH_LONG).show();
                                                 }
                                             } else {
+                                                sessionManager.setTriggerNoti("no");
                                                 startActivity(intent);
                                                 finish();
                                             }

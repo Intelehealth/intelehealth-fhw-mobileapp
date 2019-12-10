@@ -43,6 +43,7 @@ public class SessionManager {
     private static final String VISIT_SUMMARY = "visit_summary";
     private static final String EXAM = "exam_";
     private static final String MIGRATION_KEY = "migrationkey";
+    private static final String TRIGGER_NOTI = "TRIGGER_NOTI";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -182,6 +183,15 @@ public class SessionManager {
 
     public void setServerUrl(String serverUrl) {
         editor.putString(KEY_PREF_SERVER_URL, serverUrl);
+        editor.commit();
+    }
+
+    public String getTriggerNoti() {
+        return pref.getString(TRIGGER_NOTI, "");
+    }
+
+    public void setTriggerNoti(String flag) {
+        editor.putString(TRIGGER_NOTI, flag);
         editor.commit();
     }
 
