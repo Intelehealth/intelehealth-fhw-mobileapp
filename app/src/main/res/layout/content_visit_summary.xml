@@ -632,7 +632,8 @@
         </android.support.v7.widget.CardView>
 
         <!-- Diagnosis contains a TableView-->
-        <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <android.support.v7.widget.CardView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_diagnosis"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -642,8 +643,7 @@
             android:visibility="gone"
             app:cardCornerRadius="@dimen/card_corner_radius"
             app:cardElevation="2dp"
-            app:cardUseCompatPadding="true"
-            app:contentPadding="@dimen/padding_card">
+            app:cardUseCompatPadding="true">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -653,14 +653,18 @@
                     android:id="@+id/textView_heading_diagnosis"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding_card_title_text"
+                    android:paddingStart="20dp"
                     android:text="@string/visit_summary_diagnosis"
-                    android:textSize="@dimen/card_title_text_size" />
+                    android:paddingVertical="12dp"
+                    android:background="@color/titleBar_cardview"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/card_content_text_size" />
 
 
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="@dimen/padding_card"
                     android:layout_below="@id/textView_heading_diagnosis">
 
                     <!--Diagnosis-->
@@ -673,7 +677,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:paddingTop="@dimen/padding_card"
                             android:text="@string/visit_summary_height_heading"
                             android:textSize="@dimen/card_content_text_size" />
 
@@ -684,7 +687,8 @@
         </android.support.v7.widget.CardView>
 
         <!-- Prescription contains a TableView-->
-        <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <android.support.v7.widget.CardView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_rx"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -694,8 +698,7 @@
             android:visibility="gone"
             app:cardCornerRadius="@dimen/card_corner_radius"
             app:cardElevation="2dp"
-            app:cardUseCompatPadding="true"
-            app:contentPadding="@dimen/padding_card">
+            app:cardUseCompatPadding="true">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -705,14 +708,18 @@
                     android:id="@+id/textView_heading_rx"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding_card_title_text"
-                    android:text="@string/visit_summary_rx"
-                    android:textSize="@dimen/card_title_text_size" />
+                    android:paddingVertical="12dp"
+                    android:paddingStart="20dp"
+                    android:background="@color/titleBar_cardview"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/card_content_text_size"
+                    android:text="@string/visit_summary_rx" />
 
 
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="@dimen/padding_card"
                     android:layout_below="@id/textView_heading_rx">
 
                     <!--Prescription-->
@@ -725,7 +732,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:paddingTop="@dimen/padding_card"
                             android:text="@string/visit_summary_height_heading"
                             android:textSize="@dimen/card_content_text_size" />
 
@@ -736,7 +742,8 @@
         </android.support.v7.widget.CardView>
 
         <!-- Medical Advice contains a TableView-->
-        <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <android.support.v7.widget.CardView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_medical_advice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -746,8 +753,7 @@
             android:visibility="gone"
             app:cardCornerRadius="@dimen/card_corner_radius"
             app:cardElevation="2dp"
-            app:cardUseCompatPadding="true"
-            app:contentPadding="@dimen/padding_card">
+            app:cardUseCompatPadding="true">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -757,14 +763,18 @@
                     android:id="@+id/textView_heading_medical_advice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding_card_title_text"
-                    android:text="@string/visit_summary_advice"
-                    android:textSize="@dimen/card_title_text_size" />
+                    android:paddingVertical="12dp"
+                    android:paddingStart="20dp"
+                    android:background="@color/titleBar_cardview"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/card_content_text_size"
+                    android:text="@string/visit_summary_advice" />
 
 
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="@dimen/padding_card"
                     android:layout_below="@id/textView_heading_medical_advice">
 
                     <!--Medical Advice-->
@@ -777,7 +787,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:paddingTop="@dimen/padding_card"
                             android:text="@string/visit_summary_height_heading"
                             android:textSize="@dimen/card_content_text_size" />
 
@@ -788,7 +797,8 @@
         </android.support.v7.widget.CardView>
 
         <!-- Requested Tests contains a TableView-->
-        <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <android.support.v7.widget.CardView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_tests"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -798,8 +808,7 @@
             android:visibility="gone"
             app:cardCornerRadius="@dimen/card_corner_radius"
             app:cardElevation="2dp"
-            app:cardUseCompatPadding="true"
-            app:contentPadding="@dimen/padding_card">
+            app:cardUseCompatPadding="true">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -809,14 +818,19 @@
                     android:id="@+id/textView_heading_tests"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding_card_title_text"
                     android:text="@string/visit_summary_tests_prescribed"
-                    android:textSize="@dimen/card_title_text_size" />
+                    android:paddingVertical="12dp"
+                    android:paddingStart="20dp"
+                    android:background="@color/titleBar_cardview"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/card_content_text_size"
+                     />
 
 
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="@dimen/padding_card"
                     android:layout_below="@id/textView_heading_tests">
 
                     <!--Requsted Tests-->
@@ -829,7 +843,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:paddingTop="@dimen/padding_card"
                             android:text="@string/visit_summary_height_heading"
                             android:textSize="@dimen/card_content_text_size" />
 
@@ -840,7 +853,8 @@
         </android.support.v7.widget.CardView>
 
         <!-- Additional Comments contains a TableView-->
-        <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <android.support.v7.widget.CardView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_additional_comments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -850,8 +864,7 @@
             android:visibility="gone"
             app:cardCornerRadius="@dimen/card_corner_radius"
             app:cardElevation="2dp"
-            app:cardUseCompatPadding="true"
-            app:contentPadding="@dimen/padding_card">
+            app:cardUseCompatPadding="true">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -861,14 +874,18 @@
                     android:id="@+id/textView_heading_additional_comments"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding_card_title_text"
                     android:text="@string/visit_summary_additional_comments"
-                    android:textSize="@dimen/card_title_text_size" />
+                    android:paddingVertical="12dp"
+                    android:paddingStart="20dp"
+                    android:background="@color/titleBar_cardview"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/card_content_text_size"/>
 
 
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="@dimen/padding_card"
                     android:layout_below="@id/textView_heading_additional_comments">
 
                     <!--Additional Comments-->
@@ -881,7 +898,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:paddingTop="@dimen/padding_card"
                             android:text="@string/visit_summary_height_heading"
                             android:textSize="@dimen/card_content_text_size" />
 
@@ -891,7 +907,8 @@
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
-        <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <android.support.v7.widget.CardView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_follow_up_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -901,8 +918,7 @@
             android:visibility="gone"
             app:cardCornerRadius="@dimen/card_corner_radius"
             app:cardElevation="2dp"
-            app:cardUseCompatPadding="true"
-            app:contentPadding="@dimen/padding_card">
+            app:cardUseCompatPadding="true">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -912,14 +928,18 @@
                     android:id="@+id/textView_heading_follow_up_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding_card_title_text"
                     android:text="@string/visit_summary_follow_up_date"
-                    android:textSize="@dimen/card_title_text_size" />
+                    android:paddingVertical="12dp"
+                    android:paddingStart="20dp"
+                    android:background="@color/titleBar_cardview"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/card_content_text_size" />
 
 
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="@dimen/padding_card"
                     android:layout_below="@id/textView_heading_follow_up_date">
 
                     <!--Additional Comments-->
@@ -932,7 +952,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:paddingTop="@dimen/padding_card"
                             android:text="@string/visit_summary_height_heading"
                             android:textSize="@dimen/card_content_text_size" />
 
