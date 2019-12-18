@@ -4,14 +4,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="28dp">
     <TextView
         android:id="@+id/textView_entry"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="28dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="28dp"
+        android:layout_height="match_parent"
         />
 
+    </ScrollView>
 </LinearLayout>
