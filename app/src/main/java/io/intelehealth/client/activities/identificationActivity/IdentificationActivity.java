@@ -555,7 +555,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 mAge.setError(null);
                 //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
                 mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
-
+                Locale.setDefault(Locale.ENGLISH);
                 //Formatted so that it can be read the way the user sets
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
                 dob.set(year, monthOfYear, dayOfMonth);
@@ -647,6 +647,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         mDOBMonth = birthMonth;
                         mDOBDay = 1;
 
+                        Locale.setDefault(Locale.ENGLISH);
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                         dob.set(mDOBYear, mDOBMonth, mDOBDay);
                         String dobString = simpleDateFormat.format(dob.getTime());
