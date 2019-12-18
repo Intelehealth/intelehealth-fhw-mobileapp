@@ -6,7 +6,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="320dp"
+        android:layout_height="match_parent"
         android:layout_marginLeft="28dp"
         android:layout_marginTop="15dp"
         android:layout_marginRight="28dp">
