@@ -155,7 +155,7 @@
                             android:layout_height="30dp"
                             android:layout_centerVertical="true"
                             android:contentDescription="TODO"
-                            app:srcCompat="@drawable/ic_calendar_intele_24dp" />
+                            app:srcCompat="@drawable/ic_active_patients_black" />
 
                         <TextView
                             android:layout_width="wrap_content"
