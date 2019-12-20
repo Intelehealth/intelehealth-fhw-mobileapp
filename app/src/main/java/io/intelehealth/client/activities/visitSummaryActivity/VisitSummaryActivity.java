@@ -540,6 +540,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if(flag.isChecked())
+                {
+                    try {
+                        EncounterDAO encounterDAO = new EncounterDAO();
+                        encounterDAO.setEmergency(visitUuid, true);
+                    } catch (DAOException e) {
+                        Crashlytics.getInstance().core.logException(e);
+                    }
+                }
                 if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
                     String patientSelection = "uuid = ?";
                     String[] patientArgs = {String.valueOf(patient.getUuid())};
