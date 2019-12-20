@@ -1049,7 +1049,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                patHistory.setValue(dialogEditText.getText().toString());
+                                //patHistory.setValue(dialogEditText.getText().toString());
+                                patHistory.setValue(dialogEditText.getText().toString().replace("\n","<br>"));
+
                                 if (patHistory.getValue() != null) {
                                     historyText.setText(Html.fromHtml(patHistory.getValue()));
                                     patHistView.setText(Html.fromHtml(patHistory.getValue()));
