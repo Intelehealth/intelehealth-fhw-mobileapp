@@ -13,6 +13,8 @@
         android:focusable="false"
         android:fontFamily="sans-serif"
         android:textStyle="normal"
+        android:paddingStart="20dp"
+        android:paddingEnd="0dp"
         android:paddingBottom="@dimen/padding_complaint_select"
         android:paddingTop="@dimen/padding_complaint_select"
         android:textSize="@dimen/text_size_complaint" />
