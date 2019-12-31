@@ -540,6 +540,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if(flag.isChecked())
+                {
+                    try {
+                        EncounterDAO encounterDAO = new EncounterDAO();
+                        encounterDAO.setEmergency(visitUuid, true);
+                    } catch (DAOException e) {
+                        Crashlytics.getInstance().core.logException(e);
+                    }
+                }
                 if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
                     String patientSelection = "uuid = ?";
                     String[] patientArgs = {String.valueOf(patient.getUuid())};
@@ -752,7 +762,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                famHistory.setValue(dialogEditText.getText().toString());
+                                //famHistory.setValue(dialogEditText.getText().toString());
+                                famHistory.setValue(dialogEditText.getText().toString().replace("\n","<br>"));
+
                                 if (famHistory.getValue() != null) {
                                     famHistText.setText(Html.fromHtml(famHistory.getValue()));
                                     famHistView.setText(Html.fromHtml(famHistory.getValue()));
@@ -1049,7 +1061,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                patHistory.setValue(dialogEditText.getText().toString());
+                                //patHistory.setValue(dialogEditText.getText().toString());
+                                patHistory.setValue(dialogEditText.getText().toString().replace("\n","<br>"));
+
                                 if (patHistory.getValue() != null) {
                                     historyText.setText(Html.fromHtml(patHistory.getValue()));
                                     patHistView.setText(Html.fromHtml(patHistory.getValue()));

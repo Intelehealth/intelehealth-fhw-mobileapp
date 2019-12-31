@@ -274,5 +274,6 @@
     <string name="user_server_unreachable">"ଫୋନ  ଅଫଲାଇନ ଅଛି | ସରବର ରେ ଲଗନ ହେଇ ପାରିବ ନାହିଁ "</string>
     <string name="enter_password">Enter your password</string>
     <string name="enter_username">Enter your username</string>
+    <string name="active_patient" translatable="false">ଦେଖିଥିବା ରୋଗୀ</string>
 
 </resources>
