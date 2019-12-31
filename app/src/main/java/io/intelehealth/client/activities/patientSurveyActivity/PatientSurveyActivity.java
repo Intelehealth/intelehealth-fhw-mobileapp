@@ -28,6 +28,7 @@ import io.intelehealth.client.database.dao.SyncDAO;
 import io.intelehealth.client.database.dao.VisitsDAO;
 import io.intelehealth.client.models.dto.EncounterDTO;
 import io.intelehealth.client.models.dto.ObsDTO;
+import io.intelehealth.client.syncModule.SyncUtils;
 import io.intelehealth.client.utilities.SessionManager;
 import io.intelehealth.client.utilities.UuidDictionary;
 import io.intelehealth.client.utilities.exception.DAOException;
@@ -39,7 +40,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
     String state;
     String patientName;
     String intentTag;
-
+    SyncUtils syncUtils = new SyncUtils();
     Context context;
     SQLiteDatabase db;
 
@@ -204,8 +205,10 @@ public class PatientSurveyActivity extends AppCompatActivity {
 
         }
 
-        SyncDAO syncDAO = new SyncDAO();
-        syncDAO.pushDataApi();
+        //SyncDAO syncDAO = new SyncDAO();
+        //syncDAO.pushDataApi();
+        syncUtils.syncForeground(); //Sync function will work in foreground of app and
+        // the Time will be changed for last sync.
 
         AppConstants.notificationUtils.DownloadDone("End visit", "Visit ended", 3, PatientSurveyActivity.this);
 

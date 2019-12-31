@@ -13,6 +13,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -387,7 +388,7 @@ public class HomeActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        new AlertDialog.Builder(this)
+        /*new AlertDialog.Builder(this)
                 .setMessage("Are you sure you want to EXIT ?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
@@ -400,6 +401,32 @@ public class HomeActivity extends AppCompatActivity {
                 })
                 .setNegativeButton("No", null)
                 .show();
+*/
+        AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this);
+        alertdialogBuilder.setMessage("Are you sure you want to EXIT ?");
+        alertdialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i)
+
+            {
+                moveTaskToBack(true);
+               // finish();
+            }
+        });
+        alertdialogBuilder.setNegativeButton("No", null);
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.show();
+
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
     }
 
     public class Myreceiver extends BroadcastReceiver {
