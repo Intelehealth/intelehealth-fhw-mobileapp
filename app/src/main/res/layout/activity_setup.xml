@@ -49,7 +49,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:text="Which server would you like to connect to?"
+                        android:text="@string/which_server_would_you_like_to_connect_to"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
 
@@ -62,7 +62,7 @@
                             android:id="@+id/editText_URL"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Enter URL"
+                            android:hint="@string/enter_url"
                             android:inputType="textUri" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -75,7 +75,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:text="Choose a location to login"
+                        android:text="@string/choose_a_location_to_login"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                     <android.support.design.widget.TextInputLayout
@@ -97,7 +97,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Choose an option for protocols"
+                        android:text="@string/choose_an_option_for_protocols"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                     <Space
@@ -136,7 +136,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:text="Please enter your username and password"
+                        android:text="@string/please_enter_your_username_and_password"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                     <android.support.design.widget.TextInputLayout
@@ -214,7 +214,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:text="Android Id:"
+                        android:text="@string/android_id"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
                 </LinearLayout>
