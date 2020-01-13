@@ -38,7 +38,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Planet Name"
+            android:text="@string/planet_name"
             android:textSize="15sp" />
 
         <ImageView

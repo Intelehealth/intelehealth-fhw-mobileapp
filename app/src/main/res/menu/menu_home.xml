@@ -30,11 +30,11 @@
         <item
             android:id="@+id/sync"
             android:orderInCategory="150"
-            android:title="Sync" />
+            android:title="@string/sync" />
         <item
             android:id="@+id/updateProtocolsOption"
             android:orderInCategory="150"
-            android:title="Update Protocols" />
+            android:title="@string/update_protocols" />
 
         <item
             android:id="@+id/logoutOption"
