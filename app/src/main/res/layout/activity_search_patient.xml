@@ -38,7 +38,7 @@
                 android:id="@+id/textviewmessage"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Please wait till sync is completed"
+                android:text="@string/please_wait_till_sync_is_completed"
                 android:visibility="visible" />
 
             <android.support.v7.widget.RecyclerView

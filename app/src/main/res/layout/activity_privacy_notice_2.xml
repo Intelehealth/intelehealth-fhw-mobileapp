@@ -45,7 +45,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:text="Accept" />
+                android:text="@string/accept" />
 
             <RadioButton
                 android:id="@+id/radio_reject"
@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:layout_marginLeft="35dp"
-                android:text="Reject"/>
+                android:text="@string/reject"/>
 
 
         </RadioGroup>
@@ -62,7 +62,7 @@
             android:id="@+id/txt_privacy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Next"
+            android:text="@string/next"
             android:textColor="@color/white"
             android:background="@color/colorPrimary"
             android:textStyle="bold"

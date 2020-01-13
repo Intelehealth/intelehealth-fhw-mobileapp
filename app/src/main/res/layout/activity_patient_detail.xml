@@ -130,7 +130,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
-                                    android:text="Patient name"
+                                    android:text="@string/patient_name"
                                     android:textSize="@dimen/card_content_text_size"
                                     android:textStyle="bold" />
 
@@ -352,7 +352,7 @@
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:paddingRight="5dp"
-                                    android:text="Son/Daughter/Wife of"
+                                    android:text="@string/son_daughter_wife_of"
                                     android:textSize="@dimen/card_content_text_size"
                                     android:textStyle="bold" />
 
@@ -381,7 +381,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
-                                    android:text="Occupation"
+                                    android:text="@string/occupation"
                                     android:textSize="@dimen/card_content_text_size"
                                     android:textStyle="bold" />
 
@@ -410,7 +410,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
-                                    android:text="Economic status"
+                                    android:text="@string/economic_status"
                                     android:textSize="@dimen/card_content_text_size"
                                     android:textStyle="bold" />
 
@@ -438,7 +438,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
-                                    android:text="Education level"
+                                    android:text="@string/education_level"
                                     android:textSize="@dimen/card_content_text_size"
                                     android:textStyle="bold" />
 
@@ -466,7 +466,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
-                                    android:text="Caste"
+                                    android:text="@string/caste"
                                     android:textSize="@dimen/card_content_text_size"
                                     android:textStyle="bold" />
 
@@ -622,7 +622,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/white"
                             android:background="@color/titleBar_cardview"
-                            android:text="Previous visits"
+                            android:text="@string/previous_visits"
                             android:paddingStart="20dp"
                             android:padding="10dp"
                             android:textSize="18sp"/>
