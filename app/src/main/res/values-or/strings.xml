@@ -275,7 +275,6 @@
     <string name="enter_password">Enter your password</string>
     <string name="enter_username">Enter your username</string>
     <string name="active_patient" translatable="false">ଦେଖିଥିବା ରୋଗୀ</string>
-    <string name="please_wait_till_sync_is_completed">Please wait till sync is completed</string>
     <string name="patient_name">Patient name</string>
     <string name="son_daughter_wife_of">Son/Daughter/Wife of</string>
     <string name="occupation">Occupation</string>
@@ -295,13 +294,10 @@
     <string name="android_id">Android Id:</string>
     <string name="temperature_f">Temperature (F)</string>
     <string name="respiratory_rate">Respiratory Rate</string>
-    <string name="respiratory_rate">Respiratory Rate</string>
-    <string name="click_to_download_the_images">Click to download the images</string>
     <string name="click_to_download_the_images">Click to download the images</string>
     <string name="doctor">Doctor</string>
     <string name="health_worker">Health worker</string>
     <string name="emergency">Emergency</string>
-    <string name="planet_name">Planet Name</string>
     <string name="server_url">Server url</string>
     <string name="sync">Sync</string>
     <string name="update_protocols">Update Protocols</string>
