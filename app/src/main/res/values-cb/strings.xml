@@ -13,7 +13,6 @@
     <string name="accept">Accept</string>
     <string name="reject">Reject</string>
     <string name="next">Next</string>
-    <string name="please_wait_till_sync_is_completed">Please wait till sync is completed</string>
     <string name="which_server_would_you_like_to_connect_to">Which server would you like to connect to?</string>
     <string name="enter_url">Enter URL</string>
     <string name="choose_a_location_to_login">Choose a location to login</string>
@@ -22,13 +21,10 @@
     <string name="android_id">Android Id:</string>
     <string name="temperature_f">Temperature (F)</string>
     <string name="respiratory_rate">Respiratory Rate</string>
-    <string name="respiratory_rate">Respiratory Rate</string>
-    <string name="click_to_download_the_images">Click to download the images</string>
     <string name="click_to_download_the_images">Click to download the images</string>
     <string name="doctor">Doctor</string>
     <string name="health_worker">Health worker</string>
     <string name="emergency">Emergency</string>
-    <string name="planet_name">Planet Name</string>
     <string name="server_url">Server url</string>
     <string name="sync">Sync</string>
     <string name="update_protocols">Update Protocols</string>
