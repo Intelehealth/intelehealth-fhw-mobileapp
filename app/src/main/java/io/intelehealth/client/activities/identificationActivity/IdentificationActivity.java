@@ -1062,7 +1062,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
             else {
-                AppConstants.notificationUtils.showNotifications(getString(R.string.patient_data_failed), getString(R.string.check_your_connectivity), 3, IdentificationActivity.this);
+                AppConstants.notificationUtils.showNotifications(getString(R.string.patient_data_failed), getString(R.string.check_your_connectivity), 2, IdentificationActivity.this);
             }
 
             if (isPatientInserted && isPatientImageInserted) {
