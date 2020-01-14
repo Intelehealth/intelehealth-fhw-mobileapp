@@ -93,7 +93,7 @@ public class SyncDAO {
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
             @Override
             public void onResponse(Call<ResponseDTO> call, Response<ResponseDTO> response) {
-                AppConstants.notificationUtils.showNotifications("syncBackground", "Syncing", 1, IntelehealthApplication.getAppContext());
+                AppConstants.notificationUtils.showNotifications("Sync background", "Sync in progress..", 1, IntelehealthApplication.getAppContext());
                 if (response.body() != null && response.body().getData() != null) {
                     sessionManager.setPulled(response.body().getData().getPullexecutedtime());
                 }
@@ -107,9 +107,9 @@ public class SyncDAO {
                         Crashlytics.getInstance().core.logException(e);
                     }
                     if (sync)
-                        AppConstants.notificationUtils.DownloadDone("sync", "Successfully synced", 1, IntelehealthApplication.getAppContext());
+                        AppConstants.notificationUtils.DownloadDone("Sync", "Successfully synced", 1, IntelehealthApplication.getAppContext());
                     else
-                        AppConstants.notificationUtils.DownloadDone("sync", "failed synced,You can try again", 1, IntelehealthApplication.getAppContext());
+                        AppConstants.notificationUtils.DownloadDone("Sync", "Failed synced,You can try again", 1, IntelehealthApplication.getAppContext());
 
                     if (sessionManager.getTriggerNoti().equals("yes")) {
                         if (response.body().getData() != null) {
