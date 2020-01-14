@@ -487,7 +487,7 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="unable_to_end">Unable to end</string>
-    <string name="upload_before_end_visit_active">visits.Please upload visit before attempting to end the visit.</string>
+    <string name="upload_before_end_visit_active"> visits.Please upload visit before attempting to end the visit.</string>
     <string name="active">Active</string>
     <string name="closed">Closed</string>
     <string name="last_synced">Last Synced:- </string>
@@ -505,6 +505,22 @@
     <string name="are_you_want_go_back">Are you sure you want to go back ?</string>
     <string name="error">Error</string>
     <string name="patient_data_upload">Patient Data Upload</string>
+    <string name="patient_image_download_notifi">Patient Image Download</string>
+    <string name="image_download_complete_notifi">\'s Image Download complete.</string>
+    <string name="no_prior_visits">No prior visits.</string>
+    <string name="end_visit_notif">End visit</string>
+    <string name="visit_ended_notif">Visit ended</string>
+    <string name="this_question_only_one_answer">This question can have only one answer.</string>
+    <string name="uploading_to_doctor_notif">Uploading to doctor.</string>
+    <string name="visit_data_upload">Visit Data Upload</string>
+    <string name="uploading_visit_data_notif">Uploading visit data</string>
+    <string name="uploaded_visit_data_notif">Uploaded visit data</string>
+    <string name="failed_to_upload">failed to Uploaded</string>
+    <string name="upload_completed">Upload Completed</string>
+    <string name="check_your_connectivity">Check your connectivity</string>
+    <string name="download_from_doctor">Download from doctor</string>
+    <string name="prescription_downloaded">Prescription downloaded</string>
+    <string name="downloading_prescription">Downloading prescription</string>
 
 
 </resources>

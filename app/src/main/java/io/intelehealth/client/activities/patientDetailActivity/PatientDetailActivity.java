@@ -570,9 +570,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                             Crashlytics.getInstance().core.logException(e);
                         }
                         if (isImageDownloaded)
-                            AppConstants.notificationUtils.DownloadDone("Patient Image Download", "" + patient_new.getFirst_name() + "" + patient_new.getLast_name() + "'s Image Download complete.", 4, getApplication());
+                            AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_image_download_notifi), "" + patient_new.getFirst_name() + "" + patient_new.getLast_name() + "'s Image Download Incomplete.", 4, getApplication());
                         else
-                            AppConstants.notificationUtils.DownloadDone("Patient Image Download", "" + patient_new.getFirst_name() + "" + patient_new.getLast_name() + "'s Image Download Incomplete.", 4, getApplication());
+                            AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_image_download_notifi), "" + patient_new.getFirst_name() + "" + patient_new.getLast_name() + "'s Image Download Incomplete.", 4, getApplication());
 
 
                     }
@@ -700,7 +700,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         final LayoutInflater inflater = PatientDetailActivity.this.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.list_item_previous_visit, null);
         TextView textView = convertView.findViewById(R.id.textView_visit_info);
-        String visitString = "No prior visits.";
+        String visitString = getString(R.string.no_prior_visits);
         textView.setText(visitString);
         previousVisitsList.addView(convertView);
     }

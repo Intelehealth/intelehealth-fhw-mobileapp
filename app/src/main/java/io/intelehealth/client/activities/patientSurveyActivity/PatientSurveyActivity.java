@@ -210,7 +210,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         syncUtils.syncForeground(); //Sync function will work in foreground of app and
         // the Time will be changed for last sync.
 
-        AppConstants.notificationUtils.DownloadDone("End visit", "Visit ended", 3, PatientSurveyActivity.this);
+        AppConstants.notificationUtils.DownloadDone(getString(R.string.end_visit_notif), getString(R.string.visit_ended_notif), 3, PatientSurveyActivity.this);
 
         sessionManager.removeVisitSummary(patientUuid, visitUuid);
 

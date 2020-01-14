@@ -290,7 +290,7 @@ public class SearchPatientActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         dialogBuilder = new AlertDialog.Builder(SearchPatientActivity.this);
-        dialogBuilder.setTitle("Filter by creator");
+        dialogBuilder.setTitle(R.string.filter_by_creator);
 
         String[] finalCreator_names = creator_names;
         String[] finalCreator_uuid = creator_uuid;
@@ -316,7 +316,7 @@ public class SearchPatientActivity extends AppCompatActivity {
             }
         });
 
-        dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        dialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 //display filter query code on list menu
@@ -325,7 +325,7 @@ public class SearchPatientActivity extends AppCompatActivity {
             }
         });
 
-        dialogBuilder.setNegativeButton("Cancel", null);
+        dialogBuilder.setNegativeButton(R.string.generic_cancel, null);
 
         //dialogBuilder.show();
         AlertDialog alertDialog = dialogBuilder.create();

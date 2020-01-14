@@ -202,7 +202,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
             }
         } else if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && currentNode.getOption(groupPosition).anySubSelected()) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(QuestionNodeActivity.this);
-            alertDialogBuilder.setMessage("This question can have only one answer.");
+            alertDialogBuilder.setMessage(R.string.this_question_only_one_answer);
             alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {

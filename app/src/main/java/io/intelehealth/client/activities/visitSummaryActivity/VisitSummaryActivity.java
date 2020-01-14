@@ -592,13 +592,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     //
                 }
 
-                new Restaurant(VisitSummaryActivity.this, "Uploading to doctor.", Snackbar.LENGTH_LONG)
+                new Restaurant(VisitSummaryActivity.this, getString(R.string.uploading_to_doctor_notif), Snackbar.LENGTH_LONG)
                         .setBackgroundColor(Color.BLACK)
                         .setTextColor(Color.WHITE)
                         .show();
 
                 if (NetworkConnection.isOnline(getApplication())) {
-                    AppConstants.notificationUtils.showNotifications("Visit Data Upload", "Uploading visit data", 3, VisitSummaryActivity.this);
+                    AppConstants.notificationUtils.showNotifications(getString(R.string.visit_data_upload), getString(R.string.uploading_visit_data_notif), 3, VisitSummaryActivity.this);
                     SyncDAO syncDAO = new SyncDAO();
                     ProgressDialog pd = new ProgressDialog(VisitSummaryActivity.this);
                     pd.setTitle("Syncing");
@@ -614,16 +614,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             SyncUtils syncUtils = new SyncUtils();
                             boolean isSynced = syncUtils.syncForeground();
                             if (isSynced)
-                                AppConstants.notificationUtils.DownloadDone("Visit Data Upload", "Uploaded visit data", 3, VisitSummaryActivity.this);
+                                AppConstants.notificationUtils.DownloadDone(getString(R.string.visit_data_upload), getString(R.string.uploaded_visit_data_notif), 3, VisitSummaryActivity.this);
                             else
-                                AppConstants.notificationUtils.DownloadDone("Visit Data Upload", "failed to Uploaded", 3, VisitSummaryActivity.this);
+                                AppConstants.notificationUtils.DownloadDone(getString(R.string.visit_data_upload), getString(R.string.failed_to_upload), 3, VisitSummaryActivity.this);
                             uploaded = true;
                             pd.dismiss();
-                            Toast.makeText(VisitSummaryActivity.this, "Upload Completed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(VisitSummaryActivity.this, getString(R.string.upload_completed), Toast.LENGTH_SHORT).show();
                         }
                     }, 4000);
                 } else {
-                    AppConstants.notificationUtils.showNotifications("Visit Data Upload", "Check your connectivity", 3, VisitSummaryActivity.this);
+                    AppConstants.notificationUtils.showNotifications(getString(R.string.visit_data_upload), getString(R.string.check_your_connectivity), 3, VisitSummaryActivity.this);
                 }
             }
 
@@ -1139,10 +1139,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View view) {
                 SyncUtils syncUtils = new SyncUtils();
                 syncUtils.syncForeground();
-                AppConstants.notificationUtils.DownloadDone("download from doctor", "prescription Downloaded", 3, VisitSummaryActivity.this);
+                AppConstants.notificationUtils.DownloadDone(getString(R.string.download_from_doctor), getString(R.string.prescription_downloaded), 3, VisitSummaryActivity.this);
                 uploaded = true;
                 ProgressDialog pd = new ProgressDialog(VisitSummaryActivity.this);
-                pd.setTitle("Downloading prescription");
+                pd.setTitle(getString(R.string.downloading_prescription));
                 pd.show();
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {

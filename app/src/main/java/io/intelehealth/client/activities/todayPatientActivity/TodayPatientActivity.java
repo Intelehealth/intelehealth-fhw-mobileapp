@@ -168,7 +168,7 @@ public class TodayPatientActivity extends AppCompatActivity {
 //        boolean[] checkedItems = {false, false, false, false};
         // ngo_numbers = getResources().getStringArray(R.array.ngo_numbers);
         dialogBuilder = new AlertDialog.Builder(TodayPatientActivity.this);
-        dialogBuilder.setTitle("Filter by creator");
+        dialogBuilder.setTitle(R.string.filter_by_creator);
 
         String[] finalCreator_names = creator_names;
         String[] finalCreator_uuid = creator_uuid;
@@ -190,7 +190,7 @@ public class TodayPatientActivity extends AppCompatActivity {
             }
         });
 
-        dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        dialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 //display filter query code on list menu
@@ -199,7 +199,7 @@ public class TodayPatientActivity extends AppCompatActivity {
             }
         });
 
-        dialogBuilder.setNegativeButton("Cancel", null);
+        dialogBuilder.setNegativeButton(R.string.generic_cancel, null);
 //        dialogBuilder.show();
 
         AlertDialog alertDialog = dialogBuilder.create();
@@ -300,8 +300,8 @@ public class TodayPatientActivity extends AppCompatActivity {
             startActivity(intent);
         } else {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setMessage("Unable to end " + failedUploads +
-                    " visits.Please upload visit before attempting to end the visit.");
+            alertDialogBuilder.setMessage(R.string.unable_to_end + failedUploads +
+                    R.string.upload_before_end_visit_active);
             alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
