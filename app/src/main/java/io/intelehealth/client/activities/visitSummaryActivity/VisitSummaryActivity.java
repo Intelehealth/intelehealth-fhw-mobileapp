@@ -623,7 +623,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         }
                     }, 4000);
                 } else {
-                    AppConstants.notificationUtils.showNotifications(getString(R.string.visit_data_upload), getString(R.string.check_your_connectivity), 3, VisitSummaryActivity.this);
+                    AppConstants.notificationUtils.showNotifications(getString(R.string.visit_data_failed), getString(R.string.check_your_connectivity), 3, VisitSummaryActivity.this);
                 }
             }
 
