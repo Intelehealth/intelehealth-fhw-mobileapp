@@ -67,10 +67,10 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         holder.getHeadTextView().setText(header);
         holder.getBodyTextView().setText(body);
         if (activePatientModel.getEnddate() == null) {
-            holder.getIndicatorTextView().setText("Active");
+            holder.getIndicatorTextView().setText(R.string.active);
             holder.getIndicatorTextView().setBackgroundColor(Color.GREEN);
         } else {
-            holder.getIndicatorTextView().setText("Closed");
+            holder.getIndicatorTextView().setText(R.string.closed);
             holder.getIndicatorTextView().setBackgroundColor(Color.RED);
         }
         holder.getRootView().setOnClickListener(new View.OnClickListener() {

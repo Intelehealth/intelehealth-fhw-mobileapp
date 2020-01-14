@@ -167,7 +167,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        lastSyncTextView.setText("Last Synced:- " + sessionManager.getLastPulledDateTime());
+        lastSyncTextView.setText(R.string.last_synced + sessionManager.getLastPulledDateTime());
         manualSyncButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,7 +178,7 @@ public class HomeActivity extends AppCompatActivity {
         WorkManager.getInstance().enqueueUniquePeriodicWork(UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
         if (sessionManager.isFirstTimeLaunched()) {
             TempDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle); //thats how to add a style!
-            TempDialog.setTitle("Sync in progress");
+            TempDialog.setTitle(R.string.syncInProgress);
             TempDialog.setCancelable(false);
             TempDialog.setProgress(i);
 
@@ -186,8 +186,8 @@ public class HomeActivity extends AppCompatActivity {
 
             CDT = new CountDownTimer(7000, 1000) {
                 public void onTick(long millisUntilFinished) {
-                    TempDialog.setTitle("Sync in progress");
-                    TempDialog.setMessage("Please wait...");
+                    TempDialog.setTitle(getString(R.string.syncInProgress));
+                    TempDialog.setMessage(getString(R.string.please_wait));
                     i--;
                 }
 
@@ -293,13 +293,13 @@ public class HomeActivity extends AppCompatActivity {
 //                pullDataDAO.pullData(this);
 //                pullDataDAO.pushDataApi();
                 boolean isSynced = syncUtils.syncForeground();
-                AppConstants.notificationUtils.showNotifications("sync", "syncBackground Completed", 1, this);
+                AppConstants.notificationUtils.showNotifications(getString(R.string.sync_notif_title), getString(R.string.sync_background_completed), 1, this);
 //                boolean i = imagesPushDAO.patientProfileImagesPush();
 //                boolean o = imagesPushDAO.obsImagesPush();
                 if (isSynced)
-                    AppConstants.notificationUtils.showNotifications_noProgress("Sync not available", "Please connect to an internet connection!", getApplicationContext());
+                    AppConstants.notificationUtils.showNotifications_noProgress(getString(R.string.sync_not_available), getString(R.string.please_connect_to_internet), getApplicationContext());
                 else
-                    AppConstants.notificationUtils.showNotifications("ImageUpload", "ImageUpload failed", 4, this);
+                    AppConstants.notificationUtils.showNotifications(getString(R.string.image_upload), getString(R.string.image_upload_failed), 4, this);
                 return true;
 //            case R.id.backupOption:
 //                manageBackup(true, false);  // to backup app data at any time of the day
@@ -403,8 +403,8 @@ public class HomeActivity extends AppCompatActivity {
                 .show();
 */
         AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this);
-        alertdialogBuilder.setMessage("Are you sure you want to EXIT ?");
-        alertdialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        alertdialogBuilder.setMessage(R.string.sure_to_exit);
+        alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i)
 
@@ -413,7 +413,7 @@ public class HomeActivity extends AppCompatActivity {
                // finish();
             }
         });
-        alertdialogBuilder.setNegativeButton("No", null);
+        alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
 
         AlertDialog alertDialog = alertdialogBuilder.create();
         alertDialog.show();
@@ -432,7 +432,7 @@ public class HomeActivity extends AppCompatActivity {
     public class Myreceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            lastSyncTextView.setText("Last Synced:- " + sessionManager.getLastPulledDateTime());
+            lastSyncTextView.setText(R.string.last_synced + sessionManager.getLastPulledDateTime());
         }
     }
 

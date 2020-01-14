@@ -186,7 +186,7 @@ public class IdentificationActivity extends AppCompatActivity {
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             if (intent.hasExtra("patientUuid")) {
-                this.setTitle("Update Patient");
+                this.setTitle(R.string.update_patient_identification);
                 patientID_edit = intent.getStringExtra("patientUuid");
                 patient1.setUuid(patientID_edit);
                 setscreen(patientID_edit);
@@ -776,8 +776,8 @@ public class IdentificationActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this);
-                alertdialogBuilder.setMessage("Are you sure you want to go back ?");
-                alertdialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                alertdialogBuilder.setMessage(R.string.are_you_want_go_back);
+                alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i)
 
@@ -786,7 +786,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         startActivity(i_back);
                     }
                 });
-                alertdialogBuilder.setNegativeButton("No", null);
+                alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
 
         AlertDialog alertDialog = alertdialogBuilder.create();
         alertDialog.show();
@@ -854,7 +854,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (dob.after(today)) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
-            alertDialogBuilder.setTitle("Error");
+            alertDialogBuilder.setTitle(R.string.error);
             alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_dob);
             //alertDialogBuilder.setMessage(getString(R.string.identification_dialog_date_error));
             alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
@@ -890,7 +890,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
-            alertDialogBuilder.setTitle("Error");
+            alertDialogBuilder.setTitle(R.string.error);
             alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
             alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                 @Override
@@ -1041,20 +1041,21 @@ public class IdentificationActivity extends AppCompatActivity {
             if (NetworkConnection.isOnline(getApplication())) {
 //                patientApiCall();
 //                frameJson();
-                AppConstants.notificationUtils.showNotifications("Patient Data Upload", "Uploading " + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s data", 2, getApplication());
+                AppConstants.notificationUtils.showNotifications(getString(R.string.patient_data_upload), R.string.uplo
+                        ading + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s data", 2, getApplication());
                 SyncDAO syncDAO = new SyncDAO();
                 ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
                 boolean push = syncDAO.pushDataApi();
                 boolean pushImage = imagesPushDAO.patientProfileImagesPush();
                 if (push)
-                    AppConstants.notificationUtils.DownloadDone("Patient Data Upload", "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s data upload complete.", 2, getApplication());
+                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s data upload complete.", 2, getApplication());
                 else
-                    AppConstants.notificationUtils.DownloadDone("Patient Data Upload", "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s data not uploaded.", 2, getApplication());
+                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s data not uploaded.", 2, getApplication());
 
                 if (pushImage)
-                    AppConstants.notificationUtils.DownloadDone("Patient Data Upload", "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s Image upload complete.", 4, getApplication());
+                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s Image upload complete.", 4, getApplication());
                 else
-                    AppConstants.notificationUtils.DownloadDone("Patient Data Upload", "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s Image not complete.", 4, getApplication());
+                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s Image not complete.", 4, getApplication());
 
 
             }

@@ -31,4 +31,21 @@
     <string name="end_all_visit">End All Visit</string>
     <string name="filter_by_creator">Filter by creator</string>
     <string name="planet_name">Planet Name</string>
+    <string name="upload_before_end_visit_active">visits.Please upload visit before attempting to end the visit.</string>
+    <string name="active">Active</string>
+    <string name="last_synced">Last Synced:-</string>
+    <string name="syncInProgress">Sync in progress</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="sync_notif_title">sync</string>
+    <string name="sync_background_completed">syncBackground Completed</string>
+    <string name="sync_not_available">Sync not available</string>
+    <string name="please_connect_to_internet">Please connect to an internet connection!</string>
+    <string name="image_upload">ImageUpload</string>
+    <string name="image_upload_failed">ImageUpload failed</string>
+    <string name="sure_to_exit">Are you sure you want to EXIT ?</string>
+    <string name="lastsync_normal">Last sync</string>
+    <string name="update_patient_identification">Update Patient</string>
+    <string name="are_you_want_go_back">Are you sure you want to go back ?</string>
+    <string name="error">Error</string>
+    <string name="patient_data_upload">Patient Data Upload</string>
 </resources>
