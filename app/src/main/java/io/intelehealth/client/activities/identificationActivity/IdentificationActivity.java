@@ -53,6 +53,7 @@ import io.intelehealth.client.activities.cameraActivity.CameraActivity;
 import io.intelehealth.client.activities.homeActivity.HomeActivity;
 import io.intelehealth.client.activities.patientDetailActivity.PatientDetailActivity;
 import io.intelehealth.client.activities.setupActivity.SetupActivity;
+import io.intelehealth.client.activities.visitSummaryActivity.VisitSummaryActivity;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.dao.ImagesDAO;
 import io.intelehealth.client.database.dao.ImagesPushDAO;
@@ -1060,6 +1061,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
             }
+            else {
+                AppConstants.notificationUtils.showNotifications(getString(R.string.patient_data_failed), getString(R.string.check_your_connectivity), 3, IdentificationActivity.this);
+            }
+
             if (isPatientInserted && isPatientImageInserted) {
                 Logger.logD(TAG, "inserted");
                 Intent i = new Intent(getApplication(), PatientDetailActivity.class);

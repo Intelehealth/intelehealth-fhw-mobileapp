@@ -521,6 +521,8 @@
     <string name="download_from_doctor">Download from doctor</string>
     <string name="prescription_downloaded">Prescription downloaded</string>
     <string name="downloading_prescription">Downloading prescription</string>
+    <string name="visit_data_failed">Visit Data Failed</string>
+    <string name="patient_data_failed">Patient Data Failed</string>
 
 
 </resources>
