@@ -167,7 +167,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        lastSyncTextView.setText(R.string.last_synced + sessionManager.getLastPulledDateTime());
+        lastSyncTextView.setText(getString(R.string.last_synced) + sessionManager.getLastPulledDateTime());
         manualSyncButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -432,7 +432,7 @@ public class HomeActivity extends AppCompatActivity {
     public class Myreceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            lastSyncTextView.setText(R.string.last_synced + sessionManager.getLastPulledDateTime());
+            lastSyncTextView.setText(getString(R.string.last_synced) + sessionManager.getLastPulledDateTime());
         }
     }
 

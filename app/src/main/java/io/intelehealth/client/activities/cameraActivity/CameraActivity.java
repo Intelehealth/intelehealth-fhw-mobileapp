@@ -234,7 +234,7 @@ public class CameraActivity extends AppCompatActivity {
         if (mDialogMessage != null) {
             new AlertDialog.Builder(this)
                     .setMessage(mDialogMessage)
-                    .setNeutralButton(R.string.button_ok, new DialogInterface.OnClickListener() {
+                    .setNeutralButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -248,14 +248,14 @@ public class CameraActivity extends AppCompatActivity {
     @OnShowRationale(Manifest.permission.CAMERA)
     void showRationaleForCamera(final PermissionRequest request) {
         new AlertDialog.Builder(this)
-                .setMessage(R.string.permission_camera_rationale)
-                .setPositiveButton(R.string.button_allow, new DialogInterface.OnClickListener() {
+                .setMessage(getString(R.string.permission_camera_rationale))
+                .setPositiveButton(getString(R.string.button_allow), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         request.proceed();
                     }
                 })
-                .setNegativeButton(R.string.button_deny, new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.button_deny), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         request.cancel();
@@ -266,12 +266,12 @@ public class CameraActivity extends AppCompatActivity {
 
     @OnPermissionDenied(Manifest.permission.CAMERA)
     void showDeniedForCamera() {
-        Toast.makeText(this, R.string.permission_camera_denied, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.permission_camera_denied), Toast.LENGTH_SHORT).show();
     }
 
     @OnNeverAskAgain(Manifest.permission.CAMERA)
     void showNeverAskForCamera() {
-        Toast.makeText(this, R.string.permission_camera_never_askagain, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.permission_camera_never_askagain), Toast.LENGTH_SHORT).show();
     }
 
     private Handler getBackgroundHandler() {

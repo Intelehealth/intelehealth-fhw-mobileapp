@@ -40,14 +40,13 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
     public void onBindViewHolder(@NonNull SearchPatientAdapter.Myholder holder, int position) {
         final PatientDTO patinet = patients.get(position);
         if (patinet != null) {
-            int age = DateAndTimeUtils.getAge(patinet.getDateofbirth(),context);
-            String dob = DateAndTimeUtils.SimpleDatetoLongDate(patinet.getDateofbirth());
-            String body = String.format(context.getString(R.string.id_number) + ": %s \n" +
-                            context.getString(R.string.identification_screen_prompt_phone_number) + ": %s\n" +
-                            context.getString(R.string.identification_screen_prompt_birthday) +
-                            ": %s (" + context.getString(R.string.identification_screen_prompt_age) + " %d)", patinet.getOpenmrsId(), patinet.getPhonenumber(),
-                    dob, age);
-            holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname());
+            //int age = DateAndTimeUtils.getAge(patinet.getDateofbirth(),context);
+
+            String age = DateAndTimeUtils.getAgeInYearMonth(patinet.getDateofbirth(), context);
+            //String dob = DateAndTimeUtils.SimpleDatetoLongDate(patinet.getDateofbirth());
+            String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
+            holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname()
+                    + ", " + patinet.getOpenmrsId());
             holder.bodyTextView.setText(body);
         }
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {

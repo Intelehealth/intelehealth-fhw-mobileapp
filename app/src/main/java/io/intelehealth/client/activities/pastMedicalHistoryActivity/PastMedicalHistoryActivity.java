@@ -150,7 +150,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity {
         }
 
 
-        setTitle(R.string.title_activity_patient_history);
+        setTitle(getString(R.string.title_activity_patient_history));
         setTitle(getTitle() + ": " + patientName);
 
         super.onCreate(savedInstanceState);

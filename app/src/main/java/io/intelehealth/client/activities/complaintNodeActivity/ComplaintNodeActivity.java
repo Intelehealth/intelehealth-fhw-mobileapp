@@ -190,9 +190,9 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
             if (selection.isEmpty()) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-                alertDialogBuilder.setTitle(R.string.complaint_dialog_title);
-                alertDialogBuilder.setMessage(R.string.complaint_required);
-                alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                alertDialogBuilder.setTitle(getString(R.string.complaint_dialog_title));
+                alertDialogBuilder.setMessage(getString(R.string.complaint_required));
+                alertDialogBuilder.setNeutralButton(getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();

@@ -300,8 +300,8 @@ public class TodayPatientActivity extends AppCompatActivity {
             startActivity(intent);
         } else {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setMessage(R.string.unable_to_end + failedUploads +
-                    R.string.upload_before_end_visit_active);
+            alertDialogBuilder.setMessage(getString(R.string.unable_to_end)+ failedUploads +
+                    getString(R.string.upload_before_end_visit_active));
             alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {

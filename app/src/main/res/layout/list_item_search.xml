@@ -4,12 +4,15 @@
     android:id="@+id/searchlinear"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingVertical="10dp">
 
     <TextView
         android:id="@+id/list_item_head"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textStyle="bold" />
 

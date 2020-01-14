@@ -88,7 +88,7 @@ public class VitalsActivity extends AppCompatActivity {
 
 
 //        Setting the title
-        setTitle(R.string.title_activity_vitals);
+        setTitle(getString(R.string.title_activity_vitals));
         setTitle(patientName + ": " + getTitle());
 
         mHeight = findViewById(R.id.table_height);

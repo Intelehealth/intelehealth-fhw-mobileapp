@@ -220,7 +220,7 @@ public class ActivePatientActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         dialogBuilder = new AlertDialog.Builder(ActivePatientActivity.this);
-        dialogBuilder.setTitle(R.string.filter_by_creator);
+        dialogBuilder.setTitle(getString(R.string.filter_by_creator));
 
         String[] finalCreator_names = creator_names;
         String[] finalCreator_uuid = creator_uuid;
@@ -242,7 +242,7 @@ public class ActivePatientActivity extends AppCompatActivity {
             }
         });
 
-        dialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+        dialogBuilder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 //display filter query code on list menu
@@ -251,7 +251,7 @@ public class ActivePatientActivity extends AppCompatActivity {
             }
         });
 
-        dialogBuilder.setNegativeButton(R.string.cancel, null);
+        dialogBuilder.setNegativeButton(getString(R.string.cancel), null);
         dialogBuilder.show();
 
     }
@@ -287,9 +287,9 @@ public class ActivePatientActivity extends AppCompatActivity {
             startActivity(intent);
         } else {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setMessage(R.string.unable_to_end + failedUploads +
-                    R.string.upload_before_end_visit_active);
-            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setMessage(getString(R.string.unable_to_end) + failedUploads +
+                    getString(R.string.upload_before_end_visit_active));
+            alertDialogBuilder.setNeutralButton(getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();

@@ -404,7 +404,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             Crashlytics.getInstance().core.logException(e);
         }
 
-        setTitle(R.string.title_activity_patient_summary);
+        setTitle(getString(R.string.title_activity_patient_summary));
         setTitle(patientName + ": " + getTitle());
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -2081,7 +2081,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         });
 
 
-        textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+        textInput.setNegativeButton(getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();

@@ -290,7 +290,7 @@ public class SearchPatientActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         dialogBuilder = new AlertDialog.Builder(SearchPatientActivity.this);
-        dialogBuilder.setTitle(R.string.filter_by_creator);
+        dialogBuilder.setTitle(getString(R.string.filter_by_creator));
 
         String[] finalCreator_names = creator_names;
         String[] finalCreator_uuid = creator_uuid;

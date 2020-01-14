@@ -1042,7 +1042,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //                patientApiCall();
 //                frameJson();
                 AppConstants.notificationUtils.showNotifications(getString(R.string.patient_data_upload),
-                        R.string.uploading + patientdto.getFirstname() + "" + patientdto.getLastname() +
+                        getString(R.string.uploading) + patientdto.getFirstname() + "" + patientdto.getLastname() +
                                 "'s data", 2, getApplication());
                 SyncDAO syncDAO = new SyncDAO();
                 ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
