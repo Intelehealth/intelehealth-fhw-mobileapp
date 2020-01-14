@@ -14,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -35,6 +36,7 @@ import java.util.List;
 
 import io.intelehealth.client.R;
 import io.intelehealth.client.activities.homeActivity.HomeActivity;
+import io.intelehealth.client.activities.todayPatientActivity.TodayPatientActivity;
 import io.intelehealth.client.app.AppConstants;
 import io.intelehealth.client.database.dao.ProviderDAO;
 import io.intelehealth.client.models.dto.PatientDTO;
@@ -103,7 +105,9 @@ public class SearchPatientActivity extends AppCompatActivity {
             recycler = new SearchPatientAdapter(getQueryPatients(query), SearchPatientActivity.this);
             RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerView.setLayoutManager(reLayoutManager);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.addItemDecoration(new
+                    DividerItemDecoration(this,
+                    DividerItemDecoration.VERTICAL));
             recyclerView.setAdapter(recycler);
 
         } catch (Exception e) {
@@ -122,7 +126,9 @@ public class SearchPatientActivity extends AppCompatActivity {
 //            Log.i("db data", "" + getAllPatientsFromDB());
             RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerView.setLayoutManager(reLayoutManager);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.addItemDecoration(new
+                    DividerItemDecoration(this,
+                    DividerItemDecoration.VERTICAL));
             recyclerView.setAdapter(recycler);
 
         } catch (Exception e) {
@@ -408,7 +414,9 @@ public class SearchPatientActivity extends AppCompatActivity {
 //            Log.i("db data", "" + getQueryPatients(query));
                 RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
                 recyclerView.setLayoutManager(reLayoutManager);
-                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.addItemDecoration(new
+                        DividerItemDecoration(this,
+                        DividerItemDecoration.VERTICAL));
                 recyclerView.setAdapter(recycler);
 
             } catch (Exception e) {
@@ -457,7 +465,9 @@ public class SearchPatientActivity extends AppCompatActivity {
                 recycler = new SearchPatientAdapter(modelList, SearchPatientActivity.this);
                 RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
                 recyclerView.setLayoutManager(reLayoutManager);
-                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.addItemDecoration(new
+                        DividerItemDecoration(this,
+                        DividerItemDecoration.VERTICAL));
                 recyclerView.setAdapter(recycler);
 
             } catch (Exception e) {

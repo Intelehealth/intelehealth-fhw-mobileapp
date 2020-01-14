@@ -119,7 +119,7 @@ public class TodayPatientActivity extends AppCompatActivity {
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(TodayPatientActivity.this);
             mTodayPatientList.setLayoutManager(linearLayoutManager);
             mTodayPatientList.addItemDecoration(new
-                    DividerItemDecoration(this,
+                    DividerItemDecoration(TodayPatientActivity.this,
                     DividerItemDecoration.VERTICAL));
             mTodayPatientList.setAdapter(mTodayPatientAdapter);
         }
