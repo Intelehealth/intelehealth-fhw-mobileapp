@@ -25,8 +25,8 @@ public class SyncWorkManager extends Worker {
     public Result doWork() {
         Logger.logD(TAG, "result job");
 
-      //  SyncUtils syncUtils = new SyncUtils();
-      //  syncUtils.syncBackground();
+        SyncUtils syncUtils = new SyncUtils();
+        syncUtils.syncBackground();
 
         return Result.success();
     }

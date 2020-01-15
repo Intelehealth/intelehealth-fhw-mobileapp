@@ -20,7 +20,7 @@ public class SyncUtils {
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
 
         syncDAO.pushDataApi();
-        syncDAO.pullData(IntelehealthApplication.getAppContext());
+        syncDAO.pullData_Background(IntelehealthApplication.getAppContext()); //only this new function duplicate
 
         imagesPushDAO.patientProfileImagesPush();
         imagesPushDAO.obsImagesPush();

@@ -79,6 +79,92 @@ public class SyncDAO {
 
     }
 
+
+    public boolean pullData_Background(final Context context) {
+
+        mDbHelper = new InteleHealthDatabaseHelper(context);
+        db = mDbHelper.getWritableDatabase();
+
+        sessionManager = new SessionManager(context);
+        String encoded = sessionManager.getEncoded();
+        String oldDate = sessionManager.getPullExcutedTime();
+        String url = "http://" + sessionManager.getServerUrl() + "/EMR-Middleware/webapi/pull/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
+        Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(url, "Basic " + encoded);
+        Logger.logD("Start pull request", "Started");
+        middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
+            @Override
+            public void onResponse(Call<ResponseDTO> call, Response<ResponseDTO> response) {
+               // AppConstants.notificationUtils.showNotifications("Sync background", "Sync in progress..", 1, IntelehealthApplication.getAppContext());
+                if (response.body() != null && response.body().getData() != null) {
+                    sessionManager.setPulled(response.body().getData().getPullexecutedtime());
+                }
+                if (response.isSuccessful()) {
+
+                    // SyncDAO syncDAO = new SyncDAO();
+                    boolean sync = false;
+                    try {
+                        sync = SyncData(response.body());
+                    } catch (DAOException e) {
+                        Crashlytics.getInstance().core.logException(e);
+                    }
+                    if (sync)
+                    {
+
+                    }
+                     //   AppConstants.notificationUtils.DownloadDone("Sync", "Successfully synced", 1, IntelehealthApplication.getAppContext());
+                    else
+                    {
+
+                    }
+                        //AppConstants.notificationUtils.DownloadDone("Sync", "Failed synced,You can try again", 1, IntelehealthApplication.getAppContext());
+
+                    if (sessionManager.getTriggerNoti().equals("yes")) {
+                        if (response.body().getData() != null) {
+                            ArrayList<String> listPatientUUID = new ArrayList<String>();
+                            List<VisitDTO> listVisitDTO = new ArrayList<>();
+                            ArrayList<String> encounterVisitUUID = new ArrayList<String>();
+                            for (int i = 0; i < response.body().getData().getEncounterDTO().size(); i++) {
+                                if (response.body().getData().getEncounterDTO().get(i)
+                                        .getEncounterTypeUuid().equalsIgnoreCase("d7151f82-c1f3-4152-a605-2f9ea7414a79")) {
+                                    encounterVisitUUID.add(response.body().getData().getEncounterDTO().get(i).getVisituuid());
+                                }
+                            }
+                            listVisitDTO.addAll(response.body().getData().getVisitDTO());
+                            for (int i = 0; i < encounterVisitUUID.size(); i++) {
+                                for (int j = 0; j < listVisitDTO.size(); j++) {
+                                    if (encounterVisitUUID.get(i).equalsIgnoreCase(listVisitDTO.get(j).getUuid())) {
+                                        listPatientUUID.add(listVisitDTO.get(j).getPatientuuid());
+                                    }
+                                }
+                            }
+
+                            if (listPatientUUID.size() > 0) {
+                                triggerVisitNotification(listPatientUUID);
+                            }
+                        }
+                    } else {
+                        sessionManager.setTriggerNoti("yes");
+                    }
+                }
+
+                Logger.logD("End Pull request", "Ended");
+                sessionManager.setLastPulledDateTime(AppConstants.dateAndTimeUtils.currentDateTimeInHome());
+
+                Intent intent = new Intent(IntelehealthApplication.getAppContext(), LastSyncIntentService.class);
+                IntelehealthApplication.getAppContext().startService(intent);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseDTO> call, Throwable t) {
+                Logger.logD("pull data", "exception" + t.getMessage());
+            }
+        });
+        sessionManager.setPullSyncFinished(true);
+        return true;
+    }
+
+
+
     public boolean pullData(final Context context) {
 
         mDbHelper = new InteleHealthDatabaseHelper(context);
