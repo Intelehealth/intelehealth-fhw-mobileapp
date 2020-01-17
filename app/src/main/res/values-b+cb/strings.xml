@@ -332,7 +332,7 @@
     <string name="click_to_download_the_images">Click to download the images</string>
     <string name="doctor">Doctor</string>
     <string name="health_worker">Health worker</string>
-    <string name="emergency">Emergency</string>
+    <string name="priority">Priority</string>
     <string name="server_url">Server url</string>
     <string name="sync">Sync</string>
     <string name="update_protocols">Update Protocols</string>

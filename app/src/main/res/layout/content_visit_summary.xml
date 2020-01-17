@@ -1046,7 +1046,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.9"
-                    android:text="@string/emergency"
+                    android:text="@string/priority"
                     android:paddingStart="5dp"
                     android:paddingVertical="12dp"
                     android:textSize="@dimen/card_content_text_size" />
