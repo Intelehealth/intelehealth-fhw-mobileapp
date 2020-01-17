@@ -132,6 +132,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
                         }
                         else
                         {
+                            Toast.makeText(PrivacyNotice_Activity.this, "You cannot register a patient without consent", Toast.LENGTH_SHORT).show();
                             finish();
                         }
                     }
