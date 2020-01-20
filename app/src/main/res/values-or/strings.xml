@@ -351,5 +351,6 @@
     <string name="visit_summary_button_upload" translatable="false">"ଅପଲୋଡ୍ "</string>
     <string name="associated_symptoms">"ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ "</string>
     <string name="no_mindmaps_found">"କୌଣସି ମାଇଣ୍ଡମ୍ୟାପ୍ ମିଳିଲା ନାହିଁ  "</string>
+    <string name="title_activity_active_patient" translatable="false">"ସକ୍ରିୟ ରୋଗୀମାନେ "</string>
 
 </resources>
