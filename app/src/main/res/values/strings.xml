@@ -523,6 +523,7 @@
     <string name="downloading_prescription">Downloading prescription</string>
     <string name="visit_data_failed">Visit Data Failed</string>
     <string name="patient_data_failed">Patient Data Failed</string>
+    <string name="privacy_notice_title">Privacy Notice</string>
 
 
 </resources>
