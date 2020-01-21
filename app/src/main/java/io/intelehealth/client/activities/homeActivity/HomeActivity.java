@@ -167,7 +167,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        lastSyncTextView.setText(getString(R.string.last_synced) + sessionManager.getLastPulledDateTime());
+        lastSyncTextView.setText("Last Synced:-" + sessionManager.getLastPulledDateTime());
         manualSyncButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

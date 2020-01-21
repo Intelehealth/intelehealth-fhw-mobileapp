@@ -241,7 +241,6 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:layout_centerInParent="true"
-                            android:text="@string/lastsync"
                             android:textSize="12sp" />
 
 

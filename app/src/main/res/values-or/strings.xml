@@ -345,7 +345,7 @@
     <string name="patient_data_failed">Patient Data Failed</string>
     <string name="privacy_notice_title">Privacy Notice</string>
     <string name="title_activity_privacy_notice" translatable="false">"ଗୋପନୀୟତା ନୋଟିସ୍ "</string>
-    <string name="sync_now">"ଏବେ ହିଁ ସମକାଳୀନ କରନ୍ତୁ "</string>
+    <string name="sync_now">Sync Now</string>
     <string name="not_provided" translatable="false">"ଦିଆଯାଇନାହିଁ "</string>
     <string name="visit_summary_complaint" translatable="false">"ପରିଦର୍ଶନର କାରଣ "</string>
     <string name="visit_summary_button_upload" translatable="false">"ଅପଲୋଡ୍ "</string>
