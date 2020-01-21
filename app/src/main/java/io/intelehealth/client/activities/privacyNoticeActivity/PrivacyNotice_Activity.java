@@ -124,7 +124,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
 
                     if (radio_acc.isChecked() || radio_rej.isChecked())
                     {
-                        if(radiobtn.getText().equals("Accept"))
+                        if(radio_acc.isChecked())
                         {
                             Intent intent = new Intent(getApplicationContext(), IdentificationActivity.class);
                             intent.putExtra("privacy",radiobtn.getText()); //privacy value send to identificationActivity
