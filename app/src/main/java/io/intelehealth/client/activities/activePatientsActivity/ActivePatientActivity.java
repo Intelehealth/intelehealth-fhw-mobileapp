@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -349,6 +350,11 @@ public class ActivePatientActivity extends AppCompatActivity {
                 } while (cursor.moveToNext());
             }
         }
+        else
+        {
+           // activePatientList.clear();
+           //Toast.makeText(this, "No patients where looked by this health worker!", Toast.LENGTH_SHORT).show();
+        }
         if (cursor != null) {
             cursor.close();
         }
@@ -364,6 +370,21 @@ public class ActivePatientActivity extends AppCompatActivity {
                     DividerItemDecoration(this,
                     DividerItemDecoration.VERTICAL));
             recyclerView.setAdapter(mActivePatientAdapter);
+            recyclerView.setVisibility(View.VISIBLE);
+            TextView t = findViewById(R.id.ttt);
+            t.setVisibility(View.GONE);
+
+        }
+        else
+        {
+            TextView t = findViewById(R.id.ttt);
+            t.setVisibility(View.VISIBLE);
+            t.setText("No patient records for this health worker found.");
+            recyclerView.setVisibility(View.GONE);
+            //recyclerView.addView(t);
+            // Intent i = new Intent(this, HomeActivity.class);
+            //startActivity(i);
+            //recyclerView.setVisibility(View.GONE);
         }
 
     }
