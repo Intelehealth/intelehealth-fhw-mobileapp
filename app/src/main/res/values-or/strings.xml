@@ -310,7 +310,6 @@
     <string name="upload_before_end_visit_active">"କରିବାରେ ଅକ୍ଷମ । ପରିଦର୍ଶନକୁ ସମାପ୍ତ କରିବାର ଚେଷ୍ଟା କରିବା ପୂର୍ବରୁ ଦୟାକରି ପରିଦର୍ଶନକୁ ଅପଲୋଡ୍ କରନ୍ତୁ । "</string>
     <string name="active">"ସକ୍ରିୟ "</string>
     <string name="closed">"ବନ୍ଦ "</string>
-    <string name="last_synced">"ଶେଷ ସମକାଳୀନକରଣ:- "</string>
     <string name="syncInProgress">Sync in progress</string>
     <string name="please_wait">Please wait...</string>
     <string name="sync_notif_title">"ସମକାଳୀନ କରନ୍ତୁ "</string>
@@ -331,27 +330,28 @@
     <string name="end_visit_notif">"ପରିଦର୍ଶନକୁ ସମାପ୍ତ କରନ୍ତୁ "</string>
     <string name="visit_ended_notif">"ପରିଦର୍ଶନ ସମାପ୍ତ  "</string>
     <string name="this_question_only_one_answer">"ଏହି ପ୍ରଶ୍ନର କେବଳ ଗୋଟିଏ ହିଁ ଉତ୍ତର ହୋଇପାରେ । "</string>
-    <string name="uploading_to_doctor_notif">Uploading to doctor.</string>
+    <string name="uploading_to_doctor_notif">ଡାକ୍ତରଙ୍କ ନିକଟକୁ ଅପଲୋଡ୍ କରାଯାଉଛି ।</string>
     <string name="visit_data_upload">Visit Data Upload</string>
     <string name="uploading_visit_data_notif">Uploading visit data</string>
     <string name="uploaded_visit_data_notif">Uploaded visit data</string>
     <string name="failed_to_upload">failed to Uploaded</string>
-    <string name="upload_completed">Upload Completed</string>
+    <string name="upload_completed">ଅପଲୋଡ୍ ସମ୍ପୂର୍ଣ୍ଣ</string>
     <string name="check_your_connectivity">Check your connectivity</string>
     <string name="download_from_doctor">Download from doctor</string>
     <string name="prescription_downloaded">Prescription downloaded</string>
-    <string name="downloading_prescription">Downloading prescription</string>
+    <string name="downloading_prescription">ପ୍ରେସକ୍ରିପ୍ସନ୍ ଡାଉନଲୋଡ୍ ହେଉଛି</string>
     <string name="visit_data_failed">Visit Data Failed</string>
     <string name="patient_data_failed">Patient Data Failed</string>
-    <string name="privacy_notice_title">Privacy Notice</string>
+    <string name="privacy_notice_title">ଗୋପନୀୟତା ନୋଟିସ୍</string>
     <string name="title_activity_privacy_notice" translatable="false">"ଗୋପନୀୟତା ନୋଟିସ୍ "</string>
     <string name="sync_now">Sync Now</string>
-    <string name="not_provided" translatable="false">"ଦିଆଯାଇନାହିଁ "</string>
+    <string name="not_provided" translatable="false">Not provided</string>
     <string name="visit_summary_complaint" translatable="false">"ପରିଦର୍ଶନର କାରଣ "</string>
     <string name="visit_summary_button_upload" translatable="false">"ଅପଲୋଡ୍ "</string>
     <string name="associated_symptoms">"ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ "</string>
     <string name="no_mindmaps_found">"କୌଣସି ମାଇଣ୍ଡମ୍ୟାପ୍ ମିଳିଲା ନାହିଁ  "</string>
     <string name="title_activity_active_patient" translatable="false">"ସକ୍ରିୟ ରୋଗୀମାନେ "</string>
     <string name="no_data_active_patients">No patient records for this health worker found.</string>
+    <string name="syncing_visitDialog">ସମକାଳୀନ ହେଉଛି</string>
 
 </resources>

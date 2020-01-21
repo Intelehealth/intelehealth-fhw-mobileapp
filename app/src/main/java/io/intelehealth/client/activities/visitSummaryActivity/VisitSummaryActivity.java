@@ -602,7 +602,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     AppConstants.notificationUtils.showNotifications(getString(R.string.visit_data_upload), getString(R.string.uploading_visit_data_notif), 3, VisitSummaryActivity.this);
                     SyncDAO syncDAO = new SyncDAO();
                     ProgressDialog pd = new ProgressDialog(VisitSummaryActivity.this);
-                    pd.setTitle("Syncing");
+                    pd.setTitle(getString(R.string.syncing_visitDialog));
                     pd.show();
                     pd.setCancelable(false);
 

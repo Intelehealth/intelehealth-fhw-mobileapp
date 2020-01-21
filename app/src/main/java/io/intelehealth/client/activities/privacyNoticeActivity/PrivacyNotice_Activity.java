@@ -37,6 +37,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_privacy_notice_2);
+        setTitle(getString(R.string.privacy_notice_title));
 
         /*
          * Toolbar which displays back arrow on action bar

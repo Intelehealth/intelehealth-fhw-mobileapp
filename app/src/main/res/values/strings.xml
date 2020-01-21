@@ -370,7 +370,7 @@
     <string name="resp_error" translatable="false">"Respiratory rate should be in between %1$s and %2$s"</string>
     <string name="temp_error" translatable="false">"Temperature should be in between %1$s and %2$s"</string>
 
-    <string name="not_provided" translatable="false">Not provided</string>
+    <string name="not_provided">Not provided</string>
 
     <!-- Patient Exit Survey -->
     <string name="exit_survey_label" translatable="false">How was your experience?</string>
@@ -525,6 +525,7 @@
     <string name="patient_data_failed">Patient Data Failed</string>
     <string name="privacy_notice_title">Privacy Notice</string>
     <string name="no_data_active_patients">No patient records for this health worker found.</string>
+    <string name="syncing_visitDialog">Syncing</string>
 
 
 </resources>
