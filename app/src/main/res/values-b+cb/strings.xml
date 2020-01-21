@@ -379,6 +379,7 @@
     <string name="visit_data_failed">Visit Data Failed</string>
     <string name="patient_data_failed">Patient Data Failed</string>
     <string name="privacy_notice_title">Privacy Notice</string>
+    <string name="no_data_active_patients">No patient records for this health worker found.</string>
 
 
 </resources>

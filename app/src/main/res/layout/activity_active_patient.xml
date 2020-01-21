@@ -34,12 +34,13 @@
                 android:id="@+id/ttt"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="no patient records for this health worker found"
                 android:visibility="gone"
                 android:textStyle="bold"
                 android:textAlignment="center"
                 android:layout_centerInParent="true"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="70dp"
+                android:textSize="18sp"
+                android:layout_marginHorizontal="5sp"
                 />
 
             <TextView

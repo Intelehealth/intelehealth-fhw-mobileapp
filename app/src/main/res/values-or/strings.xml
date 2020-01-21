@@ -352,5 +352,6 @@
     <string name="associated_symptoms">"ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ "</string>
     <string name="no_mindmaps_found">"କୌଣସି ମାଇଣ୍ଡମ୍ୟାପ୍ ମିଳିଲା ନାହିଁ  "</string>
     <string name="title_activity_active_patient" translatable="false">"ସକ୍ରିୟ ରୋଗୀମାନେ "</string>
+    <string name="no_data_active_patients">No patient records for this health worker found.</string>
 
 </resources>

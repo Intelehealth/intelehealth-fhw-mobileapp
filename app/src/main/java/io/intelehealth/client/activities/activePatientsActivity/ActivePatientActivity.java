@@ -373,13 +373,12 @@ public class ActivePatientActivity extends AppCompatActivity {
             recyclerView.setVisibility(View.VISIBLE);
             TextView t = findViewById(R.id.ttt);
             t.setVisibility(View.GONE);
-
         }
         else
         {
             TextView t = findViewById(R.id.ttt);
             t.setVisibility(View.VISIBLE);
-            t.setText("No patient records for this health worker found.");
+            t.setText(getString(R.string.no_data_active_patients));
             recyclerView.setVisibility(View.GONE);
             //recyclerView.addView(t);
             // Intent i = new Intent(this, HomeActivity.class);
