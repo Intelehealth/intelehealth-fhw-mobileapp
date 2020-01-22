@@ -299,7 +299,7 @@
     <string name="health_worker">"ସ୍ୱାସ୍ଥ୍ୟ କର୍ମୀ "</string>
     <string name="priority">Priority</string>
     <string name="server_url">Server url</string>
-    <string name="sync">"ସମକାଳୀନ କରନ୍ତୁ "</string>
+    <string name="sync">ସମକାଳୀନ କରନ୍ତୁ</string>
     <string name="update_protocols">"ପ୍ରୋଟୋକଲ୍ ଅପଡେଟ୍ କରନ୍ତୁ "</string>
     <string name="end_all_visit">End All Visit</string>
     <string name="filter_by_creator">"ସ୍ରଷ୍ଟାଙ୍କ ଅନୁସାରେ ଫିଲଟର୍ କରନ୍ତୁ "</string>
@@ -353,5 +353,7 @@
     <string name="title_activity_active_patient" translatable="false">"ସକ୍ରିୟ ରୋଗୀମାନେ "</string>
     <string name="no_data_active_patients">No patient records for this health worker found.</string>
     <string name="syncing_visitDialog">ସମକାଳୀନ ହେଉଛି</string>
+    <string name="has_a_new_prescription">"ଏକ ନୂଆ ପ୍ରେସକ୍ରିପ୍ସନ୍ ଅଛି "</string>
+    <string name="successfully_synced_notif">"ସଫଳତାର ସହ ସମକାଳୀନ ହେଲା "</string>
 
 </resources>

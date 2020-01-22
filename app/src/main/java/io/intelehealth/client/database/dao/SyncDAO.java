@@ -193,7 +193,7 @@ public class SyncDAO {
                         Crashlytics.getInstance().core.logException(e);
                     }
                     if (sync)
-                        AppConstants.notificationUtils.DownloadDone("Sync", "Successfully synced", 1, IntelehealthApplication.getAppContext());
+                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.successfully_synced_notif), 1, IntelehealthApplication.getAppContext());
                     else
                         AppConstants.notificationUtils.DownloadDone("Sync", "Failed synced,You can try again", 1, IntelehealthApplication.getAppContext());
 
