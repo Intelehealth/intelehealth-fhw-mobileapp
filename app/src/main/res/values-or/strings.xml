@@ -355,5 +355,7 @@
     <string name="syncing_visitDialog">ସମକାଳୀନ ହେଉଛି</string>
     <string name="has_a_new_prescription">"ଏକ ନୂଆ ପ୍ରେସକ୍ରିପ୍ସନ୍ ଅଛି "</string>
     <string name="successfully_synced_notif">"ସଫଳତାର ସହ ସମକାଳୀନ ହେଲା "</string>
+    <string name="languages">ଭାଷା</string>
+    <string name="current_language">Current Language</string>
 
 </resources>

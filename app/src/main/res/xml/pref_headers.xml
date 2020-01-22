@@ -15,7 +15,7 @@
     <header
         android:fragment="io.intelehealth.client.activities.settingsActivity.SettingsActivity$LanguagePreferenceFragment"
         android:icon="@drawable/ic_translate_black_24dp"
-        android:title="Languages" />
+        android:title="@string/languages" />
 
 
     <header
