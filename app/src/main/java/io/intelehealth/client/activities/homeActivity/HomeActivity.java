@@ -289,7 +289,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 return true;
             }
-            case R.id.sync:
+         /*   case R.id.sync:
 //                pullDataDAO.pullData(this);
 //                pullDataDAO.pushDataApi();
                 boolean isSynced = syncUtils.syncForeground();
@@ -301,6 +301,7 @@ public class HomeActivity extends AppCompatActivity {
                 else
                     AppConstants.notificationUtils.showNotifications(getString(R.string.image_upload), getString(R.string.image_upload_failed), 4, this);
                 return true;
+                */
 //            case R.id.backupOption:
 //                manageBackup(true, false);  // to backup app data at any time of the day
 //                return true;

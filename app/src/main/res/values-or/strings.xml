@@ -357,5 +357,6 @@
     <string name="successfully_synced_notif">"ସଫଳତାର ସହ ସମକାଳୀନ ହେଲା "</string>
     <string name="languages">ଭାଷା</string>
     <string name="current_language">Current Language</string>
+    <string name="cant_login_user" translatable="false">Can\'t log in?</string>
 
 </resources>
