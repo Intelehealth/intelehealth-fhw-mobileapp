@@ -14,11 +14,14 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -216,6 +219,7 @@ public class ActivePatientActivity extends AppCompatActivity {
         String[] creator_uuid = null;
         try {
             creator_names = providerDAO.getProvidersList().toArray(new String[0]);
+            Log.d("PRAJWAL","CREATOR PRAJWAL: "+creator_names.length);
             creator_uuid = providerDAO.getProvidersUuidList().toArray(new String[0]);
         } catch (DAOException e) {
             e.printStackTrace();
@@ -253,7 +257,15 @@ public class ActivePatientActivity extends AppCompatActivity {
         });
 
         dialogBuilder.setNegativeButton(getString(R.string.cancel), null);
-        dialogBuilder.show();
+        //dialogBuilder.show();
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
 
     }
 
@@ -340,6 +352,11 @@ public class ActivePatientActivity extends AppCompatActivity {
                 } while (cursor.moveToNext());
             }
         }
+        else
+        {
+           // activePatientList.clear();
+           //Toast.makeText(this, "No patients where looked by this health worker!", Toast.LENGTH_SHORT).show();
+        }
         if (cursor != null) {
             cursor.close();
         }
@@ -355,6 +372,20 @@ public class ActivePatientActivity extends AppCompatActivity {
                     DividerItemDecoration(this,
                     DividerItemDecoration.VERTICAL));
             recyclerView.setAdapter(mActivePatientAdapter);
+            recyclerView.setVisibility(View.VISIBLE);
+            TextView t = findViewById(R.id.ttt);
+            t.setVisibility(View.GONE);
+        }
+        else
+        {
+            TextView t = findViewById(R.id.ttt);
+            t.setVisibility(View.VISIBLE);
+            t.setHint(getString(R.string.no_data_active_patients));
+            recyclerView.setVisibility(View.GONE);
+            //recyclerView.addView(t);
+            // Intent i = new Intent(this, HomeActivity.class);
+            //startActivity(i);
+            //recyclerView.setVisibility(View.GONE);
         }
 
     }

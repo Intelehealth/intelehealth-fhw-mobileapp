@@ -316,7 +316,7 @@ public class SessionManager {
     }
 
     public String getLastPulledDateTime() {
-        return pref.getString(LAST_PULLED_EXECUTED_DATE_TIME, "01 January 2019 12:15:26");
+        return pref.getString(LAST_PULLED_EXECUTED_DATE_TIME, "01 Jan 2019 12:15:26");
     }  //getting the sync value  and time and saving in the sharedpref
 
     public void setLastPulledDateTime(String lastPulledDateTime) {

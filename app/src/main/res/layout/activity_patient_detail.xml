@@ -353,7 +353,7 @@
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:paddingRight="5dp"
-                                    android:text="@string/son_daughter_wife_of"
+                                    android:text="@string/identification_screen_prompt_relationship"
                                     android:textSize="@dimen/card_content_text_size"
                                     android:textStyle="bold" />
 
@@ -382,7 +382,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
-                                    android:text="@string/occupation"
+                                    android:text="@string/identification_screen_prompt_occupation"
                                     android:textSize="@dimen/card_content_text_size"
                                     android:textStyle="bold" />
 

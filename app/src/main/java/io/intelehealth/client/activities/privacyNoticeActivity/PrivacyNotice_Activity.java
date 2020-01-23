@@ -37,6 +37,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_privacy_notice_2);
+        setTitle(getString(R.string.privacy_notice_title));
 
         /*
          * Toolbar which displays back arrow on action bar
@@ -124,7 +125,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
 
                     if (radio_acc.isChecked() || radio_rej.isChecked())
                     {
-                        if(radiobtn.getText().equals("Accept"))
+                        if(radio_acc.isChecked())
                         {
                             Intent intent = new Intent(getApplicationContext(), IdentificationActivity.class);
                             intent.putExtra("privacy",radiobtn.getText()); //privacy value send to identificationActivity
@@ -132,6 +133,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
                         }
                         else
                         {
+                            Toast.makeText(PrivacyNotice_Activity.this, "You cannot register a patient without consent", Toast.LENGTH_SHORT).show();
                             finish();
                         }
                     }

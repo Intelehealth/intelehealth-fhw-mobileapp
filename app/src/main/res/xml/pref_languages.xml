@@ -7,6 +7,6 @@
         android:entryValues="@array/language_values"
         android:key="hindiLang"
         android:summary="%s"
-        android:title="Current Language" />
+        android:title="@string/current_language" />
 
 </PreferenceScreen>

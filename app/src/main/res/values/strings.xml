@@ -368,7 +368,7 @@
     <string name="resp_error" translatable="false">"Respiratory rate should be in between %1$s and %2$s"</string>
     <string name="temp_error" translatable="false">"Temperature should be in between %1$s and %2$s"</string>
 
-    <string name="not_provided" translatable="false">Not provided</string>
+    <string name="not_provided">Not provided</string>
 
     <!-- Patient Exit Survey -->
     <string name="exit_survey_label" translatable="false">How was your experience?</string>
@@ -474,7 +474,7 @@
     <string name="click_to_download_the_images">Click to download the images</string>
     <string name="doctor">Doctor</string>
     <string name="health_worker">Health worker</string>
-    <string name="emergency">Emergency</string>
+    <string name="priority">Priority</string>
     <string name="server_url">Server url</string>
     <string name="sync">Sync</string>
     <string name="update_protocols">Update Protocols</string>
@@ -520,6 +520,12 @@
     <string name="downloading_prescription">Downloading prescription</string>
     <string name="visit_data_failed">Visit Data Failed</string>
     <string name="patient_data_failed">Patient Data Failed</string>
+    <string name="privacy_notice_title">Privacy Notice</string>
+    <string name="no_data_active_patients">No patient records for this health worker found.</string>
+    <string name="syncing_visitDialog">Syncing</string>
+    <string name="successfully_synced_notif">Successfully synced</string>
+    <string name="languages">Languages</string>
+    <string name="current_language">Current Language</string>
 
     <string name="protocols_downloaded_successfully">Protocols Downloaded Successfully!</string>
     <string name="no_protocols_found">No protocols found</string>
