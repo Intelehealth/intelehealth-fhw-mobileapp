@@ -11,8 +11,9 @@ public class TodayPatientModel {
     String last_name;
     String date_of_birth;
     String phone_number;
+    String sync;
 
-    public TodayPatientModel(String uuid, String patientuuid, String startdate, String enddate, String openmrs_id, String first_name, String middle_name, String last_name, String date_of_birth, String phone_number) {
+    public TodayPatientModel(String uuid, String patientuuid, String startdate, String enddate, String openmrs_id, String first_name, String middle_name, String last_name, String date_of_birth, String phone_number, String sync) {
         this.uuid = uuid;
         this.patientuuid = patientuuid;
         this.startdate = startdate;
@@ -23,6 +24,7 @@ public class TodayPatientModel {
         this.last_name = last_name;
         this.date_of_birth = date_of_birth;
         this.phone_number = phone_number;
+        this.sync = sync;
     }
 
     public String getUuid() {
@@ -105,4 +107,11 @@ public class TodayPatientModel {
         this.openmrs_id = openmrs_id;
     }
 
+    public String getSync() {
+        return sync;
+    }
+
+    public void setSync(String sync) {
+        this.sync = sync;
+    }
 }

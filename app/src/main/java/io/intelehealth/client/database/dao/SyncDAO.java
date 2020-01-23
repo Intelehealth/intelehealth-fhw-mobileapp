@@ -186,7 +186,7 @@ public class SyncDAO {
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
             @Override
             public void onResponse(Call<ResponseDTO> call, Response<ResponseDTO> response) {
-                AppConstants.notificationUtils.showNotifications("Sync background", "Sync in progress..", 1, IntelehealthApplication.getAppContext());
+//                AppConstants.notificationUtils.showNotifications("Sync background", "Sync in progress..", 1, IntelehealthApplication.getAppContext());
                 if (response.body() != null && response.body().getData() != null) {
                     sessionManager.setPulled(response.body().getData().getPullexecutedtime());
                 }
@@ -204,9 +204,11 @@ public class SyncDAO {
                         if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")) {
                             CalculateAgoTime(context);
                         }
-                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.successfully_synced), 1, IntelehealthApplication.getAppContext());
+//                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.successfully_synced), 1, IntelehealthApplication.getAppContext());
+                        Toast.makeText(context, context.getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
                     } else {
-                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.failed_synced), 1, IntelehealthApplication.getAppContext());
+//                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.failed_synced), 1, IntelehealthApplication.getAppContext());
+                        Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
                     }
 
                     if (sessionManager.getTriggerNoti().equals("yes")) {

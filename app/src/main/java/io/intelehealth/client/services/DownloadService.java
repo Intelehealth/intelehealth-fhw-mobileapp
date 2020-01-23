@@ -39,6 +39,7 @@ public class DownloadService extends IntentService {
     private int totalFileSize;
     public String baseDir = "";
     public String ImageType = "";
+
     public DownloadService() {
         super("Download Service");
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
@@ -50,7 +51,7 @@ public class DownloadService extends IntentService {
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
             ImageType = intent.getStringExtra("ImageType");
         }
-        AppConstants.notificationUtils.showNotificationProgress("Download", "Downloading File", 4, IntelehealthApplication.getAppContext(), 0);
+//        AppConstants.notificationUtils.showNotificationProgress("Download", "Downloading File", 4, IntelehealthApplication.getAppContext(), 0);
 
         baseDir = AppConstants.IMAGE_PATH;
         initDownload(ImageType);
@@ -62,8 +63,9 @@ public class DownloadService extends IntentService {
         String url = "";
         List<String> imageObsList = new ArrayList<>();
         imageObsList = obsDAO.getImageStrings(ImageType, encounterAdultIntials);
-        if (imageObsList.size() == 0)
-            AppConstants.notificationUtils.DownloadDone("Download", "No Images to Download", 4, IntelehealthApplication.getAppContext());
+        if (imageObsList.size() == 0) {
+//            AppConstants.notificationUtils.DownloadDone("Download", "No Images to Download", 4, IntelehealthApplication.getAppContext());
+        }
         for (int i = 0; i < imageObsList.size(); i++) {
             url = urlModifiers.obsImageUrl(imageObsList.get(i));
             Observable<ResponseBody> downloadobs = AppConstants.apiInterface.OBS_IMAGE_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
@@ -171,7 +173,7 @@ public class DownloadService extends IntentService {
         download.setProgress(100);
         sendIntent(download);
 
-        AppConstants.notificationUtils.showNotificationProgress("Download", "File Downloaded", 4, IntelehealthApplication.getAppContext(), 100);
+//        AppConstants.notificationUtils.showNotificationProgress("Download", "File Downloaded", 4, IntelehealthApplication.getAppContext(), 100);
 
 
     }

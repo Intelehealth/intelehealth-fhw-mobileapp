@@ -119,6 +119,27 @@
                             android:layout_weight="3"
                             android:textSize="@dimen/card_content_text_size" />
                     </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textView_visit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/visitID"
+                            android:textSize="@dimen/card_content_text_size" />
+
+                        <TextView
+                            android:id="@+id/textView_visit_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:textSize="@dimen/card_content_text_size" />
+                    </TableRow>
+
                 </TableLayout>
             </RelativeLayout>
         </android.support.v7.widget.CardView>

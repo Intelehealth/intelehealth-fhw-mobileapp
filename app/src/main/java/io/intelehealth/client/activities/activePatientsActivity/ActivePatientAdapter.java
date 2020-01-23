@@ -55,15 +55,25 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
             header = String.format("%s %s, %s", activePatientModel.getFirst_name(),
                     activePatientModel.getLast_name(), activePatientModel.getOpenmrs_id());
 
-            holder.getTv_not_uploaded().setVisibility(View.GONE);
+//            holder.getTv_not_uploaded().setVisibility(View.GONE);
         } else {
             header = String.format("%s %s", activePatientModel.getFirst_name(),
                     activePatientModel.getLast_name());
 
-            holder.getTv_not_uploaded().setVisibility(View.VISIBLE);
-            holder.getTv_not_uploaded().setText("Not Uploaded");
-            holder.getTv_not_uploaded().setBackgroundColor(context.getResources().getColor(R.color.lite_red));
+//            holder.getTv_not_uploaded().setVisibility(View.VISIBLE);
+//            holder.getTv_not_uploaded().setText(context.getResources().getString(R.string.visit_not_uploaded));
+//            holder.getTv_not_uploaded().setBackgroundColor(context.getResources().getColor(R.color.lite_red));
         }
+
+        if (activePatientModel.getSync().equalsIgnoreCase("0")){
+            holder.getTv_not_uploaded().setVisibility(View.VISIBLE);
+            holder.getTv_not_uploaded().setText(context.getResources().getString(R.string.visit_not_uploaded));
+            holder.getTv_not_uploaded().setBackgroundColor(context.getResources().getColor(R.color.lite_red));
+        } else {
+            holder.getTv_not_uploaded().setVisibility(View.GONE);
+        }
+
+
 //        int age = DateAndTimeUtils.getAge(activePatientModel.getDate_of_birth());
         String age = DateAndTimeUtils.getAgeInYearMonth(activePatientModel.getDate_of_birth(), context);
         String dob = DateAndTimeUtils.SimpleDatetoLongDate(activePatientModel.getDate_of_birth());

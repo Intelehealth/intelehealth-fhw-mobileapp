@@ -7,8 +7,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.intelehealth.client.R;
@@ -26,10 +28,12 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
     List<TodayPatientModel> todayPatientModelList;
     Context context;
     LayoutInflater layoutInflater;
+    ArrayList<String> listPatientUUID;
 
-    public TodayPatientAdapter(List<TodayPatientModel> todayPatientModelList, Context context) {
+    public TodayPatientAdapter(List<TodayPatientModel> todayPatientModelList, Context context, ArrayList<String> _listPatientUUID) {
         this.todayPatientModelList = todayPatientModelList;
         this.context = context;
+        this.listPatientUUID = _listPatientUUID;
     }
 
     @Override
@@ -56,6 +60,14 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         String dob = DateAndTimeUtils.SimpleDatetoLongDate(todayPatientModel.getDate_of_birth());
         String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
 
+        if (todayPatientModel.getSync().equalsIgnoreCase("0")){
+            holder.getTv_not_uploaded().setVisibility(View.VISIBLE);
+            holder.getTv_not_uploaded().setText(context.getResources().getString(R.string.visit_not_uploaded));
+            holder.getTv_not_uploaded().setBackgroundColor(context.getResources().getColor(R.color.lite_red));
+        } else {
+            holder.getTv_not_uploaded().setVisibility(View.GONE);
+        }
+
         holder.getHeadTextView().setText(header);
         holder.getBodyTextView().setText(body);
         if (todayPatientModel.getEnddate() == null) {
@@ -73,10 +85,24 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                 intent.putExtra("patientUuid", todayPatientModel.getPatientuuid());
                 intent.putExtra("status", patientStatus);
                 intent.putExtra("tag", "");
-                intent.putExtra("hasPrescription", "false");
+
+                if (holder.ivPriscription.getTag().equals("1")) {
+                    intent.putExtra("hasPrescription", "true");
+                } else {
+                    intent.putExtra("hasPrescription", "false");
+                }
+
                 context.startActivity(intent);
             }
         });
+
+        for (int i = 0; i < listPatientUUID.size(); i++) {
+            if (todayPatientModelList.get(position).getPatientuuid().equalsIgnoreCase(listPatientUUID.get(i))) {
+                holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_prescription_green));
+                holder.ivPriscription.setTag("1");
+            }
+        }
+
 
     }
 
@@ -92,12 +118,16 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         private TextView bodyTextView;
         private TextView indicatorTextView;
         private View rootView;
+        private ImageView ivPriscription;
+        private TextView tv_not_uploaded;
 
         public TodayPatientViewHolder(View itemView) {
             super(itemView);
             headTextView = itemView.findViewById(R.id.list_item_head_text_view);
             bodyTextView = itemView.findViewById(R.id.list_item_body_text_view);
             indicatorTextView = itemView.findViewById(R.id.list_item_indicator_text_view);
+            ivPriscription = itemView.findViewById(R.id.iv_prescription);
+            tv_not_uploaded = (TextView) itemView.findViewById(R.id.tv_not_uploaded);
             rootView = itemView;
         }
 
@@ -127,6 +157,14 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
 
         public View getRootView() {
             return rootView;
+        }
+
+        public TextView getTv_not_uploaded() {
+            return tv_not_uploaded;
+        }
+
+        public void setTv_not_uploaded(TextView tv_not_uploaded) {
+            this.tv_not_uploaded = tv_not_uploaded;
         }
     }
 }

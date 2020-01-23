@@ -184,6 +184,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                AppConstants.notificationUtils.showNotifications(getString(R.string.sync), getString(R.string.syncInProgress), 1, context);
+                Toast.makeText(context, getString(R.string.syncInProgress), Toast.LENGTH_LONG).show();
                 syncUtils.syncForeground();
                 if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")) {
                     lastSyncAgo.setText(sessionManager.getLastTimeAgo());

@@ -94,6 +94,7 @@ import io.intelehealth.client.database.dao.PatientsDAO;
 import io.intelehealth.client.database.dao.SyncDAO;
 import io.intelehealth.client.database.dao.VisitsDAO;
 import io.intelehealth.client.knowledgeEngine.Node;
+import io.intelehealth.client.models.ActivePatientModel;
 import io.intelehealth.client.models.Patient;
 import io.intelehealth.client.models.dto.ObsDTO;
 import io.intelehealth.client.services.DownloadService;
@@ -125,8 +126,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String patientName;
     String intentTag;
     String visitUUID;
-    String medicalAdvice_string="";
-    String medicalAdvice_HyperLink="";
+    String medicalAdvice_string = "";
+    String medicalAdvice_HyperLink = "";
+    String isSynedFlag = "";
 
     SQLiteDatabase db;
 
@@ -161,6 +163,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     TextView nameView;
     TextView idView;
+    TextView visitView;
     TextView heightView;
     TextView weightView;
     TextView pulseView;
@@ -542,8 +545,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(flag.isChecked())
-                {
+                Toast.makeText(context, getResources().getString(R.string.upload_started), Toast.LENGTH_LONG).show();
+
+                if (flag.isChecked()) {
                     try {
                         EncounterDAO encounterDAO = new EncounterDAO();
                         encounterDAO.setEmergency(visitUuid, true);
@@ -614,17 +618,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             //Do something after 100ms
                             SyncUtils syncUtils = new SyncUtils();
                             boolean isSynced = syncUtils.syncForeground();
-                            if (isSynced)
-                                AppConstants.notificationUtils.DownloadDone(getString(R.string.visit_data_upload), getString(R.string.uploaded_visit_data_notif), 3, VisitSummaryActivity.this);
-                            else
-                                AppConstants.notificationUtils.DownloadDone(getString(R.string.visit_data_upload), getString(R.string.failed_to_upload), 3, VisitSummaryActivity.this);
+                            if (isSynced) {
+                                AppConstants.notificationUtils.DownloadDone(patientName + " " + " " + getString(R.string.visit_data_upload), getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity.this);
+                            } else {
+                                AppConstants.notificationUtils.DownloadDone(patientName + " " + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
+                            }
                             uploaded = true;
                             pd.dismiss();
 //                            Toast.makeText(VisitSummaryActivity.this, getString(R.string.upload_completed), Toast.LENGTH_SHORT).show();
                         }
                     }, 4000);
                 } else {
-                    AppConstants.notificationUtils.showNotifications(getString(R.string.visit_data_failed), getString(R.string.check_your_connectivity), 3, VisitSummaryActivity.this);
+                    AppConstants.notificationUtils.DownloadDone(patientName + " " + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
                 }
             }
 
@@ -640,6 +645,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         //OpenMRS Id
         idView = findViewById(R.id.textView_id_value);
+        visitView = findViewById(R.id.textView_visit_value);
         if (patient.getOpenmrs_id() != null && !patient.getOpenmrs_id().isEmpty()) {
             idView.setText(patient.getOpenmrs_id());
         } else {
@@ -764,7 +770,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 //famHistory.setValue(dialogEditText.getText().toString());
-                                famHistory.setValue(dialogEditText.getText().toString().replace("\n","<br>"));
+                                famHistory.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
 
                                 if (famHistory.getValue() != null) {
                                     famHistText.setText(Html.fromHtml(famHistory.getValue()));
@@ -1063,7 +1069,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 //patHistory.setValue(dialogEditText.getText().toString());
-                                patHistory.setValue(dialogEditText.getText().toString().replace("\n","<br>"));
+                                patHistory.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
 
                                 if (patHistory.getValue() != null) {
                                     historyText.setText(Html.fromHtml(patHistory.getValue()));
@@ -1140,7 +1146,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View view) {
                 SyncUtils syncUtils = new SyncUtils();
                 syncUtils.syncForeground();
-                AppConstants.notificationUtils.DownloadDone(getString(R.string.download_from_doctor), getString(R.string.prescription_downloaded), 3, VisitSummaryActivity.this);
+//                AppConstants.notificationUtils.DownloadDone(getString(R.string.download_from_doctor), getString(R.string.prescription_downloaded), 3, VisitSummaryActivity.this);
                 uploaded = true;
                 ProgressDialog pd = new ProgressDialog(VisitSummaryActivity.this);
                 pd.setTitle(getString(R.string.downloading_prescription));
@@ -1167,6 +1173,43 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 startDownload(UuidDictionary.COMPLEX_IMAGE_PE);
             }
         });
+
+        doQuery();
+    }
+
+
+    private void doQuery() {
+
+        if (visitUUID != null && !visitUUID.isEmpty()) {
+
+            String query = "SELECT   a.uuid, a.sync " +
+                    "FROM tbl_visit a " +
+                    "WHERE a.uuid = '" + visitUUID + "'";
+
+            final Cursor cursor = db.rawQuery(query, null);
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        isSynedFlag = cursor.getString(cursor.getColumnIndexOrThrow("sync"));
+                    } while (cursor.moveToNext());
+                }
+            }
+            if (cursor != null) {
+                cursor.close();
+            }
+
+            Log.e("ISSYNCED==", isSynedFlag);
+
+            if (!isSynedFlag.equalsIgnoreCase("0")) {
+                String hideVisitUUID = visitUUID;
+                hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
+                visitView.setText("XXXX" + hideVisitUUID);
+            } else {
+                visitView.setText(getResources().getString(R.string.visit_not_uploaded));
+            }
+        } else {
+            visitView.setText("----");
+        }
     }
 
     private void physcialExaminationImagesDownload() {
@@ -1388,8 +1431,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         //String advice_web = stringToWeb(adviceReturned);
 
-        String advice_web = stringToWeb(medicalAdvice_string.trim().replace("\n\n","\n"));
-        Log.d("Hyperlink","hyper_print: " + advice_web);
+        String advice_web = stringToWeb(medicalAdvice_string.trim().replace("\n\n", "\n"));
+        Log.d("Hyperlink", "hyper_print: " + advice_web);
 
         String diagnosis_web = stringToWeb(diagnosisReturned);
 
@@ -1785,41 +1828,38 @@ public class VisitSummaryActivity extends AppCompatActivity {
             case UuidDictionary.MEDICAL_ADVICE: {
                 if (!adviceReturned.isEmpty()) {
                     adviceReturned = adviceReturned + "\n" + value;
-                    Log.d("GAME","GAME: "+adviceReturned);
+                    Log.d("GAME", "GAME: " + adviceReturned);
                 } else {
                     adviceReturned = value;
-                    Log.d("GAME","GAME_2: "+adviceReturned);
+                    Log.d("GAME", "GAME_2: " + adviceReturned);
                 }
                 if (medicalAdviceCard.getVisibility() != View.VISIBLE) {
                     medicalAdviceCard.setVisibility(View.VISIBLE);
                 }
                 //medicalAdviceTextView.setText(adviceReturned);
-                Log.d("Hyperlink","hyper_global: " + medicalAdvice_string);
+                Log.d("Hyperlink", "hyper_global: " + medicalAdvice_string);
 
                 int j = adviceReturned.indexOf('<');
                 int i = adviceReturned.lastIndexOf('>');
-                if(i>=0 && j>=0)
-                {
-                    medicalAdvice_HyperLink = adviceReturned.substring(j,i+1);
-                }
-                else
-                {
+                if (i >= 0 && j >= 0) {
+                    medicalAdvice_HyperLink = adviceReturned.substring(j, i + 1);
+                } else {
                     medicalAdvice_HyperLink = "";
                 }
 
-                Log.d("Hyperlink","Hyperlink: " + medicalAdvice_HyperLink);
+                Log.d("Hyperlink", "Hyperlink: " + medicalAdvice_HyperLink);
 
-                medicalAdvice_string = adviceReturned.replaceAll(medicalAdvice_HyperLink,"");
-                Log.d("Hyperlink","hyper_string: " + medicalAdvice_string);
+                medicalAdvice_string = adviceReturned.replaceAll(medicalAdvice_HyperLink, "");
+                Log.d("Hyperlink", "hyper_string: " + medicalAdvice_string);
 
                 /*
                  * variable a contains the hyperlink sent from webside.
                  * variable b contains the string data (medical advice) of patient.
                  * */
-                medicalAdvice_string = medicalAdvice_string.replace("\n\n","\n");
-                medicalAdviceTextView.setText(Html.fromHtml(medicalAdvice_HyperLink + medicalAdvice_string.replaceAll("\n","<br><br>")));
+                medicalAdvice_string = medicalAdvice_string.replace("\n\n", "\n");
+                medicalAdviceTextView.setText(Html.fromHtml(medicalAdvice_HyperLink + medicalAdvice_string.replaceAll("\n", "<br><br>")));
                 medicalAdviceTextView.setMovementMethod(LinkMovementMethod.getInstance());
-                Log.d("hyper_textview","hyper_textview: " + medicalAdviceTextView.getText().toString());
+                Log.d("hyper_textview", "hyper_textview: " + medicalAdviceTextView.getText().toString());
                 //checkForDoctor();
                 break;
             }

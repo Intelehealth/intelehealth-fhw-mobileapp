@@ -257,7 +257,7 @@
     <string name="title_activity_today_patient" translatable="false">"Today's Visits"</string>
     <string name="title_activity_additional_documents" translatable="false">"Additional Documents"</string>
     <string name="title_activity_video_library" translatable="false">"Video Library"</string>
-    <string name="visit_summary_patient_details" translatable="false">Patient details</string>
+    <string name="visit_summary_patient_details" translatable="false">Visit details</string>
 
     <!--Setup Activity-->
     <string name="setup_internet" translatable="false">A strong Internet connection is required for setup.</string>
@@ -540,5 +540,9 @@
     <string name="ago">ago</string>
     <string name="successfully_synced">Successfully synced</string>
     <string name="failed_synced"><![CDATA[Failed synced, please check your internet connection & try again]]></string>
-
+    <string name="visit_not_uploaded">Visit Not Uploaded</string>
+    <string name="upload_started">Upload Started</string>
+    <string name="visit_uploaded_successfully">Visit Uploaded Successfully</string>
+    <string name="visit_uploaded_failed">Visit was not uploaded, will be uploaded when internet connection is available</string>
+    <string name="visitID">Visit ID</string>
 </resources>

@@ -239,7 +239,7 @@
     <string name="title_activity_diagnostic_tests_list">Pagpili og usa ka Diagnostic na Eksamin</string>
     <string name="title_activity_camera">Camera</string>
     <string name="title_activity_identification">Idugang ang Bag-ong Pasyente</string>
-    <string name="visit_summary_patient_details">Detalye sa Pasyente</string>
+    <string name="visit_summary_patient_details">Bisita sa Pasyente</string>
     <string name="title_activity_patient_history">Niaging Kasaysayan sa Medisina</string>
     <string name="title_activity_patient_summary">Sumaryo sa pagbisita</string>
     <string name="title_activity_physical_exam">Pisikal nga Pagsusi</string>
@@ -381,13 +381,13 @@
     <string name="successfully_synced_notif">Successfully synced</string>
     <string name="languages">ଭାଷା</string>
     <string name="current_language">Current Language</string>
+    <string name="today_visits">Mga Pasyente Karon adlawa</string>
+    <string name="active_visits">Aktibo nga mga Pasyente</string>
 
     <string name="no_protocols_found">No protocols found</string>
     <string name="unable_to_get_proper_response">There was a problem downloading protocols, Please contact system administrator</string>
     <string name="protocols_downloaded_successfully">Protocols Downloaded Successfully!</string>
     <string name="last_synced">Last Synced - </string>
-    <string name="today_visits">Mga Pasyente Karon adlawa</string>
-    <string name="active_visits">Aktibo nga mga Pasyente</string>
     <string name="day">day</string>
     <string name="hour">hour</string>
     <string name="minute">minute</string>
@@ -404,6 +404,10 @@
     <string name="has_a_new_prescription">has a new prescription</string>
     <string name="patient_denies">Patient denies</string>
     <string name="patient_reports">Patient reports</string>
-
+    <string name="visit_not_uploaded">Visit Not Uploaded</string>
+    <string name="upload_started">Upload Started</string>
+    <string name="visit_uploaded_successfully">Visit Uploaded Successfully</string>
+    <string name="visit_uploaded_failed">Visit was not uploaded, will be uploaded when internet connection is available</string>
+    <string name="visitID">Visit ID</string>
 
 </resources>

@@ -274,7 +274,7 @@
     <string name="enter_password">Enter your password</string>
     <string name="enter_username">Enter your username</string>
 
-    <string name="patient_name">Patient name</string>
+    <string name="patient_name">ରୋଗୀଙ୍କ ନାମ</string>
     <string name="son_daughter_wife_of">Son/Daughter/Wife of</string>
     <string name="occupation">Occupation</string>
     <string name="economic_status">"ଆର୍ଥିକ ସ୍ଥିତି "</string>
@@ -343,13 +343,12 @@
     <string name="patient_data_failed">Patient Data Failed</string>
     <string name="privacy_notice_title">ଗୋପନୀୟତା ନୋଟିସ୍</string>
     <string name="title_activity_privacy_notice" translatable="false">"ଗୋପନୀୟତା ନୋଟିସ୍ "</string>
-    <string name="sync_now">Sync Now</string>
+
     <string name="not_provided" translatable="false">Not provided</string>
     <string name="visit_summary_complaint" translatable="false">"ପରିଦର୍ଶନର କାରଣ "</string>
     <string name="visit_summary_button_upload" translatable="false">"ଅପଲୋଡ୍ "</string>
     <string name="associated_symptoms">"ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ "</string>
-    <string name="no_mindmaps_found">"କୌଣସି ମାଇଣ୍ଡମ୍ୟାପ୍ ମିଳିଲା ନାହିଁ  "</string>
-    <string name="title_activity_active_patient" translatable="false">"ସକ୍ରିୟ ରୋଗୀମାନେ "</string>
+
     <string name="no_data_active_patients">No patient records for this health worker found.</string>
     <string name="syncing_visitDialog">ସମକାଳୀନ ହେଉଛି</string>
     <string name="has_a_new_prescription">"ଏକ ନୂଆ ପ୍ରେସକ୍ରିପ୍ସନ୍ ଅଛି "</string>
@@ -358,12 +357,12 @@
     <string name="current_language">Current Language</string>
     <string name="cant_login_user" translatable="false">Can\'t log in?</string>
 
-    <string name="no_protocols_found">No protocols found</string>
+    <string name="today_visits">ଆଜିର ରୋଗୀ</string>
+    <string name="active_visits">ଦେଖିଥିବା ରୋଗୀ</string>
     <string name="unable_to_get_proper_response">There was a problem downloading protocols, Please contact system administrator</string>
     <string name="protocols_downloaded_successfully">Protocols Downloaded Successfully!</string>
+    <string name="no_protocols_found">No protocols found</string>
     <string name="last_synced">Last Synced - </string>
-    <string name="today_visits">ଆଜିର ରୋଗୀ</string>
-    <string name="active_visits" translatable="false">ଦେଖିଥିବା ରୋଗୀ</string>
     <string name="day">day</string>
     <string name="hour">hour</string>
     <string name="minute">minute</string>
@@ -375,10 +374,13 @@
     <string name="title_activity_today_patient" translatable="false">"Today's Visits"</string>
 
     <string name="privacy_toast">Please select an option</string>
-    <string name="sync_now">Sync Now</string>
     <string name="lastsync">lastsync</string>
-    <string name="has_a_new_prescription">has a new prescription</string>
     <string name="patient_denies">Patient denies</string>
     <string name="patient_reports">Patient reports</string>
-
+    <string name="visit_not_uploaded">Visit Not Uploaded</string>
+    <string name="upload_started">Upload Started</string>
+    <string name="visit_uploaded_successfully">Visit Uploaded Successfully</string>
+    <string name="visit_uploaded_failed">Visit was not uploaded, will be uploaded when internet connection is available</string>
+    <string name="sync_now">Sync Now</string>
+    <string name="visitID">Visit ID</string>
 </resources>
