@@ -126,7 +126,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:layout_toEndOf="@+id/iv_today_patients"
-                            android:text="@string/today_patient"
+                            android:text="@string/today_visits"
                             android:textSize="28sp" />
 
                     </RelativeLayout>
@@ -162,7 +162,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:layout_toEndOf="@+id/iv_active_patients"
-                            android:text="@string/active_patient"
+                            android:text="@string/active_visits"
                             android:textSize="28sp" />
 
                     </RelativeLayout>
@@ -227,22 +227,40 @@
                             android:id="@+id/manualsyncbutton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:background="?attr/selectableItemBackground"
+                            android:layout_alignParentEnd="true"
+                            android:background="@drawable/button_bg_rounded_stroke"
                             android:clickable="true"
-                            android:paddingHorizontal="5dp"
+                            android:paddingHorizontal="10dp"
                             android:text="@string/sync_now"
-                            android:textColor="@color/cardview_dark_background"
+                            android:textColor="@color/colorPrimary"
                             android:textSize="15sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toStartOf="@+id/manualsyncbutton"
+                            android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/lastsynctextview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
                             android:layout_centerInParent="true"
                             android:text="@string/lastsync"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/lastsyncago"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerInParent="true"
+                                android:layout_marginEnd="10dp"
+                                tools:text="2 hours ago"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
 
 
                     </RelativeLayout>

@@ -4,5 +4,6 @@
         <domain includeSubdomains="true">intelehealth.io</domain>
         <domain includeSubdomains="true">165.227.97.214</domain>
         <domain includeSubdomains="true">13.228.184.65</domain>
+        <domain includeSubdomains="true">13.232.32.249</domain>
     </domain-config>
 </network-security-config>

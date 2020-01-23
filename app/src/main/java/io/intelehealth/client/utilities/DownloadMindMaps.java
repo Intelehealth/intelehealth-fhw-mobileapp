@@ -17,6 +17,8 @@ import java.net.URL;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import io.intelehealth.client.R;
+
 /**
  * Created by Sagar Shimpi
  * Github - sagars23
@@ -80,7 +82,7 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
         Log.d("MindMapDownloadTask", "f.getParentFile().getPath()=" + f.getParentFile().getPath());
         Log.d("MindMapDownloadTask", "f.getName()=" + f.getName().replace(".zip", ""));
         unpackZip(destinationFilePath);
-        return "Mindmaps Downloaded Successfully!";
+        return context.getResources().getString(R.string.protocols_downloaded_successfully);
     }
 
     @Override

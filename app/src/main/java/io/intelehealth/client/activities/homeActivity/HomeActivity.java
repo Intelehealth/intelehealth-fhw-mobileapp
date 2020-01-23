@@ -23,6 +23,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,6 +39,10 @@ import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 import io.intelehealth.client.R;
@@ -81,6 +86,7 @@ public class HomeActivity extends AppCompatActivity {
     int i = 5;
 
     TextView lastSyncTextView;
+    TextView lastSyncAgo;
     Button manualSyncButton;
     IntentFilter filter;
     Myreceiver reMyreceive;
@@ -117,8 +123,9 @@ public class HomeActivity extends AppCompatActivity {
 
         Logger.logD(TAG, "onCreate: " + getFilesDir().toString());
         lastSyncTextView = findViewById(R.id.lastsynctextview);
+        lastSyncAgo = findViewById(R.id.lastsyncago);
         manualSyncButton = findViewById(R.id.manualsyncbutton);
-        manualSyncButton.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+//        manualSyncButton.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
         c1 = findViewById(R.id.cardview_newpat);
         c2 = findViewById(R.id.cardview_find_patient);
         c3 = findViewById(R.id.cardview_today_patient);
@@ -167,12 +174,20 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        lastSyncTextView.setText(getString(R.string.last_synced) + sessionManager.getLastPulledDateTime());
+        lastSyncTextView.setText(getString(R.string.last_synced) + " " + sessionManager.getLastSyncDateTime());
+
+        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")) {
+            lastSyncAgo.setText(CalculateAgoTime());
+        }
+
         manualSyncButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+//                AppConstants.notificationUtils.showNotifications(getString(R.string.sync), getString(R.string.syncInProgress), 1, context);
                 syncUtils.syncForeground();
+                if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")) {
+                    lastSyncAgo.setText(sessionManager.getLastTimeAgo());
+                }
             }
         });
         WorkManager.getInstance().enqueueUniquePeriodicWork(UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
@@ -207,6 +222,48 @@ public class HomeActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    private String CalculateAgoTime() {
+        String finalTime = "";
+
+        String syncTime = sessionManager.getLastSyncDateTime();
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy HH:mm", Locale.getDefault());
+        ParsePosition pos = new ParsePosition(0);
+        long then = formatter.parse(syncTime, pos).getTime();
+        long now = new Date().getTime();
+
+        long seconds = (now - then) / 1000;
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+        long days = hours / 24;
+
+        String time = "";
+        long num = 0;
+        if (days > 0) {
+            num = days;
+            time = days + " " + context.getString(R.string.day);
+        } else if (hours > 0) {
+            num = hours;
+            time = hours + " " + context.getString(R.string.hour);
+        } else if (minutes >= 0) {
+            num = minutes;
+            time = minutes + " " + context.getString(R.string.minute);
+        }
+//      <For Seconds>
+//      else {
+//            num = seconds;
+//            time = seconds + " second";
+//      }
+        if (num > 1) {
+            time += context.getString(R.string.s);
+        }
+        finalTime = time + " " + context.getString(R.string.ago);
+
+        sessionManager.setLastTimeAgo(finalTime);
+
+        return finalTime;
     }
 
     private boolean isNetworkConnected() {
@@ -262,7 +319,7 @@ public class HomeActivity extends AppCompatActivity {
                                         etURL.requestFocus();
                                         return;
                                     }
-                                    if (url.contains(":")){
+                                    if (url.contains(":")) {
                                         etURL.setError(getResources().getString(R.string.invalid_url));
                                         etURL.requestFocus();
                                         return;
@@ -292,14 +349,14 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.sync:
 //                pullDataDAO.pullData(this);
 //                pullDataDAO.pushDataApi();
+//                AppConstants.notificationUtils.showNotifications(getString(R.string.sync), getString(R.string.syncInProgress), 1, this);
                 boolean isSynced = syncUtils.syncForeground();
-                AppConstants.notificationUtils.showNotifications(getString(R.string.sync_notif_title), getString(R.string.sync_background_completed), 1, this);
 //                boolean i = imagesPushDAO.patientProfileImagesPush();
 //                boolean o = imagesPushDAO.obsImagesPush();
-                if (isSynced)
-                    AppConstants.notificationUtils.showNotifications_noProgress(getString(R.string.sync_not_available), getString(R.string.please_connect_to_internet), getApplicationContext());
-                else
-                    AppConstants.notificationUtils.showNotifications(getString(R.string.image_upload), getString(R.string.image_upload_failed), 4, this);
+//                if (isSynced)
+//                    AppConstants.notificationUtils.showNotifications_noProgress(getString(R.string.sync_not_available), getString(R.string.please_connect_to_internet), getApplicationContext());
+//                else
+//                    AppConstants.notificationUtils.showNotifications(getString(R.string.image_upload), getString(R.string.image_upload_failed), 4, this);
                 return true;
 //            case R.id.backupOption:
 //                manageBackup(true, false);  // to backup app data at any time of the day
@@ -386,6 +443,7 @@ public class HomeActivity extends AppCompatActivity {
         //TODO: Verify License Key
         return true;
     }
+
     @Override
     public void onBackPressed() {
         /*new AlertDialog.Builder(this)
@@ -406,11 +464,9 @@ public class HomeActivity extends AppCompatActivity {
         alertdialogBuilder.setMessage(R.string.sure_to_exit);
         alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i)
-
-            {
+            public void onClick(DialogInterface dialogInterface, int i) {
                 moveTaskToBack(true);
-               // finish();
+                // finish();
             }
         });
         alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
@@ -432,7 +488,8 @@ public class HomeActivity extends AppCompatActivity {
     public class Myreceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            lastSyncTextView.setText(getString(R.string.last_synced) + sessionManager.getLastPulledDateTime());
+            lastSyncTextView.setText(getString(R.string.last_synced) + " " + sessionManager.getLastSyncDateTime());
+            lastSyncAgo.setText(sessionManager.getLastTimeAgo());
         }
     }
 
@@ -458,7 +515,7 @@ public class HomeActivity extends AppCompatActivity {
                                 checkExistingMindMaps();
 
                             } else {
-                                Toast.makeText(context, getResources().getString(R.string.no_mindmaps_found), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, getResources().getString(R.string.no_protocols_found), Toast.LENGTH_SHORT).show();
                             }
                         }
 

@@ -153,6 +153,12 @@ public class DateAndTimeUtils {
         return date.format(todayDate);
     }
 
+    public String getcurrentDateTime() {
+        DateFormat date = new SimpleDateFormat("dd MMM yyyy HH:mm", Locale.getDefault());
+        Date todayDate = new Date();
+        return date.format(todayDate);
+    }
+
     public static String SimpleDatetoLongFollowupDate(String dateString) {
         String formattedDate = null;
         try {

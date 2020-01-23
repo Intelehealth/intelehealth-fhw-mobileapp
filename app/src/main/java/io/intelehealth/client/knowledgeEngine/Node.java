@@ -563,15 +563,24 @@ public class Node implements Serializable {
                     String associatedTest = node_opt.getText();
                     if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") ||
                             associatedTest.trim().equals("H/o specific illness"))) {
-                        raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
-//                        raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
-                    } else {
-                        if (node_opt.getLanguage().equals("%")) {
-                            raw = raw + bullet + " " + node_opt.formLanguage() + next_line;
-                        } else if (node_opt.getLanguage().substring(0, 1).equals("%")) {
-                            raw = raw + (bullet + " " + node_opt.getLanguage().substring(1) + " - " + node_opt.formLanguage()) + next_line;
+
+                        if ((associatedTest.trim().equals("Associated symptoms"))) {
+                            raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                            raw = raw.substring(6);
+                            Log.e("FinalText= ", raw);
                         } else {
-                            raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + node_opt.formLanguage()) + next_line;
+                            raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                        }
+
+                    } else {
+                        if (!node_opt.getLanguage().isEmpty()) {
+                            if (node_opt.getLanguage().equals("%")) {
+                                raw = raw + bullet + " " + node_opt.formLanguage() + next_line;
+                            } else if (node_opt.getLanguage().substring(0, 1).equals("%")) {
+                                raw = raw + (bullet + " " + node_opt.getLanguage().substring(1) + " - " + node_opt.formLanguage()) + next_line;
+                            } else {
+                                raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + node_opt.formLanguage()) + next_line;
+                            }
                         }
                     }
                     //raw = raw + ("\n"+"\n" + bullet +" "+ node_opt.formLanguage());
@@ -1364,12 +1373,15 @@ public class Node implements Serializable {
             for (int i = 0; i < mOptions.size(); i++) {
                 if (mOptions.get(i).isSelected()) {
                     String test = mOptions.get(i).getLanguage();
-                    if (test.equals("%")) {
-                    } else if (test.substring(0, 1).equals("%")) {
-                        stringsList.add(test.substring(1));
-                    } else {
-                        stringsList.add(test);
+                    if (!test.isEmpty()) {
+                        if (test.equals("%")) {
+                        } else if (test.substring(0, 1).equals("%")) {
+                            stringsList.add(test.substring(1));
+                        } else {
+                            stringsList.add(test);
+                        }
                     }
+
                     if (!mOptions.get(i).isTerminal()) {
                         stringsList.add(mOptions.get(i).formLanguage());
                         isTerminal = false;
@@ -1630,13 +1642,15 @@ public class Node implements Serializable {
 
 
             if (mOptions.get(i).isSelected()) {
-                if (mOptions.get(i).getLanguage().equals("%")) {
-                } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
-                    positiveAssociations.add(mOptions.get(i).getLanguage().substring(1));
-                } else if (mOptions.get(i).getLanguage().isEmpty()) {
-                    positiveAssociations.add(mOptions.get(i).getText());
-                } else {
-                    positiveAssociations.add(mOptions.get(i).getLanguage());
+                if (!mOptions.get(i).getLanguage().isEmpty()) {
+                    if (mOptions.get(i).getLanguage().equals("%")) {
+                    } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
+                        positiveAssociations.add(mOptions.get(i).getLanguage().substring(1));
+                    } else if (mOptions.get(i).getLanguage().isEmpty()) {
+                        positiveAssociations.add(mOptions.get(i).getText());
+                    } else {
+                        positiveAssociations.add(mOptions.get(i).getLanguage());
+                    }
                 }
                 if (!mOptions.get(i).isTerminal()) {
                     if (positiveAssociations.size() > 0) {
@@ -1648,13 +1662,15 @@ public class Node implements Serializable {
                 }
 
             } else if (mOptions.get(i).isNoSelected()) {
-                if (mOptions.get(i).getLanguage().equals("%")) {
-                } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
-                    negativeAssociations.add(mOptions.get(i).getLanguage().substring(1));
-                } else if (mOptions.get(i).getLanguage().isEmpty()) {
-                    negativeAssociations.add(mOptions.get(i).getText());
-                } else {
-                    negativeAssociations.add(mOptions.get(i).getLanguage());
+                if (!mOptions.get(i).getLanguage().isEmpty()) {
+                    if (mOptions.get(i).getLanguage().equals("%")) {
+                    } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
+                        negativeAssociations.add(mOptions.get(i).getLanguage().substring(1));
+                    } else if (mOptions.get(i).getLanguage().isEmpty()) {
+                        negativeAssociations.add(mOptions.get(i).getText());
+                    } else {
+                        negativeAssociations.add(mOptions.get(i).getLanguage());
+                    }
                 }
             }
 
@@ -1739,13 +1755,15 @@ public class Node implements Serializable {
                         Log.i(TAG, "ipt: " + mOptions.get(i).getInputType());
                         if (mOptions.get(i).getInputType().equals("camera")) {
                         } else {
-                            if (answer.equals("%")) {
-                            } else if (mOptions.get(i).getText().equals(mOptions.get(i).getLanguage())) {
-                                stringsList.add(bullet_hollow + answer + next_line);
-                            } else if (answer.substring(0, 1).equals("%")) {
-                                stringsList.add(bullet_hollow + answer.substring(1) + next_line);
-                            } else {
-                                stringsList.add(bullet_hollow + answer + next_line);
+                            if (!answer.isEmpty()) {
+                                if (answer.equals("%")) {
+                                } else if (mOptions.get(i).getText().equals(mOptions.get(i).getLanguage())) {
+                                    stringsList.add(bullet_hollow + answer + next_line);
+                                } else if (answer.substring(0, 1).equals("%")) {
+                                    stringsList.add(bullet_hollow + answer.substring(1) + next_line);
+                                } else {
+                                    stringsList.add(bullet_hollow + answer + next_line);
+                                }
                             }
                         }
                     } else {

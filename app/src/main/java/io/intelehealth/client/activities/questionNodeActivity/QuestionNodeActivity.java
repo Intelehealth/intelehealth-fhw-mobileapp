@@ -273,7 +273,9 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
             } else {
                 String complaint = currentNode.getText();
-                insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + " ");
+                if (!complaint.equalsIgnoreCase("Associated symptoms")) {
+                    insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + " ");
+                }
             }
             ArrayList<String> selectedAssociatedComplaintsList = currentNode.getSelectedAssociations();
             if (selectedAssociatedComplaintsList != null && !selectedAssociatedComplaintsList.isEmpty()) {
@@ -300,7 +302,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 complaintNumber++;
                 setupQuestions(complaintNumber);
                 complaintConfirmed = false;
-            } else if (complaints.size() > 1 && complaintNumber == complaints.size() - 1) {
+            } else if (complaints.size() >= 1 && complaintNumber == complaints.size() - 1 && !optionsList.isEmpty()) {
                 complaintNumber++;
                 removeDuplicateSymptoms();
                 complaintConfirmed = false;
@@ -338,9 +340,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             }
-
         }
-
     }
 
     /**
@@ -418,7 +418,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
     private void setupQuestions(int complaintIndex) {
         nodeComplete = false;
 
-        if (complaints.size() > 1) {
+        if (complaints.size() >= 1) {
             getAssociatedSymptoms(complaintIndex);
         } else {
             currentNode = complaintsNodes.get(complaintIndex);
@@ -448,6 +448,8 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 currentNode = assoComplaintsNodes.get(complaintIndex);
                 Log.e("CurrentNode", "" + currentNode);
 
+            } else {
+                currentNode = complaintsNodes.get(complaintIndex);
             }
         }
     }

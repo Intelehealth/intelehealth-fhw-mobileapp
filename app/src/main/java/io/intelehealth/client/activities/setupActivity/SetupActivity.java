@@ -408,15 +408,15 @@ public class SetupActivity extends AppCompatActivity {
                                     }
 
 
-                                    key = text.getText().toString();
-                                    licenseUrl = url.getText().toString();
+                                    key = text.getText().toString().trim();
+                                    licenseUrl = url.getText().toString().trim();
 
                                     if (licenseUrl.isEmpty()) {
                                         url.setError(getResources().getString(R.string.enter_server_url));
                                         url.requestFocus();
                                         return;
                                     }
-                                    if (licenseUrl.contains(":")){
+                                    if (licenseUrl.contains(":")) {
                                         url.setError(getResources().getString(R.string.invalid_url));
                                         url.requestFocus();
                                         return;
@@ -544,7 +544,7 @@ public class SetupActivity extends AppCompatActivity {
                                             sessionManager.setBaseUrl(BASE_URL);
                                             sessionManager.setSetupComplete(true);
 
-                                           // OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
+                                            // OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
                                             AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
 
                                             Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
@@ -581,7 +581,7 @@ public class SetupActivity extends AppCompatActivity {
                                                 values.put("username", USERNAME);
                                                 values.put("password", hash_password);
                                                 values.put("creator_uuid_cred", loginModel.getUser().getUuid());
-                                                values.put("chwname",loginModel.getUser().getDisplay());
+                                                values.put("chwname", loginModel.getUser().getDisplay());
                                                 values.put("provider_uuid_cred", sessionManager.getProviderID());
                                                 createdRecordsCount = sqLiteDatabase.insertWithOnConflict("tbl_user_credentials", null, values, SQLiteDatabase.CONFLICT_REPLACE);
                                                 sqLiteDatabase.setTransactionSuccessful();
@@ -648,6 +648,7 @@ public class SetupActivity extends AppCompatActivity {
 
 
     }
+
     public String getSalt_DATA() {
         BufferedReader reader = null;
         String salt = null;
@@ -692,8 +693,6 @@ public class SetupActivity extends AppCompatActivity {
                             customProgressDialog.dismiss();
                             if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
 
-
-
                                 Log.e("MindMapURL", "Successfully get MindMap URL");
                                 mTask = new DownloadMindMaps(context);
                                 mindmapURL = res.getMindmap().trim();
@@ -701,14 +700,16 @@ public class SetupActivity extends AppCompatActivity {
                                 checkExistingMindMaps();
 
                             } else {
-                                Toast.makeText(SetupActivity.this, getResources().getString(R.string.no_mindmaps_found), Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(SetupActivity.this, res.getMessage(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(SetupActivity.this, getResources().getString(R.string.no_protocols_found), Toast.LENGTH_LONG).show();
                             }
                         }
 
                         @Override
                         public void onError(Throwable e) {
                             customProgressDialog.dismiss();
-                            Toast.makeText(SetupActivity.this, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_SHORT).show();
+                            Log.e("MindMapURL", " " + e);
+                            Toast.makeText(SetupActivity.this, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_LONG).show();
                         }
 
                         @Override

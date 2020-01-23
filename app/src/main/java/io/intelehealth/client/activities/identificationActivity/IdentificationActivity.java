@@ -975,7 +975,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
             patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
             patientdto.setPatientPhoto(mCurrentPhotoPath);
-//                patientdto.setEconomic(StringUtils.getValue(m));
+//          patientdto.setEconomic(StringUtils.getValue(m));
             patientdto.setStateprovince(StringUtils.getValue(mState.getSelectedItem().toString()));
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -1042,29 +1042,32 @@ public class IdentificationActivity extends AppCompatActivity {
             if (NetworkConnection.isOnline(getApplication())) {
 //                patientApiCall();
 //                frameJson();
-                AppConstants.notificationUtils.showNotifications(getString(R.string.patient_data_upload),
-                        getString(R.string.uploading) + patientdto.getFirstname() + "" + patientdto.getLastname() +
-                                "'s data", 2, getApplication());
+
+//                AppConstants.notificationUtils.showNotifications(getString(R.string.patient_data_upload),
+//                        getString(R.string.uploading) + patientdto.getFirstname() + "" + patientdto.getLastname() +
+//                                "'s data", 2, getApplication());
+
                 SyncDAO syncDAO = new SyncDAO();
                 ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
                 boolean push = syncDAO.pushDataApi();
                 boolean pushImage = imagesPushDAO.patientProfileImagesPush();
-                if (push)
-                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s data upload complete.", 2, getApplication());
-                else
-                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s data not uploaded.", 2, getApplication());
 
-                if (pushImage)
-                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s Image upload complete.", 4, getApplication());
-                else
-                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s Image not complete.", 4, getApplication());
+//                if (push)
+//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s data upload complete.", 2, getApplication());
+//                else
+//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s data not uploaded.", 2, getApplication());
+
+//                if (pushImage)
+//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s Image upload complete.", 4, getApplication());
+//                else
+//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s Image not complete.", 4, getApplication());
 
 
+//
             }
-            else {
-                AppConstants.notificationUtils.showNotifications(getString(R.string.patient_data_failed), getString(R.string.check_your_connectivity), 2, IdentificationActivity.this);
-            }
-
+//            else {
+//                AppConstants.notificationUtils.showNotifications(getString(R.string.patient_data_failed), getString(R.string.check_your_connectivity), 2, IdentificationActivity.this);
+//            }
             if (isPatientInserted && isPatientImageInserted) {
                 Logger.logD(TAG, "inserted");
                 Intent i = new Intent(getApplication(), PatientDetailActivity.class);
@@ -1175,15 +1178,15 @@ public class IdentificationActivity extends AppCompatActivity {
                 boolean ispush = syncDAO.pushDataApi();
                 boolean isPushImage = imagesPushDAO.patientProfileImagesPush();
 
-                if (ispush)
-                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirst_name() + "" + patientdto.getLast_name() + "'s data upload complete.", 2, getApplication());
-                else
-                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirst_name() + "" + patientdto.getLast_name() + "'s data not uploaded.", 2, getApplication());
+//                if (ispush)
+//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirst_name() + "" + patientdto.getLast_name() + "'s data upload complete.", 2, getApplication());
+//                else
+//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirst_name() + "" + patientdto.getLast_name() + "'s data not uploaded.", 2, getApplication());
 
-                if (isPushImage)
-                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirst_name() + "" + patientdto.getLast_name() + "'s Image upload complete.", 4, getApplication());
-                else
-                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirst_name() + "" + patientdto.getLast_name() + "'s Image not complete.", 4, getApplication());
+//                if (isPushImage)
+//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirst_name() + "" + patientdto.getLast_name() + "'s Image upload complete.", 4, getApplication());
+//                else
+//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirst_name() + "" + patientdto.getLast_name() + "'s Image not complete.", 4, getApplication());
 
             }
             if (isPatientUpdated && isPatientImageUpdated) {

@@ -54,9 +54,15 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         if (activePatientModel.getOpenmrs_id() != null) {
             header = String.format("%s %s, %s", activePatientModel.getFirst_name(),
                     activePatientModel.getLast_name(), activePatientModel.getOpenmrs_id());
+
+            holder.getTv_not_uploaded().setVisibility(View.GONE);
         } else {
             header = String.format("%s %s", activePatientModel.getFirst_name(),
                     activePatientModel.getLast_name());
+
+            holder.getTv_not_uploaded().setVisibility(View.VISIBLE);
+            holder.getTv_not_uploaded().setText("Not Uploaded");
+            holder.getTv_not_uploaded().setBackgroundColor(context.getResources().getColor(R.color.lite_red));
         }
 //        int age = DateAndTimeUtils.getAge(activePatientModel.getDate_of_birth());
         String age = DateAndTimeUtils.getAgeInYearMonth(activePatientModel.getDate_of_birth(), context);
@@ -115,6 +121,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         private TextView indicatorTextView;
         private View rootView;
         private ImageView ivPriscription;
+        private TextView tv_not_uploaded;
 
         public ActivePatientViewHolder(View itemView) {
             super(itemView);
@@ -122,6 +129,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
             bodyTextView = itemView.findViewById(R.id.list_item_body_text_view);
             indicatorTextView = itemView.findViewById(R.id.list_item_indicator_text_view);
             ivPriscription = itemView.findViewById(R.id.iv_prescription);
+            tv_not_uploaded = (TextView) itemView.findViewById(R.id.tv_not_uploaded);
             rootView = itemView;
         }
 
@@ -151,6 +159,14 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
 
         public View getRootView() {
             return rootView;
+        }
+
+        public TextView getTv_not_uploaded() {
+            return tv_not_uploaded;
+        }
+
+        public void setTv_not_uploaded(TextView tv_not_uploaded) {
+            this.tv_not_uploaded = tv_not_uploaded;
         }
     }
 

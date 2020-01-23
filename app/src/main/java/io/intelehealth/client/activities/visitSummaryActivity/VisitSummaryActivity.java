@@ -598,7 +598,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         .show();
 
                 if (NetworkConnection.isOnline(getApplication())) {
-                    AppConstants.notificationUtils.showNotifications(getString(R.string.visit_data_upload), getString(R.string.uploading_visit_data_notif), 3, VisitSummaryActivity.this);
+//                    AppConstants.notificationUtils.showNotifications(getString(R.string.visit_data_upload), getString(R.string.uploading_visit_data_notif), 3, VisitSummaryActivity.this);
                     SyncDAO syncDAO = new SyncDAO();
                     ProgressDialog pd = new ProgressDialog(VisitSummaryActivity.this);
                     pd.setTitle("Syncing");
@@ -619,7 +619,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 AppConstants.notificationUtils.DownloadDone(getString(R.string.visit_data_upload), getString(R.string.failed_to_upload), 3, VisitSummaryActivity.this);
                             uploaded = true;
                             pd.dismiss();
-                            Toast.makeText(VisitSummaryActivity.this, getString(R.string.upload_completed), Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(VisitSummaryActivity.this, getString(R.string.upload_completed), Toast.LENGTH_SHORT).show();
                         }
                     }, 4000);
                 } else {

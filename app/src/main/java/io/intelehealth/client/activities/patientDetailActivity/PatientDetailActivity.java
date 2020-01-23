@@ -187,7 +187,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 encounterDTO.setVisituuid(uuid);
                 encounterDTO.setSyncd(false);
                 encounterDTO.setProvideruuid(sessionManager.getProviderID());
-                Log.d("DTO","DTO:detail "+ encounterDTO.getProvideruuid());
+                Log.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
                 encounterDTO.setVoided(0);
                 encounterDTO.setPrivacynotice_value(privacy_value_selected);//privacy value added.
 
@@ -569,10 +569,10 @@ public class PatientDetailActivity extends AppCompatActivity {
                         } catch (DAOException e) {
                             Crashlytics.getInstance().core.logException(e);
                         }
-                        if (isImageDownloaded)
-                            AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_image_download_notifi), "" + patient_new.getFirst_name() + "" + patient_new.getLast_name() + "'s Image Download Incomplete.", 4, getApplication());
-                        else
-                            AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_image_download_notifi), "" + patient_new.getFirst_name() + "" + patient_new.getLast_name() + "'s Image Download Incomplete.", 4, getApplication());
+//                        if (isImageDownloaded)
+//                            AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_image_download_notifi), "" + patient_new.getFirst_name() + "" + patient_new.getLast_name() + "'s Image Download Incomplete.", 4, getApplication());
+//                        else
+//                            AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_image_download_notifi), "" + patient_new.getFirst_name() + "" + patient_new.getLast_name() + "'s Image Download Incomplete.", 4, getApplication());
 
 
                     }
@@ -611,7 +611,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                     TextView complaintxt1 = new TextView(this);
                     complaintxt1.setLayoutParams(layoutParams);
                     if (visitValue != null && !visitValue.equals("")) {
-                        complaintxt1.setText(Html.fromHtml(visitValue));
+                        String visitComplaint = Html.fromHtml(visitValue).toString();
+                        complaintxt1.setText(visitComplaint.replace(Node.bullet_arrow + "Associated symptoms", ""));
                     } else {
                         Log.e("Check", "No complaint");
                     }
@@ -650,7 +651,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 if (i == 2) {
                     TextView complaintxt1 = new TextView(this);
                     if (visitValue != null && !visitValue.equals("")) {
-                        complaintxt1.setText(Html.fromHtml(visitValue));
+                        String visitComplaint = Html.fromHtml(visitValue).toString();
+                        complaintxt1.setText(visitComplaint.replace(Node.bullet_arrow + "Associated symptoms", ""));
                     } else {
                         Log.e("Check", "No complaint");
                     }

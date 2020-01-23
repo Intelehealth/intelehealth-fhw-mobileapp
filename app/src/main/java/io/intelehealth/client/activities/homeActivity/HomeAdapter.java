@@ -30,8 +30,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
 
     final String[] options = {IntelehealthApplication.getAppContext().getString(R.string.new_patient),
             IntelehealthApplication.getAppContext().getString(R.string.find_patient),
-            IntelehealthApplication.getAppContext().getString(R.string.today_patient),
-            IntelehealthApplication.getAppContext().getString(R.string.active_patient),
+            IntelehealthApplication.getAppContext().getString(R.string.today_visits),
+            IntelehealthApplication.getAppContext().getString(R.string.active_visits),
             IntelehealthApplication.getAppContext().getString(R.string.video_library),
             IntelehealthApplication.getAppContext().getString(R.string.lastsync_normal)
 

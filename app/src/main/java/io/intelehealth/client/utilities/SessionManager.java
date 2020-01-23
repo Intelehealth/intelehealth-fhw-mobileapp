@@ -36,6 +36,8 @@ public class SessionManager {
     private static final String FIRST_TIME_LAUNCHED = "firsttimelaunched";
     private static final String SYNC_FINISHED = "syncfinished";
     private static final String LAST_PULLED_EXECUTED_DATE_TIME = "lastpulledexecutedtimeanddate";
+    private static final String LAST_SYNC_SUCCESS_DATE_TIME = "lastsyncsuccessdatetime";
+    private static final String LAST_SYNC_TIME_AGO = "LAST_SYNC_TIME_AGO";
     private static final String PULL_SYNC_FINISHED = "pullsyncfinished";
     private static final String PUSH_SYNC_FINISHED = "pushsyncfinished";
     private static final String MIND_MAP_SERVER_URL = "mindmapurl";
@@ -319,6 +321,24 @@ public class SessionManager {
 
     public void setLastPulledDateTime(String lastPulledDateTime) {
         editor.putString(LAST_PULLED_EXECUTED_DATE_TIME, lastPulledDateTime);
+        editor.commit();
+    }
+
+    public String getLastSyncDateTime() {
+        return pref.getString(LAST_SYNC_SUCCESS_DATE_TIME, "- - - -");
+    }  //getting the sync value  and time and saving in the sharedpref
+
+    public void setLastSyncDateTime(String lastPulledDateTime) {
+        editor.putString(LAST_SYNC_SUCCESS_DATE_TIME, lastPulledDateTime);
+        editor.commit();
+    }
+
+    public String getLastTimeAgo() {
+        return pref.getString(LAST_SYNC_TIME_AGO, "");
+    }  //getting the sync value  and time and saving in the sharedpref
+
+    public void setLastTimeAgo(String lastPulledDateTime) {
+        editor.putString(LAST_SYNC_TIME_AGO, lastPulledDateTime);
         editor.commit();
     }
 

@@ -176,11 +176,10 @@
     <string name="title_activity_physical_exam">ଶାରୀରିକ ପରୀକ୍ଷା</string>
     <string name="title_activity_search_patient">ରୋଗୀ ଖୋଜିବା</string>
     <string name="title_activity_settings">ସେଟିଙ୍ଗ</string>
-    <string name="title_activity_today_patient">ଦିର ରୋଗୀ</string>
     <string name="title_activity_video_library">ଭିଡ଼ିଓ ଲାଇବ୍ରେରୀ</string>
     <string name="title_activity_vitals">ପ୍ରଧାନ (ମହୂତ୍ତପର୍ଣ୍ଣ)</string>
     <string name="title_home_screen">ଘର</string>
-    <string name="today_patient">ଆଜିର ରୋଗୀ</string>
+
     <string name="toast_crash">ବେଦ ତ୍ରଟି କୁ ମୁକାବିଲା କରିବାକୁ ପଡ଼େ; ରିପୋର୍ଟ ପଠାଗଲା</string>
     <string name="uploading">ପ୍ ଲୋଡ଼ିଙ୍ଗ</string>
     <string name="url_invalid">ନିଜର ୟୁଅାରଏଲ୍ କୁ ଯାଞ୍ଚ କରନ୍ତୁ</string>
@@ -274,7 +273,7 @@
     <string name="user_server_unreachable">"ଫୋନ  ଅଫଲାଇନ ଅଛି | ସରବର ରେ ଲଗନ ହେଇ ପାରିବ ନାହିଁ "</string>
     <string name="enter_password">Enter your password</string>
     <string name="enter_username">Enter your username</string>
-    <string name="active_patient" translatable="false">ଦେଖିଥିବା ରୋଗୀ</string>
+
     <string name="patient_name">Patient name</string>
     <string name="son_daughter_wife_of">Son/Daughter/Wife of</string>
     <string name="occupation">Occupation</string>
@@ -310,7 +309,7 @@
     <string name="upload_before_end_visit_active">visits.Please upload visit before attempting to end the visit.</string>
     <string name="active">Active</string>
     <string name="closed">Closed</string>
-    <string name="last_synced">Last Synced:-</string>
+
     <string name="syncInProgress">Sync in progress</string>
     <string name="please_wait">Please wait...</string>
     <string name="sync_notif_title">sync</string>
@@ -343,5 +342,28 @@
     <string name="downloading_prescription">Downloading prescription</string>
     <string name="visit_data_failed">Visit Data Failed</string>
     <string name="patient_data_failed">Patient Data Failed</string>
+
+    <string name="no_protocols_found">No protocols found</string>
+    <string name="unable_to_get_proper_response">There was a problem downloading protocols, Please contact system administrator</string>
+    <string name="protocols_downloaded_successfully">Protocols Downloaded Successfully!</string>
+    <string name="last_synced">Last Synced - </string>
+    <string name="today_visits">ଆଜିର ରୋଗୀ</string>
+    <string name="active_visits" translatable="false">ଦେଖିଥିବା ରୋଗୀ</string>
+    <string name="day">day</string>
+    <string name="hour">hour</string>
+    <string name="minute">minute</string>
+    <string name="s">s</string>
+    <string name="ago">ago</string>
+    <string name="successfully_synced">Successfully synced</string>
+    <string name="failed_synced"><![CDATA[Failed synced, please check your internet connection & try again]]></string>
+    <string name="title_activity_active_patient" translatable="false">Active Visits</string>
+    <string name="title_activity_today_patient" translatable="false">"Today's Visits"</string>
+
+    <string name="privacy_toast">Please select an option</string>
+    <string name="sync_now">Sync Now</string>
+    <string name="lastsync">lastsync</string>
+    <string name="has_a_new_prescription">has a new prescription</string>
+    <string name="patient_denies">Patient denies</string>
+    <string name="patient_reports">Patient reports</string>
 
 </resources>

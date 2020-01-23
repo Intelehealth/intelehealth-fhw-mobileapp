@@ -8,9 +8,8 @@
     <string name="identification_screen_picker_months">Bulan</string>
     <string name="identification_screen_text_months">Bulan</string>
     <string name="identification_screen_picker_years">Tuig</string>
-    <string name="active_patient">Aktibo nga mga Pasyente</string>
     <string name="button_active_pt">Aktibo nga mga Pasyente</string>
-    <string name="title_activity_active_patient">Aktibo nga mga Pasyente</string>
+
     <string name="visit_summary_complaint">c/o</string>
     <string name="visit_summary_follow_up_date">Sunod nga petsa</string>
     <string name="sync_complete">Nahuman (DONE)</string>
@@ -244,8 +243,7 @@
     <string name="title_activity_patient_history">Niaging Kasaysayan sa Medisina</string>
     <string name="title_activity_patient_summary">Sumaryo sa pagbisita</string>
     <string name="title_activity_physical_exam">Pisikal nga Pagsusi</string>
-    <string name="title_activity_today_patient">Mga Pasyente Karon adlawa</string>
-    <string name="today_patient">Mga Pasyente Karon adlawa</string>
+
     <string name="title_activity_video_library">Video Library</string>
     <string name="video_library">Video Library</string>
     <string name="title_activity_vitals">Mahinungdanon</string>
@@ -345,7 +343,6 @@
     <string name="upload_before_end_visit_active">visits.Please upload visit before attempting to end the visit.</string>
     <string name="active">Active</string>
     <string name="closed">Closed</string>
-    <string name="last_synced">Last Synced:-</string>
     <string name="syncInProgress">Sync in progress</string>
     <string name="please_wait">Please wait...</string>
     <string name="sync_notif_title">sync</string>
@@ -378,6 +375,29 @@
     <string name="downloading_prescription">Downloading prescription</string>
     <string name="visit_data_failed">Visit Data Failed</string>
     <string name="patient_data_failed">Patient Data Failed</string>
+
+    <string name="no_protocols_found">No protocols found</string>
+    <string name="unable_to_get_proper_response">There was a problem downloading protocols, Please contact system administrator</string>
+    <string name="protocols_downloaded_successfully">Protocols Downloaded Successfully!</string>
+    <string name="last_synced">Last Synced - </string>
+    <string name="today_visits">Mga Pasyente Karon adlawa</string>
+    <string name="active_visits">Aktibo nga mga Pasyente</string>
+    <string name="day">day</string>
+    <string name="hour">hour</string>
+    <string name="minute">minute</string>
+    <string name="s">s</string>
+    <string name="ago">ago</string>
+    <string name="successfully_synced">Successfully synced</string>
+    <string name="failed_synced"><![CDATA[Failed synced, please check your internet connection & try again]]></string>
+    <string name="title_activity_today_patient" translatable="false">"Today's Visits"</string>
+    <string name="title_activity_active_patient" translatable="false">Active Visits</string>
+
+    <string name="privacy_toast">Please select an option</string>
+    <string name="sync_now">Sync Now</string>
+    <string name="lastsync">lastsync</string>
+    <string name="has_a_new_prescription">has a new prescription</string>
+    <string name="patient_denies">Patient denies</string>
+    <string name="patient_reports">Patient reports</string>
 
 
 </resources>

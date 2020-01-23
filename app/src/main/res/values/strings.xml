@@ -111,7 +111,7 @@
     <string name="identification_screen_picker_months" translatable="false">months</string>
 
     //Active Patients Screen
-    <string name="title_activity_active_patient" translatable="false">Active Patients</string>
+    <string name="title_activity_active_patient" translatable="false">Active Visits</string>
 
     //Patient History Screen
     <string name="title_activity_get_patient_history" translatable="false">Patient History</string>
@@ -254,7 +254,7 @@
     <string name="title_activity_setup" translatable="false">Setup</string>
 
     <string name="title_activity_camera" translatable="false">Camera</string>
-    <string name="title_activity_today_patient" translatable="false">"Today's Patients"</string>
+    <string name="title_activity_today_patient" translatable="false">"Today's Visits"</string>
     <string name="title_activity_additional_documents" translatable="false">"Additional Documents"</string>
     <string name="title_activity_video_library" translatable="false">"Video Library"</string>
     <string name="visit_summary_patient_details" translatable="false">Patient details</string>
@@ -341,8 +341,6 @@
 
     <string name="new_patient" translatable="false">New Patient</string>
     <string name="find_patient" translatable="false">Find Patients</string>
-    <string name="today_patient" translatable="false">"Today's Patients"</string>
-    <string name="active_patient" translatable="false">"Active Patients"</string>
     <string name="video_library" translatable="false">Video Library</string>
 
     <string name="error_no_sd" translatable="false">This feature is only available to devices with SD cards.</string>
@@ -446,10 +444,9 @@
     <string name="enter_password">Enter your password</string>
     <string name="enter_username">Enter your username</string>
     <string name="has_a_new_prescription">has a new prescription</string>
-    <string name="patient_denies">Patient denies</string>
-    <string name="patient_reports">Patient reports</string>
-    <string name="no_mindmaps_found">No Mindmaps Found</string>
-    <string name="unable_to_get_proper_response">Unable to get proper response</string>
+    <string name="patient_denies" translatable="false">Patient denies</string>
+    <string name="patient_reports" translatable="false">Patient reports</string>
+
     <string name="associated_symptoms">Associated symptoms</string>
     <string name="enter_server_url">Enter Server URL</string>
     <string name="enter_license_key">Enter license key</string>
@@ -490,7 +487,7 @@
     <string name="upload_before_end_visit_active"> visits.Please upload visit before attempting to end the visit.</string>
     <string name="active">Active</string>
     <string name="closed">Closed</string>
-    <string name="last_synced">Last Synced:- </string>
+
     <string name="syncInProgress">Sync in progress</string>
     <string name="please_wait">Please wait...</string>
     <string name="sync_notif_title">sync</string>
@@ -524,5 +521,18 @@
     <string name="visit_data_failed">Visit Data Failed</string>
     <string name="patient_data_failed">Patient Data Failed</string>
 
+    <string name="protocols_downloaded_successfully">Protocols Downloaded Successfully!</string>
+    <string name="no_protocols_found">No protocols found</string>
+    <string name="unable_to_get_proper_response">There was a problem downloading protocols, Please contact system administrator</string>
+    <string name="last_synced">Last Synced - </string>
+    <string name="today_visits" translatable="false">"Today's Visits"</string>
+    <string name="active_visits" translatable="false">"Active Visits"</string>
+    <string name="day">day</string>
+    <string name="hour">hour</string>
+    <string name="minute">minute</string>
+    <string name="s">s</string>
+    <string name="ago">ago</string>
+    <string name="successfully_synced">Successfully synced</string>
+    <string name="failed_synced"><![CDATA[Failed synced, please check your internet connection & try again]]></string>
 
 </resources>

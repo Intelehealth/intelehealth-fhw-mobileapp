@@ -6,12 +6,17 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import io.intelehealth.client.R;
@@ -65,7 +70,7 @@ public class SyncDAO {
             locationDAO.insertLocations(responseDTO.getData().getLocationDTO());
             providerDAO.insertProviders(responseDTO.getData().getProviderlist());
 
-            Logger.logD(TAG, "Pull ENCOUNTER: "+responseDTO.getData().getEncounterDTO());
+            Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
             Logger.logD(TAG, "Pull sync ended");
             sessionManager.setPullExcutedTime(sessionManager.isPulled());
             sessionManager.setFirstTimeSyncExecute(false);
@@ -94,7 +99,7 @@ public class SyncDAO {
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
             @Override
             public void onResponse(Call<ResponseDTO> call, Response<ResponseDTO> response) {
-               // AppConstants.notificationUtils.showNotifications("Sync background", "Sync in progress..", 1, IntelehealthApplication.getAppContext());
+                // AppConstants.notificationUtils.showNotifications("Sync background", "Sync in progress..", 1, IntelehealthApplication.getAppContext());
                 if (response.body() != null && response.body().getData() != null) {
                     sessionManager.setPulled(response.body().getData().getPullexecutedtime());
                 }
@@ -107,16 +112,19 @@ public class SyncDAO {
                     } catch (DAOException e) {
                         Crashlytics.getInstance().core.logException(e);
                     }
-                    if (sync)
-                    {
+                    if (sync) {
+                        sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime());
+
+                        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")) {
+                            CalculateAgoTime(context);
+                        }
 
                     }
-                     //   AppConstants.notificationUtils.DownloadDone("Sync", "Successfully synced", 1, IntelehealthApplication.getAppContext());
-                    else
-                    {
+                    //   AppConstants.notificationUtils.DownloadDone("Sync", "Successfully synced", 1, IntelehealthApplication.getAppContext());
+                    else {
 
                     }
-                        //AppConstants.notificationUtils.DownloadDone("Sync", "Failed synced,You can try again", 1, IntelehealthApplication.getAppContext());
+                    //AppConstants.notificationUtils.DownloadDone("Sync", "Failed synced,You can try again", 1, IntelehealthApplication.getAppContext());
 
                     if (sessionManager.getTriggerNoti().equals("yes")) {
                         if (response.body().getData() != null) {
@@ -164,7 +172,6 @@ public class SyncDAO {
     }
 
 
-
     public boolean pullData(final Context context) {
 
         mDbHelper = new InteleHealthDatabaseHelper(context);
@@ -192,10 +199,15 @@ public class SyncDAO {
                     } catch (DAOException e) {
                         Crashlytics.getInstance().core.logException(e);
                     }
-                    if (sync)
-                        AppConstants.notificationUtils.DownloadDone("Sync", "Successfully synced", 1, IntelehealthApplication.getAppContext());
-                    else
-                        AppConstants.notificationUtils.DownloadDone("Sync", "Failed synced,You can try again", 1, IntelehealthApplication.getAppContext());
+                    if (sync) {
+                        sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime());
+                        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")) {
+                            CalculateAgoTime(context);
+                        }
+                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.successfully_synced), 1, IntelehealthApplication.getAppContext());
+                    } else {
+                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.failed_synced), 1, IntelehealthApplication.getAppContext());
+                    }
 
                     if (sessionManager.getTriggerNoti().equals("yes")) {
                         if (response.body().getData() != null) {
@@ -281,6 +293,7 @@ public class SyncDAO {
                             cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
                             cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
                             cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                            "",
                             ""
                     ));
                 } while (cursor.moveToNext());
@@ -316,7 +329,7 @@ public class SyncDAO {
                             for (int i = 0; i < pushResponseApiCall.getData().getPatientlist().size(); i++) {
                                 try {
                                     patientsDAO.updateOpemmrsId(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId(), pushResponseApiCall.getData().getPatientlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
-                                    Log.d("SYNC","ProvUUDI"+pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
+                                    Log.d("SYNC", "ProvUUDI" + pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
                                 } catch (DAOException e) {
                                     Crashlytics.getInstance().core.logException(e);
                                 }
@@ -333,7 +346,7 @@ public class SyncDAO {
                             for (int i = 0; i < pushResponseApiCall.getData().getEncounterlist().size(); i++) {
                                 try {
                                     encounterDAO.updateEncounterSync(pushResponseApiCall.getData().getEncounterlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getEncounterlist().get(i).getUuid());
-                                    Log.d("SYNC","Encounter Data: "+pushResponseApiCall.getData().getEncounterlist().get(i).toString());
+                                    Log.d("SYNC", "Encounter Data: " + pushResponseApiCall.getData().getEncounterlist().get(i).toString());
                                 } catch (DAOException e) {
                                     Crashlytics.getInstance().core.logException(e);
                                 }
@@ -354,5 +367,44 @@ public class SyncDAO {
         return isSucess[0];
     }
 
+    private void CalculateAgoTime(Context context) {
+        String finalTime = "";
+
+        String syncTime = sessionManager.getLastSyncDateTime();
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy HH:mm", Locale.getDefault());
+        ParsePosition pos = new ParsePosition(0);
+        long then = formatter.parse(syncTime, pos).getTime();
+        long now = new Date().getTime();
+
+        long seconds = (now - then) / 1000;
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+        long days = hours / 24;
+
+        String time = "";
+        long num = 0;
+        if (days > 0) {
+            num = days;
+            time = days + " " + context.getString(R.string.day);
+        } else if (hours > 0) {
+            num = hours;
+            time = hours + " " + context.getString(R.string.hour);
+        } else if (minutes >= 0) {
+            num = minutes;
+            time = minutes + " " + context.getString(R.string.minute);
+        }
+//      <For seconds>
+//      else {
+//            num = seconds;
+//            time = seconds + " second";
+//      }
+        if (num > 1) {
+            time += context.getString(R.string.s);
+        }
+        finalTime = time + " " + context.getString(R.string.ago);
+
+        sessionManager.setLastTimeAgo(finalTime);
+    }
 
 }
