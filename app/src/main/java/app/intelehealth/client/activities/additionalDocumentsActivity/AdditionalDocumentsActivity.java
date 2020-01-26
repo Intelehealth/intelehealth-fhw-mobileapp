@@ -19,11 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import app.intelehealth.client.R;
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.database.dao.ImagesDAO;
 import app.intelehealth.client.models.DocumentObject;
 import app.intelehealth.client.utilities.UuidDictionary;
-import io.intelehealth.client.R;
+
 import app.intelehealth.client.activities.cameraActivity.CameraActivity;
 import app.intelehealth.client.utilities.StringUtils;
 import app.intelehealth.client.utilities.exception.DAOException;

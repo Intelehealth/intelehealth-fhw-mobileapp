@@ -15,7 +15,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import app.intelehealth.client.utilities.OfflineLogin;
-import io.intelehealth.client.R;
+import app.intelehealth.client.R;
 import app.intelehealth.client.activities.homeActivity.HomeActivity;
 
 /**
