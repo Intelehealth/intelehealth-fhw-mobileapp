@@ -3,12 +3,12 @@ apply plugin: 'io.fabric'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "io.intelehealth.client"
+        applicationId "app.intelehealth.client"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 29
+        versionCode 35
         buildToolsVersion('28.0.3')
-        versionName "version 2.0 final"
+        versionName "2.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true

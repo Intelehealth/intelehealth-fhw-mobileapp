@@ -10,7 +10,7 @@
     <string name="identification_screen_picker_years">Tuig</string>
     <string name="button_active_pt">Aktibo nga mga Pasyente</string>
 
-    <string name="visit_summary_complaint">c/o</string>
+    <string name="visit_summary_complaint">c/pinaagi</string>
     <string name="visit_summary_follow_up_date">Sunod nga petsa</string>
     <string name="sync_complete">Nahuman (DONE)</string>
     <string name="error_no_sd">Kini nga bahin anaa lamang sa mga gamit nga may mga SD card.</string>
@@ -44,7 +44,7 @@
     <string name="db_file_write_error">Sayop nga pagsulat sa backup file</string>
     <string name="local_restore_alert_title">Ibalik ang Backup</string>
     <string name="local_restore_alert_message">Naay local ng backup nakit-an. Gusto ba nimo ibalik?</string>
-    <string name="downloading">Gina-Download</string>
+    <string name="downloading">Gina-Download...</string>
     <string name="image_downloading_service_title">Gina-Download</string>
     <string name="image_downloading_service_message">Gina-Donwload ang Imahe sa data</string>
     <string name="image_downloading_service_complete_title">Ang Imahe sa data na Kumplete ug download</string>
@@ -161,7 +161,7 @@
     <string name="identification_screen_prompt_gender">Gender*</string>
     <string name="identification_screen_prompt_occupation">Trabaho</string>
     <string name="identification_screen_prompt_relationship">Anak / Anak nga babaye / Asawa ni</string>
-    <string name="db_postal_code" translatable="false">Postal Code</string>
+    <string name="db_postal_code" translatable="false">Postal nga code</string>
     <string name="identification_screen_prompt_postal_code">Postal Code</string>
     <string name="identification_screen_snack_patient_created">Nahimo na ang pasyente! Gina-upload sa server.</string>
     <string name="logging_in">Gina-log in</string>
@@ -197,7 +197,7 @@
     <string name="prescription">Reseta</string>
     <string name="prompt_admin_password">Admin Password</string>
     <string name="prompt_email">Username</string>
-    <string name="prompt_licensekey">License Key</string>
+    <string name="prompt_licensekey">Yawi sa lisensya</string>
     <string name="prompt_password">Password</string>
     <string name="question_area_picker">Palihug pagsulod sa lugar (gilapdon nga X ang gitas-on)</string>
     <string name="question_date_picker">Palihug pagpili og petsa</string>
@@ -222,8 +222,8 @@
     <string name="backup_completed">Kompleto na ang Backup!</string>
     <string name="table_bmi">BMI</string>
     <string name="table_bp">Hinungdanon nga mga Ilhanan</string>
-    <string name="table_bpsys">BP Sys</string>
-    <string name="table_bpdia">BP Dia</string>
+    <string name="table_bpsys">Systole sa presyon</string>
+    <string name="table_bpdia">Diastole sa presyon</string>
     <string name="table_pulse">Pulso (bpm)</string>
     <string name="table_height">Gitas-on (cm)</string>
     <string name="visit_summary_height_heading">Gitas-on (cm)</string>
@@ -244,8 +244,8 @@
     <string name="title_activity_patient_summary">Sumaryo sa pagbisita</string>
     <string name="title_activity_physical_exam">Pisikal nga Pagsusi</string>
 
-    <string name="title_activity_video_library">Video Library</string>
-    <string name="video_library">Video Library</string>
+    <string name="title_activity_video_library">Librarya sa mga bidyu</string>
+    <string name="video_library">Librarya sa mga bidyu</string>
     <string name="title_activity_vitals">Mahinungdanon</string>
     <string name="visit_summary_vitals_heading">Mahinungdanon</string>
     <string name="visit_summary_vitals">Mahinungdanon</string>
@@ -314,72 +314,72 @@
     <string name="economic_status">Economic status</string>
     <string name="education_level">Education level</string>
     <string name="caste">Caste</string>
-    <string name="previous_visits">Previous visits</string>
-    <string name="accept">Accept</string>
-    <string name="reject">Reject</string>
+    <string name="previous_visits">Mga niagi nga pagbisita</string>
+    <string name="accept">Dawaton</string>
+    <string name="reject">Isalikway</string>
     <string name="next">Next</string>
     <string name="please_wait_till_sync_is_completed">Please wait till sync is completed</string>
     <string name="which_server_would_you_like_to_connect_to">Which server would you like to connect to?</string>
-    <string name="enter_url">Enter URL</string>
+    <string name="enter_url">I-sulod ang URL</string>
     <string name="choose_a_location_to_login">Choose a location to login</string>
     <string name="choose_an_option_for_protocols">Choose an option for protocols</string>
     <string name="please_enter_your_username_and_password">Please enter your username and password</string>
     <string name="android_id">Android Id:</string>
     <string name="temperature_f">Temperature (F)</string>
-    <string name="respiratory_rate">Respiratory Rate</string>
-    <string name="click_to_download_the_images">Click to download the images</string>
+    <string name="respiratory_rate">Kakusog sa pagginhawa</string>
+    <string name="click_to_download_the_images">I-klik ang imahe para ma-download</string>
     <string name="doctor">Doctor</string>
-    <string name="health_worker">Health worker</string>
-    <string name="priority">Priority</string>
+    <string name="health_worker">Kawani sa panglawas</string>
+    <string name="priority">Prayoridad</string>
     <string name="server_url">Server url</string>
     <string name="sync">Sync</string>
-    <string name="update_protocols">Update Protocols</string>
+    <string name="update_protocols">I-update ang protokol</string>
     <string name="end_all_visit">End All Visit</string>
-    <string name="filter_by_creator">Filter by creator</string>
+    <string name="filter_by_creator">Pagsala sa tighimo</string>
     <string name="planet_name">Planet Name</string>
-    <string name="ok">OK</string>
-    <string name="cancel">Cancel</string>
-    <string name="unable_to_end">Unable to end</string>
-    <string name="upload_before_end_visit_active">visits.Please upload visit before attempting to end the visit.</string>
-    <string name="active">Active</string>
-    <string name="closed">Closed</string>
+    <string name="ok">Sige</string>
+    <string name="cancel">Kansela</string>
+    <string name="unable_to_end">Dili mahuman ang pag-bisita</string>
+    <string name="upload_before_end_visit_active">Palihug pag-upload sa pag-bisita usa musuway sa paghuman sa pag-bisita.</string>
+    <string name="active">Aktibo</string>
+    <string name="closed">Sirado</string>
     <string name="syncInProgress">Sync in progress</string>
     <string name="please_wait">Please wait...</string>
     <string name="sync_notif_title">sync</string>
-    <string name="sync_background_completed">syncBackground Completed</string>
-    <string name="sync_not_available">Sync not available</string>
-    <string name="please_connect_to_internet">Please connect to an internet connection!</string>
-    <string name="image_upload">ImageUpload</string>
-    <string name="image_upload_failed">ImageUpload failed</string>
-    <string name="sure_to_exit">Are you sure you want to EXIT ?</string>
+    <string name="sync_background_completed">Kumpleto na ang pag-sync sa bakrawon</string>
+    <string name="sync_not_available">Di magamit ang sync</string>
+    <string name="please_connect_to_internet">Palihug ug konekta sa koneksyon sa internet!</string>
+    <string name="image_upload">Pag-upload sa imahe</string>
+    <string name="image_upload_failed">Di malampuson ang pag-upload sa imahe</string>
+    <string name="sure_to_exit">Sigurado ka nga gusto ka mugawas ?</string>
     <string name="lastsync_normal">Last sync</string>
-    <string name="update_patient_identification">Update Patient</string>
-    <string name="are_you_want_go_back">Are you sure you want to go back ?</string>
-    <string name="error">Error</string>
-    <string name="patient_data_upload">Patient Data Upload</string>
-    <string name="patient_image_download_notifi">Patient Image Download</string>
-    <string name="image_download_complete_notifi">\'s Image Download complete.</string>
-    <string name="no_prior_visits">No prior visits.</string>
-    <string name="end_visit_notif">End visit</string>
-    <string name="visit_ended_notif">Visit ended</string>
-    <string name="this_question_only_one_answer">This question can have only one answer.</string>
-    <string name="uploading_to_doctor_notif">Uploading to doctor.</string>
-    <string name="visit_data_upload">Visit Data Upload</string>
-    <string name="uploading_visit_data_notif">Uploading visit data</string>
-    <string name="uploaded_visit_data_notif">Uploaded visit data</string>
-    <string name="failed_to_upload">failed to Uploaded</string>
-    <string name="upload_completed">Upload Completed</string>
-    <string name="check_your_connectivity">Check your connectivity</string>
-    <string name="download_from_doctor">Download from doctor</string>
-    <string name="prescription_downloaded">Prescription downloaded</string>
-    <string name="downloading_prescription">Downloading prescription</string>
-    <string name="visit_data_failed">Visit Data Failed</string>
-    <string name="patient_data_failed">Patient Data Failed</string>
-    <string name="privacy_notice_title">Privacy Notice</string>
+    <string name="update_patient_identification">I-update ang pasyente</string>
+    <string name="are_you_want_go_back">Sigurado ka nga gusto ka mubalik?</string>
+    <string name="error">Sayup</string>
+    <string name="patient_data_upload">Pag-upload sa datos sa pasyente</string>
+    <string name="patient_image_download_notifi">Pag-download sa imahe sa pasyente</string>
+    <string name="image_download_complete_notifi">\'s Kumpleto na ang pag-download sa imahe.</string>
+    <string name="no_prior_visits">Walay niagi nga mga pagbisita.</string>
+    <string name="end_visit_notif">Humanon ang pag-bisita</string>
+    <string name="visit_ended_notif">Nahuman ang pagbisita</string>
+    <string name="this_question_only_one_answer">Naay usa lamang ka tubag niining pangutana.</string>
+    <string name="uploading_to_doctor_notif">Gina-upload padung sa doktor.</string>
+    <string name="visit_data_upload">Pag-upload sa datos sa pag-bisita</string>
+    <string name="uploading_visit_data_notif">Gina-upload ang datos sa pag-bisita</string>
+    <string name="uploaded_visit_data_notif">Na-upload ang datos sa pag-bisita</string>
+    <string name="failed_to_upload">Di malampuson ang pag-upload</string>
+    <string name="upload_completed">Nakumpleto na ang pag-upload</string>
+    <string name="check_your_connectivity">Susiha imong koneksyon</string>
+    <string name="download_from_doctor">Mag-download gikan sa doktor</string>
+    <string name="prescription_downloaded">Na-downloaded na ang riseta</string>
+    <string name="downloading_prescription">Naga-download ug riseta</string>
+    <string name="visit_data_failed">Di malampuson ang datos sa pag-bisita</string>
+    <string name="patient_data_failed">Di malampuson ang datos sa pasyente</string>
+    <string name="privacy_notice_title">Pagpahibalo sa pagkapribado</string>
     <string name="no_data_active_patients">No patient records for this health worker found.</string>
-    <string name="syncing_visitDialog">Syncing</string>
-    <string name="successfully_synced_notif">Successfully synced</string>
-    <string name="languages">ଭାଷା</string>
+    <string name="syncing_visitDialog">Naga-sync</string>
+    <string name="successfully_synced_notif">Malampuson nga pag-sync</string>
+    <string name="languages">Mga pinulongan</string>
     <string name="current_language">Current Language</string>
     <string name="today_visits">Mga Pasyente Karon adlawa</string>
     <string name="active_visits">Aktibo nga mga Pasyente</string>
@@ -387,7 +387,7 @@
     <string name="no_protocols_found">No protocols found</string>
     <string name="unable_to_get_proper_response">There was a problem downloading protocols, Please contact system administrator</string>
     <string name="protocols_downloaded_successfully">Protocols Downloaded Successfully!</string>
-    <string name="last_synced">Last Synced - </string>
+    <string name="last_synced">Kinaulihan nga pag-sync - </string>
     <string name="day">day</string>
     <string name="hour">hour</string>
     <string name="minute">minute</string>
@@ -395,19 +395,23 @@
     <string name="ago">ago</string>
     <string name="successfully_synced">Successfully synced</string>
     <string name="failed_synced"><![CDATA[Failed synced, please check your internet connection & try again]]></string>
-    <string name="title_activity_today_patient" translatable="false">"Today's Visits"</string>
-    <string name="title_activity_active_patient" translatable="false">Active Visits</string>
+    <string name="title_activity_today_patient">"Mga Pasyente Karon adlawa"</string>
+    <string name="title_activity_active_patient">Aktibo nga mga Pasyente</string>
 
     <string name="privacy_toast">Please select an option</string>
-    <string name="sync_now">Sync Now</string>
+    <string name="sync_now">I-sync karon</string>
     <string name="lastsync">lastsync</string>
-    <string name="has_a_new_prescription">has a new prescription</string>
-    <string name="patient_denies">Patient denies</string>
-    <string name="patient_reports">Patient reports</string>
+    <string name="has_a_new_prescription">Naay bag-ong riseta</string>
+    <string name="patient_denies" translatable="false">Patient denies</string>
+    <string name="patient_reports" translatable="false">Patient reports</string>
     <string name="visit_not_uploaded">Visit Not Uploaded</string>
-    <string name="upload_started">Upload Started</string>
+    <string name="upload_started">Naga-upload...</string>
     <string name="visit_uploaded_successfully">Visit Uploaded Successfully</string>
     <string name="visit_uploaded_failed">Visit was not uploaded, will be uploaded when internet connection is available</string>
     <string name="visitID">Visit ID</string>
+
+    <string name="end_visit_msg">Are you sure you want to end the visit?</string>
+    <string name="prescription_not_downloaded_check_internet">Prescription not downloaded, check internet connection</string>
+
 
 </resources>

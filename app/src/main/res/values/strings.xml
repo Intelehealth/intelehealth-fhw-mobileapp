@@ -111,7 +111,7 @@
     <string name="identification_screen_picker_months" translatable="false">months</string>
 
     //Active Patients Screen
-    <string name="title_activity_active_patient" translatable="false">Active Visits</string>
+    <string name="title_activity_active_patient">Active Visits</string>
 
     //Patient History Screen
     <string name="title_activity_get_patient_history" translatable="false">Patient History</string>
@@ -254,7 +254,7 @@
     <string name="title_activity_setup" translatable="false">Setup</string>
 
     <string name="title_activity_camera" translatable="false">Camera</string>
-    <string name="title_activity_today_patient" translatable="false">"Today's Visits"</string>
+    <string name="title_activity_today_patient">"Today's Visits"</string>
     <string name="title_activity_additional_documents" translatable="false">"Additional Documents"</string>
     <string name="title_activity_video_library" translatable="false">"Video Library"</string>
     <string name="visit_summary_patient_details" translatable="false">Visit details</string>
@@ -315,7 +315,7 @@
 
     <string name="id_number" translatable="false">ID Number</string>
     <string name="uploading" translatable="false">Uploading</string>
-    <string name="downloading" translatable="false">Downloading</string>
+    <string name="downloading" translatable="false">Downloading...</string>
 
     <string name="visit" translatable="false">Visit</string>
     <string name="visit_update" translatable="false">Visit Update</string>
@@ -531,18 +531,23 @@
     <string name="no_protocols_found">No protocols found</string>
     <string name="unable_to_get_proper_response">There was a problem downloading protocols, Please contact system administrator</string>
     <string name="last_synced">Last Synced - </string>
-    <string name="today_visits" translatable="false">"Today's Visits"</string>
-    <string name="active_visits" translatable="false">"Active Visits"</string>
+    <string name="today_visits">"Today's Visits"</string>
+    <string name="active_visits">"Active Visits"</string>
     <string name="day">day</string>
     <string name="hour">hour</string>
     <string name="minute">minute</string>
     <string name="s">s</string>
     <string name="ago">ago</string>
     <string name="successfully_synced">Successfully synced</string>
-    <string name="failed_synced"><![CDATA[Failed synced, please check your internet connection & try again]]></string>
+    <string name="failed_synced"><![CDATA[Failed synced, check your internet connection]]></string>
     <string name="visit_not_uploaded">Visit Not Uploaded</string>
-    <string name="upload_started">Upload Started</string>
+    <string name="upload_started">Uploading...</string>
     <string name="visit_uploaded_successfully">Visit Uploaded Successfully</string>
     <string name="visit_uploaded_failed">Visit was not uploaded, will be uploaded when internet connection is available</string>
     <string name="visitID">Visit ID</string>
+
+    <string name="end_visit_msg">Are you sure you want to end the visit?</string>
+    <string name="prescription_not_downloaded_check_internet">Prescription not downloaded, check internet connection</string>
+
+
 </resources>

@@ -34,7 +34,7 @@
     <string name="complaint_required">"ଭିଯୋଗ ଚୟନ ହେବା ଉଚିତ୍ "</string>
     <string name="device_id">"ଡ଼ିଭାଇସ୍ ଅାଇଡ଼ "</string>
     <string name="downloading_protocols">ମାଇଣ୍ଡ ମ୍ଯାପ୍ ଡ଼ାଉନ ଲୋଡ଼ କରିବା</string>
-    <string name="downloading">ଡ଼ାଉନ ଲୋଡ଼ିଙ୍ଗ</string>
+    <string name="downloading">ଡ଼ାଉନ ଲୋଡ଼ିଙ୍ଗ...</string>
     <string name="enter_license_key">"ଲାଇସେନ୍ସ ନମ୍ବର ନେବା "</string>
     <string name="error_downloading_protocols">ଭୂଲ ମାଇଣ୍ଡ ମ୍ଯାପ୍ ଡ଼ାଉନ ଲୋର୍ଡ଼ କରିବା</string>
     <string name="error_field_required">ଏହି କ୍ଷେତ୍ର ଅାବଶ୍ଯକ ଅଟେ (ଏହି କ୍ଷେତ୍ରର ଅାବଶ୍ଯତା ଅଛି)</string>
@@ -291,16 +291,16 @@
     <string name="choose_an_option_for_protocols">Choose an option for protocols</string>
     <string name="please_enter_your_username_and_password">Please enter your username and password</string>
     <string name="android_id">Android Id:</string>
-    <string name="temperature_f">Temperature (F)</string>
-    <string name="respiratory_rate">Respiratory Rate</string>
+    <string name="temperature_f">ତାପମାତ୍ରା (F)</string>
+    <string name="respiratory_rate">ଶ୍ୱାସକ୍ରିୟା ହାର</string>
     <string name="click_to_download_the_images">"ଛବିଗୁଡ଼ିକୁ ଡାଉନଲୋଡ୍ କରିବା ପାଇଁ କ୍ଲିକ୍ କରନ୍ତୁ "</string>
     <string name="doctor">Doctor</string>
     <string name="health_worker">"ସ୍ୱାସ୍ଥ୍ୟ କର୍ମୀ "</string>
-    <string name="priority">Priority</string>
+    <string name="priority">ପ୍ରାଥମିକତା</string>
     <string name="server_url">Server url</string>
     <string name="sync">ସମକାଳୀନ କରନ୍ତୁ</string>
     <string name="update_protocols">"ପ୍ରୋଟୋକଲ୍ ଅପଡେଟ୍ କରନ୍ତୁ "</string>
-    <string name="end_all_visit">End All Visit</string>
+    <string name="end_all_visit">ସମସ୍ତ ପରିଦର୍ଶନକୁ ସମାପ୍ତ କରନ୍ତୁ</string>
     <string name="filter_by_creator">"ସ୍ରଷ୍ଟାଙ୍କ ଅନୁସାରେ ଫିଲଟର୍ କରନ୍ତୁ "</string>
     <string name="planet_name">Planet Name</string>
     <string name="ok">"ଠିକ୍ ଅଛି "</string>
@@ -309,7 +309,7 @@
     <string name="upload_before_end_visit_active">"କରିବାରେ ଅକ୍ଷମ । ପରିଦର୍ଶନକୁ ସମାପ୍ତ କରିବାର ଚେଷ୍ଟା କରିବା ପୂର୍ବରୁ ଦୟାକରି ପରିଦର୍ଶନକୁ ଅପଲୋଡ୍ କରନ୍ତୁ । "</string>
     <string name="active">"ସକ୍ରିୟ "</string>
     <string name="closed">"ବନ୍ଦ "</string>
-    <string name="syncInProgress">Sync in progress</string>
+    <string name="syncInProgress">ସମକାଳୀନକରଣ ପ୍ରକ୍ରିୟା ଜାରି ଅଛି</string>
     <string name="please_wait">Please wait...</string>
     <string name="sync_notif_title">"ସମକାଳୀନ କରନ୍ତୁ "</string>
     <string name="sync_background_completed">syncBackground Completed</string>
@@ -347,40 +347,47 @@
     <string name="not_provided" translatable="false">Not provided</string>
     <string name="visit_summary_complaint" translatable="false">"ପରିଦର୍ଶନର କାରଣ "</string>
     <string name="visit_summary_button_upload" translatable="false">"ଅପଲୋଡ୍ "</string>
-    <string name="associated_symptoms">"ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ "</string>
+    <string name="associated_symptoms">"ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"</string>
 
     <string name="no_data_active_patients">No patient records for this health worker found.</string>
     <string name="syncing_visitDialog">ସମକାଳୀନ ହେଉଛି</string>
     <string name="has_a_new_prescription">"ଏକ ନୂଆ ପ୍ରେସକ୍ରିପ୍ସନ୍ ଅଛି "</string>
     <string name="successfully_synced_notif">"ସଫଳତାର ସହ ସମକାଳୀନ ହେଲା "</string>
     <string name="languages">ଭାଷା</string>
-    <string name="current_language">Current Language</string>
-    <string name="cant_login_user" translatable="false">Can\'t log in?</string>
+    <string name="current_language">ପ୍ରଚଳିତ ଭାଷା</string>
+    <string name="cant_login_user" translatable="false">ଲଗ୍ ଇନ୍ କରିପାରୁନାହାନ୍ତି?</string>
 
     <string name="today_visits">ଆଜିର ରୋଗୀ</string>
     <string name="active_visits">ଦେଖିଥିବା ରୋଗୀ</string>
-    <string name="unable_to_get_proper_response">There was a problem downloading protocols, Please contact system administrator</string>
-    <string name="protocols_downloaded_successfully">Protocols Downloaded Successfully!</string>
-    <string name="no_protocols_found">No protocols found</string>
-    <string name="last_synced">Last Synced - </string>
-    <string name="day">day</string>
-    <string name="hour">hour</string>
-    <string name="minute">minute</string>
-    <string name="s">s</string>
-    <string name="ago">ago</string>
-    <string name="successfully_synced">Successfully synced</string>
-    <string name="failed_synced"><![CDATA[Failed synced, please check your internet connection & try again]]></string>
-    <string name="title_activity_active_patient" translatable="false">Active Visits</string>
-    <string name="title_activity_today_patient" translatable="false">"Today's Visits"</string>
+    <string name="unable_to_get_proper_response">ପ୍ରୋଟୋକଲ୍ ଡାଉନଲୋଡିଂ ସମୟରେ ଏକ ସମସ୍ୟା ଦେଖାଦେଇଛି, ଦୟାକରି ସିଷ୍ଟମ୍ ଏଡମିନିଷ୍ଟ୍ରେଟରଙ୍କ ସହ ଯୋଗାଯୋଗ କରନ୍ତୁ</string>
+    <string name="protocols_downloaded_successfully">ପ୍ରୋଟୋକଲ୍ ସଫଳତାର ସହ ଡାଉନଲୋଡ୍ ହେଲା!</string>
+    <string name="no_protocols_found">କୌଣସି ପ୍ରୋଟୋକଲ୍ ମିଳିଲା ନାହିଁ</string>
+    <string name="last_synced">ଶେଷ ସମକାଳୀନକରଣ - </string>
+    <string name="day">ଦିନ</string>
+    <string name="hour">ଘଣ୍ଟା</string>
+    <string name="minute">ମିନିଟ୍</string>
+    <string name="s">ସେକେଣ୍ଡ</string>
+    <string name="ago">ପୂର୍ବରୁ</string>
+    <string name="successfully_synced">ସଫଳତାର ସହ ସମକାଳୀନ ହେଲା</string>
+    <string name="failed_synced"><![CDATA[ସମକାଳୀନକରଣ ବିଫଳ, ଦୟାକରି ନିଜ ଇଣ୍ଟରନେଟ୍ ସଂଯୋଗ ଯାଞ୍ଚ କରନ୍ତୁ ଓ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ]]></string>
+    <string name="title_activity_active_patient">ସକ୍ରିୟ ପରିଦର୍ଶନ</string>
+    <string name="title_activity_today_patient">"ଆଜିର ପରିଦର୍ଶନ"</string>
 
-    <string name="privacy_toast">Please select an option</string>
-    <string name="lastsync">lastsync</string>
-    <string name="patient_denies">Patient denies</string>
-    <string name="patient_reports">Patient reports</string>
-    <string name="visit_not_uploaded">Visit Not Uploaded</string>
-    <string name="upload_started">Upload Started</string>
-    <string name="visit_uploaded_successfully">Visit Uploaded Successfully</string>
-    <string name="visit_uploaded_failed">Visit was not uploaded, will be uploaded when internet connection is available</string>
-    <string name="sync_now">Sync Now</string>
+    <string name="privacy_toast">ଦୟାକରି ଏକ ବିକଳ୍ପ ଚୟନ କରନ୍ତୁ</string>
+    <string name="lastsync">ଶେଷ ସମକାଳୀନକରଣ</string>
+    <string name="patient_denies" translatable="false">Patient denies</string>
+    <string name="patient_reports" translatable="false">Patient reports</string>
+    <string name="visit_not_uploaded">ପରିଦର୍ଶନ ଅପଲୋଡ୍ ହୋଇନାହିଁ</string>
+    <string name="upload_started">ଅପଲୋଡ୍ ଆରମ୍ଭ ହୋଇଛି</string>
+    <string name="visit_uploaded_successfully">ପରିଦର୍ଶନ ସଫଳତାର ସହ ଅପଲୋଡ୍ ହେଲା</string>
+    <string name="visit_uploaded_failed">ପରିଦର୍ଶନ ଅପଲୋଡ୍ ହୋଇନାହିଁ , ଇଣ୍ଟରନେଟ୍ ସଂଯୋଗ ଉପଲବ୍ଧ ହେଲେ ଅପଲୋଡ୍ ହେବ</string>
+    <string name="sync_now">ଏବେ ହିଁ ସମକାଳୀନ କରନ୍ତୁ</string>
     <string name="visitID">Visit ID</string>
+    <string name="years">ବର୍ଷ</string>
+    <string name="visit_summary_follow_up_date" translatable="false">ପରବର୍ତ୍ତୀ ଯାଞ୍ଚ ତାରିଖ</string>
+    <string name="success_offline_login" translatable="false">"ଅଫଲାଇନ୍ ଲଗ୍ ଇନ୍ ସଫଳ"</string>
+
+    <string name="end_visit_msg">Are you sure you want to end the visit?</string>
+    <string name="prescription_not_downloaded_check_internet">Prescription not downloaded, check internet connection</string>
+
 </resources>
