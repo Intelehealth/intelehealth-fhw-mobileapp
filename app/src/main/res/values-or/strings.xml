@@ -375,8 +375,8 @@
 
     <string name="privacy_toast">ଦୟାକରି ଏକ ବିକଳ୍ପ ଚୟନ କରନ୍ତୁ</string>
     <string name="lastsync">ଶେଷ ସମକାଳୀନକରଣ</string>
-    <string name="patient_denies" translatable="false">Patient denies</string>
-    <string name="patient_reports" translatable="false">Patient reports</string>
+    <string name="patient_denies" translatable="false">ରୋଗୀ ମନା କରୁଛନ୍ତି</string>
+    <string name="patient_reports" translatable="false">ରୋଗୀ ରିପୋର୍ଟ କରୁଛନ୍ତି</string>
     <string name="visit_not_uploaded">ପରିଦର୍ଶନ ଅପଲୋଡ୍ ହୋଇନାହିଁ</string>
     <string name="upload_started">ଅପଲୋଡ୍ ଆରମ୍ଭ ହୋଇଛି</string>
     <string name="visit_uploaded_successfully">ପରିଦର୍ଶନ ସଫଳତାର ସହ ଅପଲୋଡ୍ ହେଲା</string>
