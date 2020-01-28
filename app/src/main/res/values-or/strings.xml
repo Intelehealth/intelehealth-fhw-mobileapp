@@ -349,7 +349,7 @@
     <string name="visit_summary_button_upload" translatable="false">"ଅପଲୋଡ୍ "</string>
     <string name="associated_symptoms">"ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"</string>
 
-    <string name="no_data_active_patients">No patient records for this health worker found.</string>
+    <string name="no_data_active_patients">ସ୍ୱାସ୍ଥ୍ୟ କର୍ମୀ  ପାଖରେ  ପେସେଣ୍ଟ   ରେକର୍ଡ଼ ନାହିଁ</string>
     <string name="syncing_visitDialog">ସମକାଳୀନ ହେଉଛି</string>
     <string name="has_a_new_prescription">"ଏକ ନୂଆ ପ୍ରେସକ୍ରିପ୍ସନ୍ ଅଛି "</string>
     <string name="successfully_synced_notif">"ସଫଳତାର ସହ ସମକାଳୀନ ହେଲା "</string>
@@ -375,19 +375,20 @@
 
     <string name="privacy_toast">ଦୟାକରି ଏକ ବିକଳ୍ପ ଚୟନ କରନ୍ତୁ</string>
     <string name="lastsync">ଶେଷ ସମକାଳୀନକରଣ</string>
-    <string name="patient_denies" translatable="false">Patient denies</string>
-    <string name="patient_reports" translatable="false">Patient reports</string>
+    <string name="patient_denies" translatable="false">ରୋଗୀ ମନା କରୁଛନ୍ତି</string>
+    <string name="patient_reports" translatable="false">ରୋଗୀ ରିପୋର୍ଟ କରୁଛନ୍ତି</string>
     <string name="visit_not_uploaded">ପରିଦର୍ଶନ ଅପଲୋଡ୍ ହୋଇନାହିଁ</string>
     <string name="upload_started">ଅପଲୋଡ୍ ଆରମ୍ଭ ହୋଇଛି</string>
     <string name="visit_uploaded_successfully">ପରିଦର୍ଶନ ସଫଳତାର ସହ ଅପଲୋଡ୍ ହେଲା</string>
     <string name="visit_uploaded_failed">ପରିଦର୍ଶନ ଅପଲୋଡ୍ ହୋଇନାହିଁ , ଇଣ୍ଟରନେଟ୍ ସଂଯୋଗ ଉପଲବ୍ଧ ହେଲେ ଅପଲୋଡ୍ ହେବ</string>
     <string name="sync_now">ଏବେ ହିଁ ସମକାଳୀନ କରନ୍ତୁ</string>
-    <string name="visitID">Visit ID</string>
+    <string name="visitID">" ଭିଜିଟ୍ ଆଇଡି"</string>
     <string name="years">ବର୍ଷ</string>
     <string name="visit_summary_follow_up_date" translatable="false">ପରବର୍ତ୍ତୀ ଯାଞ୍ଚ ତାରିଖ</string>
     <string name="success_offline_login" translatable="false">"ଅଫଲାଇନ୍ ଲଗ୍ ଇନ୍ ସଫଳ"</string>
 
-    <string name="end_visit_msg">Are you sure you want to end the visit?</string>
-    <string name="prescription_not_downloaded_check_internet">Prescription not downloaded, check internet connection</string>
+    <string name="end_visit_msg">ଆପଣ ସିଅର କୀ ଭିଜିଟ୍ କୁ ବନ୍ଦ</string>
+    <string name="prescription_not_downloaded_check_internet">ପ୍ରେସକୂଶନ୍ ଡାଉଁଲଡ ହଉନାହିଁ, ଦୟାକରି ନିଜ ଇଟଂରନେଟ୍ ସଂଯୋଗ ଯାଂଚ କରନ୍ତୁ ଓ ପୁନବାର ଚେଷ୍ଟା କରନ୍ତୁ</string>
+    <string name="privacy_reject_toast">ରୋଗୀର ସହମତି ବିନା ନାଁ ଲେଖାଇବା</string>
 
 </resources>
