@@ -1,6 +1,9 @@
 *.iml
+*.json
 .gradle
+/assets
 salt.env
+.idea/misc.xml
 /local.properties
 /.idea/caches
 /.idea/libraries
@@ -11,4 +14,6 @@ salt.env
 .DS_Store
 /build
 /captures
+.idea/caches/build_file_checksums.ser
 .externalNativeBuild
+*.jpg
