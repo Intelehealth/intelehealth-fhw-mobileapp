@@ -54,11 +54,12 @@ public class VitalsActivity extends AppCompatActivity {
     int flag_height = 0, flag_weight = 0;
     String heightvalue;
     String weightvalue;
-    ConfigUtils configUtils=new ConfigUtils(VitalsActivity.this);
+    ConfigUtils configUtils = new ConfigUtils(VitalsActivity.this);
 
-    VitalsObject results=new VitalsObject();
-    private String encounterAdultIntials="";
+    VitalsObject results = new VitalsObject();
+    private String encounterAdultIntials = "";
     EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -66,7 +67,7 @@ public class VitalsActivity extends AppCompatActivity {
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
-            encounterVitals=intent.getStringExtra("encounterUuidVitals");
+            encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
@@ -84,8 +85,6 @@ public class VitalsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         sessionManager = new SessionManager(this);
-
-
 
 
 //        Setting the title
@@ -207,12 +206,9 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 calculateBMI();
-                if(mHeight.getText().toString().startsWith("."))
-                {
+                if (mHeight.getText().toString().startsWith(".")) {
                     mHeight.setText("");
-                }
-                else
-                {
+                } else {
 
                 }
             }
@@ -244,12 +240,9 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
-                if(mWeight.getText().toString().startsWith("."))
-                {
+                if (mWeight.getText().toString().startsWith(".")) {
                     mWeight.setText("");
-                }
-                else
-                {
+                } else {
 
                 }
                 calculateBMI();
@@ -289,12 +282,9 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
-                if(mSpo2.getText().toString().startsWith("."))
-                {
+                if (mSpo2.getText().toString().startsWith(".")) {
                     mSpo2.setText("");
-                }
-                else
-                {
+                } else {
 
                 }
             }
@@ -309,38 +299,35 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                    if (configUtils.celsius()) {
-                        if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                            if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS) ||
-                                    Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_TEMPERATURE_CELSIUS)) {
-                                mTemperature.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
-                            } else {
-                                mTemperature.setError(null);
-                            }
-
-                        }
-                    } else if (configUtils.fahrenheit()) {
-                        if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                            if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_TEMPERATURE_FARHENIT) ||
-                                    Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_TEMPERATURE_FARHENIT)) {
-                                mTemperature.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_FARHENIT, AppConstants.MAXIMUM_TEMPERATURE_FARHENIT));
-                            } else {
-                                mTemperature.setError(null);
-                            }
+                if (configUtils.celsius()) {
+                    if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                        if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS) ||
+                                Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_TEMPERATURE_CELSIUS)) {
+                            mTemperature.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
+                        } else {
+                            mTemperature.setError(null);
                         }
 
                     }
+                } else if (configUtils.fahrenheit()) {
+                    if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                        if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_TEMPERATURE_FARHENIT) ||
+                                Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_TEMPERATURE_FARHENIT)) {
+                            mTemperature.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_FARHENIT, AppConstants.MAXIMUM_TEMPERATURE_FARHENIT));
+                        } else {
+                            mTemperature.setError(null);
+                        }
+                    }
+
+                }
 
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(mTemperature.getText().toString().startsWith("."))
-                {
+                if (mTemperature.getText().toString().startsWith(".")) {
                     mTemperature.setText("");
-                }
-                else
-                {
+                } else {
 
                 }
 
@@ -368,12 +355,9 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
-                if(mResp.getText().toString().startsWith("."))
-                {
+                if (mResp.getText().toString().startsWith(".")) {
                     mResp.setText("");
-                }
-                else
-                {
+                } else {
 
                 }
             }
@@ -401,12 +385,9 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
-                if(mPulse.getText().toString().startsWith("."))
-                {
+                if (mPulse.getText().toString().startsWith(".")) {
                     mPulse.setText("");
-                }
-                else
-                {
+                } else {
 
                 }
             }
@@ -433,12 +414,9 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
-                if(mBpSys.getText().toString().startsWith("."))
-                {
+                if (mBpSys.getText().toString().startsWith(".")) {
                     mBpSys.setText("");
-                }
-                else
-                {
+                } else {
 
                 }
             }
@@ -465,12 +443,9 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
-                if(mBpDia.getText().toString().startsWith("."))
-                {
+                if (mBpDia.getText().toString().startsWith(".")) {
                     mBpDia.setText("");
-                }
-                else
-                {
+                } else {
 
                 }
             }
@@ -485,6 +460,7 @@ public class VitalsActivity extends AppCompatActivity {
             }
         });
     }
+
     public void calculateBMI() {
         if (flag_height == 1 && flag_weight == 1) {
             mBMI.getText().clear();
@@ -499,6 +475,7 @@ public class VitalsActivity extends AppCompatActivity {
             mBMI.getText().clear();
         }
     }
+
     public void loadPrevious() {
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -534,7 +511,15 @@ public class VitalsActivity extends AppCompatActivity {
                 mBpDia.setText(value);
                 break;
             case UuidDictionary.TEMPERATURE: //Temperature
-                mTemperature.setText(value);
+                if (findViewById(R.id.table_temp).getVisibility() == View.GONE) {
+                    //Converting Celsius to Fahrenheit
+                    if (value != null && !value.isEmpty()) {
+                        mTemperature.setText(convertCtoF(value));
+                    }
+                } else {
+                    mTemperature.setText(value);
+                }
+
                 break;
             //    Respiratory added by mahiti dev team
             case UuidDictionary.RESPIRATORY: //Respiratory
@@ -548,6 +533,7 @@ public class VitalsActivity extends AppCompatActivity {
 
         }
     }
+
     public void validateTable() {
         boolean cancel = false;
         View focusView = null;
@@ -657,26 +643,26 @@ public class VitalsActivity extends AppCompatActivity {
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
                     if (configUtils.celsius()) {
-                            if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS)) ||
-                                    (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_CELSIUS))) {
-                                et.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
-                                focusView = et;
-                                cancel = true;
-                                break;
-                            } else {
-                                cancel = false;
-                            }
-                        } else if (configUtils.fahrenheit()) {
-                            if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_FARHENIT)) ||
-                                    (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_FARHENIT))) {
-                                et.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_FARHENIT, AppConstants.MAXIMUM_TEMPERATURE_FARHENIT));
-                                focusView = et;
-                                cancel = true;
-                                break;
-                            } else {
-                                cancel = false;
-                            }
+                        if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS)) ||
+                                (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_CELSIUS))) {
+                            et.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
+                            focusView = et;
+                            cancel = true;
+                            break;
+                        } else {
+                            cancel = false;
                         }
+                    } else if (configUtils.fahrenheit()) {
+                        if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_TEMPERATURE_FARHENIT)) ||
+                                (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_TEMPERATURE_FARHENIT))) {
+                            et.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_FARHENIT, AppConstants.MAXIMUM_TEMPERATURE_FARHENIT));
+                            focusView = et;
+                            cancel = true;
+                            break;
+                        } else {
+                            cancel = false;
+                        }
+                    }
                 } else {
                     cancel = false;
                 }
@@ -697,7 +683,7 @@ public class VitalsActivity extends AppCompatActivity {
                 } else {
                     cancel = false;
                 }
-            }else {
+            } else {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
@@ -739,7 +725,16 @@ public class VitalsActivity extends AppCompatActivity {
                     results.setBpsys((mBpSys.getText().toString()));
                 }
                 if (mTemperature.getText() != null) {
-                    results.setTemperature((mTemperature.getText().toString()));
+
+                    if (findViewById(R.id.table_temp).getVisibility() == View.GONE) {
+                        //Converting Fahrenheit to Celsius
+//                        results.setTemperature((mTemperature.getText().toString()));
+
+                        results.setTemperature(ConvertFtoC(mTemperature.getText().toString()));
+                    } else {
+                        results.setTemperature((mTemperature.getText().toString()));
+                    }
+
                 }
                 if (mResp.getText() != null) {
                     results.setResp((mResp.getText().toString()));
@@ -756,8 +751,8 @@ public class VitalsActivity extends AppCompatActivity {
 //
         }
 
-        ObsDAO obsDAO=new ObsDAO();
-        ObsDTO obsDTO=new ObsDTO();
+        ObsDAO obsDAO = new ObsDAO();
+        ObsDTO obsDTO = new ObsDTO();
         if (intentTag != null && intentTag.equals("edit")) {
             try {
                 obsDTO = new ObsDTO();
@@ -855,7 +850,7 @@ public class VitalsActivity extends AppCompatActivity {
             }
         } else {
 
-            obsDTO=new ObsDTO();
+            obsDTO = new ObsDTO();
             obsDTO.setConceptuuid(UuidDictionary.HEIGHT);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
@@ -868,7 +863,7 @@ public class VitalsActivity extends AppCompatActivity {
                 Crashlytics.getInstance().core.logException(e);
             }
 
-            obsDTO=new ObsDTO();
+            obsDTO = new ObsDTO();
             obsDTO.setConceptuuid(UuidDictionary.WEIGHT);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
@@ -880,7 +875,7 @@ public class VitalsActivity extends AppCompatActivity {
                 Crashlytics.getInstance().core.logException(e);
             }
 
-            obsDTO=new ObsDTO();
+            obsDTO = new ObsDTO();
             obsDTO.setConceptuuid(UuidDictionary.PULSE);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
@@ -892,7 +887,7 @@ public class VitalsActivity extends AppCompatActivity {
                 Crashlytics.getInstance().core.logException(e);
             }
 
-            obsDTO=new ObsDTO();
+            obsDTO = new ObsDTO();
             obsDTO.setConceptuuid(UuidDictionary.SYSTOLIC_BP);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
@@ -904,7 +899,7 @@ public class VitalsActivity extends AppCompatActivity {
                 Crashlytics.getInstance().core.logException(e);
             }
 
-            obsDTO=new ObsDTO();
+            obsDTO = new ObsDTO();
             obsDTO.setConceptuuid(UuidDictionary.DIASTOLIC_BP);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
@@ -916,7 +911,7 @@ public class VitalsActivity extends AppCompatActivity {
                 Crashlytics.getInstance().core.logException(e);
             }
 
-            obsDTO=new ObsDTO();
+            obsDTO = new ObsDTO();
             obsDTO.setConceptuuid(UuidDictionary.TEMPERATURE);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
@@ -928,7 +923,7 @@ public class VitalsActivity extends AppCompatActivity {
                 Crashlytics.getInstance().core.logException(e);
             }
 
-            obsDTO=new ObsDTO();
+            obsDTO = new ObsDTO();
             obsDTO.setConceptuuid(UuidDictionary.RESPIRATORY);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
@@ -940,7 +935,7 @@ public class VitalsActivity extends AppCompatActivity {
                 Crashlytics.getInstance().core.logException(e);
             }
 
-            obsDTO=new ObsDTO();
+            obsDTO = new ObsDTO();
             obsDTO.setConceptuuid(UuidDictionary.SPO2);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
@@ -962,6 +957,33 @@ public class VitalsActivity extends AppCompatActivity {
             intent.putExtra("tag", intentTag);
             startActivity(intent);
         }
+    }
+
+    private String ConvertFtoC(String temperature) {
+
+        String result = "";
+        double fTemp = Double.parseDouble(temperature);
+        double cTemp = ((fTemp - 32) * 5 / 9);
+        Log.i(TAG, "uploadTemperatureInC: " + cTemp);
+        DecimalFormat dtime = new DecimalFormat("#.##");
+        cTemp = Double.valueOf(dtime.format(cTemp));
+        result = String.valueOf(cTemp);
+        return result;
+
+    }
+
+    private String convertCtoF(String temperature) {
+
+        String result = "";
+        double a = Double.parseDouble(String.valueOf(temperature));
+        Double b = a * 9 / 5 + 32;
+
+        DecimalFormat dtime = new DecimalFormat("#.##");
+        b = Double.valueOf(dtime.format(b));
+
+        result = String.valueOf(b);
+        return result;
+
     }
 
     @Override

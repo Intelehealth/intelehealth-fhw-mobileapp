@@ -33,7 +33,7 @@ public class AppConstants {
 
 
     //App vitals constants
-    public static final String MAXIMUM_BP_SYS = "150";
+    public static final String MAXIMUM_BP_SYS = "250";
     public static final String MAXIMUM_HEIGHT = "272";
     public static final String MAXIMUM_WEIGHT = "150";
     public static int APP_VERSION_CODE = 26;
@@ -44,8 +44,8 @@ public class AppConstants {
     public static final String MINIMUM_PULSE = "30";
     public static final String MAXIMUM_TEMPERATURE_CELSIUS = "43";
     public static final String MINIMUM_TEMPERATURE_CELSIUS = "25";
-    public static final String MINIMUM_TEMPERATURE_FARHENIT = "80";
-    public static final String MAXIMUM_TEMPERATURE_FARHENIT = "120";
+    public static final String MINIMUM_TEMPERATURE_FARHENIT = "77";
+    public static final String MAXIMUM_TEMPERATURE_FARHENIT = "109";
     public static final String MAXIMUM_SPO2 = "100";
     public static final String MINIMUM_SPO2 = "1";
     public static final String MAXIMUM_RESPIRATORY = "80";

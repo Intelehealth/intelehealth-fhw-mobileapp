@@ -1850,7 +1850,7 @@ public class Node implements Serializable {
         Log.i(TAG, "formQuestionAnswer: " + mLanguage);
 
         if (mLanguage.equalsIgnoreCase("")) {
-            mLanguage = "No questions are answered, are you sure to proceed?";
+            mLanguage = "Question not answered";
         }
 
         return mLanguage;

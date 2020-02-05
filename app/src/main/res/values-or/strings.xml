@@ -380,7 +380,7 @@
     <string name="visit_not_uploaded">ପରିଦର୍ଶନ ଅପଲୋଡ୍ ହୋଇନାହିଁ</string>
     <string name="upload_started">ଅପଲୋଡ୍ ଆରମ୍ଭ ହୋଇଛି</string>
     <string name="visit_uploaded_successfully">ପରିଦର୍ଶନ ସଫଳତାର ସହ ଅପଲୋଡ୍ ହେଲା</string>
-    <string name="visit_uploaded_failed">ପରିଦର୍ଶନ ଅପଲୋଡ୍ ହୋଇନାହିଁ , ଇଣ୍ଟରନେଟ୍ ସଂଯୋଗ ଉପଲବ୍ଧ ହେଲେ ଅପଲୋଡ୍ ହେବ</string>
+    <string name="visit_uploaded_failed">ଇଣ୍ଟରନେଟ୍ ସଂଯୋଗ ଉପଲବ୍ଧ ହେଲେ ଅପଲୋଡ୍ ହେବ</string>
     <string name="sync_now">ଏବେ ହିଁ ସମକାଳୀନ କରନ୍ତୁ</string>
     <string name="visitID">" ଭିଜିଟ୍ ଆଇଡି"</string>
     <string name="years">ବର୍ଷ</string>
@@ -390,5 +390,6 @@
     <string name="end_visit_msg">ଆପଣ ସିଅର କୀ ଭିଜିଟ୍ କୁ ବନ୍ଦ</string>
     <string name="prescription_not_downloaded_check_internet">ପ୍ରେସକୂଶନ୍ ଡାଉଁଲଡ ହଉନାହିଁ, ଦୟାକରି ନିଜ ଇଟଂରନେଟ୍ ସଂଯୋଗ ଯାଂଚ କରନ୍ତୁ ଓ ପୁନବାର ଚେଷ୍ଟା କରନ୍ତୁ</string>
     <string name="privacy_reject_toast">ରୋଗୀର ସହମତି ବିନା ନାଁ ଲେଖାଇବା</string>
+    <string name="not_answered">ଉତର ଦଉ ନାହାନ୍ତି</string>
 
 </resources>

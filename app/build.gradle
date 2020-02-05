@@ -6,9 +6,9 @@ android {
         applicationId "app.intelehealth.client"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 35
+        versionCode 38
         buildToolsVersion('28.0.3')
-        versionName "2.0.0"
+        versionName "2.0.1-2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
@@ -103,9 +103,9 @@ dependencies {
     implementation "com.google.firebase:firebase-messaging:17.3.4"
     implementation 'com.google.firebase:firebase-crash:16.2.1'
 
-    implementation('com.github.SandroMachado:restaurant:0.2.0@aar') {
-        transitive = true
-    }
+//    implementation('com.github.SandroMachado:restaurant:0.2.0@aar') {
+//        transitive = true
+//    }
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin
 

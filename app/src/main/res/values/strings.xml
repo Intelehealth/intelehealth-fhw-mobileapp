@@ -111,7 +111,7 @@
     <string name="identification_screen_picker_months" translatable="false">months</string>
 
     //Active Patients Screen
-    <string name="title_activity_active_patient">Active Visits</string>
+    <string name="title_activity_active_patient" translatable="false">"Active Visits"</string>
 
     //Patient History Screen
     <string name="title_activity_get_patient_history" translatable="false">Patient History</string>
@@ -254,7 +254,7 @@
     <string name="title_activity_setup" translatable="false">Setup</string>
 
     <string name="title_activity_camera" translatable="false">Camera</string>
-    <string name="title_activity_today_patient">"Today's Visits"</string>
+    <string name="title_activity_today_patient" translatable="false">"Today's Visits"</string>
     <string name="title_activity_additional_documents" translatable="false">"Additional Documents"</string>
     <string name="title_activity_video_library" translatable="false">"Video Library"</string>
     <string name="visit_summary_patient_details" translatable="false">Visit details</string>
@@ -543,12 +543,13 @@
     <string name="visit_not_uploaded">Visit Not Uploaded</string>
     <string name="upload_started">Uploading...</string>
     <string name="visit_uploaded_successfully">Visit Uploaded Successfully</string>
-    <string name="visit_uploaded_failed">Visit was not uploaded, will be uploaded when internet connection is available</string>
+    <string name="visit_uploaded_failed">Will be uploaded when internet is available</string>
     <string name="visitID">Visit ID</string>
 
     <string name="end_visit_msg">Are you sure you want to end the visit?</string>
     <string name="prescription_not_downloaded_check_internet">Prescription not downloaded, check internet connection</string>
     <string name="privacy_reject_toast">You cannot register a patient without consent</string>
+    <string name="not_answered">Not answered</string>
 
 
 </resources>

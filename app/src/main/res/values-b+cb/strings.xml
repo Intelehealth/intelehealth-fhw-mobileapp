@@ -407,12 +407,13 @@
     <string name="visit_not_uploaded">Visit Not Uploaded</string>
     <string name="upload_started">Naga-upload...</string>
     <string name="visit_uploaded_successfully">Visit Uploaded Successfully</string>
-    <string name="visit_uploaded_failed">Visit was not uploaded, will be uploaded when internet connection is available</string>
+    <string name="visit_uploaded_failed">Will be uploaded when internet is available</string>
     <string name="visitID">Visit ID</string>
 
     <string name="end_visit_msg">Are you sure you want to end the visit?</string>
     <string name="prescription_not_downloaded_check_internet">Prescription not downloaded, check internet connection</string>
     <string name="privacy_reject_toast">You cannot register a patient without consent</string>
+    <string name="not_answered">Not answered</string>
 
 
 </resources>

@@ -130,7 +130,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
                     {
                         if(radio_acc.isChecked())
                         {
-                            sessionManager.setOfllineOpenMRSID("");
+//                            sessionManager.setOfllineOpenMRSID("");
                             Intent intent = new Intent(getApplicationContext(), IdentificationActivity.class);
                             intent.putExtra("privacy",radiobtn.getText()); //privacy value send to identificationActivity
                             startActivity(intent);

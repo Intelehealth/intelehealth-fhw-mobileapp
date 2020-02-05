@@ -416,18 +416,19 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         if (patient_new.getOpenmrs_id() != null && !patient_new.getOpenmrs_id().isEmpty()) {
             idView.setText(patient_new.getOpenmrs_id());
-            sessionManager.setOfllineOpenMRSID(patient_new.getOpenmrs_id());
+//            sessionManager.setOfllineOpenMRSID(patient_new.getOpenmrs_id());
         } else {
             idView.setText(getString(R.string.patient_not_registered));
         }
 
-        if (!NetworkConnection.isOnline(getApplication())) {
-            if (!sessionManager.getOfllineOpenMRSID().equals("")) {
-                idView.setText(sessionManager.getOfllineOpenMRSID());
-            } else {
-                idView.setText(getString(R.string.patient_not_registered));
-            }
-        }
+
+//        if (!NetworkConnection.isOnline(getApplication())) {
+//            if (!sessionManager.getOfllineOpenMRSID().equals("")) {
+//                idView.setText(sessionManager.getOfllineOpenMRSID());
+//            } else {
+//                idView.setText(getString(R.string.patient_not_registered));
+//            }
+//        }
 
 
         setTitle(patient_new.getOpenmrs_id());

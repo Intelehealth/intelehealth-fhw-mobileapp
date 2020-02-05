@@ -135,11 +135,9 @@ public class HomeActivity extends AppCompatActivity {
                 //Loads the config file values and check for the boolean value of privacy key.
                 ConfigUtils configUtils = new ConfigUtils(HomeActivity.this);
                 if (configUtils.privacy_notice()) {
-                    sessionManager.setOfllineOpenMRSID("");
                     Intent intent = new Intent(HomeActivity.this, PrivacyNotice_Activity.class);
                     startActivity(intent);
                 } else {
-                    sessionManager.setOfllineOpenMRSID("");
                     Intent intent = new Intent(HomeActivity.this, IdentificationActivity.class);
                     startActivity(intent);
                 }
@@ -148,7 +146,6 @@ public class HomeActivity extends AppCompatActivity {
         c2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sessionManager.setOfllineOpenMRSID("");
                 Intent intent = new Intent(HomeActivity.this, SearchPatientActivity.class);
                 startActivity(intent);
             }
@@ -156,7 +153,6 @@ public class HomeActivity extends AppCompatActivity {
         c3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sessionManager.setOfllineOpenMRSID("");
                 Intent intent = new Intent(HomeActivity.this, TodayPatientActivity.class);
                 startActivity(intent);
             }
@@ -164,7 +160,6 @@ public class HomeActivity extends AppCompatActivity {
         c4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sessionManager.setOfllineOpenMRSID("");
                 Intent intent = new Intent(HomeActivity.this, ActivePatientActivity.class);
                 startActivity(intent);
             }
@@ -446,7 +441,6 @@ public class HomeActivity extends AppCompatActivity {
                 && Locale.getDefault().toString().equals("en")) {
 //            lastSyncAgo.setText(CalculateAgoTime());
         }
-        sessionManager.setOfllineOpenMRSID("");
         super.onResume();
     }
 
