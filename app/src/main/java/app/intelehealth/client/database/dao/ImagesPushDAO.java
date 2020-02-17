@@ -1,5 +1,7 @@
 package app.intelehealth.client.database.dao;
 
+import android.util.Log;
+
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 
@@ -30,7 +32,6 @@ import okhttp3.ResponseBody;
 public class ImagesPushDAO {
     String TAG = ImagesPushDAO.class.getSimpleName();
     SessionManager sessionManager = null;
-
 
 
     public boolean patientProfileImagesPush() {
@@ -84,6 +85,7 @@ public class ImagesPushDAO {
         List<ObsPushDTO> obsImageJsons = new ArrayList<>();
         try {
             obsImageJsons = imagesDAO.getObsUnsyncedImages();
+            Log.e(TAG, "image request model" + gson.toJson(obsImageJsons));
         } catch (DAOException e) {
             Crashlytics.getInstance().core.logException(e);
         }

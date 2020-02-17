@@ -58,6 +58,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.gson.Gson;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
@@ -2062,6 +2063,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             obsDTO.setUuid(obsDAO.getObsuuid(encounterUuidAdultIntial, String.valueOf(conceptID)));
 
             obsDAO.updateObs(obsDTO);
+
+            Gson gson = new Gson();
+            Log.e("OBS=", "" + gson.toJson(obsDAO));
 
         } catch (DAOException dao) {
             Crashlytics.getInstance().core.logException(dao);
