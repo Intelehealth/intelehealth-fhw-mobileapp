@@ -2,6 +2,7 @@ package app.intelehealth.client.activities.patientDetailActivity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
@@ -10,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -28,12 +30,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.crashlytics.android.Crashlytics;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,6 +49,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 import app.intelehealth.client.R;
+import app.intelehealth.client.activities.setupActivity.SetupActivity;
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.database.InteleHealthDatabaseHelper;
 import app.intelehealth.client.database.dao.EncounterDAO;
@@ -56,6 +62,8 @@ import app.intelehealth.client.models.dto.EncounterDTO;
 import app.intelehealth.client.models.dto.VisitDTO;
 import app.intelehealth.client.utilities.DateAndTimeUtils;
 import app.intelehealth.client.utilities.DownloadFilesUtils;
+import app.intelehealth.client.utilities.EditTextUtils;
+import app.intelehealth.client.utilities.FileUtils;
 import app.intelehealth.client.utilities.Logger;
 import app.intelehealth.client.utilities.SessionManager;
 import app.intelehealth.client.utilities.UrlModifiers;
@@ -87,7 +95,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     EncounterDTO encounterDTO = new EncounterDTO();
     PatientsDAO patientsDAO = new PatientsDAO();
-    private boolean hasLicense;
+    private boolean hasLicense = false;
     private boolean returning;
 
     String phistory = "";
@@ -381,6 +389,43 @@ public class PatientDetailActivity extends AppCompatActivity {
         TextView medHistView = findViewById(R.id.textView_patHist);
         TextView famHistView = findViewById(R.id.textView_famHist);
 
+
+        if (!sessionManager.getLicenseKey().isEmpty()) {
+            hasLicense = true;
+        }
+
+        try {
+            JSONObject obj = null;
+            if (hasLicense) {
+                obj = new JSONObject(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this)); //Load the config file
+            } else {
+                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
+            }
+
+            //Display the fields on the Add Patient screen as per the config file
+            if (obj.getBoolean("casteLayout")) {
+                casteRow.setVisibility(View.VISIBLE);
+            } else {
+                casteRow.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("educationLayout")) {
+                educationRow.setVisibility(View.VISIBLE);
+            } else {
+                educationRow.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("economicLayout")) {
+                economicRow.setVisibility(View.VISIBLE);
+            } else {
+                economicRow.setVisibility(View.GONE);
+            }
+
+        } catch (JSONException e) {
+            Crashlytics.getInstance().core.logException(e);
+//            Issue #627
+//            added the catch exception to check the config and throwing back to setup activity
+            Toast.makeText(getApplicationContext(), "JsonException" + e, Toast.LENGTH_LONG).show();
+//            showAlertDialogButtonClicked(e.toString());
+        }
 
 //changing patient to patient_new object
         if (patient_new.getMiddle_name() == null) {
