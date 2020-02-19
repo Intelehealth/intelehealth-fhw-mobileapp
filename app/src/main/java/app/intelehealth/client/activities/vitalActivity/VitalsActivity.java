@@ -345,7 +345,7 @@ public class VitalsActivity extends AppCompatActivity {
                 if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
                     if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_RESPIRATORY) ||
                             Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_RESPIRATORY)) {
-                        mResp.setError(getString(R.string.temp_error, AppConstants.MINIMUM_RESPIRATORY, AppConstants.MAXIMUM_RESPIRATORY));
+                        mResp.setError(getString(R.string.resp_error, AppConstants.MINIMUM_RESPIRATORY, AppConstants.MAXIMUM_RESPIRATORY));
                     } else {
                         mResp.setError(null);
                     }
