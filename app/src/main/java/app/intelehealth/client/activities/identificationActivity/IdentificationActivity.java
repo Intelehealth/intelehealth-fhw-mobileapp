@@ -853,27 +853,29 @@ public class IdentificationActivity extends AppCompatActivity {
         View focusView = null;
 
 
-        if (dob.after(today)) {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
-            alertDialogBuilder.setTitle(R.string.error);
-            alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_dob);
-            //alertDialogBuilder.setMessage(getString(R.string.identification_dialog_date_error));
-            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
+        if(dob.equals("") || dob.toString().equals("")) {
+            if (dob.after(today)) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
+                alertDialogBuilder.setTitle(R.string.error);
+                alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_dob);
+                //alertDialogBuilder.setMessage(getString(R.string.identification_dialog_date_error));
+                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
 
-            mDOBPicker.show();
-            alertDialog.show();
+                mDOBPicker.show();
+                alertDialog.show();
 
-            Button postiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            postiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-            postiveButton.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+                Button postiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                postiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                postiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-            return;
+                return;
+            }
         }
 
         ArrayList<EditText> values = new ArrayList<>();
@@ -889,6 +891,7 @@ public class IdentificationActivity extends AppCompatActivity {
         values.add(mRelationship);
         values.add(mOccupation);
 
+/*
         if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
             alertDialogBuilder.setTitle(R.string.error);
@@ -908,10 +911,11 @@ public class IdentificationActivity extends AppCompatActivity {
 
             return;
         }
+*/
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                 && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
-                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("")) {
+                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked())) {
 
             Log.v(TAG, "Result");
 
@@ -934,6 +938,25 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if (mCity.getText().toString().equals("")) {
                 mCity.setError(getString(R.string.error_field_required));
+            }
+
+            if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
+                alertDialogBuilder.setTitle(R.string.error);
+                alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
+                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
             }
 
 
