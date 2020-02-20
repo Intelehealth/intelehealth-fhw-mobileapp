@@ -43,7 +43,7 @@ public class UuidDictionary {
     public static final String ENCOUNTER_VISIT_NOTE = "d7151f82-c1f3-4152-a605-2f9ea7414a79";
     public static final String ENCOUNTER_PATIENT_EXIT_SURVEY = "629a9d0b-48eb-405e-953d-a5964c88dc30";
 
-    public static final String EMERGENCY_OBS = "26644031-24e2-473a-ab5d-e31dfffd957d";
+    public static final String EMERGENCY_OBS = "ca5f5dc3-4f0b-4097-9cae-5cf2eb44a09c";
 
     //Patient Identifier Type
     public static final String IDENTIFIER_OPENMRS_ID = "05a29f94-c0ed-11e2-94be-8c13b969e334";
