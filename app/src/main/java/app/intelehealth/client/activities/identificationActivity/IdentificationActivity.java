@@ -15,6 +15,8 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -128,6 +130,8 @@ public class IdentificationActivity extends AppCompatActivity {
     ImagesDAO imagesDAO = new ImagesDAO();
     private String mCurrentPhotoPath;
     Context context;
+    private String BlockCharacterSet_Others = "0123456789\\@$#!=><&^*+";
+    private String BlockCharacterSet_Name = "\\@$#!=><&^*+\"\'";
 
     Intent i_privacy;
     String privacy_value;
@@ -153,14 +157,26 @@ public class IdentificationActivity extends AppCompatActivity {
         });
         sessionManager = new SessionManager(this);
         mFirstName = findViewById(R.id.identification_first_name);
+        mFirstName.setFilters(new InputFilter[] {inputFilter_Name});
+
         mMiddleName = findViewById(R.id.identification_middle_name);
+        mMiddleName.setFilters(new InputFilter[] {inputFilter_Name});
+
         mLastName = findViewById(R.id.identification_last_name);
+        mLastName.setFilters(new InputFilter[] {inputFilter_Name});
+
         mDOB = findViewById(R.id.identification_birth_date_text_view);
         mPhoneNum = findViewById(R.id.identification_phone_number);
         mAge = findViewById(R.id.identification_age);
         mAddress1 = findViewById(R.id.identification_address1);
+        mAddress1.setFilters(new InputFilter[] {inputFilter_Others});
+
         mAddress2 = findViewById(R.id.identification_address2);
+        mAddress2.setFilters(new InputFilter[] {inputFilter_Others});
+
         mCity = findViewById(R.id.identification_city);
+        mCity.setFilters(new InputFilter[] {inputFilter_Others});
+
         stateText = findViewById(R.id.identification_state);
         mState = findViewById(R.id.spinner_state);
         mPostal = findViewById(R.id.identification_postal_code);
@@ -169,7 +185,11 @@ public class IdentificationActivity extends AppCompatActivity {
         mGenderM = findViewById(R.id.identification_gender_male);
         mGenderF = findViewById(R.id.identification_gender_female);
         mRelationship = findViewById(R.id.identification_relationship);
+        mRelationship.setFilters(new InputFilter[] {inputFilter_Others});
+
         mOccupation = findViewById(R.id.identification_occupation);
+        mOccupation.setFilters(new InputFilter[] {inputFilter_Others});
+
         mCaste = findViewById(R.id.spinner_caste);
         mEducation = findViewById(R.id.spinner_education);
         mEconomicStatus = findViewById(R.id.spinner_economic_status);
@@ -695,6 +715,26 @@ public class IdentificationActivity extends AppCompatActivity {
                 break;
         }
     }
+
+    private InputFilter inputFilter_Name = new InputFilter() { //filter input for name fields
+        @Override
+        public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {
+            if (charSequence != null && BlockCharacterSet_Name.contains(("" + charSequence))) {
+                return "";
+            }
+            return null;
+        }
+    };
+
+    private InputFilter inputFilter_Others = new InputFilter() { //filter input for all other fields
+        @Override
+        public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {
+            if (charSequence != null && BlockCharacterSet_Others.contains(("" + charSequence))) {
+                return "";
+            }
+            return null;
+        }
+    };
 
     public void generateUuid() {
 
