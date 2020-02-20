@@ -13,11 +13,6 @@
         tools:context=".activities.homeActivity.HomeActivity"
         tools:showIn="@layout/activity_home">
 
-        <ScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:fillViewport="true">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -40,7 +35,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
-                        android:padding="16dp">
+                        android:layout_marginVertical="3sp"
+                        android:layout_marginHorizontal="15sp">
 
                         <ImageView
                             android:id="@+id/iv_new_patient"
@@ -52,10 +48,9 @@
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginStart="15sp"
                             android:layout_centerVertical="true"
-                            android:gravity="center"
                             android:layout_toEndOf="@+id/iv_new_patient"
                             android:text="@string/new_patient"
                             android:textSize="28sp" />
@@ -80,7 +75,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
-                        android:padding="16dp">
+                        android:layout_marginVertical="3sp"
+                        android:layout_marginHorizontal="15sp">
 
                         <ImageView
                             android:id="@+id/iv_find_patient"
@@ -92,9 +88,9 @@
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
                             android:layout_centerVertical="true"
-                            android:gravity="center"
                             android:layout_marginStart="15sp"
                             android:layout_toEndOf="@+id/iv_find_patient"
                             android:text="@string/find_patient"
@@ -119,7 +115,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
-                        android:padding="16dp">
+                        android:layout_marginVertical="3sp"
+                        android:layout_marginHorizontal="15sp">
 
                         <ImageView
                             android:id="@+id/iv_today_patients"
@@ -131,11 +128,10 @@
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:gravity="center"
-                            android:layout_marginStart="15sp"
-                            android:layout_toEndOf="@+id/iv_today_patients"
+                            android:ellipsize="end"
+                            android:layout_marginStart="15sp" android:layout_toEndOf="@+id/iv_today_patients"
                             android:text="@string/today_visits"
                             android:textSize="28sp" />
 
@@ -158,7 +154,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
-                        android:padding="16dp">
+                        android:layout_marginVertical="3sp"
+                        android:layout_marginHorizontal="15sp">
 
                         <ImageView
                             android:id="@+id/iv_active_patients"
@@ -170,9 +167,9 @@
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:gravity="center"
+                            android:ellipsize="end"
                             android:layout_marginStart="15sp"
                             android:layout_toEndOf="@+id/iv_active_patients"
                             android:text="@string/active_visits"
@@ -198,7 +195,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
-                        android:padding="16dp">
+                        android:layout_marginVertical="3sp"
+                        android:layout_marginHorizontal="15sp">
 
                         <ImageView
                             android:id="@+id/iv_video_library"
@@ -210,9 +208,9 @@
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:gravity="center"
+                            android:ellipsize="end"
                             android:layout_marginStart="15sp"
                             android:layout_toEndOf="@+id/iv_video_library"
                             android:text="@string/video_library"
@@ -258,15 +256,15 @@
                             android:layout_toStartOf="@+id/manualsyncbutton"
                             android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/lastsynctextview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerInParent="true"
-                            android:text="@string/lastsync"
-                            android:padding="6sp"
-                            android:textSize="14sp" />
+                            <TextView
+                                android:id="@+id/lastsynctextview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerInParent="true"
+                                android:text="@string/lastsync"
+                                android:padding="6sp"
+                                android:textSize="14sp" />
 
                             <TextView
                                 android:id="@+id/lastsyncago"
@@ -286,7 +284,6 @@
                 </android.support.v7.widget.CardView>
             </LinearLayout>
 
-        </ScrollView>
 
     </RelativeLayout>
 
