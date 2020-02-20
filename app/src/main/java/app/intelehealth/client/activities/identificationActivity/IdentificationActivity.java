@@ -655,7 +655,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         yearPicker.setValue(yearPicker.getValue());
                         monthPicker.setValue(monthPicker.getValue());
-                        String ageString = yearPicker.getValue() + getString(R.string.identification_screen_text_years) + monthPicker.getValue() + getString(R.string.identification_screen_text_months);
+                        String ageString = yearPicker.getValue() + getString(R.string.identification_screen_text_years) + " - " + monthPicker.getValue() + getString(R.string.identification_screen_text_months);
                         mAge.setText(ageString);
 
 
