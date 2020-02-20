@@ -669,7 +669,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         mDOBDay = 1;
 
                         Locale.setDefault(Locale.ENGLISH);
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
                         dob.set(mDOBYear, mDOBMonth, mDOBDay);
                         String dobString = simpleDateFormat.format(dob.getTime());
                         mDOB.setText(dobString);
