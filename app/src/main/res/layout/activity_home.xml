@@ -13,17 +13,20 @@
         tools:context=".activities.homeActivity.HomeActivity"
         tools:showIn="@layout/activity_home">
 
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="16dp">
 
                 <android.support.v7.widget.CardView
                     android:id="@+id/cardview_newpat"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:padding="16dp"
@@ -33,15 +36,14 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:layout_marginVertical="3sp"
-                        android:layout_marginHorizontal="15sp">
+                        android:padding="16dp">
 
                         <ImageView
                             android:id="@+id/iv_new_patient"
                             android:layout_width="30dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="30dp"
                             android:layout_centerVertical="true"
                             android:contentDescription="TODO"
                             app:srcCompat="@drawable/ic_person_add_24dp" />
@@ -49,8 +51,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="15sp"
-                            android:layout_centerVertical="true"
+                            android:layout_marginStart="10dp"
                             android:layout_toEndOf="@+id/iv_new_patient"
                             android:text="@string/new_patient"
                             android:textSize="28sp" />
@@ -62,8 +63,7 @@
                 <android.support.v7.widget.CardView
                     android:id="@+id/cardview_find_patient"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:padding="16dp"
@@ -73,15 +73,14 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:layout_marginVertical="3sp"
-                        android:layout_marginHorizontal="15sp">
+                        android:padding="16dp">
 
                         <ImageView
                             android:id="@+id/iv_find_patient"
                             android:layout_width="30dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="30dp"
                             android:layout_centerVertical="true"
                             android:contentDescription="TODO"
                             app:srcCompat="@drawable/ic_search_24dp" />
@@ -89,9 +88,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:layout_centerVertical="true"
-                            android:layout_marginStart="15sp"
+                            android:layout_marginStart="10dp"
                             android:layout_toEndOf="@+id/iv_find_patient"
                             android:text="@string/find_patient"
                             android:textSize="28sp" />
@@ -103,8 +100,7 @@
                 <android.support.v7.widget.CardView
                     android:id="@+id/cardview_today_patient"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="5dp"
@@ -113,15 +109,14 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:layout_marginVertical="3sp"
-                        android:layout_marginHorizontal="15sp">
+                        android:padding="16dp">
 
                         <ImageView
                             android:id="@+id/iv_today_patients"
                             android:layout_width="30dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="30dp"
                             android:layout_centerVertical="true"
                             android:contentDescription="TODO"
                             app:srcCompat="@drawable/ic_calendar_intele_24dp" />
@@ -129,9 +124,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:ellipsize="end"
-                            android:layout_marginStart="15sp" android:layout_toEndOf="@+id/iv_today_patients"
+                            android:layout_marginStart="10dp"
+                            android:layout_toEndOf="@+id/iv_today_patients"
                             android:text="@string/today_visits"
                             android:textSize="28sp" />
 
@@ -142,8 +136,7 @@
                 <android.support.v7.widget.CardView
                     android:id="@+id/cardview_active_patients"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="5dp"
@@ -152,15 +145,14 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:layout_marginVertical="3sp"
-                        android:layout_marginHorizontal="15sp">
+                        android:padding="16dp">
 
                         <ImageView
                             android:id="@+id/iv_active_patients"
                             android:layout_width="30dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="30dp"
                             android:layout_centerVertical="true"
                             android:contentDescription="TODO"
                             app:srcCompat="@drawable/ic_active_patients_black" />
@@ -168,9 +160,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:ellipsize="end"
-                            android:layout_marginStart="15sp"
+                            android:layout_marginStart="10dp"
                             android:layout_toEndOf="@+id/iv_active_patients"
                             android:text="@string/active_visits"
                             android:textSize="28sp" />
@@ -182,8 +172,7 @@
                 <android.support.v7.widget.CardView
                     android:id="@+id/cardview_video_libraby"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:padding="16dp"
@@ -193,15 +182,14 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:layout_marginVertical="3sp"
-                        android:layout_marginHorizontal="15sp">
+                        android:padding="16dp">
 
                         <ImageView
                             android:id="@+id/iv_video_library"
                             android:layout_width="30dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="30dp"
                             android:layout_centerVertical="true"
                             android:contentDescription="TODO"
                             app:srcCompat="@drawable/ic_play_circle_filled_black_24dp" />
@@ -209,9 +197,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:ellipsize="end"
-                            android:layout_marginStart="15sp"
+                            android:layout_marginStart="10dp"
                             android:layout_toEndOf="@+id/iv_video_library"
                             android:text="@string/video_library"
                             android:textSize="28sp" />
@@ -223,8 +209,7 @@
                 <android.support.v7.widget.CardView
                     android:id="@+id/cardview_home"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:background="@color/white"
                     android:foreground="?android:attr/selectableItemBackground"
@@ -235,13 +220,13 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:padding="16dp">
 
                         <Button
                             android:id="@+id/manualsyncbutton"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:background="@drawable/button_bg_rounded_stroke"
                             android:clickable="true"
@@ -252,7 +237,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_toStartOf="@+id/manualsyncbutton"
                             android:orientation="vertical">
 
@@ -263,7 +248,6 @@
                                 android:layout_alignParentStart="true"
                                 android:layout_centerInParent="true"
                                 android:text="@string/lastsync"
-                                android:padding="6sp"
                                 android:textSize="14sp" />
 
                             <TextView
@@ -284,6 +268,7 @@
                 </android.support.v7.widget.CardView>
             </LinearLayout>
 
+        </ScrollView>
 
     </RelativeLayout>
 
