@@ -130,8 +130,8 @@ public class IdentificationActivity extends AppCompatActivity {
     ImagesDAO imagesDAO = new ImagesDAO();
     private String mCurrentPhotoPath;
     Context context;
-    private String BlockCharacterSet_Others = "0123456789\\@$!=><&^*+€";
-    private String BlockCharacterSet_Name = "\\@$!=><&^*+\"\'€";
+    private String BlockCharacterSet_Others = "0123456789\\@$!=><&^*+€¥";
+    private String BlockCharacterSet_Name = "\\@$!=><&^*+\"\'€¥";
 
     Intent i_privacy;
     String privacy_value;
