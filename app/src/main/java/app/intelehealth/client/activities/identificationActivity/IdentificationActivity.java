@@ -157,7 +157,7 @@ public class IdentificationActivity extends AppCompatActivity {
         });
         sessionManager = new SessionManager(this);
         mFirstName = findViewById(R.id.identification_first_name);
-        mFirstName.setFilters(new InputFilter[] {inputFilter_Name});
+        mFirstName.setFilters(new InputFilter[] {new InputFilter.LengthFilter(25),inputFilter_Name});
 
         mMiddleName = findViewById(R.id.identification_middle_name);
         mMiddleName.setFilters(new InputFilter[] {inputFilter_Name});
@@ -169,10 +169,10 @@ public class IdentificationActivity extends AppCompatActivity {
         mPhoneNum = findViewById(R.id.identification_phone_number);
         mAge = findViewById(R.id.identification_age);
         mAddress1 = findViewById(R.id.identification_address1);
-        mAddress1.setFilters(new InputFilter[] {inputFilter_Others});
+        mAddress1.setFilters(new InputFilter[] {inputFilter_Name});
 
         mAddress2 = findViewById(R.id.identification_address2);
-        mAddress2.setFilters(new InputFilter[] {inputFilter_Others});
+        mAddress2.setFilters(new InputFilter[] {inputFilter_Name});
 
         mCity = findViewById(R.id.identification_city);
         mCity.setFilters(new InputFilter[] {inputFilter_Others});
