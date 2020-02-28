@@ -157,25 +157,25 @@ public class IdentificationActivity extends AppCompatActivity {
         });
         sessionManager = new SessionManager(this);
         mFirstName = findViewById(R.id.identification_first_name);
-        mFirstName.setFilters(new InputFilter[] {new InputFilter.LengthFilter(25),inputFilter_Name});
+        mFirstName.setFilters(new InputFilter[] {new InputFilter.LengthFilter(25),inputFilter_Name}); //maxlength 25
 
         mMiddleName = findViewById(R.id.identification_middle_name);
-        mMiddleName.setFilters(new InputFilter[] {new InputFilter.LengthFilter(25),inputFilter_Name});
+        mMiddleName.setFilters(new InputFilter[] {new InputFilter.LengthFilter(25),inputFilter_Name}); //maxlength 25
 
         mLastName = findViewById(R.id.identification_last_name);
-        mLastName.setFilters(new InputFilter[] {new InputFilter.LengthFilter(25),inputFilter_Name});
+        mLastName.setFilters(new InputFilter[] {new InputFilter.LengthFilter(25),inputFilter_Name}); //maxlength 25
 
         mDOB = findViewById(R.id.identification_birth_date_text_view);
         mPhoneNum = findViewById(R.id.identification_phone_number);
         mAge = findViewById(R.id.identification_age);
         mAddress1 = findViewById(R.id.identification_address1);
-        mAddress1.setFilters(new InputFilter[] {new InputFilter.LengthFilter(50),inputFilter_Name});
+        mAddress1.setFilters(new InputFilter[] {new InputFilter.LengthFilter(50),inputFilter_Name}); //maxlength 50
 
         mAddress2 = findViewById(R.id.identification_address2);
-        mAddress2.setFilters(new InputFilter[] {new InputFilter.LengthFilter(50),inputFilter_Name});
+        mAddress2.setFilters(new InputFilter[] {new InputFilter.LengthFilter(50),inputFilter_Name}); //maxlength 50
 
         mCity = findViewById(R.id.identification_city);
-        mCity.setFilters(new InputFilter[] {new InputFilter.LengthFilter(25),inputFilter_Others});
+        mCity.setFilters(new InputFilter[] {new InputFilter.LengthFilter(25),inputFilter_Others}); //maxlength 25
 
         stateText = findViewById(R.id.identification_state);
         mState = findViewById(R.id.spinner_state);
@@ -185,10 +185,10 @@ public class IdentificationActivity extends AppCompatActivity {
         mGenderM = findViewById(R.id.identification_gender_male);
         mGenderF = findViewById(R.id.identification_gender_female);
         mRelationship = findViewById(R.id.identification_relationship);
-        mRelationship.setFilters(new InputFilter[] {new InputFilter.LengthFilter(25),inputFilter_Others});
+        mRelationship.setFilters(new InputFilter[] {new InputFilter.LengthFilter(25),inputFilter_Others}); //maxlength 25
 
         mOccupation = findViewById(R.id.identification_occupation);
-        mOccupation.setFilters(new InputFilter[] {new InputFilter.LengthFilter(25),inputFilter_Others});
+        mOccupation.setFilters(new InputFilter[] {new InputFilter.LengthFilter(25),inputFilter_Others}); //maxlength 25
 
         mCaste = findViewById(R.id.spinner_caste);
         mEducation = findViewById(R.id.spinner_education);
