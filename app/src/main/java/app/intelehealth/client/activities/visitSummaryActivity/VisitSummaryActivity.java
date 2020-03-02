@@ -1980,7 +1980,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
             case UuidDictionary.REQUESTED_TESTS: {
                 if (!testsReturned.isEmpty()) {
-                    testsReturned = testsReturned + "," + value;
+                    testsReturned = testsReturned + "\n\n" + value;
                 } else {
                     testsReturned = value;
                 }
