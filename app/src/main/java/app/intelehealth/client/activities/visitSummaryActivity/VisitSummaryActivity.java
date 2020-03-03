@@ -1504,7 +1504,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         String rx_web = stringToWeb(rxReturned);
 
-        String tests_web = stringToWeb(testsReturned.trim().replace("\n\n", "\n"));
+        String tests_web = stringToWeb(testsReturned.trim().replace("\n\n", "\n")
+                .replace(Node.bullet, ""));
 
         //String advice_web = stringToWeb(adviceReturned);
 
@@ -1980,9 +1981,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
             case UuidDictionary.REQUESTED_TESTS: {
                 if (!testsReturned.isEmpty()) {
-                    testsReturned = testsReturned + "\n\n" + value;
+                    testsReturned =  testsReturned + "\n\n" + Node.bullet + " " + value;
                 } else {
-                    testsReturned = value;
+                    testsReturned =  Node.bullet + " " + value;
                 }
                 if (requestedTestsCard.getVisibility() != View.VISIBLE) {
                     requestedTestsCard.setVisibility(View.VISIBLE);
