@@ -369,7 +369,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
                                     // offlineLogin.setUpOfflineLogin(mEmail, mPassword);
-
+                                    cpd.dismiss();
                                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                                     intent.putExtra("login", true);
 //                startJobDispatcherService(LoginActivity.this);
