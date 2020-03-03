@@ -410,7 +410,7 @@
     <string name="visit_uploaded_failed">Will be uploaded when internet is available</string>
     <string name="visitID">Visit ID</string>
 
-    <string name="end_visit_msg">Are you sure you want to end the visit?</string>
+    <string name="end_visit_msg">sigurado ba ka nga humanonn ang pagbisita?</string>
     <string name="prescription_not_downloaded_check_internet">Prescription not downloaded, check internet connection</string>
     <string name="privacy_reject_toast">You cannot register a patient without consent</string>
     <string name="not_answered">Not answered</string>
