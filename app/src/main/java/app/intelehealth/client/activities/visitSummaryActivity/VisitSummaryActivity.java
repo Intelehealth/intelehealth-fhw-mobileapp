@@ -1504,7 +1504,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         String rx_web = stringToWeb(rxReturned);
 
-        String tests_web = stringToWeb(testsReturned);
+        String tests_web = stringToWeb(testsReturned.trim().replace("\n\n", "\n"));
 
         //String advice_web = stringToWeb(adviceReturned);
 
