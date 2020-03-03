@@ -415,7 +415,6 @@
     <string name="privacy_reject_toast">You cannot register a patient without consent</string>
     <string name="not_answered">Not answered</string>
     <string name="resp_error">"Respiratory rate should be in between %1$s and %2$s"</string>
-    <string name="question_not_answered">Wala natubag ang pangutana</string>
 
 
 </resources>
