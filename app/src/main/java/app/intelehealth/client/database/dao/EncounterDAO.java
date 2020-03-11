@@ -119,7 +119,7 @@ public class EncounterDAO {
         List<EncounterDTO> encounterDTOList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
-        Cursor idCursor = db.rawQuery("SELECT distinct a.uuid,a.visituuid,a.encounter_type_uuid,a.provider_uuid,a.encounter_time,a.voided,a.privacynotice_value FROM tbl_encounter a,tbl_obs b where (a.sync = ? OR b.sync=?) and a.uuid = b.encounteruuid  and b.sync='FALSE' AND b.voided='0' ", new String[]{"false", "0"});
+        Cursor idCursor = db.rawQuery("SELECT distinct a.uuid,a.visituuid,a.encounter_type_uuid,a.provider_uuid,a.encounter_time,a.voided,a.privacynotice_value FROM tbl_encounter a,tbl_obs b where (a.sync = ? OR a.sync=?) and a.uuid = b.encounteruuid  and b.sync='FALSE' AND b.voided='0' ", new String[]{"false", "0"});
         EncounterDTO encounterDTO = new EncounterDTO();
         Log.d("RAINBOW: ","RAINBOW: "+idCursor.getCount());
         if (idCursor.getCount() != 0) {
