@@ -166,7 +166,7 @@ public class ObsDAO {
                 values.put("value", ob.getValue());
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
                 values.put("voided", "0");
-                values.put("sync", "FALSE");
+                values.put("sync", "false");    //Earlier was set to FALSE which caused the issue.
                 insertedCount = db.insert("tbl_obs", null, values);
             }
             db.setTransactionSuccessful();
