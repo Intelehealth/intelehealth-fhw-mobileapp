@@ -130,7 +130,7 @@ public class EncounterDAO {
                 encounterDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
                 encounterDTO.setVisituuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visituuid")));
                 encounterDTO.setEncounterTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_type_uuid")));
-                encounterDTO.setProvideruuid("28cea4ab-3188-434a-82f0-055133090a38");
+                encounterDTO.setProvideruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("provider_uuid")));
                 Log.d("ENCO","ENCO_PROV: "+idCursor.getString(idCursor.getColumnIndexOrThrow("provider_uuid")));
                 encounterDTO.setEncounterTime(idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_time")));
                 Log.d("ENCO","ENCO_TIME: "+idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_time")));
