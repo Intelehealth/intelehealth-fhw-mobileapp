@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,7 +130,7 @@ public class EncounterDAO {
                 encounterDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
                 encounterDTO.setVisituuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visituuid")));
                 encounterDTO.setEncounterTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_type_uuid")));
-                encounterDTO.setProvideruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("provider_uuid")));
+                encounterDTO.setProvideruuid("28cea4ab-3188-434a-82f0-055133090a38");
                 Log.d("ENCO","ENCO_PROV: "+idCursor.getString(idCursor.getColumnIndexOrThrow("provider_uuid")));
                 encounterDTO.setEncounterTime(idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_time")));
                 Log.d("ENCO","ENCO_TIME: "+idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_time")));
@@ -142,7 +143,8 @@ public class EncounterDAO {
         db.setTransactionSuccessful();
         db.endTransaction();
 
-
+        Gson gson = new Gson();
+        Log.d("ENC_GSON: ","ENC_GSON: "+gson.toJson(encounterDTOList));
         return encounterDTOList;
     }
 
