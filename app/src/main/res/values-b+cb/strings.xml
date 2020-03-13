@@ -256,7 +256,7 @@
     <string name="visit_images">Hulagway sa Bisita</string>
     <string name="visit_summary_additional_comments">Dugang nga mga Komento</string>
     <string name="visit_summary_advice">Tambag Medikal</string>
-    <string name="visit_summary_button_download">Pag-download gikan sa doktor</string>
+    <string name="visit_summary_button_download">Download</string>
     <string name="visit_summary_diagnosis">Pag-diagnose</string>
     <string name="visit_summary_doctor_details">Detalye sa Doktor</string>
     <string name="visit_summary_rx">Gipresenta nga mga tambal</string>
