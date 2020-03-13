@@ -15,7 +15,11 @@ import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -58,6 +62,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
     String comments;
 
     SessionManager sessionManager = null;
+
     @Override
     public void onBackPressed() {
         //do nothing
@@ -115,13 +120,11 @@ public class PatientSurveyActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (rating != null && !TextUtils.isEmpty(rating)) {
-                    Log.d(TAG, "Rating is "+rating);
+                    Log.d(TAG, "Rating is " + rating);
                     uploadSurvey();
                     endVisit();
-                }
-                else
-                {
-                    Toast.makeText(getApplicationContext(),getString(R.string.exit_survey_toast),Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), getString(R.string.exit_survey_toast), Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -158,9 +161,17 @@ public class PatientSurveyActivity extends AppCompatActivity {
         encounterDTO = new EncounterDTO();
         encounterDTO.setUuid(uuid);
         encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_PATIENT_EXIT_SURVEY"));
-        encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+
+        //As per issue #785 - we fixed it by subtracting 1 minute from Encounter Time
+        try {
+            encounterDTO.setEncounterTime(fiveMinutesAgo(AppConstants.dateAndTimeUtils.currentDateTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         encounterDTO.setVisituuid(visitUuid);
-        encounterDTO.setProvideruuid(encounterDTO.getProvideruuid());  //handles correct provideruuid for every patient
+//        encounterDTO.setProvideruuid(encounterDTO.getProvideruuid());  //handles correct provideruuid for every patient
+        encounterDTO.setProvideruuid(sessionManager.getProviderID());  //handles correct provideruuid for every patient
         encounterDTO.setSyncd(false);
         encounterDTO.setVoided(0);
         try {
@@ -190,10 +201,17 @@ public class PatientSurveyActivity extends AppCompatActivity {
             Crashlytics.getInstance().core.logException(e);
         }
 
+//      AppConstants.notificationUtils.DownloadDone("Upload survey", "Survey uploaded", 3, PatientSurveyActivity.this);
 
-//        AppConstants.notificationUtils.DownloadDone("Upload survey", "Survey uploaded", 3, PatientSurveyActivity.this);
+    }
 
+    public String fiveMinutesAgo(String timeStamp) throws ParseException {
 
+        long FIVE_MINS_IN_MILLIS = 5 * 60 * 1000;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        long time = df.parse(timeStamp).getTime();
+
+        return df.format(new Date(time - FIVE_MINS_IN_MILLIS));
     }
 
     private void endVisit() {
@@ -202,7 +220,6 @@ public class PatientSurveyActivity extends AppCompatActivity {
             visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
         } catch (DAOException e) {
             Crashlytics.getInstance().core.logException(e);
-
         }
 
         //SyncDAO syncDAO = new SyncDAO();

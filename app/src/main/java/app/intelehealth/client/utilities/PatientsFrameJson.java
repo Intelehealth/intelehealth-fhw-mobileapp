@@ -3,6 +3,7 @@ package app.intelehealth.client.utilities;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -171,6 +172,8 @@ public class PatientsFrameJson {
         pushRequestApiCall.setPersons(personList);
         pushRequestApiCall.setVisits(visitList);
         pushRequestApiCall.setEncounters(encounterList);
+        Gson gson = new Gson();
+        Log.d("OBS: ","OBS: "+gson.toJson(encounterList));
 
 
         return pushRequestApiCall;

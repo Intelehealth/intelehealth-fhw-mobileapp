@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,8 +120,10 @@ public class EncounterDAO {
         List<EncounterDTO> encounterDTOList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
-        Cursor idCursor = db.rawQuery("SELECT distinct a.uuid,a.visituuid,a.encounter_type_uuid,a.provider_uuid,a.encounter_time,a.voided,a.privacynotice_value FROM tbl_encounter a,tbl_obs b where (a.sync = ? OR a.sync=?) and a.uuid = b.encounteruuid  and b.sync='false' AND b.voided='0' ", new String[]{"false", "0"});
+        //Distinct keyword is used to remove all duplicate records.
+        Cursor idCursor = db.rawQuery("SELECT distinct a.uuid,a.visituuid,a.encounter_type_uuid,a.provider_uuid,a.encounter_time,a.voided,a.privacynotice_value FROM tbl_encounter a,tbl_obs b WHERE (a.sync = ? OR a.sync=?) AND a.uuid = b.encounteruuid AND b.sync='false' AND b.voided='0' ", new String[]{"false", "0"});
         EncounterDTO encounterDTO = new EncounterDTO();
+        Log.d("RAINBOW: ","RAINBOW: "+idCursor.getCount());
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
                 encounterDTO = new EncounterDTO();
@@ -140,7 +143,8 @@ public class EncounterDAO {
         db.setTransactionSuccessful();
         db.endTransaction();
 
-
+        Gson gson = new Gson();
+        Log.d("ENC_GSON: ","ENC_GSON: "+gson.toJson(encounterDTOList));
         return encounterDTOList;
     }
 
@@ -193,8 +197,6 @@ public class EncounterDAO {
             throw new DAOException(sql.getMessage());
         } finally {
             db.endTransaction();
-
-
         }
 
         return isUpdated;
