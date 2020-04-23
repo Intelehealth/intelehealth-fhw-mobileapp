@@ -3,7 +3,7 @@ package app.intelehealth.client.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import app.intelehealth.client.utilities.SessionManager;
 import app.intelehealth.client.app.AppConstants;
