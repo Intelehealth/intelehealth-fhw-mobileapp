@@ -9,16 +9,26 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -52,11 +62,15 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     String intentTag;
     SearchView searchView;
     List<Node> complaints;
-    CustomArrayAdapter listAdapter;
+   // CustomArrayAdapter listAdapter;
+   ComplaintNodeListAdapter listAdapter;
     String encounterVitals;
     String encounterAdultIntials;
     EncounterDTO encounterDTO;
     SessionManager sessionManager = null;
+    ImageView img_question;
+    TextView tv_selectComplaint;
+    RecyclerView list_recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +112,14 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+        img_question = findViewById(R.id.img_question);
+        tv_selectComplaint = findViewById(R.id.tv_selectComplaint);
+        list_recyclerView = findViewById(R.id.list_recyclerView);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        list_recyclerView.setLayoutManager(linearLayoutManager);
+        list_recyclerView.setItemAnimator(new DefaultItemAnimator());
+
 
         FloatingActionButton fab = findViewById(R.id.fab);
         assert fab != null;
@@ -155,7 +177,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             }
         }
 
-        listAdapter = new CustomArrayAdapter(ComplaintNodeActivity.this,
+      /*  listAdapter = new CustomArrayAdapter(ComplaintNodeActivity.this,
                 R.layout.list_item_subquestion,
                 complaints);
 
@@ -170,7 +192,27 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 listAdapter.notifyDataSetChanged();
                 //The adapter needs to be notified every time a knowledgeEngine is clicked to ensure proper display of selected nodes.
             }
-        });
+        });*/
+
+        listAdapter
+                 = new ComplaintNodeListAdapter(this,complaints);
+        list_recyclerView.setAdapter(listAdapter);
+
+        animateView(img_question);
+        animateView(tv_selectComplaint);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                bottomUpAnimation(list_recyclerView);
+            }
+        }, 1000);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                animateView(fab);
+            }
+        }, 3000);
 
     }
 
@@ -264,8 +306,9 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
         searchView.setMaxWidth(Integer.MAX_VALUE);
-        searchView.setFocusable(true);
-        searchView.requestFocus();
+        searchView.setFocusableInTouchMode(true);
+        //searchView.setFocusable(true);
+        //searchView.requestFocus();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -283,5 +326,27 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         });
 
         return true;
+    }
+
+
+
+    // Animate views and handle their visibility
+    private void animateView(View v) {
+
+        v.setVisibility(View.VISIBLE);
+        AlphaAnimation fadeIn = new AlphaAnimation(0.0f, 1.0f);
+        fadeIn.setDuration(2000);
+        fadeIn.setFillAfter(true);
+        v.startAnimation(fadeIn);
+
+    }
+
+    private void bottomUpAnimation(View v) {
+
+        v.setVisibility(View.VISIBLE);
+        Animation bottomUp = AnimationUtils.loadAnimation(this,
+                R.anim.bottom_up);
+        v.startAnimation(bottomUp);
+
     }
 }

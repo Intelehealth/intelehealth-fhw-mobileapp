@@ -78,7 +78,8 @@
             android:label="@string/title_activity_complaint_node"
             android:parentActivityName=".activities.identificationActivity.IdentificationActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".activities.visitSummaryActivity.VisitSummaryActivity"
             android:configChanges="orientation|keyboardHidden"

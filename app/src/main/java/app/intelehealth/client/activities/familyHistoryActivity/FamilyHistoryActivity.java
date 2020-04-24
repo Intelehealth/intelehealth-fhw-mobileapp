@@ -56,7 +56,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     int lastExpandedPosition = -1;
 
     Node familyHistoryMap;
-    CustomExpandableListAdapter adapter;
+    //CustomExpandableListAdapter adapter;
     ExpandableListView familyListView;
 
     ArrayList<String> insertionList = new ArrayList<>();
@@ -172,8 +172,8 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         }
 
         familyListView = findViewById(R.id.family_history_expandable_list_view);
-        adapter = new CustomExpandableListAdapter(this, familyHistoryMap, this.getClass().getSimpleName());
-        familyListView.setAdapter(adapter);
+        /*adapter = new CustomExpandableListAdapter(this, familyHistoryMap, this.getClass().getSimpleName());
+        familyListView.setAdapter(adapter);*/
 
         familyListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
@@ -186,11 +186,11 @@ public class FamilyHistoryActivity extends AppCompatActivity {
                 } else {
                     familyHistoryMap.getOption(groupPosition).setUnselected();
                 }
-                adapter.notifyDataSetChanged();
+              //  adapter.notifyDataSetChanged();
 
                 if (clickedNode.getInputType() != null) {
                     if (!clickedNode.getInputType().equals("camera")) {
-                        Node.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter, null, null);
+                //        Node.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter, null, null);
                     }
                 }
                 if (!filePath.exists()) {
@@ -202,7 +202,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 
                 if (!familyHistoryMap.getOption(groupPosition).getOption(childPosition).isTerminal() &&
                         familyHistoryMap.getOption(groupPosition).getOption(childPosition).isSelected()) {
-                    Node.subLevelQuestion(clickedNode, FamilyHistoryActivity.this, adapter, filePath.toString(), imageName);
+                   // Node.subLevelQuestion(clickedNode, FamilyHistoryActivity.this, adapter, filePath.toString(), imageName);
                 }
 
                 return false;

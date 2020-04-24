@@ -475,16 +475,16 @@ public class PhysicalExamActivity extends AppCompatActivity {
                                 Log.i("RES>", "" + filePath + " -> " + res);
                             }
                             imageName = UUID.randomUUID().toString();
-                            Node.handleQuestion(question, getActivity(), adapter, filePath.toString(), imageName);
+                           // Node.handleQuestion(question, getActivity(), adapter, filePath.toString(), imageName);
                         } else {
-                            Node.handleQuestion(question, (Activity) getContext(), adapter, null, null);
+                           // Node.handleQuestion(question, (Activity) getContext(), adapter, null, null);
                         }
 
 
                     }
 
                     if (!question.isTerminal() && question.isSelected()) {
-                        Node.subLevelQuestion(question, (Activity) getContext(), adapter, filePath.toString(), imageName);
+                       // Node.subLevelQuestion(question, (Activity) getContext(), adapter, filePath.toString(), imageName);
                     }
 
                     return false;

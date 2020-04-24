@@ -4,13 +4,25 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ExpandableListView;
 
 import com.crashlytics.android.Crashlytics;
@@ -46,7 +58,7 @@ import app.intelehealth.client.knowledgeEngine.Node;
 import app.intelehealth.client.utilities.StringUtils;
 import app.intelehealth.client.utilities.exception.DAOException;
 
-public class QuestionNodeActivity extends AppCompatActivity {
+public class QuestionNodeActivity extends AppCompatActivity implements  QuestionsAdapter.FabClickListener{
     final String TAG = "Question Node Activity";
     String patientUuid;
     String visitUuid;
@@ -69,7 +81,8 @@ public class QuestionNodeActivity extends AppCompatActivity {
     List<Node> complaintsNodes; //actual nodes to be used
     ArrayList<String> physicalExams;
     Node currentNode;
-    CustomExpandableListAdapter adapter;
+   // CustomExpandableListAdapter adapter;
+   QuestionsAdapter adapter;
     boolean nodeComplete = false;
 
     int lastExpandedPosition = -1;
@@ -83,6 +96,9 @@ public class QuestionNodeActivity extends AppCompatActivity {
     private JSONObject assoSympObj = new JSONObject();
     private JSONArray assoSympArr = new JSONArray();
     private JSONObject finalAssoSympObj = new JSONObject();
+
+    FloatingActionButton fab;
+    RecyclerView question_recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,7 +148,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
 
         questionListView = findViewById(R.id.complaint_question_expandable_list_view);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,6 +156,12 @@ public class QuestionNodeActivity extends AppCompatActivity {
                 fabClick();
             }
         });
+        question_recyclerView = findViewById(R.id.question_recyclerView);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        question_recyclerView.setLayoutManager(linearLayoutManager);
+        question_recyclerView.setItemAnimator(new DefaultItemAnimator());
+        PagerSnapHelper helper = new PagerSnapHelper();
+        helper.attachToRecyclerView(question_recyclerView);
         setupQuestions(complaintNumber);
         //In the event there is more than one complaint, they will be prompted one at a time.
 
@@ -171,7 +193,7 @@ public class QuestionNodeActivity extends AppCompatActivity {
     }
 
     public void onListClicked(View v, int groupPosition, int childPosition) {
-
+        Log.e(TAG,"CLICKED: "+currentNode.getOption(groupPosition).toString());
         if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && !currentNode.getOption(groupPosition).anySubSelected()) {
             Node question = currentNode.getOption(groupPosition).getOption(childPosition);
             question.toggleSelected();
@@ -423,10 +445,12 @@ public class QuestionNodeActivity extends AppCompatActivity {
             currentNode = complaintsNodes.get(complaintIndex);
         }
 
-        adapter = new CustomExpandableListAdapter(this, currentNode, this.getClass().getSimpleName());
+        adapter = new QuestionsAdapter(this,currentNode,question_recyclerView,this.getClass().getSimpleName(),this);
+        question_recyclerView.setAdapter(adapter);
+      /*  adapter = new CustomExpandableListAdapter(this, currentNode, this.getClass().getSimpleName());
         questionListView.setAdapter(adapter);
         questionListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
-        questionListView.expandGroup(0);
+        questionListView.expandGroup(0);*/
         setTitle(patientName + ": " + currentNode.findDisplay());
 
     }
@@ -499,10 +523,12 @@ public class QuestionNodeActivity extends AppCompatActivity {
             assoSympNode.getOptionsList().get(0).setTerminal(false);
 
             currentNode = assoSympNode;
-            adapter = new CustomExpandableListAdapter(this, currentNode, this.getClass().getSimpleName());
+           /* adapter = new CustomExpandableListAdapter(this, currentNode, this.getClass().getSimpleName());
             questionListView.setAdapter(adapter);
             questionListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
-            questionListView.expandGroup(0);
+            questionListView.expandGroup(0);*/
+            adapter = new QuestionsAdapter(this,currentNode,question_recyclerView,this.getClass().getSimpleName(),this);
+            question_recyclerView.setAdapter(adapter);
             setTitle(patientName + ": " + currentNode.getText());
 
         }
@@ -561,4 +587,40 @@ public class QuestionNodeActivity extends AppCompatActivity {
     }
 
 
+    public void AnimateView(View v) {
+
+        int fadeInDuration = 500; // Configure time values here
+        int timeBetween = 3000;
+        int fadeOutDuration = 1000;
+
+        Animation fadeIn = new AlphaAnimation(0, 1);
+        fadeIn.setInterpolator(new DecelerateInterpolator()); // add this
+        fadeIn.setDuration(fadeInDuration);
+
+        Animation fadeOut = new AlphaAnimation(1, 0);
+        fadeOut.setInterpolator(new AccelerateInterpolator()); // and this
+        fadeOut.setStartOffset(fadeInDuration + timeBetween);
+        fadeOut.setDuration(fadeOutDuration);
+
+        AnimationSet animation = new AnimationSet(false); // change to false
+        animation.addAnimation(fadeIn);
+        animation.addAnimation(fadeOut);
+        animation.setRepeatCount(1);
+        if(v != null){
+            v.setAnimation(animation);
+        }
+
+
+    }
+
+    @Override
+    public void fabClickedAtEnd(Node node) {
+        currentNode = node;
+        fabClick();
+    }
+
+    @Override
+    public void onChildListClickEvent(Node node, int groupPos, int childPos) {
+        onListClicked(null,groupPos,childPos);
+    }
 }

@@ -552,4 +552,9 @@
     <string name="not_answered">Not answered</string>
 
 
+    <!--New Ayu Related Changes-->
+    <string name="what_is_the_reason_for_your_visit" >What is the reason for your visit?</string>
+    <string name="swipe_down_to_return">Swipe down to view previous</string>
+
+
 </resources>
