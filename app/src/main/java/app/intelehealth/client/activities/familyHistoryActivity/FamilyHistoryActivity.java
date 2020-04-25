@@ -11,6 +11,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -27,6 +32,7 @@ import java.util.List;
 import java.util.UUID;
 
 import app.intelehealth.client.R;
+import app.intelehealth.client.activities.questionNodeActivity.QuestionsAdapter;
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.database.dao.EncounterDAO;
 import app.intelehealth.client.database.dao.ImagesDAO;
@@ -42,7 +48,7 @@ import app.intelehealth.client.activities.physcialExamActivity.PhysicalExamActiv
 import app.intelehealth.client.activities.visitSummaryActivity.VisitSummaryActivity;
 import app.intelehealth.client.utilities.exception.DAOException;
 
-public class FamilyHistoryActivity extends AppCompatActivity {
+public class FamilyHistoryActivity extends AppCompatActivity  implements  QuestionsAdapter.FabClickListener{
     private static final String TAG = FamilyHistoryActivity.class.getSimpleName();
 
     String patientUuid;
@@ -70,6 +76,9 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     String encounterAdultIntials;
     private String imageName = null;
     private File filePath;
+
+    RecyclerView family_history_recyclerView;
+    QuestionsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +156,12 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         setTitle(patientName + ": " + getTitle());
 
         FloatingActionButton fab = findViewById(R.id.fab);
+        family_history_recyclerView = findViewById(R.id.family_history_recyclerView);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        family_history_recyclerView.setLayoutManager(linearLayoutManager);
+        family_history_recyclerView.setItemAnimator(new DefaultItemAnimator());
+        PagerSnapHelper helper = new PagerSnapHelper();
+        helper.attachToRecyclerView(family_history_recyclerView);
         assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,42 +187,49 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         }
 
         familyListView = findViewById(R.id.family_history_expandable_list_view);
+
+        adapter = new QuestionsAdapter(this,familyHistoryMap,family_history_recyclerView,this.getClass().getSimpleName(),this,false);
+        family_history_recyclerView.setAdapter(adapter);
         /*adapter = new CustomExpandableListAdapter(this, familyHistoryMap, this.getClass().getSimpleName());
         familyListView.setAdapter(adapter);*/
 
-        familyListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+        /*familyListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                Node clickedNode = familyHistoryMap.getOption(groupPosition).getOption(childPosition);
-                Log.i(TAG, "onChildClick: ");
-                clickedNode.toggleSelected();
-                if (familyHistoryMap.getOption(groupPosition).anySubSelected()) {
-                    familyHistoryMap.getOption(groupPosition).setSelected();
-                } else {
-                    familyHistoryMap.getOption(groupPosition).setUnselected();
-                }
-              //  adapter.notifyDataSetChanged();
-
-                if (clickedNode.getInputType() != null) {
-                    if (!clickedNode.getInputType().equals("camera")) {
-                //        Node.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter, null, null);
-                    }
-                }
-                if (!filePath.exists()) {
-                    boolean res = filePath.mkdirs();
-                    Log.i("RES>", "" + filePath + " -> " + res);
-                }
-
-                imageName = UUID.randomUUID().toString();
-
-                if (!familyHistoryMap.getOption(groupPosition).getOption(childPosition).isTerminal() &&
-                        familyHistoryMap.getOption(groupPosition).getOption(childPosition).isSelected()) {
-                   // Node.subLevelQuestion(clickedNode, FamilyHistoryActivity.this, adapter, filePath.toString(), imageName);
-                }
 
                 return false;
             }
-        });
+        });*/
+    }
+
+    private void onListClick(View v, int groupPosition,int childPosition){
+        Node clickedNode = familyHistoryMap.getOption(groupPosition).getOption(childPosition);
+        Log.i(TAG, "onChildClick: ");
+        clickedNode.toggleSelected();
+        if (familyHistoryMap.getOption(groupPosition).anySubSelected()) {
+            familyHistoryMap.getOption(groupPosition).setSelected();
+        } else {
+            familyHistoryMap.getOption(groupPosition).setUnselected();
+        }
+        adapter.notifyDataSetChanged();
+
+        if (clickedNode.getInputType() != null) {
+            if (!clickedNode.getInputType().equals("camera")) {
+                Node.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter, null, null);
+            }
+        }
+        if (!filePath.exists()) {
+            boolean res = filePath.mkdirs();
+            Log.i("RES>", "" + filePath + " -> " + res);
+        }
+
+        imageName = UUID.randomUUID().toString();
+
+        if (!familyHistoryMap.getOption(groupPosition).getOption(childPosition).isTerminal() &&
+                familyHistoryMap.getOption(groupPosition).getOption(childPosition).isSelected()) {
+            Node.subLevelQuestion(clickedNode, FamilyHistoryActivity.this, adapter, filePath.toString(), imageName);
+        }
+
     }
 
     private void onFabClick() {
@@ -347,6 +369,16 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     public void onBackPressed() {
     }
 
+    @Override
+    public void fabClickedAtEnd(Node node) {
+        onFabClick();
+
+    }
+
+    @Override
+    public void onChildListClickEvent(Node node, int groupPos, int childPos) {
+        onListClick(null,groupPos,childPos);
+    }
 }
 
 

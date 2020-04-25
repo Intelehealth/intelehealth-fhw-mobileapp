@@ -445,7 +445,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
             currentNode = complaintsNodes.get(complaintIndex);
         }
 
-        adapter = new QuestionsAdapter(this,currentNode,question_recyclerView,this.getClass().getSimpleName(),this);
+        adapter = new QuestionsAdapter(this,currentNode,question_recyclerView,this.getClass().getSimpleName(),this,false);
         question_recyclerView.setAdapter(adapter);
       /*  adapter = new CustomExpandableListAdapter(this, currentNode, this.getClass().getSimpleName());
         questionListView.setAdapter(adapter);
@@ -527,7 +527,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
             questionListView.setAdapter(adapter);
             questionListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
             questionListView.expandGroup(0);*/
-            adapter = new QuestionsAdapter(this,currentNode,question_recyclerView,this.getClass().getSimpleName(),this);
+            adapter = new QuestionsAdapter(this,currentNode,question_recyclerView,this.getClass().getSimpleName(),this,true);
             question_recyclerView.setAdapter(adapter);
             setTitle(patientName + ": " + currentNode.getText());
 
@@ -615,7 +615,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
 
     @Override
     public void fabClickedAtEnd(Node node) {
-        currentNode = node;
+        //currentNode = node;
         fabClick();
     }
 

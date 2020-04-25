@@ -22,12 +22,14 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import app.intelehealth.client.R;
+import app.intelehealth.client.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import app.intelehealth.client.knowledgeEngine.Node;
 
 /**
@@ -43,18 +45,22 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
     RecyclerView recyclerView;
     FabClickListener _mListener;
     String _mCallingClass;
+    boolean isAssociateSym;
 
-    interface FabClickListener{
+    public interface FabClickListener {
         void fabClickedAtEnd(Node node);
-        void onChildListClickEvent(Node node, int groupPos,int childPos);
+
+        void onChildListClickEvent(Node node, int groupPos, int childPos);
     }
 
-    public QuestionsAdapter(Context _context,  Node node, RecyclerView _rvQuestions,String callingClass,FabClickListener _mListener) {
+    public QuestionsAdapter(Context _context, Node node, RecyclerView _rvQuestions, String callingClass,
+                            FabClickListener _mListener, boolean isAssociateSym) {
         this.context = _context;
         this.currentNode = node;
         this.recyclerView = _rvQuestions;
         this._mCallingClass = callingClass;
         this._mListener = _mListener;
+        this.isAssociateSym = isAssociateSym;
 
     }
 
@@ -71,15 +77,26 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
     @Override
     public void onBindViewHolder(QuestionsAdapter.ChipsAdapterViewHolder holder, int position) {
         Node _mNode = currentNode;
-        holder.tvQuestion.setText(_mNode.getOptionsList().get(position).findDisplay());
+        if (isAssociateSym && currentNode.getOptionsList().size() == 1) {
+            holder.tvQuestion.setText(_mNode.getOptionsList().get(0).findDisplay());
+        } else {
+            holder.tvQuestion.setText(_mNode.getOptionsList().get(position).findDisplay());
+        }
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                ((QuestionNodeActivity) context).AnimateView(holder.ivAyu);
-                ((QuestionNodeActivity) context).AnimateView(holder.tvQuestion);
-                ((QuestionNodeActivity) context).AnimateView(holder.tvSwipe);
+                if(_mCallingClass.equalsIgnoreCase(QuestionNodeActivity.class.getSimpleName())){
+                    ((QuestionNodeActivity) context).AnimateView(holder.ivAyu);
+                    ((QuestionNodeActivity) context).AnimateView(holder.tvQuestion);
+                    ((QuestionNodeActivity) context).AnimateView(holder.tvSwipe);
+                }else if(_mCallingClass.equalsIgnoreCase(PastMedicalHistoryActivity.class.getSimpleName())){
+                    ((PastMedicalHistoryActivity) context).AnimateView(holder.ivAyu);
+                    ((PastMedicalHistoryActivity) context).AnimateView(holder.tvQuestion);
+                    ((PastMedicalHistoryActivity) context).AnimateView(holder.tvSwipe);
+                }
+
             }
         });
 
@@ -89,7 +106,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             holder.tvSwipe.setVisibility(View.GONE);
         }
 
-        if (position == getItemCount()-1) {
+        if (position == getItemCount() - 1) {
             holder.rvChips.setNestedScrollingEnabled(true);
             recyclerView.setNestedScrollingEnabled(false);
             holder.fab.setVisibility(View.VISIBLE);
@@ -113,7 +130,20 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 
     @Override
     public int getItemCount() {
-        return currentNode.getOptionsList().size();
+        if (isAssociateSym && currentNode.getOptionsList().size() == 1) {
+            List<Node> nodeList = currentNode.getOptionsList().get(0).getOptionsList();
+            if (nodeList.size() > 5) {
+                int optionChildToAddCount = (nodeList.size() / 5) + ((nodeList.size() % 5) == 0 ? 0 : 1);
+                List<List<Node>> spiltList = Lists.partition(currentNode.getOptionsList().get(0).getOptionsList(), 5);
+                //List<List<Node>> spiltList = partitionList(currentNode.getOptionsList().get(0).getOptionsList(),5);
+                Log.e("TAG", "SPLITLIST COUNT: " + spiltList.size());
+                return spiltList.size();
+            } else {
+                return currentNode.getOptionsList().size();
+            }
+        } else {
+            return currentNode.getOptionsList().size();
+        }
     }
 
     @Override
@@ -155,36 +185,52 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             rvChips.setNestedScrollingEnabled(true);
 
             List<Node> chipList = new ArrayList<>();
-            Node node = currentNode.getOptionsList().get(pos);
-            for (int i = 0; i < node.getOptionsList().size(); i++) {
-                chipList.add(node.getOptionsList().get(i));
+            if (isAssociateSym && currentNode.getOptionsList().size() == 1) {
+                int childOptionCount = currentNode.getOptionsList().get(0).getOptionsList().size();
+                if (childOptionCount > 5) {
+                    //  int optionChildToAddCount = (childOptionCount / 5) + ((childOptionCount % 5) == 0 ? 0 : 1);
+                    // List<List<Node>> spiltList = partitionList(currentNode.getOptionsList().get(0).getOptionsList(),5);
+                    List<List<Node>> spiltList = Lists.partition(currentNode.getOptionsList().get(0).getOptionsList(), 5);
+                    chipList.addAll(spiltList.get(pos));
+                } else {
+                    Node node = currentNode.getOptionsList().get(0);
+                    for (int i = 0; i < node.getOptionsList().size(); i++) {
+                        chipList.add(node.getOptionsList().get(i));
+                    }
+                }
+            } else {
+                Node node = currentNode.getOptionsList().get(pos);
+                for (int i = 0; i < node.getOptionsList().size(); i++) {
+                    chipList.add(node.getOptionsList().get(i));
+                }
             }
 
-            chipsAdapter = new ComplaintNodeListAdapter(context, chipList,currentNode,pos,_mListener,_mCallingClass);
+
+            int groupPos = (isAssociateSym && currentNode.getOptionsList().size() == 1) ? 0 : pos;
+            chipsAdapter = new ComplaintNodeListAdapter(context, chipList, currentNode, groupPos, _mListener, _mCallingClass);
             rvChips.setAdapter(chipsAdapter);
 
         }
     }
 
 
-
     class ComplaintNodeListAdapter extends RecyclerView.Adapter<ComplaintNodeListAdapter.ItemViewHolder> {
-        private static final  String TAG = "CNodeListAdapter";
+        private static final String TAG = "CNodeListAdapter";
 
         private Context mContext;
         private int layoutResourceID;
         private ImmutableList<Node> mNodes;
         private List<Node> mNodesFilter;
         private Node mGroupNode;
-        private  int mGroupPos;
+        private int mGroupPos;
         private QuestionsAdapter.FabClickListener _mListener;
         String _mCallingClass;
 
         public ComplaintNodeListAdapter(Context context, List<Node> nodes, Node groupNode, int groupPos,
-                                        QuestionsAdapter.FabClickListener listener,String callingClass){
+                                        QuestionsAdapter.FabClickListener listener, String callingClass) {
             this.mContext = context;
             this.mNodesFilter = nodes;
-            this.mNodes= ImmutableList.copyOf(mNodesFilter);
+            this.mNodes = ImmutableList.copyOf(mNodesFilter);
             mGroupNode = groupNode;
             mGroupPos = groupPos;
             this._mListener = listener;
@@ -205,18 +251,18 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             final Node thisNode = mNodesFilter.get(position);
             itemViewHolder.mChip.setText(thisNode.findDisplay());
             Node groupNode = mGroupNode.getOption(mGroupPos);
-            if(groupNode.getText().equalsIgnoreCase("Associated symptoms")){
+            if (groupNode.getText().equalsIgnoreCase("Associated symptoms")) {
                 switch (_mCallingClass) {
                     case "ComplaintNodeActivity":
                         itemViewHolder.mChip.setChecked(thisNode.isSelected());
                         break;
                     default:
                         if (thisNode.isSelected()) {
-                            if(thisNode.findDisplay().equalsIgnoreCase("yes")){
+                            if (thisNode.findDisplay().equalsIgnoreCase("yes")) {
                                 itemViewHolder.mChip.setChecked(true);
                             }
                         } else {
-                            if(thisNode.findDisplay().equalsIgnoreCase("No")){
+                            if (thisNode.findDisplay().equalsIgnoreCase("No")) {
                                 if (thisNode.isNoSelected()) {
                                     itemViewHolder.mChip.setChecked(true);
                                 } else {
@@ -227,14 +273,14 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                         }
                         break;
                 }
-            }else{
+            } else {
                 itemViewHolder.mChip.setChecked(thisNode.isSelected());
             }
-            if(thisNode.isSelected()){
+            if (thisNode.isSelected()) {
                 itemViewHolder.mChip.setCloseIconVisible(true);
                 itemViewHolder.mChip.setChipBackgroundColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.colorAccent))));
                 itemViewHolder.mChip.setTextColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.white))));
-            }else{
+            } else {
                 itemViewHolder.mChip.setCloseIconVisible(false);
                 itemViewHolder.mChip.setChipBackgroundColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, android.R.color.transparent))));
                 itemViewHolder.mChip.setTextColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.primary_text))));
@@ -242,19 +288,21 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             itemViewHolder.mChip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(groupNode.getText().equalsIgnoreCase("Associated symptoms")){
-                        if(thisNode.findDisplay().equalsIgnoreCase("yes")){
+                    if (groupNode.getText().equalsIgnoreCase("Associated symptoms")) {
+                        if (thisNode.findDisplay().equalsIgnoreCase("yes")) {
                             thisNode.setNoSelected(false);
-                           // _mListener.onChildListClickEvent(mGroupNode,mGroupPos,position);
-                        }else{
+                            // _mListener.onChildListClickEvent(mGroupNode,mGroupPos,position);
+                        } else {
                             thisNode.setNoSelected(true);
                             thisNode.setUnselected();
                         }
-                    }else{
+                    } else {
                         //thisNode.toggleSelected();
                     }
-                    _mListener.onChildListClickEvent(mGroupNode,mGroupPos,position);
-                   notifyDataSetChanged();
+                    List<Node> childNode  = mGroupNode.getOptionsList().get(mGroupPos).getOptionsList();
+                    int indexOfCheckedNode = childNode.indexOf(thisNode);
+                    _mListener.onChildListClickEvent(mGroupNode, mGroupPos, indexOfCheckedNode);
+                    notifyDataSetChanged();
                 }
             });
 
@@ -262,19 +310,22 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                 @Override
                 public void onClick(View v) {
                     thisNode.toggleSelected();
+                    List<Node> childNode  = mGroupNode.getOptionsList().get(mGroupPos).getOptionsList();
+                    int indexOfCheckedNode = childNode.indexOf(thisNode);
+                    _mListener.onChildListClickEvent(mGroupNode, mGroupPos, indexOfCheckedNode);
                     notifyDataSetChanged();
-                    _mListener.onChildListClickEvent(mGroupNode,mGroupPos,position);
                 }
             });
         }
 
         @Override
         public int getItemCount() {
-            return (mNodesFilter!=  null? mNodesFilter.size():0 );
+            return (mNodesFilter != null ? mNodesFilter.size() : 0);
         }
 
         public class ItemViewHolder extends RecyclerView.ViewHolder {
             Chip mChip;
+
             public ItemViewHolder(@NonNull View itemView) {
                 super(itemView);
                 mChip = itemView.findViewById(R.id.complaint_chip);
@@ -288,93 +339,16 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
     }
 
 
-    class CustomLinearLayoutManager extends LinearLayoutManager {
-
-        //private static final String TAG = CustomLinearLayoutManager.class.getSimpleName();
-
-        public CustomLinearLayoutManager(Context context) {
-            super(context);
+    public static <T> List<List<T>> partitionList(List<T> list, int chunkSize) {
+        if (chunkSize <= 0) {
+            throw new IllegalArgumentException("Invalid  size to partition: " + chunkSize);
         }
-
-        public CustomLinearLayoutManager(Context context, int orientation, boolean reverseLayout) {
-            super(context, orientation, reverseLayout);
+        List<List<T>> chunkList = new ArrayList<>(list.size() / chunkSize);
+        for (int i = 0; i < list.size(); i += chunkSize) {
+            chunkList.add(list.subList(i, i + chunkSize >= list.size() ? list.size() - 1 : i + chunkSize));
         }
-
-        private int[] mMeasuredDimension = new int[2];
-
-        @Override
-        public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {
-
-            final int widthMode = View.MeasureSpec.getMode(widthSpec);
-            final int heightMode = View.MeasureSpec.getMode(heightSpec);
-            final int widthSize = View.MeasureSpec.getSize(widthSpec);
-            final int heightSize = View.MeasureSpec.getSize(heightSpec);
-
-            int width = 0;
-            int height = 0;
-            for (int i = 0; i < getItemCount(); i++) {
-                measureScrapChild(recycler, i, View.MeasureSpec.makeMeasureSpec(i, View.MeasureSpec.UNSPECIFIED),
-                        View.MeasureSpec.makeMeasureSpec(i, View.MeasureSpec.UNSPECIFIED),
-                        mMeasuredDimension);
-
-
-                if (getOrientation() == HORIZONTAL) {
-                    width = width + mMeasuredDimension[0];
-                    if (i == 0) {
-                        height = mMeasuredDimension[1];
-                    }
-                } else {
-                    height = height + mMeasuredDimension[1];
-                    if (i == 0) {
-                        width = mMeasuredDimension[0];
-                    }
-                }
-            }
-            switch (widthMode) {
-                case View.MeasureSpec.EXACTLY:
-                    width = widthSize;
-                case View.MeasureSpec.AT_MOST:
-                case View.MeasureSpec.UNSPECIFIED:
-            }
-
-            switch (heightMode) {
-                case View.MeasureSpec.EXACTLY:
-                    height = heightSize;
-                case View.MeasureSpec.AT_MOST:
-                case View.MeasureSpec.UNSPECIFIED:
-            }
-
-            setMeasuredDimension(width, height);
-        }
-
-        private void measureScrapChild(RecyclerView.Recycler recycler, int position, int widthSpec,
-                                       int heightSpec, int[] measuredDimension) {
-            try {
-                View view = recycler.getViewForPosition(0);//fix IndexOutOfBoundsException
-
-                if (view != null) {
-                    RecyclerView.LayoutParams p = (RecyclerView.LayoutParams) view.getLayoutParams();
-
-                    int childWidthSpec = ViewGroup.getChildMeasureSpec(widthSpec,
-                            getPaddingLeft() + getPaddingRight(), p.width);
-
-                    int childHeightSpec = ViewGroup.getChildMeasureSpec(heightSpec,
-                            getPaddingTop() + getPaddingBottom(), p.height);
-
-                    view.measure(childWidthSpec, childHeightSpec);
-                    measuredDimension[0] = view.getMeasuredWidth() + p.leftMargin + p.rightMargin;
-                    measuredDimension[1] = view.getMeasuredHeight() + p.bottomMargin + p.topMargin;
-                    recycler.recycleView(view);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        return chunkList;
     }
-
-
-
-
 
 
 }
