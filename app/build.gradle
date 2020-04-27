@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "app.intelehealth.client"
         minSdkVersion 19
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 40
         buildToolsVersion('28.0.3')
         versionName "2.0.2-1"
