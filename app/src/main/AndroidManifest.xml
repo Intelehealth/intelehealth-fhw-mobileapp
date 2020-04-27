@@ -55,7 +55,8 @@
             android:label="@string/title_activity_physical_exam"
             android:parentActivityName=".activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing"/>
         <activity
             android:name=".activities.familyHistoryActivity.FamilyHistoryActivity"
             android:label="@string/title_activity_family_history"

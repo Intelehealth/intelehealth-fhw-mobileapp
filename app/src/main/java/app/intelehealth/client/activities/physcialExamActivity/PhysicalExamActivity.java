@@ -14,6 +14,10 @@ import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +26,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -42,6 +52,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import app.intelehealth.client.R;
+import app.intelehealth.client.activities.questionNodeActivity.QuestionsAdapter;
 import app.intelehealth.client.activities.visitSummaryActivity.VisitSummaryActivity;
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.database.dao.EncounterDAO;
@@ -57,11 +68,11 @@ import app.intelehealth.client.utilities.UuidDictionary;
 import app.intelehealth.client.utilities.StringUtils;
 import app.intelehealth.client.utilities.exception.DAOException;
 
-public class PhysicalExamActivity extends AppCompatActivity {
+public class PhysicalExamActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener{
     final static String TAG = PhysicalExamActivity.class.getSimpleName();
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+   // private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    private ViewPager mViewPager;
+   // private ViewPager mViewPager;
 
     static String patientUuid;
     static String visitUuid;
@@ -89,6 +100,8 @@ public class PhysicalExamActivity extends AppCompatActivity {
     String encounterVitals;
     String encounterAdultIntials;
     SessionManager sessionManager;
+    RecyclerView physExam_recyclerView;
+    QuestionsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,17 +184,23 @@ public class PhysicalExamActivity extends AppCompatActivity {
         }
 
         setTitle(patientName + ": " + getTitle());
+        physExam_recyclerView = findViewById(R.id.physExam_recyclerView);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        physExam_recyclerView.setLayoutManager(linearLayoutManager);
+        physExam_recyclerView.setItemAnimator(new DefaultItemAnimator());
+        PagerSnapHelper helper = new PagerSnapHelper();
+        helper.attachToRecyclerView(physExam_recyclerView);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), physicalExamMap);
+       /* mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), physicalExamMap);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = findViewById(R.id.container);
         if (mViewPager != null) {
             mViewPager.setAdapter(mSectionsPagerAdapter);
-        }
+        }*/
 
-        TabLayout tabLayout = findViewById(R.id.tabs);
+        /*TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setSelectedTabIndicatorHeight(15);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -202,57 +221,15 @@ public class PhysicalExamActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                complaintConfirmed = physicalExamMap.areRequiredAnswered();
 
-                if (complaintConfirmed) {
-
-                    physicalString = physicalExamMap.generateFindings();
-
-                    List<String> imagePathList = physicalExamMap.getImagePathList();
-
-                    if (imagePathList != null) {
-                        for (String imagePath : imagePathList) {
-                            updateImageDatabase();
-                        }
-                    }
-
-                    if (intentTag != null && intentTag.equals("edit")) {
-                        updateDatabase(physicalString);
-                        Intent intent = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
-                        intent.putExtra("patientUuid", patientUuid);
-                        intent.putExtra("visitUuid", visitUuid);
-                        intent.putExtra("encounterUuidVitals", encounterVitals);
-                        intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
-                        intent.putExtra("state", state);
-                        intent.putExtra("name", patientName);
-                        intent.putExtra("tag", intentTag);
-                        intent.putExtra("hasPrescription", "false");
-
-                        for (String exams : selectedExamsList) {
-                            Log.i(TAG, "onClick:++ " + exams);
-                        }
-                        // intent.putStringArrayListExtra("exams", selectedExamsList);
-                        startActivity(intent);
-                    } else {
-                        boolean obsId = insertDb(physicalString);
-                        Intent intent1 = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class); // earlier visitsummary
-                        intent1.putExtra("patientUuid", patientUuid);
-                        intent1.putExtra("visitUuid", visitUuid);
-                        intent1.putExtra("encounterUuidVitals", encounterVitals);
-                        intent1.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
-                        intent1.putExtra("state", state);
-                        intent1.putExtra("name", patientName);
-                        intent1.putExtra("tag", intentTag);
-                        intent1.putExtra("hasPrescription", "false");
-                        // intent1.putStringArrayListExtra("exams", selectedExamsList);
-                        startActivity(intent1);
-                    }
-
-                } else {
-                    questionsMissing();
-                }
             }
         });
+
+         */
+
+        Log.e(TAG, "PhyExam: "+physicalExamMap.getTotalNumberOfExams());
+        adapter = new QuestionsAdapter(this,physicalExamMap,physExam_recyclerView,this.getClass().getSimpleName(),this,false);
+        physExam_recyclerView.setAdapter(adapter);
 
     }
 
@@ -273,6 +250,95 @@ public class PhysicalExamActivity extends AppCompatActivity {
         }
 
         return isInserted;
+    }
+
+    @Override
+    public void fabClickedAtEnd() {
+
+        complaintConfirmed = physicalExamMap.areRequiredAnswered();
+
+        if (complaintConfirmed) {
+
+            physicalString = physicalExamMap.generateFindings();
+
+            List<String> imagePathList = physicalExamMap.getImagePathList();
+
+            if (imagePathList != null) {
+                for (String imagePath : imagePathList) {
+                    updateImageDatabase();
+                }
+            }
+
+            if (intentTag != null && intentTag.equals("edit")) {
+                updateDatabase(physicalString);
+                Intent intent = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
+                intent.putExtra("patientUuid", patientUuid);
+                intent.putExtra("visitUuid", visitUuid);
+                intent.putExtra("encounterUuidVitals", encounterVitals);
+                intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                intent.putExtra("state", state);
+                intent.putExtra("name", patientName);
+                intent.putExtra("tag", intentTag);
+                intent.putExtra("hasPrescription", "false");
+
+                for (String exams : selectedExamsList) {
+                    Log.i(TAG, "onClick:++ " + exams);
+                }
+                // intent.putStringArrayListExtra("exams", selectedExamsList);
+                startActivity(intent);
+            } else {
+                boolean obsId = insertDb(physicalString);
+                Intent intent1 = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class); // earlier visitsummary
+                intent1.putExtra("patientUuid", patientUuid);
+                intent1.putExtra("visitUuid", visitUuid);
+                intent1.putExtra("encounterUuidVitals", encounterVitals);
+                intent1.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                intent1.putExtra("state", state);
+                intent1.putExtra("name", patientName);
+                intent1.putExtra("tag", intentTag);
+                intent1.putExtra("hasPrescription", "false");
+                // intent1.putStringArrayListExtra("exams", selectedExamsList);
+                startActivity(intent1);
+            }
+
+        } else {
+            questionsMissing();
+        }
+
+    }
+
+    @Override
+    public void onChildListClickEvent( int groupPosition, int childPos, int physExamPos) {
+        Node question = physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOption(childPos);
+        //Log.d("Clicked", question.language());
+        question.toggleSelected();
+        if (physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).anySubSelected()) {
+            physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).setSelected();
+        } else {
+            physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).setUnselected();
+        }
+        adapter.notifyDataSetChanged();
+
+
+        if (question.getInputType() != null && question.isSelected()) {
+
+            if (question.getInputType().equals("camera")) {
+                if (!filePath.exists()) {
+                    boolean res = filePath.mkdirs();
+                    Log.i("RES>", "" + filePath + " -> " + res);
+                }
+                imageName = UUID.randomUUID().toString();
+                Node.handleQuestion(question, this, adapter, filePath.toString(), imageName);
+            } else {
+                Node.handleQuestion(question, this, adapter, null, null);
+            }
+
+
+        }
+
+        if (!question.isTerminal() && question.isSelected()) {
+            Node.subLevelQuestion(question, this, adapter, filePath.toString(), imageName);
+        }
     }
 
     /**
@@ -456,36 +522,7 @@ public class PhysicalExamActivity extends AppCompatActivity {
             expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
                 @Override
                 public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                    Node question = viewNode.getOption(groupPosition).getOption(childPosition);
-                    //Log.d("Clicked", question.language());
-                    question.toggleSelected();
-                    if (viewNode.getOption(groupPosition).anySubSelected()) {
-                        viewNode.getOption(groupPosition).setSelected();
-                    } else {
-                        viewNode.getOption(groupPosition).setUnselected();
-                    }
-                    adapter.notifyDataSetChanged();
 
-
-                    if (question.getInputType() != null && question.isSelected()) {
-
-                        if (question.getInputType().equals("camera")) {
-                            if (!filePath.exists()) {
-                                boolean res = filePath.mkdirs();
-                                Log.i("RES>", "" + filePath + " -> " + res);
-                            }
-                            imageName = UUID.randomUUID().toString();
-                           // Node.handleQuestion(question, getActivity(), adapter, filePath.toString(), imageName);
-                        } else {
-                           // Node.handleQuestion(question, (Activity) getContext(), adapter, null, null);
-                        }
-
-
-                    }
-
-                    if (!question.isTerminal() && question.isSelected()) {
-                       // Node.subLevelQuestion(question, (Activity) getContext(), adapter, filePath.toString(), imageName);
-                    }
 
                     return false;
                 }
@@ -514,6 +551,42 @@ public class PhysicalExamActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+
+    }
+
+    public void AnimateView(View v) {
+
+        int fadeInDuration = 500; // Configure time values here
+        int timeBetween = 3000;
+        int fadeOutDuration = 1000;
+
+        Animation fadeIn = new AlphaAnimation(0, 1);
+        fadeIn.setInterpolator(new DecelerateInterpolator()); // add this
+        fadeIn.setDuration(fadeInDuration);
+
+        Animation fadeOut = new AlphaAnimation(1, 0);
+        fadeOut.setInterpolator(new AccelerateInterpolator()); // and this
+        fadeOut.setStartOffset(fadeInDuration + timeBetween);
+        fadeOut.setDuration(fadeOutDuration);
+
+        AnimationSet animation = new AnimationSet(false); // change to false
+        animation.addAnimation(fadeIn);
+        animation.addAnimation(fadeOut);
+        animation.setRepeatCount(1);
+        if(v != null){
+            v.setAnimation(animation);
+        }
+
+
+    }
+    public void bottomUpAnimation(View v) {
+
+        if( v != null){
+            v.setVisibility(View.VISIBLE);
+            Animation bottomUp = AnimationUtils.loadAnimation(this,
+                    R.anim.bottom_up);
+            v.startAnimation(bottomUp);
+        }
 
     }
 

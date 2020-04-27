@@ -18,6 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ExpandableListView;
 
 import com.crashlytics.android.Crashlytics;
@@ -63,7 +69,7 @@ public class FamilyHistoryActivity extends AppCompatActivity  implements  Questi
 
     Node familyHistoryMap;
     //CustomExpandableListAdapter adapter;
-    ExpandableListView familyListView;
+   // ExpandableListView familyListView;
 
     ArrayList<String> insertionList = new ArrayList<>();
     String insertion = "", phistory = "", fhistory = "";
@@ -186,7 +192,7 @@ public class FamilyHistoryActivity extends AppCompatActivity  implements  Questi
             familyHistoryMap = new Node(FileUtils.encodeJSON(this, mFileName)); //Load the family history mind map
         }
 
-        familyListView = findViewById(R.id.family_history_expandable_list_view);
+      //  familyListView = findViewById(R.id.family_history_expandable_list_view);
 
         adapter = new QuestionsAdapter(this,familyHistoryMap,family_history_recyclerView,this.getClass().getSimpleName(),this,false);
         family_history_recyclerView.setAdapter(adapter);
@@ -370,14 +376,50 @@ public class FamilyHistoryActivity extends AppCompatActivity  implements  Questi
     }
 
     @Override
-    public void fabClickedAtEnd(Node node) {
+    public void fabClickedAtEnd() {
         onFabClick();
 
     }
 
     @Override
-    public void onChildListClickEvent(Node node, int groupPos, int childPos) {
+    public void onChildListClickEvent(int groupPos, int childPos,int physExamPos) {
         onListClick(null,groupPos,childPos);
+    }
+
+    public void AnimateView(View v) {
+
+        int fadeInDuration = 500; // Configure time values here
+        int timeBetween = 3000;
+        int fadeOutDuration = 1000;
+
+        Animation fadeIn = new AlphaAnimation(0, 1);
+        fadeIn.setInterpolator(new DecelerateInterpolator()); // add this
+        fadeIn.setDuration(fadeInDuration);
+
+        Animation fadeOut = new AlphaAnimation(1, 0);
+        fadeOut.setInterpolator(new AccelerateInterpolator()); // and this
+        fadeOut.setStartOffset(fadeInDuration + timeBetween);
+        fadeOut.setDuration(fadeOutDuration);
+
+        AnimationSet animation = new AnimationSet(false); // change to false
+        animation.addAnimation(fadeIn);
+        animation.addAnimation(fadeOut);
+        animation.setRepeatCount(1);
+        if(v != null){
+            v.setAnimation(animation);
+        }
+
+
+    }
+    public void bottomUpAnimation(View v) {
+
+        if( v != null){
+            v.setVisibility(View.VISIBLE);
+            Animation bottomUp = AnimationUtils.loadAnimation(this,
+                    R.anim.bottom_up);
+            v.startAnimation(bottomUp);
+        }
+
     }
 }
 

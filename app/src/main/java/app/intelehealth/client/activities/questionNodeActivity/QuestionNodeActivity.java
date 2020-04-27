@@ -22,6 +22,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ExpandableListView;
 
@@ -72,7 +73,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
     SessionManager sessionManager = null;
 
     //    Knowledge mKnowledge; //Knowledge engine
-    ExpandableListView questionListView;
+   // ExpandableListView questionListView;
     String mFileName = "knowledge.json"; //knowledge engine file
     //    String mFileName = "DemoBrain.json";
     int complaintNumber = 0; //assuming there is at least one complaint, starting complaint number
@@ -146,7 +147,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        questionListView = findViewById(R.id.complaint_question_expandable_list_view);
+       // questionListView = findViewById(R.id.complaint_question_expandable_list_view);
 
         fab = findViewById(R.id.fab);
         assert fab != null;
@@ -165,7 +166,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
         setupQuestions(complaintNumber);
         //In the event there is more than one complaint, they will be prompted one at a time.
 
-        questionListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+ /*       questionListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 
@@ -188,7 +189,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
                 }
                 lastExpandedPosition = groupPosition;
             }
-        });
+        });*/
 
     }
 
@@ -610,17 +611,27 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
             v.setAnimation(animation);
         }
 
+    }
+
+    public void bottomUpAnimation(View v) {
+
+        if( v != null){
+            v.setVisibility(View.VISIBLE);
+            Animation bottomUp = AnimationUtils.loadAnimation(this,
+                    R.anim.bottom_up);
+            v.startAnimation(bottomUp);
+        }
 
     }
 
     @Override
-    public void fabClickedAtEnd(Node node) {
+    public void fabClickedAtEnd() {
         //currentNode = node;
         fabClick();
     }
 
     @Override
-    public void onChildListClickEvent(Node node, int groupPos, int childPos) {
+    public void onChildListClickEvent(int groupPos, int childPos, int physExamPos) {
         onListClicked(null,groupPos,childPos);
     }
 }

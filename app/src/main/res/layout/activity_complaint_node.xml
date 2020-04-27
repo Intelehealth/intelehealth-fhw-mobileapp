@@ -85,6 +85,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:scrollbars="vertical"
+        android:scrollbarThumbVertical="@color/colorAccent"
         android:visibility="gone" />
 
 </RelativeLayout>

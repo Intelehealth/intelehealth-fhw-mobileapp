@@ -23,6 +23,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ExpandableListView;
 
@@ -82,7 +83,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
     Node patientHistoryMap;
     // CustomExpandableListAdapter adapter;
-    ExpandableListView historyListView;
+    //ExpandableListView historyListView;
 
     String patientHistory;
     String phistory = "";
@@ -422,13 +423,13 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     }
 
     @Override
-    public void fabClickedAtEnd(Node node) {
+    public void fabClickedAtEnd() {
        // patientHistoryMap = node;
         fabClick();
     }
 
     @Override
-    public void onChildListClickEvent(Node node, int groupPos, int childPos) {
+    public void onChildListClickEvent( int groupPos, int childPos,int physExamPos) {
         onListClick(null, groupPos, childPos);
     }
 
@@ -455,6 +456,17 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             v.setAnimation(animation);
         }
 
+
+    }
+
+    public void bottomUpAnimation(View v) {
+
+        if( v != null){
+            v.setVisibility(View.VISIBLE);
+            Animation bottomUp = AnimationUtils.loadAnimation(this,
+                    R.anim.bottom_up);
+            v.startAnimation(bottomUp);
+        }
 
     }
 }
