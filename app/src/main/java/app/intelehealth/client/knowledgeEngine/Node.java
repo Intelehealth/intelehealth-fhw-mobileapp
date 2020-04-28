@@ -303,7 +303,8 @@ public class Node implements Serializable {
         subQuestion.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-               // node.toggleSelected();
+                node.toggleSelected();
+                callingAdapter.refreshChildAdapter();
                 callingAdapter.notifyDataSetChanged();
                 dialog.cancel();
             }

@@ -62,6 +62,12 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         notifyDataSetChanged();
     }
 
+    boolean isChildNeedRefresh = false;
+
+    public void refreshChildAdapter() {
+        this.isChildNeedRefresh = true;
+    }
+
     public interface FabClickListener {
         void fabClickedAtEnd();
 
@@ -202,6 +208,9 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             }
         });
 
+        if (isChildNeedRefresh) {
+            holder.rvChips.getAdapter().notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -352,6 +361,13 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                         confirmDialog.setView(convertView);
                         RadioButton radio_yes = convertView.findViewById(R.id.radio_yes);
                         RadioButton radio_no = convertView.findViewById(R.id.radio_no);
+                        confirmDialog.setPositiveButton(context.getString(R.string.ok), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        AlertDialog alertDialog = confirmDialog.create();
                         radio_yes.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -360,6 +376,10 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                                 int indexOfCheckedNode = childNode.indexOf(thisNode);
                                 _mListener.onChildListClickEvent(mGroupPos, indexOfCheckedNode, physExamNodePos);
                                 notifyDataSetChanged();
+                                if (alertDialog != null) {
+                                    alertDialog.dismiss();
+                                }
+
                             }
                         });
 
@@ -374,6 +394,9 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                                 int indexOfCheckedNode = childNode.indexOf(thisNode);
                                 _mListener.onChildListClickEvent(mGroupPos, indexOfCheckedNode, physExamNodePos,true);*/
                                 notifyDataSetChanged();
+                                if (alertDialog != null) {
+                                    alertDialog.dismiss();
+                                }
                             }
                         });
 
@@ -398,13 +421,8 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                                 }
                                 break;
                         }
-                        confirmDialog.setPositiveButton(context.getString(R.string.ok), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                        confirmDialog.show();
+
+                        alertDialog.show();
                        /* if (thisNode.findDisplay().equalsIgnoreCase("yes")) {
                             thisNode.setNoSelected(false);
                             // _mListener.onChildListClickEvent(mGroupNode,mGroupPos,position);
