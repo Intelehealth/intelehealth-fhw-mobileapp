@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+
 import androidx.appcompat.app.AlertDialog;
+
+import android.text.InputFilter;
 import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -47,6 +50,7 @@ import java.util.Locale;
 import app.intelehealth.client.R;
 import app.intelehealth.client.activities.questionNodeActivity.QuestionsAdapter;
 import app.intelehealth.client.app.IntelehealthApplication;
+import app.intelehealth.client.utilities.InputFilterMinMax;
 import app.intelehealth.client.utilities.SessionManager;
 
 import app.intelehealth.client.activities.cameraActivity.CameraActivity;
@@ -787,14 +791,17 @@ public class Node implements Serializable {
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_1_number_picker, null);
         numberDialog.setView(convertView);
-        final NumberPicker numberPicker = convertView.findViewById(R.id.dialog_1_number_picker);
+       /* final NumberPicker numberPicker = convertView.findViewById(R.id.dialog_1_number_picker);
         numberPicker.setMinValue(0);
-        numberPicker.setMaxValue(1000);
+        numberPicker.setMaxValue(1000);*/
+        EditText et_enter_value = convertView.findViewById(R.id.et_enter_value);
+        et_enter_value.setFilters(new InputFilter[]{ new InputFilterMinMax("1", "1000")});
         numberDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                numberPicker.setValue(numberPicker.getValue());
-                String value = String.valueOf(numberPicker.getValue());
+               /* numberPicker.setValue(numberPicker.getValue());
+                String value = String.valueOf(numberPicker.getValue());*/
+               String value = et_enter_value.getText().toString();
 
                 if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", value));
@@ -1088,14 +1095,17 @@ public class Node implements Serializable {
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_1_number_picker, null);
         numberDialog.setView(convertView);
-        final NumberPicker numberPicker = convertView.findViewById(R.id.dialog_1_number_picker);
+      /*  final NumberPicker numberPicker = convertView.findViewById(R.id.dialog_1_number_picker);
         numberPicker.setMinValue(0);
-        numberPicker.setMaxValue(1000);
+        numberPicker.setMaxValue(1000);*/
+        EditText et_enter_value = convertView.findViewById(R.id.et_enter_value);
+        et_enter_value.setFilters(new InputFilter[]{ new InputFilterMinMax("1", "1000")});
         numberDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                numberPicker.setValue(numberPicker.getValue());
-                String value = String.valueOf(numberPicker.getValue());
+                //numberPicker.setValue(numberPicker.getValue());
+                // String value = String.valueOf(numberPicker.getValue());
+                String value = et_enter_value.getText().toString();
                 if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", value));
                 } else {

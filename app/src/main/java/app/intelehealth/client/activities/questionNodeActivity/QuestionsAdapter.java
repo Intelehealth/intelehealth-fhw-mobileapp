@@ -386,13 +386,8 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                         radio_no.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                // thisNode.toggleSelected();
                                 thisNode.setNoSelected(true);
                                 thisNode.setUnselected();
-                                //thisNode.toggleSelected();
-                               /* List<Node> childNode = mGroupNode.getOptionsList().get(mGroupPos).getOptionsList();
-                                int indexOfCheckedNode = childNode.indexOf(thisNode);
-                                _mListener.onChildListClickEvent(mGroupPos, indexOfCheckedNode, physExamNodePos,true);*/
                                 notifyDataSetChanged();
                                 if (alertDialog != null) {
                                     alertDialog.dismiss();
@@ -423,13 +418,6 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                         }
 
                         alertDialog.show();
-                       /* if (thisNode.findDisplay().equalsIgnoreCase("yes")) {
-                            thisNode.setNoSelected(false);
-                            // _mListener.onChildListClickEvent(mGroupNode,mGroupPos,position);
-                        } else {
-                            thisNode.setNoSelected(true);
-                            thisNode.setUnselected();
-                        }*/
 
                     } else {
                         //thisNode.toggleSelected();
