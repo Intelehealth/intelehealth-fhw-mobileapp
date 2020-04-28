@@ -1,6 +1,7 @@
 package app.intelehealth.client.activities.questionNodeActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
@@ -10,10 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -53,10 +57,15 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
     String _mCallingClass;
     boolean isAssociateSym;
 
+    public void updateNode(Node currentNode) {
+        this.currentNode = currentNode;
+        notifyDataSetChanged();
+    }
+
     public interface FabClickListener {
         void fabClickedAtEnd();
 
-        void onChildListClickEvent(int groupPos, int childPos,int physExamPos);
+        void onChildListClickEvent(int groupPos, int childPos, int physExamPos);
     }
 
     public QuestionsAdapter(Context _context, Node node, RecyclerView _rvQuestions, String callingClass,
@@ -71,6 +80,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
     }
 
     PhysicalExam physicalExam;
+
     public QuestionsAdapter(Context _context, PhysicalExam node, RecyclerView _rvQuestions, String callingClass,
                             FabClickListener _mListener, boolean isAssociateSym) {
         this.context = _context;
@@ -94,8 +104,8 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 
     @Override
     public void onBindViewHolder(QuestionsAdapter.ChipsAdapterViewHolder holder, int position) {
-        Node _mNode ;
-        if(_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())){
+        Node _mNode;
+        if (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())) {
             _mNode = physicalExam.getExamNode(position).getOption(0);
             final String parent_name = physicalExam.getExamParentNodeName(position);
             String nodeText = parent_name + " : " + _mNode.findDisplay();
@@ -127,8 +137,8 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             } else {
                 holder.physical_exam_image_view.setVisibility(View.GONE);
             }
-            holder.tvQuestion.setText( _mNode.findDisplay());
-        }else{
+            holder.tvQuestion.setText(_mNode.findDisplay());
+        } else {
             _mNode = currentNode;
             if (isAssociateSym && currentNode.getOptionsList().size() == 1) {
                 holder.tvQuestion.setText(_mNode.getOptionsList().get(0).findDisplay());
@@ -168,13 +178,14 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 
             }
         });
-
-        if (position != 0) {
+        if (position == getItemCount() - 1) {
+            holder.tvSwipe.setText(context.getString(R.string.swipe_down));
+        } else if (position != 0) {
             holder.tvSwipe.setText(context.getString(R.string.swipe_down_to_return));
-           // holder.tvSwipe.setVisibility(View.VISIBLE);
+            // holder.tvSwipe.setVisibility(View.VISIBLE);
         } else {
             holder.tvSwipe.setText(context.getString(R.string.swipe_up));
-           // holder.tvSwipe.setVisibility(View.GONE);
+            // holder.tvSwipe.setVisibility(View.GONE);
         }
 
         if (position == getItemCount() - 1) {
@@ -195,9 +206,9 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 
     @Override
     public int getItemCount() {
-        if(_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())){
+        if (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())) {
             return physicalExam.getTotalNumberOfExams();
-        }else{
+        } else {
             if (isAssociateSym && currentNode.getOptionsList().size() == 1) {
                 List<Node> nodeList = currentNode.getOptionsList().get(0).getOptionsList();
                 if (nodeList.size() > 5) {
@@ -245,12 +256,12 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 
             Node groupNode;
             List<Node> chipList = new ArrayList<>();
-            if(_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())){
-                groupNode =  physicalExam.getExamNode(pos).getOption(0);
+            if (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())) {
+                groupNode = physicalExam.getExamNode(pos).getOption(0);
                 for (int i = 0; i < groupNode.getOptionsList().size(); i++) {
                     chipList.add(groupNode.getOptionsList().get(i));
                 }
-            }else{
+            } else {
                 groupNode = currentNode;
                 if (isAssociateSym && currentNode.getOptionsList().size() == 1) {
                     int childOptionCount = currentNode.getOptionsList().get(0).getOptionsList().size();
@@ -272,9 +283,8 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             }
 
 
-
-            int groupPos = (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName()) ||(isAssociateSym && currentNode.getOptionsList().size() == 1)) ? 0 : pos;
-            chipsAdapter = new ComplaintNodeListAdapter(context, chipList, groupNode, groupPos, _mListener, _mCallingClass,pos);
+            int groupPos = (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName()) || (isAssociateSym && currentNode.getOptionsList().size() == 1)) ? 0 : pos;
+            chipsAdapter = new ComplaintNodeListAdapter(context, chipList, groupNode, groupPos, _mListener, _mCallingClass, pos);
             rvChips.setAdapter(chipsAdapter);
 
         }
@@ -295,7 +305,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         private int physExamNodePos;
 
         public ComplaintNodeListAdapter(Context context, List<Node> nodes, Node groupNode, int groupPos,
-                                        QuestionsAdapter.FabClickListener listener, String callingClass,int nodePos) {
+                                        QuestionsAdapter.FabClickListener listener, String callingClass, int nodePos) {
             this.mContext = context;
             this.mNodesFilter = nodes;
             this.mNodes = ImmutableList.copyOf(mNodesFilter);
@@ -320,32 +330,8 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             final Node thisNode = mNodesFilter.get(position);
             itemViewHolder.mChip.setText(thisNode.findDisplay());
             Node groupNode = mGroupNode.getOption(mGroupPos);
-            if (groupNode.getText().equalsIgnoreCase("Associated symptoms")) {
-                switch (_mCallingClass) {
-                    case "ComplaintNodeActivity":
-                        itemViewHolder.mChip.setChecked(thisNode.isSelected());
-                        break;
-                    default:
-                        if (thisNode.isSelected()) {
-                            if (thisNode.findDisplay().equalsIgnoreCase("yes")) {
-                                itemViewHolder.mChip.setChecked(true);
-                            }
-                        } else {
-                            if (thisNode.findDisplay().equalsIgnoreCase("No")) {
-                                if (thisNode.isNoSelected()) {
-                                    itemViewHolder.mChip.setChecked(true);
-                                } else {
-                                    itemViewHolder.mChip.setChecked(false);
-                                }
-                            }
 
-                        }
-                        break;
-                }
-            } else {
-                itemViewHolder.mChip.setChecked(thisNode.isSelected());
-            }
-            if (thisNode.isSelected()) {
+            if ((groupNode.getText().equalsIgnoreCase("Associated symptoms") && thisNode.isNoSelected()) || thisNode.isSelected()) {
                 itemViewHolder.mChip.setCloseIconVisible(true);
                 itemViewHolder.mChip.setChipBackgroundColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.colorAccent))));
                 itemViewHolder.mChip.setTextColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.white))));
@@ -358,27 +344,88 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                 @Override
                 public void onClick(View v) {
                     if (groupNode.getText().equalsIgnoreCase("Associated symptoms")) {
-                        if (thisNode.findDisplay().equalsIgnoreCase("yes")) {
+                        AlertDialog.Builder confirmDialog = new AlertDialog.Builder(context);
+                        confirmDialog.setTitle(R.string.have_symptom);
+                        confirmDialog.setCancelable(false);
+                        LayoutInflater layoutInflater = LayoutInflater.from(context);
+                        View convertView = layoutInflater.inflate(R.layout.list_expandable_item_radio, null);
+                        confirmDialog.setView(convertView);
+                        RadioButton radio_yes = convertView.findViewById(R.id.radio_yes);
+                        RadioButton radio_no = convertView.findViewById(R.id.radio_no);
+                        radio_yes.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                thisNode.setNoSelected(false);
+                                List<Node> childNode = mGroupNode.getOptionsList().get(mGroupPos).getOptionsList();
+                                int indexOfCheckedNode = childNode.indexOf(thisNode);
+                                _mListener.onChildListClickEvent(mGroupPos, indexOfCheckedNode, physExamNodePos);
+                                notifyDataSetChanged();
+                            }
+                        });
+
+                        radio_no.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // thisNode.toggleSelected();
+                                thisNode.setNoSelected(true);
+                                thisNode.setUnselected();
+                                //thisNode.toggleSelected();
+                               /* List<Node> childNode = mGroupNode.getOptionsList().get(mGroupPos).getOptionsList();
+                                int indexOfCheckedNode = childNode.indexOf(thisNode);
+                                _mListener.onChildListClickEvent(mGroupPos, indexOfCheckedNode, physExamNodePos,true);*/
+                                notifyDataSetChanged();
+                            }
+                        });
+
+                        switch (_mCallingClass) {
+
+                            case "ComplaintNodeActivity":
+                                if (thisNode.isSelected()) {
+                                    radio_yes.setChecked(true);
+                                } else {
+                                    radio_no.setChecked(true);
+                                }
+                                break;
+                            default:
+                                if (thisNode.isSelected()) {
+                                    radio_yes.setChecked(true);
+                                } else {
+                                    if (thisNode.isNoSelected()) {
+                                        radio_no.setChecked(true);
+                                    } else {
+                                        radio_no.setChecked(false);
+                                    }
+                                }
+                                break;
+                        }
+                        confirmDialog.setPositiveButton(context.getString(R.string.ok), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        confirmDialog.show();
+                       /* if (thisNode.findDisplay().equalsIgnoreCase("yes")) {
                             thisNode.setNoSelected(false);
                             // _mListener.onChildListClickEvent(mGroupNode,mGroupPos,position);
                         } else {
                             thisNode.setNoSelected(true);
                             thisNode.setUnselected();
-                        }
+                        }*/
+
                     } else {
                         //thisNode.toggleSelected();
-                    }
-                    int indexOfCheckedNode;
-                    if(_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())){
-                       indexOfCheckedNode = position;
-                    }else{
-                        List<Node> childNode = mGroupNode.getOptionsList().get(mGroupPos).getOptionsList();
-                        indexOfCheckedNode = childNode.indexOf(thisNode);
+                        int indexOfCheckedNode;
+                        if (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())) {
+                            indexOfCheckedNode = position;
+                        } else {
+                            List<Node> childNode = mGroupNode.getOptionsList().get(mGroupPos).getOptionsList();
+                            indexOfCheckedNode = childNode.indexOf(thisNode);
+                        }
+                        _mListener.onChildListClickEvent(mGroupPos, indexOfCheckedNode, physExamNodePos);
+                        notifyDataSetChanged();
                     }
 
-
-                    _mListener.onChildListClickEvent( mGroupPos, indexOfCheckedNode,physExamNodePos);
-                    notifyDataSetChanged();
                 }
             });
 
@@ -386,14 +433,18 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                 @Override
                 public void onClick(View v) {
                     //thisNode.toggleSelected();
+                    if ((groupNode.getText().equalsIgnoreCase("Associated symptoms") && thisNode.isNoSelected())) {
+                        thisNode.setNoSelected(false);
+                        thisNode.toggleSelected();
+                    }
                     int indexOfCheckedNode;
-                    if(_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())){
+                    if (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())) {
                         indexOfCheckedNode = position;
-                    }else{
+                    } else {
                         List<Node> childNode = mGroupNode.getOptionsList().get(mGroupPos).getOptionsList();
                         indexOfCheckedNode = childNode.indexOf(thisNode);
                     }
-                    _mListener.onChildListClickEvent( mGroupPos, indexOfCheckedNode,physExamNodePos);
+                    _mListener.onChildListClickEvent(mGroupPos, indexOfCheckedNode, physExamNodePos);
                     notifyDataSetChanged();
                 }
             });

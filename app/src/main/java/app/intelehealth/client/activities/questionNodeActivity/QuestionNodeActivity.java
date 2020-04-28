@@ -260,6 +260,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
                 //If the knowledgeEngine is not terminal, that means there are more questions to be asked for this branch.
             }
         }
+        //adapter.updateNode(currentNode);
         adapter.notifyDataSetChanged();
 
     }
@@ -634,4 +635,6 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
     public void onChildListClickEvent(int groupPos, int childPos, int physExamPos) {
         onListClicked(null,groupPos,childPos);
     }
+
+
 }

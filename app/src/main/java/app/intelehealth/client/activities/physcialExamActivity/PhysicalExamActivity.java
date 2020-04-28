@@ -9,8 +9,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -22,6 +24,7 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,11 +71,11 @@ import app.intelehealth.client.utilities.UuidDictionary;
 import app.intelehealth.client.utilities.StringUtils;
 import app.intelehealth.client.utilities.exception.DAOException;
 
-public class PhysicalExamActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener{
+public class PhysicalExamActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
     final static String TAG = PhysicalExamActivity.class.getSimpleName();
-   // private SectionsPagerAdapter mSectionsPagerAdapter;
+    // private SectionsPagerAdapter mSectionsPagerAdapter;
 
-   // private ViewPager mViewPager;
+    // private ViewPager mViewPager;
 
     static String patientUuid;
     static String visitUuid;
@@ -227,8 +230,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
          */
 
-        Log.e(TAG, "PhyExam: "+physicalExamMap.getTotalNumberOfExams());
-        adapter = new QuestionsAdapter(this,physicalExamMap,physExam_recyclerView,this.getClass().getSimpleName(),this,false);
+        Log.e(TAG, "PhyExam: " + physicalExamMap.getTotalNumberOfExams());
+        adapter = new QuestionsAdapter(this, physicalExamMap, physExam_recyclerView, this.getClass().getSimpleName(), this, false);
         physExam_recyclerView.setAdapter(adapter);
 
     }
@@ -308,7 +311,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
     }
 
     @Override
-    public void onChildListClickEvent( int groupPosition, int childPos, int physExamPos) {
+    public void onChildListClickEvent(int groupPosition, int childPos, int physExamPos) {
         Node question = physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOption(childPos);
         //Log.d("Clicked", question.language());
         question.toggleSelected();
@@ -573,15 +576,16 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         animation.addAnimation(fadeIn);
         animation.addAnimation(fadeOut);
         animation.setRepeatCount(1);
-        if(v != null){
+        if (v != null) {
             v.setAnimation(animation);
         }
 
 
     }
+
     public void bottomUpAnimation(View v) {
 
-        if( v != null){
+        if (v != null) {
             v.setVisibility(View.VISIBLE);
             Animation bottomUp = AnimationUtils.loadAnimation(this,
                     R.anim.bottom_up);

@@ -556,6 +556,8 @@
     <string name="what_is_the_reason_for_your_visit" >What is the reason for your visit?</string>
     <string name="swipe_down_to_return">Swipe to Down for previous / Up for next</string>
     <string name="swipe_up">Swipe to Up for Next</string>
+    <string name="swipe_down">Swipe to Down for previous</string>
+    <string name="have_symptom">Do you have this Symptom?</string>
 
 
 </resources>

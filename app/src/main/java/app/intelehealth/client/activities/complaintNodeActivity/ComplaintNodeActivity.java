@@ -212,7 +212,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             public void run() {
                 animateView(fab);
             }
-        }, 3000);
+        }, 1000);
 
     }
 
