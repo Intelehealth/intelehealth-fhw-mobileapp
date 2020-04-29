@@ -391,6 +391,9 @@
     <string name="prescription_not_downloaded_check_internet">ପ୍ରେସକୂଶନ୍ ଡାଉଁଲଡ ହଉନାହିଁ, ଦୟାକରି ନିଜ ଇଟଂରନେଟ୍ ସଂଯୋଗ ଯାଂଚ କରନ୍ତୁ ଓ ପୁନବାର ଚେଷ୍ଟା କରନ୍ତୁ</string>
     <string name="privacy_reject_toast">ରୋଗୀର ସହମତି ବିନା ନାଁ ଲେଖାଇବା</string>
     <string name="not_answered">ଉତର ଦଉ ନାହାନ୍ତି</string>
+    <string name="new_update_available">New Update Available</string>
+    <string name="update_app_note">New version is available with new features please update app</string>
+    <string name="update">Update</string>
 
 
 </resources>

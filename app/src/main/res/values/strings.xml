@@ -550,6 +550,9 @@
     <string name="prescription_not_downloaded_check_internet">Prescription not downloaded, check internet connection</string>
     <string name="privacy_reject_toast">You cannot register a patient without consent</string>
     <string name="not_answered">Not answered</string>
+    <string name="new_update_available">New Update Available</string>
+    <string name="update_app_note">New version is available with new features please update app</string>
+    <string name="update">Update</string>
 
 
 </resources>
