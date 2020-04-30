@@ -25,6 +25,7 @@ import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
+
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.core.view.MenuItemCompat;
@@ -34,6 +35,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
+
 import android.telephony.SmsManager;
 import android.text.Html;
 import android.text.InputType;
@@ -58,6 +60,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
@@ -88,6 +92,7 @@ import app.intelehealth.client.database.dao.PatientsDAO;
 import app.intelehealth.client.database.dao.SyncDAO;
 import app.intelehealth.client.database.dao.VisitsDAO;
 import app.intelehealth.client.knowledgeEngine.Node;
+import app.intelehealth.client.models.ClsDoctorDetails;
 import app.intelehealth.client.models.Patient;
 import app.intelehealth.client.models.dto.ObsDTO;
 import app.intelehealth.client.services.DownloadService;
@@ -1542,9 +1547,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
         // Generate an HTML document on the fly:
+        String font_face = "<style>" +
+                "                @font-face {" +
+                "                    font-family: \"MyFont\";" +
+                "                    src: url('file:///android_asset/fonts/Youthness.ttf');" +
+                "                }" +
+                "            </style>" ;
         if (isRespiratory) {
             String htmlDocument =
-                    String.format("<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                    String.format(font_face+  "<b><p id=\"heading_1\" style=\"font-size:16pt; font-family: MyFont; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<hr style=\"font-size:12pt;\">" + "<br/>" +
@@ -1852,6 +1863,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
         downloadPrescriptionDefault();
+        downloadDoctorDetails();
     }
 
     /**
@@ -1980,9 +1992,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
             case UuidDictionary.REQUESTED_TESTS: {
                 if (!testsReturned.isEmpty()) {
-                    testsReturned =  testsReturned + "\n\n" + Node.bullet + " " + value;
+                    testsReturned = testsReturned + "\n\n" + Node.bullet + " " + value;
                 } else {
-                    testsReturned =  Node.bullet + " " + value;
+                    testsReturned = Node.bullet + " " + value;
                 }
                 if (requestedTestsCard.getVisibility() != View.VISIBLE) {
                     requestedTestsCard.setVisibility(View.VISIBLE);
@@ -2027,6 +2039,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 break;
 
         }
+    }
+
+    ClsDoctorDetails objClsDoctorDetails;
+    private void parseDoctorDetails(String dbValue){
+        Gson gson = new Gson();
+        objClsDoctorDetails = gson.fromJson(dbValue,ClsDoctorDetails.class);
+        Log.e(TAG,"TEST VISIT: "+objClsDoctorDetails);
     }
 
 
@@ -2323,7 +2342,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         Crashlytics.getInstance().core.logException(e);
                     }
                 }
-
+                downloadDoctorDetails();
             }
 
             additionalDocumentImagesDownload();
@@ -2511,7 +2530,39 @@ public class VisitSummaryActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             Logger.logD(TAG, "Download prescription happen" + new SimpleDateFormat("yyyy MM dd_HH mm ss").format(Calendar.getInstance().getTime()));
             downloadPrescriptionDefault();
+            downloadDoctorDetails();
         }
     }
+
+    private void downloadDoctorDetails(){
+        String visitnote = "";
+        EncounterDAO encounterDAO = new EncounterDAO();
+        String encounterIDSelection = "visituuid = ? ";
+        String[] encounterIDArgs = {visitUuid};
+        String encounter_type_uuid_comp = "bd1fbfaa-f5fb-4ebd-b75c-564506fc309e";// make the encounter_type_uuid as constant later on.
+        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+        if (encounterCursor != null && encounterCursor.moveToFirst()) {
+            do {
+                if (encounter_type_uuid_comp.equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                }
+            } while (encounterCursor.moveToNext());
+
+        }
+        encounterCursor.close();
+        String[] columns = {"value", " conceptuuid"};
+        String visitSelection = "encounteruuid = ? and voided!='1' ";
+        String[] visitArgs = {visitnote};
+        Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+        if (visitCursor.moveToFirst()) {
+            do {
+                String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                parseDoctorDetails(dbValue);
+            } while (visitCursor.moveToNext());
+        }
+        visitCursor.close();
+    }
+
 
 }
