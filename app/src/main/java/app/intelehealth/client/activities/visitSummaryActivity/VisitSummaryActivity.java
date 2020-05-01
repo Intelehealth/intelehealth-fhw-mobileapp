@@ -39,6 +39,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.telephony.SmsManager;
 import android.text.Html;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -1405,7 +1406,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         });
 
-        String mPatientName = patient.getFirst_name() + " " + patient.getMiddle_name() + " " + patient.getLast_name();
+        String mPatientName = patient.getFirst_name() + " " + ((!TextUtils.isEmpty(patient.getMiddle_name())) ? patient.getMiddle_name() : "") + " " + patient.getLast_name();
         String mPatientOpenMRSID = patient.getOpenmrs_id();
         String mPatientDob = patient.getDate_of_birth();
         String mAddress = patient.getAddress1() + "\n" + patient.getAddress2();
@@ -1552,13 +1553,31 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 "                    font-family: \"MyFont\";" +
                 "                    src: url('file:///android_asset/fonts/Youthness.ttf');" +
                 "                }" +
-                "            </style>" ;
+                "            </style>";
+
+        String doctorSign = "";
+        String doctrRegistartionNum = "";
+        String docDigitallySign = "";
+        String doctorDetailStr = "";
+        if (objClsDoctorDetails != null) {
+            docDigitallySign = "Digitally Signed By";
+            doctorSign = objClsDoctorDetails.getTextOfSign();
+            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "HCP Registration No: " + objClsDoctorDetails.getRegistrationNumber() : "";
+            doctorDetailStr = "<div style=\"text-align:left;margin-right:5px;margin-top:5px;\">" +
+                    "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
+                    "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + "  "+objClsDoctorDetails.getQualification()+", "+objClsDoctorDetails.getSpecialization() + "</span><br>" +
+                    "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber())?"Phone Number: "+objClsDoctorDetails.getPhoneNumber():"") + "</span><br>" +
+                    "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId())?"Email: "+objClsDoctorDetails.getEmailId():"") + "</span><br>" +
+                    "<span style=\"font-size:12pt;color:#448AFF; margin-bottom:0px; padding: 0px;\">" + objClsDoctorDetails.getAddress() + "</span>" +
+                    "</div><br>";
+        }
         if (isRespiratory) {
             String htmlDocument =
-                    String.format(font_face+  "<b><p id=\"heading_1\" style=\"font-size:16pt; font-family: MyFont; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                    String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<hr style=\"font-size:12pt;\">" + "<br/>" +
+                                    doctorDetailStr +
                                     "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" +
                                     "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s | Son/Daughter/Wife of: %s </p>" +
                                     "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\"><b>Address and Contact:</b> %s</p>" +
@@ -1569,18 +1588,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p>" +
                                     "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
                                     "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p>" +
-                                    "<b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Chief Complaint(s)</p></b>" +
+                                    "<b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medical condition(s)</p></b>" +
                                     para_open + "%s" + para_close + "<br><br>" +
                                     "<b><p id=\"diagnosis_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b>" +
                                     "%s" +
-                                    "<b><p id=\"rx_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication</p></b>" +
+                                    "<b><p id=\"rx_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b>" +
                                     "%s" +
-                                    "<b><p id=\"tests_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Tests To Be Performed</p></b>" +
+                                    "<b><p id=\"tests_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b>" +
                                     "%s" +
                                     "<b><p id=\"advice_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b>" +
                                     "%s" +
                                     "<b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b>" +
-                                    "%s"
+                                    "%s" +
+                                    "<div style=\"text-align:right;margin-right:50px;margin-top:25px;\">" +
+                                    "<span style=\"font-size:12pt; padding: 0px;\">" + docDigitallySign + "</span><br>" +
+                                    "<b><span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span></b><br>" +
+                                    "<span style=\"font-size:12pt; margin-bottom:0px; padding: 0px;\">" + doctrRegistartionNum + "</span>" +
+                                    "</div>"
                             , heading, heading2, heading3, mPatientName, age, mGender, mSdw, address, mPatientOpenMRSID, mDate, mHeight, mWeight,
                             mBMI, bp, mPulse, mTemp, mresp, mSPO2, pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
@@ -1590,6 +1614,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<hr style=\"font-size:12pt;\">" + "<br/>" +
+                                    doctorDetailStr +
                                     "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" +
                                     "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s | Son/Daughter/Wife of: %s </p>" +
                                     "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\"><b>Address and Contact:</b> %s</p>" +
@@ -1600,18 +1625,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p>" +
                                     "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
                                     "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p>" +
-                                    "<b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Chief Complaint(s)</p></b>" +
+                                    "<b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medical condition(s)</p></b>" +
                                     para_open + "%s" + para_close + "<br><br>" +
                                     "<b><p id=\"diagnosis_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b>" +
                                     "%s" +
-                                    "<b><p id=\"rx_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication</p></b>" +
+                                    "<b><p id=\"rx_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b>" +
                                     "%s" +
-                                    "<b><p id=\"tests_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Tests To Be Performed</p></b>" +
+                                    "<b><p id=\"tests_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b>" +
                                     "%s" +
                                     "<b><p id=\"advice_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b>" +
                                     "%s" +
                                     "<b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b>" +
-                                    "%s"
+                                    "%s" +
+                                    "<div style=\"text-align:right;margin-right:50px;margin-top:25px;\">" +
+                                    "<span style=\"font-size:12pt; epadding: 0px;\">" + docDigitallySign + "</span><br>" +
+                                    "<b><span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span></b><br>" +
+                                    "<span style=\"font-size:12pt; margin-bottom:0px; padding: 0px;\">" + doctrRegistartionNum + "</span>" +
+                                    "</div>"
                             , heading, heading2, heading3, mPatientName, age, mGender, mSdw, address, mPatientOpenMRSID, mDate, mHeight, mWeight,
                             mBMI, bp, mPulse, mTemp, mSPO2, pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
@@ -2042,10 +2072,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     ClsDoctorDetails objClsDoctorDetails;
-    private void parseDoctorDetails(String dbValue){
+
+    private void parseDoctorDetails(String dbValue) {
         Gson gson = new Gson();
-        objClsDoctorDetails = gson.fromJson(dbValue,ClsDoctorDetails.class);
-        Log.e(TAG,"TEST VISIT: "+objClsDoctorDetails);
+        objClsDoctorDetails = gson.fromJson(dbValue, ClsDoctorDetails.class);
+        Log.e(TAG, "TEST VISIT: " + objClsDoctorDetails);
     }
 
 
@@ -2534,7 +2565,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
     }
 
-    private void downloadDoctorDetails(){
+    private void downloadDoctorDetails() {
         String visitnote = "";
         EncounterDAO encounterDAO = new EncounterDAO();
         String encounterIDSelection = "visituuid = ? ";
