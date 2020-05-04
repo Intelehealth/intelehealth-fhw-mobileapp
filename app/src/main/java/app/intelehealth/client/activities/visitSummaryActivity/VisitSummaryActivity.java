@@ -1548,10 +1548,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
         // Generate an HTML document on the fly:
+        String fontFamilyFile = "";
+        if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
+            fontFamilyFile = "src: url('file:///android_asset/fonts/Youthness.ttf');";
+        } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("asem")) {
+            fontFamilyFile = "src: url('file:///android_asset/fonts/Asem.otf');";
+        } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
+            fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
+        }
         String font_face = "<style>" +
                 "                @font-face {" +
                 "                    font-family: \"MyFont\";" +
-                "                    src: url('file:///android_asset/fonts/Youthness.ttf');" +
+                fontFamilyFile +
                 "                }" +
                 "            </style>";
 
@@ -1565,9 +1573,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "HCP Registration No: " + objClsDoctorDetails.getRegistrationNumber() : "";
             doctorDetailStr = "<div style=\"text-align:left;margin-right:5px;margin-top:5px;\">" +
                     "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
-                    "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + "  "+objClsDoctorDetails.getQualification()+", "+objClsDoctorDetails.getSpecialization() + "</span><br>" +
-                    "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber())?"Phone Number: "+objClsDoctorDetails.getPhoneNumber():"") + "</span><br>" +
-                    "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId())?"Email: "+objClsDoctorDetails.getEmailId():"") + "</span><br>" +
+                    "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification() + ", " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
+                    "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ? "Phone Number: " + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
+                    "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +
                     "<span style=\"font-size:12pt;color:#448AFF; margin-bottom:0px; padding: 0px;\">" + objClsDoctorDetails.getAddress() + "</span>" +
                     "</div><br>";
         }
@@ -1602,7 +1610,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "%s" +
                                     "<div style=\"text-align:right;margin-right:50px;margin-top:25px;\">" +
                                     "<span style=\"font-size:12pt; padding: 0px;\">" + docDigitallySign + "</span><br>" +
-                                    "<b><span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span></b><br>" +
+                                    "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" +
                                     "<span style=\"font-size:12pt; margin-bottom:0px; padding: 0px;\">" + doctrRegistartionNum + "</span>" +
                                     "</div>"
                             , heading, heading2, heading3, mPatientName, age, mGender, mSdw, address, mPatientOpenMRSID, mDate, mHeight, mWeight,
@@ -1639,7 +1647,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "%s" +
                                     "<div style=\"text-align:right;margin-right:50px;margin-top:25px;\">" +
                                     "<span style=\"font-size:12pt; epadding: 0px;\">" + docDigitallySign + "</span><br>" +
-                                    "<b><span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span></b><br>" +
+                                    "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" +
                                     "<span style=\"font-size:12pt; margin-bottom:0px; padding: 0px;\">" + doctrRegistartionNum + "</span>" +
                                     "</div>"
                             , heading, heading2, heading3, mPatientName, age, mGender, mSdw, address, mPatientOpenMRSID, mDate, mHeight, mWeight,
