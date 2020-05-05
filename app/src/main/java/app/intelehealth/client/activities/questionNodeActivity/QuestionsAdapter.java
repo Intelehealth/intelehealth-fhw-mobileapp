@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
@@ -184,6 +185,12 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 
             }
         });
+
+        if(getItemCount()-1 == 0){
+            holder.tv_swipe_view.setVisibility(View.GONE);
+        }else{
+            holder.tv_swipe_view.setVisibility(View.VISIBLE);
+        }
         if (position == getItemCount() - 1) {
             holder.tvSwipe.setText(context.getString(R.string.swipe_down));
         } else if (position != 0) {
@@ -246,6 +253,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         RecyclerView rvChips;
         FloatingActionButton fab;
         ComplaintNodeListAdapter chipsAdapter;
+        RelativeLayout tv_swipe_view;
 
 
         public ChipsAdapterViewHolder(View itemView) {
@@ -253,6 +261,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             tvQuestion = itemView.findViewById(R.id.tv_complaintQuestion);
             rvChips = itemView.findViewById(R.id.rv_chips);
             fab = itemView.findViewById(R.id.fab);
+            tv_swipe_view = itemView.findViewById(R.id.tv_swipe_view);
             tvSwipe = itemView.findViewById(R.id.tv_swipe);
             physical_exam_text_view = itemView.findViewById(R.id.physical_exam_text_view);
             physical_exam_image_view = itemView.findViewById(R.id.physical_exam_image_view);
