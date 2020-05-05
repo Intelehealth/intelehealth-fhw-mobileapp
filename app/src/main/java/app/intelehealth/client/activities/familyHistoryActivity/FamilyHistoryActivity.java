@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.app.AlertDialog;
@@ -93,7 +94,7 @@ public class FamilyHistoryActivity extends AppCompatActivity  implements  Questi
         filePath = new File(AppConstants.IMAGE_PATH);
         boolean past = sessionManager.isReturning();
         if (past) {
-            AlertDialog.Builder alertdialog = new AlertDialog.Builder(FamilyHistoryActivity.this);
+            AlertDialog.Builder alertdialog = new AlertDialog.Builder(FamilyHistoryActivity.this,R.style.AlertDialogStyle);
             alertdialog.setTitle(getString(R.string.title_activity_family_history));
             alertdialog.setMessage(getString(R.string.question_update_details));
             alertdialog.setPositiveButton(getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
@@ -157,6 +158,8 @@ public class FamilyHistoryActivity extends AppCompatActivity  implements  Questi
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitleTextAppearance(this,R.style.ToolbarTheme);
+        toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         setTitle(patientName + ": " + getTitle());

@@ -22,6 +22,7 @@
             android:layout_centerInParent="true"
             android:layout_alignParentTop="true"
             android:visibility="visible"
+            android:fontFamily="@font/lato_bold"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:text="@string/swipe_down_to_return"/>
@@ -74,6 +75,7 @@
                 android:layout_marginStart="10dp"
                 android:visibility="visible"
                 android:layout_gravity="center_vertical"
+                android:fontFamily="@font/lato_bold"
                 android:text="Since when have you had this symptom?"
                 android:textColor="@color/primary_text"
                 android:textSize="18sp" />

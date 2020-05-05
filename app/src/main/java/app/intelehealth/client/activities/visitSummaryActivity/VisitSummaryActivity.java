@@ -347,7 +347,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 //meera
                 if (downloaded) {
 
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
                     alertDialogBuilder.setMessage(R.string.end_visit_msg);
                     alertDialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                         @Override
@@ -366,7 +366,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     alertDialog.show();
 
                 } else {
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
                     alertDialogBuilder.setMessage(R.string.error_no_data);
                     alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                         @Override
@@ -447,6 +447,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_visit_summary);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitleTextAppearance(this,R.style.ToolbarTheme);
+        toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         mLayout = findViewById(R.id.summary_layout);
         context = getApplicationContext();
@@ -789,7 +791,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editFamHist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder famHistDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
+                final AlertDialog.Builder famHistDialog = new AlertDialog.Builder(VisitSummaryActivity.this,R.style.AlertDialogStyle);
                 famHistDialog.setTitle(getString(R.string.visit_summary_family_history));
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
@@ -803,7 +805,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 famHistDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        final AlertDialog.Builder textInput = new AlertDialog.Builder(VisitSummaryActivity.this);
+                        final AlertDialog.Builder textInput = new AlertDialog.Builder(VisitSummaryActivity.this,R.style.AlertDialogStyle);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
                         if (famHistory.getValue() != null)
@@ -879,7 +881,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editComplaint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder complaintDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
+                final AlertDialog.Builder complaintDialog = new AlertDialog.Builder(VisitSummaryActivity.this,R.style.AlertDialogStyle);
                 complaintDialog.setTitle(getString(R.string.visit_summary_complaint));
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
@@ -894,7 +896,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 complaintDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        final AlertDialog.Builder textInput = new AlertDialog.Builder(VisitSummaryActivity.this);
+                        final AlertDialog.Builder textInput = new AlertDialog.Builder(VisitSummaryActivity.this,R.style.AlertDialogStyle);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
                         if (complaint.getValue() != null) {
@@ -984,7 +986,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editPhysical.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder physicalDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
+                final AlertDialog.Builder physicalDialog = new AlertDialog.Builder(VisitSummaryActivity.this,R.style.AlertDialogStyle);
                 physicalDialog.setTitle(getString(R.string.visit_summary_on_examination));
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
@@ -998,7 +1000,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 physicalDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        final AlertDialog.Builder textInput = new AlertDialog.Builder(VisitSummaryActivity.this);
+                        final AlertDialog.Builder textInput = new AlertDialog.Builder(VisitSummaryActivity.this,R.style.AlertDialogStyle);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
                         if (phyExam.getValue() != null)
@@ -1088,7 +1090,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editMedHist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder historyDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
+                final AlertDialog.Builder historyDialog = new AlertDialog.Builder(VisitSummaryActivity.this,R.style.AlertDialogStyle);
                 historyDialog.setTitle(getString(R.string.visit_summary_medical_history));
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
@@ -1102,7 +1104,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 historyDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        final AlertDialog.Builder textInput = new AlertDialog.Builder(VisitSummaryActivity.this);
+                        final AlertDialog.Builder textInput = new AlertDialog.Builder(VisitSummaryActivity.this,R.style.AlertDialogStyle);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
                         if (patHistory.getValue() != null)
@@ -1703,7 +1705,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         if (visitUUID != null && !visitUUID.isEmpty()) {
             if (followUpDate != null && !followUpDate.isEmpty()) {
-                AlertDialog.Builder followUpAlert = new AlertDialog.Builder(VisitSummaryActivity.this);
+                AlertDialog.Builder followUpAlert = new AlertDialog.Builder(VisitSummaryActivity.this,R.style.AlertDialogStyle);
                 followUpAlert.setMessage(getString(R.string.visit_summary_follow_up_reminder) + followUpDate);
                 followUpAlert.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                     @Override
@@ -1734,7 +1736,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         } else {
 
             Log.d(TAG, "endVisit: null");
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(VisitSummaryActivity.this);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(VisitSummaryActivity.this,R.style.AlertDialogStyle);
             alertDialogBuilder.setMessage(getString(R.string.visit_summary_upload_reminder));
             alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                 @Override

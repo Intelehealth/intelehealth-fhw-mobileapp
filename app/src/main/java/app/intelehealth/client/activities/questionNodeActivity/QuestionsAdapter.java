@@ -362,7 +362,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                 @Override
                 public void onClick(View v) {
                     if (groupNode.getText().equalsIgnoreCase("Associated symptoms")) {
-                        AlertDialog.Builder confirmDialog = new AlertDialog.Builder(context);
+                        AlertDialog.Builder confirmDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle);
                         confirmDialog.setTitle(R.string.have_symptom);
                         confirmDialog.setCancelable(false);
                         LayoutInflater layoutInflater = LayoutInflater.from(context);

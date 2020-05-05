@@ -15,6 +15,8 @@
             android:hint="@string/server_url"
             android:inputType="textAutoComplete"
             android:maxLines="1"
+            android:fontFamily="@font/lato_regular"
+            android:textSize="14sp"
             android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -29,6 +31,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:hint="@string/prompt_licensekey"
+            android:fontFamily="@font/lato_regular"
+            android:textSize="14sp"
             android:inputType="textEmailAddress"
             android:maxLines="1"
             android:singleLine="true" />

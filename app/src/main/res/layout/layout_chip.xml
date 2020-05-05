@@ -18,6 +18,7 @@
         app:closeIconTint="@color/white"
         app:closeIconVisible="false"
         android:padding="5dp"
+        android:fontFamily="@font/lato_regular"
         android:text="sample text"
         android:textColor="@color/primary_text"
         app:chipStrokeWidth="1dp"

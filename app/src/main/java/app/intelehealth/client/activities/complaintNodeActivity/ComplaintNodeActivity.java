@@ -111,6 +111,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_complaint_node);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitleTextAppearance(this,R.style.ToolbarTheme);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         img_question = findViewById(R.id.img_question);
@@ -232,7 +233,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             }
 
             if (selection.isEmpty()) {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
                 alertDialogBuilder.setTitle(getString(R.string.complaint_dialog_title));
                 alertDialogBuilder.setMessage(getString(R.string.complaint_required));
                 alertDialogBuilder.setNeutralButton(getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
@@ -247,7 +248,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
                 pb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
             } else {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
                 alertDialogBuilder.setTitle(R.string.complaint_dialog_title);
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.list_dialog_complaint, null);

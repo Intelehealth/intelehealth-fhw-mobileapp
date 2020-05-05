@@ -303,7 +303,7 @@ public class HomeActivity extends AppCompatActivity {
                     getMindmapDownloadURL("http://" + licenseUrl + ":3004/", licenseKey);
 
                 } else {
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
                     LayoutInflater li = LayoutInflater.from(this);
                     View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
                     dialog.setTitle(getString(R.string.enter_license_key))
@@ -471,7 +471,7 @@ public class HomeActivity extends AppCompatActivity {
                 .setNegativeButton("No", null)
                 .show();
 */
-        AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this);
+        AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
         alertdialogBuilder.setMessage(R.string.sure_to_exit);
         alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
             @Override

@@ -254,7 +254,7 @@ public class Node implements Serializable {
         node.setSelected();
         List<Node> mNodes = node.getOptionsList();
         final CustomArrayAdapter adapter = new CustomArrayAdapter(context, R.layout.list_item_subquestion, mNodes);
-        final AlertDialog.Builder subQuestion = new AlertDialog.Builder(context);
+        final AlertDialog.Builder subQuestion = new AlertDialog.Builder(context,R.style.AlertDialogStyle);
 
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_subquestion, null);
@@ -538,7 +538,7 @@ public class Node implements Serializable {
     }
 
     public static void askText(final Node node, Activity context, final QuestionsAdapter adapter) {
-        final AlertDialog.Builder textInput = new AlertDialog.Builder(context);
+        final AlertDialog.Builder textInput = new AlertDialog.Builder(context,R.style.AlertDialogStyle);
         textInput.setTitle(R.string.question_text_input);
         final EditText dialogEditText = new EditText(context);
         dialogEditText.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -723,7 +723,7 @@ public class Node implements Serializable {
         }
 
         if (!finalMessage.isEmpty()) {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context,R.style.AlertDialogStyle);
             alertDialogBuilder.setMessage(finalMessage);
             alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                 @Override
@@ -786,7 +786,7 @@ public class Node implements Serializable {
 
     public static void askNumber(final Node node, Activity context, final QuestionsAdapter adapter) {
 
-        final AlertDialog.Builder numberDialog = new AlertDialog.Builder(context);
+        final AlertDialog.Builder numberDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle);
         numberDialog.setTitle(R.string.question_number_picker);
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_1_number_picker, null);
@@ -829,7 +829,7 @@ public class Node implements Serializable {
 
     public static void askArea(final Node node, Activity context, final QuestionsAdapter adapter) {
 
-        final AlertDialog.Builder areaDialog = new AlertDialog.Builder(context);
+        final AlertDialog.Builder areaDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle);
         areaDialog.setTitle(R.string.question_area_picker);
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
@@ -879,7 +879,7 @@ public class Node implements Serializable {
 
     public static void askRange(final Node node, Activity context, final QuestionsAdapter adapter) {
 
-        final AlertDialog.Builder rangeDialog = new AlertDialog.Builder(context);
+        final AlertDialog.Builder rangeDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle);
         rangeDialog.setTitle(R.string.question_range_picker);
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
@@ -926,7 +926,7 @@ public class Node implements Serializable {
 
     public static void askLocation(final Node node, Activity context, final QuestionsAdapter adapter) {
 
-        final AlertDialog.Builder locationDialog = new AlertDialog.Builder(context);
+        final AlertDialog.Builder locationDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle);
         locationDialog.setTitle(R.string.question_location_picker);
 
         //TODO: Issue #51 on GitHub
@@ -936,7 +936,7 @@ public class Node implements Serializable {
 
     public static void askFrequency(final Node node, Activity context, final QuestionsAdapter adapter) {
 
-        final AlertDialog.Builder frequencyDialog = new AlertDialog.Builder(context);
+        final AlertDialog.Builder frequencyDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle);
         frequencyDialog.setTitle(R.string.question_frequency_picker);
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
@@ -984,7 +984,7 @@ public class Node implements Serializable {
     }
 
     public static void askDuration(final Node node, Activity context, final QuestionsAdapter adapter) {
-        final AlertDialog.Builder durationDialog = new AlertDialog.Builder(context);
+        final AlertDialog.Builder durationDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle);
         durationDialog.setTitle(R.string.question_duration_picker);
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
@@ -1030,7 +1030,7 @@ public class Node implements Serializable {
     }
 
     public static void subAskText(final Node node, Activity context, final CustomArrayAdapter adapter) {
-        final AlertDialog.Builder textInput = new AlertDialog.Builder(context);
+        final AlertDialog.Builder textInput = new AlertDialog.Builder(context,R.style.AlertDialogStyle);
         textInput.setTitle(R.string.question_text_input);
         final EditText dialogEditText = new EditText(context);
         dialogEditText.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -1090,7 +1090,7 @@ public class Node implements Serializable {
 
     public static void subAskNumber(final Node node, Activity context, final CustomArrayAdapter adapter) {
 
-        final AlertDialog.Builder numberDialog = new AlertDialog.Builder(context);
+        final AlertDialog.Builder numberDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle);
         numberDialog.setTitle(R.string.question_number_picker);
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_1_number_picker, null);
@@ -1166,7 +1166,7 @@ public class Node implements Serializable {
 
     public static void subAskArea(final Node node, Activity context, final CustomArrayAdapter adapter) {
 
-        final AlertDialog.Builder areaDialog = new AlertDialog.Builder(context);
+        final AlertDialog.Builder areaDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle);
         areaDialog.setTitle(R.string.question_area_picker);
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
@@ -1214,7 +1214,7 @@ public class Node implements Serializable {
 
     public static void subAskRange(final Node node, Activity context, final CustomArrayAdapter adapter) {
 
-        final AlertDialog.Builder rangeDialog = new AlertDialog.Builder(context);
+        final AlertDialog.Builder rangeDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle);
         rangeDialog.setTitle(R.string.question_range_picker);
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
@@ -1261,7 +1261,7 @@ public class Node implements Serializable {
 
     public static void subAskLocation(final Node node, Activity context, final CustomArrayAdapter adapter) {
 
-        final AlertDialog.Builder locationDialog = new AlertDialog.Builder(context);
+        final AlertDialog.Builder locationDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle);
         locationDialog.setTitle(R.string.question_location_picker);
 
         //TODO: Issue #51 on GitHub
@@ -1269,7 +1269,7 @@ public class Node implements Serializable {
 
     public static void subAskFrequency(final Node node, Activity context, final CustomArrayAdapter adapter) {
 
-        final AlertDialog.Builder frequencyDialog = new AlertDialog.Builder(context);
+        final AlertDialog.Builder frequencyDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle);
         frequencyDialog.setTitle(R.string.question_frequency_picker);
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
@@ -1317,7 +1317,7 @@ public class Node implements Serializable {
     }
 
     public static void subAskDuration(final Node node, Activity context, final CustomArrayAdapter adapter) {
-        final AlertDialog.Builder durationDialog = new AlertDialog.Builder(context);
+        final AlertDialog.Builder durationDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle);
         durationDialog.setTitle(R.string.question_duration_picker);
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
@@ -1460,7 +1460,7 @@ public class Node implements Serializable {
     }
 
     public AlertDialog displayImage(final Activity context, final String path, final String name) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context,R.style.AlertDialogStyle);
         builder.setPositiveButton(R.string.button_save, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

@@ -23,6 +23,7 @@
         <item name="android:textColorPrimary">@color/primary_text</item>
         <item name="android:editTextColor">@color/primary_text</item>
         <item name="android:background">@color/white</item>
+        <item name="android:fontFamily">@font/lato_regular</item>
         <item name="android:windowTitleStyle">@style/TextAppearance.AppCompat.Title</item>
     </style>
 
@@ -31,11 +32,11 @@
     </style>
 
     <style name="RobotoTextViewStyle" parent="android:Widget.TextView">
-        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:fontFamily">@font/lato_regular</item>
     </style>
 
     <style name="RobotoButtonStyle" parent="android:Widget.Holo.Button">
-        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:fontFamily">@font/lato_bold</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -68,6 +69,10 @@
         <item name="colorControlNormal">#FFFFFF</item>
         <item name="colorControlActivated">#FFFFFF</item>
         <item name="colorControlHighlight">#FFFFFF</item>
+    </style>
+
+    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:fontFamily">@font/lato_bold</item>
     </style>
 
 </resources>
