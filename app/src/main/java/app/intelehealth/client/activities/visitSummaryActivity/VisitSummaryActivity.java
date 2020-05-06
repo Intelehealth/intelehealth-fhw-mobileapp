@@ -1458,19 +1458,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (obj.getBoolean("mTemperature")) {
                 if (obj.getBoolean("mCelsius")) {
 
-                    mTemp = "Temperature(C): " + temperature.getValue();
+                    mTemp = "Temperature(C): " + (!TextUtils.isEmpty(temperature.getValue())?temperature.getValue().toString():"");
 
                 } else if (obj.getBoolean("mFahrenheit")) {
 
 //                    mTemp = "Temperature(F): " + temperature.getValue();
-                    mTemp = "Temperature(F): " + tempView.getText().toString();
+                    mTemp = "Temperature(F): " + (!TextUtils.isEmpty(temperature.getValue())?temperature.getValue().toString():"");
                 }
             }
         } catch (Exception e) {
             Crashlytics.getInstance().core.logException(e);
         }
         mresp = resp.getValue();
-        mSPO2 = "SpO2(%): " + spO2.getValue();
+        mSPO2 = "SpO2(%): " + (!TextUtils.isEmpty(spO2.getValue())?spO2.getValue():"");
         String mComplaint = complaint.getValue();
 
         //Show only the headers of the complaints in the printed prescription
@@ -1532,7 +1532,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String heading3 = "<br/>";
 
         String bp = mBP;
-        if (bp.equals("/")) bp = "";
+        if (bp.equals("/") || bp.equals("null/null")) bp = "";
 
         String address = mAddress + " " + mCityState + " " + mPhone;
 
@@ -1617,8 +1617,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "<span style=\"font-size:12pt; margin-bottom:0px; padding: 0px;\">" + doctrRegistartionNum + "</span>" +
                                     doctorDetailStr +
                                     "</div>"
-                            , heading, heading2, heading3, mPatientName, age, mGender, mSdw, address, mPatientOpenMRSID, mDate, mHeight, mWeight,
-                            mBMI, bp, mPulse, mTemp, mresp, mSPO2, pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
+                            , heading, heading2, heading3, mPatientName, age, mGender, mSdw, address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight))?mHeight:"", (!TextUtils.isEmpty(mWeight))?mWeight:"",
+                            (!TextUtils.isEmpty(mBMI))?mBMI:"", (!TextUtils.isEmpty(bp))?bp:"", (!TextUtils.isEmpty(mPulse))?mPulse:"", (!TextUtils.isEmpty(mTemp))?mTemp:"", (!TextUtils.isEmpty(mresp))?mresp:"", (!TextUtils.isEmpty(mSPO2))?mSPO2:"",
+                            pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
             String htmlDocument =
@@ -1653,8 +1654,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "<span style=\"font-size:12pt; margin-bottom:0px; padding: 0px;\">" + doctrRegistartionNum + "</span>" +
                                     doctorDetailStr +
                                     "</div>"
-                            , heading, heading2, heading3, mPatientName, age, mGender, mSdw, address, mPatientOpenMRSID, mDate, mHeight, mWeight,
-                            mBMI, bp, mPulse, mTemp, mSPO2, pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
+                            , heading, heading2, heading3, mPatientName, age, mGender, mSdw, address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight))?mHeight:"", (!TextUtils.isEmpty(mWeight))?mWeight:"",
+                            (!TextUtils.isEmpty(mBMI))?mBMI:"", (!TextUtils.isEmpty(bp))?bp:"", (!TextUtils.isEmpty(mPulse))?mPulse:"", (!TextUtils.isEmpty(mTemp))?mTemp:"", (!TextUtils.isEmpty(mresp))?mresp:"", (!TextUtils.isEmpty(mSPO2))?mSPO2:"",
+                            pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         }
 
