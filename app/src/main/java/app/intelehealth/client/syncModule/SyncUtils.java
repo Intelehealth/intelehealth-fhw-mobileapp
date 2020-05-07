@@ -3,6 +3,9 @@ package app.intelehealth.client.syncModule;
 import android.content.Intent;
 import android.os.Handler;
 
+import androidx.work.WorkManager;
+
+import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.dao.ImagesPushDAO;
 import app.intelehealth.client.database.dao.SyncDAO;
@@ -29,8 +32,14 @@ public class SyncUtils {
         NotificationUtils notificationUtils = new NotificationUtils();
         notificationUtils.clearAllNotifications(IntelehealthApplication.getAppContext());
 
-        Intent intent = new Intent(IntelehealthApplication.getAppContext(), UpdateDownloadPrescriptionService.class);
-        IntelehealthApplication.getAppContext().startService(intent);
+        //Background Sync Fixes : Chaining of request in place of running background service
+        WorkManager.getInstance()
+                .beginWith(AppConstants.VISIT_SUMMARY_WORK_REQUEST)
+                .then(AppConstants.LAST_SYNC_WORK_REQUEST)
+                .enqueue();
+
+       /* Intent intent = new Intent(IntelehealthApplication.getAppContext(), UpdateDownloadPrescriptionService.class);
+        IntelehealthApplication.getAppContext().startService(intent);*/
 
     }
 
@@ -60,8 +69,14 @@ public class SyncUtils {
 
         imagesPushDAO.deleteObsImage();
 
-        Intent intent = new Intent(IntelehealthApplication.getAppContext(), UpdateDownloadPrescriptionService.class);
-        IntelehealthApplication.getAppContext().startService(intent);
+
+        WorkManager.getInstance()
+                .beginWith(AppConstants.VISIT_SUMMARY_WORK_REQUEST)
+                .then(AppConstants.LAST_SYNC_WORK_REQUEST)
+                .enqueue();
+
+        /*Intent intent = new Intent(IntelehealthApplication.getAppContext(), UpdateDownloadPrescriptionService.class);
+        IntelehealthApplication.getAppContext().startService(intent);*/
 
         return isSynced;
     }

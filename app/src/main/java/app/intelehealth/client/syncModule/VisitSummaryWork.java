@@ -1,22 +1,26 @@
 package app.intelehealth.client.syncModule;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
+import android.content.Intent;
 
+import androidx.annotation.NonNull;
+import androidx.work.ListenableWorker;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.crashlytics.android.Crashlytics;
 
+import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.utilities.Logger;
 import app.intelehealth.client.utilities.SessionManager;
 
-public class SyncWorkManager extends Worker {
+
+public class VisitSummaryWork extends Worker {
 
     private SessionManager sessionManager = null;
-    private String TAG = SyncWorkManager.class.getSimpleName();
+    private String TAG = VisitSummaryWork.class.getSimpleName();
 
-    public SyncWorkManager(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public VisitSummaryWork(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         sessionManager = new SessionManager(context);
     }
@@ -24,7 +28,7 @@ public class SyncWorkManager extends Worker {
 
     @NonNull
     @Override
-    public Result doWork() {
+    public ListenableWorker.Result doWork() {
         try {
             Thread.sleep(3000);
         } catch (Exception e) {
@@ -32,12 +36,11 @@ public class SyncWorkManager extends Worker {
             Logger.logE(TAG, "Exception in doWork method", e);
         }
         Logger.logD(TAG, "doWork");
-        //Logger.logD(TAG, "result job");
 
-        SyncUtils syncUtils = new SyncUtils();
-        syncUtils.syncBackground();
+        Intent in = new Intent();
+        in.setAction("downloadprescription");
+        IntelehealthApplication.getAppContext().sendBroadcast(in);
 
         return Result.success();
     }
 }
-
