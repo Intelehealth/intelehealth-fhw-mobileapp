@@ -71,8 +71,8 @@ public class AppConstants {
     public static Constraints MY_CONSTRAINTS = new Constraints.Builder()
             .setRequiresCharging(false)
             .setRequiredNetworkType(NetworkType.CONNECTED)
-            .setRequiresBatteryNotLow(true)
-            .setRequiresStorageNotLow(true)
+            .setRequiresBatteryNotLow(false)
+            .setRequiresStorageNotLow(false)
             .build();
 
     public static PeriodicWorkRequest PERIODIC_WORK_REQUEST =
