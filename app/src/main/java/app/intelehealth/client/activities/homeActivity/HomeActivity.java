@@ -5,15 +5,18 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -52,6 +55,7 @@ import app.intelehealth.client.activities.settingsActivity.SettingsActivity;
 import app.intelehealth.client.activities.todayPatientActivity.TodayPatientActivity;
 import app.intelehealth.client.activities.videoLibraryActivity.VideoLibraryActivity;
 import app.intelehealth.client.app.AppConstants;
+import app.intelehealth.client.models.CheckAppUpdateRes;
 import app.intelehealth.client.models.DownloadMindMapRes;
 import app.intelehealth.client.networkApiCalls.ApiClient;
 import app.intelehealth.client.networkApiCalls.ApiInterface;
@@ -65,7 +69,10 @@ import app.intelehealth.client.widget.materialprogressbar.CustomProgressDialog;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
+import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -95,6 +102,9 @@ public class HomeActivity extends AppCompatActivity {
     private String mindmapURL = "";
     private DownloadMindMaps mTask;
 
+    private int versionCode = 0;
+    private CompositeDisposable disposable = new CompositeDisposable();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,6 +128,7 @@ public class HomeActivity extends AppCompatActivity {
 
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
+        checkAppVer();  //auto-update feature.
 
         Logger.logD(TAG, "onCreate: " + getFilesDir().toString());
         lastSyncTextView = findViewById(R.id.lastsynctextview);
@@ -436,6 +447,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         registerReceiver(reMyreceive, filter);
+        checkAppVer();  //auto-update feature.
 //        lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
         if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
                 && Locale.getDefault().toString().equals("en")) {
@@ -587,5 +599,65 @@ public class HomeActivity extends AppCompatActivity {
         Log.e("DOWNLOAD", "isSTARTED");
 
     }
+
+    private void checkAppVer() {
+
+        try {
+            PackageInfo pInfo = context.getPackageManager().getPackageInfo(getPackageName(), 0);
+            String version = pInfo.versionName;
+            versionCode = pInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        disposable.add((Disposable) AppConstants.apiInterface.checkAppUpdate()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableSingleObserver<CheckAppUpdateRes>() {
+                    @Override
+                    public void onSuccess(CheckAppUpdateRes res) {
+                        int latestVersionCode = 0;
+                        if (!res.getLatestVersionCode().isEmpty()) {
+                            latestVersionCode = Integer.parseInt(res.getLatestVersionCode());
+                        }
+
+                        if (latestVersionCode > versionCode) {
+                            android.app.AlertDialog.Builder builder;
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                builder = new android.app.AlertDialog.Builder(HomeActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+                            } else {
+                                builder = new android.app.AlertDialog.Builder(HomeActivity.this);
+                            }
+                            builder.setTitle(getResources().getString(R.string.new_update_available))
+                                    .setCancelable(false)
+                                    .setMessage(getResources().getString(R.string.update_app_note))
+                                    .setPositiveButton(getResources().getString(R.string.update), new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                            final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                                            try {
+                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                                            } catch (ActivityNotFoundException anfe) {
+                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + appPackageName)));
+                                            }
+
+                                        }
+                                    })
+
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .setCancelable(false)
+                                    .show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("Error", "" + e);
+                    }
+                })
+        );
+
+    }
+
 
 }

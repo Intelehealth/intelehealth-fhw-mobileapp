@@ -1,6 +1,7 @@
 package app.intelehealth.client.networkApiCalls;
 
 
+import app.intelehealth.client.models.CheckAppUpdateRes;
 import app.intelehealth.client.models.DownloadMindMapRes;
 import app.intelehealth.client.models.Location;
 import app.intelehealth.client.models.ObsImageModel.ObsJsonResponse;
@@ -86,4 +87,6 @@ public interface ApiInterface {
     @GET("/api/mindmap/download")
     Observable<DownloadMindMapRes> DOWNLOAD_MIND_MAP_RES_OBSERVABLE(@Query("key") String licenseKey);
 
+    @GET("/intelehealth/app_update.json")
+    Single<CheckAppUpdateRes> checkAppUpdate();
 }
