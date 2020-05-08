@@ -25,6 +25,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.Toolbar;
+
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -628,6 +630,8 @@ public class HomeActivity extends AppCompatActivity {
                             } else {
                                 builder = new android.app.AlertDialog.Builder(HomeActivity.this);
                             }
+
+
                             builder.setTitle(getResources().getString(R.string.new_update_available))
                                     .setCancelable(false)
                                     .setMessage(getResources().getString(R.string.update_app_note))
@@ -645,8 +649,14 @@ public class HomeActivity extends AppCompatActivity {
                                     })
 
                                     .setIcon(android.R.drawable.ic_dialog_alert)
-                                    .setCancelable(false)
-                                    .show();
+                                    .setCancelable(false);
+
+                            Dialog dialog = builder.show();
+                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                                int textViewId = dialog.getContext().getResources().getIdentifier("android:id/alertTitle", null, null);
+                                TextView tv = (TextView) dialog.findViewById(textViewId);
+                                tv.setTextColor(getResources().getColor(R.color.white));
+                            }
                         }
                     }
 
