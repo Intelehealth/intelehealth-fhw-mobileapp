@@ -30,6 +30,7 @@
             android:layout_marginTop="10dp"
             android:gravity="center_vertical|center"
             android:textColor="@color/primary_text"
+            android:fontFamily="@font/lato_medium"
             android:textSize="14sp"
             android:visibility="gone" />
     </RelativeLayout>

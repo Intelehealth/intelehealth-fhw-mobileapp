@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
@@ -62,7 +63,7 @@ public class SplashActivity extends AppCompatActivity {
 //                Timer t = new Timer();
 //                t.schedule(new splash(), 2000);
 
-                TempDialog = new ProgressDialog(SplashActivity.this);
+                TempDialog = new ProgressDialog(SplashActivity.this, R.style.AlertDialogStyle);
                 TempDialog.setMessage("Data migrating...");
                 TempDialog.setCancelable(false);
                 TempDialog.setProgress(i);

@@ -9,19 +9,23 @@ import android.content.Context;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -122,7 +126,8 @@ public class SetupActivity extends AppCompatActivity {
         manager = AccountManager.get(SetupActivity.this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
+        toolbar.setTitleTextColor(Color.WHITE);
         context = SetupActivity.this;
         customProgressDialog = new CustomProgressDialog(context);
 
@@ -495,7 +500,8 @@ public class SetupActivity extends AppCompatActivity {
         encoded = base64Utils.encoded(USERNAME, PASSWORD);
         sessionManager.setEncoded(encoded);
 
-        progress = new ProgressDialog(SetupActivity.this);
+        progress = new ProgressDialog(SetupActivity.this, R.style.AlertDialogStyle);
+        ;//SetupActivity.this);
         progress.setTitle(getString(R.string.please_wait_progress));
         progress.setMessage(getString(R.string.logging_in));
         progress.show();
