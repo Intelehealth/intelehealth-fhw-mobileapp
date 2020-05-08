@@ -5,6 +5,7 @@ import android.os.Environment;
 
 import androidx.work.Constraints;
 import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 
 
@@ -12,6 +13,8 @@ import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import app.intelehealth.client.database.InteleHealthDatabaseHelper;
+import app.intelehealth.client.syncModule.LastSyncWork;
+import app.intelehealth.client.syncModule.VisitSummaryWork;
 import app.intelehealth.client.utilities.DateAndTimeUtils;
 import app.intelehealth.client.utilities.NotificationUtils;
 import app.intelehealth.client.utilities.UuidGenerator;
@@ -68,12 +71,26 @@ public class AppConstants {
     public static Constraints MY_CONSTRAINTS = new Constraints.Builder()
             .setRequiresCharging(false)
             .setRequiredNetworkType(NetworkType.CONNECTED)
-            .setRequiresBatteryNotLow(true)
-            .setRequiresStorageNotLow(true)
+            .setRequiresBatteryNotLow(false)
+            .setRequiresStorageNotLow(false)
             .build();
 
     public static PeriodicWorkRequest PERIODIC_WORK_REQUEST =
             new PeriodicWorkRequest.Builder(SyncWorkManager.class, REPEAT_INTERVAL, TimeUnit.MINUTES)
                     .setConstraints(MY_CONSTRAINTS)
                     .build();
+
+
+
+    // Added by Venu to make the Sync Issue Solutions as intele_safe.
+    public static OneTimeWorkRequest VISIT_SUMMARY_WORK_REQUEST =
+            new OneTimeWorkRequest.Builder(VisitSummaryWork.class)
+                    .setConstraints(MY_CONSTRAINTS)
+                    .build();
+
+    public static OneTimeWorkRequest LAST_SYNC_WORK_REQUEST =
+            new OneTimeWorkRequest.Builder(LastSyncWork.class)
+                    .setConstraints(MY_CONSTRAINTS)
+                    .build();
 }
+

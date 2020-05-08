@@ -156,8 +156,9 @@ public class SyncDAO {
                 Logger.logD("End Pull request", "Ended");
                 sessionManager.setLastPulledDateTime(AppConstants.dateAndTimeUtils.currentDateTimeInHome());
 
-                Intent intent = new Intent(IntelehealthApplication.getAppContext(), LastSyncIntentService.class);
-                IntelehealthApplication.getAppContext().startService(intent);
+                //Workmanager request is used in ForeGround sync in place of this as per Intele_safe
+                /*Intent intent = new Intent(IntelehealthApplication.getAppContext(), LastSyncIntentService.class);
+                IntelehealthApplication.getAppContext().startService(intent);*/
             }
 
             @Override
@@ -264,8 +265,9 @@ public class SyncDAO {
                 Logger.logD("End Pull request", "Ended");
                 sessionManager.setLastPulledDateTime(AppConstants.dateAndTimeUtils.currentDateTimeInHome());
 
-                Intent intent = new Intent(IntelehealthApplication.getAppContext(), LastSyncIntentService.class);
-                IntelehealthApplication.getAppContext().startService(intent);
+                //Workmanager request is used in ForeGround sync in place of this as per the intele_Safe
+               /* Intent intent = new Intent(IntelehealthApplication.getAppContext(), LastSyncIntentService.class);
+                IntelehealthApplication.getAppContext().startService(intent);*/
             }
 
             @Override
