@@ -88,7 +88,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<MyViewHolder> {
     }
 
     public void displayImage(final File file) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context,R.style.AlertDialogStyle);
 
         final AlertDialog dialog = builder.create();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

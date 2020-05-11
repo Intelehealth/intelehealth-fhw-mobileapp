@@ -15,15 +15,18 @@
         android:textStyle="normal"
         android:paddingStart="20dp"
         android:paddingEnd="0dp"
+        android:visibility="gone"
         android:paddingBottom="@dimen/padding_complaint_select"
         android:paddingTop="@dimen/padding_complaint_select"
         android:textSize="@dimen/text_size_complaint" />
 
     <RadioGroup
-        android:layout_width="0dp"
+        android:id="@+id/radio_group"
+        android:layout_width="match_parent"
         android:layout_weight="0.40"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
         android:layout_gravity="center_vertical"
-        android:gravity="center_horizontal"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 

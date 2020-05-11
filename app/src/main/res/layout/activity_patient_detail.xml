@@ -84,10 +84,12 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="12"
                             android:text="@string/header_patient_detail"
+                            android:includeFontPadding="false"
                             android:textColor="@color/white"
+                            android:fontFamily="@font/lato_bold"
                             android:padding="5dp"
                             android:paddingStart="20dp"
-                            android:textSize="18sp" />
+                            android:textSize="@dimen/card_content_text_size" />
 
                         <Button
                         android:id="@+id/edit_button"
@@ -131,9 +133,11 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
+                                    android:includeFontPadding="false"
+                                    android:fontFamily="@font/lato_bold"
                                     android:text="@string/patient_name"
-                                    android:textSize="@dimen/card_content_text_size"
-                                    android:textStyle="bold" />
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                     />
 
 
                                 <TextView
@@ -141,8 +145,10 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:includeFontPadding="false"
                                     android:paddingTop="@dimen/padding_card_action"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:textSize="@dimen/card_content_sub_text_size" />
 
                                 <androidx.legacy.widget.Space
                                     android:layout_width="10dp"
@@ -160,16 +166,20 @@
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:text="@string/row_patient_id"
-                                    android:textSize="@dimen/card_content_text_size"
-                                    android:textStyle="bold" />
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:includeFontPadding="false"
+                                    android:fontFamily="@font/lato_bold"
+                                     />
 
 
                                 <TextView
                                     android:id="@+id/textView_ID"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:includeFontPadding="false"
+                                    android:fontFamily="@font/lato_regular"
                                     android:paddingTop="@dimen/padding_card_action"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:textSize="@dimen/card_content_sub_text_size" />
 
                                 <androidx.legacy.widget.Space
                                     android:layout_width="10dp"
@@ -187,8 +197,9 @@
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:text="@string/row_dob"
-                                    android:textSize="@dimen/card_content_text_size"
-                                    android:textStyle="bold" />
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:includeFontPadding="false"
+                                    android:fontFamily="@font/lato_bold"/>
 
 
                                 <TextView
@@ -197,7 +208,9 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:paddingTop="@dimen/padding_card_action"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:includeFontPadding="false"
+                                    android:fontFamily="@font/lato_regular"/>
 
                                 <androidx.legacy.widget.Space
                                     android:layout_width="10dp"
@@ -215,8 +228,9 @@
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:text="@string/row_age"
-                                    android:textSize="@dimen/card_content_text_size"
-                                    android:textStyle="bold" />
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:fontFamily="@font/lato_bold"
+                                    android:includeFontPadding="false"/>
 
 
                                 <TextView
@@ -224,7 +238,9 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:includeFontPadding="false"
+                                    android:fontFamily="@font/lato_regular"/>
 
                                 <androidx.legacy.widget.Space
                                     android:layout_width="10dp"
@@ -243,8 +259,9 @@
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:text="@string/row_address"
-                                    android:textSize="@dimen/card_content_text_size"
-                                    android:textStyle="bold" />
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:fontFamily="@font/lato_bold"
+                                    android:includeFontPadding="false"/>
 
 
                                 <TextView
@@ -253,7 +270,9 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:paddingTop="@dimen/padding_card_action"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:includeFontPadding="false"/>
 
                                 <androidx.legacy.widget.Space
                                     android:layout_width="10dp"
@@ -271,7 +290,9 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:fontFamily="@font/lato_bold"
+                                    android:includeFontPadding="false"/>
 
 
                                 <TextView
@@ -280,7 +301,9 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:paddingTop="@dimen/padding_card_action"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:includeFontPadding="false"/>
 
                                 <androidx.legacy.widget.Space
                                     android:layout_width="10dp"
@@ -298,7 +321,9 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:includeFontPadding="false"
+                                    android:fontFamily="@font/lato_bold"/>
 
 
                                 <TextView
@@ -307,7 +332,9 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:paddingTop="@dimen/padding_card_action"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:includeFontPadding="false"
+                                    android:fontFamily="@font/lato_regular"/>
 
                                 <androidx.legacy.widget.Space
                                     android:layout_width="10dp"
@@ -325,8 +352,9 @@
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:text="@string/row_phone_number"
-                                    android:textSize="@dimen/card_content_text_size"
-                                    android:textStyle="bold" />
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:includeFontPadding="false"
+                                    android:fontFamily="@font/lato_bold"/>
 
 
                                 <TextView
@@ -334,7 +362,9 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:includeFontPadding="false"
+                                    android:fontFamily="@font/lato_regular"/>
 
                                 <androidx.legacy.widget.Space
                                     android:layout_width="10dp"
@@ -354,8 +384,9 @@
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:paddingRight="5dp"
                                     android:text="@string/identification_screen_prompt_relationship"
-                                    android:textSize="@dimen/card_content_text_size"
-                                    android:textStyle="bold" />
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:includeFontPadding="false"
+                                    android:fontFamily="@font/lato_bold"/>
 
 
                                 <TextView
@@ -364,7 +395,9 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:paddingTop="@dimen/padding_card_action"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:includeFontPadding="false"
+                                    android:fontFamily="@font/lato_regular"/>
 
                                 <androidx.legacy.widget.Space
                                     android:layout_width="10dp"
@@ -383,8 +416,9 @@
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:text="@string/identification_screen_prompt_occupation"
-                                    android:textSize="@dimen/card_content_text_size"
-                                    android:textStyle="bold" />
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:includeFontPadding="false"
+                                    android:fontFamily="@font/lato_bold"/>
 
 
                                 <TextView
@@ -393,7 +427,9 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:paddingTop="@dimen/padding_card_action"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:includeFontPadding="false"
+                                    android:fontFamily="@font/lato_regular"/>
 
                                 <androidx.legacy.widget.Space
                                     android:layout_width="10dp"
@@ -412,8 +448,9 @@
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:text="@string/economic_status"
-                                    android:textSize="@dimen/card_content_text_size"
-                                    android:textStyle="bold" />
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:includeFontPadding="false"
+                                    android:fontFamily="@font/lato_bold"/>
 
 
                                 <TextView
@@ -421,7 +458,9 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:includeFontPadding="false"
+                                    android:fontFamily="@font/lato_regular"/>
 
                                 <androidx.legacy.widget.Space
                                     android:layout_width="10dp"
@@ -440,8 +479,9 @@
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:text="@string/education_level"
-                                    android:textSize="@dimen/card_content_text_size"
-                                    android:textStyle="bold" />
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:includeFontPadding="false"
+                                    android:fontFamily="@font/lato_bold"/>
 
 
                                 <TextView
@@ -449,7 +489,9 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:includeFontPadding="false"
+                                    android:fontFamily="@font/lato_regular"/>
 
                                 <androidx.legacy.widget.Space
                                     android:layout_width="10dp"
@@ -468,8 +510,9 @@
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:text="@string/caste"
-                                    android:textSize="@dimen/card_content_text_size"
-                                    android:textStyle="bold" />
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:includeFontPadding="false"
+                                    android:fontFamily="@font/lato_bold"/>
 
 
                                 <TextView
@@ -477,7 +520,9 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:includeFontPadding="false"
+                                    android:fontFamily="@font/lato_regular"/>
 
                                 <androidx.legacy.widget.Space
                                     android:layout_width="10dp"
@@ -516,8 +561,10 @@
                             android:paddingStart="20dp"
                             android:background="@color/titleBar_cardview"
                             android:text="@string/header_medical_history"
+                            android:includeFontPadding="false"
+                            android:fontFamily="@font/lato_bold"
                             android:textColor="@color/white"
-                            android:textSize="18sp" />
+                            android:textSize="@dimen/card_content_text_size" />
 
 
                         <TableLayout
@@ -535,8 +582,9 @@
                                     android:layout_height="wrap_content"
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:text="@string/header_patient_history"
-                                    android:textStyle="bold"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:fontFamily="@font/lato_bold"
+                                    android:includeFontPadding="false"
+                                    android:textSize="@dimen/card_content_sub_text_size" />
 
 
                                 <androidx.legacy.widget.Space
@@ -550,7 +598,9 @@
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:layout_weight="1"
                                     android:paddingHorizontal="5dp"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:includeFontPadding="false"
+                                    android:fontFamily="@font/lato_regular"/>
 
 
                             </TableRow>
@@ -563,8 +613,9 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="@string/header_family_history"
-                                    android:textStyle="bold"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:includeFontPadding="false"
+                                    android:fontFamily="@font/lato_bold"/>
 
 
                                 <androidx.legacy.widget.Space
@@ -578,7 +629,9 @@
                                     android:paddingTop="@dimen/padding_card_action"
                                     android:layout_weight="1"
                                     android:paddingHorizontal="5dp"
-                                    android:textSize="@dimen/card_content_text_size" />
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:includeFontPadding="false"
+                                    android:fontFamily="@font/lato_regular"/>
 
 
                             </TableRow>
@@ -595,9 +648,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:textStyle="bold"
                     android:layout_marginHorizontal="10dp"
                     android:elevation="5dp"
+                    android:fontFamily="@font/lato_bold"
                     style="@style/SelectableItemBackground"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:text="@string/button_new_visit" />
@@ -624,9 +677,11 @@
                             android:textColor="@color/white"
                             android:background="@color/titleBar_cardview"
                             android:text="@string/previous_visits"
+                            android:includeFontPadding="false"
+                            android:fontFamily="@font/lato_bold"
                             android:paddingStart="20dp"
                             android:padding="10dp"
-                            android:textSize="18sp"/>
+                            android:textSize="@dimen/card_content_text_size"/>
 
                     </LinearLayout>
 
@@ -640,6 +695,8 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_regular"
+                            android:includeFontPadding="false"
                             android:textSize="@dimen/card_title_text_size" />
 
 

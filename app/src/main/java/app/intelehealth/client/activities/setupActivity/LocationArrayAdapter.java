@@ -8,11 +8,13 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import app.intelehealth.client.R;
+
 public class LocationArrayAdapter extends ArrayAdapter<String> {
 
     public LocationArrayAdapter(Context context, List<String> objects) {
-        super(context, android.R.layout.simple_spinner_item, objects);
-        setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        super(context, R.layout.spinner_textview, objects);
+        setDropDownViewResource(R.layout.spinner_checked_textview);
     }
 
     @Override

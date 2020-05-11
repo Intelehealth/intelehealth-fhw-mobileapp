@@ -6,13 +6,25 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ExpandableListView;
 
 import com.crashlytics.android.Crashlytics;
@@ -27,6 +39,7 @@ import java.util.List;
 import java.util.UUID;
 
 import app.intelehealth.client.R;
+import app.intelehealth.client.activities.questionNodeActivity.QuestionsAdapter;
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.database.dao.EncounterDAO;
 import app.intelehealth.client.database.dao.ImagesDAO;
@@ -42,7 +55,7 @@ import app.intelehealth.client.activities.physcialExamActivity.PhysicalExamActiv
 import app.intelehealth.client.activities.visitSummaryActivity.VisitSummaryActivity;
 import app.intelehealth.client.utilities.exception.DAOException;
 
-public class FamilyHistoryActivity extends AppCompatActivity {
+public class FamilyHistoryActivity extends AppCompatActivity  implements  QuestionsAdapter.FabClickListener{
     private static final String TAG = FamilyHistoryActivity.class.getSimpleName();
 
     String patientUuid;
@@ -56,8 +69,8 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     int lastExpandedPosition = -1;
 
     Node familyHistoryMap;
-    CustomExpandableListAdapter adapter;
-    ExpandableListView familyListView;
+    //CustomExpandableListAdapter adapter;
+   // ExpandableListView familyListView;
 
     ArrayList<String> insertionList = new ArrayList<>();
     String insertion = "", phistory = "", fhistory = "";
@@ -71,6 +84,9 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     private String imageName = null;
     private File filePath;
 
+    RecyclerView family_history_recyclerView;
+    QuestionsAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(this);
@@ -78,7 +94,7 @@ public class FamilyHistoryActivity extends AppCompatActivity {
         filePath = new File(AppConstants.IMAGE_PATH);
         boolean past = sessionManager.isReturning();
         if (past) {
-            AlertDialog.Builder alertdialog = new AlertDialog.Builder(FamilyHistoryActivity.this);
+            AlertDialog.Builder alertdialog = new AlertDialog.Builder(FamilyHistoryActivity.this,R.style.AlertDialogStyle);
             alertdialog.setTitle(getString(R.string.title_activity_family_history));
             alertdialog.setMessage(getString(R.string.question_update_details));
             alertdialog.setPositiveButton(getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
@@ -142,11 +158,19 @@ public class FamilyHistoryActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitleTextAppearance(this,R.style.ToolbarTheme);
+        toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         setTitle(patientName + ": " + getTitle());
 
         FloatingActionButton fab = findViewById(R.id.fab);
+        family_history_recyclerView = findViewById(R.id.family_history_recyclerView);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        family_history_recyclerView.setLayoutManager(linearLayoutManager);
+        family_history_recyclerView.setItemAnimator(new DefaultItemAnimator());
+        PagerSnapHelper helper = new PagerSnapHelper();
+        helper.attachToRecyclerView(family_history_recyclerView);
         assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,43 +195,50 @@ public class FamilyHistoryActivity extends AppCompatActivity {
             familyHistoryMap = new Node(FileUtils.encodeJSON(this, mFileName)); //Load the family history mind map
         }
 
-        familyListView = findViewById(R.id.family_history_expandable_list_view);
-        adapter = new CustomExpandableListAdapter(this, familyHistoryMap, this.getClass().getSimpleName());
-        familyListView.setAdapter(adapter);
+      //  familyListView = findViewById(R.id.family_history_expandable_list_view);
 
-        familyListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+        adapter = new QuestionsAdapter(this,familyHistoryMap,family_history_recyclerView,this.getClass().getSimpleName(),this,false);
+        family_history_recyclerView.setAdapter(adapter);
+        /*adapter = new CustomExpandableListAdapter(this, familyHistoryMap, this.getClass().getSimpleName());
+        familyListView.setAdapter(adapter);*/
+
+        /*familyListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                Node clickedNode = familyHistoryMap.getOption(groupPosition).getOption(childPosition);
-                Log.i(TAG, "onChildClick: ");
-                clickedNode.toggleSelected();
-                if (familyHistoryMap.getOption(groupPosition).anySubSelected()) {
-                    familyHistoryMap.getOption(groupPosition).setSelected();
-                } else {
-                    familyHistoryMap.getOption(groupPosition).setUnselected();
-                }
-                adapter.notifyDataSetChanged();
-
-                if (clickedNode.getInputType() != null) {
-                    if (!clickedNode.getInputType().equals("camera")) {
-                        Node.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter, null, null);
-                    }
-                }
-                if (!filePath.exists()) {
-                    boolean res = filePath.mkdirs();
-                    Log.i("RES>", "" + filePath + " -> " + res);
-                }
-
-                imageName = UUID.randomUUID().toString();
-
-                if (!familyHistoryMap.getOption(groupPosition).getOption(childPosition).isTerminal() &&
-                        familyHistoryMap.getOption(groupPosition).getOption(childPosition).isSelected()) {
-                    Node.subLevelQuestion(clickedNode, FamilyHistoryActivity.this, adapter, filePath.toString(), imageName);
-                }
 
                 return false;
             }
-        });
+        });*/
+    }
+
+    private void onListClick(View v, int groupPosition,int childPosition){
+        Node clickedNode = familyHistoryMap.getOption(groupPosition).getOption(childPosition);
+        Log.i(TAG, "onChildClick: ");
+        clickedNode.toggleSelected();
+        if (familyHistoryMap.getOption(groupPosition).anySubSelected()) {
+            familyHistoryMap.getOption(groupPosition).setSelected();
+        } else {
+            familyHistoryMap.getOption(groupPosition).setUnselected();
+        }
+        adapter.notifyDataSetChanged();
+
+        if (clickedNode.getInputType() != null) {
+            if (!clickedNode.getInputType().equals("camera")) {
+                Node.handleQuestion(clickedNode, FamilyHistoryActivity.this, adapter, null, null);
+            }
+        }
+        if (!filePath.exists()) {
+            boolean res = filePath.mkdirs();
+            Log.i("RES>", "" + filePath + " -> " + res);
+        }
+
+        imageName = UUID.randomUUID().toString();
+
+        if (!familyHistoryMap.getOption(groupPosition).getOption(childPosition).isTerminal() &&
+                familyHistoryMap.getOption(groupPosition).getOption(childPosition).isSelected()) {
+            Node.subLevelQuestion(clickedNode, FamilyHistoryActivity.this, adapter, filePath.toString(), imageName);
+        }
+
     }
 
     private void onFabClick() {
@@ -347,6 +378,52 @@ public class FamilyHistoryActivity extends AppCompatActivity {
     public void onBackPressed() {
     }
 
+    @Override
+    public void fabClickedAtEnd() {
+        onFabClick();
+
+    }
+
+    @Override
+    public void onChildListClickEvent(int groupPos, int childPos,int physExamPos) {
+        onListClick(null,groupPos,childPos);
+    }
+
+    public void AnimateView(View v) {
+
+        int fadeInDuration = 500; // Configure time values here
+        int timeBetween = 3000;
+        int fadeOutDuration = 1000;
+
+        Animation fadeIn = new AlphaAnimation(0, 1);
+        fadeIn.setInterpolator(new DecelerateInterpolator()); // add this
+        fadeIn.setDuration(fadeInDuration);
+
+        Animation fadeOut = new AlphaAnimation(1, 0);
+        fadeOut.setInterpolator(new AccelerateInterpolator()); // and this
+        fadeOut.setStartOffset(fadeInDuration + timeBetween);
+        fadeOut.setDuration(fadeOutDuration);
+
+        AnimationSet animation = new AnimationSet(false); // change to false
+        animation.addAnimation(fadeIn);
+        animation.addAnimation(fadeOut);
+        animation.setRepeatCount(1);
+        if(v != null){
+            v.setAnimation(animation);
+        }
+
+
+    }
+    public void bottomUpAnimation(View v) {
+
+        if( v != null){
+            v.setVisibility(View.VISIBLE);
+            Animation bottomUp = AnimationUtils.loadAnimation(this,
+                    R.anim.bottom_up);
+            v.startAnimation(bottomUp);
+        }
+
+    }
 }
 
 

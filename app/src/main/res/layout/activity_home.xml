@@ -54,6 +54,8 @@
                             android:layout_marginStart="10dp"
                             android:layout_toEndOf="@+id/iv_new_patient"
                             android:text="@string/new_patient"
+                            android:includeFontPadding="false"
+                            android:fontFamily="@font/lato_medium"
                             android:textSize="28sp" />
 
                     </RelativeLayout>
@@ -91,6 +93,8 @@
                             android:layout_marginStart="10dp"
                             android:layout_toEndOf="@+id/iv_find_patient"
                             android:text="@string/find_patient"
+                            android:includeFontPadding="false"
+                            android:fontFamily="@font/lato_medium"
                             android:textSize="28sp" />
 
                     </RelativeLayout>
@@ -127,6 +131,8 @@
                             android:layout_marginStart="10dp"
                             android:layout_toEndOf="@+id/iv_today_patients"
                             android:text="@string/today_visits"
+                            android:includeFontPadding="false"
+                            android:fontFamily="@font/lato_medium"
                             android:textSize="28sp" />
 
                     </RelativeLayout>
@@ -163,6 +169,8 @@
                             android:layout_marginStart="10dp"
                             android:layout_toEndOf="@+id/iv_active_patients"
                             android:text="@string/active_visits"
+                            android:includeFontPadding="false"
+                            android:fontFamily="@font/lato_medium"
                             android:textSize="28sp" />
 
                     </RelativeLayout>
@@ -200,6 +208,8 @@
                             android:layout_marginStart="10dp"
                             android:layout_toEndOf="@+id/iv_video_library"
                             android:text="@string/video_library"
+                            android:includeFontPadding="false"
+                            android:fontFamily="@font/lato_medium"
                             android:textSize="28sp" />
 
                     </RelativeLayout>
@@ -233,11 +243,14 @@
                             android:paddingHorizontal="10dp"
                             android:text="@string/sync_now"
                             android:textColor="@color/colorPrimary"
+                            android:includeFontPadding="false"
+                            android:fontFamily="@font/lato_regular"
                             android:textSize="15sp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
                             android:layout_toStartOf="@+id/manualsyncbutton"
                             android:orientation="vertical">
 
@@ -248,6 +261,8 @@
                                 android:layout_alignParentStart="true"
                                 android:layout_centerInParent="true"
                                 android:text="@string/lastsync"
+                                android:includeFontPadding="false"
+                                android:fontFamily="@font/lato_regular"
                                 android:textSize="14sp" />
 
                             <TextView
@@ -258,6 +273,9 @@
                                 android:layout_centerInParent="true"
                                 android:layout_marginEnd="10dp"
                                 tools:text="2 hours ago"
+                                android:visibility="gone"
+                                android:includeFontPadding="false"
+                                android:fontFamily="@font/lato_regular"
                                 android:textSize="14sp" />
 
                         </LinearLayout>

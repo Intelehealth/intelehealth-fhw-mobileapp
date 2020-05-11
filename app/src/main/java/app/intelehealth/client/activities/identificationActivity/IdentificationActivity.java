@@ -357,22 +357,22 @@ public class IdentificationActivity extends AppCompatActivity {
 
         Resources res = getResources();
         ArrayAdapter<CharSequence> countryAdapter = ArrayAdapter.createFromResource(this,
-                R.array.countries, android.R.layout.simple_spinner_item);
-        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.array.countries, R.layout.custom_spinner);
+        //countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCountry.setAdapter(countryAdapter);
 
         ArrayAdapter<CharSequence> casteAdapter = ArrayAdapter.createFromResource(this,
-                R.array.caste, android.R.layout.simple_spinner_item);
-        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.array.caste, R.layout.custom_spinner);
+        //countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCaste.setAdapter(casteAdapter);
         try {
             String economicLanguage = "economic_" + Locale.getDefault().getLanguage();
             int economics = res.getIdentifier(economicLanguage, "array", getApplicationContext().getPackageName());
             if (economics != 0) {
                 economicStatusAdapter = ArrayAdapter.createFromResource(this,
-                        economics, android.R.layout.simple_spinner_item);
+                        economics,R.layout.custom_spinner);
             }
-            countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+           // countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             mEconomicStatus.setAdapter(economicStatusAdapter);
         } catch (Exception e) {
             Toast.makeText(this, "Economic values are missing", Toast.LENGTH_SHORT).show();
@@ -383,10 +383,10 @@ public class IdentificationActivity extends AppCompatActivity {
             int educations = res.getIdentifier(educationLanguage, "array", getApplicationContext().getPackageName());
             if (educations != 0) {
                 educationAdapter = ArrayAdapter.createFromResource(this,
-                        educations, android.R.layout.simple_spinner_item);
+                        educations, R.layout.custom_spinner);
 
             }
-            countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+           // countryAdapter.setDropDownViewResource(R.layout.custom_spinner);
             mEducation.setAdapter(educationAdapter);
         } catch (Exception e) {
             Toast.makeText(this, "Education values are missing", Toast.LENGTH_SHORT).show();
@@ -442,8 +442,8 @@ public class IdentificationActivity extends AppCompatActivity {
             mCountry.setSelection(countryAdapter.getPosition(country1));
         }
 
-        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.state_error, android.R.layout.simple_spinner_item);
-        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.state_error, R.layout.custom_spinner);
+      //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mState.setAdapter(stateAdapter);
 
         mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -453,12 +453,12 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (state.matches("Odisha")) {
                     //Creating the instance of ArrayAdapter containing list of fruit names
                     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                            R.array.odisha_villages, android.R.layout.simple_spinner_item);
+                            R.array.odisha_villages, R.layout.custom_spinner);
                     mCity.setThreshold(1);//will start working from first character
                     mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
                 } else if (state.matches("Bukidnon")) {
                     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                            R.array.bukidnon_villages, android.R.layout.simple_spinner_item);
+                            R.array.bukidnon_villages, R.layout.custom_spinner);
                     mCity.setThreshold(1);//will start working from first character
                     mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
                 } else {
@@ -480,8 +480,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
                     if (country.matches("India")) {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                R.array.states_india, android.R.layout.simple_spinner_item);
-                        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                R.array.states_india, R.layout.custom_spinner);
+                       // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mState.setAdapter(stateAdapter);
                         // setting state according database when user clicks edit details
 
@@ -493,8 +493,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
                     } else if (country.matches("United States")) {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                R.array.states_us, android.R.layout.simple_spinner_item);
-                        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                R.array.states_us, R.layout.custom_spinner);
+                       // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mState.setAdapter(stateAdapter);
 
                         if (patientID_edit != null) {
@@ -503,7 +503,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         }
                     } else if (country.matches("Philippines")) {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                R.array.states_philippines, android.R.layout.simple_spinner_item);
+                                R.array.states_philippines,R.layout.custom_spinner);
                         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mState.setAdapter(stateAdapter);
 
@@ -515,8 +515,8 @@ public class IdentificationActivity extends AppCompatActivity {
                     }
                 } else {
                     ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                            R.array.state_error, android.R.layout.simple_spinner_item);
-                    stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            R.array.state_error, R.layout.custom_spinner);
+                   // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     mState.setAdapter(stateAdapter);
                 }
 

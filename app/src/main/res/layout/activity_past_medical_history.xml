@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".activities.past_medical_history_activity.PastMedicalHistoryActivity">
+    tools:context=".activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
@@ -21,7 +22,22 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_past_medical_history" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/pastMedical_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/app_bar_view"
+        android:scrollbars="vertical"
+        android:visibility="visible"
+        android:fadeScrollbars="false"
+        android:scrollbarThumbVertical="@color/colorAccent"
+        android:layout_above="@+id/fab"/>
+
+    <include layout="@layout/content_past_medical_history"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -29,7 +45,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
+        android:visibility="gone"
         app:srcCompat="@drawable/ic_done_24dp"
         />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</RelativeLayout>
