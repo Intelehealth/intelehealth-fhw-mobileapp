@@ -55,6 +55,9 @@
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
                         android:text="@string/table_hw"
+                        android:fontFamily="@font/lato_bold"
+                        android:includeFontPadding="false"
+                        android:textSize="@dimen/card_content_text_size"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -70,6 +73,8 @@
                             android:inputType="numberDecimal"
                             android:maxLines="1"
                             android:singleLine="true"
+                            android:fontFamily="@font/lato_regular"
+                            android:textSize="@dimen/card_content_sub_text_size"
                             android:tag="@string/tag_optional" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -87,7 +92,10 @@
                             android:inputType="numberDecimal"
                             android:maxLines="1"
                             android:singleLine="true"
-                            android:tag="@string/tag_optional" />
+                            android:tag="@string/tag_optional"
+                            android:includeFontPadding="false"
+                            android:fontFamily="@font/lato_regular"
+                            android:textSize="@dimen/card_content_sub_text_size"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -106,7 +114,10 @@
                             android:longClickable="false"
                             android:maxLines="1"
                             android:singleLine="true"
-                            android:tag="@string/tag_optional" />
+                            android:tag="@string/tag_optional"
+                            android:fontFamily="@font/lato_regular"
+                            android:includeFontPadding="false"
+                            android:textSize="@dimen/card_content_sub_text_size"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -122,7 +133,10 @@
                         android:layout_alignParentTop="true"
                         android:tag="@string/tag_optional"
                         android:text="@string/table_bp"
-                        android:textAppearance="?android:attr/textAppearanceLarge" />
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textSize="@dimen/card_content_text_size"
+                        android:fontFamily="@font/lato_bold"
+                        android:includeFontPadding="false"/>
 
                     <TableLayout
                         android:layout_width="match_parent"
@@ -146,7 +160,10 @@
                                     android:inputType="numberDecimal"
                                     android:maxLines="1"
                                     android:singleLine="true"
-                                    android:tag="@string/tag_optional" />
+                                    android:tag="@string/tag_optional"
+                                    android:includeFontPadding="false"
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:fontFamily="@font/lato_regular"/>
 
                             </com.google.android.material.textfield.TextInputLayout>
 
@@ -172,7 +189,10 @@
                                     android:inputType="numberDecimal"
                                     android:maxLines="1"
                                     android:singleLine="true"
-                                    android:tag="@string/tag_optional" />
+                                    android:tag="@string/tag_optional"
+                                    android:includeFontPadding="false"
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:fontFamily="@font/lato_regular"/>
 
                             </com.google.android.material.textfield.TextInputLayout>
                         </TableRow>
@@ -191,7 +211,10 @@
                             android:inputType="numberDecimal"
                             android:maxLines="1"
                             android:singleLine="true"
-                            android:tag="@string/tag_optional" />
+                            android:tag="@string/tag_optional"
+                            android:includeFontPadding="false"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:fontFamily="@font/lato_regular"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -208,7 +231,10 @@
                             android:inputType="numberDecimal"
                             android:maxLines="1"
                             android:singleLine="true"
-                            android:tag="@string/tag_optional" />
+                            android:tag="@string/tag_optional"
+                            android:includeFontPadding="false"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:fontFamily="@font/lato_regular"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -225,7 +251,10 @@
                             android:inputType="numberDecimal"
                             android:maxLines="1"
                             android:singleLine="true"
-                            android:tag="@string/tag_optional" />
+                            android:tag="@string/tag_optional"
+                            android:includeFontPadding="false"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:fontFamily="@font/lato_regular"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -242,7 +271,10 @@
                             android:inputType="numberDecimal"
                             android:maxLines="1"
                             android:singleLine="true"
-                            android:tag="@string/tag_optional" />
+                            android:tag="@string/tag_optional"
+                            android:includeFontPadding="false"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:fontFamily="@font/lato_regular"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -259,7 +291,10 @@
                             android:inputType="numberDecimal"
                             android:maxLines="1"
                             android:singleLine="true"
-                            android:tag="@string/tag_optional" />
+                            android:tag="@string/tag_optional"
+                            android:includeFontPadding="false"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:fontFamily="@font/lato_regular"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 

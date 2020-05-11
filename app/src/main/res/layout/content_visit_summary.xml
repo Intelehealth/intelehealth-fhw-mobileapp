@@ -89,9 +89,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:fontFamily="@font/lato_regular"
+                            android:fontFamily="@font/lato_bold"
                             android:text="@string/visit_summary_heading_name"
-                            android:textSize="@dimen/card_content_normal_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_name_value"
@@ -100,7 +100,7 @@
                             android:layout_weight="3"
                             android:fontFamily="@font/lato_regular"
                             android:gravity="fill"
-                            android:textSize="@dimen/card_content_normal_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
 
                     <TableRow
@@ -110,11 +110,11 @@
                         <TextView
                             android:id="@+id/textView_id"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:fontFamily="@font/lato_regular"
+                            android:fontFamily="@font/lato_bold"
                             android:text="@string/visit_summary_heading_id"
-                            android:textSize="@dimen/card_content_normal_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_id_value"
@@ -122,7 +122,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato_regular"
                             android:layout_weight="3"
-                            android:textSize="@dimen/card_content_normal_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
 
                     <TableRow
@@ -133,10 +133,10 @@
                             android:id="@+id/textView_visit"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/lato_regular"
+                            android:fontFamily="@font/lato_bold"
                             android:layout_weight="1"
                             android:text="@string/visitID"
-                            android:textSize="@dimen/card_content_normal_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_visit_value"
@@ -144,7 +144,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato_regular"
                             android:layout_weight="3"
-                            android:textSize="@dimen/card_content_normal_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
 
                 </TableLayout>
@@ -210,9 +210,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:fontFamily="@font/lato_regular"
+                            android:fontFamily="@font/lato_bold"
                             android:text="@string/visit_summary_height_heading"
-                            android:textSize="@dimen/card_content_normal_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_height_value"
@@ -220,7 +220,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_regular"
-                            android:textSize="@dimen/card_content_normal_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
                     <!--Weight-->
                     <TableRow android:layout_width="match_parent">
@@ -230,9 +230,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:fontFamily="@font/lato_regular"
+                            android:fontFamily="@font/lato_bold"
                             android:text="@string/visit_summary_weight"
-                            android:textSize="@dimen/card_content_normal_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_weight_value"
@@ -240,7 +240,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_regular"
-                            android:textSize="@dimen/card_content_normal_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
                     <!--BMI-->
                     <TableRow>
@@ -250,9 +250,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:fontFamily="@font/lato_regular"
+                            android:fontFamily="@font/lato_bold"
                             android:text="@string/visit_summary_bmi"
-                            android:textSize="@dimen/card_content_normal_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_bmi_value"
@@ -260,7 +260,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_regular"
-                            android:textSize="@dimen/card_content_normal_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
                     <!--Blood Pressure-->
                     <TableRow>
@@ -270,9 +270,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:fontFamily="@font/lato_regular"
+                            android:fontFamily="@font/lato_bold"
                             android:text="@string/visit_summary_bp"
-                            android:textSize="@dimen/card_content_normal_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -286,7 +286,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:fontFamily="@font/lato_regular"
-                                android:textSize="@dimen/card_content_normal_text_size" />
+                                android:textSize="@dimen/card_content_sub_text_size" />
                         </LinearLayout>
                     </TableRow>
                     <!--Pulse-->
@@ -297,9 +297,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:fontFamily="@font/lato_regular"
+                            android:fontFamily="@font/lato_bold"
                             android:text="@string/visit_summary_pulse"
-                            android:textSize="@dimen/card_content_normal_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_pulse_value"
@@ -307,7 +307,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_regular"
-                            android:textSize="@dimen/card_content_normal_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
                     <!--Temperature-->
                     <TableRow>
@@ -321,9 +321,9 @@
                                 android:id="@+id/textView_temp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/lato_regular"
+                                android:fontFamily="@font/lato_bold"
                                 android:text="@string/visit_summary_temperature"
-                                android:textSize="@dimen/card_content_normal_text_size" />
+                                android:textSize="@dimen/card_content_sub_text_size" />
 
                             <TextView
                                 android:id="@+id/textView_temp_faren"
@@ -331,7 +331,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_regular"
                                 android:text="@string/temperature_f"
-                                android:textSize="@dimen/card_content_normal_text_size" />
+                                android:textSize="@dimen/card_content_sub_text_size" />
 
                         </LinearLayout>
 
@@ -341,7 +341,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato_regular"
                             android:layout_weight="1"
-                            android:textSize="@dimen/card_content_normal_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
                     <!--sPO2-->
                     <TableRow>
@@ -350,10 +350,10 @@
                             android:id="@+id/textView_pulseox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/lato_regular"
+                            android:fontFamily="@font/lato_bold"
                             android:layout_weight="1"
                             android:text="@string/visit_summary_pulseox"
-                            android:textSize="@dimen/card_content_normal_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_pulseox_value"
@@ -361,7 +361,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_regular"
-                            android:textSize="@dimen/card_content_normal_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
 
                     <TableRow>
@@ -370,10 +370,10 @@
                             android:id="@+id/textView_respiratory"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/lato_regular"
+                            android:fontFamily="@font/lato_bold"
                             android:layout_weight="1"
                             android:text="@string/respiratory_rate"
-                            android:textSize="@dimen/card_content_normal_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_respiratory_value"
@@ -381,7 +381,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato_regular"
                             android:layout_weight="1"
-                            android:textSize="@dimen/card_content_normal_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
 
                 </TableLayout>
@@ -434,7 +434,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView_heading_complaint"
                     android:paddingTop="@dimen/padding_card"
-                    android:textSize="@dimen/card_content_normal_text_size"
+                    android:textSize="@dimen/card_content_sub_text_size"
                     android:fontFamily="@font/lato_regular"
                     android:padding="@dimen/padding_card"/>
             </RelativeLayout>
@@ -499,7 +499,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView_heading_physexam"
                     android:fontFamily="@font/lato_regular"
-                    android:textSize="@dimen/card_content_normal_text_size"
+                    android:textSize="@dimen/card_content_sub_text_size"
                     android:padding="@dimen/padding_card"/>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -517,7 +517,7 @@
                     android:fontFamily="@font/lato_medium"
                     android:backgroundTint="@color/cardview_dark_background"
                     android:text="@string/click_to_download_the_images"
-                    android:textSize="@dimen/card_content_normal_text_size"
+                    android:textSize="@dimen/card_content_sub_text_size"
                     android:visibility="gone" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
@@ -569,7 +569,7 @@
                     android:layout_below="@+id/textView_heading_pathist"
                     android:fontFamily="@font/lato_regular"
                     android:padding="@dimen/padding_card"
-                    android:textSize="@dimen/card_content_normal_text_size" />
+                    android:textSize="@dimen/card_content_sub_text_size" />
             </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
@@ -619,7 +619,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView_heading_famhist"
-                    android:textSize="@dimen/card_content_normal_text_size"
+                    android:textSize="@dimen/card_content_sub_text_size"
                     android:fontFamily="@font/lato_regular"
                     android:padding="@dimen/padding_card"/>
 
@@ -683,7 +683,7 @@
                     android:text="@string/click_to_download_the_images"
                     android:fontFamily="@font/lato_medium"
                     android:visibility="gone"
-                    android:textSize="@dimen/card_content_normal_text_size"
+                    android:textSize="@dimen/card_content_sub_text_size"
                     android:padding="@dimen/padding_card"/>
             </RelativeLayout>
 
@@ -739,7 +739,7 @@
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_regular"
                             android:text="@string/visit_summary_height_heading"
-                            android:textSize="@dimen/card_content_normal_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                     </TableRow>
 
@@ -796,7 +796,7 @@
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_regular"
                             android:text="@string/visit_summary_height_heading"
-                            android:textSize="@dimen/card_content_normal_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                     </TableRow>
 
@@ -853,7 +853,7 @@
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_regular"
                             android:text="@string/visit_summary_height_heading"
-                            android:textSize="@dimen/card_content_normal_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                     </TableRow>
 
@@ -911,7 +911,7 @@
                             android:fontFamily="@font/lato_regular"
                             android:layout_weight="1"
                             android:text="@string/visit_summary_height_heading"
-                            android:textSize="@dimen/card_content_normal_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                     </TableRow>
 
@@ -968,7 +968,7 @@
                             android:fontFamily="@font/lato_regular"
                             android:layout_weight="1"
                             android:text="@string/visit_summary_height_heading"
-                            android:textSize="@dimen/card_content_normal_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                     </TableRow>
 
@@ -1024,7 +1024,7 @@
                             android:layout_weight="1"
                             android:fontFamily="@font/lato_regular"
                             android:text="@string/visit_summary_height_heading"
-                            android:textSize="@dimen/card_content_normal_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                     </TableRow>
 
@@ -1069,7 +1069,7 @@
                     android:padding="@dimen/padding_card"
                     android:fontFamily="@font/lato_regular"
                     android:text=""
-                    android:textSize="@dimen/card_content_normal_text_size" />
+                    android:textSize="@dimen/card_content_sub_text_size" />
 
                 <TextView
                     android:id="@+id/title_health_worker"
@@ -1091,7 +1091,7 @@
                     android:padding="@dimen/padding_card"
                     android:fontFamily="@font/lato_regular"
                     android:text=""
-                    android:textSize="@dimen/card_content_normal_text_size" />
+                    android:textSize="@dimen/card_content_sub_text_size" />
 
             </LinearLayout>
 
@@ -1178,7 +1178,7 @@
         <!--android:layout_height="wrap_content"-->
         <!--android:layout_below="@+id/textView_heading_prevreports"-->
         <!--android:paddingTop="@dimen/padding_card"-->
-        <!--android:textSize="@dimen/card_content_normal_text_size" />-->
+        <!--android:textSize="@dimen/card_content_sub_text_size" />-->
         <!--</RelativeLayout>-->
 
         <!--</android.support.v7.widget.CardView>-->
@@ -1213,7 +1213,7 @@
         <!--android:layout_height="wrap_content"-->
         <!--android:layout_below="@+id/textView_heading_hadetails"-->
         <!--android:paddingTop="@dimen/padding_card"-->
-        <!--android:textSize="@dimen/card_content_normal_text_size" />-->
+        <!--android:textSize="@dimen/card_content_sub_text_size" />-->
         <!--</RelativeLayout>-->
         <!--</android.support.v7.widget.CardView>-->
 

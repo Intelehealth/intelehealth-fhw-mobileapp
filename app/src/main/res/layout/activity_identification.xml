@@ -73,18 +73,20 @@
                             <EditText
                                 android:id="@+id/identification_first_name"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="54dp"
                                 android:drawableStart="@drawable/person_icon"
                                 android:drawableLeft="@drawable/person_icon"
                                 android:drawablePadding="10dp"
                                 android:ems="10"
+                                android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_first_name"
                                 android:imeOptions="actionUnspecified"
                                 android:inputType="textCapWords"
                                 android:maxLength="25"
                                 android:maxLines="1"
-                                android:singleLine="true" />
+                                android:singleLine="true"
+                                android:textSize="@dimen/card_content_sub_text_size" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -107,7 +109,10 @@
                                 android:maxLength="25"
                                 android:maxLines="1"
                                 android:singleLine="true"
-                                android:tag="@string/tag_optional" />
+                                android:tag="@string/tag_optional"
+                                android:fontFamily="@font/lato_regular"
+                                android:textSize="@dimen/card_content_sub_text_size"
+                                />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -130,7 +135,10 @@
                                 android:inputType="textCapWords"
                                 android:maxLength="25"
                                 android:maxLines="1"
-                                android:singleLine="true" />
+                                android:singleLine="true"
+                                android:fontFamily="@font/lato_regular"
+                                android:textSize="@dimen/card_content_sub_text_size"
+                                />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -167,7 +175,8 @@
                         android:drawableLeft="@drawable/male_icon"
                         android:drawablePadding="10dp"
                         android:text="@string/identification_screen_checkbox_male"
-                        android:textSize="@dimen/id_screen_text_size" />
+                        android:fontFamily="@font/lato_regular"
+                        android:textSize="@dimen/card_content_sub_text_size" />
 
                     <RadioButton
                         android:id="@+id/identification_gender_female"
@@ -178,7 +187,8 @@
                         android:drawableLeft="@drawable/female_icon"
                         android:drawablePadding="10dp"
                         android:text="@string/identification_screen_checkbox_female"
-                        android:textSize="@dimen/id_screen_text_size" />
+                        android:textSize="@dimen/card_content_sub_text_size"
+                        android:fontFamily="@font/lato_regular"/>
 
                 </RadioGroup>
 
@@ -204,7 +214,10 @@
                         android:imeOptions="actionUnspecified"
                         android:inputType=""
                         android:maxLines="1"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:fontFamily="@font/lato_regular"
+                        android:textSize="@dimen/card_content_sub_text_size"
+                        />
 
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -229,7 +242,10 @@
                         android:imeOptions="actionUnspecified"
                         android:inputType=""
                         android:maxLines="1"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:fontFamily="@font/lato_regular"
+                        android:textSize="@dimen/card_content_sub_text_size"
+                        />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -254,7 +270,10 @@
                         android:maxLength="10"
                         android:maxLines="1"
                         android:singleLine="true"
-                        android:tag="@string/tag_optional" />
+                        android:tag="@string/tag_optional"
+                        android:fontFamily="@font/lato_regular"
+                        android:textSize="@dimen/card_content_sub_text_size"
+                        />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -300,7 +319,10 @@
                                     android:imeOptions="actionUnspecified"
                                     android:inputType="textCapWords"
                                     android:maxLines="1"
-                                    android:text="@string/identification_screen_prompt_country" />
+                                    android:text="@string/identification_screen_prompt_country"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    />
 
                                 <Spinner
                                     android:id="@+id/spinner_country"
@@ -349,7 +371,10 @@
                                     android:imeOptions="actionUnspecified"
                                     android:inputType="textCapWords"
                                     android:maxLines="1"
-                                    android:text="@string/identification_screen_prompt_state" />
+                                    android:text="@string/identification_screen_prompt_state"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    />
 
                                 <Spinner
                                     android:id="@+id/spinner_state"
@@ -381,7 +406,10 @@
                         android:imeOptions="actionUnspecified"
                         android:inputType="textCapWords"
                         android:maxLength="25"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:fontFamily="@font/lato_regular"
+                        android:textSize="@dimen/card_content_sub_text_size"
+                        />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -404,7 +432,10 @@
                         android:maxLength="50"
                         android:maxLines="2"
                         android:singleLine="false"
-                        android:tag="@string/tag_optional" />
+                        android:tag="@string/tag_optional"
+                        android:fontFamily="@font/lato_regular"
+                        android:textSize="@dimen/card_content_sub_text_size"
+                        />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -426,7 +457,10 @@
                         android:drawableStart="@drawable/home_icon"
                         android:drawableLeft="@drawable/home_icon"
                         android:drawablePadding="10dp"
-                        android:tag="@string/tag_optional" />
+                        android:tag="@string/tag_optional"
+                        android:fontFamily="@font/lato_regular"
+                        android:textSize="@dimen/card_content_sub_text_size"
+                        />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -448,7 +482,10 @@
                         android:drawablePadding="10dp"
                         android:maxLength="9"
                         android:maxLines="1"
-                        android:tag="@string/tag_optional" />
+                        android:tag="@string/tag_optional"
+                        android:fontFamily="@font/lato_regular"
+                        android:textSize="@dimen/card_content_sub_text_size"
+                        />
 
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -473,7 +510,10 @@
                         android:inputType="textCapWords"
                         android:maxLength="25"
                         android:maxLines="1"
-                        android:tag="@string/tag_optional" />
+                        android:tag="@string/tag_optional"
+                        android:fontFamily="@font/lato_regular"
+                        android:textSize="@dimen/card_content_sub_text_size"
+                        />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -497,7 +537,10 @@
                         android:maxLength="25"
 
                         android:maxLines="1"
-                        android:tag="@string/tag_optional" />
+                        android:tag="@string/tag_optional"
+                        android:fontFamily="@font/lato_regular"
+                        android:textSize="@dimen/card_content_sub_text_size"
+                        />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -533,7 +576,10 @@
                             android:imeOptions="actionUnspecified"
                             android:inputType="textCapWords"
                             android:maxLines="1"
-                            android:text="@string/identification_screen_prompt_caste" />
+                            android:text="@string/identification_screen_prompt_caste"
+                            android:fontFamily="@font/lato_regular"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            />
 
                         <Spinner
                             android:id="@+id/spinner_caste"
@@ -569,7 +615,10 @@
                             android:imeOptions="actionUnspecified"
                             android:inputType="textCapWords"
                             android:maxLines="1"
-                            android:text="@string/identification_screen_prompt_economic_status" />
+                            android:text="@string/identification_screen_prompt_economic_status"
+                            android:fontFamily="@font/lato_regular"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            />
 
                         <Spinner
                             android:id="@+id/spinner_economic_status"
@@ -605,7 +654,10 @@
 
                             android:inputType="textCapWords"
                             android:maxLines="1"
-                            android:text="@string/identification_screen_prompt_education" />
+                            android:text="@string/identification_screen_prompt_education"
+                            android:fontFamily="@font/lato_regular"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            />
 
                         <Spinner
                             android:id="@+id/spinner_education"

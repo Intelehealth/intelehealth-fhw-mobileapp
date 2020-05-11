@@ -1575,12 +1575,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
           //  docDigitallySign = "Digitally Signed By";
             doctorSign = objClsDoctorDetails.getTextOfSign();
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "HCP Registration No: " + objClsDoctorDetails.getRegistrationNumber() : "";
-            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:5px;\">" +
+            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:-10px;margin-bottom:2px\">" +
                     "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
                     "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification() + ", " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
                     "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ? "Phone Number: " + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
                     "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +
-                    "<span style=\"font-size:12pt;color:#448AFF; margin-bottom:0px; padding: 0px;\">" + objClsDoctorDetails.getAddress() + "</span>" +
+                    "<span style=\"font-size:12pt;color:#448AFF; margin-bottom:10px; padding: 0px;\">" + objClsDoctorDetails.getAddress() + "</span>" +
                     "</div>";
         }
         if (isRespiratory) {
@@ -1613,9 +1613,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "<b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b>" +
                                     "%s<br>" +
                                     "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
-                                    "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" +
-                                    "<span style=\"font-size:12pt; margin-bottom:0px; padding: 0px;\">" + doctrRegistartionNum + "</span>" +
+                                    "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
                                     doctorDetailStr +
+                                    "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" +
                                     "</div>"
                             , heading, heading2, heading3, mPatientName, age, mGender, mSdw, address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight))?mHeight:"", (!TextUtils.isEmpty(mWeight))?mWeight:"",
                             (!TextUtils.isEmpty(mBMI))?mBMI:"", (!TextUtils.isEmpty(bp))?bp:"", (!TextUtils.isEmpty(mPulse))?mPulse:"", (!TextUtils.isEmpty(mTemp))?mTemp:"", (!TextUtils.isEmpty(mresp))?mresp:"", (!TextUtils.isEmpty(mSPO2))?mSPO2:"",
@@ -1651,8 +1651,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "%s<br>" +
                                     "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
                                     "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" +
-                                    "<span style=\"font-size:12pt; margin-bottom:0px; padding: 0px;\">" + doctrRegistartionNum + "</span>" +
                                     doctorDetailStr +
+                                    "<span style=\"font-size:12pt; margin-top:5px; padding: 0px;\">" + doctrRegistartionNum + "</span>" +
                                     "</div>"
                             , heading, heading2, heading3, mPatientName, age, mGender, mSdw, address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight))?mHeight:"", (!TextUtils.isEmpty(mWeight))?mWeight:"",
                             (!TextUtils.isEmpty(mBMI))?mBMI:"", (!TextUtils.isEmpty(bp))?bp:"", (!TextUtils.isEmpty(mPulse))?mPulse:"", (!TextUtils.isEmpty(mTemp))?mTemp:"", (!TextUtils.isEmpty(mresp))?mresp:"", (!TextUtils.isEmpty(mSPO2))?mSPO2:"",

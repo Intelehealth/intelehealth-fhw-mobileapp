@@ -12,6 +12,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -20,13 +21,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold" />
+                android:fontFamily="@font/lato_bold"
+                android:includeFontPadding="false"/>
 
             <TextView
                 android:id="@+id/list_item_body_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:fontFamily="@font/lato_regular"
+                android:includeFontPadding="false"/>
         </LinearLayout>
 
     <LinearLayout
@@ -46,7 +50,7 @@
             android:paddingEnd="5dp"
             android:paddingTop="3dp"
             android:paddingBottom="3dp"
-            android:textStyle="bold" />
+           android:fontFamily="@font/lato_bold" />
 
         <TextView
             android:id="@+id/tv_not_uploaded"
@@ -60,7 +64,8 @@
             android:textStyle="bold"
             android:visibility="gone"
             android:textColor="@color/white"
-            android:layout_margin="5dp"/>
+            android:layout_margin="5dp"
+            android:fontFamily="@font/lato_regular"/>
 
     </LinearLayout>
 
