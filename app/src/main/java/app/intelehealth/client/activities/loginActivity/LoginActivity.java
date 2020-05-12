@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -41,6 +42,7 @@ import java.security.NoSuchAlgorithmException;
 
 import app.intelehealth.client.R;
 import app.intelehealth.client.app.AppConstants;
+import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.models.loginModel.LoginModel;
 import app.intelehealth.client.models.loginProviderModel.LoginProviderModel;
 import app.intelehealth.client.utilities.Base64Utils;
@@ -239,7 +241,7 @@ public class LoginActivity extends AppCompatActivity {
         final SpannableString span_string = new SpannableString(getApplicationContext().getText(R.string.email_link));
         Linkify.addLinks(span_string, Linkify.EMAIL_ADDRESSES);
 
-        new AlertDialog.Builder(this)
+      MaterialAlertDialogBuilder builder =   new MaterialAlertDialogBuilder(this)
                 .setMessage(span_string)
                 .setNegativeButton("Send Email", new DialogInterface.OnClickListener() {
                     @Override
@@ -257,8 +259,10 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
                 })
-                .setPositiveButton("Close", null)
-                .show();
+                .setPositiveButton("Close", null);
+
+      AlertDialog alertDialog = builder.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
 
         //prajwal_changes
     }

@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.google.android.material.chip.Chip;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -40,6 +41,7 @@ import app.intelehealth.client.R;
 import app.intelehealth.client.activities.familyHistoryActivity.FamilyHistoryActivity;
 import app.intelehealth.client.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import app.intelehealth.client.activities.physcialExamActivity.PhysicalExamActivity;
+import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.knowledgeEngine.Node;
 import app.intelehealth.client.knowledgeEngine.PhysicalExam;
 
@@ -269,7 +271,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
             rvChips.setLayoutManager(linearLayoutManager);
-            rvChips.setItemAnimator(new DefaultItemAnimator());
+            //rvChips.setItemAnimator(new DefaultItemAnimator());
             rvChips.setNestedScrollingEnabled(true);
 
             Node groupNode;
@@ -362,7 +364,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                 @Override
                 public void onClick(View v) {
                     if (groupNode.getText().equalsIgnoreCase("Associated symptoms")) {
-                        AlertDialog.Builder confirmDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle);
+                        MaterialAlertDialogBuilder confirmDialog = new MaterialAlertDialogBuilder(context);
                         confirmDialog.setTitle(R.string.have_symptom);
                         confirmDialog.setCancelable(false);
                         LayoutInflater layoutInflater = LayoutInflater.from(context);
@@ -427,6 +429,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                         }
 
                         alertDialog.show();
+                        IntelehealthApplication.setAlertDialogCustomTheme(context,alertDialog);
 
                     } else {
                         //thisNode.toggleSelected();

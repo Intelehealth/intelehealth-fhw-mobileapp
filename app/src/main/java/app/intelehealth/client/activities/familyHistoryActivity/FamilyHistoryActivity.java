@@ -1,5 +1,6 @@
 package app.intelehealth.client.activities.familyHistoryActivity;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,7 +9,10 @@ import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -41,6 +45,7 @@ import java.util.UUID;
 import app.intelehealth.client.R;
 import app.intelehealth.client.activities.questionNodeActivity.QuestionsAdapter;
 import app.intelehealth.client.app.AppConstants;
+import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.dao.EncounterDAO;
 import app.intelehealth.client.database.dao.ImagesDAO;
 import app.intelehealth.client.database.dao.ObsDAO;
@@ -55,7 +60,7 @@ import app.intelehealth.client.activities.physcialExamActivity.PhysicalExamActiv
 import app.intelehealth.client.activities.visitSummaryActivity.VisitSummaryActivity;
 import app.intelehealth.client.utilities.exception.DAOException;
 
-public class FamilyHistoryActivity extends AppCompatActivity  implements  QuestionsAdapter.FabClickListener{
+public class FamilyHistoryActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
     private static final String TAG = FamilyHistoryActivity.class.getSimpleName();
 
     String patientUuid;
@@ -70,7 +75,7 @@ public class FamilyHistoryActivity extends AppCompatActivity  implements  Questi
 
     Node familyHistoryMap;
     //CustomExpandableListAdapter adapter;
-   // ExpandableListView familyListView;
+    // ExpandableListView familyListView;
 
     ArrayList<String> insertionList = new ArrayList<>();
     String insertion = "", phistory = "", fhistory = "";
@@ -94,7 +99,8 @@ public class FamilyHistoryActivity extends AppCompatActivity  implements  Questi
         filePath = new File(AppConstants.IMAGE_PATH);
         boolean past = sessionManager.isReturning();
         if (past) {
-            AlertDialog.Builder alertdialog = new AlertDialog.Builder(FamilyHistoryActivity.this,R.style.AlertDialogStyle);
+            MaterialAlertDialogBuilder alertdialog = new MaterialAlertDialogBuilder(this);
+            //AlertDialog.Builder alertdialog = new AlertDialog.Builder(FamilyHistoryActivity.this,R.style.AlertDialogStyle);
             alertdialog.setTitle(getString(R.string.title_activity_family_history));
             alertdialog.setMessage(getString(R.string.question_update_details));
             alertdialog.setPositiveButton(getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
@@ -140,7 +146,9 @@ public class FamilyHistoryActivity extends AppCompatActivity  implements  Questi
 
                 }
             });
-            alertdialog.show();
+            Dialog alertDialog = alertdialog.show();
+            IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+
         }
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -158,7 +166,7 @@ public class FamilyHistoryActivity extends AppCompatActivity  implements  Questi
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextAppearance(this,R.style.ToolbarTheme);
+        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
@@ -195,9 +203,9 @@ public class FamilyHistoryActivity extends AppCompatActivity  implements  Questi
             familyHistoryMap = new Node(FileUtils.encodeJSON(this, mFileName)); //Load the family history mind map
         }
 
-      //  familyListView = findViewById(R.id.family_history_expandable_list_view);
+        //  familyListView = findViewById(R.id.family_history_expandable_list_view);
 
-        adapter = new QuestionsAdapter(this,familyHistoryMap,family_history_recyclerView,this.getClass().getSimpleName(),this,false);
+        adapter = new QuestionsAdapter(this, familyHistoryMap, family_history_recyclerView, this.getClass().getSimpleName(), this, false);
         family_history_recyclerView.setAdapter(adapter);
         /*adapter = new CustomExpandableListAdapter(this, familyHistoryMap, this.getClass().getSimpleName());
         familyListView.setAdapter(adapter);*/
@@ -211,7 +219,7 @@ public class FamilyHistoryActivity extends AppCompatActivity  implements  Questi
         });*/
     }
 
-    private void onListClick(View v, int groupPosition,int childPosition){
+    private void onListClick(View v, int groupPosition, int childPosition) {
         Node clickedNode = familyHistoryMap.getOption(groupPosition).getOption(childPosition);
         Log.i(TAG, "onChildClick: ");
         clickedNode.toggleSelected();
@@ -385,8 +393,8 @@ public class FamilyHistoryActivity extends AppCompatActivity  implements  Questi
     }
 
     @Override
-    public void onChildListClickEvent(int groupPos, int childPos,int physExamPos) {
-        onListClick(null,groupPos,childPos);
+    public void onChildListClickEvent(int groupPos, int childPos, int physExamPos) {
+        onListClick(null, groupPos, childPos);
     }
 
     public void AnimateView(View v) {
@@ -408,15 +416,16 @@ public class FamilyHistoryActivity extends AppCompatActivity  implements  Questi
         animation.addAnimation(fadeIn);
         animation.addAnimation(fadeOut);
         animation.setRepeatCount(1);
-        if(v != null){
+        if (v != null) {
             v.setAnimation(animation);
         }
 
 
     }
+
     public void bottomUpAnimation(View v) {
 
-        if( v != null){
+        if (v != null) {
             v.setVisibility(View.VISIBLE);
             Animation bottomUp = AnimationUtils.loadAnimation(this,
                     R.anim.bottom_up);

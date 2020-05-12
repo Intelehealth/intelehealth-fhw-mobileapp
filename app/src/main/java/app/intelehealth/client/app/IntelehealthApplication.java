@@ -1,21 +1,28 @@
 package app.intelehealth.client.app;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Application;
+import android.app.Dialog;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.provider.Settings;
+
+import androidx.core.content.res.ResourcesCompat;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 import androidx.appcompat.app.AppCompatDelegate;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.parse.Parse;
 
 import app.intelehealth.client.BuildConfig;
+import app.intelehealth.client.R;
 import app.intelehealth.client.database.InteleHealthDatabaseHelper;
 import app.intelehealth.client.utilities.SessionManager;
 import io.fabric.sdk.android.Fabric;
@@ -133,5 +140,23 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 
     public Activity getCurrentActivity() {
         return currentActivity;
+    }
+
+
+    /**
+     * for setting the Alert Dialog Custom Font.
+     * @param context
+     * @param builderDialog
+     */
+    public static void setAlertDialogCustomTheme(Context context, Dialog builderDialog){
+        // Getting the view elements
+        TextView textView = (TextView) builderDialog.getWindow().findViewById(android.R.id.message);
+        TextView alertTitle = (TextView) builderDialog.getWindow().findViewById(R.id.alertTitle);
+        Button button1 = (Button) builderDialog.getWindow().findViewById(android.R.id.button1);
+        Button button2 = (Button) builderDialog.getWindow().findViewById(android.R.id.button2);
+        textView.setTypeface(ResourcesCompat.getFont(context, R.font.lato_regular));
+        alertTitle.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
+        button1.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
+        button2.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
     }
 }

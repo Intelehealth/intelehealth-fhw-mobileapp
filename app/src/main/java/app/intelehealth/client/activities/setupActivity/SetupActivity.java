@@ -2,7 +2,6 @@ package app.intelehealth.client.activities.setupActivity;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -17,6 +16,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -40,6 +40,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.parse.Parse;
 
@@ -386,7 +387,8 @@ public class SetupActivity extends AppCompatActivity {
             case R.id.downloadMindmap:
                 if (checked) {
                     r1.setChecked(false);
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+                    MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+                    // AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
                     LayoutInflater li = LayoutInflater.from(this);
                     View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
 
@@ -470,10 +472,12 @@ public class SetupActivity extends AppCompatActivity {
 
                     // Change the alert dialog buttons text and background color
                     positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                   // positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
                     negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                    //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+                    IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
 
 
                 }
