@@ -14,6 +14,7 @@
         <item name="colorSurface">#FFFFFF</item>
         <item name="colorOnSurface">#212121</item>
         <item name="textAppearanceLargePopupMenu">@style/AppTheme.TextAppearance.Popup</item>
+        <item name="fontFamily">@font/lato_regular</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

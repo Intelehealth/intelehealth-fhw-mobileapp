@@ -706,64 +706,75 @@
                 app:cardElevation="2dp"
                 app:cardUseCompatPadding="true">
 
-
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/titleBar_cardview">
+                    android:orientation="vertical">
 
-                    <TextView
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/titleBar_cardview"
-                        android:fontFamily="@font/lato_bold"
-                        android:includeFontPadding="false"
-                        android:padding="10dp"
-                        android:paddingStart="20dp"
-                        android:text="@string/previous_visits"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/card_content_text_size" />
+                        android:background="@color/titleBar_cardview">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/titleBar_cardview"
+                            android:fontFamily="@font/lato_bold"
+                            android:includeFontPadding="false"
+                            android:padding="10dp"
+                            android:paddingStart="20dp"
+                            android:text="@string/previous_visits"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/card_content_text_size" />
 
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:visibility="invisible"
-                        android:orientation="horizontal">
-
-                        <ImageButton
-                            style="@style/SelectableItemBackground"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
-                            android:background="@null"
-                            android:contentDescription="TODO"
-                            android:foreground="?android:attr/selectableItemBackground"
-                            android:padding="10dp"
-                            app:srcCompat="@drawable/edit_icon" />
+                            android:visibility="invisible"
+                            android:orientation="horizontal">
+
+                            <ImageButton
+                                style="@style/SelectableItemBackground"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:background="@null"
+                                android:contentDescription="TODO"
+                                android:foreground="?android:attr/selectableItemBackground"
+                                android:padding="10dp"
+                                app:srcCompat="@drawable/edit_icon" />
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout_previous_visits"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:padding="@dimen/padding_card">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_regular"
+                            android:includeFontPadding="false"
+                            android:visibility="gone"
+                            android:textSize="@dimen/card_title_text_size" />
+
 
                     </LinearLayout>
 
-                </RelativeLayout>
-
-
-                <LinearLayout
-                    android:id="@+id/linearLayout_previous_visits"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/padding_card">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_regular"
-                        android:includeFontPadding="false"
-                        android:textSize="@dimen/card_title_text_size" />
-
-
                 </LinearLayout>
+
+
+
             </androidx.cardview.widget.CardView>
 
 

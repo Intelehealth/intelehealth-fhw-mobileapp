@@ -58,6 +58,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -198,8 +199,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     NotificationManager mNotificationManager;
     NotificationCompat.Builder mBuilder;
 
-    Button uploadButton;
-    Button downloadButton;
+    RelativeLayout uploadButton;
+    RelativeLayout downloadButton;
     ArrayList<String> physicalExams;
 
     CardView diagnosisCard;

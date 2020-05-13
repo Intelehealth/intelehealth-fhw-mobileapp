@@ -661,8 +661,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                     spannableString.setSpan(greenSpan, spannableString.length() - 6, spannableString.length(), 0);
                     spannableString.setSpan(underlineSpan, 0, spannableString.length() - 7, 0);
                     textView.setText(spannableString);
-                    layoutParams.setMargins(2, 2, 2, 2);
-                    textView.setLayoutParams(layoutParams);
+                    layoutParams.setMargins(5, 10, 5, 0);
+                  //  textView.setLayoutParams(layoutParams);
                     textView.setTextSize(16);
                     Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_regular);
                     textView.setTypeface(typeface);
@@ -680,8 +680,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                     } else {
                         Log.e("Check", "No complaint");
                     }
-                    layoutParams.setMargins(2, 2, 2, 2);
-                    complaintxt1.setLayoutParams(layoutParams);
+                    layoutParams.setMargins(5, 10, 5, 0);
+                    //complaintxt1.setLayoutParams(layoutParams);
                     complaintxt1.setTextSize(16);
                     previousVisitsList.addView(complaintxt1);
                 }
@@ -714,8 +714,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                     Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_regular);
                     textView.setTypeface(typeface);
                     textView.setTextSize(16);
-                    layoutParams.setMargins(2, 2, 2, 2);
-                    textView.setLayoutParams(layoutParams);
+                    layoutParams.setMargins(5, 10, 5, 0);
+                   // textView.setLayoutParams(layoutParams);
                     previousVisitsList.addView(textView);
                 }
                 //If patient has any past complaints
@@ -727,8 +727,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                     } else {
                         Log.e("Check", "No complaint");
                     }
-                    layoutParams.setMargins(2, 2, 2, 2);
-                    complaintxt1.setLayoutParams(layoutParams);
+                    layoutParams.setMargins(5, 10, 5, 0);
+                   // complaintxt1.setLayoutParams(layoutParams);
                     Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_regular);
                     complaintxt1.setTypeface(typeface);
                     complaintxt1.setTextSize(16);
@@ -740,8 +740,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         textView.setTextSize(16);
         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams
                 (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        llp.setMargins(0, 5, 0, 5);
-        textView.setLayoutParams(llp);
+        llp.setMargins(0, 10, 0, 0);
+       // textView.setLayoutParams(llp);
         textView.setTag(visit_id);
         Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_regular);
         textView.setTypeface(typeface);
@@ -999,7 +999,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                             if (complaints != null) {
                                 for (String comp : complaints) {
                                     if (!comp.trim().isEmpty()) {
-                                        visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+                                        visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) /*+ "<br/>"*/;
                                     }
                                 }
                                 if (!visitValue.isEmpty()) {
