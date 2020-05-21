@@ -111,9 +111,9 @@ public class SearchPatientActivity extends AppCompatActivity {
             recycler = new SearchPatientAdapter(getQueryPatients(query), SearchPatientActivity.this);
             RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerView.setLayoutManager(reLayoutManager);
-            recyclerView.addItemDecoration(new
+           /* recyclerView.addItemDecoration(new
                     DividerItemDecoration(this,
-                    DividerItemDecoration.VERTICAL));
+                    DividerItemDecoration.VERTICAL));*/
             recyclerView.setAdapter(recycler);
 
         } catch (Exception e) {
@@ -132,9 +132,9 @@ public class SearchPatientActivity extends AppCompatActivity {
 //            Log.i("db data", "" + getAllPatientsFromDB());
             RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerView.setLayoutManager(reLayoutManager);
-            recyclerView.addItemDecoration(new
+         /*   recyclerView.addItemDecoration(new
                     DividerItemDecoration(this,
-                    DividerItemDecoration.VERTICAL));
+                    DividerItemDecoration.VERTICAL));*/
             recyclerView.setAdapter(recycler);
 
         } catch (Exception e) {
@@ -423,9 +423,9 @@ public class SearchPatientActivity extends AppCompatActivity {
 //            Log.i("db data", "" + getQueryPatients(query));
                 RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
                 recyclerView.setLayoutManager(reLayoutManager);
-                recyclerView.addItemDecoration(new
+            /*    recyclerView.addItemDecoration(new
                         DividerItemDecoration(this,
-                        DividerItemDecoration.VERTICAL));
+                        DividerItemDecoration.VERTICAL));*/
                 recyclerView.setAdapter(recycler);
 
             } catch (Exception e) {
@@ -474,9 +474,9 @@ public class SearchPatientActivity extends AppCompatActivity {
                 recycler = new SearchPatientAdapter(modelList, SearchPatientActivity.this);
                 RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
                 recyclerView.setLayoutManager(reLayoutManager);
-                recyclerView.addItemDecoration(new
+           /*     recyclerView.addItemDecoration(new
                         DividerItemDecoration(this,
-                        DividerItemDecoration.VERTICAL));
+                        DividerItemDecoration.HORIZONTAL));*/
                 recyclerView.setAdapter(recycler);
 
             } catch (Exception e) {
