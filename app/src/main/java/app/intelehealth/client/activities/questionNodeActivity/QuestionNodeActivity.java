@@ -1,11 +1,13 @@
 package app.intelehealth.client.activities.questionNodeActivity;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.app.AlertDialog;
@@ -45,6 +47,7 @@ import java.util.UUID;
 
 import app.intelehealth.client.R;
 import app.intelehealth.client.app.AppConstants;
+import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.dao.EncounterDAO;
 import app.intelehealth.client.database.dao.ImagesDAO;
 import app.intelehealth.client.database.dao.ObsDAO;
@@ -226,7 +229,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
                 //If the knowledgeEngine is not terminal, that means there are more questions to be asked for this branch.
             }
         } else if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && currentNode.getOption(groupPosition).anySubSelected()) {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(QuestionNodeActivity.this,R.style.AlertDialogStyle);
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+            //AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(QuestionNodeActivity.this,R.style.AlertDialogStyle);
             alertDialogBuilder.setMessage(R.string.this_question_only_one_answer);
             alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                 @Override
@@ -236,6 +240,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
+            IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
         } else {
 
             Node question = currentNode.getOption(groupPosition).getOption(childPosition);
@@ -543,7 +548,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
     //Can be removed if necessary
     //TODO: Add setting to allow for all questions unrequired..addAll(Arrays.asList(splitExams))
     public void questionsMissing() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+       // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
         alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
         alertDialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
             @Override
@@ -559,8 +565,9 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
                 dialog.dismiss();
             }
         });
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+        Dialog alertDialog = alertDialogBuilder.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
+        //alertDialog.show();
     }
 
 

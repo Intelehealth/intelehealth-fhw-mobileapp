@@ -6,6 +6,7 @@
         android:fragment="app.intelehealth.client.activities.settingsActivity.SettingsActivity$NotificationPreferenceFragment"
         android:icon="@drawable/ic_notifications_black_24dp"
         android:title="@string/pref_header_notifications"
+
         />
 
     <header

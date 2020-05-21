@@ -12,6 +12,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import app.intelehealth.client.R;
 
@@ -28,6 +29,9 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
         getDelegate().installViewFactory();
         getDelegate().onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
+        ListView listView = getListView();
+        listView.setDivider(getResources().getDrawable(R.drawable.divider));
+        listView.setDividerHeight(1);
     }
 
     @Override

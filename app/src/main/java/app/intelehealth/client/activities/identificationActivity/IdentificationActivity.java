@@ -10,11 +10,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.Bundle;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
@@ -53,6 +57,7 @@ import java.util.UUID;
 import app.intelehealth.client.R;
 import app.intelehealth.client.activities.patientDetailActivity.PatientDetailActivity;
 import app.intelehealth.client.app.AppConstants;
+import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.dao.ImagesDAO;
 import app.intelehealth.client.database.dao.ImagesPushDAO;
 import app.intelehealth.client.database.dao.PatientsDAO;
@@ -101,7 +106,7 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mDOB;
     EditText mPhoneNum;
     EditText mAge;
-    AlertDialog.Builder mAgePicker;
+    MaterialAlertDialogBuilder mAgePicker;
     EditText mAddress1;
     EditText mAddress2;
     AutoCompleteTextView mCity;
@@ -157,25 +162,25 @@ public class IdentificationActivity extends AppCompatActivity {
         });
         sessionManager = new SessionManager(this);
         mFirstName = findViewById(R.id.identification_first_name);
-        mFirstName.setFilters(new InputFilter[] {new InputFilter.LengthFilter(25),inputFilter_Name}); //maxlength 25
+        mFirstName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
 
         mMiddleName = findViewById(R.id.identification_middle_name);
-        mMiddleName.setFilters(new InputFilter[] {new InputFilter.LengthFilter(25),inputFilter_Name}); //maxlength 25
+        mMiddleName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
 
         mLastName = findViewById(R.id.identification_last_name);
-        mLastName.setFilters(new InputFilter[] {new InputFilter.LengthFilter(25),inputFilter_Name}); //maxlength 25
+        mLastName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
 
         mDOB = findViewById(R.id.identification_birth_date_text_view);
         mPhoneNum = findViewById(R.id.identification_phone_number);
         mAge = findViewById(R.id.identification_age);
         mAddress1 = findViewById(R.id.identification_address1);
-        mAddress1.setFilters(new InputFilter[] {new InputFilter.LengthFilter(50),inputFilter_Name}); //maxlength 50
+        mAddress1.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
 
         mAddress2 = findViewById(R.id.identification_address2);
-        mAddress2.setFilters(new InputFilter[] {new InputFilter.LengthFilter(50),inputFilter_Name}); //maxlength 50
+        mAddress2.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
 
         mCity = findViewById(R.id.identification_city);
-        mCity.setFilters(new InputFilter[] {new InputFilter.LengthFilter(25),inputFilter_Others}); //maxlength 25
+        mCity.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
         stateText = findViewById(R.id.identification_state);
         mState = findViewById(R.id.spinner_state);
@@ -185,10 +190,10 @@ public class IdentificationActivity extends AppCompatActivity {
         mGenderM = findViewById(R.id.identification_gender_male);
         mGenderF = findViewById(R.id.identification_gender_female);
         mRelationship = findViewById(R.id.identification_relationship);
-        mRelationship.setFilters(new InputFilter[] {new InputFilter.LengthFilter(25),inputFilter_Others}); //maxlength 25
+        mRelationship.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
         mOccupation = findViewById(R.id.identification_occupation);
-        mOccupation.setFilters(new InputFilter[] {new InputFilter.LengthFilter(25),inputFilter_Others}); //maxlength 25
+        mOccupation.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
         mCaste = findViewById(R.id.spinner_caste);
         mEducation = findViewById(R.id.spinner_education);
@@ -370,9 +375,9 @@ public class IdentificationActivity extends AppCompatActivity {
             int economics = res.getIdentifier(economicLanguage, "array", getApplicationContext().getPackageName());
             if (economics != 0) {
                 economicStatusAdapter = ArrayAdapter.createFromResource(this,
-                        economics,R.layout.custom_spinner);
+                        economics, R.layout.custom_spinner);
             }
-           // countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             mEconomicStatus.setAdapter(economicStatusAdapter);
         } catch (Exception e) {
             Toast.makeText(this, "Economic values are missing", Toast.LENGTH_SHORT).show();
@@ -386,7 +391,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         educations, R.layout.custom_spinner);
 
             }
-           // countryAdapter.setDropDownViewResource(R.layout.custom_spinner);
+            // countryAdapter.setDropDownViewResource(R.layout.custom_spinner);
             mEducation.setAdapter(educationAdapter);
         } catch (Exception e) {
             Toast.makeText(this, "Education values are missing", Toast.LENGTH_SHORT).show();
@@ -443,7 +448,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.state_error, R.layout.custom_spinner);
-      //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mState.setAdapter(stateAdapter);
 
         mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -481,7 +486,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     if (country.matches("India")) {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                                 R.array.states_india, R.layout.custom_spinner);
-                       // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mState.setAdapter(stateAdapter);
                         // setting state according database when user clicks edit details
 
@@ -494,7 +499,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     } else if (country.matches("United States")) {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                                 R.array.states_us, R.layout.custom_spinner);
-                       // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mState.setAdapter(stateAdapter);
 
                         if (patientID_edit != null) {
@@ -503,7 +508,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         }
                     } else if (country.matches("Philippines")) {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                R.array.states_philippines,R.layout.custom_spinner);
+                                R.array.states_philippines, R.layout.custom_spinner);
                         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mState.setAdapter(stateAdapter);
 
@@ -516,7 +521,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 } else {
                     ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                             R.array.state_error, R.layout.custom_spinner);
-                   // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     mState.setAdapter(stateAdapter);
                 }
 
@@ -620,7 +625,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         //if patient update then age will be set
         if (patientID_edit != null) {
-            int age = DateAndTimeUtils.getAge(patient1.getDate_of_birth(),context);
+            int age = DateAndTimeUtils.getAge(patient1.getDate_of_birth(), context);
             mDOB.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
             int month = DateAndTimeUtils.getMonth(patient1.getDate_of_birth());
             mAge.setText(age + getString(R.string.identification_screen_text_years) + month + getString(R.string.identification_screen_text_months));
@@ -628,7 +633,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mAge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAgePicker = new AlertDialog.Builder(IdentificationActivity.this, R.style.AlertDialogStyle);
+                mAgePicker = new MaterialAlertDialogBuilder(IdentificationActivity.this, R.style.AlertDialogStyle);
                 mAgePicker.setTitle(R.string.identification_screen_prompt_age);
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
@@ -684,7 +689,8 @@ public class IdentificationActivity extends AppCompatActivity {
                     }
                 });
 
-                mAgePicker.show();
+                AlertDialog alertDialog = mAgePicker.show();
+                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
             }
         });
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -816,18 +822,16 @@ public class IdentificationActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this);
-                alertdialogBuilder.setMessage(R.string.are_you_want_go_back);
-                alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i)
-
-                    {
-                        Intent i_back = new Intent(getApplicationContext(), HomeActivity.class);
-                        startActivity(i_back);
-                    }
-                });
-                alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+        alertdialogBuilder.setMessage(R.string.are_you_want_go_back);
+        alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent i_back = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(i_back);
+            }
+        });
+        alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
 
         AlertDialog alertDialog = alertdialogBuilder.create();
         alertDialog.show();
@@ -836,15 +840,16 @@ public class IdentificationActivity extends AppCompatActivity {
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
         positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-        positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
         negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-        negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
     public void showAlertDialogButtonClicked(String errorMessage) {
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
         alertDialogBuilder.setTitle("Config Error");
         alertDialogBuilder.setMessage(errorMessage);
         alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
@@ -858,10 +863,12 @@ public class IdentificationActivity extends AppCompatActivity {
         });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         Log.v(TAG, "Result Received");
         if (requestCode == CameraActivity.TAKE_IMAGE) {
             Log.v(TAG, "Request Code " + CameraActivity.TAKE_IMAGE);
@@ -893,9 +900,9 @@ public class IdentificationActivity extends AppCompatActivity {
         View focusView = null;
 
 
-        if(dob.equals("") || dob.toString().equals("")) {
+        if (dob.equals("") || dob.toString().equals("")) {
             if (dob.after(today)) {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
+                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
                 alertDialogBuilder.setTitle(R.string.error);
                 alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_dob);
                 //alertDialogBuilder.setMessage(getString(R.string.identification_dialog_date_error));
@@ -912,8 +919,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
                 Button postiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 postiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                postiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
+                // postiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
                 return;
             }
         }
@@ -933,7 +940,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
 /*
         if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
             alertDialogBuilder.setTitle(R.string.error);
             alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
             alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
@@ -981,7 +988,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
+                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
                 alertDialogBuilder.setTitle(R.string.error);
                 alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
                 alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
@@ -995,7 +1002,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
                 Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
 
             }
 
@@ -1139,7 +1147,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 i.putExtra("tag", "newPatient");
                 i.putExtra("privacy", privacy_value);
                 i.putExtra("hasPrescription", "false");
-                Log.d(TAG, "Privacy Value on (Identification): "+privacy_value); //privacy value transferred to PatientDetail activity.
+                Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 getApplication().startActivity(i);
             } else {

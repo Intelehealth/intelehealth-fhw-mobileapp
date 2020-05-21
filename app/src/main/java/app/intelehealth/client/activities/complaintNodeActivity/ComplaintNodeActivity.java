@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,6 +46,7 @@ import java.util.UUID;
 import app.intelehealth.client.R;
 import app.intelehealth.client.activities.questionNodeActivity.QuestionNodeActivity;
 import app.intelehealth.client.app.AppConstants;
+import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.dao.EncounterDAO;
 import app.intelehealth.client.knowledgeEngine.Node;
 import app.intelehealth.client.models.dto.EncounterDTO;
@@ -233,7 +236,8 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             }
 
             if (selection.isEmpty()) {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
+                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+//                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
                 alertDialogBuilder.setTitle(getString(R.string.complaint_dialog_title));
                 alertDialogBuilder.setMessage(getString(R.string.complaint_required));
                 alertDialogBuilder.setNeutralButton(getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
@@ -242,13 +246,15 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
+                AlertDialog alertDialog = alertDialogBuilder.show();
+               // alertDialog.show();
                 Button pb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
                 pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-                pb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+                //pb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+                IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
             } else {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
+                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+//                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
                 alertDialogBuilder.setTitle(R.string.complaint_dialog_title);
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.list_dialog_complaint, null);
@@ -282,14 +288,15 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
+                AlertDialog alertDialog = alertDialogBuilder.show();
+                //alertDialog.show();
                 Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
                 pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-                pb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+               // pb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
                 nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-                nb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+                //nb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+                IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
             }
         }
     }

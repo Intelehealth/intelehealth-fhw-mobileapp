@@ -1,5 +1,6 @@
 package app.intelehealth.client.activities.pastMedicalHistoryActivity;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -8,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.app.AlertDialog;
@@ -41,6 +43,7 @@ import java.util.UUID;
 import app.intelehealth.client.R;
 import app.intelehealth.client.activities.questionNodeActivity.QuestionsAdapter;
 import app.intelehealth.client.app.AppConstants;
+import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.dao.EncounterDAO;
 import app.intelehealth.client.database.dao.ImagesDAO;
 import app.intelehealth.client.database.dao.ObsDAO;
@@ -107,8 +110,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
         boolean past = sessionManager.isReturning();
         if (past) {
+            MaterialAlertDialogBuilder alertdialog = new MaterialAlertDialogBuilder(this);
 
-            AlertDialog.Builder alertdialog = new AlertDialog.Builder(PastMedicalHistoryActivity.this,R.style.AlertDialogStyle);
+            //AlertDialog.Builder alertdialog = new AlertDialog.Builder(PastMedicalHistoryActivity.this,R.style.AlertDialogStyle);
             alertdialog.setTitle(getString(R.string.title_activity_patient_history));
             alertdialog.setMessage(getString(R.string.question_update_details));
             alertdialog.setPositiveButton(getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
@@ -153,7 +157,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
                 }
             });
-            alertdialog.show();
+            Dialog builderDialog = alertdialog.show();
+            IntelehealthApplication.setAlertDialogCustomTheme(this, builderDialog);
 
         }
 
@@ -176,7 +181,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         setContentView(R.layout.activity_past_medical_history);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextAppearance(this,R.style.ToolbarTheme);
+        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
@@ -427,12 +432,12 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
     @Override
     public void fabClickedAtEnd() {
-       // patientHistoryMap = node;
+        // patientHistoryMap = node;
         fabClick();
     }
 
     @Override
-    public void onChildListClickEvent( int groupPos, int childPos,int physExamPos) {
+    public void onChildListClickEvent(int groupPos, int childPos, int physExamPos) {
         onListClick(null, groupPos, childPos);
     }
 
@@ -455,7 +460,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         animation.addAnimation(fadeIn);
         animation.addAnimation(fadeOut);
         animation.setRepeatCount(1);
-        if(v != null){
+        if (v != null) {
             v.setAnimation(animation);
         }
 
@@ -464,7 +469,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
     public void bottomUpAnimation(View v) {
 
-        if( v != null){
+        if (v != null) {
             v.setVisibility(View.VISIBLE);
             Animation bottomUp = AnimationUtils.loadAnimation(this,
                     R.anim.bottom_up);

@@ -449,7 +449,7 @@
 
     <string name="associated_symptoms">Associated symptoms</string>
     <string name="enter_server_url">Enter Server URL</string>
-    <string name="enter_license_key">Enter license key</string>
+    <string name="enter_license_key"><b>Enter license key</b></string>
     <string name="invalid_url">Invalid URL</string>
     <string name="years">years</string>
     <string name="months">months</string>
@@ -561,6 +561,12 @@
     <string name="swipe_up">Swipe to Up for Next</string>
     <string name="swipe_down">Swipe to Down for previous</string>
     <string name="have_symptom">Do you have this Symptom?</string>
+
+
+    <!--New UI changes 2.1-->
+    <string name="personal_information">Personal Information</string>
+    <string name="address_details">Address Details</string>
+    <string name="txt_others">Others</string>
 
 
 </resources>

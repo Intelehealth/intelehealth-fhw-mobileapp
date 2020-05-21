@@ -10,6 +10,8 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -31,6 +33,7 @@ import java.io.OutputStream;
 
 import app.intelehealth.client.R;
 import app.intelehealth.client.app.AppConstants;
+import app.intelehealth.client.app.IntelehealthApplication;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -232,22 +235,23 @@ public class CameraActivity extends AppCompatActivity {
     @NeedsPermission(Manifest.permission.CAMERA)
     void startCamera() {
         if (mDialogMessage != null) {
-            new AlertDialog.Builder(this)
+           MaterialAlertDialogBuilder builder =  new MaterialAlertDialogBuilder(this)
                     .setMessage(mDialogMessage)
                     .setNeutralButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                         }
-                    })
-                    .show();
+                    });
+                 AlertDialog dialog = builder.show();
+            IntelehealthApplication.setAlertDialogCustomTheme(this,dialog);
         }
         mCameraView.start();
     }
 
     @OnShowRationale(Manifest.permission.CAMERA)
     void showRationaleForCamera(final PermissionRequest request) {
-        new AlertDialog.Builder(this)
+       MaterialAlertDialogBuilder builder =  new MaterialAlertDialogBuilder(this)
                 .setMessage(getString(R.string.permission_camera_rationale))
                 .setPositiveButton(getString(R.string.button_allow), new DialogInterface.OnClickListener() {
                     @Override
@@ -260,8 +264,9 @@ public class CameraActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         request.cancel();
                     }
-                })
-                .show();
+                });
+              AlertDialog dialog = builder.show();
+              IntelehealthApplication.setAlertDialogCustomTheme(this,dialog);
     }
 
     @OnPermissionDenied(Manifest.permission.CAMERA)

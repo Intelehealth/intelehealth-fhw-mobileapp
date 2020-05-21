@@ -8,12 +8,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
+
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
@@ -25,6 +28,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
@@ -102,7 +106,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     private String encounterVitals = "";
     private String encounterAdultIntials = "";
     SQLiteDatabase db = null;
-    Button editbtn;
+    ImageButton editbtn;
     Button newVisit;
     IntentFilter filter;
     Myreceiver reMyreceive;
@@ -643,12 +647,12 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         final Boolean past_visit;
         final TextView textView = new TextView(this);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
         final String visitString = String.format("Seen on (%s)", DateAndTimeUtils.SimpleDatetoLongDate(datetime));
         if (end_datetime == null || end_datetime.isEmpty()) {
             // visit has not yet ended
 
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             for (int i = 1; i <= 2; i++) {
                 if (i == 1) {
                     SpannableString spannableString = new SpannableString(visitString + " Active");
@@ -657,12 +661,18 @@ public class PatientDetailActivity extends AppCompatActivity {
                     spannableString.setSpan(greenSpan, spannableString.length() - 6, spannableString.length(), 0);
                     spannableString.setSpan(underlineSpan, 0, spannableString.length() - 7, 0);
                     textView.setText(spannableString);
-                    layoutParams.setMargins(2, 2, 2, 2);
+                    layoutParams.setMargins(5, 10, 5, 0);
+                  //  textView.setLayoutParams(layoutParams);
+                    textView.setTextSize(16);
+                    Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_regular);
+                    textView.setTypeface(typeface);
                     previousVisitsList.addView(textView);
                 }
                 //If patient come up with any complaints
                 if (i == 2) {
                     TextView complaintxt1 = new TextView(this);
+                    Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_regular);
+                    complaintxt1.setTypeface(typeface);
                     complaintxt1.setLayoutParams(layoutParams);
                     if (visitValue != null && !visitValue.equals("")) {
                         String visitComplaint = Html.fromHtml(visitValue).toString();
@@ -670,7 +680,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                     } else {
                         Log.e("Check", "No complaint");
                     }
-                    layoutParams.setMargins(2, 2, 2, 2);
+                    layoutParams.setMargins(5, 10, 5, 0);
+                    //complaintxt1.setLayoutParams(layoutParams);
+                    complaintxt1.setTextSize(16);
                     previousVisitsList.addView(complaintxt1);
                 }
             }
@@ -699,6 +711,11 @@ public class PatientDetailActivity extends AppCompatActivity {
                 if (i == 1) {
                     textView.setText(visitString);
                     textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                    Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_regular);
+                    textView.setTypeface(typeface);
+                    textView.setTextSize(16);
+                    layoutParams.setMargins(5, 10, 5, 0);
+                   // textView.setLayoutParams(layoutParams);
                     previousVisitsList.addView(textView);
                 }
                 //If patient has any past complaints
@@ -710,18 +727,24 @@ public class PatientDetailActivity extends AppCompatActivity {
                     } else {
                         Log.e("Check", "No complaint");
                     }
+                    layoutParams.setMargins(5, 10, 5, 0);
+                   // complaintxt1.setLayoutParams(layoutParams);
+                    Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_regular);
+                    complaintxt1.setTypeface(typeface);
+                    complaintxt1.setTextSize(16);
                     previousVisitsList.addView(complaintxt1);
                 }
             }
         }
 
-        textView.setTextSize(18);
+        textView.setTextSize(16);
         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams
                 (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        llp.setMargins(0, 0, 0, 0);
-        textView.setLayoutParams(llp);
+        llp.setMargins(0, 10, 0, 0);
+       // textView.setLayoutParams(llp);
         textView.setTag(visit_id);
-
+        Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_regular);
+        textView.setTypeface(typeface);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -758,6 +781,9 @@ public class PatientDetailActivity extends AppCompatActivity {
         TextView textView = convertView.findViewById(R.id.textView_visit_info);
         String visitString = getString(R.string.no_prior_visits);
         textView.setText(visitString);
+        Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_regular);
+        textView.setTypeface(typeface);
+        textView.setTextSize(16);
         previousVisitsList.addView(convertView);
     }
 
@@ -973,7 +999,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                             if (complaints != null) {
                                 for (String comp : complaints) {
                                     if (!comp.trim().isEmpty()) {
-                                        visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+                                        visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) /*+ "<br/>"*/;
                                     }
                                 }
                                 if (!visitValue.isEmpty()) {
