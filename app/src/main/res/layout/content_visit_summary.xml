@@ -294,27 +294,6 @@
                     <!--Temperature-->
                     <TableRow>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
-
-                            <TextView
-                                android:id="@+id/textView_temp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/visit_summary_temperature"
-                                android:textSize="@dimen/card_content_text_size" />
-
-                            <TextView
-                                android:id="@+id/textView_temp_faren"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/temperature_f"
-                                android:textSize="@dimen/card_content_text_size" />
-
-                        </LinearLayout>
-
                         <TextView
                             android:id="@+id/textView_temp_value"
                             android:layout_width="match_parent"
@@ -414,7 +393,7 @@
         </androidx.cardview.widget.CardView>
 
         <!--Physical Exam Card contains text-->
-        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView
             android:id="@+id/cardView_physexam"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -488,6 +467,27 @@
                     android:backgroundTint="@color/cardview_dark_background"
                     android:text="@string/click_to_download_the_images"
                     android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/textView_temp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/visit_summary_temperature"
+                        android:textSize="@dimen/card_content_text_size" />
+
+                    <TextView
+                        android:id="@+id/textView_temp_faren"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/temperature_f"
+                        android:textSize="@dimen/card_content_text_size" />
+
+                </LinearLayout>
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
@@ -982,6 +982,55 @@
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
+
+<FrameLayout
+    android:id="@+id/frame_doctor"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/doctor_details_cardview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/padding_card"
+        android:layout_marginBottom="@dimen/padding_card"
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:cardElevation="2dp"
+        app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title_doctor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="12dp"
+            android:paddingStart="20dp"
+            android:text="@string/doctor"
+            android:background="@color/titleBar_cardview"
+            android:textColor="@color/white"
+            android:textSize="@dimen/card_content_text_size" />
+
+        <TextView
+            android:id="@+id/doctor_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title_doctor"
+            android:paddingTop="@dimen/padding_card"
+            android:paddingStart="@dimen/padding_card"
+            android:paddingEnd="@dimen/padding_card"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</FrameLayout>
+
         <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/chw_and_doctor_details"
             android:layout_width="match_parent"
@@ -999,24 +1048,7 @@
                 android:animateLayoutChanges="true"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/title_doctor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingVertical="12dp"
-                    android:paddingStart="20dp"
-                    android:text="@string/doctor"
-                    android:background="@color/titleBar_cardview"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/card_content_text_size" />
 
-                <TextView
-                    android:id="@+id/doctor_details"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/title_doctor"
-                    android:padding="@dimen/padding_card"
-                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/title_health_worker"

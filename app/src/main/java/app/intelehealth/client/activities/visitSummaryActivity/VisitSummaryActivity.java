@@ -53,6 +53,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -164,6 +165,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ImageButton editMedHist;
     ImageButton editAddDocs;
 
+    FrameLayout frameLayout_doctor;
     TextView nameView;
     TextView idView;
     TextView visitView;
@@ -462,6 +464,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         followUpDateCard = findViewById(R.id.cardView_follow_up_date);
         mDoctorTitle = findViewById(R.id.title_doctor);
         mDoctorName = findViewById(R.id.doctor_details);
+        frameLayout_doctor = findViewById(R.id.frame_doctor);
+        frameLayout_doctor.setVisibility(View.GONE);
 
 //        mDoctorTitle.setVisibility(View.GONE);
 //        mDoctorName.setVisibility(View.GONE);
@@ -2135,6 +2139,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String doctorDetailStr = "";
         if (objClsDoctorDetails != null) {
             //  docDigitallySign = "Digitally Signed By";
+//            mDoctorName.setVisibility(View.VISIBLE);
+//            mDoctorTitle.setVisibility(View.VISIBLE);
+            frameLayout_doctor.setVisibility(View.VISIBLE);
+
             doctorSign = objClsDoctorDetails.getTextOfSign();
 
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " + objClsDoctorDetails.getRegistrationNumber() : "";
