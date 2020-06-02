@@ -2142,10 +2142,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
                     "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification() + ", " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
                     "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ? "Phone Number: " + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
-                    "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +
+                    "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") + "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " + objClsDoctorDetails.getRegistrationNumber() : "") +
                     "</div>";
 
-            mDoctorName.setText(doctrRegistartionNum + "\n" + Html.fromHtml(doctorDetailStr));
+            mDoctorName.setText(Html.fromHtml(doctorDetailStr));
         }
     }
 
