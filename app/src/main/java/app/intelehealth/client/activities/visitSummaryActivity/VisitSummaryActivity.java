@@ -1500,6 +1500,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String[] complaints = StringUtils.split(mComplaint, Node.bullet_arrow);
         mComplaint = "";
         String colon = ":";
+        String mComplaint_new = "";
         if (complaints != null) {
             for (String comp : complaints) {
                 if (!comp.trim().isEmpty()) {
@@ -1513,6 +1514,21 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 mComplaint = mComplaint.replaceAll("</b>", "");
             }
         }
+
+        if(mComplaint.contains("Associated symptoms"))
+        {
+            String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);
+            for(String compla : cc)
+            {
+                mComplaint =  mComplaint.substring(0, compla.indexOf("Associated symptoms")-1);
+            }
+        }
+        else
+        {
+
+        }
+
+
 
         if (mPatientOpenMRSID == null) {
             mPatientOpenMRSID = getString(R.string.patient_not_registered);
