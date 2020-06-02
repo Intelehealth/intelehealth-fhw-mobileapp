@@ -294,7 +294,7 @@
     <string name="temperature_f">ତାପମାତ୍ରା (F)</string>
     <string name="respiratory_rate">ଶ୍ୱାସକ୍ରିୟା ହାର</string>
     <string name="click_to_download_the_images">"ଛବିଗୁଡ଼ିକୁ ଡାଉନଲୋଡ୍ କରିବା ପାଇଁ କ୍ଲିକ୍ କରନ୍ତୁ "</string>
-    <string name="doctor">Doctor</string>
+    <string name="doctor">Doctor Details</string>
     <string name="health_worker">"ସ୍ୱାସ୍ଥ୍ୟ କର୍ମୀ "</string>
     <string name="priority">ପ୍ରାଥମିକତା</string>
     <string name="server_url">Server url</string>

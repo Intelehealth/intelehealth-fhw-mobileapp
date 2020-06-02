@@ -1016,7 +1016,6 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/title_doctor"
                     android:padding="@dimen/padding_card"
-                    android:text=""
                     android:textSize="18sp" />
 
                 <TextView

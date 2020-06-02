@@ -472,7 +472,7 @@
     <string name="android_id">Android Id:</string>
     <string name="respiratory_rate">Respiratory Rate</string>
     <string name="click_to_download_the_images">Click to download the images</string>
-    <string name="doctor">Doctor</string>
+    <string name="doctor">Doctor Details</string>
     <string name="health_worker">Health worker</string>
     <string name="priority">Priority</string>
     <string name="server_url">Server url</string>

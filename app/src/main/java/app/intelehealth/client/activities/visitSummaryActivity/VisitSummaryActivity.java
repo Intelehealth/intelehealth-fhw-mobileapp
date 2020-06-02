@@ -462,8 +462,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
         followUpDateCard = findViewById(R.id.cardView_follow_up_date);
         mDoctorTitle = findViewById(R.id.title_doctor);
         mDoctorName = findViewById(R.id.doctor_details);
-        mDoctorTitle.setVisibility(View.GONE);
-        mDoctorName.setVisibility(View.GONE);
+
+//        mDoctorTitle.setVisibility(View.GONE);
+//        mDoctorName.setVisibility(View.GONE);
 
         diagnosisTextView = findViewById(R.id.textView_content_diagnosis);
         prescriptionTextView = findViewById(R.id.textView_content_rx);
@@ -1609,6 +1610,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (objClsDoctorDetails != null) {
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = objClsDoctorDetails.getTextOfSign();
+
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " + objClsDoctorDetails.getRegistrationNumber() : "";
             doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
                     "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
@@ -1616,6 +1618,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ? "Phone Number: " + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
                     "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +
                     "</div>";
+
+//            mDoctorName.setText(doctrRegistartionNum + "\n" + Html.fromHtml(doctorDetailStr));
         }
         if (isRespiratory) {
             String htmlDocument =
@@ -2124,6 +2128,25 @@ public class VisitSummaryActivity extends AppCompatActivity {
         Gson gson = new Gson();
         objClsDoctorDetails = gson.fromJson(dbValue, ClsDoctorDetails.class);
         Log.e(TAG, "TEST VISIT: " + objClsDoctorDetails);
+
+        String doctorSign = "";
+        String doctrRegistartionNum = "";
+        // String docDigitallySign = "";
+        String doctorDetailStr = "";
+        if (objClsDoctorDetails != null) {
+            //  docDigitallySign = "Digitally Signed By";
+            doctorSign = objClsDoctorDetails.getTextOfSign();
+
+            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " + objClsDoctorDetails.getRegistrationNumber() : "";
+            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
+                    "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
+                    "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification() + ", " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
+                    "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ? "Phone Number: " + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
+                    "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +
+                    "</div>";
+
+            mDoctorName.setText(doctrRegistartionNum + "\n" + Html.fromHtml(doctorDetailStr));
+        }
     }
 
 
