@@ -70,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
     };
     private final String TAG = LoginActivity.class.getSimpleName();
 //    protected AccountManager manager;
+//    Account Manager is commented....
 //    ProgressDialog progress;
     Context context;
     CustomProgressDialog cpd;
