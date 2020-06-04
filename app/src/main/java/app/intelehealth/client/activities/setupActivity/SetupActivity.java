@@ -84,7 +84,7 @@ public class SetupActivity extends AppCompatActivity {
     private static final int PERMISSION_ALL = 1;
     private long createdRecordsCount = 0;
 
-    protected AccountManager manager;
+//    protected AccountManager manager;
     UrlModifiers urlModifiers = new UrlModifiers();
     Base64Utils base64Utils = new Base64Utils();
     String encoded = null;
@@ -119,7 +119,7 @@ public class SetupActivity extends AppCompatActivity {
         getSupportActionBar();
         sessionManager = new SessionManager(this);
         // Persistent login information
-        manager = AccountManager.get(SetupActivity.this);
+//        manager = AccountManager.get(SetupActivity.this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -531,8 +531,8 @@ public class SetupActivity extends AppCompatActivity {
                                             Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
                                             sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
 //                                                responsecode = 200;
-                                            final Account account = new Account(USERNAME, "io.intelehealth.openmrs");
-                                            manager.addAccountExplicitly(account, PASSWORD, null);
+                                          /*  final Account account = new Account(USERNAME, "io.intelehealth.openmrs");
+                                            manager.addAccountExplicitly(account, PASSWORD, null);*/
 
                                             sessionManager.setLocationName(location.getDisplay());
                                             sessionManager.setLocationUuid(location.getUuid());

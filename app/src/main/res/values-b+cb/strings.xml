@@ -328,7 +328,7 @@
     <string name="temperature_f">Temperature (F)</string>
     <string name="respiratory_rate">Kakusog sa pagginhawa</string>
     <string name="click_to_download_the_images">I-klik ang imahe para ma-download</string>
-    <string name="doctor">Doctor</string>
+    <string name="doctor">Doctor Details</string>
     <string name="health_worker">Kawani sa panglawas</string>
     <string name="priority">Prayoridad</string>
     <string name="server_url">Server url</string>

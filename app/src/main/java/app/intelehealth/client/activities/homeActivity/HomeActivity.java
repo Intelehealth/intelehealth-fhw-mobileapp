@@ -415,7 +415,7 @@ public class HomeActivity extends AppCompatActivity {
 
 //        parseLogOut();
 
-        AccountManager manager = AccountManager.get(HomeActivity.this);
+       /* AccountManager manager = AccountManager.get(HomeActivity.this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -425,8 +425,8 @@ public class HomeActivity extends AppCompatActivity {
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
             return;
-        }
-        Account[] accountList = manager.getAccountsByType("io.intelehealth.openmrs");
+        }*/
+     /*   Account[] accountList = manager.getAccountsByType("io.intelehealth.openmrs");
         if (accountList.length > 0) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 manager.removeAccount(accountList[0], HomeActivity.this, null, null);
@@ -434,7 +434,7 @@ public class HomeActivity extends AppCompatActivity {
                 manager.removeAccount(accountList[0], null, null); // Legacy implementation
             }
         }
-
+*/
         Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();
