@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
             "username:password", "admin:nimda"
     };
     private final String TAG = LoginActivity.class.getSimpleName();
-    protected AccountManager manager;
+//    protected AccountManager manager;
 //    ProgressDialog progress;
     Context context;
     CustomProgressDialog cpd;
@@ -112,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
                 cant_log();
             }
         });
-        manager = AccountManager.get(LoginActivity.this);
+      /*  manager = AccountManager.get(LoginActivity.this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -122,16 +122,16 @@ public class LoginActivity extends AppCompatActivity {
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
             return;
-        }
+        }*/
 
-        Account[] accountList = manager.getAccountsByType("io.intelehealth.openmrs");
+      /*  Account[] accountList = manager.getAccountsByType("io.intelehealth.openmrs");
         if (accountList.length > 0) {
             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
             intent.putExtra("login", true);
 //            startJobDispatcherService(LoginActivity.this);
             startActivity(intent);
             finish();
-        }
+        }*/
 
         //Enforces Offline Login Check only if network not present
         if (!NetworkConnection.isOnline(this)) {
@@ -316,9 +316,9 @@ public class LoginActivity extends AppCompatActivity {
 
                                             provider_url_uuid = loginProviderModel.getResults().get(i).getUuid();
 //                                                success = true;
-                                            final Account account = new Account(mEmail, "io.intelehealth.openmrs");
+                                          /*  final Account account = new Account(mEmail, "io.intelehealth.openmrs");
                                             manager.addAccountExplicitly(account, mPassword, null);
-                                            Log.d("MANAGER", "MANAGER " + account);
+                                            Log.d("MANAGER", "MANAGER " + account);*/
                                             //offlineLogin.invalidateLoginCredentials();
 
 
