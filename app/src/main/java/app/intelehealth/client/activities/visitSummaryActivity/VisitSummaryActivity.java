@@ -1520,7 +1520,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);
             for(String compla : cc)
             {
-                mComplaint =  mComplaint.substring(0, compla.indexOf("Associated symptoms")-1);
+                mComplaint =  mComplaint.substring(0, compla.indexOf("Associated symptoms")-3);
             }
         }
         else
