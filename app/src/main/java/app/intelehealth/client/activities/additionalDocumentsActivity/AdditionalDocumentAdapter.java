@@ -3,8 +3,10 @@ package app.intelehealth.client.activities.additionalDocumentsActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,12 +22,14 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.crashlytics.android.Crashlytics;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import app.intelehealth.client.R;
+import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.dao.ImagesDAO;
 import app.intelehealth.client.models.DocumentObject;
 
@@ -105,6 +109,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
             }
         });
     }
+
     public void add(DocumentObject doc) {
         boolean bool = documentList.add(doc);
         if (bool) Log.d(TAG, "add: Item added to list");
@@ -118,7 +123,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
 
 
     public void displayImage(final File file) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
 
 
         final AlertDialog dialog = builder.create();
@@ -161,6 +166,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
         });
 
         dialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
 }

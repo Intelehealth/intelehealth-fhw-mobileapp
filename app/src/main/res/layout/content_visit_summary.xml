@@ -23,14 +23,13 @@
         android:orientation="vertical">
 
 
-        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView
             android:id="@+id/cardView_patient_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
-            android:layout_marginBottom="@dimen/padding_card"
-            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
 
@@ -47,20 +46,21 @@
                     android:visibility="gone" />
 
                 <RelativeLayout
+                    android:id="@+id/linear_card_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/titleBar_cardview"
-                    android:id="@+id/linear_card_view">
+                    android:background="@color/titleBar_cardview">
 
                     <TextView
                         android:id="@+id/textView_heading_patient_details"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:textColor="@color/white"
-                        android:paddingStart="20dp"
                         android:layout_centerVertical="true"
+                        android:fontFamily="@font/lato_bold"
+                        android:paddingStart="20dp"
                         android:text="@string/visit_summary_patient_details"
-                        android:textSize="18sp"/>
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/card_content_text_size" />
 
                     <ImageView
                         android:id="@+id/iv_prescription"
@@ -69,15 +69,15 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginVertical="5dp"
-                        android:src="@drawable/ic_prescription_gray"/>
+                        android:src="@drawable/ic_prescription_gray" />
 
                 </RelativeLayout>
 
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/padding_card"
-                    android:layout_below="@id/linear_card_view">
+                    android:layout_below="@id/linear_card_view"
+                    android:padding="@dimen/padding_card">
 
                     <TableRow
                         android:layout_width="wrap_content"
@@ -88,16 +88,18 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
                             android:text="@string/visit_summary_heading_name"
-                            android:textSize="@dimen/card_content_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_name_value"
                             android:layout_width="1dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
+                            android:fontFamily="@font/lato_regular"
                             android:gravity="fill"
-                            android:textSize="@dimen/card_content_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
 
                     <TableRow
@@ -107,17 +109,19 @@
                         <TextView
                             android:id="@+id/textView_id"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
                             android:text="@string/visit_summary_heading_id"
-                            android:textSize="@dimen/card_content_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_id_value"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
-                            android:textSize="@dimen/card_content_text_size" />
+                            android:fontFamily="@font/lato_regular"
+                            android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
 
                     <TableRow
@@ -129,15 +133,17 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
                             android:text="@string/visitID"
-                            android:textSize="@dimen/card_content_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_visit_value"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="3"
-                            android:textSize="@dimen/card_content_text_size" />
+                            android:fontFamily="@font/lato_regular"
+                            android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
 
                 </TableLayout>
@@ -153,35 +159,34 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
-            android:layout_marginBottom="@dimen/padding_card"
-            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/textView_heading_vitals"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/visit_summary_vitals_heading"
-                    android:paddingVertical="12dp"
-                    android:textColor="@color/white"
-                    android:paddingStart="20dp"
                     android:background="@color/titleBar_cardview"
+                    android:fontFamily="@font/lato_bold"
+                    android:paddingVertical="12dp"
+                    android:paddingStart="20dp"
+                    android:text="@string/visit_summary_vitals_heading"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/card_content_text_size" />
 
                 <ImageButton
                     android:id="@+id/imagebutton_edit_vitals"
+                    style="@style/SelectableItemBackground"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:background="@null"
                     android:contentDescription="TODO"
-                    style="@style/SelectableItemBackground"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:padding="10dp"
                     app:srcCompat="@drawable/edit_icon" />
@@ -189,8 +194,8 @@
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/padding_card"
-                    android:layout_below="@id/textView_heading_vitals">
+                    android:layout_below="@id/textView_heading_vitals"
+                    android:padding="@dimen/padding_card">
 
                     <!--Height-->
                     <TableRow
@@ -202,15 +207,17 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
                             android:text="@string/visit_summary_height_heading"
-                            android:textSize="@dimen/card_content_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_height_value"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:textSize="@dimen/card_content_text_size" />
+                            android:fontFamily="@font/lato_regular"
+                            android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
                     <!--Weight-->
                     <TableRow android:layout_width="match_parent">
@@ -220,15 +227,17 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
                             android:text="@string/visit_summary_weight"
-                            android:textSize="@dimen/card_content_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_weight_value"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:textSize="@dimen/card_content_text_size" />
+                            android:fontFamily="@font/lato_regular"
+                            android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
                     <!--BMI-->
                     <TableRow>
@@ -238,15 +247,17 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
                             android:text="@string/visit_summary_bmi"
-                            android:textSize="@dimen/card_content_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_bmi_value"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:textSize="@dimen/card_content_text_size" />
+                            android:fontFamily="@font/lato_regular"
+                            android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
                     <!--Blood Pressure-->
                     <TableRow>
@@ -256,8 +267,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
                             android:text="@string/visit_summary_bp"
-                            android:textSize="@dimen/card_content_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -270,7 +282,8 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:textSize="@dimen/card_content_text_size" />
+                                android:fontFamily="@font/lato_regular"
+                                android:textSize="@dimen/card_content_sub_text_size" />
                         </LinearLayout>
                     </TableRow>
                     <!--Pulse-->
@@ -281,15 +294,17 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
                             android:text="@string/visit_summary_pulse"
-                            android:textSize="@dimen/card_content_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_pulse_value"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:textSize="@dimen/card_content_text_size" />
+                            android:fontFamily="@font/lato_regular"
+                            android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
                     <!--Temperature-->
                     <TableRow>
@@ -303,15 +318,17 @@
                                 android:id="@+id/textView_temp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_bold"
                                 android:text="@string/visit_summary_temperature"
-                                android:textSize="@dimen/card_content_text_size" />
+                                android:textSize="@dimen/card_content_sub_text_size" />
 
                             <TextView
                                 android:id="@+id/textView_temp_faren"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_regular"
                                 android:text="@string/temperature_f"
-                                android:textSize="@dimen/card_content_text_size" />
+                                android:textSize="@dimen/card_content_sub_text_size" />
 
                         </RelativeLayout>
 
@@ -320,7 +337,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:textSize="@dimen/card_content_text_size" />
+                            android:fontFamily="@font/lato_regular"
+                            android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
                     <!--sPO2-->
                     <TableRow>
@@ -330,15 +348,17 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
                             android:text="@string/visit_summary_pulseox"
-                            android:textSize="@dimen/card_content_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_pulseox_value"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:textSize="@dimen/card_content_text_size" />
+                            android:fontFamily="@font/lato_regular"
+                            android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
 
                     <TableRow>
@@ -348,15 +368,17 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
                             android:text="@string/respiratory_rate"
-                            android:textSize="@dimen/card_content_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                         <TextView
                             android:id="@+id/textView_respiratory_value"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:textSize="@dimen/card_content_text_size" />
+                            android:fontFamily="@font/lato_regular"
+                            android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
 
                 </TableLayout>
@@ -370,8 +392,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
-            android:layout_marginBottom="@dimen/padding_card"
-            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
 
@@ -383,21 +404,22 @@
                     android:id="@+id/textView_heading_complaint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/visit_summary_complaint"
-                    android:paddingVertical="12dp"
                     android:background="@color/titleBar_cardview"
-                    android:textColor="@color/white"
+                    android:fontFamily="@font/lato_bold"
+                    android:paddingVertical="12dp"
                     android:paddingStart="20dp"
+                    android:text="@string/visit_summary_complaint"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/card_content_text_size" />
 
                 <ImageButton
                     android:id="@+id/imagebutton_edit_complaint"
+                    style="@style/SelectableItemBackground"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignRight="@id/textView_heading_complaint"
                     android:background="@null"
                     android:contentDescription="TODO"
-                    style="@style/SelectableItemBackground"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:padding="10dp"
                     app:srcCompat="@drawable/edit_icon" />
@@ -407,9 +429,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView_heading_complaint"
+                    android:fontFamily="@font/lato_regular"
+                    android:padding="@dimen/padding_card"
                     android:paddingTop="@dimen/padding_card"
-                    android:textSize="@dimen/card_content_text_size"
-                    android:padding="@dimen/padding_card"/>
+                    android:textSize="@dimen/card_content_sub_text_size" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
@@ -420,8 +443,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
-            android:layout_marginBottom="@dimen/padding_card"
-            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
 
@@ -433,34 +455,35 @@
                     android:id="@+id/textView_heading_physexam"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/titleBar_cardview"
+                    android:fontFamily="@font/lato_bold"
                     android:paddingVertical="12dp"
                     android:paddingStart="20dp"
                     android:text="@string/visit_summary_on_examination"
-                    android:background="@color/titleBar_cardview"
                     android:textColor="@color/white"
                     android:textSize="@dimen/card_content_text_size" />
 
                 <ImageButton
                     android:id="@+id/imagebutton_edit_physexam"
+                    style="@style/SelectableItemBackground"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignRight="@id/textView_heading_physexam"
                     android:background="@null"
                     android:contentDescription="TODO"
-                    style="@style/SelectableItemBackground"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:padding="10dp"
                     app:srcCompat="@drawable/edit_icon" />
 
                 <ImageButton
                     android:id="@+id/imagebutton_download_physexam"
+                    style="@style/SelectableItemBackground"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@id/imagebutton_edit_physexam"
                     android:layout_marginLeft="-29dp"
                     android:background="@null"
                     android:contentDescription="TODO"
-                    style="@style/SelectableItemBackground"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:padding="10dp"
                     app:srcCompat="@drawable/download" />
@@ -470,8 +493,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView_heading_physexam"
-                    android:textSize="@dimen/card_content_text_size"
-                    android:padding="@dimen/padding_card"/>
+                    android:fontFamily="@font/lato_regular"
+                    android:padding="@dimen/padding_card"
+                    android:textSize="@dimen/card_content_sub_text_size" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recy_physexam"
@@ -486,7 +510,9 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/recy_physexam"
                     android:backgroundTint="@color/cardview_dark_background"
+                    android:fontFamily="@font/lato_medium"
                     android:text="@string/click_to_download_the_images"
+                    android:textSize="@dimen/card_content_sub_text_size"
                     android:visibility="gone" />
 
 
@@ -500,8 +526,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
-            android:layout_marginBottom="@dimen/padding_card"
-            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
 
@@ -513,21 +538,22 @@
                     android:id="@+id/textView_heading_pathist"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                   android:paddingVertical="12dp"
-                    android:text="@string/visit_summary_medical_history"
                     android:background="@color/titleBar_cardview"
-                    android:textColor="@color/white"
+                    android:fontFamily="@font/lato_bold"
+                    android:paddingVertical="12dp"
                     android:paddingStart="20dp"
+                    android:text="@string/visit_summary_medical_history"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/card_content_text_size" />
 
                 <ImageButton
                     android:id="@+id/imagebutton_edit_pathist"
+                    style="@style/SelectableItemBackground"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignRight="@id/textView_heading_pathist"
                     android:background="@null"
                     android:contentDescription="TODO"
-                    style="@style/SelectableItemBackground"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:padding="10dp"
                     app:srcCompat="@drawable/edit_icon" />
@@ -537,8 +563,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView_heading_pathist"
+                    android:fontFamily="@font/lato_regular"
                     android:padding="@dimen/padding_card"
-                    android:textSize="@dimen/card_content_text_size" />
+                    android:textSize="@dimen/card_content_sub_text_size" />
             </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
@@ -550,8 +577,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
-            android:layout_marginBottom="@dimen/padding_card"
-            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
 
@@ -563,21 +589,22 @@
                     android:id="@+id/textView_heading_famhist"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/visit_summary_family_history"
                     android:background="@color/titleBar_cardview"
-                    android:textColor="@color/white"
-                    android:paddingStart="20dp"
+                    android:fontFamily="@font/lato_bold"
                     android:paddingVertical="12dp"
+                    android:paddingStart="20dp"
+                    android:text="@string/visit_summary_family_history"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/card_content_text_size" />
 
                 <ImageButton
                     android:id="@+id/imagebutton_edit_famhist"
+                    style="@style/SelectableItemBackground"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignRight="@id/textView_heading_famhist"
                     android:background="@null"
                     android:contentDescription="TODO"
-                    style="@style/SelectableItemBackground"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:padding="10dp"
                     app:srcCompat="@drawable/edit_icon" />
@@ -587,8 +614,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView_heading_famhist"
-                    android:textSize="@dimen/card_content_text_size"
-                    android:padding="@dimen/padding_card"/>
+                    android:fontFamily="@font/lato_regular"
+                    android:padding="@dimen/padding_card"
+                    android:textSize="@dimen/card_content_sub_text_size" />
 
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
@@ -599,8 +627,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
-            android:layout_marginBottom="@dimen/padding_card"
-            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
 
@@ -612,21 +639,22 @@
                     android:id="@+id/textView_additional_document_images"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/title_activity_additional_documents"
                     android:background="@color/titleBar_cardview"
-                    android:textColor="@color/white"
-                    android:paddingStart="20dp"
+                    android:fontFamily="@font/lato_bold"
                     android:paddingVertical="12dp"
+                    android:paddingStart="20dp"
+                    android:text="@string/title_activity_additional_documents"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/card_content_text_size" />
 
                 <ImageButton
                     android:id="@+id/imagebutton_edit_additional_document"
+                    style="@style/SelectableItemBackground"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignRight="@id/textView_additional_document_images"
                     android:background="@null"
                     android:contentDescription="TODO"
-                    style="@style/SelectableItemBackground"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:padding="10dp"
                     app:srcCompat="@drawable/edit_icon" />
@@ -646,25 +674,25 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/recy_additional_documents"
                     android:backgroundTint="@color/cardview_dark_background"
+                    android:fontFamily="@font/lato_medium"
+                    android:padding="@dimen/padding_card"
                     android:text="@string/click_to_download_the_images"
-                    android:visibility="gone"
-                    android:padding="@dimen/padding_card"/>
+                    android:textSize="@dimen/card_content_sub_text_size"
+                    android:visibility="gone" />
             </RelativeLayout>
 
 
         </androidx.cardview.widget.CardView>
 
         <!-- Diagnosis contains a TableView-->
-        <androidx.cardview.widget.CardView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_diagnosis"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
-            android:layout_marginBottom="@dimen/padding_card"
             android:visibility="gone"
-            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
 
@@ -676,10 +704,11 @@
                     android:id="@+id/textView_heading_diagnosis"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/titleBar_cardview"
+                    android:fontFamily="@font/lato_bold"
+                    android:paddingVertical="12dp"
                     android:paddingStart="20dp"
                     android:text="@string/visit_summary_diagnosis"
-                    android:paddingVertical="12dp"
-                    android:background="@color/titleBar_cardview"
                     android:textColor="@color/white"
                     android:textSize="@dimen/card_content_text_size" />
 
@@ -687,8 +716,8 @@
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/padding_card"
-                    android:layout_below="@id/textView_heading_diagnosis">
+                    android:layout_below="@id/textView_heading_diagnosis"
+                    android:padding="@dimen/padding_card">
 
                     <!--Diagnosis-->
                     <TableRow
@@ -700,8 +729,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
                             android:text="@string/visit_summary_height_heading"
-                            android:textSize="@dimen/card_content_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                     </TableRow>
 
@@ -710,16 +740,14 @@
         </androidx.cardview.widget.CardView>
 
         <!-- Prescription contains a TableView-->
-        <androidx.cardview.widget.CardView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_rx"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
-            android:layout_marginBottom="@dimen/padding_card"
             android:visibility="gone"
-            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
 
@@ -731,19 +759,20 @@
                     android:id="@+id/textView_heading_rx"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/titleBar_cardview"
+                    android:fontFamily="@font/lato_bold"
                     android:paddingVertical="12dp"
                     android:paddingStart="20dp"
-                    android:background="@color/titleBar_cardview"
+                    android:text="@string/visit_summary_rx"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/card_content_text_size"
-                    android:text="@string/visit_summary_rx" />
+                    android:textSize="@dimen/card_content_text_size" />
 
 
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/padding_card"
-                    android:layout_below="@id/textView_heading_rx">
+                    android:layout_below="@id/textView_heading_rx"
+                    android:padding="@dimen/padding_card">
 
                     <!--Prescription-->
                     <TableRow
@@ -755,8 +784,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
                             android:text="@string/visit_summary_height_heading"
-                            android:textSize="@dimen/card_content_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                     </TableRow>
 
@@ -765,16 +795,14 @@
         </androidx.cardview.widget.CardView>
 
         <!-- Medical Advice contains a TableView-->
-        <androidx.cardview.widget.CardView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_medical_advice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
-            android:layout_marginBottom="@dimen/padding_card"
             android:visibility="gone"
-            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
 
@@ -786,19 +814,20 @@
                     android:id="@+id/textView_heading_medical_advice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/titleBar_cardview"
+                    android:fontFamily="@font/lato_bold"
                     android:paddingVertical="12dp"
                     android:paddingStart="20dp"
-                    android:background="@color/titleBar_cardview"
+                    android:text="@string/visit_summary_advice"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/card_content_text_size"
-                    android:text="@string/visit_summary_advice" />
+                    android:textSize="@dimen/card_content_text_size" />
 
 
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/padding_card"
-                    android:layout_below="@id/textView_heading_medical_advice">
+                    android:layout_below="@id/textView_heading_medical_advice"
+                    android:padding="@dimen/padding_card">
 
                     <!--Medical Advice-->
                     <TableRow
@@ -810,8 +839,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
                             android:text="@string/visit_summary_height_heading"
-                            android:textSize="@dimen/card_content_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                     </TableRow>
 
@@ -820,16 +850,14 @@
         </androidx.cardview.widget.CardView>
 
         <!-- Requested Tests contains a TableView-->
-        <androidx.cardview.widget.CardView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_tests"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
-            android:layout_marginBottom="@dimen/padding_card"
             android:visibility="gone"
-            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
 
@@ -841,20 +869,20 @@
                     android:id="@+id/textView_heading_tests"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/visit_summary_tests_prescribed"
+                    android:background="@color/titleBar_cardview"
+                    android:fontFamily="@font/lato_bold"
                     android:paddingVertical="12dp"
                     android:paddingStart="20dp"
-                    android:background="@color/titleBar_cardview"
+                    android:text="@string/visit_summary_tests_prescribed"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/card_content_text_size"
-                     />
+                    android:textSize="@dimen/card_content_text_size" />
 
 
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/padding_card"
-                    android:layout_below="@id/textView_heading_tests">
+                    android:layout_below="@id/textView_heading_tests"
+                    android:padding="@dimen/padding_card">
 
                     <!--Requsted Tests-->
                     <TableRow
@@ -866,8 +894,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
                             android:text="@string/visit_summary_height_heading"
-                            android:textSize="@dimen/card_content_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                     </TableRow>
 
@@ -876,16 +905,14 @@
         </androidx.cardview.widget.CardView>
 
         <!-- Additional Comments contains a TableView-->
-        <androidx.cardview.widget.CardView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_additional_comments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
-            android:layout_marginBottom="@dimen/padding_card"
             android:visibility="gone"
-            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
 
@@ -897,19 +924,20 @@
                     android:id="@+id/textView_heading_additional_comments"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/visit_summary_additional_comments"
+                    android:background="@color/titleBar_cardview"
+                    android:fontFamily="@font/lato_bold"
                     android:paddingVertical="12dp"
                     android:paddingStart="20dp"
-                    android:background="@color/titleBar_cardview"
+                    android:text="@string/visit_summary_additional_comments"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/card_content_text_size"/>
+                    android:textSize="@dimen/card_content_text_size" />
 
 
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/padding_card"
-                    android:layout_below="@id/textView_heading_additional_comments">
+                    android:layout_below="@id/textView_heading_additional_comments"
+                    android:padding="@dimen/padding_card">
 
                     <!--Additional Comments-->
                     <TableRow
@@ -921,8 +949,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
                             android:text="@string/visit_summary_height_heading"
-                            android:textSize="@dimen/card_content_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                     </TableRow>
 
@@ -930,16 +959,14 @@
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
-        <androidx.cardview.widget.CardView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_follow_up_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
-            android:layout_marginBottom="@dimen/padding_card"
             android:visibility="gone"
-            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
 
@@ -951,10 +978,11 @@
                     android:id="@+id/textView_heading_follow_up_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/visit_summary_follow_up_date"
+                    android:background="@color/titleBar_cardview"
+                    android:fontFamily="@font/lato_bold"
                     android:paddingVertical="12dp"
                     android:paddingStart="20dp"
-                    android:background="@color/titleBar_cardview"
+                    android:text="@string/visit_summary_follow_up_date"
                     android:textColor="@color/white"
                     android:textSize="@dimen/card_content_text_size" />
 
@@ -962,8 +990,8 @@
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/padding_card"
-                    android:layout_below="@id/textView_heading_follow_up_date">
+                    android:layout_below="@id/textView_heading_follow_up_date"
+                    android:padding="@dimen/padding_card">
 
                     <!--Additional Comments-->
                     <TableRow
@@ -975,8 +1003,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
                             android:text="@string/visit_summary_height_heading"
-                            android:textSize="@dimen/card_content_text_size" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                     </TableRow>
 
@@ -1037,8 +1066,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
-            android:layout_marginBottom="@dimen/padding_card"
-            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true">
 
@@ -1054,11 +1082,12 @@
                     android:id="@+id/title_health_worker"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="12dp"
-                    android:text="@string/health_worker"
                     android:background="@color/titleBar_cardview"
-                    android:textColor="@color/white"
+                    android:fontFamily="@font/lato_bold"
+                    android:paddingVertical="12dp"
                     android:paddingStart="20dp"
+                    android:text="@string/health_worker"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/card_content_text_size" />
 
                 <TextView
@@ -1066,9 +1095,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/title_health_worker"
+                    android:fontFamily="@font/lato_regular"
                     android:padding="@dimen/padding_card"
                     android:text=""
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/card_content_sub_text_size" />
 
             </LinearLayout>
 
@@ -1080,8 +1110,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
-            android:layout_marginBottom="@dimen/padding_card"
-            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
             app:cardUseCompatPadding="true"
             app:contentPadding="@dimen/padding_card">
@@ -1098,9 +1127,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.9"
-                    android:text="@string/priority"
-                    android:paddingStart="5dp"
+                    android:fontFamily="@font/lato_bold"
                     android:paddingVertical="12dp"
+                    android:paddingStart="5dp"
+                    android:text="@string/priority"
                     android:textSize="@dimen/card_content_text_size" />
 
                 <CheckBox
@@ -1108,6 +1138,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
+                    android:fontFamily="@font/lato_regular"
                     android:textSize="20sp" />
 
 
@@ -1153,7 +1184,7 @@
         <!--android:layout_height="wrap_content"-->
         <!--android:layout_below="@+id/textView_heading_prevreports"-->
         <!--android:paddingTop="@dimen/padding_card"-->
-        <!--android:textSize="@dimen/card_content_text_size" />-->
+        <!--android:textSize="@dimen/card_content_sub_text_size" />-->
         <!--</RelativeLayout>-->
 
         <!--</android.support.v7.widget.CardView>-->
@@ -1188,42 +1219,124 @@
         <!--android:layout_height="wrap_content"-->
         <!--android:layout_below="@+id/textView_heading_hadetails"-->
         <!--android:paddingTop="@dimen/padding_card"-->
-        <!--android:textSize="@dimen/card_content_text_size" />-->
+        <!--android:textSize="@dimen/card_content_sub_text_size" />-->
         <!--</RelativeLayout>-->
         <!--</android.support.v7.widget.CardView>-->
 
 
-        <Button
-            android:id="@+id/button_upload"
+        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:background="@color/colorPrimary"
-            android:drawableLeft="@drawable/ic_cloud_upload"
-            android:paddingRight="45dp"
-            android:text="@string/visit_summary_button_upload"
-            android:textAlignment="center"
-            android:textColor="@android:color/white"
-            android:textSize="24dp"
-            style="@style/SelectableItemBackground"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:textStyle="bold" />
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/padding_card"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true">
 
-        <Button
-            android:id="@+id/button_download"
+            <RelativeLayout
+                android:id="@+id/button_upload"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/lato_bold"
+                    android:gravity="center_horizontal"
+                    android:text="@string/visit_summary_button_upload"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="5dp"
+                    app:srcCompat="@drawable/ic_cloud_upload">
+
+                </ImageView>
+
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:background="@color/colorPrimary"
-            android:drawableLeft="@drawable/ic_cloud_download"
-            android:paddingRight="40dp"
-            android:text="@string/visit_summary_button_download"
-            android:textAlignment="center"
-            android:textColor="@android:color/white"
-            android:textSize="24dp"
-            style="@style/SelectableItemBackground"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:textStyle="bold" />
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/padding_card"
+            app:cardCornerRadius="5dp"
+            android:layout_marginBottom="@dimen/padding_card"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true">
+
+            <RelativeLayout
+                android:id="@+id/button_download"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/lato_bold"
+                    android:gravity="center_horizontal"
+                    android:text="@string/visit_summary_button_download"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="5dp"
+                    app:srcCompat="@drawable/ic_cloud_download">
+
+                </ImageView>
+
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- <Button
+             android:id="@+id/button_upload"
+             style="@style/SelectableItemBackground"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="16dp"
+             android:background="@color/colorPrimary"
+             android:drawableStart="@drawable/ic_cloud_upload"
+             android:fontFamily="@font/lato_bold"
+             android:foreground="?android:attr/selectableItemBackground"
+             android:gravity="center"
+             android:text="@string/visit_summary_button_upload"
+             android:textAlignment="center"
+             android:textColor="@android:color/white"
+             android:textSize="20sp" />
+
+         <Button
+             android:id="@+id/button_download"
+             style="@style/SelectableItemBackground"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="16dp"
+             android:layout_marginBottom="5dp"
+             android:background="@color/colorPrimary"
+             android:drawableStart="@drawable/ic_cloud_download"
+             android:fontFamily="@font/lato_bold"
+             android:foreground="?android:attr/selectableItemBackground"
+             android:text="@string/visit_summary_button_download"
+             android:textAlignment="center"
+             android:textColor="@android:color/white"
+             android:textSize="20sp" />-->
 
     </LinearLayout>
 

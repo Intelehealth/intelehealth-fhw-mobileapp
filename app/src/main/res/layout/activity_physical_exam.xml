@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="io.intelehealth.client.activities.physical_exam_activity.PhysicalExamActivity">
+    tools:context=".activities.physcialExamActivity.PhysicalExamActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,6 +31,7 @@
             android:layout_height="wrap_content"
             app:tabTextColor="@android:color/white"
             app:tabSelectedTextColor="@android:color/white"
+            android:visibility="gone"
             android:background="@color/colorPrimary"/>
 
         <androidx.viewpager.widget.ViewPager
@@ -38,7 +39,19 @@
             android:layout_alignBottom="@id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="gone"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/physExam_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/app_bar_view"
+            android:scrollbars="vertical"
+            android:visibility="visible"
+            android:fadeScrollbars="false"
+            android:scrollbarThumbVertical="@color/colorAccent"
+            android:layout_above="@+id/fab"/>
 
     </LinearLayout>
 
@@ -48,6 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/fab_margin"
+        android:visibility="gone"
         app:srcCompat="@drawable/ic_done_24dp"
         />
 

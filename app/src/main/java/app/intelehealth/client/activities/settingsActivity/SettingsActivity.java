@@ -20,15 +20,19 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
+
 import androidx.core.app.NavUtils;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
+
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.EditText;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.List;
 import java.util.Locale;
@@ -135,7 +139,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         admin_password = false;
 
         final Activity activity = (Activity) context;
-        final AlertDialog.Builder textInput = new AlertDialog.Builder(context, R.style.AlertDialogStyle);
+        final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(context);
         textInput.setTitle(R.string.admin_password_dialog_heading);
         final EditText passwordEditText = new EditText(context);
         passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT |
@@ -166,7 +170,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
         });
 
-        textInput.show();
+        AlertDialog dialog = textInput.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(activity, dialog);
     }
 
     public static void restoreValidation(final Context context) {
@@ -174,7 +179,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         admin_password = false;
 
         final Activity activity = (Activity) context;
-        final AlertDialog.Builder textInput = new AlertDialog.Builder(context, R.style.AlertDialogStyle);
+        final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(context);
         textInput.setTitle(R.string.admin_password_dialog_heading);
         textInput.setCancelable(false);
         final EditText passwordEditText = new EditText(context);
@@ -211,7 +216,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
         });
 
-        textInput.show();
+        AlertDialog dialog = textInput.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
     @Override

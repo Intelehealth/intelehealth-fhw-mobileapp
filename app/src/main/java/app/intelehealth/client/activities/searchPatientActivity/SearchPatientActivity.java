@@ -7,9 +7,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
+
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,12 +32,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import app.intelehealth.client.R;
 import app.intelehealth.client.app.AppConstants;
+import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.dao.ProviderDAO;
 import app.intelehealth.client.models.dto.PatientDTO;
 import app.intelehealth.client.utilities.Logger;
@@ -51,7 +56,7 @@ public class SearchPatientActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     SessionManager sessionManager = null;
     TextView msg;
-    AlertDialog.Builder dialogBuilder;
+    MaterialAlertDialogBuilder dialogBuilder;
     private String TAG = SearchPatientActivity.class.getSimpleName();
     private SQLiteDatabase db;
 
@@ -66,6 +71,8 @@ public class SearchPatientActivity extends AppCompatActivity {
 //        toolbar.setOverflowIcon(drawable);
 
         setSupportActionBar(toolbar);
+        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
+        toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         // Get the intent, verify the action and get the query
@@ -104,9 +111,9 @@ public class SearchPatientActivity extends AppCompatActivity {
             recycler = new SearchPatientAdapter(getQueryPatients(query), SearchPatientActivity.this);
             RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerView.setLayoutManager(reLayoutManager);
-            recyclerView.addItemDecoration(new
+           /* recyclerView.addItemDecoration(new
                     DividerItemDecoration(this,
-                    DividerItemDecoration.VERTICAL));
+                    DividerItemDecoration.VERTICAL));*/
             recyclerView.setAdapter(recycler);
 
         } catch (Exception e) {
@@ -125,9 +132,9 @@ public class SearchPatientActivity extends AppCompatActivity {
 //            Log.i("db data", "" + getAllPatientsFromDB());
             RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerView.setLayoutManager(reLayoutManager);
-            recyclerView.addItemDecoration(new
+         /*   recyclerView.addItemDecoration(new
                     DividerItemDecoration(this,
-                    DividerItemDecoration.VERTICAL));
+                    DividerItemDecoration.VERTICAL));*/
             recyclerView.setAdapter(recycler);
 
         } catch (Exception e) {
@@ -208,21 +215,21 @@ public class SearchPatientActivity extends AppCompatActivity {
         String table = "tbl_patient";
         final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " ORDER BY first_name ASC", null);
         try {
-        if (searchCursor.moveToFirst()) {
-            do {
-                PatientDTO model = new PatientDTO();
-                model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
-                model.setFirstname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")));
-                model.setLastname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")));
-                model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
-                model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
-                model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
-                model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
+            if (searchCursor.moveToFirst()) {
+                do {
+                    PatientDTO model = new PatientDTO();
+                    model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
+                    model.setFirstname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")));
+                    model.setLastname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")));
+                    model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
+                    model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
+                    model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
+                    model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
 
-                modelList.add(model);
-            } while (searchCursor.moveToNext());
-        }
-        searchCursor.close();
+                    modelList.add(model);
+                } while (searchCursor.moveToNext());
+            }
+            searchCursor.close();
         } catch (DAOException e) {
             e.printStackTrace();
         }
@@ -261,7 +268,7 @@ public class SearchPatientActivity extends AppCompatActivity {
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
         } else {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
             alertDialogBuilder.setMessage("Unable to end " + failedUploads +
                     " visits.Please upload visit before attempting to end the visit.");
             alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
@@ -272,6 +279,7 @@ public class SearchPatientActivity extends AppCompatActivity {
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
+            IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
         }
 
     }
@@ -294,7 +302,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         } catch (DAOException e) {
             e.printStackTrace();
         }
-        dialogBuilder = new AlertDialog.Builder(SearchPatientActivity.this);
+        dialogBuilder = new MaterialAlertDialogBuilder(SearchPatientActivity.this);
         dialogBuilder.setTitle(getString(R.string.filter_by_creator));
 
         String[] finalCreator_names = creator_names;
@@ -341,6 +349,8 @@ public class SearchPatientActivity extends AppCompatActivity {
 
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
         negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
     }
 
@@ -413,9 +423,9 @@ public class SearchPatientActivity extends AppCompatActivity {
 //            Log.i("db data", "" + getQueryPatients(query));
                 RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
                 recyclerView.setLayoutManager(reLayoutManager);
-                recyclerView.addItemDecoration(new
+            /*    recyclerView.addItemDecoration(new
                         DividerItemDecoration(this,
-                        DividerItemDecoration.VERTICAL));
+                        DividerItemDecoration.VERTICAL));*/
                 recyclerView.setAdapter(recycler);
 
             } catch (Exception e) {
@@ -464,9 +474,9 @@ public class SearchPatientActivity extends AppCompatActivity {
                 recycler = new SearchPatientAdapter(modelList, SearchPatientActivity.this);
                 RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
                 recyclerView.setLayoutManager(reLayoutManager);
-                recyclerView.addItemDecoration(new
+           /*     recyclerView.addItemDecoration(new
                         DividerItemDecoration(this,
-                        DividerItemDecoration.VERTICAL));
+                        DividerItemDecoration.HORIZONTAL));*/
                 recyclerView.setAdapter(recycler);
 
             } catch (Exception e) {

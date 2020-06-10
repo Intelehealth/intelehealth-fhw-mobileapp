@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Handler;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,11 +21,13 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
 import java.util.List;
 
 import app.intelehealth.client.R;
+import app.intelehealth.client.app.IntelehealthApplication;
 
 
 /**
@@ -88,9 +92,10 @@ public class HorizontalAdapter extends RecyclerView.Adapter<MyViewHolder> {
     }
 
     public void displayImage(final File file) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        //AlertDialog.Builder builder = new AlertDialog.Builder(context,R.style.AlertDialogStyle);
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(context);
 
-        final AlertDialog dialog = builder.create();
+        final AlertDialog dialog = alertDialogBuilder.create();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogLayout = inflater.inflate(R.layout.image_confirmation_dialog, null);
         dialog.setView(dialogLayout);
@@ -132,6 +137,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
             }
         });
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
 

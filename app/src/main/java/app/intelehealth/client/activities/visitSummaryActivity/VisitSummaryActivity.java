@@ -27,6 +27,7 @@ import android.print.PrintJob;
 import android.print.PrintManager;
 
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.core.view.MenuItemCompat;
 import androidx.appcompat.app.AlertDialog;
@@ -58,10 +59,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -87,6 +90,7 @@ import app.intelehealth.client.activities.familyHistoryActivity.FamilyHistoryAct
 import app.intelehealth.client.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import app.intelehealth.client.activities.patientSurveyActivity.PatientSurveyActivity;
 import app.intelehealth.client.app.AppConstants;
+import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.dao.EncounterDAO;
 import app.intelehealth.client.database.dao.ImagesDAO;
 import app.intelehealth.client.database.dao.ObsDAO;
@@ -97,6 +101,7 @@ import app.intelehealth.client.knowledgeEngine.Node;
 import app.intelehealth.client.models.ClsDoctorDetails;
 import app.intelehealth.client.models.Patient;
 import app.intelehealth.client.models.dto.ObsDTO;
+import app.intelehealth.client.models.pushRequestApiCall.Visit;
 import app.intelehealth.client.services.DownloadService;
 import app.intelehealth.client.syncModule.SyncUtils;
 import app.intelehealth.client.utilities.DateAndTimeUtils;
@@ -196,8 +201,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     NotificationManager mNotificationManager;
     NotificationCompat.Builder mBuilder;
 
-    Button uploadButton;
-    Button downloadButton;
+    RelativeLayout uploadButton;
+    RelativeLayout downloadButton;
     ArrayList<String> physicalExams;
 
     CardView diagnosisCard;
@@ -348,8 +353,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             case R.id.summary_endVisit: {
                 //meera
                 if (downloaded) {
+                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
 
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+//                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
                     alertDialogBuilder.setMessage(R.string.end_visit_msg);
                     alertDialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                         @Override
@@ -364,11 +370,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             endVisit();
                         }
                     });
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
+                    AlertDialog alertDialog = alertDialogBuilder.show();
+                    //alertDialog.show();
+                    IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
                 } else {
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+//                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
                     alertDialogBuilder.setMessage(R.string.error_no_data);
                     alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                         @Override
@@ -376,8 +384,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             dialog.dismiss();
                         }
                     });
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
+                    AlertDialog alertDialog = alertDialogBuilder.show();
+                    //alertDialog.show();
+                    IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
                 }
                 return true;
             }
@@ -449,6 +458,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_visit_summary);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
+        toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         mLayout = findViewById(R.id.summary_layout);
         context = getApplicationContext();
@@ -794,7 +805,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editFamHist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder famHistDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
+                MaterialAlertDialogBuilder famHistDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
+                //final MaterialAlertDialogBuilder famHistDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity.this,R.style.AlertDialogStyle);
                 famHistDialog.setTitle(getString(R.string.visit_summary_family_history));
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
@@ -808,7 +820,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 famHistDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        final AlertDialog.Builder textInput = new AlertDialog.Builder(VisitSummaryActivity.this);
+                        MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
+                        // final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
                         if (famHistory.getValue() != null)
@@ -836,8 +849,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 dialog.dismiss();
                             }
                         });
-                        textInput.show();
+                        AlertDialog alertDialog = textInput.show();
                         dialogInterface.dismiss();
+                        IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, alertDialog);
                     }
                 });
 
@@ -869,22 +883,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 alertDialog.show();
                 Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-                pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                // pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
                 Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
                 nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-                nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                //nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
                 Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
                 neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-                neutralb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                neutralb.setTypeface(ResourcesCompat.getFont(VisitSummaryActivity.this, R.font.lato_bold));
+                IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, alertDialog);
             }
         });
 
         editComplaint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder complaintDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
+                final MaterialAlertDialogBuilder complaintDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
                 complaintDialog.setTitle(getString(R.string.visit_summary_complaint));
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
@@ -899,7 +914,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 complaintDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        final AlertDialog.Builder textInput = new AlertDialog.Builder(VisitSummaryActivity.this);
+                        final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
                         if (complaint.getValue() != null) {
@@ -926,7 +941,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 dialog.dismiss();
                             }
                         });
-                        textInput.show();
+                        AlertDialog alertDialog = textInput.show();
+                        IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, alertDialog);
                         dialogInterface.dismiss();
                     }
                 });
@@ -982,14 +998,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
                 neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-                neutralb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                neutralb.setTypeface(ResourcesCompat.getFont(VisitSummaryActivity.this, R.font.lato_bold));
+
+                IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, alertDialog);
             }
         });
 
         editPhysical.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder physicalDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
+                final MaterialAlertDialogBuilder physicalDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
                 physicalDialog.setTitle(getString(R.string.visit_summary_on_examination));
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
@@ -1003,7 +1021,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 physicalDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        final AlertDialog.Builder textInput = new AlertDialog.Builder(VisitSummaryActivity.this);
+                        final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
                         if (phyExam.getValue() != null)
@@ -1030,7 +1048,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 dialog.dismiss();
                             }
                         });
-                        textInput.show();
+                        AlertDialog dialog = textInput.show();
+                        IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, dialog);
                         dialogInterface.dismiss();
                     }
                 });
@@ -1086,14 +1105,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
                 neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-                neutralb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                neutralb.setTypeface(ResourcesCompat.getFont(VisitSummaryActivity.this, R.font.lato_bold));
+
+                IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, alertDialog);
             }
         });
 
         editMedHist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder historyDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
+                final MaterialAlertDialogBuilder historyDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
                 historyDialog.setTitle(getString(R.string.visit_summary_medical_history));
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
@@ -1107,7 +1128,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 historyDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        final AlertDialog.Builder textInput = new AlertDialog.Builder(VisitSummaryActivity.this);
+                        final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
                         textInput.setTitle(R.string.question_text_input);
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
                         if (patHistory.getValue() != null)
@@ -1135,7 +1156,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 dialog.dismiss();
                             }
                         });
-                        textInput.show();
+                        AlertDialog dialog = textInput.show();
+                        IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, dialog);
                         dialogInterface.dismiss();
                     }
                 });
@@ -1175,7 +1197,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
                 neutralb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-                neutralb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                neutralb.setTypeface(ResourcesCompat.getFont(VisitSummaryActivity.this, R.font.lato_bold));
+                IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, alertDialog);
             }
         });
 
@@ -1765,7 +1788,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         if (visitUUID != null && !visitUUID.isEmpty()) {
             if (followUpDate != null && !followUpDate.isEmpty()) {
-                AlertDialog.Builder followUpAlert = new AlertDialog.Builder(VisitSummaryActivity.this);
+                MaterialAlertDialogBuilder followUpAlert = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
                 followUpAlert.setMessage(getString(R.string.visit_summary_follow_up_reminder) + followUpDate);
                 followUpAlert.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                     @Override
@@ -1796,7 +1819,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         } else {
 
             Log.d(TAG, "endVisit: null");
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(VisitSummaryActivity.this);
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
             alertDialogBuilder.setMessage(getString(R.string.visit_summary_upload_reminder));
             alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                 @Override
@@ -1806,6 +1829,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
+            IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, alertDialog);
 
         }
     }
@@ -2292,7 +2316,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 
     public void sendSMS() {
-        final AlertDialog.Builder textInput = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+        final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(this);
         textInput.setTitle(R.string.identification_screen_prompt_phone_number);
         final EditText phoneNumberEditText = new EditText(context);
         phoneNumberEditText.setInputType(InputType.TYPE_CLASS_PHONE);
@@ -2392,7 +2416,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         });
 
-        textInput.show();
+        AlertDialog alertDialog = textInput.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
     public void downloadPrescription() {

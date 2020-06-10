@@ -15,6 +15,7 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
+                android:theme="@style/ToolbarTheme"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/colorPrimary"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
@@ -26,10 +27,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingBottom="@dimen/activity_vertical_margin"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:context="io.intelehealth.client.activities.setup_activity.SetupActivity"
             tools:showIn="@layout/activity_setup">
@@ -44,100 +41,161 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-
-                    <TextView
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardview1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:text="@string/which_server_would_you_like_to_connect_to"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+                        android:layout_marginHorizontal="10dp"
+                        app:cardCornerRadius="10sp"
+                        android:layout_marginTop="15dp"
+                        app:cardElevation="5sp"
+                        app:cardPreventCornerOverlap="false"
+                        >
 
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="5dp">
-
-                        <EditText
-                            android:id="@+id/editText_URL"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/enter_url"
-                            android:inputType="textUri" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                            android:orientation="vertical"
+                            android:padding="10dp">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:includeFontPadding="false"
+                                android:text="@string/which_server_would_you_like_to_connect_to"
+                                android:textSize="16sp"
+                                android:fontFamily="@font/lato_bold"/>
 
 
-                    <Space
-                        android:layout_width="match_parent"
-                        android:layout_height="20sp" />
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="5dp">
 
-                    <TextView
+                                <EditText
+                                    android:id="@+id/editText_URL"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="@string/enter_url"
+                                    android:textSize="14sp"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:inputType="textUri" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="10dp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:includeFontPadding="false"
+                                android:textSize="16sp"
+                                android:text="@string/choose_a_location_to_login"
+                               android:fontFamily="@font/lato_bold" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="5dp">
+
+                                <Spinner
+                                    android:id="@+id/spinner_location"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:nextFocusForward="@+id/demoMindmap" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardview2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:text="@string/choose_a_location_to_login"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+                        android:layout_marginHorizontal="10dp"
+                        app:cardCornerRadius="10sp"
+                        android:layout_marginTop="15dp"
+                        app:cardElevation="5sp"
+                        app:cardPreventCornerOverlap="false"
+                        >
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <Spinner
-                            android:id="@+id/spinner_location"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:nextFocusForward="@+id/demoMindmap" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                            android:orientation="vertical"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp"
+                                android:includeFontPadding="false"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="@string/choose_an_option_for_protocols"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="10dp" />
+
+                            <RadioButton
+                                android:id="@+id/demoMindmap"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:textSize="14sp"
+                                android:includeFontPadding="false"
+                                android:fontFamily="@font/lato_regular"
+                                android:onClick="onRadioClick"
+                                android:textAppearance="@style/RobotoTextViewStyle"
+                                android:text="@string/setup_use_demo_mindmap" />
 
 
-                    <Space
-                        android:layout_width="match_parent"
-                        android:layout_height="20sp" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/choose_an_option_for_protocols"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+                            <RadioButton
+                                android:id="@+id/downloadMindmap"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:onClick="onRadioClick"
+                                android:textSize="14sp"
+                                android:includeFontPadding="false"
+                                android:fontFamily="@font/lato_regular"
+                                android:textAppearance="@style/RobotoTextViewStyle"
+                                android:text="@string/setup_download_mindmap" />
 
-                    <Space
-                        android:layout_width="match_parent"
-                        android:layout_height="20sp" />
+                        </LinearLayout>
 
-                    <RadioButton
-                        android:id="@+id/demoMindmap"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checked="true"
-                        android:textSize="17sp"
-                        android:onClick="onRadioClick"
-                        android:textAppearance="@style/RobotoTextViewStyle"
-                        android:text="@string/setup_use_demo_mindmap" />
+                    </androidx.cardview.widget.CardView>
 
-                    <Space
-                        android:layout_width="match_parent"
-                        android:layout_height="20sp" />
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardview3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    app:cardCornerRadius="10sp"
+                    android:layout_marginTop="15dp"
+                    app:cardElevation="5sp"
+                    app:cardPreventCornerOverlap="false"
+                    >
 
-                    <RadioButton
-                        android:id="@+id/downloadMindmap"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="onRadioClick"
-                        android:textSize="17sp"
-                        android:textAppearance="@style/RobotoTextViewStyle"
-                        android:text="@string/setup_download_mindmap" />
-
-                    <Space
-                        android:layout_width="match_parent"
-                        android:layout_height="20sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/textView2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
+                        android:includeFontPadding="false"
+                        android:textSize="16sp"
                         android:text="@string/please_enter_your_username_and_password"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+                        android:fontFamily="@font/lato_bold" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
@@ -151,6 +209,8 @@
                             android:imeOptions="actionNext"
                             android:inputType="textEmailAddress"
                             android:maxLines="1"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/lato_regular"
                             android:nextFocusForward="@id/password" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -168,7 +228,9 @@
                             android:imeOptions="actionNext"
                             android:inputType="textPassword"
                             android:maxLines="1"
-                            android:singleLine="true" />
+                            android:singleLine="true"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/lato_regular"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -185,21 +247,31 @@
                             android:imeOptions="actionUnspecified"
                             android:inputType="textPassword"
                             android:maxLines="1"
-                            android:singleLine="true" />
+                            android:singleLine="true"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/lato_regular"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <Space
+                </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+
+
+
+                    <!--<Space
                         android:layout_width="match_parent"
-                        android:layout_height="20sp" />
+                        android:layout_height="20sp" />-->
 
                     <Button
                         android:id="@+id/setup_submit_button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
                         android:text="@string/action_sign_in"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/lato_bold"
                         android:background="@color/colorPrimary"
                         android:textColor="@color/white"
                         style="@style/SelectableItemBackground"
@@ -207,12 +279,19 @@
 
                     <Space
                         android:layout_width="match_parent"
-                        android:layout_height="20sp" />
+                        android:layout_height="15sp" />
 
                     <TextView
                         android:id="@+id/textView_Aid"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:textSize="14sp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_gravity="end"
+                        android:gravity="end"
+                        android:fontFamily="@font/lato_regular"
                         android:ems="10"
                         android:text="@string/android_id"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small" />

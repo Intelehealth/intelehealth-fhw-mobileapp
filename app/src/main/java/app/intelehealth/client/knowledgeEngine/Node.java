@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+
 import androidx.appcompat.app.AlertDialog;
+
+import android.text.InputFilter;
 import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -27,6 +30,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.crashlytics.android.Crashlytics;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,12 +49,13 @@ import java.util.List;
 import java.util.Locale;
 
 import app.intelehealth.client.R;
+import app.intelehealth.client.activities.questionNodeActivity.QuestionsAdapter;
 import app.intelehealth.client.app.IntelehealthApplication;
+import app.intelehealth.client.utilities.InputFilterMinMax;
 import app.intelehealth.client.utilities.SessionManager;
 
 import app.intelehealth.client.activities.cameraActivity.CameraActivity;
 import app.intelehealth.client.activities.complaintNodeActivity.CustomArrayAdapter;
-import app.intelehealth.client.activities.physcialExamActivity.CustomExpandableListAdapter;
 
 /**
  * Created by Amal Afroz Alam on 21, April, 2016.
@@ -244,13 +249,13 @@ public class Node implements Serializable {
         this.negativeCondition = source.negativeCondition;
     }
 
-    public static void subLevelQuestion(final Node node, final Activity context, final CustomExpandableListAdapter callingAdapter,
+    public static void subLevelQuestion(final Node node, final Activity context, final QuestionsAdapter callingAdapter,
                                         final String imagePath, final String imageName) {
 
         node.setSelected();
         List<Node> mNodes = node.getOptionsList();
         final CustomArrayAdapter adapter = new CustomArrayAdapter(context, R.layout.list_item_subquestion, mNodes);
-        final AlertDialog.Builder subQuestion = new AlertDialog.Builder(context);
+        final MaterialAlertDialogBuilder subQuestion = new MaterialAlertDialogBuilder(context);
 
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_subquestion, null);
@@ -304,13 +309,15 @@ public class Node implements Serializable {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 node.toggleSelected();
+                callingAdapter.refreshChildAdapter();
                 callingAdapter.notifyDataSetChanged();
                 dialog.cancel();
             }
         });
 
         subQuestion.setView(convertView);
-        subQuestion.show();
+        AlertDialog dialog = subQuestion.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
 
@@ -532,8 +539,8 @@ public class Node implements Serializable {
         }
     }
 
-    public static void askText(final Node node, Activity context, final CustomExpandableListAdapter adapter) {
-        final AlertDialog.Builder textInput = new AlertDialog.Builder(context);
+    public static void askText(final Node node, Activity context, final QuestionsAdapter adapter) {
+        final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(context);
         textInput.setTitle(R.string.question_text_input);
         final EditText dialogEditText = new EditText(context);
         dialogEditText.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -558,7 +565,8 @@ public class Node implements Serializable {
                 dialog.cancel();
             }
         });
-        textInput.show();
+        AlertDialog dialog = textInput.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
     public String generateLanguage() {
@@ -666,7 +674,7 @@ public class Node implements Serializable {
     public static final int TAKE_IMAGE_FOR_NODE = 507;
     public static final String TAG = Node.class.getSimpleName();
 
-    public static void askDate(final Node node, final Activity context, final CustomExpandableListAdapter adapter) {
+    public static void askDate(final Node node, final Activity context, final QuestionsAdapter adapter) {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(context,
                 android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
@@ -718,7 +726,7 @@ public class Node implements Serializable {
         }
 
         if (!finalMessage.isEmpty()) {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(context);
             alertDialogBuilder.setMessage(finalMessage);
             alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                 @Override
@@ -728,10 +736,11 @@ public class Node implements Serializable {
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
+            IntelehealthApplication.setAlertDialogCustomTheme(context, alertDialog);
         }
     }
 
-    public static void handleQuestion(Node questionNode, final Activity context, final CustomExpandableListAdapter adapter,
+    public static void handleQuestion(Node questionNode, final Activity context, final QuestionsAdapter adapter,
                                       final String imagePath, final String imageName) {
         String type = questionNode.getInputType();
         switch (type) {
@@ -779,21 +788,24 @@ public class Node implements Serializable {
         activity.startActivityForResult(cameraIntent, Node.TAKE_IMAGE_FOR_NODE);
     }
 
-    public static void askNumber(final Node node, Activity context, final CustomExpandableListAdapter adapter) {
+    public static void askNumber(final Node node, Activity context, final QuestionsAdapter adapter) {
 
-        final AlertDialog.Builder numberDialog = new AlertDialog.Builder(context);
+        final MaterialAlertDialogBuilder numberDialog = new MaterialAlertDialogBuilder(context);
         numberDialog.setTitle(R.string.question_number_picker);
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_1_number_picker, null);
         numberDialog.setView(convertView);
-        final NumberPicker numberPicker = convertView.findViewById(R.id.dialog_1_number_picker);
+       /* final NumberPicker numberPicker = convertView.findViewById(R.id.dialog_1_number_picker);
         numberPicker.setMinValue(0);
-        numberPicker.setMaxValue(1000);
+        numberPicker.setMaxValue(1000);*/
+        EditText et_enter_value = convertView.findViewById(R.id.et_enter_value);
+        et_enter_value.setFilters(new InputFilter[]{new InputFilterMinMax("1", "1000")});
         numberDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                numberPicker.setValue(numberPicker.getValue());
-                String value = String.valueOf(numberPicker.getValue());
+               /* numberPicker.setValue(numberPicker.getValue());
+                String value = String.valueOf(numberPicker.getValue());*/
+                String value = et_enter_value.getText().toString();
 
                 if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", value));
@@ -815,13 +827,14 @@ public class Node implements Serializable {
 
             }
         });
-        numberDialog.show();
+        AlertDialog dialog = numberDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
 
-    public static void askArea(final Node node, Activity context, final CustomExpandableListAdapter adapter) {
+    public static void askArea(final Node node, Activity context, final QuestionsAdapter adapter) {
 
-        final AlertDialog.Builder areaDialog = new AlertDialog.Builder(context);
+        final MaterialAlertDialogBuilder areaDialog = new MaterialAlertDialogBuilder(context);
         areaDialog.setTitle(R.string.question_area_picker);
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
@@ -865,13 +878,14 @@ public class Node implements Serializable {
                 dialog.dismiss();
             }
         });
-        areaDialog.show();
+        AlertDialog dialog = areaDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
 
-    public static void askRange(final Node node, Activity context, final CustomExpandableListAdapter adapter) {
+    public static void askRange(final Node node, Activity context, final QuestionsAdapter adapter) {
 
-        final AlertDialog.Builder rangeDialog = new AlertDialog.Builder(context);
+        final MaterialAlertDialogBuilder rangeDialog = new MaterialAlertDialogBuilder(context);
         rangeDialog.setTitle(R.string.question_range_picker);
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
@@ -913,12 +927,13 @@ public class Node implements Serializable {
                 dialog.dismiss();
             }
         });
-        rangeDialog.show();
+        AlertDialog dialog = rangeDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
-    public static void askLocation(final Node node, Activity context, final CustomExpandableListAdapter adapter) {
+    public static void askLocation(final Node node, Activity context, final QuestionsAdapter adapter) {
 
-        final AlertDialog.Builder locationDialog = new AlertDialog.Builder(context);
+        final MaterialAlertDialogBuilder locationDialog = new MaterialAlertDialogBuilder(context);
         locationDialog.setTitle(R.string.question_location_picker);
 
         //TODO: Issue #51 on GitHub
@@ -926,9 +941,9 @@ public class Node implements Serializable {
 
     }
 
-    public static void askFrequency(final Node node, Activity context, final CustomExpandableListAdapter adapter) {
+    public static void askFrequency(final Node node, Activity context, final QuestionsAdapter adapter) {
 
-        final AlertDialog.Builder frequencyDialog = new AlertDialog.Builder(context);
+        final MaterialAlertDialogBuilder frequencyDialog = new MaterialAlertDialogBuilder(context);
         frequencyDialog.setTitle(R.string.question_frequency_picker);
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
@@ -971,12 +986,13 @@ public class Node implements Serializable {
                 dialog.dismiss();
             }
         });
-        frequencyDialog.show();
+        AlertDialog dialog = frequencyDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
 
-    public static void askDuration(final Node node, Activity context, final CustomExpandableListAdapter adapter) {
-        final AlertDialog.Builder durationDialog = new AlertDialog.Builder(context);
+    public static void askDuration(final Node node, Activity context, final QuestionsAdapter adapter) {
+        final MaterialAlertDialogBuilder durationDialog = new MaterialAlertDialogBuilder(context);
         durationDialog.setTitle(R.string.question_duration_picker);
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
@@ -1018,11 +1034,12 @@ public class Node implements Serializable {
                 dialog.dismiss();
             }
         });
-        durationDialog.show();
+        AlertDialog dialog = durationDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
     public static void subAskText(final Node node, Activity context, final CustomArrayAdapter adapter) {
-        final AlertDialog.Builder textInput = new AlertDialog.Builder(context);
+        final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(context);
         textInput.setTitle(R.string.question_text_input);
         final EditText dialogEditText = new EditText(context);
         dialogEditText.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -1047,7 +1064,8 @@ public class Node implements Serializable {
                 dialog.cancel();
             }
         });
-        textInput.show();
+        AlertDialog dialog = textInput.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
     public static void subAskDate(final Node node, final Activity context, final CustomArrayAdapter adapter) {
@@ -1082,19 +1100,22 @@ public class Node implements Serializable {
 
     public static void subAskNumber(final Node node, Activity context, final CustomArrayAdapter adapter) {
 
-        final AlertDialog.Builder numberDialog = new AlertDialog.Builder(context);
+        final MaterialAlertDialogBuilder numberDialog = new MaterialAlertDialogBuilder(context);
         numberDialog.setTitle(R.string.question_number_picker);
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_1_number_picker, null);
         numberDialog.setView(convertView);
-        final NumberPicker numberPicker = convertView.findViewById(R.id.dialog_1_number_picker);
+      /*  final NumberPicker numberPicker = convertView.findViewById(R.id.dialog_1_number_picker);
         numberPicker.setMinValue(0);
-        numberPicker.setMaxValue(1000);
+        numberPicker.setMaxValue(1000);*/
+        EditText et_enter_value = convertView.findViewById(R.id.et_enter_value);
+        et_enter_value.setFilters(new InputFilter[]{new InputFilterMinMax("1", "1000")});
         numberDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                numberPicker.setValue(numberPicker.getValue());
-                String value = String.valueOf(numberPicker.getValue());
+                //numberPicker.setValue(numberPicker.getValue());
+                // String value = String.valueOf(numberPicker.getValue());
+                String value = et_enter_value.getText().toString();
                 if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", value));
                 } else {
@@ -1114,7 +1135,8 @@ public class Node implements Serializable {
 
             }
         });
-        numberDialog.show();
+        AlertDialog dialog = numberDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
 
@@ -1155,7 +1177,7 @@ public class Node implements Serializable {
 
     public static void subAskArea(final Node node, Activity context, final CustomArrayAdapter adapter) {
 
-        final AlertDialog.Builder areaDialog = new AlertDialog.Builder(context);
+        final MaterialAlertDialogBuilder areaDialog = new MaterialAlertDialogBuilder(context);
         areaDialog.setTitle(R.string.question_area_picker);
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
@@ -1197,13 +1219,14 @@ public class Node implements Serializable {
                 dialog.dismiss();
             }
         });
-        areaDialog.show();
+        AlertDialog dialog = areaDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
 
     public static void subAskRange(final Node node, Activity context, final CustomArrayAdapter adapter) {
 
-        final AlertDialog.Builder rangeDialog = new AlertDialog.Builder(context);
+        final MaterialAlertDialogBuilder rangeDialog = new MaterialAlertDialogBuilder(context);
         rangeDialog.setTitle(R.string.question_range_picker);
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
@@ -1245,12 +1268,13 @@ public class Node implements Serializable {
                 dialog.dismiss();
             }
         });
-        rangeDialog.show();
+        AlertDialog dialog = rangeDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
     public static void subAskLocation(final Node node, Activity context, final CustomArrayAdapter adapter) {
 
-        final AlertDialog.Builder locationDialog = new AlertDialog.Builder(context);
+        final MaterialAlertDialogBuilder locationDialog = new MaterialAlertDialogBuilder(context);
         locationDialog.setTitle(R.string.question_location_picker);
 
         //TODO: Issue #51 on GitHub
@@ -1258,7 +1282,7 @@ public class Node implements Serializable {
 
     public static void subAskFrequency(final Node node, Activity context, final CustomArrayAdapter adapter) {
 
-        final AlertDialog.Builder frequencyDialog = new AlertDialog.Builder(context);
+        final MaterialAlertDialogBuilder frequencyDialog = new MaterialAlertDialogBuilder(context);
         frequencyDialog.setTitle(R.string.question_frequency_picker);
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
@@ -1301,12 +1325,13 @@ public class Node implements Serializable {
                 dialog.dismiss();
             }
         });
-        frequencyDialog.show();
+        AlertDialog dialog = frequencyDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
 
     public static void subAskDuration(final Node node, Activity context, final CustomArrayAdapter adapter) {
-        final AlertDialog.Builder durationDialog = new AlertDialog.Builder(context);
+        final MaterialAlertDialogBuilder durationDialog = new MaterialAlertDialogBuilder(context);
         durationDialog.setTitle(R.string.question_duration_picker);
         final LayoutInflater inflater = context.getLayoutInflater();
         View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
@@ -1348,7 +1373,8 @@ public class Node implements Serializable {
                 dialog.dismiss();
             }
         });
-        durationDialog.show();
+        AlertDialog dialog = durationDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
     /**
@@ -1449,7 +1475,7 @@ public class Node implements Serializable {
     }
 
     public AlertDialog displayImage(final Activity context, final String path, final String name) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
         builder.setPositiveButton(R.string.button_save, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -1508,6 +1534,7 @@ public class Node implements Serializable {
         });
 
         dialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
         return dialog;
 
     }
@@ -1857,5 +1884,41 @@ public class Node implements Serializable {
     }
 
 
+    @Override
+    public String toString() {
+        return "Node{" +
+                "id='" + id + '\'' +
+                ", text='" + text + '\'' +
+                ", display='" + display + '\'' +
+                ", display_oriya='" + display_oriya + '\'' +
+                ", display_cebuno='" + display_cebuno + '\'' +
+                ", language='" + language + '\'' +
+                ", choiceType='" + choiceType + '\'' +
+                ", inputType='" + inputType + '\'' +
+                ", physicalExams='" + physicalExams + '\'' +
+                ", optionsList=" + optionsList +
+                ", associatedComplaint='" + associatedComplaint + '\'' +
+                ", jobAidFile='" + jobAidFile + '\'' +
+                ", jobAidType='" + jobAidType + '\'' +
+                ", pop_up='" + pop_up + '\'' +
+                ", positiveCondition='" + positiveCondition + '\'' +
+                ", negativeCondition='" + negativeCondition + '\'' +
+                ", rootNode=" + rootNode +
+                ", complaint=" + complaint +
+                ", required=" + required +
+                ", terminal=" + terminal +
+                ", hasAssociations=" + hasAssociations +
+                ", aidAvailable=" + aidAvailable +
+                ", selected=" + selected +
+                ", subSelected=" + subSelected +
+                ", hasPhysicalExams=" + hasPhysicalExams +
+                ", hasPopUp=" + hasPopUp +
+                ", subPopUp=" + subPopUp +
+                ", isNoSelected=" + isNoSelected +
+                ", imagePathList=" + imagePathList +
+                ", space='" + space + '\'' +
+                ", imagePath='" + imagePath + '\'' +
+                '}';
+    }
 }
 

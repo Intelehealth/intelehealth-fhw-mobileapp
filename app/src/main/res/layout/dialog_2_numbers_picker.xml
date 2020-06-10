@@ -20,7 +20,8 @@
         android:layout_gravity="center"
         android:layout_weight="1"
         android:gravity="center"
-        android:padding="@dimen/padding_card" />
+        android:padding="@dimen/padding_card"
+        android:fontFamily="@font/lato_regular"/>
 
     <NumberPicker
         android:id="@+id/dialog_2_numbers_unit"
@@ -38,6 +39,7 @@
         android:layout_gravity="center"
         android:layout_weight="1"
         android:gravity="center"
-        android:padding="@dimen/padding_card" />
+        android:padding="@dimen/padding_card"
+        android:fontFamily="@font/lato_regular"/>
 
 </LinearLayout>

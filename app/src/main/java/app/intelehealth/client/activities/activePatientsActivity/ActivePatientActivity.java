@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import androidx.core.content.ContextCompat;
@@ -23,6 +24,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,6 +33,7 @@ import java.util.List;
 
 import app.intelehealth.client.R;
 import app.intelehealth.client.app.AppConstants;
+import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.dao.EncounterDAO;
 import app.intelehealth.client.database.dao.ProviderDAO;
 import app.intelehealth.client.database.dao.VisitsDAO;
@@ -52,7 +55,7 @@ public class ActivePatientActivity extends AppCompatActivity {
     RecyclerView mActivePatientList;
     TextView textView;
     RecyclerView recyclerView;
-    AlertDialog.Builder dialogBuilder;
+    MaterialAlertDialogBuilder dialogBuilder;
 
     private ArrayList<String> listPatientUUID = new ArrayList<String>();
 
@@ -71,6 +74,8 @@ public class ActivePatientActivity extends AppCompatActivity {
         mActivePatientList = findViewById(R.id.today_patient_recycler_view);
 
         setSupportActionBar(mToolbar);
+        mToolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
+        mToolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
@@ -177,9 +182,9 @@ public class ActivePatientActivity extends AppCompatActivity {
             ActivePatientAdapter mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ActivePatientActivity.this);
             recyclerView.setLayoutManager(linearLayoutManager);
-            recyclerView.addItemDecoration(new
+           /* recyclerView.addItemDecoration(new
                     DividerItemDecoration(this,
-                    DividerItemDecoration.VERTICAL));
+                    DividerItemDecoration.VERTICAL));*/
             recyclerView.setAdapter(mActivePatientAdapter);
         }
 
@@ -224,7 +229,7 @@ public class ActivePatientActivity extends AppCompatActivity {
         } catch (DAOException e) {
             e.printStackTrace();
         }
-        dialogBuilder = new AlertDialog.Builder(ActivePatientActivity.this);
+        dialogBuilder = new MaterialAlertDialogBuilder(ActivePatientActivity.this);
         dialogBuilder.setTitle(getString(R.string.filter_by_creator));
 
         String[] finalCreator_names = creator_names;
@@ -266,6 +271,7 @@ public class ActivePatientActivity extends AppCompatActivity {
 
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
         negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
 
     }
 
@@ -299,7 +305,8 @@ public class ActivePatientActivity extends AppCompatActivity {
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
         } else {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+            //AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage(getString(R.string.unable_to_end) + failedUploads +
                     getString(R.string.upload_before_end_visit_active));
             alertDialogBuilder.setNeutralButton(getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
@@ -310,6 +317,7 @@ public class ActivePatientActivity extends AppCompatActivity {
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
+            IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
         }
 
     }
@@ -366,10 +374,10 @@ public class ActivePatientActivity extends AppCompatActivity {
             ActivePatientAdapter mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ActivePatientActivity.this);
             recyclerView.setLayoutManager(linearLayoutManager);
-            recyclerView.addItemDecoration(new
+            /*recyclerView.addItemDecoration(new
                     DividerItemDecoration(this,
                     DividerItemDecoration.VERTICAL));
-            recyclerView.setAdapter(mActivePatientAdapter);
+            recyclerView.setAdapter(mActivePatientAdapter);*/
             recyclerView.setVisibility(View.VISIBLE);
             TextView t = findViewById(R.id.ttt);
             t.setVisibility(View.GONE);

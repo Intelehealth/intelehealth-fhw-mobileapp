@@ -14,12 +14,14 @@ import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,8 +40,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.res.ResourcesCompat;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
 import java.text.ParsePosition;
@@ -57,6 +62,7 @@ import app.intelehealth.client.activities.settingsActivity.SettingsActivity;
 import app.intelehealth.client.activities.todayPatientActivity.TodayPatientActivity;
 import app.intelehealth.client.activities.videoLibraryActivity.VideoLibraryActivity;
 import app.intelehealth.client.app.AppConstants;
+import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.models.CheckAppUpdateRes;
 import app.intelehealth.client.models.DownloadMindMapRes;
 import app.intelehealth.client.networkApiCalls.ApiClient;
@@ -114,6 +120,8 @@ public class HomeActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
+        toolbar.setTitleTextColor(Color.WHITE);
         String language = sessionManager.getAppLanguage();
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
@@ -316,7 +324,8 @@ public class HomeActivity extends AppCompatActivity {
                     getMindmapDownloadURL("http://" + licenseUrl + ":3004/", licenseKey);
 
                 } else {
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                    MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+                    // AlertDialog.Builder dialog = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
                     LayoutInflater li = LayoutInflater.from(this);
                     View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
                     dialog.setTitle(getString(R.string.enter_license_key))
@@ -359,7 +368,8 @@ public class HomeActivity extends AppCompatActivity {
                                     dialog.dismiss();
                                 }
                             });
-                    dialog.create().show();
+                    Dialog builderDialog = dialog.show();
+                    IntelehealthApplication.setAlertDialogCustomTheme(this,builderDialog);
 
                 }
                 return true;
@@ -485,7 +495,9 @@ public class HomeActivity extends AppCompatActivity {
                 .setNegativeButton("No", null)
                 .show();
 */
-        AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this);
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+
+       // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
         alertdialogBuilder.setMessage(R.string.sure_to_exit);
         alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
             @Override
@@ -503,10 +515,11 @@ public class HomeActivity extends AppCompatActivity {
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
         positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-        positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
         negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-        negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
 
     }
 
@@ -652,7 +665,7 @@ public class HomeActivity extends AppCompatActivity {
                                     .setCancelable(false);
 
                             Dialog dialog = builder.show();
-                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                 int textViewId = dialog.getContext().getResources().getIdentifier("android:id/alertTitle", null, null);
                                 TextView tv = (TextView) dialog.findViewById(textViewId);
                                 tv.setTextColor(getResources().getColor(R.color.white));

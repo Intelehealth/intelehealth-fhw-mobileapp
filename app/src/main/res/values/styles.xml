@@ -11,6 +11,10 @@
         <item name="buttonStyle">@style/RobotoButtonStyle</item>
         <item name="colorButtonNormal">@color/colorAccent</item>
         <item name="alertDialogTheme">@style/AlertDialogStyle</item>
+        <item name="colorSurface">#FFFFFF</item>
+        <item name="colorOnSurface">#212121</item>
+        <item name="textAppearanceLargePopupMenu">@style/AppTheme.TextAppearance.Popup</item>
+        <item name="fontFamily">@font/lato_regular</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -23,6 +27,7 @@
         <item name="android:textColorPrimary">@color/primary_text</item>
         <item name="android:editTextColor">@color/primary_text</item>
         <item name="android:background">@color/white</item>
+        <item name="android:fontFamily">@font/lato_regular</item>
         <item name="android:windowTitleStyle">@style/TextAppearance.AppCompat.Title</item>
     </style>
 
@@ -69,5 +74,15 @@
         <item name="colorControlActivated">#FFFFFF</item>
         <item name="colorControlHighlight">#FFFFFF</item>
     </style>
+
+    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:fontFamily">@font/lato_bold</item>
+    </style>
+
+    <style name="AppTheme.TextAppearance.Popup" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="fontFamily">@font/lato_medium</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 
 </resources>

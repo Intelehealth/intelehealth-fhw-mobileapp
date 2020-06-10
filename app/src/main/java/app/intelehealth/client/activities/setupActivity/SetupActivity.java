@@ -2,26 +2,30 @@ package app.intelehealth.client.activities.setupActivity;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +40,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.parse.Parse;
 
@@ -122,7 +127,8 @@ public class SetupActivity extends AppCompatActivity {
 //        manager = AccountManager.get(SetupActivity.this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
+        toolbar.setTitleTextColor(Color.WHITE);
         context = SetupActivity.this;
         customProgressDialog = new CustomProgressDialog(context);
 
@@ -161,7 +167,7 @@ public class SetupActivity extends AppCompatActivity {
         });
 
         mAndroidIdTextView = findViewById(R.id.textView_Aid);
-        mAndroidIdTextView.setText("Android Id: " + IntelehealthApplication.getAndroidId());
+        mAndroidIdTextView.setText("Device Id: " + IntelehealthApplication.getAndroidId());
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -381,7 +387,8 @@ public class SetupActivity extends AppCompatActivity {
             case R.id.downloadMindmap:
                 if (checked) {
                     r1.setChecked(false);
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+                    MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+                    // AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
                     LayoutInflater li = LayoutInflater.from(this);
                     View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
 
@@ -465,10 +472,12 @@ public class SetupActivity extends AppCompatActivity {
 
                     // Change the alert dialog buttons text and background color
                     positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                   // positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
                     negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                    //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+                    IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
 
 
                 }
@@ -495,7 +504,8 @@ public class SetupActivity extends AppCompatActivity {
         encoded = base64Utils.encoded(USERNAME, PASSWORD);
         sessionManager.setEncoded(encoded);
 
-        progress = new ProgressDialog(SetupActivity.this);
+        progress = new ProgressDialog(SetupActivity.this, R.style.AlertDialogStyle);
+        ;//SetupActivity.this);
         progress.setTitle(getString(R.string.please_wait_progress));
         progress.setMessage(getString(R.string.logging_in));
         progress.show();

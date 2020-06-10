@@ -5,7 +5,8 @@
     <SwitchPreference
         android:defaultValue="true"
         android:key="notifications_new_message"
-        android:title="@string/pref_title_new_message_notifications" />
+        android:title="@string/pref_title_new_message_notifications"
+        android:fontFamily="@font/lato_regular"/>
 
     <!-- Allows the user to choose a ringtone in the 'notification' category. -->
     <!-- NOTE: This preference will be enabled only when the checkbox above is checked. -->
@@ -22,6 +23,7 @@
         android:defaultValue="true"
         android:dependency="notifications_new_message"
         android:key="notifications_new_message_vibrate"
-        android:title="@string/pref_title_vibrate" />
+        android:title="@string/pref_title_vibrate"
+        android:fontFamily="@font/lato_regular"/>
 
 </PreferenceScreen>

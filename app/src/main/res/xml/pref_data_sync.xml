@@ -11,12 +11,14 @@
         android:negativeButtonText="@string/generic_cancel"
         android:positiveButtonText="@string/generic_ok"
         android:singleLine="true"
-        android:title="@string/pref_title_server_url" />
+        android:title="@string/pref_title_server_url"
+        android:fontFamily="@font/lato_regular"/>
 
     <EditTextPreference
         android:defaultValue="JHU"
         android:key="idprefix"
         android:negativeButtonText="@string/generic_cancel"
         android:positiveButtonText="@string/generic_ok"
-        android:title="@string/pref_title_id_prefix" />
+        android:title="@string/pref_title_id_prefix"
+        android:fontFamily="@font/lato_regular"/>
 </PreferenceScreen>

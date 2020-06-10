@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import androidx.core.content.ContextCompat;
@@ -21,6 +22,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ import java.util.List;
 
 import app.intelehealth.client.R;
 import app.intelehealth.client.app.AppConstants;
+import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.InteleHealthDatabaseHelper;
 import app.intelehealth.client.database.dao.EncounterDAO;
 import app.intelehealth.client.database.dao.ProviderDAO;
@@ -49,7 +52,7 @@ public class TodayPatientActivity extends AppCompatActivity {
     private SQLiteDatabase db;
     SessionManager sessionManager = null;
     RecyclerView mTodayPatientList;
-    AlertDialog.Builder dialogBuilder;
+   MaterialAlertDialogBuilder dialogBuilder;
 
     private ArrayList<String> listPatientUUID = new ArrayList<String>();
 
@@ -67,6 +70,8 @@ public class TodayPatientActivity extends AppCompatActivity {
 
 
         setSupportActionBar(toolbar);
+        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
+        toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
@@ -170,9 +175,9 @@ public class TodayPatientActivity extends AppCompatActivity {
             TodayPatientAdapter mTodayPatientAdapter = new TodayPatientAdapter(todayPatientList, TodayPatientActivity.this, listPatientUUID);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(TodayPatientActivity.this);
             mTodayPatientList.setLayoutManager(linearLayoutManager);
-            mTodayPatientList.addItemDecoration(new
+           /* mTodayPatientList.addItemDecoration(new
                     DividerItemDecoration(TodayPatientActivity.this,
-                    DividerItemDecoration.VERTICAL));
+                    DividerItemDecoration.VERTICAL));*/
             mTodayPatientList.setAdapter(mTodayPatientAdapter);
         }
 
@@ -219,7 +224,7 @@ public class TodayPatientActivity extends AppCompatActivity {
         }
 //        boolean[] checkedItems = {false, false, false, false};
         // ngo_numbers = getResources().getStringArray(R.array.ngo_numbers);
-        dialogBuilder = new AlertDialog.Builder(TodayPatientActivity.this);
+        dialogBuilder = new MaterialAlertDialogBuilder(TodayPatientActivity.this);
         dialogBuilder.setTitle(R.string.filter_by_creator);
 
         String[] finalCreator_names = creator_names;
@@ -263,6 +268,7 @@ public class TodayPatientActivity extends AppCompatActivity {
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
         negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
 
+        IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
     }
 
     private void doQueryWithProviders(List<String> providersuuids) {
@@ -352,7 +358,7 @@ public class TodayPatientActivity extends AppCompatActivity {
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
         } else {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
             alertDialogBuilder.setMessage(getString(R.string.unable_to_end) + failedUploads +
                     getString(R.string.upload_before_end_visit_active));
             alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
@@ -363,6 +369,7 @@ public class TodayPatientActivity extends AppCompatActivity {
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
+            IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
         }
 
     }

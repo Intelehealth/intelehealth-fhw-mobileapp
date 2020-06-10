@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:focusable="false"
-        android:fontFamily="sans-serif"
+        android:fontFamily="@font/lato_regular"
         android:textStyle="normal"
         android:paddingBottom="@dimen/padding_complaint_select"
         android:paddingTop="@dimen/padding_complaint_select"

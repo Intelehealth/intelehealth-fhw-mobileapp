@@ -449,7 +449,7 @@
 
     <string name="associated_symptoms">Associated symptoms</string>
     <string name="enter_server_url">Enter Server URL</string>
-    <string name="enter_license_key">Enter license key</string>
+    <string name="enter_license_key"><b>Enter license key</b></string>
     <string name="invalid_url">Invalid URL</string>
     <string name="years">years</string>
     <string name="months">months</string>
@@ -553,6 +553,20 @@
     <string name="new_update_available">New Update Available</string>
     <string name="update_app_note">New version is available with new features please update app</string>
     <string name="update">Update</string>
+
+
+    <!--New Ayu Related Changes-->
+    <string name="what_is_the_reason_for_your_visit" >What is the reason for your visit?</string>
+    <string name="swipe_down_to_return">Swipe to Down for previous / Up for next</string>
+    <string name="swipe_up">Swipe to Up for Next</string>
+    <string name="swipe_down">Swipe to Down for previous</string>
+    <string name="have_symptom">Do you have this Symptom?</string>
+
+
+    <!--New UI changes 2.1-->
+    <string name="personal_information">Personal Information</string>
+    <string name="address_details">Address Details</string>
+    <string name="txt_others">Others</string>
 
 
 </resources>
