@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Locale;
 
 import app.intelehealth.client.R;
+import app.intelehealth.client.activities.homeActivity.HomeActivity;
 import app.intelehealth.client.dataMigration.SmoothUpgrade;
 import app.intelehealth.client.utilities.Logger;
 import app.intelehealth.client.utilities.SessionManager;
@@ -117,10 +118,19 @@ public class SplashActivity extends AppCompatActivity {
         String LOG_TAG = "SplashActivity";
         Logger.logD(LOG_TAG, String.valueOf(setup));
         if (setup) {
-            Logger.logD(LOG_TAG, "Starting login");
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            finish();
+
+            if (sessionManager.isLogout()) {
+                Logger.logD(LOG_TAG, "Starting login");
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                Logger.logD(LOG_TAG, "Starting home");
+                Intent intent = new Intent(this, HomeActivity.class);
+                startActivity(intent);
+                finish();
+            }
+
         } else {
             Logger.logD(LOG_TAG, "Starting setup");
             Intent intent = new Intent(this, SetupActivity.class);

@@ -48,6 +48,7 @@ public class SessionManager {
     private static final String TRIGGER_NOTI = "TRIGGER_NOTI";
     private static final String OFFLINE_OPENMRSID = "OFFLINE_OPENMRSID";
     private static final String CURRENT_LANG = "CURRENT_LANG";
+    private static final String IS_LOGOUT = "IS_LOGOUT";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -282,6 +283,7 @@ public class SessionManager {
         editor.putBoolean(FIRST_TIME_SYNC_EXECUTE, firstTimeSyncExecute1);
         editor.commit();
     }
+
     public boolean isReturning() {
         return pref.getBoolean(RETURNING, false);
     }
@@ -395,6 +397,15 @@ public class SessionManager {
 
     public void setReturningUser(Boolean returningUser) {
         editor.putBoolean(RETURNING_USER, returningUser);
+        editor.commit();
+    }
+
+    public boolean isLogout() {
+        return pref.getBoolean(IS_LOGOUT, false);
+    }
+
+    public void setLogout(Boolean isLogout) {
+        editor.putBoolean(IS_LOGOUT, isLogout);
         editor.commit();
     }
 

@@ -383,6 +383,7 @@ public class LoginActivity extends AppCompatActivity {
                                   //  showProgress(false);
 
                                     sessionManager.setReturningUser(true);
+                                    sessionManager.setLogout(false);
                                 }
 
                                 @Override
