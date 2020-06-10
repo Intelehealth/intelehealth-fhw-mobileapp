@@ -13,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
     //
     private static OkHttpClient.Builder client = new OkHttpClient.Builder();
-    private static String apiBaseUrl = "http://testing.intelehealth.io";    //testing server
+    private static String apiBaseUrl = "https://myhealthline.covidhelp.in";    //testing server
     private static Retrofit retrofit;
     private static Retrofit.Builder builder =
             new Retrofit.Builder()

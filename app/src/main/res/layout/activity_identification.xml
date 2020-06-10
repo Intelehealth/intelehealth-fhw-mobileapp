@@ -188,7 +188,7 @@
                             <ImageView
                                 android:id="@+id/imageview_id_picture"
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="170dp"
                                 android:layout_gravity="right|center_vertical"
                                 android:layout_weight="1"
                                 android:contentDescription="TODO"
