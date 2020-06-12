@@ -99,11 +99,10 @@ public class HomeActivity extends AppCompatActivity {
     TextView lastSyncTextView;
     TextView lastSyncAgo;
     Button manualSyncButton;
-    Button help_watsapp;
     IntentFilter filter;
     Myreceiver reMyreceive;
     SyncUtils syncUtils = new SyncUtils();
-    CardView c1, c2, c3, c4, c5;
+    CardView c1, c2, c3, c4, c5, c6;
     private String key = null;
     private String licenseUrl = null;
 
@@ -152,11 +151,10 @@ public class HomeActivity extends AppCompatActivity {
         c3 = findViewById(R.id.cardview_today_patient);
         c4 = findViewById(R.id.cardview_active_patients);
         c5 = findViewById(R.id.cardview_video_libraby);
+        c6 = findViewById(R.id.cardview_help_whatsapp);
 
         //Help section of watsapp...
-        help_watsapp = findViewById(R.id.Help_Watsapp);
-        help_watsapp.setPaintFlags(help_watsapp.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        help_watsapp.setOnClickListener(new View.OnClickListener() {
+        c6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String phoneNumberWithCountryCode = "+917005308163";
