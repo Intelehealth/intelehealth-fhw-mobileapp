@@ -2,6 +2,7 @@
 <resources>
     <string name="cant_login_user">Dili Maka Log-in?</string>
     <string name="email_link">Please contact your System Administrator to reset your password or send an email to support@intelehealth.io</string>
+    <string name="contact_whatsapp">Please contact your System Administrator to reset your password</string>
     <string name="identification_screen_error_dob">Isulat ang petsa sa pagkatawo</string>
     <string name="identification_screen_error_age">Isulat ang edad</string>
     <string name="identification_screen_text_years">Tuig</string>

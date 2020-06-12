@@ -243,20 +243,31 @@ public class LoginActivity extends AppCompatActivity {
         Linkify.addLinks(span_string, Linkify.EMAIL_ADDRESSES);
 
       MaterialAlertDialogBuilder builder =   new MaterialAlertDialogBuilder(this)
-                .setMessage(span_string)
-                .setNegativeButton("Send Email", new DialogInterface.OnClickListener() {
+                .setMessage(getApplicationContext().getText(R.string.contact_whatsapp))
+                .setNegativeButton("Contact", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //finish();
-                        Intent intent = new Intent(Intent.ACTION_SENDTO); //to get only the list of e-mail clients
-                        intent.setType("text/plain");
-                        intent.setData(Uri.parse("mailto:support@intelehealth.io"));
-                        // intent.putExtra(Intent.EXTRA_EMAIL, "support@intelehealth.io");
-                        // intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
-                        //  intent.putExtra(Intent.EXTRA_TEXT, "I'm email body.");
+//                        Intent intent = new Intent(Intent.ACTION_SENDTO); //to get only the list of e-mail clients
+//                        intent.setType("text/plain");
+//                        intent.setData(Uri.parse("mailto:support@intelehealth.io"));
+//                        // intent.putExtra(Intent.EXTRA_EMAIL, "support@intelehealth.io");
+//                        // intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
+//                        //  intent.putExtra(Intent.EXTRA_TEXT, "I'm email body.");
+//
+//                        startActivity(Intent.createChooser(intent, "Send Email"));
+//                        //add email function here !
 
-                        startActivity(Intent.createChooser(intent, "Send Email"));
-                        //add email function here !
+                        String phoneNumberWithCountryCode = "+917005308163";
+                        String message =
+                                "Hello, my name is " + sessionManager.getChwname() +
+                                        /*" from " + sessionManager.getState() + */" and I need to reset my Password(Intelehealth).";
+
+                        startActivity(new Intent(Intent.ACTION_VIEW,
+                                Uri.parse(
+                                        String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                                                phoneNumberWithCountryCode, message))));
+
                     }
 
                 })

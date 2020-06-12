@@ -91,6 +91,16 @@
             android:fitsSystemWindows="true"
             android:scrollbars="vertical" />
 
+<!--        <app.intelehealth.client.utilities.AutoFitGridRecyclerView-->
+<!--            android:id="@+id/rv_chips"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            android:listSelector="@android:color/transparent"-->
+<!--            android:numColumns="auto_fit"-->
+<!--            android:fitsSystemWindows="true"-->
+<!--            android:scrollbars="vertical" />-->
+
 
 
     </LinearLayout>

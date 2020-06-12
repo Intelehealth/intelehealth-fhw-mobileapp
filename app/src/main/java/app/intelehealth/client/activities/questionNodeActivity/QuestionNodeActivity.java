@@ -301,11 +301,13 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
                 String complaint = currentNode.getText();
                 //    complaintDetails.put(complaint, complaintFormatted);
 
-                insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
+//                insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
+                insertion = insertion.concat("<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
             } else {
                 String complaint = currentNode.getText();
                 if (!complaint.equalsIgnoreCase(getResources().getString(R.string.associated_symptoms))) {
-                    insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + " ");
+//                    insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + " ");
+                    insertion = insertion.concat("<b>" + complaint + "</b>" + ": " + Node.next_line + " ");
                 }
             }
             ArrayList<String> selectedAssociatedComplaintsList = currentNode.getSelectedAssociations();

@@ -102,7 +102,8 @@ public class Node implements Serializable {
 
     public static String bullet = "\u2022";
     public static String big_bullet = "\u25CF";
-    public static String bullet_hollow = "\u25CB";
+//    public static String bullet_hollow = "\u25CB";
+    public static String bullet_hollow = "\u2022";
     public static String bullet_arrow = "\u25BA";
     public static String next_line = "<br/>";
     String space = "\t";
