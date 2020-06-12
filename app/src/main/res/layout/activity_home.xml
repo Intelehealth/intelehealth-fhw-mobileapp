@@ -217,6 +217,68 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cardview_help"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="16dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="5dp"
+                    app:cardUseCompatPadding="true">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp">
+
+                        <RelativeLayout
+                            android:id="@+id/help_relative"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="40dp">
+
+                            <TextView
+                                android:id="@+id/Help_Text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:fontFamily="@font/lato_regular"
+                                android:includeFontPadding="false"
+                                android:text="@string/do_you_need_help_please_contact_us"
+                                android:textSize="14sp" />
+
+                            <Button
+                                android:id="@+id/Help_Watsapp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/Help_Text"
+                                android:layout_marginStart="10sp"
+                                android:background="@android:color/transparent"
+                                android:drawableStart="@drawable/ic_icons8_whatsapp"
+                                android:drawableLeft="@drawable/ic_icons8_whatsapp"
+                                android:drawablePadding="10sp"
+                                android:fontFamily="@font/lato_medium"
+                                android:gravity="start|center"
+                                android:hint=""
+                                android:textStyle="bold"
+                                android:text="@string/whatsapp_helpline"
+                                android:textColor="@color/txt_sub_header_color"
+                                android:textSize="18sp" />
+
+                            <!-- Icon Credits:- <a target="_blank" href="https://icons8.com/icons/set/whatsapp">WhatsApp icon</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>-->
+
+
+                        </RelativeLayout>
+
+                    </FrameLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
                     android:id="@+id/cardview_home"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
