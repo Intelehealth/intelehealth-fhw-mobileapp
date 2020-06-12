@@ -562,7 +562,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
                 // cameraIntent.putExtra(CameraActivity.SHOW_DIALOG_MESSAGE, getString(R.string.camera_dialog_default));
                 cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, patientTemp);
-                cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, filePath);
+                cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, filePath.toString());
                 startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
             }
         });
