@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import app.intelehealth.client.R;
+import app.intelehealth.client.activities.loginActivity.LoginActivity;
 
 public class IntroActivity extends AppCompatActivity {
 
