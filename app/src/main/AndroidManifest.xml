@@ -30,11 +30,12 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
+        android:networkSecurityConfig="@xml/network_security_configuration"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true"
-        android:networkSecurityConfig="@xml/network_security_configuration">
+        android:usesCleartextTraffic="true">
+        <activity android:name=".activities.IntroActivity.IntroActivity"></activity>
         <activity
             android:name=".activities.privacyNoticeActivity.PrivacyNotice_Activity"
             android:label="@string/title_activity_privacy_notice"
@@ -56,34 +57,34 @@
             android:parentActivityName=".activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustNothing"/>
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".activities.familyHistoryActivity.FamilyHistoryActivity"
             android:label="@string/title_activity_family_history"
             android:parentActivityName=".activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustNothing"/>
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
             android:label="@string/title_activity_past_medical_history"
             android:parentActivityName=".activities.questionNodeActivity.QuestionNodeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustNothing"/>
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".activities.questionNodeActivity.QuestionNodeActivity"
             android:label="@string/title_activity_question_node"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustNothing"/>
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".activities.complaintNodeActivity.ComplaintNodeActivity"
             android:label="@string/title_activity_complaint_node"
             android:parentActivityName=".activities.identificationActivity.IdentificationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.visitSummaryActivity.VisitSummaryActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -237,8 +238,9 @@
             </intent-filter>
         </service>
 
-    <meta-data android:name="firebase_crashlytics_collection_enabled" android:value="false" />
-
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="false" />
     </application>
 
 </manifest>

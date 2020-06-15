@@ -557,7 +557,7 @@
 
 
     <!--New Ayu Related Changes-->
-    <string name="what_is_the_reason_for_your_visit" >What is the reason for your visit?</string>
+    <string name="what_is_the_reason_for_your_visit">What is the reason for your visit?</string>
     <string name="swipe_down_to_return">Swipe to Down for previous / Up for next</string>
     <string name="swipe_up">Swipe to Up for Next</string>
     <string name="swipe_down">Swipe to Down for previous</string>
@@ -571,6 +571,8 @@
     <string name="do_you_need_help_please_contact_us">Do you need help? Please contact us!</string>
     <string name="whatsapp_helpline">WhatsApp Helpline</string>
     <string name="Whatsapp_Help_Cardview">Help</string>
+    <string name="skip">skip</string>
+    <string name="start">Start</string>
 
 
 </resources>

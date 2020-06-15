@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:text="@string/who_is_this_napplication_for"
+            android:textColor="@color/font_black_0"
+            app:fontFamily="@fonts/Lato-Regular"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:paddingStart="20dp"
+            android:id="@+id/tv_intro_one"
+            app:fontFamily="@fonts/Lato-Regular"
+            android:paddingEnd="20dp"
+            tools:text="This app is for all types of health workers at the frontlines of care to learn about personal protection measures and PPE use."
+            android:textColor="@color/font_black_0"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingStart="20dp"
+            android:id="@+id/tv_intro_two"
+            app:fontFamily="@fonts/Lato-Regular"
+            android:paddingEnd="20dp"
+            tools:text="You can monitor your own health daily and reach out for help if you think you may have had unsafe exposure and may be infected."
+            android:textColor="@color/font_black_0"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/ic_intro" />
+
+    </LinearLayout>
+</RelativeLayout>

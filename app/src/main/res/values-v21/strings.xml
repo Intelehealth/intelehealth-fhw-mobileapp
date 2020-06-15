@@ -6,4 +6,6 @@
     <string name="do_you_need_help_please_contact_us">Do you need help? Please contact us!</string>
     <string name="whatsapp_helpline">WhatsApp Helpline</string>
     <string name="Whatsapp_Help_Cardview">Help</string>
+    <string name="skip">skip</string>
+    <string name="start">Start</string>
 </resources>
