@@ -22,6 +22,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:paddingRight="@dimen/activity_horizontal_margin">
 
             <LinearLayout
@@ -38,6 +40,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_bold"
                     android:includeFontPadding="false"
+                    android:text="Test 2 Vibha onplus 6T, 10FKE-7"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <TextView
@@ -46,6 +49,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_regular"
                     android:includeFontPadding="false"
+                    android:text="Age: 11 years, 5 months"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
             </LinearLayout>
 
@@ -65,6 +69,7 @@
                     android:fontFamily="@font/lato_bold"
                     android:paddingStart="5dp"
                     android:paddingTop="3dp"
+                    android:text="Active"
                     android:paddingEnd="5dp"
                     android:paddingBottom="3dp" />
 

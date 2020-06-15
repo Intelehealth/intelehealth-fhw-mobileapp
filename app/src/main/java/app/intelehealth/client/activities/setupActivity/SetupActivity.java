@@ -210,7 +210,7 @@ public class SetupActivity extends AppCompatActivity {
                     // user didn't typed for 1.5 seconds, do whatever you want
                     if (!mUrlField.getText().toString().trim().isEmpty() && mUrlField.getText().toString().length() >= 12) {
                         if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
-                            String BASE_URL = "https://" + mUrlField.getText().toString() + "/openmrs/ws/rest/v1/";
+                            String BASE_URL = "http://" + mUrlField.getText().toString() + "/openmrs/ws/rest/v1/";
                             if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched)
                                 getLocationFromServer(BASE_URL);
                             else
@@ -408,7 +408,7 @@ public class SetupActivity extends AppCompatActivity {
                                         text.setError(getResources().getString(R.string.enter_license_key));
                                     }
 
-                                    if (sessionManager.getLicenseKey() != null && sessionManager.getLicenseKey().equalsIgnoreCase("https://mindmaps.intelehealth.io:4040")) {
+                                    if (sessionManager.getLicenseKey() != null && sessionManager.getLicenseKey().equalsIgnoreCase("http://mindmaps.intelehealth.io:4040")) {
                                         text.setText(sessionManager.getLicenseKey());
                                         url.setText(sessionManager.getMindMapServerUrl());
                                     }
@@ -447,7 +447,7 @@ public class SetupActivity extends AppCompatActivity {
                                         // updateProtocolsTask.execute(null, "AllFiles", "TRUE");
 //                                        DownloadProtocolsTask downloadProtocolsTask = new DownloadProtocolsTask(SetupActivity.this);
 //                                        downloadProtocolsTask.execute(key);
-                                        getMindmapDownloadURL("https://" + licenseUrl + ":3004/");
+                                        getMindmapDownloadURL("http://" + licenseUrl + ":3004/");
 
 
                                     }
@@ -549,7 +549,7 @@ public class SetupActivity extends AppCompatActivity {
                                             sessionManager.setLocationDescription(location.getDescription());
                                             sessionManager.setServerUrl(CLEAN_URL);
                                             sessionManager.setServerUrlRest(BASE_URL);
-                                            sessionManager.setServerUrlBase("https://" + CLEAN_URL + "/openmrs");
+                                            sessionManager.setServerUrlBase("http://" + CLEAN_URL + "/openmrs");
                                             sessionManager.setBaseUrl(BASE_URL);
                                             sessionManager.setSetupComplete(true);
 
@@ -558,7 +558,7 @@ public class SetupActivity extends AppCompatActivity {
 
                                             Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
                                                     .applicationId(AppConstants.IMAGE_APP_ID)
-                                                    .server("https://" + CLEAN_URL + ":1337/parse/")
+                                                    .server("http://" + CLEAN_URL + ":1337/parse/")
                                                     .build()
                                             );
 

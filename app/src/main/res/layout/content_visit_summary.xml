@@ -1054,7 +1054,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/title_doctor"
             android:padding="@dimen/padding_card"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -1075,8 +1075,6 @@
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true"
                 android:orientation="vertical">
-
-
 
                 <TextView
                     android:id="@+id/title_health_worker"
