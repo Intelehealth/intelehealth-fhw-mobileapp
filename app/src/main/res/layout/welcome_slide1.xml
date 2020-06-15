@@ -12,48 +12,30 @@
         android:layout_centerVertical="true"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="20dp"
-            android:text="@string/who_is_this_napplication_for"
-            android:textColor="@color/font_black_0"
-            app:fontFamily="@fonts/Lato-Regular"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:paddingStart="20dp"
-            android:id="@+id/tv_intro_one"
-            app:fontFamily="@fonts/Lato-Regular"
-            android:paddingEnd="20dp"
-            tools:text="This app is for all types of health workers at the frontlines of care to learn about personal protection measures and PPE use."
-            android:textColor="@color/font_black_0"
-            android:textSize="16sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:paddingStart="20dp"
-            android:id="@+id/tv_intro_two"
-            app:fontFamily="@fonts/Lato-Regular"
-            android:paddingEnd="20dp"
-            tools:text="You can monitor your own health daily and reach out for help if you think you may have had unsafe exposure and may be infected."
-            android:textColor="@color/font_black_0"
-            android:textSize="16sp" />
-
         <ImageView
             android:layout_width="300dp"
             android:layout_height="200dp"
             android:layout_gravity="center"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:layout_marginBottom="20dp"
             android:src="@drawable/ic_intro" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp"
+            android:paddingHorizontal="20dp"
+            android:id="@+id/tv_intro_one"
+            app:fontFamily="@fonts/Lato-Regular"
+            tools:text="Intelehealth is a telemedicine application that connects health workers in rural and remote areas connect with remote doctors so they can provide high quality health services for their patients."
+            android:textColor="@color/font_black_welcome"
+            android:textSize="17sp"
+            android:textAlignment="center"
+            android:layout_marginHorizontal="10dp"
+            android:lineSpacingExtra="2sp"
+            android:gravity="center_horizontal|top"
+            android:letterSpacing="0.01"
+            />
 
     </LinearLayout>
 </RelativeLayout>

@@ -5,6 +5,7 @@
     <color name="colorPrimarynew">#402E1E91</color>
     <color name="colorPrimaryDark">#21166a</color>
     <color name="colorPrimaryLight">#D1C4E9</color>
+    <color name="intro_next">#2014EB</color>
     <color name="colorAccent">#448AFF</color>
     <color name="primary_text">#212121</color>
     <color name="icons">#FFFFFF</color>
@@ -26,6 +27,7 @@
     <color name="scale_5">#008000</color>
 
     <color name="font_black_0">#212121</color>
+    <color name="font_black_welcome">#212121</color>
     <color name="font_black_1">#424242</color>
     <color name="font_black_2">#616161</color>
     <color name="font_black_3">#757575</color>

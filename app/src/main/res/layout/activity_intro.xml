@@ -42,7 +42,7 @@
         android:gravity="center"
         android:fontFamily="@fonts/Lato_Regular"
         android:drawableEnd="@drawable/ic_keyboard_arrow_right"
-        android:textColor="@color/colorPrimaryDark" />
+        android:textColor="@color/intro_next" />
 
     <Button
         android:id="@+id/btn_skip"

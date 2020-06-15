@@ -177,7 +177,7 @@ public class IntroActivity extends AppCompatActivity {
     public class MyViewPagerAdapter extends PagerAdapter {
         private LayoutInflater layoutInflater;
         private TextView tvIntroOne;
-        private TextView tvIntroTwo;
+//        private TextView tvIntroTwo;
 
         public MyViewPagerAdapter() {
         }
@@ -190,18 +190,18 @@ public class IntroActivity extends AppCompatActivity {
             container.addView(view);
 
             tvIntroOne = view.findViewById(R.id.tv_intro_one);
-            tvIntroTwo = view.findViewById(R.id.tv_intro_two);
+//            tvIntroTwo = view.findViewById(R.id.tv_intro_two);
 
             //Highlighting Text
-            String introOne = "This app is for all types of health workers at the frontlines of care to learn about personal protection measures and PPE use.";
-            String textToHighlightOne = "learn about personal protection measures and PPE use.";
+            String introOne = "Intelehealth is a telemedicine application that connects health workers in rural and remote areas connect with remote doctors so they can provide high quality health services for their patients.";
+            String textToHighlightOne = "Intelehealth";
             String newString = introOne.replaceAll(textToHighlightOne, "<font color='blue'>" + textToHighlightOne + "</font>");
             tvIntroOne.setText(Html.fromHtml(newString));
 
-            String introTwo = "You can monitor your own health daily and reach out for help if you think you may have had unsafe exposure and may be infected.";
+          /*  String introTwo = "You can monitor your own health daily and reach out for help if you think you may have had unsafe exposure and may be infected.";
             String textToHighlightTwo = "monitor your own health daily";
             String newStringTwo = introTwo.replaceAll(textToHighlightTwo, "<font color='blue'>" + textToHighlightTwo + "</font>");
-            tvIntroTwo.setText(Html.fromHtml(newStringTwo));
+            tvIntroTwo.setText(Html.fromHtml(newStringTwo));*/
 
             return view;
         }
