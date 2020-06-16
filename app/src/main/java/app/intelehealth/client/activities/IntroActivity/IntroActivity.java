@@ -62,7 +62,7 @@ public class IntroActivity extends AppCompatActivity {
 //        };
 
         layouts = new int[]{
-                R.layout.welcome_slide2
+                R.layout.welcome_slide1
         };
 
         // adding bottom dots
@@ -176,8 +176,10 @@ public class IntroActivity extends AppCompatActivity {
 
     public class MyViewPagerAdapter extends PagerAdapter {
         private LayoutInflater layoutInflater;
-//        private TextView tvIntroOne;
+        private TextView tvIntroOne;
 //        private TextView tvIntroTwo;
+//          private TextView tvtwo_text;
+
 
         public MyViewPagerAdapter() {
         }
@@ -189,14 +191,21 @@ public class IntroActivity extends AppCompatActivity {
             View view = layoutInflater.inflate(layouts[position], container, false);
             container.addView(view);
 
-//            tvIntroOne = view.findViewById(R.id.tv_intro_one);
+            tvIntroOne = view.findViewById(R.id.tv_intro_one);
 //            tvIntroTwo = view.findViewById(R.id.tv_intro_two);
+           /* tvtwo_text = view.findViewById(R.id.hello_text);
+            String two = tvtwo_text.getText().toString();
+            String textHighlight = "Ayu";
+            String newhighlight = two.replaceAll(textHighlight,
+                    "<font color='blue'>"+textHighlight+ "</font>")
+                    .replaceAll("\n", "<br>");
+            tvtwo_text.setText(Html.fromHtml(newhighlight));*/
 
             //Highlighting Text
             String introOne = "Intelehealth is a telemedicine application that connects health workers in rural and remote areas connect with remote doctors so they can provide high quality health services for their patients.";
             String textToHighlightOne = "Intelehealth";
             String newString = introOne.replaceAll(textToHighlightOne, "<font color='blue'>" + textToHighlightOne + "</font>");
-//            tvIntroOne.setText(Html.fromHtml(newString));
+            tvIntroOne.setText(Html.fromHtml(newString));
 
           /*  String introTwo = "You can monitor your own health daily and reach out for help if you think you may have had unsafe exposure and may be infected.";
             String textToHighlightTwo = "monitor your own health daily";
