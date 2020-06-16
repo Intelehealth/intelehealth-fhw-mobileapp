@@ -116,7 +116,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         sessionManager = new SessionManager(this);
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-       // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
+        // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
         alertDialogBuilder.setTitle(R.string.wash_hands);
         LayoutInflater factory = LayoutInflater.from(this);
         final View view = factory.inflate(R.layout.hand_wash, null);
@@ -128,7 +128,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             }
         });
         AlertDialog alertDialog = alertDialogBuilder.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
         //alertDialog.show();
 
         Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
@@ -187,7 +187,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextAppearance(this,R.style.ToolbarTheme);
+        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -420,7 +420,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         });
         AlertDialog alertDialog = alertDialogBuilder.show();
         //alertDialog.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
     private void updateImageDatabase() {
@@ -488,6 +488,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             View rootView = inflater.inflate(R.layout.fragment_physical_exam, container, false);
 
             final ImageView imageView = rootView.findViewById(R.id.physical_exam_image_view);
+
             TextView textView = rootView.findViewById(R.id.physical_exam_text_view);
             ExpandableListView expandableListView = rootView.findViewById(R.id.physical_exam_expandable_list_view);
 
@@ -507,6 +508,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 if (type.equals("video")) {
                     imageView.setVisibility(View.GONE);
                 } else if (type.equals("image")) {
+                    imageView.setVisibility(View.VISIBLE);
                     String drawableName = "physicalExamAssets/" + displayNode.getJobAidFile() + ".jpg";
                     try {
                         // get input stream

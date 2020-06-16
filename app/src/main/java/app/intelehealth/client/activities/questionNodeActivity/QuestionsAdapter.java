@@ -126,6 +126,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                 if (type.equals("video")) {
                     holder.physical_exam_image_view.setVisibility(View.GONE);
                 } else if (type.equals("image")) {
+                    holder.physical_exam_image_view.setVisibility(View.VISIBLE);
                     String drawableName = "physicalExamAssets/" + _mNode.getJobAidFile() + ".jpg";
                     try {
                         // get input stream
@@ -349,6 +350,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         public void onBindViewHolder(@NonNull ComplaintNodeListAdapter.ItemViewHolder itemViewHolder, int position) {
             final Node thisNode = mNodesFilter.get(position);
             itemViewHolder.mChip.setText(thisNode.findDisplay());
+
             Node groupNode = mGroupNode.getOption(mGroupPos);
 
             if ((groupNode.getText().equalsIgnoreCase("Associated symptoms") && thisNode.isNoSelected()) || thisNode.isSelected()) {
