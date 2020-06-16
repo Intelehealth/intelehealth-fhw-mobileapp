@@ -62,7 +62,7 @@ public class IntroActivity extends AppCompatActivity {
 //        };
 
         layouts = new int[]{
-                R.layout.welcome_slide1,
+                R.layout.welcome_slide2
         };
 
         // adding bottom dots
@@ -176,7 +176,7 @@ public class IntroActivity extends AppCompatActivity {
 
     public class MyViewPagerAdapter extends PagerAdapter {
         private LayoutInflater layoutInflater;
-        private TextView tvIntroOne;
+//        private TextView tvIntroOne;
 //        private TextView tvIntroTwo;
 
         public MyViewPagerAdapter() {
@@ -189,14 +189,14 @@ public class IntroActivity extends AppCompatActivity {
             View view = layoutInflater.inflate(layouts[position], container, false);
             container.addView(view);
 
-            tvIntroOne = view.findViewById(R.id.tv_intro_one);
+//            tvIntroOne = view.findViewById(R.id.tv_intro_one);
 //            tvIntroTwo = view.findViewById(R.id.tv_intro_two);
 
             //Highlighting Text
             String introOne = "Intelehealth is a telemedicine application that connects health workers in rural and remote areas connect with remote doctors so they can provide high quality health services for their patients.";
             String textToHighlightOne = "Intelehealth";
             String newString = introOne.replaceAll(textToHighlightOne, "<font color='blue'>" + textToHighlightOne + "</font>");
-            tvIntroOne.setText(Html.fromHtml(newString));
+//            tvIntroOne.setText(Html.fromHtml(newString));
 
           /*  String introTwo = "You can monitor your own health daily and reach out for help if you think you may have had unsafe exposure and may be infected.";
             String textToHighlightTwo = "monitor your own health daily";
