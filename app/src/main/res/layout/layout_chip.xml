@@ -20,7 +20,6 @@
         android:includeFontPadding="false"
         android:textColor="@color/primary_text"
         app:chipStrokeWidth="1dp"
-
         app:chipBackgroundColor="@android:color/transparent"
         app:chipStrokeColor="@color/colorAccent"/>
 

@@ -189,11 +189,15 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             }
         });
 
+
+
         if(getItemCount()-1 == 0){
             holder.tv_swipe_view.setVisibility(View.GONE);
         }else{
             holder.tv_swipe_view.setVisibility(View.VISIBLE);
         }
+
+
         if (position == getItemCount() - 1) {
             holder.tvSwipe.setText(context.getString(R.string.swipe_down));
         } else if (position != 0) {
