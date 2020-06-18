@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Html;
@@ -18,19 +17,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.parse.Parse;
-
-import org.checkerframework.framework.qual.Bottom;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -41,8 +35,6 @@ import java.util.List;
 
 import app.intelehealth.client.R;
 import app.intelehealth.client.activities.homeActivity.HomeActivity;
-import app.intelehealth.client.activities.loginActivity.LoginActivity;
-import app.intelehealth.client.activities.setupActivity.LocationArrayAdapter;
 import app.intelehealth.client.activities.setupActivity.SetupActivity;
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.models.Location;
@@ -93,10 +85,6 @@ public class IntroActivity extends AppCompatActivity {
 
         context = IntroActivity.this;
         sessionManager = new SessionManager(this);
-//        // Making notification bar transparent
-//        if (Build.VERSION.SDK_INT >= 21) {
-//            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-//        }
 
         BASE_URL = "http://demo.intelehealth.io/openmrs/ws/rest/v1/";
 
@@ -105,15 +93,6 @@ public class IntroActivity extends AppCompatActivity {
         btnSkip = (Button) findViewById(R.id.btn_skip);
         btnNext = (Button) findViewById(R.id.btn_next);
 
-
-        // layouts of all welcome sliders
-        // add few more layouts if you want
-//        layouts = new int[]{
-//                R.layout.welcome_slide1,
-//                R.layout.welcome_slide2,
-//                R.layout.welcome_slide3,
-//        };
-
         layouts = new int[]{
                 R.layout.welcome_slide1,
                 R.layout.welcome_slide2
@@ -121,9 +100,6 @@ public class IntroActivity extends AppCompatActivity {
 
         // adding bottom dots
         addBottomDots(0);
-
-        // making notification bar transparent
-//        changeStatusBarColor();
 
         myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
@@ -219,24 +195,12 @@ public class IntroActivity extends AppCompatActivity {
         }
     };
 
-    /**
-     * Making notification bar transparent
-     */
-    private void changeStatusBarColor() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(getResources().getColor(R.color.transparent_tab));
-        }
-    }
-
     public class MyViewPagerAdapter extends PagerAdapter {
         private LayoutInflater layoutInflater;
         private TextView tvIntroOne;
         private TextView tvIntroTwo;
         private Button button_demo_visit;
         private Button button_custom_visit;
-//          private TextView tvtwo_text;
 
 
         public MyViewPagerAdapter() {
@@ -292,10 +256,6 @@ public class IntroActivity extends AppCompatActivity {
                     }
                 });
             }
-          /*  String introTwo = "You can monitor your own health daily and reach out for help if you think you may have had unsafe exposure and may be infected.";
-            String textToHighlightTwo = "monitor your own health daily";
-            String newStringTwo = introTwo.replaceAll(textToHighlightTwo, "<font color='blue'>" + textToHighlightTwo + "</font>");
-            tvIntroTwo.setText(Html.fromHtml(newStringTwo));*/
 
             return view;
         }
