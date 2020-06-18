@@ -507,6 +507,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 if (type.equals("video")) {
                     imageView.setVisibility(View.GONE);
                 } else if (type.equals("image")) {
+                    imageView.setVisibility(View.VISIBLE);
                     String drawableName = "physicalExamAssets/" + displayNode.getJobAidFile() + ".jpg";
                     try {
                         // get input stream

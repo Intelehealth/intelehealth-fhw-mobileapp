@@ -33,8 +33,7 @@
         android:textSize="14sp"
         android:layout_marginStart="46dp"
         android:lineSpacingExtra="2sp"
-        android:gravity="center_horizontal|top"
-        />
+        android:gravity="center_horizontal|top" />
 
         <Button
             android:id="@+id/button_demo_visit"
@@ -65,8 +64,7 @@
             android:layout_marginEnd="70dp"
             android:includeFontPadding="true"
             android:layout_below="@id/button_demo_visit"
-            android:background="@drawable/ic_rectangle_custom_setup"
-            />
+            android:background="@drawable/ic_rectangle_custom_setup" />
 
         </RelativeLayout>
     </ScrollView>
