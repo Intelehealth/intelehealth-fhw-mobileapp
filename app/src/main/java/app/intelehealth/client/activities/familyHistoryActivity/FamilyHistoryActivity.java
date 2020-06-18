@@ -275,6 +275,8 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             }
         }
 
+        insertion = insertion.replaceAll("null.", "");
+
         List<String> imagePathList = familyHistoryMap.getImagePathList();
 
         if (imagePathList != null) {

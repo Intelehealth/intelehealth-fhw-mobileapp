@@ -126,6 +126,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                 if (type.equals("video")) {
                     holder.physical_exam_image_view.setVisibility(View.GONE);
                 } else if (type.equals("image")) {
+                    holder.physical_exam_image_view.setVisibility(View.VISIBLE);
                     String drawableName = "physicalExamAssets/" + _mNode.getJobAidFile() + ".jpg";
                     try {
                         // get input stream

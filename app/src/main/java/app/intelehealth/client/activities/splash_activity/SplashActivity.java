@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Locale;
 
 import app.intelehealth.client.R;
+import app.intelehealth.client.activities.IntroActivity.IntroActivity;
 import app.intelehealth.client.activities.homeActivity.HomeActivity;
 import app.intelehealth.client.dataMigration.SmoothUpgrade;
 import app.intelehealth.client.utilities.Logger;
@@ -30,7 +31,7 @@ import app.intelehealth.client.activities.setupActivity.SetupActivity;
 
 public class SplashActivity extends AppCompatActivity {
     SessionManager sessionManager = null;
-    ProgressDialog TempDialog;
+//    ProgressDialog TempDialog;
     int i = 5;
 
     @Override
@@ -64,11 +65,11 @@ public class SplashActivity extends AppCompatActivity {
 //                Timer t = new Timer();
 //                t.schedule(new splash(), 2000);
 
-                TempDialog = new ProgressDialog(SplashActivity.this, R.style.AlertDialogStyle);
-                TempDialog.setMessage("Data migrating...");
-                TempDialog.setCancelable(false);
-                TempDialog.setProgress(i);
-                TempDialog.show();
+//                TempDialog = new ProgressDialog(SplashActivity.this, R.style.AlertDialogStyle);
+//                TempDialog.setMessage("Data migrating...");
+//                TempDialog.setCancelable(false);
+//                TempDialog.setProgress(i);
+//                TempDialog.show();
 
                 if (sessionManager.isMigration()) {
                     nextActivity();
@@ -81,10 +82,10 @@ public class SplashActivity extends AppCompatActivity {
                             SmoothUpgrade smoothUpgrade = new SmoothUpgrade(SplashActivity.this);
                             boolean smoothupgrade = smoothUpgrade.checkingDatabase();
                             if (smoothupgrade) {
-                                TempDialog.dismiss();
+//                                TempDialog.dismiss();
                                 nextActivity();
                             } else {
-                                TempDialog.dismiss();
+//                                TempDialog.dismiss();
                                 nextActivity();
                             }
 
@@ -133,7 +134,7 @@ public class SplashActivity extends AppCompatActivity {
 
         } else {
             Logger.logD(LOG_TAG, "Starting setup");
-            Intent intent = new Intent(this, SetupActivity.class);
+            Intent intent = new Intent(this, IntroActivity.class);
             startActivity(intent);
             finish();
         }
@@ -141,7 +142,7 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        TempDialog.dismiss();
+//        TempDialog.dismiss();
         super.onDestroy();
     }
 
