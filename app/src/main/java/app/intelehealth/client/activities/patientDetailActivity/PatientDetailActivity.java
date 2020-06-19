@@ -992,14 +992,18 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                         String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
                         if (visitValue != null && !visitValue.isEmpty()) {
-                            String[] complaints = StringUtils.split(visitValue, Node.bullet_arrow);
+                            String[] complaints = StringUtils.split(visitValue, Node.bullet_hollow);
 
                             visitValue = "";
                             String colon = ":";
                             if (complaints != null) {
                                 for (String comp : complaints) {
                                     if (!comp.trim().isEmpty()) {
-                                        visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) /*+ "<br/>"*/;
+                                        if(comp.contains(colon) && !comp.contains("<b>Associated symptoms</b>"))
+                                        {
+                                            visitValue = visitValue + Node.bullet_arrow + comp.substring(comp.indexOf("<b>")) /*+ "<br/>"*/;
+                                        }
+
                                     }
                                 }
                                 if (!visitValue.isEmpty()) {
