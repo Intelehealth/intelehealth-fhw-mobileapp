@@ -492,7 +492,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
                         if (patientID_edit != null) {
                             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
-                        } else {
+                        }
+                        else {
                             mState.setSelection(stateAdapter.getPosition("Odisha"));
                         }
 

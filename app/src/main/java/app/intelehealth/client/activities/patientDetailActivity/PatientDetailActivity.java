@@ -11,6 +11,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -662,7 +663,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     spannableString.setSpan(underlineSpan, 0, spannableString.length() - 7, 0);
                     textView.setText(spannableString);
                     layoutParams.setMargins(5, 10, 5, 0);
-                  //  textView.setLayoutParams(layoutParams);
+                    //  textView.setLayoutParams(layoutParams);
                     textView.setTextSize(16);
                     Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_regular);
                     textView.setTypeface(typeface);
@@ -715,7 +716,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     textView.setTypeface(typeface);
                     textView.setTextSize(16);
                     layoutParams.setMargins(5, 10, 5, 0);
-                   // textView.setLayoutParams(layoutParams);
+                    // textView.setLayoutParams(layoutParams);
                     previousVisitsList.addView(textView);
                 }
                 //If patient has any past complaints
@@ -728,7 +729,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                         Log.e("Check", "No complaint");
                     }
                     layoutParams.setMargins(5, 10, 5, 0);
-                   // complaintxt1.setLayoutParams(layoutParams);
+                    // complaintxt1.setLayoutParams(layoutParams);
                     Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_regular);
                     complaintxt1.setTypeface(typeface);
                     complaintxt1.setTextSize(16);
@@ -741,7 +742,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams
                 (LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         llp.setMargins(0, 10, 0, 0);
-       // textView.setLayoutParams(llp);
+        // textView.setLayoutParams(llp);
         textView.setTag(visit_id);
         Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_regular);
         textView.setTypeface(typeface);
@@ -992,17 +993,18 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                         String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
                         if (visitValue != null && !visitValue.isEmpty()) {
-                            String[] complaints = StringUtils.split(visitValue, Node.bullet_hollow);
+
+                            visitValue = visitValue.replace("?<b>",Node.bullet_arrow);
+
+                            String[] complaints = StringUtils.split(visitValue, Node.bullet_arrow);
 
                             visitValue = "";
                             String colon = ":";
                             if (complaints != null) {
                                 for (String comp : complaints) {
                                     if (!comp.trim().isEmpty()) {
-                                        if(comp.contains(colon) && !comp.contains("<b>Associated symptoms</b>"))
-                                        {
-                                            visitValue = visitValue + Node.bullet_arrow + comp.substring(comp.indexOf("<b>")) /*+ "<br/>"*/;
-                                        }
+
+                                        visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) /*+ "<br/>"*/;
 
                                     }
                                 }

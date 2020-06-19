@@ -1996,7 +1996,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private void parseData(String concept_id, String value) {
         switch (concept_id) {
             case UuidDictionary.CURRENT_COMPLAINT: { //Current Complaint
-                complaint.setValue(value);
+                complaint.setValue(value.replace("?<b>", Node.bullet_arrow));
                 break;
             }
             case UuidDictionary.PHYSICAL_EXAMINATION: { //Physical Examination

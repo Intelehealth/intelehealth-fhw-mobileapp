@@ -63,7 +63,7 @@ import app.intelehealth.client.knowledgeEngine.Node;
 import app.intelehealth.client.utilities.StringUtils;
 import app.intelehealth.client.utilities.exception.DAOException;
 
-public class QuestionNodeActivity extends AppCompatActivity implements  QuestionsAdapter.FabClickListener{
+public class QuestionNodeActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
     final String TAG = "Question Node Activity";
     String patientUuid;
     String visitUuid;
@@ -77,7 +77,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
     SessionManager sessionManager = null;
 
     //    Knowledge mKnowledge; //Knowledge engine
-   // ExpandableListView questionListView;
+    // ExpandableListView questionListView;
     String mFileName = "knowledge.json"; //knowledge engine file
     //    String mFileName = "DemoBrain.json";
     int complaintNumber = 0; //assuming there is at least one complaint, starting complaint number
@@ -86,8 +86,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
     List<Node> complaintsNodes; //actual nodes to be used
     ArrayList<String> physicalExams;
     Node currentNode;
-   // CustomExpandableListAdapter adapter;
-   QuestionsAdapter adapter;
+    // CustomExpandableListAdapter adapter;
+    QuestionsAdapter adapter;
     boolean nodeComplete = false;
 
     int lastExpandedPosition = -1;
@@ -148,11 +148,11 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
         setContentView(R.layout.activity_question_node);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextAppearance(this,R.style.ToolbarTheme);
+        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-       // questionListView = findViewById(R.id.complaint_question_expandable_list_view);
+        // questionListView = findViewById(R.id.complaint_question_expandable_list_view);
 
         fab = findViewById(R.id.fab);
         assert fab != null;
@@ -163,7 +163,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
             }
         });
         question_recyclerView = findViewById(R.id.question_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,RecyclerView.VERTICAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         question_recyclerView.setLayoutManager(linearLayoutManager);
         question_recyclerView.setHasFixedSize(true);
         question_recyclerView.setNestedScrollingEnabled(true);
@@ -202,7 +202,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
     }
 
     public void onListClicked(View v, int groupPosition, int childPosition) {
-        Log.e(TAG,"CLICKED: "+currentNode.getOption(groupPosition).toString());
+        Log.e(TAG, "CLICKED: " + currentNode.getOption(groupPosition).toString());
         if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && !currentNode.getOption(groupPosition).anySubSelected()) {
             Node question = currentNode.getOption(groupPosition).getOption(childPosition);
             question.toggleSelected();
@@ -242,7 +242,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
-            IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
+            IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
         } else {
 
             Node question = currentNode.getOption(groupPosition).getOption(childPosition);
@@ -304,12 +304,12 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
                 //    complaintDetails.put(complaint, complaintFormatted);
 
 //                insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
-                insertion = insertion.concat("<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
+                insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
             } else {
                 String complaint = currentNode.getText();
                 if (!complaint.equalsIgnoreCase(getResources().getString(R.string.associated_symptoms))) {
 //                    insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + " ");
-                    insertion = insertion.concat("<b>" + complaint + "</b>" + ": " + Node.next_line + " ");
+                    insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + " ");
                 }
             }
             ArrayList<String> selectedAssociatedComplaintsList = currentNode.getSelectedAssociations();
@@ -459,7 +459,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
             currentNode = complaintsNodes.get(complaintIndex);
         }
 
-        adapter = new QuestionsAdapter(this,currentNode,question_recyclerView,this.getClass().getSimpleName(),this,false);
+        adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, false);
         question_recyclerView.setAdapter(adapter);
       /*  adapter = new CustomExpandableListAdapter(this, currentNode, this.getClass().getSimpleName());
         questionListView.setAdapter(adapter);
@@ -541,7 +541,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
             questionListView.setAdapter(adapter);
             questionListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
             questionListView.expandGroup(0);*/
-            adapter = new QuestionsAdapter(this,currentNode,question_recyclerView,this.getClass().getSimpleName(),this,true);
+            adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, true);
             question_recyclerView.setAdapter(adapter);
             setTitle(patientName + ": " + currentNode.getText());
 
@@ -553,7 +553,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
     //TODO: Add setting to allow for all questions unrequired..addAll(Arrays.asList(splitExams))
     public void questionsMissing() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-       // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
+        // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
         alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
         alertDialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
             @Override
@@ -570,7 +570,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
             }
         });
         Dialog alertDialog = alertDialogBuilder.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
         //alertDialog.show();
     }
 
@@ -622,7 +622,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
         animation.addAnimation(fadeIn);
         animation.addAnimation(fadeOut);
         animation.setRepeatCount(1);
-        if(v != null){
+        if (v != null) {
             v.setAnimation(animation);
         }
 
@@ -630,7 +630,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
 
     public void bottomUpAnimation(View v) {
 
-        if( v != null){
+        if (v != null) {
             v.setVisibility(View.VISIBLE);
             Animation bottomUp = AnimationUtils.loadAnimation(this,
                     R.anim.bottom_up);
@@ -647,7 +647,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
 
     @Override
     public void onChildListClickEvent(int groupPos, int childPos, int physExamPos) {
-        onListClicked(null,groupPos,childPos);
+        onListClicked(null, groupPos, childPos);
     }
 
 
