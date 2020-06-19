@@ -125,7 +125,6 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
         complaintsNodes = new ArrayList<>();
 
         boolean hasLicense = false;
-//        if (sessionManager.getLicenseKey() != null && !sessionManager.getLicenseKey().isEmpty())
         if (!sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
 
@@ -164,11 +163,14 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
             }
         });
         question_recyclerView = findViewById(R.id.question_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,RecyclerView.VERTICAL,false);
         question_recyclerView.setLayoutManager(linearLayoutManager);
+        question_recyclerView.setHasFixedSize(true);
+        question_recyclerView.setNestedScrollingEnabled(true);
         question_recyclerView.setItemAnimator(new DefaultItemAnimator());
         PagerSnapHelper helper = new PagerSnapHelper();
         helper.attachToRecyclerView(question_recyclerView);
+
         setupQuestions(complaintNumber);
         //In the event there is more than one complaint, they will be prompted one at a time.
 

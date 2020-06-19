@@ -269,13 +269,14 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             rvChips = itemView.findViewById(R.id.rv_chips);
             fab = itemView.findViewById(R.id.fab);
             tv_swipe_view = itemView.findViewById(R.id.tv_swipe_view);
-            tvSwipe = itemView.findViewById(R.id.tv_swipe);
+              tvSwipe = itemView.findViewById(R.id.tv_swipe);
             physical_exam_text_view = itemView.findViewById(R.id.physical_exam_text_view);
             physical_exam_image_view = itemView.findViewById(R.id.physical_exam_image_view);
 
 
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context,RecyclerView.VERTICAL,false);
             rvChips.setLayoutManager(linearLayoutManager);
+            rvChips.setHasFixedSize(true);
             //rvChips.setItemAnimator(new DefaultItemAnimator());
             rvChips.setNestedScrollingEnabled(true);
 

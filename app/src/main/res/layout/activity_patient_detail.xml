@@ -585,8 +585,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
-                            android:visibility="invisible"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:visibility="invisible">
 
                             <ImageButton
 
@@ -603,8 +603,6 @@
                         </LinearLayout>
 
                     </RelativeLayout>
-
-
 
 
                     <TableLayout
