@@ -5,6 +5,7 @@
     <color name="colorPrimarynew">#402E1E91</color>
     <color name="colorPrimaryDark">#21166a</color>
     <color name="colorPrimaryLight">#D1C4E9</color>
+    <color name="intro_next">#2014EB</color>
     <color name="colorAccent">#448AFF</color>
     <color name="primary_text">#212121</color>
     <color name="icons">#FFFFFF</color>
@@ -26,6 +27,7 @@
     <color name="scale_5">#008000</color>
 
     <color name="font_black_0">#212121</color>
+    <color name="font_black_welcome">#212121</color>
     <color name="font_black_1">#424242</color>
     <color name="font_black_2">#616161</color>
     <color name="font_black_3">#757575</color>
@@ -36,5 +38,20 @@
     <color name="lite_red">#F3665C</color>
     <!--Home Screen Changes-->
     <color name="txt_sub_header_color">#333333</color>
+
+    <!-- dots inactive colors -->
+    <color name="dot_dark_screen1">#d1395c</color>
+    <color name="dot_dark_screen2">#14a895</color>
+    <color name="dot_dark_screen3">#2278d4</color>
+    <color name="dot_dark_screen4">#a854d4</color>
+
+    <!-- dots active colors -->
+    <color name="dot_light_screen1">#f98da5</color>
+    <color name="dot_light_screen2">#8cf9eb</color>
+    <color name="dot_light_screen3">#93c6fd</color>
+    <color name="dot_light_screen4">#e4b5fc</color>
+
+    <color name="transparent_tab">#75000000</color>
+
 
 </resources>

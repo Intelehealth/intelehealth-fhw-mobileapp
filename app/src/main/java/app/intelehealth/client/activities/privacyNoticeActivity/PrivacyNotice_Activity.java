@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import android.text.util.Linkify;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -60,6 +62,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
         privacy_textview = findViewById(R.id.privacy_text);
+        privacy_textview.setAutoLinkMask(Linkify.ALL);
 
         radiogrp = findViewById(R.id.radio_privacy_grp);
         radio_acc = findViewById(R.id.radio_accept);

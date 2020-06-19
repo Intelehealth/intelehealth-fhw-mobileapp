@@ -89,7 +89,7 @@ public class SetupActivity extends AppCompatActivity {
     private static final int PERMISSION_ALL = 1;
     private long createdRecordsCount = 0;
 
-//    protected AccountManager manager;
+    //    protected AccountManager manager;
     UrlModifiers urlModifiers = new UrlModifiers();
     Base64Utils base64Utils = new Base64Utils();
     String encoded = null;
@@ -472,12 +472,12 @@ public class SetupActivity extends AppCompatActivity {
 
                     // Change the alert dialog buttons text and background color
                     positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                   // positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                    // positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
                     negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                     //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-                    IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
+                    IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
 
                 }

@@ -125,7 +125,6 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
         complaintsNodes = new ArrayList<>();
 
         boolean hasLicense = false;
-//        if (sessionManager.getLicenseKey() != null && !sessionManager.getLicenseKey().isEmpty())
         if (!sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
 
