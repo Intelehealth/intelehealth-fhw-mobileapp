@@ -36,7 +36,7 @@
         android:layout_marginTop="5dp"
         android:layout_below="@+id/tv_swipe_view"
         android:layout_above="@+id/fab"
-        android:gravity="bottom"
+        android:gravity="top"
         android:orientation="vertical">
 
         <TextView
@@ -51,6 +51,7 @@
             android:layout_width="match_parent"
             android:layout_gravity="center_horizontal"
             android:layout_height="@dimen/physical_exam_img_max_height"
+            android:visibility="gone"
             android:contentDescription="TODO"
             />
 
