@@ -177,9 +177,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private void setLogo() {
 
-        File f = new File("/data/data/" + context.getPackageName() + "/files/logo/ic_sams.png");
+        File f = new File("/data/data/" + context.getPackageName() + "/files/logo/ic_logo.png");
         if (f.isFile()) {
-            Bitmap bitmap = BitmapFactory.decodeFile("/data/data/" + context.getPackageName() + "/files/logo/ic_sams.png");
+            Bitmap bitmap = BitmapFactory.decodeFile("/data/data/" + context.getPackageName() + "/files/logo/ic_logo.png");
             icLogo.setImageBitmap(bitmap);
         } else {
             Log.e("SetLogo","No Logo Found in Mindmap Folder");

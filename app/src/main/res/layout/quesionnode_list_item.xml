@@ -6,33 +6,24 @@
     android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
-        android:id="@+id/tv_swipe_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
         <TextView
             android:id="@+id/tv_swipe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center|top"
             android:textSize="14sp"
+            android:gravity="center"
             android:layout_margin="5dp"
             android:includeFontPadding="false"
-            android:layout_centerInParent="true"
             android:layout_alignParentTop="true"
             android:visibility="visible"
             android:fontFamily="@font/lato_bold"
             android:textColor="@color/font_black_3"
             android:text="@string/swipe_down_to_return"/>
 
-    </RelativeLayout>
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_below="@+id/tv_swipe_view"
+        android:layout_below="@+id/tv_swipe"
         android:layout_above="@+id/fab"
         android:gravity="top"
         android:orientation="vertical">
@@ -57,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="5dp">
 
             <ImageView
                 android:id="@+id/iv_ayu"

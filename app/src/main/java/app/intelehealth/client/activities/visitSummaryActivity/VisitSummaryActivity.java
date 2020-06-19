@@ -1538,19 +1538,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         }
 
-        if(mComplaint.contains("Associated symptoms"))
-        {
+        if (mComplaint.contains("Associated symptoms")) {
             String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);
-            for(String compla : cc)
-            {
-                mComplaint =  mComplaint.substring(0, compla.indexOf("Associated symptoms")-3);
+            for (String compla : cc) {
+                mComplaint = mComplaint.substring(0, compla.indexOf("Associated symptoms") - 3);
             }
-        }
-        else
-        {
+        } else {
 
         }
-
 
 
         if (mPatientOpenMRSID == null) {
@@ -1591,7 +1586,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String[] spiltFollowDate = followUpDate.split(",");
             if (spiltFollowDate[0] != null && spiltFollowDate[0].contains("-")) {
                 String remainingStr = "";
-                for (int i = 1; i <= spiltFollowDate.length-1; i++) {
+                for (int i = 1; i <= spiltFollowDate.length - 1; i++) {
                     remainingStr = ((!TextUtils.isEmpty(remainingStr)) ? remainingStr + ", " : "") + spiltFollowDate[i];
                 }
                 followUpDateStr = parseDateToddMMyyyy(spiltFollowDate[0]) + ", " + remainingStr;
@@ -1630,7 +1625,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         // Generate an HTML document on the fly:
         String fontFamilyFile = "";
-        if (objClsDoctorDetails != null) {
+        if (objClsDoctorDetails != null && objClsDoctorDetails.getFontOfSign() != null) {
             if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Youthness.ttf');";
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("asem")) {
@@ -1654,7 +1649,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = objClsDoctorDetails.getTextOfSign();
 
-            
+
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " + objClsDoctorDetails.getRegistrationNumber() : "";
             doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
                     "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
