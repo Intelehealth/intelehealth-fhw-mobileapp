@@ -471,11 +471,11 @@ public class SetupActivity extends AppCompatActivity {
                                             //invalid url || invalid url and key.
                                             url.setError("");
                                             text.setError("");
-                                            Toast.makeText(SetupActivity.this, "Check License Url and Key", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(SetupActivity.this, "Enter valid License Url", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                     else {
-                                        Toast.makeText(SetupActivity.this, "Cannot enter empty data", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(SetupActivity.this, "Please enter URL and Key", Toast.LENGTH_SHORT).show();
                                     }
 
 
