@@ -111,6 +111,7 @@ public class SetupActivity extends AppCompatActivity {
     private RadioButton r1;
     private RadioButton r2;
     final Handler mHandler = new Handler();
+    boolean click_box = false;
 
     Context context;
     private String mindmapURL = "";
@@ -414,43 +415,70 @@ public class SetupActivity extends AppCompatActivity {
                                     }
 
 
-                                    key = text.getText().toString().trim();
-                                    licenseUrl = url.getText().toString().trim();
+                                    if (!url.getText().toString().trim().isEmpty()) {
+                                        if (Patterns.WEB_URL.matcher(url.getText().toString()).matches()) {
+                                            String url_field = "http://" + url.getText().toString() + ":3004/";
+                                            if (URLUtil.isValidUrl(url_field))
+                                            {
+                                                key = text.getText().toString().trim();
+                                                licenseUrl = url.getText().toString().trim();
 
-                                    if (licenseUrl.isEmpty()) {
-                                        url.setError(getResources().getString(R.string.enter_server_url));
-                                        url.requestFocus();
-                                        return;
-                                    }
-                                    if (licenseUrl.contains(":")) {
-                                        url.setError(getResources().getString(R.string.invalid_url));
-                                        url.requestFocus();
-                                        return;
-                                    }
-                                    if (key.isEmpty()) {
-                                        text.setError(getResources().getString(R.string.enter_license_key));
-                                        text.requestFocus();
-                                        return;
-                                    }
+                                                if (licenseUrl.isEmpty()) {
+                                                    url.setError(getResources().getString(R.string.enter_server_url));
+                                                    url.requestFocus();
+                                                    return;
+                                                }
+                                                if (licenseUrl.contains(":")) {
+                                                    url.setError(getResources().getString(R.string.invalid_url));
+                                                    url.requestFocus();
+                                                    return;
+                                                }
+                                                if (key.isEmpty()) {
+                                                    text.setError(getResources().getString(R.string.enter_license_key));
+                                                    text.requestFocus();
+                                                    return;
+                                                }
 
-                                    sessionManager.setMindMapServerUrl(licenseUrl);
-                                    //Toast.makeText(SetupActivity.this, "" + key, Toast.LENGTH_SHORT).show();
-                                    if (keyVerified(key)) {
-                                        // create a shared pref to store the key
+                                                sessionManager.setMindMapServerUrl(licenseUrl);
+                                                //Toast.makeText(SetupActivity.this, "" + key, Toast.LENGTH_SHORT).show();
+                                                if (keyVerified(key)) {
+                                                    // create a shared pref to store the key
 
-                                        // SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("pref",MODE_PRIVATE);
+                                                    // SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("pref",MODE_PRIVATE);
 
-                                        //DOWNLOAD MIND MAP FILE LIST
-                                        //upnew getJSONFile().execute(null, "AllFiles", "TRUE");
+                                                    //DOWNLOAD MIND MAP FILE LIST
+                                                    //upnew getJSONFile().execute(null, "AllFiles", "TRUE");
 
-                                        // UpdateProtocolsTask updateProtocolsTask = new UpdateProtocolsTask(SetupActivity.this);
-                                        // updateProtocolsTask.execute(null, "AllFiles", "TRUE");
+                                                    // UpdateProtocolsTask updateProtocolsTask = new UpdateProtocolsTask(SetupActivity.this);
+                                                    // updateProtocolsTask.execute(null, "AllFiles", "TRUE");
 //                                        DownloadProtocolsTask downloadProtocolsTask = new DownloadProtocolsTask(SetupActivity.this);
 //                                        downloadProtocolsTask.execute(key);
-                                        getMindmapDownloadURL("http://" + licenseUrl + ":3004/");
+                                                    getMindmapDownloadURL("http://" + licenseUrl + ":3004/");
 
 
+                                                }
+                                            }
+                                            else
+                                            {
+                                                d.show();
+                                                url.setText("");
+                                                Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+
+                                            }
+                                        }
+                                        else
+                                        {
+                                            //invalid url || invalid url and key.
+                                            url.setError("");
+                                            text.setError("");
+                                            Toast.makeText(SetupActivity.this, "Check License Url and Key", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
+                                    else {
+                                        Toast.makeText(SetupActivity.this, "Cannot enter empty data", Toast.LENGTH_SHORT).show();
+                                    }
+
+
                                 }
                             })
 
