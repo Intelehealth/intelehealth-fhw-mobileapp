@@ -455,13 +455,10 @@ public class SetupActivity extends AppCompatActivity {
 //                                        downloadProtocolsTask.execute(key);
                                                     getMindmapDownloadURL("http://" + licenseUrl + ":3004/");
 
-
                                                 }
                                             }
                                             else
                                             {
-                                                d.show();
-                                                url.setText("");
                                                 Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
 
                                             }
@@ -469,15 +466,12 @@ public class SetupActivity extends AppCompatActivity {
                                         else
                                         {
                                             //invalid url || invalid url and key.
-                                            url.setError("");
-                                            text.setError("");
                                             Toast.makeText(SetupActivity.this, "Enter valid License Url", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                     else {
                                         Toast.makeText(SetupActivity.this, "Please enter URL and Key", Toast.LENGTH_SHORT).show();
                                     }
-
 
                                 }
                             })
