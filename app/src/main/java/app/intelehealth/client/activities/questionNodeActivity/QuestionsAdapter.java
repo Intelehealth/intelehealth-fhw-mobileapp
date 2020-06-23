@@ -219,11 +219,13 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             @Override
             public void onClick(View view) {
                 _mListener.fabClickedAtEnd();
+
             }
         });
 
         if (isChildNeedRefresh) {
             holder.rvChips.getAdapter().notifyDataSetChanged();
+
         }
     }
 

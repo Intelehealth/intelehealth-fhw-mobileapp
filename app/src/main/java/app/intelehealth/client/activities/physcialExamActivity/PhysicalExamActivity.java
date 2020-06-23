@@ -68,6 +68,7 @@ import app.intelehealth.client.knowledgeEngine.Node;
 import app.intelehealth.client.knowledgeEngine.PhysicalExam;
 import app.intelehealth.client.models.dto.ObsDTO;
 import app.intelehealth.client.utilities.FileUtils;
+import app.intelehealth.client.utilities.RecyclerViewIndicator;
 import app.intelehealth.client.utilities.SessionManager;
 import app.intelehealth.client.utilities.UuidDictionary;
 
@@ -108,7 +109,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
     SessionManager sessionManager;
     RecyclerView physExam_recyclerView;
     QuestionsAdapter adapter;
-
+    RecyclerViewIndicator recyclerViewIndicator;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
@@ -186,6 +187,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         setTitle(getString(R.string.title_activity_physical_exam));
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+        recyclerViewIndicator=findViewById(R.id.recyclerViewIndicator);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
@@ -240,6 +242,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         Log.e(TAG, "PhyExam: " + physicalExamMap.getTotalNumberOfExams());
         adapter = new QuestionsAdapter(this, physicalExamMap, physExam_recyclerView, this.getClass().getSimpleName(), this, false);
         physExam_recyclerView.setAdapter(adapter);
+        recyclerViewIndicator.setRecyclerView(physExam_recyclerView);
 
     }
 
@@ -533,6 +536,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
             adapter = new CustomExpandableListAdapter(getContext(), viewNode, this.getClass().getSimpleName());
             expandableListView.setAdapter(adapter);
+
+
             expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
                 @Override
                 public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {

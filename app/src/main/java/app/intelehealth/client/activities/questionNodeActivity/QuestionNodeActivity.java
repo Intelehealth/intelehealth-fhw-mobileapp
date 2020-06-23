@@ -53,6 +53,7 @@ import app.intelehealth.client.database.dao.ImagesDAO;
 import app.intelehealth.client.database.dao.ObsDAO;
 import app.intelehealth.client.models.dto.ObsDTO;
 import app.intelehealth.client.utilities.FileUtils;
+import app.intelehealth.client.utilities.RecyclerViewIndicator;
 import app.intelehealth.client.utilities.SessionManager;
 import app.intelehealth.client.utilities.UuidDictionary;
 
@@ -101,6 +102,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
     private JSONObject assoSympObj = new JSONObject();
     private JSONArray assoSympArr = new JSONArray();
     private JSONObject finalAssoSympObj = new JSONObject();
+    RecyclerViewIndicator recyclerViewIndicator;
+
 
     FloatingActionButton fab;
     RecyclerView question_recyclerView;
@@ -162,8 +165,9 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
                 fabClick();
             }
         });
+        recyclerViewIndicator= findViewById(R.id.recyclerViewIndicator);
         question_recyclerView = findViewById(R.id.question_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,RecyclerView.VERTICAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false);
         question_recyclerView.setLayoutManager(linearLayoutManager);
         question_recyclerView.setHasFixedSize(true);
         question_recyclerView.setNestedScrollingEnabled(true);
@@ -376,6 +380,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
                 }
             }
         }
+        question_recyclerView.setAdapter(adapter);
+        recyclerViewIndicator.setRecyclerView(question_recyclerView);
     }
 
     /**
@@ -461,6 +467,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
 
         adapter = new QuestionsAdapter(this,currentNode,question_recyclerView,this.getClass().getSimpleName(),this,false);
         question_recyclerView.setAdapter(adapter);
+        recyclerViewIndicator.setRecyclerView(question_recyclerView);
       /*  adapter = new CustomExpandableListAdapter(this, currentNode, this.getClass().getSimpleName());
         questionListView.setAdapter(adapter);
         questionListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
@@ -491,6 +498,11 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
                 currentNode = complaintsNodes.get(complaintIndex);
             }
         }
+    }
+
+    public void setRecyclerViewIndicator(){
+        question_recyclerView.setAdapter(adapter);
+        recyclerViewIndicator.setRecyclerView(question_recyclerView);
     }
 
     private void removeDuplicateSymptoms() {

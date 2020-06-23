@@ -50,6 +50,7 @@ import app.intelehealth.client.database.dao.ObsDAO;
 import app.intelehealth.client.knowledgeEngine.Node;
 import app.intelehealth.client.models.dto.ObsDTO;
 import app.intelehealth.client.utilities.FileUtils;
+import app.intelehealth.client.utilities.RecyclerViewIndicator;
 import app.intelehealth.client.utilities.SessionManager;
 import app.intelehealth.client.utilities.StringUtils;
 import app.intelehealth.client.utilities.UuidDictionary;
@@ -99,6 +100,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     private String encounterAdultIntials;
     RecyclerView pastMedical_recyclerView;
     QuestionsAdapter adapter;
+    RecyclerViewIndicator recyclerViewIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,8 +187,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
+        recyclerViewIndicator=findViewById(R.id.recyclerViewIndicator);
         pastMedical_recyclerView = findViewById(R.id.pastMedical_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false);
         pastMedical_recyclerView.setLayoutManager(linearLayoutManager);
         pastMedical_recyclerView.setItemAnimator(new DefaultItemAnimator());
         PagerSnapHelper helper = new PagerSnapHelper();
@@ -224,6 +227,10 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
         adapter = new QuestionsAdapter(this, patientHistoryMap, pastMedical_recyclerView, this.getClass().getSimpleName(), this, false);
         pastMedical_recyclerView.setAdapter(adapter);
+
+        recyclerViewIndicator.setRecyclerView(pastMedical_recyclerView);
+
+
 
        /* historyListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
