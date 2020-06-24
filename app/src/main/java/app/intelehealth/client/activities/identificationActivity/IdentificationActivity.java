@@ -493,9 +493,9 @@ public class IdentificationActivity extends AppCompatActivity {
                         if (patientID_edit != null) {
                             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
                         }
-                        else {
-                            mState.setSelection(stateAdapter.getPosition("Odisha"));
-                        }
+//                        else {
+//                            mState.setSelection(stateAdapter.getPosition("Odisha"));
+//                        }
 
                     } else if (country.matches("United States")) {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,

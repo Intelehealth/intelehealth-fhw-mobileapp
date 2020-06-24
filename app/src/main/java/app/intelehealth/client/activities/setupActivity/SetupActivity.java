@@ -416,7 +416,7 @@ public class SetupActivity extends AppCompatActivity {
 
 
                                     if (!url.getText().toString().trim().isEmpty()) {
-                                        if (Patterns.WEB_URL.matcher(url.getText().toString()).matches()) {
+                                        if (Patterns.WEB_URL.matcher(url.getText().toString().trim()).matches()) {
                                             String url_field = "http://" + url.getText().toString() + ":3004/";
                                             if (URLUtil.isValidUrl(url_field))
                                             {
