@@ -168,7 +168,7 @@ public class SetupActivity extends AppCompatActivity {
         });
 
         mAndroidIdTextView = findViewById(R.id.textView_Aid);
-        String deviceID = getString(R.string.device_ID) + IntelehealthApplication.getAndroidId();
+        String deviceID = "Device Id: " + IntelehealthApplication.getAndroidId();
         mAndroidIdTextView.setText(deviceID);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
