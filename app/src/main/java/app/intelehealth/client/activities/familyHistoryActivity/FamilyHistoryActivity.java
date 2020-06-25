@@ -52,6 +52,7 @@ import app.intelehealth.client.database.dao.ObsDAO;
 import app.intelehealth.client.knowledgeEngine.Node;
 import app.intelehealth.client.models.dto.ObsDTO;
 import app.intelehealth.client.utilities.FileUtils;
+import app.intelehealth.client.utilities.RecyclerViewIndicator;
 import app.intelehealth.client.utilities.SessionManager;
 import app.intelehealth.client.utilities.UuidDictionary;
 
@@ -88,6 +89,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
     String encounterAdultIntials;
     private String imageName = null;
     private File filePath;
+    RecyclerViewIndicator recyclerViewIndicator;
 
     RecyclerView family_history_recyclerView;
     QuestionsAdapter adapter;
@@ -163,6 +165,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_family_history);
         setTitle(R.string.title_activity_family_history);
+        recyclerViewIndicator=findViewById(R.id.recyclerViewIndicator);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -207,6 +210,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
         adapter = new QuestionsAdapter(this, familyHistoryMap, family_history_recyclerView, this.getClass().getSimpleName(), this, false);
         family_history_recyclerView.setAdapter(adapter);
+        recyclerViewIndicator.setRecyclerView(family_history_recyclerView);
         /*adapter = new CustomExpandableListAdapter(this, familyHistoryMap, this.getClass().getSimpleName());
         familyListView.setAdapter(adapter);*/
 
@@ -398,6 +402,8 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
     public void onChildListClickEvent(int groupPos, int childPos, int physExamPos) {
         onListClick(null, groupPos, childPos);
     }
+
+
 
     public void AnimateView(View v) {
 

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
+import android.opengl.Visibility;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,7 +76,12 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         void fabClickedAtEnd();
 
         void onChildListClickEvent(int groupPos, int childPos, int physExamPos);
+
+
+
     }
+
+
 
     public QuestionsAdapter(Context _context, Node node, RecyclerView _rvQuestions, String callingClass,
                             FabClickListener _mListener, boolean isAssociateSym) {
@@ -114,7 +120,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
     @Override
     public void onBindViewHolder(QuestionsAdapter.ChipsAdapterViewHolder holder, int position) {
         Node _mNode;
-        if (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())) {
+            if (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())) {
             _mNode = physicalExam.getExamNode(position).getOption(0);
             final String parent_name = physicalExam.getExamParentNodeName(position);
             String nodeText = parent_name + " : " + _mNode.findDisplay();
@@ -200,11 +206,15 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 
         if (position == getItemCount() - 1) {
             holder.tvSwipe.setText(context.getString(R.string.swipe_down));
+
         } else if (position != 0) {
             holder.tvSwipe.setText(context.getString(R.string.swipe_down_to_return));
+
             // holder.tvSwipe.setVisibility(View.VISIBLE);
         } else {
             holder.tvSwipe.setText(context.getString(R.string.swipe_up));
+
+
             // holder.tvSwipe.setVisibility(View.GONE);
         }
 
@@ -230,6 +240,11 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
     }
 
     @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
+    }
+
+    @Override
     public int getItemCount() {
         if (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())) {
             return physicalExam.getTotalNumberOfExams();
@@ -247,6 +262,8 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             }
         }
     }
+
+
 
     @Override
     public int getItemViewType(int position) {

@@ -53,9 +53,9 @@
             app:avi_animation_enable="true"
             app:avi_drawable="@drawable/blue_radius"
             app:avi_drawable_unselected="@drawable/gray_radius"
-            app:avi_height="10dp"
-            app:avi_margin="10dp"
-            app:avi_width="10dp"
+            app:avi_height="7dp"
+            app:avi_margin="7dp"
+            app:avi_width="7dp"
             app:layout_constraintTop_toBottomOf="@+id/recyclerView">
         </app.intelehealth.client.utilities.RecyclerViewIndicator>
         <androidx.recyclerview.widget.RecyclerView

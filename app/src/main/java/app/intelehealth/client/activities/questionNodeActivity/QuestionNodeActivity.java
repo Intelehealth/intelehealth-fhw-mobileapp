@@ -28,6 +28,7 @@ import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -76,6 +77,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
     File filePath;
     Boolean complaintConfirmed = false;
     SessionManager sessionManager = null;
+
 
     //    Knowledge mKnowledge; //Knowledge engine
    // ExpandableListView questionListView;
@@ -149,6 +151,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_node);
+
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this,R.style.ToolbarTheme);
@@ -169,7 +173,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
         question_recyclerView = findViewById(R.id.question_recyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false);
         question_recyclerView.setLayoutManager(linearLayoutManager);
-        question_recyclerView.setHasFixedSize(true);
+
         question_recyclerView.setNestedScrollingEnabled(true);
         question_recyclerView.setItemAnimator(new DefaultItemAnimator());
         PagerSnapHelper helper = new PagerSnapHelper();
@@ -204,6 +208,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
         });*/
 
     }
+
 
     public void onListClicked(View v, int groupPosition, int childPosition) {
         Log.e(TAG,"CLICKED: "+currentNode.getOption(groupPosition).toString());
@@ -381,6 +386,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
             }
         }
         question_recyclerView.setAdapter(adapter);
+        question_recyclerView.getAdapter().getItemCount();
+
         recyclerViewIndicator.setRecyclerView(question_recyclerView);
     }
 
@@ -661,6 +668,9 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
     public void onChildListClickEvent(int groupPos, int childPos, int physExamPos) {
         onListClicked(null,groupPos,childPos);
     }
+
+
+
 
 
 }

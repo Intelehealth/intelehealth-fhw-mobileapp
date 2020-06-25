@@ -448,6 +448,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         onListClick(null, groupPos, childPos);
     }
 
+
+
+
     public void AnimateView(View v) {
 
         int fadeInDuration = 500; // Configure time values here

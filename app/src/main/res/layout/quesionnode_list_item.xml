@@ -20,7 +20,7 @@
         android:textColor="@color/gray"
         android:textSize="14sp"
         android:textStyle="bold"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
 
     <LinearLayout

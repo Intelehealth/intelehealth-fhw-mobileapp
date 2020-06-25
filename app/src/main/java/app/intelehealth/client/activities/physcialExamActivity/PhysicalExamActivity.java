@@ -110,6 +110,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
     RecyclerView physExam_recyclerView;
     QuestionsAdapter adapter;
     RecyclerViewIndicator recyclerViewIndicator;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
@@ -186,9 +188,11 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         setContentView(R.layout.activity_physical_exam);
         setTitle(getString(R.string.title_activity_physical_exam));
 
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         recyclerViewIndicator=findViewById(R.id.recyclerViewIndicator);
         setSupportActionBar(toolbar);
+
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
         if (getSupportActionBar() != null) {
@@ -353,6 +357,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             Node.subLevelQuestion(question, this, adapter, filePath.toString(), imageName);
         }
     }
+
+
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
