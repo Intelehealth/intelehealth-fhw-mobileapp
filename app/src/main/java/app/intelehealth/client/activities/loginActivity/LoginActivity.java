@@ -260,8 +260,8 @@ public class LoginActivity extends AppCompatActivity {
 
                         String phoneNumberWithCountryCode = "+917005308163";
                         String message =
-                                "Hello, my name is " + sessionManager.getChwname() +
-                                        /*" from " + sessionManager.getState() + */" and I need to reset my Password(Intelehealth).";
+                                getString(R.string.hello_my_name_is) + sessionManager.getChwname() +
+                                        /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
 
                         startActivity(new Intent(Intent.ACTION_VIEW,
                                 Uri.parse(
@@ -271,7 +271,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
                 })
-                .setPositiveButton("Close", null);
+                .setPositiveButton(R.string.close_button, null);
 
       AlertDialog alertDialog = builder.show();
         IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);

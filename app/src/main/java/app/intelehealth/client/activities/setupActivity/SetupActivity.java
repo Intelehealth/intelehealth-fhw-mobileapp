@@ -168,7 +168,8 @@ public class SetupActivity extends AppCompatActivity {
         });
 
         mAndroidIdTextView = findViewById(R.id.textView_Aid);
-        mAndroidIdTextView.setText("Device Id: " + IntelehealthApplication.getAndroidId());
+        String deviceID = getString(R.string.device_ID) + IntelehealthApplication.getAndroidId();
+        mAndroidIdTextView.setText(deviceID);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -466,11 +467,11 @@ public class SetupActivity extends AppCompatActivity {
                                         else
                                         {
                                             //invalid url || invalid url and key.
-                                            Toast.makeText(SetupActivity.this, "Enter valid License Url", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(SetupActivity.this, R.string.enter_valid_license_url, Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                     else {
-                                        Toast.makeText(SetupActivity.this, "Please enter URL and Key", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(SetupActivity.this, R.string.please_enter_url_and_key, Toast.LENGTH_SHORT).show();
                                     }
 
                                 }
@@ -634,7 +635,7 @@ public class SetupActivity extends AppCompatActivity {
                                                     startActivity(intent);
                                                     finish();
                                                 } else {
-                                                    Toast.makeText(SetupActivity.this, "Please enter a valid license key", Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(SetupActivity.this, R.string.please_enter_valid_license_key, Toast.LENGTH_LONG).show();
                                                 }
                                             } else {
                                                 sessionManager.setTriggerNoti("no");
