@@ -16,7 +16,7 @@
         app:closeIconTint="@color/white"
         app:closeIconVisible="false"
         android:fontFamily="@font/lato_regular"
-        android:text="sample text"
+        android:text="@string/sample_text"
         android:includeFontPadding="false"
         android:textColor="@color/primary_text"
         app:chipStrokeWidth="1dp"

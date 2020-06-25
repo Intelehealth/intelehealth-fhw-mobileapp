@@ -400,6 +400,15 @@
     <string name="skip">skip</string>
     <string name="start">Start</string>
     <string name="who_is_this_napplication_for">Who is this \napplication for?</string>
+    <string name="sample_text">sample text</string>
+    <string name="test_2_vibha_onplus_6t_10fke_7">Test 2 Vibha onplus 6T, 10FKE-7</string>
+    <string name="age_11_years_5_months">Age: 11 years, 5 months</string>
+    <string name="active_defaultTag">Active</string>
+    <string name="since_when_have_you_had_this_symptom">Since when have you had this symptom?</string>
+    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">Hello\n\n I’m Ayu, a digital health assistant. Let’s get started!</string>
+    <string name="demo_version">Demo version</string>
+    <string name="custom_setup">Custom setup</string>
+    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">Hello\n\n I’m Ayu, a digital health assistant. Let’s get started!</string>
 
 
 </resources>
