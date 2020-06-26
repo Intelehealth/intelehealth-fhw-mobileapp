@@ -455,7 +455,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                         }
 
                         alertDialog.show();
-                        IntelehealthApplication.setAlertDialogCustomTheme(context,alertDialog);
+                        IntelehealthApplication.setAlertDialogCustomTheme(context, alertDialog);
 
                     } else {
                         //thisNode.toggleSelected();
@@ -473,7 +473,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                 }
             });
 
-           itemViewHolder.mChip.setOnClickListener(new View.OnClickListener() {
+        /*   itemViewHolder.mChip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //thisNode.toggleSelected();
@@ -505,8 +505,8 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                     notifyDataSetChanged();
                 }
             });
+        */
         }
-
         @Override
         public int getItemCount() {
             return (mNodesFilter != null ? mNodesFilter.size() : 0);
