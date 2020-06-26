@@ -38,12 +38,19 @@
         app:layout_constraintTop_toBottomOf="@+id/recyclerView">
 
     </app.intelehealth.client.utilities.RecyclerViewIndicator>
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/recyclerViewIndicator"
+        android:orientation="vertical"
+        android:weightSum="1">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".8"
 
         android:id="@+id/recycleFrame"
-        android:layout_below="@+id/recyclerViewIndicator"
+
         >
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/pastMedical_recyclerView"
@@ -63,7 +70,8 @@
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight=".2"
         android:layout_gravity="bottom|end"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/recycleFrame"
@@ -72,6 +80,7 @@
         app:srcCompat="@drawable/ic_done_24dp"
         />
 
+    </LinearLayout>
     <include layout="@layout/content_past_medical_history"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

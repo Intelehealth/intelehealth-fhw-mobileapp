@@ -216,7 +216,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
             Node question = currentNode.getOption(groupPosition).getOption(childPosition);
             question.toggleSelected();
             if (currentNode.getOption(groupPosition).anySubSelected()) {
-                currentNode.getOption(groupPosition).setSelected();
+                currentNode.getOption(groupPosition).setSelected(true);
             } else {
                 currentNode.getOption(groupPosition).setUnselected();
             }
@@ -257,7 +257,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
             Node question = currentNode.getOption(groupPosition).getOption(childPosition);
             question.toggleSelected();
             if (currentNode.getOption(groupPosition).anySubSelected()) {
-                currentNode.getOption(groupPosition).setSelected();
+                currentNode.getOption(groupPosition).setSelected(true);
             } else {
                 currentNode.getOption(groupPosition).setUnselected();
             }
@@ -385,10 +385,13 @@ public class QuestionNodeActivity extends AppCompatActivity implements  Question
                 }
             }
         }
-        question_recyclerView.setAdapter(adapter);
-        question_recyclerView.getAdapter().getItemCount();
 
+       // question_recyclerView.setAdapter(adapter);
+
+        adapter.notifyDataSetChanged();
+        //question_recyclerView.notifyAll();
         recyclerViewIndicator.setRecyclerView(question_recyclerView);
+
     }
 
     /**

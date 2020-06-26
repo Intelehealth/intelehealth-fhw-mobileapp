@@ -201,7 +201,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
         setTitle(patientName + ": " + getTitle());
         physExam_recyclerView = findViewById(R.id.physExam_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false);
         physExam_recyclerView.setLayoutManager(linearLayoutManager);
         physExam_recyclerView.setItemAnimator(new DefaultItemAnimator());
         PagerSnapHelper helper = new PagerSnapHelper();
@@ -330,7 +330,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         //Log.d("Clicked", question.language());
         question.toggleSelected();
         if (physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).anySubSelected()) {
-            physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).setSelected();
+            physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).setSelected(true);
         } else {
             physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).setUnselected();
         }

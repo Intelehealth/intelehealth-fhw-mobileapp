@@ -228,7 +228,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         Log.i(TAG, "onChildClick: ");
         clickedNode.toggleSelected();
         if (familyHistoryMap.getOption(groupPosition).anySubSelected()) {
-            familyHistoryMap.getOption(groupPosition).setSelected();
+            familyHistoryMap.getOption(groupPosition).setSelected(true);
         } else {
             familyHistoryMap.getOption(groupPosition).setUnselected();
         }

@@ -373,18 +373,18 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         @Override
         public void onBindViewHolder(@NonNull ComplaintNodeListAdapter.ItemViewHolder itemViewHolder, int position) {
             final Node thisNode = mNodesFilter.get(position);
-            itemViewHolder.mChip.setText(thisNode.findDisplay());
+            itemViewHolder.mChipText.setText(thisNode.findDisplay());
 
             Node groupNode = mGroupNode.getOption(mGroupPos);
 
             if ((groupNode.getText().equalsIgnoreCase("Associated symptoms") && thisNode.isNoSelected()) || thisNode.isSelected()) {
-                itemViewHolder.mChip.setCloseIconVisible(true);
-                itemViewHolder.mChip.setChipBackgroundColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.colorAccent))));
-                itemViewHolder.mChip.setTextColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.white))));
+                itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
             } else {
-                itemViewHolder.mChip.setCloseIconVisible(false);
-                itemViewHolder.mChip.setChipBackgroundColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, android.R.color.transparent))));
-                itemViewHolder.mChip.setTextColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.primary_text))));
+                itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+                itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_orange));
+                //itemViewHolder.mChip.setChipBackgroundColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, android.R.color.transparent))));
+                //itemViewHolderiewHolder.mChip.setTextColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.primary_text))));
             }
             itemViewHolder.mChip.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -473,13 +473,26 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                 }
             });
 
-            itemViewHolder.mChip.setOnCloseIconClickListener(new View.OnClickListener() {
+           itemViewHolder.mChip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //thisNode.toggleSelected();
                     if ((groupNode.getText().equalsIgnoreCase("Associated symptoms") && thisNode.isNoSelected())) {
                         thisNode.setNoSelected(false);
-                        thisNode.toggleSelected();
+
+                        if(!thisNode.isSelected()) {
+                            thisNode.setSelected(true);
+                            itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                            itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
+
+                        }else {
+                            itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+                            thisNode.setSelected(false);
+                            itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_orange));
+                        }
+
+
+                      //  thisNode.toggleSelected();
                     }
                     int indexOfCheckedNode;
                     if (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())) {
@@ -500,11 +513,13 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         }
 
         public class ItemViewHolder extends RecyclerView.ViewHolder {
-            Chip mChip;
+            TextView mChipText;
+            RelativeLayout  mChip;
 
             public ItemViewHolder(@NonNull View itemView) {
                 super(itemView);
                 mChip = itemView.findViewById(R.id.complaint_chip);
+                mChipText=itemView.findViewById(R.id.tvChipText);
             }
         }
 

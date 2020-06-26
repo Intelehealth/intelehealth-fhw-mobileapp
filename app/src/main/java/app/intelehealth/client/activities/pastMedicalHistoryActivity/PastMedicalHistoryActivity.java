@@ -261,7 +261,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
         //Nodes and the expandable list act funny, so if anything is clicked, a lot of stuff needs to be updated.
         if (patientHistoryMap.getOption(groupPosition).anySubSelected()) {
-            patientHistoryMap.getOption(groupPosition).setSelected();
+            patientHistoryMap.getOption(groupPosition).setSelected(true);
         } else {
             patientHistoryMap.getOption(groupPosition).setUnselected();
         }

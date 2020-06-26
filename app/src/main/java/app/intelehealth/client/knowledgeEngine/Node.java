@@ -107,6 +107,7 @@ public class Node implements Serializable {
     public static String bullet_arrow = "\u25BA";
     public static String next_line = "<br/>";
     String space = "\t";
+    
 
 
     //• = \u2022, ● = \u25CF, ○ = \u25CB, ▪ = \u25AA, ■ = \u25A0, □ = \u25A1, ► = \u25BA
@@ -253,7 +254,7 @@ public class Node implements Serializable {
     public static void subLevelQuestion(final Node node, final Activity context, final QuestionsAdapter callingAdapter,
                                         final String imagePath, final String imageName) {
 
-        node.setSelected();
+        node.setSelected(true);
         List<Node> mNodes = node.getOptionsList();
         final CustomArrayAdapter adapter = new CustomArrayAdapter(context, R.layout.list_item_subquestion, mNodes);
         final MaterialAlertDialogBuilder subQuestion = new MaterialAlertDialogBuilder(context);
@@ -504,8 +505,8 @@ public class Node implements Serializable {
         selected = !selected;
     }
 
-    public void setSelected() {
-        selected = true;
+    public void setSelected(boolean isSelectedStatus) {
+        selected = isSelectedStatus;
     }
 
     public boolean anySubSelected() {
@@ -555,7 +556,7 @@ public class Node implements Serializable {
                     node.addLanguage(dialogEditText.getText().toString());
                     //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                 }
-                node.setSelected();
+                node.setSelected(true);
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -697,7 +698,7 @@ public class Node implements Serializable {
                             node.setText(node.getLanguage());
                             //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                         }
-                        node.setSelected();
+                        node.setSelected(true);
                         adapter.notifyDataSetChanged();
                         //TODO:: Check if the language is actually what is intended to be displayed
                     }
@@ -815,7 +816,7 @@ public class Node implements Serializable {
                     node.setText(value);
                     //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                 }
-                node.setSelected();
+                node.setSelected(true);
                 adapter.notifyDataSetChanged();
 
                 dialog.dismiss();
@@ -867,7 +868,7 @@ public class Node implements Serializable {
                     node.setText(durationString);
                     //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                 }
-                node.setSelected();
+                node.setSelected(true);
                 adapter.notifyDataSetChanged();
 
                 dialog.dismiss();
@@ -917,7 +918,7 @@ public class Node implements Serializable {
                     node.setText(durationString);
                     //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                 }
-                node.setSelected();
+                node.setSelected(true);
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -976,7 +977,7 @@ public class Node implements Serializable {
                     node.setText(durationString);
                     //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                 }
-                node.setSelected();
+                node.setSelected(true);
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -1024,7 +1025,7 @@ public class Node implements Serializable {
                     node.setText(durationString);
                     //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                 }
-                node.setSelected();
+                node.setSelected(true);
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -1054,7 +1055,7 @@ public class Node implements Serializable {
                     node.addLanguage(dialogEditText.getText().toString());
                     //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                 }
-                node.setSelected();
+                node.setSelected(true);
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -1089,7 +1090,7 @@ public class Node implements Serializable {
                             node.setText(node.getLanguage());
                             //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                         }
-                        node.setSelected();
+                        node.setSelected(true);
                         adapter.notifyDataSetChanged();
                         //TODO:: Check if the language is actually what is intended to be displayed
                     }
@@ -1124,7 +1125,7 @@ public class Node implements Serializable {
                     node.setText(value);
                     //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                 }
-                node.setSelected();
+                node.setSelected(true);
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -1209,7 +1210,7 @@ public class Node implements Serializable {
                     node.setText(durationString);
                     //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                 }
-                node.setSelected();
+                node.setSelected(true);
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -1258,7 +1259,7 @@ public class Node implements Serializable {
                     node.setText(durationString);
                     //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                 }
-                node.setSelected();
+                node.setSelected(true);
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -1315,7 +1316,7 @@ public class Node implements Serializable {
                     node.setText(durationString);
                     //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                 }
-                node.setSelected();
+                node.setSelected(true);
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -1363,7 +1364,7 @@ public class Node implements Serializable {
                     node.setText(durationString);
                     //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                 }
-                node.setSelected();
+                node.setSelected(true);
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
