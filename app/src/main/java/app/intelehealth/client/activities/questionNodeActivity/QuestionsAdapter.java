@@ -78,9 +78,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         void onChildListClickEvent(int groupPos, int childPos, int physExamPos);
 
 
-
     }
-
 
 
     public QuestionsAdapter(Context _context, Node node, RecyclerView _rvQuestions, String callingClass,
@@ -120,7 +118,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
     @Override
     public void onBindViewHolder(QuestionsAdapter.ChipsAdapterViewHolder holder, int position) {
         Node _mNode;
-            if (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())) {
+        if (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())) {
             _mNode = physicalExam.getExamNode(position).getOption(0);
             final String parent_name = physicalExam.getExamParentNodeName(position);
             String nodeText = parent_name + " : " + _mNode.findDisplay();
@@ -164,42 +162,41 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             holder.physical_exam_image_view.setVisibility(View.GONE);
             holder.physical_exam_text_view.setVisibility(View.GONE);
         }
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (_mCallingClass.equalsIgnoreCase(QuestionNodeActivity.class.getSimpleName())) {
-                    ((QuestionNodeActivity) context).AnimateView(holder.ivAyu);
-                    ((QuestionNodeActivity) context).AnimateView(holder.tvQuestion);
-                    ((QuestionNodeActivity) context).AnimateView(holder.tvSwipe);
-                    ((QuestionNodeActivity) context).bottomUpAnimation(holder.rvChips);
-                } else if (_mCallingClass.equalsIgnoreCase(PastMedicalHistoryActivity.class.getSimpleName())) {
-                    ((PastMedicalHistoryActivity) context).AnimateView(holder.ivAyu);
-                    ((PastMedicalHistoryActivity) context).AnimateView(holder.tvQuestion);
-                    ((PastMedicalHistoryActivity) context).AnimateView(holder.tvSwipe);
-                    ((PastMedicalHistoryActivity) context).bottomUpAnimation(holder.rvChips);
-                } else if (_mCallingClass.equalsIgnoreCase(FamilyHistoryActivity.class.getSimpleName())) {
-                    ((FamilyHistoryActivity) context).AnimateView(holder.ivAyu);
-                    ((FamilyHistoryActivity) context).AnimateView(holder.tvQuestion);
-                    ((FamilyHistoryActivity) context).AnimateView(holder.tvSwipe);
-                    ((FamilyHistoryActivity) context).bottomUpAnimation(holder.rvChips);
-                } else if (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())) {
-                    ((PhysicalExamActivity) context).AnimateView(holder.ivAyu);
-                    ((PhysicalExamActivity) context).AnimateView(holder.tvQuestion);
-                    ((PhysicalExamActivity) context).AnimateView(holder.tvSwipe);
-                    ((PhysicalExamActivity) context).bottomUpAnimation(holder.rvChips);
-                    ((PhysicalExamActivity) context).AnimateView(holder.physical_exam_image_view);
-                    ((PhysicalExamActivity) context).AnimateView(holder.physical_exam_text_view);
-                }
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                if (_mCallingClass.equalsIgnoreCase(QuestionNodeActivity.class.getSimpleName())) {
+//                    ((QuestionNodeActivity) context).AnimateView(holder.ivAyu);
+//                    ((QuestionNodeActivity) context).AnimateView(holder.tvQuestion);
+//                    ((QuestionNodeActivity) context).AnimateView(holder.tvSwipe);
+//                    ((QuestionNodeActivity) context).bottomUpAnimation(holder.rvChips);
+//                } else if (_mCallingClass.equalsIgnoreCase(PastMedicalHistoryActivity.class.getSimpleName())) {
+//                    ((PastMedicalHistoryActivity) context).AnimateView(holder.ivAyu);
+//                    ((PastMedicalHistoryActivity) context).AnimateView(holder.tvQuestion);
+//                    ((PastMedicalHistoryActivity) context).AnimateView(holder.tvSwipe);
+//                    ((PastMedicalHistoryActivity) context).bottomUpAnimation(holder.rvChips);
+//                } else if (_mCallingClass.equalsIgnoreCase(FamilyHistoryActivity.class.getSimpleName())) {
+//                    ((FamilyHistoryActivity) context).AnimateView(holder.ivAyu);
+//                    ((FamilyHistoryActivity) context).AnimateView(holder.tvQuestion);
+//                    ((FamilyHistoryActivity) context).AnimateView(holder.tvSwipe);
+//                    ((FamilyHistoryActivity) context).bottomUpAnimation(holder.rvChips);
+//                } else if (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())) {
+//                    ((PhysicalExamActivity) context).AnimateView(holder.ivAyu);
+//                    ((PhysicalExamActivity) context).AnimateView(holder.tvQuestion);
+//                    ((PhysicalExamActivity) context).AnimateView(holder.tvSwipe);
+//                    ((PhysicalExamActivity) context).bottomUpAnimation(holder.rvChips);
+//                    ((PhysicalExamActivity) context).AnimateView(holder.physical_exam_image_view);
+//                    ((PhysicalExamActivity) context).AnimateView(holder.physical_exam_text_view);
+//                }
+//
+//            }
+//        });
 
-            }
-        });
 
-
-
-        if(getItemCount()-1 == 0){
+        if (getItemCount() - 1 == 0) {
             holder.tv_swipe_view.setVisibility(View.GONE);
-        }else{
+        } else {
             holder.tv_swipe_view.setVisibility(View.VISIBLE);
         }
 
@@ -264,7 +261,6 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
     }
 
 
-
     @Override
     public int getItemViewType(int position) {
         pos = position;
@@ -288,12 +284,12 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             rvChips = itemView.findViewById(R.id.rv_chips);
             fab = itemView.findViewById(R.id.fab);
             tv_swipe_view = itemView.findViewById(R.id.tv_swipe_view);
-              tvSwipe = itemView.findViewById(R.id.tv_swipe);
+            tvSwipe = itemView.findViewById(R.id.tv_swipe);
             physical_exam_text_view = itemView.findViewById(R.id.physical_exam_text_view);
             physical_exam_image_view = itemView.findViewById(R.id.physical_exam_image_view);
 
 
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context,RecyclerView.VERTICAL,false);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
             rvChips.setLayoutManager(linearLayoutManager);
             rvChips.setHasFixedSize(true);
             //rvChips.setItemAnimator(new DefaultItemAnimator());
@@ -507,6 +503,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             });
         */
         }
+
         @Override
         public int getItemCount() {
             return (mNodesFilter != null ? mNodesFilter.size() : 0);
@@ -514,12 +511,12 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 
         public class ItemViewHolder extends RecyclerView.ViewHolder {
             TextView mChipText;
-            RelativeLayout  mChip;
+            RelativeLayout mChip;
 
             public ItemViewHolder(@NonNull View itemView) {
                 super(itemView);
                 mChip = itemView.findViewById(R.id.complaint_chip);
-                mChipText=itemView.findViewById(R.id.tvChipText);
+                mChipText = itemView.findViewById(R.id.tvChipText);
             }
         }
 
