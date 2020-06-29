@@ -12,7 +12,6 @@ import android.os.Bundle;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -28,7 +27,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.ExpandableListView;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -50,15 +48,14 @@ import app.intelehealth.client.database.dao.ObsDAO;
 import app.intelehealth.client.knowledgeEngine.Node;
 import app.intelehealth.client.models.dto.ObsDTO;
 import app.intelehealth.client.utilities.FileUtils;
-import app.intelehealth.client.utilities.RecyclerViewIndicator;
 import app.intelehealth.client.utilities.SessionManager;
 import app.intelehealth.client.utilities.StringUtils;
 import app.intelehealth.client.utilities.UuidDictionary;
 
 import app.intelehealth.client.activities.familyHistoryActivity.FamilyHistoryActivity;
-import app.intelehealth.client.activities.physcialExamActivity.CustomExpandableListAdapter;
 import app.intelehealth.client.activities.visitSummaryActivity.VisitSummaryActivity;
 import app.intelehealth.client.utilities.exception.DAOException;
+import app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator;
 
 public class PastMedicalHistoryActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
 
@@ -100,7 +97,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     private String encounterAdultIntials;
     RecyclerView pastMedical_recyclerView;
     QuestionsAdapter adapter;
-    RecyclerViewIndicator recyclerViewIndicator;
+    ScrollingPagerIndicator recyclerViewIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -228,7 +225,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         adapter = new QuestionsAdapter(this, patientHistoryMap, pastMedical_recyclerView, this.getClass().getSimpleName(), this, false);
         pastMedical_recyclerView.setAdapter(adapter);
 
-        recyclerViewIndicator.setRecyclerView(pastMedical_recyclerView);
+        recyclerViewIndicator.attachToRecyclerView(pastMedical_recyclerView);
 
 
 

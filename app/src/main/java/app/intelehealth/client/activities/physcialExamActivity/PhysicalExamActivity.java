@@ -1,19 +1,14 @@
 package app.intelehealth.client.activities.physcialExamActivity;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.tabs.TabLayout;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -22,7 +17,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -68,12 +62,12 @@ import app.intelehealth.client.knowledgeEngine.Node;
 import app.intelehealth.client.knowledgeEngine.PhysicalExam;
 import app.intelehealth.client.models.dto.ObsDTO;
 import app.intelehealth.client.utilities.FileUtils;
-import app.intelehealth.client.utilities.RecyclerViewIndicator;
 import app.intelehealth.client.utilities.SessionManager;
 import app.intelehealth.client.utilities.UuidDictionary;
 
 import app.intelehealth.client.utilities.StringUtils;
 import app.intelehealth.client.utilities.exception.DAOException;
+import app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator;
 
 public class PhysicalExamActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
     final static String TAG = PhysicalExamActivity.class.getSimpleName();
@@ -109,7 +103,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
     SessionManager sessionManager;
     RecyclerView physExam_recyclerView;
     QuestionsAdapter adapter;
-    RecyclerViewIndicator recyclerViewIndicator;
+    ScrollingPagerIndicator recyclerViewIndicator;
 
 
     @Override
@@ -246,7 +240,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         Log.e(TAG, "PhyExam: " + physicalExamMap.getTotalNumberOfExams());
         adapter = new QuestionsAdapter(this, physicalExamMap, physExam_recyclerView, this.getClass().getSimpleName(), this, false);
         physExam_recyclerView.setAdapter(adapter);
-        recyclerViewIndicator.setRecyclerView(physExam_recyclerView);
+        recyclerViewIndicator.attachToRecyclerView(physExam_recyclerView);
 
     }
 

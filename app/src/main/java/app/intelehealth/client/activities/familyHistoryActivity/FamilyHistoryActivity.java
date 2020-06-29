@@ -13,7 +13,6 @@ import android.os.Bundle;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -29,7 +28,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.ExpandableListView;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -52,14 +50,13 @@ import app.intelehealth.client.database.dao.ObsDAO;
 import app.intelehealth.client.knowledgeEngine.Node;
 import app.intelehealth.client.models.dto.ObsDTO;
 import app.intelehealth.client.utilities.FileUtils;
-import app.intelehealth.client.utilities.RecyclerViewIndicator;
 import app.intelehealth.client.utilities.SessionManager;
 import app.intelehealth.client.utilities.UuidDictionary;
 
-import app.intelehealth.client.activities.physcialExamActivity.CustomExpandableListAdapter;
 import app.intelehealth.client.activities.physcialExamActivity.PhysicalExamActivity;
 import app.intelehealth.client.activities.visitSummaryActivity.VisitSummaryActivity;
 import app.intelehealth.client.utilities.exception.DAOException;
+import app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator;
 
 public class FamilyHistoryActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
     private static final String TAG = FamilyHistoryActivity.class.getSimpleName();
@@ -89,7 +86,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
     String encounterAdultIntials;
     private String imageName = null;
     private File filePath;
-    RecyclerViewIndicator recyclerViewIndicator;
+    ScrollingPagerIndicator recyclerViewIndicator;
 
     RecyclerView family_history_recyclerView;
     QuestionsAdapter adapter;
@@ -210,7 +207,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
         adapter = new QuestionsAdapter(this, familyHistoryMap, family_history_recyclerView, this.getClass().getSimpleName(), this, false);
         family_history_recyclerView.setAdapter(adapter);
-        recyclerViewIndicator.setRecyclerView(family_history_recyclerView);
+        recyclerViewIndicator.attachToRecyclerView(family_history_recyclerView);
         /*adapter = new CustomExpandableListAdapter(this, familyHistoryMap, this.getClass().getSimpleName());
         familyListView.setAdapter(adapter);*/
 

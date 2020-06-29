@@ -20,23 +20,29 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
-    <app.intelehealth.client.utilities.RecyclerViewIndicator
+    <app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator
         android:id="@+id/recyclerViewIndicator"
         android:layout_below="@+id/app_bar_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        app:spi_visibleDotCount="21"
+        app:spi_dotSelectedColor="@color/colorPrimary"
 
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        app:avi_animation_enable="true"
-        app:avi_drawable="@drawable/blue_radius"
-        app:avi_drawable_unselected="@drawable/gray_radius"
-        app:avi_height="7dp"
-        app:avi_margin="7dp"
-        app:avi_width="7dp"
+        android:layout_centerHorizontal="true"
+
         app:layout_constraintTop_toBottomOf="@+id/recyclerView">
 
-    </app.intelehealth.client.utilities.RecyclerViewIndicator>
+    </app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator>
+
+
+
+
+
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/family_history_recyclerView"

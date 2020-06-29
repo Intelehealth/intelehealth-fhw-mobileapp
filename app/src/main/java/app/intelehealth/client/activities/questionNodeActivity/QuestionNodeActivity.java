@@ -27,8 +27,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.ExpandableListView;
-import android.widget.ImageView;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -54,16 +52,16 @@ import app.intelehealth.client.database.dao.ImagesDAO;
 import app.intelehealth.client.database.dao.ObsDAO;
 import app.intelehealth.client.models.dto.ObsDTO;
 import app.intelehealth.client.utilities.FileUtils;
-import app.intelehealth.client.utilities.RecyclerViewIndicator;
 import app.intelehealth.client.utilities.SessionManager;
 import app.intelehealth.client.utilities.UuidDictionary;
 
 import app.intelehealth.client.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
-import app.intelehealth.client.activities.physcialExamActivity.CustomExpandableListAdapter;
 import app.intelehealth.client.activities.physcialExamActivity.PhysicalExamActivity;
 import app.intelehealth.client.knowledgeEngine.Node;
 import app.intelehealth.client.utilities.StringUtils;
 import app.intelehealth.client.utilities.exception.DAOException;
+import app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator;
+
 
 public class QuestionNodeActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
     final String TAG = "Question Node Activity";
@@ -104,7 +102,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     private JSONObject assoSympObj = new JSONObject();
     private JSONArray assoSympArr = new JSONArray();
     private JSONObject finalAssoSympObj = new JSONObject();
-    RecyclerViewIndicator recyclerViewIndicator;
+    ScrollingPagerIndicator recyclerViewIndicator;
 
 
     FloatingActionButton fab;
@@ -390,7 +388,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
         adapter.notifyDataSetChanged();
         //question_recyclerView.notifyAll();
-        recyclerViewIndicator.setRecyclerView(question_recyclerView);
+        recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
 
     }
 
@@ -477,7 +475,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
         adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, false);
         question_recyclerView.setAdapter(adapter);
-        recyclerViewIndicator.setRecyclerView(question_recyclerView);
+        recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
       /*  adapter = new CustomExpandableListAdapter(this, currentNode, this.getClass().getSimpleName());
         questionListView.setAdapter(adapter);
         questionListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
@@ -512,7 +510,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
     public void setRecyclerViewIndicator() {
         question_recyclerView.setAdapter(adapter);
-        recyclerViewIndicator.setRecyclerView(question_recyclerView);
+        recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
     }
 
     private void removeDuplicateSymptoms() {
