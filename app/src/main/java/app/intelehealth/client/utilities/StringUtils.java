@@ -132,8 +132,16 @@ public final class StringUtils {
         String val = "";
         if (spinner.getSelectedItemPosition() == 0)
             val = IntelehealthApplication.getAppContext().getString(R.string.not_provided);
+
+        else if(spinner.getSelectedItem() == null)
+        {
+            val = IntelehealthApplication.getAppContext().getString(R.string.not_provided);
+        }
         else
+        {
             val = spinner.getSelectedItem().toString();
+        }
+
 
         return val;
     }

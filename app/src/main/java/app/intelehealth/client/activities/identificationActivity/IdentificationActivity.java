@@ -432,7 +432,12 @@ public class IdentificationActivity extends AppCompatActivity {
             if (patient1.getEducation_level().equals(getString(R.string.not_provided)))
                 mEducation.setSelection(0);
             else
-                mEducation.setSelection(educationAdapter.getPosition(patient1.getEducation_level()));
+                mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
+            if(educationAdapter == null)
+            {
+                Toast.makeText(context, "Education Level: "+patient1.getEducation_level(), Toast.LENGTH_LONG).show();
+            }
+
 
             if (patient1.getEconomic_status().equals(getString(R.string.not_provided)))
                 mEconomicStatus.setSelection(0);
