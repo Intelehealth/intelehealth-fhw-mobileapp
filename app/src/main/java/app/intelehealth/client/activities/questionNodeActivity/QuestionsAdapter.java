@@ -162,58 +162,6 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             holder.physical_exam_image_view.setVisibility(View.GONE);
             holder.physical_exam_text_view.setVisibility(View.GONE);
         }
-//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                if (_mCallingClass.equalsIgnoreCase(QuestionNodeActivity.class.getSimpleName())) {
-//                    ((QuestionNodeActivity) context).AnimateView(holder.ivAyu);
-//                    ((QuestionNodeActivity) context).AnimateView(holder.tvQuestion);
-//                    ((QuestionNodeActivity) context).AnimateView(holder.tvSwipe);
-//                    ((QuestionNodeActivity) context).bottomUpAnimation(holder.rvChips);
-//                } else if (_mCallingClass.equalsIgnoreCase(PastMedicalHistoryActivity.class.getSimpleName())) {
-//                    ((PastMedicalHistoryActivity) context).AnimateView(holder.ivAyu);
-//                    ((PastMedicalHistoryActivity) context).AnimateView(holder.tvQuestion);
-//                    ((PastMedicalHistoryActivity) context).AnimateView(holder.tvSwipe);
-//                    ((PastMedicalHistoryActivity) context).bottomUpAnimation(holder.rvChips);
-//                } else if (_mCallingClass.equalsIgnoreCase(FamilyHistoryActivity.class.getSimpleName())) {
-//                    ((FamilyHistoryActivity) context).AnimateView(holder.ivAyu);
-//                    ((FamilyHistoryActivity) context).AnimateView(holder.tvQuestion);
-//                    ((FamilyHistoryActivity) context).AnimateView(holder.tvSwipe);
-//                    ((FamilyHistoryActivity) context).bottomUpAnimation(holder.rvChips);
-//                } else if (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())) {
-//                    ((PhysicalExamActivity) context).AnimateView(holder.ivAyu);
-//                    ((PhysicalExamActivity) context).AnimateView(holder.tvQuestion);
-//                    ((PhysicalExamActivity) context).AnimateView(holder.tvSwipe);
-//                    ((PhysicalExamActivity) context).bottomUpAnimation(holder.rvChips);
-//                    ((PhysicalExamActivity) context).AnimateView(holder.physical_exam_image_view);
-//                    ((PhysicalExamActivity) context).AnimateView(holder.physical_exam_text_view);
-//                }
-//
-//            }
-//        });
-
-
-        if (getItemCount() - 1 == 0) {
-            holder.tv_swipe_view.setVisibility(View.GONE);
-        } else {
-            holder.tv_swipe_view.setVisibility(View.VISIBLE);
-        }
-
-
-        if (position == getItemCount() - 1) {
-            holder.tvSwipe.setText(context.getString(R.string.swipe_down));
-
-        } else if (position != 0) {
-            holder.tvSwipe.setText(context.getString(R.string.swipe_down_to_return));
-
-            // holder.tvSwipe.setVisibility(View.VISIBLE);
-        } else {
-            holder.tvSwipe.setText(context.getString(R.string.swipe_up));
-
-
-            // holder.tvSwipe.setVisibility(View.GONE);
-        }
 
         if (position == getItemCount() - 1) {
             holder.fab.setVisibility(View.VISIBLE);
@@ -270,12 +218,10 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
     public class ChipsAdapterViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvQuestion, physical_exam_text_view;
-        TextView tvSwipe;
         ImageView ivAyu, physical_exam_image_view;
         RecyclerView rvChips;
         FloatingActionButton fab;
         ComplaintNodeListAdapter chipsAdapter;
-        TextView tv_swipe_view;
 
 
         public ChipsAdapterViewHolder(View itemView) {
@@ -283,8 +229,6 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             tvQuestion = itemView.findViewById(R.id.tv_complaintQuestion);
             rvChips = itemView.findViewById(R.id.rv_chips);
             fab = itemView.findViewById(R.id.fab);
-            tv_swipe_view = itemView.findViewById(R.id.tv_swipe_view);
-            tvSwipe = itemView.findViewById(R.id.tv_swipe);
             physical_exam_text_view = itemView.findViewById(R.id.physical_exam_text_view);
             physical_exam_image_view = itemView.findViewById(R.id.physical_exam_image_view);
 
