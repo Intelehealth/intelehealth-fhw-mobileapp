@@ -43,14 +43,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/recyclerViewIndicator"
         android:orientation="vertical"
         android:weightSum="1">
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight=".8"
+        android:layout_height="match_parent"
+
 
         android:id="@+id/recycleFrame"
 
@@ -58,7 +58,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/pastMedical_recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
 
             android:scrollbars="vertical"
             android:visibility="visible"
@@ -79,7 +79,7 @@
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/recycleFrame"
         android:layout_margin="@dimen/fab_margin"
-        android:visibility="visible"
+        android:visibility="gone"
         app:srcCompat="@drawable/ic_done_24dp"
         />
 

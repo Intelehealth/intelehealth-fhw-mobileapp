@@ -194,13 +194,13 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 //        });
 
 
-        if (getItemCount() - 1 == 0) {
+      /*  if (getItemCount() - 1 == 0) {
             holder.tv_swipe_view.setVisibility(View.GONE);
         } else {
             holder.tv_swipe_view.setVisibility(View.VISIBLE);
-        }
+        }*/
 
-
+/*
         if (position == getItemCount() - 1) {
             holder.tvSwipe.setText(context.getString(R.string.swipe_down));
 
@@ -213,7 +213,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 
 
             // holder.tvSwipe.setVisibility(View.GONE);
-        }
+        }*/
 
         if (position == getItemCount() - 1) {
             holder.fab.setVisibility(View.VISIBLE);
@@ -248,8 +248,8 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         } else {
             if (isAssociateSym && currentNode.getOptionsList().size() == 1) {
                 List<Node> nodeList = currentNode.getOptionsList().get(0).getOptionsList();
-                if (nodeList.size() > 5) {
-                    List<List<Node>> spiltList = Lists.partition(currentNode.getOptionsList().get(0).getOptionsList(), 5);
+                if (nodeList.size() > 8) {
+                    List<List<Node>> spiltList = Lists.partition(currentNode.getOptionsList().get(0).getOptionsList(), 8);
                     return spiltList.size();
                 } else {
                     return currentNode.getOptionsList().size();
@@ -270,12 +270,12 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
     public class ChipsAdapterViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvQuestion, physical_exam_text_view;
-        TextView tvSwipe;
+       // TextView tvSwipe;
         ImageView ivAyu, physical_exam_image_view;
         RecyclerView rvChips;
         FloatingActionButton fab;
         ComplaintNodeListAdapter chipsAdapter;
-        RelativeLayout tv_swipe_view;
+       // RelativeLayout tv_swipe_view;
 
 
         public ChipsAdapterViewHolder(View itemView) {
@@ -283,8 +283,8 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             tvQuestion = itemView.findViewById(R.id.tv_complaintQuestion);
             rvChips = itemView.findViewById(R.id.rv_chips);
             fab = itemView.findViewById(R.id.fab);
-            tv_swipe_view = itemView.findViewById(R.id.tv_swipe_view);
-            tvSwipe = itemView.findViewById(R.id.tv_swipe);
+           // tv_swipe_view = itemView.findViewById(R.id.tv_swipe_view);
+            //tvSwipe = itemView.findViewById(R.id.tv_swipe);
             physical_exam_text_view = itemView.findViewById(R.id.physical_exam_text_view);
             physical_exam_image_view = itemView.findViewById(R.id.physical_exam_image_view);
 
@@ -306,8 +306,8 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                 groupNode = currentNode;
                 if (isAssociateSym && currentNode.getOptionsList().size() == 1) {
                     int childOptionCount = currentNode.getOptionsList().get(0).getOptionsList().size();
-                    if (childOptionCount > 5) {
-                        List<List<Node>> spiltList = Lists.partition(currentNode.getOptionsList().get(0).getOptionsList(), 5);
+                    if (childOptionCount > 8) {
+                        List<List<Node>> spiltList = Lists.partition(currentNode.getOptionsList().get(0).getOptionsList(), 8);
                         chipList.addAll(spiltList.get(pos));
                     } else {
                         Node node = currentNode.getOptionsList().get(0);
