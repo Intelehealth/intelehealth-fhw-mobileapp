@@ -164,19 +164,6 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         }
 
         if (position == getItemCount() - 1) {
-            holder.tvSwipe.setText(context.getString(R.string.swipe_down));
-
-        } else if (position != 0) {
-            holder.tvSwipe.setText(context.getString(R.string.swipe_down_to_return));
-
-        } else {
-            holder.tvSwipe.setText(context.getString(R.string.swipe_up));
-
-
-            // holder.tvSwipe.setVisibility(View.GONE);
-        }*/
-
-        if (position == getItemCount() - 1) {
             holder.fab.setVisibility(View.VISIBLE);
         } else {
             holder.fab.setVisibility(View.INVISIBLE);
