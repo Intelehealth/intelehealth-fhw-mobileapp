@@ -164,6 +164,19 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         }
 
         if (position == getItemCount() - 1) {
+            holder.tvSwipe.setText(context.getString(R.string.swipe_down));
+
+        } else if (position != 0) {
+            holder.tvSwipe.setText(context.getString(R.string.swipe_down_to_return));
+
+        } else {
+            holder.tvSwipe.setText(context.getString(R.string.swipe_up));
+
+
+            // holder.tvSwipe.setVisibility(View.GONE);
+        }*/
+
+        if (position == getItemCount() - 1) {
             holder.fab.setVisibility(View.VISIBLE);
         } else {
             holder.fab.setVisibility(View.INVISIBLE);
@@ -196,8 +209,8 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         } else {
             if (isAssociateSym && currentNode.getOptionsList().size() == 1) {
                 List<Node> nodeList = currentNode.getOptionsList().get(0).getOptionsList();
-                if (nodeList.size() > 5) {
-                    List<List<Node>> spiltList = Lists.partition(currentNode.getOptionsList().get(0).getOptionsList(), 5);
+                if (nodeList.size() > 8) {
+                    List<List<Node>> spiltList = Lists.partition(currentNode.getOptionsList().get(0).getOptionsList(), 8);
                     return spiltList.size();
                 } else {
                     return currentNode.getOptionsList().size();
@@ -250,8 +263,8 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                 groupNode = currentNode;
                 if (isAssociateSym && currentNode.getOptionsList().size() == 1) {
                     int childOptionCount = currentNode.getOptionsList().get(0).getOptionsList().size();
-                    if (childOptionCount > 5) {
-                        List<List<Node>> spiltList = Lists.partition(currentNode.getOptionsList().get(0).getOptionsList(), 5);
+                    if (childOptionCount > 8) {
+                        List<List<Node>> spiltList = Lists.partition(currentNode.getOptionsList().get(0).getOptionsList(), 8);
                         chipList.addAll(spiltList.get(pos));
                     } else {
                         Node node = currentNode.getOptionsList().get(0);
