@@ -1,19 +1,14 @@
 package app.intelehealth.client.activities.physcialExamActivity;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.tabs.TabLayout;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -22,7 +17,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -73,6 +67,7 @@ import app.intelehealth.client.utilities.UuidDictionary;
 
 import app.intelehealth.client.utilities.StringUtils;
 import app.intelehealth.client.utilities.exception.DAOException;
+import app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator;
 
 public class PhysicalExamActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
     final static String TAG = PhysicalExamActivity.class.getSimpleName();
@@ -108,6 +103,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
     SessionManager sessionManager;
     RecyclerView physExam_recyclerView;
     QuestionsAdapter adapter;
+    ScrollingPagerIndicator recyclerViewIndicator;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +113,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         sessionManager = new SessionManager(this);
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-       // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
+        // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
         alertDialogBuilder.setTitle(R.string.wash_hands);
         LayoutInflater factory = LayoutInflater.from(this);
         final View view = factory.inflate(R.layout.hand_wash, null);
@@ -128,7 +125,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             }
         });
         AlertDialog alertDialog = alertDialogBuilder.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
         //alertDialog.show();
 
         Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
@@ -185,9 +182,12 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         setContentView(R.layout.activity_physical_exam);
         setTitle(getString(R.string.title_activity_physical_exam));
 
+
         Toolbar toolbar = findViewById(R.id.toolbar);
+        recyclerViewIndicator=findViewById(R.id.recyclerViewIndicator);
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextAppearance(this,R.style.ToolbarTheme);
+
+        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -195,7 +195,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
         setTitle(patientName + ": " + getTitle());
         physExam_recyclerView = findViewById(R.id.physExam_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false);
         physExam_recyclerView.setLayoutManager(linearLayoutManager);
         physExam_recyclerView.setItemAnimator(new DefaultItemAnimator());
         PagerSnapHelper helper = new PagerSnapHelper();
@@ -240,6 +240,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         Log.e(TAG, "PhyExam: " + physicalExamMap.getTotalNumberOfExams());
         adapter = new QuestionsAdapter(this, physicalExamMap, physExam_recyclerView, this.getClass().getSimpleName(), this, false);
         physExam_recyclerView.setAdapter(adapter);
+        recyclerViewIndicator.attachToRecyclerView(physExam_recyclerView);
 
     }
 
@@ -323,7 +324,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         //Log.d("Clicked", question.language());
         question.toggleSelected();
         if (physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).anySubSelected()) {
-            physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).setSelected();
+            physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).setSelected(true);
         } else {
             physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).setUnselected();
         }
@@ -350,6 +351,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             Node.subLevelQuestion(question, this, adapter, filePath.toString(), imageName);
         }
     }
+
+
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -420,7 +423,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         });
         AlertDialog alertDialog = alertDialogBuilder.show();
         //alertDialog.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
     private void updateImageDatabase() {
@@ -488,6 +491,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             View rootView = inflater.inflate(R.layout.fragment_physical_exam, container, false);
 
             final ImageView imageView = rootView.findViewById(R.id.physical_exam_image_view);
+
             TextView textView = rootView.findViewById(R.id.physical_exam_text_view);
             ExpandableListView expandableListView = rootView.findViewById(R.id.physical_exam_expandable_list_view);
 
@@ -532,6 +536,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
             adapter = new CustomExpandableListAdapter(getContext(), viewNode, this.getClass().getSimpleName());
             expandableListView.setAdapter(adapter);
+
+
             expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
                 @Override
                 public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {

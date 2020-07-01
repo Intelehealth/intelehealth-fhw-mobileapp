@@ -42,16 +42,33 @@
             android:visibility="gone"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
+
+        <app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator
+            android:id="@+id/recyclerViewIndicator"
+            android:layout_below="@+id/app_bar_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_gravity="center"
+            app:spi_visibleDotCount="21"
+            app:spi_dotSelectedColor="@color/colorPrimary"
+
+            android:layout_centerHorizontal="true"
+
+            app:layout_constraintTop_toBottomOf="@+id/recyclerView">
+
+        </app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/physExam_recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/app_bar_view"
+            android:layout_height="match_parent"
             android:scrollbars="vertical"
             android:visibility="visible"
             android:fadeScrollbars="false"
-            android:scrollbarThumbVertical="@color/colorAccent"
-            android:layout_above="@+id/fab"/>
+            android:scrollbarThumbVertical="@color/colorAccent" />
 
     </LinearLayout>
 

@@ -27,7 +27,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.ExpandableListView;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -57,11 +56,12 @@ import app.intelehealth.client.utilities.SessionManager;
 import app.intelehealth.client.utilities.UuidDictionary;
 
 import app.intelehealth.client.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
-import app.intelehealth.client.activities.physcialExamActivity.CustomExpandableListAdapter;
 import app.intelehealth.client.activities.physcialExamActivity.PhysicalExamActivity;
 import app.intelehealth.client.knowledgeEngine.Node;
 import app.intelehealth.client.utilities.StringUtils;
 import app.intelehealth.client.utilities.exception.DAOException;
+import app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator;
+
 
 public class QuestionNodeActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
     final String TAG = "Question Node Activity";
@@ -75,6 +75,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     File filePath;
     Boolean complaintConfirmed = false;
     SessionManager sessionManager = null;
+
 
     //    Knowledge mKnowledge; //Knowledge engine
     // ExpandableListView questionListView;
@@ -101,6 +102,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     private JSONObject assoSympObj = new JSONObject();
     private JSONArray assoSympArr = new JSONArray();
     private JSONObject finalAssoSympObj = new JSONObject();
+    ScrollingPagerIndicator recyclerViewIndicator;
+
 
     FloatingActionButton fab;
     RecyclerView question_recyclerView;
@@ -146,6 +149,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_node);
+
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
@@ -162,10 +167,11 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 fabClick();
             }
         });
+        recyclerViewIndicator = findViewById(R.id.recyclerViewIndicator);
         question_recyclerView = findViewById(R.id.question_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         question_recyclerView.setLayoutManager(linearLayoutManager);
-        question_recyclerView.setHasFixedSize(true);
+
         question_recyclerView.setNestedScrollingEnabled(true);
         question_recyclerView.setItemAnimator(new DefaultItemAnimator());
         PagerSnapHelper helper = new PagerSnapHelper();
@@ -201,13 +207,14 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
     }
 
+
     public void onListClicked(View v, int groupPosition, int childPosition) {
         Log.e(TAG, "CLICKED: " + currentNode.getOption(groupPosition).toString());
         if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && !currentNode.getOption(groupPosition).anySubSelected()) {
             Node question = currentNode.getOption(groupPosition).getOption(childPosition);
             question.toggleSelected();
             if (currentNode.getOption(groupPosition).anySubSelected()) {
-                currentNode.getOption(groupPosition).setSelected();
+                currentNode.getOption(groupPosition).setSelected(true);
             } else {
                 currentNode.getOption(groupPosition).setUnselected();
             }
@@ -248,7 +255,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             Node question = currentNode.getOption(groupPosition).getOption(childPosition);
             question.toggleSelected();
             if (currentNode.getOption(groupPosition).anySubSelected()) {
-                currentNode.getOption(groupPosition).setSelected();
+                currentNode.getOption(groupPosition).setSelected(true);
             } else {
                 currentNode.getOption(groupPosition).setUnselected();
             }
@@ -376,6 +383,13 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 }
             }
         }
+
+        // question_recyclerView.setAdapter(adapter);
+
+        adapter.notifyDataSetChanged();
+        //question_recyclerView.notifyAll();
+        recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
+
     }
 
     /**
@@ -461,6 +475,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
         adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, false);
         question_recyclerView.setAdapter(adapter);
+        recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
       /*  adapter = new CustomExpandableListAdapter(this, currentNode, this.getClass().getSimpleName());
         questionListView.setAdapter(adapter);
         questionListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
@@ -491,6 +506,11 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 currentNode = complaintsNodes.get(complaintIndex);
             }
         }
+    }
+
+    public void setRecyclerViewIndicator() {
+        question_recyclerView.setAdapter(adapter);
+        recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
     }
 
     private void removeDuplicateSymptoms() {

@@ -12,7 +12,6 @@ import android.os.Bundle;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -28,7 +27,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.ExpandableListView;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -55,9 +53,9 @@ import app.intelehealth.client.utilities.StringUtils;
 import app.intelehealth.client.utilities.UuidDictionary;
 
 import app.intelehealth.client.activities.familyHistoryActivity.FamilyHistoryActivity;
-import app.intelehealth.client.activities.physcialExamActivity.CustomExpandableListAdapter;
 import app.intelehealth.client.activities.visitSummaryActivity.VisitSummaryActivity;
 import app.intelehealth.client.utilities.exception.DAOException;
+import app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator;
 
 public class PastMedicalHistoryActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
 
@@ -99,6 +97,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     private String encounterAdultIntials;
     RecyclerView pastMedical_recyclerView;
     QuestionsAdapter adapter;
+    ScrollingPagerIndicator recyclerViewIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,8 +184,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
+        recyclerViewIndicator=findViewById(R.id.recyclerViewIndicator);
         pastMedical_recyclerView = findViewById(R.id.pastMedical_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false);
         pastMedical_recyclerView.setLayoutManager(linearLayoutManager);
         pastMedical_recyclerView.setItemAnimator(new DefaultItemAnimator());
         PagerSnapHelper helper = new PagerSnapHelper();
@@ -225,6 +225,10 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         adapter = new QuestionsAdapter(this, patientHistoryMap, pastMedical_recyclerView, this.getClass().getSimpleName(), this, false);
         pastMedical_recyclerView.setAdapter(adapter);
 
+        recyclerViewIndicator.attachToRecyclerView(pastMedical_recyclerView);
+
+
+
        /* historyListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
@@ -254,7 +258,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
         //Nodes and the expandable list act funny, so if anything is clicked, a lot of stuff needs to be updated.
         if (patientHistoryMap.getOption(groupPosition).anySubSelected()) {
-            patientHistoryMap.getOption(groupPosition).setSelected();
+            patientHistoryMap.getOption(groupPosition).setSelected(true);
         } else {
             patientHistoryMap.getOption(groupPosition).setUnselected();
         }
@@ -440,6 +444,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     public void onChildListClickEvent(int groupPos, int childPos, int physExamPos) {
         onListClick(null, groupPos, childPos);
     }
+
+
+
 
     public void AnimateView(View v) {
 

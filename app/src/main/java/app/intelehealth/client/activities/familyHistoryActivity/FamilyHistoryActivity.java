@@ -13,7 +13,6 @@ import android.os.Bundle;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -29,7 +28,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.ExpandableListView;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -55,10 +53,10 @@ import app.intelehealth.client.utilities.FileUtils;
 import app.intelehealth.client.utilities.SessionManager;
 import app.intelehealth.client.utilities.UuidDictionary;
 
-import app.intelehealth.client.activities.physcialExamActivity.CustomExpandableListAdapter;
 import app.intelehealth.client.activities.physcialExamActivity.PhysicalExamActivity;
 import app.intelehealth.client.activities.visitSummaryActivity.VisitSummaryActivity;
 import app.intelehealth.client.utilities.exception.DAOException;
+import app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator;
 
 public class FamilyHistoryActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
     private static final String TAG = FamilyHistoryActivity.class.getSimpleName();
@@ -88,6 +86,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
     String encounterAdultIntials;
     private String imageName = null;
     private File filePath;
+    ScrollingPagerIndicator recyclerViewIndicator;
 
     RecyclerView family_history_recyclerView;
     QuestionsAdapter adapter;
@@ -163,6 +162,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_family_history);
         setTitle(R.string.title_activity_family_history);
+        recyclerViewIndicator=findViewById(R.id.recyclerViewIndicator);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -174,7 +174,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
         FloatingActionButton fab = findViewById(R.id.fab);
         family_history_recyclerView = findViewById(R.id.family_history_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false);
         family_history_recyclerView.setLayoutManager(linearLayoutManager);
         family_history_recyclerView.setItemAnimator(new DefaultItemAnimator());
         PagerSnapHelper helper = new PagerSnapHelper();
@@ -207,6 +207,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
         adapter = new QuestionsAdapter(this, familyHistoryMap, family_history_recyclerView, this.getClass().getSimpleName(), this, false);
         family_history_recyclerView.setAdapter(adapter);
+        recyclerViewIndicator.attachToRecyclerView(family_history_recyclerView);
         /*adapter = new CustomExpandableListAdapter(this, familyHistoryMap, this.getClass().getSimpleName());
         familyListView.setAdapter(adapter);*/
 
@@ -224,7 +225,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         Log.i(TAG, "onChildClick: ");
         clickedNode.toggleSelected();
         if (familyHistoryMap.getOption(groupPosition).anySubSelected()) {
-            familyHistoryMap.getOption(groupPosition).setSelected();
+            familyHistoryMap.getOption(groupPosition).setSelected(true);
         } else {
             familyHistoryMap.getOption(groupPosition).setUnselected();
         }
@@ -398,6 +399,8 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
     public void onChildListClickEvent(int groupPos, int childPos, int physExamPos) {
         onListClick(null, groupPos, childPos);
     }
+
+
 
     public void AnimateView(View v) {
 

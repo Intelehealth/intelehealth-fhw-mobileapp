@@ -202,21 +202,26 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                  = new ComplaintNodeListAdapter(this,complaints);
         list_recyclerView.setAdapter(listAdapter);
 
-        animateView(img_question);
-        animateView(tv_selectComplaint);
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                bottomUpAnimation(list_recyclerView);
-            }
-        }, 1000);
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                animateView(fab);
-            }
-        }, 1000);
+        img_question.setVisibility(View.VISIBLE);
+        tv_selectComplaint.setVisibility(View.VISIBLE);
+        list_recyclerView.setVisibility(View.VISIBLE);
+        fab.setVisibility(View.VISIBLE);
+
+//        animateView(img_question);
+////        animateView(tv_selectComplaint);
+////        final Handler handler = new Handler();
+////        handler.postDelayed(new Runnable() {
+////            @Override
+////            public void run() {
+////                bottomUpAnimation(list_recyclerView);
+////            }
+////        }, 1000);
+////        handler.postDelayed(new Runnable() {
+////            @Override
+////            public void run() {
+////                animateView(fab);
+////            }
+////        }, 1000);
 
     }
 

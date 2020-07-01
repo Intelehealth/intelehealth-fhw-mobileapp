@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
+import android.opengl.Visibility;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,7 +76,10 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         void fabClickedAtEnd();
 
         void onChildListClickEvent(int groupPos, int childPos, int physExamPos);
+
+
     }
+
 
     public QuestionsAdapter(Context _context, Node node, RecyclerView _rvQuestions, String callingClass,
                             FabClickListener _mListener, boolean isAssociateSym) {
@@ -158,51 +162,6 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             holder.physical_exam_image_view.setVisibility(View.GONE);
             holder.physical_exam_text_view.setVisibility(View.GONE);
         }
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (_mCallingClass.equalsIgnoreCase(QuestionNodeActivity.class.getSimpleName())) {
-                    ((QuestionNodeActivity) context).AnimateView(holder.ivAyu);
-                    ((QuestionNodeActivity) context).AnimateView(holder.tvQuestion);
-                    ((QuestionNodeActivity) context).AnimateView(holder.tvSwipe);
-                    ((QuestionNodeActivity) context).bottomUpAnimation(holder.rvChips);
-                } else if (_mCallingClass.equalsIgnoreCase(PastMedicalHistoryActivity.class.getSimpleName())) {
-                    ((PastMedicalHistoryActivity) context).AnimateView(holder.ivAyu);
-                    ((PastMedicalHistoryActivity) context).AnimateView(holder.tvQuestion);
-                    ((PastMedicalHistoryActivity) context).AnimateView(holder.tvSwipe);
-                    ((PastMedicalHistoryActivity) context).bottomUpAnimation(holder.rvChips);
-                } else if (_mCallingClass.equalsIgnoreCase(FamilyHistoryActivity.class.getSimpleName())) {
-                    ((FamilyHistoryActivity) context).AnimateView(holder.ivAyu);
-                    ((FamilyHistoryActivity) context).AnimateView(holder.tvQuestion);
-                    ((FamilyHistoryActivity) context).AnimateView(holder.tvSwipe);
-                    ((FamilyHistoryActivity) context).bottomUpAnimation(holder.rvChips);
-                } else if (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())) {
-                    ((PhysicalExamActivity) context).AnimateView(holder.ivAyu);
-                    ((PhysicalExamActivity) context).AnimateView(holder.tvQuestion);
-                    ((PhysicalExamActivity) context).AnimateView(holder.tvSwipe);
-                    ((PhysicalExamActivity) context).bottomUpAnimation(holder.rvChips);
-                    ((PhysicalExamActivity) context).AnimateView(holder.physical_exam_image_view);
-                    ((PhysicalExamActivity) context).AnimateView(holder.physical_exam_text_view);
-                }
-
-            }
-        });
-
-        if(getItemCount()-1 == 0){
-            holder.tv_swipe_view.setVisibility(View.GONE);
-        }else{
-            holder.tv_swipe_view.setVisibility(View.VISIBLE);
-        }
-        if (position == getItemCount() - 1) {
-            holder.tvSwipe.setText(context.getString(R.string.swipe_down));
-        } else if (position != 0) {
-            holder.tvSwipe.setText(context.getString(R.string.swipe_down_to_return));
-            // holder.tvSwipe.setVisibility(View.VISIBLE);
-        } else {
-            holder.tvSwipe.setText(context.getString(R.string.swipe_up));
-            // holder.tvSwipe.setVisibility(View.GONE);
-        }
 
         if (position == getItemCount() - 1) {
             holder.fab.setVisibility(View.VISIBLE);
@@ -215,12 +174,19 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             @Override
             public void onClick(View view) {
                 _mListener.fabClickedAtEnd();
+
             }
         });
 
         if (isChildNeedRefresh) {
             holder.rvChips.getAdapter().notifyDataSetChanged();
+
         }
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
     }
 
     @Override
@@ -230,8 +196,8 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         } else {
             if (isAssociateSym && currentNode.getOptionsList().size() == 1) {
                 List<Node> nodeList = currentNode.getOptionsList().get(0).getOptionsList();
-                if (nodeList.size() > 5) {
-                    List<List<Node>> spiltList = Lists.partition(currentNode.getOptionsList().get(0).getOptionsList(), 5);
+                if (nodeList.size() > 8) {
+                    List<List<Node>> spiltList = Lists.partition(currentNode.getOptionsList().get(0).getOptionsList(), 8);
                     return spiltList.size();
                 } else {
                     return currentNode.getOptionsList().size();
@@ -242,6 +208,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         }
     }
 
+
     @Override
     public int getItemViewType(int position) {
         pos = position;
@@ -251,12 +218,10 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
     public class ChipsAdapterViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvQuestion, physical_exam_text_view;
-        TextView tvSwipe;
         ImageView ivAyu, physical_exam_image_view;
         RecyclerView rvChips;
         FloatingActionButton fab;
         ComplaintNodeListAdapter chipsAdapter;
-        TextView tv_swipe_view;
 
 
         public ChipsAdapterViewHolder(View itemView) {
@@ -264,13 +229,11 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             tvQuestion = itemView.findViewById(R.id.tv_complaintQuestion);
             rvChips = itemView.findViewById(R.id.rv_chips);
             fab = itemView.findViewById(R.id.fab);
-            tv_swipe_view = itemView.findViewById(R.id.tv_swipe);
-            tvSwipe = itemView.findViewById(R.id.tv_swipe);
             physical_exam_text_view = itemView.findViewById(R.id.physical_exam_text_view);
             physical_exam_image_view = itemView.findViewById(R.id.physical_exam_image_view);
 
 
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context,RecyclerView.VERTICAL,false);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
             rvChips.setLayoutManager(linearLayoutManager);
             rvChips.setHasFixedSize(true);
             //rvChips.setItemAnimator(new DefaultItemAnimator());
@@ -287,8 +250,8 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                 groupNode = currentNode;
                 if (isAssociateSym && currentNode.getOptionsList().size() == 1) {
                     int childOptionCount = currentNode.getOptionsList().get(0).getOptionsList().size();
-                    if (childOptionCount > 5) {
-                        List<List<Node>> spiltList = Lists.partition(currentNode.getOptionsList().get(0).getOptionsList(), 5);
+                    if (childOptionCount > 8) {
+                        List<List<Node>> spiltList = Lists.partition(currentNode.getOptionsList().get(0).getOptionsList(), 8);
                         chipList.addAll(spiltList.get(pos));
                     } else {
                         Node node = currentNode.getOptionsList().get(0);
@@ -350,17 +313,18 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         @Override
         public void onBindViewHolder(@NonNull ComplaintNodeListAdapter.ItemViewHolder itemViewHolder, int position) {
             final Node thisNode = mNodesFilter.get(position);
-            itemViewHolder.mChip.setText(thisNode.findDisplay());
+            itemViewHolder.mChipText.setText(thisNode.findDisplay());
+
             Node groupNode = mGroupNode.getOption(mGroupPos);
 
             if ((groupNode.getText().equalsIgnoreCase("Associated symptoms") && thisNode.isNoSelected()) || thisNode.isSelected()) {
-                itemViewHolder.mChip.setCloseIconVisible(true);
-                itemViewHolder.mChip.setChipBackgroundColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.colorAccent))));
-                itemViewHolder.mChip.setTextColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.white))));
+                itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
             } else {
-                itemViewHolder.mChip.setCloseIconVisible(false);
-                itemViewHolder.mChip.setChipBackgroundColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, android.R.color.transparent))));
-                itemViewHolder.mChip.setTextColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.primary_text))));
+                itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+                itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_orange));
+                //itemViewHolder.mChip.setChipBackgroundColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, android.R.color.transparent))));
+                //itemViewHolderiewHolder.mChip.setTextColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.primary_text))));
             }
             itemViewHolder.mChip.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -431,7 +395,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                         }
 
                         alertDialog.show();
-                        IntelehealthApplication.setAlertDialogCustomTheme(context,alertDialog);
+                        IntelehealthApplication.setAlertDialogCustomTheme(context, alertDialog);
 
                     } else {
                         //thisNode.toggleSelected();
@@ -449,13 +413,26 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                 }
             });
 
-            itemViewHolder.mChip.setOnCloseIconClickListener(new View.OnClickListener() {
+        /*   itemViewHolder.mChip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //thisNode.toggleSelected();
                     if ((groupNode.getText().equalsIgnoreCase("Associated symptoms") && thisNode.isNoSelected())) {
                         thisNode.setNoSelected(false);
-                        thisNode.toggleSelected();
+
+                        if(!thisNode.isSelected()) {
+                            thisNode.setSelected(true);
+                            itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                            itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
+
+                        }else {
+                            itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+                            thisNode.setSelected(false);
+                            itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_orange));
+                        }
+
+
+                      //  thisNode.toggleSelected();
                     }
                     int indexOfCheckedNode;
                     if (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())) {
@@ -468,6 +445,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                     notifyDataSetChanged();
                 }
             });
+        */
         }
 
         @Override
@@ -476,11 +454,13 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         }
 
         public class ItemViewHolder extends RecyclerView.ViewHolder {
-            Chip mChip;
+            TextView mChipText;
+            RelativeLayout mChip;
 
             public ItemViewHolder(@NonNull View itemView) {
                 super(itemView);
                 mChip = itemView.findViewById(R.id.complaint_chip);
+                mChipText = itemView.findViewById(R.id.tvChipText);
             }
         }
 

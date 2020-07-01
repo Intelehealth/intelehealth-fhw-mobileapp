@@ -1,111 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
-    android:background="@color/white"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-        <TextView
-            android:id="@+id/tv_swipe"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:gravity="center"
-            android:layout_margin="5dp"
-            android:includeFontPadding="false"
-            android:layout_alignParentTop="true"
-            android:visibility="visible"
-            android:fontFamily="@font/lato_bold"
-            android:textColor="@color/font_black_3"
-            android:text="@string/swipe_down_to_return"/>
+    android:orientation="vertical"
+    android:weightSum="1"
+    android:padding="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_swipe"
-        android:layout_above="@+id/fab"
+        android:layout_height="0dp"
+        android:layout_weight="0.9"
+        android:layout_marginTop="5dp"
         android:gravity="top"
+        android:id="@+id/LL_body"
         android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/physical_exam_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/physical_node_title"
-            />
 
         <ImageView
             android:id="@+id/physical_exam_image_view"
             android:layout_width="match_parent"
-            android:layout_gravity="center_horizontal"
             android:layout_height="@dimen/physical_exam_img_max_height"
             android:visibility="gone"
-            android:contentDescription="TODO"
-            />
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="TODO" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/iv_ayu"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:visibility="visible"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_question_indicator" />
+                android:src="@drawable/ic_question_indicator"
+                android:visibility="visible" />
 
             <TextView
                 android:id="@+id/tv_complaintQuestion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:visibility="visible"
                 android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
                 android:fontFamily="@font/lato_bold"
                 android:text="Since when have you had this symptom?"
                 android:textColor="@color/primary_text"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:visibility="visible" />
 
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_chips"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/physical_exam_text_view"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:nestedScrollingEnabled="true"
-            android:fitsSystemWindows="true"
-            android:scrollbars="vertical" />
+            android:textSize="@dimen/physical_node_title" />
 
-<!--        <app.intelehealth.client.utilities.AutoFitGridRecyclerView-->
-<!--            android:id="@+id/rv_chips"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="5dp"-->
-<!--            android:listSelector="@android:color/transparent"-->
-<!--            android:numColumns="auto_fit"-->
-<!--            android:fitsSystemWindows="true"-->
-<!--            android:scrollbars="vertical" />-->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_chips"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:fitsSystemWindows="true"
+                android:nestedScrollingEnabled="true"
+                android:scrollbars="vertical" />
 
+
+
+
+
+
+        <!--        <app.intelehealth.client.utilities.AutoFitGridRecyclerView-->
+        <!--            android:id="@+id/rv_chips"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="5dp"-->
+        <!--            android:listSelector="@android:color/transparent"-->
+        <!--            android:numColumns="auto_fit"-->
+        <!--            android:fitsSystemWindows="true"-->
+        <!--            android:scrollbars="vertical" />-->
 
 
     </LinearLayout>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="10dp"
-        android:visibility="visible"
-        app:srcCompat="@drawable/ic_done_24dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_gravity="bottom|end"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="10dp"
 
-</RelativeLayout>
+            android:layout_gravity="bottom|end"
+            android:visibility="visible"
+            app:srcCompat="@drawable/ic_done_24dp" />
+
+    </LinearLayout>
+
+
+
+    <RelativeLayout
+        android:id="@+id/tv_swipe_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LL_body"
+        android:visibility="gone">
+
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_margin="5dp"
+            android:fontFamily="@font/lato_bold"
+            android:gravity="center|top"
+            android:includeFontPadding="false"
+            android:text="@string/swipe_down_to_return"
+            android:textColor="@color/gray"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:visibility="visible" />
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>
 
 
