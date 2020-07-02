@@ -1756,16 +1756,30 @@ public class VisitSummaryActivity extends AppCompatActivity {
      */
     private void createWebPrintJob(WebView webView) {
 
+       int i =  webView.getContentHeight();
         // Get a PrintManager instance
         PrintManager printManager = (PrintManager) this.getSystemService(Context.PRINT_SERVICE);
 
         // Get a print adapter instance
         PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter();
 
-        // Create a print job with name and adapter instance
-        String jobName = getString(R.string.app_name) + " Visit Summary";
-        PrintJob printJob = printManager.print(jobName, printAdapter,
-                new PrintAttributes.Builder().build());
+        if(i > 2683)
+        {
+            PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
+            pBuilder.setMediaSize(PrintAttributes.MediaSize.ISO_B4);
+            // Create a print job with name and adapter instance
+            String jobName = getString(R.string.app_name) + " Visit Summary";
+            PrintJob printJob = printManager.print(jobName, printAdapter,
+                    pBuilder.build());
+        }
+        else
+        {
+            // Create a print job with name and adapter instance
+            String jobName = getString(R.string.app_name) + " Visit Summary";
+            PrintJob printJob = printManager.print(jobName, printAdapter,
+                    new PrintAttributes.Builder().build());
+        }
+
 
     }
 
