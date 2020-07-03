@@ -16,6 +16,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -42,6 +43,7 @@ import app.intelehealth.client.R;
 import app.intelehealth.client.activities.familyHistoryActivity.FamilyHistoryActivity;
 import app.intelehealth.client.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import app.intelehealth.client.activities.physcialExamActivity.PhysicalExamActivity;
+import app.intelehealth.client.activities.questionNodeActivity.adapters.AssociatedSysAdapter;
 import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.knowledgeEngine.Node;
 import app.intelehealth.client.knowledgeEngine.PhysicalExam;
@@ -50,7 +52,7 @@ import app.intelehealth.client.knowledgeEngine.PhysicalExam;
  * Created by Sagar Shimpi
  * Github - TheSeasApps
  */
-public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.ChipsAdapterViewHolder> {
+public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.ChipsAdapterViewHolder> implements AssociatedSysAdapter.FabVisibility {
 
     LayoutInflater layoutInflater;
     Context context;
@@ -60,6 +62,8 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
     FabClickListener _mListener;
     String _mCallingClass;
     boolean isAssociateSym;
+    boolean showPopUp;
+
 
     public void updateNode(Node currentNode) {
         this.currentNode = currentNode;
@@ -70,6 +74,11 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 
     public void refreshChildAdapter() {
         this.isChildNeedRefresh = true;
+    }
+
+    @Override
+    public void setVisibility(boolean data) {
+        showPopUp=data;
     }
 
     public interface FabClickListener {
@@ -170,10 +179,16 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         }
 
 
+
         holder.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                _mListener.fabClickedAtEnd();
+                if (showPopUp){
+                    Toast.makeText(context,"Select all the answers",Toast.LENGTH_LONG).show();
+
+                }else {
+                    _mListener.fabClickedAtEnd();
+                }
 
             }
         });
@@ -195,13 +210,13 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             return physicalExam.getTotalNumberOfExams();
         } else {
             if (isAssociateSym && currentNode.getOptionsList().size() == 1) {
-                List<Node> nodeList = currentNode.getOptionsList().get(0).getOptionsList();
+               /* List<Node> nodeList = currentNode.getOptionsList().get(0).getOptionsList();
                 if (nodeList.size() > 8) {
-                    List<List<Node>> spiltList = Lists.partition(currentNode.getOptionsList().get(0).getOptionsList(), 8);
-                    return spiltList.size();
-                } else {
+                    List<List<Node>> spiltList = Lists.partition(currentNode.getOptionsList().get(0).getOptionsList(), 8);*/
+                return 1;
+               /* } else {
                     return currentNode.getOptionsList().size();
-                }
+                }*/
             } else {
                 return currentNode.getOptionsList().size();
             }
@@ -222,6 +237,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         RecyclerView rvChips;
         FloatingActionButton fab;
         ComplaintNodeListAdapter chipsAdapter;
+        AssociatedSysAdapter associatedSysAdapter;
 
 
         public ChipsAdapterViewHolder(View itemView) {
@@ -249,6 +265,14 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             } else {
                 groupNode = currentNode;
                 if (isAssociateSym && currentNode.getOptionsList().size() == 1) {
+                    chipList = currentNode.getOptionsList().get(0).getOptionsList();
+                }else{
+                    Node node = currentNode.getOptionsList().get(pos);
+                    for (int i = 0; i < node.getOptionsList().size(); i++) {
+                        chipList.add(node.getOptionsList().get(i));
+                    }
+                }
+               /* if (isAssociateSym && currentNode.getOptionsList().size() == 1) {
                     int childOptionCount = currentNode.getOptionsList().get(0).getOptionsList().size();
                     if (childOptionCount > 8) {
                         List<List<Node>> spiltList = Lists.partition(currentNode.getOptionsList().get(0).getOptionsList(), 8);
@@ -264,13 +288,20 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                     for (int i = 0; i < node.getOptionsList().size(); i++) {
                         chipList.add(node.getOptionsList().get(i));
                     }
-                }
+                }*/
             }
 
 
             int groupPos = (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName()) || (isAssociateSym && currentNode.getOptionsList().size() == 1)) ? 0 : pos;
-            chipsAdapter = new ComplaintNodeListAdapter(context, chipList, groupNode, groupPos, _mListener, _mCallingClass, pos);
-            rvChips.setAdapter(chipsAdapter);
+
+            if(groupNode.getOption(groupPos).getText().equalsIgnoreCase("Associated symptoms")) {
+                associatedSysAdapter=new AssociatedSysAdapter(context, chipList, groupNode, groupPos, _mListener, _mCallingClass, pos);
+                rvChips.setAdapter(associatedSysAdapter);
+
+            }   else {
+                chipsAdapter = new ComplaintNodeListAdapter(context, chipList, groupNode, groupPos, _mListener, _mCallingClass, pos);
+                rvChips.setAdapter(chipsAdapter);
+            }
 
         }
     }

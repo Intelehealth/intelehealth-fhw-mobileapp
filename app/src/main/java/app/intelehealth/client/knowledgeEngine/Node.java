@@ -95,6 +95,7 @@ public class Node implements Serializable {
     private boolean hasPhysicalExams;
     private boolean hasPopUp;
     private boolean subPopUp;
+    private int associated_symptoms = 0;
 
     private boolean isNoSelected;
 
@@ -102,12 +103,11 @@ public class Node implements Serializable {
 
     public static String bullet = "\u2022";
     public static String big_bullet = "\u25CF";
-//    public static String bullet_hollow = "\u25CB";
+    //    public static String bullet_hollow = "\u25CB";
     public static String bullet_hollow = "\u2022";
     public static String bullet_arrow = "\u25BA";
     public static String next_line = "<br/>";
     String space = "\t";
-    
 
 
     //• = \u2022, ● = \u25CF, ○ = \u25CB, ▪ = \u25AA, ■ = \u25A0, □ = \u25A1, ► = \u25BA
@@ -246,6 +246,7 @@ public class Node implements Serializable {
         this.hasPopUp = source.hasPopUp;
         this.selected = false;
         this.isNoSelected = false;
+        this.associated_symptoms = 0;
         this.required = source.required;
         this.positiveCondition = source.positiveCondition;
         this.negativeCondition = source.negativeCondition;
@@ -321,6 +322,15 @@ public class Node implements Serializable {
         AlertDialog dialog = subQuestion.show();
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
+    }
+
+    // check the answer status for the Associated_symptoms
+    public int getAssociated_symptoms() {
+        return associated_symptoms;
+    }
+
+    public void setAssociated_symptoms(int associated_symptoms) {
+        this.associated_symptoms = associated_symptoms;
     }
 
     //Terminal nodes are important to identify to know so that the app does not keep looking for sub-nodes.
