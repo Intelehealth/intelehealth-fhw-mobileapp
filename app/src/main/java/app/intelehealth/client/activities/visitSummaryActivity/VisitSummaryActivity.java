@@ -1763,12 +1763,21 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         // Get a print adapter instance
         PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter();
+        Log.d("webview content height", "webview content height: "+contentHeight);
 
-        if(contentHeight > 2683)
+        if(contentHeight > 2683 && contentHeight <= 4160)
         {
-
             PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
             pBuilder.setMediaSize(PrintAttributes.MediaSize.ISO_B4);
+            // Create a print job with name and adapter instance
+            String jobName = getString(R.string.app_name) + " Visit Summary";
+            PrintJob printJob = printManager.print(jobName, printAdapter,
+                    pBuilder.build());
+        }
+        else if (contentHeight > 4160)
+        {
+            PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
+            pBuilder.setMediaSize(PrintAttributes.MediaSize.JIS_B4);
             // Create a print job with name and adapter instance
             String jobName = getString(R.string.app_name) + " Visit Summary";
             PrintJob printJob = printManager.print(jobName, printAdapter,
