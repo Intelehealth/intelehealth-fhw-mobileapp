@@ -1448,7 +1448,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 Log.i("Patient WebView", "page finished loading " + url);
-                createWebPrintJob(view, view.getContentHeight());
+                int webview_heightContent = view.getContentHeight();
+                Log.d("variable i", "variable i: "+webview_heightContent);
+                createWebPrintJob(view, webview_heightContent);
                 mWebView = null;
             }
         });
