@@ -1448,7 +1448,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 Log.i("Patient WebView", "page finished loading " + url);
-                createWebPrintJob(view);
+                createWebPrintJob(view, view.getContentHeight());
                 mWebView = null;
             }
         });
@@ -1753,18 +1753,20 @@ public class VisitSummaryActivity extends AppCompatActivity {
      * This method creates a print job using PrintManager instance and PrintAdapter Instance
      *
      * @param webView object of type WebView.
+     * @param contentHeight
      */
-    private void createWebPrintJob(WebView webView) {
+    private void createWebPrintJob(WebView webView, int contentHeight) {
 
-       int i =  webView.getContentHeight();
+      /* int i =  webView.getContentHeight();*/
         // Get a PrintManager instance
         PrintManager printManager = (PrintManager) this.getSystemService(Context.PRINT_SERVICE);
 
         // Get a print adapter instance
         PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter();
 
-        if(i > 2683)
+        if(contentHeight > 2683)
         {
+
             PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
             pBuilder.setMediaSize(PrintAttributes.MediaSize.ISO_B4);
             // Create a print job with name and adapter instance
