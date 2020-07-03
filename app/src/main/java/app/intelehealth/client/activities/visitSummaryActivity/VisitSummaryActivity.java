@@ -1757,7 +1757,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
      */
     private void createWebPrintJob(WebView webView, int contentHeight) {
 
-      /* int i =  webView.getContentHeight();*/
+//       int i =  webView.getContentHeight();
         // Get a PrintManager instance
         PrintManager printManager = (PrintManager) this.getSystemService(Context.PRINT_SERVICE);
 
@@ -1765,7 +1765,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter();
         Log.d("webview content height", "webview content height: "+contentHeight);
 
-        if(contentHeight > 2683 && contentHeight <= 4160)
+        if(contentHeight > 2683 && contentHeight <= 3000)
         {
             PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
             pBuilder.setMediaSize(PrintAttributes.MediaSize.ISO_B4);
@@ -1774,7 +1774,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             PrintJob printJob = printManager.print(jobName, printAdapter,
                     pBuilder.build());
         }
-        else if (contentHeight > 4160)
+        else if (contentHeight > 3000)
         {
             PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
             pBuilder.setMediaSize(PrintAttributes.MediaSize.JIS_B4);
