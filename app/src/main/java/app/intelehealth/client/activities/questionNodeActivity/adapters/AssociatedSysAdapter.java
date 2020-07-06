@@ -83,101 +83,55 @@ public class AssociatedSysAdapter extends RecyclerView.Adapter<AssociatedSysAdap
 
            // itemViewHolder.chip_yes.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
             //itemViewHolder.chip_No.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
+
             if ( thisNode.isSelected() && thisNode.getAssociated_symptoms()==1) {
                itemViewHolder.chip_yes.setTextColor(ContextCompat.getColor(mContext, R.color.white));
                 itemViewHolder.chip_yes.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
-                itemViewHolder.chip_No.setTextColor(ContextCompat.getColor(mContext, R.color.primary_text));
+                itemViewHolder.chip_No.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
                 itemViewHolder.chip_No.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_orange));
             } else if(!thisNode.isSelected() && thisNode.getAssociated_symptoms()==-1) {
                 itemViewHolder.chip_No.setTextColor(ContextCompat.getColor(mContext, R.color.white));
                 itemViewHolder.chip_No.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
-                itemViewHolder.chip_yes.setTextColor(ContextCompat.getColor(mContext, R.color.primary_text));
+                itemViewHolder.chip_yes.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
                 itemViewHolder.chip_yes.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_orange));
             }
             else{
-                itemViewHolder.chip_No.setTextColor(ContextCompat.getColor(mContext, R.color.primary_text));
+                itemViewHolder.chip_No.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
                 itemViewHolder.chip_No.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_orange));
-                itemViewHolder.chip_yes.setTextColor(ContextCompat.getColor(mContext, R.color.primary_text));
+                itemViewHolder.chip_yes.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
                 itemViewHolder.chip_yes.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_orange));
 
             }
-           // mContext.set
 
-
-
-
-
-
-                       /* MaterialAlertDialogBuilder confirmDialog = new MaterialAlertDialogBuilder(mContext);
-                        confirmDialog.setTitle(R.string.have_symptom);
-                        confirmDialog.setCancelable(false);
-                        LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-                        View convertView = layoutInflater.inflate(R.layout.list_expandable_item_radio, null);
-                        confirmDialog.setView(convertView);
-                        RadioButton radio_yes = convertView.findViewById(R.id.radio_yes);
-                        RadioButton radio_no = convertView.findViewById(R.id.radio_no);
-                        confirmDialog.setPositiveButton(mContext.getString(R.string.ok), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });*/
-                       // AlertDialog alertDialog = confirmDialog.create();
                         itemViewHolder.chip_yes.setOnClickListener(v -> {
-                            thisNode.setNoSelected(false);
+                                thisNode.setNoSelected(false);
+
+                           if(thisNode.getAssociated_symptoms()==1){
+                                thisNode.setAssociated_symptoms(0);
+                            }
+                            else{
+                                thisNode.setAssociated_symptoms(1);
+                            }
+
                             List<Node> childNode = mGroupNode.getOptionsList().get(mGroupPos).getOptionsList();
                             int indexOfCheckedNode = childNode.indexOf(thisNode);
-                            thisNode.setAssociated_symptoms(1);
                             _mListener.onChildListClickEvent(mGroupPos, indexOfCheckedNode, physExamNodePos);
                             notifyDataSetChanged();
-
-
                         });
 
                         itemViewHolder.chip_No.setOnClickListener(v -> {
-                            thisNode.setNoSelected(true);
-                            thisNode.setAssociated_symptoms(-1);
-                            thisNode.setUnselected();
+                                thisNode.setNoSelected(true);
+                                thisNode.setUnselected();
+                            if (thisNode.getAssociated_symptoms() == -1) {
+                                thisNode.setAssociated_symptoms(0);
+                            } else {
+                                thisNode.setAssociated_symptoms(-1);
+                            }
                             notifyDataSetChanged();
-
                         });
 
 
 
-
-        /*   itemViewHolder.mChip.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //thisNode.toggleSelected();
-                    if ((groupNode.getText().equalsIgnoreCase("Associated symptoms") && thisNode.isNoSelected())) {
-                        thisNode.setNoSelected(false);
-
-                        if(!thisNode.isSelected()) {
-                            thisNode.setSelected(true);
-                            itemViewHolder.mChipText.setTextColor(mContextCompat.getColor(mmContext, R.color.white));
-                            itemViewHolder.mChipText.setBackground(mContextCompat.getDrawable(mmContext, R.drawable.rounded_rectangle_blue));
-
-                        }else {
-                            itemViewHolder.mChipText.setTextColor(mContextCompat.getColor(mmContext, R.color.colorPrimary));
-                            thisNode.setSelected(false);
-                            itemViewHolder.mChipText.setBackground(mContextCompat.getDrawable(mmContext, R.drawable.rounded_rectangle_orange));
-                        }
-
-
-                      //  thisNode.toggleSelected();
-                    }
-                    int indexOfCheckedNode;
-                    if (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())) {
-                        indexOfCheckedNode = position;
-                    } else {
-                        List<Node> childNode = mGroupNode.getOptionsList().get(mGroupPos).getOptionsList();
-                        indexOfCheckedNode = childNode.indexOf(thisNode);
-                    }
-                    _mListener.onChildListClickEvent(mGroupPos, indexOfCheckedNode, physExamNodePos);
-                    notifyDataSetChanged();
-                }
-            });
-        */
         }
 
         @Override

@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.9"
+        android:layout_weight="0.8"
         android:layout_marginTop="5dp"
         android:gravity="top"
         android:id="@+id/LL_body"
@@ -88,7 +88,8 @@
         android:layout_width="match_parent"
         android:layout_gravity="bottom|end"
         android:orientation="vertical"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_weight=".2">
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
@@ -104,31 +105,6 @@
     </LinearLayout>
 
 
-
-    <RelativeLayout
-        android:id="@+id/tv_swipe_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/LL_body"
-        android:visibility="gone">
-
-        <TextView
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerInParent="true"
-            android:layout_margin="5dp"
-            android:fontFamily="@font/lato_bold"
-            android:gravity="center|top"
-            android:includeFontPadding="false"
-            android:text="@string/swipe_down_to_return"
-            android:textColor="@color/gray"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:visibility="visible" />
-
-    </RelativeLayout>
 
 
 
