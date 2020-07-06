@@ -1769,6 +1769,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         if(contentHeight > 2683 && contentHeight <= 3000)
         {
+            //medium size prescription...
             PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
             pBuilder.setMediaSize(PrintAttributes.MediaSize.ISO_B4);
             // Create a print job with name and adapter instance
@@ -1776,8 +1777,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
             PrintJob printJob = printManager.print(jobName, printAdapter,
                     pBuilder.build());
         }
+        else if(contentHeight == 0)
+        {
+            //in case of webview bug of 0 contents...
+            PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
+            pBuilder.setMediaSize(PrintAttributes.MediaSize.JIS_B4);
+            // Create a print job with name and adapter instance
+            String jobName = getString(R.string.app_name) + " Visit Summary";
+            PrintJob printJob = printManager.print(jobName, printAdapter,
+                    pBuilder.build());
+        }
         else if (contentHeight > 3000)
         {
+            //large size prescription...
             PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
             pBuilder.setMediaSize(PrintAttributes.MediaSize.JIS_B4);
             // Create a print job with name and adapter instance
@@ -1787,6 +1799,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         else
         {
+            //small size prescription...
             // Create a print job with name and adapter instance
             String jobName = getString(R.string.app_name) + " Visit Summary";
             PrintJob printJob = printManager.print(jobName, printAdapter,
