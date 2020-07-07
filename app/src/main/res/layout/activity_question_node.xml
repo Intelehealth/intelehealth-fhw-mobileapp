@@ -50,6 +50,7 @@ android:layout_gravity="center"
         android:layout_height="match_parent"
         android:scrollbarThumbVertical="@color/colorAccent"
         android:scrollbars="vertical"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
         android:fadeScrollbars="false"
         android:visibility="visible" />
     <include layout="@layout/content_question_node"
