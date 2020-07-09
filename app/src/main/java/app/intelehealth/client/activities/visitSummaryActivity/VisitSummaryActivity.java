@@ -749,7 +749,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
             respiratory.setVisibility(View.GONE);
         }
 
-        heightView.setText(height.getValue());
+        if(height.getValue().trim().equals("0"))
+        {
+            heightView.setText("-");
+        }
+        else
+        {
+            heightView.setText(height.getValue());
+        }
+
         weightView.setText(weight.getValue());
         pulseView.setText(pulse.getValue());
 
