@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -1831,28 +1832,34 @@ public class Node implements Serializable {
                     stringsList.add(question + next_line);
                     stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
                 }
-            } else if ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms"))
-                    || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))) {
+            }
+            else if (mOptions.get(i).getText() != null &&
+                    ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms"))
+                    || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")))) {
 
                 if (!mOptions.get(i).isTerminal()) {
                     stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
                     stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
                 }
 
-//                if (mOptions.get(i).getOptionsList().size() > 0) {
-//
-//                    for (int j = 0; j < mOptions.get(i).getOptionsList().size(); j++) {
-//
-//                        if (mOptions.get(i).getOptionsList().get(j).isSelected()
-//                                || mOptions.get(i).getOptionsList().get(j).isNoSelected()) {
-//
-//                            if (!mOptions.get(i).isTerminal()) {
-//                                stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
-//                                stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
-//                            }
-//                        }
-//                    }
-//                }
+                //                if (mOptions.get(i).getOptionsList().size() > 0) {
+                //
+                //                    for (int j = 0; j < mOptions.get(i).getOptionsList().size(); j++) {
+                //
+                //                        if (mOptions.get(i).getOptionsList().get(j).isSelected()
+                //                                || mOptions.get(i).getOptionsList().get(j).isNoSelected()) {
+                //
+                //                            if (!mOptions.get(i).isTerminal()) {
+                //                                stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
+                //                                stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
+                //                            }
+                //                        }
+                //                    }
+                //                }
+            }
+            else
+            {
+                //in case of weird null exception...
             }
 
             if (mOptions.get(i).isNoSelected()) {

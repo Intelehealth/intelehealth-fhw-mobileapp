@@ -330,7 +330,8 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             itemViewHolder.mChip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (groupNode.getText() != null) { //null checking to avoid weird crashes.
+                    if (groupNode.getText() != null) {
+                        //null checking to avoid weird crashes.
                         if (groupNode.getText().equalsIgnoreCase("Associated symptoms")) {
                             MaterialAlertDialogBuilder confirmDialog = new MaterialAlertDialogBuilder(context);
                             confirmDialog.setTitle(R.string.have_symptom);

@@ -35,7 +35,7 @@ public class ConfigUtils {
                 obj = new JSONObject(Objects.requireNonNull(FileUtils.readFileRoot(CONFIG_FILE_NAME, context)));
             else
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(context, CONFIG_FILE_NAME)));
-            
+
         } catch (JSONException e) {
             Logger.logE(TAG, "Exception", e);
             Toast.makeText(context, "JsonException" + e, Toast.LENGTH_LONG).show();

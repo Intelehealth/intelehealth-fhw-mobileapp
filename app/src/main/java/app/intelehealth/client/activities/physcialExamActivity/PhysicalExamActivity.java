@@ -238,7 +238,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
          */
 
-      /*  Commented to avoid crash...
+      /*
+      Commented to avoid crash...
         Log.e(TAG, "PhyExam: " + physicalExamMap.getTotalNumberOfExams());*/
         adapter = new QuestionsAdapter(this, physicalExamMap, physExam_recyclerView, this.getClass().getSimpleName(), this, false);
         physExam_recyclerView.setAdapter(adapter);
