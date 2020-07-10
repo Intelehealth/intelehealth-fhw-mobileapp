@@ -9,6 +9,8 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Objects;
+
 import app.intelehealth.client.app.IntelehealthApplication;
 
 import static app.intelehealth.client.app.AppConstants.CONFIG_FILE_NAME;
@@ -28,7 +30,8 @@ public class ConfigUtils {
         try {
 //            if (sessionManager.valueContains("licensekey")) {
             if (!sessionManager.getLicenseKey().isEmpty()) {
-                obj = new JSONObject(FileUtils.readFileRoot(CONFIG_FILE_NAME, context)); //Load the config file
+                //NonNull added to handle null values in case of downloaded mm's.
+                obj = new JSONObject(Objects.requireNonNull(FileUtils.readFileRoot(CONFIG_FILE_NAME, context))); //Load the config file
 
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(context, CONFIG_FILE_NAME)));
