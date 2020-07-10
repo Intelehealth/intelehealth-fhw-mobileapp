@@ -6,7 +6,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
-import com.crashlytics.android.Crashlytics;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -269,7 +270,7 @@ public class VisitsDAO {
             db.setTransactionSuccessful();
         } catch (SQLException sql) {
             isUpdated = false;
-            Crashlytics.getInstance().core.logException(sql);
+            FirebaseCrashlytics.getInstance().recordException(sql);
             Logger.logD("visit", "updated isdownloaded" + sql.getMessage());
             throw new DAOException(sql.getMessage());
         } finally {
@@ -294,7 +295,7 @@ public class VisitsDAO {
             cursor.close();
             db.setTransactionSuccessful();
         } catch (SQLiteException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             throw new DAOException(e);
         } finally {
             db.endTransaction();

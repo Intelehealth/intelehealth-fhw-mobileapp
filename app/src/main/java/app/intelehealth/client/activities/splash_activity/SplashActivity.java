@@ -11,7 +11,8 @@ import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
@@ -53,7 +54,6 @@ public class SplashActivity extends AppCompatActivity {
         }
 
         checkPerm();
-        Crashlytics.log(Log.DEBUG, "tag", "message");
     }
 
     private void checkPerm() {

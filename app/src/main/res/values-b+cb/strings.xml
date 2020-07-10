@@ -425,6 +425,6 @@
     <string name="skip">skip</string>
     <string name="start">Start</string>
     <string name="who_is_this_napplication_for">Who is this \napplication for?</string>
-
+    <string name="sure_to_logout">Are you sure you want to Logout?</string>
 
 </resources>

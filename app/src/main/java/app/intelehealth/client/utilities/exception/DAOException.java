@@ -1,6 +1,7 @@
 package app.intelehealth.client.utilities.exception;
 
-import com.crashlytics.android.Crashlytics;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 public class DAOException extends Exception {
     private static final long serialVersionUID = 1L;
@@ -15,7 +16,7 @@ public class DAOException extends Exception {
     public DAOException(String msg, Throwable e) {
         super(msg, e);
         setThwStack(e);
-        Crashlytics.getInstance().core.logException(e);
+        FirebaseCrashlytics.getInstance().recordException(e);
     }
 
     public DAOException() {

@@ -415,7 +415,24 @@ public class HomeActivity extends AppCompatActivity {
 
             case R.id.logoutOption:
 //                manageBackup(true, false);
-                logout();
+
+                MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+                alertdialogBuilder.setMessage(R.string.sure_to_logout);
+                alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        logout();
+                    }
+                });
+                alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
+                AlertDialog alertDialog = alertdialogBuilder.create();
+                alertDialog.show();
+                Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+                Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

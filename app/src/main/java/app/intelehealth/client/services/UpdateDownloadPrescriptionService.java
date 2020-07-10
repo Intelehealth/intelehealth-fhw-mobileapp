@@ -3,7 +3,8 @@ package app.intelehealth.client.services;
 import android.app.IntentService;
 import android.content.Intent;
 
-import com.crashlytics.android.Crashlytics;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import app.intelehealth.client.utilities.Logger;
 
@@ -23,7 +24,7 @@ public class UpdateDownloadPrescriptionService extends IntentService {
             in.setAction("downloadprescription");
             sendBroadcast(in);
         } catch (Exception e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             Logger.logE(UpdateDownloadPrescriptionService.class.getSimpleName(), "Exception in onHandleIntent method", e);
         }
 

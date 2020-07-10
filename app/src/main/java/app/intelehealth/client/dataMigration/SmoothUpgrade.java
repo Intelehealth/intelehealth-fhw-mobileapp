@@ -8,7 +8,8 @@ import android.database.sqlite.SQLiteException;
 import android.os.Environment;
 import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -77,7 +78,7 @@ public class SmoothUpgrade {
                 }
             }
         } catch (Exception e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
 
     }
@@ -135,7 +136,7 @@ public class SmoothUpgrade {
                         try {
                             visitsDAO.insertPatientToDB(visitDTO);
                         } catch (DAOException e) {
-                            Crashlytics.getInstance().core.logException(e);
+                            FirebaseCrashlytics.getInstance().recordException(e);
                         }
                     }
                     encounterDTO = getVisitId(id, visitDTO.getUuid(), visitDTO.getStartdate());
@@ -205,7 +206,7 @@ public class SmoothUpgrade {
                     try {
                         patientsDAO.insertPatientToDB(patientDTO, uuid);
                     } catch (DAOException e) {
-                        Crashlytics.getInstance().core.logException(e);
+                        FirebaseCrashlytics.getInstance().recordException(e);
                     }
 
                     cursor.moveToNext();
@@ -219,7 +220,7 @@ public class SmoothUpgrade {
             }
             myDataBase.setTransactionSuccessful();
         } catch (SQLiteException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
 
@@ -248,7 +249,7 @@ public class SmoothUpgrade {
 
         } catch (
                 SQLiteException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
         return visitDTO;
     }
@@ -272,7 +273,7 @@ public class SmoothUpgrade {
                     try {
                         encounterDAO.createEncountersToDB(encounterDTO);
                     } catch (DAOException e) {
-                        Crashlytics.getInstance().core.logException(e);
+                        FirebaseCrashlytics.getInstance().recordException(e);
                     }
                     cursor.moveToNext();
                 }
@@ -283,7 +284,7 @@ public class SmoothUpgrade {
 
         } catch (
                 SQLiteException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
         return encounterDTO;
     }
@@ -305,7 +306,7 @@ public class SmoothUpgrade {
                     try {
                         obsDAO.insertObs(ObsDTO);
                     } catch (DAOException e) {
-                        Crashlytics.getInstance().core.logException(e);
+                        FirebaseCrashlytics.getInstance().recordException(e);
                     }
                     cursor.moveToNext();
                 }
@@ -316,7 +317,7 @@ public class SmoothUpgrade {
 
         } catch (
                 SQLiteException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
         return ObsDTO;
     }
@@ -369,10 +370,10 @@ public class SmoothUpgrade {
             try {
                 encounterDAO.createEncountersToDB(encounterDTO);
             } catch (DAOException e) {
-                Crashlytics.getInstance().core.logException(e);
+                FirebaseCrashlytics.getInstance().recordException(e);
             }
         } catch (Exception e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
         return encounterDTO;
     }

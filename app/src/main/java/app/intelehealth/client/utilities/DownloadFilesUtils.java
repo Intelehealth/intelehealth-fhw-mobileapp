@@ -3,7 +3,8 @@ package app.intelehealth.client.utilities;
 import android.util.Log;
 import android.util.Pair;
 
-import com.crashlytics.android.Crashlytics;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -49,7 +50,7 @@ public class DownloadFilesUtils {
                 Pair<Integer, Long> pairs = new Pair<>(100, 100L);
                 return;
             } catch (IOException e) {
-                Crashlytics.getInstance().core.logException(e);
+                FirebaseCrashlytics.getInstance().recordException(e);
                 Pair<Integer, Long> pairs = new Pair<>(-1, Long.valueOf(-1));
                 Log.d(TAG, "Failed to save the file!");
                 return;
@@ -58,7 +59,7 @@ public class DownloadFilesUtils {
                 if (outputStream != null) outputStream.close();
             }
         } catch (IOException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             Log.d(TAG, "Failed to save the file!");
             return;
         }

@@ -12,6 +12,7 @@ import android.os.Bundle;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -29,7 +30,7 @@ import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 
-import com.crashlytics.android.Crashlytics;
+
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
@@ -197,7 +198,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                 currentFile = new JSONObject(FileUtils.readFileRoot(mFileName, this));
                 familyHistoryMap = new Node(currentFile); //Load the family history mind map
             } catch (JSONException e) {
-                Crashlytics.getInstance().core.logException(e);
+                FirebaseCrashlytics.getInstance().recordException(e);
             }
         } else {
             familyHistoryMap = new Node(FileUtils.encodeJSON(this, mFileName)); //Load the family history mind map
@@ -342,7 +343,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         try {
             isInserted = obsDAO.insertObs(obsDTO);
         } catch (DAOException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
 
         return isInserted;
@@ -355,7 +356,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         try {
             imagesDAO.insertObsImageDatabase(imageName, encounterAdultIntials, "");
         } catch (DAOException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
 
@@ -373,7 +374,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             obsDAO.updateObs(obsDTO);
 
         } catch (DAOException dao) {
-            Crashlytics.getInstance().core.logException(dao);
+            FirebaseCrashlytics.getInstance().recordException(dao);
         }
 
         EncounterDAO encounterDAO = new EncounterDAO();
@@ -381,7 +382,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             encounterDAO.updateEncounterSync("false", encounterAdultIntials);
             encounterDAO.updateEncounterModifiedDate(encounterAdultIntials);
         } catch (DAOException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
 

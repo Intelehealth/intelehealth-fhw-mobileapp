@@ -6,7 +6,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
-import com.crashlytics.android.Crashlytics;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -87,7 +88,7 @@ public class ImagesDAO {
             localdb.updateWithOnConflict("tbl_obs", cv, "encounteruuid=? AND conceptuuid=?", new String[]{encounterUuid, conceptUuid}, SQLiteDatabase.CONFLICT_REPLACE);
             localdb.setTransactionSuccessful();
         } catch (SQLException sql) {
-            Crashlytics.getInstance().core.logException(sql);
+            FirebaseCrashlytics.getInstance().recordException(sql);
             throw new DAOException(sql);
         } finally {
             localdb.endTransaction();
@@ -111,7 +112,7 @@ public class ImagesDAO {
             localdb.updateWithOnConflict("tbl_obs", cv, "uuid=? ", new String[]{obsUuid}, SQLiteDatabase.CONFLICT_REPLACE);
             localdb.setTransactionSuccessful();
         } catch (SQLException sql) {
-            Crashlytics.getInstance().core.logException(sql);
+            FirebaseCrashlytics.getInstance().recordException(sql);
             throw new DAOException(sql);
         } finally {
             localdb.endTransaction();
@@ -292,7 +293,7 @@ public class ImagesDAO {
             localdb.setTransactionSuccessful();
         } catch (SQLiteException e) {
             isUpdated = false;
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             throw new DAOException(e);
         } finally {
             localdb.endTransaction();
@@ -317,7 +318,7 @@ public class ImagesDAO {
             localdb.setTransactionSuccessful();
         } catch (SQLiteException e) {
             isUpdated = false;
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             throw new DAOException(e);
         } finally {
             localdb.endTransaction();

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Environment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -36,7 +37,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -171,7 +172,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                     currentFile = new JSONObject(FileUtils.readFileRoot(mFileName, this));
                     physicalExamMap = new PhysicalExam(currentFile, selectedExamsList);
                 } catch (JSONException e) {
-                    Crashlytics.getInstance().core.logException(e);
+                    FirebaseCrashlytics.getInstance().recordException(e);
                 }
             } else {
                 physicalExamMap = new PhysicalExam(FileUtils.encodeJSON(this, mFileName), selectedExamsList);
@@ -257,7 +258,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         try {
             isInserted = obsDAO.insertObs(obsDTO);
         } catch (DAOException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
 
         return isInserted;
@@ -399,7 +400,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             obsDAO.updateObs(obsDTO);
 
         } catch (DAOException dao) {
-            Crashlytics.getInstance().core.logException(dao);
+            FirebaseCrashlytics.getInstance().recordException(dao);
         }
 
         EncounterDAO encounterDAO = new EncounterDAO();
@@ -407,7 +408,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             encounterDAO.updateEncounterSync("false", encounterAdultIntials);
             encounterDAO.updateEncounterModifiedDate(encounterAdultIntials);
         } catch (DAOException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
 
@@ -432,7 +433,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         try {
             imagesDAO.insertObsImageDatabase(imageName, encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_PE);
         } catch (DAOException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
 

@@ -2,7 +2,8 @@ package app.intelehealth.client.database.dao;
 
 import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -45,7 +46,7 @@ public class ImagesPushDAO {
         try {
             patientProfiles = imagesDAO.getPatientProfileUnsyncedImages();
         } catch (DAOException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
         for (PatientProfile p : patientProfiles) {
             Single<ResponseBody> personProfilePicUpload = AppConstants.apiInterface.PERSON_PROFILE_PIC_UPLOAD(url, "Basic " + encoded, p);
@@ -58,7 +59,7 @@ public class ImagesPushDAO {
                             try {
                                 imagesDAO.updateUnsyncedPatientProfile(p.getPerson(), "PP");
                             } catch (DAOException e) {
-                                Crashlytics.getInstance().core.logException(e);
+                                FirebaseCrashlytics.getInstance().recordException(e);
                             }
 //                            AppConstants.notificationUtils.DownloadDone("Patient Profile", "Uploaded Patient Profile", 4, IntelehealthApplication.getAppContext());
                         }
@@ -87,7 +88,7 @@ public class ImagesPushDAO {
             obsImageJsons = imagesDAO.getObsUnsyncedImages();
             Log.e(TAG, "image request model" + gson.toJson(obsImageJsons));
         } catch (DAOException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
         int i = 0;
         for (ObsPushDTO p : obsImageJsons) {
@@ -121,7 +122,7 @@ public class ImagesPushDAO {
                             try {
                                 imagesDAO.updateUnsyncedObsImages(p.getUuid());
                             } catch (DAOException e) {
-                                Crashlytics.getInstance().core.logException(e);
+                                FirebaseCrashlytics.getInstance().recordException(e);
                             }
                         }
                     });
@@ -141,7 +142,7 @@ public class ImagesPushDAO {
         try {
             voidedObsImageList = imagesDAO.getVoidedImageObs();
         } catch (DAOException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
         for (String voidedObsImage : voidedObsImageList) {
             String url = urlModifiers.obsImageDeleteUrl(voidedObsImage);

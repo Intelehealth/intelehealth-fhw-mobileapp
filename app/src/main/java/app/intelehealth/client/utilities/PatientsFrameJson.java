@@ -2,7 +2,8 @@ package app.intelehealth.client.utilities;
 
 import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class PatientsFrameJson {
         try {
             patientDTOList = patientsDAO.unsyncedPatients();
         } catch (DAOException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
         List<VisitDTO> visitDTOList = visitsDAO.unsyncedVisits();
         List<EncounterDTO> encounterDTOList = encounterDAO.unsyncedEncounters();
@@ -87,7 +88,7 @@ public class PatientsFrameJson {
                 try {
                     attributeList = patientsDAO.getPatientAttributes(patientDTOList.get(i).getUuid());
                 } catch (DAOException e) {
-                    Crashlytics.getInstance().core.logException(e);
+                    FirebaseCrashlytics.getInstance().recordException(e);
                 }
 
 

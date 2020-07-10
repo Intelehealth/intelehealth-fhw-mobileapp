@@ -63,8 +63,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -342,7 +343,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 try {
                     doWebViewPrint();
                 } catch (ParseException e) {
-                    Crashlytics.getInstance().core.logException(e);
+                    FirebaseCrashlytics.getInstance().recordException(e);
                 }
                 return true;
             }
@@ -445,7 +446,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
 
         } catch (JSONException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
 
         setTitle(getString(R.string.title_activity_patient_summary));
@@ -503,7 +504,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         try {
             emergencyUuid = encounterDAO.getEmergencyEncounters(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
         } catch (DAOException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
 
         if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) {
@@ -582,7 +583,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     EncounterDAO encounterDAO = new EncounterDAO();
                     encounterDAO.setEmergency(visitUuid, isChecked);
                 } catch (DAOException e) {
-                    Crashlytics.getInstance().core.logException(e);
+                    FirebaseCrashlytics.getInstance().recordException(e);
                 }
             }
         });
@@ -596,7 +597,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         EncounterDAO encounterDAO = new EncounterDAO();
                         encounterDAO.setEmergency(visitUuid, true);
                     } catch (DAOException e) {
-                        Crashlytics.getInstance().core.logException(e);
+                        FirebaseCrashlytics.getInstance().recordException(e);
                     }
                 }
                 if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
@@ -730,7 +731,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 }
             }
         } catch (JSONException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
         spO2View = findViewById(R.id.textView_pulseox_value);
         respiratory = findViewById(R.id.textView_respiratory_value);
@@ -962,7 +963,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 }
                                 imagesDAO.deleteConceptImages(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
                             } catch (DAOException e1) {
-                                Crashlytics.getInstance().core.logException(e1);
+                                FirebaseCrashlytics.getInstance().recordException(e1);
                             }
                         }
 
@@ -1068,7 +1069,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 }
                                 imagesDAO.deleteConceptImages(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_PE);
                             } catch (DAOException e1) {
-                                Crashlytics.getInstance().core.logException(e1);
+                                FirebaseCrashlytics.getInstance().recordException(e1);
                             }
                         }
                         Intent intent1 = new Intent(VisitSummaryActivity.this, PhysicalExamActivity.class);
@@ -1384,7 +1385,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             mPhysicalExamsRecyclerView.setLayoutManager(mPhysicalExamsLayoutManager);
             mPhysicalExamsRecyclerView.setAdapter(horizontalAdapter);
         } catch (DAOException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         } catch (Exception file) {
             Logger.logD(TAG, file.getMessage());
         }
@@ -1513,7 +1514,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 }
             }
         } catch (Exception e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
         mresp = resp.getValue();
         mSPO2 = "SpO2(%): " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
@@ -1880,7 +1881,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 try {
                     name = patientsDAO.getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
                 } catch (DAOException e) {
-                    Crashlytics.getInstance().core.logException(e);
+                    FirebaseCrashlytics.getInstance().recordException(e);
                 }
 
                 if (name.equalsIgnoreCase("caste")) {
@@ -1961,7 +1962,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     visitCursor.close();
                 }
             } catch (SQLException e) {
-                Crashlytics.getInstance().core.logException(e);
+                FirebaseCrashlytics.getInstance().recordException(e);
             }
         }
 //adult intails display code
@@ -1980,7 +1981,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 encountercursor.close();
             }
         } catch (SQLException sql) {
-            Crashlytics.getInstance().core.logException(sql);
+            FirebaseCrashlytics.getInstance().recordException(sql);
         }
 
         downloadPrescriptionDefault();
@@ -2230,7 +2231,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 
         } catch (DAOException dao) {
-            Crashlytics.getInstance().core.logException(dao);
+            FirebaseCrashlytics.getInstance().recordException(dao);
         }
 
         EncounterDAO encounterDAO = new EncounterDAO();
@@ -2238,7 +2239,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             encounterDAO.updateEncounterSync("false", encounterUuidAdultIntial);
             encounterDAO.updateEncounterModifiedDate(encounterUuidAdultIntial);
         } catch (DAOException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
 
@@ -2280,7 +2281,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             mAdditionalDocsRecyclerView.setLayoutManager(mAdditionalDocsLayoutManager);
             mAdditionalDocsRecyclerView.setAdapter(horizontalAdapter);
         } catch (DAOException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         } catch (Exception file) {
             Logger.logD(TAG, file.getMessage());
         }
@@ -2485,7 +2486,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     try {
                         downloaded = visitsDAO.isUpdatedDownloadColumn(visitUuid, true);
                     } catch (DAOException e) {
-                        Crashlytics.getInstance().core.logException(e);
+                        FirebaseCrashlytics.getInstance().recordException(e);
                     }
                 }
                 downloadDoctorDetails();

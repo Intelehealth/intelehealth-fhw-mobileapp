@@ -29,8 +29,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -363,7 +364,7 @@ public class LoginActivity extends AppCompatActivity {
                                         //hash_email = StringEncryption.convertToSHA256(random_salt + mEmail);
                                         hash_password = StringEncryption.convertToSHA256(random_salt + mPassword);
                                     } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-                                        Crashlytics.getInstance().core.logException(e);
+                                        FirebaseCrashlytics.getInstance().recordException(e);
                                     }
 
                                     try {

@@ -3,7 +3,8 @@ package app.intelehealth.client.utilities;
 import android.content.Context;
 import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
@@ -168,7 +169,7 @@ public class DateAndTimeUtils {
             Date date = originalFormat.parse(dateString);
             formattedDate = targetFormat.format(date);
         } catch (Exception ex) {
-            Crashlytics.getInstance().core.logException(ex);
+            FirebaseCrashlytics.getInstance().recordException(ex);
         }
         return formattedDate;
     }
@@ -181,7 +182,7 @@ public class DateAndTimeUtils {
             Date date = originalFormat.parse(dateString);
             formattedDate = targetFormat.format(date);
         } catch (Exception ex) {
-            Crashlytics.getInstance().core.logException(ex);
+            FirebaseCrashlytics.getInstance().recordException(ex);
         }
         return formattedDate;
     }
@@ -213,7 +214,7 @@ public class DateAndTimeUtils {
             sdf1 = new SimpleDateFormat(anotherFormat, Locale.ENGLISH);
             result = sdf1.format(sdf.parse(date));
         } catch (Exception e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             return "";
         } finally {
             sdf = null;

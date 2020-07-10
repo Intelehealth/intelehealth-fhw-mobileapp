@@ -6,7 +6,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.crashlytics.android.Crashlytics;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -237,7 +238,7 @@ public class PatientsDAO {
             cursor.close();
             db.setTransactionSuccessful();
         } catch (SQLException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             throw new DAOException(e.getMessage());
         } finally {
             db.endTransaction();
@@ -263,7 +264,7 @@ public class PatientsDAO {
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             isInserted = false;
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -291,7 +292,7 @@ public class PatientsDAO {
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             isInserted = false;
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -331,7 +332,7 @@ public class PatientsDAO {
             db.setTransactionSuccessful();
         } catch (SQLException sql) {
             Logger.logD("patient", "patient" + sql.getMessage());
-            Crashlytics.getInstance().core.logException(sql);
+            FirebaseCrashlytics.getInstance().recordException(sql);
             throw new DAOException(sql.getMessage());
         } finally {
             db.endTransaction();
@@ -373,7 +374,7 @@ public class PatientsDAO {
             idCursor.close();
             db.setTransactionSuccessful();
         } catch (SQLException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             throw new DAOException(e);
         } finally {
             db.endTransaction();
@@ -401,7 +402,7 @@ public class PatientsDAO {
         } catch (SQLException sql) {
             Logger.logD("patient", "patient" + sql.getMessage());
             isUpdated = false;
-            Crashlytics.getInstance().core.logException(sql);
+            FirebaseCrashlytics.getInstance().recordException(sql);
             throw new DAOException(sql.getMessage());
         } finally {
             db.endTransaction();
@@ -425,7 +426,7 @@ public class PatientsDAO {
             cursor.close();
             db.setTransactionSuccessful();
         } catch (SQLException s) {
-            Crashlytics.getInstance().core.logException(s);
+            FirebaseCrashlytics.getInstance().recordException(s);
             throw new DAOException(s);
         } finally {
             db.endTransaction();

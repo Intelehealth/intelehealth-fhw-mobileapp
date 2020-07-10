@@ -6,7 +6,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -123,7 +124,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
                 try {
                     Thread.sleep(5000);
                 } catch (InterruptedException e) {
-                    Crashlytics.getInstance().core.logException(e);
+                    FirebaseCrashlytics.getInstance().recordException(e);
                 }
                 String content = downloadMindMap(licenseKey, mm);
                 mm.setContent(content);
@@ -154,7 +155,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
                 try {
                     copyFile(physExam, physicalExam);
                 } catch (IOException e) {
-                    Crashlytics.getInstance().core.logException(e);
+                    FirebaseCrashlytics.getInstance().recordException(e);
                 }
                 physExam.delete();
             }
@@ -166,7 +167,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
                 try {
                     copyFile(famHist, familyHistory);
                 } catch (IOException e) {
-                    Crashlytics.getInstance().core.logException(e);
+                    FirebaseCrashlytics.getInstance().recordException(e);
                 }
                 famHist.delete();
             }
@@ -178,7 +179,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
                 try {
                     copyFile(patHist, pastMedicalHistory);
                 } catch (IOException e) {
-                    Crashlytics.getInstance().core.logException(e);
+                    FirebaseCrashlytics.getInstance().recordException(e);
                 }
                 patHist.delete();
             }
@@ -190,7 +191,7 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
                 try {
                     copyFile(configfile, config);
                 } catch (IOException e) {
-                    Crashlytics.getInstance().core.logException(e);
+                    FirebaseCrashlytics.getInstance().recordException(e);
                 }
                 configfile.delete();
             }

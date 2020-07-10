@@ -7,6 +7,8 @@ import android.os.Bundle;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -32,7 +34,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -106,7 +108,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         try {
             encounterDAO.createEncountersToDB(encounterDTO);
         } catch (DAOException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
 
         setTitle(patientName + ": " + getTitle());
@@ -156,7 +158,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 try {
                     currentFile = new JSONObject(FileUtils.readFile(file.getName(), this));
                 } catch (JSONException e) {
-                    Crashlytics.getInstance().core.logException(e);
+                    FirebaseCrashlytics.getInstance().recordException(e);
                 }
                 if (currentFile != null) {
                     Log.i(TAG, currentFile.toString());
@@ -169,7 +171,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             try {
                 fileNames = getApplicationContext().getAssets().list("engines");
             } catch (IOException e) {
-                Crashlytics.getInstance().core.logException(e);
+                FirebaseCrashlytics.getInstance().recordException(e);
             }
             if (fileNames != null) {
                 for (String name : fileNames) {

@@ -3,7 +3,9 @@ package app.intelehealth.client.services.firebase_services;
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.FirebaseInstanceIdService;
+import com.google.firebase.iid.InstanceIdResult;
+
+import androidx.annotation.NonNull;
 
 
 /**
@@ -11,23 +13,24 @@ import com.google.firebase.iid.FirebaseInstanceIdService;
  * Github : @dbarretto
  */
 
-public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
+public class MyFirebaseInstanceIdService implements InstanceIdResult {
 
     private static final String TAG = MyFirebaseInstanceIdService.class.getSimpleName();
 
+    @NonNull
     @Override
-    public void onTokenRefresh() {
+    public String getId() {
+        return null;
+    }
 
+    @NonNull
+    @Override
+    public String getToken() {
         //Getting registration token
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
 
         //Displaying token on logcat
         Log.d(TAG, "Refreshed token: " + refreshedToken);
+        return null;
     }
-
-    private void sendRegistrationToServer(String token) {
-        //TODO: Implement this method to store the token on your server
-
-    }
-
 }

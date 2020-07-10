@@ -4,7 +4,8 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,7 +43,7 @@ public class FileUtils {
             return s;
 
         } catch (Exception e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             return null;
         }
 
@@ -69,7 +70,7 @@ public class FileUtils {
             return s;
 
         } catch (Exception e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             return null;
         }
 
@@ -86,13 +87,13 @@ public class FileUtils {
             is.close();
             raw_json = new String(buffer, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
         try {
             encoded = new JSONObject(raw_json);
         } catch (JSONException e) {
             Toast.makeText(context, "config file is missing", Toast.LENGTH_SHORT).show();
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
 
         return encoded;

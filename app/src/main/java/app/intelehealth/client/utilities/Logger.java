@@ -2,7 +2,8 @@ package app.intelehealth.client.utilities;
 
 import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
 
 /**
  * Updated by mahiti on 24/02/16.
@@ -24,7 +25,7 @@ public class Logger {
      */
     public static void logE(String tag, String desc, Exception e) {
         Log.e(tag, desc, e);
-        Crashlytics.getInstance().core.logException(e);
+        FirebaseCrashlytics.getInstance().recordException(e);
     }
 
     /**

@@ -17,15 +17,14 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.core.CrashlyticsCore;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.parse.Parse;
 
 import app.intelehealth.client.BuildConfig;
 import app.intelehealth.client.R;
 import app.intelehealth.client.database.InteleHealthDatabaseHelper;
 import app.intelehealth.client.utilities.SessionManager;
-import io.fabric.sdk.android.Fabric;
+
 
 import io.reactivex.plugins.RxJavaPlugins;
 import okhttp3.Dispatcher;
@@ -65,7 +64,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
         configureCrashReporting();
 
         RxJavaPlugins.setErrorHandler(throwable -> {
-            Crashlytics.getInstance().core.logException(throwable);
+            FirebaseCrashlytics.getInstance().recordException(throwable);
         });
         androidId = String
                 .format("%16s", Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID))
@@ -97,10 +96,13 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
     }
 
     private void configureCrashReporting() {
-        CrashlyticsCore crashlyticsCore = new CrashlyticsCore.Builder()
-                //.disabled(BuildConfig.DEBUG) // comment by Venu as per intelesafe
-                .build();
-        Fabric.with(this, new Crashlytics.Builder().core(crashlyticsCore).build());
+//        CrashlyticsCore crashlyticsCore = new CrashlyticsCore.Builder()
+//                //.disabled(BuildConfig.DEBUG) // comment by Venu as per intelesafe
+//                .build();
+//        Fabric.with(this, new Crashlytics.Builder().core(crashlyticsCore).build());
+
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(false);
+
     }
 
     @Override

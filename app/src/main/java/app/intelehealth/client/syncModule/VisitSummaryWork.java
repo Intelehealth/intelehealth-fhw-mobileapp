@@ -3,12 +3,14 @@ package app.intelehealth.client.syncModule;
 import android.content.Context;
 import android.content.Intent;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
 import androidx.annotation.NonNull;
 import androidx.work.ListenableWorker;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import com.crashlytics.android.Crashlytics;
+
 
 import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.utilities.Logger;
@@ -32,7 +34,7 @@ public class VisitSummaryWork extends Worker {
         try {
             Thread.sleep(3000);
         } catch (Exception e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             Logger.logE(TAG, "Exception in doWork method", e);
         }
         Logger.logD(TAG, "doWork");

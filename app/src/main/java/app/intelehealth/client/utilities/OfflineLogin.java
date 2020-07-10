@@ -9,7 +9,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -72,7 +73,7 @@ public class OfflineLogin {
         try {
             hash = StringEncryption.convertToSHA256(random_salt + password);
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
         SharedPreferences.Editor editor = mSharedPreference.edit();
 
@@ -118,7 +119,7 @@ public class OfflineLogin {
                     try {
                         hash = StringEncryption.convertToSHA256(stored_salt + password);
                     } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-                        Crashlytics.getInstance().core.logException(e);
+                        FirebaseCrashlytics.getInstance().recordException(e);
                     }
                     Log.i(TAG, "Hashed Password : " + hash);
                     if (hash != null && stored_password.equals(hash) && stored_username.equals(username)) {
@@ -182,7 +183,7 @@ public class OfflineLogin {
 
 
             } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-                Crashlytics.getInstance().core.logException(e);
+                FirebaseCrashlytics.getInstance().recordException(e);
             }
             Log.d("HASH","HASH: "+hash_de_password);
         }

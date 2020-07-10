@@ -497,7 +497,8 @@
     <string name="please_connect_to_internet">Please connect to an internet connection!</string>
     <string name="image_upload">ImageUpload</string>
     <string name="image_upload_failed">ImageUpload failed</string>
-    <string name="sure_to_exit">Are you sure you want to EXIT ?</string>
+    <string name="sure_to_exit">Are you sure you want to EXIT?</string>
+    <string name="sure_to_logout">Are you sure you want to Logout?</string>
     <string name="lastsync_normal">Last sync</string>
     <string name="update_patient_identification">Update Patient</string>
     <string name="are_you_want_go_back">Are you sure you want to go back ?</string>

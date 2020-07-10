@@ -23,8 +23,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.android.cameraview.CameraView;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -144,7 +144,7 @@ public class CameraActivity extends AppCompatActivity {
                             try {
                                 os.close();
                             } catch (IOException e) {
-                                Crashlytics.getInstance().core.logException(e);
+                                FirebaseCrashlytics.getInstance().recordException(e);
                             }
                         }
                     }

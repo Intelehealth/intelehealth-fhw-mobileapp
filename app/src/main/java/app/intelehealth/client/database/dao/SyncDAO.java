@@ -7,7 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import java.text.ParsePosition;
@@ -72,7 +73,7 @@ public class SyncDAO {
             sessionManager.setPullExcutedTime(sessionManager.isPulled());
             sessionManager.setFirstTimeSyncExecute(false);
         } catch (Exception e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             Logger.logE(TAG, "Exception", e);
             throw new DAOException(e.getMessage(), e);
         }
@@ -108,7 +109,7 @@ public class SyncDAO {
                     try {
                         sync = SyncData(response.body());
                     } catch (DAOException e) {
-                        Crashlytics.getInstance().core.logException(e);
+                        FirebaseCrashlytics.getInstance().recordException(e);
                     }
                     if (sync) {
                         sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime());
@@ -198,7 +199,7 @@ public class SyncDAO {
                     try {
                         sync = SyncData(response.body());
                     } catch (DAOException e) {
-                        Crashlytics.getInstance().core.logException(e);
+                        FirebaseCrashlytics.getInstance().recordException(e);
                     }
                     if (sync) {
                         sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime());
@@ -360,7 +361,7 @@ public class SyncDAO {
                                     patientsDAO.updateOpemmrsId(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId(), pushResponseApiCall.getData().getPatientlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
                                     Log.d("SYNC", "ProvUUDI" + pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
                                 } catch (DAOException e) {
-                                    Crashlytics.getInstance().core.logException(e);
+                                    FirebaseCrashlytics.getInstance().recordException(e);
                                 }
                             }
 
@@ -368,7 +369,7 @@ public class SyncDAO {
                                 try {
                                     visitsDAO.updateVisitSync(pushResponseApiCall.getData().getVisitlist().get(i).getUuid(), pushResponseApiCall.getData().getVisitlist().get(i).getSyncd().toString());
                                 } catch (DAOException e) {
-                                    Crashlytics.getInstance().core.logException(e);
+                                    FirebaseCrashlytics.getInstance().recordException(e);
                                 }
                             }
 
@@ -377,7 +378,7 @@ public class SyncDAO {
                                     encounterDAO.updateEncounterSync(pushResponseApiCall.getData().getEncounterlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getEncounterlist().get(i).getUuid());
                                     Log.d("SYNC", "Encounter Data: " + pushResponseApiCall.getData().getEncounterlist().get(i).toString());
                                 } catch (DAOException e) {
-                                    Crashlytics.getInstance().core.logException(e);
+                                    FirebaseCrashlytics.getInstance().recordException(e);
                                 }
                             }
                             isSucess[0] = true;

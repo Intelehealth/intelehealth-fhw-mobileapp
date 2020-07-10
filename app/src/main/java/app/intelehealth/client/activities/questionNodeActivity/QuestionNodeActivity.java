@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,7 +29,7 @@ import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 
-import com.crashlytics.android.Crashlytics;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -137,7 +138,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 try {
                     currentFile = new JSONObject(FileUtils.readFile(complaints.get(i) + ".json", this));
                 } catch (JSONException e) {
-                    Crashlytics.getInstance().core.logException(e);
+                    FirebaseCrashlytics.getInstance().recordException(e);
                 }
             } else {
                 String fileLocation = "engines/" + complaints.get(i) + ".json";
@@ -412,7 +413,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         try {
             isInserted = obsDAO.insertObs(obsDTO);
         } catch (DAOException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
 
 
@@ -427,7 +428,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         try {
             imagesDAO.insertObsImageDatabase(imageName, encounterAdultIntials, "");
         } catch (DAOException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
 
@@ -446,7 +447,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             obsDAO.updateObs(obsDTO);
 
         } catch (DAOException dao) {
-            Crashlytics.getInstance().core.logException(dao);
+            FirebaseCrashlytics.getInstance().recordException(dao);
         }
 
         EncounterDAO encounterDAO = new EncounterDAO();
@@ -454,7 +455,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             encounterDAO.updateEncounterSync("false", encounterAdultIntials);
             encounterDAO.updateEncounterModifiedDate(encounterAdultIntials);
         } catch (DAOException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
 
     }

@@ -13,7 +13,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -177,7 +178,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         try {
             encounterDAO.createEncountersToDB(encounterDTO);
         } catch (DAOException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
 
         ObsDAO obsDAO = new ObsDAO();
@@ -198,7 +199,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         try {
             obsDAO.insertObsToDb(obsDTOList);
         } catch (DAOException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
 
 //      AppConstants.notificationUtils.DownloadDone("Upload survey", "Survey uploaded", 3, PatientSurveyActivity.this);
@@ -219,7 +220,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         try {
             visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
         } catch (DAOException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
 
         //SyncDAO syncDAO = new SyncDAO();

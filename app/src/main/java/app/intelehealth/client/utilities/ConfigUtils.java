@@ -3,7 +3,8 @@ package app.intelehealth.client.utilities;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,7 +49,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("mHeight");
         } catch (JSONException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
         return view;
     }
@@ -60,7 +61,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("mWeight");
         } catch (JSONException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
         return view;
     }
@@ -73,7 +74,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("mTemperature");
         } catch (JSONException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
         return view;
     }
@@ -85,7 +86,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("mCelsius");
         } catch (JSONException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
         return view;
     }
@@ -98,7 +99,7 @@ public class ConfigUtils {
             view = object.getBoolean("mFahrenheit");
             Logger.logD(TAG, String.valueOf(view));
         } catch (JSONException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
         return view;
     }
@@ -110,7 +111,7 @@ public class ConfigUtils {
         try {
             view = object.getBoolean("privacyNotice");
         } catch (JSONException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
         return view;
     }

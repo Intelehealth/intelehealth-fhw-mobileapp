@@ -29,8 +29,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.crashlytics.android.Crashlytics;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -215,7 +216,7 @@ public class Node implements Serializable {
             this.hasPopUp = !pop_up.isEmpty();
 
         } catch (JSONException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
 
@@ -1406,7 +1407,7 @@ public class Node implements Serializable {
                 createdOptions.add(i, new Node(current));
             }
         } catch (JSONException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
 
         return createdOptions;

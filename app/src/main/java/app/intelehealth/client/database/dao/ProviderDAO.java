@@ -5,7 +5,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.crashlytics.android.Crashlytics;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +77,7 @@ public class ProviderDAO {
             cursor.close();
             db.setTransactionSuccessful();
         } catch (SQLException s) {
-            Crashlytics.getInstance().core.logException(s);
+            FirebaseCrashlytics.getInstance().recordException(s);
             throw new DAOException(s);
         } finally {
             db.endTransaction();
@@ -102,7 +103,7 @@ public class ProviderDAO {
             cursor.close();
             db.setTransactionSuccessful();
         } catch (SQLException s) {
-            Crashlytics.getInstance().core.logException(s);
+            FirebaseCrashlytics.getInstance().recordException(s);
             throw new DAOException(s);
         } finally {
             db.endTransaction();

@@ -21,8 +21,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
 
-import com.crashlytics.android.Crashlytics;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -392,7 +393,7 @@ public class TodayPatientActivity extends AppCompatActivity {
                 }
             }
         } catch (SQLException s) {
-            Crashlytics.getInstance().core.logException(s);
+            FirebaseCrashlytics.getInstance().recordException(s);
         }
         idCursor.close();
 

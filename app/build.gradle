@@ -6,9 +6,9 @@ android {
         applicationId "app.intelehealth.client"
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 42
+        versionCode 43
         buildToolsVersion('29.0.2')
-        versionName "2.1.1"
+        versionName "2.1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
@@ -23,6 +23,8 @@ android {
         release {
             lintOptions {
                 disable 'MissingTranslation'
+                checkReleaseBuilds false
+                abortOnError false
             }
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -60,17 +62,11 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
-    //Permission libraby
+    //Permission library
     implementation 'gun0912.ted:tedpermission:2.2.2'
-    //logging and interceptor
-//  implementation "com.squareup.okhttp3:logging-interceptor:3.14.1"
 
     implementation "com.squareup.okhttp3:logging-interceptor:3.8.0"
 
-    //debug bridge
-//    debugImplementation 'com.amitshekhar.android:debug-db:1.0.4'
-    //image loaders
-//    implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.github.bumptech.glide:glide:3.8.0'
     //Uncomment below line to enable multidex support for Kitkat
     implementation 'androidx.multidex:multidex:2.0.0'
@@ -78,9 +74,6 @@ dependencies {
     implementation 'com.github.google:cameraview:9bbe07ba44'
     //Google Guava
     implementation 'com.google.guava:guava:27.1-jre'
-    //Storage librabry
-    //    implementation 'com.snatik:storage:2.1.0'
-    //    dexter permission
     //Parse SDK
     implementation 'com.parse:parse-android:1.15.7'
     //date and time
@@ -98,16 +91,15 @@ dependencies {
     implementation 'com.github.hotchemi:permissionsdispatcher:2.3.2'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.2'
 
-    implementation "com.crashlytics.sdk.android:crashlytics:2.9.9"
-    implementation "com.google.firebase:firebase-core:16.0.7"
-    implementation "com.google.firebase:firebase-messaging:17.3.4"
+//    implementation "com.crashlytics.sdk.android:crashlytics:2.9.9"
+    implementation 'com.google.firebase:firebase-crashlytics:17.1.0'
+    implementation 'com.google.firebase:firebase-analytics:17.4.3'
+    implementation "com.google.firebase:firebase-core:17.4.3"
+    implementation "com.google.firebase:firebase-messaging:20.2.1"
     implementation 'com.google.firebase:firebase-crash:16.2.1'
 
-
     api 'com.google.android.material:material:1.1.0'
-//    implementation('com.github.SandroMachado:restaurant:0.2.0@aar') {
-//        transitive = true
-//    }
+
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin
 

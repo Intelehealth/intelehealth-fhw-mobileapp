@@ -38,7 +38,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
@@ -205,7 +206,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 try {
                     encounterDAO.createEncountersToDB(encounterDTO);
                 } catch (DAOException e) {
-                    Crashlytics.getInstance().core.logException(e);
+                    FirebaseCrashlytics.getInstance().recordException(e);
                 }
 
                 InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity.this);
@@ -270,7 +271,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 try {
                     visitsDAO.insertPatientToDB(visitDTO);
                 } catch (DAOException e) {
-                    Crashlytics.getInstance().core.logException(e);
+                    FirebaseCrashlytics.getInstance().recordException(e);
                 }
 
                 // visitUuid = String.valueOf(visitLong);
@@ -339,7 +340,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 try {
                     name = patientsDAO.getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
                 } catch (DAOException e) {
-                    Crashlytics.getInstance().core.logException(e);
+                    FirebaseCrashlytics.getInstance().recordException(e);
                 }
 
                 if (name.equalsIgnoreCase("caste")) {
@@ -424,7 +425,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
 
         } catch (JSONException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
 //            Issue #627
 //            added the catch exception to check the config and throwing back to setup activity
             Toast.makeText(getApplicationContext(), "JsonException" + e, Toast.LENGTH_LONG).show();
@@ -443,7 +444,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         try {
             profileImage = imagesDAO.getPatientProfileChangeTime(patientUuid);
         } catch (DAOException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
         if (patient_new.getPatient_photo() == null || patient_new.getPatient_photo().equalsIgnoreCase("")) {
             if (NetworkConnection.isOnline(getApplication())) {
@@ -610,7 +611,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                         try {
                             updated = patientsDAO.updatePatientPhoto(patientUuid, AppConstants.IMAGE_PATH + patientUuid + ".jpg");
                         } catch (DAOException e) {
-                            Crashlytics.getInstance().core.logException(e);
+                            FirebaseCrashlytics.getInstance().recordException(e);
                         }
                         if (updated) {
                             Glide.with(PatientDetailActivity.this)
@@ -626,7 +627,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                         try {
                             isImageDownloaded = imagesDAO.insertPatientProfileImages(AppConstants.IMAGE_PATH + patientUuid + ".jpg", patientUuid);
                         } catch (DAOException e) {
-                            Crashlytics.getInstance().core.logException(e);
+                            FirebaseCrashlytics.getInstance().recordException(e);
                         }
 //                        if (isImageDownloaded)
 //                            AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_image_download_notifi), "" + patient_new.getFirst_name() + "" + patient_new.getLast_name() + "'s Image Download Incomplete.", 4, getApplication());
@@ -803,7 +804,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 idView.setText(patientsDAO.getOpenmrsId(patientUuid));
 
             } catch (DAOException e) {
-                Crashlytics.getInstance().core.logException(e);
+                FirebaseCrashlytics.getInstance().recordException(e);
             }
             setTitle(idView.getText());
         }
@@ -1019,7 +1020,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                                     String visitDate = currentDate.format(formatted);
                                     createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
                                 } catch (ParseException e) {
-                                    Crashlytics.getInstance().core.logException(e);
+                                    FirebaseCrashlytics.getInstance().recordException(e);
                                 }
                             }
                         }
@@ -1032,7 +1033,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                                 String visitDate = currentDate.format(formatted);
                                 createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
                             } catch (ParseException e) {
-                                Crashlytics.getInstance().core.logException(e);
+                                FirebaseCrashlytics.getInstance().recordException(e);
                             }
                         }
                     }
@@ -1045,7 +1046,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                             String visitDate = currentDate.format(formatted);
                             createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
                         } catch (ParseException e) {
-                            Crashlytics.getInstance().core.logException(e);
+                            FirebaseCrashlytics.getInstance().recordException(e);
                         }
                     }
                 } while (visitCursor.moveToPrevious());

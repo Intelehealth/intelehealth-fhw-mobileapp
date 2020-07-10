@@ -6,7 +6,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -222,7 +223,7 @@ public class EncounterDAO {
             // db.setTransactionSuccessful();
         } catch (SQLException sql) {
             Logger.logD("encounter", "encounter" + sql.getMessage());
-            Crashlytics.getInstance().core.logException(sql);
+            FirebaseCrashlytics.getInstance().recordException(sql);
             throw new DAOException(sql.getMessage());
         } finally {
             //   db.endTransaction();
@@ -269,7 +270,7 @@ public class EncounterDAO {
             idCursor.close();
             db.setTransactionSuccessful();
         } catch (SQLException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             throw new DAOException(e);
         } finally {
             db.endTransaction();

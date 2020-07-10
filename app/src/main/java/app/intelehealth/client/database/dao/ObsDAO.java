@@ -6,7 +6,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
-import com.crashlytics.android.Crashlytics;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,7 +143,7 @@ public class ObsDAO {
             try {
                 insertObs(obsDTO);
             } catch (DAOException e) {
-                Crashlytics.getInstance().core.logException(e);
+                FirebaseCrashlytics.getInstance().recordException(e);
             }
         }
 
@@ -173,7 +174,7 @@ public class ObsDAO {
             Logger.logD("updated", "updatedrecords count" + insertedCount);
         } catch (SQLException e) {
             isUpdated = false;
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
             throw new DAOException(e);
         } finally {
             db.endTransaction();
@@ -232,7 +233,7 @@ public class ObsDAO {
 
             }
         } catch (SQLException sql) {
-            Crashlytics.getInstance().core.logException(sql);
+            FirebaseCrashlytics.getInstance().recordException(sql);
             throw new DAOException(sql);
         } finally {
             obsCursoursor.close();

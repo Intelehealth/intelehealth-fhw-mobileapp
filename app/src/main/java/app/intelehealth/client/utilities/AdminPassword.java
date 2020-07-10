@@ -5,7 +5,8 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
+
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -43,7 +44,7 @@ public class AdminPassword {
         try {
             hash = StringEncryption.convertToSHA256(random_salt + password);
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-            Crashlytics.getInstance().core.logException(e);
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
         SharedPreferences.Editor editor = mSharedPreference.edit();
 
@@ -70,7 +71,7 @@ public class AdminPassword {
                 try {
                     hash = StringEncryption.convertToSHA256(stored_salt + password);
                 } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-                    Crashlytics.getInstance().core.logException(e);
+                    FirebaseCrashlytics.getInstance().recordException(e);
                 }
 
                 if (hash != null && stored_password.equals(hash)) {
