@@ -26,7 +26,9 @@ import app.intelehealth.client.activities.physcialExamActivity.PhysicalExamActiv
 import app.intelehealth.client.activities.questionNodeActivity.QuestionsAdapter;
 import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.knowledgeEngine.Node;
-
+/**
+ * Created by Shubham mittal
+ */
 public class AssociatedSysAdapter extends RecyclerView.Adapter<AssociatedSysAdapter.ItemViewHolder> {
 
 

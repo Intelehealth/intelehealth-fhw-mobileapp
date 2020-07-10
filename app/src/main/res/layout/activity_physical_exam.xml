@@ -54,7 +54,6 @@
             android:layout_gravity="center"
             app:spi_visibleDotCount="21"
             app:spi_dotSelectedColor="@color/colorPrimary"
-
             android:layout_centerHorizontal="true"
 
             app:layout_constraintTop_toBottomOf="@+id/recyclerView">
