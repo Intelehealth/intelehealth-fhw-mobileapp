@@ -16,6 +16,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -329,85 +330,90 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             itemViewHolder.mChip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (groupNode.getText().equalsIgnoreCase("Associated symptoms")) {
-                        MaterialAlertDialogBuilder confirmDialog = new MaterialAlertDialogBuilder(context);
-                        confirmDialog.setTitle(R.string.have_symptom);
-                        confirmDialog.setCancelable(false);
-                        LayoutInflater layoutInflater = LayoutInflater.from(context);
-                        View convertView = layoutInflater.inflate(R.layout.list_expandable_item_radio, null);
-                        confirmDialog.setView(convertView);
-                        RadioButton radio_yes = convertView.findViewById(R.id.radio_yes);
-                        RadioButton radio_no = convertView.findViewById(R.id.radio_no);
-                        confirmDialog.setPositiveButton(context.getString(R.string.ok), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                        AlertDialog alertDialog = confirmDialog.create();
-                        radio_yes.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                thisNode.setNoSelected(false);
-                                List<Node> childNode = mGroupNode.getOptionsList().get(mGroupPos).getOptionsList();
-                                int indexOfCheckedNode = childNode.indexOf(thisNode);
-                                _mListener.onChildListClickEvent(mGroupPos, indexOfCheckedNode, physExamNodePos);
-                                notifyDataSetChanged();
-                                if (alertDialog != null) {
-                                    alertDialog.dismiss();
+                    if (groupNode.getText() != null) { //null checking to avoid weird crashes.
+                        if (groupNode.getText().equalsIgnoreCase("Associated symptoms")) {
+                            MaterialAlertDialogBuilder confirmDialog = new MaterialAlertDialogBuilder(context);
+                            confirmDialog.setTitle(R.string.have_symptom);
+                            confirmDialog.setCancelable(false);
+                            LayoutInflater layoutInflater = LayoutInflater.from(context);
+                            View convertView = layoutInflater.inflate(R.layout.list_expandable_item_radio, null);
+                            confirmDialog.setView(convertView);
+                            RadioButton radio_yes = convertView.findViewById(R.id.radio_yes);
+                            RadioButton radio_no = convertView.findViewById(R.id.radio_no);
+                            confirmDialog.setPositiveButton(context.getString(R.string.ok), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
                                 }
+                            });
+                            AlertDialog alertDialog = confirmDialog.create();
+                            radio_yes.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    thisNode.setNoSelected(false);
+                                    List<Node> childNode = mGroupNode.getOptionsList().get(mGroupPos).getOptionsList();
+                                    int indexOfCheckedNode = childNode.indexOf(thisNode);
+                                    _mListener.onChildListClickEvent(mGroupPos, indexOfCheckedNode, physExamNodePos);
+                                    notifyDataSetChanged();
+                                    if (alertDialog != null) {
+                                        alertDialog.dismiss();
+                                    }
 
-                            }
-                        });
-
-                        radio_no.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                thisNode.setNoSelected(true);
-                                thisNode.setUnselected();
-                                notifyDataSetChanged();
-                                if (alertDialog != null) {
-                                    alertDialog.dismiss();
                                 }
-                            }
-                        });
+                            });
 
-                        switch (_mCallingClass) {
-
-                            case "ComplaintNodeActivity":
-                                if (thisNode.isSelected()) {
-                                    radio_yes.setChecked(true);
-                                } else {
-                                    radio_no.setChecked(true);
-                                }
-                                break;
-                            default:
-                                if (thisNode.isSelected()) {
-                                    radio_yes.setChecked(true);
-                                } else {
-                                    if (thisNode.isNoSelected()) {
-                                        radio_no.setChecked(true);
-                                    } else {
-                                        radio_no.setChecked(false);
+                            radio_no.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    thisNode.setNoSelected(true);
+                                    thisNode.setUnselected();
+                                    notifyDataSetChanged();
+                                    if (alertDialog != null) {
+                                        alertDialog.dismiss();
                                     }
                                 }
-                                break;
-                        }
+                            });
 
-                        alertDialog.show();
-                        IntelehealthApplication.setAlertDialogCustomTheme(context, alertDialog);
+                            switch (_mCallingClass) {
 
-                    } else {
-                        //thisNode.toggleSelected();
-                        int indexOfCheckedNode;
-                        if (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())) {
-                            indexOfCheckedNode = position;
+                                case "ComplaintNodeActivity":
+                                    if (thisNode.isSelected()) {
+                                        radio_yes.setChecked(true);
+                                    } else {
+                                        radio_no.setChecked(true);
+                                    }
+                                    break;
+                                default:
+                                    if (thisNode.isSelected()) {
+                                        radio_yes.setChecked(true);
+                                    } else {
+                                        if (thisNode.isNoSelected()) {
+                                            radio_no.setChecked(true);
+                                        } else {
+                                            radio_no.setChecked(false);
+                                        }
+                                    }
+                                    break;
+                            }
+
+                            alertDialog.show();
+                            IntelehealthApplication.setAlertDialogCustomTheme(context, alertDialog);
+
                         } else {
-                            List<Node> childNode = mGroupNode.getOptionsList().get(mGroupPos).getOptionsList();
-                            indexOfCheckedNode = childNode.indexOf(thisNode);
+                            //thisNode.toggleSelected();
+                            int indexOfCheckedNode;
+                            if (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())) {
+                                indexOfCheckedNode = position;
+                            } else {
+                                List<Node> childNode = mGroupNode.getOptionsList().get(mGroupPos).getOptionsList();
+                                indexOfCheckedNode = childNode.indexOf(thisNode);
+                            }
+                            _mListener.onChildListClickEvent(mGroupPos, indexOfCheckedNode, physExamNodePos);
+                            notifyDataSetChanged();
                         }
-                        _mListener.onChildListClickEvent(mGroupPos, indexOfCheckedNode, physExamNodePos);
-                        notifyDataSetChanged();
+                    }
+                    else {
+                        Toast.makeText(mContext, "Some issue with the mindmaps.", Toast.LENGTH_SHORT).show();
                     }
 
                 }
