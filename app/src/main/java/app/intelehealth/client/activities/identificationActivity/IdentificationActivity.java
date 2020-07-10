@@ -99,6 +99,7 @@ public class IdentificationActivity extends AppCompatActivity {
     private DatePickerDialog mDOBPicker;
     private int mAgeYears = 0;
     private int mAgeMonths = 0;
+    private int mAgeDays = 0;
     private String country1;
     PatientsDAO patientsDAO = new PatientsDAO();
     EditText mFirstName;
@@ -597,6 +598,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
                 mAgeYears = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
                 mAgeMonths = today.get(Calendar.MONTH) - dob.get(Calendar.MONTH);
+                mAgeDays=today.get(Calendar.DATE) - dob.get(Calendar.DATE);
 
 
                 if (mAgeMonths < 0) {
@@ -615,7 +617,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 mDOBDay = dayOfMonth;
 
                 String ageString = mAgeYears + getString(R.string.identification_screen_text_years)
-                        + " - " + mAgeMonths + getString(R.string.identification_screen_text_months);
+                        + " - " + mAgeMonths + getString(R.string.identification_screen_text_months)
+                        + " - " + mAgeDays + getString(R.string.days);
                 mAge.setText(ageString);
             }
         }, mDOBYear, mDOBMonth, mDOBDay);
@@ -647,14 +650,21 @@ public class IdentificationActivity extends AppCompatActivity {
                 mAgePicker.setView(convertView);
                 final NumberPicker yearPicker = convertView.findViewById(R.id.dialog_2_numbers_quantity);
                 final NumberPicker monthPicker = convertView.findViewById(R.id.dialog_2_numbers_unit);
+                final NumberPicker dayPicker = convertView.findViewById(R.id.dialog_3_numbers_unit);
                 final TextView middleText = convertView.findViewById(R.id.dialog_2_numbers_text);
                 final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
+                final TextView dayTv = convertView.findViewById(R.id.dialog_2_numbers_text_3);
+                dayTv.setText(getString(R.string.days));
                 middleText.setText(getString(R.string.identification_screen_picker_years));
                 endText.setText(getString(R.string.identification_screen_picker_months));
+                dayPicker.setMaxValue(31);
+                dayPicker.setMinValue(0);
                 yearPicker.setMinValue(0);
                 yearPicker.setMaxValue(100);
                 monthPicker.setMinValue(0);
                 monthPicker.setMaxValue(12);
+
+
                 if (mAgeYears > 0) {
                     yearPicker.setValue(mAgeYears);
                 }
@@ -667,7 +677,8 @@ public class IdentificationActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         yearPicker.setValue(yearPicker.getValue());
                         monthPicker.setValue(monthPicker.getValue());
-                        String ageString = yearPicker.getValue() + getString(R.string.identification_screen_text_years) + " - " + monthPicker.getValue() + getString(R.string.identification_screen_text_months);
+                        dayPicker.setValue(dayPicker.getValue());
+                        String ageString = yearPicker.getValue() + getString(R.string.identification_screen_text_years) + " - " + monthPicker.getValue() + getString(R.string.identification_screen_text_months) + " - " +  dayPicker.getValue() + getString(R.string.days);
                         mAge.setText(ageString);
 
 
@@ -676,9 +687,10 @@ public class IdentificationActivity extends AppCompatActivity {
                         int birthYear = curYear - yearPicker.getValue();
                         int curMonth = calendar.get(Calendar.MONTH);
                         int birthMonth = curMonth - monthPicker.getValue();
+                        int birthDay=calendar.get(Calendar.DAY_OF_MONTH)-dayPicker.getValue();
                         mDOBYear = birthYear;
                         mDOBMonth = birthMonth;
-                        mDOBDay = 1;
+                        mDOBDay = birthDay;
 
                         Locale.setDefault(Locale.ENGLISH);
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
