@@ -13,6 +13,12 @@
         <item>cb</item>
     </string-array>
 
+    <string-array name="speciality_values">
+        <item>Select Speciality</item>
+        <item>Heart</item>
+        <item>Lungs</item>
+    </string-array>
+
 
     <string-array name="pref_example_list_titles">
         <item>Always</item>
