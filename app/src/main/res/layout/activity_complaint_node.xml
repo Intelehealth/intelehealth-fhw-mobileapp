@@ -86,6 +86,9 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:scrollbars="vertical"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:fadeScrollbars="false"
+        android:scrollbarFadeDuration="0"
         android:scrollbarThumbVertical="@color/colorAccent"
         android:visibility="gone" />
 

@@ -4,25 +4,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="1"
-    android:padding="10dp">
+
+    android:weightSum="1">
 
     <LinearLayout
+        android:id="@+id/LL_body"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.9"
         android:layout_marginTop="5dp"
+        android:layout_weight="0.88"
         android:gravity="top"
-        android:id="@+id/LL_body"
         android:orientation="vertical">
 
         <ImageView
             android:id="@+id/physical_exam_image_view"
             android:layout_width="match_parent"
             android:layout_height="@dimen/physical_exam_img_max_height"
-            android:visibility="gone"
             android:layout_gravity="center_horizontal"
-            android:contentDescription="TODO" />
+            android:contentDescription="TODO"
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -58,18 +58,19 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/physical_node_title" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_chips"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                android:fitsSystemWindows="true"
-                android:nestedScrollingEnabled="true"
-                android:scrollbars="vertical" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_chips"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
 
-
-
-
+            android:scrollbarThumbVertical="@color/colorPrimary"
+            android:fitsSystemWindows="true"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:fadeScrollbars="false"
+            android:scrollbarFadeDuration="0"
+            android:nestedScrollingEnabled="true"
+            android:scrollbars="vertical" />
 
 
         <!--        <app.intelehealth.client.utilities.AutoFitGridRecyclerView-->
@@ -84,52 +85,24 @@
 
 
     </LinearLayout>
-    <LinearLayout
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_gravity="bottom|end"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+
+        android:layout_weight=".12">
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginTop="10dp"
-
-            android:layout_gravity="bottom|end"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+           android:layout_marginEnd="10dp"
             android:visibility="visible"
             app:srcCompat="@drawable/ic_done_24dp" />
 
-    </LinearLayout>
-
-
-
-    <RelativeLayout
-        android:id="@+id/tv_swipe_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/LL_body"
-        android:visibility="gone">
-
-        <TextView
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerInParent="true"
-            android:layout_margin="5dp"
-            android:fontFamily="@font/lato_bold"
-            android:gravity="center|top"
-            android:includeFontPadding="false"
-            android:text="@string/swipe_down_to_return"
-            android:textColor="@color/gray"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:visibility="visible" />
-
     </RelativeLayout>
-
 
 
 </LinearLayout>
