@@ -1449,7 +1449,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 Log.i("Patient WebView", "page finished loading " + url);
-                createWebPrintJob(view);
+                int webview_heightContent = view.getContentHeight();
+                Log.d("variable i", "variable i: "+webview_heightContent);
+                createWebPrintJob(view, webview_heightContent);
                 mWebView = null;
             }
         });
@@ -1754,19 +1756,57 @@ public class VisitSummaryActivity extends AppCompatActivity {
      * This method creates a print job using PrintManager instance and PrintAdapter Instance
      *
      * @param webView object of type WebView.
+     * @param contentHeight
      */
-    private void createWebPrintJob(WebView webView) {
+    private void createWebPrintJob(WebView webView, int contentHeight) {
 
+//       int i =  webView.getContentHeight();
         // Get a PrintManager instance
         PrintManager printManager = (PrintManager) this.getSystemService(Context.PRINT_SERVICE);
 
         // Get a print adapter instance
         PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter();
+        Log.d("webview content height", "webview content height: "+contentHeight);
 
-        // Create a print job with name and adapter instance
-        String jobName = getString(R.string.app_name) + " Visit Summary";
-        PrintJob printJob = printManager.print(jobName, printAdapter,
-                new PrintAttributes.Builder().build());
+        if(contentHeight > 2683 && contentHeight <= 3000)
+        {
+            //medium size prescription...
+            PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
+            pBuilder.setMediaSize(PrintAttributes.MediaSize.ISO_B4);
+            // Create a print job with name and adapter instance
+            String jobName = getString(R.string.app_name) + " Visit Summary";
+            PrintJob printJob = printManager.print(jobName, printAdapter,
+                    pBuilder.build());
+        }
+        else if(contentHeight == 0)
+        {
+            //in case of webview bug of 0 contents...
+            PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
+            pBuilder.setMediaSize(PrintAttributes.MediaSize.JIS_B4);
+            // Create a print job with name and adapter instance
+            String jobName = getString(R.string.app_name) + " Visit Summary";
+            PrintJob printJob = printManager.print(jobName, printAdapter,
+                    pBuilder.build());
+        }
+        else if (contentHeight > 3000)
+        {
+            //large size prescription...
+            PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
+            pBuilder.setMediaSize(PrintAttributes.MediaSize.JIS_B4);
+            // Create a print job with name and adapter instance
+            String jobName = getString(R.string.app_name) + " Visit Summary";
+            PrintJob printJob = printManager.print(jobName, printAdapter,
+                    pBuilder.build());
+        }
+        else
+        {
+            //small size prescription...
+            // Create a print job with name and adapter instance
+            String jobName = getString(R.string.app_name) + " Visit Summary";
+            PrintJob printJob = printManager.print(jobName, printAdapter,
+                    new PrintAttributes.Builder().build());
+        }
+
 
     }
 
@@ -2184,8 +2224,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " + objClsDoctorDetails.getRegistrationNumber() : "";
             doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
-                    "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
-                    "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification() + ", " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
+                    "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getName()) ? objClsDoctorDetails.getName() : "") + "</span><br>" +
+                    "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + "  " +
+                    (!TextUtils.isEmpty(objClsDoctorDetails.getQualification()) ? objClsDoctorDetails.getQualification() : "") + ", "
+                    + (!TextUtils.isEmpty(objClsDoctorDetails.getSpecialization()) ? objClsDoctorDetails.getSpecialization() : "") + "</span><br>" +
                     "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ? "Phone Number: " + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
                     "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") + "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " + objClsDoctorDetails.getRegistrationNumber() : "") +
                     "</div>";
