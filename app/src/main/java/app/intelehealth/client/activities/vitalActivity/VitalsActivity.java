@@ -474,6 +474,7 @@ public class VitalsActivity extends AppCompatActivity {
             double bmi_value = numerator / denominator;
             DecimalFormat df = new DecimalFormat("0.00");
             mBMI.setText(df.format(bmi_value));
+            Log.d("BMI","BMI: "+mBMI.getText().toString());
             //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
         } else if (flag_height == 0 || flag_weight == 0) {
             // do nothing
@@ -714,8 +715,12 @@ public class VitalsActivity extends AppCompatActivity {
             return;
         } else {
             try {
-                if (mHeight.getText() != null) {
+                if (mHeight.getText() != null && !mHeight.getText().toString().equals("")) {
                     results.setHeight((mHeight.getText().toString()));
+                }
+                else if(mHeight.getText().toString().equals(""))
+                {
+                    results.setHeight("0");
                 }
                 if (mWeight.getText() != null) {
                     results.setWeight((mWeight.getText().toString()));
@@ -764,7 +769,14 @@ public class VitalsActivity extends AppCompatActivity {
                 obsDTO.setConceptuuid(UuidDictionary.HEIGHT);
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
-                obsDTO.setValue(results.getHeight());
+                if(results.getHeight().equals(""))
+                {
+                    obsDTO.setValue("0");
+                }
+                else
+                {
+                    obsDTO.setValue(results.getHeight());
+                }
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.HEIGHT));
 
                 obsDAO.updateObs(obsDTO);
@@ -859,7 +871,15 @@ public class VitalsActivity extends AppCompatActivity {
             obsDTO.setConceptuuid(UuidDictionary.HEIGHT);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
-            obsDTO.setValue(results.getHeight());
+            if(results.getHeight().equals(""))
+            {
+                obsDTO.setValue("0");
+            }
+            else
+            {
+                obsDTO.setValue(results.getHeight());
+            }
+
             obsDTO.setUuid(AppConstants.NEW_UUID);
 
             try {
