@@ -89,20 +89,20 @@ public class ProviderAttributeLIstDAO {
         return isCreated;
     }
 
-    public List<ProviderAttributeListDTO> getAllValues() {
-        List<ProviderAttributeListDTO> listDTOArrayList = new ArrayList<>();
+    public List<String> getAllValues() {
+        List<String> listDTOArrayList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         String selectionArgs[] = {"ed1715f5-93e2-404e-b3c9-2a2d9600f062", "0"};
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_dr_speciality WHERE " +
-                "attributetypeuuid = ? AND voided = ?", null);
+                "attributetypeuuid = ? AND voided = ?", selectionArgs);
 
         ProviderAttributeListDTO dto = new ProviderAttributeListDTO();
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
                 dto = new ProviderAttributeListDTO();
                 dto.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
-                listDTOArrayList.add(dto);
+                listDTOArrayList.add(dto.getValue());
             }
         }
         idCursor.close();

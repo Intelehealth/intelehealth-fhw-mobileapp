@@ -60,6 +60,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -90,12 +91,15 @@ import app.intelehealth.client.activities.complaintNodeActivity.ComplaintNodeAct
 import app.intelehealth.client.activities.familyHistoryActivity.FamilyHistoryActivity;
 import app.intelehealth.client.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import app.intelehealth.client.activities.patientSurveyActivity.PatientSurveyActivity;
+import app.intelehealth.client.activities.setupActivity.LocationArrayAdapter;
+import app.intelehealth.client.activities.setupActivity.SetupActivity;
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.dao.EncounterDAO;
 import app.intelehealth.client.database.dao.ImagesDAO;
 import app.intelehealth.client.database.dao.ObsDAO;
 import app.intelehealth.client.database.dao.PatientsDAO;
+import app.intelehealth.client.database.dao.ProviderAttributeLIstDAO;
 import app.intelehealth.client.database.dao.SyncDAO;
 import app.intelehealth.client.database.dao.VisitsDAO;
 import app.intelehealth.client.knowledgeEngine.Node;
@@ -139,6 +143,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String medicalAdvice_string = "";
     String medicalAdvice_HyperLink = "";
     String isSynedFlag = "";
+
+    Spinner speciality_spinner;
 
     SQLiteDatabase db;
 
@@ -481,7 +487,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 //        mDoctorTitle.setVisibility(View.GONE);
 //        mDoctorName.setVisibility(View.GONE);
-
+        speciality_spinner = findViewById(R.id.speciality_spinner);
         diagnosisTextView = findViewById(R.id.textView_content_diagnosis);
         prescriptionTextView = findViewById(R.id.textView_content_rx);
         medicalAdviceTextView = findViewById(R.id.textView_content_medical_advice);
@@ -490,6 +496,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
 
         ivPrescription = findViewById(R.id.iv_prescription);
+
+        //spinner is being populated with the speciality values...
+        ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
+        List<String> items  = providerAttributeLIstDAO.getAllValues();
+        LocationArrayAdapter adapter = new LocationArrayAdapter(VisitSummaryActivity.this, items);
+        speciality_spinner.setAdapter(adapter);
 
         if (hasPrescription.equalsIgnoreCase("true")) {
             ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
