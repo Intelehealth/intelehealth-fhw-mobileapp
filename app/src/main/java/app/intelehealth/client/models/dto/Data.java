@@ -40,7 +40,7 @@ public class Data {
     private List<Object> providerAttributeTypeList = null;
     @SerializedName("providerAttributeList")
     @Expose
-    private List<Object> providerAttributeList = null;
+    private List<ProviderAttributeListDTO> providerAttributeList = null;
     @SerializedName("visitAttributeTypeList")
     @Expose
     private List<VisitAttributeTypeDTO> visitAttributeTypeList = null;
@@ -128,11 +128,11 @@ public class Data {
         this.providerAttributeTypeList = providerAttributeTypeList;
     }
 
-    public List<Object> getProviderAttributeList() {
+    public List<ProviderAttributeListDTO> getProviderAttributeList() {
         return providerAttributeList;
     }
 
-    public void setProviderAttributeList(List<Object> providerAttributeList) {
+    public void setProviderAttributeList(List<ProviderAttributeListDTO> providerAttributeList) {
         this.providerAttributeList = providerAttributeList;
     }
 
