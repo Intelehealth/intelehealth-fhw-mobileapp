@@ -3,6 +3,7 @@ package app.intelehealth.client.activities.questionNodeActivity.adapters;
 import android.content.Context;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,6 +106,9 @@ public class AssociatedSysAdapter extends RecyclerView.Adapter<AssociatedSysAdap
 
             }
 
+
+
+
                         itemViewHolder.chip_yes.setOnClickListener(v -> {
                                 thisNode.setNoSelected(false);
 
@@ -122,8 +126,18 @@ public class AssociatedSysAdapter extends RecyclerView.Adapter<AssociatedSysAdap
                         });
 
                         itemViewHolder.chip_No.setOnClickListener(v -> {
+
+                            // To manage to unselected state
+
+                            if(thisNode.isNoSelected()) {
+                                thisNode.setNoSelected(false);
+
+                            }else{
                                 thisNode.setNoSelected(true);
+                            }
                                 thisNode.setUnselected();
+
+
                             if (thisNode.getAssociated_symptoms() == -1) {
                                 thisNode.setAssociated_symptoms(0);
                             } else {
@@ -131,6 +145,8 @@ public class AssociatedSysAdapter extends RecyclerView.Adapter<AssociatedSysAdap
                             }
                             notifyDataSetChanged();
                         });
+
+                        Log.e("->>>",thisNode.isNoSelected()+"");
 
 
 
