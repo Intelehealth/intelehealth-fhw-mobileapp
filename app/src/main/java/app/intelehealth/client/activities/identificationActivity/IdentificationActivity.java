@@ -49,8 +49,13 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -587,6 +592,11 @@ public class IdentificationActivity extends AppCompatActivity {
                 dob.set(year, monthOfYear, dayOfMonth);
                 mDOB.setError(null);
                 mAge.setError(null);
+
+
+
+
+
                 //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
                 mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
                 Locale.setDefault(Locale.ENGLISH);
@@ -599,7 +609,13 @@ public class IdentificationActivity extends AppCompatActivity {
                 mAgeYears = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
                 mAgeMonths = today.get(Calendar.MONTH) - dob.get(Calendar.MONTH);
                 mAgeDays=today.get(Calendar.DATE) - dob.get(Calendar.DATE);
+              int totalDays=  today.getActualMaximum(Calendar.DAY_OF_MONTH);
 
+
+                if(mAgeDays<0){
+                    mAgeDays=mAgeDays+totalDays;
+                    mAgeMonths=mAgeMonths-1;
+                }
 
                 if (mAgeMonths < 0) {
                     mAgeMonths = mAgeMonths + 12;
@@ -619,7 +635,13 @@ public class IdentificationActivity extends AppCompatActivity {
                 String ageString = mAgeYears + getString(R.string.identification_screen_text_years)
                         + " - " + mAgeMonths + getString(R.string.identification_screen_text_months)
                         + " - " + mAgeDays + getString(R.string.days);
-                mAge.setText(ageString);
+                mAgeYears = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+                mAgeMonths = today.get(Calendar.MONTH) - dob.get(Calendar.MONTH);
+                mAgeDays=today.get(Calendar.DATE) - dob.get(Calendar.DATE);
+                String age= getYear(today.get(Calendar.YEAR), today.get(Calendar.MONTH),today.get(Calendar.DATE),dob.get(Calendar.YEAR),dob.get(Calendar.MONTH),dob.get(Calendar.DATE));
+                mAge.setText(age);
+               // mAge.setText(ageString);
+
             }
         }, mDOBYear, mDOBMonth, mDOBDay);
 
@@ -691,7 +713,8 @@ public class IdentificationActivity extends AppCompatActivity {
                         mDOBYear = birthYear;
                         mDOBMonth = birthMonth;
                         mDOBDay = birthDay;
-
+                       String age= getYear(yearPicker.getValue(), monthPicker.getValue(),dayPicker.getValue(),curYear,curMonth,calendar.get(Calendar.DAY_OF_MONTH));
+                        mAge.setText(age);
                         Locale.setDefault(Locale.ENGLISH);
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
                         dob.set(mDOBYear, mDOBMonth, mDOBDay);
@@ -723,6 +746,66 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public static String getYear( int syear,int smonth,int sday,int eyear, int emonth,int eday) {
+        String calculatedAge=null;
+        int resmonth;
+        int resyear;
+        int resday;
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+
+            LocalDate today = LocalDate.now();
+            LocalDate birthday = LocalDate.of(eyear, emonth+1, eday);
+
+            Period p = Period.between(birthday, today);
+            System.out.println(p.getDays());
+            System.out.println(p.getMonths());
+            System.out.println(p.getYears());
+            calculatedAge=p.getYears()+" years  - "+p.getMonths()+" month - "+p.getDays()+" age";
+
+
+        } else {
+
+            //calculating year
+            resyear = eyear - syear;
+
+            //calculating month
+            if (emonth >= smonth) {
+                resmonth = emonth - smonth;
+            } else {
+                resmonth = emonth - smonth;
+                resmonth = 12 + resmonth;
+                resyear--;
+            }
+
+            //calculating date
+            if (eday >= sday) {
+                resday = eday - sday;
+            } else {
+                resday = eday - sday;
+                resday = 31 + resday;
+                if (resmonth == 0) {
+                    resmonth = 11;
+                    resyear--;
+                } else {
+                    resmonth--;
+                }
+            }
+
+            //displaying error if calculated age is negative
+            if (resday <0 || resmonth<0 || resyear<0) {
+               // Toast.makeText(this, "Current Date must be greater than Date of Birth", Toast.LENGTH_LONG).show();
+               // t1.setText("Current Date must be greater than Date of Birth");
+            }
+            else {
+               // t1.setText("Age: " + resyear + " years /" + resmonth + " months/" + resday + " days");
+
+                calculatedAge="Age: " + resyear + " years /" + resmonth + " months/" + resday + " days";
+            }        }
+
+        return calculatedAge!=null?calculatedAge:"0-0-0";
     }
 
     public void onRadioButtonClicked(View view) {
