@@ -1798,6 +1798,8 @@ public class Node implements Serializable {
 
     }
 
+
+
     public String formQuestionAnswer(int level) {
         List<String> stringsList = new ArrayList<>();
         List<String> stringsListNoSelected = new ArrayList<>();
@@ -1806,6 +1808,7 @@ public class Node implements Serializable {
         boolean isAssociatedSymEmpty = false;
 
         for (int i = 0; i < mOptions.size(); i++) {
+            //isSelected set from  thisNode.setUnselected(); method
             if (mOptions.get(i).isSelected()) {
                 String question;
                 if (level == 0) {
@@ -1865,6 +1868,7 @@ public class Node implements Serializable {
 //                }
             }
 
+            // to add Patient denies entry
             if (mOptions.get(i).isNoSelected()) {
                 if (!flag) {
                     flag = true;
