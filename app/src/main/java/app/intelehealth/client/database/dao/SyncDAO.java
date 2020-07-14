@@ -56,6 +56,7 @@ public class SyncDAO {
         ObsDAO obsDAO = new ObsDAO();
         LocationDAO locationDAO = new LocationDAO();
         ProviderDAO providerDAO = new ProviderDAO();
+        ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
         try {
             Logger.logD(TAG, "pull sync started");
 
@@ -67,6 +68,8 @@ public class SyncDAO {
             obsDAO.insertObsTemp(responseDTO.getData().getObsDTO());
             locationDAO.insertLocations(responseDTO.getData().getLocationDTO());
             providerDAO.insertProviders(responseDTO.getData().getProviderlist());
+            providerAttributeLIstDAO.insertProvidersAttributeList
+                    (responseDTO.getData().getProviderAttributeList());
 
             Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
             Logger.logD(TAG, "Pull sync ended");

@@ -32,7 +32,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
                     "uuid TEXT PRIMARY KEY," +
                     "provideruuid TEXT," +
                     "attributetypeuuid TEXT," +
-                    "value TEXT," +
+                    "value TEXT UNIQUE," +
                     "voided TEXT" +
                     ")";
 
