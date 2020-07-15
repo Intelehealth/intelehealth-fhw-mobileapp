@@ -771,7 +771,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 resday = eday - sday;
             } else {
                 resday = eday - sday;
-                resday = 31 + resday;
+                resday = 30 + resday;
                 if (resmonth == 0) {
                     resmonth = 11;
                     resyear--;
