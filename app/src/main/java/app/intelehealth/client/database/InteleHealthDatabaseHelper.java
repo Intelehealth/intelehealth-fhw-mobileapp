@@ -94,7 +94,9 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "isdownloaded TEXT DEFAULT 'false'," +
             "voided TEXT DEFAULT '0'," +
             "sync TEXT DEFAULT 'false' ," +
-            "issubmitted Integer DEFAULT 0 " +
+            "issubmitted Integer DEFAULT 0," +
+            "speciality_uuid TEXT," +
+            "speciality_value TEXT" +
             ")";
 
 
