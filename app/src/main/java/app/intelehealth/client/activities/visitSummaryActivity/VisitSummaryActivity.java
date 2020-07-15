@@ -50,6 +50,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -501,10 +502,22 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //spinner is being populated with the speciality values...
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
         List<String> items  = providerAttributeLIstDAO.getAllValues();
+        items.add(0, "Select Specialization");
         ArrayAdapter<String> stringArrayAdapter =
                 new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
         speciality_spinner.setAdapter(stringArrayAdapter);
+        speciality_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d("SPINNER", "SPINNER_Selected: "+ adapterView.getItemAtPosition(i).toString());
+            }
 
+            @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        //end - spinner - speciality...
         if (hasPrescription.equalsIgnoreCase("true")) {
             ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
         }
