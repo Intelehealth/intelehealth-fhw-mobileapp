@@ -185,8 +185,29 @@ public class VisitsDAO {
         }
      finally {
             db_update.endTransaction();
+            db_update.close();
 
     }
+
+        //Sqlite Db Browser bug isnt showing the updated records...
+        //To re-check and confirm that the records are updated & stored in the local db, below is
+        //the code....
+      /*  SQLiteDatabase db_aa = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db_aa.beginTransaction();
+        Cursor idCursor_aa = db_aa.rawQuery("SELECT speciality_uuid, speciality_value FROM tbl_visit WHERE uuid = ?", new String[]{visitUUID});
+
+        if(idCursor_aa.getCount() != 0)
+        {
+            while(idCursor_aa.moveToNext())
+            {
+                String aa_uuid = idCursor_aa.getString(idCursor_aa.getColumnIndexOrThrow("speciality_uuid"));
+                String aa_value = idCursor_aa.getString(idCursor_aa.getColumnIndexOrThrow("speciality_value"));
+                Log.d("PRAJ", "PRAJ: "+ aa_uuid + " :: " + aa_value);
+            }
+        }
+        idCursor_aa.close();
+        db_aa.setTransactionSuccessful();
+        db_aa.endTransaction();*/
 
         return  isupdatedone;
 }
