@@ -13,6 +13,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.intelehealth.client.models.dto.VisitAttribute_Speciality;
 import app.intelehealth.client.utilities.DateAndTimeUtils;
 import app.intelehealth.client.utilities.Logger;
 import app.intelehealth.client.app.AppConstants;
@@ -207,7 +208,19 @@ public class VisitsDAO {
                 visitDTO.setEnddate(idCursor.getString(idCursor.getColumnIndexOrThrow("enddate")));
                 visitDTO.setCreatoruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("creator")));
                 visitDTO.setVisitTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_type_uuid")));
-                //visitdto.specuiuid, value
+               /* visitDTO.getAttributes().get(0).setValue
+                        (idCursor.getString(idCursor.getColumnIndexOrThrow
+                                ("speciality_value")));
+                visitDTO.getAttributes().get(0).setAttributeType("3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d");*/
+
+               List<VisitAttribute_Speciality> list = new ArrayList<>();
+               VisitAttribute_Speciality speciality = new VisitAttribute_Speciality();
+               speciality.setAttributeType("3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d");
+               speciality.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("speciality_value")));
+               list.add(speciality);
+
+
+                visitDTO.setAttributes(list);
                 visitDTOList.add(visitDTO);
             }
         }

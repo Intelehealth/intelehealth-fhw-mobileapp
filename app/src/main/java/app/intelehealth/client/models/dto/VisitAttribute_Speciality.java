@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class VisitAttribute_Speciality {
-    
+
     @SerializedName("attributeType")
     @Expose
     private String attributeType;
