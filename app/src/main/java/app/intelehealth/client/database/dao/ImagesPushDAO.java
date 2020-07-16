@@ -35,6 +35,7 @@ public class ImagesPushDAO {
     SessionManager sessionManager = null;
 
 
+
     public boolean patientProfileImagesPush() {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String encoded = sessionManager.getEncoded();
@@ -77,6 +78,7 @@ public class ImagesPushDAO {
     }
 
     public boolean obsImagesPush() {
+
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String encoded = sessionManager.getEncoded();
         Gson gson = new Gson();
@@ -90,12 +92,12 @@ public class ImagesPushDAO {
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
+
         int i = 0;
         for (ObsPushDTO p : obsImageJsons) {
             //pass it like this
             File file = null;
             file = new File(AppConstants.IMAGE_PATH + p.getUuid() + ".jpg");
-
             RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
             // MultipartBody.Part is used to send also the actual file name
             MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);

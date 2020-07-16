@@ -21,6 +21,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.util.EventLog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -651,17 +652,21 @@ public class IdentificationActivity extends AppCompatActivity {
                 dayTv.setText(getString(R.string.days));
                 middleText.setText(getString(R.string.identification_screen_picker_years));
                 endText.setText(getString(R.string.identification_screen_picker_months));
-                dayPicker.setMaxValue(31);
                 dayPicker.setMinValue(0);
+                dayPicker.setMaxValue(31);
+
                 yearPicker.setMinValue(0);
                 yearPicker.setMaxValue(100);
                 monthPicker.setMinValue(0);
                 monthPicker.setMaxValue(12);
+                retainPickerYear=yearPicker.getValue();
+                retainPickerMonth=monthPicker.getValue();
+                retainPickerDate=dayPicker.getValue();
 
-                yearPicker.setValue(retainPickerYear);
+               /* yearPicker.setValue(retainPickerYear);
                 monthPicker.setValue(retainPickerMonth);
                 dayPicker.setValue(retainPickerDate);
-
+*/
                 if (mAgeYears > 0) {
                     yearPicker.setValue(mAgeYears);
                 }
@@ -672,43 +677,42 @@ public class IdentificationActivity extends AppCompatActivity {
                     dayPicker.setValue(mAgeDays);
                 }
 
-                mAgePicker.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        retainPickerYear = yearPicker.getValue();
-                        retainPickerMonth = monthPicker.getValue();
-                        retainPickerDate = dayPicker.getValue();
-                        yearPicker.setValue(retainPickerYear);
-                        monthPicker.setValue(retainPickerMonth);
-                        dayPicker.setValue(retainPickerDate);
-                        String ageString = yearPicker.getValue() + getString(R.string.identification_screen_text_years) + " - " + monthPicker.getValue() + getString(R.string.identification_screen_text_months) + " - " + dayPicker.getValue() + getString(R.string.days);
-                        mAge.setText(ageString);
+                mAgePicker.setPositiveButton(R.string.generic_ok, (dialog, which) -> {
+
+                    retainPickerYear = yearPicker.getValue();
+                    retainPickerMonth = monthPicker.getValue();
+                    retainPickerDate = dayPicker.getValue();
+
+                    yearPicker.setValue(retainPickerYear);
+                    monthPicker.setValue(retainPickerMonth);
+                    dayPicker.setValue(retainPickerDate);
+                    String ageString = yearPicker.getValue() + getString(R.string.identification_screen_text_years) + " - " + monthPicker.getValue() + getString(R.string.identification_screen_text_months) + " - " + dayPicker.getValue() + getString(R.string.days);
+                    mAge.setText(ageString);
 
 
-                        Calendar calendar = Calendar.getInstance();
-                        int curYear = calendar.get(Calendar.YEAR);
-                        int birthYear = curYear - yearPicker.getValue();
-                        int curMonth = calendar.get(Calendar.MONTH);
-                        int birthMonth = curMonth - monthPicker.getValue();
-                        int birthDay = calendar.get(Calendar.DAY_OF_MONTH) - dayPicker.getValue();
-                        mDOBYear = birthYear;
-                        mDOBMonth = birthMonth;
+                    Calendar calendar = Calendar.getInstance();
+                    int curYear = calendar.get(Calendar.YEAR);
+                    int birthYear = curYear - yearPicker.getValue();
+                    int curMonth = calendar.get(Calendar.MONTH);
+                    int birthMonth = curMonth - monthPicker.getValue();
+                    int birthDay = calendar.get(Calendar.DAY_OF_MONTH) - dayPicker.getValue();
+                    mDOBYear = birthYear;
+                    mDOBMonth = birthMonth;
 
-                        if (birthDay < 0) {
-                            mDOBDay = birthDay + totalDays - 1;
-                            mDOBMonth--;
+                    if (birthDay < 0) {
+                        mDOBDay = birthDay + totalDays - 1;
+                        mDOBMonth--;
 
-                        } else {
-                            mDOBDay = birthDay;
-                        }
-                        Locale.setDefault(Locale.ENGLISH);
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
-                        dob.set(mDOBYear, mDOBMonth, mDOBDay);
-                        String dobString = simpleDateFormat.format(dob.getTime());
-                        mDOB.setText(dobString);
-                        mDOBPicker.updateDate(mDOBYear, mDOBMonth, mDOBDay);
-                        dialog.dismiss();
+                    } else {
+                        mDOBDay = birthDay;
                     }
+                    Locale.setDefault(Locale.ENGLISH);
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
+                    dob.set(mDOBYear, mDOBMonth, mDOBDay);
+                    String dobString = simpleDateFormat.format(dob.getTime());
+                    mDOB.setText(dobString);
+                    mDOBPicker.updateDate(mDOBYear, mDOBMonth, mDOBDay);
+                    dialog.dismiss();
                 });
                 mAgePicker.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
                     @Override
@@ -722,14 +726,11 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (patientID_edit != null) {
-                    onPatientUpdateClicked(patient1);
-                } else {
-                    onPatientCreateClicked();
-                }
+        fab.setOnClickListener(v -> {
+            if (patientID_edit != null) {
+                onPatientUpdateClicked(patient1);
+            } else {
+                onPatientCreateClicked();
             }
         });
     }
