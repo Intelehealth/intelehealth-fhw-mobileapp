@@ -167,9 +167,11 @@ public class VisitsDAO {
         {
             values.put("speciality_uuid", cursor_uuid);
             values.put("speciality_value", spinner_value);
-            int i = db.update("tbl_visit", values, whereclause, selectionArgs);
+            Logger.logD("visit", "updated_specilaity_values " + values.get("speciality_uuid") + " " +
+                    values.get("speciality_value"));
+            int i = db_update.update("tbl_visit", values, whereclause, selectionArgs);
             Logger.logD("visit", "updated_specilaity" + i);
-            db.setTransactionSuccessful();
+            db_update.setTransactionSuccessful();
             if(i != -1)
                 isupdatedone = true;
 
@@ -182,7 +184,7 @@ public class VisitsDAO {
 
         }
      finally {
-        db_update.endTransaction();
+            db_update.endTransaction();
 
     }
 
