@@ -2,6 +2,7 @@ package app.intelehealth.client.activities.visitSummaryActivity;
 
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -130,6 +131,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private LinearLayout mLayout;
 
     String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp;
+    String speciality_selected = "";
 
     boolean uploaded = false;
     boolean downloaded = false;
@@ -502,6 +504,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //spinner is being populated with the speciality values...
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
         List<String> items  = providerAttributeLIstDAO.getAllValues();
+        //Hashmap to List<String> add all value
         items.add(0, "Select Specialization");
         ArrayAdapter<String> stringArrayAdapter =
                 new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
@@ -510,6 +513,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d("SPINNER", "SPINNER_Selected: "+ adapterView.getItemAtPosition(i).toString());
+
+                speciality_selected = adapterView.getItemAtPosition(i).toString();
+                Log.d("SPINNER", "SPINNER_Selected_final: "+ speciality_selected);
             }
 
             @Override
@@ -667,6 +673,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 if (!flag.isChecked()) {
                     //
+                }
+
+                VisitsDAO visitsDAO_speciality = new VisitsDAO();
+                boolean isUpdateVisitDone = false;
+                try {
+                    isUpdateVisitDone = visitsDAO_speciality.update_visitTbl_speciality
+                            (speciality_selected, visitUUID);
+
+                    Log.d("Update_Special_Visit", "Update_Special_Visit: "+ isUpdateVisitDone);
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                    Log.d("Update_Special_Visit", "Update_Special_Visit: "+ isUpdateVisitDone);
                 }
 
 //                new Restaurant(VisitSummaryActivity.this, getString(R.string.uploading_to_doctor_notif), Snackbar.LENGTH_LONG)
@@ -1284,6 +1302,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         doQuery();
     }
+
+
 
     private String convertCtoF(String temperature) {
 

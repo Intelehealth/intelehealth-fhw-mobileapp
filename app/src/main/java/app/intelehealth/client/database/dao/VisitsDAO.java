@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.util.Log;
 
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -66,6 +67,7 @@ public class VisitsDAO {
         }
         return isCreated;
     }
+
 
     public boolean insertPatientToDB(VisitDTO visit) throws DAOException {
         boolean isCreated = true;
@@ -130,6 +132,65 @@ public class VisitsDAO {
         return isCreated;
     }
 
+
+    //update condition for speciality
+    public boolean update_visitTbl_speciality(String spinner_value, String visitUUID) throws DAOException {
+        boolean isupdatedone = false;
+        String cursor_uuid = "", cursor_value="";
+        Log.d("SPINNER", "SPINNER_Selected_valuelogs: "+ spinner_value);
+        Log.d("SPINNER", "SPINNER_Selected_uuidlogs: "+ visitUUID);
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        Cursor idCursor = db.rawQuery("SELECT uuid,value FROM tbl_dr_speciality WHERE value = ?",
+                new String[]{spinner_value});
+
+        if(idCursor.getCount() != 0)
+        {
+            while(idCursor.moveToNext())
+            {
+                 cursor_uuid = idCursor.getString(idCursor.getColumnIndexOrThrow("uuid"));
+            }
+        }
+        idCursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+
+        SQLiteDatabase db_update = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db_update.beginTransaction();
+        ContentValues values = new ContentValues();
+        String whereclause = "uuid=?";
+        String[] selectionArgs = {visitUUID};
+        try
+        {
+            values.put("speciality_uuid", cursor_uuid);
+            values.put("speciality_value", spinner_value);
+            int i = db.update("tbl_visit", values, whereclause, selectionArgs);
+            Logger.logD("visit", "updated_specilaity" + i);
+            db.setTransactionSuccessful();
+            if(i != -1)
+                isupdatedone = true;
+
+        }
+        catch (SQLException e)
+        {
+            isupdatedone = false;
+            Logger.logD("visit", "updated" + e.getMessage());
+            throw new DAOException(e.getMessage());
+
+        }
+     finally {
+        db_update.endTransaction();
+
+    }
+
+        return  isupdatedone;
+}
+
+
+    //update - end....
+
     public List<VisitDTO> unsyncedVisits() {
         List<VisitDTO> visitDTOList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -146,6 +207,7 @@ public class VisitsDAO {
                 visitDTO.setEnddate(idCursor.getString(idCursor.getColumnIndexOrThrow("enddate")));
                 visitDTO.setCreatoruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("creator")));
                 visitDTO.setVisitTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_type_uuid")));
+                //visitdto.specuiuid, value
                 visitDTOList.add(visitDTO);
             }
         }

@@ -96,7 +96,7 @@ public class ProviderAttributeLIstDAO {
         db.beginTransaction();
         String selectionArgs[] = {"ed1715f5-93e2-404e-b3c9-2a2d9600f062", "0"};
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_dr_speciality WHERE " +
-                "attributetypeuuid = ? AND voided = ?", selectionArgs);
+                "attributetypeuuid = ? AND voided = ?", selectionArgs); //checking....
 
         ProviderAttributeListDTO dto = new ProviderAttributeListDTO();
         if (idCursor.getCount() != 0) {
