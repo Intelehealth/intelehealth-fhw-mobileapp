@@ -1,7 +1,6 @@
 package app.intelehealth.client.activities.setupActivity;
 
 import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,7 +8,6 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -25,7 +23,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Patterns;
-import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -89,6 +86,7 @@ public class SetupActivity extends AppCompatActivity {
     String BASE_URL = "";
     private static final int PERMISSION_ALL = 1;
     private long createdRecordsCount = 0;
+    ProgressDialog mProgressDialog;
 
     //    protected AccountManager manager;
     UrlModifiers urlModifiers = new UrlModifiers();
@@ -224,7 +222,7 @@ public class SetupActivity extends AppCompatActivity {
 
         });
 
-
+showProgressbar();
     }
 
     /**
@@ -299,6 +297,17 @@ public class SetupActivity extends AppCompatActivity {
                 Log.d(TAG, "attempting setup");
             }
         }
+    }
+
+    private void showProgressbar() {
+
+
+// instantiate it within the onCreate method
+        mProgressDialog = new ProgressDialog(SetupActivity.this);
+        mProgressDialog.setMessage("Downloading");
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        mProgressDialog.setCancelable(false);
     }
 
     private boolean isEmailValid(String email) {
@@ -726,7 +735,7 @@ public class SetupActivity extends AppCompatActivity {
                             if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
 
                                 Log.e("MindMapURL", "Successfully get MindMap URL");
-                                mTask = new DownloadMindMaps(context);
+                                mTask = new DownloadMindMaps(context, mProgressDialog);
                                 mindmapURL = res.getMindmap().trim();
                                 sessionManager.setLicenseKey(key);
                                 checkExistingMindMaps();

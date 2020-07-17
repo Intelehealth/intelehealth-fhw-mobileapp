@@ -1,8 +1,5 @@
 package app.intelehealth.client.activities.homeActivity;
 
-import android.Manifest;
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -15,21 +12,17 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 
-import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.Toolbar;
 
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -41,7 +34,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.core.content.res.ResourcesCompat;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
@@ -110,6 +102,7 @@ public class HomeActivity extends AppCompatActivity {
     CustomProgressDialog customProgressDialog;
     private String mindmapURL = "";
     private DownloadMindMaps mTask;
+    ProgressDialog mProgressDialog;
 
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
@@ -211,6 +204,8 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+
+
         lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
 
 //        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
@@ -266,7 +261,21 @@ public class HomeActivity extends AppCompatActivity {
         if (sessionManager.isReturningUser()) {
             syncUtils.syncForeground("");
         }
+
+        showProgressbar();
     }
+
+    private void showProgressbar() {
+
+
+// instantiate it within the onCreate method
+        mProgressDialog = new ProgressDialog(HomeActivity.this);
+        mProgressDialog.setMessage("Downloading");
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        mProgressDialog.setCancelable(false);
+    }
+
 
     private String CalculateAgoTime() {
         String finalTime = "";
@@ -583,7 +592,7 @@ public class HomeActivity extends AppCompatActivity {
                             if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
 
                                 Log.e("MindMapURL", "Successfully get MindMap URL");
-                                mTask = new DownloadMindMaps(context);
+                                mTask = new DownloadMindMaps(context, mProgressDialog);
                                 mindmapURL = res.getMindmap().trim();
                                 sessionManager.setLicenseKey(key);
                                 checkExistingMindMaps();

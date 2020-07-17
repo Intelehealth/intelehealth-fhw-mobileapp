@@ -1,8 +1,10 @@
 package app.intelehealth.client.utilities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.io.BufferedInputStream;
@@ -29,8 +31,17 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
 
     Context context;
 
-    public DownloadMindMaps(Context _context) {
+    private final ProgressDialog mProgressDialog;
+    public DownloadMindMaps(Context _context, ProgressDialog mProgressDialog) {
         this.context = _context;
+        this.mProgressDialog = mProgressDialog;
+    }
+
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        mProgressDialog.show();
     }
 
     @Override
@@ -50,6 +61,7 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
                 return "Server returned HTTP " + connection.getResponseCode() + " " + connection.getResponseMessage();
             }
 
+            int fileLength=connection.getContentLength();
             //Download Zip
             input = connection.getInputStream();
 
@@ -59,9 +71,20 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
 
             byte data[] = new byte[4096];
             int count;
+            long total = 0;
             while ((count = input.read(data)) != -1) {
+
+                if (isCancelled()) {
+                    input.close();
+                    return null;
+                }
+                total += count;
+                if (fileLength > 0) // only if total length is known
+                    publishProgress((int) (total * 100 / fileLength));
                 output.write(data, 0, count);
+
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             return e.toString();
@@ -82,6 +105,7 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
 
         Log.d("MindMapDownloadTask", "f.getParentFile().getPath()=" + f.getParentFile().getPath());
         Log.d("MindMapDownloadTask", "f.getName()=" + f.getName().replace(".zip", ""));
+
         unpackZip(destinationFilePath);
         return context.getResources().getString(R.string.protocols_downloaded_successfully);
     }
@@ -90,13 +114,22 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         Toast.makeText(context, s, Toast.LENGTH_LONG).show();
-
+        mProgressDialog.dismiss();
         //Check is there any existing mindmaps are present, if yes then delete.
         File mindMapZip = new File(context.getFilesDir().getAbsolutePath(), "mindmaps.zip");
         Log.e("MindMap Zip=", "" + mindMapZip.exists());
         if (mindMapZip.exists()) {
             mindMapZip.delete();
         }
+    }
+
+    @Override
+    protected void onProgressUpdate(Integer... values) {
+        super.onProgressUpdate(values);
+        Log.e("------>>>",values[0]+"");
+        mProgressDialog.setIndeterminate(false);
+        mProgressDialog.setMax(100);
+        mProgressDialog.setProgress(values[0]);
     }
 
     private boolean unpackZip(String filePath) {
