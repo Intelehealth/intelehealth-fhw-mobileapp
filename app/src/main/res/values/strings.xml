@@ -577,6 +577,7 @@
     <string name="who_is_this_napplication_for">Who is this \napplication for?</string>
     <string name="custom_setup">Custom setup</string>
     <string name="demo_version">Demo version</string>
-
+<string name="download_protocols">Downloading Protocols</string>
+    <string name="mindmap_internect_connection">To download mindmaps you need a Internet connectivity, please turn on your Internet</string>
 
 </resources>
