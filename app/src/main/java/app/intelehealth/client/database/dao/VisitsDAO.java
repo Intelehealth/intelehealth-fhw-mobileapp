@@ -137,13 +137,13 @@ public class VisitsDAO {
     //update condition for speciality
     public boolean update_visitTbl_speciality(String spinner_value, String visitUUID) throws DAOException {
         boolean isupdatedone = false;
-        String cursor_uuid = "", cursor_value="";
+//        String cursor_uuid = "", cursor_value="";
         Log.d("SPINNER", "SPINNER_Selected_valuelogs: "+ spinner_value);
         Log.d("SPINNER", "SPINNER_Selected_uuidlogs: "+ visitUUID);
 
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+       /* SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
-        Cursor idCursor = db.rawQuery("SELECT uuid,value FROM tbl_dr_speciality WHERE value = ?",
+        Cursor idCursor = db.rawQuery("SELECT value FROM tbl_dr_speciality WHERE value = ?",
                 new String[]{spinner_value});
 
         if(idCursor.getCount() != 0)
@@ -155,7 +155,7 @@ public class VisitsDAO {
         }
         idCursor.close();
         db.setTransactionSuccessful();
-        db.endTransaction();
+        db.endTransaction();*/
 
 
         SQLiteDatabase db_update = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -165,11 +165,13 @@ public class VisitsDAO {
         String[] selectionArgs = {visitUUID};
         try
         {
-            values.put("speciality_uuid", cursor_uuid);
+//            values.put("speciality_uuid", cursor_uuid);
             values.put("speciality_value", spinner_value);
             Logger.logD("visit", "updated_specilaity_values " + values.get("speciality_uuid") + " " +
                     values.get("speciality_value"));
+
             int i = db_update.update("tbl_visit", values, whereclause, selectionArgs);
+
             Logger.logD("visit", "updated_specilaity" + i);
             db_update.setTransactionSuccessful();
             if(i != -1)

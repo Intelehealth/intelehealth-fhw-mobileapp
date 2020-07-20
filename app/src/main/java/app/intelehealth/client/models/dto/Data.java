@@ -48,6 +48,8 @@ public class Data {
     @Expose
     private List<VisitAttributeDTO> visitAttributeList = null;
 
+
+
     public List<PatientDTO> getPatientDTO() {
         return patientDTO;
     }

@@ -36,15 +36,6 @@ public class VisitDTO {
     @Expose
     private List<VisitAttribute_Speciality> attributes = null;
 
-    //getter-setter...
-    public List<VisitAttribute_Speciality> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(List<VisitAttribute_Speciality> attributes) {
-        this.attributes = attributes;
-    }
-
     private List<VisitAttributeDTO> visitAttributeDTOS;
 
     public String getPatientuuid() {
@@ -117,5 +108,14 @@ public class VisitDTO {
 
     public void setVisitAttributeDTOS(List<VisitAttributeDTO> visitAttributeDTOS) {
         this.visitAttributeDTOS = visitAttributeDTOS;
+    }
+
+    //getter-setter...
+    public List<VisitAttribute_Speciality> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(List<VisitAttribute_Speciality> attributes) {
+        this.attributes = attributes;
     }
 }
