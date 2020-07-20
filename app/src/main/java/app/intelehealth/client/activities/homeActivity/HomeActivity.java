@@ -1,8 +1,5 @@
 package app.intelehealth.client.activities.homeActivity;
 
-import android.Manifest;
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -15,21 +12,17 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 
-import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.Toolbar;
 
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -41,7 +34,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.core.content.res.ResourcesCompat;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
@@ -72,6 +64,7 @@ import app.intelehealth.client.syncModule.SyncUtils;
 import app.intelehealth.client.utilities.ConfigUtils;
 import app.intelehealth.client.utilities.DownloadMindMaps;
 import app.intelehealth.client.utilities.Logger;
+import app.intelehealth.client.utilities.NetworkConnection;
 import app.intelehealth.client.utilities.OfflineLogin;
 import app.intelehealth.client.utilities.SessionManager;
 import app.intelehealth.client.widget.materialprogressbar.CustomProgressDialog;
@@ -110,6 +103,7 @@ public class HomeActivity extends AppCompatActivity {
     CustomProgressDialog customProgressDialog;
     private String mindmapURL = "";
     private DownloadMindMaps mTask;
+    ProgressDialog mProgressDialog;
 
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
@@ -211,6 +205,8 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+
+
         lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
 
 //        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
@@ -266,7 +262,21 @@ public class HomeActivity extends AppCompatActivity {
         if (sessionManager.isReturningUser()) {
             syncUtils.syncForeground("");
         }
+
+        showProgressbar();
     }
+
+    private void showProgressbar() {
+
+
+// instantiate it within the onCreate method
+        mProgressDialog = new ProgressDialog(HomeActivity.this);
+        mProgressDialog.setMessage(getString(R.string.download_protocols));
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        mProgressDialog.setCancelable(false);
+    }
+
 
     private String CalculateAgoTime() {
         String finalTime = "";
@@ -335,63 +345,73 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             case R.id.updateProtocolsOption: {
 
-                if (!sessionManager.getLicenseKey().isEmpty()) {
 
-                    String licenseUrl = sessionManager.getMindMapServerUrl();
-                    String licenseKey = sessionManager.getLicenseKey();
-                    getMindmapDownloadURL("http://" + licenseUrl + ":3004/", licenseKey);
+                if (NetworkConnection.isOnline(this))
+                {
 
-                } else {
-                    MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-                    // AlertDialog.Builder dialog = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
-                    LayoutInflater li = LayoutInflater.from(this);
-                    View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
-                    dialog.setTitle(getString(R.string.enter_license_key))
-                            .setView(promptsView)
-                            .setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
+                    if (!sessionManager.getLicenseKey().isEmpty()) {
 
-                                    Dialog d = (Dialog) dialog;
+                        String licenseUrl = sessionManager.getMindMapServerUrl();
+                        String licenseKey = sessionManager.getLicenseKey();
+                        getMindmapDownloadURL("http://" + licenseUrl + ":3004/", licenseKey);
 
-                                    EditText etURL = d.findViewById(R.id.licenseurl);
-                                    EditText etKey = d.findViewById(R.id.licensekey);
-                                    String url = etURL.getText().toString().trim();
-                                    String key = etKey.getText().toString().trim();
+                    } else {
+                        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+                        // AlertDialog.Builder dialog = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
+                        LayoutInflater li = LayoutInflater.from(this);
+                        View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
+                        dialog.setTitle(getString(R.string.enter_license_key))
+                                .setView(promptsView)
+                                .setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
 
-                                    if (url.isEmpty()) {
-                                        etURL.setError(getResources().getString(R.string.enter_server_url));
-                                        etURL.requestFocus();
-                                        return;
+                                        Dialog d = (Dialog) dialog;
+
+                                        EditText etURL = d.findViewById(R.id.licenseurl);
+                                        EditText etKey = d.findViewById(R.id.licensekey);
+                                        String url = etURL.getText().toString().trim();
+                                        String key = etKey.getText().toString().trim();
+
+                                        if (url.isEmpty()) {
+                                            etURL.setError(getResources().getString(R.string.enter_server_url));
+                                            etURL.requestFocus();
+                                            return;
+                                        }
+                                        if (url.contains(":")) {
+                                            etURL.setError(getResources().getString(R.string.invalid_url));
+                                            etURL.requestFocus();
+                                            return;
+                                        }
+                                        if (key.isEmpty()) {
+                                            etKey.setError(getResources().getString(R.string.enter_license_key));
+                                            etKey.requestFocus();
+                                            return;
+                                        }
+
+                                        sessionManager.setMindMapServerUrl(url);
+                                        getMindmapDownloadURL("http://" + url + ":3004/", key);
+
                                     }
-                                    if (url.contains(":")) {
-                                        etURL.setError(getResources().getString(R.string.invalid_url));
-                                        etURL.requestFocus();
-                                        return;
+                                })
+                                .setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
                                     }
-                                    if (key.isEmpty()) {
-                                        etKey.setError(getResources().getString(R.string.enter_license_key));
-                                        etKey.requestFocus();
-                                        return;
-                                    }
+                                });
+                        Dialog builderDialog = dialog.show();
+                        IntelehealthApplication.setAlertDialogCustomTheme(this, builderDialog);
 
-                                    sessionManager.setMindMapServerUrl(url);
-                                    getMindmapDownloadURL("http://" + url + ":3004/", key);
+                    }
 
-                                }
-                            })
-                            .setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                    Dialog builderDialog = dialog.show();
-                    IntelehealthApplication.setAlertDialogCustomTheme(this,builderDialog);
-
+            }else{
+                    Toast.makeText(context, getString(R.string.mindmap_internect_connection), Toast.LENGTH_SHORT).show();
                 }
+
                 return true;
-            }
+        }
+
          /*   case R.id.sync:
 //                pullDataDAO.pullData(this);
 //                pullDataDAO.pushDataApi();
@@ -582,7 +602,7 @@ public class HomeActivity extends AppCompatActivity {
                             if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
 
                                 Log.e("MindMapURL", "Successfully get MindMap URL");
-                                mTask = new DownloadMindMaps(context);
+                                mTask = new DownloadMindMaps(context, mProgressDialog);
                                 mindmapURL = res.getMindmap().trim();
                                 sessionManager.setLicenseKey(key);
                                 checkExistingMindMaps();
