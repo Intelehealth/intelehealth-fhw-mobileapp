@@ -639,6 +639,22 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                if(!speciality_selected.equalsIgnoreCase("Select Specialization"))
+                {
+                    VisitsDAO visitsDAO_speciality = new VisitsDAO();
+                    boolean isUpdateVisitDone = false;
+                    try {
+                        isUpdateVisitDone = visitsDAO_speciality.update_visitTbl_speciality
+                                (speciality_selected, visitUuid);
+
+                        Log.d("Update_Special_Visit", "Update_Special_Visit: "+ isUpdateVisitDone);
+                    } catch (DAOException e) {
+                        e.printStackTrace();
+                        Log.d("Update_Special_Visit", "Update_Special_Visit: "+ isUpdateVisitDone);
+                    }
+                }
+
+
 
                 if (flag.isChecked()) {
                     try {
@@ -677,33 +693,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     if (visitIDCursor != null)
                         visitIDCursor.close();
                 }
-                String[] columnsToReturn = {"startdate"};
-                String visitIDorderBy = "startdate";
-                String visitIDSelection = "uuid = ?";
-                String[] visitIDArgs = {visitUuid};
-                Cursor visitIDCursor1 = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
-                visitIDCursor1.moveToLast();
-                String startDateTime = visitIDCursor1.getString(visitIDCursor1.getColumnIndexOrThrow("startdate"));
-                visitIDCursor1.close();
+//                String[] columnsToReturn = {"startdate"};
+//                String visitIDorderBy = "startdate";
+//                String visitIDSelection = "uuid = ?";
+//                String[] visitIDArgs = {visitUuid};
+//                Cursor visitIDCursor1 = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
+//                visitIDCursor1.moveToLast();
+//                String startDateTime = visitIDCursor1.getString(visitIDCursor1.getColumnIndexOrThrow("startdate"));
+//                visitIDCursor1.close();
 
                 if (!flag.isChecked()) {
                     //
                 }
 
-                if(!speciality_selected.equalsIgnoreCase("Select Specialization"))
-                {
-                    VisitsDAO visitsDAO_speciality = new VisitsDAO();
-                    boolean isUpdateVisitDone = false;
-                    try {
-                        isUpdateVisitDone = visitsDAO_speciality.update_visitTbl_speciality
-                                (speciality_selected, visitUuid);
-
-                        Log.d("Update_Special_Visit", "Update_Special_Visit: "+ isUpdateVisitDone);
-                    } catch (DAOException e) {
-                        e.printStackTrace();
-                        Log.d("Update_Special_Visit", "Update_Special_Visit: "+ isUpdateVisitDone);
-                    }
-                }
 
 
 //                new Restaurant(VisitSummaryActivity.this, getString(R.string.uploading_to_doctor_notif), Snackbar.LENGTH_LONG)

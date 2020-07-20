@@ -187,7 +187,8 @@ public class VisitsDAO {
         }
      finally {
             db_update.endTransaction();
-            db_update.close();
+//            db_update.close(); Closing the db was causing the crash on visit onCreate() in update.
+            //while updating, do not close the db instance,.
 
     }
 
