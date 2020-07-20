@@ -108,7 +108,7 @@ public class VisitsDAO {
 
     }
 
-    private boolean insertVisitAttribToDB(List<VisitAttributeDTO> visitAttributeDTOS, SQLiteDatabase db) throws DAOException {
+    public boolean insertVisitAttribToDB(List<VisitAttributeDTO> visitAttributeDTOS, SQLiteDatabase db) throws DAOException {
         boolean isCreated = true;
         ContentValues values = new ContentValues();
         db.beginTransaction();

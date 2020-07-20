@@ -56,6 +56,7 @@ public class SyncDAO {
         ObsDAO obsDAO = new ObsDAO();
         LocationDAO locationDAO = new LocationDAO();
         ProviderDAO providerDAO = new ProviderDAO();
+        VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
         try {
             Logger.logD(TAG, "pull sync started");
@@ -70,6 +71,8 @@ public class SyncDAO {
             providerDAO.insertProviders(responseDTO.getData().getProviderlist());
             providerAttributeLIstDAO.insertProvidersAttributeList
                     (responseDTO.getData().getProviderAttributeList());
+            visitAttributeListDAO.insertProvidersAttributeList(responseDTO.getData().getVisitAttributeList());
+//            visitsDAO.insertVisitAttribToDB(responseDTO.getData().getVisitAttributeList())
 
             Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
             Logger.logD(TAG, "Pull sync ended");

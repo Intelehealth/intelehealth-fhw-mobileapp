@@ -60,7 +60,7 @@ public class ProviderAttributeLIstDAO {
             values.put("voided", attributeListDTO.getVoided());
 
             if(attributeListDTO.getVoided() == 0 &&
-            attributeListDTO.getAttributetypeuuid().equals("ed1715f5-93e2-404e-b3c9-2a2d9600f062"))
+            attributeListDTO.getAttributetypeuuid().equalsIgnoreCase("ed1715f5-93e2-404e-b3c9-2a2d9600f062"))
             {
                 createdRecordsCount = db.insertWithOnConflict("tbl_dr_speciality", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
