@@ -167,6 +167,8 @@ public class VisitsDAO {
         {
 //            values.put("speciality_uuid", cursor_uuid);
             values.put("speciality_value", spinner_value);
+            values.put("sync", "0");
+
             Logger.logD("visit", "updated_specilaity_values " +
                     values.get("speciality_value"));
 
