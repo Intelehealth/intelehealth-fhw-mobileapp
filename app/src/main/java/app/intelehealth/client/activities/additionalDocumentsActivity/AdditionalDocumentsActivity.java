@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
+
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -111,6 +113,15 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
                 File photo = new File(mCurrentPhotoPath);
                 if (photo.exists()) {
+                    try{
+
+                        long length = photo.length();
+                        length = length/1024;
+                        Log.e("------->>>>",length+"");
+                    }catch(Exception e){
+                        System.out.println("File not found : " + e.getMessage() + e);
+                    }
+
                     recyclerViewAdapter.add(new DocumentObject(photo.getName(), photo.getAbsolutePath()));
                     updateImageDatabase(StringUtils.getFileNameWithoutExtension(photo));
                 }
