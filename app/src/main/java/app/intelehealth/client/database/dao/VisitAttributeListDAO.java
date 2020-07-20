@@ -1,6 +1,7 @@
 package app.intelehealth.client.database.dao;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -79,6 +80,35 @@ public class VisitAttributeListDAO {
         }
 
         return isCreated;
+    }
+
+    public String getVisitAttributesList_specificVisit(String VISITUUID)
+    {
+        String isValue = "";
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+
+        Cursor cursor = db.rawQuery("SELECT speciality_value FROM tbl_visit WHERE uuid = ?",
+                new String[]{VISITUUID});
+
+        if(cursor.getCount() != 0)
+        {
+            while (cursor.moveToNext())
+            {
+                isValue = cursor.getString(cursor.getColumnIndexOrThrow("speciality_value"));
+            }
+        }
+        else
+        {
+            isValue = "EMPTY";
+        }
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+
+        return  isValue;
     }
 
 }

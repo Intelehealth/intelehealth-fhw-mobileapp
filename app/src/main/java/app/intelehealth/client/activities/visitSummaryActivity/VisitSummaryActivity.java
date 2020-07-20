@@ -104,6 +104,7 @@ import app.intelehealth.client.database.dao.ObsDAO;
 import app.intelehealth.client.database.dao.PatientsDAO;
 import app.intelehealth.client.database.dao.ProviderAttributeLIstDAO;
 import app.intelehealth.client.database.dao.SyncDAO;
+import app.intelehealth.client.database.dao.VisitAttributeListDAO;
 import app.intelehealth.client.database.dao.VisitsDAO;
 import app.intelehealth.client.knowledgeEngine.Node;
 import app.intelehealth.client.models.ClsDoctorDetails;
@@ -503,12 +504,26 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         //spinner is being populated with the speciality values...
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
+        VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
+
         List<String> items  = providerAttributeLIstDAO.getAllValues();
+        String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid);
         //Hashmap to List<String> add all value
         items.add(0, "Select Specialization");
         ArrayAdapter<String> stringArrayAdapter =
                 new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
         speciality_spinner.setAdapter(stringArrayAdapter);
+
+        if(!special_value.equalsIgnoreCase("EMPTY") && special_value != null)
+        {
+            int spinner_position = stringArrayAdapter.getPosition(special_value);
+            speciality_spinner.setSelection(spinner_position);
+        }
+        else
+        {
+
+        }
+
         speciality_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -675,6 +690,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     //
                 }
 
+                //sepciali != Select speciality only then do this....
                 VisitsDAO visitsDAO_speciality = new VisitsDAO();
                 boolean isUpdateVisitDone = false;
                 try {
