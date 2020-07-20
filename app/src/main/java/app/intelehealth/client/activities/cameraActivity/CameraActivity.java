@@ -121,9 +121,9 @@ public class CameraActivity extends AppCompatActivity {
                     OutputStream os = null;
                     try {
                         os = new FileOutputStream(file);
-                        Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-                        Bitmap bitmap = Bitmap.createScaledBitmap(bmp, 600, 800, false);
-                        bmp.recycle();
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                      //  Bitmap bitmap = Bitmap.createScaledBitmap(bmp, 600, 800, false);
+                      //  bitmap.recycle();
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
                         os.flush();
                         os.close();
