@@ -318,7 +318,10 @@ public class CameraActivity extends AppCompatActivity {
             mFab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mCameraView != null) mCameraView.takePicture();
+                    if (mCameraView != null)
+                    {
+                        mCameraView.takePicture();
+                    }
                 }
             });
         }
