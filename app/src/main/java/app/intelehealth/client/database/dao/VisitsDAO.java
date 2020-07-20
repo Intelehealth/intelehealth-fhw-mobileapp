@@ -167,7 +167,7 @@ public class VisitsDAO {
         {
 //            values.put("speciality_uuid", cursor_uuid);
             values.put("speciality_value", spinner_value);
-            Logger.logD("visit", "updated_specilaity_values " + values.get("speciality_uuid") + " " +
+            Logger.logD("visit", "updated_specilaity_values " +
                     values.get("speciality_value"));
 
             int i = db_update.update("tbl_visit", values, whereclause, selectionArgs);
@@ -233,10 +233,6 @@ public class VisitsDAO {
                 visitDTO.setEnddate(idCursor.getString(idCursor.getColumnIndexOrThrow("enddate")));
                 visitDTO.setCreatoruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("creator")));
                 visitDTO.setVisitTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_type_uuid")));
-               /* visitDTO.getAttributes().get(0).setValue
-                        (idCursor.getString(idCursor.getColumnIndexOrThrow
-                                ("speciality_value")));
-                visitDTO.getAttributes().get(0).setAttributeType("3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d");*/
 
                List<VisitAttribute_Speciality> list = new ArrayList<>();
                VisitAttribute_Speciality speciality = new VisitAttribute_Speciality();

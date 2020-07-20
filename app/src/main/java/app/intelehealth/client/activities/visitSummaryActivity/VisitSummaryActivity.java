@@ -514,7 +514,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
         speciality_spinner.setAdapter(stringArrayAdapter);
 
-        if(!special_value.equalsIgnoreCase("EMPTY") && special_value != null)
+        if(special_value != null)
         {
             int spinner_position = stringArrayAdapter.getPosition(special_value);
             speciality_spinner.setSelection(spinner_position);
@@ -690,18 +690,21 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     //
                 }
 
-                //sepciali != Select speciality only then do this....
-                VisitsDAO visitsDAO_speciality = new VisitsDAO();
-                boolean isUpdateVisitDone = false;
-                try {
-                    isUpdateVisitDone = visitsDAO_speciality.update_visitTbl_speciality
-                            (speciality_selected, visitUUID);
+                if(!speciality_selected.equalsIgnoreCase("Select Specialization"))
+                {
+                    VisitsDAO visitsDAO_speciality = new VisitsDAO();
+                    boolean isUpdateVisitDone = false;
+                    try {
+                        isUpdateVisitDone = visitsDAO_speciality.update_visitTbl_speciality
+                                (speciality_selected, visitUuid);
 
-                    Log.d("Update_Special_Visit", "Update_Special_Visit: "+ isUpdateVisitDone);
-                } catch (DAOException e) {
-                    e.printStackTrace();
-                    Log.d("Update_Special_Visit", "Update_Special_Visit: "+ isUpdateVisitDone);
+                        Log.d("Update_Special_Visit", "Update_Special_Visit: "+ isUpdateVisitDone);
+                    } catch (DAOException e) {
+                        e.printStackTrace();
+                        Log.d("Update_Special_Visit", "Update_Special_Visit: "+ isUpdateVisitDone);
+                    }
                 }
+
 
 //                new Restaurant(VisitSummaryActivity.this, getString(R.string.uploading_to_doctor_notif), Snackbar.LENGTH_LONG)
 //                        .setBackgroundColor(Color.BLACK)
