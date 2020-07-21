@@ -769,26 +769,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                     positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-//alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(R.color.colorPrimary);
-//alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-
-
-//                    Dialog d = new Dialog(context);
-//                    d.setCancelable(false);
-//                    TextView textView = new TextView(context);
-//                    textView.setText("Please select specialization");
-//                    d.setContentView(textView);
-//                    d.show();
-
-//                    TextView t = (TextView) speciality_spinner.getSelectedView();
-//                    t.setFocusable(true);
-//                    t.requestFocus();
-//                    t.setError("Please select specialization");
-//                    ((TextView)speciality_spinner.getSelectedView()).setFocusable(true)
-//                            .setError("Please select specialization");
-//                    speciality_spinner.requestFocus();
-//                    Toast.makeText(context, "Please select specialization", Toast.LENGTH_SHORT).show();
                 }
 
             }
