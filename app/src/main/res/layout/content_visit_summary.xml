@@ -1136,6 +1136,7 @@
                     android:layout_marginBottom="25dp"
                     android:layout_marginHorizontal="10dp"
                     android:focusable="true"
+                    android:entries="@array/speciality_values"
                    />
 
             </LinearLayout>

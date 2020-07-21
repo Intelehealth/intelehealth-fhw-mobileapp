@@ -509,12 +509,30 @@ public class VisitSummaryActivity extends AppCompatActivity {
         VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
 
         List<String> items  = providerAttributeLIstDAO.getAllValues();
+        items = null;
         String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid);
         //Hashmap to List<String> add all value
-        items.add(0, "Select Specialization");
-        ArrayAdapter<String> stringArrayAdapter =
-                new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        speciality_spinner.setAdapter(stringArrayAdapter);
+        ArrayAdapter<String> stringArrayAdapter;
+
+        if(items != null)
+        {
+            items.add(0, "Select Specialization");
+             stringArrayAdapter =
+                    new ArrayAdapter<String>
+                            (this, android.R.layout.simple_spinner_dropdown_item, items);
+            speciality_spinner.setAdapter(stringArrayAdapter);
+        }
+        else
+        {
+             stringArrayAdapter =
+                    new ArrayAdapter<String>
+                            (this, android.R.layout.simple_spinner_dropdown_item,
+                                    getResources().getStringArray(R.array.speciality_values));
+            speciality_spinner.setAdapter(stringArrayAdapter);
+        }
+
+
+
 
         if(special_value != null)
         {

@@ -14,9 +14,8 @@
     </string-array>
 
     <string-array name="speciality_values">
-        <item>Select Speciality</item>
-        <item>Heart</item>
-        <item>Lungs</item>
+        <item>Select Specialization</item>
+        <item>General Physician</item>
     </string-array>
 
 
