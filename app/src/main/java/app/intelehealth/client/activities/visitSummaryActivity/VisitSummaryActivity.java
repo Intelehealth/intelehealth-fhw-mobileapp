@@ -1,5 +1,6 @@
 package app.intelehealth.client.activities.visitSummaryActivity;
 
+import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
@@ -76,6 +77,7 @@ import com.google.gson.JsonObject;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.text.DecimalFormat;
@@ -639,60 +641,57 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(!speciality_selected.equalsIgnoreCase("Select Specialization"))
-                {
+                if (speciality_spinner.getSelectedItemPosition() != 0) {
                     VisitsDAO visitsDAO_speciality = new VisitsDAO();
                     boolean isUpdateVisitDone = false;
                     try {
                         isUpdateVisitDone = visitsDAO_speciality.update_visitTbl_speciality
                                 (speciality_selected, visitUuid);
 
-                        Log.d("Update_Special_Visit", "Update_Special_Visit: "+ isUpdateVisitDone);
+                        Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                     } catch (DAOException e) {
                         e.printStackTrace();
-                        Log.d("Update_Special_Visit", "Update_Special_Visit: "+ isUpdateVisitDone);
+                        Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                     }
-                }
 
 
-
-                if (flag.isChecked()) {
-                    try {
-                        EncounterDAO encounterDAO = new EncounterDAO();
-                        encounterDAO.setEmergency(visitUuid, true);
-                    } catch (DAOException e) {
-                        FirebaseCrashlytics.getInstance().recordException(e);
+                    if (flag.isChecked()) {
+                        try {
+                            EncounterDAO encounterDAO = new EncounterDAO();
+                            encounterDAO.setEmergency(visitUuid, true);
+                        } catch (DAOException e) {
+                            FirebaseCrashlytics.getInstance().recordException(e);
+                        }
                     }
-                }
-                if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
-                    String patientSelection = "uuid = ?";
-                    String[] patientArgs = {String.valueOf(patient.getUuid())};
-                    String table = "tbl_patient";
-                    String[] columnsToReturn = {"openmrs_id"};
-                    final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
+                    if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
+                        String patientSelection = "uuid = ?";
+                        String[] patientArgs = {String.valueOf(patient.getUuid())};
+                        String table = "tbl_patient";
+                        String[] columnsToReturn = {"openmrs_id"};
+                        final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
 
 
-                    if (idCursor.moveToFirst()) {
-                        do {
-                            patient.setOpenmrs_id(idCursor.getString(idCursor.getColumnIndex("openmrs_id")));
-                        } while (idCursor.moveToNext());
+                        if (idCursor.moveToFirst()) {
+                            do {
+                                patient.setOpenmrs_id(idCursor.getString(idCursor.getColumnIndex("openmrs_id")));
+                            } while (idCursor.moveToNext());
+                        }
+                        idCursor.close();
                     }
-                    idCursor.close();
-                }
 
-                if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
-                }
-
-                if (visitUUID == null || visitUUID.isEmpty()) {
-                    String visitIDSelection = "uuid = ?";
-                    String[] visitIDArgs = {visitUuid};
-                    final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, null);
-                    if (visitIDCursor != null && visitIDCursor.moveToFirst()) {
-                        visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
+                    if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
                     }
-                    if (visitIDCursor != null)
-                        visitIDCursor.close();
-                }
+
+                    if (visitUUID == null || visitUUID.isEmpty()) {
+                        String visitIDSelection = "uuid = ?";
+                        String[] visitIDArgs = {visitUuid};
+                        final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, null);
+                        if (visitIDCursor != null && visitIDCursor.moveToFirst()) {
+                            visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
+                        }
+                        if (visitIDCursor != null)
+                            visitIDCursor.close();
+                    }
 //                String[] columnsToReturn = {"startdate"};
 //                String visitIDorderBy = "startdate";
 //                String visitIDSelection = "uuid = ?";
@@ -702,10 +701,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //                String startDateTime = visitIDCursor1.getString(visitIDCursor1.getColumnIndexOrThrow("startdate"));
 //                visitIDCursor1.close();
 
-                if (!flag.isChecked()) {
-                    //
-                }
-
+                    if (!flag.isChecked()) {
+                        //
+                    }
 
 
 //                new Restaurant(VisitSummaryActivity.this, getString(R.string.uploading_to_doctor_notif), Snackbar.LENGTH_LONG)
@@ -713,42 +711,87 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //                        .setTextColor(Color.WHITE)
 //                        .show();
 
-                if (NetworkConnection.isOnline(getApplication())) {
-                    Toast.makeText(context, getResources().getString(R.string.upload_started), Toast.LENGTH_LONG).show();
+                    if (NetworkConnection.isOnline(getApplication())) {
+                        Toast.makeText(context, getResources().getString(R.string.upload_started), Toast.LENGTH_LONG).show();
 
 //                    AppConstants.notificationUtils.showNotifications(getString(R.string.visit_data_upload), getString(R.string.uploading_visit_data_notif), 3, VisitSummaryActivity.this);
-                    SyncDAO syncDAO = new SyncDAO();
+                        SyncDAO syncDAO = new SyncDAO();
 //                    ProgressDialog pd = new ProgressDialog(VisitSummaryActivity.this);
 //                    pd.setTitle(getString(R.string.syncing_visitDialog));
 //                    pd.show();
 //                    pd.setCancelable(false);
 
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
 //                            Added the 4 sec delay and then push data.For some reason doing immediately does not work
-                            //Do something after 100ms
-                            SyncUtils syncUtils = new SyncUtils();
-                            boolean isSynced = syncUtils.syncForeground("visitSummary");
-                            if (isSynced) {
-                                AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload), getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity.this);
-                                //
-                                showVisitID();
-                            } else {
-                                AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
+                                //Do something after 100ms
+                                SyncUtils syncUtils = new SyncUtils();
+                                boolean isSynced = syncUtils.syncForeground("visitSummary");
+                                if (isSynced) {
+                                    AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload), getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity.this);
+                                    //
+                                    showVisitID();
+                                } else {
+                                    AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
 
-                            }
-                            uploaded = true;
+                                }
+                                uploaded = true;
 //                            pd.dismiss();
 //                            Toast.makeText(VisitSummaryActivity.this, getString(R.string.upload_completed), Toast.LENGTH_SHORT).show();
-                        }
-                    }, 4000);
-                } else {
-                    AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
+                            }
+                        }, 4000);
+                    } else {
+                        AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
+                    }
                 }
-            }
+                else
+                {
+                    TextView t = (TextView) speciality_spinner.getSelectedView();
+                    t.setError("Please select specialization");
+                    t.setTextColor(Color.RED);
 
+                    AlertDialog.Builder builder = new AlertDialog.Builder(VisitSummaryActivity.this)
+                            .setMessage("Please select specialization")
+                            .setCancelable(false)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            });
+
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+
+                    Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+                    positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+//alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(R.color.colorPrimary);
+//alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+
+
+//                    Dialog d = new Dialog(context);
+//                    d.setCancelable(false);
+//                    TextView textView = new TextView(context);
+//                    textView.setText("Please select specialization");
+//                    d.setContentView(textView);
+//                    d.show();
+
+//                    TextView t = (TextView) speciality_spinner.getSelectedView();
+//                    t.setFocusable(true);
+//                    t.requestFocus();
+//                    t.setError("Please select specialization");
+//                    ((TextView)speciality_spinner.getSelectedView()).setFocusable(true)
+//                            .setError("Please select specialization");
+//                    speciality_spinner.requestFocus();
+//                    Toast.makeText(context, "Please select specialization", Toast.LENGTH_SHORT).show();
+                }
+
+            }
         });
 
         if (intentTag != null && intentTag.equals("prior")) {
