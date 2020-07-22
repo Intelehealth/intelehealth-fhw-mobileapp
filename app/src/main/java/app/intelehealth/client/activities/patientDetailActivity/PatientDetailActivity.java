@@ -534,7 +534,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         if (patient_new.getOccupation() != null && !patient_new.getOccupation().equals("")) {
             occuView.setText(patient_new.getOccupation());
         } else {
-            occuRow.setVisibility(View.GONE);
+//            occuRow.setVisibility(View.GONE);
+            occuView.setText("");
         }
 
         if (visitUuid != null && !visitUuid.isEmpty()) {
