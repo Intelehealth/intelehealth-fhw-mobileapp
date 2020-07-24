@@ -20,17 +20,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
             android:paddingRight="@dimen/activity_horizontal_margin">
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
@@ -47,10 +45,16 @@
                     android:id="@+id/list_item_body_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:fontFamily="@font/lato_regular"
                     android:includeFontPadding="false"
-                    android:text="Age: 11 years, 5 months"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:text="Age: 11 years, 5 months" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="3pt">
+
+                </View>
             </LinearLayout>
 
             <LinearLayout
@@ -69,9 +73,9 @@
                     android:fontFamily="@font/lato_bold"
                     android:paddingStart="5dp"
                     android:paddingTop="3dp"
-                    android:text="Active"
                     android:paddingEnd="5dp"
-                    android:paddingBottom="3dp" />
+                    android:paddingBottom="3dp"
+                    android:text="Active" />
 
                 <TextView
                     android:id="@+id/tv_not_uploaded"

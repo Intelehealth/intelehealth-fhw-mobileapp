@@ -70,10 +70,9 @@ public class DateAndTimeUtils {
         }
 
     }
-
+    //calculate year, month, days from two date
     public static String getAgeInYearMonth(String s, Context context) {
         if (s == null) return "";
-
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date date = null;
@@ -95,21 +94,21 @@ public class DateAndTimeUtils {
         Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
 
         String age = "";
-        if (period.getMonths() != 0)
-            age = period.getYears() + " " + context.getResources().getString(R.string.years) + ", " + period.getMonths() + " " + context.getResources().getString(R.string.months);
-        else
-            age = period.getYears() + " " + context.getResources().getString(R.string.years);
+        String tyears = "", tmonth = "", tdays = "";
+
+        if(period.getYears() > 0)
+            tyears = period.getYears() + " " + context.getResources().getString(R.string.years);
+
+        if(period.getMonths() > 0)
+            tmonth = period.getMonths() + " " + context.getResources().getString(R.string.months);
+
+        if(period.getDays() > 0)
+            tdays = period.getDays() + " " + context.getResources().getString(R.string.days);
+
+        age = " "+tyears + " " + tmonth + " " + tdays;
 
         return age;
     }
-
-    public static String getSubtractedPulledExcutedTime(String lastPulledTime) {
-        Calendar now = Calendar.getInstance();
-
-
-        return "";
-    }
-
     public static String getFormatedDateOfBirth(String oldformatteddate) {
 
         DateFormat originalFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);

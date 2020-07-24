@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="3pt"
             android:paddingRight="@dimen/activity_horizontal_margin">
 
             <LinearLayout
@@ -31,6 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
+
                 android:orientation="vertical">
 
                 <TextView
@@ -48,8 +50,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/lato_regular"
-                    android:includeFontPadding="false"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:includeFontPadding="false" />
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="3pt"></View>
             </LinearLayout>
 
             <LinearLayout
@@ -96,6 +100,7 @@
                 android:tag="0" />
 
         </LinearLayout>
+
     </androidx.cardview.widget.CardView>
 
 
