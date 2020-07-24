@@ -47,7 +47,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/lato_regular"
-                    android:includeFontPadding="false"
                     android:text="Age: 11 years, 5 months" />
 
                 <View
