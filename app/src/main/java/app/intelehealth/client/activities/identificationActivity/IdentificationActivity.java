@@ -19,8 +19,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.text.TextWatcher;
 import android.util.EventLog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -70,11 +72,13 @@ import app.intelehealth.client.database.dao.ImagesPushDAO;
 import app.intelehealth.client.database.dao.PatientsDAO;
 import app.intelehealth.client.database.dao.SyncDAO;
 import app.intelehealth.client.models.Patient;
+import app.intelehealth.client.models.Resource;
 import app.intelehealth.client.models.dto.PatientAttributesDTO;
 import app.intelehealth.client.models.dto.PatientDTO;
 import app.intelehealth.client.utilities.DateAndTimeUtils;
 import app.intelehealth.client.utilities.EditTextUtils;
 import app.intelehealth.client.utilities.FileUtils;
+import app.intelehealth.client.utilities.IReturnValues;
 import app.intelehealth.client.utilities.Logger;
 import app.intelehealth.client.utilities.SessionManager;
 import app.intelehealth.client.utilities.UuidGenerator;
@@ -151,6 +155,8 @@ public class IdentificationActivity extends AppCompatActivity {
     private int retainPickerYear;
     private int retainPickerMonth;
     private int retainPickerDate;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -606,12 +612,19 @@ public class IdentificationActivity extends AppCompatActivity {
                 mDOBYear = year;
                 mDOBMonth = monthOfYear;
                 mDOBDay = dayOfMonth;
-                mAgeYears = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
-                mAgeMonths = today.get(Calendar.MONTH) - dob.get(Calendar.MONTH);
-                mAgeDays = today.get(Calendar.DATE) - dob.get(Calendar.DATE);
+
                 String age = getYear(dob.get(Calendar.YEAR), dob.get(Calendar.MONTH), dob.get(Calendar.DATE), today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DATE));
+                //get years months days
+                String [] frtData = age.split("-");
+
+                String [] yearData = frtData[0].split(" ");
+                String [] monthData = frtData[1].split(" ");
+                String [] daysData = frtData[2].split(" ");
+
+                mAgeYears = Integer.valueOf(yearData[0]);
+                mAgeMonths = Integer.valueOf(monthData[1]);
+                mAgeDays = Integer.valueOf(daysData[1]);
                 mAge.setText(age);
-                // mAge.setText(ageString);
 
             }
         }, mDOBYear, mDOBMonth, mDOBDay);
@@ -627,11 +640,17 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
         //if patient update then age will be set
-        if (patientID_edit != null) {
-            int age = DateAndTimeUtils.getAge(patient1.getDate_of_birth(), context);
+        if (patientID_edit != null)
+        {
             mDOB.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
-            int month = DateAndTimeUtils.getMonth(patient1.getDate_of_birth());
-            mAge.setText(age + getString(R.string.identification_screen_text_years) + month + getString(R.string.identification_screen_text_months));
+            //get year month days
+            String yrMoDays = DateAndTimeUtils.getAgeInYearMonth(patient1.getDate_of_birth(),context);
+
+            String [] ymdData = DateAndTimeUtils.getAgeInYearMonth(patient1.getDate_of_birth()).split(" ");
+            mAgeYears = Integer.valueOf(ymdData[0]);
+            mAgeMonths = Integer.valueOf(ymdData[1]);
+            mAgeDays = Integer.valueOf(ymdData[2]);
+            mAge.setText(yrMoDays);
         }
         mAge.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -642,31 +661,70 @@ public class IdentificationActivity extends AppCompatActivity {
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.dialog_2_numbers_picker, null);
                 mAgePicker.setView(convertView);
-                final NumberPicker yearPicker = convertView.findViewById(R.id.dialog_2_numbers_quantity);
-                final NumberPicker monthPicker = convertView.findViewById(R.id.dialog_2_numbers_unit);
-                final NumberPicker dayPicker = convertView.findViewById(R.id.dialog_3_numbers_unit);
+                NumberPicker yearPicker = convertView.findViewById(R.id.dialog_2_numbers_quantity);
+                NumberPicker monthPicker = convertView.findViewById(R.id.dialog_2_numbers_unit);
+                NumberPicker dayPicker = convertView.findViewById(R.id.dialog_3_numbers_unit);
+
                 final TextView middleText = convertView.findViewById(R.id.dialog_2_numbers_text);
                 final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
                 final TextView dayTv = convertView.findViewById(R.id.dialog_2_numbers_text_3);
+
                 int totalDays = today.getActualMaximum(Calendar.DAY_OF_MONTH);
                 dayTv.setText(getString(R.string.days));
                 middleText.setText(getString(R.string.identification_screen_picker_years));
                 endText.setText(getString(R.string.identification_screen_picker_months));
-                dayPicker.setMinValue(0);
-                dayPicker.setMaxValue(31);
+
 
                 yearPicker.setMinValue(0);
                 yearPicker.setMaxValue(100);
                 monthPicker.setMinValue(0);
                 monthPicker.setMaxValue(12);
-                retainPickerYear=yearPicker.getValue();
+
+                dayPicker.setMinValue(0);
+                dayPicker.setMaxValue(31);
+
+                EditText yearText = yearPicker.findViewById(Resources.getSystem().getIdentifier("numberpicker_input", "id", "android"));
+                EditText monthText = monthPicker.findViewById(Resources.getSystem().getIdentifier("numberpicker_input", "id", "android"));
+                EditText dayText = dayPicker.findViewById(Resources.getSystem().getIdentifier("numberpicker_input", "id", "android"));
+
+
+                yearPicker.setValue(mAgeYears);
+                monthPicker.setValue(mAgeMonths);
+                dayPicker.setValue(mAgeDays);
+
+                //year
+                EditTextUtils.returnEditextValues(new IReturnValues() {
+                    @Override
+                    public void onReturnValue(String value) {
+                        mAgeYears = Integer.valueOf(value);
+                    }
+                },yearText);
+
+                //month
+                EditTextUtils.returnEditextValues(new IReturnValues() {
+                    @Override
+                    public void onReturnValue(String value) {
+                        mAgeMonths = Integer.valueOf(value);
+                    }
+                },monthText);
+
+                //day
+                EditTextUtils.returnEditextValues(new IReturnValues() {
+                    @Override
+                    public void onReturnValue(String value) {
+                        mAgeDays = Integer.valueOf(value);
+                    }
+                },dayText);
+
+
+                /*retainPickerYear=yearPicker.getValue();
                 retainPickerMonth=monthPicker.getValue();
                 retainPickerDate=dayPicker.getValue();
 
-               /* yearPicker.setValue(retainPickerYear);
+                yearPicker.setValue(retainPickerYear);
                 monthPicker.setValue(retainPickerMonth);
                 dayPicker.setValue(retainPickerDate);
-*/
+
                 if (mAgeYears > 0) {
                     yearPicker.setValue(mAgeYears);
                 }
@@ -675,27 +733,32 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
                 if (mAgeDays > 0) {
                     dayPicker.setValue(mAgeDays);
-                }
-
+                }*/
                 mAgePicker.setPositiveButton(R.string.generic_ok, (dialog, which) -> {
 
-                    retainPickerYear = yearPicker.getValue();
+                    /*retainPickerYear = yearPicker.getValue();
                     retainPickerMonth = monthPicker.getValue();
                     retainPickerDate = dayPicker.getValue();
 
                     yearPicker.setValue(retainPickerYear);
                     monthPicker.setValue(retainPickerMonth);
-                    dayPicker.setValue(retainPickerDate);
-                    String ageString = yearPicker.getValue() + getString(R.string.identification_screen_text_years) + " - " + monthPicker.getValue() + getString(R.string.identification_screen_text_months) + " - " + dayPicker.getValue() + getString(R.string.days);
+                    dayPicker.setValue(retainPickerDate);*/
+
+                    String ageString = mAgeYears + getString(R.string.identification_screen_text_years) + " - " +
+                                       mAgeMonths + getString(R.string.identification_screen_text_months) + " - " +
+                                       mAgeDays + getString(R.string.days);
                     mAge.setText(ageString);
 
 
                     Calendar calendar = Calendar.getInstance();
                     int curYear = calendar.get(Calendar.YEAR);
-                    int birthYear = curYear - yearPicker.getValue();
+                    //int birthYear = curYear - yearPicker.getValue();
+                    int birthYear = curYear - mAgeYears;
                     int curMonth = calendar.get(Calendar.MONTH);
-                    int birthMonth = curMonth - monthPicker.getValue();
-                    int birthDay = calendar.get(Calendar.DAY_OF_MONTH) - dayPicker.getValue();
+                    //int birthMonth = curMonth - monthPicker.getValue();
+                    int birthMonth = curMonth - mAgeMonths;
+                    //int birthDay = calendar.get(Calendar.DAY_OF_MONTH) - dayPicker.getValue();
+                    int birthDay = calendar.get(Calendar.DAY_OF_MONTH) - mAgeDays;
                     mDOBYear = birthYear;
                     mDOBMonth = birthMonth;
 

@@ -1,6 +1,9 @@
 package app.intelehealth.client.utilities;
 
+import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.EditText;
 
 import java.util.regex.Matcher;
@@ -23,6 +26,23 @@ public class EditTextUtils {
         Pattern pattern = Pattern.compile(SPECIAL_CHARACTERS);
         Matcher matcher = pattern.matcher(text);
         return matcher.matches();
+    }
+
+    //return editext values
+    public static void returnEditextValues(IReturnValues iReturnValues, EditText editText)
+    {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                iReturnValues.onReturnValue(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
     }
 
 }
