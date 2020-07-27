@@ -664,10 +664,12 @@ public class IdentificationActivity extends AppCompatActivity {
                 NumberPicker yearPicker = convertView.findViewById(R.id.dialog_2_numbers_quantity);
                 NumberPicker monthPicker = convertView.findViewById(R.id.dialog_2_numbers_unit);
                 NumberPicker dayPicker = convertView.findViewById(R.id.dialog_3_numbers_unit);
+                dayPicker.setVisibility(View.VISIBLE);
 
                 final TextView middleText = convertView.findViewById(R.id.dialog_2_numbers_text);
                 final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
                 final TextView dayTv = convertView.findViewById(R.id.dialog_2_numbers_text_3);
+                dayPicker.setVisibility(View.VISIBLE);
 
                 int totalDays = today.getActualMaximum(Calendar.DAY_OF_MONTH);
                 dayTv.setText(getString(R.string.days));
