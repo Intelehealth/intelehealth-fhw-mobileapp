@@ -637,8 +637,6 @@ public class IdentificationActivity extends AppCompatActivity {
                 mDOBPicker.show();
             }
         });
-
-
         //if patient update then age will be set
         if (patientID_edit != null)
         {
@@ -717,35 +715,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         mAgeDays = Integer.valueOf(value);
                     }
                 },dayText);
-
-
-                /*retainPickerYear=yearPicker.getValue();
-                retainPickerMonth=monthPicker.getValue();
-                retainPickerDate=dayPicker.getValue();
-
-                yearPicker.setValue(retainPickerYear);
-                monthPicker.setValue(retainPickerMonth);
-                dayPicker.setValue(retainPickerDate);
-
-                if (mAgeYears > 0) {
-                    yearPicker.setValue(mAgeYears);
-                }
-                if (mAgeMonths > 0) {
-                    monthPicker.setValue(mAgeMonths);
-                }
-                if (mAgeDays > 0) {
-                    dayPicker.setValue(mAgeDays);
-                }*/
                 mAgePicker.setPositiveButton(R.string.generic_ok, (dialog, which) -> {
-
-                    /*retainPickerYear = yearPicker.getValue();
-                    retainPickerMonth = monthPicker.getValue();
-                    retainPickerDate = dayPicker.getValue();
-
-                    yearPicker.setValue(retainPickerYear);
-                    monthPicker.setValue(retainPickerMonth);
-                    dayPicker.setValue(retainPickerDate);*/
-
                     String ageString = mAgeYears + getString(R.string.identification_screen_text_years) + " - " +
                                        mAgeMonths + getString(R.string.identification_screen_text_months) + " - " +
                                        mAgeDays + getString(R.string.days);

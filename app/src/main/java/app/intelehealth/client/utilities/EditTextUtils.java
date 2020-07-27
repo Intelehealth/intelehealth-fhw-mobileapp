@@ -37,7 +37,17 @@ public class EditTextUtils {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                iReturnValues.onReturnValue(s.toString());
+                if(s.length() > 0)
+                {
+                    if(Integer.valueOf(s.toString()) > 0 )
+                        iReturnValues.onReturnValue(s.toString());
+                    else
+                        iReturnValues.onReturnValue("0");
+                }
+                else
+                    iReturnValues.onReturnValue("0");
+
+
             }
 
             @Override
