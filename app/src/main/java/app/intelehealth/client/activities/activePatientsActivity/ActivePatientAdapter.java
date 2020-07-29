@@ -76,9 +76,11 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
 
 
 //        int age = DateAndTimeUtils.getAge(activePatientModel.getDate_of_birth());
+
+        //get date of birth and convert it into years and months
         String age = DateAndTimeUtils.getAgeInYearMonth(activePatientModel.getDate_of_birth(), context);
         String dob = DateAndTimeUtils.SimpleDatetoLongDate(activePatientModel.getDate_of_birth());
-        String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
+        String body = context.getString(R.string.identification_screen_prompt_age) + "" + age;
 
 
         holder.getHeadTextView().setText(header);
