@@ -32,6 +32,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -161,6 +162,7 @@ public class IdentificationActivity extends AppCompatActivity {
     //Health_Scheme_Fields
     MaterialCheckBox ma_checkbox, ab_checkbox, none_checkbox;
     FrameLayout frameLayout;
+    TextView health_textview;
 
 
 
@@ -235,6 +237,7 @@ public class IdentificationActivity extends AppCompatActivity {
         ab_checkbox = findViewById(R.id.ab_checkbox);
         none_checkbox = findViewById(R.id.none_checkbox);
         frameLayout = findViewById(R.id.health_framelayout);
+        health_textview = findViewById(R.id.health_textview);
 
 //Initialize the local database to store patient information
 
@@ -781,6 +784,28 @@ public class IdentificationActivity extends AppCompatActivity {
                 IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
             }
         });
+
+        ma_checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                none_checkbox.setChecked(false);
+            }
+        });
+
+        ab_checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                none_checkbox.setChecked(false);
+            }
+        });
+
+        none_checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                ma_checkbox.setChecked(false);
+                ab_checkbox.setChecked(false);
+            }
+        });
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(v -> {
             if (patientID_edit != null) {
@@ -1108,7 +1133,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                 && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
-                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked())) {
+                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked()) && (ma_checkbox.isChecked() || ab_checkbox.isChecked() || none_checkbox.isChecked())) {
 
             Log.v(TAG, "Result");
 
@@ -1131,6 +1156,29 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if (mCity.getText().toString().equals("")) {
                 mCity.setError(getString(R.string.error_field_required));
+            }
+
+            if(!ma_checkbox.isChecked() || !ma_checkbox.isChecked() || !ma_checkbox.isChecked())
+            {
+                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+                alertDialogBuilder.setTitle("Health Scheme Card");
+                alertDialogBuilder.setMessage("Please select the option for Health Scheme Card");
+                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+
+//                health_textview.setError("Please Select an option");
+//                health_textview.requestFocus();
             }
 
             if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
