@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
@@ -33,6 +34,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
@@ -156,6 +158,10 @@ public class IdentificationActivity extends AppCompatActivity {
     private int retainPickerMonth;
     private int retainPickerDate;
 
+    //Health_Scheme_Fields
+    MaterialCheckBox ma_checkbox, ab_checkbox, none_checkbox;
+    FrameLayout frameLayout;
+
 
 
     @Override
@@ -224,6 +230,12 @@ public class IdentificationActivity extends AppCompatActivity {
         educationLayout = findViewById(R.id.identification_txtleducation);
         countryStateLayout = findViewById(R.id.identification_llcountry_state);
         mImageView = findViewById(R.id.imageview_id_picture);
+
+        ma_checkbox = findViewById(R.id.ma_checkbox);
+        ab_checkbox = findViewById(R.id.ab_checkbox);
+        none_checkbox = findViewById(R.id.none_checkbox);
+        frameLayout = findViewById(R.id.health_framelayout);
+
 //Initialize the local database to store patient information
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
@@ -351,6 +363,15 @@ public class IdentificationActivity extends AppCompatActivity {
                 EditTextUtils.setEditTextMaxLength(10, mPhoneNum);
             } else if (country1.equalsIgnoreCase("Philippines")) {
                 EditTextUtils.setEditTextMaxLength(11, mPhoneNum);
+            }
+
+            if(obj.getBoolean("health_scheme_card"))
+            {
+                frameLayout.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                frameLayout.setVisibility(View.GONE);
             }
 
         } catch (JSONException e) {
