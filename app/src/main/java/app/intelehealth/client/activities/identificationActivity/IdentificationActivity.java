@@ -163,6 +163,7 @@ public class IdentificationActivity extends AppCompatActivity {
     MaterialCheckBox ma_checkbox, ab_checkbox, none_checkbox;
     FrameLayout frameLayout;
     TextView health_textview;
+    String ma_string, ab_string, none_string, html_health;
 
 
 
@@ -789,6 +790,7 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 none_checkbox.setChecked(false);
+                ma_string = ma_checkbox.getText().toString();
             }
         });
 
@@ -796,6 +798,7 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 none_checkbox.setChecked(false);
+                ab_string = ab_checkbox.getText().toString();
             }
         });
 
@@ -804,8 +807,13 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 ma_checkbox.setChecked(false);
                 ab_checkbox.setChecked(false);
+                none_string = none_checkbox.getText().toString();
             }
         });
+
+//        html_health = "<p>"+ma_string+"</p><br><p>"+ab_string+"</p>";
+
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(v -> {
             if (patientID_edit != null) {
@@ -1096,6 +1104,9 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }
 
+
+
+
         ArrayList<EditText> values = new ArrayList<>();
         values.add(mFirstName);
         values.add(mMiddleName);
@@ -1131,35 +1142,36 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 */
 
-        if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-                && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
-                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked()) && (ma_checkbox.isChecked() || ab_checkbox.isChecked() || none_checkbox.isChecked())) {
+if(frameLayout.getVisibility() == View.VISIBLE) {
+    if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
+            && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
+            !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked()) && (ma_checkbox.isChecked() || ab_checkbox.isChecked() || none_checkbox.isChecked())) {
 
-            Log.v(TAG, "Result");
+        Log.v(TAG, "Result");
 
-        } else {
-            if (mFirstName.getText().toString().equals("")) {
-                mFirstName.setError(getString(R.string.error_field_required));
-            }
+    } else {
+        if (mFirstName.getText().toString().equals("")) {
+            mFirstName.setError(getString(R.string.error_field_required));
+        }
 
-            if (mLastName.getText().toString().equals("")) {
-                mLastName.setError(getString(R.string.error_field_required));
-            }
+        if (mLastName.getText().toString().equals("")) {
+            mLastName.setError(getString(R.string.error_field_required));
+        }
 
-            if (mDOB.getText().toString().equals("")) {
-                mDOB.setError(getString(R.string.error_field_required));
-            }
+        if (mDOB.getText().toString().equals("")) {
+            mDOB.setError(getString(R.string.error_field_required));
+        }
 
-            if (mAge.getText().toString().equals("")) {
-                mAge.setError(getString(R.string.error_field_required));
-            }
+        if (mAge.getText().toString().equals("")) {
+            mAge.setError(getString(R.string.error_field_required));
+        }
 
-            if (mCity.getText().toString().equals("")) {
-                mCity.setError(getString(R.string.error_field_required));
-            }
+        if (mCity.getText().toString().equals("")) {
+            mCity.setError(getString(R.string.error_field_required));
+        }
 
-            if(!ma_checkbox.isChecked() || !ma_checkbox.isChecked() || !ma_checkbox.isChecked())
-            {
+        if (frameLayout.getVisibility() == View.VISIBLE) {
+            if (!ma_checkbox.isChecked() || !ma_checkbox.isChecked() || !ma_checkbox.isChecked()) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
                 alertDialogBuilder.setTitle("Health Scheme Card");
                 alertDialogBuilder.setMessage("Please select the option for Health Scheme Card");
@@ -1181,31 +1193,89 @@ public class IdentificationActivity extends AppCompatActivity {
 //                health_textview.requestFocus();
             }
 
-            if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
-                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
-                alertDialogBuilder.setTitle(R.string.error);
-                alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
-                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-
-                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
-
-            }
-
-
-            Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
-            return;
         }
 
+        if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+            alertDialogBuilder.setTitle(R.string.error);
+            alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+            Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+            //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+            IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+
+        }
+
+
+        Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
+        return;
+    }
+}
+else
+{
+    if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
+            && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
+            !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked())) {
+
+        Log.v(TAG, "Result");
+
+    }
+    else
+    {
+        if (mFirstName.getText().toString().equals("")) {
+            mFirstName.setError(getString(R.string.error_field_required));
+        }
+
+        if (mLastName.getText().toString().equals("")) {
+            mLastName.setError(getString(R.string.error_field_required));
+        }
+
+        if (mDOB.getText().toString().equals("")) {
+            mDOB.setError(getString(R.string.error_field_required));
+        }
+
+        if (mAge.getText().toString().equals("")) {
+            mAge.setError(getString(R.string.error_field_required));
+        }
+
+        if (mCity.getText().toString().equals("")) {
+            mCity.setError(getString(R.string.error_field_required));
+        }
+
+        if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+            alertDialogBuilder.setTitle(R.string.error);
+            alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+            Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+            //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+            IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+
+        }
+
+
+        Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
+        return;
+    }
+}
         if (mCountry.getSelectedItemPosition() == 0) {
             countryText.setError(getString(R.string.error_field_required));
             focusView = countryText;
@@ -1270,6 +1340,23 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
             patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
+
+            if(frameLayout.getVisibility() == View.VISIBLE)
+            {
+                health_condition(); //This will call the function to send the health data.
+            }
+
+            if(frameLayout.getVisibility() == View.VISIBLE)
+            {
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid
+                        (patientsDAO.getUuidForAttribute("Health insurance card"));
+                patientAttributesDTO.setValue(StringUtils
+                        .getValue(html_health));
+                patientAttributesDTOList.add(patientAttributesDTO);
+            }
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -1468,6 +1555,26 @@ public class IdentificationActivity extends AppCompatActivity {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
+    }
+
+    public void health_condition()
+    {
+        if(ma_checkbox.isChecked() && !ab_checkbox.isChecked())
+        {
+            html_health = "<p>"+ma_string+"</p>";
+        }
+        else if (ab_checkbox.isChecked() && !ma_checkbox.isChecked() )
+        {
+            html_health = "<p>"+ab_string+"</p>";
+        }
+        else if (none_checkbox.isChecked())
+        {
+            html_health = "<p>"+none_string+"</p>";
+        }
+        else if (ma_checkbox.isChecked() && ab_checkbox.isChecked())
+        {
+            html_health = ma_string + "\n"+ab_string;
+        }
     }
 
 
