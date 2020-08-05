@@ -41,6 +41,7 @@ public class UuidDictionary {
     public static final String ENCOUNTER_ADULTINITIAL = "8d5b27bc-c2cc-11de-8d13-0010c6dffd0f";
     public static final String ENCOUNTER_VITALS = "67a71486-1a54-468f-ac3e-7091a9a79584";
     public static final String ENCOUNTER_VISIT_NOTE = "d7151f82-c1f3-4152-a605-2f9ea7414a79";
+    public static final String ENCOUNTER_VISIT_COMPLETE = "bd1fbfaa-f5fb-4ebd-b75c-564506fc309e";
     public static final String ENCOUNTER_PATIENT_EXIT_SURVEY = "629a9d0b-48eb-405e-953d-a5964c88dc30";
 
     public static final String EMERGENCY_OBS = "ca5f5dc3-4f0b-4097-9cae-5cf2eb44a09c";

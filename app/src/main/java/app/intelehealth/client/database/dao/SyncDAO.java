@@ -133,7 +133,7 @@ public class SyncDAO {
                             ArrayList<String> encounterVisitUUID = new ArrayList<String>();
                             for (int i = 0; i < response.body().getData().getEncounterDTO().size(); i++) {
                                 if (response.body().getData().getEncounterDTO().get(i)
-                                        .getEncounterTypeUuid().equalsIgnoreCase("d7151f82-c1f3-4152-a605-2f9ea7414a79")) {
+                                        .getEncounterTypeUuid().equalsIgnoreCase("bd1fbfaa-f5fb-4ebd-b75c-564506fc309e")) {
                                     encounterVisitUUID.add(response.body().getData().getEncounterDTO().get(i).getVisituuid());
                                 }
                             }
@@ -243,7 +243,7 @@ public class SyncDAO {
                             ArrayList<String> encounterVisitUUID = new ArrayList<String>();
                             for (int i = 0; i < response.body().getData().getEncounterDTO().size(); i++) {
                                 if (response.body().getData().getEncounterDTO().get(i)
-                                        .getEncounterTypeUuid().equalsIgnoreCase("d7151f82-c1f3-4152-a605-2f9ea7414a79")) {
+                                        .getEncounterTypeUuid().equalsIgnoreCase("bd1fbfaa-f5fb-4ebd-b75c-564506fc309e")) {
                                     encounterVisitUUID.add(response.body().getData().getEncounterDTO().get(i).getVisituuid());
                                 }
                             }

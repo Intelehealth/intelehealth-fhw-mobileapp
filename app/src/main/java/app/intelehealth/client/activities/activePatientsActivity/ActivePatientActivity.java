@@ -108,10 +108,10 @@ public class ActivePatientActivity extends AppCompatActivity {
         EncounterDAO encounterDAO = new EncounterDAO();
         List<EncounterDTO> encounterDTOList = encounterDAO.getAllEncounters();
 
-        //Get Visit Note Encounters only, visit note encounter id - d7151f82-c1f3-4152-a605-2f9ea7414a79
+        //Get Visit Complete Encounters only, visit complete encounter id - bd1fbfaa-f5fb-4ebd-b75c-564506fc309e
         if (encounterDTOList.size() > 0) {
             for (int i = 0; i < encounterDTOList.size(); i++) {
-                if (encounterDTOList.get(i).getEncounterTypeUuid().equalsIgnoreCase("d7151f82-c1f3-4152-a605-2f9ea7414a79")) {
+                if (encounterDTOList.get(i).getEncounterTypeUuid().equalsIgnoreCase("bd1fbfaa-f5fb-4ebd-b75c-564506fc309e")) {
                     encounterVisitUUID.add(encounterDTOList.get(i).getVisituuid());
                 }
             }
