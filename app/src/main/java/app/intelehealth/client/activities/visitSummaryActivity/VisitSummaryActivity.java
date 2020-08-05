@@ -750,13 +750,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
             respiratory.setVisibility(View.GONE);
         }
 
-        if(height.getValue().trim().equals("0"))
-        {
-            heightView.setText("-");
-        }
-        else
-        {
-            heightView.setText(height.getValue());
+        if (height.getValue() != null) {
+            if (height.getValue().trim().equals("0")) {
+                heightView.setText("-");
+            } else {
+                heightView.setText(height.getValue());
+            }
         }
 
         weightView.setText(weight.getValue());
@@ -1458,7 +1457,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
                 Log.i("Patient WebView", "page finished loading " + url);
                 int webview_heightContent = view.getContentHeight();
-                Log.d("variable i", "variable i: "+webview_heightContent);
+                Log.d("variable i", "variable i: " + webview_heightContent);
                 createWebPrintJob(view, webview_heightContent);
                 mWebView = null;
             }
@@ -1763,7 +1762,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     /**
      * This method creates a print job using PrintManager instance and PrintAdapter Instance
      *
-     * @param webView object of type WebView.
+     * @param webView       object of type WebView.
      * @param contentHeight
      */
     private void createWebPrintJob(WebView webView, int contentHeight) {
@@ -1774,10 +1773,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         // Get a print adapter instance
         PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter();
-        Log.d("webview content height", "webview content height: "+contentHeight);
+        Log.d("webview content height", "webview content height: " + contentHeight);
 
-        if(contentHeight > 2683 && contentHeight <= 3000)
-        {
+        if (contentHeight > 2683 && contentHeight <= 3000) {
             //medium size prescription...
             PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
             pBuilder.setMediaSize(PrintAttributes.MediaSize.ISO_B4);
@@ -1785,9 +1783,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String jobName = getString(R.string.app_name) + " Visit Summary";
             PrintJob printJob = printManager.print(jobName, printAdapter,
                     pBuilder.build());
-        }
-        else if(contentHeight == 0)
-        {
+        } else if (contentHeight == 0) {
             //in case of webview bug of 0 contents...
             PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
             pBuilder.setMediaSize(PrintAttributes.MediaSize.JIS_B4);
@@ -1795,9 +1791,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String jobName = getString(R.string.app_name) + " Visit Summary";
             PrintJob printJob = printManager.print(jobName, printAdapter,
                     pBuilder.build());
-        }
-        else if (contentHeight > 3000)
-        {
+        } else if (contentHeight > 3000) {
             //large size prescription...
             PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
             pBuilder.setMediaSize(PrintAttributes.MediaSize.JIS_B4);
@@ -1805,9 +1799,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String jobName = getString(R.string.app_name) + " Visit Summary";
             PrintJob printJob = printManager.print(jobName, printAdapter,
                     pBuilder.build());
-        }
-        else
-        {
+        } else {
             //small size prescription...
             // Create a print job with name and adapter instance
             String jobName = getString(R.string.app_name) + " Visit Summary";
