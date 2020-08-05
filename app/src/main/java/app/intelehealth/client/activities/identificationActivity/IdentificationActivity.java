@@ -399,6 +399,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mRelationship.setText(patient1.getSdw());
         mOccupation.setText(patient1.getOccupation());
         //helath_scheme...
+        Log.d("Health_scheme", "Scheme: "+ patient1.getHealth_scheme());
         if(patient1.getHealth_scheme() != null && !patient1.getHealth_scheme().isEmpty()) {
 
             if (patient1.getHealth_scheme().equalsIgnoreCase("<p>Mukhyamantri Amrutam scheme</p>"))
@@ -1371,13 +1372,10 @@ else
             patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
-            if(frameLayout.getVisibility() == View.VISIBLE)
-            {
-                health_condition(); //This will call the function to send the health data.
-            }
 
             if(frameLayout.getVisibility() == View.VISIBLE)
             {
+                html_health = health_condition();
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
@@ -1523,13 +1521,11 @@ else
         patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
         patientAttributesDTOList.add(patientAttributesDTO);
 
-        if(frameLayout.getVisibility() == View.VISIBLE)
-        {
-            health_condition(); //This will call the function to send the health data.
-        }
 
+        //based on availability of this atribute, it will be passed to the Edit field to update the attribute value.
         if(frameLayout.getVisibility() == View.VISIBLE)
         {
+            html_health = health_condition();
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
@@ -1604,29 +1600,30 @@ else
 
     }
 
-    public void health_condition()
+    public String health_condition()
     {
         if(ma_checkbox.isChecked() && !ab_checkbox.isChecked())
         {
-            html_health = "<p>"+ma_string+"</p>";
+            html_health = "<p>"+ma_checkbox.getText()+"</p>";
             result_selection = "option_1";
         }
         else if (ab_checkbox.isChecked() && !ma_checkbox.isChecked() )
         {
-            html_health = "<p>"+ab_string+"</p>";
+            html_health = "<p>"+ab_checkbox.getText()+"</p>";
             result_selection = "option_2";
         }
         else if (none_checkbox.isChecked())
         {
-            html_health = "<p>"+none_string+"</p>";
+            html_health = "<p>"+none_checkbox.getText()+"</p>";
             result_selection = "option_3";
         }
         else if (ma_checkbox.isChecked() && ab_checkbox.isChecked())
         {
-            html_health = ma_string + "\n"+ab_string;
+            html_health = ma_checkbox.getText() + "\n"+ab_checkbox.getText();
             result_selection = "option_4";
         }
-    }
 
+        return html_health;
+    }
 
 }
