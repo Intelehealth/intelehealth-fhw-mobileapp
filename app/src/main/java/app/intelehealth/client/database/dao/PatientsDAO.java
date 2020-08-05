@@ -110,6 +110,7 @@ public class PatientsDAO {
             patientAttributesList = patientDTO.getPatientAttributesDTOList();
             if (patientAttributesList != null)
                 insertPatientAttributes(patientAttributesList, db);
+            //patient attributes are stored in patient_attribute_table...
             Logger.logD("pulldata", "datadumper" + values);
             createdRecordsCount1 = db.insert("tbl_patient", null, values);
             db.setTransactionSuccessful();

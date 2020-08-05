@@ -163,7 +163,7 @@ public class IdentificationActivity extends AppCompatActivity {
     MaterialCheckBox ma_checkbox, ab_checkbox, none_checkbox;
     FrameLayout frameLayout;
     TextView health_textview;
-    String ma_string, ab_string, none_string, html_health;
+    String ma_string, ab_string, none_string, html_health, result_selection;
 
 
 
@@ -398,6 +398,34 @@ public class IdentificationActivity extends AppCompatActivity {
         mPostal.setText(patient1.getPostal_code());
         mRelationship.setText(patient1.getSdw());
         mOccupation.setText(patient1.getOccupation());
+        //helath_scheme...
+        if(patient1.getHealth_scheme() != null && !patient1.getHealth_scheme().isEmpty()) {
+
+            if (patient1.getHealth_scheme().equalsIgnoreCase("<p>Mukhyamantri Amrutam scheme</p>"))
+            {
+                ma_checkbox.setChecked(true);
+            }
+            else if (patient1.getHealth_scheme().equalsIgnoreCase("<p>Ayushman Bharat Card</p>"))
+            {
+                ab_checkbox.setChecked(true);
+            }
+            else if (patient1.getHealth_scheme().equalsIgnoreCase("<p>None of the above</p>"))
+            {
+                none_checkbox.setChecked(true);
+            }
+            else if (patient1.getHealth_scheme().equalsIgnoreCase
+                    ("Mukhyamantri Amrutam scheme\n" + "Ayushman Bharat Card"))
+            {
+                ma_checkbox.setChecked(true);
+                ab_checkbox.setChecked(true);
+            }
+        }
+        else
+        {
+            ma_checkbox.setChecked(false);
+            ab_checkbox.setChecked(false);
+            none_checkbox.setChecked(false);
+        }
 
         if (patient1.getPatient_photo() != null && !patient1.getPatient_photo().trim().isEmpty())
             mImageView.setImageBitmap(BitmapFactory.decodeFile(patient1.getPatient_photo()));
@@ -811,8 +839,6 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
 
-//        html_health = "<p>"+ma_string+"</p><br><p>"+ab_string+"</p>";
-
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(v -> {
@@ -936,7 +962,7 @@ public class IdentificationActivity extends AppCompatActivity {
         String[] patientColumns = {"uuid", "first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw", "occupation", "patient_photo",
-                "economic_status", "education_status", "caste"};
+                "economic_status", "education_status", "caste", "health_scheme"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
@@ -956,6 +982,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patient1.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
                 patient1.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
                 patient1.setPatient_photo(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
+                patient1.setHealth_scheme(idCursor.getString(idCursor.getColumnIndexOrThrow("health_scheme")));
 
             } while (idCursor.moveToNext());
             idCursor.close();
@@ -990,6 +1017,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
                 if (name.equalsIgnoreCase("Son/wife/daughter")) {
                     patient1.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if(name.equalsIgnoreCase("Health insurance card")){
+                    patient1.setHealth_scheme(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
 
             } while (idCursor1.moveToNext());
@@ -1493,6 +1523,23 @@ else
         patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
         patientAttributesDTOList.add(patientAttributesDTO);
 
+        if(frameLayout.getVisibility() == View.VISIBLE)
+        {
+            health_condition(); //This will call the function to send the health data.
+        }
+
+        if(frameLayout.getVisibility() == View.VISIBLE)
+        {
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid
+                    (patientsDAO.getUuidForAttribute("Health insurance card"));
+            patientAttributesDTO.setValue(StringUtils
+                    .getValue(html_health));
+            patientAttributesDTOList.add(patientAttributesDTO);
+        }
+
         patientAttributesDTO = new PatientAttributesDTO();
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
@@ -1562,18 +1609,22 @@ else
         if(ma_checkbox.isChecked() && !ab_checkbox.isChecked())
         {
             html_health = "<p>"+ma_string+"</p>";
+            result_selection = "option_1";
         }
         else if (ab_checkbox.isChecked() && !ma_checkbox.isChecked() )
         {
             html_health = "<p>"+ab_string+"</p>";
+            result_selection = "option_2";
         }
         else if (none_checkbox.isChecked())
         {
             html_health = "<p>"+none_string+"</p>";
+            result_selection = "option_3";
         }
         else if (ma_checkbox.isChecked() && ab_checkbox.isChecked())
         {
             html_health = ma_string + "\n"+ab_string;
+            result_selection = "option_4";
         }
     }
 
