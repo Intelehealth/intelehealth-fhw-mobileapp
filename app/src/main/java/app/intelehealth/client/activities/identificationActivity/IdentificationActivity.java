@@ -163,7 +163,7 @@ public class IdentificationActivity extends AppCompatActivity {
     MaterialCheckBox ma_checkbox, ab_checkbox, none_checkbox;
     FrameLayout frameLayout;
     TextView health_textview;
-    String ma_string, ab_string, none_string, html_health, result_selection;
+    String html_health, result_selection;
 
 
 
@@ -402,20 +402,20 @@ public class IdentificationActivity extends AppCompatActivity {
         Log.d("Health_scheme", "Scheme: "+ patient1.getHealth_scheme());
         if(patient1.getHealth_scheme() != null && !patient1.getHealth_scheme().isEmpty()) {
 
-            if (patient1.getHealth_scheme().equalsIgnoreCase("<p>Mukhyamantri Amrutam scheme</p>"))
+            if (patient1.getHealth_scheme().equalsIgnoreCase("Mukhyamantri Amrutam scheme"))
             {
                 ma_checkbox.setChecked(true);
             }
-            else if (patient1.getHealth_scheme().equalsIgnoreCase("<p>Ayushman Bharat Card</p>"))
+            else if (patient1.getHealth_scheme().equalsIgnoreCase("Ayushman Bharat Card"))
             {
                 ab_checkbox.setChecked(true);
             }
-            else if (patient1.getHealth_scheme().equalsIgnoreCase("<p>None of the above</p>"))
+            else if (patient1.getHealth_scheme().equalsIgnoreCase("None of the above"))
             {
                 none_checkbox.setChecked(true);
             }
             else if (patient1.getHealth_scheme().equalsIgnoreCase
-                    ("Mukhyamantri Amrutam scheme\n" + "Ayushman Bharat Card"))
+                    ("Mukhyamantri Amrutam scheme, " + "Ayushman Bharat Card"))
             {
                 ma_checkbox.setChecked(true);
                 ab_checkbox.setChecked(true);
@@ -819,7 +819,6 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 none_checkbox.setChecked(false);
-                ma_string = ma_checkbox.getText().toString();
             }
         });
 
@@ -827,7 +826,6 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 none_checkbox.setChecked(false);
-                ab_string = ab_checkbox.getText().toString();
             }
         });
 
@@ -836,7 +834,6 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 ma_checkbox.setChecked(false);
                 ab_checkbox.setChecked(false);
-                none_string = none_checkbox.getText().toString();
             }
         });
 
@@ -1604,22 +1601,22 @@ else
     {
         if(ma_checkbox.isChecked() && !ab_checkbox.isChecked())
         {
-            html_health = "<p>"+ma_checkbox.getText()+"</p>";
+            html_health = ma_checkbox.getText().toString();
             result_selection = "option_1";
         }
         else if (ab_checkbox.isChecked() && !ma_checkbox.isChecked() )
         {
-            html_health = "<p>"+ab_checkbox.getText()+"</p>";
+            html_health = ab_checkbox.getText().toString();
             result_selection = "option_2";
         }
         else if (none_checkbox.isChecked())
         {
-            html_health = "<p>"+none_checkbox.getText()+"</p>";
+            html_health = none_checkbox.getText().toString();
             result_selection = "option_3";
         }
         else if (ma_checkbox.isChecked() && ab_checkbox.isChecked())
         {
-            html_health = ma_checkbox.getText() + "\n"+ab_checkbox.getText();
+            html_health = ma_checkbox.getText() + ", "+ab_checkbox.getText();
             result_selection = "option_4";
         }
 
