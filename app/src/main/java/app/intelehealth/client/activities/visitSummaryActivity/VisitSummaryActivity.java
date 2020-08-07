@@ -1478,7 +1478,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String mGender = patient.getGender();
 
         Calendar c = Calendar.getInstance();
-        System.out.println("Current time => " + c.getTime());
+        System.out.println(getString(R.string.current_time) + c.getTime());
 
         String[] columnsToReturn = {"startdate"};
         String visitIDorderBy = "startdate";
@@ -1514,12 +1514,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (obj.getBoolean("mTemperature")) {
                 if (obj.getBoolean("mCelsius")) {
 
-                    mTemp = "Temperature(C): " + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "");
+                    mTemp = getString(R.string.temperature_C) + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "");
 
                 } else if (obj.getBoolean("mFahrenheit")) {
 
 //                    mTemp = "Temperature(F): " + temperature.getValue();
-                    mTemp = "Temperature(F): " + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "");
+                    mTemp = getString(R.string.temperature_F) + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "");
                 }
             }
         } catch (Exception e) {
@@ -1624,13 +1624,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String pat_hist = mPatHist;
 
         if (fam_hist.trim().isEmpty()) {
-            fam_hist = "No history of illness in family provided.";
+            fam_hist = getString(R.string.no_history_family_found);
         } else {
             fam_hist = fam_hist.replaceAll(Node.bullet, Node.big_bullet);
         }
 
         if (pat_hist.trim().isEmpty()) {
-            pat_hist = "No history of patient's illness provided.";
+            pat_hist = getString(R.string.no_history_patient_illness_found);
         }
 
         // Generate an HTML document on the fly:
@@ -1660,12 +1660,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
             doctorSign = objClsDoctorDetails.getTextOfSign();
 
 
-            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " + objClsDoctorDetails.getRegistrationNumber() : "";
+            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
             doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
                     "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
                     "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification() + ", " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
-                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ? "Phone Number: " + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
-                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +
+                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ?
+                    getString(R.string.dr_phone_number) + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
+                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
+                    getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +
                     "</div>";
 
 //            mDoctorName.setText(doctrRegistartionNum + "\n" + Html.fromHtml(doctorDetailStr));
@@ -2222,7 +2224,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             doctorSign = objClsDoctorDetails.getTextOfSign();
 
-            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " + objClsDoctorDetails.getRegistrationNumber() : "";
+            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
             doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
                     "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getName()) ? objClsDoctorDetails.getName() : "") + "</span><br>" +
                     "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + "  " +
@@ -2380,9 +2382,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     openMRSID = getString(R.string.patient_not_registered);
                 }
 
-                header = "Patient Id: " + patient.getOpenmrs_id() + "\n"
-                        + "Patient Name: " + patient.getFirst_name() + " " + patient.getLast_name() + "\n"
-                        + "Patient DOB: " + patient.getDate_of_birth() + "\n";
+                header = getString(R.string.patient_id_) + patient.getOpenmrs_id() + "\n"
+                        + getString(R.string.patient_name_title) + patient.getFirst_name() + " " + patient.getLast_name() + "\n"
+                        + getString(R.string.patient_DOB) + patient.getDate_of_birth() + "\n";
 
 
                 if (diagnosisCard.getVisibility() == View.VISIBLE) {

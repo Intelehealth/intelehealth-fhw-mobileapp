@@ -54,7 +54,7 @@
     <string name="error_network" translatable="false">Network Error</string>
     <string name="error_location_not_selected" translatable="false">Please select a value form the location dropdown</string>
     <string name="error_location_not_fetched" translatable="false">Unable to fetch locations</string>
-    <string name="permission_rationale" translatable="false">"Contacts permissions are needed for providing email completions."
+    <string name="permission_rationale" translatable="false">Contacts permissions are needed for providing email completions.
     </string>
     <string name="device_id" translatable="false">Device ID:</string>
 
@@ -112,7 +112,7 @@
     <string name="identification_screen_picker_months" translatable="false">months</string>
 
     //Active Patients Screen
-    <string name="title_activity_active_patient" translatable="false">"Active Visits"</string>
+    <string name="title_activity_active_patient" translatable="false">Active Visits</string>
 
     //Patient History Screen
     <string name="title_activity_get_patient_history" translatable="false">Patient History</string>
@@ -255,9 +255,9 @@
     <string name="title_activity_setup" translatable="false">Setup</string>
 
     <string name="title_activity_camera" translatable="false">Camera</string>
-    <string name="title_activity_today_patient" translatable="false">"Today's Visits"</string>
-    <string name="title_activity_additional_documents" translatable="false">"Additional Documents"</string>
-    <string name="title_activity_video_library" translatable="false">"Video Library"</string>
+    <string name="title_activity_today_patient" translatable="false">Today\'s Visits</string>
+    <string name="title_activity_additional_documents" translatable="false">Additional Documents</string>
+    <string name="title_activity_video_library" translatable="false">Video Library</string>
     <string name="visit_summary_patient_details" translatable="false">Visit details</string>
 
     <!--Setup Activity-->
@@ -346,12 +346,12 @@
 
     <string name="error_no_sd" translatable="false">This feature is only available to devices with SD cards.</string>
     <string name="error_admin_password" translatable="false">Admin Password Wrong</string>
-    <string name="error_no_file" translatable="false">"No Files in this directory"</string>
+    <string name="error_no_file" translatable="false">No Files in this directory</string>
     <string name="error_no_camera" translatable="false">No camera installed.</string>
-    <string name="error_delete" translatable="false">"Error in deleting"</string>
-    <string name="error_offline_login" translatable="false">"Offline Login Unsuccessful"</string>
-    <string name="success_offline_login" translatable="false">"Offline Login Successful"</string>
-    <string name="invalidate_offline_login" translatable="false">"Offline Login Invalidated"</string>
+    <string name="error_delete" translatable="false">Error in deleting</string>
+    <string name="error_offline_login" translatable="false">Offline Login Unsuccessful</string>
+    <string name="success_offline_login" translatable="false">Offline Login Successful</string>
+    <string name="invalidate_offline_login" translatable="false">Offline Login Invalidated</string>
 
     <string name="patient_upload_error" translatable="false">Patient has not been uploaded</string>
     <string name="patient_not_registered" translatable="false">Patient not registered</string>
@@ -360,14 +360,14 @@
 
     <!-- Vitals Screen Error-->
 
-    <string name="weight_error" translatable="false">"Weight should be less than %1$s kg"</string>
-    <string name="height_error" translatable="false">"Height should be between 0 and %1$s cm"</string>
-    <string name="spo2_error" translatable="false">"SpO2 should be in between %1$s and %2$s"</string>
-    <string name="pulse_error" translatable="false">"Pulse should be in between %1$s and %2$s"</string>
-    <string name="bpsys_error" translatable="false">"Systolic pressure should be in between %1$s and %2$s"</string>
-    <string name="bpdia_error" translatable="false">"Diastolic pressure should be in between %1$s and %2$s"</string>
-    <string name="resp_error" translatable="false">"Respiratory rate should be in between %1$s and %2$s"</string>
-    <string name="temp_error" translatable="false">"Temperature should be in between %1$s and %2$s"</string>
+    <string name="weight_error" translatable="false">Weight should be less than %1$s kg</string>
+    <string name="height_error" translatable="false">Height should be between 0 and %1$s cm</string>
+    <string name="spo2_error" translatable="false">SpO2 should be in between %1$s and %2$s</string>
+    <string name="pulse_error" translatable="false">Pulse should be in between %1$s and %2$s</string>
+    <string name="bpsys_error" translatable="false">Systolic pressure should be in between %1$s and %2$s</string>
+    <string name="bpdia_error" translatable="false">Diastolic pressure should be in between %1$s and %2$s</string>
+    <string name="resp_error" translatable="false">Respiratory rate should be in between %1$s and %2$s</string>
+    <string name="temp_error" translatable="false">Temperature should be in between %1$s and %2$s</string>
 
     <string name="not_provided">Not provided</string>
 
@@ -397,7 +397,7 @@
     <string name="error_existing_data" translatable="false">Database contains data, cannot restore!</string>
     <string name="cloud_download_data" translatable="false">Downloading database from cloud</string>
 
-    <string name="force_restore_header" translatable="false">"Restoring data from cloud(Forced)"</string>
+    <string name="force_restore_header" translatable="false">Restoring data from cloud(Forced)</string>
 
     <string name="database_upload" translatable="false">Database Upload</string>
     <string name="database_uploading" translatable="false">Database Uploading</string>
@@ -533,8 +533,8 @@
     <string name="no_protocols_found">No protocols found</string>
     <string name="unable_to_get_proper_response">There was a problem downloading protocols, Please contact system administrator</string>
     <string name="last_synced">Last Synced - </string>
-    <string name="today_visits">"Today's Visits"</string>
-    <string name="active_visits">"Active Visits"</string>
+    <string name="today_visits">Today\'s Visits</string>
+    <string name="active_visits">Active Visits</string>
     <string name="day">day</string>
     <string name="hour">hour</string>
     <string name="minute">minute</string>
@@ -577,6 +577,42 @@
     <string name="who_is_this_napplication_for">Who is this \napplication for?</string>
     <string name="custom_setup">Custom setup</string>
     <string name="demo_version">Demo version</string>
+    <string name="sample_text">sample text</string>
+    <string name="test_2_vibha_onplus_6t_10fke_7">Test 2 Vibha onplus 6T, 10FKE-7</string>
+    <string name="age_11_years_5_months">Age: 11 years, 5 months</string>
+    <string name="active_defaultTag">Active</string>
+    <string name="since_when_have_you_had_this_symptom">Since when have you had this symptom?</string>
+    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">Hello\n\n I’m Ayu, a digital health assistant. Let’s get started!</string>
+    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">Hello\n\n I’m Ayu, a digital health assistant. Let’s get started!</string>
+    <string name="hello_my_name_is">Hello, my name is </string>
+    <string name="i_need_assistance"> and I need some assistance.</string>
+    <string name="economic_values_missing">Economic values are missing</string>
+    <string name="education_values_missing">Education values are missing</string>
+    <string name="intelehealth_a_telemedicine_platform">Intelehealth is a telemedicine application that connects health workers in rural and remote areas connect with remote doctors so they can provide high quality health services for their patients.</string>
+    <string name="intelehealth_name">Intelehealth</string>
+    <string name="Ayu_name">Ayu</string>
+    <string name="close_button">Close</string>
+    <string name="active_tag_patientDetail"> Active"</string>
+    <string name="associated_symptoms_patientDetail">Associated symptoms</string>
+    <string name="device_ID">Device Id: </string>
+    <string name="enter_valid_license_url">Enter valid License Url</string>
+    <string name="please_enter_url_and_key">Please enter URL and Key</string>
+    <string name="please_enter_valid_license_key">Please enter a valid license key</string>
+    <string name="permission_denied">Permission Denied\n</string>
+    <string name="reject_permission_results"><![CDATA[If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]]]></string>
+    <string name="current_time"><![CDATA[\"Current time => \"]]></string>
+    <string name="temperature_C">Temperature(C): </string>
+    <string name="temperature_F">Temperature(F): </string>
+    <string name="no_history_family_found">No history of illness in family provided.</string>
+    <string name="no_history_patient_illness_found">No history of patient\'s illness provided.</string>
+    <string name="dr_registration_no">Registration No: </string>
+    <string name="dr_phone_number">Phone Number: </string>
+    <string name="dr_email">Email: </string>
+    <string name="_visit_summary"> Visit Summary</string>
+    <string name="patient_id_">Patient Id: </string>
+    <string name="patient_name_title">Patient Name: </string>
+    <string name="patient_DOB">Patient DOB: </string>
+    <string name="error_non_decimal_no_added">Error: non-decimal number entered.</string>
 <string name="download_protocols">Downloading Protocols</string>
     <string name="mindmap_internect_connection">To download mindmaps you need a Internet connectivity, please turn on your Internet</string>
     <string name="days">days</string>

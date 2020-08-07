@@ -153,8 +153,8 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String phoneNumberWithCountryCode = "+917005308163";
                 String message =
-                        "Hello, my name is " + sessionManager.getChwname() +
-                                /*" from " + sessionManager.getState() + */" and I need some assistance.";
+                        getString(R.string.hello_my_name_is) + sessionManager.getChwname() +
+                                /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
 
                 startActivity(new Intent(Intent.ACTION_VIEW,
                         Uri.parse(

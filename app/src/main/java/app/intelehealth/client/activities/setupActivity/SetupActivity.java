@@ -168,7 +168,8 @@ public class SetupActivity extends AppCompatActivity {
         });
 
         mAndroidIdTextView = findViewById(R.id.textView_Aid);
-        mAndroidIdTextView.setText("Device Id: " + IntelehealthApplication.getAndroidId());
+        String deviceID = "Device Id: " + IntelehealthApplication.getAndroidId();
+        mAndroidIdTextView.setText(deviceID);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -644,7 +645,7 @@ public class SetupActivity extends AppCompatActivity {
                                                     startActivity(intent);
                                                     finish();
                                                 } else {
-                                                    Toast.makeText(SetupActivity.this, "Please enter a valid license key", Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(SetupActivity.this, R.string.please_enter_valid_license_key, Toast.LENGTH_LONG).show();
                                                 }
                                             } else {
                                                 sessionManager.setTriggerNoti("no");
