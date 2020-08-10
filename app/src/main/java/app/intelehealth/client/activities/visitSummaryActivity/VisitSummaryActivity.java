@@ -26,6 +26,7 @@ import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -67,7 +68,6 @@ import android.widget.Toast;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
@@ -102,12 +102,12 @@ import app.intelehealth.client.knowledgeEngine.Node;
 import app.intelehealth.client.models.ClsDoctorDetails;
 import app.intelehealth.client.models.Patient;
 import app.intelehealth.client.models.dto.ObsDTO;
-import app.intelehealth.client.models.pushRequestApiCall.Visit;
 import app.intelehealth.client.services.DownloadService;
 import app.intelehealth.client.syncModule.SyncUtils;
 import app.intelehealth.client.utilities.DateAndTimeUtils;
 import app.intelehealth.client.utilities.FileUtils;
 import app.intelehealth.client.utilities.Logger;
+import android.print.PdfPrint;
 import app.intelehealth.client.utilities.SessionManager;
 import app.intelehealth.client.utilities.UuidDictionary;
 
@@ -1765,6 +1765,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
      * @param webView       object of type WebView.
      * @param contentHeight
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void createWebPrintJob(WebView webView, int contentHeight) {
 
 //       int i =  webView.getContentHeight();
@@ -1803,8 +1804,38 @@ public class VisitSummaryActivity extends AppCompatActivity {
             //small size prescription...
             // Create a print job with name and adapter instance
             String jobName = getString(R.string.app_name) + " Visit Summary";
-            PrintJob printJob = printManager.print(jobName, printAdapter,
-                    new PrintAttributes.Builder().build());
+
+            PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
+            pBuilder.setMediaSize(PrintAttributes.MediaSize.JIS_B4);
+            pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
+            pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
+            PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
+
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String fileName = visitUUID +".pdf";
+            File dir = new File(path);
+            if (!dir.exists())
+                dir.mkdirs();
+
+            File directory = new File(dir, fileName);
+
+            //TODO: write different functions for <= Lollipop versions pls..
+            pdfPrint.print(webView.createPrintDocumentAdapter(jobName), directory,
+                            fileName, new PdfPrint.CallbackPrint() {
+                        @Override
+                        public void success(String path) {
+
+                        }
+
+                                @Override
+                                public void onFailure() {
+
+                                }
+
+                    });
+//            PrintJob printJob = printManager.print(jobName, printAdapter,
+//                    new PrintAttributes.Builder().build());
+
         }
 
 
