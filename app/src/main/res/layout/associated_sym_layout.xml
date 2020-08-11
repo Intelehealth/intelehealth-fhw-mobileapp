@@ -26,7 +26,7 @@
 
     <TextView
         android:id="@+id/chip_yes"
-        android:text="Yes"
+        android:text="@string/generic_yes"
         android:gravity="center"
         android:layout_weight=".4"
         android:textSize="15sp"
@@ -40,7 +40,7 @@
        />
 
     <TextView
-        android:text="No"
+        android:text="@string/generic_no"
         android:layout_marginStart="5sp"
         android:gravity="center"
         android:layout_weight=".4"

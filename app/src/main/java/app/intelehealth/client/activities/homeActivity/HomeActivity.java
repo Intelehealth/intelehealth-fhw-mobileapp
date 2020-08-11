@@ -206,7 +206,6 @@ public class HomeActivity extends AppCompatActivity {
         });
 
 
-
         lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
 
 //        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
@@ -451,7 +450,7 @@ public class HomeActivity extends AppCompatActivity {
                 Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
                 positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                 negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
+                IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
                 return true;
             default:
@@ -552,7 +551,7 @@ public class HomeActivity extends AppCompatActivity {
 */
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
 
-       // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+        // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
         alertdialogBuilder.setMessage(R.string.sure_to_exit);
         alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
             @Override
@@ -574,7 +573,7 @@ public class HomeActivity extends AppCompatActivity {
 
         negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
         //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
     }
 
