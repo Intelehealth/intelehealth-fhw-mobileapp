@@ -26,7 +26,6 @@ import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
 
-import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -1765,7 +1764,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
      * @param webView       object of type WebView.
      * @param contentHeight
      */
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
     private void createWebPrintJob(WebView webView, int contentHeight) {
 
 //       int i =  webView.getContentHeight();
@@ -1805,8 +1804,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             // Create a print job with name and adapter instance
             String jobName = getString(R.string.app_name) + " Visit Summary";
 
+            Log.d("PrintPDF", "PrintPDF");
             PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
-            pBuilder.setMediaSize(PrintAttributes.MediaSize.JIS_B4);
+            pBuilder.setMediaSize(PrintAttributes.MediaSize.NA_LETTER);
             pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
             pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
@@ -1819,20 +1819,47 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             File directory = new File(dir, fileName);
 
-            //TODO: write different functions for <= Lollipop versions pls..
-            pdfPrint.print(webView.createPrintDocumentAdapter(jobName), directory,
-                            fileName, new PdfPrint.CallbackPrint() {
-                        @Override
-                        public void success(String path) {
+            //To display the preview window to user...
+            PrintJob printJob = printManager.print(jobName, printAdapter,
+                    pBuilder.build());
 
-                        }
+            //TODO: write different functions for <= Lollipop versions..
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                //to write to a pdf file...
+                pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir,
+                                fileName, new PdfPrint.CallbackPrint() {
+                            @Override
+                            public void success(String path) {
+
+                            }
+
+                                    @Override
+                                    public void onFailure() {
+
+                                    }
+
+                        });
+            }
+            else
+            {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+                {
+                    //to write to a pdf file...
+                    pdfPrint.print(printAdapter, dir,
+                            fileName, new PdfPrint.CallbackPrint() {
+                                @Override
+                                public void success(String path) {
+
+                                }
 
                                 @Override
                                 public void onFailure() {
 
                                 }
 
-                    });
+                            });
+                }
+            }
 //            PrintJob printJob = printManager.print(jobName, printAdapter,
 //                    new PrintAttributes.Builder().build());
 
