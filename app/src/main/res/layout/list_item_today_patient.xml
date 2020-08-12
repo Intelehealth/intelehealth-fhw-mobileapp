@@ -38,7 +38,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_bold"
                     android:includeFontPadding="false"
-                    android:text="Test 2 Vibha onplus 6T, 10FKE-7"
+                    android:text="@string/test_2_vibha_onplus_6t_10fke_7"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <TextView

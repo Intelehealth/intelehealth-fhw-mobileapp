@@ -755,7 +755,7 @@ public class VitalsActivity extends AppCompatActivity {
 
 
             } catch (NumberFormatException e) {
-                Snackbar.make(findViewById(R.id.cl_table), "Error: non-decimal number entered.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(findViewById(R.id.cl_table), R.string.error_non_decimal_no_added, Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
 
 //
