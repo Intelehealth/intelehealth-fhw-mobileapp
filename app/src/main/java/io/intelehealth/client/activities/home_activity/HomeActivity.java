@@ -82,6 +82,7 @@ public class HomeActivity extends AppCompatActivity {
         //do nothing
     }
 
+    //Renaming branch changes....just a comment...
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
