@@ -38,6 +38,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.common.collect.Table;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 
@@ -345,6 +346,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("caste")) {
                     patient_new.setCaste(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+                if(name.equalsIgnoreCase("Health insurance card")) {
+                    patient_new.setHealth_scheme(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
                 if (name.equalsIgnoreCase("Telephone Number")) {
                     patient_new.setPhone_number(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
@@ -379,6 +383,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         TextView addr2View = findViewById(R.id.textView_address2);
         TextView addrFinalView = findViewById(R.id.textView_address_final);
         TextView casteView = findViewById(R.id.textView_caste);
+        TextView healthSchemeView = findViewById(R.id.textView_healthScheme);
         TextView economic_statusView = findViewById(R.id.textView_economic_status);
         TextView education_statusView = findViewById(R.id.textView_education_status);
         TextView phoneView = findViewById(R.id.textView_phone);
@@ -389,6 +394,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         TableRow economicRow = findViewById(R.id.tableRow_Economic_Status);
         TableRow educationRow = findViewById(R.id.tableRow_Education_Status);
         TableRow casteRow = findViewById(R.id.tableRow_Caste);
+        TableRow healthSchemeRow = findViewById(R.id.tableRow_healthScheme);
 
         TextView medHistView = findViewById(R.id.textView_patHist);
         TextView famHistView = findViewById(R.id.textView_famHist);
@@ -421,6 +427,11 @@ public class PatientDetailActivity extends AppCompatActivity {
                 economicRow.setVisibility(View.VISIBLE);
             } else {
                 economicRow.setVisibility(View.GONE);
+            }
+            if (obj.getBoolean("health_scheme_card")) {
+                healthSchemeRow.setVisibility(View.VISIBLE);
+            } else {
+                healthSchemeRow.setVisibility(View.GONE);
             }
 
         } catch (JSONException e) {
@@ -523,6 +534,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         education_statusView.setText(patient_new.getEducation_level());
         economic_statusView.setText(patient_new.getEconomic_status());
         casteView.setText(patient_new.getCaste());
+        healthSchemeView.setText(patient_new.getHealth_scheme());
+
 //
         if (patient_new.getSdw() != null && !patient_new.getSdw().equals("")) {
             sdwView.setText(patient_new.getSdw());
