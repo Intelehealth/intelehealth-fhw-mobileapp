@@ -271,12 +271,8 @@
     <string name="user_login_check_success">ଲଗନ ସଫଳ  ହେଲା</string>
     <string name="user_login_error">ଅନ୍ୟ  ଉସର ସାମାନ୍ୟ ସ୍ଥାନ ରୁ ଲଗନ ଅଛନ୍ତି . ଆଡମିନ କୁ ଯୋଗାଯୋଗ କର</string>
     <string name="user_server_unreachable">"ଫୋନ  ଅଫଲାଇନ ଅଛି | ସରବର ରେ ଲଗନ ହେଇ ପାରିବ ନାହିଁ "</string>
-    <string name="enter_password">Enter your password</string>
-    <string name="enter_username">Enter your username</string>
 
     <string name="patient_name">ରୋଗୀଙ୍କ ନାମ</string>
-    <string name="son_daughter_wife_of">Son/Daughter/Wife of</string>
-    <string name="occupation">Occupation</string>
     <string name="economic_status">"ଆର୍ଥିକ ସ୍ଥିତି "</string>
     <string name="education_level">"ଶିକ୍ଷା ସ୍ତର "</string>
     <string name="caste">"ଜାତି "</string>
@@ -284,20 +280,11 @@
     <string name="accept">"ଗ୍ରହଣ କରନ୍ତୁ "</string>
     <string name="reject">"ନାକଚ କରନ୍ତୁ "</string>
     <string name="next">"ପରବର୍ତ୍ତୀ "</string>
-    <string name="please_wait_till_sync_is_completed">Please wait till sync is completed</string>
-    <string name="which_server_would_you_like_to_connect_to">Which server would you like to connect to?</string>
-    <string name="enter_url">Enter URL</string>
-    <string name="choose_a_location_to_login">Choose a location to login</string>
-    <string name="choose_an_option_for_protocols">Choose an option for protocols</string>
-    <string name="please_enter_your_username_and_password">Please enter your username and password</string>
-    <string name="android_id">Android Id:</string>
     <string name="temperature_f">ତାପମାତ୍ରା (F)</string>
     <string name="respiratory_rate">ଶ୍ୱାସକ୍ରିୟା ହାର</string>
     <string name="click_to_download_the_images">"ଛବିଗୁଡ଼ିକୁ ଡାଉନଲୋଡ୍ କରିବା ପାଇଁ କ୍ଲିକ୍ କରନ୍ତୁ "</string>
-    <string name="doctor">Doctor Details</string>
     <string name="health_worker">"ସ୍ୱାସ୍ଥ୍ୟ କର୍ମୀ "</string>
     <string name="priority">ପ୍ରାଥମିକତା</string>
-    <string name="server_url">Server url</string>
     <string name="sync">ସମକାଳୀନ କରନ୍ତୁ</string>
     <string name="update_protocols">"ପ୍ରୋଟୋକଲ୍ ଅପଡେଟ୍ କରନ୍ତୁ "</string>
     <string name="end_all_visit">ସମସ୍ତ ପରିଦର୍ଶନକୁ ସମାପ୍ତ କରନ୍ତୁ</string>
@@ -310,7 +297,6 @@
     <string name="active">"ସକ୍ରିୟ "</string>
     <string name="closed">"ବନ୍ଦ "</string>
     <string name="syncInProgress">ସମକାଳୀନକରଣ ପ୍ରକ୍ରିୟା ଜାରି ଅଛି</string>
-    <string name="please_wait">Please wait...</string>
     <string name="sync_notif_title">"ସମକାଳୀନ କରନ୍ତୁ "</string>
     <string name="sync_background_completed">syncBackground Completed</string>
     <string name="sync_not_available">Sync not available</string>
@@ -439,5 +425,49 @@
     <string name="patient_DOB">\"Patient DOB: \"</string>
     <string name="error_non_decimal_no_added">Error: non-decimal number entered.</string>
     <string name="sure_to_logout">Are you sure you want to Logout?</string>
+    <string name="email_link" translatable="false">ନଜିର ପାସୱାର୍ଡରିସସଟ୍ କରିବା ପାଇଁଦୟାକରିସିଷ୍ଟମ୍ ଆର୍ମିନସିେଟରଙ୍କ ସହତି ସମ୍ପକଡକରନ୍ତୁକମିବା support@intelehealth.io ସର ଏକ ଇସମଲ୍ ପଠାନ</string>
+    <string name="contact_whatsapp">"ନଜିର ପାସୱାର୍ଡରିସସଟ୍ କରିବା ପାଇଁଦୟାକରିସିଷ୍ଟମ୍ ଆର୍ମିନସିେଟରଙ୍କ ସହତି ସମ୍ପକଡକରନ୍ତୁ "</string>
+    <string name="identification_screen_required_fields" translatable="false">"ଦୟାକରିଦରକାରୀ ସେତ୍ରଗୁଡ଼କିୁପୂରଣ କରନ୍ତୁ "</string>
+    <string name="identification_screen_error_dob" translatable="false">"ସବଧୈ ଜନମତାରିଖ ପ୍ରସବଶ କରନ୍ତୁ "</string>
+    <string name="identification_screen_error_age" translatable="false">"ସବଧୈ ବୟସ ପ୍ରସବଶ କରନ୍ତୁ "</string>
+    <string name="identification_screen_text_years" translatable="false">ବର୍ଡ</string>
+    <string name="identification_screen_text_months" translatable="false">ମାସ</string>
+    <string name="identification_screen_picker_years" translatable="false">"ବର୍ଡ "</string>
+    <string name="identification_screen_picker_months" translatable="false">ମାସ</string>
+    <string name="title_activity_question_node" translatable="false">ପ୍ରଶନସନାର୍ଗତବିଧ</string>
+    <string name="title_activity_setup" translatable="false">ବନିୟାସ</string>
+    <string name="sync_complete" translatable="false">ସମ୍ପୂର</string>
+    <string name="show_text">"ସଦଖନ୍ତୁ "</string>
+    <string name="hide_text">"ଲୁଚାନ୍ତୁ "</string>
+    <string name="error_no_sd" translatable="false">ଏହିସବଶୈଷ୍ଟି ୟ ସକବଳ ଏସ.ର୍. ିକାର୍ଡଯୁକ୍ତ ର୍ଭିାଇସ୍ ସର ଉପଲବ</string>
+    <string name="error_admin_password" translatable="false">"ଭୁଲ୍ ଆର୍ମିନ୍ ପାସୱାର୍ଡ "</string>
+    <string name="patient_upload_error" translatable="false">"ସରାଗୀ ଅପସଲାଡ୍ ସହାଇନାହାନ୍ତି "</string>
+    <string name="exit_survey_toast">ଦାଖଲ କରିବା ପୂବଡରୁଦୟାକରିଏକ ସ୍ମାଇଲିଚୟନ କରନ୍ତୁ</string>
+    <string name="no_data" translatable="false">"ବୟାକଅପ୍ ପାଇଁସକୌଣସିତଥ୍ୟ ନାହ!ିଁ "</string>
+    <string name="local_backup_failed" translatable="false">ସ୍ଥାନୀୟ ବୟାକଅପ୍ ଉପଲବ୍ଧ ନାହ</string>
+    <string name="user_logged_in_other_device" translatable="false">ପୂବଡରୁଲଗ୍ ଇନ୍ କରିସାରିଛନ୍ତି। ଦୟାକରିଅନୟ ର୍ଭିାଇସ୍ ରୁଲଗ୍ ଆଉଟ୍ କରନ୍ତୁ।</string>
+    <string name="title_activity_splash_acticity" translatable="false">ସ୍ପ୍ଲାଶଗତବିଧ</string>
+    <string name="title_activity_home" translatable="false">ସହାମଗତବିଧ</string>
+    <string name="title_activity_sync" translatable="false">"ଗତବିଧିିସିଙ୍କ୍ "</string>
+    <string name="title_activity_visit_summary" translatable="false">ପରିଦଶଡନସାରାାଂଶଗତବିଧ</string>
+    <string name="title_activity_past_medical_history" translatable="false">ଅତୀତଚକିତ୍ସିାଇତହିାସଗତବିଧିି</string>
+    <string name="title_activity_patient_survey" translatable="false">ସରାଗୀସସବଡେଣଗତବିଧିି</string>
+    <string name="enter_password">ନଜିର ପାସୱାର୍ଡପ୍ରସବଶ କରନ</string>
+    <string name="enter_username">ନଜିର ୟୁଜରସନମ୍ ପ୍ରସବଶ କରନ୍ତୁ</string>
+    <string name="enter_server_url">ସଭଡର ୟୁଆରଏଲ୍ ପ୍ରସବଶ କରନ</string>
+    <string name="invalid_url">"ଅସବଧୈ ୟୁଆରଏଲ୍ "</string>
+    <string name="months">ମାସ</string>
+    <string name="please_wait_till_sync_is_completed">ସମକାଳୀନ କ୍ରିୟା ସମ୍ପୂର୍ଣ୍ଡସହବା ପଯଡୟନ୍ତ ଅସପୋ କରନ</string>
+    <string name="son_daughter_wife_of">ଙ୍କ ପୁତ୍ର/କନୟା/ପତ୍ନୀ</string>
+    <string name="occupation">ସପସା</string>
+    <string name="which_server_would_you_like_to_connect_to">ଆପଣ ସକଉଁସଭଡରକୁସାଂସଯାଗ କରିବାକୁଚାହୁଁଛନ୍ତି?</string>
+    <string name="enter_url">ୟୁଆରଏଲ୍ ପ୍ରସବଶ କରନ</string>
+    <string name="choose_a_location_to_login">ଲଗ୍ ଇନ୍ ପାଇଁଏକ ସ୍ଥାନ ବାଛନ</string>
+    <string name="choose_an_option_for_protocols">ସପ୍ରାସଟାକଲ୍ ପାଇଁଏକ ବକିଳ୍ପ ବାଛନ</string>
+    <string name="please_enter_your_username_and_password">ଦୟାକରିନଜିର ୟୁଜରସନମ୍ ଓ ପାସୱାର୍ଡପ୍ରସବଶ କରନ</string>
+    <string name="android_id">ଆଣ୍ଡ୍ରଏଡ୍ ଆଇର୍:ି</string>
+    <string name="doctor">ର୍ାକ୍ତରଙ୍କ ବବିରଣୀ</string>
+    <string name="server_url">ସଭଡର ୟୁଆରଏଲ</string>
+    <string name="please_wait">ଦୟାକରିଅସପୋ କରନ୍ତୁ…</string>
 
 </resources>
