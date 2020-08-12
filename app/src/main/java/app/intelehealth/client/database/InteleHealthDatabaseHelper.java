@@ -27,6 +27,14 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "privacynotice_value TEXT" +
             ")";
 
+    public static final String CREATE_DR_SPECIALITY =
+            "CREATE TABLE IF NOT EXISTS tbl_dr_speciality (" +
+                    "uuid TEXT PRIMARY KEY," +
+                    "provideruuid TEXT," +
+                    "attributetypeuuid TEXT," +
+                    "value TEXT UNIQUE," +
+                    "voided TEXT" +
+                    ")";
 
     public static final String CREATE_USER_CREDENTIALS = "CREATE TABLE IF NOT EXISTS tbl_user_credentials (" +
             "username TEXT," +
@@ -86,7 +94,8 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "isdownloaded TEXT DEFAULT 'false'," +
             "voided TEXT DEFAULT '0'," +
             "sync TEXT DEFAULT 'false' ," +
-            "issubmitted Integer DEFAULT 0 " +
+            "issubmitted Integer DEFAULT 0," +
+            "speciality_value TEXT" +
             ")";
 
 
@@ -208,6 +217,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_PROVIDER);
         db.execSQL(CREATE_UUID_DICTIONARY);
         db.execSQL(CREATE_USER_CREDENTIALS);
+        db.execSQL(CREATE_DR_SPECIALITY);
         uuidInsert(db);
         database = db;
 
