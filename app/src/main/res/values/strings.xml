@@ -616,5 +616,6 @@
 <string name="download_protocols">Downloading Protocols</string>
     <string name="mindmap_internect_connection">To download mindmaps you need a Internet connectivity, please turn on your Internet</string>
     <string name="days">days</string>
+    <string name="contact">Contact</string>
 
 </resources>

@@ -47,4 +47,5 @@
     <string name="patient_name_title">\"Patient Name: \"</string>
     <string name="patient_DOB">\"Patient DOB: \"</string>
     <string name="error_non_decimal_no_added">Error: non-decimal number entered.</string>
+    <string name="contact">Contact</string>
 </resources>
