@@ -138,7 +138,6 @@
     <string name="row_age">ବୟସ</string>
     <string name="row_dob">ଜନ୍ମତିଥି</string>
     <string name="row_open_visit">ଯାତ୍ରା କୁ ଖୋଲିବା ପାଇଁ କ୍ଳିକ୍ରେ</string>
-    <string name="row_patient_id">"ରୋଗୀର ଅାଇଡ଼ି "</string>
     <string name="row_phone_number">ଫୋନ୍ ନମ୍ବର</string>
     <string name="search_hint">"ଖୋଜା ହୋଇତ୍ଥିବା ରୋଗୀଙ୍କୁ ନାମାନୁସାରେ ପାଇପ୍ କର "</string>
     <string name="setup_download_mindmap">ମାଇଣ୍ଡ ମ୍ଯାଗ୍ ଡ଼ାଉନ୍ ଲୋଡ଼ କରିବା</string>
@@ -323,7 +322,7 @@
 
     <string name="no_data_active_patients">ସ୍ୱାସ୍ଥ୍ୟ କର୍ମୀ  ପାଖରେ  ପେସେଣ୍ଟ   ରେକର୍ଡ଼ ନାହିଁ</string>
     <string name="syncing_visitDialog">ସମକାଳୀନ ହେଉଛି</string>
-    <string name="has_a_new_prescription">"ଏକ ନୂଆ ପ୍ରେସକ୍ରିପ୍ସନ୍ ଅଛି "</string>
+    <string name="has_a_new_prescription">ଏକ ନୂଆ ପ୍ରେସକ୍ରିପ୍ସନ୍ ଅଛି</string>
     <string name="successfully_synced_notif">"ସଫଳତାର ସହ ସମକାଳୀନ ହେଲା "</string>
     <string name="languages">ଭାଷା</string>
     <string name="current_language">ପ୍ରଚଳିତ ଭାଷା</string>
@@ -481,5 +480,6 @@
     <string name="mindmap_internect_connection">"ମାଇଣ୍ଡମୟାପ୍ ର୍ାଉନସଲାଡ୍ କରିବା ପାଇଁଇଣ୍ଟରସନଟ୍ ସାଂସଯାଗ ଆବଶୟକ ଅସଟ, ଦୟାକରିନଜିର ଇଣ୍ଟରସନଟ୍ ଚାଲୁକରନ୍ତୁ "</string>
     <string name="days">ଦନି</string>
     <string name="contact">ସଯାଗାସଯାଗ</string>
+    <string name="row_patient_id" translatable="false">ରୋଗୀଙ୍କ ଆଇଡି:</string>
 
 </resources>
