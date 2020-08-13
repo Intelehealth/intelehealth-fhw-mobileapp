@@ -3,21 +3,21 @@ package app.intelehealth.client.activities.activePatientsActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import app.intelehealth.client.R;
+import app.intelehealth.client.activities.patientDetailActivity.PatientDetailActivity;
 import app.intelehealth.client.models.ActivePatientModel;
 import app.intelehealth.client.utilities.DateAndTimeUtils;
-
-import app.intelehealth.client.activities.patientDetailActivity.PatientDetailActivity;
 
 /**
  * Created by Dexter Barretto on 5/20/17.
@@ -31,12 +31,17 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
     LayoutInflater layoutInflater;
     ArrayList<String> listPatientUUID;
 
-    public ActivePatientAdapter(List<ActivePatientModel> activePatientModels, Context context, ArrayList<String> _listPatientUUID) {
+    //public ActivePatientAdapter(List<ActivePatientModel> activePatientModels, Context context, ArrayList<String> _listPatientUUID) {
+    /*public ActivePatientAdapter(List<ActivePatientModel> activePatientModels, Context context) {
+        this.activePatientModels = activePatientModels;
+        this.context = context;
+        //this.listPatientUUID = _listPatientUUID;
+    }*/
+    public void setActivePatientAdapter(List<ActivePatientModel> activePatientModels, Context context, ArrayList<String> _listPatientUUID) {
         this.activePatientModels = activePatientModels;
         this.context = context;
         this.listPatientUUID = _listPatientUUID;
     }
-
     @Override
     public ActivePatientViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (layoutInflater == null) {
@@ -110,12 +115,12 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
             }
         });
 
-        for (int i = 0; i < listPatientUUID.size(); i++) {
+        /*for (int i = 0; i < listPatientUUID.size(); i++) {
             if (activePatientModels.get(position).getPatientuuid().equalsIgnoreCase(listPatientUUID.get(i))) {
                 holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_prescription_green));
                 holder.ivPriscription.setTag("1");
             }
-        }
+        }*/
     }
 
     @Override
@@ -125,7 +130,22 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
 
     @Override
     public int getItemCount() {
-        return activePatientModels.size();
+
+        int data = 0;
+        try
+        {
+            if(activePatientModels.size() > 0)
+                data = activePatientModels.size();
+            else
+                data = 0;
+        }
+        catch (Exception e)
+        {
+
+        }
+
+        return data;
+
     }
 
     public class ActivePatientViewHolder extends RecyclerView.ViewHolder {
