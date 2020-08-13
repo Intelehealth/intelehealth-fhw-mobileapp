@@ -9,9 +9,11 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,9 +28,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
@@ -39,6 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.intelehealth.client.R;
+import app.intelehealth.client.activities.todayPatientActivity.TodayPatientActivity;
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.dao.ProviderDAO;
@@ -53,23 +58,35 @@ import app.intelehealth.client.utilities.exception.DAOException;
 public class SearchPatientActivity extends AppCompatActivity {
     SearchView searchView;
     String query;
-    private SearchPatientAdapter recycler;
+    private SearchPatientAdapter searchPatientAdapter;
     RecyclerView recyclerView;
     SessionManager sessionManager = null;
     TextView msg;
     MaterialAlertDialogBuilder dialogBuilder;
-    private String TAG = SearchPatientActivity.class.getSimpleName();
+   // private String TAG = SearchPatientActivity.class.getSimpleName();
     private SQLiteDatabase db;
 
+    List<PatientDTO> ALL_PATIENT_DETAILS = new ArrayList<PatientDTO>();
+
+    String TAG = "SEARCH_PATIENT_ACTIVITY";
+
+    LinearLayoutManager linearLayoutManager;
+    boolean isSchrolling = false;
+    int currentItems, totalItems, scrollOutItems;
+
+    int currentOffset = 0;
+    int dataSetLimit = 10;
+
+    int progressCount = 0;
+
+    ProgressBar progress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_patient);
         Toolbar toolbar = findViewById(R.id.toolbar);
 
-        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),
-                R.drawable.ic_sort_white_24dp);
-//        toolbar.setOverflowIcon(drawable);
+
 
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
@@ -80,9 +97,48 @@ public class SearchPatientActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         msg = findViewById(R.id.textviewmessage);
+        progress = findViewById(R.id.progress);
+
         recyclerView = findViewById(R.id.recycle);
+        linearLayoutManager = new LinearLayoutManager(SearchPatientActivity.this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        searchPatientAdapter = new SearchPatientAdapter();
+        recyclerView.setAdapter(searchPatientAdapter);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                //we will get here schrolling has been started
+
+                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
+                    isSchrolling = true;
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                currentItems = linearLayoutManager.getChildCount();
+                totalItems = linearLayoutManager.getItemCount();
+                scrollOutItems = linearLayoutManager.findFirstVisibleItemPosition();
+
+                if(isSchrolling && (currentItems + scrollOutItems == totalItems))
+                {
+                    //load new data
+                    isSchrolling = false;
+                    //get data when scroll
+                    new GetAllPatientsFromDb().execute();
+                    //doQuery();
+                }
+            }
+        });
+
         Intent intent = getIntent();
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction()))
+        {
+            Log.e(TAG,"if called");
             query = intent.getStringExtra(SearchManager.QUERY);
             SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this, SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
             suggestions.saveRecentQuery(query, null);
@@ -92,14 +148,18 @@ public class SearchPatientActivity extends AppCompatActivity {
                 doQuery(query);
             }
 
-        } else {
+        }
+        else
+        {
+            Log.e(TAG,"else called");
             SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
                     SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
             suggestions.saveRecentQuery(query, null);
             if (sessionManager.isPullSyncFinished()) {
                 msg.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
-                firstQuery();
+                //firstQuery();
+                new GetAllPatientsFromDb().execute();
             }
 
         }
@@ -109,13 +169,10 @@ public class SearchPatientActivity extends AppCompatActivity {
 
     private void doQuery(String query) {
         try {
-            recycler = new SearchPatientAdapter(getQueryPatients(query), SearchPatientActivity.this);
+            searchPatientAdapter.setSearchPatientAdapter(getQueryPatients(query), SearchPatientActivity.this);
             RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerView.setLayoutManager(reLayoutManager);
-           /* recyclerView.addItemDecoration(new
-                    DividerItemDecoration(this,
-                    DividerItemDecoration.VERTICAL));*/
-            recyclerView.setAdapter(recycler);
+            recyclerView.setAdapter(searchPatientAdapter);
 
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -125,18 +182,12 @@ public class SearchPatientActivity extends AppCompatActivity {
 
     private void firstQuery() {
         try {
-            getAllPatientsFromDB();
-
-            recycler = new SearchPatientAdapter(getAllPatientsFromDB(), SearchPatientActivity.this);
-
-
-//            Log.i("db data", "" + getAllPatientsFromDB());
+           // recycler = new SearchPatientAdapter(getAllPatientsFromDB(), SearchPatientActivity.this);
+            searchPatientAdapter.setSearchPatientAdapter(getAllPatientsFromDB(), SearchPatientActivity.this);
+              Log.i("db data", "" + getAllPatientsFromDB());
             RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerView.setLayoutManager(reLayoutManager);
-         /*   recyclerView.addItemDecoration(new
-                    DividerItemDecoration(this,
-                    DividerItemDecoration.VERTICAL));*/
-            recyclerView.setAdapter(recycler);
+            recyclerView.setAdapter(searchPatientAdapter);
 
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -211,6 +262,74 @@ public class SearchPatientActivity extends AppCompatActivity {
         lvItems.setAdapter(searchAdapter);
     }
 
+    class GetAllPatientsFromDb extends AsyncTask<Void,Void,Void>
+    {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (progressCount == 0)
+                progress.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            String table = "tbl_patient";
+            //final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " ORDER BY first_name ASC", null);
+            final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " ORDER BY first_name ASC LIMIT "+currentOffset+","+dataSetLimit+"", null);
+            try {
+                if (searchCursor.moveToFirst()) {
+                    do {
+                        PatientDTO model = new PatientDTO();
+                        model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
+                        model.setFirstname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")));
+                        model.setLastname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")));
+                        model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
+                        model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
+                        model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
+                        model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
+
+                        ALL_PATIENT_DETAILS.add(model);
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                searchPatientAdapter.notifyItemInserted(ALL_PATIENT_DETAILS.size() - 1);
+                            }
+                        });
+                    } while (searchCursor.moveToNext());
+                }
+                searchCursor.close();
+            } catch (DAOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if (progressCount == 0)
+                progress.setVisibility(View.GONE);
+
+            progressCount = 1;
+            if(!ALL_PATIENT_DETAILS.isEmpty())
+            {
+                //recycler = new SearchPatientAdapter(ALL_PATIENT_DETAILS, SearchPatientActivity.this);
+                //RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
+                //recyclerView.setLayoutManager(reLayoutManager);
+                searchPatientAdapter.setSearchPatientAdapter(ALL_PATIENT_DETAILS, SearchPatientActivity.this);
+                //mangae data set
+                if (currentOffset == 0)
+                    currentOffset = dataSetLimit;
+                else
+                    currentOffset = currentOffset + dataSetLimit;
+
+                Log.e(TAG,"currentOffset : "+currentOffset);
+                Log.e(TAG,"dataSetLimit : "+dataSetLimit);
+            }
+        }
+    }
     public List<PatientDTO> getAllPatientsFromDB() {
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
         String table = "tbl_patient";
@@ -420,14 +539,15 @@ public class SearchPatientActivity extends AppCompatActivity {
             }
 
             try {
-                recycler = new SearchPatientAdapter(modelListwihtoutQuery, SearchPatientActivity.this);
+               // recycler = new SearchPatientAdapter(modelListwihtoutQuery, SearchPatientActivity.this);
+                searchPatientAdapter.setSearchPatientAdapter(modelListwihtoutQuery, SearchPatientActivity.this);
 //            Log.i("db data", "" + getQueryPatients(query));
                 RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
                 recyclerView.setLayoutManager(reLayoutManager);
             /*    recyclerView.addItemDecoration(new
                         DividerItemDecoration(this,
                         DividerItemDecoration.VERTICAL));*/
-                recyclerView.setAdapter(recycler);
+                recyclerView.setAdapter(searchPatientAdapter);
 
             } catch (Exception e) {
                 Logger.logE("doquery", "doquery", e);
@@ -472,13 +592,14 @@ public class SearchPatientActivity extends AppCompatActivity {
 
 
             try {
-                recycler = new SearchPatientAdapter(modelList, SearchPatientActivity.this);
+                //recycler = new SearchPatientAdapter(modelList, SearchPatientActivity.this);
+                searchPatientAdapter.setSearchPatientAdapter(modelList, SearchPatientActivity.this);
                 RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
                 recyclerView.setLayoutManager(reLayoutManager);
            /*     recyclerView.addItemDecoration(new
                         DividerItemDecoration(this,
                         DividerItemDecoration.HORIZONTAL));*/
-                recyclerView.setAdapter(recycler);
+                recyclerView.setAdapter(searchPatientAdapter);
 
             } catch (Exception e) {
                 FirebaseCrashlytics.getInstance().recordException(e);

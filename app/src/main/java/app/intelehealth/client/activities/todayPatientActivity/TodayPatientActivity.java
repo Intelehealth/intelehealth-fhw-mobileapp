@@ -269,6 +269,7 @@ public class TodayPatientActivity extends AppCompatActivity {
             if (progressCount == 0)
                 progress.setVisibility(View.GONE);
 
+            progressCount = 1;
             if (!todayPatientList.isEmpty()) {
                 for (TodayPatientModel todayPatientModel : todayPatientList)
                     Log.i(TAG, todayPatientModel.getFirst_name() + " " + todayPatientModel.getLast_name());
