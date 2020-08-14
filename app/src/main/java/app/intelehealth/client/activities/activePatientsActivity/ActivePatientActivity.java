@@ -44,6 +44,7 @@ import app.intelehealth.client.database.dao.VisitsDAO;
 import app.intelehealth.client.models.ActivePatientModel;
 import app.intelehealth.client.models.dto.EncounterDTO;
 import app.intelehealth.client.models.dto.VisitDTO;
+import app.intelehealth.client.utilities.EndlessRecyclerViewScrollListener;
 import app.intelehealth.client.utilities.Logger;
 import app.intelehealth.client.utilities.SessionManager;
 import app.intelehealth.client.utilities.StringUtils;
@@ -51,7 +52,7 @@ import app.intelehealth.client.utilities.exception.DAOException;
 
 public class ActivePatientActivity extends AppCompatActivity
 {
-    private static final String TAG = ActivePatientActivity.class.getSimpleName();
+    private static final String TAG = "ActivePatientActivity";
     private SQLiteDatabase db;
     SessionManager sessionManager = null;
     Toolbar mToolbar;
@@ -65,14 +66,12 @@ public class ActivePatientActivity extends AppCompatActivity
 
     private ArrayList<String> listPatientUUID = new ArrayList<String>();
 
-    boolean isSchrolling = false;
-    //check we want to fetch data or not so we need to maintain three var
-    int currentItems, totalItems, scrollOutItems;
-
     int currentOffset = 0;
     int dataSetLimit = 10;
 
     int progressCount = 0;
+
+    private EndlessRecyclerViewScrollListener scrollListener;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -80,9 +79,6 @@ public class ActivePatientActivity extends AppCompatActivity
         setContentView(R.layout.activity_active_patient);
         mToolbar = findViewById(R.id.toolbar);
 
-
-        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),
-                R.drawable.ic_sort_white_24dp);
 
         setSupportActionBar(mToolbar);
         mToolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
@@ -100,35 +96,20 @@ public class ActivePatientActivity extends AppCompatActivity
         mActivePatientAdapter = new ActivePatientAdapter();
         recyclerView.setAdapter(mActivePatientAdapter);
 
-        //for getting item when scroll
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                //we will get here schrolling has been started
-
-                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
-                    isSchrolling = true;
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+                //loadNextDataFromApi(page);
+                Log.e(TAG,"Called...");
+                new LoadActiveVisits().execute();
             }
+        };
+        // Adds the scroll listener to RecyclerView
+        recyclerView.addOnScrollListener(scrollListener);
 
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                currentItems = linearLayoutManager.getChildCount();
-                totalItems = linearLayoutManager.getItemCount();
-                scrollOutItems = linearLayoutManager.findFirstVisibleItemPosition();
-
-                if(isSchrolling && (currentItems + scrollOutItems == totalItems))
-                {
-                    //load new data
-                    isSchrolling = false;
-                    //get data when scroll
-                    new LoadActiveVisits().execute();
-                    //doQuery();
-                }
-            }
-        });
         sessionManager = new SessionManager(this);
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         if (sessionManager.isPullSyncFinished())

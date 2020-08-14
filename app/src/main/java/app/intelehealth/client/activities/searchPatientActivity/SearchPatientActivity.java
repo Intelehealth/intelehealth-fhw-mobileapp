@@ -48,6 +48,7 @@ import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.dao.ProviderDAO;
 import app.intelehealth.client.models.dto.PatientDTO;
+import app.intelehealth.client.utilities.EndlessRecyclerViewScrollListener;
 import app.intelehealth.client.utilities.Logger;
 import app.intelehealth.client.utilities.SessionManager;
 
@@ -71,8 +72,7 @@ public class SearchPatientActivity extends AppCompatActivity {
     String TAG = "SEARCH_PATIENT_ACTIVITY";
 
     LinearLayoutManager linearLayoutManager;
-    boolean isSchrolling = false;
-    int currentItems, totalItems, scrollOutItems;
+
 
     int currentOffset = 0;
     int dataSetLimit = 10;
@@ -80,6 +80,8 @@ public class SearchPatientActivity extends AppCompatActivity {
     int progressCount = 0;
 
     ProgressBar progress;
+
+    private EndlessRecyclerViewScrollListener scrollListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,34 +108,19 @@ public class SearchPatientActivity extends AppCompatActivity {
         searchPatientAdapter = new SearchPatientAdapter();
         recyclerView.setAdapter(searchPatientAdapter);
 
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                //we will get here schrolling has been started
-
-                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
-                    isSchrolling = true;
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+                //loadNextDataFromApi(page);
+                Log.e(TAG,"Called...");
+                new GetAllPatientsFromDb().execute();
             }
+        };
+        // Adds the scroll listener to RecyclerView
+        recyclerView.addOnScrollListener(scrollListener);
 
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                currentItems = linearLayoutManager.getChildCount();
-                totalItems = linearLayoutManager.getItemCount();
-                scrollOutItems = linearLayoutManager.findFirstVisibleItemPosition();
-
-                if(isSchrolling && (currentItems + scrollOutItems == totalItems))
-                {
-                    //load new data
-                    isSchrolling = false;
-                    //get data when scroll
-                    new GetAllPatientsFromDb().execute();
-                    //doQuery();
-                }
-            }
-        });
 
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction()))

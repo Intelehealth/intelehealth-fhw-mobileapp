@@ -37,6 +37,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import app.intelehealth.client.R;
+import app.intelehealth.client.activities.activePatientsActivity.ActivePatientActivity;
 import app.intelehealth.client.activities.homeActivity.HomeActivity;
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.app.IntelehealthApplication;
@@ -47,6 +48,7 @@ import app.intelehealth.client.database.dao.VisitsDAO;
 import app.intelehealth.client.models.TodayPatientModel;
 import app.intelehealth.client.models.dto.EncounterDTO;
 import app.intelehealth.client.models.dto.VisitDTO;
+import app.intelehealth.client.utilities.EndlessRecyclerViewScrollListener;
 import app.intelehealth.client.utilities.Logger;
 import app.intelehealth.client.utilities.SessionManager;
 import app.intelehealth.client.utilities.StringUtils;
@@ -62,9 +64,6 @@ public class TodayPatientActivity extends AppCompatActivity {
 
     private ArrayList<String> listPatientUUID = new ArrayList<String>();
 
-    boolean isSchrolling = false;
-    //check we want to fetch data or not so we need to maintain three var
-    int currentItems, totalItems, scrollOutItems;
 
     int currentOffset = 0;
     int dataSetLimit = 10;
@@ -77,7 +76,7 @@ public class TodayPatientActivity extends AppCompatActivity {
     ProgressBar progress;
     List<TodayPatientModel> todayPatientList;
 
-
+    private EndlessRecyclerViewScrollListener scrollListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,35 +105,19 @@ public class TodayPatientActivity extends AppCompatActivity {
         mTodayPatientAdapter = new TodayPatientAdapter();
         mTodayPatientList.setAdapter(mTodayPatientAdapter);
 
-        //for getting item when scroll
-        mTodayPatientList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                //we will get here schrolling has been started
-
-                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
-                    isSchrolling = true;
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+                //loadNextDataFromApi(page);
+                Log.e(TAG,"Called...");
+                new LoadTodaysPatient().execute();
             }
+        };
+        // Adds the scroll listener to RecyclerView
+        mTodayPatientList.addOnScrollListener(scrollListener);
 
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                currentItems = linearLayoutManager.getChildCount();
-                totalItems = linearLayoutManager.getItemCount();
-                scrollOutItems = linearLayoutManager.findFirstVisibleItemPosition();
-
-                if(isSchrolling && (currentItems + scrollOutItems == totalItems))
-                {
-                    //load new data
-                    isSchrolling = false;
-                    //get data when scroll
-                    new LoadTodaysPatient().execute();
-                    //doQuery();
-                }
-            }
-        });
 
         sessionManager = new SessionManager(this);
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
