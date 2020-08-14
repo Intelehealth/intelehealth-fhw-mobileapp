@@ -478,15 +478,25 @@ public class IdentificationActivity extends AppCompatActivity {
                 String state = parent.getItemAtPosition(position).toString();
                 if (state.matches("Odisha")) {
                     //Creating the instance of ArrayAdapter containing list of fruit names
-                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                    ArrayAdapter<CharSequence> adapter =
+                            ArrayAdapter.createFromResource(IdentificationActivity.this,
                             R.array.odisha_villages, R.layout.custom_spinner);
-                    mCity.setThreshold(1);//will start working from first character
-                    mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
-                } else if (state.matches("Bukidnon")) {
-                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                    mCity.setThreshold(1);   //will start working from first character
+                    mCity.setAdapter(adapter);  //setting the adapter data into the AutoCompleteTextView
+                }
+                else if(state.matches("Gujarat")) {
+                    ArrayAdapter<CharSequence> adapter =
+                            ArrayAdapter.createFromResource(IdentificationActivity.this,
+                            R.array.gujarat_villages, R.layout.custom_spinner);
+                    mCity.setThreshold(1);   //will start working from first character
+                    mCity.setAdapter(adapter);  //setting the adapter data into the AutoCompleteTextView
+                }
+                else if (state.matches("Bukidnon")) {
+                    ArrayAdapter<CharSequence> adapter =
+                            ArrayAdapter.createFromResource(IdentificationActivity.this,
                             R.array.bukidnon_villages, R.layout.custom_spinner);
-                    mCity.setThreshold(1);//will start working from first character
-                    mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+                    mCity.setThreshold(1);   //will start working from first character
+                    mCity.setAdapter(adapter);   //setting the adapter data into the AutoCompleteTextView
                 } else {
                     mCity.setAdapter(null);
                 }
