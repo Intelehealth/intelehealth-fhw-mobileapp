@@ -658,7 +658,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
             for (int i = 1; i <= 2; i++) {
                 if (i == 1) {
-                    SpannableString spannableString = new SpannableString(visitString + " Active");
+                    SpannableString spannableString = new SpannableString(visitString + getString(R.string.active_tag_patientDetail));
                     Object greenSpan = new BackgroundColorSpan(Color.GREEN);
                     Object underlineSpan = new UnderlineSpan();
                     spannableString.setSpan(greenSpan, spannableString.length() - 6, spannableString.length(), 0);
@@ -679,7 +679,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     complaintxt1.setLayoutParams(layoutParams);
                     if (visitValue != null && !visitValue.equals("")) {
                         String visitComplaint = Html.fromHtml(visitValue).toString();
-                        complaintxt1.setText(visitComplaint.replace("\n" + Node.bullet_arrow + "Associated symptoms", ""));
+                        complaintxt1.setText(visitComplaint.replace("\n" + Node.bullet_arrow + getString(R.string.associated_symptoms_patientDetail), ""));
                     } else {
                         Log.e("Check", "No complaint");
                     }
@@ -726,7 +726,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     TextView complaintxt1 = new TextView(this);
                     if (visitValue != null && !visitValue.equals("")) {
                         String visitComplaint = Html.fromHtml(visitValue).toString();
-                        complaintxt1.setText(visitComplaint.replace("\n" + Node.bullet_arrow + "Associated symptoms", ""));
+                        complaintxt1.setText(visitComplaint.replace("\n" + Node.bullet_arrow + getString(R.string.associated_symptoms_patientDetail), ""));
                     } else {
                         Log.e("Check", "No complaint");
                     }
