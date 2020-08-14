@@ -451,7 +451,7 @@ public class IdentificationActivity extends AppCompatActivity {
             // countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             mEconomicStatus.setAdapter(economicStatusAdapter);
         } catch (Exception e) {
-            Toast.makeText(this, "Economic values are missing", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.economic_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
         }
         try {
@@ -465,7 +465,7 @@ public class IdentificationActivity extends AppCompatActivity {
             // countryAdapter.setDropDownViewResource(R.layout.custom_spinner);
             mEducation.setAdapter(educationAdapter);
         } catch (Exception e) {
-            Toast.makeText(this, "Education values are missing", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
         }
 

@@ -45,7 +45,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/lato_bold"
-                android:text="Since when have you had this symptom?"
+                android:text="@string/since_when_have_you_had_this_symptom"
                 android:textColor="@color/primary_text"
                 android:textSize="18sp"
                 android:visibility="visible" />
