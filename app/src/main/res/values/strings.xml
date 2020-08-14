@@ -256,7 +256,7 @@
 
     <string name="title_activity_camera" translatable="false">Camera</string>
     <string name="title_activity_today_patient" translatable="false">Today\'s Visits</string>
-    <string name="title_activity_additional_documents" translatable="false">Additional Documents</string>
+    <string name="title_activity_additional_documents">Additional Documents</string>
     <string name="title_activity_video_library" translatable="false">Video Library</string>
     <string name="visit_summary_patient_details" translatable="false">Visit details</string>
 
@@ -444,7 +444,6 @@
     <string name="lastsync">lastsync</string>
     <string name="enter_password">Enter your password</string>
     <string name="enter_username">Enter your username</string>
-    <string name="has_a_new_prescription">has a new prescription</string>
     <string name="patient_denies">Patient denies</string>
     <string name="patient_reports">Patient reports</string>
 
@@ -540,7 +539,7 @@
     <string name="minute">minute</string>
     <string name="s">s</string>
     <string name="ago">ago</string>
-    <string name="successfully_synced" translatable="false">Successfully synced</string>
+    <string name="successfully_synced">Successfully synced</string>
     <string name="failed_synced"><![CDATA[Failed synced, check your internet connection]]></string>
     <string name="visit_not_uploaded">Visit Not Uploaded</string>
     <string name="upload_started">Uploading...</string>
@@ -616,5 +615,7 @@
 <string name="download_protocols">Downloading Protocols</string>
     <string name="mindmap_internect_connection">To download mindmaps you need a Internet connectivity, please turn on your Internet</string>
     <string name="days">days</string>
+    <string name="contact">Contact</string>
+    <string name="has_a_new_prescription">ଏକ ନୂଆ ପ୍ରେସକ୍ରିପ୍ସନ୍ ଅଛି</string>
 
 </resources>

@@ -245,7 +245,7 @@ public class LoginActivity extends AppCompatActivity {
 
       MaterialAlertDialogBuilder builder =   new MaterialAlertDialogBuilder(this)
                 .setMessage(getApplicationContext().getText(R.string.contact_whatsapp))
-                .setNegativeButton("Contact", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.contact, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //finish();

@@ -49,6 +49,9 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_additional_documents);
         Toolbar topToolBar = findViewById(R.id.toolbar);
+
+        //removes the bug of no translation seen even when provided....
+        topToolBar.setTitle(getString(R.string.title_activity_additional_documents));
         setSupportActionBar(topToolBar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
