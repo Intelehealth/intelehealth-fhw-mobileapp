@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.IntentSender;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -18,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -38,6 +40,13 @@ import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.android.play.core.tasks.OnSuccessListener;
+import com.google.android.play.core.tasks.Task;
 
 import java.io.File;
 import java.text.ParsePosition;
@@ -83,7 +92,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private static final String TAG = HomeActivity.class.getSimpleName();
+    private static final String TAG = "HomeActivity";
     SessionManager sessionManager = null;
     ProgressDialog TempDialog;
     CountDownTimer CDT;
@@ -107,6 +116,9 @@ public class HomeActivity extends AppCompatActivity {
 
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
+
+    //for auto update app
+    private int REQUEST_CODE = 11;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +146,9 @@ public class HomeActivity extends AppCompatActivity {
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
         checkAppVer();  //auto-update feature.
+
+        //init auto app update
+        initAutoUpdateApp();
 
         Logger.logD(TAG, "onCreate: " + getFilesDir().toString());
         lastSyncTextView = findViewById(R.id.lastsynctextview);
@@ -263,6 +278,53 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         showProgressbar();
+    }
+
+    //check update available and update the app
+    private void initAutoUpdateApp() {
+
+        AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(HomeActivity.this);
+        //get update is available or not
+        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
+
+        appUpdateInfoTask.addOnSuccessListener(new OnSuccessListener<AppUpdateInfo>() {
+            @Override
+            public void onSuccess(AppUpdateInfo result) {
+
+                //check in result update is available
+                //if then proceed to update app
+                if(result.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                && result.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE))
+                {
+                    Log.e(TAG,"App update available");
+                    try {
+                        appUpdateManager.startUpdateFlowForResult(result,AppUpdateType.IMMEDIATE,HomeActivity.this,REQUEST_CODE);
+                    } catch (IntentSender.SendIntentException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else
+                {
+                    Log.e(TAG,"App update not available");
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == REQUEST_CODE)
+        {
+            //Toast.makeText(HomeActivity.this,"Start download update",Toast.LENGTH_LONG).show();
+            if(resultCode != RESULT_OK)
+            {
+                Log.e(TAG,"App update process fail");
+            }
+        }
+        else
+            Log.e(TAG,"App update REQUEST_CODE not matched");
     }
 
     private void showProgressbar() {
