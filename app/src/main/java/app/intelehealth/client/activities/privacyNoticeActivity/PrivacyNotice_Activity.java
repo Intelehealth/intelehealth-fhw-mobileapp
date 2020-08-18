@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -136,13 +137,15 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
                     int selected_radio = radiogrp.getCheckedRadioButtonId();
                     radiobtn = findViewById(selected_radio);
 
-                    if ((radio_acc.isChecked() || radio_rej.isChecked()) & checkBox_cho.isChecked())
+
+                    if (checkBox_cho.isChecked() & (radio_acc.isChecked() || radio_rej.isChecked()))
                     {
                         if(radio_acc.isChecked())
                         {
 //                            sessionManager.setOfllineOpenMRSID("");
                             Intent intent = new Intent(getApplicationContext(), IdentificationActivity.class);
                             intent.putExtra("privacy",radiobtn.getText()); //privacy value send to identificationActivity
+                            Log.d("Privacy", "selected radio: "+radiobtn.getText().toString());
                             startActivity(intent);
                         }
                         else
@@ -153,6 +156,9 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
                     }
                     else if((radio_acc.isChecked() || radio_rej.isChecked()) & !checkBox_cho.isChecked())
                     {
+//                        radio_acc.setChecked(false);
+//                        radio_rej.setChecked(false);
+                        radiogrp.clearCheck();
                         Toast.makeText(PrivacyNotice_Activity.this, "Please read out the entire Privacy Consent first.", Toast.LENGTH_SHORT).show();
                     }
                     else
