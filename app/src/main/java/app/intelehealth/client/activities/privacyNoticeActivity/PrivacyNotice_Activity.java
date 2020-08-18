@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.json.JSONException;
@@ -37,6 +38,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
     RadioButton radio_acc;
     RadioButton radio_rej;
     TextView txt_next;
+    MaterialCheckBox checkBox_cho;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
         radio_rej = findViewById(R.id.radio_reject);
 
         txt_next = findViewById(R.id.txt_privacy);
+        checkBox_cho = findViewById(R.id.checkbox_CHO);
 
 
         if (!sessionManager.getLicenseKey().isEmpty())
@@ -133,7 +136,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
                     int selected_radio = radiogrp.getCheckedRadioButtonId();
                     radiobtn = findViewById(selected_radio);
 
-                    if (radio_acc.isChecked() || radio_rej.isChecked())
+                    if ((radio_acc.isChecked() || radio_rej.isChecked()) & checkBox_cho.isChecked())
                     {
                         if(radio_acc.isChecked())
                         {
@@ -147,6 +150,10 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
                             Toast.makeText(PrivacyNotice_Activity.this, getString(R.string.privacy_reject_toast), Toast.LENGTH_SHORT).show();
                             finish();
                         }
+                    }
+                    else if((radio_acc.isChecked() || radio_rej.isChecked()) & !checkBox_cho.isChecked())
+                    {
+                        Toast.makeText(PrivacyNotice_Activity.this, "Please read out the entire Privacy Consent first.", Toast.LENGTH_SHORT).show();
                     }
                     else
                     {

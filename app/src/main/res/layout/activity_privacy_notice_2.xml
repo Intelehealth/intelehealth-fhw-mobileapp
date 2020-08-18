@@ -31,14 +31,6 @@
         android:gravity="center"
         android:layout_alignParentBottom="true">
 
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/checkbox_CHO"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="I (CHO) have read out the privacy consent."
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="5dp"
-            />
 
         <RadioGroup
             android:id="@+id/radio_privacy_grp"
@@ -46,8 +38,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginHorizontal="50dp"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/checkbox_CHO">
+            android:layout_centerHorizontal="true">
 
             <RadioButton
                 android:id="@+id/radio_accept"
@@ -90,7 +81,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_above="@id/buttons"
         android:layout_below="@+id/actionbar"
         android:layout_marginBottom="15dp">
@@ -109,6 +100,16 @@
                 android:layout_width="wrap_content"
                 android:layout_marginHorizontal="5dp"
                 android:textAlignment="gravity"/>
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/checkbox_CHO"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="I confirm that I have read out the privacy notice and consent to the patient."
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="5dp"
+                />
+
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>
