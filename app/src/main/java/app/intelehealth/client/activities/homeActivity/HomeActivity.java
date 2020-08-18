@@ -145,10 +145,13 @@ public class HomeActivity extends AppCompatActivity {
 
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
-        checkAppVer();  //auto-update feature.
-
-        //init auto app update
-        initAutoUpdateApp();
+        //auto-update feature.
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            //above 5.0
+            initAutoUpdateApp();
+        else
+            //below 5.0
+            checkAppVer();
 
         Logger.logD(TAG, "onCreate: " + getFilesDir().toString());
         lastSyncTextView = findViewById(R.id.lastsynctextview);
