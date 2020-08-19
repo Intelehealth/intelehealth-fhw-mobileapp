@@ -159,7 +159,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
 //                        radio_acc.setChecked(false);
 //                        radio_rej.setChecked(false);
                         radiogrp.clearCheck();
-                        Toast.makeText(PrivacyNotice_Activity.this, "Please read out the entire Privacy Consent first.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PrivacyNotice_Activity.this, "Please read out the Privacy Consent first.", Toast.LENGTH_SHORT).show();
                     }
                     else
                     {
