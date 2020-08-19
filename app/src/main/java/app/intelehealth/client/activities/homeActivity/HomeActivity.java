@@ -200,7 +200,9 @@ public class HomeActivity extends AppCompatActivity {
         c5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, VideoLibraryActivity.class);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri uri = Uri.parse("https://www.youtube.com/channel/UClZeC7V-7cwnSFYY_QfO2yg/videos");
+                intent.setData(uri);
                 startActivity(intent);
             }
         });
