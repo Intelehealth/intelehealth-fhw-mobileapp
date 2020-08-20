@@ -38,6 +38,10 @@ import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.text.ParsePosition;
@@ -63,6 +67,7 @@ import app.intelehealth.client.networkApiCalls.ApiInterface;
 import app.intelehealth.client.syncModule.SyncUtils;
 import app.intelehealth.client.utilities.ConfigUtils;
 import app.intelehealth.client.utilities.DownloadMindMaps;
+import app.intelehealth.client.utilities.FileUtils;
 import app.intelehealth.client.utilities.Logger;
 import app.intelehealth.client.utilities.NetworkConnection;
 import app.intelehealth.client.utilities.OfflineLogin;
@@ -87,6 +92,7 @@ public class HomeActivity extends AppCompatActivity {
     SessionManager sessionManager = null;
     ProgressDialog TempDialog;
     CountDownTimer CDT;
+    private boolean hasLicense = false;
     int i = 5;
 
     TextView lastSyncTextView;
@@ -200,10 +206,7 @@ public class HomeActivity extends AppCompatActivity {
         c5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                Uri uri = Uri.parse("https://www.youtube.com/channel/UClZeC7V-7cwnSFYY_QfO2yg/videos");
-                intent.setData(uri);
-                startActivity(intent);
+                videoLibrary();
             }
         });
 
@@ -265,6 +268,38 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         showProgressbar();
+    }
+
+    //function for handling the video library feature...
+    private void videoLibrary() {
+        if (!sessionManager.getLicenseKey().isEmpty())
+            hasLicense = true;
+        //Check for license key and load the correct config file
+        try {
+            JSONObject obj = null;
+            if (hasLicense) {
+                obj = new JSONObject(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this)); //Load the config file
+
+            } else {
+                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
+            }
+
+            if(obj.has("video_library"))
+            {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri uri = Uri.parse(obj.getString("video_library"));
+                intent.setData(uri);
+                startActivity(intent);
+            }
+            else
+            {
+                Toast.makeText(context, "No config attribute found", Toast.LENGTH_SHORT).show();
+            }
+        }
+        catch (JSONException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            Toast.makeText(getApplicationContext(), "JsonException" + e, Toast.LENGTH_LONG).show();
+        }
     }
 
     private void showProgressbar() {
