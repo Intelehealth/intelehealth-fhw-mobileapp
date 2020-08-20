@@ -9,6 +9,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -34,11 +35,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
     TextView privacy_textview;
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
-    RadioGroup radiogrp;
-    RadioButton radiobtn;
-    RadioButton radio_acc;
-    RadioButton radio_rej;
-    TextView txt_next;
+    Button accept, reject;
     MaterialCheckBox checkBox_cho;
 
     @Override
@@ -67,12 +64,8 @@ public class PrivacyNotice_Activity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         privacy_textview = findViewById(R.id.privacy_text);
         privacy_textview.setAutoLinkMask(Linkify.ALL);
-
-        radiogrp = findViewById(R.id.radio_privacy_grp);
-        radio_acc = findViewById(R.id.radio_accept);
-        radio_rej = findViewById(R.id.radio_reject);
-
-        txt_next = findViewById(R.id.txt_privacy);
+        accept = findViewById(R.id.button_accept);
+        reject = findViewById(R.id.button_reject);
         checkBox_cho = findViewById(R.id.checkbox_CHO);
 
 
