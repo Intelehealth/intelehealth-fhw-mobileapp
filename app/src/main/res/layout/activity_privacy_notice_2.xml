@@ -29,6 +29,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_alignParentBottom="true">
 
         <Button
@@ -42,7 +44,8 @@
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
             android:includeFontPadding="true"
-            android:background="@drawable/ic_rectangle_76" />
+            android:background="@color/colorPrimary"
+            />
 
         <Button
             android:id="@+id/button_reject"
@@ -58,7 +61,8 @@
             android:layout_marginEnd="5dp"
             android:includeFontPadding="true"
             android:layout_below="@id/button_accept"
-            android:background="@drawable/ic_rectangle_custom_setup"
+            android:background="@drawable/button_layerlist_nocorner"
+            android:layout_marginBottom="5dp"
             />
 
     </RelativeLayout>
