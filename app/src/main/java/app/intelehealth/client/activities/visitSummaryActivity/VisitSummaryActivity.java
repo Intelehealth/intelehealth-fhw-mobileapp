@@ -255,6 +255,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String encounterUuid;
     String encounterVitals;
     String encounterUuidAdultIntial;
+    Boolean isreturningWhatsapp = true;
 
     ProgressBar mProgressBar;
     TextView mProgressText;
@@ -545,6 +546,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                                         String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
                                                                 phoneNumber, message))));
 
+                                        isreturningWhatsapp = true;
 
                                     }
                                     else
@@ -1386,13 +1388,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     }
 
-    private void showVisitID() {
+    private String showVisitID() {
 
         if (visitUUID != null && !visitUUID.isEmpty()) {
             String hideVisitUUID = visitUUID;
             hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
             visitView.setText("XXXX" + hideVisitUUID);
         }
+
+        return visitView.getText().toString();
 
     }
 
@@ -2500,7 +2504,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
             String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
-            String fileName = visitUUID +".pdf";
+            String fileName = patientName + "_" + showVisitID() +".pdf";
             File dir = new File(path);
             if (!dir.exists())
                 dir.mkdirs();
@@ -2564,7 +2568,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
             String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
-            String fileName = visitUUID +".pdf";
+            String fileName = patientName + "_" + showVisitID() +".pdf";
             File dir = new File(path);
             if (!dir.exists())
                 dir.mkdirs();
@@ -2628,7 +2632,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
             String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
-            String fileName = visitUUID +".pdf";
+            String fileName = patientName + "_" + showVisitID() +".pdf";
             File dir = new File(path);
             if (!dir.exists())
                 dir.mkdirs();
@@ -2692,7 +2696,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
             String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
-            String fileName = visitUUID +".pdf";
+            String fileName = patientName + "_" + showVisitID() +".pdf";
             File dir = new File(path);
             if (!dir.exists())
                 dir.mkdirs();
@@ -3266,6 +3270,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
             FirebaseCrashlytics.getInstance().recordException(e);
         } catch (Exception file) {
             Logger.logD(TAG, file.getMessage());
+        }
+
+        if(isreturningWhatsapp)
+        {
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String fileName = patientName + "_" + showVisitID() +".pdf";
+            File dir = new File(path);
+            File directory = new File(dir, fileName);
+
+            directory.delete();
         }
     }
 
