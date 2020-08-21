@@ -48,6 +48,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -487,11 +488,29 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                try {
-                    doWebViewPrint();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
+                    EditText editText = new EditText(VisitSummaryActivity.this);
+                    editText.setText(patient.getPhone_number());
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
+                            (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    editText.setLayoutParams(layoutParams);
+                    alertDialog.setView(editText);
+
+                    //AlertDialog alertDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle).create();
+                    alertDialog.setMessage("Enter mobile number if you dont want to share to this number.");
+                    alertDialog.setPositiveButton("Share",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    dialog.dismiss();
+                                }
+                            });
+                    AlertDialog dialog = alertDialog.show();
+                    Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+                    //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                    IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+
 
             }
         });
@@ -1476,7 +1495,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 Log.i("Patient WebView", "page finished loading " + url);
                 int webview_heightContent = view.getContentHeight();
                 Log.d("variable i", "variable i: " + webview_heightContent);
-                createWebPrintJob(view, webview_heightContent);
+
                 mWebView = null;
             }
         });
@@ -2008,23 +2027,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             //To display the preview window to user...
             PrintJob printJob = printManager.print(jobName, printAdapter,
                     pBuilder.build());
-
-            MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(this);
-
-            //AlertDialog alertDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle).create();
-            alertDialog.setMessage("Enter mobile number if want to send to some other number");
-            alertDialog.setPositiveButton("Share",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-
-                            dialog.dismiss();
-                        }
-                    });
-            AlertDialog dialog = alertDialog.show();
-            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
-            //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
             //end...
 
