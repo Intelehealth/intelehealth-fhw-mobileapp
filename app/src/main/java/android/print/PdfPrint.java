@@ -51,6 +51,8 @@ this.attributes = printAttributes;
                         }
                     }, null);
 
+
+
     }
 
     private ParcelFileDescriptor getOutputFile(File path, String filename) {

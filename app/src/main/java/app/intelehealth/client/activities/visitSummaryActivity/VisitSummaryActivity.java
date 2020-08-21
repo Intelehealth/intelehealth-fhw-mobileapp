@@ -211,6 +211,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     CardView requestedTestsCard;
     CardView additionalCommentsCard;
     CardView followUpDateCard;
+    CardView card_print, card_share;
+
 
     TextView diagnosisTextView;
     TextView prescriptionTextView;
@@ -477,6 +479,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mDoctorName = findViewById(R.id.doctor_details);
         frameLayout_doctor = findViewById(R.id.frame_doctor);
         frameLayout_doctor.setVisibility(View.GONE);
+
+        card_print = findViewById(R.id.card_print);
+        card_share = findViewById(R.id.card_share);
+
+        card_share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                try {
+                    doWebViewPrint();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
 
 //        mDoctorTitle.setVisibility(View.GONE);
 //        mDoctorName.setVisibility(View.GONE);
@@ -1989,6 +2008,25 @@ public class VisitSummaryActivity extends AppCompatActivity {
             //To display the preview window to user...
             PrintJob printJob = printManager.print(jobName, printAdapter,
                     pBuilder.build());
+
+            MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(this);
+
+            //AlertDialog alertDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle).create();
+            alertDialog.setMessage("Enter mobile number if want to send to some other number");
+            alertDialog.setPositiveButton("Share",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            dialog.dismiss();
+                        }
+                    });
+            AlertDialog dialog = alertDialog.show();
+            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+            //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+
+            //end...
 
             //TODO: write different functions for <= Lollipop versions..
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

@@ -13,7 +13,6 @@
     <!--Split the screen into two columns of cards-->
 
     <LinearLayout
-
         android:id="@+id/summary_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -285,6 +284,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:textSize="@dimen/card_content_sub_text_size" />
                         </LinearLayout>
+
                     </TableRow>
                     <!--Pulse-->
                     <TableRow>
@@ -514,8 +514,6 @@
                     android:text="@string/click_to_download_the_images"
                     android:textSize="@dimen/card_content_sub_text_size"
                     android:visibility="gone" />
-
-
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
@@ -665,7 +663,6 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView_additional_document_images"
                     android:padding="@dimen/padding_card">
-
                 </androidx.recyclerview.widget.RecyclerView>
 
                 <TextView
@@ -680,8 +677,6 @@
                     android:textSize="@dimen/card_content_sub_text_size"
                     android:visibility="gone" />
             </RelativeLayout>
-
-
         </androidx.cardview.widget.CardView>
 
         <!-- Diagnosis contains a TableView-->
@@ -740,7 +735,8 @@
         </androidx.cardview.widget.CardView>
 
         <!-- Prescription contains a TableView-->
-        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_rx"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -767,7 +763,6 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/card_content_text_size" />
 
-
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -789,13 +784,13 @@
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                     </TableRow>
-
                 </TableLayout>
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
         <!-- Medical Advice contains a TableView-->
-        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_medical_advice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -822,7 +817,6 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/card_content_text_size" />
 
-
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -834,8 +828,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
-                        <TextView
-                            android:id="@+id/textView_content_medical_advice"
+                        <TextView android:id="@+id/textView_content_medical_advice"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -844,7 +837,6 @@
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                     </TableRow>
-
                 </TableLayout>
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
@@ -877,7 +869,6 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/card_content_text_size" />
 
-
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -899,7 +890,6 @@
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                     </TableRow>
-
                 </TableLayout>
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
@@ -932,11 +922,9 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/card_content_text_size" />
 
-
                 <TableLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/textView_heading_additional_comments"
+                    android:layout_height="wrap_content" android:layout_below="@id/textView_heading_additional_comments"
                     android:padding="@dimen/padding_card">
 
                     <!--Additional Comments-->
@@ -944,8 +932,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
-                        <TextView
-                            android:id="@+id/textView_content_additional_comments"
+                        <TextView android:id="@+id/textView_content_additional_comments"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -954,12 +941,12 @@
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                     </TableRow>
-
                 </TableLayout>
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
-        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_follow_up_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -986,11 +973,9 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/card_content_text_size" />
 
-
                 <TableLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/textView_heading_follow_up_date"
+                    android:layout_height="wrap_content" android:layout_below="@id/textView_heading_follow_up_date"
                     android:padding="@dimen/padding_card">
 
                     <!--Additional Comments-->
@@ -998,8 +983,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
-                        <TextView
-                            android:id="@+id/textView_content_follow_up_date"
+                        <TextView android:id="@+id/textView_content_follow_up_date"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -1008,17 +992,14 @@
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                     </TableRow>
-
                 </TableLayout>
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
-
 
 <FrameLayout
     android:id="@+id/frame_doctor"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
 
     <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/doctor_details_cardview"
@@ -1099,10 +1080,10 @@
                     android:textSize="@dimen/card_content_sub_text_size" />
 
             </LinearLayout>
-
         </androidx.cardview.widget.CardView>
 
-        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/flageddetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -1139,9 +1120,7 @@
                     android:fontFamily="@font/lato_regular"
                     android:textSize="20sp" />
 
-
             </LinearLayout>
-
         </androidx.cardview.widget.CardView>
 
         <!--Previous Reports Card contains a list of links to image files of the previous reports-->
@@ -1238,7 +1217,6 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary">
 
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -1258,8 +1236,6 @@
                     app:srcCompat="@drawable/ic_cloud_upload">
 
                 </ImageView>
-
-
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
@@ -1279,7 +1255,6 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary">
 
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -1297,9 +1272,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="5dp"
                     app:srcCompat="@drawable/ic_cloud_download">
-
                 </ImageView>
-
 
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
@@ -1309,8 +1282,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="2"
-            android:layout_marginTop="@dimen/padding_card"
-            >
+            android:layout_marginTop="@dimen/padding_card">
 
         <androidx.cardview.widget.CardView
             xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -1328,7 +1300,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary">
-
 
                 <TextView
                     android:layout_width="match_parent"
@@ -1348,9 +1319,7 @@
                     android:layout_marginStart="10dp"
                     android:paddingVertical="10dp"
                     app:srcCompat="@drawable/ic_print_24dp">
-
                 </ImageView>
-
 
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
@@ -1372,7 +1341,6 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary">
 
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -1391,12 +1359,9 @@
                     android:layout_marginStart="10dp"
                     android:paddingVertical="10dp"
                     app:srcCompat="@drawable/ic_icons8_whatsapp_purple">
-
                 </ImageView>
 
-
             </RelativeLayout>
-
         </androidx.cardview.widget.CardView>
         </LinearLayout>
 
@@ -1434,6 +1399,4 @@
              android:textSize="20sp" />-->
 
     </LinearLayout>
-
-
 </androidx.core.widget.NestedScrollView>
