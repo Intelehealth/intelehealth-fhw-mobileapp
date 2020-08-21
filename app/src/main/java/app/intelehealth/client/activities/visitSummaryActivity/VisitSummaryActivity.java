@@ -1779,26 +1779,193 @@ public class VisitSummaryActivity extends AppCompatActivity {
             //medium size prescription...
             PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
             pBuilder.setMediaSize(PrintAttributes.MediaSize.ISO_B4);
+            pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
+            pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
             // Create a print job with name and adapter instance
             String jobName = getString(R.string.app_name) + " Visit Summary";
+
+            PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
+
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String fileName = visitUUID +".pdf";
+            File dir = new File(path);
+            if (!dir.exists())
+                dir.mkdirs();
+
+            File directory = new File(dir, fileName);
+
+            //To display the preview window to user...
             PrintJob printJob = printManager.print(jobName, printAdapter,
                     pBuilder.build());
-        } else if (contentHeight == 0) {
+
+            //TODO: write different functions for <= Lollipop versions..
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                //to write to a pdf file...
+                pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir,
+                        fileName, new PdfPrint.CallbackPrint() {
+                            @Override
+                            public void success(String path) {
+
+                            }
+
+                            @Override
+                            public void onFailure() {
+
+                            }
+
+                        });
+            }
+            else
+            {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+                {
+                    //to write to a pdf file...
+                    pdfPrint.print(printAdapter, dir,
+                            fileName, new PdfPrint.CallbackPrint() {
+                                @Override
+                                public void success(String path) {
+
+                                }
+
+                                @Override
+                                public void onFailure() {
+
+                                }
+
+                            });
+                }
+            }
+
+//            PrintJob printJob = printManager.print(jobName, printAdapter,
+//                    pBuilder.build());
+        }
+        else if (contentHeight == 0) {
             //in case of webview bug of 0 contents...
             PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
             pBuilder.setMediaSize(PrintAttributes.MediaSize.JIS_B4);
+            pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
+            pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
             // Create a print job with name and adapter instance
             String jobName = getString(R.string.app_name) + " Visit Summary";
+
+            PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
+
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String fileName = visitUUID +".pdf";
+            File dir = new File(path);
+            if (!dir.exists())
+                dir.mkdirs();
+
+            File directory = new File(dir, fileName);
+
+            //To display the preview window to user...
             PrintJob printJob = printManager.print(jobName, printAdapter,
                     pBuilder.build());
-        } else if (contentHeight > 3000) {
+
+            //TODO: write different functions for <= Lollipop versions..
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                //to write to a pdf file...
+                pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir,
+                        fileName, new PdfPrint.CallbackPrint() {
+                            @Override
+                            public void success(String path) {
+
+                            }
+
+                            @Override
+                            public void onFailure() {
+
+                            }
+
+                        });
+            }
+            else
+            {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+                {
+                    //to write to a pdf file...
+                    pdfPrint.print(printAdapter, dir,
+                            fileName, new PdfPrint.CallbackPrint() {
+                                @Override
+                                public void success(String path) {
+
+                                }
+
+                                @Override
+                                public void onFailure() {
+
+                                }
+
+                            });
+                }
+            }
+
+//            PrintJob printJob = printManager.print(jobName, printAdapter,
+//                    pBuilder.build());
+        }
+        else if (contentHeight > 3000) {
             //large size prescription...
             PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
             pBuilder.setMediaSize(PrintAttributes.MediaSize.JIS_B4);
+            pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
+            pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
             // Create a print job with name and adapter instance
             String jobName = getString(R.string.app_name) + " Visit Summary";
+
+            PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
+
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String fileName = visitUUID +".pdf";
+            File dir = new File(path);
+            if (!dir.exists())
+                dir.mkdirs();
+
+            File directory = new File(dir, fileName);
+
+            //To display the preview window to user...
             PrintJob printJob = printManager.print(jobName, printAdapter,
                     pBuilder.build());
+
+            //TODO: write different functions for <= Lollipop versions..
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                //to write to a pdf file...
+                pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir,
+                        fileName, new PdfPrint.CallbackPrint() {
+                            @Override
+                            public void success(String path) {
+
+                            }
+
+                            @Override
+                            public void onFailure() {
+
+                            }
+
+                        });
+            }
+            else
+            {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+                {
+                    //to write to a pdf file...
+                    pdfPrint.print(printAdapter, dir,
+                            fileName, new PdfPrint.CallbackPrint() {
+                                @Override
+                                public void success(String path) {
+
+                                }
+
+                                @Override
+                                public void onFailure() {
+
+                                }
+
+                            });
+                }
+            }
+
+//            PrintJob printJob = printManager.print(jobName, printAdapter,
+//                    pBuilder.build());
         } else {
             //small size prescription...
             // Create a print job with name and adapter instance
