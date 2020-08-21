@@ -40,7 +40,9 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.telephony.SmsManager;
 import android.text.Html;
+import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
@@ -511,6 +513,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
                     EditText editText = new EditText(VisitSummaryActivity.this);
+                    editText.setInputType(InputType.TYPE_CLASS_PHONE);
+                    InputFilter inputFilter = new InputFilter() {
+                        @Override
+                        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                            return null;
+                        }
+                    };
+                    editText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(10)});
                     editText.setText(patient.getPhone_number());
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
                             (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -523,16 +533,27 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
 
-                                    String phoneNumber = "+91" + editText.getText().toString();
-                                    String message =
-                                            "Share pdf from this path: Internal" +
-                                                    " Storage/Intelehealth_PDF/YourName.pdf";
+                                    if(!editText.getText().toString().equalsIgnoreCase(""))
+                                    {
+                                        String phoneNumber = "+91" + editText.getText().toString();
+                                        String message =
+                                                "Share pdf from this path: Internal" +
+                                                        " Storage/Intelehealth_PDF/YourName.pdf";
 
-                                    startActivity(new Intent(Intent.ACTION_VIEW,
-                                            Uri.parse(
-                                                    String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-                                                            phoneNumber, message))));
-                                    dialog.dismiss();
+                                        startActivity(new Intent(Intent.ACTION_VIEW,
+                                                Uri.parse(
+                                                        String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                                                                phoneNumber, message))));
+
+
+                                    }
+                                    else
+                                    {
+                                        Toast.makeText(context, "Please enter a mobile number",
+                                                Toast.LENGTH_SHORT).show();
+
+                                    }
+
                                 }
                             });
                     AlertDialog dialog = alertDialog.show();
