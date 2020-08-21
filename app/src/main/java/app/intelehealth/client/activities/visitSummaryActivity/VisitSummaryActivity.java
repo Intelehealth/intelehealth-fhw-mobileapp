@@ -501,13 +501,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                try {
-                    doWebViewPrint();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                if(hasPrescription.equalsIgnoreCase("true"))
+                {
+                    try {
+                        doWebViewPrint();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
 
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
                     EditText editText = new EditText(VisitSummaryActivity.this);
                     editText.setText(patient.getPhone_number());
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
@@ -538,6 +540,25 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
                     //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                     IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+                }
+                else
+                {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
+                    alertDialog.setMessage("Download prescription first before sharing");
+                    alertDialog.setPositiveButton("ok",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    AlertDialog dialog = alertDialog.show();
+                    Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+                    //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                    IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+
+                }
+
 
 
             }
