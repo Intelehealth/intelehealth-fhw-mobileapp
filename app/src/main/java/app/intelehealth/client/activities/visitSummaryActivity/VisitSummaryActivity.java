@@ -488,7 +488,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
+                try {
+                    doWebViewPrint();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
                     EditText editText = new EditText(VisitSummaryActivity.this);
                     editText.setText(patient.getPhone_number());
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
@@ -1495,7 +1501,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 Log.i("Patient WebView", "page finished loading " + url);
                 int webview_heightContent = view.getContentHeight();
                 Log.d("variable i", "variable i: " + webview_heightContent);
-
+                createWebPrintJob(view, webview_heightContent);
                 mWebView = null;
             }
         });
@@ -1833,8 +1839,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             File directory = new File(dir, fileName);
 
             //To display the preview window to user...
-            PrintJob printJob = printManager.print(jobName, printAdapter,
-                    pBuilder.build());
+//            PrintJob printJob = printManager.print(jobName, printAdapter,
+//                    pBuilder.build());
 
             //TODO: write different functions for <= Lollipop versions..
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -1897,8 +1903,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             File directory = new File(dir, fileName);
 
             //To display the preview window to user...
-            PrintJob printJob = printManager.print(jobName, printAdapter,
-                    pBuilder.build());
+//            PrintJob printJob = printManager.print(jobName, printAdapter,
+//                    pBuilder.build());
 
             //TODO: write different functions for <= Lollipop versions..
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -1961,8 +1967,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             File directory = new File(dir, fileName);
 
             //To display the preview window to user...
-            PrintJob printJob = printManager.print(jobName, printAdapter,
-                    pBuilder.build());
+//            PrintJob printJob = printManager.print(jobName, printAdapter,
+//                    pBuilder.build());
 
             //TODO: write different functions for <= Lollipop versions..
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -2025,8 +2031,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             File directory = new File(dir, fileName);
 
             //To display the preview window to user...
-            PrintJob printJob = printManager.print(jobName, printAdapter,
-                    pBuilder.build());
+//            PrintJob printJob = printManager.print(jobName, printAdapter,
+//                    pBuilder.build());
 
             //end...
 
