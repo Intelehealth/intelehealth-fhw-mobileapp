@@ -16,6 +16,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -484,6 +485,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
 
+        card_print.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
+
         card_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -508,6 +516,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
 
+                                    String phoneNumber = "+91" + editText.getText().toString();
+                                    String message =
+                                            "Share pdf from this path: Internal" +
+                                                    " Storage/Intelehealth_PDF/YourName.pdf";
+
+                                    startActivity(new Intent(Intent.ACTION_VIEW,
+                                            Uri.parse(
+                                                    String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                                                            phoneNumber, message))));
                                     dialog.dismiss();
                                 }
                             });
