@@ -3272,15 +3272,28 @@ public class VisitSummaryActivity extends AppCompatActivity {
             Logger.logD(TAG, file.getMessage());
         }
 
+        //logic code for handling the whatsapp prescription part...
         if(isreturningWhatsapp)
         {
             String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
-            String fileName = patientName + "_" + showVisitID() +".pdf";
+//            String fileName = patientName + "_" + showVisitID() +".pdf";
             File dir = new File(path);
-            File directory = new File(dir, fileName);
+//            File directory = new File(dir, fileName);
 
-            directory.delete();
+
+//            dir.delete();
+
+            deleteRecursive(dir);
         }
+    }
+
+    public void deleteRecursive(File fileOrDirectory) {
+        if (fileOrDirectory.isDirectory()) {
+            for (File child : fileOrDirectory.listFiles()) {
+                deleteRecursive(child);
+            }
+        }
+        fileOrDirectory.delete();
     }
 
     @Override
