@@ -3276,18 +3276,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if(isreturningWhatsapp)
         {
             String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
-//            String fileName = patientName + "_" + showVisitID() +".pdf";
             File dir = new File(path);
-//            File directory = new File(dir, fileName);
-
-
-//            dir.delete();
-
             deleteRecursive(dir);
         }
     }
 
-    public void deleteRecursive(File fileOrDirectory) {
+    public static void deleteRecursive(File fileOrDirectory) {
         if (fileOrDirectory.isDirectory()) {
             for (File child : fileOrDirectory.listFiles()) {
                 deleteRecursive(child);
