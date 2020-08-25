@@ -320,7 +320,7 @@
 
     <string name="visit" translatable="false">Visit</string>
     <string name="visit_update" translatable="false">Visit Update</string>
-    <string name="patient" translatable="false">Patient</string>
+    <string name="patient">Patient</string>
     <string name="patient_update" translatable="false">Patient Update</string>
     <string name="patient_images" translatable="false">Patient Profile Image</string>
     <string name="visit_images" translatable="false">Visit Images</string>

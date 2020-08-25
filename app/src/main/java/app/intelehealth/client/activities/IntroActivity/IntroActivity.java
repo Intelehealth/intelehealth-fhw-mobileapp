@@ -87,7 +87,7 @@ public class IntroActivity extends AppCompatActivity {
         context = IntroActivity.this;
         sessionManager = new SessionManager(this);
 
-        BASE_URL = "https://demo.intelehealth.io/openmrs/ws/rest/v1/";
+        BASE_URL = "https://demo.intelehealth.org/openmrs/ws/rest/v1/";
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
@@ -295,7 +295,7 @@ public class IntroActivity extends AppCompatActivity {
                                 mLocations = locationList.getResults();
                                 location = mLocations.get(0);
 
-                                TestSetup("demo.intelehealth.io", "nurse1", "Nurse123", "", location);
+                                TestSetup("demo.intelehealth.org", "nurse1", "Nurse123", "", location);
 
                             } else {
                                 progress.dismiss();
