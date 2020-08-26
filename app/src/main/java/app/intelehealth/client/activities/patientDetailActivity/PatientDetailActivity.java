@@ -346,7 +346,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("caste")) {
                     patient_new.setCaste(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if(name.equalsIgnoreCase("Health insurance card")) {
+                if(name.equalsIgnoreCase("Health Scheme Card")) {
                     patient_new.setHealth_scheme(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("Telephone Number")) {
