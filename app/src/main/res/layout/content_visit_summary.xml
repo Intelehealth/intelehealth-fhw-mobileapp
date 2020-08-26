@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activities.visitSummaryActivity.VisitSummaryActivity"
+    android:layout_marginTop="-1800dp"
     tools:showIn="@layout/activity_visit_summary">
-
     <!-- TODO: Replace hard-coded strings with @string resources-->
 
     <!--Split the screen into two columns of cards-->
@@ -1302,21 +1302,24 @@
                 android:background="@color/colorPrimary">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:fontFamily="@font/lato_bold"
                     android:gravity="center_horizontal"
-                    android:text="Print"
+                    android:text="View/Print"
+                    android:layout_toEndOf="@+id/print_imageview"
+                    android:paddingStart="10dp"
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
                     android:textSize="20sp" />
 
                 <ImageView
+                    android:id="@+id/print_imageview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="20dp"
                     android:paddingVertical="10dp"
                     app:srcCompat="@drawable/ic_print_24dp">
                 </ImageView>
@@ -1342,23 +1345,25 @@
                 android:background="@color/colorPrimary">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:fontFamily="@font/lato_bold"
                     android:gravity="center_horizontal"
                     android:text="Share"
+                    android:layout_toEndOf="@+id/share_imageview"
                     android:textAlignment="center"
+                    android:layout_marginStart="15dp"
                     android:textColor="@android:color/white"
                     android:textSize="20sp" />
 
                 <ImageView
+                    android:id="@+id/share_imageview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:layout_marginStart="10dp"
-                    android:paddingVertical="10dp"
-                    app:srcCompat="@drawable/ic_icons8_whatsapp_purple">
+                    android:layout_marginStart="35dp"
+                    android:paddingVertical="10dp" app:srcCompat="@drawable/ic_icons8_whatsapp_purple">
                 </ImageView>
 
             </RelativeLayout>
