@@ -87,7 +87,7 @@ public class IntroActivity extends AppCompatActivity {
         context = IntroActivity.this;
         sessionManager = new SessionManager(this);
 
-        BASE_URL = "http://demo.intelehealth.io/openmrs/ws/rest/v1/";
+        BASE_URL = "https://demo.intelehealth.org/openmrs/ws/rest/v1/";
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
@@ -295,7 +295,7 @@ public class IntroActivity extends AppCompatActivity {
                                 mLocations = locationList.getResults();
                                 location = mLocations.get(0);
 
-                                TestSetup("demo.intelehealth.io", "nurse1", "Nurse123", "", location);
+                                TestSetup("demo.intelehealth.org", "nurse1", "Nurse123", "", location);
 
                             } else {
                                 progress.dismiss();
@@ -375,7 +375,7 @@ public class IntroActivity extends AppCompatActivity {
                                             sessionManager.setLocationDescription(location.getDescription());
                                             sessionManager.setServerUrl(CLEAN_URL);
                                             sessionManager.setServerUrlRest(BASE_URL);
-                                            sessionManager.setServerUrlBase("http://" + CLEAN_URL + "/openmrs");
+                                            sessionManager.setServerUrlBase("https://" + CLEAN_URL + "/openmrs");
                                             sessionManager.setBaseUrl(BASE_URL);
                                             sessionManager.setSetupComplete(true);
 
@@ -384,7 +384,7 @@ public class IntroActivity extends AppCompatActivity {
 
                                             Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
                                                     .applicationId(AppConstants.IMAGE_APP_ID)
-                                                    .server("http://" + CLEAN_URL + ":1337/parse/")
+                                                    .server("https://" + CLEAN_URL + ":1337/parse/")
                                                     .build()
                                             );
 
