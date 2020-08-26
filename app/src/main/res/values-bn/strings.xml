@@ -20,4 +20,5 @@
     <string name="identification_screen_prompt_state">রাষ্ট্র</string>
     <string name="enter_password">Enter your password</string>
     <string name="enter_username">Enter your username</string>
+    <string name="patient">Patient</string>
 </resources>

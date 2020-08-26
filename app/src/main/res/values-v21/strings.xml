@@ -22,7 +22,7 @@
     <string name="i_need_assistance">" and I need some assistance."</string>
     <string name="economic_values_missing">Economic values are missing</string>
     <string name="education_values_missing">Education values are missing</string>
-    <string name="intelehealth_a_telemedicine_platform">Intelehealth is a telemedicine application that connects health workers in rural and remote areas connect with remote doctors so they can provide high quality health services for their patients.</string>
+    <string name="intelehealth_a_telemedicine_platform">Intelehealth is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
     <string name="intelehealth_name">Intelehealth</string>
     <string name="Ayu_name">Ayu</string>
     <string name="close_button">Close</string>
@@ -48,4 +48,7 @@
     <string name="patient_DOB">\"Patient DOB: \"</string>
     <string name="error_non_decimal_no_added">Error: non-decimal number entered.</string>
     <string name="contact">Contact</string>
+    <string name="has_a_new_prescription">has a new prescription</string>
+    <string name="patient">Patient</string>
+
 </resources>
