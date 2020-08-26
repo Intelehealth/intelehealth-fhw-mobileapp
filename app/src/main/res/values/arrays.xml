@@ -209,6 +209,95 @@
         <item>Wyoming</item>
     </string-array>
 
+    <string-array name="gujarat_villages">
+        <item>Chanchavadarda</item>
+        <item>Nirubennagar</item>
+        <item>Navagm</item>
+        <item>Motibarar</item>
+        <item>Rasangpar</item>
+        <item>Nanibarar</item>
+        <item>Jasapar</item>
+        <item>Jajasar</item>
+        <item>Devgadh</item>
+        <item>Derala</item>
+        <item>Mahendragadh</item>
+        <item>Meghpar</item>
+        <item>Songadh</item>
+        <item>Maliya</item>
+        <item>Neknam</item>
+        <item>Hamirpar</item>
+        <item>Vachhakpar</item>
+        <item>Sakhpar</item>
+        <item>Rohishala</item>
+        <item>Jodhpar</item>
+        <item>Virvav</item>
+        <item>Ganeshpar</item>
+        <item>Dhroliya</item>
+        <item>Mitana</item>
+        <item>Prabhunagar</item>
+        <item>Chhatar</item>
+        <item>Haripar</item>
+        <item>Bhutkotda</item>
+        <item>Harbatiyali</item>
+        <item>Jivapar</item>
+        <item>Jabalpur</item>
+        <item>Kalyanpar</item>
+        <item>Laxmivas</item>
+        <item>Motadahisara</item>
+        <item>Motabhela</item>
+        <item>Nanabhela</item>
+        <item>Targhadi</item>
+        <item>Bhavpar</item>
+        <item>Bagasara</item>
+        <item>Chamanpar</item>
+        <item>Kuntashi</item>
+        <item>Nanadahisara</item>
+        <item>Bodki</item>
+        <item>Navlkhi</item>
+        <item>Khirasara</item>
+        <item>Varshamedi</item>
+        <item>Lavanpur</item>
+        <item>Jumavadi</item>
+        <item>Lajai</item>
+        <item>Hadmatiya</item>
+        <item>Sajanpar</item>
+        <item>Nashitpar</item>
+        <item>Nanarampar</item>
+        <item>Virpar</item>
+        <item>Nanakhijadiya</item>
+        <item>Motakhijadiya</item>
+        <item>Lakhdhirgadh</item>
+        <item>Rajavad-Dhruvnagar</item>
+        <item>Motarampar</item>
+        <item>Ghunda.kha</item>
+        <item>Meghpar.za</item>
+        <item>Vaghgadh</item>
+        <item>Nesda.kha</item>
+        <item>Gajdi</item>
+        <item>Ghantila</item>
+        <item>Vejalpar</item>
+        <item>Venasar</item>
+        <item>Kumbhariya</item>
+        <item>Mandrki</item>
+        <item>Manaba</item>
+        <item>Sultanpur</item>
+        <item>Vadhrava</item>
+        <item>Savdi</item>
+        <item>Nesda.su</item>
+        <item>Saraya</item>
+        <item>Hirapar</item>
+        <item>Otala</item>
+        <item>Devadiya</item>
+        <item>Bangavdi</item>
+        <item>Khakhra</item>
+        <item>Tankara-1</item>
+        <item>Tankara-2</item>
+        <item>Tankara-3</item>
+        <item>Amrapar</item>
+        <item>Tol</item>
+
+    </string-array>
+
     <string-array name="odisha_villages">
         <item>Satygaon</item>
         <item>Bhanjamunda</item>
