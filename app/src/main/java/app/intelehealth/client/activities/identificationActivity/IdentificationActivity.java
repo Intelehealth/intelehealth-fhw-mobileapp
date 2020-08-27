@@ -113,7 +113,7 @@ public class IdentificationActivity extends AppCompatActivity {
     private int mAgeYears = 0;
     private int mAgeMonths = 0;
     private int mAgeDays = 0;
-    private String country1;
+    private String country1,state;
     PatientsDAO patientsDAO = new PatientsDAO();
     EditText mFirstName;
     EditText mMiddleName;
@@ -362,6 +362,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 economicLayout.setVisibility(View.GONE);
             }
             country1 = obj.getString("mCountry");
+            state = obj.getString("mState");
 
             if (country1.equalsIgnoreCase("India")) {
                 EditTextUtils.setEditTextMaxLength(10, mPhoneNum);
@@ -526,32 +527,6 @@ public class IdentificationActivity extends AppCompatActivity {
         //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mState.setAdapter(stateAdapter);
 
-        mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String state = parent.getItemAtPosition(position).toString();
-                if (state.matches("Odisha")) {
-                    //Creating the instance of ArrayAdapter containing list of fruit names
-                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                            R.array.odisha_villages, R.layout.custom_spinner);
-                    mCity.setThreshold(1);//will start working from first character
-                    mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
-                } else if (state.matches("Bukidnon")) {
-                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                            R.array.bukidnon_villages, R.layout.custom_spinner);
-                    mCity.setThreshold(1);//will start working from first character
-                    mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
-                } else {
-                    mCity.setAdapter(null);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
         mCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -565,12 +540,10 @@ public class IdentificationActivity extends AppCompatActivity {
                         mState.setAdapter(stateAdapter);
                         // setting state according database when user clicks edit details
 
-                        if (patientID_edit != null) {
+                        if (patientID_edit != null)
                             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
-                        }
-//                        else {
-//                            mState.setSelection(stateAdapter.getPosition("Odisha"));
-//                        }
+                        else
+                            mState.setSelection(stateAdapter.getPosition(state));
 
                     } else if (country.matches("United States")) {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
@@ -608,6 +581,33 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
         });
+        mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String state = parent.getItemAtPosition(position).toString();
+                if (state.matches("Odisha")) {
+                    //Creating the instance of ArrayAdapter containing list of fruit names
+                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                            R.array.odisha_villages, R.layout.custom_spinner);
+                    mCity.setThreshold(1);//will start working from first character
+                    mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+                } else if (state.matches("Bukidnon")) {
+                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                            R.array.bukidnon_villages, R.layout.custom_spinner);
+                    mCity.setThreshold(1);//will start working from first character
+                    mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+                } else {
+                    mCity.setAdapter(null);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
         mGenderF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
