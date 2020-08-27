@@ -3591,10 +3591,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     do {
                         String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                        hasPrescription = "true"; //if any kind of prescription data is present...
                         parseData(dbConceptID, dbValue);
                     } while (visitCursor.moveToNext());
                 }
                 visitCursor.close();
+
+                //checks if prescription is downloaded and if so then sets the icon color.
+                if (hasPrescription.equalsIgnoreCase("true")) {
+                    ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green)); }
+
 
                 if (uploaded) {
                     try {
