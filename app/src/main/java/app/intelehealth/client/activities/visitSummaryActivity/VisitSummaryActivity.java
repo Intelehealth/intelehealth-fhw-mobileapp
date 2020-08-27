@@ -668,9 +668,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
         });
         //end - spinner - speciality...
         //checks if prescription is downloaded and if so then sets the icon color.
-        if (hasPrescription.equalsIgnoreCase("true")) {
-            ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
-        }
+//        if (hasPrescription.equalsIgnoreCase("true")) {
+//            ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
+//        }
 
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
         obsImgdir = new File(AppConstants.IMAGE_PATH);
