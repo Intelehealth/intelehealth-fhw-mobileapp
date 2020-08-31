@@ -550,14 +550,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     if(!editText.getText().toString().equalsIgnoreCase(""))
                                     {
                                         String phoneNumber = "+91" + editText.getText().toString();
-                                        String message =
+                                       /* String message =
                                                 "Share pdf from this path: Internal" +
-                                                        " Storage/Intelehealth_PDF/YourName.pdf";
+                                                        " Storage/Intelehealth_PDF/YourName.pdf";*/
 
+//                                        https://api.whatsapp.com/send?phone=%s&text=%s
+
+                                        Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
                                         startActivity(new Intent(Intent.ACTION_VIEW,
                                                 Uri.parse(
-                                                        String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-                                                                phoneNumber, message))));
+                                                        String.format("https://api.whatsapp.com/send?phone=%s",
+                                                                phoneNumber))));
 
                                         isreturningWhatsapp = true;
 
