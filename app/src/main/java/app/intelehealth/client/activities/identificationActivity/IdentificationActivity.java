@@ -592,12 +592,21 @@ public class IdentificationActivity extends AppCompatActivity {
                             R.array.odisha_villages, R.layout.custom_spinner);
                     mCity.setThreshold(1);//will start working from first character
                     mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
-                } else if (state.matches("Bukidnon")) {
+                }
+                else if (state.matches("Bukidnon")) {
                     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                             R.array.bukidnon_villages, R.layout.custom_spinner);
                     mCity.setThreshold(1);//will start working from first character
                     mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
-                } else {
+                }
+                else if(state.matches("Gujarat")) {
+                    ArrayAdapter<CharSequence> adapter =
+                            ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                    R.array.gujarat_villages, R.layout.custom_spinner);
+                    mCity.setThreshold(1);   //will start working from first character
+                    mCity.setAdapter(adapter);  //setting the adapter data into the AutoCompleteTextView
+                }
+                else {
                     mCity.setAdapter(null);
                 }
             }
