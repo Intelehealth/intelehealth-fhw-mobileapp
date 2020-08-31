@@ -528,6 +528,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //                            mState.setSelection(stateAdapter.getPosition("Odisha"));
 //                        }
 
+                        //just a comment..
                     } else if (country.matches("United States")) {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                                 R.array.states_us, R.layout.custom_spinner);
