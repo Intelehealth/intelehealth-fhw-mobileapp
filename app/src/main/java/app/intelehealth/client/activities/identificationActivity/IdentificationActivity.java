@@ -166,7 +166,6 @@ public class IdentificationActivity extends AppCompatActivity {
     String html_health, result_selection;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -369,12 +368,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 EditTextUtils.setEditTextMaxLength(11, mPhoneNum);
             }
 
-            if(obj.getBoolean("health_scheme_card"))
-            {
+            if (obj.getBoolean("health_scheme_card")) {
                 frameLayout.setVisibility(View.VISIBLE);
-            }
-            else
-            {
+            } else {
                 frameLayout.setVisibility(View.GONE);
             }
 
@@ -399,30 +395,21 @@ public class IdentificationActivity extends AppCompatActivity {
         mRelationship.setText(patient1.getSdw());
         mOccupation.setText(patient1.getOccupation());
         //helath_scheme...
-        Log.d("Health_scheme", "Scheme: "+ patient1.getHealth_scheme());
-        if(patient1.getHealth_scheme() != null && !patient1.getHealth_scheme().isEmpty()) {
+        Log.d("Health_scheme", "Scheme: " + patient1.getHealth_scheme());
+        if (patient1.getHealth_scheme() != null && !patient1.getHealth_scheme().isEmpty()) {
 
-            if (patient1.getHealth_scheme().equalsIgnoreCase("Mukhyamantri Amrutam scheme"))
-            {
+            if (patient1.getHealth_scheme().equalsIgnoreCase("Mukhyamantri Amrutam scheme")) {
                 ma_checkbox.setChecked(true);
-            }
-            else if (patient1.getHealth_scheme().equalsIgnoreCase("Ayushman Bharat Card"))
-            {
+            } else if (patient1.getHealth_scheme().equalsIgnoreCase("Ayushman Bharat Card")) {
                 ab_checkbox.setChecked(true);
-            }
-            else if (patient1.getHealth_scheme().equalsIgnoreCase("None of the above"))
-            {
+            } else if (patient1.getHealth_scheme().equalsIgnoreCase("None of the above")) {
                 none_checkbox.setChecked(true);
-            }
-            else if (patient1.getHealth_scheme().equalsIgnoreCase
-                    ("Mukhyamantri Amrutam scheme, " + "Ayushman Bharat Card"))
-            {
+            } else if (patient1.getHealth_scheme().equalsIgnoreCase
+                    ("Mukhyamantri Amrutam scheme, " + "Ayushman Bharat Card")) {
                 ma_checkbox.setChecked(true);
                 ab_checkbox.setChecked(true);
             }
-        }
-        else
-        {
+        } else {
             ma_checkbox.setChecked(false);
             ab_checkbox.setChecked(false);
             none_checkbox.setChecked(false);
@@ -669,11 +656,11 @@ public class IdentificationActivity extends AppCompatActivity {
 
                 String age = getYear(dob.get(Calendar.YEAR), dob.get(Calendar.MONTH), dob.get(Calendar.DATE), today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DATE));
                 //get years months days
-                String [] frtData = age.split("-");
+                String[] frtData = age.split("-");
 
-                String [] yearData = frtData[0].split(" ");
-                String [] monthData = frtData[1].split(" ");
-                String [] daysData = frtData[2].split(" ");
+                String[] yearData = frtData[0].split(" ");
+                String[] monthData = frtData[1].split(" ");
+                String[] daysData = frtData[2].split(" ");
 
                 mAgeYears = Integer.valueOf(yearData[0]);
                 mAgeMonths = Integer.valueOf(monthData[1]);
@@ -692,13 +679,12 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
         //if patient update then age will be set
-        if (patientID_edit != null)
-        {
+        if (patientID_edit != null) {
             mDOB.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
             //get year month days
-            String yrMoDays = DateAndTimeUtils.getAgeInYearMonth(patient1.getDate_of_birth(),context);
+            String yrMoDays = DateAndTimeUtils.getAgeInYearMonth(patient1.getDate_of_birth(), context);
 
-            String [] ymdData = DateAndTimeUtils.getAgeInYearMonth(patient1.getDate_of_birth()).split(" ");
+            String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patient1.getDate_of_birth()).split(" ");
             mAgeYears = Integer.valueOf(ymdData[0]);
             mAgeMonths = Integer.valueOf(ymdData[1]);
             mAgeDays = Integer.valueOf(ymdData[2]);
@@ -752,7 +738,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     public void onReturnValue(String value) {
                         mAgeYears = Integer.valueOf(value);
                     }
-                },yearText);
+                }, yearText);
 
                 //month
                 EditTextUtils.returnEditextValues(new IReturnValues() {
@@ -760,7 +746,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     public void onReturnValue(String value) {
                         mAgeMonths = Integer.valueOf(value);
                     }
-                },monthText);
+                }, monthText);
 
                 //day
                 EditTextUtils.returnEditextValues(new IReturnValues() {
@@ -768,11 +754,11 @@ public class IdentificationActivity extends AppCompatActivity {
                     public void onReturnValue(String value) {
                         mAgeDays = Integer.valueOf(value);
                     }
-                },dayText);
+                }, dayText);
                 mAgePicker.setPositiveButton(R.string.generic_ok, (dialog, which) -> {
                     String ageString = mAgeYears + getString(R.string.identification_screen_text_years) + " - " +
-                                       mAgeMonths + getString(R.string.identification_screen_text_months) + " - " +
-                                       mAgeDays + getString(R.string.days);
+                            mAgeMonths + getString(R.string.identification_screen_text_months) + " - " +
+                            mAgeDays + getString(R.string.days);
                     mAge.setText(ageString);
 
 
@@ -1016,7 +1002,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("Son/wife/daughter")) {
                     patient1.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if(name.equalsIgnoreCase("Health insurance card")){
+                if (name.equalsIgnoreCase("Health insurance card")) {
                     patient1.setHealth_scheme(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
 
@@ -1103,9 +1089,48 @@ public class IdentificationActivity extends AppCompatActivity {
         patientdto.setUuid(uuid);
         Gson gson = new Gson();
 
-        boolean cancel = false;
-        View focusView = null;
+//        boolean cancel = false;
+//        View focusView = null;
 
+
+        // New Validation
+        if (mFirstName.getText().toString().equals("") && mFirstName.getText().toString().isEmpty()) {
+            mFirstName.setError(getString(R.string.error_field_required));
+            mFirstName.requestFocus();
+            return;
+        }
+
+        if (mLastName.getText().toString().equals("") && mLastName.getText().toString().isEmpty()) {
+            mLastName.setError(getString(R.string.error_field_required));
+            mLastName.requestFocus();
+            return;
+        }
+
+        if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+            alertDialogBuilder.setTitle(R.string.error);
+            alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+            Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+            //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+            IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+            return;
+        }
+
+        if (mDOB.getText().toString().equals("") && mDOB.getText().toString().isEmpty()) {
+            mDOB.setError(getString(R.string.error_field_required));
+            mDOB.requestFocus();
+            return;
+        }
 
         if (dob.equals("") || dob.toString().equals("")) {
             if (dob.after(today)) {
@@ -1132,7 +1157,56 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }
 
+        if (mAge.getText().toString().equals("") && mAge.getText().toString().isEmpty()) {
+            mAge.setError(getString(R.string.error_field_required));
+            mAge.requestFocus();
+            return;
+        }
 
+        if (mCountry.getSelectedItemPosition() == 0) {
+            countryText.setError(getString(R.string.error_field_required));
+            mCountry.requestFocus();
+            return;
+        } else {
+            countryText.setError(null);
+        }
+
+        if (mState.getSelectedItemPosition() == 0) {
+            stateText.setError(getString(R.string.error_field_required));
+            mState.requestFocus();
+            return;
+        } else {
+            stateText.setError(null);
+        }
+
+        if (mCity.getText().toString().equals("") && mCity.getText().toString().isEmpty()) {
+            mCity.setError(getString(R.string.error_field_required));
+            mCity.requestFocus();
+            return;
+        }
+
+        if (frameLayout.getVisibility() == View.VISIBLE) {
+            if (!ma_checkbox.isChecked() && !ab_checkbox.isChecked() && !none_checkbox.isChecked()) {
+                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+                alertDialogBuilder.setTitle("Health Scheme Card");
+                alertDialogBuilder.setMessage("Please select the option for Health Scheme Card");
+                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+
+                return;
+            }
+        }
 
 
         ArrayList<EditText> values = new ArrayList<>();
@@ -1170,257 +1244,255 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 */
 
-if(frameLayout.getVisibility() == View.VISIBLE) {
-
-    if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-            && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
-            !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked()) && (ma_checkbox.isChecked() || ab_checkbox.isChecked() || none_checkbox.isChecked())) {
-
-        Log.v(TAG, "Result");
-
-    } else {
-
-        if(mFirstName.getText().toString().equals("") || mLastName.getText().toString().equals("") || mCity.getText().toString().equals("") || mDOB.getText().toString().equals("") || mAge.getText().toString().equals(""))
-        {
-            Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
-
-            if (mFirstName.getText().toString().equals("")) {
-                mFirstName.setError(getString(R.string.error_field_required));
-            }
-
-            if (mLastName.getText().toString().equals("")) {
-                mLastName.setError(getString(R.string.error_field_required));
-            }
-
-            if (mDOB.getText().toString().equals("")) {
-                mDOB.setError(getString(R.string.error_field_required));
-            }
-
-            if (mAge.getText().toString().equals("")) {
-                mAge.setError(getString(R.string.error_field_required));
-            }
-
-            if (mCity.getText().toString().equals("")) {
-                mCity.setError(getString(R.string.error_field_required));
-            }
-
+//if(frameLayout.getVisibility() == View.VISIBLE) {
+//
+//    if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
+//            && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
+//            !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked()) && (ma_checkbox.isChecked() || ab_checkbox.isChecked() || none_checkbox.isChecked())) {
+//
+//        Log.v(TAG, "Result");
+//
+//    } else {
+//
+//        if(mFirstName.getText().toString().equals("") || mLastName.getText().toString().equals("") || mCity.getText().toString().equals("") || mDOB.getText().toString().equals("") || mAge.getText().toString().equals(""))
+//        {
 //            Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
-            return;
-        }
+//
+//            if (mFirstName.getText().toString().equals("")) {
+//                mFirstName.setError(getString(R.string.error_field_required));
+//            }
+//
+//            if (mLastName.getText().toString().equals("")) {
+//                mLastName.setError(getString(R.string.error_field_required));
+//            }
+//
+//            if (mDOB.getText().toString().equals("")) {
+//                mDOB.setError(getString(R.string.error_field_required));
+//            }
+//
+//            if (mAge.getText().toString().equals("")) {
+//                mAge.setError(getString(R.string.error_field_required));
+//            }
+//
+//            if (mCity.getText().toString().equals("")) {
+//                mCity.setError(getString(R.string.error_field_required));
+//            }
+//
+////            Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
+//            return;
+//        }
+//
+//
+//        if (frameLayout.getVisibility() == View.VISIBLE) {
+//            if (!ma_checkbox.isChecked() && !ab_checkbox.isChecked() && !none_checkbox.isChecked()) {
+//                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+//                alertDialogBuilder.setTitle("Health Scheme Card");
+//                alertDialogBuilder.setMessage("Please select the option for Health Scheme Card");
+//                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                    }
+//                });
+//                AlertDialog alertDialog = alertDialogBuilder.create();
+//                alertDialog.show();
+//
+//                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+//                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+//                //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+//
+////                health_textview.setError("Please Select an option");
+////                health_textview.requestFocus();
+//            }
+//
+//        }
+//
+//        if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
+//            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+//            alertDialogBuilder.setTitle(R.string.error);
+//            alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
+//            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    dialog.dismiss();
+//                }
+//            });
+//            AlertDialog alertDialog = alertDialogBuilder.create();
+//            alertDialog.show();
+//
+//            Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+//            positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+//            //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//            IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+//
+//        }
+//
+//
+////        Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
+//        return;
+//    }
+//}
+//else
+//{
+//        if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
+//                && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
+//                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked())) {
+//
+//            Log.v(TAG, "Result");
+//
+//        } else {
+//            if (mFirstName.getText().toString().equals("")) {
+//                mFirstName.setError(getString(R.string.error_field_required));
+//            }
+//
+//            if (mLastName.getText().toString().equals("")) {
+//                mLastName.setError(getString(R.string.error_field_required));
+//            }
+//
+//            if (mDOB.getText().toString().equals("")) {
+//                mDOB.setError(getString(R.string.error_field_required));
+//            }
+//
+//            if (mAge.getText().toString().equals("")) {
+//                mAge.setError(getString(R.string.error_field_required));
+//            }
+//
+//            if (mCity.getText().toString().equals("")) {
+//                mCity.setError(getString(R.string.error_field_required));
+//            }
+//
+//            if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
+//                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+//                alertDialogBuilder.setTitle(R.string.error);
+//                alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
+//                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                    }
+//                });
+//                AlertDialog alertDialog = alertDialogBuilder.create();
+//                alertDialog.show();
+//
+//                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+//                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+//                //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+//
+//            }
+//
+//
+//            Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
+//        }
+//}
+//        if (mCountry.getSelectedItemPosition() == 0) {
+//            countryText.setError(getString(R.string.error_field_required));
+//            focusView = countryText;
+//            cancel = true;
+//            return;
+//        } else {
+//            countryText.setError(null);
+//        }
+//
+//
+//        if (mState.getSelectedItemPosition() == 0) {
+//            stateText.setError(getString(R.string.error_field_required));
+//            focusView = stateText;
+//            cancel = true;
+//            return;
+//        } else {
+//            stateText.setError(null);
+//        }
+
+
+//        if (cancel) {
+//            focusView.requestFocus();
+//        } else {
+
+        patientdto.setFirstname(StringUtils.getValue(mFirstName.getText().toString()));
+        patientdto.setMiddlename(StringUtils.getValue(mMiddleName.getText().toString()));
+        patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
+        patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
+        patientdto.setGender(StringUtils.getValue(mGender));
+        patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(mDOB.getText().toString())));
+        patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
+        patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
+        patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));
+        patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
+        patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
+        patientdto.setPatientPhoto(mCurrentPhotoPath);
+//          patientdto.setEconomic(StringUtils.getValue(m));
+        patientdto.setStateprovince(StringUtils.getValue(mState.getSelectedItem().toString()));
+
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
+        patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
+        patientAttributesDTO.setValue(StringUtils.getValue(mPhoneNum.getText().toString()));
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Son/wife/daughter"));
+        patientAttributesDTO.setValue(StringUtils.getValue(mRelationship.getText().toString()));
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+        patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
+        patientAttributesDTOList.add(patientAttributesDTO);
 
 
         if (frameLayout.getVisibility() == View.VISIBLE) {
-            if (!ma_checkbox.isChecked() && !ab_checkbox.isChecked() && !none_checkbox.isChecked()) {
-                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
-                alertDialogBuilder.setTitle("Health Scheme Card");
-                alertDialogBuilder.setMessage("Please select the option for Health Scheme Card");
-                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-
-                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
-
-//                health_textview.setError("Please Select an option");
-//                health_textview.requestFocus();
-            }
-
-        }
-
-        if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
-            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
-            alertDialogBuilder.setTitle(R.string.error);
-            alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
-            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-
-            Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-            //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-            IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
-
-        }
-
-
-//        Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
-        return;
-    }
-}
-else
-{
-    if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-            && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
-            !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked())) {
-
-        Log.v(TAG, "Result");
-
-    }
-    else
-    {
-        if (mFirstName.getText().toString().equals("")) {
-            mFirstName.setError(getString(R.string.error_field_required));
-        }
-
-        if (mLastName.getText().toString().equals("")) {
-            mLastName.setError(getString(R.string.error_field_required));
-        }
-
-        if (mDOB.getText().toString().equals("")) {
-            mDOB.setError(getString(R.string.error_field_required));
-        }
-
-        if (mAge.getText().toString().equals("")) {
-            mAge.setError(getString(R.string.error_field_required));
-        }
-
-        if (mCity.getText().toString().equals("")) {
-            mCity.setError(getString(R.string.error_field_required));
-        }
-
-        if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
-            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
-            alertDialogBuilder.setTitle(R.string.error);
-            alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
-            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-
-            Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-            //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-            IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
-
-        }
-
-
-        Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
-        return;
-    }
-}
-        if (mCountry.getSelectedItemPosition() == 0) {
-            countryText.setError(getString(R.string.error_field_required));
-            focusView = countryText;
-            cancel = true;
-            return;
-        } else {
-            countryText.setError(null);
-        }
-
-
-        if (mState.getSelectedItemPosition() == 0) {
-            stateText.setError(getString(R.string.error_field_required));
-            focusView = stateText;
-            cancel = true;
-            return;
-        } else {
-            stateText.setError(null);
-        }
-        if (cancel) {
-            focusView.requestFocus();
-        } else {
-
-            patientdto.setFirstname(StringUtils.getValue(mFirstName.getText().toString()));
-            patientdto.setMiddlename(StringUtils.getValue(mMiddleName.getText().toString()));
-            patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
-            patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
-            patientdto.setGender(StringUtils.getValue(mGender));
-            patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(mDOB.getText().toString())));
-            patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
-            patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
-            patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));
-            patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
-            patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
-            patientdto.setPatientPhoto(mCurrentPhotoPath);
-//          patientdto.setEconomic(StringUtils.getValue(m));
-            patientdto.setStateprovince(StringUtils.getValue(mState.getSelectedItem().toString()));
-
+            html_health = health_condition();
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
+            patientAttributesDTO.setPersonAttributeTypeUuid
+                    (patientsDAO.getUuidForAttribute("Health insurance card"));
+            patientAttributesDTO.setValue(StringUtils
+                    .getValue(html_health));
             patientAttributesDTOList.add(patientAttributesDTO);
-
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone Number"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mPhoneNum.getText().toString()));
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Son/wife/daughter"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mRelationship.getText().toString()));
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-
-            if(frameLayout.getVisibility() == View.VISIBLE)
-            {
-                html_health = health_condition();
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid
-                        (patientsDAO.getUuidForAttribute("Health insurance card"));
-                patientAttributesDTO.setValue(StringUtils
-                        .getValue(html_health));
-                patientAttributesDTOList.add(patientAttributesDTO);
-            }
-
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(mEconomicStatus));
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(mEducation));
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ProfileImageTimestamp"));
-            patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
-
-            patientAttributesDTOList.add(patientAttributesDTO);
-            Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());
-            patientdto.setPatientAttributesDTOList(patientAttributesDTOList);
-            patientdto.setSyncd(false);
-            Logger.logD("patient json : ", "Json : " + gson.toJson(patientdto, PatientDTO.class));
-
         }
+
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
+        patientAttributesDTO.setValue(StringUtils.getProvided(mEconomicStatus));
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
+        patientAttributesDTO.setValue(StringUtils.getProvided(mEducation));
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ProfileImageTimestamp"));
+        patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
+
+        patientAttributesDTOList.add(patientAttributesDTO);
+        Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());
+        patientdto.setPatientAttributesDTOList(patientAttributesDTOList);
+        patientdto.setSyncd(false);
+        Logger.logD("patient json : ", "Json : " + gson.toJson(patientdto, PatientDTO.class));
+
+//        }
 
         try {
             Logger.logD(TAG, "insertpatinet ");
@@ -1514,8 +1586,6 @@ else
         }
 
 
-
-
         ArrayList<EditText> values = new ArrayList<>();
         values.add(mFirstName);
         values.add(mMiddleName);
@@ -1551,7 +1621,7 @@ else
         }
 */
 
-        if(frameLayout.getVisibility() == View.VISIBLE) {
+        if (frameLayout.getVisibility() == View.VISIBLE) {
             if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                     && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
                     !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked()) && (ma_checkbox.isChecked() || ab_checkbox.isChecked() || none_checkbox.isChecked())) {
@@ -1628,18 +1698,14 @@ else
                 Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
                 return;
             }
-        }
-        else
-        {
+        } else {
             if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                     && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
                     !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked())) {
 
                 Log.v(TAG, "Result");
 
-            }
-            else
-            {
+            } else {
                 if (mFirstName.getText().toString().equals("")) {
                     mFirstName.setError(getString(R.string.error_field_required));
                 }
@@ -1834,26 +1900,18 @@ else
 
     }
 
-    public String health_condition()
-    {
-        if(ma_checkbox.isChecked() && !ab_checkbox.isChecked())
-        {
+    public String health_condition() {
+        if (ma_checkbox.isChecked() && !ab_checkbox.isChecked()) {
             html_health = ma_checkbox.getText().toString();
             result_selection = "option_1";
-        }
-        else if (ab_checkbox.isChecked() && !ma_checkbox.isChecked() )
-        {
+        } else if (ab_checkbox.isChecked() && !ma_checkbox.isChecked()) {
             html_health = ab_checkbox.getText().toString();
             result_selection = "option_2";
-        }
-        else if (none_checkbox.isChecked())
-        {
+        } else if (none_checkbox.isChecked()) {
             html_health = none_checkbox.getText().toString();
             result_selection = "option_3";
-        }
-        else if (ma_checkbox.isChecked() && ab_checkbox.isChecked())
-        {
-            html_health = ma_checkbox.getText() + ", "+ab_checkbox.getText();
+        } else if (ma_checkbox.isChecked() && ab_checkbox.isChecked()) {
+            html_health = ma_checkbox.getText() + ", " + ab_checkbox.getText();
             result_selection = "option_4";
         }
 
