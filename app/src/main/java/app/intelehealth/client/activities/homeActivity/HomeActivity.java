@@ -353,7 +353,7 @@ public class HomeActivity extends AppCompatActivity {
 
                         String licenseUrl = sessionManager.getMindMapServerUrl();
                         String licenseKey = sessionManager.getLicenseKey();
-                        getMindmapDownloadURL("http://" + licenseUrl + ":3004/", licenseKey);
+                        getMindmapDownloadURL("https://" + licenseUrl + ":3004/", licenseKey);
 
                     } else {
                         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
@@ -390,7 +390,7 @@ public class HomeActivity extends AppCompatActivity {
                                         }
 
                                         sessionManager.setMindMapServerUrl(url);
-                                        getMindmapDownloadURL("http://" + url + ":3004/", key);
+                                        getMindmapDownloadURL("https://" + url + ":3004/", key);
 
                                     }
                                 })
