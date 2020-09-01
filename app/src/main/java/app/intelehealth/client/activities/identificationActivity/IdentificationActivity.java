@@ -1171,6 +1171,7 @@ public class IdentificationActivity extends AppCompatActivity {
 */
 
 if(frameLayout.getVisibility() == View.VISIBLE) {
+
     if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
             && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
             !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked()) && (ma_checkbox.isChecked() || ab_checkbox.isChecked() || none_checkbox.isChecked())) {
@@ -1178,25 +1179,35 @@ if(frameLayout.getVisibility() == View.VISIBLE) {
         Log.v(TAG, "Result");
 
     } else {
-        if (mFirstName.getText().toString().equals("")) {
-            mFirstName.setError(getString(R.string.error_field_required));
+
+        if(mFirstName.getText().toString().equals("") || mLastName.getText().toString().equals("") || mCity.getText().toString().equals("") || mDOB.getText().toString().equals("") || mAge.getText().toString().equals(""))
+        {
+            Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
+
+            if (mFirstName.getText().toString().equals("")) {
+                mFirstName.setError(getString(R.string.error_field_required));
+            }
+
+            if (mLastName.getText().toString().equals("")) {
+                mLastName.setError(getString(R.string.error_field_required));
+            }
+
+            if (mDOB.getText().toString().equals("")) {
+                mDOB.setError(getString(R.string.error_field_required));
+            }
+
+            if (mAge.getText().toString().equals("")) {
+                mAge.setError(getString(R.string.error_field_required));
+            }
+
+            if (mCity.getText().toString().equals("")) {
+                mCity.setError(getString(R.string.error_field_required));
+            }
+
+//            Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
+            return;
         }
 
-        if (mLastName.getText().toString().equals("")) {
-            mLastName.setError(getString(R.string.error_field_required));
-        }
-
-        if (mDOB.getText().toString().equals("")) {
-            mDOB.setError(getString(R.string.error_field_required));
-        }
-
-        if (mAge.getText().toString().equals("")) {
-            mAge.setError(getString(R.string.error_field_required));
-        }
-
-        if (mCity.getText().toString().equals("")) {
-            mCity.setError(getString(R.string.error_field_required));
-        }
 
         if (frameLayout.getVisibility() == View.VISIBLE) {
             if (!ma_checkbox.isChecked() && !ab_checkbox.isChecked() && !none_checkbox.isChecked()) {
@@ -1244,7 +1255,7 @@ if(frameLayout.getVisibility() == View.VISIBLE) {
         }
 
 
-        Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
+//        Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
         return;
     }
 }
