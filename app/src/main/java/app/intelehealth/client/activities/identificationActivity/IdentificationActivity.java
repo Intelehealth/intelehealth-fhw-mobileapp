@@ -1200,7 +1200,7 @@ if(frameLayout.getVisibility() == View.VISIBLE) {
 
         if (frameLayout.getVisibility() == View.VISIBLE) {
             if (!ma_checkbox.isChecked() && !ab_checkbox.isChecked() && !none_checkbox.isChecked()) {
-               /* MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
                 alertDialogBuilder.setTitle("Health Scheme Card");
                 alertDialogBuilder.setMessage("Please select the option for Health Scheme Card");
                 alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
@@ -1215,7 +1215,7 @@ if(frameLayout.getVisibility() == View.VISIBLE) {
                 Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                 //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);*/
+                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
 
 //                health_textview.setError("Please Select an option");
 //                health_textview.requestFocus();
@@ -1570,7 +1570,7 @@ else
 
                 if (frameLayout.getVisibility() == View.VISIBLE) {
                     if (!ma_checkbox.isChecked() && !ab_checkbox.isChecked() && !none_checkbox.isChecked()) {
-                      /*  MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+                        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
                         alertDialogBuilder.setTitle("Health Scheme Card");
                         alertDialogBuilder.setMessage("Please select the option for Health Scheme Card");
                         alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
@@ -1585,7 +1585,7 @@ else
                         Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                         positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                         //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-                        IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);*/
+                        IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
 
 //                health_textview.setError("Please Select an option");
 //                health_textview.requestFocus();
