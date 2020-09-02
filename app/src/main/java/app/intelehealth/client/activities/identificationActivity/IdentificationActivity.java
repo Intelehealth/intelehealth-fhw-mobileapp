@@ -40,6 +40,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -126,6 +127,7 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mAddress2;
     AutoCompleteTextView mCity;
     EditText mPostal;
+    RadioGroup radioGroup;
     RadioButton mGenderM;
     RadioButton mGenderF;
     EditText mRelationship;
@@ -194,6 +196,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
         mLastName = findViewById(R.id.identification_last_name);
         mLastName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
+
+        radioGroup = findViewById(R.id.radioGrp);
 
         mDOB = findViewById(R.id.identification_birth_date_text_view);
         mPhoneNum = findViewById(R.id.identification_phone_number);
@@ -516,6 +520,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                stateText.setError(null);
                 String state = parent.getItemAtPosition(position).toString();
                 if (state.matches("Odisha")) {
                     //Creating the instance of ArrayAdapter containing list of fruit names
@@ -542,7 +547,10 @@ public class IdentificationActivity extends AppCompatActivity {
         mCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+
                 if (i != 0) {
+                    countryText.setError(null); //to clear the error message on clicked...
                     String country = adapterView.getItemAtPosition(i).toString();
 
                     if (country.matches("India")) {
@@ -598,6 +606,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mGenderF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mGenderF.setError(null);
                 onRadioButtonClicked(v);
             }
         });
@@ -605,6 +614,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mGenderM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mGenderM.setError(null);
                 onRadioButtonClicked(v);
             }
         });
@@ -804,6 +814,7 @@ public class IdentificationActivity extends AppCompatActivity {
         ma_checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                health_textview.setError(null);
                 none_checkbox.setChecked(false);
             }
         });
@@ -811,6 +822,7 @@ public class IdentificationActivity extends AppCompatActivity {
         ab_checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                health_textview.setError(null);
                 none_checkbox.setChecked(false);
             }
         });
@@ -818,6 +830,7 @@ public class IdentificationActivity extends AppCompatActivity {
         none_checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                health_textview.setError(null);
                 ma_checkbox.setChecked(false);
                 ab_checkbox.setChecked(false);
             }
@@ -1094,6 +1107,63 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
         // New Validation
+        if(mFirstName.getText().toString().equals("") && mFirstName.getText().toString().isEmpty() && mLastName.getText().toString().equals("") && mLastName.getText().toString().isEmpty() && !mGenderF.isChecked() && !mGenderM.isChecked() && mDOB.getText().toString().equals("") && mDOB.getText().toString().isEmpty() && mAge.getText().toString().equals("") && mAge.getText().toString().isEmpty() && mCity.getText().toString().equals("") && mCity.getText().toString().isEmpty())
+        {
+            mFirstName.setError(getString(R.string.error_field_required));
+            mFirstName.requestFocus();
+
+            mLastName.setError(getString(R.string.error_field_required));
+            mLastName.requestFocus();
+
+            //gender..
+            mGenderM.setError(getString(R.string.error_field_required));
+            mGenderF.setError(getString(R.string.error_field_required));
+
+            mDOB.setError(getString(R.string.error_field_required));
+            mDOB.requestFocus();
+
+            mAge.setError(getString(R.string.error_field_required));
+            mAge.requestFocus();
+
+//            countryText.setError(getString(R.string.error_field_required));
+//            countryText.requestFocus();
+
+//            stateText.setError(getString(R.string.error_field_required));
+//            stateText.requestFocus();
+
+            mCity.setError(getString(R.string.error_field_required));
+            mCity.requestFocus();
+
+            if (frameLayout.getVisibility() == View.VISIBLE) {
+                if (!ma_checkbox.isChecked() && !ab_checkbox.isChecked() && !none_checkbox.isChecked()) {
+                    health_textview.setError(getString(R.string.error_field_required));
+                    /*ma_checkbox.setError(getString(R.string.error_field_required));
+                    ab_checkbox.setError(getString(R.string.error_field_required));
+                    none_checkbox.setError(getString(R.string.error_field_required));*/
+                }
+            }
+
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+            alertDialogBuilder.setTitle(R.string.error);
+            alertDialogBuilder.setMessage(R.string.identification_screen_required_fields);
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+            Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+            //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+            IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+
+            return;
+        }
+
+
         if (mFirstName.getText().toString().equals("") && mFirstName.getText().toString().isEmpty()) {
             mFirstName.setError(getString(R.string.error_field_required));
             mFirstName.requestFocus();
