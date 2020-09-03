@@ -375,7 +375,7 @@ public class IntroActivity extends AppCompatActivity {
                                             sessionManager.setLocationDescription(location.getDescription());
                                             sessionManager.setServerUrl(CLEAN_URL);
                                             sessionManager.setServerUrlRest(BASE_URL);
-                                            sessionManager.setServerUrlBase("https://" + CLEAN_URL + "/openmrs");
+                                            sessionManager.setServerUrlBase("http://" + CLEAN_URL + "/openmrs");
                                             sessionManager.setBaseUrl(BASE_URL);
                                             sessionManager.setSetupComplete(true);
 
@@ -384,7 +384,7 @@ public class IntroActivity extends AppCompatActivity {
 
                                             Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
                                                     .applicationId(AppConstants.IMAGE_APP_ID)
-                                                    .server("https://" + CLEAN_URL + ":1337/parse/")
+                                                    .server("http://" + CLEAN_URL + ":1337/parse/")
                                                     .build()
                                             );
 
