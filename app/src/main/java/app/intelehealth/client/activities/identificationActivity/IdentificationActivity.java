@@ -1574,15 +1574,15 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientAttributesDTOList.add(patientAttributesDTO);
             }
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid
-                    (patientsDAO.getUuidForAttribute("Health insurance card"));
-            patientAttributesDTO.setValue(StringUtils
-                    .getValue(html_health));
-            patientAttributesDTOList.add(patientAttributesDTO);
-        }
+//            patientAttributesDTO = new PatientAttributesDTO();
+//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//            patientAttributesDTO.setPatientuuid(uuid);
+//            patientAttributesDTO.setPersonAttributeTypeUuid
+//                    (patientsDAO.getUuidForAttribute("Health insurance card"));
+//            patientAttributesDTO.setValue(StringUtils
+//                    .getValue(html_health));
+//            patientAttributesDTOList.add(patientAttributesDTO);
+//        }
 
         patientAttributesDTO = new PatientAttributesDTO();
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
