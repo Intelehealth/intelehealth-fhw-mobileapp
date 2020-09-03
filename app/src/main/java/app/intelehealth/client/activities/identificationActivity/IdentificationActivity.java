@@ -484,6 +484,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
         if (mGenderM.isChecked()) {
             mGender = "M";
+
         } else {
             mGender = "F";
         }
@@ -606,7 +607,6 @@ public class IdentificationActivity extends AppCompatActivity {
         mGenderF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mGenderF.setError(null);
                 onRadioButtonClicked(v);
             }
         });
@@ -614,7 +614,6 @@ public class IdentificationActivity extends AppCompatActivity {
         mGenderM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mGenderM.setError(null);
                 onRadioButtonClicked(v);
             }
         });
@@ -922,6 +921,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 Log.v(TAG, "gender:" + mGender);
                 break;
         }
+        mGenderM.setError(null);
+        mGenderF.setError(null);
     }
 
     private InputFilter inputFilter_Name = new InputFilter() { //filter input for name fields
