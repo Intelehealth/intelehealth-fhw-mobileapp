@@ -1112,20 +1112,22 @@ public class IdentificationActivity extends AppCompatActivity {
         // New Validation
         if(mFirstName.getText().toString().equals("") && mFirstName.getText().toString().isEmpty() && mLastName.getText().toString().equals("") && mLastName.getText().toString().isEmpty() && !mGenderF.isChecked() && !mGenderM.isChecked() && mDOB.getText().toString().equals("") && mDOB.getText().toString().isEmpty() && mAge.getText().toString().equals("") && mAge.getText().toString().isEmpty() && mCity.getText().toString().equals("") && mCity.getText().toString().isEmpty())
         {
+            personal_info_textview.requestFocus();
+
             mFirstName.setError(getString(R.string.error_field_required));
-            mFirstName.requestFocus();
+//            mFirstName.requestFocus();
 
             mLastName.setError(getString(R.string.error_field_required));
-            mLastName.requestFocus();
+//            mLastName.requestFocus();
 
             mGenderF.setError(getString(R.string.error_field_required));
-            mGenderF.requestFocus();
+//            mGenderF.requestFocus();
 
             mDOB.setError(getString(R.string.error_field_required));
-            mDOB.requestFocus();
+//            mDOB.requestFocus();
 
             mAge.setError(getString(R.string.error_field_required));
-            mAge.requestFocus();
+//            mAge.requestFocus();
 
 //            countryText.setError(getString(R.string.error_field_required));
 //            countryText.requestFocus();
@@ -1134,7 +1136,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //            stateText.requestFocus();
 
             mCity.setError(getString(R.string.error_field_required));
-            mCity.requestFocus();
+//            mCity.requestFocus();
 
             if (frameLayout.getVisibility() == View.VISIBLE) {
                 if (!ma_checkbox.isChecked() && !ab_checkbox.isChecked() && !none_checkbox.isChecked()) {
@@ -1161,7 +1163,7 @@ public class IdentificationActivity extends AppCompatActivity {
             positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
             //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
             IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
-
+            personal_info_textview.clearFocus();
             return;
         }
 
@@ -1244,7 +1246,7 @@ public class IdentificationActivity extends AppCompatActivity {
             countryText.setError(getString(R.string.error_field_required));
 //            mCountry.requestFocus();
             address_details_textview.requestFocus();
-            Toast.makeText(this, "Please select country", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please select Country", Toast.LENGTH_SHORT).show();
             address_details_textview.clearFocus();
             return;
         } else {
@@ -1255,7 +1257,7 @@ public class IdentificationActivity extends AppCompatActivity {
             stateText.setError(getString(R.string.error_field_required));
 //            mState.requestFocus();
             address_details_textview.requestFocus();
-            Toast.makeText(this, "Please select state", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please select State", Toast.LENGTH_SHORT).show();
             address_details_textview.clearFocus();
             return;
         }
@@ -1265,7 +1267,9 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (mCity.getText().toString().equals("") && mCity.getText().toString().isEmpty()) {
             mCity.setError(getString(R.string.error_field_required));
-            mCity.requestFocus();
+            address_details_textview.requestFocus();
+            Toast.makeText(this, "Please enter Village/Town/City", Toast.LENGTH_SHORT).show();
+            address_details_textview.clearFocus();
             return;
         }
 
