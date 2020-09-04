@@ -1686,7 +1686,7 @@ public class IdentificationActivity extends AppCompatActivity {
             mLastName.requestFocus();
 
             //gender..
-            mGenderM.setError(getString(R.string.error_field_required));
+//            mGenderM.setError(getString(R.string.error_field_required));
             mGenderF.setError(getString(R.string.error_field_required));
 
             mDOB.setError(getString(R.string.error_field_required));
@@ -1730,7 +1730,7 @@ public class IdentificationActivity extends AppCompatActivity {
             //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
             IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
             personal_info_textview.clearFocus();
-            
+
             return;
         }
 
