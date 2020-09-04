@@ -1730,7 +1730,6 @@ public class IdentificationActivity extends AppCompatActivity {
             //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
             IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
             personal_info_textview.clearFocus();
-
             return;
         }
 
@@ -1805,7 +1804,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (mCountry.getSelectedItemPosition() == 0) {
             countryText.setError(getString(R.string.error_field_required));
-            mCountry.requestFocus();
+//            mCountry.requestFocus();
+            address_details_textview.requestFocus();
+            Toast.makeText(this, "Please select country", Toast.LENGTH_SHORT).show();
+            address_details_textview.clearFocus();
             return;
         } else {
             countryText.setError(null);
@@ -1813,7 +1815,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (mState.getSelectedItemPosition() == 0) {
             stateText.setError(getString(R.string.error_field_required));
-            mState.requestFocus();
+//            mState.requestFocus();
+            address_details_textview.requestFocus();
+            Toast.makeText(this, "Please select state", Toast.LENGTH_SHORT).show();
+            address_details_textview.clearFocus();
             return;
         } else {
             stateText.setError(null);
