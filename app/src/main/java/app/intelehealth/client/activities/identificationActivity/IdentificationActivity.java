@@ -164,7 +164,7 @@ public class IdentificationActivity extends AppCompatActivity {
     //Health_Scheme_Fields
     MaterialCheckBox ma_checkbox, ab_checkbox, none_checkbox;
     FrameLayout frameLayout;
-    TextView health_textview, address_details_textview;
+    TextView health_textview, address_details_textview, personal_info_textview;
     String html_health, result_selection;
 
 
@@ -219,6 +219,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mGenderM = findViewById(R.id.identification_gender_male);
         mGenderF = findViewById(R.id.identification_gender_female);
         address_details_textview = findViewById(R.id.address_details_textview);
+        personal_info_textview = findViewById(R.id.personal_info_textview);
         mRelationship = findViewById(R.id.identification_relationship);
         mRelationship.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
@@ -1178,6 +1179,8 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
+            mGenderF.setError(getString(R.string.error_field_required));
+            personal_info_textview.requestFocus();
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
             alertDialogBuilder.setTitle(R.string.error);
             alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
@@ -1194,6 +1197,7 @@ public class IdentificationActivity extends AppCompatActivity {
             positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
             //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
             IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+            personal_info_textview.clearFocus();
             return;
         }
 
