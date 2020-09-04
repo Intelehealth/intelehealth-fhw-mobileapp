@@ -1116,8 +1116,6 @@ public class IdentificationActivity extends AppCompatActivity {
             mLastName.setError(getString(R.string.error_field_required));
             mLastName.requestFocus();
 
-            //gender..
-            mGenderM.setError(getString(R.string.error_field_required));
             mGenderF.setError(getString(R.string.error_field_required));
 
             mDOB.setError(getString(R.string.error_field_required));
