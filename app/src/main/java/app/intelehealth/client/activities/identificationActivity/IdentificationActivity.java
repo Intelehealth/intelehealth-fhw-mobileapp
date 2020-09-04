@@ -1203,7 +1203,9 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (mDOB.getText().toString().equals("") && mDOB.getText().toString().isEmpty()) {
             mDOB.setError(getString(R.string.error_field_required));
-            mDOB.requestFocus();
+            personal_info_textview.requestFocus();
+            Toast.makeText(this, "Please enter Date Of Birth", Toast.LENGTH_SHORT).show();
+            personal_info_textview.clearFocus();
             return;
         }
 
