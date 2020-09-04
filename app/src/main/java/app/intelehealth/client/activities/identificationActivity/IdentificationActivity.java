@@ -1680,20 +1680,20 @@ public class IdentificationActivity extends AppCompatActivity {
             personal_info_textview.requestFocus();
 
             mFirstName.setError(getString(R.string.error_field_required));
-            mFirstName.requestFocus();
+//            mFirstName.requestFocus();
 
             mLastName.setError(getString(R.string.error_field_required));
-            mLastName.requestFocus();
+//            mLastName.requestFocus();
 
             //gender..
 //            mGenderM.setError(getString(R.string.error_field_required));
             mGenderF.setError(getString(R.string.error_field_required));
 
             mDOB.setError(getString(R.string.error_field_required));
-            mDOB.requestFocus();
+//            mDOB.requestFocus();
 
             mAge.setError(getString(R.string.error_field_required));
-            mAge.requestFocus();
+//            mAge.requestFocus();
 
 //            countryText.setError(getString(R.string.error_field_required));
 //            countryText.requestFocus();
@@ -1702,7 +1702,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //            stateText.requestFocus();
 
             mCity.setError(getString(R.string.error_field_required));
-            mCity.requestFocus();
+//            mCity.requestFocus();
 
             if (frameLayout.getVisibility() == View.VISIBLE) {
                 if (!ma_checkbox.isChecked() && !ab_checkbox.isChecked() && !none_checkbox.isChecked()) {
@@ -1811,7 +1811,7 @@ public class IdentificationActivity extends AppCompatActivity {
             countryText.setError(getString(R.string.error_field_required));
 //            mCountry.requestFocus();
             address_details_textview.requestFocus();
-            Toast.makeText(this, "Please select country", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please select Country", Toast.LENGTH_SHORT).show();
             address_details_textview.clearFocus();
             return;
         } else {
@@ -1822,7 +1822,7 @@ public class IdentificationActivity extends AppCompatActivity {
             stateText.setError(getString(R.string.error_field_required));
 //            mState.requestFocus();
             address_details_textview.requestFocus();
-            Toast.makeText(this, "Please select state", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please select State", Toast.LENGTH_SHORT).show();
             address_details_textview.clearFocus();
             return;
         } else {
@@ -1831,7 +1831,9 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (mCity.getText().toString().equals("") && mCity.getText().toString().isEmpty()) {
             mCity.setError(getString(R.string.error_field_required));
-            mCity.requestFocus();
+            address_details_textview.requestFocus();
+            Toast.makeText(this, "Please enter Village/Town/City", Toast.LENGTH_SHORT).show();
+            address_details_textview.clearFocus();
             return;
         }
 
