@@ -1839,6 +1839,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (frameLayout.getVisibility() == View.VISIBLE) {
             if (!ma_checkbox.isChecked() && !ab_checkbox.isChecked() && !none_checkbox.isChecked()) {
+                health_textview.setError(getString(R.string.error_field_required));
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
                 alertDialogBuilder.setTitle("Health Scheme Card");
                 alertDialogBuilder.setMessage("Please select the option for Health Scheme Card");
