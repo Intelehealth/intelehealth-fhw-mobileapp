@@ -1677,6 +1677,8 @@ public class IdentificationActivity extends AppCompatActivity {
         // New Validation
         if(mFirstName.getText().toString().equals("") && mFirstName.getText().toString().isEmpty() && mLastName.getText().toString().equals("") && mLastName.getText().toString().isEmpty() && !mGenderF.isChecked() && !mGenderM.isChecked() && mDOB.getText().toString().equals("") && mDOB.getText().toString().isEmpty() && mAge.getText().toString().equals("") && mAge.getText().toString().isEmpty() && mCity.getText().toString().equals("") && mCity.getText().toString().isEmpty())
         {
+            personal_info_textview.requestFocus();
+
             mFirstName.setError(getString(R.string.error_field_required));
             mFirstName.requestFocus();
 
@@ -1727,7 +1729,8 @@ public class IdentificationActivity extends AppCompatActivity {
             positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
             //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
             IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
-
+            personal_info_textview.clearFocus();
+            
             return;
         }
 
