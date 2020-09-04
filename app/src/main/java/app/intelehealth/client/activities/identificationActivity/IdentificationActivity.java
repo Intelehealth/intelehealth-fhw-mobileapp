@@ -1746,6 +1746,8 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
+            mGenderF.setError(getString(R.string.error_field_required));
+            personal_info_textview.requestFocus();
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
             alertDialogBuilder.setTitle(R.string.error);
             alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
@@ -1762,6 +1764,7 @@ public class IdentificationActivity extends AppCompatActivity {
             positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
             //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
             IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+            personal_info_textview.clearFocus();
             return;
         }
 
