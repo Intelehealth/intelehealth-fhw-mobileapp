@@ -164,7 +164,7 @@ public class IdentificationActivity extends AppCompatActivity {
     //Health_Scheme_Fields
     MaterialCheckBox ma_checkbox, ab_checkbox, none_checkbox;
     FrameLayout frameLayout;
-    TextView health_textview;
+    TextView health_textview, address_details_textview;
     String html_health, result_selection;
 
 
@@ -218,6 +218,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mCountry = findViewById(R.id.spinner_country);
         mGenderM = findViewById(R.id.identification_gender_male);
         mGenderF = findViewById(R.id.identification_gender_female);
+        address_details_textview = findViewById(R.id.address_details_textview);
         mRelationship = findViewById(R.id.identification_relationship);
         mRelationship.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
@@ -1117,6 +1118,7 @@ public class IdentificationActivity extends AppCompatActivity {
             mLastName.requestFocus();
 
             mGenderF.setError(getString(R.string.error_field_required));
+            mGenderF.requestFocus();
 
             mDOB.setError(getString(R.string.error_field_required));
             mDOB.requestFocus();
@@ -1234,7 +1236,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (mCountry.getSelectedItemPosition() == 0) {
             countryText.setError(getString(R.string.error_field_required));
-            mCountry.requestFocus();
+//            mCountry.requestFocus();
+            address_details_textview.requestFocus();
+            Toast.makeText(this, "Please select country", Toast.LENGTH_SHORT).show();
+            address_details_textview.clearFocus();
             return;
         } else {
             countryText.setError(null);
@@ -1242,9 +1247,13 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (mState.getSelectedItemPosition() == 0) {
             stateText.setError(getString(R.string.error_field_required));
-            mState.requestFocus();
+//            mState.requestFocus();
+            address_details_textview.requestFocus();
+            Toast.makeText(this, "Please select state", Toast.LENGTH_SHORT).show();
+            address_details_textview.clearFocus();
             return;
-        } else {
+        }
+        else {
             stateText.setError(null);
         }
 
