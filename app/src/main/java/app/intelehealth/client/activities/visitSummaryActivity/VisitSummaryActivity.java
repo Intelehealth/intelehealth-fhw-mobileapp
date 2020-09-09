@@ -659,11 +659,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 if (speciality_spinner.getSelectedItemPosition() != 0) {
-                    VisitsDAO visitsDAO_speciality = new VisitsDAO();
+//                    VisitsDAO visitsDAO_speciality = new VisitsDAO();
+                    VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
                     boolean isUpdateVisitDone = false;
                     try {
-                        isUpdateVisitDone = visitsDAO_speciality.update_visitTbl_speciality
-                                (speciality_selected, visitUuid);
+//                        isUpdateVisitDone = visitsDAO_speciality.update_visitTbl_speciality
+//                                (speciality_selected, visitUuid);
+                        isUpdateVisitDone = speciality_attributes
+                                .insertVisitAttributes(visitUuid, speciality_selected);
 
                         Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                     } catch (DAOException e) {

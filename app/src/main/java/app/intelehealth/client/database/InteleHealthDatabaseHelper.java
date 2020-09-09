@@ -43,7 +43,9 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
                     "visit_uuid TEXT," +
                     "value TEXT," +
                     "visit_attribute_type_uuid TEXT," +
-                    "voided TEXT)";
+                    "voided TEXT," +
+                    "sync TEXT)";
+    //sync column is maintained for internal checking on android side for update.
 
     public static final String CREATE_USER_CREDENTIALS = "CREATE TABLE IF NOT EXISTS tbl_user_credentials (" +
             "username TEXT," +

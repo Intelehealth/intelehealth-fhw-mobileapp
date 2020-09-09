@@ -237,6 +237,7 @@ public class VisitsDAO {
                 visitDTO.setCreatoruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("creator")));
                 visitDTO.setVisitTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_type_uuid")));
 
+                //adding visit attribute list in the visit data.
                List<VisitAttribute_Speciality> list = new ArrayList<>();
                VisitAttribute_Speciality speciality = new VisitAttribute_Speciality();
                speciality.setAttributeType("3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d");
@@ -245,6 +246,7 @@ public class VisitsDAO {
 
 
                 visitDTO.setAttributes(list);
+
                 visitDTOList.add(visitDTO);
             }
         }
