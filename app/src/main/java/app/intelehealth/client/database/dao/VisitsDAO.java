@@ -238,14 +238,17 @@ public class VisitsDAO {
                 visitDTO.setVisitTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_type_uuid")));
 
                 //adding visit attribute list in the visit data.
-               List<VisitAttribute_Speciality> list = new ArrayList<>();
-               VisitAttribute_Speciality speciality = new VisitAttribute_Speciality();
-               speciality.setAttributeType("3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d");
-               speciality.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("speciality_value")));
-               list.add(speciality);
-
-
-                visitDTO.setAttributes(list);
+//               List<VisitAttribute_Speciality> list = new ArrayList<>();
+//               VisitAttribute_Speciality speciality = new VisitAttribute_Speciality();
+//               speciality.setAttributeType("3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d");
+//               speciality.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("speciality_value")));
+//               list.add(speciality);
+//
+//
+//                visitDTO.setAttributes(list);
+                //need a return value as list so that I can then add it to visitDTO.setAttributes(list);
+//               list =  fetchVisitAttr_Speciality();
+//               visitDTO.setAttributes(list);
 
                 visitDTOList.add(visitDTO);
             }
@@ -254,7 +257,39 @@ public class VisitsDAO {
         db.setTransactionSuccessful();
         db.endTransaction();
 
+        List<VisitAttribute_Speciality> list = new ArrayList<>();
+        list = fetchVisitAttr_Speciality();
+        visitDTO.setAttributes(list);
+        visitDTOList.add(visitDTO);
+
         return visitDTOList;
+    }
+
+    private List<VisitAttribute_Speciality> fetchVisitAttr_Speciality() {
+        List<VisitAttribute_Speciality> list = new ArrayList<>();
+        VisitAttribute_Speciality speciality = new VisitAttribute_Speciality();
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+//        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit where (sync = ? OR sync=?) COLLATE NOCASE", new String[]{"0", "false"});
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE sync=?",
+                new String[] {"0"});
+
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+
+                speciality.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                speciality.setVisitAttributeTypeUuid(cursor.getString
+                        (cursor.getColumnIndexOrThrow("visit_attribute_type_uuid")));
+                speciality.setValue(cursor.getString(cursor.getColumnIndexOrThrow("value")));
+                list.add(speciality);
+            }
+            }
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        return list;
     }
 
     public List<VisitDTO> getAllVisits() {

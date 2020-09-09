@@ -9,20 +9,45 @@ import com.google.gson.annotations.SerializedName;
 
 public class VisitAttribute_Speciality {
 
-    @SerializedName("attributeType")
+//    @SerializedName("attributeType")
+//    @Expose
+//    private String attributeType;
+
+    @SerializedName("uuid")
     @Expose
-    private String attributeType;
+    private String uuid;
+
+    @SerializedName("visit_attribute_type_uuid")
+    @Expose
+    private String visitAttributeTypeUuid;
+
     @SerializedName("value")
     @Expose
     private String value;
 
-    public String getAttributeType() {
-        return attributeType;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setAttributeType(String attributeType) {
-        this.attributeType = attributeType;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
+
+    public String getVisitAttributeTypeUuid() {
+        return visitAttributeTypeUuid;
+    }
+
+    public void setVisitAttributeTypeUuid(String visitAttributeTypeUuid) {
+        this.visitAttributeTypeUuid = visitAttributeTypeUuid;
+    }
+
+//    public String getAttributeType() {
+//        return attributeType;
+//    }
+//
+//    public void setAttributeType(String attributeType) {
+//        this.attributeType = attributeType;
+//    }
 
     public String getValue() {
         return value;
