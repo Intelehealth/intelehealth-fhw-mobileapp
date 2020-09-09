@@ -36,6 +36,15 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
                     "voided TEXT" +
                     ")";
 
+    //visit attributes tables
+    public static final String CREATE_VISIT_ATTRIBUTES =
+            "CREATE TABLE IF NOT EXISTS tbl_visit_attribute (" +
+                    "uuid TEXT PRIMARY KEY," +
+                    "visit_uuid TEXT," +
+                    "value TEXT," +
+                    "visit_attribute_type_uuid TEXT," +
+                    "voided TEXT)";
+
     public static final String CREATE_USER_CREDENTIALS = "CREATE TABLE IF NOT EXISTS tbl_user_credentials (" +
             "username TEXT," +
             "password TEXT UNIQUE," +
@@ -218,6 +227,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_UUID_DICTIONARY);
         db.execSQL(CREATE_USER_CREDENTIALS);
         db.execSQL(CREATE_DR_SPECIALITY);
+        db.execSQL(CREATE_VISIT_ATTRIBUTES);
         uuidInsert(db);
         database = db;
 
