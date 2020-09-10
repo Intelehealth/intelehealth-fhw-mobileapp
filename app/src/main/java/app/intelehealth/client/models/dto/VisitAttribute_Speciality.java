@@ -8,18 +8,15 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class VisitAttribute_Speciality {
+    //the keys used for SeriaizedName in this class will be shared by dev handling Openmrs.
 
-//    @SerializedName("attributeType")
-//    @Expose
-//    private String attributeType;
+    @SerializedName("attributeType")
+    @Expose
+    private String attributeType;
 
     @SerializedName("uuid")
     @Expose
     private String uuid;
-
-    @SerializedName("visit_attribute_type_uuid")
-    @Expose
-    private String visitAttributeTypeUuid;
 
     @SerializedName("value")
     @Expose
@@ -33,21 +30,13 @@ public class VisitAttribute_Speciality {
         this.uuid = uuid;
     }
 
-    public String getVisitAttributeTypeUuid() {
-        return visitAttributeTypeUuid;
+    public String getAttributeType() {
+        return attributeType;
     }
 
-    public void setVisitAttributeTypeUuid(String visitAttributeTypeUuid) {
-        this.visitAttributeTypeUuid = visitAttributeTypeUuid;
+    public void setAttributeType(String attributeType) {
+        this.attributeType = attributeType;
     }
-
-//    public String getAttributeType() {
-//        return attributeType;
-//    }
-//
-//    public void setAttributeType(String attributeType) {
-//        this.attributeType = attributeType;
-//    }
 
     public String getValue() {
         return value;
