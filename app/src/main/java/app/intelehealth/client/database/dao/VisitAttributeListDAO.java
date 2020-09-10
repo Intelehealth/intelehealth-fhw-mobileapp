@@ -49,7 +49,7 @@ public class VisitAttributeListDAO {
 
         boolean isCreated = true;
         ContentValues values = new ContentValues();
-        String where = "uuid=?";
+        String where = "visit_uuid=?";
         String whereArgs[] = {visitDTO.getVisit_uuid()};
         try {
 
@@ -95,7 +95,7 @@ public class VisitAttributeListDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT value FROM tbl_visit_attribute WHERE uuid = ?",
+        Cursor cursor = db.rawQuery("SELECT value FROM tbl_visit_attribute WHERE visit_uuid = ?",
                 new String[]{VISITUUID});
 
         if(cursor.getCount() != 0)
