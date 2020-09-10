@@ -53,11 +53,17 @@ public class VisitAttributeListDAO {
         String whereArgs[] = {visitDTO.getVisit_uuid()};
         try {
 
-            values.put("speciality_value", visitDTO.getValue());
+//            values.put("speciality_value", visitDTO.getValue());
+            values.put("uuid", visitDTO.getUuid());
+            values.put("visit_uuid", visitDTO.getVisit_uuid());
+            values.put("value", visitDTO.getValue());
+            values.put("visit_attribute_type_uuid", visitDTO.getVisit_attribute_type_uuid());
+            values.put("voided", visitDTO.getVoided());
+            values.put("sync", "1");
 
             if(visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase("3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d"))
             {
-                createdRecordsCount = db.update("tbl_visit", values, where, whereArgs);
+                createdRecordsCount = db.update("tbl_visit_attribute", values, where, whereArgs);
 
                 if(createdRecordsCount != -1)
                 {
@@ -89,14 +95,14 @@ public class VisitAttributeListDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT speciality_value FROM tbl_visit WHERE uuid = ?",
+        Cursor cursor = db.rawQuery("SELECT value FROM tbl_visit_attribute WHERE uuid = ?",
                 new String[]{VISITUUID});
 
         if(cursor.getCount() != 0)
         {
             while (cursor.moveToNext())
             {
-                isValue = cursor.getString(cursor.getColumnIndexOrThrow("speciality_value"));
+                isValue = cursor.getString(cursor.getColumnIndexOrThrow("value"));
             }
         }
         else
