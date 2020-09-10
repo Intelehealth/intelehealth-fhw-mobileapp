@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.util.List;
+import java.util.UUID;
 
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.models.dto.ProviderAttributeListDTO;
@@ -129,7 +130,7 @@ public class VisitAttributeListDAO {
         ContentValues values = new ContentValues();
         try
         {
-            values.put("uuid", AppConstants.NEW_UUID);
+            values.put("uuid", UUID.randomUUID().toString()); //as per patient attributes uuid generation.
             values.put("visit_uuid", visitUuid);
             values.put("value", speciality_selected);
             values.put("visit_attribute_type_uuid", "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d");
