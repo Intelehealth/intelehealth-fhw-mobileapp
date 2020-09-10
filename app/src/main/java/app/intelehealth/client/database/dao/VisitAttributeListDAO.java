@@ -75,7 +75,6 @@ public class VisitAttributeListDAO {
                     Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
                 }
             }
-
         }
         catch (SQLException e)
         {
@@ -92,7 +91,7 @@ public class VisitAttributeListDAO {
     public String getVisitAttributesList_specificVisit(String VISITUUID)
     {
         String isValue = "";
-
+        Log.d("specc", "spec_fun: "+ VISITUUID);
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
 
@@ -104,6 +103,7 @@ public class VisitAttributeListDAO {
             while (cursor.moveToNext())
             {
                 isValue = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+                Log.d("specc", "spec_3: "+ isValue);
             }
         }
         else
@@ -115,6 +115,7 @@ public class VisitAttributeListDAO {
         db.endTransaction();
         db.close();
 
+        Log.d("specc", "spec_4: "+ isValue);
         return  isValue;
     }
 
