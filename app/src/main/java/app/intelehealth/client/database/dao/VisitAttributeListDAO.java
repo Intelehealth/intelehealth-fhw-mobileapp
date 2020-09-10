@@ -63,7 +63,7 @@ public class VisitAttributeListDAO {
 
             if(visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase("3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d"))
             {
-                createdRecordsCount = db.update("tbl_visit_attribute", values, where, whereArgs);
+                createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
                 if(createdRecordsCount != -1)
                 {
