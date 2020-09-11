@@ -243,6 +243,11 @@ public class VisitsDAO {
                 visitDTO.setCreatoruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("creator")));
                 visitDTO.setVisitTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_type_uuid")));
 
+                List<VisitAttribute_Speciality> list = new ArrayList<>();
+                list = fetchVisitAttr_Speciality(visitDTO.getUuid());
+                visitDTO.setAttributes(list);
+//                visitDTOList.add(visitDTO);
+
                 //adding visit attribute list in the visit data.
 //               List<VisitAttribute_Speciality> list = new ArrayList<>();
 //               VisitAttribute_Speciality speciality = new VisitAttribute_Speciality();
@@ -263,23 +268,23 @@ public class VisitsDAO {
         db.setTransactionSuccessful();
         db.endTransaction();
 
-        List<VisitAttribute_Speciality> list = new ArrayList<>();
-        list = fetchVisitAttr_Speciality();
-        visitDTO.setAttributes(list);
-        visitDTOList.add(visitDTO);
+//        List<VisitAttribute_Speciality> list = new ArrayList<>();
+//        list = fetchVisitAttr_Speciality();
+//        visitDTO.setAttributes(list);
+//        visitDTOList.add(visitDTO);
 
         return visitDTOList;
     }
 
-    private List<VisitAttribute_Speciality> fetchVisitAttr_Speciality() {
+    private List<VisitAttribute_Speciality> fetchVisitAttr_Speciality(String visit_uuid) {
         List<VisitAttribute_Speciality> list = new ArrayList<>();
         VisitAttribute_Speciality speciality = new VisitAttribute_Speciality();
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE sync=?",
-                new String[] {"0"});
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE sync=? AND visit_uuid=?",
+                new String[] {"0", visit_uuid});
 
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
