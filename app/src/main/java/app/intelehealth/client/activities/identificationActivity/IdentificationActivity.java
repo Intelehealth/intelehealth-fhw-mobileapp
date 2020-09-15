@@ -164,7 +164,7 @@ public class IdentificationActivity extends AppCompatActivity {
     //Health_Scheme_Fields
     MaterialCheckBox ma_checkbox, ab_checkbox, none_checkbox;
     FrameLayout frameLayout;
-    TextView health_textview;
+    TextView health_textview, address_details_textview, personal_info_textview;
     String html_health, result_selection;
 
 
@@ -218,6 +218,8 @@ public class IdentificationActivity extends AppCompatActivity {
         mCountry = findViewById(R.id.spinner_country);
         mGenderM = findViewById(R.id.identification_gender_male);
         mGenderF = findViewById(R.id.identification_gender_female);
+        address_details_textview = findViewById(R.id.address_details_textview);
+        personal_info_textview = findViewById(R.id.personal_info_textview);
         mRelationship = findViewById(R.id.identification_relationship);
         mRelationship.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
@@ -1146,21 +1148,22 @@ public class IdentificationActivity extends AppCompatActivity {
         // New Validation
         if(mFirstName.getText().toString().equals("") && mFirstName.getText().toString().isEmpty() && mLastName.getText().toString().equals("") && mLastName.getText().toString().isEmpty() && !mGenderF.isChecked() && !mGenderM.isChecked() && mDOB.getText().toString().equals("") && mDOB.getText().toString().isEmpty() && mAge.getText().toString().equals("") && mAge.getText().toString().isEmpty() && mCity.getText().toString().equals("") && mCity.getText().toString().isEmpty())
         {
+            personal_info_textview.requestFocus();
+
             mFirstName.setError(getString(R.string.error_field_required));
-            mFirstName.requestFocus();
+//            mFirstName.requestFocus();
 
             mLastName.setError(getString(R.string.error_field_required));
-            mLastName.requestFocus();
+//            mLastName.requestFocus();
 
-            //gender..
-            mGenderM.setError(getString(R.string.error_field_required));
             mGenderF.setError(getString(R.string.error_field_required));
+//            mGenderF.requestFocus();
 
             mDOB.setError(getString(R.string.error_field_required));
-            mDOB.requestFocus();
+//            mDOB.requestFocus();
 
             mAge.setError(getString(R.string.error_field_required));
-            mAge.requestFocus();
+//            mAge.requestFocus();
 
 //            countryText.setError(getString(R.string.error_field_required));
 //            countryText.requestFocus();
@@ -1169,7 +1172,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //            stateText.requestFocus();
 
             mCity.setError(getString(R.string.error_field_required));
-            mCity.requestFocus();
+//            mCity.requestFocus();
 
             if (frameLayout.getVisibility() == View.VISIBLE) {
                 if (!ma_checkbox.isChecked() && !ab_checkbox.isChecked() && !none_checkbox.isChecked()) {
@@ -1196,7 +1199,7 @@ public class IdentificationActivity extends AppCompatActivity {
             positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
             //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
             IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
-
+            personal_info_textview.clearFocus();
             return;
         }
 
@@ -1214,6 +1217,8 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
+            mGenderF.setError(getString(R.string.error_field_required));
+            personal_info_textview.requestFocus();
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
             alertDialogBuilder.setTitle(R.string.error);
             alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
@@ -1230,12 +1235,15 @@ public class IdentificationActivity extends AppCompatActivity {
             positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
             //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
             IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+            personal_info_textview.clearFocus();
             return;
         }
 
         if (mDOB.getText().toString().equals("") && mDOB.getText().toString().isEmpty()) {
             mDOB.setError(getString(R.string.error_field_required));
-            mDOB.requestFocus();
+            personal_info_textview.requestFocus();
+            Toast.makeText(this, "Please enter Date Of Birth", Toast.LENGTH_SHORT).show();
+            personal_info_textview.clearFocus();
             return;
         }
 
@@ -1272,7 +1280,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (mCountry.getSelectedItemPosition() == 0) {
             countryText.setError(getString(R.string.error_field_required));
-            mCountry.requestFocus();
+//            mCountry.requestFocus();
+            address_details_textview.requestFocus();
+            Toast.makeText(this, "Please select Country", Toast.LENGTH_SHORT).show();
+            address_details_textview.clearFocus();
             return;
         } else {
             countryText.setError(null);
@@ -1280,20 +1291,27 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (mState.getSelectedItemPosition() == 0) {
             stateText.setError(getString(R.string.error_field_required));
-            mState.requestFocus();
+//            mState.requestFocus();
+            address_details_textview.requestFocus();
+            Toast.makeText(this, "Please select State", Toast.LENGTH_SHORT).show();
+            address_details_textview.clearFocus();
             return;
-        } else {
+        }
+        else {
             stateText.setError(null);
         }
 
         if (mCity.getText().toString().equals("") && mCity.getText().toString().isEmpty()) {
             mCity.setError(getString(R.string.error_field_required));
-            mCity.requestFocus();
+            address_details_textview.requestFocus();
+            Toast.makeText(this, "Please enter Village/Town/City", Toast.LENGTH_SHORT).show();
+            address_details_textview.clearFocus();
             return;
         }
 
         if (frameLayout.getVisibility() == View.VISIBLE) {
             if (!ma_checkbox.isChecked() && !ab_checkbox.isChecked() && !none_checkbox.isChecked()) {
+                health_textview.setError(getString(R.string.error_field_required));
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
                 alertDialogBuilder.setTitle("Health Scheme Card");
                 alertDialogBuilder.setMessage("Please select the option for Health Scheme Card");
@@ -1706,21 +1724,23 @@ public class IdentificationActivity extends AppCompatActivity {
         // New Validation
         if(mFirstName.getText().toString().equals("") && mFirstName.getText().toString().isEmpty() && mLastName.getText().toString().equals("") && mLastName.getText().toString().isEmpty() && !mGenderF.isChecked() && !mGenderM.isChecked() && mDOB.getText().toString().equals("") && mDOB.getText().toString().isEmpty() && mAge.getText().toString().equals("") && mAge.getText().toString().isEmpty() && mCity.getText().toString().equals("") && mCity.getText().toString().isEmpty())
         {
+            personal_info_textview.requestFocus();
+
             mFirstName.setError(getString(R.string.error_field_required));
-            mFirstName.requestFocus();
+//            mFirstName.requestFocus();
 
             mLastName.setError(getString(R.string.error_field_required));
-            mLastName.requestFocus();
+//            mLastName.requestFocus();
 
             //gender..
-            mGenderM.setError(getString(R.string.error_field_required));
+//            mGenderM.setError(getString(R.string.error_field_required));
             mGenderF.setError(getString(R.string.error_field_required));
 
             mDOB.setError(getString(R.string.error_field_required));
-            mDOB.requestFocus();
+//            mDOB.requestFocus();
 
             mAge.setError(getString(R.string.error_field_required));
-            mAge.requestFocus();
+//            mAge.requestFocus();
 
 //            countryText.setError(getString(R.string.error_field_required));
 //            countryText.requestFocus();
@@ -1729,7 +1749,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //            stateText.requestFocus();
 
             mCity.setError(getString(R.string.error_field_required));
-            mCity.requestFocus();
+//            mCity.requestFocus();
 
             if (frameLayout.getVisibility() == View.VISIBLE) {
                 if (!ma_checkbox.isChecked() && !ab_checkbox.isChecked() && !none_checkbox.isChecked()) {
@@ -1756,7 +1776,7 @@ public class IdentificationActivity extends AppCompatActivity {
             positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
             //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
             IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
-
+            personal_info_textview.clearFocus();
             return;
         }
 
@@ -1773,6 +1793,8 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
+            mGenderF.setError(getString(R.string.error_field_required));
+            personal_info_textview.requestFocus();
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
             alertDialogBuilder.setTitle(R.string.error);
             alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
@@ -1789,12 +1811,15 @@ public class IdentificationActivity extends AppCompatActivity {
             positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
             //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
             IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+            personal_info_textview.clearFocus();
             return;
         }
 
         if (mDOB.getText().toString().equals("") && mDOB.getText().toString().isEmpty()) {
             mDOB.setError(getString(R.string.error_field_required));
-            mDOB.requestFocus();
+            personal_info_textview.requestFocus();
+            Toast.makeText(this, "Please enter Date Of Birth", Toast.LENGTH_SHORT).show();
+            personal_info_textview.clearFocus();
             return;
         }
 
@@ -1831,7 +1856,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (mCountry.getSelectedItemPosition() == 0) {
             countryText.setError(getString(R.string.error_field_required));
-            mCountry.requestFocus();
+//            mCountry.requestFocus();
+            address_details_textview.requestFocus();
+            Toast.makeText(this, "Please select Country", Toast.LENGTH_SHORT).show();
+            address_details_textview.clearFocus();
             return;
         } else {
             countryText.setError(null);
@@ -1839,7 +1867,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (mState.getSelectedItemPosition() == 0) {
             stateText.setError(getString(R.string.error_field_required));
-            mState.requestFocus();
+//            mState.requestFocus();
+            address_details_textview.requestFocus();
+            Toast.makeText(this, "Please select State", Toast.LENGTH_SHORT).show();
+            address_details_textview.clearFocus();
             return;
         } else {
             stateText.setError(null);
@@ -1847,12 +1878,15 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (mCity.getText().toString().equals("") && mCity.getText().toString().isEmpty()) {
             mCity.setError(getString(R.string.error_field_required));
-            mCity.requestFocus();
+            address_details_textview.requestFocus();
+            Toast.makeText(this, "Please enter Village/Town/City", Toast.LENGTH_SHORT).show();
+            address_details_textview.clearFocus();
             return;
         }
 
         if (frameLayout.getVisibility() == View.VISIBLE) {
             if (!ma_checkbox.isChecked() && !ab_checkbox.isChecked() && !none_checkbox.isChecked()) {
+                health_textview.setError(getString(R.string.error_field_required));
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
                 alertDialogBuilder.setTitle("Health Scheme Card");
                 alertDialogBuilder.setMessage("Please select the option for Health Scheme Card");

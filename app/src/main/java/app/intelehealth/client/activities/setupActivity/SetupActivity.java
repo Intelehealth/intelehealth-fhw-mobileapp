@@ -422,7 +422,7 @@ public class SetupActivity extends AppCompatActivity {
                                             text.setError(getResources().getString(R.string.enter_license_key));
                                         }
 
-                                        if (sessionManager.getLicenseKey() != null && sessionManager.getLicenseKey().equalsIgnoreCase("https://mindmaps.intelehealth.io:4040")) {
+                                        if (sessionManager.getLicenseKey() != null && sessionManager.getLicenseKey().equalsIgnoreCase("http://mindmaps.intelehealth.io:4040")) {
                                             text.setText(sessionManager.getLicenseKey());
                                             url.setText(sessionManager.getMindMapServerUrl());
                                         }
