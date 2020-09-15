@@ -240,7 +240,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     //added checkbox flag .m
     CheckBox flag;
 
-    Boolean isPastVisit = false;
+    Boolean isPastVisit = false, isVisitSpecialityExists = false;
     Boolean isReceiverRegistered = false;
 
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
@@ -616,11 +616,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         ivPrescription = findViewById(R.id.iv_prescription);
 
+        //if row is present i.e. if true is returned by the function then the spinner will be disabled.
+        Log.d("visitUUID", "onCreate_uuid: " + visitUuid);
+        isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
+        if(isVisitSpecialityExists)
+            speciality_spinner.setEnabled(false);
+
+
         //spinner is being populated with the speciality values...
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
         VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
 
         List<String> items  = providerAttributeLIstDAO.getAllValues();
+        Log.d("specc", "spec: "+ visitUuid);
         String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid);
         //Hashmap to List<String> add all value
         ArrayAdapter<String> stringArrayAdapter;
@@ -772,17 +780,25 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 if (speciality_spinner.getSelectedItemPosition() != 0) {
-                    VisitsDAO visitsDAO_speciality = new VisitsDAO();
+//                    VisitsDAO visitsDAO_speciality = new VisitsDAO();
+                    VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
                     boolean isUpdateVisitDone = false;
                     try {
-                        isUpdateVisitDone = visitsDAO_speciality.update_visitTbl_speciality
-                                (speciality_selected, visitUuid);
+//                        isUpdateVisitDone = visitsDAO_speciality.update_visitTbl_speciality
+//                                (speciality_selected, visitUuid);
+                        isUpdateVisitDone = speciality_attributes
+                                .insertVisitAttributes(visitUuid, speciality_selected);
 
                         Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                     } catch (DAOException e) {
                         e.printStackTrace();
                         Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                     }
+
+                    Log.d("visitUUID", "upload_click: "+visitUUID);
+                    isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+                    if(isVisitSpecialityExists)
+                        speciality_spinner.setEnabled(false);
 
 
                     if (flag.isChecked()) {
@@ -863,6 +879,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload), getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity.this);
                                     //
                                     showVisitID();
+                                    Log.d("visitUUID", "showVisitID: "+visitUUID);
+                                    isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+                                    if(isVisitSpecialityExists)
+                                        speciality_spinner.setEnabled(false);
                                 } else {
                                     AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
 
@@ -1484,6 +1504,30 @@ public class VisitSummaryActivity extends AppCompatActivity {
         doQuery();
     }
 
+    /**
+     * @param uuid the visit uuid of the patient visit records is passed to the function.
+     * @return boolean value will be returned depending upon if the row exists in the tbl_visit_attribute tbl
+     */
+    private boolean speciality_row_exist_check(String uuid) {
+        boolean isExists = false;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        db.beginTransaction();
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=?",
+                new String[]{uuid});
+
+        if(cursor.getCount() != 0)
+        {
+            while(cursor.moveToNext())
+            {
+                isExists = true;
+            }
+        }
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        return isExists;
+    }
 
 
     private String convertCtoF(String temperature) {

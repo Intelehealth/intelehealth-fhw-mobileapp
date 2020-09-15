@@ -94,7 +94,7 @@ public class Visit {
 //    public List<Attribute> getAttributes() {
 //        return attributes;
 //    }
-
+//
 //    public void setAttributes(List<Attribute> attributes) {
 //        this.attributes = attributes;
 //    }

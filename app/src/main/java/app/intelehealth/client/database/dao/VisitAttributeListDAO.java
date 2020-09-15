@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.util.List;
+import java.util.UUID;
 
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.models.dto.ProviderAttributeListDTO;
@@ -49,15 +50,21 @@ public class VisitAttributeListDAO {
 
         boolean isCreated = true;
         ContentValues values = new ContentValues();
-        String where = "uuid=?";
+        String where = "visit_uuid=?";
         String whereArgs[] = {visitDTO.getVisit_uuid()};
         try {
 
-            values.put("speciality_value", visitDTO.getValue());
+//            values.put("speciality_value", visitDTO.getValue());
+            values.put("uuid", visitDTO.getUuid());
+            values.put("visit_uuid", visitDTO.getVisit_uuid());
+            values.put("value", visitDTO.getValue());
+            values.put("visit_attribute_type_uuid", visitDTO.getVisit_attribute_type_uuid());
+            values.put("voided", visitDTO.getVoided());
+            values.put("sync", "1");
 
             if(visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase("3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d"))
             {
-                createdRecordsCount = db.update("tbl_visit", values, where, whereArgs);
+                createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
                 if(createdRecordsCount != -1)
                 {
@@ -68,7 +75,6 @@ public class VisitAttributeListDAO {
                     Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
                 }
             }
-
         }
         catch (SQLException e)
         {
@@ -85,18 +91,19 @@ public class VisitAttributeListDAO {
     public String getVisitAttributesList_specificVisit(String VISITUUID)
     {
         String isValue = "";
-
+        Log.d("specc", "spec_fun: "+ VISITUUID);
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT speciality_value FROM tbl_visit WHERE uuid = ?",
+        Cursor cursor = db.rawQuery("SELECT value FROM tbl_visit_attribute WHERE visit_uuid = ?",
                 new String[]{VISITUUID});
 
         if(cursor.getCount() != 0)
         {
             while (cursor.moveToNext())
             {
-                isValue = cursor.getString(cursor.getColumnIndexOrThrow("speciality_value"));
+                isValue = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+                Log.d("specc", "spec_3: "+ isValue);
             }
         }
         else
@@ -108,7 +115,47 @@ public class VisitAttributeListDAO {
         db.endTransaction();
         db.close();
 
+        Log.d("specc", "spec_4: "+ isValue);
         return  isValue;
     }
 
+    public boolean insertVisitAttributes(String visitUuid, String speciality_selected) throws
+            DAOException {
+        boolean isInserted = false;
+
+        Log.d("SPINNER", "SPINNER_Selected_visituuid_logs: "+ visitUuid);
+        Log.d("SPINNER", "SPINNER_Selected_value_logs: "+ speciality_selected);
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+        try
+        {
+            values.put("uuid", UUID.randomUUID().toString()); //as per patient attributes uuid generation.
+            values.put("visit_uuid", visitUuid);
+            values.put("value", speciality_selected);
+            values.put("visit_attribute_type_uuid", "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d");
+            values.put("voided", "0");
+            values.put("sync", "0");
+
+            long count = db.insertWithOnConflict("tbl_visit_attribute", null,
+                    values, SQLiteDatabase.CONFLICT_REPLACE);
+
+            if(count != -1)
+                isInserted = true;
+
+            db.setTransactionSuccessful();
+        }
+        catch (SQLException e)
+        {
+            isInserted = false;
+            throw new DAOException(e.getMessage(), e);
+        }
+        finally {
+            db.endTransaction();
+        }
+
+        Log.d("isInserted", "isInserted: "+isInserted);
+        return isInserted;
+    }
 }
