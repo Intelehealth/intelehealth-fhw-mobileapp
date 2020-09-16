@@ -1789,7 +1789,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 } else if (obj.getBoolean("mFahrenheit")) {
 
 //                    mTemp = "Temperature(F): " + temperature.getValue();
-                    mTemp = "Temperature(F): " + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "");
+                    mTemp = "Temperature(F): " + (!TextUtils.isEmpty(temperature.getValue()) ?
+                            convertCtoF(temperature.getValue()) : "");
                 }
             }
         } catch (Exception e) {
