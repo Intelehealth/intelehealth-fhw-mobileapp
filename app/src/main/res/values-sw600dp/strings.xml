@@ -32,8 +32,8 @@
     <string name="permission_denied">Permission Denied\n</string>
     <string name="reject_permission_results"><![CDATA[If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]]]></string>
     <string name="current_time"><![CDATA[\"Current time => \"]]></string>
-    <string name="temperature_C">\"Temperature(C): \"</string>
-    <string name="temperature_F">\"Temperature(F): \"</string>
+    <string name="temperature_C">"Temperature(C): "</string>
+    <string name="temperature_F">"Temperature(F): "</string>
     <string name="no_history_family_found">No history of illness in family provided.</string>
     <string name="no_history_patient_illness_found">No history of patient\'s illness provided.</string>
     <string name="dr_registration_no">\"Registration No: \"</string>
@@ -46,5 +46,4 @@
     <string name="error_non_decimal_no_added">Error: non-decimal number entered.</string>
     <string name="contact">Contact</string>
     <string name="patient">Patient</string>
-    <string name="whatsapp_presc_toast">Select prescription PDF from file explorer - Internal storage/Intelehealth_PDF</string>
 </resources>

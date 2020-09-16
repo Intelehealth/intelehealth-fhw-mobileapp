@@ -962,11 +962,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 tempcel.setVisibility(View.VISIBLE);
                 tempfaren.setVisibility(View.GONE);
                 tempView.setText(temperature.getValue());
+                Log.d("temp","temp_C: "+temperature.getValue());
             } else if (obj.getBoolean("mFahrenheit")) {
                 tempfaren.setVisibility(View.VISIBLE);
                 tempcel.setVisibility(View.GONE);
                 if (temperature.getValue() != null && !temperature.getValue().isEmpty()) {
                     tempView.setText(convertCtoF(temperature.getValue()));
+                    Log.d("temp","temp_F: "+tempView.getText().toString());
                 }
             }
         } catch (JSONException e) {
@@ -2106,7 +2108,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 } else if (obj.getBoolean("mFahrenheit")) {
 
 //                    mTemp = "Temperature(F): " + temperature.getValue();
-                    mTemp = getString(R.string.temperature_F) + (!TextUtils.isEmpty(temperature.getValue()) ? temperature.getValue().toString() : "");
+                    mTemp = getString(R.string.temperature_F) + (!TextUtils.isEmpty(temperature.getValue()) ? convertCtoF(temperature.getValue()) : "");
                 }
             }
         } catch (Exception e) {
