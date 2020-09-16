@@ -1271,7 +1271,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         String result = "";
         double a = Double.parseDouble(String.valueOf(temperature));
-        Double b = a * 9 / 5 + 32;
+        Double b = (a * 9 / 5) + 32;
 
         DecimalFormat dtime = new DecimalFormat("#.##");
         b = Double.valueOf(dtime.format(b));
