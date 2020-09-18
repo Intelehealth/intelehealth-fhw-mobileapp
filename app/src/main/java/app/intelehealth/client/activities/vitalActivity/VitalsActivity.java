@@ -991,7 +991,7 @@ public class VitalsActivity extends AppCompatActivity {
         double cTemp = ((fTemp - 32) * 5 / 9);
         Log.i(TAG, "uploadTemperatureInC: " + cTemp);
         DecimalFormat dtime = new DecimalFormat("#.##");
-        cTemp = Double.valueOf(dtime.format(cTemp));
+        cTemp = Double.parseDouble(dtime.format(cTemp));
         result = String.valueOf(cTemp);
         return result;
 
@@ -1001,10 +1001,10 @@ public class VitalsActivity extends AppCompatActivity {
 
         String result = "";
         double a = Double.parseDouble(String.valueOf(temperature));
-        Double b = a * 9 / 5 + 32;
+        Double b = (a * 9 / 5) + 32;
 
         DecimalFormat dtime = new DecimalFormat("#.##");
-        b = Double.valueOf(dtime.format(b));
+        b = Double.parseDouble(dtime.format(b));
 
         result = String.valueOf(b);
         return result;
