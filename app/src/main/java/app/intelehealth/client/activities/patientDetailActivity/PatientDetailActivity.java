@@ -456,6 +456,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 profilePicDownloaded();
             }
         }
+        photoView.setImageResource(0);
+
         Glide.with(PatientDetailActivity.this)
                 .load(patient_new.getPatient_photo())
                 .thumbnail(0.3f)
