@@ -466,7 +466,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 profilePicDownloaded();
             }
         }
-        photoView.setImageResource(0);
+        photoView.setImageResource(0);  //important otherwise on OnePlus device,
+        // the imageview doesnt displays any image.
 
         Glide.with(PatientDetailActivity.this)
                 .load(patient_new.getPatient_photo())
