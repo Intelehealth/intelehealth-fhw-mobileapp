@@ -145,25 +145,27 @@ public class PatientsFrameJson {
             encounterProviderList.add(encounterProvider);
             encounter.setEncounterProviders(encounterProviderList);
 
-            List<Ob> obsList = new ArrayList<>();
-            List<ObsDTO> obsDTOList = obsDAO.obsDTOList(encounterDTO.getUuid());
-            Ob ob = new Ob();
-            for (ObsDTO obs : obsDTOList) {
-                if (obs != null && obs.getValue() != null) {
-                    if (!obs.getValue().isEmpty()) {
-                        ob = new Ob();
-                        //Do not set obs uuid in case of emergency encounter type .Some error occuring in open MRS if passed
-                        if (!encounterDTO.getEncounterTypeUuid().equalsIgnoreCase(UuidDictionary.EMERGENCY)) {
+            if (!encounterDTO.getEncounterTypeUuid().equalsIgnoreCase(UuidDictionary.EMERGENCY)) {
+                List<Ob> obsList = new ArrayList<>();
+                List<ObsDTO> obsDTOList = obsDAO.obsDTOList(encounterDTO.getUuid());
+                Ob ob = new Ob();
+                for (ObsDTO obs : obsDTOList) {
+                    if (obs != null && obs.getValue() != null) {
+                        if (!obs.getValue().isEmpty()) {
+                            ob = new Ob();
+                            //Do not set obs uuid in case of emergency encounter type .Some error occuring in open MRS if passed
 
                             ob.setUuid(obs.getUuid());
+                            ob.setConcept(obs.getConceptuuid());
+                            ob.setValue(obs.getValue());
+                            obsList.add(ob);
+
                         }
-                        ob.setConcept(obs.getConceptuuid());
-                        ob.setValue(obs.getValue());
-                        obsList.add(ob);
                     }
                 }
+                encounter.setObs(obsList);
             }
-            encounter.setObs(obsList);
+
             encounter.setLocation(session.getLocationUuid());
 
             encounterList.add(encounter);
