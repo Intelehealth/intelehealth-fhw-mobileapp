@@ -470,6 +470,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         Glide.with(PatientDetailActivity.this)
                 .load(patient_new.getPatient_photo())
+                .asBitmap()
                 .thumbnail(0.3f)
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -631,6 +632,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                         if (updated) {
                             Glide.with(PatientDetailActivity.this)
                                     .load(AppConstants.IMAGE_PATH + patientUuid + ".jpg")
+                                    .asBitmap()
                                     .thumbnail(0.3f)
                                     .centerCrop()
                                     .diskCacheStrategy(DiskCacheStrategy.NONE)
