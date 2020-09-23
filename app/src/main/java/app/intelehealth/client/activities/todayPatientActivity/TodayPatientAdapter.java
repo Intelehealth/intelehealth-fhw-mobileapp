@@ -3,12 +3,13 @@ package app.intelehealth.client.activities.todayPatientActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,12 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
     LayoutInflater layoutInflater;
     ArrayList<String> listPatientUUID;
 
-    public TodayPatientAdapter(List<TodayPatientModel> todayPatientModelList, Context context, ArrayList<String> _listPatientUUID) {
+    /*public TodayPatientAdapter(List<TodayPatientModel> todayPatientModelList, Context context, ArrayList<String> _listPatientUUID) {
+        this.todayPatientModelList = todayPatientModelList;
+        this.context = context;
+        this.listPatientUUID = _listPatientUUID;
+    }*/
+    public void setTodayPatientAdapter(List<TodayPatientModel> todayPatientModelList, Context context, ArrayList<String> _listPatientUUID) {
         this.todayPatientModelList = todayPatientModelList;
         this.context = context;
         this.listPatientUUID = _listPatientUUID;
@@ -114,7 +120,20 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
 
     @Override
     public int getItemCount() {
-        return todayPatientModelList.size();
+        int data = 0;
+        try
+        {
+            if(todayPatientModelList.size() > 0)
+                data = todayPatientModelList.size();
+            else
+                data = 0;
+        }
+        catch (Exception e)
+        {
+
+        }
+
+        return data;
     }
 
     class TodayPatientViewHolder extends RecyclerView.ViewHolder {

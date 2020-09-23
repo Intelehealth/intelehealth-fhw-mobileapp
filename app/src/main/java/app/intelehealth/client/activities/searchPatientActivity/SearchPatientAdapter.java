@@ -24,7 +24,11 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
     Context context;
     LayoutInflater layoutInflater;
 
-    public SearchPatientAdapter(List<PatientDTO> patients, Context context) {
+    /*public SearchPatientAdapter(List<PatientDTO> patients, Context context) {
+        this.patients = patients;
+        this.context = context;
+    }*/
+    public void setSearchPatientAdapter(List<PatientDTO> patients, Context context) {
         this.patients = patients;
         this.context = context;
     }
@@ -68,7 +72,20 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
 
     @Override
     public int getItemCount() {
-        return patients.size();
+        int data = 0;
+        try
+        {
+            if(patients.size() > 0)
+                data = patients.size();
+            else
+                data = 0;
+        }
+        catch (Exception e)
+        {
+
+        }
+
+        return data;
     }
 
     class Myholder extends RecyclerView.ViewHolder {
