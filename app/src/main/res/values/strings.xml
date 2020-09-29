@@ -578,7 +578,6 @@
     <string name="demo_version">Demo version</string>
     <string name="sample_text">sample text</string>
     <string name="test_2_vibha_onplus_6t_10fke_7">Test 2 Vibha onplus 6T, 10FKE-7</string>
-    <string name="age_11_years_5_months">Age: 11 years, 5 months</string>
     <string name="active_defaultTag">Active</string>
     <string name="since_when_have_you_had_this_symptom">Since when have you had this symptom?</string>
     <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">Hello\n\n I’m Ayu, a digital health assistant. Let’s get started!</string>
@@ -617,6 +616,7 @@
     <string name="days">days</string>
     <string name="contact">Contact</string>
     <string name="has_a_new_prescription">has a new prescription</string>
+
     <string name="whatsapp_presc_toast">Select prescription PDF from file explorer - Internal storage/Intelehealth_PDF</string>
     <string name="health_scheme_card">Health Scheme Card*</string>
     <string name="mukhyamantri_amrutam_scheme">Mukhyamantri Amrutam scheme</string>
@@ -627,7 +627,6 @@
     <string name="fever">fever</string>
     <string name="speciality">Speciality</string>
     <string name="view_print">View/Print</string>
-    <string name="share">Share</string>
     <string name="age_11_years_5_months">Age: 11 years, 5 months</string>
     <string name="current_date_must_be">Current Date must be greater than Date of Birth</string>
     <string name="please_enter_DOB">Please enter Date Of Birth</string>
