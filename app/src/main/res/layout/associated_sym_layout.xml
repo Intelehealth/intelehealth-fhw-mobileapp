@@ -16,7 +16,7 @@
     <TextView
         android:layout_width="0dp"
         android:layout_weight="1.2"
-        android:text="fever"
+        android:text="@string/fever"
         android:id="@+id/symp"
         android:textSize="15sp"
         android:layout_gravity="center"

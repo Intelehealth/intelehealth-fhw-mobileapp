@@ -553,7 +553,7 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
-                                android:text="Health Scheme"
+                                android:text="@string/health_scheme_title"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
 
