@@ -444,7 +444,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                         }
                     }
                     else {
-                        Toast.makeText(mContext, "Some issue with the mindmaps.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, R.string.some_issue_mindmaps, Toast.LENGTH_SHORT).show();
                     }
 
                 }

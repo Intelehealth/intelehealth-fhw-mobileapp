@@ -190,7 +190,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
         else
         {
             Toast.makeText(PrivacyNotice_Activity.this,
-                    "Please read out the Privacy Consent first.", Toast.LENGTH_SHORT).show();
+                    R.string.please_read_out_consent, Toast.LENGTH_SHORT).show();
         }
 
 //        if(v.getId() == R.id.button_accept)

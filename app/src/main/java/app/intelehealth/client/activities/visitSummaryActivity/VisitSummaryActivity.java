@@ -542,8 +542,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     alertDialog.setView(editText);
 
                     //AlertDialog alertDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle).create();
-                    alertDialog.setMessage("Enter mobile number if you dont want to share to this number.");
-                    alertDialog.setPositiveButton("Share",
+                    alertDialog.setMessage(R.string.enter_mobile_if_not_this_number);
+                    alertDialog.setPositiveButton(R.string.share,
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
 
@@ -567,7 +567,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     }
                                     else
                                     {
-                                        Toast.makeText(context, "Please enter a mobile number",
+                                        Toast.makeText(context, R.string.please_enter_mobile_no,
                                                 Toast.LENGTH_SHORT).show();
 
                                     }
@@ -583,7 +583,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 else
                 {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
-                    alertDialog.setMessage("Download prescription first before sharing");
+                    alertDialog.setMessage(R.string.download_presc_before_sharing);
                     alertDialog.setPositiveButton("ok",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -899,7 +899,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 else
                 {
                     TextView t = (TextView) speciality_spinner.getSelectedView();
-                    t.setError("Please select specialization");
+                    t.setError(getString(R.string.please_select_specialization));
                     t.setTextColor(Color.RED);
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(VisitSummaryActivity.this)
