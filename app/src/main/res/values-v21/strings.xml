@@ -59,8 +59,6 @@
     <string name="fever">fever</string>
     <string name="speciality">Speciality</string>
     <string name="view_print">View/Print</string>
-    <string name="share">Share</string>
-    <string name="age_11_years_5_months">Age: 11 years, 5 months</string>
     <string name="current_date_must_be">Current Date must be greater than Date of Birth</string>
     <string name="please_enter_DOB">Please enter Date Of Birth</string>
     <string name="please_select_country">Please select Country</string>
