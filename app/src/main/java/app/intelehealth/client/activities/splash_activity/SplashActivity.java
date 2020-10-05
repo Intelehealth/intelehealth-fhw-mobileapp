@@ -23,6 +23,7 @@ import app.intelehealth.client.R;
 import app.intelehealth.client.activities.IntroActivity.IntroActivity;
 import app.intelehealth.client.activities.homeActivity.HomeActivity;
 import app.intelehealth.client.dataMigration.SmoothUpgrade;
+import app.intelehealth.client.services.OnClearFromRecentService;
 import app.intelehealth.client.utilities.Logger;
 import app.intelehealth.client.utilities.SessionManager;
 
@@ -42,6 +43,7 @@ public class SplashActivity extends AppCompatActivity {
 //        Getting App language through the session manager
         sessionManager = new SessionManager(SplashActivity.this);
 
+        startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
         String appLanguage = sessionManager.getAppLanguage();
 
 

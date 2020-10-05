@@ -617,5 +617,6 @@
     <string name="days">days</string>
     <string name="contact">Contact</string>
     <string name="has_a_new_prescription">has a new prescription</string>
+    <string name="whatsapp_presc_toast">Select prescription PDF from file explorer - Internal storage/Intelehealth_PDF</string>
 
 </resources>

@@ -34,6 +34,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
 
         <activity
@@ -218,6 +219,10 @@
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <service
+            android:name="app.intelehealth.client.services.OnClearFromRecentService"
+            android:stopWithTask="false" />
 
         <service
             android:name=".utilities.OpenMRSAccountAuthenticatorService"
