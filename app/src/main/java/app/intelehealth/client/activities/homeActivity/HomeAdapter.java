@@ -125,11 +125,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
                     this.context.startActivity(intent);
                     break;
                 }
-                case 6: {
-                    Intent intent = new Intent(this.context, ActivitySync.class);
-                    this.context.startActivity(intent);
-                    break;
-                }
+//                case 6: {
+//                    Intent intent = new Intent(this.context, ActivitySync.class);
+//                    this.context.startActivity(intent);
+//                    break;
+//                }
                 default:
                     Log.i(TAG, "Matching class not found");
             }
