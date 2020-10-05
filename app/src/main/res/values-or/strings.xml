@@ -481,16 +481,6 @@
     <string name="days">ଦନି</string>
     <string name="contact">ସଯାଗାସଯାଗ</string>
     <string name="row_patient_id" translatable="false">ରୋଗୀଙ୍କ ଆଇଡି:</string>
-    <string name="new_update_available">New Update Available</string>
-    <string name="update_app_note">New version is available with new features please update app</string>
-    <string name="update">Update</string>
-    <string name="do_you_need_help_please_contact_us">Do you need help? Please contact us!</string>
-    <string name="whatsapp_helpline">WhatsApp Helpline</string>
-    <string name="Whatsapp_Help_Cardview">Help</string>
-    <string name="skip">skip</string>
-    <string name="start">Start</string>
-    <string name="who_is_this_napplication_for">Who is this \napplication for?</string>
-    <string name="sure_to_logout">Are you sure you want to Logout?</string>
     <string name="whatsapp_presc_toast">Select prescription PDF from file explorer - Internal storage/Intelehealth_PDF</string>
 
 </resources>
