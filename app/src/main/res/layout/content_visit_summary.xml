@@ -1104,13 +1104,14 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/speciality_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/speciality_card"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/padding_card"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
+            android:visibility="gone"
             app:cardUseCompatPadding="true">
 
             <LinearLayout

@@ -151,7 +151,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String medicalAdvice_HyperLink = "";
     String isSynedFlag = "";
 
-    Spinner speciality_spinner;
+//    Spinner speciality_spinner;
 
     SQLiteDatabase db;
 
@@ -494,7 +494,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 //        mDoctorTitle.setVisibility(View.GONE);
 //        mDoctorName.setVisibility(View.GONE);
-        speciality_spinner = findViewById(R.id.speciality_spinner);
+//        speciality_spinner = findViewById(R.id.speciality_spinner);
         diagnosisTextView = findViewById(R.id.textView_content_diagnosis);
         prescriptionTextView = findViewById(R.id.textView_content_rx);
         medicalAdviceTextView = findViewById(R.id.textView_content_medical_advice);
@@ -506,65 +506,65 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         //if row is present i.e. if true is returned by the function then the spinner will be disabled.
         Log.d("visitUUID", "onCreate_uuid: " + visitUuid);
-        isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
-        if(isVisitSpecialityExists)
-            speciality_spinner.setEnabled(false);
+//        isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
+//        if(isVisitSpecialityExists)
+//            speciality_spinner.setEnabled(false);
 
 
         //spinner is being populated with the speciality values...
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
         VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
 
-        List<String> items  = providerAttributeLIstDAO.getAllValues();
-        Log.d("specc", "spec: "+ visitUuid);
-        String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid);
-        //Hashmap to List<String> add all value
-        ArrayAdapter<String> stringArrayAdapter;
+//        List<String> items  = providerAttributeLIstDAO.getAllValues();
+//        Log.d("specc", "spec: "+ visitUuid);
+//        String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid);
+//        //Hashmap to List<String> add all value
+//        ArrayAdapter<String> stringArrayAdapter;
 
-        if(items != null)
-        {
-            items.add(0, "Select Specialization");
-             stringArrayAdapter =
-                    new ArrayAdapter<String>
-                            (this, android.R.layout.simple_spinner_dropdown_item, items);
-            speciality_spinner.setAdapter(stringArrayAdapter);
-        }
-        else
-        {
-             stringArrayAdapter =
-                    new ArrayAdapter<String>
-                            (this, android.R.layout.simple_spinner_dropdown_item,
-                                    getResources().getStringArray(R.array.speciality_values));
-            speciality_spinner.setAdapter(stringArrayAdapter);
-        }
+//        if(items != null)
+//        {
+//            items.add(0, "Select Specialization");
+//             stringArrayAdapter =
+//                    new ArrayAdapter<String>
+//                            (this, android.R.layout.simple_spinner_dropdown_item, items);
+//            speciality_spinner.setAdapter(stringArrayAdapter);
+//        }
+//        else
+//        {
+//             stringArrayAdapter =
+//                    new ArrayAdapter<String>
+//                            (this, android.R.layout.simple_spinner_dropdown_item,
+//                                    getResources().getStringArray(R.array.speciality_values));
+//            speciality_spinner.setAdapter(stringArrayAdapter);
+//        }
+//
+//
+//
+//
+//        if(special_value != null)
+//        {
+//            int spinner_position = stringArrayAdapter.getPosition(special_value);
+//            speciality_spinner.setSelection(spinner_position);
+//        }
+//        else
+//        {
+//
+//        }
 
-
-
-
-        if(special_value != null)
-        {
-            int spinner_position = stringArrayAdapter.getPosition(special_value);
-            speciality_spinner.setSelection(spinner_position);
-        }
-        else
-        {
-
-        }
-
-        speciality_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d("SPINNER", "SPINNER_Selected: "+ adapterView.getItemAtPosition(i).toString());
-
-                speciality_selected = adapterView.getItemAtPosition(i).toString();
-                Log.d("SPINNER", "SPINNER_Selected_final: "+ speciality_selected);
-            }
-
-            @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+//        speciality_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                Log.d("SPINNER", "SPINNER_Selected: "+ adapterView.getItemAtPosition(i).toString());
+//
+//                speciality_selected = adapterView.getItemAtPosition(i).toString();
+//                Log.d("SPINNER", "SPINNER_Selected_final: "+ speciality_selected);
+//            }
+//
+//            @Override
+//                public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
         //end - spinner - speciality...
         if (hasPrescription.equalsIgnoreCase("true")) {
             ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
@@ -666,7 +666,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (speciality_spinner.getSelectedItemPosition() != 0) {
+//                if (speciality_spinner.getSelectedItemPosition() != 0) {
 //                    VisitsDAO visitsDAO_speciality = new VisitsDAO();
                     VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
                     boolean isUpdateVisitDone = false;
@@ -674,7 +674,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //                        isUpdateVisitDone = visitsDAO_speciality.update_visitTbl_speciality
 //                                (speciality_selected, visitUuid);
                         isUpdateVisitDone = speciality_attributes
-                                .insertVisitAttributes(visitUuid, speciality_selected);
+                                .insertVisitAttributes(visitUuid, "General Physician");
 
                         Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                     } catch (DAOException e) {
@@ -683,9 +683,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
 
                     Log.d("visitUUID", "upload_click: "+visitUUID);
-                    isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
-                    if(isVisitSpecialityExists)
-                        speciality_spinner.setEnabled(false);
+//                    isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+//                    if(isVisitSpecialityExists)
+//                        speciality_spinner.setEnabled(false);
 
 
                     if (flag.isChecked()) {
@@ -767,9 +767,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     //
                                     showVisitID();
                                     Log.d("visitUUID", "showVisitID: "+visitUUID);
-                                    isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
-                                    if(isVisitSpecialityExists)
-                                        speciality_spinner.setEnabled(false);
+//                                    isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+//                                    if(isVisitSpecialityExists)
+//                                        speciality_spinner.setEnabled(false);
                                 } else {
                                     AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
 
@@ -782,31 +782,31 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     } else {
                         AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
                     }
-                }
-                else
-                {
-                    TextView t = (TextView) speciality_spinner.getSelectedView();
-                    t.setError("Please select specialization");
-                    t.setTextColor(Color.RED);
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(VisitSummaryActivity.this)
-                            .setMessage("Please select specialization")
-                            .setCancelable(false)
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.dismiss();
-                                }
-                            });
-
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
-
-                    Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-                    positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-                }
+//                }
+//                else
+//                {
+//                    TextView t = (TextView) speciality_spinner.getSelectedView();
+//                    t.setError("Please select specialization");
+//                    t.setTextColor(Color.RED);
+//
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(VisitSummaryActivity.this)
+//                            .setMessage("Please select specialization")
+//                            .setCancelable(false)
+//                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialogInterface, int i) {
+//                                    dialogInterface.dismiss();
+//                                }
+//                            });
+//
+//                    AlertDialog alertDialog = builder.create();
+//                    alertDialog.show();
+//
+//                    Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+//                    positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+//                    positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//
+//                }
 
             }
         });
