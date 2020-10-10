@@ -32,6 +32,9 @@ public class VisitDTO {
     @SerializedName("syncd")
     @Expose
     private Boolean syncd;
+    @SerializedName("attributes")
+    @Expose
+    private List<VisitAttribute_Speciality> attributes = null;
 
     private List<VisitAttributeDTO> visitAttributeDTOS;
 
@@ -105,5 +108,14 @@ public class VisitDTO {
 
     public void setVisitAttributeDTOS(List<VisitAttributeDTO> visitAttributeDTOS) {
         this.visitAttributeDTOS = visitAttributeDTOS;
+    }
+
+    //getter-setter...
+    public List<VisitAttribute_Speciality> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(List<VisitAttribute_Speciality> attributes) {
+        this.attributes = attributes;
     }
 }
