@@ -97,7 +97,7 @@
                 android:id="@+id/checkbox_CHO"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="*I (Health worker) confirm that I have read out the privacy notice and consent to the patient."
+                android:text="*I (Sevika) confirm that I have read out the privacy notice and consent to the patient."
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="5dp"
                 />
