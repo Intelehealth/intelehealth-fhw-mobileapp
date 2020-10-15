@@ -70,6 +70,7 @@ public class Node implements Serializable {
     private String display;
     private String display_oriya;
     private String display_cebuno;
+    private String display_hindi;
     private String language;
     private String choiceType;
     private String inputType;
@@ -174,6 +175,15 @@ public class Node implements Serializable {
             if (this.display_cebuno.isEmpty()) {
                 this.display_cebuno = this.display;
             }
+
+            this.display_hindi = jsonNode.optString("display-hi");
+            if (this.display_hindi.isEmpty()) {
+                this.display_hindi = jsonNode.optString("display-hi");
+            }
+            if (this.display_hindi.isEmpty()) {
+                this.display_hindi = this.display;
+            }
+
             this.language = jsonNode.optString("language");
             if (this.language.isEmpty()) {
                 this.language = this.text;
@@ -401,6 +411,21 @@ public class Node implements Serializable {
                 if (display_cebuno != null && !display_cebuno.isEmpty()) {
                     //Log.i(TAG, "findDisplay: cb ");
                     return display_cebuno;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+            }
+            case "hi": {
+                //Log.i(TAG, "findDisplay: cb");
+                if (display_hindi != null && !display_hindi.isEmpty()) {
+                    //Log.i(TAG, "findDisplay: cb ");
+                    return display_hindi;
                 } else {
                     if (display == null || display.isEmpty()) {
                         //Log.i(TAG, "findDisplay: eng/o txt");
@@ -1614,6 +1639,14 @@ public class Node implements Serializable {
         this.display_cebuno = display_cebuno;
     }
 
+    public String getDisplay_hindi() {
+        return display_hindi;
+    }
+
+    public void setDisplay_hindi(String display_hindi) {
+        this.display_hindi = display_hindi;
+    }
+
     public void setOptionsList(List<Node> optionsList) {
         this.optionsList = optionsList;
     }
@@ -1916,6 +1949,7 @@ public class Node implements Serializable {
                 ", display='" + display + '\'' +
                 ", display_oriya='" + display_oriya + '\'' +
                 ", display_cebuno='" + display_cebuno + '\'' +
+                ", display_hindi='" + display_hindi + '\'' +
                 ", language='" + language + '\'' +
                 ", choiceType='" + choiceType + '\'' +
                 ", inputType='" + inputType + '\'' +
