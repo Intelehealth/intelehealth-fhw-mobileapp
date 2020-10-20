@@ -529,7 +529,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     alertDialog.setView(editText);
 
                     //AlertDialog alertDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle).create();
-                    alertDialog.setMessage("Enter mobile number if you dont want to share to this number.");
+                    alertDialog.setMessage("Enter the mobile number to which you want to share the prescription.");
                     alertDialog.setPositiveButton("Share",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
