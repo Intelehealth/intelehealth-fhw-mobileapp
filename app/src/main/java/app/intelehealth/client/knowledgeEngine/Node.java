@@ -7,6 +7,7 @@ import android.content.Intent;
 
 import androidx.appcompat.app.AlertDialog;
 
+import android.os.Build;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.DisplayMetrics;
@@ -1510,8 +1511,15 @@ public class Node implements Serializable {
         final AlertDialog dialog = builder.create();
         LayoutInflater inflater = context.getLayoutInflater();
         View dialogLayout = inflater.inflate(R.layout.image_confirmation_dialog, null);
+
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+            dialog.supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        } else {
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        }
+        
         dialog.setView(dialogLayout);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
@@ -1800,7 +1808,6 @@ public class Node implements Serializable {
     }
 
 
-
     public String formQuestionAnswer(int level) {
         List<String> stringsList = new ArrayList<>();
         List<String> stringsListNoSelected = new ArrayList<>();
@@ -1845,10 +1852,9 @@ public class Node implements Serializable {
                     stringsList.add(question + next_line);
                     stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1));
                 }
-            }
-            else if (mOptions.get(i).getText() != null &&
+            } else if (mOptions.get(i).getText() != null &&
                     ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms"))
-                    || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")))) {
+                            || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")))) {
 
                 if (!mOptions.get(i).isTerminal()) {
                     stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
@@ -1869,9 +1875,7 @@ public class Node implements Serializable {
                 //                        }
                 //                    }
                 //                }
-            }
-            else
-            {
+            } else {
                 //in case of weird null exception...
             }
 
