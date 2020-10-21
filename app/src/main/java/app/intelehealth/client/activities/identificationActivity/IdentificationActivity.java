@@ -83,6 +83,7 @@ import app.intelehealth.client.utilities.DateAndTimeUtils;
 import app.intelehealth.client.utilities.EditTextUtils;
 import app.intelehealth.client.utilities.FileUtils;
 import app.intelehealth.client.utilities.IReturnValues;
+import app.intelehealth.client.utilities.InputFilterMinMax;
 import app.intelehealth.client.utilities.Logger;
 import app.intelehealth.client.utilities.SessionManager;
 import app.intelehealth.client.utilities.UuidGenerator;
@@ -201,6 +202,19 @@ public class IdentificationActivity extends AppCompatActivity {
 
         mDOB = findViewById(R.id.identification_birth_date_text_view);
         mPhoneNum = findViewById(R.id.identification_phone_number);
+
+     /*   mPhoneNum.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus) {
+                    if(mPhoneNum.getText().toString().trim().length() < 10)
+                        mPhoneNum.setError("Enter 10 digits");
+                    else
+                        mPhoneNum.setError(null);
+                }
+            }
+        });*/
+
         mAge = findViewById(R.id.identification_age);
         mAddress1 = findViewById(R.id.identification_address1);
         mAddress1.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
@@ -1334,7 +1348,15 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
 
-        ArrayList<EditText> values = new ArrayList<>();
+        if(mPhoneNum.getText().toString().trim().length() > 0) {
+            if(mPhoneNum.getText().toString().trim().length() < 10) {
+                mPhoneNum.requestFocus();
+                mPhoneNum.setError("Enter 10 digits");
+                return;
+            }
+        }
+
+   /*     ArrayList<EditText> values = new ArrayList<>();
         values.add(mFirstName);
         values.add(mMiddleName);
         values.add(mLastName);
@@ -1345,7 +1367,7 @@ public class IdentificationActivity extends AppCompatActivity {
         values.add(mCity);
         values.add(mPostal);
         values.add(mRelationship);
-        values.add(mOccupation);
+        values.add(mOccupation);*/
 
 /*
         if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
@@ -1909,7 +1931,15 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
 
-        ArrayList<EditText> values = new ArrayList<>();
+        if(mPhoneNum.getText().toString().trim().length() > 0) {
+            if(mPhoneNum.getText().toString().trim().length() < 10) {
+                mPhoneNum.requestFocus();
+                mPhoneNum.setError("Enter 10 digits");
+                return;
+            }
+        }
+
+       /* ArrayList<EditText> values = new ArrayList<>();
         values.add(mFirstName);
         values.add(mMiddleName);
         values.add(mLastName);
@@ -1920,7 +1950,7 @@ public class IdentificationActivity extends AppCompatActivity {
         values.add(mCity);
         values.add(mPostal);
         values.add(mRelationship);
-        values.add(mOccupation);
+        values.add(mOccupation);*/
 
 /*
         if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
