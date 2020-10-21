@@ -508,18 +508,21 @@ public class PatientDetailActivity extends AppCompatActivity {
             city_village = "";
         }
 
-        String postal_code;
-        if (patient_new.getPostal_code() != null) {
-            postal_code = patient_new.getPostal_code().trim() + ",";
-        } else {
-            postal_code = "";
+        if (!patient_new.getPostal_code().equalsIgnoreCase("")) {
+            String addrFinalLine =
+                    String.format("%s, %s, %s, %s",
+                            city_village, patient_new.getState_province(),
+                            patient_new.getPostal_code(), patient_new.getCountry());
+            addrFinalView.setText(addrFinalLine);
+        }
+        else {
+            String addrFinalLine =
+                    String.format("%s, %s, %s",
+                            city_village, patient_new.getState_province(),
+                            patient_new.getCountry());
+            addrFinalView.setText(addrFinalLine);
         }
 
-        String addrFinalLine =
-                String.format("%s, %s, %s %s",
-                        city_village, patient_new.getState_province(),
-                        postal_code, patient_new.getCountry());
-        addrFinalView.setText(addrFinalLine);
         phoneView.setText(patient_new.getPhone_number());
         education_statusView.setText(patient_new.getEducation_level());
         economic_statusView.setText(patient_new.getEconomic_status());
