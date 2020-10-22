@@ -740,7 +740,7 @@ public class VitalsActivity extends AppCompatActivity {
                         //Converting Fahrenheit to Celsius
 //                        results.setTemperature((mTemperature.getText().toString()));
 
-                        results.setTemperature(ConvertFtoC(mTemperature.getText().toString()));
+                        results.setTemperature(ConvertFtoC(mTemperature.getText().toString())); //exception line
                     } else {
                         results.setTemperature((mTemperature.getText().toString()));
                     }
@@ -865,7 +865,7 @@ public class VitalsActivity extends AppCompatActivity {
             } catch (DAOException dao) {
                 FirebaseCrashlytics.getInstance().recordException(dao);
             }
-        } else {
+        } else { //insert
 
             obsDTO = new ObsDTO();
             obsDTO.setConceptuuid(UuidDictionary.HEIGHT);
@@ -986,14 +986,17 @@ public class VitalsActivity extends AppCompatActivity {
 
     private String ConvertFtoC(String temperature) {
 
-        String result = "";
-        double fTemp = Double.parseDouble(temperature);
-        double cTemp = ((fTemp - 32) * 5 / 9);
-        Log.i(TAG, "uploadTemperatureInC: " + cTemp);
-        DecimalFormat dtime = new DecimalFormat("#.##");
-        cTemp = Double.parseDouble(dtime.format(cTemp));
-        result = String.valueOf(cTemp);
-        return result;
+        if(temperature != null && temperature.length() > 0) {
+            String result = "";
+            double fTemp = Double.parseDouble(temperature);
+            double cTemp = ((fTemp - 32) * 5 / 9);
+            Log.i(TAG, "uploadTemperatureInC: " + cTemp);
+            DecimalFormat dtime = new DecimalFormat("#.##");
+            cTemp = Double.parseDouble(dtime.format(cTemp));
+            result = String.valueOf(cTemp);
+            return result;
+        }
+        return "";
 
     }
 
