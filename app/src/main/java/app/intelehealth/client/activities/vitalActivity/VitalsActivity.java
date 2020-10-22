@@ -544,6 +544,21 @@ public class VitalsActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
+
+        if(mBpSys.getText().toString().isEmpty() && !mBpDia.getText().toString().isEmpty() ||
+                !mBpSys.getText().toString().isEmpty() && mBpDia.getText().toString().isEmpty()) {
+            if(mBpSys.getText().toString().isEmpty()) {
+                mBpSys.requestFocus();
+                mBpSys.setError("Enter field");
+                return;
+            }
+            else if(mBpDia.getText().toString().isEmpty()) {
+                mBpDia.requestFocus();
+                mBpDia.setError("Enter field");
+                return;
+            }
+        }
+
         // Store values at the time of the fab is clicked.
         ArrayList<EditText> values = new ArrayList<EditText>();
         values.add(mHeight);
