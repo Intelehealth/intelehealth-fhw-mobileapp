@@ -346,7 +346,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("caste")) {
                     patient_new.setCaste(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if(name.equalsIgnoreCase("Health Scheme Card")) {
+                if (name.equalsIgnoreCase("Health Scheme Card")) {
                     patient_new.setHealth_scheme(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("Telephone Number")) {
@@ -522,18 +522,17 @@ public class PatientDetailActivity extends AppCompatActivity {
             city_village = "";
         }
 
-        if (!patient_new.getPostal_code().equalsIgnoreCase("")) {
-            String addrFinalLine =
-                    String.format("%s, %s, %s, %s",
-                            city_village, patient_new.getState_province(),
-                            patient_new.getPostal_code(), patient_new.getCountry());
-            addrFinalView.setText(addrFinalLine);
-        }
-        else {
-            String addrFinalLine =
-                    String.format("%s, %s, %s",
-                            city_village, patient_new.getState_province(),
-                            patient_new.getCountry());
+        if (patient_new.getPostal_code() != null) {
+            String addrFinalLine;
+            if (!patient_new.getPostal_code().equalsIgnoreCase("")) {
+                addrFinalLine = String.format("%s, %s, %s, %s",
+                        city_village, patient_new.getState_province(),
+                        patient_new.getPostal_code(), patient_new.getCountry());
+            } else {
+                addrFinalLine = String.format("%s, %s, %s",
+                        city_village, patient_new.getState_province(),
+                        patient_new.getCountry());
+            }
             addrFinalView.setText(addrFinalLine);
         }
 
@@ -1016,7 +1015,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                         String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
                         if (visitValue != null && !visitValue.isEmpty()) {
 
-                            visitValue = visitValue.replace("?<b>",Node.bullet_arrow);
+                            visitValue = visitValue.replace("?<b>", Node.bullet_arrow);
 
                             String[] complaints = StringUtils.split(visitValue, Node.bullet_arrow);
 
