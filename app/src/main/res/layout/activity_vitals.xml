@@ -191,6 +191,8 @@
                                     android:tag="@string/tag_optional"
                                     android:includeFontPadding="false"
                                     android:textSize="@dimen/card_content_sub_text_size"
+                                    android:focusable="true"
+                                    android:focusableInTouchMode="true"
                                     android:fontFamily="@font/lato_regular"/>
 
                             </com.google.android.material.textfield.TextInputLayout>
@@ -220,6 +222,8 @@
                                     android:tag="@string/tag_optional"
                                     android:includeFontPadding="false"
                                     android:textSize="@dimen/card_content_sub_text_size"
+                                    android:focusable="true"
+                                    android:focusableInTouchMode="true"
                                     android:fontFamily="@font/lato_regular"/>
 
                             </com.google.android.material.textfield.TextInputLayout>
