@@ -1001,14 +1001,17 @@ public class VitalsActivity extends AppCompatActivity {
 
     private String ConvertFtoC(String temperature) {
 
-        String result = "";
-        double fTemp = Double.parseDouble(temperature);
-        double cTemp = ((fTemp - 32) * 5 / 9);
-        Log.i(TAG, "uploadTemperatureInC: " + cTemp);
-        DecimalFormat dtime = new DecimalFormat("#.##");
-        cTemp = Double.parseDouble(dtime.format(cTemp));
-        result = String.valueOf(cTemp);
-        return result;
+        if(temperature != null && temperature.length() > 0) {
+            String result = "";
+            double fTemp = Double.parseDouble(temperature);
+            double cTemp = ((fTemp - 32) * 5 / 9);
+            Log.i(TAG, "uploadTemperatureInC: " + cTemp);
+            DecimalFormat dtime = new DecimalFormat("#.##");
+            cTemp = Double.parseDouble(dtime.format(cTemp));
+            result = String.valueOf(cTemp);
+            return result;
+        }
+        return "";
 
     }
 
