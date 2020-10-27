@@ -75,7 +75,9 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
     @Override
     public void onBindViewHolder(final AdditionalDocumentViewHolder holder, final int position) {
 
-        holder.getDocumentNameTextView().setText(documentList.get(position).getDocumentName());
+//        holder.getDocumentNameTextView().setText(documentList.get(position).getDocumentName());
+        holder.getDocumentNameTextView().setText
+                ("Document - " + (position + 1));
 
         final File image = new File(documentList.get(position).getDocumentPhoto());
 
