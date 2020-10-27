@@ -482,6 +482,25 @@ public class VitalsActivity extends AppCompatActivity {
         }
     }
 
+    public void calculateBMI_dynamic(String height, String weight) {
+        if (height.toString().trim().length() > 0 && !height.toString().startsWith(".") &&
+                weight.toString().trim().length() > 0 && !weight.toString().startsWith(".")) {
+
+            mBMI.getText().clear();
+            double numerator = Double.parseDouble(weight) * 10000;
+            double denominator = (Double.parseDouble(height)) * (Double.parseDouble(height));
+            double bmi_value = numerator / denominator;
+            DecimalFormat df = new DecimalFormat("0.00");
+            mBMI.setText(df.format(bmi_value));
+            Log.d("BMI","BMI: "+mBMI.getText().toString());
+            //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
+        } else  {
+            // do nothing
+            mBMI.getText().clear();
+        }
+    }
+
+
     public void loadPrevious() {
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -537,6 +556,10 @@ public class VitalsActivity extends AppCompatActivity {
             default:
                 break;
 
+        }
+        //on edit on vs screen, the bmi will be set in vitals bmi edit field.
+        if(mBMI.getText().toString().equalsIgnoreCase("")) {
+            calculateBMI_dynamic(mHeight.getText().toString(), mWeight.getText().toString());
         }
     }
 
