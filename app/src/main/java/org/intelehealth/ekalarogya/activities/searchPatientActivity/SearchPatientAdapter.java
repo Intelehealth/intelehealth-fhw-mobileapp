@@ -2,8 +2,10 @@ package org.intelehealth.ekalarogya.activities.searchPatientActivity;
 
 import android.content.Context;
 import android.content.Intent;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,8 +48,13 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
             String age = DateAndTimeUtils.getAgeInYearMonth(patinet.getDateofbirth(), context);
             //String dob = DateAndTimeUtils.SimpleDatetoLongDate(patinet.getDateofbirth());
             String body = context.getString(R.string.identification_screen_prompt_age) + "" + age;
-            holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname()
-                    + ", " + patinet.getOpenmrsId());
+
+            if (patinet.getOpenmrsId() != null)
+                holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname()
+                        + ", " + patinet.getOpenmrsId());
+            else
+                holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname());
+
             holder.bodyTextView.setText(body);
         }
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
