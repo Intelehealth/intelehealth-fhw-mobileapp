@@ -471,8 +471,8 @@ public class VitalsActivity extends AppCompatActivity {
                 (mHeight.getText().toString().trim().length() > 0 && !mHeight.getText().toString().startsWith(".") && (mWeight.getText().toString().trim().length() > 0 &&
                         !mWeight.getText().toString().startsWith(".")))) {
             mBMI.getText().clear();
-            double numerator = Double.parseDouble(weightvalue) * 10000;
-            double denominator = (Double.parseDouble(heightvalue)) * (Double.parseDouble(heightvalue));
+            double numerator = Double.parseDouble(mWeight.getText().toString()) * 10000;
+            double denominator = (Double.parseDouble(mHeight.getText().toString())) * (Double.parseDouble(mHeight.getText().toString()));
             double bmi_value = numerator / denominator;
             DecimalFormat df = new DecimalFormat("0.00");
             mBMI.setText(df.format(bmi_value));
