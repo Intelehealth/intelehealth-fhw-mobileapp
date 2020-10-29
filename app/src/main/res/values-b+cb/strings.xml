@@ -468,5 +468,7 @@
     <string name="contact">Contact</string>
     <string name="enter_mobile_number_to_share_prescription">Enter the mobile number to which you want to share the prescription.</string>
     <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I (Sevika) confirm that I have read out the privacy notice and consent to the patient.</string>
+    <string name="enter_10_digits">Enter 10 digits</string>
+    <string name="please_read_out_privacy_consent_first">Please read out the Privacy Consent first.</string>
 
 </resources>

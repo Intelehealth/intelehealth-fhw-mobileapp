@@ -1058,7 +1058,7 @@ public class IdentificationActivity extends AppCompatActivity {
         if(mPhoneNum.getText().toString().trim().length() > 0) {
             if(mPhoneNum.getText().toString().trim().length() < 10) {
                 mPhoneNum.requestFocus();
-                mPhoneNum.setError("Enter 10 digits");
+                mPhoneNum.setError(getString(R.string.enter_10_digits));
                 return;
             }
         }
