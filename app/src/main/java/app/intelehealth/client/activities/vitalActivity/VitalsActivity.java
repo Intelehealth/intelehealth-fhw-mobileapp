@@ -5,12 +5,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -20,7 +22,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 
 import org.json.JSONException;
@@ -467,20 +468,46 @@ public class VitalsActivity extends AppCompatActivity {
     }
 
     public void calculateBMI() {
-        if (flag_height == 1 && flag_weight == 1) {
+        if (flag_height == 1 && flag_weight == 1 ||
+                (mHeight.getText().toString().trim().length() > 0 && !mHeight.getText().toString().startsWith(".") && (mWeight.getText().toString().trim().length() > 0 &&
+                        !mWeight.getText().toString().startsWith(".")))) {
+
             mBMI.getText().clear();
-            double numerator = Double.parseDouble(weightvalue) * 10000;
-            double denominator = (Double.parseDouble(heightvalue)) * (Double.parseDouble(heightvalue));
+            double numerator = Double.parseDouble(mWeight.getText().toString()) * 10000;
+            double denominator = (Double.parseDouble(mHeight.getText().toString())) * (Double.parseDouble(mHeight.getText().toString()));
             double bmi_value = numerator / denominator;
             DecimalFormat df = new DecimalFormat("0.00");
             mBMI.setText(df.format(bmi_value));
-            Log.d("BMI","BMI: "+mBMI.getText().toString());
+            Log.d("BMI", "BMI: " + mBMI.getText().toString());
             //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
         } else if (flag_height == 0 || flag_weight == 0) {
             // do nothing
             mBMI.getText().clear();
         }
+        else
+        {
+            mBMI.getText().clear();
+        }
     }
+
+    public void calculateBMI_onEdit(String height, String weight) {
+        if (height.toString().trim().length() > 0 && !height.toString().startsWith(".") &&
+                weight.toString().trim().length() > 0 && !weight.toString().startsWith(".")) {
+
+            mBMI.getText().clear();
+            double numerator = Double.parseDouble(weight) * 10000;
+            double denominator = (Double.parseDouble(height)) * (Double.parseDouble(height));
+            double bmi_value = numerator / denominator;
+            DecimalFormat df = new DecimalFormat("0.00");
+            mBMI.setText(df.format(bmi_value));
+            Log.d("BMI", "BMI: " + mBMI.getText().toString());
+            //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
+        } else {
+            // do nothing
+            mBMI.getText().clear();
+        }
+    }
+
 
     public void loadPrevious() {
 
@@ -537,6 +564,10 @@ public class VitalsActivity extends AppCompatActivity {
             default:
                 break;
 
+        }
+        //on edit on vs screen, the bmi will be set in vitals bmi edit field.
+        if (mBMI.getText().toString().equalsIgnoreCase("")) {
+            calculateBMI_onEdit(mHeight.getText().toString(), mWeight.getText().toString());
         }
     }
 
@@ -732,9 +763,7 @@ public class VitalsActivity extends AppCompatActivity {
             try {
                 if (mHeight.getText() != null && !mHeight.getText().toString().equals("")) {
                     results.setHeight((mHeight.getText().toString()));
-                }
-                else if(mHeight.getText().toString().equals(""))
-                {
+                } else if (mHeight.getText().toString().equals("")) {
                     results.setHeight("0");
                 }
                 if (mWeight.getText() != null) {
@@ -784,12 +813,9 @@ public class VitalsActivity extends AppCompatActivity {
                 obsDTO.setConceptuuid(UuidDictionary.HEIGHT);
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
-                if(results.getHeight().equals(""))
-                {
+                if (results.getHeight().equals("")) {
                     obsDTO.setValue("0");
-                }
-                else
-                {
+                } else {
                     obsDTO.setValue(results.getHeight());
                 }
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.HEIGHT));
@@ -886,12 +912,9 @@ public class VitalsActivity extends AppCompatActivity {
             obsDTO.setConceptuuid(UuidDictionary.HEIGHT);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
-            if(results.getHeight().equals(""))
-            {
+            if (results.getHeight().equals("")) {
                 obsDTO.setValue("0");
-            }
-            else
-            {
+            } else {
                 obsDTO.setValue(results.getHeight());
             }
 
