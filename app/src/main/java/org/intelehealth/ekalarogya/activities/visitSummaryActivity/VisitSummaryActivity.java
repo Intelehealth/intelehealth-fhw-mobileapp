@@ -529,8 +529,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     alertDialog.setView(editText);
 
                     //AlertDialog alertDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle).create();
-                    alertDialog.setMessage(R.string.enter_mobile_number_to_share_prescription);
-                    alertDialog.setPositiveButton(R.string.share,
+                    alertDialog.setMessage(getResources().getString(R.string.enter_mobile_number_to_share_prescription));
+                    alertDialog.setPositiveButton(getResources().getString(R.string.share),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
 
@@ -1674,6 +1674,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         }
 
+        if (mComplaint.contains("जुड़े लक्षण")) {
+            String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);
+            for (String compla : cc) {
+                mComplaint = mComplaint.substring(0, compla.indexOf("जुड़े लक्षण") - 3);
+            }
+        } else {
+
+        }
+
 
         if (mPatientOpenMRSID == null) {
             mPatientOpenMRSID = getString(R.string.patient_not_registered);
@@ -1990,6 +1999,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);
             for (String compla : cc) {
                 mComplaint = mComplaint.substring(0, compla.indexOf("Associated symptoms") - 3);
+            }
+        } else {
+
+        }
+
+        if (mComplaint.contains("जुड़े लक्षण")) {
+            String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);
+            for (String compla : cc) {
+                mComplaint = mComplaint.substring(0, compla.indexOf("जुड़े लक्षण") - 3);
             }
         } else {
 

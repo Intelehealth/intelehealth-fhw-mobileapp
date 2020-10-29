@@ -445,7 +445,7 @@
     <string name="patient_denies">पेशेंट इनकार करता है</string>
     <string name="patient_reports">पेशेंट की रिपोर्ट</string>
 
-    <string name="associated_symptoms">संबद्ध लक्षण</string>
+    <string name="associated_symptoms">जुड़े लक्षण</string>
     <string name="enter_server_url">सर्वर URL दर्ज करें</string>
     <string name="enter_license_key"><b>लाइसेंस नंबर डाले</b></string>
     <string name="invalid_url">अवैध यूआरएल</string>
@@ -591,7 +591,7 @@
     <string name="Ayu_name">आयु</string>
     <string name="close_button">बंद</string>
     <string name="active_tag_patientDetail">सक्रिय</string>
-    <string name="associated_symptoms_patientDetail">जुड़े लक्षण</string>
+    <string name="associated_symptoms_patientDetail">Associated symptoms</string>
     <string name="device_ID">डिवाइस की पहचान:</string>
     <string name="enter_valid_license_url">वैध लाइसेंस यूआरएल दर्ज करें</string>
     <string name="please_enter_url_and_key">कृपया URL और कुंजी दर्ज करें</string>
