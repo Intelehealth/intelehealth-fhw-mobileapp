@@ -529,8 +529,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     alertDialog.setView(editText);
 
                     //AlertDialog alertDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle).create();
-                    alertDialog.setMessage("Enter the mobile number to which you want to share the prescription.");
-                    alertDialog.setPositiveButton("Share",
+                    alertDialog.setMessage(R.string.enter_mobile_number_to_share_prescription);
+                    alertDialog.setPositiveButton(R.string.share,
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
 
@@ -539,7 +539,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                         String phoneNumber = "+91" + editText.getText().toString();
                                        /* String message =
                                                 "Share pdf from this path: Internal" +
-                                                        " Storage/Intelehealth_PDF/YourName.pdf";*/
+                                                        " Storage/EkalArogya_PDF/YourName.pdf";*/
 
 //                                        https://api.whatsapp.com/send?phone=%s&text=%s
 
@@ -554,7 +554,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     }
                                     else
                                     {
-                                        Toast.makeText(context, "Please enter a mobile number",
+                                        Toast.makeText(context, getResources().getString(R.string.please_enter_mobile_number),
                                                 Toast.LENGTH_SHORT).show();
 
                                     }
@@ -570,8 +570,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 else
                 {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
-                    alertDialog.setMessage("Download prescription first before sharing");
-                    alertDialog.setPositiveButton("ok",
+                    alertDialog.setMessage(R.string.download_prescription_first_before_sharing);
+                    alertDialog.setPositiveButton(R.string.ok,
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
@@ -2226,7 +2226,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 //            PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 //
-//            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+//            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/EkalArogya_PDF/";
 //            String fileName = visitUUID +".pdf";
 //            File dir = new File(path);
 //            if (!dir.exists())
@@ -2292,7 +2292,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
           /*  PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/EkalArogya_PDF/";
             String fileName = visitUUID +".pdf";
             File dir = new File(path);
             if (!dir.exists())
@@ -2358,7 +2358,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             /*PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/EkalArogya_PDF/";
             String fileName = visitUUID +".pdf";
             File dir = new File(path);
             if (!dir.exists())
@@ -2425,7 +2425,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
            /* PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/EkalArogya_PDF/";
             String fileName = visitUUID +".pdf";
             File dir = new File(path);
             if (!dir.exists())
@@ -2510,7 +2510,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/EkalArogya_PDF/";
             String fileName = patientName + "_" + showVisitID() +".pdf";
             File dir = new File(path);
             if (!dir.exists())
@@ -2574,7 +2574,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/EkalArogya_PDF/";
             String fileName = patientName + "_" + showVisitID() +".pdf";
             File dir = new File(path);
             if (!dir.exists())
@@ -2638,7 +2638,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/EkalArogya_PDF/";
             String fileName = patientName + "_" + showVisitID() +".pdf";
             File dir = new File(path);
             if (!dir.exists())
@@ -2702,7 +2702,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/EkalArogya_PDF/";
             String fileName = patientName + "_" + showVisitID() +".pdf";
             File dir = new File(path);
             if (!dir.exists())
@@ -3282,7 +3282,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //logic code for handling the whatsapp prescription part...
         if(isreturningWhatsapp)
         {
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/EkalArogya_PDF/";
             File dir = new File(path);
             deleteRecursive(dir);
         }

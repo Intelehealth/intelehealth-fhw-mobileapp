@@ -617,5 +617,9 @@
     <string name="contact">संपर्क करें</string>
     <string name="has_a_new_prescription">एक नया पर्ची है</string>
     <string name="whatsapp_presc_toast">फ़ाइल एक्सप्लोरर से पर्चे पीडीएफ का चयन करें - Internal storage/EkalArogya_PDF</string>
+    <string name="enter_mobile_number_to_share_prescription">उस मोबाइल नंबर को दर्ज करें जिसमें आप नप्रिस्क्रिप्षन(डॉक्टर की पर्ची) को साझा करना चाहते हैं।</string>
+    <string name="share">साझा करें</string>
+    <string name="please_enter_mobile_number">कृपया मोबाइल नंबर दर्ज करें</string>
+    <string name="download_prescription_first_before_sharing">साझा करने से पहले पहले पर्चे डाउनलोड करें</string>
 
 </resources>
