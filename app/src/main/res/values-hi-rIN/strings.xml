@@ -112,7 +112,7 @@
     <string name="identification_screen_picker_months" translatable="false">महीने</string>
 
     //Active Patients Screen
-    <string name="title_activity_active_patient" translatable="false">सक्रिय दौरे </string>
+    <string name="title_activity_active_patient">सक्रिय दौरे </string>
 
     //Patient History Screen
     <string name="title_activity_get_patient_history" translatable="false">पेशेंट का इतिहास</string>
@@ -253,7 +253,7 @@
     <string name="title_activity_setup" translatable="false">सेट अप</string>
 
     <string name="title_activity_camera" translatable="false">कैमरा</string>
-    <string name="title_activity_today_patient" translatable="false">आज का दौरा</string>
+    <string name="title_activity_today_patient">आज का दौरा</string>
     <string name="title_activity_additional_documents">अतिरिक्त दस्तावेज़</string>
     <string name="title_activity_video_library" translatable="false">वीडियो लाइब्रेरी</string>
     <string name="visit_summary_patient_details" translatable="false">विवरण पर जाएँ</string>

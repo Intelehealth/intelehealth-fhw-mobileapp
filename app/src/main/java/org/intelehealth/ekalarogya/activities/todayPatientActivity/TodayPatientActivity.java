@@ -61,6 +61,7 @@ public class TodayPatientActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_today_patient);
+        setTitle(getString(R.string.title_activity_today_patient));
 //        binding = DataBindingUtil.setContentView(this, R.layout.activity_today_patient);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
