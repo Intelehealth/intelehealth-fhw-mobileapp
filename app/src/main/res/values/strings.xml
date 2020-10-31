@@ -340,9 +340,9 @@
     <string name="hide_text">HIDE</string>
     <string name="show_text">SHOW</string>
 
-    <string name="new_patient" translatable="false">New Patient</string>
-    <string name="find_patient" translatable="false">Find Patients</string>
-    <string name="video_library" translatable="false">Video Library</string>
+    <string name="new_patient">New Patient</string>
+    <string name="find_patient">Find Patients</string>
+    <string name="video_library">Video Library</string>
 
     <string name="error_no_sd" translatable="false">This feature is only available to devices with SD cards.</string>
     <string name="error_admin_password" translatable="false">Admin Password Wrong</string>
@@ -625,5 +625,6 @@
     <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I (Sevika) confirm that I have read out the privacy notice and consent to the patient.</string>
     <string name="enter_10_digits">Enter 10 digits</string>
     <string name="please_read_out_privacy_consent_first">Please read out the Privacy Consent first.</string>
+    <string name="view_print">View/Print</string>
 
 </resources>

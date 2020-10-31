@@ -1306,7 +1306,7 @@
                     android:layout_centerVertical="true"
                     android:fontFamily="@font/lato_bold"
                     android:gravity="center_horizontal"
-                    android:text="View/Print"
+                    android:text="@string/view_print"
                     android:layout_toEndOf="@+id/print_imageview"
                     android:paddingStart="10dp"
                     android:textAlignment="center"
@@ -1349,7 +1349,7 @@
                     android:layout_centerVertical="true"
                     android:fontFamily="@font/lato_bold"
                     android:gravity="center_horizontal"
-                    android:text="Share"
+                    android:text="@string/share"
                     android:layout_toEndOf="@+id/share_imageview"
                     android:textAlignment="center"
                     android:layout_marginStart="15dp"
@@ -1362,7 +1362,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="35dp"
-                    android:paddingVertical="10dp" app:srcCompat="@drawable/ic_icons8_whatsapp_purple">
+                    android:paddingVertical="10dp"
+                    app:srcCompat="@drawable/ic_icons8_whatsapp_purple">
                 </ImageView>
 
             </RelativeLayout>

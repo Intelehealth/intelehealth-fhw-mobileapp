@@ -338,9 +338,9 @@
     <string name="hide_text">छिपाना</string>
     <string name="show_text">प्रदर्शन</string>
 
-    <string name="new_patient" translatable="false">नया पेशेंट</string>
-    <string name="find_patient" translatable="false">पेशेंट खोजे</string>
-    <string name="video_library" translatable="false">वीडियो लाइब्रेरी</string>
+    <string name="new_patient">नया पेशेंट</string>
+    <string name="find_patient">पेशेंट खोजे</string>
+    <string name="video_library">वीडियो लाइब्रेरी</string>
 
     <string name="error_no_sd" translatable="false">यह सुविधा केवल एसडी कार्ड वाले उपकरणों के लिए उपलब्ध है।</string>
     <string name="error_admin_password" translatable="false">व्यवस्थापक पासवर्ड गलत</string>
@@ -624,5 +624,6 @@
     <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*मैं (सेविका) इस बात की पुष्टि करती हूं कि मैंने पेशेंट को गोपनीयता नोटिस और सहमति पढ़ दी है।</string>
     <string name="enter_10_digits">10 अंक दर्ज करें</string>
     <string name="please_read_out_privacy_consent_first">कृपया पहले गोपनीयता सहमति पढ़ें।</string>
+    <string name="view_print">देखें / प्रिंट करें</string>
 
 </resources>
