@@ -1880,7 +1880,7 @@ public class IdentificationActivity extends AppCompatActivity {
             countryText.setError(getString(R.string.error_field_required));
 //            mCountry.requestFocus();
             address_details_textview.requestFocus();
-            Toast.makeText(this, "Please select Country", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.please_select_country, Toast.LENGTH_SHORT).show();
             address_details_textview.clearFocus();
             return;
         } else {
@@ -1891,7 +1891,7 @@ public class IdentificationActivity extends AppCompatActivity {
             stateText.setError(getString(R.string.error_field_required));
 //            mState.requestFocus();
             address_details_textview.requestFocus();
-            Toast.makeText(this, "Please select State", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.please_select_state, Toast.LENGTH_SHORT).show();
             address_details_textview.clearFocus();
             return;
         } else {
@@ -1901,7 +1901,7 @@ public class IdentificationActivity extends AppCompatActivity {
         if (mCity.getText().toString().equals("") && mCity.getText().toString().isEmpty()) {
             mCity.setError(getString(R.string.error_field_required));
             address_details_textview.requestFocus();
-            Toast.makeText(this, "Please enter Village/Town/City", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.please_enter_village, Toast.LENGTH_SHORT).show();
             address_details_textview.clearFocus();
             return;
         }
@@ -1910,8 +1910,8 @@ public class IdentificationActivity extends AppCompatActivity {
             if (!ma_checkbox.isChecked() && !ab_checkbox.isChecked() && !none_checkbox.isChecked()) {
                 health_textview.setError(getString(R.string.error_field_required));
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
-                alertDialogBuilder.setTitle("Health Scheme Card");
-                alertDialogBuilder.setMessage("Please select the option for Health Scheme Card");
+                alertDialogBuilder.setTitle(R.string.health_scheme_card);
+                alertDialogBuilder.setMessage(R.string.select_health_card);
                 alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -2127,8 +2127,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //            focusView.requestFocus();
 //        } else {
 //            if (mCurrentPhotoPath == null)
-//                mCurrentPhotoPath = patientdto.getPatient_photo();
-
+//                mCurrentPhotoPath = patientdto.get
 
             patientdto.setFirst_name(StringUtils.getValue(mFirstName.getText().toString()));
             patientdto.setMiddle_name(StringUtils.getValue(mMiddleName.getText().toString()));
