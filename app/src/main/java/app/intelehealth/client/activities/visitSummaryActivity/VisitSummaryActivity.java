@@ -633,20 +633,24 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //Hashmap to List<String> add all value
         ArrayAdapter<String> stringArrayAdapter;
 
-        if(items != null)
-        {
-            items.add(0, "Select Specialization");
-             stringArrayAdapter =
-                    new ArrayAdapter<String>
-                            (this, android.R.layout.simple_spinner_dropdown_item, items);
-            speciality_spinner.setAdapter(stringArrayAdapter);
+        if(getResources().getConfiguration().locale.getLanguage().equalsIgnoreCase("en")) {
+            if (items != null) {
+                items.add(0, "Select Specialization");
+                stringArrayAdapter =
+                        new ArrayAdapter<String>
+                                (this, android.R.layout.simple_spinner_dropdown_item, items);
+                speciality_spinner.setAdapter(stringArrayAdapter);
+            } else {
+                stringArrayAdapter =
+                        new ArrayAdapter<String>
+                                (this, android.R.layout.simple_spinner_dropdown_item,
+                                        getResources().getStringArray(R.array.speciality_values));
+                speciality_spinner.setAdapter(stringArrayAdapter);
+            }
         }
-        else
-        {
-             stringArrayAdapter =
-                    new ArrayAdapter<String>
-                            (this, android.R.layout.simple_spinner_dropdown_item,
-                                    getResources().getStringArray(R.array.speciality_values));
+        else {
+            stringArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
+                    getResources().getStringArray(R.array.speciality_value_hindi));
             speciality_spinner.setAdapter(stringArrayAdapter);
         }
 
@@ -655,6 +659,25 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         if(special_value != null)
         {
+            if(getResources().getConfiguration().locale.getLanguage().equalsIgnoreCase("hi")) {
+            switch (special_value) {
+                case "General Physician":
+                    special_value = "सामान्य चिकित्सक";
+                    break;
+                case "Skin Speciality":
+                    special_value = "त्वचा विशेषज्ञ";
+                    break;
+                case "Physiotherapist":
+                    special_value = "फ़िज़ियोथेरेपिस्ट";
+                    break;
+                case "Dentist":
+                    special_value = "प्रसूतिशास्री";
+                    break;
+                case "Child Specialist":
+                    special_value = "बच्चों का चिकित्सक";
+                    break;
+            }
+            }
             int spinner_position = stringArrayAdapter.getPosition(special_value);
             speciality_spinner.setSelection(spinner_position);
         }
@@ -668,8 +691,35 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d("SPINNER", "SPINNER_Selected: "+ adapterView.getItemAtPosition(i).toString());
 
-                speciality_selected = adapterView.getItemAtPosition(i).toString();
-                Log.d("SPINNER", "SPINNER_Selected_final: "+ speciality_selected);
+                if(getResources().getConfiguration().locale.getLanguage().equalsIgnoreCase("hi")) {
+                    speciality_selected = adapterView.getItemAtPosition(i).toString();
+
+                    switch (speciality_selected) {
+                        case "सामान्य चिकित्सक":
+                            speciality_selected = "General Physician";
+                            break;
+                        case "त्वचा विशेषज्ञ":
+                            speciality_selected = "Skin Speciality";
+                            break;
+                        case "फ़िज़ियोथेरेपिस्ट":
+                            speciality_selected = "Physiotherapist";
+                            break;
+                        case "प्रसूतिशास्री":
+                            speciality_selected = "Dentist";
+                            break;
+                        case "बच्चों का चिकित्सक":
+                            speciality_selected = "Child Specialist";
+                            break;
+                    }
+
+                }else {
+                    speciality_selected = adapterView.getItemAtPosition(i).toString();
+                    Log.d("SPINNER", "SPINNER_Selected_final: "+ speciality_selected);
+                }
+
+
+
+
             }
 
             @Override
