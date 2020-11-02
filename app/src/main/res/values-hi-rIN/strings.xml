@@ -475,7 +475,7 @@
     <string name="priority">प्राथमिकता</string>
     <string name="server_url">सर्वर url</string>
     <string name="sync">सिंक</string>
-    <string name="update_protocols">प्रोटोकॉल अद्यतन करें</string>
+    <string name="update_protocols">प्रोटोकॉल डाउनलोड करें</string>
     <string name="end_all_visit">एंड ऑल विजिट</string>
     <string name="filter_by_creator">निर्माता द्वारा फ़िल्टर करें</string>
     <string name="planet_name">प्लॅनेट नामे</string>
@@ -530,7 +530,7 @@
     <string name="protocols_downloaded_successfully">प्रोटोकॉल सफलतापूर्वक डाउनलोड!</string>
     <string name="no_protocols_found">कोई प्रोटोकॉल नहीं मिला</string>
     <string name="unable_to_get_proper_response">प्रोटोकॉल डाउनलोड करने में समस्या थी, कृपया सिस्टम व्यवस्थापक से संपर्क करें!</string>
-    <string name="last_synced">आखरी समन्वित- </string>
+    <string name="last_synced">आखरी सिंक- </string>
     <string name="today_visits">आज की विज़िट्स</string>
     <string name="active_visits">आक्टिव विज़िट्स</string>
     <string name="day">दिन</string>
