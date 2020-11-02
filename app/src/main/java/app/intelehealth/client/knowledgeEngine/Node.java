@@ -71,6 +71,7 @@ public class Node implements Serializable {
     private String display;
     private String display_oriya;
     private String display_cebuno;
+    private String display_hindi;
     private String language;
     private String choiceType;
     private String inputType;
@@ -175,6 +176,15 @@ public class Node implements Serializable {
             if (this.display_cebuno.isEmpty()) {
                 this.display_cebuno = this.display;
             }
+
+            this.display_hindi = jsonNode.optString("display-hi");
+            if (this.display_hindi.isEmpty()) {
+                this.display_hindi = jsonNode.optString("display-hi");
+            }
+            if (this.display_hindi.isEmpty()) {
+                this.display_hindi = this.display;
+            }
+
             this.language = jsonNode.optString("language");
             if (this.language.isEmpty()) {
                 this.language = this.text;
@@ -402,6 +412,21 @@ public class Node implements Serializable {
                 if (display_cebuno != null && !display_cebuno.isEmpty()) {
                     //Log.i(TAG, "findDisplay: cb ");
                     return display_cebuno;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+            }
+            case "hi": {
+                //Log.i(TAG, "findDisplay: cb");
+                if (display_hindi != null && !display_hindi.isEmpty()) {
+                    //Log.i(TAG, "findDisplay: cb ");
+                    return display_hindi;
                 } else {
                     if (display == null || display.isEmpty()) {
                         //Log.i(TAG, "findDisplay: eng/o txt");

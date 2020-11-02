@@ -39,11 +39,11 @@ import java.util.Locale;
 
 import app.intelehealth.client.R;
 import app.intelehealth.client.activities.appCompatPreferenceActivity.AppCompatPreferenceActivity;
+import app.intelehealth.client.activities.homeActivity.HomeActivity;
 import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.utilities.AdminPassword;
 import app.intelehealth.client.utilities.SessionManager;
 
-import app.intelehealth.client.activities.homeActivity.HomeActivity;
 
 public class SettingsActivity extends AppCompatPreferenceActivity {
     private static boolean admin_password = false;
