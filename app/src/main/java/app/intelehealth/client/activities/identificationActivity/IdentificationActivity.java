@@ -419,14 +419,19 @@ public class IdentificationActivity extends AppCompatActivity {
         Log.d("Health_scheme", "Scheme: " + patient1.getHealth_scheme());
         if (patient1.getHealth_scheme() != null && !patient1.getHealth_scheme().isEmpty()) {
 
-            if (patient1.getHealth_scheme().equalsIgnoreCase("Mukhyamantri Amrutam scheme")) {
+            if (patient1.getHealth_scheme().equalsIgnoreCase("Mukhyamantri Amrutam scheme") ||
+                    patient1.getHealth_scheme().equalsIgnoreCase("मुख्यमंत्री अमृतम स्कीम")) {
                 ma_checkbox.setChecked(true);
-            } else if (patient1.getHealth_scheme().equalsIgnoreCase("Ayushman Bharat Card")) {
+            } else if (patient1.getHealth_scheme().equalsIgnoreCase("Ayushman Bharat Card") ||
+                    patient1.getHealth_scheme().equalsIgnoreCase("आयुष्मान भारत कार्ड")) {
                 ab_checkbox.setChecked(true);
-            } else if (patient1.getHealth_scheme().equalsIgnoreCase("None of the above")) {
+            } else if (patient1.getHealth_scheme().equalsIgnoreCase("None of the above") ||
+                    patient1.getHealth_scheme().equalsIgnoreCase("कोई भी नही")) {
                 none_checkbox.setChecked(true);
             } else if (patient1.getHealth_scheme().equalsIgnoreCase
-                    ("Mukhyamantri Amrutam scheme, " + "Ayushman Bharat Card")) {
+                    ("Mukhyamantri Amrutam scheme, " + "Ayushman Bharat Card") ||
+                    patient1.getHealth_scheme().equalsIgnoreCase
+                            ("मुख्यमंत्री अमृतम स्कीम, " + "आयुष्मान भारत कार्ड")) {
                 ma_checkbox.setChecked(true);
                 ab_checkbox.setChecked(true);
             }
@@ -2266,6 +2271,22 @@ public class IdentificationActivity extends AppCompatActivity {
         } else if (ma_checkbox.isChecked() && ab_checkbox.isChecked()) {
             html_health = ma_checkbox.getText() + ", " + ab_checkbox.getText();
             result_selection = "option_4";
+        }
+
+        switch (html_health) {
+            case "मुख्यमंत्री अमृतम स्कीम":
+                html_health = "Mukhyamantri Amrutam scheme";
+                break;
+            case "आयुष्मान भारत कार्ड":
+                html_health = "Ayushman Bharat Card";
+                break;
+            case "कोई भी नही":
+                html_health = "None of the above";
+                break;
+            case "मुख्यमंत्री अमृतम स्कीम, आयुष्मान भारत कार्ड":
+                html_health = "Mukhyamantri Amrutam scheme, Ayushman Bharat Card";
+                break;
+
         }
 
         return html_health;

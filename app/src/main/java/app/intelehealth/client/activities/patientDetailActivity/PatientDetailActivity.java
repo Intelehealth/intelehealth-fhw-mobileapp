@@ -540,7 +540,28 @@ public class PatientDetailActivity extends AppCompatActivity {
         education_statusView.setText(patient_new.getEducation_level());
         economic_statusView.setText(patient_new.getEconomic_status());
         casteView.setText(patient_new.getCaste());
-        healthSchemeView.setText(patient_new.getHealth_scheme());
+
+//        String c = getResources().getConfiguration().locale.getLanguage();
+        if(getResources().getConfiguration().locale.getLanguage().equalsIgnoreCase("hi")) {
+            switch (patient_new.getHealth_scheme()) {
+                case "Mukhyamantri Amrutam scheme":
+                    healthSchemeView.setText("मुख्यमंत्री अमृतम स्कीम");
+                    break;
+                case "Ayushman Bharat Card":
+                    healthSchemeView.setText("आयुष्मान भारत कार्ड");
+                    break;
+                case "None of the above":
+                    healthSchemeView.setText("कोई भी नही");
+                    break;
+                case "Mukhyamantri Amrutam scheme, Ayushman Bharat Card":
+                    healthSchemeView.setText("मुख्यमंत्री अमृतम स्कीम, आयुष्मान भारत कार्ड");
+                    break;
+            }
+        }
+        else {
+            healthSchemeView.setText(patient_new.getHealth_scheme());
+        }
+
 
 //
         if (patient_new.getSdw() != null && !patient_new.getSdw().equals("")) {

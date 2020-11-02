@@ -110,6 +110,9 @@
     <string name="identification_screen_text_months" translatable="false"> महीने</string>
     <string name="identification_screen_picker_years" translatable="false">वर्षों</string>
     <string name="identification_screen_picker_months" translatable="false">महीने</string>
+    <string name="mukhyamantri_amrutam_scheme">मुख्यमंत्री अमृतम स्कीम</string>
+    <string name="ayushman_bharat_card">आयुष्मान भारत कार्ड</string>
+    <string name="noneof_the_above">कोई भी नही</string>
 
     //Active Patients Screen
     <string name="title_activity_active_patient">आक्टिव विज़िट्स</string>
