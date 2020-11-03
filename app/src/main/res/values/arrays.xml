@@ -21,7 +21,7 @@
     </string-array>
 
     <string-array name="speciality_value_hindi">
-        <item>Select Specialization</item>
+        <item>स्पेशलाइज़ेशन चुनिए</item>
         <item>सामान्य चिकित्सक</item>
         <item>त्वचा विशेषज्ञ</item>
         <item>फ़िज़ियोथेरेपिस्ट</item>

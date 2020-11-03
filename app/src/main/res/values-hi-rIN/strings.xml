@@ -113,6 +113,7 @@
     <string name="mukhyamantri_amrutam_scheme">मुख्यमंत्री अमृतम स्कीम</string>
     <string name="ayushman_bharat_card">आयुष्मान भारत कार्ड</string>
     <string name="noneof_the_above">कोई भी नही</string>
+    <string name="please_select_option_hsc">हेल्त स्कीम कार्ड के लिए विकल्प चुनिए</string>
 
     //Active Patients Screen
     <string name="title_activity_active_patient">आक्टिव विज़िट्स</string>
@@ -630,16 +631,11 @@
     <string name="view_print">देखें / प्रिंट करें</string>
     <string name="please_enter_village">प्लीज़ एंटर विलेज/टाउन/सिटी</string>
     <string name="please_select_state">प्लीज़ सेलेक्ट स्टेट</string>
-    <string name="health_scheme_card">हेल्त स्कीम कार्ड</string>
+    <string name="health_scheme_card">हेल्त स्कीम कार्ड*</string>
     <string name="select_health_card">प्लीज़ सेलेक्ट थे ऑप्षन फॉर हेल्त स्कीम कार्ड</string>
     <string name="please_select_country">प्लीज़ सेलेक्ट कंट्री</string>
     <string name="select_specialization">प्लीज़ सेलेक्ट स्पेशलाइज़ेशन</string>
-    <string name="mukhyamantri_amrutam_scheme">मुख्यमंत्री अमृतम स्कीम</string>
-    <string name="ayushman_bharat_card">आयुष्मान भारत कार्ड</string>
-    <string name="noneof_the_above">नन ऑफ थे अबव</string>
-
-
-
+    <string name="health_scheme_card_dialog">हेल्त स्कीम कार्ड</string>
 
 </resources>
 

@@ -504,5 +504,6 @@
     <string name="please_enter_mobile_no">Please enter a mobile number</string>
     <string name="download_presc_before_sharing">Download prescription first before sharing</string>
     <string name="please_select_specialization">Please select specialization</string>
+    <string name="health_scheme_card_dialog">Health Scheme Card</string>
 
 </resources>

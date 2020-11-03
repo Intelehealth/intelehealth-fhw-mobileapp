@@ -664,16 +664,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 case "General Physician":
                     special_value = "सामान्य चिकित्सक";
                     break;
-                case "Skin Speciality":
+                case "Dermatologist":
                     special_value = "त्वचा विशेषज्ञ";
                     break;
                 case "Physiotherapist":
                     special_value = "फ़िज़ियोथेरेपिस्ट";
                     break;
-                case "Dentist":
+                case "Gynecologist":
                     special_value = "प्रसूतिशास्री";
                     break;
-                case "Child Specialist":
+                case "Pediatrician":
                     special_value = "बच्चों का चिकित्सक";
                     break;
             }
@@ -699,16 +699,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             speciality_selected = "General Physician";
                             break;
                         case "त्वचा विशेषज्ञ":
-                            speciality_selected = "Skin Speciality";
+                            speciality_selected = "Dermatologist";
                             break;
                         case "फ़िज़ियोथेरेपिस्ट":
                             speciality_selected = "Physiotherapist";
                             break;
                         case "प्रसूतिशास्री":
-                            speciality_selected = "Dentist";
+                            speciality_selected = "Gynecologist";
                             break;
                         case "बच्चों का चिकित्सक":
-                            speciality_selected = "Child Specialist";
+                            speciality_selected = "Pediatrician";
                             break;
                     }
 

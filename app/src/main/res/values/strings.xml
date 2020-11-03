@@ -649,7 +649,7 @@
     <string name="please_read_out_privacy_consent_first">Please read out the Privacy Consent first.</string>
     <string name="select_health_card">Please select the option for Health Scheme Card</string>
     <string name="select_specialization">Please select specialization</string>
-
+    <string name="health_scheme_card_dialog">Health Scheme Card</string>
 
 
 </resources>
