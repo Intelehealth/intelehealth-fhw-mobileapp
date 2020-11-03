@@ -474,10 +474,10 @@ public class SetupActivity extends AppCompatActivity {
                                                 }
                                             } else {
                                                 //invalid url || invalid url and key.
-                                                Toast.makeText(SetupActivity.this, "Enter valid License Url", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(SetupActivity.this, R.string.enter_valid_license_url, Toast.LENGTH_SHORT).show();
                                             }
                                         } else {
-                                            Toast.makeText(SetupActivity.this, "Please enter URL and Key", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(SetupActivity.this, R.string.please_enter_url_and_key, Toast.LENGTH_SHORT).show();
                                         }
 
                                     }
