@@ -953,9 +953,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     t.setTextColor(Color.RED);
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(VisitSummaryActivity.this)
-                            .setMessage("Please select specialization")
+                            .setMessage(R.string.select_specialization)
                             .setCancelable(false)
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     dialogInterface.dismiss();
