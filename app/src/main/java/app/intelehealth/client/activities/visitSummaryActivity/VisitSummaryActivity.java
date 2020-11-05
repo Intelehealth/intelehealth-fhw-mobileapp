@@ -358,14 +358,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 startActivity(i);
                 return true;
             }
-            case R.id.summary_print: {
-                try {
-                    doWebViewPrint_Button();
-                } catch (ParseException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                }
-                return true;
-            }
+//            case R.id.summary_print: {
+//                try {
+//                    doWebViewPrint_Button();
+//                } catch (ParseException e) {
+//                    FirebaseCrashlytics.getInstance().recordException(e);
+//                }
+//                return true;
+//            }
             case R.id.summary_sms: {
                 //     VisitSummaryActivityPermissionsDispatcher.sendSMSWithCheck(this);
                 return true;
