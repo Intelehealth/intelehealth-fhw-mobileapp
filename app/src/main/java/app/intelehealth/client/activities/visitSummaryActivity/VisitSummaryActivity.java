@@ -120,7 +120,9 @@ import app.intelehealth.client.syncModule.SyncUtils;
 import app.intelehealth.client.utilities.DateAndTimeUtils;
 import app.intelehealth.client.utilities.FileUtils;
 import app.intelehealth.client.utilities.Logger;
+
 import android.print.PdfPrint;
+
 import app.intelehealth.client.utilities.SessionManager;
 import app.intelehealth.client.utilities.UuidDictionary;
 
@@ -517,8 +519,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(hasPrescription.equalsIgnoreCase("true"))
-                {
+                if (hasPrescription.equalsIgnoreCase("true")) {
                     try {
                         doWebViewPrint();
                     } catch (ParseException e) {
@@ -547,8 +548,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
 
-                                    if(!editText.getText().toString().equalsIgnoreCase(""))
-                                    {
+                                    if (!editText.getText().toString().equalsIgnoreCase("")) {
                                         String phoneNumber = "+91" + editText.getText().toString();
                                        /* String message =
                                                 "Share pdf from this path: Internal" +
@@ -564,9 +564,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                                         isreturningWhatsapp = true;
 
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         Toast.makeText(context, R.string.please_enter_mobile_no,
                                                 Toast.LENGTH_SHORT).show();
 
@@ -579,9 +577,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
                     //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                     IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
-                }
-                else
-                {
+                } else {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
                     alertDialog.setMessage(R.string.download_presc_before_sharing);
                     alertDialog.setPositiveButton("ok",
@@ -619,7 +615,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //if row is present i.e. if true is returned by the function then the spinner will be disabled.
         Log.d("visitUUID", "onCreate_uuid: " + visitUuid);
         isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
-        if(isVisitSpecialityExists)
+        if (isVisitSpecialityExists)
             speciality_spinner.setEnabled(false);
 
 
@@ -627,23 +623,20 @@ public class VisitSummaryActivity extends AppCompatActivity {
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
         VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
 
-        List<String> items  = providerAttributeLIstDAO.getAllValues();
-        Log.d("specc", "spec: "+ visitUuid);
+        List<String> items = providerAttributeLIstDAO.getAllValues();
+        Log.d("specc", "spec: " + visitUuid);
         String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid);
         //Hashmap to List<String> add all value
         ArrayAdapter<String> stringArrayAdapter;
 
-        if(items != null)
-        {
+        if (items != null) {
             items.add(0, "Select Specialization");
-             stringArrayAdapter =
+            stringArrayAdapter =
                     new ArrayAdapter<String>
                             (this, android.R.layout.simple_spinner_dropdown_item, items);
             speciality_spinner.setAdapter(stringArrayAdapter);
-        }
-        else
-        {
-             stringArrayAdapter =
+        } else {
+            stringArrayAdapter =
                     new ArrayAdapter<String>
                             (this, android.R.layout.simple_spinner_dropdown_item,
                                     getResources().getStringArray(R.array.speciality_values));
@@ -651,29 +644,24 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
 
-
-
-        if(special_value != null)
-        {
+        if (special_value != null) {
             int spinner_position = stringArrayAdapter.getPosition(special_value);
             speciality_spinner.setSelection(spinner_position);
-        }
-        else
-        {
+        } else {
 
         }
 
         speciality_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d("SPINNER", "SPINNER_Selected: "+ adapterView.getItemAtPosition(i).toString());
+                Log.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
 
                 speciality_selected = adapterView.getItemAtPosition(i).toString();
-                Log.d("SPINNER", "SPINNER_Selected_final: "+ speciality_selected);
+                Log.d("SPINNER", "SPINNER_Selected_final: " + speciality_selected);
             }
 
             @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
         });
@@ -795,9 +783,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                     }
 
-                    Log.d("visitUUID", "upload_click: "+visitUUID);
+                    Log.d("visitUUID", "upload_click: " + visitUUID);
                     isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
-                    if(isVisitSpecialityExists)
+                    if (isVisitSpecialityExists)
                         speciality_spinner.setEnabled(false);
 
 
@@ -879,9 +867,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload), getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity.this);
                                     //
                                     showVisitID();
-                                    Log.d("visitUUID", "showVisitID: "+visitUUID);
+                                    Log.d("visitUUID", "showVisitID: " + visitUUID);
                                     isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
-                                    if(isVisitSpecialityExists)
+                                    if (isVisitSpecialityExists)
                                         speciality_spinner.setEnabled(false);
                                 } else {
                                     AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
@@ -895,9 +883,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     } else {
                         AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
                     }
-                }
-                else
-                {
+                } else {
                     TextView t = (TextView) speciality_spinner.getSelectedView();
                     t.setError(getString(R.string.please_select_specialization));
                     t.setTextColor(Color.RED);
@@ -962,13 +948,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 tempcel.setVisibility(View.VISIBLE);
                 tempfaren.setVisibility(View.GONE);
                 tempView.setText(temperature.getValue());
-                Log.d("temp","temp_C: "+temperature.getValue());
+                Log.d("temp", "temp_C: " + temperature.getValue());
             } else if (obj.getBoolean("mFahrenheit")) {
                 tempfaren.setVisibility(View.VISIBLE);
                 tempcel.setVisibility(View.GONE);
                 if (temperature.getValue() != null && !temperature.getValue().isEmpty()) {
                     tempView.setText(convertCtoF(temperature.getValue()));
-                    Log.d("temp","temp_F: "+tempView.getText().toString());
+                    Log.d("temp", "temp_F: " + tempView.getText().toString());
                 }
             }
         } catch (JSONException e) {
@@ -1517,10 +1503,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=?",
                 new String[]{uuid});
 
-        if(cursor.getCount() != 0)
-        {
-            while(cursor.moveToNext())
-            {
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
                 isExists = true;
             }
         }
@@ -2033,7 +2017,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
     //print button end
 
 
-
     private void doWebViewPrint() throws ParseException {
         // Create a WebView object specifically for printing
         WebView webView = new WebView(this);
@@ -2434,8 +2417,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 //            PrintJob printJob = printManager.print(jobName, printAdapter,
 //                    pBuilder.build());
-        }
-        else if (contentHeight == 0) {
+        } else if (contentHeight == 0) {
             //in case of webview bug of 0 contents...
             PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
             pBuilder.setMediaSize(PrintAttributes.MediaSize.JIS_B4);
@@ -2500,8 +2482,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 //            PrintJob printJob = printManager.print(jobName, printAdapter,
 //                    pBuilder.build());
-        }
-        else if (contentHeight > 3000) {
+        } else if (contentHeight > 3000) {
             //large size prescription...
             PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
             pBuilder.setMediaSize(PrintAttributes.MediaSize.JIS_B4);
@@ -2665,7 +2646,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
             String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
-            String fileName = patientName + "_" + showVisitID() +".pdf";
+            String fileName = patientName + "_" + showVisitID() + ".pdf";
             File dir = new File(path);
             if (!dir.exists())
                 dir.mkdirs();
@@ -2692,11 +2673,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             }
 
                         });
-            }
-            else
-            {
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-                {
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     //to write to a pdf file...
                     pdfPrint.print(printAdapter, dir,
                             fileName, new PdfPrint.CallbackPrint() {
@@ -2716,8 +2694,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 //            PrintJob printJob = printManager.print(jobName, printAdapter,
 //                    pBuilder.build());
-        }
-        else if (contentHeight == 0) {
+        } else if (contentHeight == 0) {
             //in case of webview bug of 0 contents...
             PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
             pBuilder.setMediaSize(PrintAttributes.MediaSize.JIS_B4);
@@ -2729,7 +2706,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
             String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
-            String fileName = patientName + "_" + showVisitID() +".pdf";
+            String fileName = patientName + "_" + showVisitID() + ".pdf";
             File dir = new File(path);
             if (!dir.exists())
                 dir.mkdirs();
@@ -2756,11 +2733,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             }
 
                         });
-            }
-            else
-            {
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-                {
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     //to write to a pdf file...
                     pdfPrint.print(printAdapter, dir,
                             fileName, new PdfPrint.CallbackPrint() {
@@ -2780,8 +2754,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 //            PrintJob printJob = printManager.print(jobName, printAdapter,
 //                    pBuilder.build());
-        }
-        else if (contentHeight > 3000) {
+        } else if (contentHeight > 3000) {
             //large size prescription...
             PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
             pBuilder.setMediaSize(PrintAttributes.MediaSize.JIS_B4);
@@ -2793,7 +2766,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
             String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
-            String fileName = patientName + "_" + showVisitID() +".pdf";
+            String fileName = patientName + "_" + showVisitID() + ".pdf";
             File dir = new File(path);
             if (!dir.exists())
                 dir.mkdirs();
@@ -2820,11 +2793,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             }
 
                         });
-            }
-            else
-            {
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-                {
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     //to write to a pdf file...
                     pdfPrint.print(printAdapter, dir,
                             fileName, new PdfPrint.CallbackPrint() {
@@ -2857,7 +2827,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
             String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
-            String fileName = patientName + "_" + showVisitID() +".pdf";
+            String fileName = patientName + "_" + showVisitID() + ".pdf";
             File dir = new File(path);
             if (!dir.exists())
                 dir.mkdirs();
@@ -2874,23 +2844,20 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 //to write to a pdf file...
                 pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir,
-                                fileName, new PdfPrint.CallbackPrint() {
+                        fileName, new PdfPrint.CallbackPrint() {
                             @Override
                             public void success(String path) {
 
                             }
 
-                                    @Override
-                                    public void onFailure() {
+                            @Override
+                            public void onFailure() {
 
-                                    }
+                            }
 
                         });
-            }
-            else
-            {
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-                {
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     //to write to a pdf file...
                     pdfPrint.print(printAdapter, dir,
                             fileName, new PdfPrint.CallbackPrint() {
@@ -3434,8 +3401,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
         //logic code for handling the whatsapp prescription part...
-        if(isreturningWhatsapp)
-        {
+        if (isreturningWhatsapp) {
             String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
             File dir = new File(path);
             deleteRecursive(dir);
@@ -3649,7 +3615,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 //checks if prescription is downloaded and if so then sets the icon color.
                 if (hasPrescription.equalsIgnoreCase("true")) {
-                    ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green)); }
+                    ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
+                }
 
 
                 if (uploaded) {
