@@ -36,6 +36,7 @@
     <string-array name="countries">
         <item>Select Country</item>
         <item>India</item>
+        <item>Kyrgyzstan</item>
         <item>United States</item>
         <item>Philippines</item>
     </string-array>
@@ -155,6 +156,18 @@
 
     </string-array>
 
+    <string-array name="region_kr">
+        <item>Select Region</item>
+        <item>Bishkek</item>
+        <item>Jalalbad</item>
+        <item>Chuy</item>
+        <item>Batken</item>
+        <item>Naryn</item>
+        <item>Osh</item>
+        <item>Talas</item>
+        <item>Osh city</item>
+        <item>Issykul</item>
+    </string-array>
 
     <string-array name="states_us">
         <item>Select State</item>

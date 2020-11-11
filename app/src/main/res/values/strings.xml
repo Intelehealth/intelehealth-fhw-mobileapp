@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">MyTeleDoc</string>
+    <string name="app_name" translatable="false">Intelehealth</string>
 
     //Generic
     <string name="generic_the_flipping_word_next" translatable="false">Next</string>
@@ -39,7 +39,7 @@
     <string name="db_patient_id3" translatable="false">patient_identifier3</string>
 
     //Login Screen
-    <string name="title_activity_login" translatable="false">MyTeleDoc</string>
+    <string name="title_activity_login" translatable="false">Intelehealth</string>
     <string name="prompt_email" translatable="false">Username</string>
     <string name="prompt_password" translatable="false">Password</string>
     <string name="prompt_admin_password" translatable="false">Admin Password</string>
@@ -90,7 +90,7 @@
     <string name="identification_screen_prompt_birthday">Date of birth*</string>
     <string name="identification_screen_prompt_age">Age:</string>
     <string name="identification_screen_prompt_city">Village/Town/City *</string>
-    <string name="identification_screen_prompt_state">State *</string>
+    <string name="identification_screen_prompt_state">Region *</string>
     <string name="identification_screen_prompt_caste" translatable="false">Caste</string>
     <string name="identification_screen_prompt_economic_status" translatable="false">Economic status</string>
     <string name="identification_screen_prompt_education" translatable="false">Education level</string>
@@ -586,8 +586,8 @@
     <string name="i_need_assistance">" and I need some assistance."</string>
     <string name="economic_values_missing">Economic values are missing</string>
     <string name="education_values_missing">Education values are missing</string>
-    <string name="intelehealth_a_telemedicine_platform">MyTeleDoc is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
-    <string name="intelehealth_name">MyTeleDoc</string>
+    <string name="intelehealth_a_telemedicine_platform">Intelehealth is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
+    <string name="intelehealth_name">Intelehealth</string>
     <string name="Ayu_name">Ayu</string>
     <string name="close_button">Close</string>
     <string name="active_tag_patientDetail">" Active"</string>
@@ -623,7 +623,7 @@
     <string name="ayushman_bharat_card">Ayushman Bharat Card</string>
     <string name="noneof_the_above">None of the above</string>
     <string name="health_scheme_title">Health Scheme</string>
-    <string name="i_health_worker_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I (Community Health Officer) confirm that I have read out the privacy notice and consent to the patient.</string>
+    <string name="i_health_worker_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I (Health Worker) confirm that I have read out the privacy notice and consent to the patient.</string>
     <string name="fever">fever</string>
     <string name="speciality">Speciality</string>
     <string name="view_print">View/Print</string>
@@ -631,7 +631,7 @@
     <string name="current_date_must_be">Current Date must be greater than Date of Birth</string>
     <string name="please_enter_DOB">Please enter Date Of Birth</string>
     <string name="please_select_country">Please select Country</string>
-    <string name="please_select_state">Please select State</string>
+    <string name="please_select_state">Please select Region</string>
     <string name="please_enter_village">Please enter Village/Town/City</string>
     <string name="please_select_option_hsc">Please select the option for Health Scheme Card</string>
     <string name="please_read_out_consent">Please read out the Privacy Consent first.</string>
