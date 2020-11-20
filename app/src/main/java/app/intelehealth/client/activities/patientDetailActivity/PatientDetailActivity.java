@@ -574,8 +574,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 }
                 encounterCursor.close();
             }
-            familyHistory(famHistView, patientUuid);
-            pastMedicalHistory(medHistView, patientUuid);
+            familyHistory(famHistView, patientUuid, encounterAdultIntials);
+            pastMedicalHistory(medHistView, patientUuid, encounterAdultIntials);
             pastVisits(patientUuid);
 
 
@@ -811,7 +811,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
     }
 
-    public void familyHistory(TextView famHistView, String patientuuid) {
+    public void familyHistory(TextView famHistView, String patientuuid,
+                              String EncounterAdultInitials_LatestVisit) {
         //String visitSelection = "patientuuid = ? AND enddate IS NULL OR enddate = ''";
         String visitSelection = "patientuuid = ?";
         String[] visitArgs = {patientuuid};
@@ -853,7 +854,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                         encounterCursor.close();
                     }
                     String famHistSelection = "encounteruuid = ? AND conceptuuid = ? And voided!='1'";
-                    String[] famHistArgs = {encounterlocalAdultintial, UuidDictionary.RHK_FAMILY_HISTORY_BLURB};
+                    String[] famHistArgs = {EncounterAdultInitials_LatestVisit, UuidDictionary.RHK_FAMILY_HISTORY_BLURB};
                     String[] famHistColumns = {"value", " conceptuuid"};
                     Cursor famHistCursor = db.query("tbl_obs", famHistColumns, famHistSelection, famHistArgs, null, null, null);
                     famHistCursor.moveToLast();
@@ -880,7 +881,8 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     }
 
-    public void pastMedicalHistory(TextView medHistView, String patientuuid) {
+    public void pastMedicalHistory(TextView medHistView, String patientuuid,
+                                   String EncounterAdultInitials_LatestVisit) {
         //String visitSelection = "patientuuid = ? AND enddate IS NULL OR enddate = ''";
         String visitSelection = "patientuuid = ?";
         String[] visitArgs = {patientuuid};
@@ -922,7 +924,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                         encounterCursor.close();
                     }
                     String medHistSelection = "encounteruuid = ? AND conceptuuid = ? And voided!='1'";
-                    String[] medHistArgs = {encounterlocalAdultintial, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
+                    String[] medHistArgs = {EncounterAdultInitials_LatestVisit, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
                     String[] medHistColumms = {"value", " conceptuuid"};
                     Cursor medHistCursor = db.query("tbl_obs", medHistColumms, medHistSelection, medHistArgs, null, null, null);
                     medHistCursor.moveToLast();
