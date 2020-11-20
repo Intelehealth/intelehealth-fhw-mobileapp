@@ -280,6 +280,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 intent2.putExtra("visitUuid", uuid);
                 intent2.putExtra("encounterUuidVitals", encounterDTO.getUuid());
                 intent2.putExtra("encounterUuidAdultIntial", "");
+                intent2.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
                 intent2.putExtra("name", fullName);
                 intent2.putExtra("tag", "new");
                 startActivity(intent2);

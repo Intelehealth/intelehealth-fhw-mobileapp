@@ -95,7 +95,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
     SessionManager sessionManager = null;
     private String encounterVitals;
-    private String encounterAdultIntials;
+    private String encounterAdultIntials, EncounterAdultInitial_LatestVisit;
     RecyclerView pastMedical_recyclerView;
     QuestionsAdapter adapter;
     ScrollingPagerIndicator recyclerViewIndicator;
@@ -129,7 +129,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                     String[] columns = {"value", " conceptuuid"};
                     try {
                         String medHistSelection = "encounteruuid = ? AND conceptuuid = ? AND voided!='1'";
-                        String[] medHistArgs = {encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
+                        String[] medHistArgs = {EncounterAdultInitial_LatestVisit, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
                         Cursor medHistCursor = localdb.query("tbl_obs", columns, medHistSelection, medHistArgs, null, null, null);
                         medHistCursor.moveToLast();
                         phistory = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
@@ -149,6 +149,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                     intent.putExtra("visitUuid", visitUuid);
                     intent.putExtra("encounterUuidVitals", encounterVitals);
                     intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                    intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
@@ -170,6 +171,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             visitUuid = intent.getStringExtra("visitUuid");
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
+            EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
@@ -308,6 +310,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             intent.putExtra("visitUuid", visitUuid);
             intent.putExtra("encounterUuidVitals", encounterVitals);
             intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+            intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
             intent.putExtra("tag", intentTag);
@@ -336,6 +339,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             intent.putExtra("visitUuid", visitUuid);
             intent.putExtra("encounterUuidVitals", encounterVitals);
             intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+            intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
             intent.putExtra("tag", intentTag);

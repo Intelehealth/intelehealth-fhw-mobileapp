@@ -70,7 +70,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
    // CustomArrayAdapter listAdapter;
    ComplaintNodeListAdapter listAdapter;
     String encounterVitals;
-    String encounterAdultIntials;
+    String encounterAdultIntials, EncounterAdultInitial_LatestVisit;
     EncounterDTO encounterDTO;
     SessionManager sessionManager = null;
     ImageView img_question;
@@ -86,6 +86,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             visitUuid = intent.getStringExtra("visitUuid");
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
+            EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
@@ -279,6 +280,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                         intent.putExtra("visitUuid", visitUuid);
                         intent.putExtra("encounterUuidVitals", encounterVitals);
                         intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                        intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                         intent.putExtra("state", state);
                         intent.putExtra("name", patientName);
                         if (intentTag != null) {

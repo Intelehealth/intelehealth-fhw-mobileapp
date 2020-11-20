@@ -84,7 +84,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
     SQLiteDatabase localdb;
     SessionManager sessionManager;
     String encounterVitals;
-    String encounterAdultIntials;
+    String encounterAdultIntials, EncounterAdultInitial_LatestVisit;
     private String imageName = null;
     private File filePath;
     ScrollingPagerIndicator recyclerViewIndicator;
@@ -120,7 +120,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
                     try {
                         String famHistSelection = "encounteruuid = ? AND conceptuuid = ? AND voided!='1'";
-                        String[] famHistArgs = {encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB};
+                        String[] famHistArgs = {EncounterAdultInitial_LatestVisit, UuidDictionary.RHK_FAMILY_HISTORY_BLURB};
                         Cursor famHistCursor = localdb.query("tbl_obs", columns, famHistSelection, famHistArgs, null, null, null);
                         famHistCursor.moveToLast();
                         fhistory = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
@@ -138,6 +138,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                     intent.putExtra("visitUuid", visitUuid);
                     intent.putExtra("encounterUuidVitals", encounterVitals);
                     intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                    intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
@@ -159,6 +160,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             state = intent.getStringExtra("state");
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
+            EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
         }
@@ -298,6 +300,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             intent.putExtra("visitUuid", visitUuid);
             intent.putExtra("encounterUuidVitals", encounterVitals);
             intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+            intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
             intent.putExtra("tag", intentTag);
@@ -324,6 +327,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             intent.putExtra("visitUuid", visitUuid);
             intent.putExtra("encounterUuidVitals", encounterVitals);
             intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+            intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
             intent.putExtra("tag", intentTag);
