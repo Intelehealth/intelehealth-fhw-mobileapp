@@ -91,6 +91,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
     RecyclerView family_history_recyclerView;
     QuestionsAdapter adapter;
+    String edit_FamHist = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +99,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         filePath = new File(AppConstants.IMAGE_PATH);
         boolean past = sessionManager.isReturning();
-        if (past) {
+        if (past && edit_FamHist.equalsIgnoreCase("")) {
             MaterialAlertDialogBuilder alertdialog = new MaterialAlertDialogBuilder(this);
             //AlertDialog.Builder alertdialog = new AlertDialog.Builder(FamilyHistoryActivity.this,R.style.AlertDialogStyle);
             alertdialog.setTitle(getString(R.string.title_activity_family_history));
@@ -159,6 +160,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             visitUuid = intent.getStringExtra("visitUuid");
             state = intent.getStringExtra("state");
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
+            edit_FamHist = intent.getStringExtra("edit_PatHist");
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
             EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             patientName = intent.getStringExtra("name");

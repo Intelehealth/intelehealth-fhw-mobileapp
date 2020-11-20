@@ -879,6 +879,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("encounterUuidVitals", encounterVitals);
+                        intent1.putExtra("edit_FamHist", "edit_FamHist");
                      /*   if(EncounterAdultInitial_LatestVisit != null &&
                                 !EncounterAdultInitial_LatestVisit.isEmpty()) {
                             intent1.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
@@ -1185,6 +1186,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("encounterUuidVitals", encounterVitals);
+                        intent1.putExtra("edit_PatHist", "edit_PatHist");
 //                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                       /*  if(EncounterAdultInitial_LatestVisit != null &&
                                 !EncounterAdultInitial_LatestVisit.isEmpty()) {

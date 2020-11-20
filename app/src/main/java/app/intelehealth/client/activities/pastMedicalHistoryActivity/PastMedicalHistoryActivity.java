@@ -79,6 +79,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     SQLiteDatabase localdb;
 
     boolean hasLicense = false;
+    String edit_PatHist = "";
 
 //  String mFileName = "DemoHistory.json";
 
@@ -109,7 +110,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 //        e = sharedPreferences.edit();
 
         boolean past = sessionManager.isReturning();
-        if (past) {
+        if (past && edit_PatHist.equalsIgnoreCase("")) {
             MaterialAlertDialogBuilder alertdialog = new MaterialAlertDialogBuilder(this);
 
             //AlertDialog.Builder alertdialog = new AlertDialog.Builder(PastMedicalHistoryActivity.this,R.style.AlertDialogStyle);
@@ -170,6 +171,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
+            edit_PatHist = intent.getStringExtra("edit_PatHist");
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
             EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             state = intent.getStringExtra("state");
