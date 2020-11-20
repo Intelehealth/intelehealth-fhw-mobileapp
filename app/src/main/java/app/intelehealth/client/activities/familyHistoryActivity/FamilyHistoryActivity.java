@@ -147,6 +147,8 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                 }
             });
             Dialog alertDialog = alertdialog.show();
+            alertDialog.setCancelable(false);
+            alertDialog.setCanceledOnTouchOutside(false);
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
         }

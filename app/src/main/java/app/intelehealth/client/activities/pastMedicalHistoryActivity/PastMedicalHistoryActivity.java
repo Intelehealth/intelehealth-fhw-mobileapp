@@ -158,6 +158,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                 }
             });
             Dialog builderDialog = alertdialog.show();
+            builderDialog.setCancelable(false);
+            builderDialog.setCanceledOnTouchOutside(false);
             IntelehealthApplication.setAlertDialogCustomTheme(this, builderDialog);
 
         }
