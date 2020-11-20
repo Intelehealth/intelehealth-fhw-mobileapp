@@ -879,13 +879,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent1.putExtra("patientUuid", patientUuid);
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("encounterUuidVitals", encounterVitals);
-                        if(EncounterAdultInitial_LatestVisit != null &&
+                     /*   if(EncounterAdultInitial_LatestVisit != null &&
                                 !EncounterAdultInitial_LatestVisit.isEmpty()) {
                             intent1.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                         }
                         else {
                             intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-                        }
+                        }*/
+                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("tag", "edit");
                         startActivity(intent1);
@@ -1185,13 +1186,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("encounterUuidVitals", encounterVitals);
 //                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-                        if(EncounterAdultInitial_LatestVisit != null &&
+                      /*  if(EncounterAdultInitial_LatestVisit != null &&
                                 !EncounterAdultInitial_LatestVisit.isEmpty()) {
                             intent1.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                         }
                         else {
                             intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-                        }
+                        }*/
+                        intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("tag", "edit");
                         startActivity(intent1);
