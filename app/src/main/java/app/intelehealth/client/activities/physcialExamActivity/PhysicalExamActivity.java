@@ -100,7 +100,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
     String physicalString;
     Boolean complaintConfirmed = false;
     String encounterVitals;
-    String encounterAdultIntials;
+    String encounterAdultIntials, EncounterAdultInitial_LatestVisit;
     SessionManager sessionManager;
     RecyclerView physExam_recyclerView;
     QuestionsAdapter adapter;
@@ -140,6 +140,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             visitUuid = intent.getStringExtra("visitUuid");
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
+            EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
@@ -290,6 +291,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 intent.putExtra("visitUuid", visitUuid);
                 intent.putExtra("encounterUuidVitals", encounterVitals);
                 intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                 intent.putExtra("state", state);
                 intent.putExtra("name", patientName);
                 intent.putExtra("tag", intentTag);
@@ -307,6 +309,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 intent1.putExtra("visitUuid", visitUuid);
                 intent1.putExtra("encounterUuidVitals", encounterVitals);
                 intent1.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                intent1.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                 intent1.putExtra("state", state);
                 intent1.putExtra("name", patientName);
                 intent1.putExtra("tag", intentTag);

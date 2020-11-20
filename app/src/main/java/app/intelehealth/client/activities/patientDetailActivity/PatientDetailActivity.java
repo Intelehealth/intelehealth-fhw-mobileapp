@@ -759,6 +759,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 visitSummary.putExtra("patientUuid", patientUuid);
                 visitSummary.putExtra("encounterUuidVitals", encounterVitalslocal);
                 visitSummary.putExtra("encounterUuidAdultIntial", encounterAdultIntialslocal);
+                visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
                 visitSummary.putExtra("name", patientName);
                 visitSummary.putExtra("tag", intentTag);
                 visitSummary.putExtra("pastVisit", past_visit);
