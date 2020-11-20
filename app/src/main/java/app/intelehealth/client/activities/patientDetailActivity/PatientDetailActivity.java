@@ -217,8 +217,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 sessionManager.setReturning(returning);
 
                 String[] cols = {"value"};
-                Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for PMH
-                        new String[]{encounterDTO.getUuid(), UuidDictionary.RHK_MEDICAL_HISTORY_BLURB},
+                Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for PMH (Past Medical History)
+                        new String[]{encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB},
                         null, null, null);
 
                 if (cursor.moveToFirst()) {
@@ -234,8 +234,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 }
                 cursor.close();
 
-                Cursor cursor1 = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for FH
-                        new String[]{encounterDTO.getUuid(), UuidDictionary.RHK_MEDICAL_HISTORY_BLURB},
+                Cursor cursor1 = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for FH (Family History)
+                        new String[]{encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB},
                         null, null, null);
                 if (cursor1.moveToFirst()) {
                     // rows present
@@ -812,7 +812,8 @@ public class PatientDetailActivity extends AppCompatActivity {
     }
 
     public void familyHistory(TextView famHistView, String patientuuid) {
-        String visitSelection = "patientuuid = ? AND enddate IS NULL OR enddate = ''";
+        //String visitSelection = "patientuuid = ? AND enddate IS NULL OR enddate = ''";
+        String visitSelection = "patientuuid = ?";
         String[] visitArgs = {patientuuid};
         String[] visitColumns = {"uuid, startdate", "enddate"};
         String visitOrderBy = "startdate";
@@ -880,7 +881,8 @@ public class PatientDetailActivity extends AppCompatActivity {
     }
 
     public void pastMedicalHistory(TextView medHistView, String patientuuid) {
-        String visitSelection = "patientuuid = ? AND enddate IS NULL OR enddate = ''";
+        //String visitSelection = "patientuuid = ? AND enddate IS NULL OR enddate = ''";
+        String visitSelection = "patientuuid = ?";
         String[] visitArgs = {patientuuid};
         String[] visitColumns = {"uuid, startdate", "enddate"};
         String visitOrderBy = "startdate";
@@ -936,6 +938,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                         medHistCursor.close();
                     }
 
+                    Log.v(TAG, medHistValue);
                     if (medHistValue != null && !medHistValue.equals("")) {
                         medHistView.setText(Html.fromHtml(medHistValue));
                     } else {
