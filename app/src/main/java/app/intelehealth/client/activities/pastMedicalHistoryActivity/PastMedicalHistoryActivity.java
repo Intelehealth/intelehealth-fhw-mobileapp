@@ -124,7 +124,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
 
-            new_result = getPastMedicalVisitData();
+            if(edit_PatHist == null)
+                new_result = getPastMedicalVisitData();
         }
 
         boolean past = sessionManager.isReturning();
@@ -509,7 +510,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
     }
 
-    public String getPastMedicalVisitData() {
+    private String getPastMedicalVisitData() {
         String result = "";
 
         db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
@@ -527,37 +528,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             result = ""; // if medical history does not exist
         }
 
-/*
-        try {
-            String medHistSelection = "encounteruuid = ? AND conceptuuid = ?";
-
-            String[] medHistArgs = {EncounterAdultInitial_LatestVisit, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
-
-            Cursor medHistCursor = db.query("tbl_obs", columns, medHistSelection, medHistArgs, null, null, null);
-           medHistCursor.moveToLast();
-            result = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
-//            patHistory.setValue(medHistText);
-          //  result = medHistText;
-
-            if (result != null && !result.isEmpty()) {
-
-//                medHistory = patHistory.getValue();
-                result = result.replace("\"", "");
-                result = result.replace("\n", "");
-                do {
-                    result = result.replace("  ", "");
-                } while (result.contains("  "));
-            }
-            else
-                result = "";
-            medHistCursor.close();
-        } catch (CursorIndexOutOfBoundsException e) {
-           // patHistory.setValue(""); // if medical history does not exist
-            result = "";
-        }
-*/
-
-//        db.setTransactionSuccessful();
         db.close();
 
         return result;
