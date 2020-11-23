@@ -8,12 +8,14 @@ import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -31,6 +33,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
 import android.widget.TextView;
 
 
@@ -122,7 +125,16 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         boolean past = sessionManager.isReturning();
         if (past && edit_FamHist == null) {
             MaterialAlertDialogBuilder alertdialog = new MaterialAlertDialogBuilder(this);
+            alertdialog.setTitle(getString(R.string.question_update_details));
             //AlertDialog.Builder alertdialog = new AlertDialog.Builder(FamilyHistoryActivity.this,R.style.AlertDialogStyle);
+//            TextView textViewTitle = new TextView(this);
+//            textViewTitle.setText(getString(R.string.question_update_details));
+//            textViewTitle.setTextColor(getResources().getColor((R.color.colorPrimary)));
+//            textViewTitle.setPadding(30,50,30,0);
+//            textViewTitle.setTextSize(16F);
+//            textViewTitle.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//            alertdialog.setCustomTitle(textViewTitle);
+
             View layoutInflater = LayoutInflater.from(FamilyHistoryActivity.this)
                     .inflate(R.layout.past_fam_hist_previous_details, null);
             alertdialog.setView(layoutInflater);
@@ -130,8 +142,8 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             Log.v(TAG, new_result);
             textView.setText(Html.fromHtml(new_result));
 
-            alertdialog.setTitle(getString(R.string.title_activity_family_history));
-            alertdialog.setMessage(getString(R.string.question_update_details));
+
+//            alertdialog.setMessage(getString(R.string.question_update_details));
             alertdialog.setPositiveButton(getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -176,7 +188,18 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
                 }
             });
-            Dialog alertDialog = alertdialog.show();
+
+            AlertDialog alertDialog = alertdialog.create();
+            alertDialog.show();
+
+            Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+            pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+            Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+            nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+            nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
             alertDialog.setCancelable(false);
             alertDialog.setCanceledOnTouchOutside(false);
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);

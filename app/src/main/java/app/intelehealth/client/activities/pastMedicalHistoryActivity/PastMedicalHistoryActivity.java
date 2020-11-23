@@ -1,5 +1,6 @@
 package app.intelehealth.client.activities.pastMedicalHistoryActivity;
 
+
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,12 +8,14 @@ import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -30,6 +33,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
 import android.widget.TextView;
 
 
@@ -131,7 +135,14 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         boolean past = sessionManager.isReturning();
         if (past && edit_PatHist == null) {
             MaterialAlertDialogBuilder alertdialog = new MaterialAlertDialogBuilder(this);
-
+            alertdialog.setTitle(getString(R.string.question_update_details));
+//            TextView textViewTitle = new TextView(this);
+//            textViewTitle.setText(getString(R.string.question_update_details));
+//            textViewTitle.setTextColor(getResources().getColor((R.color.colorPrimary)));
+//            textViewTitle.setPadding(30,50,30,0);
+//            textViewTitle.setTextSize(16F);
+//            textViewTitle.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//            alertdialog.setCustomTitle(textViewTitle);
             //AlertDialog.Builder alertdialog = new AlertDialog.Builder(PastMedicalHistoryActivity.this,R.style.AlertDialogStyle);
 
             View layoutInflater = LayoutInflater.from(PastMedicalHistoryActivity.this)
@@ -141,8 +152,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             Log.v(TAG, new_result);
             textView.setText(Html.fromHtml(new_result));
 
-            alertdialog.setTitle(getString(R.string.title_activity_patient_history));
-            alertdialog.setMessage(getString(R.string.question_update_details));
+
+//            alertdialog.setMessage(getString(R.string.question_update_details));
             alertdialog.setPositiveButton(getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -186,10 +197,20 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
                 }
             });
-            Dialog builderDialog = alertdialog.show();
-            builderDialog.setCancelable(false);
-            builderDialog.setCanceledOnTouchOutside(false);
-            IntelehealthApplication.setAlertDialogCustomTheme(this, builderDialog);
+            AlertDialog alertDialog = alertdialog.create();
+            alertDialog.show();
+
+            Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+            pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+            Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+            nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+            nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+            alertDialog.setCancelable(false);
+            alertDialog.setCanceledOnTouchOutside(false);
+            IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
         }
 
