@@ -20,7 +20,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Html;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
@@ -28,7 +30,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
-
+import android.widget.TextView;
 
 
 import org.json.JSONException;
@@ -76,7 +78,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     String imageName;
     File filePath;
 
-    SQLiteDatabase localdb;
+    SQLiteDatabase localdb, db;
 
     boolean hasLicense = false;
     String edit_PatHist = "";
@@ -100,6 +102,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     RecyclerView pastMedical_recyclerView;
     QuestionsAdapter adapter;
     ScrollingPagerIndicator recyclerViewIndicator;
+    String new_result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +117,14 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             MaterialAlertDialogBuilder alertdialog = new MaterialAlertDialogBuilder(this);
 
             //AlertDialog.Builder alertdialog = new AlertDialog.Builder(PastMedicalHistoryActivity.this,R.style.AlertDialogStyle);
+
+            View layoutInflater = LayoutInflater.from(PastMedicalHistoryActivity.this)
+                    .inflate(R.layout.past_fam_hist_previous_details, null);
+            alertdialog.setView(layoutInflater);
+            TextView textView = layoutInflater.findViewById(R.id.textview_details);
+            Log.v(TAG, new_result);
+            textView.setText(Html.fromHtml(new_result));
+
             alertdialog.setTitle(getString(R.string.title_activity_patient_history));
             alertdialog.setMessage(getString(R.string.question_update_details));
             alertdialog.setPositiveButton(getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
@@ -177,6 +188,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
+
+             new_result = getPastMedicalVisitData();
         }
 
 
@@ -492,6 +505,46 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             v.startAnimation(bottomUp);
         }
 
+    }
+
+    public String getPastMedicalVisitData() {
+        String result = "";
+
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        String[] columns = {"value"};
+
+        try {
+            String medHistSelection = "encounteruuid = ? AND conceptuuid = ?";
+
+            String[] medHistArgs = {EncounterAdultInitial_LatestVisit, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
+
+            Cursor medHistCursor = db.query("tbl_obs", columns, medHistSelection, medHistArgs, null, null, null);
+//            medHistCursor.moveToLast();
+            result = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+//            patHistory.setValue(medHistText);
+          //  result = medHistText;
+
+            if (result != null && !result.isEmpty()) {
+
+//                medHistory = patHistory.getValue();
+                result = result.replace("\"", "");
+                result = result.replace("\n", "");
+                do {
+                    result = result.replace("  ", "");
+                } while (result.contains("  "));
+            }
+            else
+                result = "";
+            medHistCursor.close();
+        } catch (CursorIndexOutOfBoundsException e) {
+           // patHistory.setValue(""); // if medical history does not exist
+            result = "";
+        }
+
+//        db.setTransactionSuccessful();
+        db.close();
+
+        return result;
     }
 }
 
