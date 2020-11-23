@@ -112,8 +112,23 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 //        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 //        e = sharedPreferences.edit();
 
+        Intent intent = this.getIntent(); // The intent was passed to the activity
+        if (intent != null) {
+            patientUuid = intent.getStringExtra("patientUuid");
+            visitUuid = intent.getStringExtra("visitUuid");
+            encounterVitals = intent.getStringExtra("encounterUuidVitals");
+            edit_PatHist = intent.getStringExtra("edit_PatHist");
+            encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
+            EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
+            state = intent.getStringExtra("state");
+            patientName = intent.getStringExtra("name");
+            intentTag = intent.getStringExtra("tag");
+
+            new_result = getPastMedicalVisitData();
+        }
+
         boolean past = sessionManager.isReturning();
-        if (past && edit_PatHist.equalsIgnoreCase("")) {
+        if (past && edit_PatHist == null) {
             MaterialAlertDialogBuilder alertdialog = new MaterialAlertDialogBuilder(this);
 
             //AlertDialog.Builder alertdialog = new AlertDialog.Builder(PastMedicalHistoryActivity.this,R.style.AlertDialogStyle);
@@ -177,20 +192,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
         }
 
-        Intent intent = this.getIntent(); // The intent was passed to the activity
-        if (intent != null) {
-            patientUuid = intent.getStringExtra("patientUuid");
-            visitUuid = intent.getStringExtra("visitUuid");
-            encounterVitals = intent.getStringExtra("encounterUuidVitals");
-            edit_PatHist = intent.getStringExtra("edit_PatHist");
-            encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
-            EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
-            state = intent.getStringExtra("state");
-            patientName = intent.getStringExtra("name");
-            intentTag = intent.getStringExtra("tag");
 
-             new_result = getPastMedicalVisitData();
-        }
 
 
         setTitle(getString(R.string.title_activity_patient_history));
@@ -511,15 +513,28 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         String result = "";
 
         db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        String[] columns = {"value"};
+       // String[] columns = {"value"};
 
+        String[] columns = {"value", " conceptuuid"};
+        try {
+            String medHistSelection = "encounteruuid = ? AND conceptuuid = ? AND voided!='1'";
+            String[] medHistArgs = {EncounterAdultInitial_LatestVisit, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
+            Cursor medHistCursor = localdb.query("tbl_obs", columns, medHistSelection, medHistArgs, null, null, null);
+            medHistCursor.moveToLast();
+            result = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+            medHistCursor.close();
+        } catch (CursorIndexOutOfBoundsException e) {
+            result = ""; // if medical history does not exist
+        }
+
+/*
         try {
             String medHistSelection = "encounteruuid = ? AND conceptuuid = ?";
 
             String[] medHistArgs = {EncounterAdultInitial_LatestVisit, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
 
             Cursor medHistCursor = db.query("tbl_obs", columns, medHistSelection, medHistArgs, null, null, null);
-//            medHistCursor.moveToLast();
+           medHistCursor.moveToLast();
             result = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
 //            patHistory.setValue(medHistText);
           //  result = medHistText;
@@ -540,6 +555,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
            // patHistory.setValue(""); // if medical history does not exist
             result = "";
         }
+*/
 
 //        db.setTransactionSuccessful();
         db.close();
