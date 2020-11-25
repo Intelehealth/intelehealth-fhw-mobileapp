@@ -79,6 +79,7 @@ public class Node implements Serializable {
     private String jobAidFile;
     private String jobAidType;
     private String pop_up;
+    private String gender;
 
     //for Associated Complaints and medical history only
     private String positiveCondition;
@@ -179,6 +180,8 @@ public class Node implements Serializable {
                 this.language = this.text;
             }
 
+            this.gender = jsonNode.optString("gender");
+
             //Only for physical exams
             if (!this.language.isEmpty()) {
                 if (this.language.contains(":")) {
@@ -235,6 +238,7 @@ public class Node implements Serializable {
         this.optionsList = source.optionsList;
         this.terminal = source.terminal;
         this.language = source.language;
+        this.gender = source.gender;
         this.inputType = source.inputType;
         this.physicalExams = source.physicalExams;
         this.complaint = source.complaint;
@@ -1628,6 +1632,14 @@ public class Node implements Serializable {
 
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public boolean isRequired() {
