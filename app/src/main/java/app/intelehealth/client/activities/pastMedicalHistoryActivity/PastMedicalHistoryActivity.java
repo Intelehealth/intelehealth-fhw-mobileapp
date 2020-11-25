@@ -77,6 +77,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     File filePath;
 
     SQLiteDatabase localdb;
+    String mgender;
 
     boolean hasLicense = false;
 
@@ -222,12 +223,13 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
        /* historyListView = findViewById(R.id.patient_history_expandable_list_view);
         adapter = new CustomExpandableListAdapter(this, patientHistoryMap, this.getClass().getSimpleName()); //The adapter might change depending on the activity.
         historyListView.setAdapter(adapter);*/
-        String gender = "male";
 
-        if(gender.equalsIgnoreCase("male")) {
+        mgender = fetch_gender(patientUuid);
+
+        if(mgender.equalsIgnoreCase("M")) {
             patientHistoryMap.removeItem("0", patientHistoryMap);
         }
-        else if(gender.equalsIgnoreCase("female")) {
+        else if(mgender.equalsIgnoreCase("F")) {
             patientHistoryMap.removeItem("1", patientHistoryMap);
         }
 
@@ -492,6 +494,24 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             v.startAnimation(bottomUp);
         }
 
+    }
+
+    public String fetch_gender(String patientUuid) {
+        String gender = "";
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor cursor = db.query("tbl_patient", new String[]{"gender"}, "uuid=?",
+                new String[]{patientUuid}, null, null, null);
+
+        if(cursor.moveToFirst()) {
+            do {
+                gender = cursor.getString(cursor.getColumnIndexOrThrow("gender"));
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return gender;
     }
 }
 
