@@ -222,6 +222,14 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
        /* historyListView = findViewById(R.id.patient_history_expandable_list_view);
         adapter = new CustomExpandableListAdapter(this, patientHistoryMap, this.getClass().getSimpleName()); //The adapter might change depending on the activity.
         historyListView.setAdapter(adapter);*/
+        String gender = "male";
+
+        if(gender.equalsIgnoreCase("male")) {
+            patientHistoryMap.removeItem("0", patientHistoryMap);
+        }
+        else if(gender.equalsIgnoreCase("female")) {
+            patientHistoryMap.removeItem("1", patientHistoryMap);
+        }
 
         adapter = new QuestionsAdapter(this, patientHistoryMap, pastMedical_recyclerView, this.getClass().getSimpleName(), this, false);
         pastMedical_recyclerView.setAdapter(adapter);

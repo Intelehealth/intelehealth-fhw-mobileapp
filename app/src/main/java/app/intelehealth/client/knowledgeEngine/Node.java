@@ -23,7 +23,6 @@ import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -1425,6 +1424,8 @@ public class Node implements Serializable {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
+        //write your code here for removing an option item...
+
         return createdOptions;
     }
 
@@ -1955,6 +1956,16 @@ public class Node implements Serializable {
                 ", space='" + space + '\'' +
                 ", imagePath='" + imagePath + '\'' +
                 '}';
+    }
+
+    public void removeItem(String s, Node patientHistoryMap) {
+        //s = 0 or s = 1;
+        for (int i = 0; i < patientHistoryMap.getOptionsList().size(); i++) {
+
+            if(patientHistoryMap.getOption(i).getGender().equalsIgnoreCase(s)) {
+                optionsList.remove(i);
+            }
+        }
     }
 }
 
