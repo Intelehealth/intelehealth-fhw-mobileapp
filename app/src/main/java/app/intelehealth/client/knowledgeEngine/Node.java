@@ -43,6 +43,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -143,6 +144,7 @@ public class Node implements Serializable {
             //this.id = jsonNode.getString("id");
 
             this.text = jsonNode.getString("text");
+            this.gender = jsonNode.optString("gender");
 
             JSONArray optionsArray = jsonNode.optJSONArray("options");
             if (optionsArray == null) {
@@ -179,7 +181,7 @@ public class Node implements Serializable {
                 this.language = this.text;
             }
 
-            this.gender = jsonNode.optString("gender");
+
 
             //Only for physical exams
             if (!this.language.isEmpty()) {
@@ -1926,6 +1928,7 @@ public class Node implements Serializable {
         return "Node{" +
                 "id='" + id + '\'' +
                 ", text='" + text + '\'' +
+                ", gender='" + gender + '\'' +
                 ", display='" + display + '\'' +
                 ", display_oriya='" + display_oriya + '\'' +
                 ", display_cebuno='" + display_cebuno + '\'' +
@@ -1958,14 +1961,51 @@ public class Node implements Serializable {
                 '}';
     }
 
-    public void removeItem(String s, Node patientHistoryMap) {
-        //s = 0 or s = 1;
-        for (int i = 0; i < patientHistoryMap.getOptionsList().size(); i++) {
+    public void fetchItem(String s) {
 
-            if(patientHistoryMap.getOption(i).getGender().equalsIgnoreCase(s)) {
-                optionsList.remove(i);
+        //for 1st level
+        for (int i = 0; i <optionsList.size() ; i++) {
+            if (optionsList.get(i).getGender().equalsIgnoreCase(s)) {
+                remove(optionsList, i);
             }
         }
+
+        //2nd level
+        for (int i = 0; i <optionsList.size() ; i++) {
+            if (optionsList.get(i).getOptionsList()!=null) {
+                for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) {
+                    if (optionsList.get(i).getOptionsList().get(j).getGender().equalsIgnoreCase(s)) {
+                        remove(optionsList.get(i).getOptionsList(), j);
+                    }
+                }
+            }
+        }
+
+        //3rd level
+        for (int i = 0; i <optionsList.size() ; i++) {
+            if (optionsList.get(i).getOptionsList()!=null) {
+                for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                        for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
+                            if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getGender().equalsIgnoreCase(s)) {
+//                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
+                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList(), k);
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
     }
+
+    // removes options specific to index from the json
+    public void remove(List<Node> no, int index) {
+        no.remove(index);
+    }
+
+
 }
 

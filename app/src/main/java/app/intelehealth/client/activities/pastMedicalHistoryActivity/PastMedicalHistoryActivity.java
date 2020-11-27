@@ -227,10 +227,10 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         mgender = fetch_gender(patientUuid);
 
         if(mgender.equalsIgnoreCase("M")) {
-            patientHistoryMap.removeItem("0", patientHistoryMap);
+            patientHistoryMap.fetchItem("0");
         }
         else if(mgender.equalsIgnoreCase("F")) {
-            patientHistoryMap.removeItem("1", patientHistoryMap);
+            patientHistoryMap.fetchItem("1");
         }
 
         adapter = new QuestionsAdapter(this, patientHistoryMap, pastMedical_recyclerView, this.getClass().getSimpleName(), this, false);
