@@ -1967,6 +1967,7 @@ public class Node implements Serializable {
         for (int i = 0; i <optionsList.size() ; i++) {
             if (optionsList.get(i).getGender().equalsIgnoreCase(s)) {
                 remove(optionsList, i);
+                i--;
             }
         }
 
@@ -1976,6 +1977,7 @@ public class Node implements Serializable {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) {
                     if (optionsList.get(i).getOptionsList().get(j).getGender().equalsIgnoreCase(s)) {
                         remove(optionsList.get(i).getOptionsList(), j);
+                        j--;
                     }
                 }
             }
@@ -1990,7 +1992,7 @@ public class Node implements Serializable {
                             if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getGender().equalsIgnoreCase(s)) {
 //                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
                                 remove(optionsList.get(i).getOptionsList().get(j).getOptionsList(), k);
-
+                                k--;
                             }
                         }
                     }
