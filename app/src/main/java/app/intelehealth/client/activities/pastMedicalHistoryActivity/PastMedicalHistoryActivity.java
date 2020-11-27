@@ -46,6 +46,7 @@ import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.dao.EncounterDAO;
 import app.intelehealth.client.database.dao.ImagesDAO;
 import app.intelehealth.client.database.dao.ObsDAO;
+import app.intelehealth.client.database.dao.PatientsDAO;
 import app.intelehealth.client.knowledgeEngine.Node;
 import app.intelehealth.client.models.dto.ObsDTO;
 import app.intelehealth.client.utilities.FileUtils;
@@ -57,6 +58,8 @@ import app.intelehealth.client.activities.familyHistoryActivity.FamilyHistoryAct
 import app.intelehealth.client.activities.visitSummaryActivity.VisitSummaryActivity;
 import app.intelehealth.client.utilities.exception.DAOException;
 import app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator;
+
+import static app.intelehealth.client.database.dao.PatientsDAO.fetch_gender;
 
 public class PastMedicalHistoryActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
 
@@ -223,6 +226,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
        /* historyListView = findViewById(R.id.patient_history_expandable_list_view);
         adapter = new CustomExpandableListAdapter(this, patientHistoryMap, this.getClass().getSimpleName()); //The adapter might change depending on the activity.
         historyListView.setAdapter(adapter);*/
+
 
         mgender = fetch_gender(patientUuid);
 
@@ -496,22 +500,5 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
     }
 
-    public String fetch_gender(String patientUuid) {
-        String gender = "";
-
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        Cursor cursor = db.query("tbl_patient", new String[]{"gender"}, "uuid=?",
-                new String[]{patientUuid}, null, null, null);
-
-        if(cursor.moveToFirst()) {
-            do {
-                gender = cursor.getString(cursor.getColumnIndexOrThrow("gender"));
-            }
-            while (cursor.moveToNext());
-        }
-        cursor.close();
-
-        return gender;
-    }
 }
 

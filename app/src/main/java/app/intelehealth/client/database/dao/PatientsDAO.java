@@ -436,5 +436,24 @@ public class PatientsDAO {
 
     }
 
+    public static String fetch_gender(String patientUuid) {
+        String gender = "";
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor cursor = db.query("tbl_patient", new String[]{"gender"}, "uuid=?",
+                new String[]{patientUuid}, null, null, null);
+
+        if(cursor.moveToFirst()) {
+            do {
+                gender = cursor.getString(cursor.getColumnIndexOrThrow("gender"));
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return gender;
+    }
+
+
 
 }
