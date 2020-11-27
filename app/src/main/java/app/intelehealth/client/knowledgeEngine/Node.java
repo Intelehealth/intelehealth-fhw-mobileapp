@@ -2000,6 +2000,58 @@ public class Node implements Serializable {
             }
         }
 
+        //4th level
+        for (int i = 0; i <optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList()!=null) {
+                for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                        for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
+                            if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList() != null) {
+                                for (int l = 0; l <optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
+                                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
+                                            .getGender().equalsIgnoreCase(s)) {
+//                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
+                                        remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), l);
+                                        l--;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        //5th level
+        for (int i = 0; i <optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList()!=null) {
+                for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                        for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
+                            if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList() != null) {
+                                for (int l = 0; l <optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
+                                    if(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                            .get(l).getOptionsList() != null) {
+                                        for (int m = 0; m < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                                .get(l).getOptionsList().size(); m++) {
+
+                                        if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                                .get(l).getOptionsList().get(m).getGender().equalsIgnoreCase(s)) {
+//                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
+                                            remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                                    .get(l).getOptionsList(), m);
+                                            m--;
+                                        }
+                                    }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
 
     }
 
