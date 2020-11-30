@@ -362,6 +362,17 @@
     <string name="prescription_not_downloaded_check_internet">ପ୍ରେସକୂଶନ୍ ଡାଉଁଲଡ ହଉନାହିଁ, ଦୟାକରି ନିଜ ଇଟଂରନେଟ୍ ସଂଯୋଗ ଯାଂଚ କରନ୍ତୁ ଓ ପୁନବାର ଚେଷ୍ଟା କରନ୍ତୁ</string>
     <string name="privacy_reject_toast">ରୋଗୀର ସହମତି ବିନା ନାଁ ଲେଖାଇବା</string>
     <string name="not_answered">ଉତର ଦଉ ନାହାନ୍ତି</string>
+    <string name="new_update_available">New Update Available</string>
+    <string name="update_app_note">New version is available with new features please update app</string>
+    <string name="update">Update</string>
+    <string name="do_you_need_help_please_contact_us">Do you need help? Please contact us!</string>
+    <string name="whatsapp_helpline">WhatsApp Helpline</string>
+    <string name="Whatsapp_Help_Cardview">Help</string>
+    <string name="skip">skip</string>
+    <string name="start">Start</string>
+    <string name="who_is_this_napplication_for">Who is this \napplication for?</string>
+    <string name="sure_to_logout">Are you sure you want to Logout?</string>
+    <string name="whatsapp_presc_toast">Select prescription PDF from file explorer - Internal storage/Intelehealth_PDF</string>
     <string name="who_is_this_napplication_for">ଏହିଆପିଲସକଶନ୍ କାହା ପାଇଁ?</string>
     <string name="test_2_vibha_onplus_6t_10fke_7">Test 2 Vibha onplus 6T, 10FKE-7</string>
     <string name="age_11_years_5_months">Age: 11 years, 5 months</string>
