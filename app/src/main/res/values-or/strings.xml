@@ -362,6 +362,7 @@
     <string name="prescription_not_downloaded_check_internet">ପ୍ରେସକୂଶନ୍ ଡାଉଁଲଡ ହଉନାହିଁ, ଦୟାକରି ନିଜ ଇଟଂରନେଟ୍ ସଂଯୋଗ ଯାଂଚ କରନ୍ତୁ ଓ ପୁନବାର ଚେଷ୍ଟା କରନ୍ତୁ</string>
     <string name="privacy_reject_toast">ରୋଗୀର ସହମତି ବିନା ନାଁ ଲେଖାଇବା</string>
     <string name="not_answered">ଉତର ଦଉ ନାହାନ୍ତି</string>
+    <string name="whatsapp_presc_toast">Select prescription PDF from file explorer - Internal storage/Intelehealth_PDF</string>
     <string name="who_is_this_napplication_for">ଏହିଆପିଲସକଶନ୍ କାହା ପାଇଁ?</string>
     <string name="test_2_vibha_onplus_6t_10fke_7">Test 2 Vibha onplus 6T, 10FKE-7</string>
     <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">Hello\n\n I’m Ayu, a digital health assistant. Let’s get started!</string>
@@ -480,6 +481,8 @@
     <string name="days">ଦନି</string>
     <string name="contact">ସଯାଗାସଯାଗ</string>
     <string name="row_patient_id" translatable="false">ରୋଗୀଙ୍କ ଆଇଡି:</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using Intelehealth. To Download your prescription please click here "</string>
+    <string name="and_enter_your_patient_id">" and enter your Patient ID - "</string>
     <string name="whatsapp_presc_toast">Select prescription PDF from file explorer - Internal storage/Intelehealth_PDF</string>
     <string name="health_scheme_card">Health Scheme Card*</string>
     <string name="mukhyamantri_amrutam_scheme">Mukhyamantri Amrutam scheme</string>
