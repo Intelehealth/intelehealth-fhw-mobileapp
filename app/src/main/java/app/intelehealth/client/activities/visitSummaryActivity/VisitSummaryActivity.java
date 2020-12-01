@@ -543,9 +543,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                                     if (!editText.getText().toString().equalsIgnoreCase("")) {
                                         String phoneNumber = "+91" + editText.getText().toString();
-                                        String whatsappMessage = "Hello, Thank you for using Intelehealth. To Download your " +
-                                                "prescription please click here " + whatsapp_url + " and enter your Patient " +
-                                                "ID - " + idView.getText().toString();
+                                        String whatsappMessage = getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) + whatsapp_url + getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
 
                                         //Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
                                         startActivity(new Intent(Intent.ACTION_VIEW,
