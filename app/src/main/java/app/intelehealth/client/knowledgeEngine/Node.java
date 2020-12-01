@@ -80,6 +80,9 @@ public class Node implements Serializable {
     private String jobAidType;
     private String pop_up;
     private String gender;
+    private String min_age;
+    private String max_age;
+
 
     //for Associated Complaints and medical history only
     private String positiveCondition;
@@ -144,7 +147,12 @@ public class Node implements Serializable {
             //this.id = jsonNode.getString("id");
 
             this.text = jsonNode.getString("text");
+
             this.gender = jsonNode.optString("gender");
+
+            this.min_age = jsonNode.optString("min_age");
+
+            this.max_age = jsonNode.optString("max_age");
 
             JSONArray optionsArray = jsonNode.optJSONArray("options");
             if (optionsArray == null) {
@@ -240,6 +248,8 @@ public class Node implements Serializable {
         this.terminal = source.terminal;
         this.language = source.language;
         this.gender = source.gender;
+        this.min_age = source.min_age;
+        this.max_age = source.max_age;
         this.inputType = source.inputType;
         this.physicalExams = source.physicalExams;
         this.complaint = source.complaint;
@@ -1645,6 +1655,22 @@ public class Node implements Serializable {
         this.gender = gender;
     }
 
+    public String getMin_age() {
+        return min_age;
+    }
+
+    public void setMin_age(String min_age) {
+        this.min_age = min_age;
+    }
+
+    public String getMax_age() {
+        return max_age;
+    }
+
+    public void setMax_age(String max_age) {
+        this.max_age = max_age;
+    }
+
     public boolean isRequired() {
         return required;
     }
@@ -1929,6 +1955,8 @@ public class Node implements Serializable {
                 "id='" + id + '\'' +
                 ", text='" + text + '\'' +
                 ", gender='" + gender + '\'' +
+                ", min_age='" + min_age + '\'' +
+                ", max_age='" + max_age + '\'' +
                 ", display='" + display + '\'' +
                 ", display_oriya='" + display_oriya + '\'' +
                 ", display_cebuno='" + display_cebuno + '\'' +
