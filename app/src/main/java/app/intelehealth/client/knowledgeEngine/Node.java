@@ -24,7 +24,6 @@ import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -45,6 +44,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -80,6 +80,7 @@ public class Node implements Serializable {
     private String jobAidFile;
     private String jobAidType;
     private String pop_up;
+    private String gender;
 
     //for Associated Complaints and medical history only
     private String positiveCondition;
@@ -144,6 +145,7 @@ public class Node implements Serializable {
             //this.id = jsonNode.getString("id");
 
             this.text = jsonNode.getString("text");
+            this.gender = jsonNode.optString("gender");
 
             JSONArray optionsArray = jsonNode.optJSONArray("options");
             if (optionsArray == null) {
@@ -179,6 +181,8 @@ public class Node implements Serializable {
             if (this.language.isEmpty()) {
                 this.language = this.text;
             }
+
+
 
             //Only for physical exams
             if (!this.language.isEmpty()) {
@@ -236,6 +240,7 @@ public class Node implements Serializable {
         this.optionsList = source.optionsList;
         this.terminal = source.terminal;
         this.language = source.language;
+        this.gender = source.gender;
         this.inputType = source.inputType;
         this.physicalExams = source.physicalExams;
         this.complaint = source.complaint;
@@ -1422,6 +1427,8 @@ public class Node implements Serializable {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
+        //write your code here for removing an option item...
+
         return createdOptions;
     }
 
@@ -1636,6 +1643,14 @@ public class Node implements Serializable {
 
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public boolean isRequired() {
@@ -1917,6 +1932,7 @@ public class Node implements Serializable {
         return "Node{" +
                 "id='" + id + '\'' +
                 ", text='" + text + '\'' +
+                ", gender='" + gender + '\'' +
                 ", display='" + display + '\'' +
                 ", display_oriya='" + display_oriya + '\'' +
                 ", display_cebuno='" + display_cebuno + '\'' +
@@ -1948,5 +1964,106 @@ public class Node implements Serializable {
                 ", imagePath='" + imagePath + '\'' +
                 '}';
     }
+
+    public void fetchItem(String s) {
+
+        //for 1st level
+        for (int i = 0; i <optionsList.size() ; i++) {
+            if (optionsList.get(i).getGender().equalsIgnoreCase(s)) {
+                remove(optionsList, i);
+                i--;
+            }
+        }
+
+        //2nd level
+        for (int i = 0; i <optionsList.size() ; i++) {
+            if (optionsList.get(i).getOptionsList()!=null) {
+                for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) {
+                    if (optionsList.get(i).getOptionsList().get(j).getGender().equalsIgnoreCase(s)) {
+                        remove(optionsList.get(i).getOptionsList(), j);
+                        j--;
+                    }
+                }
+            }
+        }
+
+        //3rd level
+        for (int i = 0; i <optionsList.size() ; i++) {
+            if (optionsList.get(i).getOptionsList()!=null) {
+                for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                        for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
+                            if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getGender().equalsIgnoreCase(s)) {
+//                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
+                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList(), k);
+                                k--;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        //4th level
+        for (int i = 0; i <optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList()!=null) {
+                for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                        for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
+                            if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList() != null) {
+                                for (int l = 0; l <optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
+                                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
+                                            .getGender().equalsIgnoreCase(s)) {
+//                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
+                                        remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), l);
+                                        l--;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        //5th level
+        for (int i = 0; i <optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList()!=null) {
+                for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                        for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
+                            if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList() != null) {
+                                for (int l = 0; l <optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
+                                    if(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                            .get(l).getOptionsList() != null) {
+                                        for (int m = 0; m < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                                .get(l).getOptionsList().size(); m++) {
+
+                                        if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                                .get(l).getOptionsList().get(m).getGender().equalsIgnoreCase(s)) {
+//                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
+                                            remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                                    .get(l).getOptionsList(), m);
+                                            m--;
+                                        }
+                                    }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    // removes options specific to index from the json
+    public void remove(List<Node> no, int index) {
+        no.remove(index);
+    }
+
+
 }
 

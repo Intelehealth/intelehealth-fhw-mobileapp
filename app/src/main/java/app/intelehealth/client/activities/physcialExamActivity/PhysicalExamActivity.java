@@ -70,6 +70,8 @@ import app.intelehealth.client.utilities.StringUtils;
 import app.intelehealth.client.utilities.exception.DAOException;
 import app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator;
 
+import static app.intelehealth.client.database.dao.PatientsDAO.fetch_gender;
+
 public class PhysicalExamActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
     final static String TAG = PhysicalExamActivity.class.getSimpleName();
     // private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -104,6 +106,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
     SessionManager sessionManager;
     RecyclerView physExam_recyclerView;
     QuestionsAdapter adapter;
+    String mgender;
     ScrollingPagerIndicator recyclerViewIndicator;
 
 
@@ -146,7 +149,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             intentTag = intent.getStringExtra("tag");
             Set<String> selectedExams = sessionManager.getVisitSummary(patientUuid);
             selectedExamsList.clear();
-            if (selectedExams != null) selectedExamsList.addAll(selectedExams);
+            if (selectedExams != null)
+                selectedExamsList.addAll(selectedExams);
             filePath = new File(AppConstants.IMAGE_PATH);
         }
 
@@ -160,7 +164,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             selectedExamsList.clear();
             selectedExamsList.addAll(selectedExamsWithoutDuplicates);
             Log.d(TAG, selectedExamsList.toString());
-            for (String string : selectedExamsList) Log.d(TAG, string);
+            for (String string : selectedExamsList)
+                Log.d(TAG, string);
 
             boolean hasLicense = false;
 //            if (sessionManager.getLicenseKey() != null && !sessionManager.getLicenseKey().isEmpty())
@@ -177,6 +182,9 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 }
             } else {
                 physicalExamMap = new PhysicalExam(FileUtils.encodeJSON(this, mFileName), selectedExamsList);
+
+
+
             }
         }
 
@@ -242,6 +250,18 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
       /*
       Commented to avoid crash...
         Log.e(TAG, "PhyExam: " + physicalExamMap.getTotalNumberOfExams());*/
+
+        mgender = fetch_gender(patientUuid);
+
+        if(mgender.equalsIgnoreCase("M")) {
+            physicalExamMap.fetchItem("0");
+        }
+        else if(mgender.equalsIgnoreCase("F")) {
+            physicalExamMap.fetchItem("1");
+        }
+       // new PhysicalExam(FileUtils.encodeJSON(this, mFileName)).refresh(selectedExamsList);
+        physicalExamMap.refresh(selectedExamsList);
+
         adapter = new QuestionsAdapter(this, physicalExamMap, physExam_recyclerView, this.getClass().getSimpleName(), this, false);
         physExam_recyclerView.setAdapter(adapter);
         recyclerViewIndicator.attachToRecyclerView(physExam_recyclerView);

@@ -63,6 +63,8 @@ import app.intelehealth.client.utilities.StringUtils;
 import app.intelehealth.client.utilities.exception.DAOException;
 import app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator;
 
+import static app.intelehealth.client.database.dao.PatientsDAO.fetch_gender;
+
 
 public class QuestionNodeActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
     final String TAG = "Question Node Activity";
@@ -71,6 +73,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     String state;
     String patientName;
     String intentTag;
+    String mgender;
 
     String imageName;
     File filePath;
@@ -477,6 +480,15 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             currentNode = complaintsNodes.get(complaintIndex);
         }
 
+        mgender = fetch_gender(patientUuid);
+
+        if(mgender.equalsIgnoreCase("M")) {
+            currentNode.fetchItem("0");
+        }
+        else if(mgender.equalsIgnoreCase("F")) {
+            currentNode.fetchItem("1");
+        }
+
         adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, false);
         question_recyclerView.setAdapter(adapter);
         recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
@@ -565,6 +577,16 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             questionListView.setAdapter(adapter);
             questionListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
             questionListView.expandGroup(0);*/
+
+            mgender = fetch_gender(patientUuid);
+
+            if(mgender.equalsIgnoreCase("M")) {
+                currentNode.fetchItem("0");
+            }
+            else if(mgender.equalsIgnoreCase("F")) {
+                currentNode.fetchItem("1");
+            }
+
             adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, true);
             question_recyclerView.setAdapter(adapter);
             setTitle(patientName + ": " + currentNode.getText());

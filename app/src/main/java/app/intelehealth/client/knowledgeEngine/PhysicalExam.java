@@ -37,6 +37,17 @@ public class PhysicalExam extends Node {
 
     }
 
+    public PhysicalExam(JSONObject jsonObject) {
+        super(jsonObject);
+    }
+
+    public void refresh(ArrayList<String> selection) {
+        this.selection = selection;
+        this.selectedNodes = matchSelections();
+        this.totalExams = calculateTotal();
+        this.pageTitles = determineTitles();
+    }
+
     /**
      * When this object is first created, the constructor requires an input string of the exams for the current patient.
      * These exams are located first, and a copy of the original mind map is created using only those required exams.
@@ -70,11 +81,14 @@ public class PhysicalExam extends Node {
             }
 
 
+
+
             //Find the other exams that need to be conducted and add them in
             if (selection == null || selection.isEmpty()) {
                 //If no exams were required, just do the general ones
                 return newOptionsList;
-            } else {
+            }
+            else {
                 for (String current : selection) {
                     if (!current.trim().isEmpty()) {
                 /*
