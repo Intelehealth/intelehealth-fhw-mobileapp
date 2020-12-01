@@ -1,18 +1,15 @@
 package app.intelehealth.client.activities.splash_activity;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
-import android.util.Log;
-import android.view.ContextThemeWrapper;
+
 import android.widget.Toast;
 
 
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
@@ -23,12 +20,10 @@ import app.intelehealth.client.R;
 import app.intelehealth.client.activities.IntroActivity.IntroActivity;
 import app.intelehealth.client.activities.homeActivity.HomeActivity;
 import app.intelehealth.client.dataMigration.SmoothUpgrade;
-import app.intelehealth.client.services.OnClearFromRecentService;
 import app.intelehealth.client.utilities.Logger;
 import app.intelehealth.client.utilities.SessionManager;
 
 import app.intelehealth.client.activities.loginActivity.LoginActivity;
-import app.intelehealth.client.activities.setupActivity.SetupActivity;
 
 
 public class SplashActivity extends AppCompatActivity {
@@ -43,7 +38,7 @@ public class SplashActivity extends AppCompatActivity {
 //        Getting App language through the session manager
         sessionManager = new SessionManager(SplashActivity.this);
 
-        startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
+       // startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
         String appLanguage = sessionManager.getAppLanguage();
 
 

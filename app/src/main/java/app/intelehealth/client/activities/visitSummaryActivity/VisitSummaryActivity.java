@@ -29,6 +29,7 @@ import android.print.PrintManager;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.text.HtmlCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.core.view.MenuItemCompat;
 import androidx.appcompat.app.AlertDialog;
@@ -114,6 +115,7 @@ import app.intelehealth.client.utilities.Logger;
 import android.print.PdfPrint;
 
 import app.intelehealth.client.utilities.SessionManager;
+import app.intelehealth.client.utilities.UrlModifiers;
 import app.intelehealth.client.utilities.UuidDictionary;
 
 import app.intelehealth.client.activities.homeActivity.HomeActivity;
@@ -257,7 +259,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String encounterUuid;
     String encounterVitals;
     String encounterUuidAdultIntial;
-    Boolean isreturningWhatsapp = true;
+   // Boolean isreturningWhatsapp = true;
 
     ProgressBar mProgressBar;
     TextView mProgressText;
@@ -507,11 +509,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (hasPrescription.equalsIgnoreCase("true")) {
-                    try {
-                        doWebViewPrint();
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        doWebViewPrint();
+//                    } catch (ParseException e) {
+//                        e.printStackTrace();
+//                    }
 
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
                     EditText editText = new EditText(VisitSummaryActivity.this);
@@ -522,6 +524,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             return null;
                         }
                     };
+                    String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
+                    String whatsapp_url = partial_whatsapp_presc_url.concat(visitUUID);
+//                    Spanned hyperlink_whatsapp = HtmlCompat.fromHtml("<a href=" + whatsapp_url + ">Click Here</a>", HtmlCompat.FROM_HTML_MODE_COMPACT);
+
                     editText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(10)});
                     editText.setText(patient.getPhone_number());
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
@@ -537,13 +543,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                                     if (!editText.getText().toString().equalsIgnoreCase("")) {
                                         String phoneNumber = "+91" + editText.getText().toString();
-                                        Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
+                                        String whatsappMessage = "Hello, Thank you for using Intelehealth. To Download your " +
+                                                "prescription please click here " + whatsapp_url + " and enter your Patient " +
+                                                "ID - " + idView.getText().toString();
+
+                                        //Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
                                         startActivity(new Intent(Intent.ACTION_VIEW,
                                                 Uri.parse(
-                                                        String.format("https://api.whatsapp.com/send?phone=%s",
-                                                                phoneNumber))));
+                                                        String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                                                                phoneNumber, whatsappMessage))));
 
-                                        isreturningWhatsapp = true;
+                                        //isreturningWhatsapp = true;
 
                                     } else {
                                         Toast.makeText(context, "Please enter a mobile number",
@@ -3250,21 +3260,21 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
         //logic code for handling the whatsapp prescription part...
-        if (isreturningWhatsapp) {
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
-            File dir = new File(path);
-            deleteRecursive(dir);
-        }
+//        if (isreturningWhatsapp) {
+//            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+//            File dir = new File(path);
+//            deleteRecursive(dir);
+//        }
     }
 
-    public static void deleteRecursive(File fileOrDirectory) {
-        if (fileOrDirectory.isDirectory()) {
-            for (File child : fileOrDirectory.listFiles()) {
-                deleteRecursive(child);
-            }
-        }
-        fileOrDirectory.delete();
-    }
+//    public static void deleteRecursive(File fileOrDirectory) {
+//        if (fileOrDirectory.isDirectory()) {
+//            for (File child : fileOrDirectory.listFiles()) {
+//                deleteRecursive(child);
+//            }
+//        }
+//        fileOrDirectory.delete();
+//    }
 
     @Override
     public void onPause() {

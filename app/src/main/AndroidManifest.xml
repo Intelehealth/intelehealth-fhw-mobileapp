@@ -221,10 +221,6 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service
-            android:name="app.intelehealth.client.services.OnClearFromRecentService"
-            android:stopWithTask="false" />
-
-        <service
             android:name=".utilities.OpenMRSAccountAuthenticatorService"
             android:exported="false">
             <intent-filter>
