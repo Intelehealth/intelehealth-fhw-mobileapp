@@ -22,6 +22,49 @@ import app.intelehealth.client.R;
 
 public class DateAndTimeUtils {
 
+    public static float getFloat_Age_Year_Month(String date_of_birth) {
+        float year_month = 0;
+
+        if (date_of_birth == null) return 0;
+
+        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Date date = null;
+        try {
+            date = originalFormat.parse(date_of_birth);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String formattedDate = targetFormat.format(date);  // 20120821
+
+        String[] components = formattedDate.split("\\-");
+
+        int year = Integer.parseInt(components[2]);
+        int month = Integer.parseInt(components[1]);
+        int day = Integer.parseInt(components[0]);
+
+        LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
+        LocalDate now = new LocalDate();                    //Today's date
+        Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
+
+        int xyears, xmonths;
+        String x_format = "";
+
+        if(period.getYears() > 0)
+            xyears = period.getYears();
+        else
+            xyears = 0;
+        if(period.getMonths() > 0)
+            xmonths = period.getMonths();
+        else
+            xmonths = 0;
+
+        x_format = xyears + "." + xmonths;
+        year_month = Float.parseFloat(x_format);
+
+        return year_month;
+    }
+
     public String currentDateTime() {
         Locale.setDefault(Locale.ENGLISH);
         DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
@@ -89,19 +132,25 @@ public class DateAndTimeUtils {
         int month = Integer.parseInt(components[1]);
         int day = Integer.parseInt(components[0]);
 
+        //call to function to pass this year and month for age mindmaps questions...
+        //getAge_Year_Month(year, month, day);
+
         LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
         LocalDate now = new LocalDate();                    //Today's date
         Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
 
         String age = "";
         String tyears = "", tmonth = "", tdays = "";
+        //String xyears = "", xmonths = "";
 
-        if(period.getYears() > 0)
+        if(period.getYears() > 0) {
             tyears = period.getYears() + " " + context.getResources().getString(R.string.years);
-
-        if(period.getMonths() > 0)
+            //xyears = String.valueOf(period.getYears());
+        }
+        if(period.getMonths() > 0) {
             tmonth = period.getMonths() + " " + context.getResources().getString(R.string.months);
-
+            //xmonths = String.valueOf(period.getMonths());
+        }
         if(period.getDays() > 0)
             tdays = period.getDays() + " " + context.getResources().getString(R.string.days);
 
@@ -109,6 +158,9 @@ public class DateAndTimeUtils {
 
         return age;
     }
+
+
+
     public static String getAgeInYearMonth(String s) {
         if (s == null) return "";
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
