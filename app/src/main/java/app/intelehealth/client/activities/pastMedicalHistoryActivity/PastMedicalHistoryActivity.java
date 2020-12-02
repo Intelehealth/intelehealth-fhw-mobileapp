@@ -69,6 +69,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     String state;
     String patientName;
     String intentTag;
+    private float float_ageYear_Month;
 
     ArrayList<String> physicalExams;
     int lastExpandedPosition = -1;
@@ -155,6 +156,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                     intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
+                    intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                     intent.putExtra("tag", intentTag);
                     //    intent.putStringArrayListExtra("exams", physicalExams);
                     startActivity(intent);
@@ -173,6 +175,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
             state = intent.getStringExtra("state");
+            float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
         }
@@ -350,6 +353,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
+            intent.putExtra("float_ageYear_Month", float_ageYear_Month);
             intent.putExtra("tag", intentTag);
             //       intent.putStringArrayListExtra("exams", physicalExams);
             startActivity(intent);

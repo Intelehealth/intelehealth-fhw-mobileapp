@@ -67,6 +67,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
     String state;
     String patientName;
     String intentTag;
+    private float float_ageYear_Month;
 
     ArrayList<String> physicalExams;
     String mFileName = "famHist.json";
@@ -140,6 +141,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                     intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
+                    intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                     intent.putExtra("tag", intentTag);
 
                     startActivity(intent);
@@ -158,6 +160,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
             patientName = intent.getStringExtra("name");
+            float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
         }
         super.onCreate(savedInstanceState);
@@ -324,6 +327,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
+            intent.putExtra("float_ageYear_Month", float_ageYear_Month);
             intent.putExtra("tag", intentTag);
             //   intent.putStringArrayListExtra("exams", physicalExams);
             startActivity(intent);

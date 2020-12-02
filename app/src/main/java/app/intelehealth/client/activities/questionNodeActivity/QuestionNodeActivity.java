@@ -79,6 +79,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     File filePath;
     Boolean complaintConfirmed = false;
     SessionManager sessionManager = null;
+    private float float_ageYear_Month;
 
 
     //    Knowledge mKnowledge; //Knowledge engine
@@ -123,6 +124,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             state = intent.getStringExtra("state");
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
+            float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             complaints = intent.getStringArrayListExtra("complaints");
@@ -372,13 +374,15 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 } else {
                     Log.i(TAG, "fabClick: " + insertion);
                     insertDb(insertion);
-                    Intent intent = new Intent(QuestionNodeActivity.this, PastMedicalHistoryActivity.class);
+                    Intent intent = new Intent
+                            (QuestionNodeActivity.this, PastMedicalHistoryActivity.class);
                     intent.putExtra("patientUuid", patientUuid);
                     intent.putExtra("visitUuid", visitUuid);
                     intent.putExtra("encounterUuidVitals", encounterVitals);
                     intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
+                    intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                     intent.putExtra("tag", intentTag);
                     Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
                     sessionManager.setVisitSummary(patientUuid, selectedExams);

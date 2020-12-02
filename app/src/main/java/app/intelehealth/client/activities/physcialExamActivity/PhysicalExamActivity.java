@@ -83,6 +83,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
     String state;
     String patientName;
     String intentTag;
+    private float float_ageYear_Month;
 
     ArrayList<String> selectedExamsList;
 
@@ -145,6 +146,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
+            float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
             Set<String> selectedExams = sessionManager.getVisitSummary(patientUuid);
             selectedExamsList.clear();
@@ -312,6 +314,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
                 intent.putExtra("state", state);
                 intent.putExtra("name", patientName);
+                intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                 intent.putExtra("tag", intentTag);
                 intent.putExtra("hasPrescription", "false");
 
@@ -330,6 +333,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 intent1.putExtra("state", state);
                 intent1.putExtra("name", patientName);
                 intent1.putExtra("tag", intentTag);
+                intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                 intent1.putExtra("hasPrescription", "false");
                 // intent1.putStringArrayListExtra("exams", selectedExamsList);
                 startActivity(intent1);
