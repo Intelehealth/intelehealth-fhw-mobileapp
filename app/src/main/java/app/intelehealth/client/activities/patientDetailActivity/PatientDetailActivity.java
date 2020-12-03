@@ -122,6 +122,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     ImageView ivPrescription;
     private String hasPrescription = "";
     Context context;
+    float float_ageYear_Month;
 
 
     @Override
@@ -283,6 +284,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 intent2.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
                 intent2.putExtra("name", fullName);
                 intent2.putExtra("tag", "new");
+                intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
                 startActivity(intent2);
             }
         });
@@ -300,6 +302,19 @@ public class PatientDetailActivity extends AppCompatActivity {
         super.onDestroy();
 
     }
+
+//    public float age_in_Decimal(String age) {
+//        float age_float = 0;
+//        //2 years 4 months 4 days
+//        //int age_int = Integer.parseInt(age.replaceAll("[\\D]", "")); //244
+//        String ageTrim = age.trim();
+//        String year = String.valueOf(ageTrim.charAt(ageTrim.indexOf("years") - 1));
+//        String month = String.valueOf(ageTrim.charAt(ageTrim.indexOf("months") - 1));
+//        String result = year + " " + month;
+//        //int month = age_.indexOf("months") - 1;
+//
+//        return age_float;
+//    }
 
     public void setDisplay(String dataString) {
 
@@ -503,6 +518,8 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         String age = DateAndTimeUtils.getAgeInYearMonth(patient_new.getDate_of_birth(), context);
         ageView.setText(age);
+        float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(patient_new.getDate_of_birth());
+
 
         String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient_new.getDate_of_birth());
         dobView.setText(dob);
@@ -780,6 +797,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 visitSummary.putExtra("encounterUuidAdultIntial", encounterAdultIntialslocal);
                 visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
                 visitSummary.putExtra("name", patientName);
+                visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
                 visitSummary.putExtra("tag", intentTag);
                 visitSummary.putExtra("pastVisit", past_visit);
                 if (hasPrescription.equalsIgnoreCase("true")) {

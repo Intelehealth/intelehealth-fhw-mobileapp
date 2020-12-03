@@ -75,6 +75,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     String state;
     String patientName;
     String intentTag;
+    private float float_ageYear_Month;
 
     ArrayList<String> physicalExams;
     int lastExpandedPosition = -1;
@@ -130,6 +131,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
+            float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
 
             if(edit_PatHist == null)
@@ -195,6 +197,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                     intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
+                    intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                     intent.putExtra("tag", intentTag);
                     //    intent.putStringArrayListExtra("exams", physicalExams);
                     startActivity(intent);
@@ -208,6 +211,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
             pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
+            
             Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
             nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
             nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
@@ -279,6 +283,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         else if(mgender.equalsIgnoreCase("F")) {
             patientHistoryMap.fetchItem("1");
         }
+
+        // flaoting value of age is passed to Node for comparison...
+        patientHistoryMap.fetchAge(float_ageYear_Month);
 
         adapter = new QuestionsAdapter(this, patientHistoryMap, pastMedical_recyclerView, this.getClass().getSimpleName(), this, false);
         pastMedical_recyclerView.setAdapter(adapter);
@@ -395,6 +402,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
+            intent.putExtra("float_ageYear_Month", float_ageYear_Month);
             intent.putExtra("tag", intentTag);
             //       intent.putStringArrayListExtra("exams", physicalExams);
             startActivity(intent);

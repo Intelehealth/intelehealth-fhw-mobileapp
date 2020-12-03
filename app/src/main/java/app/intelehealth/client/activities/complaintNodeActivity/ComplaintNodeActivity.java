@@ -76,6 +76,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     ImageView img_question;
     TextView tv_selectComplaint;
     RecyclerView list_recyclerView;
+    private float float_ageYear_Month;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +90,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
+            float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
         }
         if (encounterAdultIntials.equalsIgnoreCase("") || encounterAdultIntials == null) {
@@ -275,7 +277,8 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        Intent intent = new Intent(ComplaintNodeActivity.this, QuestionNodeActivity.class);
+                        Intent intent = new Intent(
+                                ComplaintNodeActivity.this, QuestionNodeActivity.class);
                         intent.putExtra("patientUuid", patientUuid);
                         intent.putExtra("visitUuid", visitUuid);
                         intent.putExtra("encounterUuidVitals", encounterVitals);
@@ -283,6 +286,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                         intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                         intent.putExtra("state", state);
                         intent.putExtra("name", patientName);
+                        intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                         if (intentTag != null) {
                             intent.putExtra("tag", intentTag);
                         }

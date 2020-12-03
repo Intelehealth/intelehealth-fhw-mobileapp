@@ -79,6 +79,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     File filePath;
     Boolean complaintConfirmed = false;
     SessionManager sessionManager = null;
+    private float float_ageYear_Month;
 
 
     //    Knowledge mKnowledge; //Knowledge engine
@@ -124,6 +125,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
             EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
+            float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             complaints = intent.getStringArrayListExtra("complaints");
@@ -374,7 +376,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 } else {
                     Log.i(TAG, "fabClick: " + insertion);
                     insertDb(insertion);
-                    Intent intent = new Intent(QuestionNodeActivity.this, PastMedicalHistoryActivity.class);
+                    Intent intent = new Intent
+                            (QuestionNodeActivity.this, PastMedicalHistoryActivity.class);
                     intent.putExtra("patientUuid", patientUuid);
                     intent.putExtra("visitUuid", visitUuid);
                     intent.putExtra("encounterUuidVitals", encounterVitals);
@@ -382,6 +385,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
+                    intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                     intent.putExtra("tag", intentTag);
                     Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
                     sessionManager.setVisitSummary(patientUuid, selectedExams);
@@ -488,6 +492,18 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         else if(mgender.equalsIgnoreCase("F")) {
             currentNode.fetchItem("1");
         }
+
+        // flaoting value of age is passed to Node for comparison...
+        currentNode.fetchAge(float_ageYear_Month);
+
+//        //min age = 5 ... user age = 1...
+//        if(float_ageYear_Month <= Float.parseFloat(currentNode.getMin_age())) {
+//
+//        }
+//        //max age = 10 ... user age = 15 ...
+//        if(float_ageYear_Month >= Float.parseFloat(currentNode.getMax_age())) {
+//
+//        }
 
         adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, false);
         question_recyclerView.setAdapter(adapter);
