@@ -776,6 +776,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 visitSummary.putExtra("encounterUuidVitals", encounterVitalslocal);
                 visitSummary.putExtra("encounterUuidAdultIntial", encounterAdultIntialslocal);
                 visitSummary.putExtra("name", patientName);
+                visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
                 visitSummary.putExtra("tag", intentTag);
                 visitSummary.putExtra("pastVisit", past_visit);
                 if (hasPrescription.equalsIgnoreCase("true")) {

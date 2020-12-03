@@ -1989,6 +1989,153 @@ public class Node implements Serializable {
                 '}';
     }
 
+    public void fetchAge(float age) {
+
+        //for 1st level
+        for (int i = 0; i <optionsList.size() ; i++) {
+            if(!optionsList.get(i).getMin_age().equalsIgnoreCase("") &&
+                    !optionsList.get(i).getMax_age().equalsIgnoreCase("")) {
+                if (age < Float.parseFloat(optionsList.get(i).getMin_age().trim())) { //age = 1 , min_age = 5
+                    remove(optionsList, i);
+                    i--;
+                }
+
+            //else if(!optionsList.get(i).getMax_age().equalsIgnoreCase(""))
+             else if (age > Float.parseFloat(optionsList.get(i).getMax_age())) { //age = 15 , max_age = 10
+                    remove(optionsList, i);
+                    i--;
+                }
+            }
+        }
+
+        //2nd level
+        for (int i = 0; i <optionsList.size() ; i++) {
+            if (optionsList.get(i).getOptionsList()!=null) {
+                for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) {
+                    if(!optionsList.get(i).getOptionsList()
+                            .get(j).getMin_age().equalsIgnoreCase("") &&
+                            !optionsList.get(i).getOptionsList()
+                                    .get(j).getMax_age().equalsIgnoreCase("")) {
+                        if (age < Float.parseFloat(optionsList.get(i).getOptionsList()
+                                .get(j).getMin_age())) {
+                            remove(optionsList.get(i).getOptionsList(), j);
+                            j--;
+                        }
+
+                        else if (age > Float.parseFloat(optionsList.get(i).getOptionsList()
+                                .get(j).getMax_age())) {
+                            remove(optionsList.get(i).getOptionsList(), j);
+                            j--;
+                        }
+                    }
+                }
+            }
+        }
+
+        //3rd level
+        for (int i = 0; i <optionsList.size() ; i++) {
+            if (optionsList.get(i).getOptionsList()!=null) {
+                for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                        for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
+                            if(!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMin_age().equalsIgnoreCase("") && !optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMax_age().equalsIgnoreCase("")) {
+                                if (age < Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMin_age())) {
+//                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
+                                    remove(optionsList.get(i).getOptionsList().get(j).getOptionsList(), k);
+                                    k--;
+                                }
+
+                                else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMax_age())) {
+                                    remove(optionsList.get(i).getOptionsList().get(j).getOptionsList(), k);
+                                    k--;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        //4th level
+        for (int i = 0; i <optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList()!=null) {
+                for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                        for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
+                            if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList() != null) {
+                                for (int l = 0; l <optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
+
+                                    if(!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
+                                            .getMin_age().equalsIgnoreCase("") && !optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
+                                            .getMax_age().equalsIgnoreCase("")) {
+
+                                        if (age < Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
+                                                .getMin_age())) {
+//                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
+                                            remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), l);
+                                            l--;
+                                        }
+
+                                        else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
+                                                .getMax_age())) {
+                                            remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), l);
+                                            l--;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        //5th level
+        for (int i = 0; i <optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList()!=null) {
+                for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                        for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
+                            if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList() != null) {
+                                for (int l = 0; l <optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
+                                    if(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                            .get(l).getOptionsList() != null) {
+                                        for (int m = 0; m < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                                .get(l).getOptionsList().size(); m++) {
+
+                                            if(!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                                    .get(l).getOptionsList().get(m).getMin_age().equalsIgnoreCase("") && !optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                                    .get(l).getOptionsList().get(m).getMax_age().equalsIgnoreCase("")) {
+                                                if (age < Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                                        .get(l).getOptionsList().get(m).getMin_age())) {
+//                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
+                                                    remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                                            .get(l).getOptionsList(), m);
+                                                    m--;
+                                                }
+
+                                                else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                                        .get(l).getOptionsList().get(m).getMax_age())) {
+
+                                                    remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                                            .get(l).getOptionsList(), m);
+                                                    m--;
+
+                                                }
+                                            }
+                                    }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+    }
+
     public void fetchItem(String s) {
 
         //for 1st level
@@ -2063,14 +2210,14 @@ public class Node implements Serializable {
                                         for (int m = 0; m < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                                 .get(l).getOptionsList().size(); m++) {
 
-                                        if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
-                                                .get(l).getOptionsList().get(m).getGender().equalsIgnoreCase(s)) {
+                                            if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                                    .get(l).getOptionsList().get(m).getGender().equalsIgnoreCase(s)) {
 //                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
-                                            remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
-                                                    .get(l).getOptionsList(), m);
-                                            m--;
+                                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                                        .get(l).getOptionsList(), m);
+                                                m--;
+                                            }
                                         }
-                                    }
                                     }
                                 }
                             }
@@ -2082,6 +2229,7 @@ public class Node implements Serializable {
 
 
     }
+
 
     // removes options specific to index from the json
     public void remove(List<Node> no, int index) {
