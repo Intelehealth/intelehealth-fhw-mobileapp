@@ -260,8 +260,11 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         else if(mgender.equalsIgnoreCase("F")) {
             physicalExamMap.fetchItem("1");
         }
-       // new PhysicalExam(FileUtils.encodeJSON(this, mFileName)).refresh(selectedExamsList);
-        physicalExamMap.refresh(selectedExamsList);
+        physicalExamMap.refresh(selectedExamsList); //refreshing the physical exam nodes with updated json
+
+        // flaoting value of age is passed to Node for comparison...
+        physicalExamMap.fetchAge(float_ageYear_Month);
+        physicalExamMap.refresh(selectedExamsList); //refreshing the physical exam nodes with updated json
 
         adapter = new QuestionsAdapter(this, physicalExamMap, physExam_recyclerView, this.getClass().getSimpleName(), this, false);
         physExam_recyclerView.setAdapter(adapter);

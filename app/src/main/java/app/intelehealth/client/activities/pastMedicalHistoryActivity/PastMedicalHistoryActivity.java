@@ -240,6 +240,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             patientHistoryMap.fetchItem("1");
         }
 
+        // flaoting value of age is passed to Node for comparison...
+        patientHistoryMap.fetchAge(float_ageYear_Month);
+
         adapter = new QuestionsAdapter(this, patientHistoryMap, pastMedical_recyclerView, this.getClass().getSimpleName(), this, false);
         pastMedical_recyclerView.setAdapter(adapter);
 
