@@ -57,6 +57,8 @@ import app.intelehealth.client.utilities.SessionManager;
 
 import app.intelehealth.client.utilities.exception.DAOException;
 
+import static app.intelehealth.client.database.dao.PatientsDAO.fetch_gender;
+
 public class ComplaintNodeActivity extends AppCompatActivity {
     final String TAG = "Complaint Node Activity";
 
@@ -77,6 +79,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     TextView tv_selectComplaint;
     RecyclerView list_recyclerView;
     private float float_ageYear_Month;
+    String mgender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,7 +169,24 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 if (currentFile != null) {
                     Log.i(TAG, currentFile.toString());
                     Node currentNode = new Node(currentFile);
-                    complaints.add(currentNode);
+
+                    mgender = fetch_gender(patientUuid);
+
+                    if(mgender.equalsIgnoreCase("M") &&
+                            currentNode.getGender().equalsIgnoreCase("0")) {
+                        //do nothing - skip this question
+                    }
+                    else if(mgender.equalsIgnoreCase("F") &&
+                            currentNode.getGender().equalsIgnoreCase("1")) {
+
+                        //do nothing - skip this question
+                    }
+                    else {
+                        // flaoting value of age is passed to Node for comparison...
+                        currentNode.fetchAge(float_ageYear_Month);
+                        complaints.add(currentNode);
+                    }
+
                 }
             }
         } else {
@@ -181,7 +201,29 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     String fileLocation = "engines/" + name;
                     currentFile = FileUtils.encodeJSON(this, fileLocation);
                     Node currentNode = new Node(currentFile);
-                    complaints.add(currentNode);
+
+                    mgender = fetch_gender(patientUuid);
+
+                    if(mgender.equalsIgnoreCase("M") &&
+                    currentNode.getGender().equalsIgnoreCase("0")) {
+                        //nothing
+                    }
+                    else if(mgender.equalsIgnoreCase("F") &&
+                            currentNode.getGender().equalsIgnoreCase("1")) {
+                        //currentNode.fetchItem("1");
+                        //nothing
+                    }
+                    else {
+                        // flaoting value of age is passed to Node for comparison...
+                        currentNode.fetchAge(float_ageYear_Month);
+                        complaints.add(currentNode);
+                    }
+
+
+
+
+
+
                 }
             }
         }
