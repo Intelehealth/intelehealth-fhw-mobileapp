@@ -273,7 +273,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String encounterUuid;
     String encounterVitals;
     String encounterUuidAdultIntial;
-   // Boolean isreturningWhatsapp = true;
+    // Boolean isreturningWhatsapp = true;
     String EncounterAdultInitial_LatestVisit;
 
     ProgressBar mProgressBar;

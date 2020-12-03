@@ -38,7 +38,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -186,7 +185,6 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 physicalExamMap = new PhysicalExam(FileUtils.encodeJSON(this, mFileName), selectedExamsList);
 
 
-
             }
         }
 
@@ -196,7 +194,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        recyclerViewIndicator=findViewById(R.id.recyclerViewIndicator);
+        recyclerViewIndicator = findViewById(R.id.recyclerViewIndicator);
         setSupportActionBar(toolbar);
 
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
@@ -207,7 +205,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
         setTitle(patientName + ": " + getTitle());
         physExam_recyclerView = findViewById(R.id.physExam_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         physExam_recyclerView.setLayoutManager(linearLayoutManager);
         physExam_recyclerView.setItemAnimator(new DefaultItemAnimator());
         PagerSnapHelper helper = new PagerSnapHelper();
@@ -255,10 +253,9 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
         mgender = fetch_gender(patientUuid);
 
-        if(mgender.equalsIgnoreCase("M")) {
+        if (mgender.equalsIgnoreCase("M")) {
             physicalExamMap.fetchItem("0");
-        }
-        else if(mgender.equalsIgnoreCase("F")) {
+        } else if (mgender.equalsIgnoreCase("F")) {
             physicalExamMap.fetchItem("1");
         }
         physicalExamMap.refresh(selectedExamsList); //refreshing the physical exam nodes with updated json
@@ -384,7 +381,6 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             Node.subLevelQuestion(question, this, adapter, filePath.toString(), imageName);
         }
     }
-
 
 
     /**

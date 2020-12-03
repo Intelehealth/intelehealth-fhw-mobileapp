@@ -30,7 +30,6 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 
 
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -486,10 +485,9 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
         mgender = fetch_gender(patientUuid);
 
-        if(mgender.equalsIgnoreCase("M")) {
+        if (mgender.equalsIgnoreCase("M")) {
             currentNode.fetchItem("0");
-        }
-        else if(mgender.equalsIgnoreCase("F")) {
+        } else if (mgender.equalsIgnoreCase("F")) {
             currentNode.fetchItem("1");
         }
 
@@ -596,10 +594,9 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
             mgender = fetch_gender(patientUuid);
 
-            if(mgender.equalsIgnoreCase("M")) {
+            if (mgender.equalsIgnoreCase("M")) {
                 currentNode.fetchItem("0");
-            }
-            else if(mgender.equalsIgnoreCase("F")) {
+            } else if (mgender.equalsIgnoreCase("F")) {
                 currentNode.fetchItem("1");
             }
 

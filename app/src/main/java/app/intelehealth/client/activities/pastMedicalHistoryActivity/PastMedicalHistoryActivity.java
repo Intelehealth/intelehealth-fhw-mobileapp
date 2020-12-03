@@ -134,7 +134,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
 
-            if(edit_PatHist == null)
+            if (edit_PatHist == null)
                 new_result = getPastMedicalVisitData();
         }
 
@@ -211,7 +211,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
             pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-            
+
             Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
             nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
             nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
@@ -221,8 +221,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
         }
-
-
 
 
         setTitle(getString(R.string.title_activity_patient_history));
@@ -236,9 +234,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        recyclerViewIndicator=findViewById(R.id.recyclerViewIndicator);
+        recyclerViewIndicator = findViewById(R.id.recyclerViewIndicator);
         pastMedical_recyclerView = findViewById(R.id.pastMedical_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         pastMedical_recyclerView.setLayoutManager(linearLayoutManager);
         pastMedical_recyclerView.setItemAnimator(new DefaultItemAnimator());
         PagerSnapHelper helper = new PagerSnapHelper();
@@ -277,10 +275,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
         mgender = fetch_gender(patientUuid);
 
-        if(mgender.equalsIgnoreCase("M")) {
+        if (mgender.equalsIgnoreCase("M")) {
             patientHistoryMap.fetchItem("0");
-        }
-        else if(mgender.equalsIgnoreCase("F")) {
+        } else if (mgender.equalsIgnoreCase("F")) {
             patientHistoryMap.fetchItem("1");
         }
 
@@ -514,8 +511,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     }
 
 
-
-
     public void AnimateView(View v) {
 
         int fadeInDuration = 500; // Configure time values here
@@ -557,7 +552,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         String result = "";
 
         db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-       // String[] columns = {"value"};
+        // String[] columns = {"value"};
 
         String[] columns = {"value", " conceptuuid"};
         try {
