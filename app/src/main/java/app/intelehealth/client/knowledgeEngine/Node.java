@@ -2228,7 +2228,8 @@ public class Node implements Serializable {
 
 
     // removes options specific to index from the json
-    public void remove(List<Node> no, int index) {
+    public void remove(List<Node> no, int index)
+    {
         no.remove(index);
     }
 

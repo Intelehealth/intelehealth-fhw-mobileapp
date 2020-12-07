@@ -169,39 +169,45 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     Log.i(TAG, currentFile.toString());
                     Node currentNode = new Node(currentFile);
 
-                    mgender = fetch_gender(patientUuid);
+                    complaints.add(currentNode);
+                }
+            }
+            //remove items from complaints array here...
+            mgender = fetch_gender(patientUuid);
 
-                    if (mgender.equalsIgnoreCase("M") &&
-                            currentNode.getGender().equalsIgnoreCase("0")) {
-                        //do nothing - skip this question
-                    } else if (mgender.equalsIgnoreCase("F") &&
-                            currentNode.getGender().equalsIgnoreCase("1")) {
+            for (int i = 0; i < complaints.size(); i++) {
+                if (mgender.equalsIgnoreCase("M") &&
+                        complaints.get(i).getGender().equalsIgnoreCase("0")) {
 
-                        //do nothing - skip this question
-                    } else {
-                        // flaoting value of age is passed to Node for comparison...
-                       // currentNode.fetchAge(float_ageYear_Month);
-                        if(!currentNode.getMin_age().equalsIgnoreCase("") &&
-                        !currentNode.getMax_age().equalsIgnoreCase("")) {
+                    complaints.get(i).remove(complaints, i);
+                    i--;
+                } else if (mgender.equalsIgnoreCase("F") &&
+                        complaints.get(i).getGender().equalsIgnoreCase("1")) {
+                    complaints.get(i).remove(complaints, i);
+                    i--;
+                }
+            }
 
-                            if(float_ageYear_Month < Float.parseFloat(currentNode.getMin_age())) {
-                                //do nothing...
-                            }
-                            else if(float_ageYear_Month > Float.parseFloat(currentNode.getMax_age())) {
-                                //do nothing...
-                            }
-                            else {
-                                complaints.add(currentNode);
-                            }
-                        }
-                        else {
-                            complaints.add(currentNode);
-                        }
+            for (int i = 0; i < complaints.size(); i++) {
+                if (!complaints.get(i).getMin_age().equalsIgnoreCase("") &&
+                        !complaints.get(i).getMax_age().equalsIgnoreCase("")) {
 
+                    if (float_ageYear_Month < Float.parseFloat(complaints.get(i).getMin_age().trim())) { //age = 1 , min_age = 5
+                        complaints.get(i).remove(complaints, i);
+                        i--;
+                    }
+
+                    //else if(!optionsList.get(i).getMax_age().equalsIgnoreCase(""))
+                    else if (float_ageYear_Month > Float.parseFloat(complaints.get(i).getMax_age())) { //age = 15 , max_age = 10
+                        complaints.get(i).remove(complaints, i);
+                        i--;
                     }
 
                 }
+
+
             }
+
         } else {
             String[] fileNames = new String[0];
             try {
@@ -214,24 +220,46 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     String fileLocation = "engines/" + name;
                     currentFile = FileUtils.encodeJSON(this, fileLocation);
                     Node currentNode = new Node(currentFile);
+                    complaints.add(currentNode);
+                }
 
-                    mgender = fetch_gender(patientUuid);
+                //remove items from complaints array here...
+                mgender = fetch_gender(patientUuid);
 
+                for (int i = 0; i < complaints.size(); i++) {
                     if (mgender.equalsIgnoreCase("M") &&
-                            currentNode.getGender().equalsIgnoreCase("0")) {
-                        //nothing
+                            complaints.get(i).getGender().equalsIgnoreCase("0")) {
+
+                        complaints.get(i).remove(complaints, i);
+                        i--;
                     } else if (mgender.equalsIgnoreCase("F") &&
-                            currentNode.getGender().equalsIgnoreCase("1")) {
-                        //currentNode.fetchItem("1");
-                        //nothing
-                    } else {
-                        // flaoting value of age is passed to Node for comparison...
-                        currentNode.fetchAge(float_ageYear_Month);
-                        complaints.add(currentNode);
+                            complaints.get(i).getGender().equalsIgnoreCase("1")) {
+                        complaints.get(i).remove(complaints, i);
+                        i--;
+                    }
+                }
+
+                for (int i = 0; i < complaints.size(); i++) {
+                    if (!complaints.get(i).getMin_age().equalsIgnoreCase("") &&
+                            !complaints.get(i).getMax_age().equalsIgnoreCase("")) {
+
+                        if (float_ageYear_Month < Float.parseFloat(complaints.get(i).getMin_age().trim())) { //age = 1 , min_age = 5
+                            complaints.get(i).remove(complaints, i);
+                            i--;
+                        }
+
+                        //else if(!optionsList.get(i).getMax_age().equalsIgnoreCase(""))
+                        else if (float_ageYear_Month > Float.parseFloat(complaints.get(i).getMax_age())) { //age = 15 , max_age = 10
+                            complaints.get(i).remove(complaints, i);
+                            i--;
+                        }
+
                     }
 
 
                 }
+
+
             }
         }
 
