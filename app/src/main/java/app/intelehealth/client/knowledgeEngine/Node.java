@@ -151,9 +151,9 @@ public class Node implements Serializable {
 
             this.gender = jsonNode.optString("gender");
 
-            this.min_age = jsonNode.optString("min_age");
+            this.min_age = jsonNode.optString("age_min");
 
-            this.max_age = jsonNode.optString("max_age");
+            this.max_age = jsonNode.optString("age_max");
 
             JSONArray optionsArray = jsonNode.optJSONArray("options");
             if (optionsArray == null) {
