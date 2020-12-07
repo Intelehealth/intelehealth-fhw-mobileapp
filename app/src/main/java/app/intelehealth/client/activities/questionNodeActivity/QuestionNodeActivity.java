@@ -494,14 +494,6 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         // flaoting value of age is passed to Node for comparison...
         currentNode.fetchAge(float_ageYear_Month);
 
-//        //min age = 5 ... user age = 1...
-//        if(float_ageYear_Month <= Float.parseFloat(currentNode.getMin_age())) {
-//
-//        }
-//        //max age = 10 ... user age = 15 ...
-//        if(float_ageYear_Month >= Float.parseFloat(currentNode.getMax_age())) {
-//
-//        }
 
         adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, false);
         question_recyclerView.setAdapter(adapter);
@@ -587,10 +579,6 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             assoSympNode.getOptionsList().get(0).setTerminal(false);
 
             currentNode = assoSympNode;
-           /* adapter = new CustomExpandableListAdapter(this, currentNode, this.getClass().getSimpleName());
-            questionListView.setAdapter(adapter);
-            questionListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
-            questionListView.expandGroup(0);*/
 
             mgender = fetch_gender(patientUuid);
 
@@ -599,6 +587,9 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             } else if (mgender.equalsIgnoreCase("F")) {
                 currentNode.fetchItem("1");
             }
+
+            // flaoting value of age is passed to Node for comparison...
+            currentNode.fetchAge(float_ageYear_Month);
 
             adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, true);
             question_recyclerView.setAdapter(adapter);
