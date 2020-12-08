@@ -54,14 +54,14 @@ public class VitalsActivity extends AppCompatActivity {
     private String patientUuid;
     private String visitUuid;
     private String encounterVitals;
-
+    private float float_ageYear_Month;
     int flag_height = 0, flag_weight = 0;
     String heightvalue;
     String weightvalue;
     ConfigUtils configUtils = new ConfigUtils(VitalsActivity.this);
 
     VitalsObject results = new VitalsObject();
-    private String encounterAdultIntials = "";
+    private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
     EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp;
 
     @Override
@@ -73,9 +73,11 @@ public class VitalsActivity extends AppCompatActivity {
             visitUuid = intent.getStringExtra("visitUuid");
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
+            EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
+            float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             Log.v(TAG, "Patient ID: " + patientUuid);
             Log.v(TAG, "Visit ID: " + visitUuid);
             Log.v(TAG, "Patient Name: " + patientName);
@@ -898,6 +900,7 @@ public class VitalsActivity extends AppCompatActivity {
                 intent.putExtra("visitUuid", visitUuid);
                 intent.putExtra("encounterUuidVitals", encounterVitals);
                 intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                 intent.putExtra("state", state);
                 intent.putExtra("name", patientName);
                 intent.putExtra("tag", intentTag);
@@ -1015,8 +1018,10 @@ public class VitalsActivity extends AppCompatActivity {
             intent.putExtra("visitUuid", visitUuid);
             intent.putExtra("encounterUuidVitals", encounterVitals);
             intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+            intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
+            intent.putExtra("float_ageYear_Month", float_ageYear_Month);
             intent.putExtra("tag", intentTag);
             startActivity(intent);
         }

@@ -62,4 +62,15 @@ public class UrlModifiers {
         return BASE_URL + provider;
     }
 
+
+    /**
+     * @return BASE_URL which returns the partial url for whatsapp prescription share feature.
+     */
+    public String setwhatsappPresciptionUrl() {
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        String BASE_URL = "https://" + sessionManager.getServerUrl() +
+                "/preApi/index.jsp?v=";
+        return BASE_URL;
+    }
+
 }

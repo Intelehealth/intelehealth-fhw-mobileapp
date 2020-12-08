@@ -122,6 +122,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     ImageView ivPrescription;
     private String hasPrescription = "";
     Context context;
+    float float_ageYear_Month;
 
 
     @Override
@@ -218,8 +219,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 sessionManager.setReturning(returning);
 
                 String[] cols = {"value"};
-                Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for PMH
-                        new String[]{encounterDTO.getUuid(), UuidDictionary.RHK_MEDICAL_HISTORY_BLURB},
+                Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for PMH (Past Medical History)
+                        new String[]{encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB},
                         null, null, null);
 
                 if (cursor.moveToFirst()) {
@@ -235,8 +236,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 }
                 cursor.close();
 
-                Cursor cursor1 = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for FH
-                        new String[]{encounterDTO.getUuid(), UuidDictionary.RHK_MEDICAL_HISTORY_BLURB},
+                Cursor cursor1 = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for FH (Family History)
+                        new String[]{encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB},
                         null, null, null);
                 if (cursor1.moveToFirst()) {
                     // rows present
@@ -280,8 +281,10 @@ public class PatientDetailActivity extends AppCompatActivity {
                 intent2.putExtra("visitUuid", uuid);
                 intent2.putExtra("encounterUuidVitals", encounterDTO.getUuid());
                 intent2.putExtra("encounterUuidAdultIntial", "");
+                intent2.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
                 intent2.putExtra("name", fullName);
                 intent2.putExtra("tag", "new");
+                intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
                 startActivity(intent2);
             }
         });
@@ -299,6 +302,19 @@ public class PatientDetailActivity extends AppCompatActivity {
         super.onDestroy();
 
     }
+
+//    public float age_in_Decimal(String age) {
+//        float age_float = 0;
+//        //2 years 4 months 4 days
+//        //int age_int = Integer.parseInt(age.replaceAll("[\\D]", "")); //244
+//        String ageTrim = age.trim();
+//        String year = String.valueOf(ageTrim.charAt(ageTrim.indexOf("years") - 1));
+//        String month = String.valueOf(ageTrim.charAt(ageTrim.indexOf("months") - 1));
+//        String result = year + " " + month;
+//        //int month = age_.indexOf("months") - 1;
+//
+//        return age_float;
+//    }
 
     public void setDisplay(String dataString) {
 
@@ -502,6 +518,8 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         String age = DateAndTimeUtils.getAgeInYearMonth(patient_new.getDate_of_birth(), context);
         ageView.setText(age);
+        float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(patient_new.getDate_of_birth());
+
 
         String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient_new.getDate_of_birth());
         dobView.setText(dob);
@@ -592,8 +610,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 }
                 encounterCursor.close();
             }
-            familyHistory(famHistView, patientUuid);
-            pastMedicalHistory(medHistView, patientUuid);
+            familyHistory(famHistView, patientUuid, encounterAdultIntials);
+            pastMedicalHistory(medHistView, patientUuid, encounterAdultIntials);
             pastVisits(patientUuid);
 
 
@@ -777,7 +795,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                 visitSummary.putExtra("patientUuid", patientUuid);
                 visitSummary.putExtra("encounterUuidVitals", encounterVitalslocal);
                 visitSummary.putExtra("encounterUuidAdultIntial", encounterAdultIntialslocal);
+                visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
                 visitSummary.putExtra("name", patientName);
+                visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
                 visitSummary.putExtra("tag", intentTag);
                 visitSummary.putExtra("pastVisit", past_visit);
                 if (hasPrescription.equalsIgnoreCase("true")) {
@@ -830,8 +850,10 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
     }
 
-    public void familyHistory(TextView famHistView, String patientuuid) {
-        String visitSelection = "patientuuid = ? AND enddate IS NULL OR enddate = ''";
+    public void familyHistory(TextView famHistView, String patientuuid,
+                              String EncounterAdultInitials_LatestVisit) {
+        //String visitSelection = "patientuuid = ? AND enddate IS NULL OR enddate = ''";
+        String visitSelection = "patientuuid = ?";
         String[] visitArgs = {patientuuid};
         String[] visitColumns = {"uuid, startdate", "enddate"};
         String visitOrderBy = "startdate";
@@ -871,7 +893,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                         encounterCursor.close();
                     }
                     String famHistSelection = "encounteruuid = ? AND conceptuuid = ? And voided!='1'";
-                    String[] famHistArgs = {encounterlocalAdultintial, UuidDictionary.RHK_FAMILY_HISTORY_BLURB};
+                    String[] famHistArgs = {EncounterAdultInitials_LatestVisit, UuidDictionary.RHK_FAMILY_HISTORY_BLURB};
                     String[] famHistColumns = {"value", " conceptuuid"};
                     Cursor famHistCursor = db.query("tbl_obs", famHistColumns, famHistSelection, famHistArgs, null, null, null);
                     famHistCursor.moveToLast();
@@ -898,8 +920,10 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     }
 
-    public void pastMedicalHistory(TextView medHistView, String patientuuid) {
-        String visitSelection = "patientuuid = ? AND enddate IS NULL OR enddate = ''";
+    public void pastMedicalHistory(TextView medHistView, String patientuuid,
+                                   String EncounterAdultInitials_LatestVisit) {
+        //String visitSelection = "patientuuid = ? AND enddate IS NULL OR enddate = ''";
+        String visitSelection = "patientuuid = ?";
         String[] visitArgs = {patientuuid};
         String[] visitColumns = {"uuid, startdate", "enddate"};
         String visitOrderBy = "startdate";
@@ -939,7 +963,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                         encounterCursor.close();
                     }
                     String medHistSelection = "encounteruuid = ? AND conceptuuid = ? And voided!='1'";
-                    String[] medHistArgs = {encounterlocalAdultintial, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
+                    String[] medHistArgs = {EncounterAdultInitials_LatestVisit, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
                     String[] medHistColumms = {"value", " conceptuuid"};
                     Cursor medHistCursor = db.query("tbl_obs", medHistColumms, medHistSelection, medHistArgs, null, null, null);
                     medHistCursor.moveToLast();
@@ -955,6 +979,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                         medHistCursor.close();
                     }
 
+                    Log.v(TAG, medHistValue);
                     if (medHistValue != null && !medHistValue.equals("")) {
                         medHistView.setText(Html.fromHtml(medHistValue));
                     } else {
