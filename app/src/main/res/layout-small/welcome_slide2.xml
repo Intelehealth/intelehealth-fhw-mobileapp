@@ -6,13 +6,13 @@
     android:background="@color/white"
     android:paddingTop="70dp">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+<!--    <ScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent">-->
 
     <ImageView
         android:id="@+id/ayu_logo"
@@ -47,25 +47,25 @@
             android:layout_marginTop="40dp"
             android:layout_marginStart="70dp"
             android:layout_marginEnd="70dp"
+            android:visibility="gone"
             android:includeFontPadding="true"
             android:background="@drawable/ic_rectangle_76"/>
 
         <Button
             android:id="@+id/button_custom_visit"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="bottom|center_horizontal"
             android:elevation="5dp"
-            android:layout_marginTop="16dp"
             android:fontFamily="@font/lato_bold"
-            android:text="@string/custom_setup"
-            android:textColor="#000000"
-            android:layout_marginStart="70dp"
-            android:layout_marginEnd="70dp"
+            android:text="@string/setup"
+            android:layout_marginTop="36dp"
+            android:textColor="@color/white"
             android:includeFontPadding="true"
             android:layout_below="@id/button_demo_visit"
-            android:background="@drawable/ic_rectangle_custom_setup" />
+            android:background="@drawable/ic_rectangle_76" />
 
-        </RelativeLayout>
-    </ScrollView>
+<!--        </RelativeLayout>-->
+<!--    </ScrollView>-->
 </RelativeLayout>

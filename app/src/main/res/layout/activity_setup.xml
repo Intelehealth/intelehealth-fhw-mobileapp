@@ -224,7 +224,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/prompt_password"
-                            android:imeActionId="@+id/admin_password"
                             android:imeOptions="actionNext"
                             android:inputType="textPassword"
                             android:maxLines="1"
@@ -236,10 +235,11 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
+                        android:visibility="gone"
                         android:layout_height="wrap_content">
 
                         <EditText
-                            android:id="@id/admin_password"
+                            android:id="@+id/admin_password"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/prompt_admin_password"
@@ -255,9 +255,6 @@
 
                 </LinearLayout>
                 </androidx.cardview.widget.CardView>
-
-
-
 
                     <!--<Space
                         android:layout_width="match_parent"
