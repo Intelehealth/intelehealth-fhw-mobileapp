@@ -15,7 +15,7 @@
         android:layout_above="@+id/ll_center"
         android:layout_centerHorizontal="true"
         android:layout_margin="20dp"
-        android:src="@drawable/intelehealth_i_icon_only" />
+        android:src="@mipmap/myteledoc_splash_icon" />
 
     <LinearLayout
         android:id="@+id/ll_center"
