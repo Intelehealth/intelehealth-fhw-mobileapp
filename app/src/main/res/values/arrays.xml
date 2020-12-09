@@ -3,8 +3,8 @@
 
     <string-array name="language_names">
         <item>English</item>
-        <item>Odiya</item>
-        <item>Cebuano</item>
+<!--        <item>Odiya</item>-->
+<!--        <item>Cebuano</item>-->
     </string-array>
 
     <string-array name="language_values">
