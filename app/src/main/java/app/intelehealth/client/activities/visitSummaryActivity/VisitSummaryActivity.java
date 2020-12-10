@@ -994,7 +994,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         pulseView.setText(pulse.getValue());
 
         String bpText = bpSys.getValue() + "/" + bpDias.getValue();
-        if (bpText.equals("/")) {
+        if (bpText.equals("/")) { //when new patient is being registered we get / for BP
+            bpView.setText("");
+        } else if (bpText.equalsIgnoreCase("null/null")) {
+            //when we setup app and get data from other users, we get null/null from server...
             bpView.setText("");
         } else {
             bpView.setText(bpText);
