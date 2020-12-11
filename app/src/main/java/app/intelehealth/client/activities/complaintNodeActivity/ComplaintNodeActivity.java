@@ -181,9 +181,23 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                         //do nothing - skip this question
                     }
                     else {
-                        // flaoting value of age is passed to Node for comparison...
-                        currentNode.fetchAge(float_ageYear_Month);
-                        complaints.add(currentNode);
+                        // currentNode.fetchAge(float_ageYear_Month);
+                        if(!currentNode.getMin_age().equalsIgnoreCase("") &&
+                                !currentNode.getMax_age().equalsIgnoreCase("")) {
+
+                            if(float_ageYear_Month < Float.parseFloat(currentNode.getMin_age())) {
+                                //do nothing...
+                            }
+                            else if(float_ageYear_Month > Float.parseFloat(currentNode.getMax_age())) {
+                                //do nothing...
+                            }
+                            else {
+                                complaints.add(currentNode);
+                            }
+                        }
+                        else {
+                            complaints.add(currentNode);
+                        }
                     }
 
                 }
