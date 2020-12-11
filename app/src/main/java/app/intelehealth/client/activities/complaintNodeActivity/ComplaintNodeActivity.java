@@ -35,7 +35,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -69,8 +68,8 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     String intentTag;
     SearchView searchView;
     List<Node> complaints;
-   // CustomArrayAdapter listAdapter;
-   ComplaintNodeListAdapter listAdapter;
+    // CustomArrayAdapter listAdapter;
+    ComplaintNodeListAdapter listAdapter;
     String encounterVitals;
     String encounterAdultIntials;
     EncounterDTO encounterDTO;
@@ -108,7 +107,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         encounterDTO.setVisituuid(visitUuid);
         encounterDTO.setSyncd(false);
         encounterDTO.setProvideruuid(sessionManager.getProviderID());
-        Log.d("DTO","DTOcomp: "+ encounterDTO.getProvideruuid());
+        Log.d("DTO", "DTOcomp: " + encounterDTO.getProvideruuid());
         encounterDTO.setVoided(0);
         try {
             encounterDAO.createEncountersToDB(encounterDTO);
@@ -121,7 +120,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_complaint_node);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitleTextAppearance(this,R.style.ToolbarTheme);
+        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         img_question = findViewById(R.id.img_question);
@@ -169,39 +168,45 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     Log.i(TAG, currentFile.toString());
                     Node currentNode = new Node(currentFile);
 
-                    mgender = fetch_gender(patientUuid);
+                    complaints.add(currentNode);
+                }
+            }
+            //remove items from complaints array here...
+            mgender = fetch_gender(patientUuid);
 
-                    if(mgender.equalsIgnoreCase("M") &&
-                            currentNode.getGender().equalsIgnoreCase("0")) {
-                        //do nothing - skip this question
+            for (int i = 0; i < complaints.size(); i++) {
+                if (mgender.equalsIgnoreCase("M") &&
+                        complaints.get(i).getGender().equalsIgnoreCase("0")) {
+
+                    complaints.get(i).remove(complaints, i);
+                    i--;
+                } else if (mgender.equalsIgnoreCase("F") &&
+                        complaints.get(i).getGender().equalsIgnoreCase("1")) {
+                    complaints.get(i).remove(complaints, i);
+                    i--;
+                }
+            }
+
+            for (int i = 0; i < complaints.size(); i++) {
+                if (!complaints.get(i).getMin_age().equalsIgnoreCase("") &&
+                        !complaints.get(i).getMax_age().equalsIgnoreCase("")) {
+
+                    if (float_ageYear_Month < Float.parseFloat(complaints.get(i).getMin_age().trim())) { //age = 1 , min_age = 5
+                        complaints.get(i).remove(complaints, i);
+                        i--;
                     }
-                    else if(mgender.equalsIgnoreCase("F") &&
-                            currentNode.getGender().equalsIgnoreCase("1")) {
 
-                        //do nothing - skip this question
-                    }
-                    else {
-                        // currentNode.fetchAge(float_ageYear_Month);
-                        if(!currentNode.getMin_age().equalsIgnoreCase("") &&
-                                !currentNode.getMax_age().equalsIgnoreCase("")) {
-
-                            if(float_ageYear_Month < Float.parseFloat(currentNode.getMin_age())) {
-                                //do nothing...
-                            }
-                            else if(float_ageYear_Month > Float.parseFloat(currentNode.getMax_age())) {
-                                //do nothing...
-                            }
-                            else {
-                                complaints.add(currentNode);
-                            }
-                        }
-                        else {
-                            complaints.add(currentNode);
-                        }
+                    //else if(!optionsList.get(i).getMax_age().equalsIgnoreCase(""))
+                    else if (float_ageYear_Month > Float.parseFloat(complaints.get(i).getMax_age())) { //age = 15 , max_age = 10
+                        complaints.get(i).remove(complaints, i);
+                        i--;
                     }
 
                 }
+
+
             }
+
         } else {
             String[] fileNames = new String[0];
             try {
@@ -214,22 +219,39 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     String fileLocation = "engines/" + name;
                     currentFile = FileUtils.encodeJSON(this, fileLocation);
                     Node currentNode = new Node(currentFile);
+                    complaints.add(currentNode);
+                }
+                //remove items from complaints array here...
+                mgender = fetch_gender(patientUuid);
 
-                    mgender = fetch_gender(patientUuid);
+                for (int i = 0; i < complaints.size(); i++) {
+                    if (mgender.equalsIgnoreCase("M") &&
+                            complaints.get(i).getGender().equalsIgnoreCase("0")) {
 
-                    if(mgender.equalsIgnoreCase("M") &&
-                            currentNode.getGender().equalsIgnoreCase("0")) {
-                        //nothing
+                        complaints.get(i).remove(complaints, i);
+                        i--;
+                    } else if (mgender.equalsIgnoreCase("F") &&
+                            complaints.get(i).getGender().equalsIgnoreCase("1")) {
+                        complaints.get(i).remove(complaints, i);
+                        i--;
                     }
-                    else if(mgender.equalsIgnoreCase("F") &&
-                            currentNode.getGender().equalsIgnoreCase("1")) {
-                        //currentNode.fetchItem("1");
-                        //nothing
-                    }
-                    else {
-                        // flaoting value of age is passed to Node for comparison...
-                        currentNode.fetchAge(float_ageYear_Month);
-                        complaints.add(currentNode);
+                }
+
+                for (int i = 0; i < complaints.size(); i++) {
+                    if (!complaints.get(i).getMin_age().equalsIgnoreCase("") &&
+                            !complaints.get(i).getMax_age().equalsIgnoreCase("")) {
+
+                        if (float_ageYear_Month < Float.parseFloat(complaints.get(i).getMin_age().trim())) { //age = 1 , min_age = 5
+                            complaints.get(i).remove(complaints, i);
+                            i--;
+                        }
+
+                        //else if(!optionsList.get(i).getMax_age().equalsIgnoreCase(""))
+                        else if (float_ageYear_Month > Float.parseFloat(complaints.get(i).getMax_age())) { //age = 15 , max_age = 10
+                            complaints.get(i).remove(complaints, i);
+                            i--;
+                        }
+
                     }
 
                 }
@@ -254,7 +276,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         });*/
 
         listAdapter
-                 = new ComplaintNodeListAdapter(this,complaints);
+                = new ComplaintNodeListAdapter(this, complaints);
         list_recyclerView.setAdapter(listAdapter);
 
         img_question.setVisibility(View.VISIBLE);
@@ -307,11 +329,11 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     }
                 });
                 AlertDialog alertDialog = alertDialogBuilder.show();
-               // alertDialog.show();
+                // alertDialog.show();
                 Button pb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
                 pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
                 //pb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
-                IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
+                IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
             } else {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
 //                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
@@ -355,10 +377,10 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
                 pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
-               // pb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
+                // pb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
                 nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
                 //nb.setTypeface(Typeface.DEFAULT,Typeface.BOLD);
-                IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
+                IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
             }
         }
     }
@@ -397,7 +419,6 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
         return true;
     }
-
 
 
     // Animate views and handle their visibility
