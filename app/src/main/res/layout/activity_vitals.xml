@@ -6,7 +6,7 @@
     android:id="@+id/cl_table"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.vitalActivity.VitalsActivity">
+    tools:context="app.intelehealth.client.activities.vitalActivity.VitalsActivity">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
