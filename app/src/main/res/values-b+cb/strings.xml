@@ -451,8 +451,8 @@
     <string name="permission_denied">Permission Denied\n</string>
     <string name="reject_permission_results"><![CDATA[If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]]]></string>
     <string name="current_time"><![CDATA[\"Current time => \"]]></string>
-    <string name="temperature_C">\"Temperature(C): \"</string>
-    <string name="temperature_F">\"Temperature(F): \"</string>
+    <string name="temperature_C">"Temperature(C): "</string>
+    <string name="temperature_F">"Temperature(F): "</string>
     <string name="no_history_family_found">No history of illness in family provided.</string>
     <string name="no_history_patient_illness_found">No history of patient\'s illness provided.</string>
     <string name="dr_registration_no">\"Registration No: \"</string>
@@ -464,6 +464,14 @@
     <string name="patient_DOB">\"Patient DOB: \"</string>
     <string name="error_non_decimal_no_added">Error: non-decimal number entered.</string>
     <string name="sure_to_logout">Are you sure you want to Logout?</string>
+    <string name="whatsapp_presc_toast">Select prescription PDF from file explorer - Internal storage/Intelehealth_PDF</string>
     <string name="contact">Contact</string>
+    <string name="enter_mobile_number_to_share_prescription">Enter the mobile number to which you want to share the prescription.</string>
+    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I (Sevika) confirm that I have read out the privacy notice and consent to the patient.</string>
+    <string name="enter_10_digits">Enter 10 digits</string>
+    <string name="please_read_out_privacy_consent_first">Please read out the Privacy Consent first.</string>
+    <string name="download_prescription_first_before_sharing">Download prescription first before sharing</string>
+    <string name="share">Share</string>
+    <string name="view_print">View/Print</string>
 
 </resources>

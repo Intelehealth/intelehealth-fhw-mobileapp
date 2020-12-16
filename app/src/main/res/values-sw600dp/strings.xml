@@ -6,6 +6,7 @@
     <string name="skip">skip</string>
     <string name="start">Start</string>
     <string name="who_is_this_napplication_for">Who is this \napplication for?</string>
+    <string name="whatsapp_presc_toast">Select prescription PDF from file explorer - Internal storage/EkalArogya_PDF</string>
     <string name="sample_text">sample text</string>
     <string name="test_2_vibha_onplus_6t_10fke_7">Test 2 Vibha onplus 6T, 10FKE-7</string>
     <string name="age_11_years_5_months">Age: 11 years, 5 months</string>
@@ -19,8 +20,8 @@
     <string name="i_need_assistance">" and I need some assistance."</string>
     <string name="economic_values_missing">Economic values are missing</string>
     <string name="education_values_missing">Education values are missing</string>
-    <string name="intelehealth_a_telemedicine_platform">Intelehealth is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
-    <string name="intelehealth_name">Intelehealth</string>
+    <string name="intelehealth_a_telemedicine_platform">Ekal Arogya is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
+    <string name="intelehealth_name">Ekal Arogya</string>
     <string name="Ayu_name">Ayu</string>
     <string name="close_button">Close</string>
     <string name="active_tag_patientDetail">" Active"</string>
@@ -46,4 +47,12 @@
     <string name="error_non_decimal_no_added">Error: non-decimal number entered.</string>
     <string name="contact">Contact</string>
     <string name="patient">Patient</string>
+    <string name="enter_mobile_number_to_share_prescription">Enter the mobile number to which you want to share the prescription.</string>
+    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I (Sevika) confirm that I have read out the privacy notice and consent to the patient.</string>
+    <string name="enter_10_digits">Enter 10 digits</string>
+    <string name="please_read_out_privacy_consent_first">Please read out the Privacy Consent first.</string>
+    <string name="download_prescription_first_before_sharing">Download prescription first before sharing</string>
+    <string name="share">Share</string>
+    <string name="view_print">View/Print</string>
+
 </resources>

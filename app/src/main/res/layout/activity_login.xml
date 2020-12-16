@@ -10,12 +10,12 @@
 
     <ImageView
         android:id="@+id/iv_logo"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         android:layout_above="@+id/ll_center"
         android:layout_centerHorizontal="true"
         android:layout_margin="20dp"
-        android:src="@drawable/intelehealth_i_icon_only" />
+        android:src="@drawable/ic_round_app" />
 
     <LinearLayout
         android:id="@+id/ll_center"
