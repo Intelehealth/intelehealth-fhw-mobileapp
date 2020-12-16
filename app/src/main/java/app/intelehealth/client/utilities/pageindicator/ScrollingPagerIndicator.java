@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.intelehealth.ekalarogya.R;
+import app.intelehealth.client.R;
 
 
 public class ScrollingPagerIndicator extends View {

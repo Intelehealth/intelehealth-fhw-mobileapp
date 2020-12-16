@@ -15,7 +15,7 @@ import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Locale;
 
-import org.intelehealth.ekalarogya.R;
+import app.intelehealth.client.R;
 import app.intelehealth.client.knowledgeEngine.Node;
 
 
