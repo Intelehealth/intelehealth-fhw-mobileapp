@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.IntroActivity.IntroActivity">
+    tools:context="app.intelehealth.client.activities.IntroActivity.IntroActivity">
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"

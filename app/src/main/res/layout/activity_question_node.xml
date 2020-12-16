@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:layout_weight="1"
     android:orientation="vertical"
-    tools:context=".activities.questionNodeActivity.QuestionNodeActivity">
+    tools:context="app.intelehealth.client.activities.questionNodeActivity.QuestionNodeActivity">
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="0dp"
@@ -30,7 +30,7 @@
 
 
 
-<org.intelehealth.ekalarogya.utilities.pageindicator.ScrollingPagerIndicator
+<app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator
     android:id="@+id/recyclerViewIndicator"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
 android:layout_gravity="center"
     app:layout_constraintTop_toBottomOf="@+id/recyclerView">
 
-</org.intelehealth.ekalarogya.utilities.pageindicator.ScrollingPagerIndicator>
+</app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/question_recyclerView"
