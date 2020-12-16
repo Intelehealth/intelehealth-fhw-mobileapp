@@ -5,12 +5,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -20,7 +22,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 
 import org.json.JSONException;
@@ -476,7 +477,7 @@ public class VitalsActivity extends AppCompatActivity {
             double bmi_value = numerator / denominator;
             DecimalFormat df = new DecimalFormat("0.00");
             mBMI.setText(df.format(bmi_value));
-            Log.d("BMI","BMI: "+mBMI.getText().toString());
+            Log.d("BMI", "BMI: " + mBMI.getText().toString());
             //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
         } else if (flag_height == 0 || flag_weight == 0) {
             // do nothing
@@ -762,9 +763,7 @@ public class VitalsActivity extends AppCompatActivity {
             try {
                 if (mHeight.getText() != null && !mHeight.getText().toString().equals("")) {
                     results.setHeight((mHeight.getText().toString()));
-                }
-                else if(mHeight.getText().toString().equals(""))
-                {
+                } else if (mHeight.getText().toString().equals("")) {
                     results.setHeight("0");
                 }
                 if (mWeight.getText() != null) {
@@ -814,12 +813,9 @@ public class VitalsActivity extends AppCompatActivity {
                 obsDTO.setConceptuuid(UuidDictionary.HEIGHT);
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
-                if(results.getHeight().equals(""))
-                {
+                if (results.getHeight().equals("")) {
                     obsDTO.setValue("0");
-                }
-                else
-                {
+                } else {
                     obsDTO.setValue(results.getHeight());
                 }
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.HEIGHT));
@@ -916,12 +912,9 @@ public class VitalsActivity extends AppCompatActivity {
             obsDTO.setConceptuuid(UuidDictionary.HEIGHT);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
-            if(results.getHeight().equals(""))
-            {
+            if (results.getHeight().equals("")) {
                 obsDTO.setValue("0");
-            }
-            else
-            {
+            } else {
                 obsDTO.setValue(results.getHeight());
             }
 
