@@ -61,7 +61,7 @@ public class VitalsActivity extends AppCompatActivity {
     ConfigUtils configUtils = new ConfigUtils(VitalsActivity.this);
 
     VitalsObject results = new VitalsObject();
-    private String encounterAdultIntials = "";
+    private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
     EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp;
 
     @Override
@@ -73,6 +73,7 @@ public class VitalsActivity extends AppCompatActivity {
             visitUuid = intent.getStringExtra("visitUuid");
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
+            EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
@@ -898,6 +899,7 @@ public class VitalsActivity extends AppCompatActivity {
                 intent.putExtra("visitUuid", visitUuid);
                 intent.putExtra("encounterUuidVitals", encounterVitals);
                 intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                 intent.putExtra("state", state);
                 intent.putExtra("name", patientName);
                 intent.putExtra("tag", intentTag);
@@ -1015,6 +1017,7 @@ public class VitalsActivity extends AppCompatActivity {
             intent.putExtra("visitUuid", visitUuid);
             intent.putExtra("encounterUuidVitals", encounterVitals);
             intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+            intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
             intent.putExtra("tag", intentTag);

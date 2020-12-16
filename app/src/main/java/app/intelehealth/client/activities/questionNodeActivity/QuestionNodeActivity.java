@@ -96,7 +96,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     String insertion = "";
     private SharedPreferences prefs;
     private String encounterVitals;
-    private String encounterAdultIntials;
+    private String encounterAdultIntials, EncounterAdultInitial_LatestVisit;
 
     private List<Node> optionsList = new ArrayList<>();
     Node assoSympNode;
@@ -120,6 +120,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             state = intent.getStringExtra("state");
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
+            EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             complaints = intent.getStringArrayListExtra("complaints");
@@ -358,6 +359,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     intent.putExtra("visitUuid", visitUuid);
                     intent.putExtra("encounterUuidVitals", encounterVitals);
                     intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                    intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
@@ -374,6 +376,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     intent.putExtra("visitUuid", visitUuid);
                     intent.putExtra("encounterUuidVitals", encounterVitals);
                     intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                    intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
                     intent.putExtra("tag", intentTag);
