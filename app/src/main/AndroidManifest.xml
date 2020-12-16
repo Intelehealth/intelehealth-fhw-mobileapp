@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.intelehealth.ekalarogya">
+    package="app.intelehealth.client">
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
@@ -25,7 +25,7 @@
         android:required="false" />
 
     <application
-        android:name="org.intelehealth.ekalarogya.app.IntelehealthApplication"
+        android:name=".app.IntelehealthApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -38,123 +38,123 @@
         android:usesCleartextTraffic="true">
 
         <activity
-            android:name="org.intelehealth.ekalarogya.activities.privacyNoticeActivity.PrivacyNotice_Activity"
+            android:name=".activities.privacyNoticeActivity.PrivacyNotice_Activity"
             android:label="@string/title_activity_privacy_notice"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ekalarogya.activities.additionalDocumentsActivity.AdditionalDocumentsActivity"
+            android:name=".activities.additionalDocumentsActivity.AdditionalDocumentsActivity"
             android:label="@string/title_activity_additional_documents"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ekalarogya.activities.patientSurveyActivity.PatientSurveyActivity"
+            android:name=".activities.patientSurveyActivity.PatientSurveyActivity"
             android:label="@string/title_activity_patient_survey"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ekalarogya.activities.physcialExamActivity.PhysicalExamActivity"
+            android:name=".activities.physcialExamActivity.PhysicalExamActivity"
             android:label="@string/title_activity_physical_exam"
-            android:parentActivityName="org.intelehealth.ekalarogya.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
+            android:parentActivityName=".activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name="org.intelehealth.ekalarogya.activities.familyHistoryActivity.FamilyHistoryActivity"
+            android:name=".activities.familyHistoryActivity.FamilyHistoryActivity"
             android:label="@string/title_activity_family_history"
             android:configChanges="uiMode"
-            android:parentActivityName="org.intelehealth.ekalarogya.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
+            android:parentActivityName=".activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name="org.intelehealth.ekalarogya.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
+            android:name=".activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
             android:label="@string/title_activity_past_medical_history"
-            android:parentActivityName="org.intelehealth.ekalarogya.activities.questionNodeActivity.QuestionNodeActivity"
+            android:parentActivityName=".activities.questionNodeActivity.QuestionNodeActivity"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name="org.intelehealth.ekalarogya.activities.questionNodeActivity.QuestionNodeActivity"
+            android:name=".activities.questionNodeActivity.QuestionNodeActivity"
             android:label="@string/title_activity_question_node"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name="org.intelehealth.ekalarogya.activities.complaintNodeActivity.ComplaintNodeActivity"
+            android:name=".activities.complaintNodeActivity.ComplaintNodeActivity"
             android:label="@string/title_activity_complaint_node"
             android:configChanges="uiMode"
-            android:parentActivityName="org.intelehealth.ekalarogya.activities.identificationActivity.IdentificationActivity"
+            android:parentActivityName=".activities.identificationActivity.IdentificationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
 
         <activity
-            android:name="org.intelehealth.ekalarogya.activities.IntroActivity.IntroActivity"
+            android:name=".activities.IntroActivity.IntroActivity"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name="org.intelehealth.ekalarogya.activities.visitSummaryActivity.VisitSummaryActivity"
+            android:name=".activities.visitSummaryActivity.VisitSummaryActivity"
             android:configChanges="orientation|keyboardHidden|uiMode"
             android:label="@string/title_activity_visit_summary"
-            android:parentActivityName="org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity"
+            android:parentActivityName=".activities.homeActivity.HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity" />
+                android:value=".activities.homeActivity.HomeActivity" />
         </activity>
         <activity
-            android:name="org.intelehealth.ekalarogya.activities.vitalActivity.VitalsActivity"
+            android:name=".activities.vitalActivity.VitalsActivity"
             android:label="@string/title_activity_vitals"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ekalarogya.activities.patientDetailActivity.PatientDetailActivity"
+            android:name=".activities.patientDetailActivity.PatientDetailActivity"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ekalarogya.activities.cameraActivity.CameraActivity"
+            android:name=".activities.cameraActivity.CameraActivity"
             android:label="@string/title_activity_camera"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ekalarogya.activities.activitySync.ActivitySync"
+            android:name=".activities.activitySync.ActivitySync"
             android:label="@string/title_activity_sync"
             android:configChanges="uiMode"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ekalarogya.activities.videoLibraryActivity.VideoLibraryActivity"
+            android:name=".activities.videoLibraryActivity.VideoLibraryActivity"
             android:label="@string/title_activity_video_library"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ekalarogya.activities.activePatientsActivity.ActivePatientActivity"
+            android:name=".activities.activePatientsActivity.ActivePatientActivity"
             android:label="@string/title_activity_active_patient"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ekalarogya.activities.todayPatientActivity.TodayPatientActivity"
+            android:name=".activities.todayPatientActivity.TodayPatientActivity"
             android:label="@string/title_activity_today_patient"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ekalarogya.activities.searchPatientActivity.SearchPatientActivity"
+            android:name=".activities.searchPatientActivity.SearchPatientActivity"
             android:label="@string/title_activity_search_patient"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
@@ -168,42 +168,42 @@
                 android:resource="@xml/searchable" />
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity" />
+                android:value=".activities.homeActivity.HomeActivity" />
         </activity>
         <activity
-            android:name="org.intelehealth.ekalarogya.activities.identificationActivity.IdentificationActivity"
+            android:name=".activities.identificationActivity.IdentificationActivity"
             android:label="@string/title_activity_identification"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ekalarogya.activities.settingsActivity.SettingsActivity"
+            android:name=".activities.settingsActivity.SettingsActivity"
             android:configChanges="orientation|keyboardHidden|uiMode"
             android:label="@string/title_activity_settings"
-            android:parentActivityName="org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity"
+            android:parentActivityName=".activities.homeActivity.HomeActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity" />
+                android:value=".activities.homeActivity.HomeActivity" />
         </activity>
         <activity
-            android:name="org.intelehealth.ekalarogya.activities.loginActivity.LoginActivity"
+            android:name=".activities.loginActivity.LoginActivity"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity"
+            android:name=".activities.homeActivity.HomeActivity"
             android:label="@string/title_activity_home"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity" />
+                android:value=".activities.homeActivity.HomeActivity" />
         </activity>
         <activity
-            android:name="org.intelehealth.ekalarogya.activities.splash_activity.SplashActivity"
+            android:name=".activities.splash_activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -214,18 +214,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="org.intelehealth.ekalarogya.activities.setupActivity.SetupActivity"
+            android:name=".activities.setupActivity.SetupActivity"
             android:label="@string/title_activity_setup"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service
-            android:name="org.intelehealth.ekalarogya.services.OnClearFromRecentService"
+            android:name=".services.OnClearFromRecentService"
             android:stopWithTask="false" />
 
         <service
-            android:name="org.intelehealth.ekalarogya.utilities.OpenMRSAccountAuthenticatorService"
+            android:name=".utilities.OpenMRSAccountAuthenticatorService"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
@@ -236,13 +236,13 @@
                 android:resource="@xml/authenticator" />
         </service>
         <service
-            android:name="org.intelehealth.ekalarogya.services.RunAfterBootService"
+            android:name=".services.RunAfterBootService"
             android:enabled="true"
             android:exported="false"
             android:permission="" />
 
         <receiver
-            android:name="org.intelehealth.ekalarogya.syncModule.BootCompleteReceiver"
+            android:name=".syncModule.BootCompleteReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
@@ -251,20 +251,20 @@
         </receiver>
 
         <provider
-            android:name="org.intelehealth.ekalarogya.activities.searchPatientActivity.SearchSuggestionProvider"
-            android:authorities="org.intelehealth.ekalarogya.activities.searchPatientActivity.SearchSuggestionProvider"
+            android:name=".activities.searchPatientActivity.SearchSuggestionProvider"
+            android:authorities="app.intelehealth.client.activities.searchPatientActivity.SearchSuggestionProvider"
             android:exported="false" />
 
-        <service android:name="org.intelehealth.ekalarogya.services.DownloadService" />
-        <service android:name="org.intelehealth.ekalarogya.services.MyIntentService" />
-        <service android:name="org.intelehealth.ekalarogya.services.LastSyncIntentService" />
-        <service android:name="org.intelehealth.ekalarogya.services.UpdateDownloadPrescriptionService" /> <!-- Firebase Services -->
-        <service android:name="org.intelehealth.ekalarogya.services.firebase_services.MyFirebaseMessagingService">
+        <service android:name=".services.DownloadService" />
+        <service android:name=".services.MyIntentService" />
+        <service android:name=".services.LastSyncIntentService" />
+        <service android:name=".services.UpdateDownloadPrescriptionService" /> <!-- Firebase Services -->
+        <service android:name=".services.firebase_services.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name="org.intelehealth.ekalarogya.services.firebase_services.MyFirebaseInstanceIdService">
+        <service android:name=".services.firebase_services.MyFirebaseInstanceIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
