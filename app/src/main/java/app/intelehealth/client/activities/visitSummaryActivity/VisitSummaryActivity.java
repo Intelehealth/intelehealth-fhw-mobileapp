@@ -153,6 +153,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String medicalAdvice_string = "";
     String medicalAdvice_HyperLink = "";
     String isSynedFlag = "";
+    private float float_ageYear_Month;
 
 //    Spinner speciality_spinner;
 
@@ -429,6 +430,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             mSharedPreference = this.getSharedPreferences(
                     "visit_summary", Context.MODE_PRIVATE);
             patientName = intent.getStringExtra("name");
+            float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
             isPastVisit = intent.getBooleanExtra("pastVisit", false);
 //            hasPrescription = intent.getStringExtra("hasPrescription");
@@ -1075,6 +1077,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         }*/
                         intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent1.putExtra("name", patientName);
+                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                         intent1.putExtra("tag", "edit");
                         startActivity(intent1);
                         dialogInterface.dismiss();
@@ -1175,6 +1178,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent1.putExtra("encounterUuidVitals", encounterVitals);
                         intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent1.putExtra("name", patientName);
+                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                         intent1.putExtra("tag", "edit");
                         startActivity(intent1);
                         dialogInterface.dismiss();
@@ -1280,6 +1284,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent1.putExtra("encounterUuidVitals", encounterVitals);
                         intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent1.putExtra("name", patientName);
+                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                         intent1.putExtra("tag", "edit");
                         //    intent1.putStringArrayListExtra("exams", physicalExams);
                         for (String string : physicalExams)
@@ -1383,6 +1388,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         }*/
                         intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                         intent1.putExtra("name", patientName);
+                        intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                         intent1.putExtra("tag", "edit");
                         startActivity(intent1);
                         dialogInterface.dismiss();

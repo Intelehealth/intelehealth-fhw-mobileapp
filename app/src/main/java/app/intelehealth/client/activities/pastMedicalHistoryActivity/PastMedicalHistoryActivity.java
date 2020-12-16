@@ -52,6 +52,7 @@ import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.dao.EncounterDAO;
 import app.intelehealth.client.database.dao.ImagesDAO;
 import app.intelehealth.client.database.dao.ObsDAO;
+import app.intelehealth.client.database.dao.PatientsDAO;
 import app.intelehealth.client.knowledgeEngine.Node;
 import app.intelehealth.client.models.dto.ObsDTO;
 import app.intelehealth.client.utilities.FileUtils;
@@ -64,6 +65,8 @@ import app.intelehealth.client.activities.visitSummaryActivity.VisitSummaryActiv
 import app.intelehealth.client.utilities.exception.DAOException;
 import app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator;
 
+import static app.intelehealth.client.database.dao.PatientsDAO.fetch_gender;
+
 public class PastMedicalHistoryActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
 
     String patient = "patient";
@@ -72,6 +75,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     String state;
     String patientName;
     String intentTag;
+    private float float_ageYear_Month;
 
     ArrayList<String> physicalExams;
     int lastExpandedPosition = -1;
@@ -82,7 +86,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     String imageName;
     File filePath;
 
-    SQLiteDatabase localdb, db;
+    SQLiteDatabase localdb;
+    String mgender;
 
     boolean hasLicense = false;
     String edit_PatHist = "";
@@ -127,6 +132,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
+            float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
 
             if(edit_PatHist == null)
                 new_result = getPastMedicalVisitData();
@@ -191,6 +197,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                     intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
+                    intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                     intent.putExtra("tag", intentTag);
                     //    intent.putStringArrayListExtra("exams", physicalExams);
                     startActivity(intent);
@@ -212,6 +219,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             alertDialog.setCanceledOnTouchOutside(false);
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
+            
         }
 
 
@@ -265,6 +273,19 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
        /* historyListView = findViewById(R.id.patient_history_expandable_list_view);
         adapter = new CustomExpandableListAdapter(this, patientHistoryMap, this.getClass().getSimpleName()); //The adapter might change depending on the activity.
         historyListView.setAdapter(adapter);*/
+
+
+        mgender = fetch_gender(patientUuid);
+
+        if(mgender.equalsIgnoreCase("M")) {
+            patientHistoryMap.fetchItem("0");
+        }
+        else if(mgender.equalsIgnoreCase("F")) {
+            patientHistoryMap.fetchItem("1");
+        }
+
+        // flaoting value of age is passed to Node for comparison...
+        patientHistoryMap.fetchAge(float_ageYear_Month);
 
         adapter = new QuestionsAdapter(this, patientHistoryMap, pastMedical_recyclerView, this.getClass().getSimpleName(), this, false);
         pastMedical_recyclerView.setAdapter(adapter);
@@ -381,6 +402,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
+            intent.putExtra("float_ageYear_Month", float_ageYear_Month);
             intent.putExtra("tag", intentTag);
             //       intent.putStringArrayListExtra("exams", physicalExams);
             startActivity(intent);
@@ -531,27 +553,5 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
     }
 
-    private String getPastMedicalVisitData() {
-        String result = "";
-
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-       // String[] columns = {"value"};
-
-        String[] columns = {"value", " conceptuuid"};
-        try {
-            String medHistSelection = "encounteruuid = ? AND conceptuuid = ? AND voided!='1'";
-            String[] medHistArgs = {EncounterAdultInitial_LatestVisit, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
-            Cursor medHistCursor = localdb.query("tbl_obs", columns, medHistSelection, medHistArgs, null, null, null);
-            medHistCursor.moveToLast();
-            result = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
-            medHistCursor.close();
-        } catch (CursorIndexOutOfBoundsException e) {
-            result = ""; // if medical history does not exist
-        }
-
-        db.close();
-
-        return result;
-    }
 }
 

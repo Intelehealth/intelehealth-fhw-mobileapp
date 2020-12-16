@@ -30,7 +30,6 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 
 
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -63,6 +62,8 @@ import app.intelehealth.client.utilities.StringUtils;
 import app.intelehealth.client.utilities.exception.DAOException;
 import app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator;
 
+import static app.intelehealth.client.database.dao.PatientsDAO.fetch_gender;
+
 
 public class QuestionNodeActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
     final String TAG = "Question Node Activity";
@@ -71,11 +72,13 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     String state;
     String patientName;
     String intentTag;
+    String mgender;
 
     String imageName;
     File filePath;
     Boolean complaintConfirmed = false;
     SessionManager sessionManager = null;
+    private float float_ageYear_Month;
 
 
     //    Knowledge mKnowledge; //Knowledge engine
@@ -121,6 +124,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
             EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
+            float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             complaints = intent.getStringArrayListExtra("complaints");
@@ -371,7 +375,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 } else {
                     Log.i(TAG, "fabClick: " + insertion);
                     insertDb(insertion);
-                    Intent intent = new Intent(QuestionNodeActivity.this, PastMedicalHistoryActivity.class);
+                    Intent intent = new Intent
+                            (QuestionNodeActivity.this, PastMedicalHistoryActivity.class);
                     intent.putExtra("patientUuid", patientUuid);
                     intent.putExtra("visitUuid", visitUuid);
                     intent.putExtra("encounterUuidVitals", encounterVitals);
@@ -379,6 +384,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
+                    intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                     intent.putExtra("tag", intentTag);
                     Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
                     sessionManager.setVisitSummary(patientUuid, selectedExams);
@@ -477,6 +483,18 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             currentNode = complaintsNodes.get(complaintIndex);
         }
 
+        mgender = fetch_gender(patientUuid);
+
+        if (mgender.equalsIgnoreCase("M")) {
+            currentNode.fetchItem("0");
+        } else if (mgender.equalsIgnoreCase("F")) {
+            currentNode.fetchItem("1");
+        }
+
+        // flaoting value of age is passed to Node for comparison...
+        currentNode.fetchAge(float_ageYear_Month);
+
+
         adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, false);
         question_recyclerView.setAdapter(adapter);
         recyclerViewIndicator.attachToRecyclerView(question_recyclerView);
@@ -564,10 +582,19 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             assoSympNode.getOptionsList().get(0).setTerminal(false);
 
             currentNode = assoSympNode;
-           /* adapter = new CustomExpandableListAdapter(this, currentNode, this.getClass().getSimpleName());
-            questionListView.setAdapter(adapter);
-            questionListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
-            questionListView.expandGroup(0);*/
+
+
+            mgender = fetch_gender(patientUuid);
+
+            if (mgender.equalsIgnoreCase("M")) {
+                currentNode.fetchItem("0");
+            } else if (mgender.equalsIgnoreCase("F")) {
+                currentNode.fetchItem("1");
+            }
+
+            // flaoting value of age is passed to Node for comparison...
+            currentNode.fetchAge(float_ageYear_Month);
+
             adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, true);
             question_recyclerView.setAdapter(adapter);
             setTitle(patientName + ": " + currentNode.getText());
