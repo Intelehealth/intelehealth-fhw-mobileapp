@@ -113,6 +113,9 @@ public class HomeActivity extends AppCompatActivity {
 
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
+    TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
+            activeVisits_textview, videoLibrary_textview, help_textview;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,6 +155,21 @@ public class HomeActivity extends AppCompatActivity {
         c4 = findViewById(R.id.cardview_active_patients);
         c5 = findViewById(R.id.cardview_video_libraby);
         c6 = findViewById(R.id.cardview_help_whatsapp);
+
+        //card textview referrenced to fix bug of localization not working in some cases...
+        newPatient_textview = findViewById(R.id.newPatient_textview);
+        newPatient_textview.setText(R.string.new_patient);
+        findPatients_textview = findViewById(R.id.findPatients_textview);
+        findPatients_textview.setText(R.string.find_patient);
+        todaysVisits_textview = findViewById(R.id.todaysVisits_textview);
+        todaysVisits_textview.setText(R.string.today_visits);
+        activeVisits_textview = findViewById(R.id.activeVisits_textview);
+        activeVisits_textview.setText(R.string.active_visits);
+        videoLibrary_textview = findViewById(R.id.videoLibrary_textview);
+        videoLibrary_textview.setText(R.string.video_library);
+        help_textview = findViewById(R.id.help_textview);
+        help_textview.setText(R.string.Whatsapp_Help_Cardview);
+        manualSyncButton.setText(R.string.sync_now);
 
         //Help section of watsapp...
         c6.setOnClickListener(new View.OnClickListener() {
@@ -284,19 +302,15 @@ public class HomeActivity extends AppCompatActivity {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
             }
 
-            if(obj.has("video_library"))
-            {
+            if (obj.has("video_library")) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 Uri uri = Uri.parse(obj.getString("video_library"));
                 intent.setData(uri);
                 startActivity(intent);
-            }
-            else
-            {
+            } else {
                 Toast.makeText(context, "No config attribute found", Toast.LENGTH_SHORT).show();
             }
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             Toast.makeText(getApplicationContext(), "JsonException" + e, Toast.LENGTH_LONG).show();
         }
@@ -382,8 +396,7 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.updateProtocolsOption: {
 
 
-                if (NetworkConnection.isOnline(this))
-                {
+                if (NetworkConnection.isOnline(this)) {
 
                     if (!sessionManager.getLicenseKey().isEmpty()) {
 
@@ -441,12 +454,12 @@ public class HomeActivity extends AppCompatActivity {
 
                     }
 
-            }else{
+                } else {
                     Toast.makeText(context, getString(R.string.mindmap_internect_connection), Toast.LENGTH_SHORT).show();
                 }
 
                 return true;
-        }
+            }
 
          /*   case R.id.sync:
 //                pullDataDAO.pullData(this);
