@@ -120,6 +120,7 @@ public class PatientsFrameJson {
             visit.setUuid(visitDTO.getUuid());
             visit.setVisitType(visitDTO.getVisitTypeUuid());
             visit.setStopDatetime(visitDTO.getEnddate());
+            visit.setAttributes(visitDTO.getAttributes());
             visitList.add(visit);
 
         }
@@ -176,7 +177,7 @@ public class PatientsFrameJson {
         pushRequestApiCall.setVisits(visitList);
         pushRequestApiCall.setEncounters(encounterList);
         Gson gson = new Gson();
-        Log.d("OBS: ","OBS: "+gson.toJson(encounterList));
+        Log.d("OBS: ","OBS: "+gson.toJson(pushRequestApiCall));
 
 
         return pushRequestApiCall;

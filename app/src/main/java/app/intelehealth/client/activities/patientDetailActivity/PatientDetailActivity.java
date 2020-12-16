@@ -264,7 +264,6 @@ public class PatientDetailActivity extends AppCompatActivity {
                 visitDTO.setLocationuuid(sessionManager.getLocationUuid());
                 visitDTO.setSyncd(false);
                 visitDTO.setCreatoruuid(sessionManager.getCreatorID());//static
-
                 VisitsDAO visitsDAO = new VisitsDAO();
 
                 try {

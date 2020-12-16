@@ -27,6 +27,25 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "privacynotice_value TEXT" +
             ")";
 
+    public static final String CREATE_DR_SPECIALITY =
+            "CREATE TABLE IF NOT EXISTS tbl_dr_speciality (" +
+                    "uuid TEXT PRIMARY KEY," +
+                    "provideruuid TEXT," +
+                    "attributetypeuuid TEXT," +
+                    "value TEXT UNIQUE," +
+                    "voided TEXT" +
+                    ")";
+
+    //visit attributes tables
+    public static final String CREATE_VISIT_ATTRIBUTES =
+            "CREATE TABLE IF NOT EXISTS tbl_visit_attribute (" +
+                    "uuid TEXT PRIMARY KEY," +
+                    "visit_uuid TEXT," +
+                    "value TEXT," +
+                    "visit_attribute_type_uuid TEXT," +
+                    "voided TEXT," +
+                    "sync TEXT)";
+    //sync column is maintained for internal checking on android side for update.
 
     public static final String CREATE_USER_CREDENTIALS = "CREATE TABLE IF NOT EXISTS tbl_user_credentials (" +
             "username TEXT," +
@@ -86,7 +105,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "isdownloaded TEXT DEFAULT 'false'," +
             "voided TEXT DEFAULT '0'," +
             "sync TEXT DEFAULT 'false' ," +
-            "issubmitted Integer DEFAULT 0 " +
+            "issubmitted Integer DEFAULT 0" +
             ")";
 
 
@@ -208,6 +227,8 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_PROVIDER);
         db.execSQL(CREATE_UUID_DICTIONARY);
         db.execSQL(CREATE_USER_CREDENTIALS);
+        db.execSQL(CREATE_DR_SPECIALITY);
+        db.execSQL(CREATE_VISIT_ATTRIBUTES);
         uuidInsert(db);
         database = db;
 

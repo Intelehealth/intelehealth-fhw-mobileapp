@@ -15,6 +15,11 @@
 <!--        <item>cb</item>-->
     </string-array>
 
+    <string-array name="speciality_values">
+        <item>Select Specialization</item>
+        <item>General Physician</item>
+    </string-array>
+
 
     <string-array name="pref_example_list_titles">
         <item>Always</item>

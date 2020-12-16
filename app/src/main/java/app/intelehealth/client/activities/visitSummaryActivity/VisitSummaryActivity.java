@@ -1,7 +1,9 @@
 package app.intelehealth.client.activities.visitSummaryActivity;
 
+import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -54,6 +56,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -64,6 +68,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,6 +80,7 @@ import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.text.DecimalFormat;
@@ -93,13 +99,17 @@ import app.intelehealth.client.activities.complaintNodeActivity.ComplaintNodeAct
 import app.intelehealth.client.activities.familyHistoryActivity.FamilyHistoryActivity;
 import app.intelehealth.client.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import app.intelehealth.client.activities.patientSurveyActivity.PatientSurveyActivity;
+import app.intelehealth.client.activities.setupActivity.LocationArrayAdapter;
+import app.intelehealth.client.activities.setupActivity.SetupActivity;
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.dao.EncounterDAO;
 import app.intelehealth.client.database.dao.ImagesDAO;
 import app.intelehealth.client.database.dao.ObsDAO;
 import app.intelehealth.client.database.dao.PatientsDAO;
+import app.intelehealth.client.database.dao.ProviderAttributeLIstDAO;
 import app.intelehealth.client.database.dao.SyncDAO;
+import app.intelehealth.client.database.dao.VisitAttributeListDAO;
 import app.intelehealth.client.database.dao.VisitsDAO;
 import app.intelehealth.client.knowledgeEngine.Node;
 import app.intelehealth.client.models.ClsDoctorDetails;
@@ -127,6 +137,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private LinearLayout mLayout;
 
     String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp;
+    String speciality_selected = "";
 
     boolean uploaded = false;
     boolean downloaded = false;
@@ -142,6 +153,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String medicalAdvice_string = "";
     String medicalAdvice_HyperLink = "";
     String isSynedFlag = "";
+
+//    Spinner speciality_spinner;
 
     SQLiteDatabase db;
 
@@ -227,7 +240,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     //added checkbox flag .m
     CheckBox flag;
 
-    Boolean isPastVisit = false;
+    Boolean isPastVisit = false, isVisitSpecialityExists = false;
     Boolean isReceiverRegistered = false;
 
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
@@ -593,7 +606,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 //        mDoctorTitle.setVisibility(View.GONE);
 //        mDoctorName.setVisibility(View.GONE);
-
+//        speciality_spinner = findViewById(R.id.speciality_spinner);
         diagnosisTextView = findViewById(R.id.textView_content_diagnosis);
         prescriptionTextView = findViewById(R.id.textView_content_rx);
         medicalAdviceTextView = findViewById(R.id.textView_content_medical_advice);
@@ -603,6 +616,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         ivPrescription = findViewById(R.id.iv_prescription);
 
+        //spinner is being populated with the speciality values...
+        ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
+        VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
 //        if (hasPrescription.equalsIgnoreCase("true")) {
 //            ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
 //        }
@@ -703,98 +719,149 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-
-                if (flag.isChecked()) {
+//                if (speciality_spinner.getSelectedItemPosition() != 0) {
+//                    VisitsDAO visitsDAO_speciality = new VisitsDAO();
+                    VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
+                    boolean isUpdateVisitDone = false;
                     try {
-                        EncounterDAO encounterDAO = new EncounterDAO();
-                        encounterDAO.setEmergency(visitUuid, true);
+//                        isUpdateVisitDone = visitsDAO_speciality.update_visitTbl_speciality
+//                                (speciality_selected, visitUuid);
+                        isUpdateVisitDone = speciality_attributes
+                                .insertVisitAttributes(visitUuid, "General Physician");
+
+                        Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                     } catch (DAOException e) {
-                        FirebaseCrashlytics.getInstance().recordException(e);
+                        e.printStackTrace();
+                        Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                     }
-                }
-                if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
-                    String patientSelection = "uuid = ?";
-                    String[] patientArgs = {String.valueOf(patient.getUuid())};
-                    String table = "tbl_patient";
-                    String[] columnsToReturn = {"openmrs_id"};
-                    final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
+
+                    Log.d("visitUUID", "upload_click: "+visitUUID);
+//                    isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+//                    if(isVisitSpecialityExists)
+//                        speciality_spinner.setEnabled(false);
 
 
-                    if (idCursor.moveToFirst()) {
-                        do {
-                            patient.setOpenmrs_id(idCursor.getString(idCursor.getColumnIndex("openmrs_id")));
-                        } while (idCursor.moveToNext());
+                    if (flag.isChecked()) {
+                        try {
+                            EncounterDAO encounterDAO = new EncounterDAO();
+                            encounterDAO.setEmergency(visitUuid, true);
+                        } catch (DAOException e) {
+                            FirebaseCrashlytics.getInstance().recordException(e);
+                        }
                     }
-                    idCursor.close();
-                }
+                    if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
+                        String patientSelection = "uuid = ?";
+                        String[] patientArgs = {String.valueOf(patient.getUuid())};
+                        String table = "tbl_patient";
+                        String[] columnsToReturn = {"openmrs_id"};
+                        final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
 
-                if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
-                }
 
-                if (visitUUID == null || visitUUID.isEmpty()) {
-                    String visitIDSelection = "uuid = ?";
-                    String[] visitIDArgs = {visitUuid};
-                    final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, null);
-                    if (visitIDCursor != null && visitIDCursor.moveToFirst()) {
-                        visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
+                        if (idCursor.moveToFirst()) {
+                            do {
+                                patient.setOpenmrs_id(idCursor.getString(idCursor.getColumnIndex("openmrs_id")));
+                            } while (idCursor.moveToNext());
+                        }
+                        idCursor.close();
                     }
-                    if (visitIDCursor != null)
-                        visitIDCursor.close();
-                }
-                String[] columnsToReturn = {"startdate"};
-                String visitIDorderBy = "startdate";
-                String visitIDSelection = "uuid = ?";
-                String[] visitIDArgs = {visitUuid};
-                Cursor visitIDCursor1 = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
-                visitIDCursor1.moveToLast();
-                String startDateTime = visitIDCursor1.getString(visitIDCursor1.getColumnIndexOrThrow("startdate"));
-                visitIDCursor1.close();
 
-                if (!flag.isChecked()) {
-                    //
-                }
+                    if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
+                    }
+
+                    if (visitUUID == null || visitUUID.isEmpty()) {
+                        String visitIDSelection = "uuid = ?";
+                        String[] visitIDArgs = {visitUuid};
+                        final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, null);
+                        if (visitIDCursor != null && visitIDCursor.moveToFirst()) {
+                            visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
+                        }
+                        if (visitIDCursor != null)
+                            visitIDCursor.close();
+                    }
+//                String[] columnsToReturn = {"startdate"};
+//                String visitIDorderBy = "startdate";
+//                String visitIDSelection = "uuid = ?";
+//                String[] visitIDArgs = {visitUuid};
+//                Cursor visitIDCursor1 = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
+//                visitIDCursor1.moveToLast();
+//                String startDateTime = visitIDCursor1.getString(visitIDCursor1.getColumnIndexOrThrow("startdate"));
+//                visitIDCursor1.close();
+
+                    if (!flag.isChecked()) {
+                        //
+                    }
+
 
 //                new Restaurant(VisitSummaryActivity.this, getString(R.string.uploading_to_doctor_notif), Snackbar.LENGTH_LONG)
 //                        .setBackgroundColor(Color.BLACK)
 //                        .setTextColor(Color.WHITE)
 //                        .show();
 
-                if (NetworkConnection.isOnline(getApplication())) {
-                    Toast.makeText(context, getResources().getString(R.string.upload_started), Toast.LENGTH_LONG).show();
+                    if (NetworkConnection.isOnline(getApplication())) {
+                        Toast.makeText(context, getResources().getString(R.string.upload_started), Toast.LENGTH_LONG).show();
 
 //                    AppConstants.notificationUtils.showNotifications(getString(R.string.visit_data_upload), getString(R.string.uploading_visit_data_notif), 3, VisitSummaryActivity.this);
-                    SyncDAO syncDAO = new SyncDAO();
+                        SyncDAO syncDAO = new SyncDAO();
 //                    ProgressDialog pd = new ProgressDialog(VisitSummaryActivity.this);
 //                    pd.setTitle(getString(R.string.syncing_visitDialog));
 //                    pd.show();
 //                    pd.setCancelable(false);
 
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
 //                            Added the 4 sec delay and then push data.For some reason doing immediately does not work
-                            //Do something after 100ms
-                            SyncUtils syncUtils = new SyncUtils();
-                            boolean isSynced = syncUtils.syncForeground("visitSummary");
-                            if (isSynced) {
-                                AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload), getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity.this);
-                                //
-                                showVisitID();
-                            } else {
-                                AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
+                                //Do something after 100ms
+                                SyncUtils syncUtils = new SyncUtils();
+                                boolean isSynced = syncUtils.syncForeground("visitSummary");
+                                if (isSynced) {
+                                    AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload), getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity.this);
+                                    //
+                                    showVisitID();
+                                    Log.d("visitUUID", "showVisitID: "+visitUUID);
+//                                    isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+//                                    if(isVisitSpecialityExists)
+//                                        speciality_spinner.setEnabled(false);
+                                } else {
+                                    AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
 
-                            }
-                            uploaded = true;
+                                }
+                                uploaded = true;
 //                            pd.dismiss();
 //                            Toast.makeText(VisitSummaryActivity.this, getString(R.string.upload_completed), Toast.LENGTH_SHORT).show();
-                        }
-                    }, 4000);
-                } else {
-                    AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
-                }
-            }
+                            }
+                        }, 4000);
+                    } else {
+                        AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
+                    }
+//                }
+//                else
+//                {
+//                    TextView t = (TextView) speciality_spinner.getSelectedView();
+//                    t.setError("Please select specialization");
+//                    t.setTextColor(Color.RED);
+//
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(VisitSummaryActivity.this)
+//                            .setMessage("Please select specialization")
+//                            .setCancelable(false)
+//                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialogInterface, int i) {
+//                                    dialogInterface.dismiss();
+//                                }
+//                            });
+//
+//                    AlertDialog alertDialog = builder.create();
+//                    alertDialog.show();
+//
+//                    Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+//                    positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+//                    positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//
+//                }
 
+            }
         });
 
         if (intentTag != null && intentTag.equals("prior")) {
@@ -1383,6 +1450,32 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         doQuery();
     }
+
+    /**
+     * @param uuid the visit uuid of the patient visit records is passed to the function.
+     * @return boolean value will be returned depending upon if the row exists in the tbl_visit_attribute tbl
+     */
+    private boolean speciality_row_exist_check(String uuid) {
+        boolean isExists = false;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        db.beginTransaction();
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=?",
+                new String[]{uuid});
+
+        if(cursor.getCount() != 0)
+        {
+            while(cursor.moveToNext())
+            {
+                isExists = true;
+            }
+        }
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        return isExists;
+    }
+
 
     private String convertCtoF(String temperature) {
 
