@@ -29,7 +29,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.intelehealth.ekalarogya.R;
+import app.intelehealth.client.R;
 import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.dao.ImagesDAO;
 import app.intelehealth.client.models.DocumentObject;

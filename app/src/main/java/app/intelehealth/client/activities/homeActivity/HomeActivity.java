@@ -49,7 +49,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import org.intelehealth.ekalarogya.R;
+import app.intelehealth.client.R;
 import app.intelehealth.client.activities.activePatientsActivity.ActivePatientActivity;
 import app.intelehealth.client.activities.identificationActivity.IdentificationActivity;
 import app.intelehealth.client.activities.loginActivity.LoginActivity;

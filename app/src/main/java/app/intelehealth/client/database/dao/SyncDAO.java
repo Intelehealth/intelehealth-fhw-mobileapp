@@ -21,7 +21,7 @@ import app.intelehealth.client.utilities.Logger;
 import app.intelehealth.client.utilities.NotificationID;
 import app.intelehealth.client.utilities.PatientsFrameJson;
 import app.intelehealth.client.utilities.SessionManager;
-import org.intelehealth.ekalarogya.R;
+import app.intelehealth.client.R;
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.InteleHealthDatabaseHelper;

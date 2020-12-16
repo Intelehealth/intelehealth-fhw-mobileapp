@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.intelehealth.ekalarogya.R;
+import app.intelehealth.client.R;
 
 
 /**
