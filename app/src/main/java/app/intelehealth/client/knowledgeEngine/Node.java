@@ -7,6 +7,7 @@ import android.content.Intent;
 
 import androidx.appcompat.app.AlertDialog;
 
+import android.os.Build;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.DisplayMetrics;
@@ -1510,8 +1511,18 @@ public class Node implements Serializable {
         final AlertDialog dialog = builder.create();
         LayoutInflater inflater = context.getLayoutInflater();
         View dialogLayout = inflater.inflate(R.layout.image_confirmation_dialog, null);
+
+        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT)
+        {
+            dialog.supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        }
+        else
+        {
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        }
+
         dialog.setView(dialogLayout);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
