@@ -10,9 +10,11 @@ import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.dao.ImagesPushDAO;
 import app.intelehealth.client.database.dao.SyncDAO;
+import app.intelehealth.client.models.pushRequestApiCall.PushRequestApiCall;
 import app.intelehealth.client.services.UpdateDownloadPrescriptionService;
 import app.intelehealth.client.utilities.Logger;
 import app.intelehealth.client.utilities.NotificationUtils;
+import app.intelehealth.client.utilities.PatientsFrameJson;
 
 public class SyncUtils {
 
@@ -23,7 +25,17 @@ public class SyncUtils {
         SyncDAO syncDAO = new SyncDAO();
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
 
-        syncDAO.pushDataApi();
+        // Checking if Specialty is added or not in visit
+        PushRequestApiCall pushRequestApiCall;
+        PatientsFrameJson patientsFrameJson = new PatientsFrameJson();
+        pushRequestApiCall = patientsFrameJson.frameJson();
+
+        for (int i = 0; i < pushRequestApiCall.getVisits().size(); i++) {
+            if (pushRequestApiCall.getVisits().get(i).getAttributes().size() > 0) {
+                syncDAO.pushDataApi();
+            }
+        }
+
         syncDAO.pullData_Background(IntelehealthApplication.getAppContext()); //only this new function duplicate
 
         imagesPushDAO.patientProfileImagesPush();
@@ -67,7 +79,19 @@ public class SyncUtils {
         SyncDAO syncDAO = new SyncDAO();
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
         Logger.logD(TAG, "Push Started");
-        isSynced = syncDAO.pushDataApi();
+
+        // Checking if Specialty is added or not in visit
+        PushRequestApiCall pushRequestApiCall;
+        PatientsFrameJson patientsFrameJson = new PatientsFrameJson();
+        pushRequestApiCall = patientsFrameJson.frameJson();
+
+        for (int i = 0; i < pushRequestApiCall.getVisits().size(); i++) {
+            if (pushRequestApiCall.getVisits().get(i).getAttributes().size() > 0) {
+                isSynced = syncDAO.pushDataApi();
+            }
+        }
+
+//      isSynced = syncDAO.pushDataApi();
         Logger.logD(TAG, "Push ended");
 
 
