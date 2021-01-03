@@ -535,17 +535,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
                     EditText editText = new EditText(VisitSummaryActivity.this);
                     editText.setInputType(InputType.TYPE_CLASS_PHONE);
-                    InputFilter inputFilter = new InputFilter() {
-                        @Override
-                        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                            return null;
-                        }
-                    };
+//                    InputFilter inputFilter = new InputFilter() {
+//                        @Override
+//                        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+//                            return null;
+//                        }
+//                    };
                     String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
                     String whatsapp_url = partial_whatsapp_presc_url.concat(visitUUID);
 //                    Spanned hyperlink_whatsapp = HtmlCompat.fromHtml("<a href=" + whatsapp_url + ">Click Here</a>", HtmlCompat.FROM_HTML_MODE_COMPACT);
 
-                    editText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(10)});
+                    editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
                     editText.setText(patient.getPhone_number());
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
                             (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
