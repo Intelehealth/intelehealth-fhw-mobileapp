@@ -32,9 +32,12 @@ public class ConfigUtils {
             //NonNull added to handle null values in case of downloaded mm's.
             //Load the config file
             if (!sessionManager.getLicenseKey().isEmpty())
-                obj = new JSONObject(Objects.requireNonNull(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context)));
+            { obj = new JSONObject(Objects.requireNonNullElse
+                    (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context),
+                            String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME))));
+            }
             else
-                obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)));
+            { obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME))); }
 
         } catch (JSONException e) {
             Logger.logE(TAG, "Exception", e);
