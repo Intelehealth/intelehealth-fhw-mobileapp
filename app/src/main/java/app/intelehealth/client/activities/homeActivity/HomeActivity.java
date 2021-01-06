@@ -169,7 +169,7 @@ public class HomeActivity extends AppCompatActivity {
         videoLibrary_textview.setText(R.string.video_library);
         help_textview = findViewById(R.id.help_textview);
         help_textview.setText(R.string.Whatsapp_Help_Cardview);
-        manualSyncButton.setText(R.string.sync_now);
+        manualSyncButton.setText(R.string.refresh);
 
         //Help section of watsapp...
         c6.setOnClickListener(new View.OnClickListener() {

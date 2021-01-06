@@ -3,4 +3,5 @@
     <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using Intelehealth. To Download your prescription please click here "</string>
     <string name="and_enter_your_patient_id">" and enter your Patient ID - "</string>
     <string name="setup">Setup</string>
+    <string name="refresh">Refresh</string>
 </resources>

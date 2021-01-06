@@ -507,5 +507,6 @@
     <string name="download_presc_before_sharing">Download prescription first before sharing</string>
     <string name="please_select_specialization">Please select specialization</string>
     <string name="setup">Setup</string>
+    <string name="refresh">Refresh</string>
 
 </resources>
