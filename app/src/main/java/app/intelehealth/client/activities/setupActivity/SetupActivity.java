@@ -27,6 +27,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.URLUtil;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -142,6 +143,7 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 attemptLogin();
+                closeKeyboard();
             }
         });
 
@@ -175,6 +177,7 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 attemptLogin();
+                closeKeyboard();
                 //progressBar.setVisibility(View.VISIBLE);
                 //progressBar.setProgress(0);
 
@@ -804,5 +807,16 @@ public class SetupActivity extends AppCompatActivity {
         mTask.execute(mindmapURL, context.getFilesDir().getAbsolutePath() + "/mindmaps.zip");
         Log.e("DOWNLOAD", "isSTARTED");
 
+    }
+
+    //This function closes or opens up the soft keyboard on view click: By Nishita
+    private void closeKeyboard()
+    {
+        View view = this.getCurrentFocus();
+        if(view!=null)
+        {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(),0);
+        }
     }
 }

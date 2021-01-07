@@ -29,11 +29,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
@@ -90,7 +94,7 @@ public class HomeActivity extends AppCompatActivity {
     private static final String TAG = HomeActivity.class.getSimpleName();
     SessionManager sessionManager = null;
     ProgressDialog TempDialog;
-    CountDownTimer CDT;
+   // CountDownTimer CDT;
     private boolean hasLicense = false;
     int i = 5;
 
@@ -115,6 +119,8 @@ public class HomeActivity extends AppCompatActivity {
     TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
             activeVisits_textview, videoLibrary_textview, help_textview;
 
+    HomeViewModel homeViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,6 +130,8 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
+
+
 
         String language = sessionManager.getAppLanguage();
         if (!language.equalsIgnoreCase("")) {
@@ -176,6 +184,32 @@ public class HomeActivity extends AppCompatActivity {
         help_textview.setText(R.string.Whatsapp_Help_Cardview);
 
         manualSyncButton.setText(R.string.sync_now);
+
+       // this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        TempDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle); //thats how to add a style!
+        TempDialog.setTitle(R.string.syncInProgress);
+        TempDialog.setMessage(getString(R.string.please_wait));
+        TempDialog.setCancelable(false);
+        TempDialog.setProgress(i);
+
+        TempDialog.show();
+
+
+        //viewmodel...
+        homeViewModel = new ViewModelProvider(HomeActivity.this).get(HomeViewModel.class);
+        homeViewModel.getStringLiveData().observe(HomeActivity.this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                lastSyncTextView.setText(
+                        getString(R.string.last_synced) +
+                                " \n" +
+                                s);
+
+                TempDialog.dismiss();
+            }
+        });
+
 
         //Help section of watsapp...
         c6.setOnClickListener(new View.OnClickListener() {
@@ -235,7 +269,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
 
-        lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
+    //    lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
 
 //        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
 //                && Locale.getDefault().toString().equalsIgnoreCase("en")) {
@@ -262,27 +296,21 @@ public class HomeActivity extends AppCompatActivity {
         });
         WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
         if (sessionManager.isFirstTimeLaunched()) {
-            TempDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle); //thats how to add a style!
-            TempDialog.setTitle(R.string.syncInProgress);
-            TempDialog.setCancelable(false);
-            TempDialog.setProgress(i);
 
-            TempDialog.show();
-
-            CDT = new CountDownTimer(7000, 1000) {
-                public void onTick(long millisUntilFinished) {
-                    TempDialog.setTitle(getString(R.string.syncInProgress));
-                    TempDialog.setMessage(getString(R.string.please_wait));
-                    i--;
-                }
-
-                public void onFinish() {
-                    TempDialog.dismiss();
-                    //Your Code ...
-                    sessionManager.setFirstTimeLaunched(false);
-                    sessionManager.setMigration(true);
-                }
-            }.start();
+//            CDT = new CountDownTimer(7000, 1000) {
+//                public void onTick(long millisUntilFinished) {
+//                    TempDialog.setTitle(getString(R.string.syncInProgress));
+//                    TempDialog.setMessage(getString(R.string.please_wait));
+//                    i--;
+//                }
+//
+//                public void onFinish() {
+//                    TempDialog.dismiss();
+//                    //Your Code ...
+//                    sessionManager.setFirstTimeLaunched(false);
+//                    sessionManager.setMigration(true);
+//                }
+//            }.start();
 
         }
         sessionManager.setMigration(true);
@@ -641,7 +669,10 @@ public class HomeActivity extends AppCompatActivity {
     public class Myreceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
+            if(!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")) {
+                lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
+            }
+
 //          lastSyncAgo.setText(sessionManager.getLastTimeAgo());
         }
     }
