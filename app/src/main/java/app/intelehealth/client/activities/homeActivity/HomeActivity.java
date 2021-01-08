@@ -196,19 +196,27 @@ public class HomeActivity extends AppCompatActivity {
         TempDialog.show();
 
 
-        //viewmodel...
-        homeViewModel = new ViewModelProvider(HomeActivity.this).get(HomeViewModel.class);
-        homeViewModel.getStringLiveData().observe(HomeActivity.this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                lastSyncTextView.setText(
-                        getString(R.string.last_synced) +
-                                " \n" +
-                                s);
+        if(isNetworkConnected()) {
+            //viewmodel...
+            homeViewModel = new ViewModelProvider(HomeActivity.this).get(HomeViewModel.class);
+            homeViewModel.getStringLiveData().observe(HomeActivity.this, new Observer<String>() {
+                @Override
+                public void onChanged(String s) {
+                    lastSyncTextView.setText(
+                            getString(R.string.last_synced) +
+                                    " \n" +
+                                    s);
 
-                TempDialog.dismiss();
-            }
-        });
+                    TempDialog.dismiss();
+                }
+            });
+        }
+        else {
+            lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
+            TempDialog.dismiss();
+            Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
+        }
+
 
 
         //Help section of watsapp...
