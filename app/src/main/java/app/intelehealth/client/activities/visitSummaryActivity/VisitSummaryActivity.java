@@ -542,7 +542,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //                        }
 //                    };
                     String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
-                    String whatsapp_url = partial_whatsapp_presc_url.concat(visitUUID);
+                    String whatsapp_url = partial_whatsapp_presc_url.concat(visitUuid);
 //                    Spanned hyperlink_whatsapp = HtmlCompat.fromHtml("<a href=" + whatsapp_url + ">Click Here</a>", HtmlCompat.FROM_HTML_MODE_COMPACT);
 
                     editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
